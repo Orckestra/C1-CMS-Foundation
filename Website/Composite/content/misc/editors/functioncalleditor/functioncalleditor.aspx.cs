@@ -569,6 +569,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 		if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
 		{
 			SelectedNode = TreePathToIdMapping.Keys.Skip(1).FirstOrDefault();
+			_xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
 		}
 
         // Building tree 
