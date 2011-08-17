@@ -145,6 +145,7 @@ namespace Composite.Core.Routing.Pages
                 context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
             }
 
+            Verify.IsFalse(context.Items.Contains(HttpContextItem_C1PageUrl), "C1PageRoute was executed twice during the same request. If could be f.e. because there's an MVC player that have a route that matches a C1 page url.");
             context.Items.Add(HttpContextItem_C1PageUrl, pageUrlData);
 
             var data = GetRouteData();
