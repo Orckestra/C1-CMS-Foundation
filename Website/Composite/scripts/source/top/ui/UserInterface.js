@@ -106,6 +106,7 @@ var UserInterface = new function () {
 		"ui:datainputselector"			: DataInputSelectorBinding,
 		"ui:datainputdialog"			: DataInputDialogBinding,
 		"ui:imageinputdialog"			: ImageInputDialogBinding,
+		"ui:datainputbutton"			: DataInputButtonBinding,
 		"ui:textbox"					: TextBoxBinding,
 		"ui:editortextbox"				: editortextboximpl,
 		"ui:radiodatagroup"				: RadioDataGroupBinding,

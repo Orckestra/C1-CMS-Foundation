@@ -1004,6 +1004,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\data\DataBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\DataBindingMap.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataDialogBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataInputButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataInputDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\HTMLDataDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\ImageInputDialogBinding.js" />
