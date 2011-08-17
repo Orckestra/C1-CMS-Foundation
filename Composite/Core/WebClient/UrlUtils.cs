@@ -158,7 +158,7 @@ namespace Composite.Core.WebClient
 
                 int singleQuoteIndex =
                     (endOffset == -1)
-                    ? html.IndexOf('\'')
+                    ? html.IndexOf('\'', prefixEndOffset)
                     : html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
 
                 if (singleQuoteIndex > 0)
