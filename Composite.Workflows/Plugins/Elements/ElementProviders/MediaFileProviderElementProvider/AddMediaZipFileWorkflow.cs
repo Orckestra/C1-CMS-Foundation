@@ -69,6 +69,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (uploadedFile.HasFile)
             {
+                if(uploadedFile.FileName.EndsWith(".docx"))
+                {
+                    ShowUploadError("${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.CannotUploadDocxFile}");
+                    return;
+                }
+
                 using (System.IO.Stream readStream = uploadedFile.FileStream)
                 {
                     try
@@ -81,19 +87,17 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     }
                 }
             }
+
+            if (!_zipHasBeenUploaded)
+            {
+                ShowUploadError("${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message}");
+            }
         }
 
 
 
         private void ZipWasUploaded(object sender, ConditionalEventArgs e)
         {
-            if (!_zipHasBeenUploaded)
-            {
-                //TODO: This does not work, client needs fix
-                //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message}");
-                this.ShowMessage(DialogType.Error, "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message}");
-            }
-
             e.Result = _zipHasBeenUploaded;
         }
 
@@ -114,17 +118,22 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
 
             if (uploadedFile.HasFile == false)
-            {                
-                //TODO: This does not work, client needs fix
-                //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
-                this.ShowMessage(DialogType.Error, "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
+            {
+                ShowUploadError("${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
                 e.Result = false;
                 return;
             }
 
-
-
             e.Result = true;
+        }
+
+        private void ShowUploadError(string message)
+        {
+            //TODO: Cannot show an error bubble on file selector since the control doesn't support it. Should be fixed on client js 
+            //this.ShowFieldMessage("UploadedFile", "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message}");
+            this.ShowMessage(DialogType.Error, 
+                "${Composite.Management, Website.Forms.Administrative.AddZipMediaFile.Error.Title}",
+                message);
         }
     }
 }

@@ -113,13 +113,13 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
 
-        private void finalizeCodeActivity_ShowFileExistMessage_ExecuteCode(object sender, EventArgs e)
-        {
-            this.ShowMessage(
-                DialogType.Error,
-                "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.FileExistTitle}",
-                "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.FileExistMessage}"
-            );
-        }
+        //private void finalizeCodeActivity_ShowFileExistMessage_ExecuteCode(object sender, EventArgs e)
+        //{
+        //    this.ShowMessage(
+        //        DialogType.Error,
+        //        "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.FileExistTitle}",
+        //        "${Composite.Plugins.WebsiteFileElementProvider, UploadFile.Error.FileExistMessage}"
+        //    );
+        //}
     }
 }
