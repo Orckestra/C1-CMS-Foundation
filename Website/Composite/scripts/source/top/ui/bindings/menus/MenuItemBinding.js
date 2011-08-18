@@ -303,6 +303,9 @@ MenuItemBinding.prototype.handleEvent = function ( e ) {
 					} else {
 						this.fireCommand ();
 					}
+					EventBroadcaster.broadcast(
+						BroadcastMessages.MOUSEEVENT_MOUSEDOWN, this
+					);
 					EventBroadcaster.broadcast ( 
 						BroadcastMessages.MOUSEEVENT_MOUSEUP, this 
 					);
