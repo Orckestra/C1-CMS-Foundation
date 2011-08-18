@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Xml;
+using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.Core.Configuration;
@@ -11,8 +12,6 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.Threading;
-using Composite.Data;
-using Composite.Data.Types;
 
 
 namespace Composite.Core.WebClient.Logging.WCF
@@ -115,13 +114,17 @@ namespace Composite.Core.WebClient.Logging.WCF
             using (ThreadDataManager.Initialize())
             {
                 userIsValid = LoginProviderPluginFacade.FormValidateUser(login, password) == LoginResult.Success;
-
-                // Checking whether the user is an administrator
+                
                 if(userIsValid)
                 {
-                    IUserGroup adminGroup = DataFacade.GetData<IUserGroup>().Where(f => f.Name == "Administrator").SingleOrDefault();
+                    string userName = login.ToLowerInvariant();
+                    var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(userName).ToList();
+                    var userGroupPermissionDefinitions = PermissionTypeFacade.GetUserGroupPermissionDefinitions(userName).ToList();
 
-                    userIsAdmin = adminGroup != null && UserGroupFacade.GetUserGroupIds(login).Any(groupId => groupId == adminGroup.Id);
+                    EntityToken rootEntityToken = AttachingPoint.PerspectivesRoot.EntityToken;
+                    var permissions = PermissionTypeFacade.GetCurrentPermissionTypes(new UserToken(userName), rootEntityToken, userPermissionDefinitions, userGroupPermissionDefinitions);
+
+                    userIsAdmin = permissions.Contains(PermissionType.Administrate);
                 }
             }
 
