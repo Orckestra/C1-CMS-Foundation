@@ -9218,6 +9218,7 @@ this.setChecked(!this.isChecked);
 }else{
 this.fireCommand();
 }
+EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEDOWN,this);
 EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEUP,this);
 }
 break;
@@ -9439,7 +9440,6 @@ return PopupBinding.activeInstances.hasEntries();
 PopupBinding.handleBroadcast=function(_6f7,arg){
 switch(_6f7){
 case BroadcastMessages.MOUSEEVENT_MOUSEDOWN:
-case BroadcastMessages.MOUSEEVENT_MOUSEUP:
 if(PopupBinding.activeInstances.hasEntries()){
 var list=new List();
 PopupBinding.activeInstances.each(function(key){
@@ -9465,7 +9465,6 @@ break;
 }
 };
 EventBroadcaster.subscribe(BroadcastMessages.MOUSEEVENT_MOUSEDOWN,PopupBinding);
-EventBroadcaster.subscribe(BroadcastMessages.MOUSEEVENT_MOUSEUP,PopupBinding);
 EventBroadcaster.subscribe(BroadcastMessages.KEY_ESCAPE,PopupBinding);
 function PopupBinding(){
 this.logger=SystemLogger.getLogger("PopupBinding");
