@@ -25,6 +25,13 @@ namespace Composite.Core.Routing.Pages
                 var httpContext = HttpContext.Current;
                 return httpContext != null ? httpContext.Items[HttpContextItem_C1PageUrl] as PageUrlData : null;
             }
+            set
+            {
+                var httpContext = HttpContext.Current;
+                Verify.IsNotNull(httpContext, "HttpContext is not available");
+
+                httpContext.Items[HttpContextItem_C1PageUrl] = value;
+            }
         }
 
         /// <summary>
@@ -146,7 +153,7 @@ namespace Composite.Core.Routing.Pages
             }
 
             Verify.IsFalse(context.Items.Contains(HttpContextItem_C1PageUrl), "C1PageRoute was executed twice during the same request. If could be f.e. because there's an MVC player that have a route that matches a C1 page url.");
-            context.Items.Add(HttpContextItem_C1PageUrl, pageUrlData);
+            PageUrlData = pageUrlData;
 
             var data = GetRouteData();
             data.Values.Add(RouteDate_PageUrl, pageUrlData);
