@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="AddOnManager.CompositeVersionMisMatch" value="The package composite version requirements does not match the current composite version" />
-  <string key="AddOnManager.NewerVersionInstlled" value="Package already installed with a newer version" />
+  <string key="AddOnManager.PackageAlreadyInstalled" value="Package is already installed" />
+  <string key="AddOnManager.NewerVersionInstalled" value="A newer version of the package is already installed" />	
   <string key="AddOnManager.MissingAddOnDirectory" value="Could not locate the package directory path '{0}'" />
   <string key="AddOnManager.Uninstallable" value="The package is marked as non uninstallable" />
   <string key="AddOnManager.MissingZipFile" value="Could not locate the package zip file path '{0}'" />

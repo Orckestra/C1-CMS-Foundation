@@ -570,6 +570,7 @@
 	<string key="Website.Forms.Administrative.AddZipMediaFile.Error.Title" value="Error" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelOverwriteExsistingCheckBox" value="Overwrite existing files" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.MissingUploadedFile.Message" value="Please select a file to upload" />
+	<string key="Website.Forms.Administrative.AddZipMediaFile.CannotUploadDocxFile" value="Please use the normal upload command to upload .docx files" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.WrongUploadedFile.Message" value="The selected file was not a correct zip file" />
 	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelFunctionSearch" value="Function search" />
 	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeyword" value="Keyword" />

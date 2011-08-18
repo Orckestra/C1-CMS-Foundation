@@ -519,6 +519,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public bool OnElementDraggedAndDropped(EntityToken draggedEntityToken, EntityToken newParentEntityToken, int dropIndex, DragAndDropType dragAndDropType, FlowControllerServicesContainer flowControllerServicesContainer)
         {
             IPage draggedPage = (IPage)((DataEntityToken)draggedEntityToken).Data;
+            Verify.IsNotNull(draggedPage, "Dragged page does not exist");
 
             Guid newParentPageId;
             if ((newParentEntityToken is PageElementProviderEntityToken) == true)

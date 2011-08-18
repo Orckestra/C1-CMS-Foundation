@@ -187,7 +187,14 @@ namespace Composite.Core.PackageSystem
 
                     if (newVersion <= currentVersion)
                     {
-                        return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.NewerVersionInstlled")) }, zipFilename);
+                        string messageKey = (newVersion == currentVersion) ? "AddOnManager.PackageAlreadyInstalled" : "AddOnManager.NewerVersionInstalled";
+                        string validationError = StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", messageKey);
+
+                        return new PackageManagerInstallProcess(
+                            new List<PackageFragmentValidationResult>
+                                {
+                                    new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, validationError)
+                                }, zipFilename);
                     }
                 }
 
