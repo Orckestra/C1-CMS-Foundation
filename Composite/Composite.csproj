@@ -154,6 +154,7 @@
     <Compile Include="C1Console\Elements\ElementActionActivePosition.cs" />
     <Compile Include="C1Console\Events\SelectElementQueueItem.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\DoubleSelectorUiControl.cs" />
+    <Compile Include="C1Console\Forms\IValidatingUiControl.cs" />
     <Compile Include="C1Console\Forms\ReadBindingControlValueOverload.cs" />
     <Compile Include="C1Console\Security\LoginResult.cs" />
     <Compile Include="Core\Configuration\C1Configuration.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Core\Routing\Routes.cs" />
     <Compile Include="Core\WebClient\Renderings\RenderingContext.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\SelectElementParams.cs" />
+    <Compile Include="Core\WebClient\UiControlLib\DocumentDirtyEvent.cs" />
     <Compile Include="Core\Xml\XhtmlErrorFormatter.cs" />
     <Compile Include="Core\Xml\UriResolver.cs" />
     <Compile Include="Core\Xml\XDocumentUtils.cs" />

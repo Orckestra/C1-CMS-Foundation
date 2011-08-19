@@ -193,12 +193,19 @@
   <!-- kill links -->
   <xsl:template match="x:div[@class='calendar']//x:td">
     <td>
-      <xsl:if test="x:a">
-        <xsl:attribute name="onclick">
-          <xsl:value-of select="substring-after(x:a/@href,'javascript:')"/>
-        </xsl:attribute>
-        <xsl:attribute name="class">active <xsl:value-of select="@class"/> </xsl:attribute>
-      </xsl:if>
+      <xsl:choose>
+        <xsl:when test="x:a and not(ancestor::x:table/@class='readonly')">
+          <xsl:attribute name="onclick">
+            <xsl:value-of select="substring-after(x:a/@href,'javascript:')"/>
+          </xsl:attribute>
+          <xsl:attribute name="class">
+            active <xsl:value-of select="@class"/>
+          </xsl:attribute>
+        </xsl:when>
+        <xsl:when test="x:a and ancestor::x:table/@class='readonly' and contains(@class,'selectedday')">
+          <xsl:attribute name="class">selectedday</xsl:attribute>
+        </xsl:when>
+      </xsl:choose>
       <xsl:apply-templates select="*|text()"/>
     </td>
   </xsl:template>
@@ -209,37 +216,41 @@
   <xsl:template match="x:div[@class='calendar']//x:tr[position()=1]">
     <tr class="month">
       <td>
-        <div class="monthbrowse">
-          <xsl:attribute name="onclick">
-            <xsl:value-of select="substring-after(//x:table/x:tr/x:td[position()=1]/x:a/@href,'javascript:')"/>
-          </xsl:attribute>
-          <xsl:text>&#x25C0;</xsl:text>
-        </div>
-        <div class="monthbrowse">
-          <xsl:attribute name="onclick">
-            <xsl:value-of select="substring-after(../../x:a[1]/@href,'javascript:')"/>
-          </xsl:attribute>
-          <xsl:text>&#x25C1;</xsl:text>
-        </div>
-    </td>
+        <xsl:if test="not(ancestor::x:table/@class='readonly')">
+          <div class="monthbrowse">
+            <xsl:attribute name="onclick">
+              <xsl:value-of select="substring-after(//x:table/x:tr/x:td[position()=1]/x:a/@href,'javascript:')"/>
+            </xsl:attribute>
+            <xsl:text>&#x25C0;</xsl:text>
+          </div>
+          <div class="monthbrowse">
+            <xsl:attribute name="onclick">
+              <xsl:value-of select="substring-after(../../x:a[1]/@href,'javascript:')"/>
+            </xsl:attribute>
+            <xsl:text>&#x25C1;</xsl:text>
+          </div>
+        </xsl:if>
+      </td>
       <td colspan="5">
         <xsl:value-of select="substring-before(//x:table/x:tr/x:td[position()=2]/text(),' ')"/>
         <br/>
         <xsl:value-of select="substring-after(//x:table/x:tr/x:td[position()=2]/text(),' ')"/>
       </td>
       <td>
-        <div class="monthbrowse">
-          <xsl:attribute name="onclick">
-            <xsl:value-of select="substring-after(//x:table/x:tr/x:td[position()=3]/x:a/@href,'javascript:')"/>
-          </xsl:attribute>
-          <xsl:text>&#x25B6;</xsl:text>
-        </div>
-        <div class="monthbrowse">
-          <xsl:attribute name="onclick">
-            <xsl:value-of select="substring-after(../../x:a[2]/@href,'javascript:')"/>
-          </xsl:attribute>
-          <xsl:text>&#x25B7;</xsl:text>
-        </div>
+        <xsl:if test="not(ancestor::x:table/@class='readonly')">
+          <div class="monthbrowse">
+            <xsl:attribute name="onclick">
+              <xsl:value-of select="substring-after(//x:table/x:tr/x:td[position()=3]/x:a/@href,'javascript:')"/>
+            </xsl:attribute>
+            <xsl:text>&#x25B6;</xsl:text>
+          </div>
+          <div class="monthbrowse">
+            <xsl:attribute name="onclick">
+              <xsl:value-of select="substring-after(../../x:a[2]/@href,'javascript:')"/>
+            </xsl:attribute>
+            <xsl:text>&#x25B7;</xsl:text>
+          </div>
+        </xsl:if>
       </td>
     </tr>
   </xsl:template>

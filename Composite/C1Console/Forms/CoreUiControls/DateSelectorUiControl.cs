@@ -11,5 +11,8 @@ namespace Composite.C1Console.Forms.CoreUiControls
         [BindableProperty()]
         [FormsProperty()]
         public DateTime? Date { get; set; }
+
+        [FormsProperty()]
+        public bool ReadOnly { get; set; }
     }
 }

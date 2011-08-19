@@ -15,7 +15,7 @@
 			<ui:page id="parametereditorpage">
 		
 				<div style="display:none" id="functionparamdesignerclientmessages">
-					<asp:PlaceHolder ID="BaloonPlaceHolder" runat="server" />
+					<asp:PlaceHolder ID="MessagesPlaceHolder" runat="server" />
 					<asp:PlaceHolder ID="MakeDirtyEventPlaceHolder" runat="server" Visible="false">
 						<ui:binding onattach="this.dispatchAction(Binding.ACTION_DIRTY);" />
 					</asp:PlaceHolder>

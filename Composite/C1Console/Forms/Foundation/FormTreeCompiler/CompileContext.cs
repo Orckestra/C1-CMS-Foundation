@@ -202,14 +202,23 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
             public void Rebind(Dictionary<string, object> bindingObjects, Dictionary<string, Exception> conversionErrors)
             {
-                object value = _sourceProducerGetProperty.Invoke(_sourceProducer, null);
+                IValidatingUiControl validating = _sourceProducer as IValidatingUiControl;
 
-                Exception conversionError;
-                bindingObjects[_bindSourceName] = ValueTypeConverter.TryConvert(value, _destinationObjectType, out conversionError);
-
-                if(conversionError != null)
+                if (validating != null && validating.IsValid == false)
                 {
-                    conversionErrors.Add(_bindSourceName, conversionError);
+                    conversionErrors.Add(_bindSourceName, new InvalidOperationException(validating.ValidationError));
+                }
+                else
+                {
+                    object value = _sourceProducerGetProperty.Invoke(_sourceProducer, null);
+
+                    Exception conversionError;
+                    bindingObjects[_bindSourceName] = ValueTypeConverter.TryConvert(value, _destinationObjectType, out conversionError);
+
+                    if (conversionError != null)
+                    {
+                        conversionErrors.Add(_bindSourceName, conversionError);
+                    }
                 }
             } 
 

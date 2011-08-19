@@ -16,7 +16,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public abstract class DateTimeSelectorTemplateUserControlBase : UserControl
     {
         private string _formControlLabel;
@@ -49,6 +49,26 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
+        public bool IsValid
+        {
+            get;
+            set;
+        }
+
+        /// <exclude />
+        public string ValidationError
+        {
+            get;
+            set;
+        }
+
+        public bool ReadOnly
+        {
+            get;
+            set;
+        }
+
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
@@ -58,7 +78,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
 
 
-    internal sealed class TemplatedDateTimeSelectorUiControl : DateTimeSelectorUiControl, IWebUiControl
+    internal sealed class TemplatedDateTimeSelectorUiControl : DateTimeSelectorUiControl, IWebUiControl, IValidatingUiControl
     {
         private Type _userControlType;
         private DateTimeSelectorTemplateUserControlBase _userControl;
@@ -86,6 +106,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             _userControl.FormControlLabel = this.Label;
             _userControl.Date = this.Date;
+            _userControl.ReadOnly = this.ReadOnly;
+            _userControl.IsValid = true;
 
             return _userControl;
         }
@@ -93,6 +115,16 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public bool IsFullWidthControl { get { return false; } }
 
         public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+
+        public bool IsValid
+        {
+            get { return _userControl.IsValid; }
+        }
+
+        public string ValidationError
+        {
+            get { return _userControl.ValidationError; }
+        }
     }
 
 

@@ -20,6 +20,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
+    <UseIISExpress>false</UseIISExpress>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -109,6 +110,9 @@
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelectorBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx.designer.cs">
       <DependentUpon>FunctionParameterEditor.aspx</DependentUpon>

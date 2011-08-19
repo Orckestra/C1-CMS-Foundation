@@ -697,14 +697,13 @@ div.calendar table {
 	margin: 0 !important;
 	border-collapse: collapse;
 }
-div.calendar table td {
+div.calendar td {
 	padding-top: 3px;
 	padding-bottom: 3px;
 	-vendor-user-select: none;
-}
-div.calendar td {
 	text-align: center;
 	vertical-align: top;
+	width: 14.2%;
 }
 div.calendar td.active {
 	cursor: pointer;	
@@ -717,7 +716,8 @@ div.calendar td.othermonth {
 	color: #bbb;	
 }
 div.calendar td.selectedday {
-	background-color: #eee;
+	background-color: #ccc;
+	margin: 0;
 }
 div.calendar tr.month td {
 	border-bottom: 1px solid $(color:threedshadow);	
