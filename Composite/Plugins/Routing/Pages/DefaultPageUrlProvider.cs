@@ -264,6 +264,8 @@ namespace Composite.Plugins.Routing.Pages
             string loweredRequestPath = requestPath.ToLower();
             string pagePath = loweredRequestPath;
 
+            bool firstCheck = true;
+
             while (pagePath != null)
             {
                 if (pageUrlBuilder.UrlToIdLookupLowerCased.TryGetValue(pagePath, out pageId))
@@ -277,6 +279,17 @@ namespace Composite.Plugins.Routing.Pages
                     break;
                 }
 
+                if (firstCheck)
+                {
+                    firstCheck = false;
+
+                    if (pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
+                    {
+                        urlKind = UrlKind.Friendly;
+                        break;
+                    }
+                }
+
                 pagePath = ReducePath(pagePath);
 
                 if (pagePath != null 
@@ -287,17 +300,12 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            if(pageId == Guid.Empty)
+            if (pageId == Guid.Empty)
             {
-                if (!pageUrlBuilder.FriendlyUrlToIdLookup.TryGetValue(loweredRequestPath, out pageId))
-                {
-                    urlKind = UrlKind.Undefined;
-                    return null;
-                }
-                
-                pagePath = loweredRequestPath;
-                urlKind = UrlKind.Friendly;
+                urlKind = UrlKind.Undefined;
+                return null;
             }
+
 
             var queryParameters = urlBuilder.GetQueryParameters();
 
