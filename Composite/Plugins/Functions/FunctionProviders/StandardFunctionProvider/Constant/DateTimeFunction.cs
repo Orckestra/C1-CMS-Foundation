@@ -21,7 +21,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             get
             {
-                WidgetFunctionProvider dateSelectorWidget = StandardWidgetFunctions.DateSelectorWidget;
+                WidgetFunctionProvider dateSelectorWidget = StandardWidgetFunctions.DateTimeSelectorWidget;
 
                 yield return new StandardFunctionParameterProfile(
                     "Constant", typeof(DateTime), true, new ConstantValueProvider(DateTime.Now), dateSelectorWidget);
