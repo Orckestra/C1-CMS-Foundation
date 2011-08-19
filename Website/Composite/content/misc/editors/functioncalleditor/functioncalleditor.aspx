@@ -134,10 +134,10 @@
 		                                              </ui:field>
 		                                          </ui:fieldgroup>
 		                                          
-		                                          <asp:MultiView ID="mlvWidget" runat="server" EnableViewState="false">
+		                                          <asp:MultiView ID="mlvWidget" runat="server" EnableViewState="true">
 		                                          
 		                                            <asp:View ID="viewWidget_Constant" runat="server">
-			                                            <asp:PlaceHolder runat="server" ID="plhWidget" EnableViewState="false" />                                             
+			                                            <asp:PlaceHolder runat="server" ID="plhWidget" EnableViewState="true" />                                             
 		                                            </asp:View>
 		                                            
 		                                            <asp:View ID="viewWidget_InputParameter" runat="server">

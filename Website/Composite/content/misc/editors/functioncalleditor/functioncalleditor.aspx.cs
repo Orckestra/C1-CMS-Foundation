@@ -284,7 +284,16 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         }
 
         UpdateMenu();
+
+        SyncTreeAndEditingPanel();
     }
+
+
+    private void Page_PreRender(object sender, EventArgs args)
+    {
+//        SyncTreeAndEditingPanel();
+    }
+
 
     private void InitializeTreeView()
     {
@@ -562,7 +571,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         ctlFeedback.MarkAsDirty();
     }
 
-    private void Page_PreRender(object sender, EventArgs args)
+
+
+    private void SyncTreeAndEditingPanel()
     {
 		//Select first parameter if not selected
 		//TODO: refactor this
@@ -685,6 +696,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         // The control is temporary added to page, so it will get a correct ID
         IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+
         plhWidget.Controls.Add(webUiControl.BuildWebControl());
 
         formTreeCompiler.SaveControlProperties();
@@ -1041,8 +1053,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         (fieldGroupControl as ContainerTemplateUserControlBase).Settings.Add("RenderFieldsTag", false);
         // Overwriting field label
         (fieldGroupControl as ContainerTemplateUserControlBase).Settings.Add("FieldLabel", GetString("ParameterValueLabel"));
-        
 
+        mlvWidget.Visible = true;
+        mlvWidget.SetActiveView(viewWidget_Constant);
+        //viewWidget_Constant.Visible = true;
+        plhWidget.Visible = true;
         plhWidget.Controls.Add(fieldGroupControl);
 
         if (IsPostBack && Context.Request.Form["__EVENTTARGET"].StartsWith(webUiControl.UiControlID + "$"))

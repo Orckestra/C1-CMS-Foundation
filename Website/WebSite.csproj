@@ -111,9 +111,10 @@
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelectorBase.cs">
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelectorBase.cs">
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx.designer.cs">
       <DependentUpon>FunctionParameterEditor.aspx</DependentUpon>
     </Compile>
