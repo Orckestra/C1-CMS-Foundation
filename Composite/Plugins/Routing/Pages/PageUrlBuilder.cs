@@ -29,18 +29,19 @@ namespace Composite.Plugins.Routing.Pages
         public Hashtable<string, Guid> FriendlyUrlToIdLookup = new Hashtable<string, Guid>();
         public Hashtable<Guid, string> IdToUrlLookup = new Hashtable<Guid, string>();
 
-        private UrlSpace _urlSpace;
-        private bool _forceRelativeUrls;
+        private readonly UrlSpace _urlSpace;
+        private readonly bool _forceRelativeUrls;
 
         // public Hashtable<Guid, IHostnameBinding> HostnameBindings = new Hashtable<Guid, IHostnameBinding>();
-        private List<IHostnameBinding> _hostnameBindings = new List<IHostnameBinding>();
+        private readonly List<IHostnameBinding> _hostnameBindings = new List<IHostnameBinding>();
 
-        private IHostnameBinding _hostnameBinding;
+        private readonly IHostnameBinding _hostnameBinding;
 
         private readonly PublicationScope _publicationScope;
         private readonly CultureInfo _localizationScope;
 
         private readonly string _friendlyUrlPrefix;
+        private readonly string _friendlyUrlPrefixWithLanguageCode; 
 
         public string UrlSuffix { get; private set;}
         
@@ -50,8 +51,6 @@ namespace Composite.Plugins.Routing.Pages
             _localizationScope = localizationScope;
 
             var localeMappedName = DataLocalizationFacade.GetUrlMappingName(localizationScope) ?? string.Empty;
-            _friendlyUrlPrefix = localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName;
-
             _forceRelativeUrls = urlSpace != null && urlSpace.ForceRelativeUrls;
 
             if (!_forceRelativeUrls
@@ -70,6 +69,22 @@ namespace Composite.Plugins.Routing.Pages
 
                     _urlSpace = urlSpace;
                 }
+            }
+
+            if(_hostnameBinding != null 
+                && !_hostnameBinding.IncludeCultureInUrl
+                && _hostnameBinding.Culture == localizationScope.Name)
+            {
+                _friendlyUrlPrefix = UrlUtils.PublicRootPath;
+
+                if (!localeMappedName.IsNullOrEmpty())
+                {
+                    _friendlyUrlPrefixWithLanguageCode = UrlUtils.PublicRootPath + "/" + localeMappedName;
+                }
+            }
+            else
+            {
+                _friendlyUrlPrefix = UrlUtils.PublicRootPath + (localeMappedName.IsNullOrEmpty() ? string.Empty : "/" + localeMappedName);
             }
 
             UrlSuffix = DataFacade.GetData<IUrlConfiguration>().Select(c => c.PageUrlSuffix).FirstOrDefault() ?? string.Empty;
@@ -207,12 +222,21 @@ namespace Composite.Plugins.Routing.Pages
                     pageUrls.FriendlyUrl = friendlyUrl;
                     FriendlyUrlToIdLookup.Add(lowerCasedFriendlyUrl, page.Id);
                 }
+
+                if(_friendlyUrlPrefixWithLanguageCode != null)
+                {
+                    string alternativeFriendlyUrl = (_friendlyUrlPrefixWithLanguageCode + MakeRelativeUrl(page.FriendlyUrl)).ToLower();
+                    if(!FriendlyUrlToIdLookup.ContainsKey(alternativeFriendlyUrl))
+                    {
+                        FriendlyUrlToIdLookup.Add(alternativeFriendlyUrl, page.Id);
+                    }
+                }
             }
             
             return pageUrls;
         }
 
-        private string GetRedirectBaseUrl(CultureInfo cultureInfo)
+        private static string GetRedirectBaseUrl(CultureInfo cultureInfo)
         {
             string cultureUrlMapping = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
 
