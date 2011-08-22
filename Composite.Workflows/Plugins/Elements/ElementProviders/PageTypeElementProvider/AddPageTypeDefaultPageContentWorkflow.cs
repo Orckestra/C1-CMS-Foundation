@@ -75,7 +75,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
                 XDocument doc = XDocument.Parse(fileContent);
 
-                XName elementName = Namespaces.Rendering10 + Composite.Core.WebClient.Renderings.RenderingElementNames.PlaceHolder.LocalName;
+                XName elementName = Composite.Core.WebClient.Renderings.RenderingElementNames.PlaceHolder;
 
                 bool contained = doc.Descendants(elementName).Where(
                     f => f.Attribute("id") != null &&
