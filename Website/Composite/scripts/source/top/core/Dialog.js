@@ -25,10 +25,11 @@ _Dialog.prototype = {
 	/*
 	 * Some URL constants for common dialogs.
 	 */
-	URL_TREESELECTOR 	: "${root}/content/dialogs/treeselector/treeselector.aspx",
-	URL_TREESEARCH 		: "${root}/content/dialogs/treesearch/treeSearchForm.aspx",
-	URL_IMAGESELECTOR 	: "${root}/content/dialogs/treeselector/special/imageselector.aspx",
-	URL_SERVICEFAULT 	: "${root}/content/dialogs/webservices/error.aspx",
+	URL_TREESELECTOR 		: "${root}/content/dialogs/treeselector/treeselector.aspx",
+	URL_TREESEARCH 			: "${root}/content/dialogs/treesearch/treeSearchForm.aspx",
+	URL_IMAGESELECTOR		: "${root}/content/dialogs/treeselector/special/imageselector.aspx",
+	URL_TREEACTIONSELECTOR	: "${root}/content/dialogs/treeselector/special/treeactionselector.aspx",
+	URL_SERVICEFAULT 		: "${root}/content/dialogs/webservices/error.aspx",
 	
 	/*
 	 * Some predefined button configurations

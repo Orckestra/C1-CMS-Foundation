@@ -385,6 +385,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Composite\Configuration\UrlFormatting.xml" />
+    <Content Include="Composite\content\dialogs\treeselector\special\treeactionselector.aspx" />
     <Content Include="Composite\content\dialogs\treeselector\TreeSelectorToolBarBinding.js" />
     <Content Include="Composite\content\forms\Administrative\FunctionTesterEditFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\UrlConfiguration.xml" />

@@ -313,7 +313,7 @@ var ViewDefinitions = {
         isMutable   : true,
 		handle 		: "Composite.Management.EmbeddableMediaSelectorDialog",
 		position 	: Dialog.MODAL,
-		url 		: Dialog.URL_TREESELECTOR,
+		url 		: Dialog.URL_TREEACTIONSELECTOR,
 		argument : {
 		    label               : "${string:Composite.Management:Website.Media.SelectDialog.Title}",
 			image				: "${icon:media}",
@@ -333,7 +333,7 @@ var ViewDefinitions = {
 	"Composite.Management.FrontendFileSelectorDialog" : new DialogViewDefinition ({
 		handle 		: "Composite.Management.EmbeddableMediaSelectorDialog",
 		position 	: Dialog.MODAL,
-		url 		: Dialog.URL_TREESELECTOR,
+		url			: Dialog.URL_TREEACTIONSELECTOR,
 		argument : {
 		    label               : "${string:Composite.Management:Website.FrontendFile.SelectDialog.Title}",
 			image				: "${icon:media}",
@@ -391,7 +391,7 @@ var ViewDefinitions = {
 	"Composite.Management.LinkableSelectorDialog" : new DialogViewDefinition ({
 		handle 		: "Composite.Management.LinkableSelectorDialog",
 		position 	: Dialog.MODAL,
-		url 		: Dialog.URL_TREESELECTOR,
+		url			: Dialog.URL_TREEACTIONSELECTOR,
 		argument : {
 		    label               : "${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",
 		    image               : "${icon:link}",
