@@ -168,55 +168,26 @@ namespace Composite.Core.WebClient.FunctionCallEditor
         /// <exclude />
         public static XElement FindByPath(XElement root, string path)
         {
-            string parentId;
-
             int functionCounter = 0;
             foreach (XElement rootFunctionElement in root.Elements().GetFunctionsAndWidgetFunctions())
             {
                 functionCounter++;
-                string rootFunctionId = GetRootFunctionPath(functionCounter);
+                string rootFunctionPath = GetRootFunctionPath(functionCounter);
 
-                if (path == rootFunctionId)
+                if (path == rootFunctionPath)
                 {
                     return rootFunctionElement;
                 }
 
-                if (!path.StartsWith(rootFunctionId + PathSeparator))
+                if (!path.StartsWith(rootFunctionPath + PathSeparator))
                 {
                     continue;
                 }
 
-                parentId = rootFunctionId;
-
-                foreach (XElement element in rootFunctionElement.Descendants())
+                foreach (XElement element in rootFunctionElement.Elements())
                 {
-                    if (element.Name == ParameterNodeName)
-                    {
-                        string parameterNodePath = GetParameterPath(parentId, element.Attribute("name").Value);
-
-                        if (path == parameterNodePath)
-                        {
-                            return element;
-                        }
-
-                        if (path.StartsWith(parameterNodePath + PathSeparator))
-                        {
-                            parentId = parameterNodePath;
-                        }
-                    }
-                    else if (element.Name == FunctionNodeName)
-                    {
-                        string functionNodePath = GetFunctionCallPath(parentId);
-                        if (path == functionNodePath)
-                        {
-                            return element;
-                        }
-
-                        if (path.StartsWith(functionNodePath + PathSeparator))
-                        {
-                            parentId = functionNodePath;
-                        }
-                    }
+                    XElement result = FindByPathRec(element, rootFunctionPath, path);
+                    if (result != null) return result;
                 }
 
                 break;
@@ -225,6 +196,36 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             return null;
         }
 
+        internal static XElement FindByPathRec(XElement element, string parentPath, string pathToFind)
+        {
+            string path;
+
+            if (element.Name == ParameterNodeName)
+            {
+                path = GetParameterPath(parentPath, element.Attribute("name").Value);
+            }
+            else if (element.Name == FunctionNodeName)
+            {
+                path = GetFunctionCallPath(parentPath);
+            }
+            else return null;
+
+            if (pathToFind == path)
+            {
+                return element;
+            }
+
+            if (pathToFind.StartsWith(path + PathSeparator))
+            {
+                foreach (XElement child in element.Elements())
+                {
+                    XElement result = FindByPathRec(child, path, pathToFind);
+                    if (result != null) return result;
+                }
+            }
+
+            return null;
+        }
 
 
         /// <exclude />
