@@ -583,7 +583,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             FieldMessage fm = new FieldMessage(fieldName, message);
 
-            BaloonPlaceHolder.Controls.Add(fm);
+            MessagesPlaceHolder.Controls.Add(fm);
         }
 
         private void UpdateFieldsPanel()
