@@ -366,7 +366,8 @@ TreeSelectorDialogPageBinding.prototype._clearDisplayAndResult = function () {
 */
 TreeSelectorDialogPageBinding.prototype.onDialogResponse = function () {
 
+	StageBinding.treeSelector = null;
+
 	TreeSelectorDialogPageBinding.superclass.onDialogResponse.call(this);
 
-	StageBinding.treeSelector = null;
 }
