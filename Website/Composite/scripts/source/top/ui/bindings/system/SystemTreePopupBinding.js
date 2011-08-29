@@ -163,6 +163,9 @@ SystemTreePopupBinding.prototype.handleAction = function ( action ) {
 					this._handleCommand ( cmd );
 				}
 			}
+
+			// Clean current profile key
+			this._currentProfileKey = null
 			break;
 	}
 }
