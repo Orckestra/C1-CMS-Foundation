@@ -315,6 +315,10 @@ DataInputBinding.prototype._attachDOMEvents = function () {
 	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.BLUR, this );
 	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.KEYDOWN, this );
 	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.KEYPRESS, this );
+
+	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.DRAGOVER, this);
+	DOMEvents.addEventListener ( this.shadowTree.input, DOMEvents.DROP, this );
+
 }
 
 /**
@@ -322,66 +326,77 @@ DataInputBinding.prototype._attachDOMEvents = function () {
  * @overloads {Binding#handleEvent}
  * @param {Event} e
  */
-DataInputBinding.prototype.handleEvent = function ( e ) {
-	
-	DataInputBinding.superclass.handleEvent.call ( this, e );
-	
-	if ( this.isFocusable == true ) {
-		switch ( e.type ) {
-			
-			case DOMEvents.FOCUS :
-			case DOMEvents.BLUR :
-				this._handleFocusAndBlur ( e.type == DOMEvents.FOCUS );
+DataInputBinding.prototype.handleEvent = function (e) {
+
+	DataInputBinding.superclass.handleEvent.call(this, e);
+
+	if (this.isFocusable == true) {
+		switch (e.type) {
+			case DOMEvents.DRAGOVER:
+				// the dragover event needs to be canceled to allow firing the drop event
+				DOMEvents.preventDefault(e);
 				break;
-				
-			case DOMEvents.KEYPRESS :
-				switch ( e.keyCode ) {
-					case KeyEventCodes.VK_BACK :
-					case KeyEventCodes.VK_INSERT :
-					case KeyEventCodes.VK_DELETE :
-						this._testDirty ();
+			case DOMEvents.DROP:
+				if (e.dataTransfer) {
+					this.setValue(e.dataTransfer.getData("Text"));
+					this.checkDirty();
+					this.validate(true);
+				}
+				DOMEvents.preventDefault(e);
+				break;
+			case DOMEvents.FOCUS:
+			case DOMEvents.BLUR:
+				this._handleFocusAndBlur(e.type == DOMEvents.FOCUS);
+				break;
+
+			case DOMEvents.KEYPRESS:
+				switch (e.keyCode) {
+					case KeyEventCodes.VK_BACK:
+					case KeyEventCodes.VK_INSERT:
+					case KeyEventCodes.VK_DELETE:
+						this._testDirty();
 						break;
 				}
 				break;
-			
-			case DOMEvents.KEYDOWN :
-				
-				this._testDirty ();
-				
-				switch ( e.keyCode ) {
-				
+
+			case DOMEvents.KEYDOWN:
+
+				this._testDirty();
+
+				switch (e.keyCode) {
+
 					/*
-					 * Prevent ENTER from submitting containing form.
-					 */
-					case KeyEventCodes.VK_ENTER :						
-						this._handleEnterKey ( e );
+					* Prevent ENTER from submitting containing form.
+					*/ 
+					case KeyEventCodes.VK_ENTER:
+						this._handleEnterKey(e);
 						break;
-						
+
 					/*
-					 * Prevent ESC from reverting new value to original 
-					 * value (we create input with JS, so our original 
-					 * is empty). This behavior is seen in Explorer only.
-					 */
-					case KeyEventCodes.VK_ESCAPE :
-						DOMEvents.preventDefault ( e );
+					* Prevent ESC from reverting new value to original 
+					* value (we create input with JS, so our original 
+					* is empty). This behavior is seen in Explorer only.
+					*/ 
+					case KeyEventCodes.VK_ESCAPE:
+						DOMEvents.preventDefault(e);
 						break;
 				}
-				
+
 				/*
-				 * Autopost stuff.
-				 */
-				if ( this.isFocusable && this._isAutoPost ) {
-					if ( this._timeout != null ) {
-						top.window.clearTimeout ( this._timeout );
+				* Autopost stuff.
+				*/
+				if (this.isFocusable && this._isAutoPost) {
+					if (this._timeout != null) {
+						top.window.clearTimeout(this._timeout);
 					}
 					var self = this;
-					this._timeout = top.window.setTimeout ( function () {
-						if ( Binding.exists ( self )) {
-							self.dispatchAction ( PageBinding.ACTION_DOPOSTBACK );
+					this._timeout = top.window.setTimeout(function () {
+						if (Binding.exists(self)) {
+							self.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 						}
-					}, this._time );
+					}, this._time);
 				}
-				
+
 				break;
 		}
 	}
