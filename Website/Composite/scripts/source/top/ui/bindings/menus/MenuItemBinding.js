@@ -222,7 +222,7 @@ MenuItemBinding.prototype.buildDOMContent = function () {
 		this.setImage ( null );
 	}
 		
-	if ( label ) {
+	if ( label != null ) {
 		this.setLabel ( label );
 	}
 	if ( tooltip ) {
