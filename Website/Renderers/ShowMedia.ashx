@@ -278,7 +278,8 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
         else if (file.MimeType == "image/gif")
         {
-            imgType = ImageType.GIF;
+            // Returning image in PNG format because build-in GIF encoder produces images of a bad quality
+            imgType = ImageType.PNG;
         }
         else if (file.MimeType == "image/png")
         {
