@@ -84,6 +84,6 @@ abbr, html\:abbr {
 	border-bottom:1px dashed #CCC; cursor:help;
 }
 
-img.compositeFieldReferenceWysiwygRepresentation {
+img.compositeFieldReferenceWysiwygRepresentation, img.compositeFunctionWysiwygRepresentation {
   margin: 0px; padding: 0px;
 }
