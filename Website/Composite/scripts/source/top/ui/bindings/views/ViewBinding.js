@@ -370,7 +370,7 @@ ViewBinding.prototype.initialize = function () {
 ViewBinding.prototype.setDefinition = function ( definition ) {
 	
 	this._viewDefinition = definition;
-	if ( definition.flowHandle != null ) {
+	if (definition.position == DockBinding.MAIN) {
 		this.subscribe ( BroadcastMessages.CLOSE_VIEWS );
 	}
 }
@@ -582,7 +582,7 @@ ViewBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 			break;
 			
 		case BroadcastMessages.CLOSE_VIEWS :
-			if ( this._viewDefinition.flowHandle != null ) {
+			if (this._viewDefinition.position == DockBinding.MAIN) {
 				this.dispatchAction ( ViewBinding.ACTION_ONCLOSE_FORCE );
 			}
 			break;

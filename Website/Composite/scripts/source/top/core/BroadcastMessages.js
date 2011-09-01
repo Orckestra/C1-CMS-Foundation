@@ -123,7 +123,7 @@ _BroadcastMessages.prototype = {
 	VIEW_OPENED							: "view opened",
 	VIEW_COMPLETED						: "view completed",
 	CLOSE_VIEW							: "close view",
-	CLOSE_VIEWS							: "close views", // close all FLOWHANDLE views!
+	CLOSE_VIEWS							: "close views", // close all views at DockBinding.MAIN
 	VIEW_CLOSED							: "view closed",
 	
 	/*
