@@ -437,14 +437,12 @@ namespace Composite.Core.WebClient
         {
             StringBuilder result = null;
 
-            List<UrlUtils.UrlMatch> internalUrls;
-
             // We assume that url starts with either 
             // "{virtual folder path}/Renderers/Page.aspx"  or "~/page("
             // and ends with one of the following characters: 
             // double quote, single quote, or "&#39;" which is single quote mark (') encoded in xml attribute 
 
-            internalUrls = UrlUtils.FindUrlsInHtml(html, RendererUrlPrefix);
+            List<UrlUtils.UrlMatch> internalUrls = UrlUtils.FindUrlsInHtml(html, RendererUrlPrefix);
             internalUrls.AddRange(UrlUtils.FindUrlsInHtml(html, InternalUrlPrefix));
 
             // Sorting the offsets by descending, so we can replace urls in that order by not affecting offsets of not yet processed urls
@@ -461,7 +459,7 @@ namespace Composite.Core.WebClient
                 if (!resolvedUrls.TryGetValue(internalPageUrl, out publicPageUrl))
                 {
                     PageUrlData pageUrlData;
-                    string decodedInternalUrl = internalPageUrl.Replace("%28", "(").Replace("%29", ")");
+                    string decodedInternalUrl = internalPageUrl.Replace("%28", "(").Replace("%29", ")").Replace("&amp;", "&");
                     string anchor;
 
                     try
