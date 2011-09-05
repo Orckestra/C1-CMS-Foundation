@@ -118,7 +118,7 @@ LabelBinding.prototype.onBindingAttach = function () {
  */
 LabelBinding.prototype.setLabel = function ( label, isNotBuildingClassName ) {
 
-	label = label ? label : "";
+	label = label != null ? label : "";
 	
 	if ( !this.hasLabel ) {
 		this.buildLabel ();
