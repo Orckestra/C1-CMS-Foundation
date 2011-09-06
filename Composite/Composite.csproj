@@ -249,6 +249,8 @@
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
     <Compile Include="Core\WebClient\HttpModules\Utf8StringTransformationStream.cs" />
+    <Compile Include="Core\WebClient\Media\ImageResizer.cs" />
+    <Compile Include="Core\WebClient\Media\ResizingOptions.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewBuilder.cs" />
     <Compile Include="Core\Routing\Pages\C1PageRoute.cs" />
