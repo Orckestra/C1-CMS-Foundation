@@ -7344,7 +7344,7 @@ this.buildClassName();
 }
 };
 LabelBinding.prototype.setLabel=function(_61b,_61c){
-_61b=_61b?_61b:"";
+_61b=_61b!=null?_61b:"";
 if(!this.hasLabel){
 this.buildLabel();
 }
