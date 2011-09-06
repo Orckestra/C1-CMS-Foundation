@@ -466,7 +466,7 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\bindings\SourceEditorPageBinding.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\bindings\SourceEditorToolBarBinding.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirror.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\codemirror.html" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\codemirror.aspx" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirror.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirroreditor.aspx" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirroreditor.css" />

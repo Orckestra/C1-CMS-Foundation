@@ -2,7 +2,7 @@ SourceEditorPageBinding.prototype = new PageBinding;
 SourceEditorPageBinding.prototype.constructor = SourceEditorPageBinding;
 SourceEditorPageBinding.superclass = PageBinding.prototype;
 
-SourceEditorPageBinding.URL_CODEMIRRORWINDOW = "${root}/content/misc/editors/codemirroreditor/codemirror.html";
+SourceEditorPageBinding.URL_CODEMIRRORWINDOW = "${root}/content/misc/editors/codemirroreditor/codemirror.aspx";
 
 /**
  * @class
