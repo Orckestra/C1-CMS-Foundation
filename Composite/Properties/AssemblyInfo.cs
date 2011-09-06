@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Composite C1 2.1.3 (BETA 3)")]
+[assembly: AssemblyTitle("Composite C1 3.0.0 (BETA 4)")]
 #else
-[assembly: AssemblyTitle("Composite C1 2.1.3 (BETA 3 Internal build)")]
+[assembly: AssemblyTitle("Composite C1 3.0.0 (BETA 4 Internal build)")]
 #endif
 
 [assembly: AssemblyDescription("Composite C1 Core classes")]
@@ -39,7 +39,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.1.*")]
+[assembly: AssemblyVersion("3.0.*")]
 
 [assembly: InternalsVisibleTo("UpgradePackage")]
 [assembly: InternalsVisibleTo("Composite.Workflows")]
