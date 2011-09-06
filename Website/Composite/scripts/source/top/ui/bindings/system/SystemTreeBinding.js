@@ -206,65 +206,66 @@ SystemTreeBinding.prototype.add = function ( binding ) {
  * @overloads {TreeBinding#handleAction}
  * @param {Action} action
  */
-SystemTreeBinding.prototype.handleAction = function ( action ) {
+SystemTreeBinding.prototype.handleAction = function (action) {
 
-	SystemTreeBinding.superclass.handleAction.call ( this, action );
-	
+	SystemTreeBinding.superclass.handleAction.call(this, action);
+
 	var binding = action.target;
-	
-	switch ( action.type ) {
-		
+
+	switch (action.type) {
+
 		/*
-		 * Publish actionprofile when selection changes.
-		 */
-		case TreeNodeBinding.ACTION_ONFOCUS :
-		case TreeNodeBinding.ACTION_ONMULTIFOCUS :
+		* Publish actionprofile when selection changes.
+		*/ 
+		case TreeNodeBinding.ACTION_ONFOCUS:
+		case TreeNodeBinding.ACTION_ONMULTIFOCUS:
 			this._restorableFocusHandle = null;
-			this._handleSystemTreeFocus ();
+			this._handleSystemTreeFocus();
 			break;
-		
+
 		/**
-		 * Broadcast when treenodes are finished refreshing.
-		 * This is intercepted by the MessageQueue.
-		 */
-		case SystemTreeNodeBinding.ACTION_REFRESHED_YEAH :
-			
-			this._updateRefreshingTrees ( binding.key );
-			action.consume ();
+		* Broadcast when treenodes are finished refreshing.
+		* This is intercepted by the MessageQueue.
+		*/ 
+		case SystemTreeNodeBinding.ACTION_REFRESHED_YEAH:
+
+			this._updateRefreshingTrees(binding.key);
+			this._updateFocusedNode();
+			action.consume();
 			break;
-		
-		case TreeNodeBinding.ACTION_DISPOSE :
-		case TreeNodeBinding.ACTION_BLUR :
-			
+
+		case TreeNodeBinding.ACTION_DISPOSE:
+		case TreeNodeBinding.ACTION_BLUR:
+
 			/*
-			 * This should probably be refactored along with the whole 
-			 * _focusedTreeNodeBindings setup, but at least we clear 
-			 * the toolbar when tree has no focused nodes... 
-			 */
+			* This should probably be refactored along with the whole 
+			* _focusedTreeNodeBindings setup, but at least we clear 
+			* the toolbar when tree has no focused nodes... 
+			*/
 			var self = this;
-			setTimeout ( function () {
-				if ( !self._focusedTreeNodeBindings.hasEntries ()) {
-					EventBroadcaster.broadcast ( 
-						BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, 
+			setTimeout(function () {
+				if (!self._focusedTreeNodeBindings.hasEntries()) {
+					EventBroadcaster.broadcast(
+						BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,
 						null
 					);
 				}
-			}, 0 );
-			
+			}, 0);
+
 			/*
-			 * Backup the node that blurred. This will allow us to 
-			 * focus an appropriate treenode on tree focus, even 
-			 * when some feature destroyed all tree selection.
-			 * @see {SystemTreeBinding#focus}
-			 */
-			if ( action.type == TreeNodeBinding.ACTION_BLUR ) {
-				this._restorableFocusHandle = binding.getHandle ();
+			* Backup the node that blurred. This will allow us to 
+			* focus an appropriate treenode on tree focus, even 
+			* when some feature destroyed all tree selection.
+			* @see {SystemTreeBinding#focus}
+			*/
+			if (action.type == TreeNodeBinding.ACTION_BLUR) {
+				this._restorableFocusHandle = binding.getHandle();
 			}
 			break;
-			
-		case TreeNodeBinding.ACTION_COMMAND :
-			EventBroadcaster.broadcast ( BroadcastMessages.INVOKE_DEFAULT_ACTION ); 
-			action.consume ();
+
+		case TreeNodeBinding.ACTION_COMMAND:
+			EventBroadcaster.broadcast(BroadcastMessages.INVOKE_DEFAULT_ACTION);
+			action.consume();
 			break;
 	}
 }
@@ -452,6 +453,19 @@ SystemTreeBinding.prototype._updateRefreshingTrees = function ( key ) {
 			);
 			this._refreshToken = null;
 			this._attemptRestorableFocus ();
+		}
+	}
+};
+
+/**
+* Update focused node based on selected Tab
+* @param {String} key
+*/
+SystemTreeBinding.prototype._updateFocusedNode = function () {
+	if (!this._focusedTreeNodeBindings.hasEntries()) {
+		var token = StageBinding.entityToken;
+		if (token != null) {
+			this._focusTreeNodeByEntityToken(token);
 		}
 	}
 };
