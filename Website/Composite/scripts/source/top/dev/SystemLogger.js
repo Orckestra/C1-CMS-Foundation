@@ -157,15 +157,17 @@ SystemLogger.flushBuffer = function () {
  * @param {string} level
  * @param {string} message
  */
-SystemLogger.bufferLog = function ( identifier, level, message ) {
-	
-	message = String ( message );
-	
-	SystemLogger.buffer.add ({
-		identifier	: identifier,
-		level 		: level,
-		message 	: message
-	});
+SystemLogger.bufferLog = function (identifier, level, message) {
+
+	if (Application.isDeveloperMode) {
+		message = String(message);
+
+		SystemLogger.buffer.add({
+			identifier: identifier,
+			level: level,
+			message: message
+		});
+	}
 }
 
 /**
