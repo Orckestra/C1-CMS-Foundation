@@ -62,9 +62,11 @@ del ..\..\favicon.ico
 
 :: Blog cleanup
 del ..\..\BlogRssFeed.ashx
+del ..\..\BlogCommentsRssFeed.ashx
 del ..\..\Bin\Composite.Community.Blog.dll
 del ..\..\Bin\CookComputing.XmlRpcV2.dll
 del ..\..\BlogMetaWeblog.ashx
+del ..\..\App_GlobalResources\Composite\Community\Blog.resx
 del TreeDefinitions\Composite.Community.Blog.xml
 del TreeDefinitions\Composite.Community.Blog.Settings.xml
 del TreeDefinitions\Composite.Community.Blog.Entries.xml
