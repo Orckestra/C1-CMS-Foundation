@@ -641,8 +641,10 @@ this.log(_82.identifier,_82.level,_82.message);
 SystemLogger.isFlushing=false;
 };
 SystemLogger.bufferLog=function(_83,_84,_85){
+if(Application.isDeveloperMode){
 _85=String(_85);
 SystemLogger.buffer.add({identifier:_83,level:_84,message:_85});
+}
 };
 SystemLogger.outputLog=function(_86,_87,_88){
 _88=String(_88);
