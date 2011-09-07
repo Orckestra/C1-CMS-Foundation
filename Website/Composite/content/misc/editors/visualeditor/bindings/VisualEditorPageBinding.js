@@ -521,20 +521,25 @@ VisualEditorPageBinding.prototype.clean = function () {
  * @param {string} checksum 
  * @return {string}
  */
-VisualEditorPageBinding.prototype.getCheckSum = function ( checksum ) {
-	
-	if ( this.isSourceMode ) {
-		
+VisualEditorPageBinding.prototype.getCheckSum = function (checksum) {
+
+	if (this.isSourceMode) {
+
 		/*
-		 * If the source editor is dirty, we must return something 
-		 * not equal to the current visual editor checksum.
-		 */
-		if ( this._sourceEditor.isDirty ) {
-			return new String ( Math.random ());
+		* If the source editor is dirty, we must return something 
+		* not equal to the current visual editor checksum.
+		*/
+		if (this._sourceEditor.isDirty) {
+			return new String(Math.random());
 		} else {
 			return checksum;
 		}
 	} else {
-		return this._tinyInstance.getDoc ().body.innerHTML;
+		checksum = this._tinyInstance.getDoc().body.innerHTML;
+
+		//delete mceC1Focused from checksum to prevent unexpected dirty
+		checksum = checksum.replace(/\s*mceC1Focused\s*/g, "");
+
+		return checksum;
 	}
 }
