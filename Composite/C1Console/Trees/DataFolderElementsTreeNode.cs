@@ -587,6 +587,14 @@ namespace Composite.C1Console.Trees
 
                     return resultFilterExpressionFactory();
                 }
+                else if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Up)
+                {
+                    // At this point we are going upwards, building the filter and one or 
+                    // more of the parent elements has not been oppened, so we are not able to 
+                    // create a filter. 
+                    // This will happen if a parent filter is below us
+                    return null;
+                }
                 else
                 {
                     // This will only happen if we are searcning up and are given another entity token that
@@ -620,6 +628,14 @@ namespace Composite.C1Console.Trees
                 {
                     // We shall not create filter for our self when undfolding 
                     return resultFilterExpressionFactory();
+                }
+                else if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Up)
+                {
+                    // At this point we are going upwards, building the filter and one or 
+                    // more of the parent elements has not been oppened, so we are not able to 
+                    // create a filter. 
+                    // This will happen if a parent filter is below us
+                    return null;
                 }
                 else
                 {
