@@ -643,15 +643,16 @@ PopupBinding.prototype.fitOnScreen = function () {
 	var h = this.bindingElement.offsetHeight;
 	
 	var dim	= this.bindingWindow.WindowManager.getWindowDimensions ();
-	var pos = this.boxObject.getUniversalPosition ();
+	var pos = this.boxObject.getGlobalPosition();
+	
 	
 	
 	/*
 	 * Snap to element. 
 	 */
 	if ( this.targetElement != null ) {
+		
 		if ( pos.y + h >= dim.h ) {
-			
 			/*
 			 * This is somewhat hacky - but the "relative" switch 
 			 * is effective (for now) in order to hack menupopups
@@ -665,6 +666,12 @@ PopupBinding.prototype.fitOnScreen = function () {
 					break;
 				case "relative" : // this *really* expects a menugroup...
 					y = y - h + this.targetElement.offsetHeight + 9;
+
+					//if no space in top set to the top
+					var targetPosition = DOMUtil.getGlobalPosition(this.targetElement);
+					if (y + targetPosition.y < 0) {
+						y = - targetPosition.y;
+					}
 					break;
 			}
 		}
