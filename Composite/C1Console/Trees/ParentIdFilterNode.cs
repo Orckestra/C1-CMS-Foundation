@@ -83,7 +83,7 @@ namespace Composite.C1Console.Trees
             if (dataElementsTreeNode != null)
             {
                 if (dataElementsTreeNode.InterfaceType == this.OwnerNode.InterfaceType) // We found it :)
-                {                    
+                {
                     return entityToken;
                 }
             }
@@ -91,21 +91,33 @@ namespace Composite.C1Console.Trees
 
             TreeDataFieldGroupingElementEntityToken dataFieldGroupingElementEntityToken = entityToken as TreeDataFieldGroupingElementEntityToken;
             if (dataFieldGroupingElementEntityToken != null) // Search 'downwards'
-            {                
+            {
+
                 ParameterExpression parameterExpression = Expression.Parameter(this.OwnerNode.InterfaceType, "data");
 
                 DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
                 dataKeyPropertyCollection.AddKeyProperty("Id", dataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceValue);
-                IData parentData = DataFacade.GetDataByUniqueKey(this.ParentFilterType, dataKeyPropertyCollection);
+
+                Type dataType = dataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceType;
+
+                IData parentData = DataFacade.GetDataByUniqueKey(dataType, dataKeyPropertyCollection);
 
                 TreeNodeDynamicContext dummyContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down);
                 dummyContext.CustomData.Add("ParentData", parentData);
 
-                Expression filterExpression = this.CreateDownwardsFilterExpression(parameterExpression, dummyContext);
+                IData resultData;
+                if (this.OwnerNode.InterfaceType == TypeManager.GetType(dataFieldGroupingElementEntityToken.Type))
+                {
+                    Expression filterExpression = this.CreateDownwardsFilterExpression(parameterExpression, dummyContext);
 
-                Expression whereExpression = ExpressionHelper.CreateWhereExpression(DataFacade.GetData(this.OwnerNode.InterfaceType).Expression, parameterExpression, filterExpression);
+                    Expression whereExpression = ExpressionHelper.CreateWhereExpression(DataFacade.GetData(this.OwnerNode.InterfaceType).Expression, parameterExpression, filterExpression);
 
-                IData resultData = (IData)DataFacade.GetData(this.OwnerNode.InterfaceType).Provider.CreateQuery(whereExpression).ToEnumerableOfObjects().First();
+                    resultData = (IData)DataFacade.GetData(this.OwnerNode.InterfaceType).Provider.CreateQuery(whereExpression).ToEnumerableOfObjects().First();
+                }
+                else
+                {
+                    resultData = parentData;
+                }
 
                 return resultData.GetDataEntityToken();
             }
@@ -116,7 +128,7 @@ namespace Composite.C1Console.Trees
             if ((this.OwnerNode.Id == ancestorResult.TreeNode.Id) || (this.OwnerNode.IsChild(ancestorResult.TreeNode) == true)) // Search upwards
             {
                 return FindOwnEntityToken(ancestorResult.TreeNode, ancestorResult.EntityToken, dynamicContext);
-            }            
+            }
 
 
             // Search 'downwards' by using the parent datas key value to get 
@@ -138,7 +150,7 @@ namespace Composite.C1Console.Trees
 
                 return resultData.GetDataEntityToken();
             }
-            
+
 
             throw new InvalidOperationException("Missing parent id filtering or try to simplify the parent id filterings (Unable to find own entity token)");
         }

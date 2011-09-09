@@ -97,6 +97,7 @@ namespace Composite.C1Console.Trees
             }
 
 
+            Type childGeneratingDataElementsReferenceType = null;
             object childGeneratingDataElementsReferenceValue = null;
 
             DataEntityToken dataEntityToken = childEntityToken as DataEntityToken;
@@ -105,11 +106,13 @@ namespace Composite.C1Console.Trees
             {
                 if (this.ChildGeneratingParentIdFilterNode != null)
                 {
+                    childGeneratingDataElementsReferenceType = this.ChildGeneratingParentIdFilterNode.ParentFilterType;
                     childGeneratingDataElementsReferenceValue = this.ChildGeneratingParentIdFilterNode.ReferencePropertyInfo.GetValue(dataEntityToken.Data, null);
                 }
             }
             else if (treeDataFieldGroupingElementEntityToken != null)
             {
+                childGeneratingDataElementsReferenceType = treeDataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceType;
                 childGeneratingDataElementsReferenceValue = treeDataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceValue;
             }
 
@@ -138,6 +141,7 @@ namespace Composite.C1Console.Trees
                     }
                 }
 
+                entityToken.ChildGeneratingDataElementsReferenceType = childGeneratingDataElementsReferenceType;
                 entityToken.ChildGeneratingDataElementsReferenceValue = childGeneratingDataElementsReferenceValue;
 
                 yield return entityToken;
@@ -174,7 +178,7 @@ namespace Composite.C1Console.Trees
 
                     return new AncestorResult(this.ParentNode, newGroupingElementEntityToken);
                 }
-            }
+            }            
 
             throw new NotImplementedException();
         }
@@ -184,7 +188,9 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
+            Type referenceType = null;
             object referenceValue = null;
+
             if (this.ChildGeneratingParentIdFilterNode != null)
             {
                 if (this.IsTopFolderParent == true)
@@ -196,6 +202,7 @@ namespace Composite.C1Console.Trees
                     
                     if (dataEntityToken != null)
                     {
+                        referenceType = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.DeclaringType;
                         referenceValue = this.ChildGeneratingParentIdFilterNode.KeyPropertyInfo.GetValue(dataEntityToken.Data, null);
                     }                    
                 }
@@ -203,6 +210,7 @@ namespace Composite.C1Console.Trees
                 {
                     TreeDataFieldGroupingElementEntityToken treeDataFieldGroupingElementEntityToken = parentEntityToken as TreeDataFieldGroupingElementEntityToken;
 
+                    referenceType = treeDataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceType;
                     referenceValue = treeDataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceValue;
                 }
             }
@@ -210,7 +218,7 @@ namespace Composite.C1Console.Trees
 
             if (this.FolderRanges != null)
             {
-                return CreateFolderRangeElements(parentEntityToken, referenceValue, dynamicContext);
+                return CreateFolderRangeElements(parentEntityToken, referenceType, referenceValue, dynamicContext);
             }
             else if (this.FirstLetterOnly == true)
             {
@@ -232,7 +240,7 @@ namespace Composite.C1Console.Trees
                     }
                 }
 
-                return CreateFirstLetterOnlyElements(parentEntityToken, referenceValue, dynamicContext, objects);
+                return CreateFirstLetterOnlyElements(parentEntityToken, referenceType, referenceValue, dynamicContext, objects);
             }
             else
             {
@@ -254,13 +262,13 @@ namespace Composite.C1Console.Trees
                     }                   
                 }
 
-                return CreateSimpleElements(parentEntityToken, referenceValue, dynamicContext, objects);
+                return CreateSimpleElements(parentEntityToken, referenceType, referenceValue, dynamicContext, objects);
             }
         }
 
 
 
-        private IEnumerable<Element> CreateSimpleElements(EntityToken parentEntityToken, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
+        private IEnumerable<Element> CreateSimpleElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
         {           
             Func<object, string> labelFunc;
             if (this.PropertyInfo.PropertyType != typeof(DateTime))
@@ -288,6 +296,7 @@ namespace Composite.C1Console.Trees
 
                 Element element = CreateElement(
                     parentEntityToken,
+                    referenceType,
                     referenceValue,
                     dynamicContext,
                     label,
@@ -300,7 +309,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private IEnumerable<Element> CreateFolderRangeElements(EntityToken parentEntityToken, object referenceValue, TreeNodeDynamicContext dynamicContext)
+        private IEnumerable<Element> CreateFolderRangeElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext)
         {
             IEnumerable<int> indexies;
             if (this.Display == LeafDisplayMode.Lazy)
@@ -334,6 +343,7 @@ namespace Composite.C1Console.Trees
 
                 Element element = CreateElement(
                     parentEntityToken,
+                    referenceType,
                     referenceValue,
                     dynamicContext,
                     folderRange.Label,
@@ -354,7 +364,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private IEnumerable<Element> CreateFirstLetterOnlyElements(EntityToken parentEntityToken, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
+        private IEnumerable<Element> CreateFirstLetterOnlyElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
         {
             foreach (object obj in objects)
             {
@@ -366,6 +376,7 @@ namespace Composite.C1Console.Trees
 
                 Element element = CreateElement(
                     parentEntityToken,
+                    referenceType,
                     referenceValue, 
                     dynamicContext,
                     label,
@@ -378,11 +389,12 @@ namespace Composite.C1Console.Trees
 
 
 
-        private Element CreateElement(EntityToken parentEntityToken, object referenceValue, TreeNodeDynamicContext dynamicContext, string label, Action<TreeDataFieldGroupingElementEntityToken> entityTokenAction)
+        private Element CreateElement(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, string label, Action<TreeDataFieldGroupingElementEntityToken> entityTokenAction)
         {
             TreeDataFieldGroupingElementEntityToken entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id.ToString(), this.Tree.TreeId, this.SerializedInterfaceType);
             entityToken.GroupingValues = new Dictionary<string, object>(dynamicContext.FieldGroupingValues);
             entityToken.FolderRangeValues = new Dictionary<string, int>(dynamicContext.FieldFolderRangeValues);
+            entityToken.ChildGeneratingDataElementsReferenceType = referenceType;
             entityToken.ChildGeneratingDataElementsReferenceValue = referenceValue;
 
             entityTokenAction(entityToken);

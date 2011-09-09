@@ -15,7 +15,7 @@ namespace Composite.C1Console.Trees
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     public sealed class TreeDataFieldGroupingElementEntityToken : EntityToken
     {
@@ -147,7 +147,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public Dictionary<string, object> DeserializedGroupingValues
         {
-            get 
+            get
             {
                 Dictionary<string, object> result = new Dictionary<string, object>();
 
@@ -175,14 +175,14 @@ namespace Composite.C1Console.Trees
                         else
                         {
                             value = DateTimeFormater.Deserialize((string)value);
-                            result.Add(propertyName, value);                            
+                            result.Add(propertyName, value);
                         }
                     }
                     else
                     {
                         result.Add(propertyName, value);
                     }
-                    
+
                 }
 
                 return result;
@@ -219,6 +219,8 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <exclude />
+        public Type ChildGeneratingDataElementsReferenceType { get; set; }
 
         /// <exclude />
         public object ChildGeneratingDataElementsReferenceValue { get; set; }
@@ -251,6 +253,11 @@ namespace Composite.C1Console.Trees
                         _hashCode ^= kvp.Key.GetHashCode();
                         _hashCode ^= kvp.Value.GetHashCode();
                     }
+                }
+
+                if (this.ChildGeneratingDataElementsReferenceType != null)
+                {
+                    _hashCode ^= ChildGeneratingDataElementsReferenceType.GetHashCode();
                 }
 
                 if (this.ChildGeneratingDataElementsReferenceValue != null)
@@ -288,6 +295,11 @@ namespace Composite.C1Console.Trees
                 StringConversionServices.SerializeKeyValuePair(sb, "·" + kvp.Key, kvp.Value, kvp.Value.GetType());
             }
 
+            if (this.ChildGeneratingDataElementsReferenceType != null)
+            {
+                StringConversionServices.SerializeKeyValuePair(sb, "_ReferenceType_", TypeManager.SerializeType(this.ChildGeneratingDataElementsReferenceType));
+            }
+
             if (this.ChildGeneratingDataElementsReferenceValue != null)
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "_ReferenceValueType_", this.ChildGeneratingDataElementsReferenceValue.GetType());
@@ -308,6 +320,13 @@ namespace Composite.C1Console.Trees
             DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
 
             TreeDataFieldGroupingElementEntityToken entityToken = new TreeDataFieldGroupingElementEntityToken(id, source, type, dic);
+
+            if (dic.ContainsKey("_ReferenceType_"))
+            {
+                string typeString = StringConversionServices.DeserializeValueString(dic["_ReferenceType_"]);
+
+                entityToken.ChildGeneratingDataElementsReferenceType = TypeManager.GetType(typeString);
+            }
 
             if (dic.ContainsKey("_ReferenceValueType_") == true)
             {
