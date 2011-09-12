@@ -7,6 +7,10 @@
 <script runat="server">
     protected override void BindStateToProperties()
     {
+        // TODO: refactor???
+        InitializeOptionList();
+        EnsurePostDataLoaded();
+        
         string selectedValue = typeSelector.SelectedValue;
         if(string.IsNullOrEmpty(selectedValue))
         {
@@ -26,14 +30,28 @@
         }
         
     }
+
+    private void EnsurePostDataLoaded()
+    {
+        var form = System.Web.HttpContext.Current.Request.Form;
+        if (form[typeSelector.UniqueID] != null)
+        {
+            (typeSelector as IPostBackDataHandler).LoadPostData(typeSelector.UniqueID, form);
+        }
+    }
     
-    protected override void InitializeViewState()
+    private void InitializeOptionList()
     {
         typeSelector.ToolTip = this.FormControlLabel;
-        typeSelector.DataSource = GetTypeKeyValues().OrderBy(f=>f.Value);
+        typeSelector.DataSource = GetTypeKeyValues().OrderBy(f => f.Value);
         typeSelector.DataValueField = "Key";
         typeSelector.DataTextField = "Value";
         typeSelector.DataBind();
+    }
+    
+    protected override void InitializeViewState()
+    {
+        InitializeOptionList();
 
         if (null != this.SelectedType)
         {
@@ -50,7 +68,7 @@
 
     public override string GetDataFieldClientName()
     {
-        return this.typeSelector.ClientID;
+        return this.typeSelector.UniqueID;
     }
 
 </script>
