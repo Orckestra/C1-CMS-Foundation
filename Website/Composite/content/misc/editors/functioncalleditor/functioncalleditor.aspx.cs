@@ -285,13 +285,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         UpdateMenu();
 
-        SyncTreeAndEditingPanel();
+        //SyncTreeAndEditingPanel();
     }
 
 
     private void Page_PreRender(object sender, EventArgs args)
     {
-//        SyncTreeAndEditingPanel();
+        SyncTreeAndEditingPanel();
     }
 
 
@@ -575,6 +575,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
     private void SyncTreeAndEditingPanel()
     {
+
+
 		//Select first parameter if not selected
 		//TODO: refactor this
 		if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
@@ -632,8 +634,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string serializedMarkup = utf8.GetString(serializedXDocument);
         serializedMarkup = serializedMarkup.Substring(serializedMarkup.IndexOf(Environment.NewLine) + Environment.NewLine.Length);
 
-
-        ctlSourceEditor.Attributes["value"] = Context.Server.UrlEncode(serializedMarkup).Replace("+", "%20");
+		//Do not refresh in SourceMode
+		if (!(Request["__REQUEST"] == "refresh" && EditorMode == EditorModeEnum.Source))
+			ctlSourceEditor.Attributes["value"] = Context.Server.UrlEncode(serializedMarkup).Replace("+", "%20");
 
         if(IsInTestMode)
         {
