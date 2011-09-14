@@ -111,6 +111,26 @@
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin_src.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\example_dependency\editor_plugin.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\example_dependency\editor_plugin_src.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\lists\editor_plugin.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\lists\editor_plugin_src.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\media\moxieplayer.swf" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\flash.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\iframe.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\pagebreak.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\quicktime.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\realmedia.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\shockwave.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\trans.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\video.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\img\windowsmedia.gif" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\shortcuts.htm" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\content.css" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\dialog.css" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\ui.css" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelectorBase.cs">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -1206,7 +1226,9 @@
     <Content Include="Composite\scripts\source\top\util\List.js" />
     <Content Include="Composite\scripts\source\top\util\Map.js" />
     <Content Include="Composite\skins\dynamicskin.css" />
+    <Content Include="Composite\skins\system\wysiwygeditor\indent.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\left.png" />
+    <Content Include="Composite\skins\system\wysiwygeditor\outdent.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\right.png" />
     <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\js.txt" />

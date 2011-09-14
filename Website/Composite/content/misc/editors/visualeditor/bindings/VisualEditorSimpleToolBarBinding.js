@@ -270,113 +270,27 @@ VisualEditorSimpleToolBarBinding.prototype.handleNodeChange = function ( element
 			b2.check ( true );
 		}
 	}
-}
 
-/**
- * Update buttons.
- * @param {DOMElement} element
- *
-VisualEditorSimpleToolBarBinding.prototype._updateButtons = function ( element ) {
-	
-	alert ( "HELLO" )
-	return;
-	
-	var structure = new List ();
-	var commands = new Map ();
-	var buttons = this._buttons;
-	var align = null;
-	
-	/**
-	 * Collec ancestor nodenames in a list. 
-	 * Scanning for any alignment on stuff.
-	 *
-	var el = element;
-	do {
-		if ( el.nodeType == Node.ELEMENT_NODE ) {
-			structure.add ( el.nodeName.toLowerCase ());
-			if ( align == null && el.getAttribute ( "align" ) != null ) {
-				align = el.getAttribute ( "align" );
-			}
-		}
-	} while (( el = el.parentNode ) != null );
-
-	/*
-	 * Computing commands relevant for current node. Cases "img" and "a" 
-	 * are due to a flaw in EditorBinding#hasSelection where images aren't 
-	 * reckognized as selections.
-	 *
-	var wasAlignmentDisabled = false;
-	while ( structure.hasNext ()) {
-		switch ( structure.getNext ()) {
-			case "img" :
-				if ( this._isReservedClassName ( element.className )) {
-					this._disableAlignment ( true );
-					wasAlignmentDisabled = true;
-				} else {
-					buttons.get ( "compositeInsertLink" ).enable ();
+	if (this._buttons.has("Indent") && this._buttons.has("Outdent")) {
+		var indentButton = this._buttons.get("Indent");
+		var outdentButton = this._buttons.get("Outdent");
+		var isEnableIndent = false;
+		var isEnableOutdent = false;
+		var node = element;
+		do {
+			if (node.nodeType == Node.ELEMENT_NODE) {
+				if (node.nodeName.toLowerCase() == "ul" || node.nodeName.toLowerCase() == "ol") {
+					isEnableIndent = true;
+					isEnableOutdent = true;
+					break;
 				}
-				break;
-			case "a" :
-				buttons.get ( "unlink" ).enable ();
-				break;
-			case "ul" :
-				commands.set ( "InsertUnorderedList", true );
-				break;
-			case "ol" :
-				commands.set ( "InsertOrderedList", true );
-				break;
-			case "b" :
-			case "strong" :
-				commands.set ( "Bold", true );
-				break;
-			case "i" :
-			case "em" :
-				commands.set ( "Italic", true );
-				break;
-			case "u" :
-				commands.set ( "Underline", true );
-				break;
-			case "strike" :
-				commands.set ( "Strikethrough", true );
-				break;
-		}
-	}
-	
-	if ( !wasAlignmentDisabled && this._isAlignmentDisabled ) {
-		this._disableAlignment ( false );
-	}
-	
-	if ( align ) {
-		switch ( align ) {
-			case "left":
-				commands.set ( "JustifyLeft", true );
-				break;
-			case "right":
-				commands.set (  "JustifyRight", true );
-				break;
-			case "middle":
-			case "center":
-				commands.set ( "JustifyCenter", true );
-				break;
-			case "justify":
-				commands.set ( "JustifyFull", true );
-				break;
-		}
-	}
-	
-	/*
-	 * Check and uncheck buttons.
-	 *
-	this._buttons.each ( 
-		function ( key, button ) {
-			if ( button.cmd && ( button.isCheckButton || button.isRadioButton )) {
-				var isChecked = commands.has ( button.cmd );
-				button.setChecked ( isChecked, true );
 			}
-		}
-	);
+		} while ((node = node.parentNode) != null);
+
+		indentButton.setDisabled(!isEnableIndent);
+		outdentButton.setDisabled(!isEnableOutdent);
+	}
 }
-*/
 
 /**
  * This handles all button commands.
@@ -536,33 +450,34 @@ VisualEditorSimpleToolBarBinding.prototype.getButtonForCommand = function ( cmd 
  * @overloads {Binding#handleEvent}
  * @param {Event} e
  */
-VisualEditorSimpleToolBarBinding.prototype.handleEvent = function ( e ) {
-	
-	VisualEditorSimpleToolBarBinding.superclass.handleEvent.call ( this, e );
-	
-	if ( this._buttons.has ( "compositeInsertLink" )) {
-	
-		var linkButton		= this._buttons.get ( "compositeInsertLink" );
-		var unLinkButton 	= this._buttons.get ( "unlink" );
-		var isEnableLink 	= this._editorBinding.hasSelection ();
-		
-		var isEnableUnlink 	= false;
-		
-		var node = DOMEvents.getTarget ( e );
+VisualEditorSimpleToolBarBinding.prototype.handleEvent = function (e) {
+
+	VisualEditorSimpleToolBarBinding.superclass.handleEvent.call(this, e);
+
+	if (this._buttons.has("compositeInsertLink")) {
+
+		var linkButton = this._buttons.get("compositeInsertLink");
+		var unLinkButton = this._buttons.get("unlink");
+		var isEnableLink = this._editorBinding.hasSelection();
+
+		var isEnableUnlink = false;
+
+		var node = DOMEvents.getTarget(e);
 		do {
-			if ( node.nodeType == Node.ELEMENT_NODE ) {
-				if ( node.nodeName.toLowerCase () == "a" ) {
+			if (node.nodeType == Node.ELEMENT_NODE) {
+				if (node.nodeName.toLowerCase() == "a") {
 					isEnableLink = true;
 					isEnableUnlink = true;
 					break;
 				}
 			}
-		} while (( node = node.parentNode ) != null );
-		
-		linkButton.setDisabled ( !isEnableLink );
-		unLinkButton.setDisabled ( !isEnableUnlink );
+		} while ((node = node.parentNode) != null);
+
+		linkButton.setDisabled(!isEnableLink);
+		unLinkButton.setDisabled(!isEnableUnlink);
 	}
 }
+
 
 /**
  * Disable buttons when editor is unactivated.
