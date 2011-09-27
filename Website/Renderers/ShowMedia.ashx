@@ -81,10 +81,14 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
 
+        bool clientCaching = false;
+        
         if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn() == false)
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(60));
             context.Response.Cache.SetCacheability(HttpCacheability.Private);
+
+            clientCaching = true;
         }
 
         Stream inputStream = null;
@@ -116,6 +120,11 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             {
                 context.Response.AddHeader("Content-Length", length.ToString());
             }
+
+            if (clientCaching && file.LastWriteTime != null)
+            {
+                context.Response.Cache.SetLastModified(file.LastWriteTime.Value);
+            }            
 
             inputStream.CopyTo(context.Response.OutputStream);
         }
