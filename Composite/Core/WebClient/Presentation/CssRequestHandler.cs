@@ -121,6 +121,8 @@ namespace Composite.Core.WebClient.Presentation
                 }
                 else if (user.isOSX)
                 {
+                    scheme.Add("menutext", "rgb(0,0,0)");
+                    scheme.Add("menu", "rgb(240,240,240)");
                     scheme.Add("threeddarkshadow", "-moz-mac-chrome-active");
                     scheme.Add("threedshadow", "-moz-mac-menushadow");
                     scheme.Add("highlight", "-moz-mac-menuselect");
