@@ -10,7 +10,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
     internal sealed class PathInfoIntFunction : StandardFunctionBase
     {
         public PathInfoIntFunction(EntityTokenFactory entityTokenFactory)
-            : base("PathInfoInt", "Composite.Web.Request", typeof(string), entityTokenFactory)
+            : base("PathInfoInt", "Composite.Web.Request", typeof(int), entityTokenFactory)
         {
         }
 
