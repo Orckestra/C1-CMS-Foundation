@@ -4,8 +4,10 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(NonConfigurableElementAttachingProvider))]
-    internal class ElementAttachingProviderData : NameTypeManagerTypeConfigurationElement
+    public class ElementAttachingProviderData : NameTypeManagerTypeConfigurationElement
 	{
 	}
 }

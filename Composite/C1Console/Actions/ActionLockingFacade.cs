@@ -122,7 +122,7 @@ namespace Composite.C1Console.Actions
                 LockingInformation lockingInformation;
                 if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == true)
                 {
-                    if (lockingInformation.OwnerId == ownerId)
+                    if (object.Equals(lockingInformation.OwnerId, ownerId))
                     {
                         _lockingInformations.Remove(entityToken);
                     }
