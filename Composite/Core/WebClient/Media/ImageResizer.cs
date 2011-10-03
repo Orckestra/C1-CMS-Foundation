@@ -74,8 +74,8 @@ namespace Composite.Core.WebClient.Media
                 }
 
                 int newWidth, newHeight;
-                bool touchFromInside;
-                bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions, out newWidth, out newHeight, out touchFromInside);
+                bool centerCrop;
+                bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions, out newWidth, out newHeight, out centerCrop);
 
                 if (!needToResize)
                 {
@@ -84,10 +84,10 @@ namespace Composite.Core.WebClient.Media
 
                 int filePathHash = imageKey.GetHashCode();
 
-                string thumbnail = touchFromInside ? "th" : string.Empty;
+                string centerCroppedString = centerCrop ? "c" : string.Empty;
 
                 string fileExtension = _ImageFormat2Extension[targetImageFormat];
-                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}.{4}", newWidth, newHeight, filePathHash, thumbnail, fileExtension);
+                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}.{4}", newWidth, newHeight, filePathHash, centerCroppedString, fileExtension);
 
                 string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
 
@@ -98,7 +98,7 @@ namespace Composite.Core.WebClient.Media
                         bitmap = new Bitmap(file.GetReadStream());
                     }
 
-                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, touchFromInside, targetImageFormat);
+                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat);
 
                     if (file.LastWriteTime.HasValue)
                     {
@@ -117,9 +117,19 @@ namespace Composite.Core.WebClient.Media
             }
         }
 
-        private static bool CalculateSize(int width, int height, ResizingOptions resizingOptions, out int newWidth, out int newHeight, out bool touchFromInside)
+        private static bool CalculateSize(int width, int height, ResizingOptions resizingOptions, out int newWidth, out int newHeight, out bool centerCrop)
         {
-            touchFromInside = false;
+            if(width == 0 || height == 0)
+            {
+                newHeight = newWidth = 0;
+                centerCrop = false;
+                return false;
+            }
+
+            Verify.ArgumentCondition(width > 0, "width", "Negative values aren't allowed");
+            Verify.ArgumentCondition(height > 0, "height", "Negative values aren't allowed");
+
+            centerCrop = false;
 
             // If both height and width are defined - we have "scalling"
             if (resizingOptions.Height != null && resizingOptions.Width != null)
@@ -138,13 +148,41 @@ namespace Composite.Core.WebClient.Media
                     newWidth = width;
                 }
 
-                bool needToResize = newWidth != width || newHeight != height;
-                if(needToResize)
+                // If the target dimensions are bigger or the same size as of the image - no resizing is done
+                if(newWidth == width || newHeight == height)
                 {
-                    touchFromInside = resizingOptions.TouchFromInside;
+                    return false;
                 }
 
-                return needToResize;
+                switch(resizingOptions.ResizingAction)
+                {
+                    case ResizingAction.Stretch:
+                        // no additional logic
+                        break;
+
+                    case ResizingAction.Crop:
+                        centerCrop = true;
+                        break;
+
+                    case ResizingAction.Fit:
+                    case ResizingAction.Fill:
+                        // No float point division for better precision
+
+                        if ( ((Int64)newHeight * width  > (Int64)newWidth * height)
+                        //          (newHeight / height) >      (newWidth / width) 
+                              ^ (resizingOptions.ResizingAction == ResizingAction.Fit))
+                        {
+                            newWidth = (int)(((Int64)width * newHeight) / height);
+                        }
+                        else
+                        {
+                            newHeight = (int)(((Int64)height * newWidth) / width);
+                        }
+
+                        break;
+                }
+
+                return true;
             }
 
             newWidth = width;
@@ -180,7 +218,7 @@ namespace Composite.Core.WebClient.Media
         }
 
 
-        private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool touchFromInside, ImageFormat imageFormat)
+        private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool centerCrop, ImageFormat imageFormat)
         {
             Verify.ArgumentNotNull(image, "image");
 
@@ -192,8 +230,8 @@ namespace Composite.Core.WebClient.Media
                 newGraphic.Clear(Color.White);
                 newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                
-                if(touchFromInside)
+
+                if (centerCrop)
                 {
                     float xRatio = image.Width / (float)newWidth;
                     float yRatio = image.Height / (float)newHeight;

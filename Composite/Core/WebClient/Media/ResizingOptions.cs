@@ -7,6 +7,7 @@ using System.Web.Caching;
 using System.Xml.Linq;
 using Composite.Core.IO;
 using Composite.Core.Xml;
+using Composite.Core.Extensions;
 
 namespace Composite.Core.WebClient.Media
 {
@@ -41,10 +42,9 @@ namespace Composite.Core.WebClient.Media
         public int? MaxWidth { get; set; }
 
         /// <summary>
-        /// If true, image would be toching the borders from inside, used for creating thumbnails. 
-        /// Used along with "Height" and "Width" properties
+        /// Resizing action
         /// </summary>
-        public bool TouchFromInside { get; set; }
+        public ResizingAction ResizingAction { get; set; }
 
         /// <summary>
         /// Indicates whether any options were specified
@@ -107,9 +107,15 @@ namespace Composite.Core.WebClient.Media
                 result.MaxHeight = int.Parse(str);
             }
 
-            if(queryString["th"] == "true")
+            ResizingAction resizingAction;
+            string action = queryString["action"];
+            if (!action.IsNullOrEmpty() && Enum.TryParse(action, true, out resizingAction))
             {
-                result.TouchFromInside = true;
+                result.ResizingAction = resizingAction;
+            } 
+            else
+            {
+                result.ResizingAction = Media.ResizingAction.Stretch;
             }
 
             return result;
@@ -155,6 +161,12 @@ namespace Composite.Core.WebClient.Media
                 if (attr != null)
                 {
                     result.MaxWidth = int.Parse(attr.Value);
+                }
+
+                attr = r.Attribute("action");
+                if (attr != null)
+                {
+                    result.ResizingAction = (ResizingAction)Enum.Parse(typeof(ResizingAction), attr.Value, true);
                 }
             }
 
