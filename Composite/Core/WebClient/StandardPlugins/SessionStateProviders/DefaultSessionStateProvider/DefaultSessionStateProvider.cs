@@ -25,6 +25,7 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
             sessionStateEntry.ExpirationDate = exirationDate;
             sessionStateEntry.SerializedValue = SerializationUtil.Serialize(value);
 
+            using(new DataScope(PublicationScope.Unpublished)) 
             using (Composite.Data.Transactions.TransactionsFacade.SuppressTransactionScope())
             {
                 DataFacade.AddNew(sessionStateEntry);
@@ -62,6 +63,7 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
             entry.SerializedValue = SerializationUtil.Serialize(value);
             entry.ExpirationDate = expirationDate;
 
+            using (new DataScope(PublicationScope.Unpublished)) 
             using (Composite.Data.Transactions.TransactionsFacade.SuppressTransactionScope())
             {
                 DataFacade.Update(entry);
@@ -85,19 +87,22 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
 
         private static ISessionStateEntry GetSessionStateEntry(Guid stateId)
         {
-            var queryable = DataFacade.GetData<ISessionStateEntry>();
-
-            ISessionStateEntry entry;
-            if (queryable.IsEnumerableQuery())
+            using (new DataScope(PublicationScope.Unpublished))
             {
-                entry = (queryable as IEnumerable<ISessionStateEntry>).Where(row => row.Id == stateId).FirstOrDefault();
-            }
-            else
-            {
-                entry = queryable.Where(row => row.Id == stateId).FirstOrDefault();
-            }
+                var queryable = DataFacade.GetData<ISessionStateEntry>();
 
-            return entry;
+                ISessionStateEntry entry;
+                if (queryable.IsEnumerableQuery())
+                {
+                    entry = (queryable as IEnumerable<ISessionStateEntry>).Where(row => row.Id == stateId).FirstOrDefault();
+                }
+                else
+                {
+                    entry = queryable.Where(row => row.Id == stateId).FirstOrDefault();
+                }
+
+                return entry;
+            }
         }
 
         private static void PerformCleanUpIfNeeded()
@@ -124,6 +129,7 @@ namespace Composite.Plugins.WebClient.SessionStateProviders.DefaultSessionStateP
             var now = DateTime.Now;
             try
             {
+                using (new DataScope(PublicationScope.Unpublished)) 
                 using (Composite.Data.Transactions.TransactionsFacade.SuppressTransactionScope())
                 {
                     DataFacade.Delete<ISessionStateEntry>(entry => entry.ExpirationDate < now);
