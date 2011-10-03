@@ -167,16 +167,25 @@ namespace Composite.Core.WebClient.Media
                     case ResizingAction.Fit:
                     case ResizingAction.Fill:
                         // No float point division for better precision
+                        Int64 heightProportionArea = (Int64)newHeight * width;
+                        Int64 widthProportionArea = (Int64)newWidth * height;
 
-                        if ( ((Int64)newHeight * width  > (Int64)newWidth * height)
-                        //          (newHeight / height) >      (newWidth / width) 
+                        if(heightProportionArea == widthProportionArea)
+                        {
+                            break;
+                        }
+
+                        if ((heightProportionArea > widthProportionArea)
+                        //  (newHeight / height) > (newWidth / width) 
                               ^ (resizingOptions.ResizingAction == ResizingAction.Fit))
                         {
-                            newWidth = (int)(((Int64)width * newHeight) / height);
+                            newWidth = (int)(heightProportionArea / height);
+                            // newWidth = width * (newHeight / height)
                         }
                         else
                         {
-                            newHeight = (int)(((Int64)height * newWidth) / width);
+                            newHeight = (int)(widthProportionArea / width);
+                            // newHeight = height * (newWidth / width)
                         }
 
                         break;
