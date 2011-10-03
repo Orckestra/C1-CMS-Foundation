@@ -2,19 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Xsl;
 using Composite.Data;
-using Composite.Data.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Types;
 using Composite.Core.Xml;
-using Composite.Core.IO;
 
 namespace Composite.Services
 {
@@ -26,34 +22,15 @@ namespace Composite.Services
         public XmlDocument GetElementClassConfiguration(string configurationName)
         {
             if (string.IsNullOrEmpty(configurationName) == true) throw new ArgumentException("Missing QueryString 'configurationName' value");
+            
+            // TODO: to be removed
 
-            List<IXhtmlEditorElementClassConfiguration> elementClasses;
-
-            using (new DataScope(DataScopeIdentifier.Administrated))
-            {
-                elementClasses =
-                    (from elementClass in DataFacade.GetData<IXhtmlEditorElementClassConfiguration>()
-                     where elementClass.ConfigurationName == configurationName
-                     orderby elementClass.ElementName
-                     select elementClass).ToList();
-            }
-
-            XElement xml = new XElement("elements",
-                               from elementClass in elementClasses
-                               orderby elementClass.ElementName
-                               group elementClass by elementClass.ElementName into element
-                               select new XElement("element", new XAttribute("name", element.Key),
-                                          from cssclass in element
-                                          select new XElement("class", new XAttribute("name", cssclass.ClassName))));
-
+            XElement xml = new XElement("elements");
+            
             XmlDocument output = new XmlDocument();
             output.LoadXml(xml.ToString());
             return output;
         }
-
-
-
-
 
 
         [WebMethod]

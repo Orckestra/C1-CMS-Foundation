@@ -1933,7 +1933,6 @@
     <Compile Include="Data\Types\IFileServices.cs" />
     <Compile Include="Data\Types\IPage.cs" />
     <Compile Include="Data\Types\IPageTemplate.cs" />
-    <Compile Include="Data\Types\IXhtmlEditorElementClassConfiguration.cs" />
     <Compile Include="Data\Types\PageServices.cs" />
     <Compile Include="C1Console\Elements\ElementAction.cs" />
     <Compile Include="C1Console\Elements\ActionCategory.cs" />

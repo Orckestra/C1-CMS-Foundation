@@ -46,7 +46,6 @@ namespace Composite.Data.Foundation
                     typeof(IUserSettings),
                     typeof(IUserActiveLocale),
                     typeof(IVisualFunction),
-                    typeof(IXhtmlEditorElementClassConfiguration),
                     typeof(IMediaFile),
                     typeof(IMediaFileFolder),
                     typeof(IMediaFileData),
