@@ -14,7 +14,7 @@ namespace Composite.Core.Application
         private static EventWaitHandle _eventWaitHandle = null;
         private static string _appDomainLockKey;
         private static bool _gotSignaled = false;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)AppDomainLocker";
         private const string _warningLogEntryTitle = "AppDomainLocker";
@@ -93,6 +93,10 @@ namespace Composite.Core.Application
         /// <returns>True if the lock was aquired</returns>
         private static bool TryLock(TimeSpan maxWaitTime)
         {
+#warning MRJ: BM: Only add once? Cleanup
+            AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
+
+
             if (RuntimeInformation.AppDomainLockingDisabled) return true;
 
             lock (_lock)
@@ -110,18 +114,18 @@ namespace Composite.Core.Application
                 }
                 else
                 {
-                    LoggingService.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) detected existing handle will now wait ({1}ms max) for other AppDomains to unlock on key '{2}'", AppDomain.CurrentDomain.Id, maxWaitTime.TotalMilliseconds, _appDomainLockKey));
+                    Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) detected existing handle will now wait ({1}ms max) for other AppDomains to unlock on key '{2}'", AppDomain.CurrentDomain.Id, maxWaitTime.TotalMilliseconds, _appDomainLockKey));
                 }
 
                 _gotSignaled = _eventWaitHandle.WaitOne(maxWaitTime, false);
 
                 if (_gotSignaled == false)
                 {
-                    LoggingService.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain ({0}) has stopped waiting for signal on key '{1}'. Continuing without syncronization...", AppDomain.CurrentDomain.Id, _appDomainLockKey));
+                    Log.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain ({0}) has stopped waiting for signal on key '{1}'. Continuing without syncronization...", AppDomain.CurrentDomain.Id, _appDomainLockKey));
                 }
                 else
                 {
-                    LoggingService.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) has locked for other AppDomains on key '{1}'", AppDomain.CurrentDomain.Id, _appDomainLockKey));
+                    Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) has locked for other AppDomains on key '{1}'", AppDomain.CurrentDomain.Id, _appDomainLockKey));
                 }
 
                 return _gotSignaled;
@@ -129,18 +133,9 @@ namespace Composite.Core.Application
         }
 
 
-
-       /* private static string LockKey
+        static void CurrentDomain_DomainUnload(object sender, EventArgs e)
         {
-            get
-            {
-                string baseString = PathUtil.BaseDirectory.ToLower().Replace(@"\", "-").Replace("/", "-");
-                return string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
-            }
-        }*/
-
-
-
-
+            ReleaseAnyLock(); // This is for VS dev server, it does not always call Application_End /MRJ
+        }
     }
 }
