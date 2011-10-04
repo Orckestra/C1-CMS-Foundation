@@ -301,7 +301,7 @@ namespace Composite.C1Console.Users
         {
             IUserSettings settings = DataFacade.BuildNew<IUserSettings>();
 
-            settings.Username = username.ToLowerInvariant();
+            settings.Username = username;
             settings.CultureName = GlobalSettingsFacade.DefaultCultureName;
 
             return DataFacade.AddNew<IUserSettings>(settings);

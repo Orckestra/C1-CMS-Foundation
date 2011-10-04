@@ -76,6 +76,8 @@ namespace Composite.Core.WebClient.Setup
         {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
 
+            username = username.ToLowerInvariant();
+
             try
             {
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Setting up the system for the first time");
