@@ -273,6 +273,7 @@
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
     <Compile Include="Data\DataEvents.cs" />
+    <Compile Include="Data\IXhtmlEditorElementClassConfiguration .cs" />
     <Compile Include="Data\Plugins\DataProvider\IFileSystemDataProvider.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
