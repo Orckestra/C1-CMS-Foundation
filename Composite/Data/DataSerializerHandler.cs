@@ -41,12 +41,33 @@ namespace Composite.Data
                 StringConversionServices.SerializeKeyValuePair(sb, "_DataSourceId_", data.DataSourceId.Serialize());
             }
 
-            IEnumerable<PropertyInfo> propertyInfos =
-                from prop in data.DataSourceId.InterfaceType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+            Type dataType = data.DataSourceId.InterfaceType;
+            SerializePropertiesFromInterface(data, data.DataSourceId.InterfaceType, false, sb);
+
+            foreach(var inheritedInterface in dataType.GetInterfaces())
+            {
+                if (inheritedInterface == typeof(IData)) continue; // DataSourceId is already serialized so we're skipping it here
+
+                SerializePropertiesFromInterface(data, inheritedInterface, true, sb);
+            }
+
+            return sb.ToString();
+        }
+
+        private static IEnumerable<PropertyInfo> GetSerializableProperties(Type @interface)
+        {
+            return
+                from prop in @interface.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 where prop.CanRead == true && prop.CanWrite == true
                 select prop;
+        }
 
-            foreach (PropertyInfo propertyInfo in propertyInfos)
+
+        private static void SerializePropertiesFromInterface(object objectToSerialize, Type @interface, bool includeInterfaceName, StringBuilder stringBuilder)
+        {
+            string fieldPrefix = includeInterfaceName ? GetTypeSerializationPrefix(@interface) : string.Empty;
+
+            foreach (PropertyInfo propertyInfo in GetSerializableProperties(@interface))
             {
                 MethodInfo methodInfo =
                         (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -55,58 +76,26 @@ namespace Composite.Data
                                mi.GetParameters().Length == 3 &&
                                mi.GetParameters()[2].ParameterType.IsGenericParameter == true
                          select mi).SingleOrDefault();
-                
+
                 methodInfo = methodInfo.MakeGenericMethod(new Type[] { propertyInfo.PropertyType });
 
-                object propertyValue = propertyInfo.GetValue(data, null);
+                object propertyValue = propertyInfo.GetValue(objectToSerialize, null);
 
-                methodInfo.Invoke(null, new object[] { sb, propertyInfo.Name, propertyValue });
+                string fieldKey = fieldPrefix + propertyInfo.Name;
+
+                methodInfo.Invoke(null, new object[] { stringBuilder, fieldKey, propertyValue });
             }
-
-            return sb.ToString();
         }
 
-
-
-        public object Deserialize(string serializedObject)
+        private static void DeserializePropertiesFromInterface(Dictionary<string, string> serializedData, Type @interface, bool includeInterfaceName, object targetObject)
         {
-            Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedObject);
+            string fieldPrefix = includeInterfaceName ? GetTypeSerializationPrefix(@interface) : string.Empty;
 
-            if (dic.ContainsKey("_IsNew_") == false) throw new ArgumentException("serializedObject is of wrong format");
-
-            IData data = null;
-
-            bool isNew = StringConversionServices.DeserializeValueBool(dic["_IsNew_"]);
-            if (isNew == true)
+            foreach (PropertyInfo propertyInfo in GetSerializableProperties(@interface))
             {
-                if (dic.ContainsKey("_Type_") == false) throw new ArgumentException("serializedObject is of wrong format");
+                string fieldKey = fieldPrefix + propertyInfo.Name;
 
-                string typeString = StringConversionServices.DeserializeValueString(dic["_Type_"]);
-                Type interfaceType = TypeManager.GetType(typeString);
-
-                data = DataFacade.BuildNew(interfaceType);
-            }
-            else
-            {
-                if (dic.ContainsKey("_DataSourceId_") == false) throw new ArgumentException("serializedObject is of wrong format");
-
-                string dataSourceIdString = StringConversionServices.DeserializeValueString(dic["_DataSourceId_"]);
-                DataSourceId dataSourceId = DataSourceId.Deserialize(dataSourceIdString);
-
-                data = DataFacade.GetDataFromDataSourceId(dataSourceId);
-
-                if (data == null) throw new DataSerilizationException(string.Format("Failed to get the '{0}' with the given data source '{1}', data might have been deleted sinse this serialized data was created", dataSourceId.InterfaceType, dataSourceId));
-            }
-            
-
-            IEnumerable<PropertyInfo> propertyInfos =
-                from prop in data.DataSourceId.InterfaceType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                where prop.CanRead == true && prop.CanWrite == true
-                select prop;
-
-            foreach (PropertyInfo propertyInfo in propertyInfos)
-            {
-                if (dic.ContainsKey(propertyInfo.Name) == false) throw new DataSerilizationException(string.Format("The data type '{0}' does not contain a property named '{1}', type might have changed sinse this serialized data was created", data.DataSourceId.InterfaceType, propertyInfo.Name));
+                if (serializedData.ContainsKey(fieldKey) == false) throw new DataSerilizationException(string.Format("The data type '{0}' does not contain a property named '{1}', type might have changed sinse this serialized data was created", @interface, propertyInfo.Name));
 
                 MethodInfo methodInfo =
                         (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
@@ -117,6 +106,7 @@ namespace Composite.Data
                          select mi).SingleOrDefault();
 
                 object defaultValue;
+
                 if (propertyInfo.PropertyType == typeof(Guid)) defaultValue = default(Guid);
                 else if (propertyInfo.PropertyType == typeof(string)) defaultValue = default(string);
                 else if (propertyInfo.PropertyType == typeof(int)) defaultValue = default(int);
@@ -129,24 +119,72 @@ namespace Composite.Data
                 methodInfo = methodInfo.MakeGenericMethod(new Type[] { propertyInfo.PropertyType });
 
 
-              /*  string methodName;
+                /*  string methodName;
 
-                if (propertyInfo.PropertyType == typeof(Guid)) methodName = "DeserializeValueGuid";
-                else if (propertyInfo.PropertyType == typeof(string)) methodName = "DeserializeValueString";
-                else if (propertyInfo.PropertyType == typeof(int)) methodName = "DeserializeValueInt";
-                else if (propertyInfo.PropertyType == typeof(DateTime)) methodName = "DeserializeValueDateTime";
-                else if (propertyInfo.PropertyType == typeof(DateTime?)) methodName = "DeserializeValueDateTimeNullable";                    
-                else if (propertyInfo.PropertyType == typeof(bool)) methodName = "DeserializeValueBool";
-                else if (propertyInfo.PropertyType == typeof(decimal)) methodName = "DeserializeValueDecimal";
-                else if (propertyInfo.PropertyType == typeof(long)) methodName = "DeserializeValueLong";
-                else methodName = null;
+                  if (propertyInfo.PropertyType == typeof(Guid)) methodName = "DeserializeValueGuid";
+                  else if (propertyInfo.PropertyType == typeof(string)) methodName = "DeserializeValueString";
+                  else if (propertyInfo.PropertyType == typeof(int)) methodName = "DeserializeValueInt";
+                  else if (propertyInfo.PropertyType == typeof(DateTime)) methodName = "DeserializeValueDateTime";
+                  else if (propertyInfo.PropertyType == typeof(DateTime?)) methodName = "DeserializeValueDateTimeNullable";                    
+                  else if (propertyInfo.PropertyType == typeof(bool)) methodName = "DeserializeValueBool";
+                  else if (propertyInfo.PropertyType == typeof(decimal)) methodName = "DeserializeValueDecimal";
+                  else if (propertyInfo.PropertyType == typeof(long)) methodName = "DeserializeValueLong";
+                  else methodName = null;
 
-                if (methodName == null) throw new InvalidOperationException(string.Format("StringConversionServices does not support the type '{0}'", propertyInfo.PropertyType));
-                */
+                  if (methodName == null) throw new InvalidOperationException(string.Format("StringConversionServices does not support the type '{0}'", propertyInfo.PropertyType));
+                  */
 
-                object propertyValue = methodInfo.Invoke(null, new object[] { dic[propertyInfo.Name], defaultValue });
+                object propertyValue = methodInfo.Invoke(null, new object[] { serializedData[fieldKey], defaultValue });
 
-                propertyInfo.SetValue(data, propertyValue, null);
+                propertyInfo.SetValue(targetObject, propertyValue, null);
+            }
+        }
+
+        private static string GetTypeSerializationPrefix(Type type)
+        {
+            return type.FullName.Replace(".", "-") + ".";
+        }
+
+
+        public object Deserialize(string serializedObject)
+        {
+            Dictionary<string, string> serializationData = StringConversionServices.ParseKeyValueCollection(serializedObject);
+
+            if (serializationData.ContainsKey("_IsNew_") == false) throw new ArgumentException("serializedObject is of wrong format");
+
+            IData data = null;
+
+            bool isNew = StringConversionServices.DeserializeValueBool(serializationData["_IsNew_"]);
+            if (isNew == true)
+            {
+                if (serializationData.ContainsKey("_Type_") == false) throw new ArgumentException("serializedObject is of wrong format");
+
+                string typeString = StringConversionServices.DeserializeValueString(serializationData["_Type_"]);
+                Type interfaceType = TypeManager.GetType(typeString);
+
+                data = DataFacade.BuildNew(interfaceType);
+            }
+            else
+            {
+                if (serializationData.ContainsKey("_DataSourceId_") == false) throw new ArgumentException("serializedObject is of wrong format");
+
+                string dataSourceIdString = StringConversionServices.DeserializeValueString(serializationData["_DataSourceId_"]);
+                DataSourceId dataSourceId = DataSourceId.Deserialize(dataSourceIdString);
+
+                data = DataFacade.GetDataFromDataSourceId(dataSourceId);
+
+                if (data == null) throw new DataSerilizationException(string.Format("Failed to get the '{0}' with the given data source '{1}', data might have been deleted sinse this serialized data was created", dataSourceId.InterfaceType, dataSourceId));
+            }
+
+            Type dataType = data.DataSourceId.InterfaceType;
+
+            DeserializePropertiesFromInterface(serializationData, dataType, false, data);
+
+            foreach (var inheritedInterface in dataType.GetInterfaces())
+            {
+                if (inheritedInterface == typeof(IData)) continue; // DataSourceId is already deserialized so we're skipping it here
+
+                DeserializePropertiesFromInterface(serializationData, inheritedInterface, true, data);
             }
 
             return data;
