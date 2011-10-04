@@ -314,12 +314,6 @@ function VisualEditorBinding () {
 	*/
 	
 	/**
-	 * @type {VisualEditorElementClassConfiguration}
-	 *
-	this.elementClassConfiguration = null;
-	*/
-	
-	/**
 	 * TinyMCE internal stylesheet. Externalized  
 	 * so that an TinyMCE upgrade won't overwrite.
 	 *

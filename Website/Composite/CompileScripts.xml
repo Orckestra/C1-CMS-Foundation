@@ -307,7 +307,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/EditorMenuItemBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/VisualEditorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/VisualEditorPopupBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/VisualEditorElementClassConfiguration.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/VisualEditorFormattingConfiguration.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/VisualEditorFieldGroupConfiguration.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/multieditor/VisualMultiEditorBinding.js"/>

@@ -1095,7 +1095,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\multieditor\VisualMultiEditorBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\multieditor\VisualMultiTemplateEditorBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\VisualEditorBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\VisualEditorElementClassConfiguration.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\VisualEditorFieldGroupConfiguration.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\VisualEditorFormattingConfiguration.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\editors\visualeditor\VisualEditorPopupBinding.js" />
@@ -1656,6 +1655,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config" />
+    <Content Include="App_Data\Composite\Configuration\XmlDataProvider.config" />
     <Content Include="App_Data\Composite\app_offline.htm" />
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
     <Content Include="Composite\app.aspx" />
