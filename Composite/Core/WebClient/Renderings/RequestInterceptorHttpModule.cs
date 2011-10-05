@@ -144,7 +144,11 @@ namespace Composite.Core.WebClient.Renderings
                 && (httpContext.Request.RawUrl == customPageNotFoundUrl
                     || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl))
             {
-                page.PreRender += (a, b) => httpContext.Response.StatusCode = 404;
+                page.PreRender += (a, b) =>
+                {
+                    httpContext.Response.TrySkipIisCustomErrors = true;
+                    httpContext.Response.StatusCode = 404;
+                };
             }
         }
 
