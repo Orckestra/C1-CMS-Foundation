@@ -73,7 +73,7 @@
 										image="${icon:editor-sourceview}" 
 										image-disabled="${icon:editor-sourceview-disabled}"
 										flip="true"
-                                        OnCommand="OnSourceMarkupChanged"/>
+                                        />
 								</ui:toolbargroup>
 							</ui:toolbarbody>
 							

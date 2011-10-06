@@ -212,8 +212,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             InitializeTreeView();
         }
 
-
-        
         _xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
 
         string eventTarget = HttpContext.Current.Request.Form["__EVENTTARGET"];
@@ -285,7 +283,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         UpdateMenu();
 
-        SyncTreeAndEditingPanel();
+		if (eventTarget == "switchbutton")
+		{
+			OnSourceMarkupChanged();
+		}
+
+    	SyncTreeAndEditingPanel();
     }
 
 
@@ -575,9 +578,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
     private void SyncTreeAndEditingPanel()
     {
-
-
-		//Select first parameter if not selected
+    	//Select first parameter if not selected
 		//TODO: refactor this
 		if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
 		{
@@ -1227,26 +1228,31 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         FunctionMarkup = newMarkup;
 
         InitializeTreeView();
-        SelectedNode = null;
 
         SaveChanges();
 
-        return true;
+		//Leave selected node if exists in murkup
+		if (!TreePathToIdMapping.ContainsKey(SelectedNode))
+		{
+			SelectedNode = null;
+		}
+
+    	return true;
     }
 
     public void OnSourceMarkupChanged()
     {
-        EditorMode = EditorModeEnum.Source;
+		EditorMode = EditorModeEnum.Source;
 
-        if (Request["__EVENTARGUMENT"] == "source")
-        {
-            return;
-        }
+		if (Request["__EVENTARGUMENT"] == "source")
+		{
+			return;
+		}
 
-        if(SaveSourceMarkupChanges())
-        {
-            EditorMode = EditorModeEnum.Design;
-        }
+		if (SaveSourceMarkupChanges())
+		{
+			EditorMode = EditorModeEnum.Design;
+		}
     }
 
     private XElement UpdateTreeView(XElement functionMarkupContainer)
