@@ -8,6 +8,7 @@
 <script runat="server">
     protected override void BindStateToProperties()
     {
+    	EnsurePostDataLoaded();
         Type dataReferenceType = typeof(DataReference<>).MakeGenericType(new [] {this.DataType});
         object[] activationParameters = new object[1];
         activationParameters[0] = GetValue();
@@ -18,6 +19,15 @@
         InitializeViewState();
     }
 
+	private void EnsurePostDataLoaded()
+	{
+		var form = System.Web.HttpContext.Current.Request.Form;
+		if (form[DataReferenceSelector.UniqueID] != null)
+		{
+			(DataReferenceSelector as IPostBackDataHandler).LoadPostData(DataReferenceSelector.UniqueID, form);
+		}
+	}
+	
     private string GetValue()
     {
         string value = DataReferenceSelector.SelectedValue;

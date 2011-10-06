@@ -285,13 +285,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         UpdateMenu();
 
-        //SyncTreeAndEditingPanel();
+        SyncTreeAndEditingPanel();
     }
 
 
     private void Page_PreRender(object sender, EventArgs args)
     {
-        SyncTreeAndEditingPanel();
+        //SyncTreeAndEditingPanel();
     }
 
 
