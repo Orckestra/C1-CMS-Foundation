@@ -635,8 +635,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string serializedMarkup = utf8.GetString(serializedXDocument);
         serializedMarkup = serializedMarkup.Substring(serializedMarkup.IndexOf(Environment.NewLine) + Environment.NewLine.Length);
 
-		//Do not refresh in SourceMode
-		if (!(Request["__REQUEST"] == "refresh" && EditorMode == EditorModeEnum.Source))
+		//Update editor if switching to SourceMode
+		if (Request["__EVENTARGUMENT"] == "source")
 			ctlSourceEditor.Attributes["value"] = Context.Server.UrlEncode(serializedMarkup).Replace("+", "%20");
 
         if(IsInTestMode)
@@ -1232,7 +1232,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         SaveChanges();
 
 		//Leave selected node if exists in murkup
-		if (!TreePathToIdMapping.ContainsKey(SelectedNode))
+		if (SelectedNode != null && !TreePathToIdMapping.ContainsKey(SelectedNode))
 		{
 			SelectedNode = null;
 		}
