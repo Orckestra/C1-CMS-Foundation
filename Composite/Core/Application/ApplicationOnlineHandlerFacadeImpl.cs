@@ -10,6 +10,8 @@ namespace Composite.Core.Application
 {
     internal class ApplicationOnlineHandlerFacadeImpl : IApplicationOnlineHandlerFacade
     {
+        private static readonly string LogTitle = typeof (ApplicationOnlineHandlerFacadeImpl).Name;
+
         private bool _isApplicationOnline = true;
         private bool _wasLastTurnOffSoft = false;
         private bool _buildManagerCachingWasDisabled;
@@ -50,34 +52,45 @@ namespace Composite.Core.Application
         {
             if (this.IsApplicationOnline == true) throw new InvalidOperationException("The application is already online");
 
-            try
-            {
-                LoggingService.LogVerbose("ApplicationOnlineHandlerFacade", "Turning on the application");
+            Log.LogVerbose("ApplicationOnlineHandlerFacade", "Turning on the application");
 
-                if (_buildManagerCachingWasDisabled)
+
+            if (_buildManagerCachingWasDisabled)
+            {
+                try
                 {
+
                     BuildManager.CachingEnabled = true;
                     BuildManager.ClearCache();
+
                     // We're not turning-on caching since in this case changing of Composite.Generated will be done 
                     // at the same time with loading a new application domain.
                     BuildManager.CachingEnabled = false;
                 }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, "Failed to clear build manager's cache");
+                    Log.LogError(LogTitle, ex);
+                }
+            }
+
+            _shutdownGuard.Dispose();
+            _shutdownGuard = null;
+
+            try
+            {
+                if (_wasLastTurnOffSoft == false)
+                {
+                    ApplicationOnlineHandlerPluginFacade.TurnApplicationOnline();
+                    if (ApplicationOnlineHandlerPluginFacade.IsApplicationOnline() == false) throw new InvalidOperationException("Plugin failed to turn the application online");
+                }
             }
             finally
             {
-                _shutdownGuard.Dispose();
-                _shutdownGuard = null;
-            }
-
-            if (_wasLastTurnOffSoft == false)
-            {
-                ApplicationOnlineHandlerPluginFacade.TurnApplicationOnline();
-                if (ApplicationOnlineHandlerPluginFacade.IsApplicationOnline() == false) throw new InvalidOperationException("Plugin failed to turn the application online");
-            } 
-
-            if (HostingEnvironment.IsHosted)
-            {
-                HostingEnvironment.InitiateShutdown();
+                if (HostingEnvironment.IsHosted)
+                {
+                    HostingEnvironment.InitiateShutdown();
+                }
             }
 
             _isApplicationOnline = true;
