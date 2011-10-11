@@ -270,7 +270,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 							originalTableName));
 				}
 
-				DropAllConstraints(originalTableName);
+				DropAllConstraintsExceptPrimaryKey(originalTableName);
 
 				if (originalTableName != alteredTableName)
 				{
@@ -430,35 +430,36 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			return constraints;
 		}
 
-		private void DropAllConstraints(string tableName)
+        private void DropAllConstraintsExceptPrimaryKey(string tableName)
 		{
 			var sql = new StringBuilder();
 			var constraints = GetConstraints(tableName);
 
 			foreach (var constraint in constraints)
 			{
-				if(constraint != SqlSafeName("PK", tableName))
-				sql.AppendFormat("ALTER TABLE {0} DROP CONSTRAINT {1};", tableName, constraint);
+				if(!IsPrimaryKeyContraint(constraint))
+				{
+                    sql.AppendFormat("ALTER TABLE {0} DROP CONSTRAINT {1};", tableName, constraint);
+				}
 			}
 
 			ExecuteNonQuery(sql.ToString());
 		}
 
-		internal string SetPrimaryKey(string tableName, IEnumerable<string> fieldNames, bool createAsClustered)
-		{
-			if (fieldNames.Any())
-			{
-				string primaryKeyIndexName = SqlSafeName("PK", tableName);
+        internal string SetPrimaryKey(string tableName, IEnumerable<string> fieldNames, bool createAsClustered)
+        {
+            if (!fieldNames.Any())
+            {
+                return string.Empty;
+            }
 
-				return string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY{2}({3});", tableName, primaryKeyIndexName, createAsClustered ? " CLUSTERED " : string.Empty, string.Join(",", fieldNames.Distinct()));
-			}
-			else
-			{
-				return string.Empty;
-			}
-		}
+            string primaryKeyIndexName = GeneratePrimaryKeyContraintName(tableName);
 
-		private Exception MakeVerboseException(Exception ex)
+            return string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY{2}({3});", tableName, primaryKeyIndexName,
+                                    createAsClustered ? " CLUSTERED " : string.Empty, string.Join(",", fieldNames.Distinct()));
+        }
+
+	    private Exception MakeVerboseException(Exception ex)
 		{
 			var message = new StringBuilder();
 			Exception nested = ex;
@@ -553,10 +554,20 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			return SqlQuoted(obj.ToString());
 		}
 
-		private string SqlQuoted(string theString)
+		private static string SqlQuoted(string theString)
 		{
 			return string.Format("'{0}'", theString.Replace("'", "''"));
 		}
+
+        private static bool IsPrimaryKeyContraint(string contraintName)
+        {
+            return contraintName.StartsWith("PK_");
+        }
+
+        private static string GeneratePrimaryKeyContraintName(string tableName)
+        {
+            return SqlSafeName("PK", tableName);
+        }
 
 		private static string SqlSafeName(string prefix, string elementName)
 		{
