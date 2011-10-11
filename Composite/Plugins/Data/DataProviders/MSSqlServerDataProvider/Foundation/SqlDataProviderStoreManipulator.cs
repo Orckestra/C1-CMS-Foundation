@@ -143,17 +143,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 		public void ExecuteNonQuery(string commandText)
 		{
-			Log.LogInformation("ExecuteNonQuery", commandText);
+		    if (string.IsNullOrEmpty(commandText))
+		    {
+		        return;
+		    }
 
-			if (!string.IsNullOrEmpty(commandText))
-			{
-				var conn = SqlConnectionManager.GetConnection(_connectionString);
+		    Log.LogInformation("ExecuteNonQuery", commandText);
 
-				using (var cmd = new SqlCommand(commandText, conn))
-				{
-					cmd.ExecuteNonQuery();
-				}
-			}
+		    var conn = SqlConnectionManager.GetConnection(_connectionString);
+		    using (var cmd = new SqlCommand(commandText, conn))
+		    {
+		        cmd.ExecuteNonQuery();
+		    }
 		}
 
 		public void ExecuteNonQuery(SqlCommand cmd)
@@ -340,17 +341,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			}
 		}
 
-		private void ImplementFieldChanges(string tableName, IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> changedFieldDescriptions)
+		private void ImplementFieldChanges(string tableName, IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> existingFieldDescription)
 		{
-			foreach (var changedFieldDescriptor in changedFieldDescriptions)
+            foreach (var changedFieldDescriptor in existingFieldDescription)
 			{
-				if (!changedFieldDescriptor.AlteredFieldHasChanges)
-				{
-					continue;
-				}
-
+                // Recreating deleted contraints, if necessary - renaming the column/changing its type
+			    bool changes = changedFieldDescriptor.AlteredFieldHasChanges;
 				var columnName = changedFieldDescriptor.OriginalField.Name;
-				ConfigureColumn(tableName, columnName, changedFieldDescriptor.AlteredField, true);
+
+				ConfigureColumn(tableName, columnName, changedFieldDescriptor.AlteredField, changes);
 			}
 		}
 
@@ -481,19 +480,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			ExecuteNonQuery(sql.ToString());
 		}
 
-		private void ConfigureColumn(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool isAlter)
+		private void ConfigureColumn(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool changes)
 		{
 			if (columnName != fieldDescriptor.Name)
 			{
 				RenameColumn(tableName, columnName, fieldDescriptor.Name);
 			}
 
-			if (isAlter)
+            if (changes)
 			{
 				ExecuteNonQuery(string.Format("ALTER TABLE {0} ALTER COLUMN {1};", tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false)));
-				ExecuteNonQuery(SetDefaultValue(tableName, fieldDescriptor.Name, fieldDescriptor.DefaultValue));
 			}
 
+            ExecuteNonQuery(SetDefaultValue(tableName, fieldDescriptor.Name, fieldDescriptor.DefaultValue));
 		}
 
 		internal string GetColumnInfo(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool includeDefault)
