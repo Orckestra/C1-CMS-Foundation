@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Xml;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -18,21 +17,6 @@ namespace Composite.Services
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class WysiwygEditorConfigurationServices : System.Web.Services.WebService
     {
-        [WebMethod]
-        public XmlDocument GetElementClassConfiguration(string configurationName)
-        {
-            if (string.IsNullOrEmpty(configurationName) == true) throw new ArgumentException("Missing QueryString 'configurationName' value");
-            
-            // TODO: to be removed
-
-            XElement xml = new XElement("elements");
-            
-            XmlDocument output = new XmlDocument();
-            output.LoadXml(xml.ToString());
-            return output;
-        }
-
-
         [WebMethod]
         public List<FieldGroup> GetEmbedableFieldGroupConfigurations(string embedableFieldsTypeNames)
         {
