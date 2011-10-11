@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -552,8 +553,22 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
             }
 
+            string connectionString = data.ConnectionString;
 
-            return new SqlDataProvider(data.ConnectionString, typesTableElements, generatedTypesTableElements, sqlLoggingContext);
+            if(string.IsNullOrEmpty(connectionString))
+            {
+                string connectionStringName = data.ConnectionStringName;
+
+                if(string.IsNullOrEmpty(connectionStringName))
+                {
+                    throw new ConfigurationErrorsException("SqlDataProvider requires one of the following properties to be specified: 'connectionString', 'connectionStringName'");
+                }
+
+                var connStringConfigNode = System.Web.Configuration.WebConfigurationManager.ConnectionStrings[connectionStringName];
+                connectionString = connStringConfigNode.ConnectionString;
+            }
+
+            return new SqlDataProvider(connectionString, typesTableElements, generatedTypesTableElements, sqlLoggingContext);
         }
     }
 
@@ -574,13 +589,20 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
     internal sealed class SqlDataProviderData : DataProviderData
     {
         private const string _connectionStringPropertyName = "connectionString";
-        [System.Configuration.ConfigurationProperty(_connectionStringPropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_connectionStringPropertyName, IsRequired = false)]
         public string ConnectionString
         {
             get { return (string)base[_connectionStringPropertyName]; }
             set { base[_connectionStringPropertyName] = value; }
         }
 
+        private const string _connectionStringNamePropertyName = "connectionStringName";
+        [System.Configuration.ConfigurationProperty(_connectionStringNamePropertyName, IsRequired = false)]
+        public string ConnectionStringName
+        {
+            get { return (string)base[_connectionStringNamePropertyName]; }
+            set { base[_connectionStringNamePropertyName] = value; }
+        }
 
         private const string _sqlQueryLoggingEnabledPropertyName = "sqlQueryLoggingEnabled";
         [System.Configuration.ConfigurationProperty(_sqlQueryLoggingEnabledPropertyName, IsRequired = false, DefaultValue = false)]
