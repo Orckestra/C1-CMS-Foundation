@@ -25893,10 +25893,9 @@ DOMEvents.preventDefault(e);
 }});
 };
 EditorBinding.prototype.checkForDirty=function(_f95){
-if(!this.isDirty){
+if(!this.isDirty||!this.bindingWindow.DataManager.isDirty){
 if(_f95==true){
-this.dispatchAction(Binding.ACTION_DIRTY);
-this.isDirty=true;
+this.bindingWindow.DataManager.dirty(this);
 }else{
 var self=this;
 setTimeout(function(){
@@ -25908,8 +25907,7 @@ self._checkForRealDirty();
 EditorBinding.prototype._checkForRealDirty=function(){
 var _f97=this.getCheckSum();
 if(_f97!=this._checksum){
-this.dispatchAction(Binding.ACTION_DIRTY);
-this.isDirty=true;
+this.bindingWindow.DataManager.dirty(this);
 this._checksum=_f97;
 }
 };
