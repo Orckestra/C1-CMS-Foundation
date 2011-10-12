@@ -285,7 +285,18 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
 		if (eventTarget == "switchbutton")
 		{
-			OnSourceMarkupChanged();
+			switch (eventArgument)
+			{
+				case "source":
+					EditorMode = EditorModeEnum.Source;
+					break;
+				case "design":
+					if (SaveSourceMarkupChanges())
+					{
+						EditorMode = EditorModeEnum.Design;
+					}
+					break;
+			}
 		}
 
     	SyncTreeAndEditingPanel();
@@ -326,10 +337,10 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         if(message == "save")
         {
             ctlFeedback.SetStatus(EditorMode == EditorModeEnum.Source ? SaveSourceMarkupChanges() : ValidateSave());
-        } 
+        }
         else if ( message == "persist" )
         {
-            ctlFeedback.SetStatus(true); // PLEASE VALIDATE "failure" !
+            ctlFeedback.SetStatus(EditorMode == EditorModeEnum.Source ? SaveSourceMarkupChanges() : true);
         }
     }
 
@@ -1238,21 +1249,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 		}
 
     	return true;
-    }
-
-    public void OnSourceMarkupChanged()
-    {
-		EditorMode = EditorModeEnum.Source;
-
-		if (Request["__EVENTARGUMENT"] == "source")
-		{
-			return;
-		}
-
-		if (SaveSourceMarkupChanges())
-		{
-			EditorMode = EditorModeEnum.Design;
-		}
     }
 
     private XElement UpdateTreeView(XElement functionMarkupContainer)

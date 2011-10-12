@@ -424,11 +424,10 @@ EditorBinding.prototype.addEditorEvents = function () {
  * @param {boolean} isHiddenChange
  */
 EditorBinding.prototype.checkForDirty = function ( isHiddenChange ) {
-	
-	if ( !this.isDirty ) {
+
+	if (!this.isDirty || !this.bindingWindow.DataManager.isDirty) {
 		if ( isHiddenChange == true ) {
-			this.dispatchAction ( Binding.ACTION_DIRTY );
-			this.isDirty = true;
+			this.bindingWindow.DataManager.dirty(this);
 		} else {
 			var self = this;
 			setTimeout ( function () {
@@ -445,9 +444,8 @@ EditorBinding.prototype.checkForDirty = function ( isHiddenChange ) {
 EditorBinding.prototype._checkForRealDirty = function () {
 	
 	var checksum = this.getCheckSum ();
-	if ( checksum != this._checksum ) {
-		this.dispatchAction ( Binding.ACTION_DIRTY );
-		this.isDirty = true;
+	if (checksum != this._checksum) {
+		this.bindingWindow.DataManager.dirty(this);
 		this._checksum = checksum;
 	}
 }
