@@ -10,6 +10,7 @@ using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 
 
@@ -158,25 +159,16 @@ namespace Composite.Core.WebClient.Setup
         {
             try
             {
-                string filePath = Context.Server.MapPath("~/Composite/Setup/NtfsSecurityTest.xml");
+                TestNtfsAccessToFolder(Server.MapPath("~/"));
+                TestNtfsAccessToFolder(Server.MapPath("~/App_Data"));
+                TestNtfsAccessToFolder(Server.MapPath("~/Frontend"));
+                TestNtfsAccessToFolder(Server.MapPath("~/Composite/Setup"));
 
-                if (C1File.Exists(filePath) == true)
-                {
-                    FileUtils.Delete(filePath);
-                }
-
-                string directory = Path.Combine(Path.GetDirectoryName(filePath), "NtfsSecurityTest");
-                if (C1Directory.Exists(directory) == false)
-                {
-                    C1Directory.CreateDirectory(directory);
-                }
-
-                C1File.WriteAllLines(filePath, new[] { "That file is created for testing purpuses" });
-
-                C1File.SetCreationTime(filePath, DateTime.Now.Subtract(TimeSpan.FromSeconds(45)));
-
-                FileUtils.Delete(filePath);
-                C1Directory.Delete(directory);
+                CheckAccessToFile(Server.MapPath("~/default.aspx"));
+                CheckAccessToFile(Server.MapPath("~/Frontend/Config/VisualEditor/Common.xml"));
+                
+                /*TestFileIsNotReadOnly(Server.MapPath("~/web.config"));
+                TestFileIsNotReadOnly(Server.MapPath("~/App_Data/Composite/Composite.config"));*/
 
                 return true;
             }
@@ -192,6 +184,54 @@ namespace Composite.Core.WebClient.Setup
             }            
         }
 
+        private static void CheckAccessToFile(string file)
+        {
+            FileAttributes fa = C1File.GetAttributes(file);
+            bool isReadOnly = (fa & FileAttributes.ReadOnly) > 0;
+            
+            if(isReadOnly)
+            {
+                C1File.SetAttributes(file, fa ^ FileAttributes.ReadOnly);
+            }
+
+            DateTime creationTime = C1File.GetCreationTimeUtc(file);
+
+            C1File.SetCreationTime(file, creationTime.AddDays(-1));
+            C1File.SetCreationTime(file, creationTime);
+            
+            if(isReadOnly)
+            {
+                C1File.SetAttributes(file, fa);
+            }
+        }
+        
+        private static void TestFileIsNotReadOnly(string file)
+        {
+            Verify.That((File.GetAttributes(file) & FileAttributes.ReadOnly) == 0, "File '{0}' is read only".FormatWith(Path.GetFileName(file))); 
+        }
+        
+        private static void TestNtfsAccessToFolder(string testDir)
+        {
+            string filePath = Path.Combine(testDir, "NtfsSecurityTest.xml"); 
+
+            if (C1File.Exists(filePath) == true)
+            {
+                FileUtils.Delete(filePath);
+            }
+
+            string tempDirectory = Path.Combine(testDir, "NtfsSecurityTest");
+            if (C1Directory.Exists(tempDirectory) == false)
+            {
+                C1Directory.CreateDirectory(tempDirectory);
+            }
+
+            C1File.WriteAllLines(filePath, new[] { "That file is created for testing purpuses" });
+
+            C1File.SetCreationTime(filePath, DateTime.Now.Subtract(TimeSpan.FromSeconds(45)));
+
+            FileUtils.Delete(filePath);
+            C1Directory.Delete(tempDirectory);
+        }
 
 
         private bool BasePathNotToLong()
