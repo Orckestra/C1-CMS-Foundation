@@ -30,11 +30,6 @@ ui|fieldsbutton ui|clickbutton table.matrix td.c {
 	#endregion
 }
 
-#fieldspanel #scrollbox{
-	float: left;
-}
-
-
 /*
 ui|splitpanel#treepanel {
 	border-right: 1px solid $(color:threedlightshadow);	
