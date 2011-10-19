@@ -591,13 +591,16 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     {
     	//Select first parameter if not selected
 		//TODO: refactor this
-		if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
+		if (Request.UserAgent.IndexOf("MSIE ") == -1) // skip IE
 		{
-			SelectedNode = TreePathToIdMapping.Keys.Skip(1).FirstOrDefault();
-			_xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
+			if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
+			{
+				SelectedNode = TreePathToIdMapping.Keys.Skip(1).FirstOrDefault();
+				_xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
+			}
 		}
 
-        // Building tree 
+    	// Building tree 
         XDocument functionMarkup = Clone(FunctionMarkup);
         XElement updatedTreeView =  UpdateTreeView(functionMarkup.Root);
 

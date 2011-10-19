@@ -89,7 +89,7 @@
 								</ui:splitpanel>
 								<ui:splitter />
 								<ui:splitpanel id="fieldspanel" forcefitness="true">
-									<ui:scrollbox class="padded" id="scrollbox" style="float:left;">
+									<ui:scrollbox class="padded" id="scrollbox">
 									
 									    <asp:MultiView ID="mlvMain" runat="server">
 									      <asp:View ID="viewParameter" runat="server">
