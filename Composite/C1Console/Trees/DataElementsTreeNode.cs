@@ -112,10 +112,12 @@ namespace Composite.C1Console.Trees
                 parameterExpression, expression
             );
 
-            DataEntityToken parentEntityToken =
-                ExpressionHelper.GetCastedObjects<IData>(helper.ParentIdFilterNode.ParentFilterType, whereExpression).
-                First().
-                GetDataEntityToken();
+            IData parentDataItem = ExpressionHelper.GetCastedObjects<IData>(helper.ParentIdFilterNode.ParentFilterType, whereExpression)
+                                   .FirstOrDefault();
+
+            Verify.IsNotNull(parentDataItem, "Failed to get parent data item. Check if there's a broken parent reference.");
+            
+            DataEntityToken parentEntityToken = parentDataItem.GetDataEntityToken();
 
             TreeNode parentTreeNode = this.ParentNode;
             while (((parentTreeNode as DataElementsTreeNode) == null) ||
