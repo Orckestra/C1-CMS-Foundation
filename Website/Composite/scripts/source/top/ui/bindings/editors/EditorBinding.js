@@ -590,15 +590,9 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 						}
 					} else {
 						target = DOMEvents.getTarget ( arg );
-//						if ( this instanceof BespinEditorBinding ) {
-//							if ( target == this._bespinElement ) {
-//								isDeactivate = false;
-//							}
-//						} else {
-							if ( target && target.ownerDocument == this.getEditorDocument ()) {
-								isDeactivate = false;
-							}
-//						}
+						if ( target && target.ownerDocument == this.getEditorDocument ()) {
+							isDeactivate = false;
+						}
 					}
 					if ( isDeactivate ) {
 						if ( this._isActivated ) {
@@ -705,38 +699,41 @@ EditorBinding.prototype._sanitizeMozilla = function () {
 EditorBinding.prototype.hasSelection = function () {
 	var result = false;
 	try {
-	
-		if ( !Client.isExplorer) {
-		 	var selection = this.getEditorWindow ().getSelection ();
-			if ( selection != null ) {
-				 result = selection.toString ().length > 0;
-				 if ( !result ) {
-					var range = selection.getRangeAt ( 0 );
-					var frag = range.cloneContents ();
-					var element = this.getEditorDocument ().createElement ( "element" );
-					while ( frag.hasChildNodes ()) {
-						element.appendChild ( frag.firstChild );
+
+		if (!Client.isExplorer) {
+			var selection = this.getEditorWindow().getSelection();
+			if (selection != null) {
+				result = selection.toString().length > 0;
+				if (!result) {
+					var range = selection.getRangeAt(0);
+					var frag = range.cloneContents();
+					var element = this.getEditorDocument().createElement("element");
+					while (frag.hasChildNodes()) {
+						element.appendChild(frag.firstChild);
 					}
-					var img = element.getElementsByTagName ( "img" ).item ( 0 );
-					if ( img != null ) {
-						
+					var img = element.getElementsByTagName("img").item(0);
+					if (img != null) {
+
 						/*
-						 * Major hack. Should not be performed here, but the  
-						 * class check will at least prevent the Link button 
-						 * from being enabled when a Function is selected.
-						 */
+						* Major hack. Should not be performed here, but the  
+						* class check will at least prevent the Link button 
+						* from being enabled when a Function is selected.
+						*/
 						if (!VisualEditorBinding.isReservedElement(img)) {
 							result = true;
-						} 
+						}
 					}
-				 }
+				}
 			}
 		} else {
-			var range = this.getEditorDocument ().selection.createRange ();
-			result = ( range && range.text ) && range.text.length > 0;
+			var range = this.getEditorDocument().selection.createRange();
+			result = (range && range.text) && range.text.length > 0;
+			if (range.commonParentElement && VisualEditorBinding.isImageElement(range.commonParentElement())) {
+				result = true;
+			}
 		}
-		
-	} catch ( exception ) {
+
+	} catch (exception) {
 		// may happen in WebKit when inserting eg. a table from the Insert>Table dialog
 	}
 	return result;

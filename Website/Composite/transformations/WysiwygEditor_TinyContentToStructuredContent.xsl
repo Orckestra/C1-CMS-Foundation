@@ -39,7 +39,7 @@
   <xsl:template match="@id[.='__mce']"/>
 
   <!-- strip tinymce internals -->
-  <xsl:template match="@mce_serialized|@mce_keep|@mce_src|@mce_href|@mce_bogus|@mce_style|@data-mce-src" />
+  <xsl:template match="@mce_serialized|@mce_keep|@mce_src|@mce_href|@mce_bogus|@mce_style|@data-mce-src|@data-mce-href" />
 
   <!-- more tinymce internals -->
   <xsl:template match="@class[contains(.,'mceVisualAid')]">
