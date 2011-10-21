@@ -4,11 +4,10 @@ window.onload = function () {
 
 	// WebKit needs a short timeout here...
 	setTimeout(function () {
-		
-
 		var editor = CodeMirror.fromTextArea(div, {
 			mode: "text/html",
-			tabMode: "shift",
+			indentWithTabs: true,
+			tabMode: "classic",
 			lineNumbers: true
 		});
 

@@ -35,7 +35,7 @@ namespace Composite.Services
                 var server = HttpContext.Current.Server;
 
                 string decodedXml = server.UrlDecode(xml);
-                string result = XhtmlPrettifier.Prettify(decodedXml, "  ");
+                string result = XhtmlPrettifier.Prettify(decodedXml);
                 return server.UrlEncode(result).Replace("+", "%20");
             }
             catch (Exception)

@@ -43,6 +43,7 @@ html, body {
 	padding: 0;
 	background: transparent;
 	font-family: inherit;
+	-moz-tab-size: 4;
 }
 
 .CodeMirror-cursor {
