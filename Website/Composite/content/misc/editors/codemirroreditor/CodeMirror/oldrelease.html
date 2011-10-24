@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>CodeMirror</title>
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans:bold"/>
     <link rel="stylesheet" type="text/css" href="css/docs.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link rel="alternate" href="http://twitter.com/statuses/user_timeline/242283288.rss" type="application/rss+xml"/>
@@ -14,6 +15,69 @@
 <img src="css/baboon.png" class="logo" alt="logo"/>/* Old release history */
 
 </pre>
+
+  <p class="rel">28-03-2011: <a href="http://codemirror.net/codemirror-2.0.zip">Version 2.0</a>:</p>
+  <p class="rel-note">CodeMirror 2 is a complete rewrite that's
+  faster, smaller, simpler to use, and less dependent on browser
+  quirks. See <a href="internals.html">this</a>
+  and <a href="http://groups.google.com/group/codemirror/browse_thread/thread/5a8e894024a9f580">this</a>
+  for more information.</a>
+
+  <p class="rel">28-03-2011: <a href="http://codemirror.net/codemirror-1.0.zip">Version 1.0</a>:</p>
+  <ul class="rel-note">
+    <li>Fix error when debug history overflows.</li>
+    <li>Refine handling of C# verbatim strings.</li>
+    <li>Fix some issues with JavaScript indentation.</li>
+  </ul>
+
+  <p class="rel">22-02-2011: <a href="https://github.com/marijnh/codemirror2/tree/beta2">Version 2.0 beta 2</a>:</p>
+  <p class="rel-note">Somewhate more mature API, lots of bugs shaken out.</a>
+
+  <p class="rel">17-02-2011: <a href="http://codemirror.net/codemirror-0.94.zip">Version 0.94</a>:</p>
+  <ul class="rel-note">
+    <li><code>tabMode: "spaces"</code> was modified slightly (now indents when something is selected).</li>
+    <li>Fixes a bug that would cause the selection code to break on some IE versions.</li>
+    <li>Disabling spell-check on WebKit browsers now works.</li>
+  </ul>
+
+  <p class="rel">08-02-2011: <a href="http://codemirror.net/2/">Version 2.0 beta 1</a>:</p>
+  <p class="rel-note">CodeMirror 2 is a complete rewrite of
+  CodeMirror, no longer depending on an editable frame.</p>
+
+  <p class="rel">19-01-2011: <a href="http://codemirror.net/codemirror-0.93.zip">Version 0.93</a>:</p>
+  <ul class="rel-note">
+    <li>Added a <a href="contrib/regex/index.html">Regular Expression</a> parser.</li>
+    <li>Fixes to the PHP parser.</li>
+    <li>Support for regular expression in search/replace.</li>
+    <li>Add <code>save</code> method to instances created with <code>fromTextArea</code>.</li>
+    <li>Add support for MS T-SQL in the SQL parser.</li>
+    <li>Support use of CSS classes for highlighting brackets.</li>
+    <li>Fix yet another hang with line-numbering in hidden editors.</li>
+  </ul>
+
+  <p class="rel">17-12-2010: <a href="http://codemirror.net/codemirror-0.92.zip">Version 0.92</a>:</p>
+  <ul class="rel-note">
+    <li>Make CodeMirror work in XHTML documents.</li>
+    <li>Fix bug in handling of backslashes in Python strings.</li>
+    <li>The <code>styleNumbers</code> option is now officially
+    supported and documented.</li>
+    <li><code>onLineNumberClick</code> option added.</li>
+    <li>More consistent names <code>onLoad</code> and
+    <code>onCursorActivity</code> callbacks. Old names still work, but
+    are deprecated.</li>
+    <li>Add a <a href="contrib/freemarker/index.html">Freemarker</a> mode.</li>
+  </ul>
+
+  <p class="rel">11-11-2010: <a
+  href="http://codemirror.net/codemirror-0.91.zip">Version 0.91</a>:</p>
+  <ul class="rel-note">
+    <li>Adds support for <a href="contrib/java">Java</a>.</li>
+    <li>Small additions to the <a href="contrib/php">PHP</a> and <a href="contrib/sql">SQL</a> parsers.</li>
+    <li>Work around various <a href="https://bugs.webkit.org/show_bug.cgi?id=47806">Webkit</a> <a href="https://bugs.webkit.org/show_bug.cgi?id=23474">issues</a>.</li>
+    <li>Fix <code>toTextArea</code> to update the code in the textarea.</li>
+    <li>Add a <code>noScriptCaching</code> option (hack to ease development).</li>
+    <li>Make sub-modes of <a href="mixedtest.html">HTML mixed</a> mode configurable.</li>
+  </ul>
 
   <p class="rel">02-10-2010: <a
   href="http://codemirror.net/codemirror-0.9.zip">Version 0.9</a>:</p>
@@ -110,7 +174,5 @@ and <a href="contrib/lua/index.html">Lua</a> parsers. Add
 <code>setParser</code> (on-the-fly mode changing) and
 <code>clearHistory</code> methods. Make parsing passes time-based
 instead of lines-based (see the <code>passTime</code> option).</p>
-
-  <script type="text/javascript" src="css/font.js"></script>
 
 </body></html>

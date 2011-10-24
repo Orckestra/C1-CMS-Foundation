@@ -237,21 +237,21 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 					// syntax
 					switch (this.syntax) {
 						case CodeMirrorEditorBinding.syntax.XML:
-							this._codemirrorEditor.setOption("mode", "xml");
+							this._codemirrorEditor.setOption("mode", "application/xml");
 							break;
 						case CodeMirrorEditorBinding.syntax.XSL:
 						case CodeMirrorEditorBinding.syntax.HTML:
-							this._codemirrorEditor.setOption("mode", "htmlmixed");
+							this._codemirrorEditor.setOption("mode", "text/html");
 							break;
 						case CodeMirrorEditorBinding.syntax.CSS:
-							this._codemirrorEditor.setOption("mode", "css");
+							this._codemirrorEditor.setOption("mode", "text/css");
 
 							break;
 						case CodeMirrorEditorBinding.syntax.CSHARP:
-							this._codemirrorEditor.setOption("mode", "clike");
+							this._codemirrorEditor.setOption("mode", "text/x-c++src");
 							break;
 						case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
-							this._codemirrorEditor.setOption("mode", "javascript");
+							this._codemirrorEditor.setOption("mode", "text/javascript");
 							break;
 						case CodeMirrorEditorBinding.syntax.SQL:
 							this._codemirrorEditor.setOption("mode", "");
