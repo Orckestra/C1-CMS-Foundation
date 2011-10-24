@@ -26054,6 +26054,9 @@ _fa4=true;
 }else{
 var _fa6=this.getEditorDocument().selection.createRange();
 _fa4=(_fa6&&_fa6.text)&&_fa6.text.length>0;
+if(_fa6.commonParentElement&&VisualEditorBinding.isImageElement(_fa6.commonParentElement())){
+_fa4=true;
+}
 }
 }
 catch(exception){
@@ -27436,20 +27439,20 @@ this._codemirrorEditor=arg.codemirrorEditor;
 this._codemirrorWrapperElement=arg.codemirrorEditor.getWrapperElement();
 switch(this.syntax){
 case CodeMirrorEditorBinding.syntax.XML:
-this._codemirrorEditor.setOption("mode","xml");
+this._codemirrorEditor.setOption("mode","application/xml");
 break;
 case CodeMirrorEditorBinding.syntax.XSL:
 case CodeMirrorEditorBinding.syntax.HTML:
-this._codemirrorEditor.setOption("mode","htmlmixed");
+this._codemirrorEditor.setOption("mode","text/html");
 break;
 case CodeMirrorEditorBinding.syntax.CSS:
-this._codemirrorEditor.setOption("mode","css");
+this._codemirrorEditor.setOption("mode","text/css");
 break;
 case CodeMirrorEditorBinding.syntax.CSHARP:
-this._codemirrorEditor.setOption("mode","clike");
+this._codemirrorEditor.setOption("mode","text/x-c++src");
 break;
 case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
-this._codemirrorEditor.setOption("mode","javascript");
+this._codemirrorEditor.setOption("mode","text/javascript");
 break;
 case CodeMirrorEditorBinding.syntax.SQL:
 this._codemirrorEditor.setOption("mode","");
