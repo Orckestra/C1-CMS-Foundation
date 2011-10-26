@@ -144,6 +144,19 @@ namespace Composite.Core.Types
                     }
                 }
 
+                if (targetType == typeof(IEnumerable<XElement>))
+                {
+                    try
+                    {
+                        XElement wrapper = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", value));
+                        return wrapper.Elements();
+                    }
+                    catch
+                    {
+                        throw new InvalidCastException(string.Format("Unable to convert string '{0}' to a list of XElements.", value));
+                    }
+                }
+
                 if (targetType == typeof(XNamespace))
                 {
                     return XNamespace.Get((string)value);
