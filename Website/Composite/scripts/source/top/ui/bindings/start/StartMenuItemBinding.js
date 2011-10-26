@@ -81,3 +81,16 @@ StartMenuItemBinding.prototype.setChecked = function ( isChecked, isPreventComma
 		}
 	}
 }
+
+
+/**
+* StartMenuItemBinding factory.
+* @param {DOMDocument} ownerDocument
+* @return {StartMenuItemBinding}
+*/
+StartMenuItemBinding.newInstance = function (ownerDocument) {
+
+	var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:menuitem", ownerDocument);
+	UserInterface.registerBinding(element, StartMenuItemBinding);
+	return UserInterface.getBinding(element);
+}

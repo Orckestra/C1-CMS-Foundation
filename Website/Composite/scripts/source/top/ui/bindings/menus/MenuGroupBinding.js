@@ -73,6 +73,16 @@ MenuGroupBinding.prototype.hide = function () {
 	}
 }
 
+
+/**
+* Empty content (of body).
+*/
+MenuGroupBinding.prototype.empty = function () {
+
+	this.detachRecursive();
+	this.bindingElement.innerHTML = "";
+}
+
 /**
  * MenuGroupBinding factory.
  * @param {DOMDocument} ownerDocument

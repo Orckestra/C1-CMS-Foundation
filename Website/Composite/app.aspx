@@ -86,8 +86,9 @@
 			</ui:popup>
 			<ui:popup id="toolboxpopup" position="bottom">
 				<ui:menubody>
+					<ui:menugroup id="toolboxpopupgroup" />
 					<ui:menugroup>
-						<ui:menuitem label="${string:Composite.Web.SEOAssistant:SEOAssistant}" image="${icon:seoassistant}" binding="StageViewMenuItemBinding" handle="Composite.Management.SEOAssistant" type="checkbox"/>
+						<ui:menuitem binding="StartMenuItemBinding" label="${string:Website.App.LabelViewCompositeStart}" image="${icon:composite}"/>	
 					</ui:menugroup>
 				</ui:menubody>
 		 	</ui:popup>

@@ -77,35 +77,38 @@ ToolBoxToolBarButtonBinding.prototype.onBindingAttach = function () {
  * @param {string} broadcast
  * @param {object} arg
  */
-ToolBoxToolBarButtonBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
-	
-	ToolBoxToolBarButtonBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
-	switch ( broadcast ) {
-		case BroadcastMessages.PERSPECTIVE_CHANGED :
+ToolBoxToolBarButtonBinding.prototype.handleBroadcast = function (broadcast, arg) {
+
+	ToolBoxToolBarButtonBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+	switch (broadcast) {
+		case BroadcastMessages.PERSPECTIVE_CHANGED:
 			var tag = arg;
-			if ( this._views.has ( tag )) {
-				
-				if ( tag != this._lastGeneratedPerspective ) {
-					
-					this._lastGeneratedPerspective = tag;
-					var list = this._views.get ( tag );
-					var popup = this.bindingWindow.bindingMap.toolboxpopup;
-					popup.empty ();
-					
-					list.each ( function ( def ) {
-						var item = popup.add ( StageViewMenuItemBinding.newInstance ( popup.bindingDocument ));
-						item.setType ( MenuItemBinding.TYPE_CHECKBOX );
-						item.setHandle ( def.handle );
-						item.setLabel ( def.label );
-						item.setImage ( def.image );
-						item.setToolTip ( def.toolTip );
-						item.attach ();
+			//
+
+			if (tag != this._lastGeneratedPerspective) {
+
+				this._lastGeneratedPerspective = tag;
+
+				var popup = this.bindingWindow.bindingMap.toolboxpopupgroup;
+				popup.empty();
+
+				if (this._views.has(tag)) {
+					var list = this._views.get(tag);
+					list.each(function (def) {
+						var item = popup.add(StageViewMenuItemBinding.newInstance(popup.bindingDocument));
+						item.setType(MenuItemBinding.TYPE_CHECKBOX);
+						item.setHandle(def.handle);
+						item.setLabel(def.label);
+						item.setImage(def.image);
+						item.setToolTip(def.toolTip);
+						item.attach();
 					});
-				}				
-				this.enable ();
-			} else {
-				this.disable ();
+					popup.show();
+				}
+				else {
+					popup.hide();
+				}
 			}
 			break;
 	}
