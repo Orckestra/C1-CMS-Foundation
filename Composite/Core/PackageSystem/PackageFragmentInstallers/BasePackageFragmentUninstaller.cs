@@ -13,16 +13,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     public abstract class BasePackageFragmentUninstaller : IPackageFragmentUninstaller
 	{
         /// <exclude />
-        public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContex)
+        public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContext)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
-            if (packageUninstallerContex == null) throw new ArgumentNullException("packageUninstallerContex");
+            if (packageUninstallerContext == null) throw new ArgumentNullException("packageUninstallerContext");
 
             this.Configuration = configuration;
 #pragma warning disable 618
-            this.AddOnUninstallerContex = packageUninstallerContex;
+            this.AddOnUninstallerContex = packageUninstallerContext;
 #pragma warning restore 618
-            this.UninstallerContex = packageUninstallerContex;
+            this.UninstallerContext = packageUninstallerContext;
         }
 
 
@@ -40,7 +40,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         protected PackageUninstallerContext AddOnUninstallerContex { get; private set; }
 
         /// <exclude />
-        protected PackageUninstallerContext UninstallerContex { get; private set; }
+        [Obsolete("Use UninstallerContext")]
+        protected PackageUninstallerContext UninstallerContex { get { return UninstallerContext; }  }
+
+        /// <exclude />
+        protected PackageUninstallerContext UninstallerContext { get; private set; }
 
         internal static string GetResourceString(string key)
         {

@@ -20,11 +20,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override void Uninstall()
         {
-            PackageLicenseDefinition licenseDefinition = LicenseDefinitionManager.GetLicenseDefinition(this.UninstallerContex.PackageInformation.Id);
+            PackageLicenseDefinition licenseDefinition = LicenseDefinitionManager.GetLicenseDefinition(this.UninstallerContext.PackageInformation.Id);
             
             if ((licenseDefinition != null) && (licenseDefinition.Permanent == false))
             {
-                LicenseDefinitionManager.RemoveLicenseDefintion(this.UninstallerContex.PackageInformation.Id);
+                LicenseDefinitionManager.RemoveLicenseDefintion(this.UninstallerContext.PackageInformation.Id);
             }
         }
     }

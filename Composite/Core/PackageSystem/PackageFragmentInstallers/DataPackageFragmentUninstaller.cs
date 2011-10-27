@@ -134,7 +134,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                     bool addToDelete = true;
                                     foreach (IData referee in referees)
                                     {
-                                        if (this.UninstallerContex.IsPendingForDeletionData(referee) == false)
+                                        if (this.UninstallerContext.IsPendingForDeletionData(referee) == false)
                                         {
                                             addToDelete = false;
                                             LoggingService.LogWarning("DataPackageFragmentUninstaller", string.Format("Could not uninstall the data of the type '{0}'", type));
@@ -204,7 +204,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             dataType.DataKeys.Add(dataKeyPropertyCollection);
-            this.UninstallerContex.AddPendingForDeletionData(interfaceType, dataScopeIdentifier, locale, dataKeyPropertyCollection);
+            this.UninstallerContext.AddPendingForDeletionData(interfaceType, dataScopeIdentifier, locale, dataKeyPropertyCollection);
         }
 
 

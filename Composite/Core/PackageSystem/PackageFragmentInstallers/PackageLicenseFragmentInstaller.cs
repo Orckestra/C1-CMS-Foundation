@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
@@ -14,13 +15,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PackageLicenseFragmentInstaller : BasePackageFragmentInstaller
     {
-        private string publicKey;
+        private string _publicKeyXml;
+        private bool _licenseFileExists;
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
+
+            Guid packageId = this.InstallerContex.PackageInformation.Id;
+            if(LicenseDefinitionManager.GetLicenseDefinition(packageId) != null)
+            {
+                _licenseFileExists = true;
+                return validationResult;
+            }
 
             XElement publicKeyElement = this.Configuration.Where(f => f.Name == "RSAKeyValue").SingleOrDefault();
             if (publicKeyElement == null)
@@ -29,10 +38,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return validationResult;
             }
 
-            publicKey = publicKeyElement.ToString();
-            publicKey = "";
+            _publicKeyXml = publicKeyElement.ToString();
 
-            string validated = LicenseServerFacade.ValidateTrialLicenseDefinitionRequest(InstallationInformationFacade.InstallationId, this.InstallerContex.PackageInformation.Id, publicKey);
+            string validated = LicenseServerFacade.ValidateTrialLicenseDefinitionRequest(InstallationInformationFacade.InstallationId, packageId, _publicKeyXml);
 
             if (validated != "OK")
             {
@@ -47,7 +55,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            LicenseDefinitionDescriptor descriptor = LicenseServerFacade.GetTrialLicenseDefinition(InstallationInformationFacade.InstallationId, this.InstallerContex.PackageInformation.Id, publicKey);
+            if(_licenseFileExists)
+            {
+                return new XElement[0];
+            }
+
+            LicenseDefinitionDescriptor descriptor = LicenseServerFacade.GetTrialLicenseDefinition(InstallationInformationFacade.InstallationId, this.InstallerContex.PackageInformation.Id, _publicKeyXml);
 
             PackageLicenseDefinition definition = new PackageLicenseDefinition
             {

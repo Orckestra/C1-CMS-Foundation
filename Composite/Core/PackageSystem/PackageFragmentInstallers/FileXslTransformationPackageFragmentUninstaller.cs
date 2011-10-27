@@ -93,7 +93,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 			    string xmlFilePath = PathUtil.Resolve(xslfile.pathXml);
 
-                using (stream = this.UninstallerContex.ZipFileSystem.GetFileStream(xslfile.pathXsl))
+                using (stream = this.UninstallerContext.ZipFileSystem.GetFileStream(xslfile.pathXsl))
 				{
 					var xslt = new XslCompiledTransform();
 					using (XmlReader xslReader = XmlReader.Create(stream))
