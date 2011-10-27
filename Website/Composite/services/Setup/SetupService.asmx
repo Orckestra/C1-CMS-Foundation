@@ -196,8 +196,8 @@ namespace Composite.Core.WebClient.Setup
 
             DateTime creationTime = C1File.GetCreationTimeUtc(file);
 
-            C1File.SetCreationTime(file, creationTime.AddDays(-1));
-            C1File.SetCreationTime(file, creationTime);
+            C1File.SetCreationTimeUtc(file, creationTime.AddDays(-1));
+            C1File.SetCreationTimeUtc(file, creationTime);
             
             if(isReadOnly)
             {
