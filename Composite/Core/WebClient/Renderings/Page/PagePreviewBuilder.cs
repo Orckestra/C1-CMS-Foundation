@@ -67,14 +67,15 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <param name="ctx">the Http context that will be shared between master and child process</param>
         private static void AllowChildRequestSessionAccess(HttpContext ctx)
         {
-            System.Web.SessionState.SessionIDManager manager = new System.Web.SessionState.SessionIDManager();
+            SessionIDManager manager = new SessionIDManager();
             string oldId = manager.GetSessionID(ctx);
-            string newId = manager.GetSessionID(ctx);
+            string newId = manager.CreateSessionID(ctx);
             bool isAdd = false, isRedir = false;
+
             manager.SaveSessionID(ctx, newId, out isRedir, out isAdd);
             HttpApplication ctx2 = (HttpApplication)HttpContext.Current.ApplicationInstance;
             HttpModuleCollection mods = ctx2.Modules;
-            System.Web.SessionState.SessionStateModule ssm = (SessionStateModule)mods.Get("Session");
+            SessionStateModule ssm = (SessionStateModule)mods.Get("Session");
             System.Reflection.FieldInfo[] fields = ssm.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance);
             SessionStateStoreProviderBase store = null;
             System.Reflection.FieldInfo rqIdField = null, rqLockIdField = null, rqStateNotFoundField = null;
