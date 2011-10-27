@@ -110,7 +110,7 @@
 		                                     
 		                                          <ui:fieldgroup id="optionsfieldgroup">
 		                                              <ui:field>
-		                                                  <ui:fielddesc><%= GetString("ParameterTypeLabel") %></ui:fielddesc>
+		                                                  <ui:fielddesc><%= Server.HtmlEncode(GetString("ParameterTypeLabel")) %></ui:fielddesc>
 		                                                  <ui:fielddata id="optionsfielddata">
 		                                                      <aspui:Generic TagName="ui:fieldsbutton" runat="server" 
 		                                                          id="btnDefault" image="${icon:blank}" label="${string:Composite.Web.FormControl.FunctionCallsDesigner:ParameterTypeDefaultLabel}" 
@@ -144,7 +144,7 @@
 		                                                
 		                                             <ui:fieldgroup id="parameternamefieldgroup">
 		                                                 <ui:field>
-		            					                    <ui:fielddesc><%= GetString("ParameterNameLabel") %></ui:fielddesc>
+		            					                    <ui:fielddesc><%= Server.HtmlEncode(GetString("ParameterNameLabel")) %></ui:fielddesc>
 		            					                    <ui:fieldhelp></ui:fieldhelp>
 		                					                    <ui:fielddata>
 		                                                             <aspui:Selector runat="server" EnableViewState="false" 
@@ -176,10 +176,10 @@
 			                            
 			                                <asp:PlaceHolder id="plhEditLocalName" runat="server">  
 			                                     <ui:fields>
-			                                             <ui:fieldgroup id="localnamefieldgroup"> <!--  label="<%= this.FunctionLocalNameGroupLabel %>" -->
+			                                             <ui:fieldgroup id="localnamefieldgroup"> <!--  label="<%= Server.HtmlEncode(this.FunctionLocalNameGroupLabel) %>" -->
 			                                                <ui:field>
-			           					                    <ui:fielddesc><%= FunctionLocalNameLabel %></ui:fielddesc>
-			           					                    <ui:fieldhelp><%= FunctionLocalNameHelp %></ui:fieldhelp>
+			           					                    <ui:fielddesc><%= Server.HtmlEncode(FunctionLocalNameLabel) %></ui:fielddesc>
+			           					                    <ui:fieldhelp><%= Server.HtmlEncode(FunctionLocalNameHelp) %></ui:fieldhelp>
 			   		        			                    <ui:fielddata>
 			   		        			                    	<!-- InputType="ProgrammingIdentifier" removed, see bug 2698 -->
 			           						                    <aspui:DataInput 

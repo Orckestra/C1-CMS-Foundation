@@ -966,9 +966,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         btnFunctionCall.Attributes.Add("dialoglabel", SelectFunctionDialogLabel.FormatWith(parameterProfile.Name));
 
 
-        txtFieldName.Text = StringResourceSystemFacade.ParseString(parameterProfile.Label);
+        txtFieldName.Text = Server.HtmlEncode(StringResourceSystemFacade.ParseString(parameterProfile.Label));
         txtFieldType.Text = Server.HtmlEncode(parameterProfile.Type.GetShortLabel());
-        txtFieldDescription.Text = StringResourceSystemFacade.ParseString(parameterProfile.HelpDefinition.HelpText);
+        txtFieldDescription.Text = Server.HtmlEncode(StringResourceSystemFacade.ParseString(parameterProfile.HelpDefinition.HelpText));
 
         XElement parameterNode = TreeHelper.GetParameterNode(functionNode, parameterName);
         
