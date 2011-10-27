@@ -51,7 +51,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             IPage page = GetPage();
 
-            IEnumerable<IData> dataToDelete = page.GetFolderData();
+            Type folderType = GetFolderType();
+            IEnumerable<IData> dataToDelete = page.GetFolderData(folderType);
 
             var brokenReferences = new List<IData>();
 

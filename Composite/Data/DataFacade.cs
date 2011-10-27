@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Transactions;
 using Composite.Core.Collections.Generic;
 using Composite.Data.Foundation;
@@ -1725,6 +1726,27 @@ namespace Composite.Data
 
 
         #region Mics methods (Only helpers)
+
+        /// <exclude />
+        internal static void ForEachDataScope(Type interfaceType, ThreadStart action) 
+        {
+            IEnumerable<DataScopeIdentifier> supportedDataScopes = interfaceType.GetSupportedDataScopes();
+
+            CultureInfo[] cultures = DataLocalizationFacade.IsLocalized(interfaceType)
+                                         ? DataLocalizationFacade.ActiveLocalizationCultures.ToArray()
+                                         : new[] { DataLocalizationFacade.DefaultLocalizationCulture };
+
+            foreach (DataScopeIdentifier dataScopeIdentifier in supportedDataScopes)
+            {
+                foreach (CultureInfo culture in cultures)
+                {
+                    using (new DataScope(dataScopeIdentifier, culture))
+                    {
+                        action();
+                    }
+                }
+            }
+        }
 
         /// <exclude />
         public static IEnumerable<DataScopeIdentifier> GetSupportedDataScopes(Type interfaceType)

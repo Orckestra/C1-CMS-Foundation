@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Hierarchy;
@@ -396,8 +397,6 @@ namespace Composite.Data
             if (dataType == null) throw new ArgumentNullException("dataType");
 
             List<PropertyInfo> result = new List<PropertyInfo>();
-
-            List<PropertyInfo> properties = new List<PropertyInfo>();
 
             result.AddRange(dataType.GetProperties());
 

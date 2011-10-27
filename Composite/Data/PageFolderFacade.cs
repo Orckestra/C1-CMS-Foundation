@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -247,9 +246,28 @@ namespace Composite.Data
         /// <param name="deleteExistingFolderData"></param>
         public static void RemoveFolderDefinition(this IPage page, Type dataFolderType, bool deleteExistingFolderData = true)
         {
-            RemoveFolderDefinition(page, dataFolderType.GetImmutableTypeId(), deleteExistingFolderData);
-        }
+            Guid dataFolderTypeId = dataFolderType.GetImmutableTypeId();
 
+            if (!deleteExistingFolderData)
+            {
+                RemoveFolderDefinitionInternal(page.Id, dataFolderTypeId);
+                return;
+            }
+
+            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            {
+                DataFacade.ForEachDataScope(dataFolderType, () =>
+                {
+                    IEnumerable<IData> dataset = page.GetFolderData(dataFolderType);
+                    DataFacade.Delete(dataset);
+                });
+
+
+                RemoveFolderDefinitionInternal(page.Id, dataFolderTypeId);
+
+                transactionScope.Complete();
+            }
+        }
 
 
         /// <summary>
@@ -260,56 +278,22 @@ namespace Composite.Data
         /// <param name="deleteExistingFolderData"></param>
         public static void RemoveFolderDefinition(this IPage page, Guid dataFolderTypeId, bool deleteExistingFolderData = true)
         {
-            if (deleteExistingFolderData == true)
-            {
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-                {
-                    foreach (CultureInfo cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
-                    {
-                        using (new DataScope(cultureInfo))
-                        {
-                            using (new DataScope(DataScopeIdentifier.Public))
-                            {
-                                foreach (Type definedPageFolderType in page.GetDefinedFolderTypes())
-                                {
-                                    IEnumerable<IData> dataset = page.GetFolderData(definedPageFolderType);
-                                    DataFacade.Delete(dataset);
-                                }
-                            }
+            var interfaceType = DynamicTypeManager.GetDataTypeDescriptor(dataFolderTypeId).GetInterfaceType();
 
-                            using (new DataScope(DataScopeIdentifier.Administrated))
-                            {
-                                foreach (Type definedPageFolderType in page.GetDefinedFolderTypes())
-                                {
-                                    IEnumerable<IData> dataset = page.GetFolderData(definedPageFolderType);
-                                    DataFacade.Delete(dataset);
-                                }
-                            }
-                        }
-                    }
-
-                    IPageFolderDefinition pageFolderDefinition =
-                        DataFacade.GetData<IPageFolderDefinition>().
-                        Where(f => f.PageId == page.Id && f.FolderTypeId == dataFolderTypeId).
-                        Single();
-
-                    DataFacade.Delete<IPageFolderDefinition>(pageFolderDefinition);
-
-                    transactionScope.Complete();
-                }
-            }
-            else
-            {
-                IPageFolderDefinition pageFolderDefinition =
-                    DataFacade.GetData<IPageFolderDefinition>().
-                    Where(f => f.PageId == page.Id && f.FolderTypeId == dataFolderTypeId).
-                    Single();
-
-                DataFacade.Delete<IPageFolderDefinition>(pageFolderDefinition);
-            }
+            RemoveFolderDefinition(page, interfaceType, deleteExistingFolderData);
         }
 
+        private static void RemoveFolderDefinitionInternal(Guid pageId, Guid dataFolderTypeId)
+        {
+            IPageFolderDefinition pageFolderDefinition =
+                    DataFacade.GetData<IPageFolderDefinition>().
+                    Where(f => f.PageId == pageId && f.FolderTypeId == dataFolderTypeId).
+                    FirstOrDefault();
 
+            Verify.IsNotNull(pageFolderDefinition, "Page folder definition does not exist");
+
+            DataFacade.Delete<IPageFolderDefinition>(pageFolderDefinition);
+        }
 
         /// <summary>
         /// Removes all data folder definitions given the folder type id
