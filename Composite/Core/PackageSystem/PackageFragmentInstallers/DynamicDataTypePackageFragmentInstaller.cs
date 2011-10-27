@@ -92,7 +92,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
                 _dataTypeDescriptors.Add(dataTypeDescriptor);
-                this.InstallerContex.AddPendingDataTypeDescritpor(dataTypeDescriptor.TypeManagerTypeName, dataTypeDescriptor);
+                this.InstallerContext.AddPendingDataTypeDescritpor(dataTypeDescriptor.TypeManagerTypeName, dataTypeDescriptor);
             }
 
             foreach(string foreignKeyTypeName in foreignKeyReferences)

@@ -80,7 +80,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (dataTypeDescriptor != null)
                     {
                         _typesToInstall.Add(dataTypeDescriptor);
-                        this.InstallerContex.AddPendingDataType(type);
+                        this.InstallerContext.AddPendingDataType(type);
                     }
                 }
             }

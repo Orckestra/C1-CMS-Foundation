@@ -24,7 +24,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             var validationResult = new List<PackageFragmentValidationResult>();
 
-            Guid packageId = this.InstallerContex.PackageInformation.Id;
+            Guid packageId = this.InstallerContext.PackageInformation.Id;
             if(LicenseDefinitionManager.GetLicenseDefinition(packageId) != null)
             {
                 _licenseFileExists = true;
@@ -60,11 +60,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return new XElement[0];
             }
 
-            LicenseDefinitionDescriptor descriptor = LicenseServerFacade.GetTrialLicenseDefinition(InstallationInformationFacade.InstallationId, this.InstallerContex.PackageInformation.Id, _publicKeyXml);
+            LicenseDefinitionDescriptor descriptor = LicenseServerFacade.GetTrialLicenseDefinition(InstallationInformationFacade.InstallationId, this.InstallerContext.PackageInformation.Id, _publicKeyXml);
 
             PackageLicenseDefinition definition = new PackageLicenseDefinition
             {
-                ProductName = this.InstallerContex.PackageInformation.Name,
+                ProductName = this.InstallerContext.PackageInformation.Name,
                 InstallationId = descriptor.InstallationId,
                 ProductId = descriptor.ProductId,                
                 LicenseFileName = "",

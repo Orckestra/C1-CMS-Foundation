@@ -13,13 +13,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     public abstract class BasePackageFragmentInstaller : IPackageFragmentInstaller
 	{
         /// <exclude />
-        public void Initialize(PackageInstallerContext packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent)
+        public void Initialize(PackageInstallerContext packageInstallerContext, IEnumerable<XElement> configuration, XElement configurationParent)
         {
-            if (packageInstallerContex == null) throw new ArgumentNullException("packageInstallerContex");
+            if (packageInstallerContext == null) throw new ArgumentNullException("packageInstallerContext");
             if (configuration == null) throw new ArgumentNullException("configuration");
             if (configurationParent == null) throw new ArgumentNullException("configurationParent");
 
-            this.InstallerContex = packageInstallerContex;
+            this.InstallerContext = packageInstallerContext;
             this.Configuration = configuration;
             this.ConfigurationParent = configurationParent;
         }
@@ -33,7 +33,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
         /// <exclude />
-        protected PackageInstallerContext InstallerContex { get; private set; }
+        [Obsolete("Use InstallerContext")]
+        protected PackageInstallerContext InstallerContex 
+        {
+            get { return InstallerContext; }
+        }
+
+        /// <exclude />
+        protected PackageInstallerContext InstallerContext { get; private set; }
 
         /// <exclude />
         protected IEnumerable<XElement> Configuration { get; set; }

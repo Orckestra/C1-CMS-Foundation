@@ -272,7 +272,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
 
-                    if (this.InstallerContex.ZipFileSystem.ContainsFile(dataFilenameAttribute.Value) == false)
+                    if (this.InstallerContext.ZipFileSystem.ContainsFile(dataFilenameAttribute.Value) == false)
                     {
                         _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.MissingFile"), dataFilenameAttribute.Value), dataFilenameAttribute));
                         continue;
@@ -282,7 +282,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XDocument doc = null;
                     try
                     {
-                        using (C1StreamReader sr = new C1StreamReader(this.InstallerContex.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
+                        using (C1StreamReader sr = new C1StreamReader(this.InstallerContext.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
                         {
                             doc = XDocument.Load(sr);
                         }
@@ -324,7 +324,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return;
             }
             else if ((DataFacade.GetAllInterfaces().Contains(dataType.InterfaceType) == false) &&
-                     (this.InstallerContex.IsDataTypePending(dataType.InterfaceType) == false))
+                     (this.InstallerContext.IsDataTypePending(dataType.InterfaceType) == false))
             {
                 _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.TypeNotConfigured"), dataType.InterfaceType)));
                 return;
@@ -436,7 +436,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     
                     if ((DataLocalizationFacade.IsLocalized(dataType.InterfaceType) == false) || 
                         ((dataType.AddToAllLocales == false) && (dataType.AddToCurrentLoacle == false)) ||                          
-                        ((dataType.Locale != null) && (this.InstallerContex.IsLocalePending(dataType.Locale) == false)))
+                        ((dataType.Locale != null) && (this.InstallerContext.IsLocalePending(dataType.Locale) == false)))
                     {
                         using (DataScope dataScope = new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
                         {
@@ -456,7 +456,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private void ValidateDynamicAddedType(DataType dataType)
         {
-            DataTypeDescriptor dataTypeDescriptor = this.InstallerContex.GetPendingDataTypeDescriptor(dataType.InterfaceTypeName);
+            DataTypeDescriptor dataTypeDescriptor = this.InstallerContext.GetPendingDataTypeDescriptor(dataType.InterfaceTypeName);
 
             if (dataTypeDescriptor == null)
             {

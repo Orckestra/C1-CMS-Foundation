@@ -187,7 +187,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 string inputXml = PathUtil.Resolve(xslfile.InputXmlPath);
                 string outputXml = PathUtil.Resolve(xslfile.OutputXmlPath);
 
-                using (stream = this.InstallerContex.ZipFileSystem.GetFileStream(xslfile.XslPath))
+                using (stream = this.InstallerContext.ZipFileSystem.GetFileStream(xslfile.XslPath))
 				{
 					var xslt = new XslCompiledTransform();
 					using (XmlReader xslReader = XmlReader.Create(stream))
