@@ -166,9 +166,13 @@ namespace Composite.Core.WebClient.Setup
 
                 CheckAccessToFile(Server.MapPath("~/default.aspx"));
                 CheckAccessToFile(Server.MapPath("~/Frontend/Config/VisualEditor/Common.xml"));
-                
-                /*TestFileIsNotReadOnly(Server.MapPath("~/web.config"));
-                TestFileIsNotReadOnly(Server.MapPath("~/App_Data/Composite/Composite.config"));*/
+
+                if (!RuntimeInformation.IsDebugBuild
+                    && (FileIsReadOnly(Server.MapPath("~/web.config"))
+                        || FileIsReadOnly(Server.MapPath("~/App_Data/Composite/Composite.config"))))
+                {
+                    return false;
+                }
 
                 return true;
             }
@@ -204,10 +208,17 @@ namespace Composite.Core.WebClient.Setup
                 C1File.SetAttributes(file, fa);
             }
         }
-        
-        private static void TestFileIsNotReadOnly(string file)
+
+        private static bool FileIsReadOnly(string file)
         {
-            Verify.That((File.GetAttributes(file) & FileAttributes.ReadOnly) == 0, "File '{0}' is read only".FormatWith(Path.GetFileName(file))); 
+            bool @readonly = (File.GetAttributes(file) & FileAttributes.ReadOnly) > 0;
+            
+            if(@readonly)
+            { 
+                Log.LogError(LogTitle, "File '{0}' is read only".FormatWith(Path.GetFileName(file)));
+            }
+            
+            return @readonly; 
         }
         
         private static void TestNtfsAccessToFolder(string testDir)
