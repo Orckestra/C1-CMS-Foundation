@@ -170,6 +170,8 @@ new function () {
 										img.className = "";
 										img.removeAttribute("class");
 									}
+									//Remove tiny_mce_attribute
+									img.removeAttribute("data-mce-src");
 									break;
 							}
 
