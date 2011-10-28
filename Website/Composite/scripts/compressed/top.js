@@ -522,7 +522,7 @@ var _6e=_6d&&(_6b.indexOf("webrunner")>-1||_6b.indexOf("prism")>-1);
 var _6f=history.pushState!=null;
 this.isMozilla=_6d;
 this.isWebKit=_6b.indexOf("webkit")>-1;
-this.isSafari=_6b.indexOf("Safari")>-1;
+this.isSafari=_6b.indexOf("safari")>-1;
 this.isExplorer=!_6d;
 this.isExplorer6=this.isExplorer&&(_6b.indexOf("msie 6.0")>-1||_6b.indexOf("msie 6.1")>-1);
 this.isExplorer8=this.isExplorer&&window.XDomainRequest!=null;
