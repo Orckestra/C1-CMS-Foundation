@@ -9,6 +9,7 @@ using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
+using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 
@@ -25,11 +26,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
-
         private DataTypeDescriptor GetDataTypeDescriptor()
         {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
-            Type type = TypeManager.GetType(entityToken.SerializedTypeName);
+            Type type = GetTypeFromEntityToken();
 
             Guid guid = type.GetImmutableTypeId();
 
@@ -37,12 +36,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
-
         private void initialStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
-            Type type = TypeManager.GetType(entityToken.SerializedTypeName);
-
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
             Dictionary<string, object> bindings = new Dictionary<string, object>();
@@ -69,11 +64,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        private Type GetTypeFromEntityToken()
+        {
+            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
+            return TypeManager.GetType(entityToken.SerializedTypeName);
+        }
 
         private void finalizeStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
-            Type oldType = TypeManager.GetType(entityToken.SerializedTypeName);
+            Type oldType = GetTypeFromEntityToken();
 
             string typeName = this.GetBinding<string>("TypeName");
             string typeNamespace = this.GetBinding<string>("TypeNamespace");
@@ -139,12 +138,43 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return;
             }
 
+            string oldSerializedTypeName = ((GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken).SerializedTypeName;
+            string newSerializedTypeName = GetSerializedTypeName(typeNamespace, typeName);
+            if (newSerializedTypeName != oldSerializedTypeName)
+            {
+                UpdateWhiteListedGeneratedTypes(oldSerializedTypeName, newSerializedTypeName);
+            }
+
             helper.CreateType(originalTypeHasData);
 
             SetSaveStatus(true);
 
             ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
             parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 1);
+        }
+
+        private static void UpdateWhiteListedGeneratedTypes(string oldTypeName, string newTypeName)
+        {
+            var referencesToOldTypeName = DataFacade.GetData<IGeneratedTypeWhiteList>(item => item.TypeManagerTypeName == oldTypeName).ToList();
+            if (!referencesToOldTypeName.Any())
+            {
+                return;
+            }
+
+            if(!DataFacade.GetData<IGeneratedTypeWhiteList>(item => item.TypeManagerTypeName == newTypeName).Any())
+            {
+                var newWhiteListItem = DataFacade.BuildNew<IGeneratedTypeWhiteList>();
+                newWhiteListItem.TypeManagerTypeName = newTypeName;
+
+                DataFacade.AddNew(newWhiteListItem);
+            }
+
+            DataFacade.Delete<IGeneratedTypeWhiteList>(referencesToOldTypeName);
+        }
+
+        private static string GetSerializedTypeName(string typeNamespace, string typeName)
+        {
+            return "DynamicType:" + (typeName.Length == 0 ? typeName : typeNamespace + "." + typeName);
         }
     }
 }
