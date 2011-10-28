@@ -5,13 +5,11 @@ using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
-using Composite.Data;
-using Composite.Data.DynamicTypes;
-using Composite.Data.Types;
-using Composite.Core.ResourceSystem;
-using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.Core.Localization;
+using Composite.Core.ResourceSystem;
+using Composite.Data;
+using Composite.Data.Types;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvider
@@ -67,15 +65,9 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
             Dictionary<string, string> culturesDictionary = cultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
-            string urlMappingName = GetDefaultUrlMappingNameFromCultureName(culturesDictionary.First().Key);
-            if (DataLocalizationFacade.ActiveLocalizationCultures.Count() == 0)
-            {
-                urlMappingName = "";
-            }
-
             this.Bindings.Add("CultureName", "");
             this.Bindings.Add("RegionLanguageList", culturesDictionary);
-            this.Bindings.Add("UrlMappingName", urlMappingName);
+            this.Bindings.Add("UrlMappingName", "");
             this.Bindings.Add("AccessToAllUsers", true);
         }
 
