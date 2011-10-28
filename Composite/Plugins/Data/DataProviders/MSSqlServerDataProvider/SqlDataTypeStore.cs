@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
-using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation;
+// using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 using System.ComponentModel;
 
