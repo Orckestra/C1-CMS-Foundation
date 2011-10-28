@@ -8,7 +8,7 @@ using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation;
+// using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 
 

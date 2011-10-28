@@ -498,14 +498,12 @@
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistry.cs" />
     <Compile Include="Core\WebClient\Renderings\Foundation\RenderingResponseHandlerRegistryImpl.cs" />
     <Compile Include="Core\WebClient\Renderings\IRenderingResponseHandlerFacade.cs" />
-    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\Foundation\Class1.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\SqlDataProviderCodeBuilder.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\SqlProviderCodeGenerator.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\Foundation\NamesCreator.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\SqlDataProvider_Stores.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\SqlDataTypeStoreDataScope.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlProviderCodeGenerator.cs" />
-    <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\Foundation\Common\Class1.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlDataProviderCodeBuilder.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\NamesCreator.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataProvider_GAUD.cs" />

@@ -8,7 +8,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.CodeGeneration;
 using Composite.Core.Logging;
-using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation;
+//using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.Foundation;
 using Composite.Core.Types;
 using Composite.Core.Parallelization;
 
