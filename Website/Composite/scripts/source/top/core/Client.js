@@ -14,7 +14,8 @@ function _Client () {
 	var hasTransitions = history.pushState != null;
 
 	this.isMozilla = isMozilla;
-	this.isWebKit = agent.indexOf ( "webkit" ) >-1;
+	this.isWebKit = agent.indexOf("webkit") > -1;
+	this.isSafari = agent.indexOf("Safari") > -1;
 	this.isExplorer = !isMozilla;
 	this.isExplorer6 = this.isExplorer && ( agent.indexOf ( "msie 6.0" ) > -1 || agent.indexOf ( "msie 6.1" ) > -1 );
 	this.isExplorer8 = this.isExplorer && window.XDomainRequest != null;
