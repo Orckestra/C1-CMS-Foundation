@@ -123,7 +123,6 @@ namespace Composite.Core.Implementation
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Hostname")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "hostname")]
-        [Obsolete("Isn't used any more")]
         public virtual PageNode GetPageNodeByHostname(string hostname)
         {
             XElement homepageElement = null;
