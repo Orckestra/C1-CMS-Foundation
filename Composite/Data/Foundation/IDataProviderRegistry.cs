@@ -14,6 +14,10 @@ namespace Composite.Data.Foundation
         IEnumerable<string> DynamicDataProviderNames { get; }
         List<string> GetDataProviderNamesByInterfaceType(Type interfaceType);
         List<string> GetWriteableDataProviderNamesByInterfaceType(Type interfaceType);
+
+#warning MRJ: BM: Delete this method
+        void AddNewDataType(Type interaceType, string providerName, bool isWritableProvider = true);
+#warning MRJ: BM: Merge these methods
         void Initialize_StaticTypes();
         void Initialize_DynamicTypes();
         void Flush();

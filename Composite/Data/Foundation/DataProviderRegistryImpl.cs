@@ -128,7 +128,14 @@ namespace Composite.Data.Foundation
         }
 
 
+        public void AddNewDataType(Type interaceType, string providerName, bool isWritableProvider = true)
+        {
+            AddType(interaceType, providerName, isWritableProvider);
+        }
 
+
+
+#warning MRJ: BM: Merge these two methods
         public void Initialize_StaticTypes()
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
@@ -180,6 +187,7 @@ namespace Composite.Data.Foundation
                 }
             }
         }
+
 
 
 

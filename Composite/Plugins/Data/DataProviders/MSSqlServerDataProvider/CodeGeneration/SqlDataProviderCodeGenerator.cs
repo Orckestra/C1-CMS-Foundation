@@ -2,24 +2,19 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Data.SqlClient;
-
-using Composite.Data.DynamicTypes;
-using Composite.Data.Plugins.DataProvider;
-using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.Core.Extensions;
-using Composite.Core.Linq;
 using Composite.Core.Logging;
-using Composite.Sql;
 using Composite.Core.Types;
-
+using Composite.Data.DynamicTypes;
+using Composite.Data.Plugins.DataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
+
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration
 {
+#warning MRJ: BM: This should be obsoliete
     internal sealed class SqlDataProviderCodeGenerator
     {
         private const string _namespacePrefix = "Composite.Data.GeneratedTypes";
@@ -101,9 +96,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
 
-        public SqlDataProviderCodeGeneratorResult Generate()
+        public SqlDataTypeStoresContainer Generate()
         {
-            IEnumerable<SqlDataProviderCodeGeneratorTable> validTables = ValidTables.Evaluate();
+           /* IEnumerable<SqlDataProviderCodeGeneratorTable> validTables = ValidTables.Evaluate();
             
             if (_sqlLoggingContext.Enabled == true)
             {
@@ -119,7 +114,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             }
 
 
-            SqlDataProviderCodeGeneratorResult result = new SqlDataProviderCodeGeneratorResult(_name, _connectionString, _sqlLoggingContext);
+            SqlDataTypeStoresContainer result = new SqlDataTypeStoresContainer(_name, _connectionString, _sqlLoggingContext);
 
 
             if (validTables.Count() == 0)
@@ -132,12 +127,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             BuildManagerCompileUnit compileUnit;
             Type dataContextType = GenerateDataContextClass(validTables, out compileUnit);
 
-            var tableResults = new List<KeyValuePair<SqlDataProviderCodeGeneratorTable, SqlDataProviderCodeGeneratorTableResult>>();
+            var tableResults = new List<KeyValuePair<SqlDataProviderCodeGeneratorTable, SqlDataTypeStore>>();
             foreach (SqlDataProviderCodeGeneratorTable table in validTables)
             {
-                SqlDataProviderCodeGeneratorTableResult tableResult = ExtractInterfaceResult(table, compileUnit);
+                SqlDataTypeStore tableResult = ExtractInterfaceResult(table, compileUnit);
 
-                tableResults.Add(new KeyValuePair<SqlDataProviderCodeGeneratorTable, SqlDataProviderCodeGeneratorTableResult>(table, tableResult));
+                tableResults.Add(new KeyValuePair<SqlDataProviderCodeGeneratorTable, SqlDataTypeStore>(table, tableResult));
             }
 
             result.ConnectionString = _connectionString;
@@ -145,7 +140,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             foreach (var tableResultPair in tableResults)
             {
-                foreach (var kvp in tableResultPair.Value.Stores)
+                foreach (var kvp in tableResultPair.Value.StoreTables)
                 {
                     string storageKey = kvp.Key;
 
@@ -172,7 +167,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             result.ConfiguredInterfaceTypes = configuredInterfaceTypes;
 
-            return result;
+            return result;*/
+            throw  new NotImplementedException();
         }
 
 
@@ -214,16 +210,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
 
 
-        private SqlDataProviderCodeGeneratorTableResult ExtractInterfaceResult(SqlDataProviderCodeGeneratorTable table, BuildManagerCompileUnit buildManagerCompileUnit)
+        private SqlDataTypeStore ExtractInterfaceResult(SqlDataProviderCodeGeneratorTable table, BuildManagerCompileUnit buildManagerCompileUnit)
         {
-            var tableResult = new SqlDataProviderCodeGeneratorTableResult(table.InterfaceType);
+            throw new NotImplementedException();
+            /*
+            var tableResult = new SqlDataTypeStore(table.InterfaceType);
 
-            tableResult.Stores = new Dictionary<string, SqlDataProviderCodeGeneratorTableResult.StoreInformation>();
+            tableResult.StoreTables = new Dictionary<string, SqlDataTypeStore.SqlDataTypeStoreTable>();
 
             foreach (var kvp in table.Stores)
             {
                 var store = kvp.Value;
-                var storeInformation = new SqlDataProviderCodeGeneratorTableResult.StoreInformation();
+                var storeInformation = new SqlDataTypeStore.SqlDataTypeStoreTable();
 
                 Type sqlDataProviderHelperMethodsClassType = buildManagerCompileUnit.GetGeneretedTypeByName(store.SqlDataProviderHelperMethodsClassName);
                 if (sqlDataProviderHelperMethodsClassType == null) return null;
@@ -233,10 +231,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 if (dataIdType == null) return null;
                 storeInformation.DataIdType = dataIdType;
 
-                tableResult.Stores.Add(kvp.Key, storeInformation);
+                tableResult.StoreTables.Add(kvp.Key, storeInformation);
             }
 
-            return tableResult;
+            return tableResult;*/
         }
 
 
@@ -284,7 +282,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private void ValidateTable(SqlDataProviderCodeGeneratorTable table)
         {
-            table.Validated = false;
+#warning MRJ: BM: Reintroduce this validation
+           /* table.Validated = false;
 
             if (table.InterfaceType == null) { table.Errors.Add(string.Format("Interface type is null")); return; }
             if (table.InterfaceType.GetProperties().Length == 0) { table.Errors.Add(string.Format("The interface type '{0}' does not contain any properties", table.InterfaceType)); return; }
@@ -308,7 +307,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             {
                 foreach (string cultureName in table.CultureNames)
                 {
-                    string storeKey = Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.SqlDataProvider.GetStorageName(dataScope, cultureName);
+                    string storeKey = SqlDataProvider.GetStorageName(dataScope, cultureName);
                     string tableName = table.Stores[storeKey].TableName;
 
                     if (string.IsNullOrEmpty(tableName) == true)
@@ -384,7 +383,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             }
 
 
-            table.Validated = true;
+            table.Validated = true;*/
         }
 
 

@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-
 using Composite.Data.DynamicTypes;
+
 
 namespace Composite.Data.Plugins.DataProvider
 {
@@ -24,7 +24,7 @@ namespace Composite.Data.Plugins.DataProvider
         void CreateStore(DataTypeDescriptor typeDescriptor);
 
         /// <exclude />
-        void AlterStore(DataTypeChangeDescriptor changeDescriptor);
+        void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor);
 
         /// <exclude />
         void DropStore(DataTypeDescriptor typeDescriptor);

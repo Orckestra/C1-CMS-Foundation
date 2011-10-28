@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Composite.Core.Logging;
+using Composite.Core.Types;
 
 
 namespace Composite.Core.Application
@@ -8,7 +9,7 @@ namespace Composite.Core.Application
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class AppDomainLocker
     {
         private static EventWaitHandle _eventWaitHandle = null;
@@ -18,6 +19,7 @@ namespace Composite.Core.Application
 
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)AppDomainLocker";
         private const string _warningLogEntryTitle = "AppDomainLocker";
+
 
 
 
@@ -94,8 +96,7 @@ namespace Composite.Core.Application
         private static bool TryLock(TimeSpan maxWaitTime)
         {
 #warning MRJ: BM: Only add once? Cleanup
-            AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
-
+            AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
 
             if (RuntimeInformation.AppDomainLockingDisabled) return true;
 
@@ -105,6 +106,7 @@ namespace Composite.Core.Application
 
                 bool isNewHandle;
 
+                DateTime time = DateTime.Now;
                 _appDomainLockKey = RuntimeInformation.UniqueInstanceNameSafe;
                 _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, _appDomainLockKey, out isNewHandle);
 
@@ -117,6 +119,7 @@ namespace Composite.Core.Application
                     Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) detected existing handle will now wait ({1}ms max) for other AppDomains to unlock on key '{2}'", AppDomain.CurrentDomain.Id, maxWaitTime.TotalMilliseconds, _appDomainLockKey));
                 }
 
+
                 _gotSignaled = _eventWaitHandle.WaitOne(maxWaitTime, false);
 
                 if (_gotSignaled == false)
@@ -128,14 +131,17 @@ namespace Composite.Core.Application
                     Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) has locked for other AppDomains on key '{1}'", AppDomain.CurrentDomain.Id, _appDomainLockKey));
                 }
 
+                CodeGenerationManager.ValidateCompositeGenerate(time);
+
                 return _gotSignaled;
             }
         }
 
+  
 
         static void CurrentDomain_DomainUnload(object sender, EventArgs e)
-        {
-            ReleaseAnyLock(); // This is for VS dev server, it does not always call Application_End /MRJ
+        {          
+            ReleaseAnyLock(); // This is for VS dev server, it does not always call Application_End :S /MRJ
         }
     }
 }

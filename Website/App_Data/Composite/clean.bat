@@ -73,8 +73,29 @@ del TreeDefinitions\Composite.Community.Blog.Entries.xml
 del TreeDefinitions\Composite.Community.Blog.Entries.xmll
 
 
-:: Base site cleanup
+:: Extranet cleanup
+del ..\..\Bin\Composite.Community.Extranet.dll
 
+
+:: Newsletter cleanup
+del ..\..\Bin\Composite.Community.Newsletter.dll
+del ..\..\Bin\Composite.Community.Newsletter.SubjectBased.dll
+del ..\..\Bin\Composite.Community.Newsletter.DataTypeBased.dll
+del ..\..\Bin\Composite.Community.Newsletter.FunctionBased.dll
+del ..\..\Newsletter.ashx
+del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.Newsletter.SubjectBased.xml
+
+
+:: Event calender cleanup
+del ..\..\Bin\Composite.Community.EventCalendar.dll
+del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.EventCalendar.EventsApp.xml
+
+
+:: Versioning cleanup
+del ..\..\Bin\Composite.Versioning.ContentVersioning.dll
+
+
+:: Base site cleanup
 rd ..\..\Frontend\Composite\C1BaseSite /S /Q
 del ..\..\Composite\InstalledPackages\localization\Composite.TemplateSites.Base01.News.NewsItem.da-dk.xml 
 del ..\..\Composite\InstalledPackages\localization\Composite.TemplateSites.Base01.News.NewsItem.en-us.xml

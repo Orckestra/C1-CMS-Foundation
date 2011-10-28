@@ -157,9 +157,9 @@ namespace Composite.Plugins.Data.DataProviders.MemoryDataProvider
 
 
 
-        public void AlterStore(DataTypeChangeDescriptor changeDescriptor)
+        public void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
-            InterfaceConfigurationManipulator.Change(_context.ProviderName, changeDescriptor);
+            InterfaceConfigurationManipulator.Change(updateDataTypeDescriptor.ProviderName, updateDataTypeDescriptor.CreateDataTypeChangeDescriptor());
         }
 
 

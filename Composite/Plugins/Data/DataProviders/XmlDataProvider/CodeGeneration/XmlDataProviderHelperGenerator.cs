@@ -15,7 +15,9 @@ using Composite.Core.Parallelization;
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-    internal sealed class XmlDataProviderHelperGenerator
+#warning MRJ: BM: Make a total refac of this!
+#warning MRJ: BM: This is does not generated code for DataProviderHelper, but creates XmlDataProviderCodeGeneratorResult. 
+    /*internal sealed class XmlDataProviderHelperGenerator
     {
         private const string _namespacePrefix = "GeneratedTypes";
 
@@ -61,9 +63,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
 
-        public XmlDataProviderCodeGeneratorResult Generate(bool staticOnly)
+        public XmlDataTypeStoresContainer Generate(bool staticOnly)
         {
-            XmlDataProviderCodeGeneratorResult result = new XmlDataProviderCodeGeneratorResult();
+            XmlDataTypeStoresContainer result = new XmlDataTypeStoresContainer();
 
             result.ConfiguredInterfaceTypes = this.ValidatedStores.Select(f => f.InterfaceType).ToList();
             result.AllInterfaceTypes = result.ConfiguredInterfaceTypes.Concat(this.InvalidatedStores.Select(f => f.InterfaceType)).ToList();
@@ -76,7 +78,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
 
-        private void GenerateStore(bool staticOnly, XmlDataProviderCodeGeneratorResult result, XmlDataProviderCodeGeneratorStore store)
+        private void GenerateStore(bool staticOnly, XmlDataTypeStoresContainer result, XmlDataProviderCodeGeneratorStore store)
         {
             DataTypeDescriptor dataTypeDescriptor = staticOnly ?
                 DynamicTypeManager.BuildNewDataTypeDescriptor(store.InterfaceType) :
@@ -106,26 +108,29 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             BuildManager.GetCompiledTypes(buildManagerCompileUnit);
 
-            XmlDataProviderCodeGeneratorStoreResult storeResult = new XmlDataProviderCodeGeneratorStoreResult();
 
-            storeResult.GeneratedType = buildManagerCompileUnit.GetGeneretedTypeByName(store.DataProviderHelperClassName);
-            storeResult.GeneratedDataIdClassType = buildManagerCompileUnit.GetGeneretedTypeByName(store.DataIdClassName);
+#warning MRJ: BM: FIX THIS NOW!
+            throw new NotImplementedException("FIX THIS!");
+            /*XmlDataTypeStore storeResult = new XmlDataTypeStore();
 
-            storeResult.DataScopes = store.DataScopes;
+            storeResult.DataProviderHelperType = buildManagerCompileUnit.GetGeneretedTypeByName(store.DataProviderHelperClassName);
+            storeResult.DataIdClassType = buildManagerCompileUnit.GetGeneretedTypeByName(store.DataIdClassName);
 
-            storeResult.Stores = new Dictionary<string, Dictionary<string, XmlDataProviderCodeGeneratorStoreResult.StoreInformaion>>();
+            storeResult.DataScopesNames = store.DataScopes;
+
+            storeResult.DataScope = new Dictionary<string, Dictionary<string, XmlDataTypeStore.XmlDateTypeStoreDataScopeElement>>();
             foreach (var kvp in store.Stores)
             {
                 foreach (var innerKvp in kvp.Value)
                 {
-                    Dictionary<string, XmlDataProviderCodeGeneratorStoreResult.StoreInformaion> dic;
-                    if (storeResult.Stores.TryGetValue(kvp.Key, out dic) == false)
+                    Dictionary<string, XmlDataTypeStore.XmlDateTypeStoreDataScopeElement> dic;
+                    if (storeResult.DataScope.TryGetValue(kvp.Key, out dic) == false)
                     {
-                        dic = new Dictionary<string, XmlDataProviderCodeGeneratorStoreResult.StoreInformaion>();
-                        storeResult.Stores.Add(kvp.Key, dic);
+                        dic = new Dictionary<string, XmlDataTypeStore.XmlDateTypeStoreDataScopeElement>();
+                        storeResult.DataScope.Add(kvp.Key, dic);
                     }
 
-                    dic.Add(innerKvp.Key, new XmlDataProviderCodeGeneratorStoreResult.StoreInformaion { Filename = innerKvp.Value.Filename, ElementName = innerKvp.Value.ElementName });
+                    dic.Add(innerKvp.Key, new XmlDataTypeStore.XmlDateTypeStoreDataScopeElement { Filename = innerKvp.Value.Filename, ElementName = innerKvp.Value.ElementName });
                 }
             }
 
@@ -200,8 +205,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             {
                 foreach (var kvp in store.Stores[dataScope])
                 {
-                    if (string.IsNullOrEmpty(kvp.Value.Filename) == true) { store.Errors.Add("Filename is null or empty"); return; }
-                    if (string.IsNullOrEmpty(kvp.Value.ElementName) == true) { store.Errors.Add("Element name is null or empty"); return; }
+                    if (string.IsNullOrEmpty(kvp.Value.Filename)) { store.Errors.Add("Filename is null or empty"); return; }
+                    if (string.IsNullOrEmpty(kvp.Value.ElementName)) { store.Errors.Add("Element name is null or empty"); return; }
                 }
 
                 try
@@ -304,5 +309,5 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
             return sb.ToString();
         }
-    }
+    }*/
 }

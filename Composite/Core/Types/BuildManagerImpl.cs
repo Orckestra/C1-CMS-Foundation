@@ -315,6 +315,10 @@ namespace Composite.Core.Types
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "This is what we want, touch is used later on")]
         private void Compile(BuildManagerCompileUnit buildManagerCompileUnit)
         {
+            throw new NotImplementedException("OBSOLITE");
+#warning MRJ: BM: Log hack
+            Log.LogInformation(CodeGenerationManager.LogTitle, "BuildManager compiling: " + buildManagerCompileUnit.Id);
+
             if (!buildManagerCompileUnit.IsCacheble && buildManagerCompileUnit.AllowCrossReferences)
             {
                 throw new NotImplementedException("Not cacheable compile units are not supported.");
@@ -907,6 +911,7 @@ namespace Composite.Core.Types
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         public bool RemoveCompiledType(Guid immutableTypeId)
         {
+            return true;
             lock (_lock)
             {
                 List<int> keys = new List<int>(_buildManagerCompileUnits.GetKeys());
@@ -978,7 +983,18 @@ namespace Composite.Core.Types
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         public bool ClearCache(bool alsoBinFiles)
         {
+#warning MRJ: BM: Hack
             List<string> interfaceSources = GetInterfaceSourcesToCompile().ToList();
+
+            foreach (string filename in Directory.GetFiles(_tempAssemblyDirectory, "*.cs"))
+            {
+                if (!interfaceSources.Contains(filename))
+                {
+                    DeleteFileSilent(filename);
+                }
+            }
+
+            return true;
 
             bool result = false;
             if (alsoBinFiles == true)
@@ -1027,6 +1043,9 @@ namespace Composite.Core.Types
 
         public void InitializeCachingSytem()
         {
+#warning MRJ: BM: Hack here
+            return;
+
             if (_initializeAppDomainLoadedAssembliesHasRun == true) return; //throw new InvalidOperationException("This may only be called once");
             _initializeAppDomainLoadedAssembliesHasRun = true;
 
@@ -1041,7 +1060,6 @@ namespace Composite.Core.Types
                 from a in AppDomain.CurrentDomain.GetAssemblies()
                 where a.FullName.StartsWith(_assemblyPackFilename)
                 select a;
-
 
             foreach (Assembly assembly in dynamicGeneratedAssemblies)
             {
@@ -1089,6 +1107,8 @@ namespace Composite.Core.Types
 
         public void FinalizeCachingSytem()
         {
+#warning MRJ: BM: Hack here
+            return;
             int startTime = Environment.TickCount;
             Log.LogVerbose(LogTitleColored, "----------========== Finalizing the type caching system! ==========----------");
 
@@ -1151,6 +1171,7 @@ namespace Composite.Core.Types
         /// <returns>Null value, if no package has been generated, or compiler results otherwise.</returns>
         private CompilerResults GeneratePackageDll(string targetFileName, IEnumerable<string> filenames, string[] assemblyReferences)
         {
+            
             if (!CachingEnabled)
             {
                 return null;
@@ -1276,6 +1297,8 @@ namespace Composite.Core.Types
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         public void CreateCompositeGeneretedAssembly()
         {
+#warning MRJ: BM: Hack
+            return;
             if (!CachingEnabled)
             {
                 return;

@@ -31,11 +31,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             if (interfaceType != null)
             {
-                object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.TypeManagerTypeName);
+                object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
 
                 if (key != null)
                 {
-                    throw new InvalidOperationException(string.Format("Configuration already contains an interface type '{0}'", configurationElement.InterfaceType));
+                    throw new InvalidOperationException(string.Format("Configuration already contains an interface type with id '{0}'", configurationElement.DataTypeId));
                 }
             }
 
@@ -48,18 +48,20 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void Change(string providerName, DataTypeChangeDescriptor changeDescriptor)
+        public static void Change(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
-            XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(providerName);
+            DataTypeChangeDescriptor changeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
 
-            string oldInterfaceTypeName = changeDescriptor.OriginalType.TypeManagerTypeName;
+            XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(updateDataTypeDescriptor.ProviderName);
 
-            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(oldInterfaceTypeName);
+            Guid oldDataTypeId = changeDescriptor.OriginalType.DataTypeId;
+
+            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(oldDataTypeId);
 
             XmlProviderInterfaceConfigurationElement oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
             XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(changeDescriptor.AlteredType);
 
-            XmlDataProviderStoreManipulator.AlterStore(providerName, oldConfigurationElement, newConfigurationElement, changeDescriptor);
+            XmlDataProviderStoreManipulator.AlterStore(updateDataTypeDescriptor, oldConfigurationElement, newConfigurationElement);
 
             xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
             xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
@@ -73,7 +75,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(providerName);
 
-            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.TypeManagerTypeName);
+            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
 
             if (key != null)
             {
@@ -98,7 +100,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
-                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.TypeManagerTypeName);
+                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
                     XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, cultureInfo, null);
 
                     xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
@@ -126,7 +128,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
-                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.TypeManagerTypeName);
+                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
 
                     XmlProviderInterfaceConfigurationElement oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
                     foreach (var kvp in oldConfigurationElement.DataScopes.Values)
@@ -155,14 +157,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static XmlProviderInterfaceConfigurationElement BuildXmlProviderInterfaceConfigurationElement(DataTypeDescriptor dataTypeDescriptor, CultureInfo addedCultureInfo, CultureInfo removedCultureInfo)
         {
             XmlProviderInterfaceConfigurationElement configurationElement = new XmlProviderInterfaceConfigurationElement();
-            configurationElement.InterfaceType = dataTypeDescriptor.TypeManagerTypeName;
+            configurationElement.DataTypeId = dataTypeDescriptor.DataTypeId;
             configurationElement.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
 
             bool isLocalizable = false;
             if (dataTypeDescriptor.IsCodeGenerated == false)
             {
-                Type interfaceType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
-                isLocalizable = DataLocalizationFacade.IsLocalizable(interfaceType);
+                Type interfaceType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
+                if (interfaceType != null)
+                {
+                    isLocalizable = DataLocalizationFacade.IsLocalizable(interfaceType);
+                }
+                else
+                {
+                    isLocalizable = dataTypeDescriptor.Localizeable;
+                }
             }
             else 
             {
@@ -175,8 +184,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     DataScope = dataScopeIdentifier.Name,
                     CultureName = CultureInfo.InvariantCulture.Name,
-                    Filename = MakeFilename(dataTypeDescriptor, dataScopeIdentifier, CultureInfo.InvariantCulture.Name),
-                    ElementName = MakeElementName(dataTypeDescriptor)
+                    Filename = NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, CultureInfo.InvariantCulture.Name),
+                    ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
                 });
 
                 if (isLocalizable == true)
@@ -190,8 +199,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             {
                                 DataScope = dataScopeIdentifier.Name,
                                 CultureName = cultureName,
-                                Filename = MakeFilename(dataTypeDescriptor, dataScopeIdentifier, cultureName),
-                                ElementName = MakeElementName(dataTypeDescriptor)
+                                Filename = NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, cultureName),
+                                ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
                             });
                     }
 
@@ -202,8 +211,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         {
                             DataScope = dataScopeIdentifier.Name,
                             CultureName = addedCultureInfo.Name,
-                            Filename = MakeFilename(dataTypeDescriptor, dataScopeIdentifier, addedCultureInfo.Name),
-                            ElementName = MakeElementName(dataTypeDescriptor)
+                            Filename = NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, addedCultureInfo.Name),
+                            ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
                         });
                     }
                 }
@@ -219,50 +228,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             configurationElement.ConfigurationPropertyInitializers = new SimpleNameTypeConfigurationElementCollection();
 
             return configurationElement;
-        }
-
-
-
-
-        private static string MakeFilename(DataTypeDescriptor dataTypeDescriptor, DataScopeIdentifier dataScopeIdentifier, string cultureName)
-        {
-            string typeFullName = StringExtensionMethods.CreateNamespace(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name, '.');
-
-            PublicationScope publicationScope;
-
-            switch (dataScopeIdentifier.Name)
-            {
-                case DataScopeIdentifier.PublicName:
-                    publicationScope = PublicationScope.Published;
-                    break;
-                case DataScopeIdentifier.AdministratedName:
-                    publicationScope = PublicationScope.Unpublished;
-                    break;
-                default:
-                    throw new InvalidOperationException("Unsupported data scope identifier: '{0}'".FormatWith(dataScopeIdentifier.Name));
-            }
-
-            if (cultureName == "")
-            {
-                return string.Format("{0}_{1}.xml", typeFullName, publicationScope);
-            }
-            return string.Format("{0}_{1}_{2}.xml", typeFullName, publicationScope, cultureName);
-        }
-
-
-
-
-        private static string MakeElementName(DataTypeDescriptor dataTypeDescriptor)
-        {
-            string name = dataTypeDescriptor.Name;
-
-            if (name.StartsWith("I") == true)
-            {
-                name = name.Remove(0, 1);
-                name = string.Format("{0}{1}", name.Substring(0, 1).ToUpper(), name.Remove(0, 1));
-            }
-
-            return name;
         }
 
 

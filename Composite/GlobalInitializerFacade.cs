@@ -106,18 +106,20 @@ namespace Composite
         }
 
 
-
         /// <summary>
         /// This method will initialize the system (if it has not been initialized).
         /// </summary>
         public static void InitializeTheSystem()
         {
+           // if (AppDomain.CurrentDomain.Id == 3) SimpleDebug.AddEntry(string.Format("INITIALIZING {0} {1} {2}", Thread.CurrentThread.ManagedThreadId, _initializing, _coreInitialized));
+
             if (_exceptionThrownDurringInitialization != null)
             {
                 TimeSpan timeSpan = DateTime.Now - _exceptionThrownDurringInitializationTimeStamp;
                 if (timeSpan < TimeSpan.FromMinutes(5.0))
                 {
                     LoggingService.LogCritical("GlobalInitializerFacade", "Exception recorded:" + timeSpan.ToString() + " ago");
+
                     throw _exceptionThrownDurringInitialization;
                 }
 
@@ -167,6 +169,14 @@ namespace Composite
                     TreeFacade.Initialize();
                 }
             }
+
+          /*  if (AppDomain.CurrentDomain.Id == 3)
+            {
+                SimpleDebug.AddEntry(string.Format("INITIALIZING DONE {0}", Thread.CurrentThread.ManagedThreadId));
+             //   SimpleDebug.AddStack();
+              //  SimpleDebug.AddEntry("-------------------------------------------------");
+              //  SimpleDebug.AddEntry("");
+            }*/
         }
 
 
@@ -255,15 +265,16 @@ namespace Composite
 
         internal static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage, bool initializeHooksInTheSameThread)
         {
-            if (_hookingFacadeThread != null)
-            {
-                _hookingFacadeThread.Join(TimeSpan.FromSeconds(30));
-                if (_hookingFacadeException != null)
-                {
-                    //LoggingService.LogCritical("GlobalInitializerFacade", _hookingFacadeException);
-                    throw new InvalidOperationException("The initilization of the HookingFacade failed before this reinitialization was issued", _hookingFacadeException);
-                }
-            }
+#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup got fucked
+            //if (_hookingFacadeThread != null)
+            //{
+            //    _hookingFacadeThread.Join(TimeSpan.FromSeconds(30));
+            //    if (_hookingFacadeException != null)
+            //    {
+            //        //LoggingService.LogCritical("GlobalInitializerFacade", _hookingFacadeException);
+            //        throw new InvalidOperationException("The initilization of the HookingFacade failed before this reinitialization was issued", _hookingFacadeException);
+            //    }
+            //}
 
             using (GlobalInitializerFacade.CoreLockScope)
             {
@@ -281,16 +292,17 @@ namespace Composite
                 InitializeTheSystem();
 
                 // Updating "hooks" either in the same thread, or in another
-                if (initializeHooksInTheSameThread)
-                {
-                    object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
-                    EnsureHookingFacade(threadStartParameter);
-                }
-                else
-                {
-                    _hookingFacadeThread = new Thread(EnsureHookingFacade);
-                    _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
-                }
+#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup got fucked
+                //if (initializeHooksInTheSameThread)
+                //{
+                //    object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
+                //    EnsureHookingFacade(threadStartParameter);
+                //}
+                //else
+                //{
+                //    _hookingFacadeThread = new Thread(EnsureHookingFacade);
+                //    _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
+                //}
 
                 IsReinitializingTheSystem = false;
             }
@@ -483,9 +495,11 @@ namespace Composite
             using (new TimeMeasurement("Initialization of the static data types"))
             {
                 DataProviderRegistry.Initialize_StaticTypes();
+                DataProviderRegistry.Initialize_DynamicTypes();
             }
 
-            using (new TimeMeasurement("Auto update of static data types"))
+#warning MRJ: BM: Fix this
+         /*   using (new TimeMeasurement("Auto update of static data types"))
             {
                 flushNeeded = AutoUpdateStaticDataTypes();
             }
@@ -496,7 +510,7 @@ namespace Composite
                 _initializing = false;
                 GlobalEventSystemFacade.FlushTheSystem();
                 return;
-            }
+            }*/
 
             using (new TimeMeasurement("Ensure data stores"))
             {
@@ -511,17 +525,19 @@ namespace Composite
                 return;
             }
 
-            using (new TimeMeasurement("Compilation of the dynamic data types"))
+#warning MRJ: This should be obsolete
+         /*   using (new TimeMeasurement("Compilation of the dynamic data types"))
             {
                 GeneratedTypesFacade.GenerateTypes();
-            }
+            }*/
 
-            DynamicTypesGenerated = true;
+#warning MRJ: This should be merged into statis type stuff
+         /*   DynamicTypesGenerated = true;
 
             using (new TimeMeasurement("Initialization of the dynamic data types"))
             {
                 DataProviderRegistry.Initialize_DynamicTypes();
-            }
+            }*/
 
             using (new TimeMeasurement("Initializing functions"))
             {

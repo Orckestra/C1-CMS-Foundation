@@ -8,6 +8,7 @@ using Composite.Core.Collections.Generic;
 
 namespace Composite.Core.Types
 {
+#warning MRJ: BM: Kill this class and all its friends
     /// <summary>    
     /// </summary>
     /// <exclude />

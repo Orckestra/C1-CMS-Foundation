@@ -1,4 +1,4 @@
-﻿namespace Composite.Sql
+﻿namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
 	internal interface ISqlTableInformationStore
 	{

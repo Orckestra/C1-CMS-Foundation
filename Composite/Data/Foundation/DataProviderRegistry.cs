@@ -53,7 +53,9 @@ namespace Composite.Data.Foundation
 
 
         /// <summary>
-        /// This will include currently non-supported interfaces
+        /// This will include currently non-supported interfaces.
+        /// That is, interfaces that exists, but for some reason
+        /// does nok work as a data type.
         /// </summary>
         public static IEnumerable<Type> AllKnownInterfaces
         {
@@ -121,6 +123,23 @@ namespace Composite.Data.Foundation
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 return _dataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(interfaceType);
+            }
+        }
+
+
+        /// <summary>
+        /// This method adds a new supported data type to the regitry.
+        /// This should be used if a data provider has extended the
+        /// number of supported interfaces at runtime.
+        /// </summary>
+        /// <param name="interaceType"></param>
+        /// <param name="providerName"></param>
+        /// <param name="isWritableProvider"></param>
+        public static void AddNewDataType(Type interaceType, string providerName, bool isWritableProvider = true)
+        {
+            using (GlobalInitializerFacade.CoreIsInitializedScope)
+            {
+                _dataProviderRegistry.AddNewDataType(interaceType, providerName);
             }
         }
 

@@ -1,8 +1,13 @@
 using System;
+using System.Linq;
 using System.CodeDom;
 using System.IO;
 using Composite.Data.Foundation.CodeGeneration;
 using Composite.Data.Streams;
+using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Core.Types;
+using System.Collections.Generic;
 
 
 namespace Composite.Data.Types
@@ -11,13 +16,33 @@ namespace Composite.Data.Types
     {
         public Type GetTypeToBuild(Type dataType)
         {
+#warning MRJ: BM: Rethink this !!
+#warning MRJ: BM: CACHING!!
             CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(
                 new CodeTypeReference(typeof(FileStreamManagerAttribute)),
                 new CodeAttributeArgument[] {
                     new CodeAttributeArgument(new CodeTypeOfExpression(typeof(IFileEmptyDataClassFileStreamManager)))
                 });
 
-            return EmptyDataClassGenerator.CreateType(dataType, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
+
+            DataTypeDescriptor dataTypeDescriptor = DynamicTypes.DynamicTypeManager.GetDataTypeDescriptor(dataType);
+
+            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("IFileBuildNewHandler: " + dataType.FullName);
+
+            CodeTypeDeclaration codeTypeDeclaration = EmptyDataClassCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptor, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
+            
+            CodeNamespace codeNamespace = new CodeNamespace("EmptyDataClassCodeGenerator.NamespaceName");
+            codeNamespace.Types.Add(codeTypeDeclaration);
+
+            codeGenerationBuilder.AddNamespace(codeNamespace);
+            codeGenerationBuilder.AddReference(dataType.Assembly);
+            codeGenerationBuilder.AddReference(typeof(IFileEmptyDataClassBase).Assembly);
+
+            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+            string fullName = EmptyDataClassCodeGenerator.GetEmptyClassTypeFullName(dataTypeDescriptor);
+
+            return types.Where(f => f.FullName == fullName).Single();
         }
     }
 

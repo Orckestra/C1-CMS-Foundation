@@ -3,7 +3,6 @@ using System.Transactions;
 using Composite.Core;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation.PluginFacades;
-using Composite.Data.GeneratedTypes.Foundation;
 using Composite.Data.Plugins.DataProvider.Runtime;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
@@ -24,7 +23,7 @@ namespace Composite.Data.GeneratedTypes
             UpdateWithNewMetaDataForeignKeySystem(dataTypeDescriptor);
             UpdateWithNewPageFolderForeignKeySystem(dataTypeDescriptor, false);
 
-            Type type = InterfaceCodeGenerator.CreateType(dataTypeDescriptor);
+            Type type = InterfaceCodeManager.GetType(dataTypeDescriptor);
 
             dataTypeDescriptor.TypeManagerTypeName = TypeManager.SerializeType(type);
             dataTypeDescriptor.Version = 1;
@@ -33,19 +32,16 @@ namespace Composite.Data.GeneratedTypes
 
             if (makeAFlush && dataTypeDescriptor.IsCodeGenerated)
             {
-                // Updating Composite.Generated.dll, so the new interface will pop-up in Visual Studio's Intellisense
-                Log.LogVerbose("GeneratedTypesFacade", "Recreating Composite.Genereted.dll");
-                BuildManager.CreateCompositeGeneretedAssembly();
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly();
             }
         }
+
 
 
         public void DeleteType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)
         {
             Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
             Verify.ArgumentNotNull(dataTypeDescriptor, "dataTypeDescriptor");
-
-            Guid immutableTypeId = dataTypeDescriptor.GetInterfaceType().GetImmutableTypeId();
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {                
@@ -54,16 +50,17 @@ namespace Composite.Data.GeneratedTypes
                 transactionScope.Complete();
             }
 
-            BuildManager.RemoveCompiledType(immutableTypeId);
+            if (makeAFlush && dataTypeDescriptor.IsCodeGenerated)
+            {
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+            }
         }
 
 
 
         public bool CanDeleteType(DataTypeDescriptor dataTypeDescriptor, out string errorMessage)
         {
-            Guid typeId = dataTypeDescriptor.DataTypeId;
-
-            CompatibilityCheckResult compatibilityCheckResult = BuildManager.CheckIfAppCodeDependsOnInterface(typeId);
+            CompatibilityCheckResult compatibilityCheckResult = CodeGenerationManager.CheckIfAppCodeDependsOnInterface(dataTypeDescriptor);
 
             if (!compatibilityCheckResult.Successful)
             {
@@ -77,57 +74,34 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        public void UpdateType(string providerName, DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData)
+        
+        public void UpdateType(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
-            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
-            Verify.ArgumentNotNull(oldDataTypeDescriptor, "oldDataTypeDescriptor");
-            Verify.ArgumentNotNull(newDataTypeDescriptor, "newDataTypeDescriptor");
+            Verify.ArgumentNotNullOrEmpty(updateDataTypeDescriptor.ProviderName, "providerName");
+            Verify.ArgumentNotNull(updateDataTypeDescriptor.OldDataTypeDescriptor, "oldDataTypeDescriptor");
+            Verify.ArgumentNotNull(updateDataTypeDescriptor.NewDataTypeDescriptor, "newDataTypeDescriptor");
 
-            newDataTypeDescriptor.Version = oldDataTypeDescriptor.Version + 1;
+            updateDataTypeDescriptor.NewDataTypeDescriptor.Version = updateDataTypeDescriptor.OldDataTypeDescriptor.Version + 1;
 
-            BuildManager.RemoveCompiledType(oldDataTypeDescriptor.DataTypeId);
+            BuildManager.RemoveCompiledType(updateDataTypeDescriptor.OldDataTypeDescriptor.DataTypeId);
 
-            Type type = InterfaceCodeGenerator.CreateType(newDataTypeDescriptor);
-
-            newDataTypeDescriptor.TypeManagerTypeName = TypeManager.SerializeType(type);
-
-            DataTypeChangeDescriptor dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor, originalTypeHasData);
-
-            DynamicTypeManager.AlterStore(providerName, dataTypeChangeDescriptor);
-
-            if (newDataTypeDescriptor.IsCodeGenerated == true)
+            Type interfaceType = null;
+            if (updateDataTypeDescriptor.OldDataTypeDescriptor.IsCodeGenerated)
             {
-                // Re create Composite.Genereted.dll to ensure that App_Code, compiled assemblies that is referring the 
-                // the genereted type is referring the newst version - the newest version might only be in a temp assembly at this point
-                Log.LogVerbose("GeneratedTypesFacade", "Recreating Composite.Genereted.dll");
-                BuildManager.CreateCompositeGeneretedAssembly();
+                interfaceType = InterfaceCodeManager.GetType(updateDataTypeDescriptor.NewDataTypeDescriptor, true);
             }
+            else
+            {
+                interfaceType = DataTypeTypesManager.GetDataType(updateDataTypeDescriptor.NewDataTypeDescriptor);
+            }
+
+            updateDataTypeDescriptor.NewDataTypeDescriptor.TypeManagerTypeName = TypeManager.SerializeType(interfaceType);
+
+            DynamicTypeManager.AlterStore(updateDataTypeDescriptor, false);
+
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly();            
         }
 
-
-
-        public void GenerateTypes()
-        {
-            if (!DataProviderPluginFacade.HasConfiguration())
-            {
-                Log.LogError("GeneratedTypesFacade", "Failed to load the configuration section '{0}' from the configuration".FormatWith(DataProviderSettings.SectionName));
-                return;
-            }
-            
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                var dataTypeDescriptors = DataMetaDataFacade.GeneratedTypeDataTypeDescriptors.Evaluate();
-                foreach (DataTypeDescriptor dataTypeDescriptor in dataTypeDescriptors)
-                {
-                    UpdateWithNewMetaDataForeignKeySystem(dataTypeDescriptor);
-                    UpdateWithNewPageFolderForeignKeySystem(dataTypeDescriptor, true);
-
-                    Type type = InterfaceCodeGenerator.CreateType(dataTypeDescriptor);
-
-                    Log.LogVerbose("GeneratedTypesFacade", "Type generated: {0}, serialized: {1}".FormatWith(type.FullName, TypeManager.SerializeType(type)));
-                }
-            }
-        }
 
 
         /// <summary>
@@ -163,7 +137,9 @@ namespace Composite.Data.GeneratedTypes
 
             var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, dataTypeDescriptor);
 
-            DynamicTypeManager.AlterStore(dataTypeChangeDescriptor, false);
+            UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, dataTypeDescriptor);
+
+            DynamicTypeManager.AlterStore(updateDataTypeDescriptor, false);
         }
 
 

@@ -8,6 +8,8 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using System.IO;
+using Composite.Core.IO;
 
 
 namespace Composite.Core.WebClient
@@ -60,7 +62,7 @@ namespace Composite.Core.WebClient
                 _systemIsInitialized = true;
             }
         }
-
+      
 
 
         /// <exclude />
@@ -97,7 +99,10 @@ namespace Composite.Core.WebClient
 
                     if (haveLock)
                     {
-                        Composite.Core.Types.BuildManager.FinalizeCachingSytem();
+                        //Composite.Core.Types.BuildManager.FinalizeCachingSytem();
+
+                        CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+
                         TempDirectoryFacade.OnApplicationEnd();
                     }
 

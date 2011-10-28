@@ -1,12 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Composite.Data.Plugins.DataProvider.CodeGeneration;
-using Composite.Sql;
 using Composite.Core.Types;
+using Composite.Data.Plugins.DataProvider.CodeGeneration;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
+
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration
 {
+#warning MRJ: BM: Remove this stuff
+    [DebuggerDisplay("InterfaceType = {InterfaceType}")]
+    internal sealed class SqlDataTable
+    {
+        public Type InterfaceType { get; set; }
+    }
+
+
+#warning MRJ: BM: Remove this stuff
     [DebuggerDisplay("InterfaceType = {InterfaceType}")]
     internal sealed class SqlDataProviderCodeGeneratorTable
     {

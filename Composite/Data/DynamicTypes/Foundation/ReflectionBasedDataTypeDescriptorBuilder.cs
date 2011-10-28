@@ -32,7 +32,10 @@ namespace Composite.Data.DynamicTypes.Foundation
             typeDescriptor.Title = DynamicTypeReflectionFacade.GetTitle(type);
             typeDescriptor.LabelFieldName = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
             typeDescriptor.DataAssociations = DynamicTypeReflectionFacade.GetDataTypeAssociationDescriptors(type);
-            typeDescriptor.Version = (int)DynamicTypeReflectionFacade.GetVersion(type);
+            typeDescriptor.Version = DynamicTypeReflectionFacade.GetVersion(type);
+            
+            Type buildNewHandlerType = DynamicTypeReflectionFacade.GetBuildNewHandlerType(type);
+            if (buildNewHandlerType != null) typeDescriptor.BuildNewHandlerTypeName = TypeManager.SerializeType(buildNewHandlerType);
 
 
             foreach (PropertyInfo propertyInfo in type.GetProperties())

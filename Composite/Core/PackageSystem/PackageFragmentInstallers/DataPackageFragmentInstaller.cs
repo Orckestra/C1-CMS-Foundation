@@ -46,6 +46,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 dataType.InterfaceType = TypeManager.TryGetType(dataType.InterfaceTypeName);
 
+
                 if (dataType.IsDynamicAdded == false)
                 {
                     ValidateNonDynamicAddedType(dataType);
@@ -323,12 +324,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.TypeNotConfigured"), dataType.InterfaceTypeName)));
                 return;
             }
-            else if ((DataFacade.GetAllInterfaces().Contains(dataType.InterfaceType) == false) &&
-                     (this.InstallerContext.IsDataTypePending(dataType.InterfaceType) == false))
-            {
-                _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.TypeNotConfigured"), dataType.InterfaceType)));
-                return;
-            }
+            
+#warning MRJ: BM: This should not be needed if the types are dynamicly at runetime added..
+            //if ((DataFacade.GetAllInterfaces().Contains(dataType.InterfaceType) == false) && (InstallerContex.IsDataTypePending(dataType.InterfaceType) == false))
+            //{                
+            //    _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentInstaller.TypeNotConfigured"), dataType.InterfaceType)));
+            //    return;
+            //}
 
             if (typeof(IData).IsAssignableFrom(dataType.InterfaceType) == false)
             {

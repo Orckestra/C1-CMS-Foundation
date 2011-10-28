@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
+using Composite.Core.Logging;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
-using Composite.Core.Logging;
-using Composite.Core.Extensions;
-using Composite.Core.Types;
 
 
 namespace Composite.Data.DynamicTypes
 {
+#warning MRJ: BM: Remove version from here
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     [DebuggerDisplay("Name = {Name}")]
     public class DataTypeDescriptor
     {
@@ -106,8 +107,10 @@ namespace Composite.Data.DynamicTypes
             {
                 throw new InvalidOperationException("The TypeManagerTypeName has not been set");
             }
-
-            return TypeManager.GetType(this.TypeManagerTypeName);
+            
+#warning MRJ: BM: Will this be bad if the interface does not yet exist?
+            return DataTypeTypesManager.GetDataType(this);
+            //return TypeManager.GetType(this.TypeManagerTypeName);
         }
 
 
@@ -147,6 +150,7 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+
         /// <exclude />
         public string Title { get; set; }
 
@@ -165,7 +169,7 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
-
+#warning MRJ: BM: Is this needed any more?
         /// <exclude />
         public int Version { get; internal set; }
 
@@ -203,6 +207,14 @@ namespace Composite.Data.DynamicTypes
             {
                 return SuperInterfaces.Contains(typeof(ILocalizedControlled));
             }
+        }
+
+
+        /// <exclude />
+        public string BuildNewHandlerTypeName
+        {
+            get;
+            set;
         }
 
 
@@ -457,6 +469,7 @@ namespace Composite.Data.DynamicTypes
 
             dataTypeDescriptor.Title = this.Title;
             dataTypeDescriptor.Version = this.Version;
+            dataTypeDescriptor.BuildNewHandlerTypeName = this.BuildNewHandlerTypeName;
 
             return dataTypeDescriptor;
         }
@@ -471,22 +484,15 @@ namespace Composite.Data.DynamicTypes
             element.Add(new XAttribute("dataTypeId", this.DataTypeId));
             element.Add(new XAttribute("name", this.Name));
             element.Add(new XAttribute("namespace", this.Namespace));
-            if (this.Title != null)
-            {
-                element.Add(new XAttribute("title", this.Title));
-            }
+            if (this.Title != null) element.Add(new XAttribute("title", this.Title));
             element.Add(new XAttribute("hasCustomPhysicalSortOrder", this.HasCustomPhysicalSortOrder));
             element.Add(new XAttribute("isCodeGenerated", this.IsCodeGenerated));
             element.Add(new XAttribute("cachable", this.Cachable));
-            if (this.LabelFieldName != null)
-            {
-                element.Add(new XAttribute("labelFieldName", this.LabelFieldName));
-            }
-            if (this.TypeManagerTypeName != null)
-            {
-                element.Add(new XAttribute("typeManagerTypeName", this.TypeManagerTypeName));
-            }
+            if (this.LabelFieldName != null) element.Add(new XAttribute("labelFieldName", this.LabelFieldName));
+            if (this.TypeManagerTypeName != null) element.Add(new XAttribute("typeManagerTypeName", this.TypeManagerTypeName));
             element.Add(new XAttribute("version", this.Version));
+            if (!string.IsNullOrEmpty(this.BuildNewHandlerTypeName)) element.Add(new XAttribute("buildNewHandlerTypeName", this.BuildNewHandlerTypeName));
+
 
             XElement dataAssociationsElement = new XElement("DataAssociations");
             foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in this.DataAssociations)
@@ -541,9 +547,11 @@ namespace Composite.Data.DynamicTypes
             XAttribute isCodeGeneratedAttribute = element.Attribute("isCodeGenerated");
             XAttribute cachableAttribute = element.Attribute("cachable");            
             XAttribute versionAttribute = element.Attribute("version");
+            XAttribute buildNewHandlerTypeNameAttribute = element.Attribute("buildNewHandlerTypeName");
             XElement dataAssociationsElement = element.Element("DataAssociations");
             XElement dataScopesElement = element.Element("DataScopes");
             XElement keyPropertyNamesElement = element.Element("KeyPropertyNames");
+#warning MRJ: BM: Why is this not used?
             XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
             XElement superInterfacesElement = element.Element("SuperInterfaces");
             XElement fieldsElement = element.Element("Fields");
@@ -566,6 +574,7 @@ namespace Composite.Data.DynamicTypes
             }
 
             // TODO: check why "hasCustomPhysicalSortOrder" and "version" isn't used
+#warning MRJ: BM: Why is this not used?
             bool hasCustomPhysicalSortOrder = (bool)hasCustomPhysicalSortOrderAttribute;
             int version = (int)versionAttribute;
 
@@ -573,20 +582,11 @@ namespace Composite.Data.DynamicTypes
             dataTypeDescriptor.Cachable = cachable;
             dataTypeDescriptor.Version = version;
 
-            if (titleAttribute != null)
-            {
-                dataTypeDescriptor.Title = titleAttribute.Value;
-            }
+            if (titleAttribute != null) dataTypeDescriptor.Title = titleAttribute.Value;
+            if (labelFieldNameAttribute != null) dataTypeDescriptor.LabelFieldName = labelFieldNameAttribute.Value;
+            if (typeManagerTypeNameAttribute != null) dataTypeDescriptor.TypeManagerTypeName = typeManagerTypeNameAttribute.Value;
+            if (buildNewHandlerTypeNameAttribute != null) dataTypeDescriptor.BuildNewHandlerTypeName = buildNewHandlerTypeNameAttribute.Value;
 
-            if (labelFieldNameAttribute != null)
-            {
-                dataTypeDescriptor.LabelFieldName = labelFieldNameAttribute.Value;
-            }
-
-            if (typeManagerTypeNameAttribute != null)
-            {
-                dataTypeDescriptor.TypeManagerTypeName = typeManagerTypeNameAttribute.Value;
-            }
 
             foreach (XElement elm in dataAssociationsElement.Elements())
             {
@@ -698,6 +698,34 @@ namespace Composite.Data.DynamicTypes
             {
                 return string.Format("{0}.{1}", this.Namespace, this.Name);
             }
+        }
+    }
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
+    public static class DataTypeDescriptorExtensions
+    {
+        /// <summary>
+        /// This method returns the full interface name with out assembly name
+        /// and other C1 specific prefixes like DynamicType:
+        /// </summary>
+        /// <param name="dataTypeDescriptor"></param>
+        /// <returns></returns>
+        public static string GetFullInterfaceName(this DataTypeDescriptor dataTypeDescriptor)
+        {
+            return dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name;
+            //string interfaceTypeName = dataTypeDescriptor.TypeManagerTypeName;
+            //if (interfaceTypeName.StartsWith("DynamicType:")) interfaceTypeName = interfaceTypeName.Remove(0, "DynamicType:".Length);
+
+
+            //string fullInterfaceName = interfaceTypeName.Replace('.', '_').Replace('+', '_');
+            //if (fullInterfaceName.IndexOf(",") >= 0) fullInterfaceName = fullInterfaceName.Remove(fullInterfaceName.IndexOf(","));
+
+            //return fullInterfaceName;
         }
     }
 }

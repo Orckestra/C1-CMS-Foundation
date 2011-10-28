@@ -12,8 +12,10 @@ namespace Composite.Data.Foundation
         /// <exclude />
 	    public static T Wrap<T>(T value) where T: class, IData
         {
-            // TODO: Insert logic, so we will not have "wrapped" wrappers
-            Type wrapperType = DataWrapperGenerator.CreateType(typeof (T));
+            if (value is IDataWrapper) return value;
+
+            Type wrapperType = DataWrapperTypeManager.GetDataWrapperType(typeof (T));
+
             return (T)Activator.CreateInstance(wrapperType, new object[] { value });
         }
 

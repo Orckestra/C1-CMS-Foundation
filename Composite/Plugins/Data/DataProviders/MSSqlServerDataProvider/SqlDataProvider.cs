@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -20,24 +19,84 @@ using Composite.Plugins.Data.DataProviders.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using System.IO;
+using Composite.Data.Foundation.PluginFacades;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 {
-    [ConfigurationElementType(typeof(SqlDataProviderData))]
-    internal sealed class SqlDataProvider : IGeneratedTypesDataProvider, ILocalizedDataProvider
+#warning MRJ: BM: Move this class
+    internal class SqlDataProviderCodeProvider : ICodeProvider
     {
+        public string ProviderName { get; private set; }
+
+        public SqlDataProviderCodeProvider(string providerName)
+        {
+            ProviderName = providerName;
+        }
+
+
+        public void GetCodeToCompile(CodeGenerationBuilder builder)
+        {
+            SqlDataProvider xmlDataProvider = (SqlDataProvider)DataProviderPluginFacade.GetDataProvider(ProviderName);
+
+            xmlDataProvider.BuildAllCode(builder);
+        }
+    }
+
+
+
+    [ConfigurationElementType(typeof(SqlDataProviderData))]
+    internal partial class SqlDataProvider : IGeneratedTypesDataProvider, ILocalizedDataProvider
+    {
+#warning MRJ: BM: This is used by SqlDataProviderCodeGenerator that is current hardcoded. Find fix
+#warning MRJ: BM: There is also redundant code herem, See EnsureStore or something
+        public void BuildAllCode(CodeGenerationBuilder codeGenerationBuilder)
+        {
+            SqlDataProviderCodeBuilder codeBuilder = new SqlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
+
+            foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
+            {
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId);
+                
+                List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
+
+                foreach (StorageInformation storageInformation in element.Stores)
+                {
+                    SqlDataTypeStoreDataScope sqlDataTypeStoreDataScope = new SqlDataTypeStoreDataScope
+                    {
+                        DataScopeName = storageInformation.DataScope,
+                        CultureName = storageInformation.CultureName,
+                        TableName = storageInformation.TableName
+                    };
+
+                    sqlDataTypeStoreDataScopes.Add(sqlDataTypeStoreDataScope);
+                }
+
+                codeBuilder.AddDataType(dataTypeDescriptor, sqlDataTypeStoreDataScopes);
+            }
+
+            codeBuilder.AddDataContext();
+        }
+
         private readonly string _connectionString;
-        SqlLoggingContext _sqlLoggingContext;
-        private readonly List<InterfaceConfigurationElement> _dataTypesTableElements;
+        private readonly List<InterfaceConfigurationElement> _interfaceConfigurationElements;
+        private SqlDataTypeStoresContainer _sqlDataTypeStoresContainer;
+        private readonly SqlLoggingContext _sqlLoggingContext;
+
+
+#warning MRJ: BM: Remove this
+        /* private readonly List<InterfaceConfigurationElement> _dataTypesTableElements;
         private readonly List<InterfaceConfigurationElement> _generatedTypesTableElements;
         private bool _generatedTypesHasBeenGenerated;
+        private SqlDataTypeStoresContainer _dataTypesGeneratorResult;*/
 
-        private SqlDataProviderCodeGeneratorResult _dataTypesGeneratorResult;
+
+
         private DataProviderContext _dataProviderContext;
         private SqlDataProviderStoreManipulator _sqlDataProviderStoreManipulator;
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
         private class RequireTransactionScope : IDisposable
         {
@@ -69,12 +128,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         }
 
 
-
-        public SqlDataProvider(string connectionString, List<InterfaceConfigurationElement> dataTypesTableElements, List<InterfaceConfigurationElement> generatedTypesTableElements, SqlLoggingContext sqlLoggingContext = null)
+        public SqlDataProvider(string connectionString, IEnumerable<InterfaceConfigurationElement> interfaceConfigurationElement, SqlLoggingContext sqlLoggingContext = null)
         {
             _connectionString = connectionString;
-            _dataTypesTableElements = dataTypesTableElements;
-            _generatedTypesTableElements = generatedTypesTableElements;
+            _interfaceConfigurationElements = interfaceConfigurationElement.ToList();
             _sqlLoggingContext = sqlLoggingContext;
         }
 
@@ -85,7 +142,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             set
             {
                 _dataProviderContext = value;
-                _dataTypesGeneratorResult = GenerateResult(_dataTypesTableElements, true);
+
+#warning MRJ: Fix this line!
+                CodeGenerationManager.AddAssemblyCodeProvider(new SqlDataProviderCodeProvider(_dataProviderContext.ProviderName));
+
+                InitializeExistingStores();
             }
         }
 
@@ -93,56 +154,54 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         public IEnumerable<Type> GetSupportedInterfaces()
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                return _dataTypesGeneratorResult.ConfiguredInterfaceTypes;
-            }
+            return _sqlDataTypeStoresContainer.SupportedInterface;
         }
 
 
 
         public IEnumerable<Type> GetKnownInterfaces()
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                return _dataTypesGeneratorResult.AllInterfaceTypes;
-            }
+            return _sqlDataTypeStoresContainer.KnownInterfaces;
         }
 
 
 
         public IEnumerable<Type> GetGeneratedInterfaces()
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                if (_generatedTypesHasBeenGenerated == false)
-                {
-                    lock (_lock)
-                    {
-                        if (_generatedTypesHasBeenGenerated == false)
-                        {
-                            _dataTypesGeneratorResult = GenerateResult(_dataTypesTableElements.Concat(_generatedTypesTableElements), false);
-                            _generatedTypesHasBeenGenerated = true;
-                        }
-                    }
-                }
+#warning MRJ: BM: Clean this
 
-                List<Type> result = new List<Type>();
+            return _sqlDataTypeStoresContainer.GeneratedInterfaces;
 
-                HashSet<Type> configuratedIntefaceTypes = new HashSet<Type>(_dataTypesGeneratorResult.ConfiguredInterfaceTypes);
+            /* using (TimerProfilerFacade.CreateTimerProfiler())
+             {
+                 if (_generatedTypesHasBeenGenerated == false)
+                 {
+                     lock (_lock)
+                     {
+                         if (_generatedTypesHasBeenGenerated == false)
+                         {
+                             _dataTypesGeneratorResult = GenerateResult(_dataTypesTableElements.Concat(_generatedTypesTableElements), false);
+                             _generatedTypesHasBeenGenerated = true;
+                         }
+                     }
+                 }
 
-                foreach (var interfaceConfigurationElement in _generatedTypesTableElements)
-                {
-                    Type type = TypeManager.TryGetType(interfaceConfigurationElement.InterfaceType);
+                 List<Type> result = new List<Type>();
 
-                    if (configuratedIntefaceTypes.Contains(type))
-                    {
-                        result.Add(type);
-                    }
-                }
+                 HashSet<Type> configuratedIntefaceTypes = new HashSet<Type>(_dataTypesGeneratorResult.ConfiguredInterfaceTypes);
 
-                return result;
-            }
+                 foreach (var interfaceConfigurationElement in _generatedTypesTableElements)
+                 {
+                     Type type = TypeManager.TryGetType(interfaceConfigurationElement.DataTypeId);
+
+                     if (configuratedIntefaceTypes.Contains(type))
+                     {
+                         result.Add(type);
+                     }
+                 }
+
+                 return result;
+             }*/
         }
 
 
@@ -152,7 +211,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             using (TimerProfilerFacade.CreateTimerProfiler(typeof(T).ToString()))
             {
-                SqlDataProviderCodeGeneratorTableResult result = GetTableResult(typeof(T));
+                SqlDataTypeStore result = _sqlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
                 return (IQueryable<T>)result.GetQueryable();
             }
@@ -163,11 +222,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         public T GetData<T>(IDataId dataId)
             where T : class, IData
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler(string.Format("dataId ({0})", typeof(T))))
+            using (TimerProfilerFacade.CreateTimerProfiler(string.Format("dataId ({0})", typeof(T))))
             {
                 if (dataId == null) throw new ArgumentNullException("dataId");
 
-                SqlDataProviderCodeGeneratorTableResult result = GetTableResult(typeof(T));
+                SqlDataTypeStore result = _sqlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
                 IData data = result.GetDataByDataId(dataId, _dataProviderContext);
 
@@ -197,11 +256,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         throw new ArgumentException(string.Format("Only one data interface per enumerable type supported"));
                     }
-                }
+                }                
 
-                SqlDataProviderCodeGeneratorResult generatorResult = GetGeneratorResult(interfaceType);
-
-                generatorResult.Update(datas);
+                _sqlDataTypeStoresContainer.Update(datas);
             }
         }
 
@@ -214,8 +271,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 if (datas == null) throw new ArgumentNullException("datas");
 
-                SqlDataProviderCodeGeneratorResult generatorResult = GetGeneratorResult(typeof(T));
-
                 RequireTransactionScope scope = null;
                 try
                 {
@@ -225,7 +280,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                         scope = new RequireTransactionScope();
                     }
 
-                    var result = generatorResult.AddNew<T>(datas, _dataProviderContext);
+                    var result = _sqlDataTypeStoresContainer.AddNew<T>(datas, _dataProviderContext);
 
                     if (scope != null)
                     {
@@ -267,53 +322,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     }
                 }
 
-                SqlDataProviderCodeGeneratorResult generatorResult = GetGeneratorResult(interfaceType);
-
-                generatorResult.Delete(dataSourceIds, _dataProviderContext);
+                _sqlDataTypeStoresContainer.Delete(dataSourceIds, _dataProviderContext);
             }
         }
 
 
 
-        public void CreateStore(DataTypeDescriptor typeDescriptor)
-        {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                if (InterfaceConfigurationManipulator.ConfigurationExists(_dataProviderContext.ProviderName, typeDescriptor) == true)
-                {
-                    throw new InvalidOperationException(string.Format("SqlDataProvider configuration already contains a interface named '{0}'. Remove it from the configuration and restart the application.", typeDescriptor.TypeManagerTypeName));
-                }
-
-                SqlStoreManipulator.CreateStoresForType(typeDescriptor);
-
-                InterfaceConfigurationManipulator.AddNew(_dataProviderContext.ProviderName, typeDescriptor);
-            }
-        }
-
-
-        public void AlterStore(DataTypeChangeDescriptor changeDescriptor)
-        {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                SqlStoreManipulator.AlterStoresForType(_dataProviderContext.ProviderName, changeDescriptor);
-
-                bool localizationChanged = changeDescriptor.AlteredType.Localizeable !=
-                                           changeDescriptor.OriginalType.Localizeable;
-
-                InterfaceConfigurationManipulator.Change(_dataProviderContext.ProviderName, changeDescriptor, localizationChanged);
-            }
-        }
-
-
-        public void DropStore(DataTypeDescriptor typeDescriptor)
-        {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                SqlStoreManipulator.DropStoresForType(_dataProviderContext.ProviderName, typeDescriptor);
-
-                InterfaceConfigurationManipulator.Remove(_dataProviderContext.ProviderName, typeDescriptor);
-            }
-        }
+        
 
 
 
@@ -327,10 +342,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         if (_sqlDataProviderStoreManipulator == null)
                         {
-                            var tables = new List<InterfaceConfigurationElement>();
-                            tables.AddRange(_dataTypesTableElements);
-                            tables.AddRange(_generatedTypesTableElements);
-                            _sqlDataProviderStoreManipulator = new SqlDataProviderStoreManipulator(_connectionString, tables);
+                            _sqlDataProviderStoreManipulator = new SqlDataProviderStoreManipulator(_connectionString, _interfaceConfigurationElements);
                         }
                     }
                 }
@@ -341,7 +353,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private SqlDataProviderCodeGeneratorResult GetGeneratorResult(Type interfaceType)
+       /* private SqlDataTypeStore GetTableResult(Type interfaceType)
+        {
+            return 
+        }*/
+
+
+#warning MRJ: BM: Remove this
+        /*  private SqlDataTypeStoresContainer GetGeneratorResult(Type interfaceType)
         {
             if (_dataTypesGeneratorResult.ConfiguredInterfaceTypes.Contains(interfaceType) == true)
             {
@@ -352,18 +371,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private SqlDataProviderCodeGeneratorTableResult GetTableResult(Type interfaceType)
+        private SqlDataTypeStore GetTableResult(Type interfaceType)
         {
-            SqlDataProviderCodeGeneratorResult generatorResult = GetGeneratorResult(interfaceType);
+            SqlDataTypeStoresContainer generatorResult = GetGeneratorResult(interfaceType);
 
             return GetTableResult(interfaceType, generatorResult);
-        }
+        }*/
 
 
-
-        private SqlDataProviderCodeGeneratorTableResult GetTableResult(Type interfaceType, SqlDataProviderCodeGeneratorResult sqlDataProviderCodeGeneratorResult)
+#warning MRJ: BM: Remove this
+        /* private SqlDataTypeStore GetTableResult(Type interfaceType, SqlDataTypeStoresContainer sqlDataProviderCodeGeneratorResult)
         {
-            SqlDataProviderCodeGeneratorTableResult result = sqlDataProviderCodeGeneratorResult.TryGetTableResult(interfaceType);
+            SqlDataTypeStore result = sqlDataProviderCodeGeneratorResult.TryGetTableResult(interfaceType);
 
             if (result == null)
             {
@@ -380,82 +399,83 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
 
             return result;
-        }
+        }*/
 
-        private SqlDataProviderCodeGeneratorResult GenerateResult(IEnumerable<InterfaceConfigurationElement> tableElementsToGenerated, bool onlyBasicTypes)
-        {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                var tables = new List<SqlDataProviderCodeGeneratorTable>();
+        /* private SqlDataTypeStoresContainer GenerateResult(IEnumerable<InterfaceConfigurationElement> tableElementsToGenerated, bool onlyBasicTypes)
+         {
+             using (TimerProfilerFacade.CreateTimerProfiler())
+             {
+                 var tables = new List<SqlDataProviderCodeGeneratorTable>();
 
-                foreach (InterfaceConfigurationElement table in tableElementsToGenerated)
-                {
-                    string interfaceTypeName = table.InterfaceType;
-                    Type interfaceType = TypeManager.TryGetType(interfaceTypeName);
+                 foreach (InterfaceConfigurationElement table in tableElementsToGenerated)
+                 {
+                     string interfaceTypeName = table.DataTypeId;
+                     Type interfaceType = TypeManager.TryGetType(interfaceTypeName);
 
-                    if (interfaceType == null)
-                    {
-                        LoggingService.LogWarning("SqlDataProvider", "Cannot load type '{0}', related data storage will not be loaded.".FormatWith(interfaceTypeName));
-                        continue;
-                    }
+                     if (interfaceType == null)
+                     {
+                         LoggingService.LogWarning("SqlDataProvider", "Cannot load type '{0}', related data storage will not be loaded.".FormatWith(interfaceTypeName));
+                         continue;
+                     }
 
-                    var codeTable = new SqlDataProviderCodeGeneratorTable
-                        {
-                            InterfaceType = interfaceType,
-                            DataIdProperties = table.DataIdProperties,
-                            PropertyNameMapping = table.PropertyNameMappings,
-                            PropertyInitializers = table.PropertyInitializers
-                        };
+                     var codeTable = new SqlDataProviderCodeGeneratorTable
+                         {
+                             InterfaceType = interfaceType,
+                             DataIdProperties = table.DataIdProperties,
+                             PropertyNameMapping = table.PropertyNameMappings,
+                             PropertyInitializers = table.PropertyInitializers
+                         };
 
-                    codeTable.DataScopes = new List<string>();
-                    codeTable.CultureNames = new List<string>();
-                    codeTable.Stores = new Dictionary<string, SqlDataProviderCodeGeneratorTable.StoreInformation>();
+                     codeTable.DataScopes = new List<string>();
+                     codeTable.CultureNames = new List<string>();
+                     codeTable.Stores = new Dictionary<string, SqlDataProviderCodeGeneratorTable.StoreInformation>();
 
-                    foreach (StorageInformation storageInfo in table.Stores)
-                    {
-                        if (!codeTable.DataScopes.Contains(storageInfo.DataScope))
-                        {
-                            codeTable.DataScopes.Add(storageInfo.DataScope);
-                        }
+                     foreach (StorageInformation storageInfo in table.Stores)
+                     {
+                         if (!codeTable.DataScopes.Contains(storageInfo.DataScope))
+                         {
+                             codeTable.DataScopes.Add(storageInfo.DataScope);
+                         }
 
-                        if (!codeTable.CultureNames.Contains(storageInfo.CultureName))
-                        {
-                            codeTable.CultureNames.Add(storageInfo.CultureName);
-                        }
+                         if (!codeTable.CultureNames.Contains(storageInfo.CultureName))
+                         {
+                             codeTable.CultureNames.Add(storageInfo.CultureName);
+                         }
 
-                        string storageName = GetStorageName(storageInfo.DataScope, storageInfo.CultureName);
-                        codeTable.Stores.Add(storageName, new SqlDataProviderCodeGeneratorTable.StoreInformation
-                                                              {
-                                                                  TableName = storageInfo.TableName,
-                                                                  DataScope = storageInfo.DataScope,
-                                                                  CultureName = storageInfo.CultureName
-                                                              });
-                    }
+                         string storageName = GetStorageName(storageInfo.DataScope, storageInfo.CultureName);
+                         codeTable.Stores.Add(storageName, new SqlDataProviderCodeGeneratorTable.StoreInformation
+                                                               {
+                                                                   TableName = storageInfo.TableName,
+                                                                   DataScope = storageInfo.DataScope,
+                                                                   CultureName = storageInfo.CultureName
+                                                               });
+                     }
 
-                    if (codeTable.InterfaceType == null)
-                    {
-                        codeTable.Errors.Add(string.Format("The type '{0}' could not be found", table.InterfaceType));
-                    }
+                     if (codeTable.InterfaceType == null)
+                     {
+                         codeTable.Errors.Add(string.Format("The type '{0}' could not be found", table.DataTypeId));
+                     }
 
-                    tables.Add(codeTable);
-                }
+                     tables.Add(codeTable);
+                 }
 
-                string dataProviderName = _dataProviderContext.ProviderName;
+                 string dataProviderName = _dataProviderContext.ProviderName;
 
-                if (onlyBasicTypes)
-                {
-                    dataProviderName += "__basic";
-                }
+                 if (onlyBasicTypes)
+                 {
+                     dataProviderName += "__basic";
+                 }
 
-                SqlDataProviderCodeGenerator generator = new SqlDataProviderCodeGenerator(dataProviderName, _connectionString, tables, _dataProviderContext.ProviderName, _sqlLoggingContext);
+                 SqlDataProviderCodeGenerator generator = new SqlDataProviderCodeGenerator(dataProviderName, _connectionString, tables, _dataProviderContext.ProviderName, _sqlLoggingContext);
 
-                SqlDataProviderCodeGeneratorResult result = generator.Generate();
+                 SqlDataTypeStoresContainer result = generator.Generate();
 
-                return result;
-            }
-        }
+                 return result;
+             }
+         }*/
 
-        internal static string GetStorageName(string dataScope, string cultureName)
+#warning MRJ: DM: Delete this method
+        /*   internal static string GetStorageName1(string dataScope, string cultureName)
         {
             string result = dataScope;
             if (!cultureName.IsNullOrEmpty())
@@ -463,7 +483,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 result += "_" + cultureName.Replace('-', '_').Replace(' ', '_');
             }
             return result;
-        }
+        }*/
 
 
         public void AddLocale(CultureInfo cultureInfo)
@@ -510,9 +530,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
-            var data = (SqlDataProviderData)objectConfiguration;
+            SqlDataProviderData sqlDataProviderData = (SqlDataProviderData)objectConfiguration;
 
-            C1Configuration configuration = new C1Configuration(System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", data.Name)));
+            C1Configuration configuration = new C1Configuration(Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", sqlDataProviderData.Name)));
 
             SqlDataProviderConfigurationSection section = configuration.GetSection(SqlDataProviderConfigurationSection.SectionName) as SqlDataProviderConfigurationSection;
             if (section == null)
@@ -522,7 +542,35 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 configuration.Save();
             }
 
-            List<InterfaceConfigurationElement> typesTableElements = new List<InterfaceConfigurationElement>();
+
+            List<InterfaceConfigurationElement> interfaceConfigurationElements = new List<InterfaceConfigurationElement>();
+            foreach (InterfaceConfigurationElement table in section.Interfaces)
+            {
+                interfaceConfigurationElements.Add(table);
+            }
+
+
+            SqlLoggingContext sqlLoggingContext = new SqlLoggingContext();
+            sqlLoggingContext.Enabled = sqlDataProviderData.SqlQueryLoggingEnabled;
+            sqlLoggingContext.IncludeStack = sqlDataProviderData.SqlQueryLoggingIncludeStack;
+            sqlLoggingContext.TypesToIgnore = new List<Type>();
+            if (sqlDataProviderData.SqlQueryLoggingEnabled == true)
+            {
+                foreach (LoggingIgnoreInterfacesConfigurationElement element in sqlDataProviderData.LoggingIgnoreInterfaces)
+                {
+                    Type interfaceType = TypeManager.TryGetType(element.InterfaceType);
+                    if (interfaceType != null)
+                    {
+                        sqlLoggingContext.TypesToIgnore.Add(interfaceType);
+                    }
+                }
+            }
+
+            return new SqlDataProvider(sqlDataProviderData.ConnectionString, interfaceConfigurationElements, sqlLoggingContext);
+
+#warning MRJ: BM: Clean this up
+
+            /*List<InterfaceConfigurationElement> typesTableElements = new List<InterfaceConfigurationElement>();
             List<InterfaceConfigurationElement> generatedTypesTableElements = new List<InterfaceConfigurationElement>();
             foreach (InterfaceConfigurationElement table in section.Interfaces)
             {
@@ -534,16 +582,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 {
                     generatedTypesTableElements.Add(table);
                 }
-            }
+            }*/
 
-
+            /*
             SqlLoggingContext sqlLoggingContext = new SqlLoggingContext();
-            sqlLoggingContext.Enabled = data.SqlQueryLoggingEnabled;
-            sqlLoggingContext.IncludeStack = data.SqlQueryLoggingIncludeStack;
+            sqlLoggingContext.Enabled = sqlDataProviderData.SqlQueryLoggingEnabled;
+            sqlLoggingContext.IncludeStack = sqlDataProviderData.SqlQueryLoggingIncludeStack;
             sqlLoggingContext.TypesToIgnore = new List<Type>();
-            if (data.SqlQueryLoggingEnabled == true)
+            if (sqlDataProviderData.SqlQueryLoggingEnabled == true)
             {
-                foreach (LoggingIgnoreInterfacesConfigurationElement element in data.LoggingIgnoreInterfaces)
+                foreach (LoggingIgnoreInterfacesConfigurationElement element in sqlDataProviderData.LoggingIgnoreInterfaces)
                 {
                     Type interfaceType = TypeManager.TryGetType(element.InterfaceType);
                     if (interfaceType != null)
@@ -553,22 +601,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
             }
 
-            string connectionString = data.ConnectionString;
 
-            if(string.IsNullOrEmpty(connectionString))
-            {
-                string connectionStringName = data.ConnectionStringName;
-
-                if(string.IsNullOrEmpty(connectionStringName))
-                {
-                    throw new ConfigurationErrorsException("SqlDataProvider requires one of the following properties to be specified: 'connectionString', 'connectionStringName'");
-                }
-
-                var connStringConfigNode = System.Web.Configuration.WebConfigurationManager.ConnectionStrings[connectionStringName];
-                connectionString = connStringConfigNode.ConnectionString;
-            }
-
-            return new SqlDataProvider(connectionString, typesTableElements, generatedTypesTableElements, sqlLoggingContext);
+            return new SqlDataProvider(sqlDataProviderData.ConnectionString, typesTableElements, generatedTypesTableElements, sqlLoggingContext);*/
         }
     }
 
@@ -589,20 +623,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
     internal sealed class SqlDataProviderData : DataProviderData
     {
         private const string _connectionStringPropertyName = "connectionString";
-        [System.Configuration.ConfigurationProperty(_connectionStringPropertyName, IsRequired = false)]
+        [System.Configuration.ConfigurationProperty(_connectionStringPropertyName, IsRequired = true)]
         public string ConnectionString
         {
             get { return (string)base[_connectionStringPropertyName]; }
             set { base[_connectionStringPropertyName] = value; }
         }
 
-        private const string _connectionStringNamePropertyName = "connectionStringName";
-        [System.Configuration.ConfigurationProperty(_connectionStringNamePropertyName, IsRequired = false)]
-        public string ConnectionStringName
-        {
-            get { return (string)base[_connectionStringNamePropertyName]; }
-            set { base[_connectionStringNamePropertyName] = value; }
-        }
 
         private const string _sqlQueryLoggingEnabledPropertyName = "sqlQueryLoggingEnabled";
         [System.Configuration.ConfigurationProperty(_sqlQueryLoggingEnabledPropertyName, IsRequired = false, DefaultValue = false)]
@@ -780,12 +807,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         }
 
 
-        private const string _interfaceTypePropertyName = "interfaceType";
-        [System.Configuration.ConfigurationProperty(_interfaceTypePropertyName, IsRequired = true)]
-        public string InterfaceType
+        private const string _dataTypeIdName = "dataTypeId";
+        [System.Configuration.ConfigurationProperty(_dataTypeIdName, IsRequired = true)]
+        public Guid DataTypeId
         {
-            get { return (string)base[_interfaceTypePropertyName]; }
-            set { base[_interfaceTypePropertyName] = value; }
+            get { return (Guid)base[_dataTypeIdName]; }
+            set { base[_dataTypeIdName] = value; }
         }
 
 
@@ -840,18 +867,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
-            return ((InterfaceConfigurationElement)element).InterfaceType;
+            return ((InterfaceConfigurationElement)element).DataTypeId;
         }
 
-        internal bool ContainsInterfaceType(string interfaceType)
+        internal bool ContainsInterfaceType(Guid dataTypeId)
         {
             object[] allKeys = BaseGetAllKeys();
-            return allKeys.Contains(interfaceType);
+            return allKeys.Contains(dataTypeId);
         }
 
-        internal void Remove(string interfaceType)
+        internal void Remove(Guid dataTypeId)
         {
-            BaseRemove(interfaceType);
+            BaseRemove(dataTypeId);
         }
     }
 

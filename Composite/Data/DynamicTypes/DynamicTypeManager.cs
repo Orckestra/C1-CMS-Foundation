@@ -5,6 +5,9 @@ using Composite.Data.Foundation;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.Types;
+using Composite.Data.Foundation.PluginFacades;
+using Composite.Data.Plugins.DataProvider;
+using Composite.Data.GeneratedTypes;
 
 
 namespace Composite.Data.DynamicTypes
@@ -129,26 +132,17 @@ namespace Composite.Data.DynamicTypes
 
         // Overload
         /// <exclude />
-        public static void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor)
+        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
-            AlterStore(providerName, changeDescriptor, true);
-        }
-
-
-
-        // Overload
-        /// <exclude />
-        public static void AlterStore(DataTypeChangeDescriptor changeDescriptor, bool makeAFlush)
-        {
-            _dynamicTypeManager.AlterStore(DataProviderRegistry.DefaultDynamicTypeDataProviderName, changeDescriptor, makeAFlush);
-        }
+            AlterStore(updateDataTypeDescriptor, true);
+        }        
 
 
 
         /// <exclude />
-        public static void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor, bool makeAFlush)
+        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool makeAFlush)
         {
-            _dynamicTypeManager.AlterStore(providerName, changeDescriptor, makeAFlush);
+            _dynamicTypeManager.AlterStore(updateDataTypeDescriptor, makeAFlush);
         }
 
 
@@ -261,15 +255,14 @@ namespace Composite.Data.DynamicTypes
                 dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
             }
 
-            DataTypeDescriptor storedDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeDescriptor.DataTypeId);
-
-            if (storedDataTypeDescriptor == null)
+            if (providerName == null)
             {
-                if (providerName == null)
-                {
-                    providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
-                }
+                providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+            }
 
+            IDynamicDataProvider dataProvider = (IDynamicDataProvider)DataProviderPluginFacade.GetDataProvider(providerName);
+            if (!dataProvider.GetKnownInterfaces().Contains(interfaceType))
+            {
                 CreateStore(providerName, dataTypeDescriptor, true);
             }
         }
@@ -339,7 +332,10 @@ namespace Composite.Data.DynamicTypes
 
                 LoggingService.LogVerbose("DynamicTypeManager", string.Format("Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName));
 
-                AlterStore(providerName, dataTypeChangeDescriptor, makeAFlush);
+                UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
+                updateDataTypeDescriptor.ProviderName = providerName;
+
+                AlterStore(updateDataTypeDescriptor, makeAFlush);
 
                 return true;
             }

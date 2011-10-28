@@ -104,69 +104,79 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
-            Type interfaceType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
+#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
+            //Type interfaceType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-            {
-                List<IData> administratedDatas = null;
-                List<IData> publicDatas = null;
+            //using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            //{
+            //    List<IData> administratedDatas = null;
+            //    List<IData> publicDatas = null;
+
+            //    if (this.BindingExist("CultureName") == true)
+            //    {
+            //        string cultureName = this.GetBinding<string>("CultureName");
+            //        CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
+
+            //        using (new DataScope(cultureInfo))
+            //        {
+            //            administratedDatas = DataFacade.GetData(interfaceType).ToDataList();
+            //            DataFacade.Delete((IEnumerable<IData>)administratedDatas, true, CascadeDeleteType.Disable);
+
+            //            if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true)
+            //            {
+            //                using (new DataScope(DataScopeIdentifier.Public))
+            //                {
+            //                    publicDatas = DataFacade.GetData(interfaceType).ToDataList();
+            //                    DataFacade.Delete((IEnumerable<IData>)publicDatas, true, CascadeDeleteType.Disable);
+            //                }
+            //            }
+            //        }
+            //    }
+
+                DataTypeDescriptor newDataTypeDescriptor = dataTypeDescriptor.Clone();
+                newDataTypeDescriptor.RemoveSuperInterface(typeof(ILocalizedControlled));
+                
+
+                UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(dataTypeDescriptor, newDataTypeDescriptor, false);
 
                 if (this.BindingExist("CultureName") == true)
                 {
                     string cultureName = this.GetBinding<string>("CultureName");
                     CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
 
-                    using (new DataScope(cultureInfo))
-                    {
-                        administratedDatas = DataFacade.GetData(interfaceType).ToDataList();
-                        DataFacade.Delete((IEnumerable<IData>)administratedDatas, true, CascadeDeleteType.Disable);
-
-                        if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true)
-                        {
-                            using (new DataScope(DataScopeIdentifier.Public))
-                            {
-                                publicDatas = DataFacade.GetData(interfaceType).ToDataList();
-                                DataFacade.Delete((IEnumerable<IData>)publicDatas, true, CascadeDeleteType.Disable);
-                            }
-                        }
-                    }
+                    updateDataTypeDescriptor.LocaleToCopyFrom = cultureInfo;
                 }
 
-                DataTypeDescriptor newDataTypeDescriptor = dataTypeDescriptor.Clone();
-                newDataTypeDescriptor.RemoveSuperInterface(typeof(ILocalizedControlled));
+                GeneratedTypesFacade.UpdateType(updateDataTypeDescriptor);
 
-                GeneratedTypesFacade.UpdateType(dataTypeDescriptor, newDataTypeDescriptor);
+#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
+            //    if (administratedDatas != null)
+            //    {
+            //        foreach (IData data in administratedDatas)
+            //        {
+            //            IData newData = DataFacade.BuildNew(interfaceType);
+            //            data.ProjectedCopyTo(newData);
+            //            DataFacade.AddNew(newData, true, false, false);
+            //        }
 
-                // Important! Updates the type
-                interfaceType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
+            //        if (publicDatas != null)
+            //        {
+            //            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+            //            {
+            //                foreach (IData data in publicDatas)
+            //                {
+            //                    IData newData = DataFacade.BuildNew(interfaceType);
+            //                    data.ProjectedCopyTo(newData);
+            //                    DataFacade.AddNew(newData, true, false, false);
+            //                }
+            //            }
+            //        }
+            //    }
 
-                if (administratedDatas != null)
-                {
-                    foreach (IData data in administratedDatas)
-                    {
-                        IData newData = DataFacade.BuildNew(interfaceType);
-                        data.ProjectedCopyTo(newData);
-                        DataFacade.AddNew(newData, true, false, false);
-                    }
+            //    transactionScope.Complete();
+            //}
 
-                    if (publicDatas != null)
-                    {
-                        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
-                        {
-                            foreach (IData data in publicDatas)
-                            {
-                                IData newData = DataFacade.BuildNew(interfaceType);
-                                data.ProjectedCopyTo(newData);
-                                DataFacade.AddNew(newData, true, false, false);
-                            }
-                        }
-                    }
-                }
-
-                transactionScope.Complete();
-            }
-
-            EntityTokenCacheFacade.ClearCache();
+            //EntityTokenCacheFacade.ClearCache();
 
             this.CloseCurrentView();
             this.CollapseAndRefresh();

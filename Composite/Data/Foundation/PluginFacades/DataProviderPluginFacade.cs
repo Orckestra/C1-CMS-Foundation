@@ -192,17 +192,15 @@ namespace Composite.Data.Foundation.PluginFacades
 
 
 
-        public static void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor)
+        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (null == changeDescriptor) throw new ArgumentNullException("changeDescriptor");
-
                 using (_resourceLocker.Locker)
                 {
-                    IDynamicDataProvider provider = GetDynamicDataProvider(providerName);
+                    IDynamicDataProvider provider = GetDynamicDataProvider(updateDataTypeDescriptor.ProviderName);
 
-                    provider.AlterStore(changeDescriptor);
+                    provider.AlterStore(updateDataTypeDescriptor);
                 }
             }
         }

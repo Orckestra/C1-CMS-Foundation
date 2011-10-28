@@ -24,8 +24,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void AlterStore(string providerName, XmlProviderInterfaceConfigurationElement oldConfigurationElement, XmlProviderInterfaceConfigurationElement newConfigurationElement, DataTypeChangeDescriptor dataTypeChangeDescriptor)
+        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, XmlProviderInterfaceConfigurationElement oldConfigurationElement, XmlProviderInterfaceConfigurationElement newConfigurationElement)
         {
+#warning MRJ: BM: HANDLE STORE CHANGE AND COPY DATA!! See updateDataTypeDescriptor.LocalesToCopyTo, updateDataTypeDescriptor.LocaleToCopyFrom, updateDataTypeDescriptor.PublicationAdded, updateDataTypeDescriptor.PublicationRemoved
+
+            DataTypeChangeDescriptor dataTypeChangeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
+
             foreach (KeyValuePair<string, Type> kvp in oldConfigurationElement.PropertyInitializers)
             {
                 newConfigurationElement.AddPropertyInitializer(kvp.Key, kvp.Value);
@@ -36,15 +40,32 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 foreach (DataScopeConfigurationElement dataScopeConfigurationElement in newConfigurationElement.DataScopes[scopeIdentifier.Name].Values)
                 {
-                    CreateStore(providerName, dataScopeConfigurationElement);
+                    CreateStore(updateDataTypeDescriptor.ProviderName, dataScopeConfigurationElement);
                 }
+            }
+
+            if (updateDataTypeDescriptor.PublicationAdded)
+            {
+#warning MRJ: BM: Move data from published to unpublished
+                //foreach (var kvp in oldConfigurationElement.DataScopes[DataScopeIdentifier.PublicName])
+                //{
+                //    DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
+                //    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][kvp.Key];
+
+                //    CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement);
+                //}
+            }
+
+            if (updateDataTypeDescriptor.PublicationRemoved)
+            {
+#warning MRJ: BM: Copy data from unpublished to published
             }
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.DeletedDataScopes)
             {
                 foreach (DataScopeConfigurationElement dataScopeConfigurationElement in oldConfigurationElement.DataScopes[scopeIdentifier.Name].Values)
                 {
-                    DropStore(providerName, dataScopeConfigurationElement);
+                    DropStore(updateDataTypeDescriptor.ProviderName, dataScopeConfigurationElement);
                 }
             }
 
@@ -55,69 +76,78 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
                     DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[scopeIdentifier.Name][kvp.Key];
 
-                    string oldFilename = ResolvePath(oldDataScopeConfigurationElement.Filename, providerName);
-                    string newFilename = ResolvePath(newDataScopeConfigurationElement.Filename, providerName);
-
-                    XDocument oldDocument = XDocumentUtils.Load(PathUtil.Resolve(oldFilename));
-
-                    List<XElement> newElements = new List<XElement>();
-
-                    foreach (XElement oldElement in oldDocument.Root.Elements())
-                    {
-                        List<XAttribute> newChildAttributes = new List<XAttribute>();
-
-                        foreach (XAttribute oldChildAttribute in oldElement.Attributes())
-                        {
-                            var existingFieldInfo = GetExistingFieldInfo(dataTypeChangeDescriptor, oldChildAttribute.Name.LocalName);
-
-                            if (existingFieldInfo != null)
-                            {
-                                if (existingFieldInfo.OriginalField.Name != existingFieldInfo.AlteredField.Name)
-                                {
-                                    XAttribute newChildAttribute = new XAttribute(existingFieldInfo.AlteredField.Name, oldChildAttribute.Value);
-
-                                    newChildAttributes.Add(newChildAttribute);
-                                }
-                                else
-                                {
-                                    newChildAttributes.Add(oldChildAttribute);
-                                }
-                            }
-                             // It may happen that some data were added before data descriptors are updated, in the case of using 
-                            // [AutoUpdateable] attribute. 
-                            else if (dataTypeChangeDescriptor.AddedFields.Any(addedField => addedField.Name == oldChildAttribute.Name))
-                            {
-                                newChildAttributes.Add(oldChildAttribute);
-                            }
-                        }
-
-                        foreach (DataFieldDescriptor fieldDescriptor in dataTypeChangeDescriptor.AddedFields)
-                        {
-                            if (fieldDescriptor.IsNullable == false
-                                && !newChildAttributes.Any(attr => attr.Name == fieldDescriptor.Name))
-                            {
-                                XAttribute newChildAttribute = new XAttribute(fieldDescriptor.Name, fieldDescriptor.DefaultValue.Value);
-
-                                newChildAttributes.Add(newChildAttribute);
-                            }
-                        }
-
-                        XElement newElement = new XElement(newDataScopeConfigurationElement.ElementName, newChildAttributes);
-
-                        newElements.Add(newElement);
-                    }
-
-                    C1File.Delete(oldFilename);
-
-                    XElement newRoot = new XElement(string.Format("{0}s", newDataScopeConfigurationElement.ElementName));
-                    newRoot.Add(newElements);
-
-                    XDocument newDocument = new XDocument();
-                    newDocument.Add(newRoot);
-
-                    XDocumentUtils.Save(newDocument, newFilename);
+                    CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement);
                 }
             }
+
+#warning MRJ: BM: At this point copy data if anything is specified in updateDataTypeDescriptor.LocalesToCopyTo or updateDataTypeDescriptor.LocaleToCopyFrom
+        }
+
+
+
+        private static void CopyData(string providerName, DataTypeChangeDescriptor dataTypeChangeDescriptor, DataScopeConfigurationElement oldDataScopeConfigurationElement, DataScopeConfigurationElement newDataScopeConfigurationElement)
+        {
+            string oldFilename = ResolvePath(oldDataScopeConfigurationElement.Filename, providerName);
+            string newFilename = ResolvePath(newDataScopeConfigurationElement.Filename, providerName);
+
+            XDocument oldDocument = XDocumentUtils.Load(PathUtil.Resolve(oldFilename));
+
+            List<XElement> newElements = new List<XElement>();
+
+            foreach (XElement oldElement in oldDocument.Root.Elements())
+            {
+                List<XAttribute> newChildAttributes = new List<XAttribute>();
+
+                foreach (XAttribute oldChildAttribute in oldElement.Attributes())
+                {
+                    var existingFieldInfo = GetExistingFieldInfo(dataTypeChangeDescriptor, oldChildAttribute.Name.LocalName);
+
+                    if (existingFieldInfo != null)
+                    {
+                        if (existingFieldInfo.OriginalField.Name != existingFieldInfo.AlteredField.Name)
+                        {
+                            XAttribute newChildAttribute = new XAttribute(existingFieldInfo.AlteredField.Name, oldChildAttribute.Value);
+
+                            newChildAttributes.Add(newChildAttribute);
+                        }
+                        else
+                        {
+                            newChildAttributes.Add(oldChildAttribute);
+                        }
+                    }
+                    // It may happen that some data were added before data descriptors are updated, in the case of using 
+                    // [AutoUpdateable] attribute. 
+                    else if (dataTypeChangeDescriptor.AddedFields.Any(addedField => addedField.Name == oldChildAttribute.Name))
+                    {
+                        newChildAttributes.Add(oldChildAttribute);
+                    }
+                }
+
+                foreach (DataFieldDescriptor fieldDescriptor in dataTypeChangeDescriptor.AddedFields)
+                {
+                    if (fieldDescriptor.IsNullable == false
+                        && !newChildAttributes.Any(attr => attr.Name == fieldDescriptor.Name))
+                    {
+                        XAttribute newChildAttribute = new XAttribute(fieldDescriptor.Name, fieldDescriptor.DefaultValue.Value);
+
+                        newChildAttributes.Add(newChildAttribute);
+                    }
+                }
+
+                XElement newElement = new XElement(newDataScopeConfigurationElement.ElementName, newChildAttributes);
+
+                newElements.Add(newElement);
+            }
+
+            C1File.Delete(oldFilename);
+
+            XElement newRoot = new XElement(string.Format("{0}s", newDataScopeConfigurationElement.ElementName));
+            newRoot.Add(newElements);
+
+            XDocument newDocument = new XDocument();
+            newDocument.Add(newRoot);
+
+            XDocumentUtils.Save(newDocument, newFilename);
         }
 
 

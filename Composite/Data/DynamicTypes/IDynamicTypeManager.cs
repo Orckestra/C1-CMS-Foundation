@@ -23,7 +23,7 @@ namespace Composite.Data.DynamicTypes
         void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush);
 
         /// <exclude />
-        void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor, bool makeAFlush);
+        void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool makeAFlush);
 
         /// <exclude />
         void DropStore(string providerName, DataTypeDescriptor typeDescriptor, bool makeAFlush);

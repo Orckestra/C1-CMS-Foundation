@@ -1,4 +1,5 @@
-﻿using Composite.Data.DynamicTypes;
+﻿using System;
+using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Data.GeneratedTypes
@@ -8,7 +9,6 @@ namespace Composite.Data.GeneratedTypes
         void GenerateNewType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush);
         bool CanDeleteType(DataTypeDescriptor dataTypeDescriptor, out string errorMessage);
         void DeleteType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush);
-        void UpdateType(string providerName, DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeDataExists);
-        void GenerateTypes();
+        void UpdateType(UpdateDataTypeDescriptor updateDataTypeDescriptor);
     }
 }

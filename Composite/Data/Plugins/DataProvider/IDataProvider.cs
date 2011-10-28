@@ -20,7 +20,11 @@ namespace Composite.Data.Plugins.DataProvider
         /// </summary>
         DataProviderContext Context { set; }
 
-        /// <exclude />
+        /// <summary>
+        /// This method should return all supported data interfaces. 
+        /// That is, all data interfaces that this provider is currently handling.
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Type> GetSupportedInterfaces();
 
         /// <exclude />

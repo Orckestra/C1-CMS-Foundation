@@ -49,7 +49,8 @@ namespace Composite.Core.Types.Foundation
                     Type dataIdClassType = resultAssembly.GetType(kvp.Key, true);
                     Type dataIdCustomSerializerClassType = resultAssembly.GetType(kvp.Value, true);
 
-                    Composite.Core.Serialization.CodeGeneration.SerializerGenerator.AddSerializerType(dataIdClassType, dataIdCustomSerializerClassType);
+#warning MRJ: BM: I did this, but the file is about to DIE!
+                    //Composite.Core.Serialization.CodeGeneration.SerializerGenerator.AddSerializerType(dataIdClassType, dataIdCustomSerializerClassType);
 
                     buildManagerCompileUnit.AddType(new BuildManagerCompileType(dataIdCustomSerializerClassType));
                 }
@@ -75,7 +76,7 @@ namespace Composite.Core.Types.Foundation
                     Type interfaceType = resultAssembly.GetType(kvp.Key, true);
                     Type interfaceDataWrapperClassType = resultAssembly.GetType(kvp.Value, true);
 
-                    DataWrapperGenerator.AddDataWrapperType(interfaceType, interfaceDataWrapperClassType);
+                    //DataWrapperGenerator.AddDataWrapperType(interfaceType, interfaceDataWrapperClassType);
 
                     buildManagerCompileUnit.AddType(new BuildManagerCompileType(interfaceDataWrapperClassType));
                 }
@@ -101,8 +102,8 @@ namespace Composite.Core.Types.Foundation
 		    Type propertyClassType = type.Assembly.GetType(typeNamespace + "." + typeName);
 
 		    Verify.IsNotNull(propertyClassType, "Failed to find a class in the generated assembly. Name: '{0}', Namespace: '{1}'", typeName, typeNamespace);
-
-		    Composite.Core.Serialization.CodeGeneration.SerializerGenerator.AddSerializerType(propertyClassType, type);
+#warning MRJ: BM: I did this, but the file is about to DIE!
+            //Composite.Core.Serialization.CodeGeneration.SerializerGenerator.AddSerializerType(propertyClassType, type);
 		}
 
 		private static void UpdateEmptyClassPointer(Type type)
@@ -154,7 +155,7 @@ namespace Composite.Core.Types.Foundation
 				if (interf != typeof(IData)
 					&& typeof(IData).IsAssignableFrom(interf))
 				{
-					DataWrapperGenerator.AddDataWrapperType(interf, type);
+					//DataWrapperGenerator.AddDataWrapperType(interf, type);
 					break;
 				}
 			}
@@ -211,20 +212,21 @@ namespace Composite.Core.Types.Foundation
 
             foreach (BuildManagerSiloData buildManagerSiloData in buildManagerSiloDatas)
             {
-                CodeTypeDeclaration codeTypeDeclaration = Composite.Core.Serialization.CodeGeneration.SerializerGenerator.CreateCodeTypeDeclaration(buildManagerSiloData);
+#warning MRJ: BM: I did this, but the file is about to DIE!
+                //CodeTypeDeclaration codeTypeDeclaration = Composite.Core.Serialization.CodeGeneration.SerializerGenerator.CreateCodeTypeDeclaration(buildManagerSiloData);
 
-                codeTypeDeclaration.CustomAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        typeof(BuildManagerCustomSerializerPointerAttribute).FullName,
-                        new CodeAttributeArgument[] { 
-                            new CodeAttributeArgument(new CodePrimitiveExpression(buildManagerSiloData.CodeNamespace.Name)),
-                            new CodeAttributeArgument(new CodePrimitiveExpression(buildManagerSiloData.CodeTypeDeclaration.Name)) 
-                        }));
+                //codeTypeDeclaration.CustomAttributes.Add(
+                //    new CodeAttributeDeclaration(
+                //        typeof(BuildManagerCustomSerializerPointerAttribute).FullName,
+                //        new CodeAttributeArgument[] { 
+                //            new CodeAttributeArgument(new CodePrimitiveExpression(buildManagerSiloData.CodeNamespace.Name)),
+                //            new CodeAttributeArgument(new CodePrimitiveExpression(buildManagerSiloData.CodeTypeDeclaration.Name)) 
+                //        }));
 
-                buildManagerSiloData.CodeNamespace.Types.Add(codeTypeDeclaration);
+                //buildManagerSiloData.CodeNamespace.Types.Add(codeTypeDeclaration);
 
-                result.Add(GetTypeFullName(buildManagerSiloData.CodeNamespace, buildManagerSiloData.CodeTypeDeclaration),
-                           GetTypeFullName(buildManagerSiloData.CodeNamespace, codeTypeDeclaration));
+                //result.Add(GetTypeFullName(buildManagerSiloData.CodeNamespace, buildManagerSiloData.CodeTypeDeclaration),
+                //           GetTypeFullName(buildManagerSiloData.CodeNamespace, codeTypeDeclaration));
             }
 
             return result;
@@ -265,9 +267,9 @@ namespace Composite.Core.Types.Foundation
 
             foreach (BuildManagerSiloData buildManagerSiloData in buildManagerSiloDatas)
             {
-                CodeTypeDeclaration codeTypeDeclaration = DataWrapperGenerator.CreateCodeTypeDeclaration(buildManagerSiloData);
+                //CodeTypeDeclaration codeTypeDeclaration = DataWrapperGenerator.CreateCodeTypeDeclaration(buildManagerSiloData);
 
-                codeTypeDeclaration.CustomAttributes.Add(
+                /*codeTypeDeclaration.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
                         typeof(BuildManagerDataWrapperClassPointerAttribute).FullName,
                         new CodeAttributeArgument[] { 
@@ -278,7 +280,7 @@ namespace Composite.Core.Types.Foundation
                 buildManagerSiloData.CodeNamespace.Types.Add(codeTypeDeclaration);
 
                 result.Add(GetTypeFullName(buildManagerSiloData.CodeNamespace, buildManagerSiloData.CodeTypeDeclaration),
-                           GetTypeFullName(buildManagerSiloData.CodeNamespace, codeTypeDeclaration));
+                           GetTypeFullName(buildManagerSiloData.CodeNamespace, codeTypeDeclaration));*/
             }
 
             return result;

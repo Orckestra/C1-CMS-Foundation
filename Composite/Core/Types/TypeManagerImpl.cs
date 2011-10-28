@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
@@ -19,6 +20,7 @@ namespace Composite.Core.Types
     {
         private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
         private ConcurrentDictionary<Type, string> _serializedTypeLookup = new ConcurrentDictionary<Type, string>();
+
 
 
         public Type GetType(string fullName)
@@ -179,7 +181,20 @@ namespace Composite.Core.Types
             }
 
 
-            List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);         
+#warning MRJ: BM: It is important to check the dynamic compiled assemblies first, due to the fact the the newest types will be in there
+#warning MRJ: BM: Fix this hardcoded string stuff.
+            if (fullName.StartsWith("DynamicType:"))
+            {
+                fullName = fullName.Remove(0, "DynamicType:".Length);
+            }
+
+#warning MRJ: BM: Redo this. The last one is used if more than one is genereted due to this list is not flushed.
+            Type compiledType = TypeManager.CompiledTypes.Where(f => f.FullName == fullName).LastOrDefault();
+            if (compiledType != null) return compiledType;
+
+
+
+            List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
 
             foreach (ProviderEntry entry in providerEntries)
             {
@@ -197,7 +212,8 @@ namespace Composite.Core.Types
                 {
                     return type;
                 }
-            }            
+            }
+
 
             return null;
         }
@@ -281,7 +297,7 @@ namespace Composite.Core.Types
             }
 
             return source;
-        }        
+        }
 
 
 

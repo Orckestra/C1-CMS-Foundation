@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Composite.Sql
+namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
     /// <summary>    
     /// </summary>

@@ -115,35 +115,35 @@
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.FieldLabel" value="Select existing data folder type to add" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorLabel" value="Existing data folder types" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorHelp" value="Select existing data folder type to add" />
-	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeLabel" value="Remove Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeToolTip" value="Remove Metadata field" />
+	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeLabel" value="Remove metadata field" />
+	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeToolTip" value="Remove metadata field" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.LabelFieldGroup" value="Remove datafolder from page" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.FieldGroupLabel" value="Data cleanup" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataLabel" value="Delete data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataCheckBoxLabel" value="Yes, delete folder data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataHelp" value="If you want data in this folder to stay in the database, you should uncheck this option." />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel" value="Add Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeLabel" value="Add Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeToolTip" value="Add Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.FieldLabel" value="Select existing Metadata type to add" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorLabel" value="Existing Metadata types" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorHelp" value="Select existing Metadata type to add" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesTitle" value="No page Metadata types exists" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel" value="Add metadata field" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeLabel" value="Add metadata field" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeToolTip" value="Add metadata field" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.FieldLabel" value="Select existing metadata type to add" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorLabel" value="Existing metadata types" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorHelp" value="Select existing metadata type to add" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesTitle" value="No page metadata types exists" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.NoTypesMessage" value="No page metatypes have been created yet. You can create a Page metatype in the 'Data' perspective." />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.NamingFieldLabel" value="Metadata field group naming" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameLabel" value="Name" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp" value="Enter a unique name identifying this Metadata field group" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupNameHelp" value="Enter a unique name identifying this metadata field group" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelLabel" value="Label" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelHelp" value="Enter a user friendly label for this Metadata field group" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.FieldGroupLabelHelp" value="Enter a user friendly label for this metadata field group" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.VisabilityFieldLabel" value="Metadata field group visibility" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorLabel" value="Tab" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorHelp" value="Select the tab for which this Metadata should exists" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.ContainerSelectorHelp" value="Select the tab for which this metadata should exists" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorLabel" value="Start display from" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.StartDisplaySelectorHelp" value="Start display from" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorLabel" value="Inherit display" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataCreateFieldGroup.InheritDisplaySelectorHelp" value="Inherit display" />
-	<string key="AssociatedDataElementProviderHelper.NoItems.Title" value="The Metadata field group has no items in scope" />
-	<string key="AssociatedDataElementProviderHelper.NoItems.Description" value="There are currently no items within the specified display range. Press Previous to change the display range or Finish to create the Metadata field group." />
+	<string key="AssociatedDataElementProviderHelper.NoItems.Title" value="The metadata field group has no items in scope" />
+	<string key="AssociatedDataElementProviderHelper.NoItems.Description" value="There are currently no items within the specified display range. Press Previous to change the display range or Finish to create the metadata field group." />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption0" value="This item" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption1" value="Children" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.StartDisplayOption2" value="2nd generation descendants" />
@@ -156,32 +156,32 @@
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption3" value="Inherit 3 generations" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption4" value="Always inherit" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.FieldGroupNameNotValid" value="The field group name is in use" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectType.LayoutLabel" value="Remove Metadata field group" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.FieldLabel" value="Select a Metadata field group to remove" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectType.LayoutLabel" value="Remove metadata field group" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.FieldLabel" value="Select a metadata field group to remove" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorLabel" value="Field group" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorHelp" value="Select a Metadata field group to remove" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit page Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label" value="Page Metadata field settings" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorHelp" value="Select a metadata field group to remove" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit metadata field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit metadata field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit page metadata field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label" value="Page metadata field settings" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Label" value="Label" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Help" value="The label of the Metadata field. Used when editing pages" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Help" value="The label of the metadata field. Used when editing pages" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Label" value="Tab" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Help" value="Select the tab for which this Metadata should exists" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerSelector.Help" value="Select the tab for which this metadata should exists" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorLabel" value="Start display from" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.StartDisplaySelectorHelp" value="Start display from" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorLabel" value="Inherit display" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorHelp" value="Inherit display" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Label" value="Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Help" value="Select the Metadata field to edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Title" value="No Metadata fields to edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Message" value="There is no Metadata fields defined on this item to edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataFieldNameAlreadyUsed" value="The Metadata type is used another place with same name but different label" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Help" value="Select the metadata field to edit" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Title" value="No metadata fields to edit" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Message" value="There is no metadata fields defined on this item to edit" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataFieldNameAlreadyUsed" value="The metadata type is used another place with same name but different label" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerChangeNotAllowed" value="There exists one or more definitions with the same name, container change is not allowed" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Title" value="Press finish to save" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Description" value="All required information has been gathered. Press Finish to update the Metadata field" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Title" value="No Metadata fields to remove" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Message" value="There is no Metadata fields defined on this item to remove" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Description" value="All required information has been gathered. Press Finish to update the metadata field" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Title" value="No metadata fields to remove" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Message" value="There is no metadata fields defined on this item to remove" />
 	<string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
 	<string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
 	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.LabelNewType" value="Settings" />
@@ -210,7 +210,7 @@
 	<string key="Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorLabel" value="Select type:" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeAssociationTypeSelection.KeySelectorHelp" value="Regular data is a new type that are created under a page. Metadata is a new field that are created on a page" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameLabel" value="Rule name" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameHelp" value="Rule name are saved with the Metadata and are a part of the Metadata key. The name must be unique." />
+	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleNameHelp" value="Rule name are saved with the metadata and are a part of the metadata key. The name must be unique." />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleLabelLabel" value="Rule label" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeCompositionScopeSelection.ContainerKeySelectorLabel" value="Select composition container" />
@@ -222,7 +222,7 @@
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeLabel" value="Confirm new datatype:" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.AssociationTypeHelp" value="Metadata is a new field that are created on a page" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameLabel" value="Composition scope rule name" />
-	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameHelp" value="Rule name are saved with the Metadata and are a part of the Metadata key. The name must be unique." />
+	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleNameHelp" value="Rule name are saved with the metadata and are a part of the metadata key. The name must be unique." />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleLabelLabel" value="Composition scope rule label" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeRuleHelpHelp" value="Rule label is used as a user friendly name for the instance. Can be localized" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.CompositionScopeLabel" value="Composition scope" />

@@ -262,7 +262,13 @@ namespace Composite.Core.Extensions
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Combines URL paths using / as seperator
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="otherPath"></param>
+        /// <param name="separator"></param>
+        /// <returns></returns>
         public static string Combine(this string path, string otherPath, char separator)
         {
             string childPath = otherPath;

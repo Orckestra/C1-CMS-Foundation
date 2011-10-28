@@ -61,9 +61,9 @@ namespace Composite.Data.DynamicTypes
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                DataProviderPluginFacade.CreateStore(providerName, typeDescriptor);
-                
                 DataMetaDataFacade.PersistMetaData(typeDescriptor);
+
+                DataProviderPluginFacade.CreateStore(providerName, typeDescriptor);                                
                 
                 transactionScope.Complete();
             }
@@ -77,21 +77,20 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public void AlterStore(string providerName, DataTypeChangeDescriptor changeDescriptor, bool makeAFlush)
+        public void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool makeAFlush)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
-            if (changeDescriptor == null) throw new ArgumentNullException("changeDescriptor");
+            DataTypeChangeDescriptor dataTypeChangeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor(); 
 
-            changeDescriptor.AlteredType.Validate();
+            dataTypeChangeDescriptor.AlteredType.Validate();
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if (changeDescriptor.AlteredTypeHasChanges == true)
+                if (dataTypeChangeDescriptor.AlteredTypeHasChanges == true)
                 {
-                    DataProviderPluginFacade.AlterStore(providerName, changeDescriptor);
+                    DataProviderPluginFacade.AlterStore(updateDataTypeDescriptor);
                 }
 
-                DataMetaDataFacade.PersistMetaData(changeDescriptor.AlteredType);
+                DataMetaDataFacade.PersistMetaData(dataTypeChangeDescriptor.AlteredType);
 
                 transactionScope.Complete();
             }

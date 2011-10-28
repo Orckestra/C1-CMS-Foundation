@@ -78,10 +78,7 @@ namespace Composite.Core.Serialization
             {
                 if (!serializerCache.TryGetValue(propertyClassType, out serializer))
                 {
-                    using (DebugLoggingScope.CompletionTime(typeof(SerializationFacade), "compiling serializer for type '{0}'".FormatWith(propertyClassType.FullName)))
-                    {
-                        serializer = SerializerGenerator.CreateSerializer(propertyClassType);
-                    }
+                    serializer = PropertySerializerManager.GetPropertySerializer(propertyClassType);
 
                     serializerCache.Add(propertyClassType, serializer);
                 }

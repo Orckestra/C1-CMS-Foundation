@@ -1,7 +1,7 @@
 ﻿using Composite.C1Console.Events;
 
 
-namespace Composite.Sql
+namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
     /// <summary>    
     /// </summary>

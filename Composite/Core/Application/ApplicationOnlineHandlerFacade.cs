@@ -36,9 +36,9 @@ namespace Composite.Core.Application
 
 
         /// <exclude />
-        public static void TurnApplicationOffline(bool softTurnOff, bool clearGeneratedAssemblies)
+        public static void TurnApplicationOffline(bool softTurnOff, bool recompileCompositeGenerated)
         {
-            _applicationOnlineHandlerFacade.TurnApplicationOffline(softTurnOff, clearGeneratedAssemblies);
+            _applicationOnlineHandlerFacade.TurnApplicationOffline(softTurnOff, recompileCompositeGenerated);
         }
 
 

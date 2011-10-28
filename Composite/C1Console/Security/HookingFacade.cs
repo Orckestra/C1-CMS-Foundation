@@ -33,10 +33,7 @@ namespace Composite.C1Console.Security
 
         public static void EnsureInitialization()
         {
-            using (GlobalInitializerFacade.CoreIsInitializedScope)
-            {
-                _hookingFacade.EnsureInitialization();
-            }
+            _hookingFacade.EnsureInitialization();
         }
 
 

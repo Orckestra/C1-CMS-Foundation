@@ -17,12 +17,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 {
 	internal sealed class SqlDataProviderStoreManipulator
 	{
-		private static object _lock = new object();
+		private static readonly object _lock = new object();
 
 		private readonly string _connectionString;
-		private readonly List<InterfaceConfigurationElement> _generatedInterfaces;
+        private readonly IEnumerable<InterfaceConfigurationElement> _generatedInterfaces;
 
-		internal SqlDataProviderStoreManipulator(string connectionString, List<InterfaceConfigurationElement> generatedInterfaces)
+		internal SqlDataProviderStoreManipulator(string connectionString, IEnumerable<InterfaceConfigurationElement> generatedInterfaces)
 		{
 			Verify.ArgumentNotNullOrEmpty(connectionString, "connectionString");
 			Verify.ArgumentNotNull(generatedInterfaces, "generatedInterfaces");
@@ -174,13 +174,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 		#endregion
 
 
-		private string GetConfiguredTableName(string dataTypeName, DataScopeIdentifier dataScope, string cultureName)
+        private string GetConfiguredTableName(DataTypeDescriptor dataTypeDescriptor, DataScopeIdentifier dataScope, string cultureName)
 		{
-			string normalizedTypeName = TryNormalizeTypeFullName(dataTypeName);
-
 			var stores =
 				(from dataInterface in _generatedInterfaces
-				 where dataInterface.InterfaceType == normalizedTypeName
+                 where dataInterface.DataTypeId == dataTypeDescriptor.DataTypeId
 				 select dataInterface.Stores).FirstOrDefault();
 
 			if (stores == null)
@@ -207,9 +205,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 		}
 
 
-		internal void AlterStoresForType(string providerName, DataTypeChangeDescriptor changeDescriptor)
+        internal void AlterStoresForType(UpdateDataTypeDescriptor updateDataTypeDescriptor)
 		{
-			lock (_lock)
+            DataTypeChangeDescriptor changeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
+
+#warning MRJ: BM: HANDLE STORE CHANGE AND COPY DATA!! See updateDataTypeDescriptor.LocalesToCopyTo, updateDataTypeDescriptor.LocaleToCopyFrom, updateDataTypeDescriptor.PublicationAdded, updateDataTypeDescriptor.PublicationRemoved
+
+            lock (_lock)
 			{
 				foreach (DataScopeIdentifier dataScope in changeDescriptor.ExistingDataScopes)
 				{
@@ -259,7 +261,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 		{
 			try
 			{
-				string originalTableName = GetConfiguredTableName(changeDescriptor.OriginalType.TypeManagerTypeName, dataScope, culture.Name);
+				string originalTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, culture.Name);
 				string alteredTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, culture);
 				var tables = GetTablesList();
 
@@ -319,9 +321,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			}
 		}
 
-		private void DropStore(DataTypeDescriptor typeDescriptor, DataScopeIdentifier dataScope, CultureInfo cultureInfo)
+		private void DropStore(DataTypeDescriptor dataTypeDescriptor, DataScopeIdentifier dataScope, CultureInfo cultureInfo)
 		{
-			string tableName = GetConfiguredTableName(typeDescriptor.TypeManagerTypeName, dataScope, cultureInfo.Name);
+            string tableName = GetConfiguredTableName(dataTypeDescriptor, dataScope, cultureInfo.Name);
 
 			try
 			{

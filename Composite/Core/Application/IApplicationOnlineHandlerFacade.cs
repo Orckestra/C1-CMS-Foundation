@@ -10,10 +10,10 @@
         /// not actually turning off the application. Setting this to false will turn off the 
         /// application.
         /// </param>
-        /// <param name="clearGeneratedAssemblies">
+        /// <param name="recompileCompositeGenerated">
         /// Settings this to true will result in a recompilation of assemblies at startup
         /// </param>
-        void TurnApplicationOffline(bool softTurnOff, bool clearGeneratedAssemblies);
+        void TurnApplicationOffline(bool softTurnOff, bool recompileCompositeGenerated);
 
         void TurnApplicationOnline();
 

@@ -87,13 +87,14 @@ namespace Composite.Core.WebClient.Setup
 
                 ApplicationLevelEventHandlers.ApplicationStartInitialize();
 
-                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first user: " + username);
-                AdministratorAutoCreator.AutoCreatedAdministrator(username, password, false);
-                UserValidationFacade.FormValidateUser(username, password);
-
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first locale: " + language);
                 LocalizationFacade.AddLocale(locale, "", true, false);
                 LocalizationFacade.SetDefaultLocale(locale);
+
+
+                Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first user: " + username);
+                AdministratorAutoCreator.AutoCreatedAdministrator(username, password, false);
+                UserValidationFacade.FormValidateUser(username, password);
 
                 UserSettings.SetUserCultureInfo(username, userCulture);                
 

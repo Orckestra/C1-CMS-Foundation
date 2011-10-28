@@ -1,121 +1,167 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
+using Composite.Core.Collections.Generic;
 using Composite.Core.Serialization.CodeGeneration.Foundation;
 using Composite.Core.Types;
-using Composite.Core.Logging;
-using System.ComponentModel;
 
 
 namespace Composite.Core.Serialization.CodeGeneration
 {
-    internal static class SerializerGenerator
+#warning MRJ: BM: Move this class
+    internal static class PropertySerializerManager
     {
-        private const string _namespaceName = "Composite.Data.GeneratedTypes";
-        private const string _compileUnitId = "Composite.Data.CustomSerializers";
+        private static readonly ResourceLocker<Resources> ResourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
 
 
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
-
-
-
-        static SerializerGenerator()
+        static PropertySerializerManager()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
-
-
-        public static ISerializer CreateSerializer(Type propertyClassType)
+        /// <summary>
+        /// Returns a property serializer for the given property type.
+        /// If no serializer exists, one will be runtime code generated.
+        /// </summary>
+        /// <param name="propertyClassType"></param>
+        /// <returns></returns>
+        public static ISerializer GetPropertySerializer(Type propertyClassType)
         {
-            Type serializerType = CreateType(propertyClassType);
+            ISerializer serializer;
 
-            return (ISerializer)Activator.CreateInstance(serializerType);
-        }
-
-
-
-        public static Type CreateType(Type propertyClassType)
-        {
-            Type serializerType;
-
-            var cache = _resourceLocker.Resources.SerializersTypesCache;
-
-            if (!cache.TryGetValue(propertyClassType, out serializerType))
+            if (!ResourceLocker.Resources.SerializersTypesCache.TryGetValue(propertyClassType, out serializer))
             {
-                lock (cache)
+                using (ResourceLocker.Locker)
                 {
-                    if (!cache.TryGetValue(propertyClassType, out serializerType) )
+                    if (!ResourceLocker.Resources.SerializersTypesCache.TryGetValue(propertyClassType, out serializer))
                     {
-                        cache.RemoveOldVersion(propertyClassType);
+                        Type propertySerializerType = GetPropertySerializerType(propertyClassType);
 
-                        serializerType = GenerateType(propertyClassType);
+                        serializer = (ISerializer)Activator.CreateInstance(propertySerializerType);
 
-                        cache.Add(propertyClassType, serializerType);
+                        ResourceLocker.Resources.SerializersTypesCache.Add(propertySerializerType, serializer);
                     }
                 }
             }
 
-            return serializerType;
+            return serializer;
         }
 
 
 
-        internal static void AddSerializerType(Type propertyClassType, Type serializerType)
+        private static Type GetPropertySerializerType(Type propertyClassType)
         {
-            var cache = _resourceLocker.Resources.SerializersTypesCache;
+            string propertySerializerTypeName = PropertySerializerTypeCodeGenerator.CreateSerializerClassFullName(propertyClassType);            
 
-            if (!cache.ContainsKey(propertyClassType))
+            Type propertySerializerType = TypeManager.TryGetType(propertySerializerTypeName);
+
+            if (propertySerializerType == null)
             {
-                lock (cache)
-                {
-                    if (!cache.ContainsKey(propertyClassType))
-                    {
-                        cache.RemoveOldVersion(propertyClassType);
-
-                        cache.Add(propertyClassType, serializerType);
-                    }
-                }
-            }
-        }
-
-
-        private static Type GenerateType(Type propertyClassType)
-        {
-            string compileUnitId = CreateCompileUnitId(propertyClassType);
-            string fingerprint = propertyClassType.Assembly.FullName;
-
-            BuildManagerCompileUnit buildManagerCompileUnit = new BuildManagerCompileUnit(compileUnitId, fingerprint);
-
-            buildManagerCompileUnit.AddType(
-                new BuildManagerCompileType(
-                    _namespaceName,
-                    new KeyValuePair<string, Func<CodeTypeDeclaration>>(
-                        CreateSerializerClassName(propertyClassType.FullName),
-                        () => CreateCodeTypeDeclaration(propertyClassType))));
-
-            buildManagerCompileUnit.AddAssemblyReference(typeof(EditorBrowsableAttribute).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(StringConversionServices).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(propertyClassType.Assembly);
-            foreach (Type superInterfaceType in propertyClassType.GetInterfaces())
-            {
-                buildManagerCompileUnit.AddAssemblyReference(superInterfaceType.Assembly);
+                propertySerializerType = CodeGeneratePropertySerializer(propertyClassType);
             }
 
-
-            BuildManager.GetCompiledTypes(buildManagerCompileUnit);
-
-            string className = CreateSerializerClassName(propertyClassType);
-
-            return buildManagerCompileUnit.GetGeneretedTypeByName(className);
+            return propertySerializerType;
         }
 
+
+
+
+        private static Type CodeGeneratePropertySerializer(Type propertyClassType)
+        {
+            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("PropertySerializer: " + propertyClassType.FullName);
+
+            PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(codeGenerationBuilder, propertyClassType);
+
+            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+            return types.Single();
+        }
+
+
+
+        private static void Flush()
+        {
+            ResourceLocker.ResetInitialization();
+        }
+
+
+
+        private static void OnFlushEvent(FlushEventArgs args)
+        {
+            Flush();
+        }
+
+
+
+        private sealed class Resources
+        {
+            public Dictionary<Type, ISerializer> SerializersTypesCache;
+
+            public static void Initialize(Resources resources)
+            {
+                resources.SerializersTypesCache = new Dictionary<Type, ISerializer>();
+            }
+        }
+    }
+
+
+
+
+
+
+
+#warning MRJ: BM: Move this class or rename file
+    /// <summary>
+    /// This class creates the CodeDOM for a given property class
+    /// </summary>
+    internal static class PropertySerializerTypeCodeGenerator
+    {
+        private const string NamespaceName = "CompositeGenerated.PropertySerializers";
+
+
+        internal static void AddPropertySerializerTypeCode(CodeGenerationBuilder codeGenerationBuilder, Type propertyClassType)
+        {
+            codeGenerationBuilder.AddReference(propertyClassType.Assembly);
+            codeGenerationBuilder.AddReference(typeof(EditorBrowsableAttribute).Assembly);
+            codeGenerationBuilder.AddReference(typeof(StringConversionServices).Assembly);
+
+            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(propertyClassType);
+
+            codeGenerationBuilder.AddType(NamespaceName, codeTypeDeclaration);
+        }
+
+
+
+        internal static void AddPropertySerializerTypeCode(CodeGenerationBuilder codeGenerationBuilder, string propertyClassTypeName, Dictionary<string, Type> properties)
+        {
+            codeGenerationBuilder.AddReference(typeof(EditorBrowsableAttribute).Assembly);
+            codeGenerationBuilder.AddReference(typeof(StringConversionServices).Assembly);
+
+            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(propertyClassTypeName, properties);
+
+            codeGenerationBuilder.AddType(NamespaceName, codeTypeDeclaration);
+        }
+
+
+
+        internal static string CreateSerializerClassFullName(Type propertyClassType)
+        {
+            return NamespaceName + "." + CreateSerializerClassName(propertyClassType.FullName);
+        }        
+
+
+
+        private static string CreateSerializerClassName(Type propertyClassType)
+        {
+            return CreateSerializerClassName(propertyClassType.FullName);
+        }
+        
 
 
         internal static CodeTypeDeclaration CreateCodeTypeDeclaration(Type propertyClassType)
@@ -123,15 +169,6 @@ namespace Composite.Core.Serialization.CodeGeneration
             Dictionary<string, Type> properties = GetSerializeableProperties(propertyClassType).ToDictionary(f => f.Name, f => f.PropertyType);
 
             return CreateCodeTypeDeclaration(propertyClassType.FullName, properties);
-        }
-
-
-
-        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(BuildManagerSiloData buildManagerSiloData)
-        {
-            Dictionary<string, Type> properties = GetSerializeableProperties(buildManagerSiloData.TargetTypeProperties).ToDictionary(f => f.Name, f => f.PropertyType);
-
-            return CreateCodeTypeDeclaration(buildManagerSiloData.TargetTypeFullName, properties);
         }
 
 
@@ -367,7 +404,7 @@ namespace Composite.Core.Serialization.CodeGeneration
         {
             bool isUseable = property.CanRead && property.CanWrite;
 
-            if (isUseable == true)
+            if (isUseable)
             {
                 foreach (MethodInfo mi in property.GetAccessors(false))
                 {
@@ -388,7 +425,7 @@ namespace Composite.Core.Serialization.CodeGeneration
 
             foreach (BuildManagerPropertyInfo buildManagerPropertyInfo in buildManagerPropertyInfos)
             {
-                if (UseableForSerialization(buildManagerPropertyInfo) == true)
+                if (UseableForSerialization(buildManagerPropertyInfo))
                 {
                     yield return buildManagerPropertyInfo;
                 }
@@ -437,49 +474,10 @@ namespace Composite.Core.Serialization.CodeGeneration
         }
 
 
-        private static void Flush()
+
+        private static string CreateSerializerClassName(string propertyClassTypeFullName)
         {
-            _resourceLocker.ResetInitialization();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
-
-
-        private static string CreateCompileUnitId(Type propertyClassType)
-        {
-            return string.Format("{0}.{1}", _compileUnitId, CreateSerializerClassName(propertyClassType));
-        }
-
-
-
-        private static string CreateSerializerClassName(Type propertyClassType)
-        {
-            return CreateSerializerClassName(propertyClassType.FullName);
-        }
-
-
-
-        private static string CreateSerializerClassName(string propertyClassTypeName)
-        {
-            return string.Format("{0}CustomSerializer", propertyClassTypeName.Replace('.', '_').Replace('+', '_'));
-        }
-
-
-
-        private sealed class Resources
-        {
-            public DynamicBuildManagerTypeCache<Type> SerializersTypesCache;
-
-            public static void Initialize(Resources resources)
-            {
-                resources.SerializersTypesCache = new DynamicBuildManagerTypeCache<Type>();
-            }
+            return string.Format("{0}CustomSerializer", propertyClassTypeFullName.Replace('.', '_').Replace('+', '_'));
         }
     }
 }

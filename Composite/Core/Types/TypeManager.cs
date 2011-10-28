@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Composite.C1Console.Events;
 
 
@@ -14,6 +15,8 @@ namespace Composite.Core.Types
 
         internal static ITypeManager Implementation { get { return _implementation; } set { _implementation = value; } }
 
+#warning MRJ: BM: MAJOC HACK!!!
+        public static List<Type> CompiledTypes = new List<Type>();
 
 
         static TypeManager()
@@ -40,6 +43,15 @@ namespace Composite.Core.Types
             return _implementation.TryGetType(fullName);
         }
 
+
+
+#warning MRJ: BM: Is this needed? Should we kill the DynamicType: ?
+        public static string GetRuntimeFullName(string fullName)
+        {
+            if (fullName.StartsWith("DynamicType:")) return fullName.Remove(0, "DynamicType:".Length);
+
+            return fullName;
+        }
 
 
         /// <exclude />

@@ -809,7 +809,7 @@ namespace Composite.Data
         public static T BuildNew<T>(bool suppressEventing)
             where T : class, IData
         {
-            Type generatedType = BuildNewTypeCache.GetTypeToBuild(typeof(T));
+            Type generatedType = DataTypeTypesManager.GetDataTypeEmptyClass(typeof(T));
 
             IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
 
@@ -841,7 +841,7 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            Type generatedType = BuildNewTypeCache.GetTypeToBuild(interfaceType);
+            Type generatedType = DataTypeTypesManager.GetDataTypeEmptyClass(interfaceType);
 
             IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
 

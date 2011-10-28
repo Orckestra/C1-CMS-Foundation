@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web.Hosting;
+using Composite.C1Console.Events;
 using Composite.Core.Application.Foundation.PluginFacades;
 using Composite.Core.Logging;
 using Composite.Core.Types;
-using Composite.C1Console.Events;
 
 
 namespace Composite.Core.Application
@@ -15,14 +15,17 @@ namespace Composite.Core.Application
         private bool _isApplicationOnline = true;
         private bool _wasLastTurnOffSoft = false;
         private bool _buildManagerCachingWasDisabled;
+        private bool _recompileCompositeGenerated;
         private ShutdownGuard _shutdownGuard;
 
-        public void TurnApplicationOffline(bool softTurnOff, bool clearGeneratedAssemblies)
+        public void TurnApplicationOffline(bool softTurnOff, bool recompileCompositeGenerated)
         {
             if (this.IsApplicationOnline == false) throw new InvalidOperationException("The application is already offline");
 
             LoggingService.LogVerbose("ApplicationOnlineHandlerFacade", string.Format("Turning off the application ({0})", softTurnOff == true ? "Soft" : "Hard"));
 
+
+            _recompileCompositeGenerated = recompileCompositeGenerated;
 
             _shutdownGuard = new ShutdownGuard();
 
@@ -39,11 +42,12 @@ namespace Composite.Core.Application
             _isApplicationOnline = false;
             _wasLastTurnOffSoft = softTurnOff;
 
-            if ((clearGeneratedAssemblies == true) && (BuildManager.CachingEnabled == true))
-            {
-                _buildManagerCachingWasDisabled = true;
-                BuildManager.CachingEnabled = false;
-            }
+#warning MRJ: BM: Cleanup here
+            //if ((clearGeneratedAssemblies == true) && (BuildManager.CachingEnabled == true))
+            //{
+            //    _buildManagerCachingWasDisabled = true;
+            //    BuildManager.CachingEnabled = false;
+            //}
         }
 
 
@@ -54,25 +58,20 @@ namespace Composite.Core.Application
 
             Log.LogVerbose("ApplicationOnlineHandlerFacade", "Turning on the application");
 
-
-            if (_buildManagerCachingWasDisabled)
-            {
-                try
+#warning MRJ: BM: Cleanup here
+                if (_recompileCompositeGenerated)
                 {
-
-                    BuildManager.CachingEnabled = true;
-                    BuildManager.ClearCache();
-
-                    // We're not turning-on caching since in this case changing of Composite.Generated will be done 
-                    // at the same time with loading a new application domain.
-                    BuildManager.CachingEnabled = false;
+                    CodeGenerationManager.GenerateCompositeGeneratedAssembly();
                 }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, "Failed to clear build manager's cache");
-                    Log.LogError(LogTitle, ex);
-                }
-            }
+                //if (_buildManagerCachingWasDisabled)
+                //{
+                //    BuildManager.CachingEnabled = true;
+                //    BuildManager.ClearCache();
+                //    // We're not turning-on caching since in this case changing of Composite.Generated will be done 
+                //    // at the same time with loading a new application domain.
+                //    BuildManager.CachingEnabled = false;
+                //}
+            
 
             _shutdownGuard.Dispose();
             _shutdownGuard = null;

@@ -9,6 +9,10 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Data.DynamicTypes;
+using Composite.Core.Types;
+using System.Reflection;
+using Composite.Core;
+using Composite.Data.DynamicTypes.Foundation;
 
 
 namespace Composite.Data
@@ -16,7 +20,7 @@ namespace Composite.Data
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class DataMetaDataFacade
     {
         private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache = null;
@@ -37,7 +41,7 @@ namespace Composite.Data
                 C1Directory.CreateDirectory(_metaDataPath);
             }
 
-            UpdateFilenames();            
+            UpdateFilenames();
         }
 
 
@@ -71,7 +75,7 @@ namespace Composite.Data
         {
             List<string> filepaths = C1Directory.GetFiles(_metaDataPath).ToList();
 
-            Dictionary<Guid, string> ids = new Dictionary<Guid,string>();
+            Dictionary<Guid, string> ids = new Dictionary<Guid, string>();
             foreach (string filepath in filepaths)
             {
                 Guid id = GetGuidFromFilename(filepath);
@@ -89,7 +93,7 @@ namespace Composite.Data
                     {
                         FileUtils.Delete(ids[id]);
                         ids[id] = filepath;
-                    }                    
+                    }
                 }
             }
 
@@ -142,16 +146,59 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
-        public static DataTypeDescriptor GetDataTypeDescriptor(Guid id)
+        /// <summary>
+        /// This method will return the data type descriptor for the given data type id.
+        /// If the data type descriptor has not yet been created (file not existing) and 
+        /// the <paramref name="allowDataTypeCreation"/> is set to true,
+        /// this method will try getting it through the <see cref="Composite.Data.DynamicTypes.Foundation.ReflectionBasedDescriptorBuilder"/> 
+        /// that will try locating the type from the data type id using refelction 
+        /// going through know assemblies.
+        /// </summary>
+        /// <param name="dataTypeId">The id of the data type.</param>
+        /// <param name="allowDataTypeCreation">
+        /// If this is true and the data type descriptor does not exists, it will try to
+        /// be created.
+        /// </param>
+        /// <returns></returns>
+        public static DataTypeDescriptor GetDataTypeDescriptor(Guid dataTypeId, bool allowDataTypeCreation = false)
         {
             Initialize();
 
             DataTypeDescriptor dataTypeDescriptor;
 
-            _dataTypeDescriptorCache.TryGetValue(id, out dataTypeDescriptor);            
+            _dataTypeDescriptorCache.TryGetValue(dataTypeId, out dataTypeDescriptor);
 
-            return dataTypeDescriptor;
+            if (dataTypeDescriptor != null) return dataTypeDescriptor;
+
+#warning MRJ: Move this code!
+            /////
+
+
+            if (allowDataTypeCreation == false) return null;
+
+
+            foreach (Assembly assembly in AssemblyFacade.GetAssembliesFromBin())
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (type.GetInterfaces().Contains(typeof(IData)))
+                    {
+                        ImmutableTypeIdAttribute attribute = type.GetCustomAttributes(false).OfType<ImmutableTypeIdAttribute>().SingleOrDefault();
+                        if ((attribute == null) || (attribute.ImmutableTypeId != dataTypeId)) continue;
+
+                        DataTypeDescriptor newDataTypeDescriptor = ReflectionBasedDescriptorBuilder.Build(type);
+                        PersistMetaData(newDataTypeDescriptor);
+
+                        return newDataTypeDescriptor;
+                    }
+                }
+            }
+
+            /////
+
+            Log.LogError("DataMetaDataFacade", string.Format("No data type found with the given data type id '{0}'", dataTypeId));
+
+            return null;
         }
 
 
@@ -171,12 +218,12 @@ namespace Composite.Data
 
                 _dataTypeDescriptorCache[dataTypeDescriptor.DataTypeId] = dataTypeDescriptor;
 
-                if ((_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeDescriptor.DataTypeId) == true) && 
+                if ((_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeDescriptor.DataTypeId) == true) &&
                     (_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId] != filepath))
                 {
                     FileUtils.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId]);
                     _dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId] = filepath;
-                }                
+                }
             }
         }
 
@@ -197,7 +244,7 @@ namespace Composite.Data
                     _dataTypeDescriptorFilesnamesCache.Remove(dataTypeId);
                 }
             }
-        }       
+        }
 
 
 
@@ -221,7 +268,7 @@ namespace Composite.Data
             Guid result;
             string guidStr = tmp.Substring(index + 1);
 
-            if(!Guid.TryParse(guidStr, out result))
+            if (!Guid.TryParse(guidStr, out result))
             {
                 throw new InvalidOperationException("Failed to extract ID from file '{0}'".FormatWith(filepath));
             }

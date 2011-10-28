@@ -1,25 +1,46 @@
 using System;
 using System.Data;
+using System.ComponentModel;
+using Composite.Data.DynamicTypes;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 
 
-namespace Composite.Sql
+namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
+    internal static class SqlColumnInformationExtensions
+    {
+        public static SqlColumnInformation CreateSqlColumnInformation(this DataTypeDescriptor dataTypeDescriptor, string fieldName)
+        {
+            DataFieldDescriptor dataFieldDescriptor = dataTypeDescriptor.Fields[fieldName];
+
+            return new SqlColumnInformation(
+                dataFieldDescriptor.Name,
+                dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name),
+                false,
+                false,
+                dataFieldDescriptor.IsNullable,
+                dataFieldDescriptor.InstanceType,
+                DynamicTypesCommon.GetStoreTypeToSqlDataTypeMapping(dataFieldDescriptor.StoreType)
+            );
+       }
+    }
+
+
+
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public sealed class SqlColumnInformation
     {
-        private static readonly char[] _trimChars = new char[] { ' ' };
-
-        private string _columnName;
-        private string _trimmedColumnName;
-        private bool _isPrimaryKey;
-        private bool _isIdentity;
-        private bool _isComputed;
-        private bool _isNullable;
-        private Type _type;
-        private SqlDbType _sqlDbType;
+        private readonly string _columnName;
+        private readonly string _trimmedColumnName;
+        private readonly bool _isPrimaryKey;
+        private readonly bool _isIdentity;
+        private readonly bool _isComputed;
+        private readonly bool _isNullable;
+        private readonly Type _type;
+        private readonly SqlDbType _sqlDbType;
 
         private int? _hasCode = null;
 
@@ -33,31 +54,14 @@ namespace Composite.Sql
             SqlDbType sqlDbType)
         {
             _columnName = columnName;
-
-            _trimmedColumnName = _columnName;
-            foreach (char c in _trimChars)
-            {
-                while (true)
-                {
-                    int idx = _trimmedColumnName.IndexOf(c);
-                    if ( -1 != idx)
-                    {
-                        _trimmedColumnName = _trimmedColumnName.Remove(idx, 1);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            
+            _trimmedColumnName = _columnName.Replace(" ", "");            
             _isPrimaryKey = isPrimaryKey;
             _isIdentity = isIdentity;
             _isComputed = isComputed;
             _isNullable = isNullable;
             _type = type;
             _sqlDbType = sqlDbType;
-        }
+        }        
 
 
         /// <exclude />

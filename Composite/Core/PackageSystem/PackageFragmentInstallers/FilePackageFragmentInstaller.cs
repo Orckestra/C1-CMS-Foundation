@@ -8,6 +8,8 @@ using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Core.Xml;
+using Composite.Data;
+using System.Reflection;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -283,6 +285,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
 
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
+
+                if (fileToCopy.TargetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    Assembly assembly = Assembly.LoadFrom(fileToCopy.TargetFilePath);
+                    DataTypeTypesManager.AddNewAssembly(assembly);
+                }
 
                 XElement fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Composite.Core.Linq;
 
 
-namespace Composite.Sql
+namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
     internal sealed class SqlTableInformation : ISqlTableInformation
     {

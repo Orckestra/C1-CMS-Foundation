@@ -1,137 +1,147 @@
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
-using Composite.Core.Collections.Generic;
-using Composite.C1Console.Events;
+using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
-using System.ComponentModel;
 
 
 namespace Composite.Data.Foundation.CodeGeneration
 {
-    internal static class DataWrapperGenerator
+#warning MRJ: BM: Locking in other managers??
+#warning MJR: BM: Move this class
+    /// <summary>
+    /// This class handles data wrapper types and cashing.
+    /// It will through <see cref="DataWrapperCodeGenerator"/> genereated
+    /// data wrapper class types if needed.
+    /// </summary>
+    internal static class DataWrapperTypeManager
     {
-        internal static readonly string NamespaceName = "Composite.Data.GeneratedTypes";
-        private const string _compileUnitIdPrefix = "Composite.Data.DataWrappers";
-        private const string _wrappedObjectName = "_wrappedData";
+        private static readonly object _lock = new object();
 
 
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
-
-        static DataWrapperGenerator()
+        public static Type GetDataWrapperType(Type interfaceType)
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
-        }
+            Type wrapperType = TryGetWrapperType(interfaceType.FullName);
+            if (wrapperType != null) return wrapperType;
 
-        public static Type CreateType(Type interfaceType)
-        {
-            Type dataWrapperType;
-
-			var cache = _resourceLocker.Resources.DataWrappers;
-
-			if (!cache.TryGetValue(interfaceType, out dataWrapperType))
-			{
-				using (_resourceLocker.Locker)
-				{
-					if (!cache.TryGetValue(interfaceType, out dataWrapperType))
-					{
-						dataWrapperType = GenerateType(interfaceType);
-
-						_resourceLocker.Resources.DataWrappers.Add(interfaceType, dataWrapperType);
-					}
-				}
-			}
-
-
-            return dataWrapperType;
-        }
-
-
-        internal static void AddDataWrapperType(Type interfaceType, Type emptyClassType)
-        {
-        	var cache = _resourceLocker.Resources.DataWrappers;
-        	
-			if (cache.ContainsKey(interfaceType))
-				return;
-
-            using (_resourceLocker.Locker)
+            lock (_lock)
             {
-				if (cache.ContainsKey(interfaceType))
-					return;
+                wrapperType = TryGetWrapperType(interfaceType.FullName);
+                if (wrapperType != null) return wrapperType;
 
-                _resourceLocker.Resources.DataWrappers.Add(interfaceType, emptyClassType);
+                CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("DataWrapper:" + interfaceType.FullName);
+
+                DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, interfaceType);
+
+                IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+                return types.Single();
             }
         }
 
-        private static Type GenerateType(Type interfaceType)
+
+
+        public static Type GetDataWrapperType(DataTypeDescriptor dataTypeDescriptor)
         {
-            string codeCompileUnitId = CreateCompileUnitId(interfaceType);
+            Type wrapperType = TryGetWrapperType(dataTypeDescriptor.GetFullInterfaceName());
+            if (wrapperType != null) return wrapperType;
 
-            string codeCompileUnitFingerprint = "";
-            if (interfaceType.GetCustomAttributesRecursively<CodeGeneratedAttribute>().Any() == false)
-            {
-                codeCompileUnitFingerprint = interfaceType.Assembly.FullName;
-            }
-            else
-            {
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
-                codeCompileUnitFingerprint = dataTypeDescriptor.Version.ToString();
-            }
+            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("DataWrapper:" + dataTypeDescriptor.GetFullInterfaceName());
 
-            BuildManagerCompileUnit buildManagerCompileUnit = new BuildManagerCompileUnit(codeCompileUnitId, codeCompileUnitFingerprint);
+            DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, dataTypeDescriptor);
 
-            buildManagerCompileUnit.AddType(new BuildManagerCompileType(
-                NamespaceName,
-                new KeyValuePair<string, Func<CodeTypeDeclaration>>(
-                    CreateWrapperClassName(interfaceType.FullName),
-                    () => CreateCodeTypeDeclaration(interfaceType))));
-            
+            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
 
-            buildManagerCompileUnit.AddAssemblyReference(typeof(IDataWrapper).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(EditorBrowsableAttribute).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(interfaceType.Assembly);
-
-            BuildManager.GetCompiledTypes(buildManagerCompileUnit);
-
-            string className = CreateWrapperClassName(interfaceType.FullName);
-
-            return buildManagerCompileUnit.GetGeneretedTypeByName(className);
+            return types.Single();
         }
 
 
 
-        private static CodeTypeDeclaration CreateCodeTypeDeclaration(Type interfaceType)
+        private static Type TryGetWrapperType(string fullName)
         {
-            List<BuildManagerPropertyInfo> buildManagerPropertyInfos =
-                (from pi in interfaceType.GetPropertiesRecursively(prop => typeof(IData).IsAssignableFrom(prop.DeclaringType))
-                 select new BuildManagerPropertyInfo(pi)).ToList();
+            string dataWrapperFullName = DataWrapperCodeGenerator.CreateWrapperClassFullName(fullName);
 
-            return CreateCodeTypeDeclaration(
-                interfaceType.FullName,
-                buildManagerPropertyInfos,
-                interfaceType.GetInterfaces());
+            Type wrapperType = TypeManager.TryGetType(dataWrapperFullName);
+
+            return wrapperType;
+        }
+    }
+
+
+#warning MRJ: BM: Rename this file
+    /// <summary>
+    /// This class genereated code for data wrapper classes.
+    /// </summary>
+    internal static class DataWrapperCodeGenerator
+    {
+        private const string NamespaceName = "CompositeGenerated.DataWrappers";
+        private const string WrappedObjectName = "_wrappedData";
+
+
+
+        internal static void AddDataWrapperClassCode(CodeGenerationBuilder codeGenerationBuilder, Type interfaceType)
+        {
+            codeGenerationBuilder.AddReference(interfaceType.Assembly);
+
+            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId());
+
+            AddDataWrapperClassCode(codeGenerationBuilder, dataTypeDescriptor);
         }
 
 
 
-        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(BuildManagerSiloData buildManagerSiloData)
+        internal static void AddDataWrapperClassCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
-            List<BuildManagerPropertyInfo> buildManagerPropertyInfos =
-                (from bmpi in buildManagerSiloData.TargetTypeRecursiveInterfaceProperties
-                 where (bmpi.DeclaringType == null || (bmpi.DeclaringType != null && typeof(IData).IsAssignableFrom(bmpi.DeclaringType)))
-                 select bmpi).ToList();                       
+            codeGenerationBuilder.AddReference(typeof(IDataWrapper).Assembly);
+            codeGenerationBuilder.AddReference(typeof(EditorBrowsableAttribute).Assembly);
 
-            return CreateCodeTypeDeclaration(
-                buildManagerSiloData.TargetTypeFullName,
-                buildManagerPropertyInfos,
-                buildManagerSiloData.TargetTypeBaseTypes);
+            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor);
+
+            codeGenerationBuilder.AddType(NamespaceName, codeTypeDeclaration);
         }
 
 
-        private static CodeTypeDeclaration CreateCodeTypeDeclaration(string interfaceTypeFullName, IEnumerable<BuildManagerPropertyInfo> buildManagerPropertyInfos, IEnumerable<Type> interfaceTypeBaseTypes)
+
+        internal static string CreateWrapperClassFullName(string interfaceTypeFullName)
+        {
+            return NamespaceName + "." + CreateWrapperClassName(interfaceTypeFullName);
+        }
+
+
+
+        private static string CreateWrapperClassName(string interfaceTypeFullName)
+        {
+            return string.Format("{0}Wrapper", interfaceTypeFullName.Replace('.', '_').Replace('+', '_'));
+        }
+
+
+
+        private static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
+        {
+            string fullName = dataTypeDescriptor.GetFullInterfaceName();
+
+#warning MRJ: BM: Handle readonly (Datatype descriptor)
+            IEnumerable<Tuple<string, Type, bool>> properties =
+                dataTypeDescriptor.Fields.
+                Select(f => new Tuple<string, Type, bool>(f.Name, f.InstanceType, false)).
+                Concat(new[] { new Tuple<string, Type, bool>("DataSourceId", typeof(DataSourceId), true)});
+
+            return CreateCodeTypeDeclaration(fullName,properties);
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="interfaceTypeFullName"></param>
+        /// <param name="properties">Tuple(string propertyName, Type propertyType, bool readOnly)</param>
+        /// <returns></returns>
+        private static CodeTypeDeclaration CreateCodeTypeDeclaration(string interfaceTypeFullName, IEnumerable<Tuple<string, Type, bool>> properties)
         {
             CodeTypeDeclaration declaration = new CodeTypeDeclaration();
             declaration.Name = CreateWrapperClassName(interfaceTypeFullName);
@@ -151,12 +161,12 @@ namespace Composite.Data.Foundation.CodeGeneration
                 )
             );
 
-            declaration.Members.Add(new CodeMemberField(interfaceTypeFullName, _wrappedObjectName));
+            declaration.Members.Add(new CodeMemberField(interfaceTypeFullName, WrappedObjectName));
 
             AddConstructor(declaration, interfaceTypeFullName);
-            AddInterfaceProperties(declaration, buildManagerPropertyInfos);
+            AddInterfaceProperties(declaration, properties);
 
-            AddMethods(declaration, buildManagerPropertyInfos);
+            AddMethods(declaration, properties);
 
             return declaration;
         }
@@ -165,7 +175,7 @@ namespace Composite.Data.Foundation.CodeGeneration
 
         private static void AddConstructor(CodeTypeDeclaration declaration, string interfaceTypeFullName)
         {
-            string parameterName = "data";
+            const string parameterName = "data";
 
             CodeConstructor codeConstructor = new CodeConstructor();
             codeConstructor.Attributes = MemberAttributes.Public;
@@ -173,7 +183,7 @@ namespace Composite.Data.Foundation.CodeGeneration
 
             codeConstructor.Statements.Add(
                 new CodeAssignStatement(
-                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), _wrappedObjectName),
+                    new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), WrappedObjectName),
                     new CodeVariableReferenceExpression(parameterName)
                 ));
 
@@ -182,14 +192,24 @@ namespace Composite.Data.Foundation.CodeGeneration
 
 
 
-        private static void AddInterfaceProperties(CodeTypeDeclaration declaration, IEnumerable<BuildManagerPropertyInfo> buildManagerPropertyInfos)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="declaration"></param>
+        /// <param name="properties">Tuple(string propertyName, Type propertyType, bool readOnly)</param>
+        private static void AddInterfaceProperties(CodeTypeDeclaration declaration, IEnumerable<Tuple<string, Type, bool>> properties)
         {
-            foreach (BuildManagerPropertyInfo propertyInfo in buildManagerPropertyInfos)
+            foreach (var property in properties)
             {
-                string fieldName = CreateFieldName(propertyInfo);
+                string propertyName = property.Item1;
+                Type propertyType = property.Item2;
+                bool readOnly = property.Item3;
+
+                string fieldName = CreateFieldName(propertyName);
+
                 CodeTypeReference nullableType = new CodeTypeReference(
                         typeof(ExtendedNullable<>).FullName,
-                        new CodeTypeReference[] { new CodeTypeReference(propertyInfo.PropertyType) }
+                        new CodeTypeReference[] { new CodeTypeReference(propertyType) }
                     );
 
                 CodeMemberField codeField = new CodeMemberField();
@@ -201,10 +221,10 @@ namespace Composite.Data.Foundation.CodeGeneration
 
                 CodeMemberProperty codeProperty = new CodeMemberProperty();
                 codeProperty.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                codeProperty.Name = propertyInfo.Name;
+                codeProperty.Name = propertyName;
                 codeProperty.HasGet = true;
-                codeProperty.HasSet = propertyInfo.CanWrite;
-                codeProperty.Type = new CodeTypeReference(propertyInfo.PropertyType);
+                codeProperty.HasSet = !readOnly;
+                codeProperty.Type = new CodeTypeReference(propertyType);
 
 
                 codeProperty.GetStatements.Add(
@@ -236,40 +256,41 @@ namespace Composite.Data.Foundation.CodeGeneration
                                 new CodePropertyReferenceExpression(
                                     new CodeFieldReferenceExpression(
                                         new CodeThisReferenceExpression(),
-                                        _wrappedObjectName
+                                        WrappedObjectName
                                     ),
-                                    propertyInfo.Name
+                                    propertyName
                                 )
                             )
                         }
                     ));
 
 
-                if (propertyInfo.CanWrite == true)
+                if (!readOnly)
                 {
-                    IEnumerable<Type> beforeSetHandlerTypes =
-                        from attribute in propertyInfo.GetCustomAttributes<BeforeSetAttribute>()
-                        select attribute.BeforeSetHandlerType;
+#warning MRJ: BM: Handle before set handles (datatype descriptor??)
+                    //IEnumerable<Type> beforeSetHandlerTypes =
+                    //    from attribute in propertyInfo.GetCustomAttributes<BeforeSetAttribute>()
+                    //    select attribute.BeforeSetHandlerType;
 
-                    if (beforeSetHandlerTypes.Count() > 0)
-                    {
-                    }
+                    //if (beforeSetHandlerTypes.Count() > 0)
+                    //{
+                    //}
 
-                    foreach (Type type in beforeSetHandlerTypes)
-                    {
-                        codeProperty.SetStatements.Add(
-                            new CodeMethodInvokeExpression(
-                                new CodeMethodReferenceExpression(
-                                    new CodeTypeReferenceExpression(typeof(DataPropertyHandlerFacade)),
-                                    "HandleSet"
-                                ),
-                                new CodeExpression[] {
-                                    new CodeTypeOfExpression(type),
-                                    new CodeThisReferenceExpression(),
-                                    new CodePropertySetValueReferenceExpression()
-                                }
-                            ));
-                    }
+                    //foreach (Type type in beforeSetHandlerTypes)
+                    //{
+                    //    codeProperty.SetStatements.Add(
+                    //        new CodeMethodInvokeExpression(
+                    //            new CodeMethodReferenceExpression(
+                    //                new CodeTypeReferenceExpression(typeof(DataPropertyHandlerFacade)),
+                    //                "HandleSet"
+                    //            ),
+                    //            new CodeExpression[] {
+                    //                new CodeTypeOfExpression(type),
+                    //                new CodeThisReferenceExpression(),
+                    //                new CodePropertySetValueReferenceExpression()
+                    //            }
+                    //        ));
+                    //}
 
                     codeProperty.SetStatements.Add(
                     new CodeAssignStatement(
@@ -288,7 +309,15 @@ namespace Composite.Data.Foundation.CodeGeneration
             }
         }
 
-        private static void AddMethods(CodeTypeDeclaration declaration, IEnumerable<BuildManagerPropertyInfo> buildManagerPropertyInfos)
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="declaration"></param>
+        /// <param name="properties">Tuple(string propertyName, Type propertyType, bool readOnly)</param>
+        private static void AddMethods(CodeTypeDeclaration declaration, IEnumerable<Tuple<string, Type, bool>> properties)
         {
             CodeMemberProperty codeMemberProperty = new CodeMemberProperty();
 
@@ -303,7 +332,7 @@ namespace Composite.Data.Foundation.CodeGeneration
                 new CodeMethodReturnStatement(
                     new CodeFieldReferenceExpression(
                         new CodeThisReferenceExpression(),
-                        _wrappedObjectName
+                        WrappedObjectName
                     )
                 ));
 
@@ -316,11 +345,14 @@ namespace Composite.Data.Foundation.CodeGeneration
             codeMemberMethod.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 
 
-            foreach (BuildManagerPropertyInfo propertyInfo in buildManagerPropertyInfos)
+            foreach (var property in properties)
             {
-                if (propertyInfo.CanWrite == false) continue;
+                string propertyName = property.Item1;
+                bool readOnly = property.Item3;
+                
+                if (readOnly) continue;
 
-                string fieldName = CreateFieldName(propertyInfo);
+                string fieldName = CreateFieldName(propertyName);
 
                 List<CodeStatement> statements = new List<CodeStatement>();
 
@@ -328,9 +360,9 @@ namespace Composite.Data.Foundation.CodeGeneration
                         new CodePropertyReferenceExpression(
                             new CodeFieldReferenceExpression(
                                 new CodeThisReferenceExpression(),
-                                _wrappedObjectName
+                                WrappedObjectName
                             ),
-                            propertyInfo.Name
+                            propertyName
                         ),
                         new CodePropertyReferenceExpression(
                             new CodeFieldReferenceExpression(
@@ -363,49 +395,10 @@ namespace Composite.Data.Foundation.CodeGeneration
 
 
 
-        private static void Flush()
+
+        private static string CreateFieldName(string propertyName)
         {
-            _resourceLocker.ResetInitialization();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
-
-
-        private static string CreateCompileUnitId(Type interfaceType)
-        {
-            return string.Format("{0}.{1}", _compileUnitIdPrefix, interfaceType.FullName.Replace('.', '_').Replace('+', '_'));
-        }
-
-
-
-        private static string CreateWrapperClassName(string interfaceTypeFullName)
-        {
-            return string.Format("{0}Wrapper", interfaceTypeFullName.Replace('.', '_').Replace('+', '_'));
-        }
-
-
-
-        private static string CreateFieldName(BuildManagerPropertyInfo propertyInfo)
-        {
-            return string.Format("_{0}Nullable", propertyInfo.Name.ToLower());
-        }
-
-
-
-        private sealed class Resources
-        {
-            public Hashtable<Type, Type> DataWrappers { get; private set; }
-
-            public static void Initialize(Resources resources)
-            {
-                resources.DataWrappers = new Hashtable<Type, Type>();
-            }
+            return string.Format("_{0}Nullable", propertyName.ToLower());
         }
     }
 }

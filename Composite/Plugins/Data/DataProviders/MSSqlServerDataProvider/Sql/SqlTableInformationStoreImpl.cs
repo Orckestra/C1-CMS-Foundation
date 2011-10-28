@@ -9,7 +9,7 @@ using Composite.Core.Extensions;
 using Composite.Core.Sql;
 
 
-namespace Composite.Sql
+namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
     internal class SqlTableInformationStoreImpl : ISqlTableInformationStore
     {

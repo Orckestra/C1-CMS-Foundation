@@ -64,7 +64,7 @@ namespace Composite.Data.Caching
             {
                 if (_wrapperType == null)
                 {
-                    _wrapperType = DataWrapperGenerator.CreateType(typeof(T));
+                    _wrapperType = DataWrapperTypeManager.GetDataWrapperType(typeof(T));
                 }
 
                 return _wrapperType;

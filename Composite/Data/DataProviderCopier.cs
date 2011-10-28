@@ -62,18 +62,19 @@ namespace Composite.Data
                              select type).ToList();
 
                         LoggingService.LogVerbose(LogTitle, "Ensuring interfaces...");
-
-                        bool flushed = EnsureInterfaces(allInterfaces);
+#warning MRJ: BM: Cleanup, and maybe refac: allInterfaces used twice
+                        EnsureInterfaces(allInterfaces);
+                        //bool flushed = EnsureInterfaces(allInterfaces);
 
                         LoggingService.LogVerbose(LogTitle, "Done insuring interfaces!");
 
-                        if (flushed == true)
-                        {
+                        //if (flushed == true)
+                        //{
                             allInterfaces =
                                 (from type in DataFacade.GetAllInterfaces()
                                  where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) == true
                                  select type).ToList();
-                        }
+                        //}
 
                         List<Type> handleLastInterfaceTypes = new List<Type>();
 
@@ -113,10 +114,10 @@ namespace Composite.Data
         }
 
 
-
-        private bool EnsureInterfaces(IEnumerable<Type> allInterfaces)
+#warning MRJ: BM: CLeanup
+        private void EnsureInterfaces(IEnumerable<Type> allInterfaces)
         {
-            bool storeCreated = false;
+            //bool storeCreated = false;
 
             foreach (Type interfaceType in allInterfaces)
             {
@@ -128,16 +129,16 @@ namespace Composite.Data
 
                     DataProviderPluginFacade.CreateStore(this.TargetProviderName, dataTypeDescriptor);
 
-                    storeCreated = true;
+                    //storeCreated = true;
                 }
             }
 
-            if (storeCreated == true)
-            {
-                GlobalEventSystemFacade.FlushTheSystem();
-            }
+            //if (storeCreated == true)
+            //{
+            //    GlobalEventSystemFacade.FlushTheSystem();
+            //}
 
-            return storeCreated;
+            //return storeCreated;
         }
 
 

@@ -17,21 +17,23 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
     {
         static readonly object _syncRoot = new object();
 
-        internal static void AddNew(string providerName, DataTypeDescriptor dataTypeDescriptor)
+        internal static InterfaceConfigurationElement AddNew(string providerName, DataTypeDescriptor dataTypeDescriptor)
         {
             lock (_syncRoot)
             {
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
-                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.InterfaceType) == true)
+                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId) == true)
                     throw new InvalidOperationException(
                         string.Format("Configuration already contains a interface named '{0}'",
-                                      interfaceConfig.InterfaceType));
+                                      interfaceConfig.DataTypeId));
 
                 configuration.Section.Interfaces.Add(interfaceConfig);
 
                 configuration.Save();
+
+                return interfaceConfig;
             }
         }
 
@@ -49,13 +51,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
-                return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.InterfaceType);
+                return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId);
             }
         }
 
 
 
-        internal static void Change(string providerName, DataTypeChangeDescriptor changeDescriptor, bool localeChanges)
+        internal static InterfaceConfigurationElement Change(string providerName, DataTypeChangeDescriptor changeDescriptor, bool localeChanges)
         {
             lock (_syncRoot)
             {
@@ -68,23 +70,25 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     && (changeDescriptor.OriginalType.Name == changeDescriptor.AlteredType.Name))
                 {
                     // No changes to the config is needed, lets not touch the file.
-                    return;
+                    return null;
                 }
 
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                string interfaceType = changeDescriptor.OriginalType.TypeManagerTypeName;
+                Guid dataTypeId = changeDescriptor.OriginalType.DataTypeId;
 
-                Verify.IsTrue(configuration.Section.Interfaces.ContainsInterfaceType(interfaceType), 
-                        "Configuration does not contain the original interface named '{0}'".FormatWith(interfaceType));
+                Verify.IsTrue(configuration.Section.Interfaces.ContainsInterfaceType(dataTypeId),
+                        "Configuration does not contain the original interface named '{0}'".FormatWith(dataTypeId));
 
-                configuration.Section.Interfaces.Remove(interfaceType);
+                configuration.Section.Interfaces.Remove(dataTypeId);
 
                 InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType);
 
                 configuration.Section.Interfaces.Add(newInterfaceConfig);
 
                 configuration.Save();
+
+                return newInterfaceConfig;
             }
         }
 
@@ -95,11 +99,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                string interfaceType = dataTypeDescriptor.TypeManagerTypeName;
+                Guid dataTypeId = dataTypeDescriptor.DataTypeId;
 
-                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceType))
+                if (configuration.Section.Interfaces.ContainsInterfaceType(dataTypeId))
                 {
-                    configuration.Section.Interfaces.Remove(interfaceType);
+                    configuration.Section.Interfaces.Remove(dataTypeId);
                     configuration.Save();
                 }
             }
@@ -110,7 +114,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             var tableConfig = new InterfaceConfigurationElement();            
 
-            tableConfig.InterfaceType = dataTypeDescriptor.TypeManagerTypeName;
+            tableConfig.DataTypeId = dataTypeDescriptor.DataTypeId;
             tableConfig.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
 
             var propertyMappings = new PropertyNameMappingConfigurationElementCollection();

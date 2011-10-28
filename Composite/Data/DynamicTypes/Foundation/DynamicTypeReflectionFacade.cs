@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Composite.Core.Types;
 
 
 namespace Composite.Data.DynamicTypes.Foundation
 {
-	internal static class DynamicTypeReflectionFacade
-	{
+    internal static class DynamicTypeReflectionFacade
+    {
         public static Guid GetImmutableTypeId(Type type)
         {
             List<ImmutableTypeIdAttribute> immutableTypeIdAttributes = type.GetCustomInterfaceAttributes<ImmutableTypeIdAttribute>().ToList();
@@ -63,7 +64,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
 
 
-        public static bool TryGetFieldPosition(PropertyInfo fieldInfo, out int position )
+        public static bool TryGetFieldPosition(PropertyInfo fieldInfo, out int position)
         {
             object[] fieldPotitionAttributes = fieldInfo.GetCustomAttributes(typeof(FieldPositionAttribute), true);
 
@@ -234,5 +235,23 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             return result;
         }
-	}
+
+
+
+        /// <summary>
+        /// If no BuildNewHandlerAttribute is used on the data type interface
+        /// null is returned.
+        /// </summary>
+        /// <returns></returns>
+        public static Type GetBuildNewHandlerType(Type interfaceType)
+        {
+            IEnumerable<BuildNewHandlerAttribute> attributes = interfaceType.GetCustomAttributesRecursively<BuildNewHandlerAttribute>();
+
+            if (attributes.Count() == 0) return null;
+
+            if (attributes.Count() > 1) throw new InvalidOperationException(string.Format("Only one '{0}' allowed on the interface '{1}'", typeof(BuildNewHandlerAttribute).FullName, interfaceType.FullName));
+
+            return attributes.Single().BuildNewHandlerType;
+        }
+    }
 }

@@ -17,7 +17,6 @@ using Composite.Core.WebClient;
 using Composite.C1Console.Workflow;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.GeneratedTypes.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -824,30 +823,32 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     }
 
 
-
+#warning MRJ: BM: This is a strange feature now or what? Just restart the server?
     internal sealed class RebuildAssemblyCacheActionExecutor : IActionExecutor
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            var interfaceCompilationUnits = new List<BuildManagerCompileUnit>();
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly();
 
-            foreach(var type in DataFacade.GetAllInterfaces())
-            {
-                Guid typeId;
-                DataTypeDescriptor dataTypeDescriptor;
-                if(!DataAttributeFacade.TryGetImmutableTypeId(type, out typeId)
-                   || !DynamicTypeManager.TryGetDataTypeDescriptor(typeId, out dataTypeDescriptor)
-                   || !dataTypeDescriptor.IsCodeGenerated)
-                {
-                    continue;
-                }
+            //var interfaceCompilationUnits = new List<BuildManagerCompileUnit>();
 
-                interfaceCompilationUnits.Add(InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor));
-            }
+            //foreach(var type in DataFacade.GetAllInterfaces())
+            //{
+            //    Guid typeId;
+            //    DataTypeDescriptor dataTypeDescriptor;
+            //    if(!DataAttributeFacade.TryGetImmutableTypeId(type, out typeId)
+            //       || !DynamicTypeManager.TryGetDataTypeDescriptor(typeId, out dataTypeDescriptor)
+            //       || !dataTypeDescriptor.IsCodeGenerated)
+            //    {
+            //        continue;
+            //    }
 
-            BuildManager.RebuildCache(interfaceCompilationUnits.ToArray());
+            //    interfaceCompilationUnits.Add(InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor));
+            //}
 
-            HostingEnvironment.InitiateShutdown();
+            //BuildManager.RebuildCache(interfaceCompilationUnits.ToArray());
+
+            //HostingEnvironment.InitiateShutdown();
 
             return null;
         }

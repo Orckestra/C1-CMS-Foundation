@@ -1,16 +1,135 @@
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
-using Composite.Core.Types;
+using Composite.Data.ProcessControlled;
 
 
-namespace Composite.Data.GeneratedTypes
+namespace Composite.Data.DynamicTypes
 {
+#warning MRJ: BM: Move this class, possibly rename?
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    public class UpdateDataTypeDescriptor
+    {
+        public UpdateDataTypeDescriptor(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData = true)
+        {
+            OldDataTypeDescriptor = oldDataTypeDescriptor;
+            NewDataTypeDescriptor = newDataTypeDescriptor;
+            ProviderName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+        }
+
+
+
+        /// <summary>
+        /// </summary>
+        public DataTypeDescriptor OldDataTypeDescriptor { get; private set; }
+
+
+
+        /// <summary>
+        /// </summary>
+        public DataTypeDescriptor NewDataTypeDescriptor { get; private set; }
+
+
+
+        /// <summary>
+        /// </summary>
+        public DataTypeChangeDescriptor CreateDataTypeChangeDescriptor()
+        {
+            return new DataTypeChangeDescriptor(OldDataTypeDescriptor, NewDataTypeDescriptor, OriginalTypeHasData);
+        }
+
+
+
+        /// <summary>
+        /// If this is true, extra validation on what things are changed on 
+        /// the data type. Some operation are not allowed if data exists.
+        /// </summary>
+        public bool OriginalTypeHasData { get; set; }
+
+
+
+        /// <summary>
+        /// </summary>
+        public string ProviderName { get; set; }
+
+
+
+        /// <summary>
+        /// This is only used when enabling localization for the data type in question
+        /// If this empty or contains any cultues, data from existing locale(s) (published/unpublished)
+        /// will be copied to these locales.
+        /// </summary>
+        public IEnumerable<CultureInfo> LocalesToCopyTo { get; set; }
+
+
+
+        /// <summary>
+        /// This is only used when disabling localization for the data type in question
+        /// Data from this locale (published/unpublished) will be copied to the non-localized store(s).
+        /// </summary>
+        public CultureInfo LocaleToCopyFrom { get; set; }
+
+
+
+        /// <summary>
+        /// </summary>
+        public IEnumerable<DataScopeIdentifier> OldSupportedDataScopeIdentifiers
+        {
+            get
+            {
+                yield return DataScopeIdentifier.Administrated;
+
+                if (OldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled))) yield return DataScopeIdentifier.Public;
+            }
+        }
+
+
+
+        /// <summary>
+        /// This is true if publication is added from the data type (IPublishControlled added).
+        /// </summary>
+        public bool PublicationAdded
+        {
+            get
+            {
+                return (OldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false) &&
+                       (NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true);
+            }
+        }
+
+
+
+        /// <summary>
+        /// This is true if publication is removed from the data type (IPublishControlled removed).
+        /// </summary>
+        public bool PublicationRemoved
+        {
+            get
+            {
+                return (OldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true) &&
+                       (NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false);
+            }
+        }
+    }
+
+}
+
+namespace Composite.Data.GeneratedTypes
+{
+
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public class GenerateNewTypeEventArgs : EventArgs
     {
     }
@@ -20,7 +139,7 @@ namespace Composite.Data.GeneratedTypes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public class UpdateTypeEventArgs : EventArgs
     {
     }
@@ -30,7 +149,7 @@ namespace Composite.Data.GeneratedTypes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public class DeleteTypeEventArgs : EventArgs
     {
     }
@@ -42,7 +161,7 @@ namespace Composite.Data.GeneratedTypes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public static class GeneratedTypesFacade
     {
         /// <exclude />
@@ -151,28 +270,28 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        /// <exclude />
-        public static void UpdateType(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData)
-        {
-            UpdateType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, oldDataTypeDescriptor, newDataTypeDescriptor, originalTypeHasData);
-        }
+        ///// <exclude />
+        //public static void UpdateType(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData)
+        //{
+        //    UpdateType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, oldDataTypeDescriptor, newDataTypeDescriptor, originalTypeHasData);
+        //}
+
+
+
+        ///// <exclude />
+        //public static void UpdateType(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor)
+        //{
+        //    UpdateType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, oldDataTypeDescriptor, newDataTypeDescriptor, true);
+        //}
 
 
 
         /// <exclude />
-        public static void UpdateType(DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor)
-        {
-            UpdateType(DataProviderRegistry.DefaultDynamicTypeDataProviderName, oldDataTypeDescriptor, newDataTypeDescriptor, true);
-        }
-
-
-
-        /// <exclude />
-        public static void UpdateType(string providerName, DataTypeDescriptor oldDataTypeDescriptor, DataTypeDescriptor newDataTypeDescriptor, bool originalTypeHasData)
+        public static void UpdateType(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
             using (GlobalInitializerFacade.CoreLockScope)
-            {
-                _generatedTypesFacade.UpdateType(providerName, oldDataTypeDescriptor, newDataTypeDescriptor, originalTypeHasData);
+            {                
+                _generatedTypesFacade.UpdateType(updateDataTypeDescriptor);
 
                 if (_updateTypeDelegate != null)
                 {
@@ -228,22 +347,6 @@ namespace Composite.Data.GeneratedTypes
         public static void UnsubscribeToDeleteTypeEvent(DeleteTypeDelegate eventDelegate)
         {
             _deleteTypeDelegate -= eventDelegate;
-        }
-
-
-
-        internal static void GenerateTypes()
-        {
-            if (RuntimeInformation.IsDebugBuild == true)
-            {
-                GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
-            }
-
-
-            using (GlobalInitializerFacade.CoreLockScope)
-            {
-                _generatedTypesFacade.GenerateTypes();
-            }
-        }
+        }        
     }
 }
