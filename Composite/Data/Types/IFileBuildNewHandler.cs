@@ -8,41 +8,115 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Types;
 using System.Collections.Generic;
+using Composite.C1Console.Events;
+using Composite.Data.Foundation;
 
 
 namespace Composite.Data.Types
 {
+    internal static class FileBuildNewHandlerTypesManager
+    {
+        private static readonly object _lock = new object();
+        private static Dictionary<Type, Type> _fileBuildNewHandlerTypes = new Dictionary<Type, Type>();
+        
+        
+        static FileBuildNewHandlerTypesManager()
+        {
+            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+        }
+
+
+
+        internal static Type GetFileBuilderNewHandler(Type dataType)
+        {
+            Type result;
+            if (!_fileBuildNewHandlerTypes.TryGetValue(dataType, out result))
+            {
+                lock(_lock)
+                {
+                    if (!_fileBuildNewHandlerTypes.TryGetValue(dataType, out result))
+                    {
+                        DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(dataType);
+
+                        string fullName = EmptyDataClassCodeGenerator.GetEmptyClassTypeFullName(dataTypeDescriptor);
+
+                        result = TypeManager.TryGetType(fullName);
+
+                        if (result == null)
+                        {
+#warning MRJ: BM: Rethink this !!
+#warning MRJ: BM: CACHING!!
+                            CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(
+                                new CodeTypeReference(typeof(FileStreamManagerAttribute)),
+                                new [] {
+                                new CodeAttributeArgument(new CodeTypeOfExpression(typeof(IFileEmptyDataClassFileStreamManager)))
+                            });
+
+
+                            //CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("IFileBuildNewHandler: " + dataType.FullName);
+
+                            //CodeTypeDeclaration codeTypeDeclaration = EmptyDataClassCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptor, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
+
+                            //CodeNamespace codeNamespace = new CodeNamespace(EmptyDataClassCodeGenerator.NamespaceName);
+                            //codeNamespace.Types.Add(codeTypeDeclaration);
+
+                            result = EmptyDataClassTypeManager.CreateEmptyDataClassType(dataTypeDescriptor, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
+                            //codeGenerationBuilder.AddReference(typeof(System.ComponentModel.EditorBrowsableAttribute).Assembly);
+                            //codeGenerationBuilder.AddNamespace(codeNamespace);
+                            //codeGenerationBuilder.AddReference(dataType.Assembly);
+                            //codeGenerationBuilder.AddReference(typeof(IFileEmptyDataClassBase).Assembly);
+
+                            //IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+
+
+                            //result = types.Where(f => f.FullName == fullName).Single();
+                        }
+
+                        _fileBuildNewHandlerTypes.Add(dataType, result);
+                    }
+                }         
+            }
+
+            return result;
+        }
+        
+
+
+
+        private static void Flush()
+        {
+            _fileBuildNewHandlerTypes = new Dictionary<Type, Type>();
+        }
+
+
+
+        private static void OnFlushEvent(FlushEventArgs args)
+        {
+            Flush();
+        }
+    }
+
+
     internal sealed class IFileBuildNewHandler : IBuildNewHandler
     {
         public Type GetTypeToBuild(Type dataType)
         {
-#warning MRJ: BM: Rethink this !!
-#warning MRJ: BM: CACHING!!
+           // DataTypeTypesManager.GetDataTypeEmptyClass()
+            return FileBuildNewHandlerTypesManager.GetFileBuilderNewHandler(dataType);
+        }
+
+
+        public CodeAttributeDeclaration GetCodeAttributeDeclaration(Type dataType)
+        {
             CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(
                 new CodeTypeReference(typeof(FileStreamManagerAttribute)),
-                new CodeAttributeArgument[] {
+                new [] {
                     new CodeAttributeArgument(new CodeTypeOfExpression(typeof(IFileEmptyDataClassFileStreamManager)))
-                });
+                }
+            );
 
-
-            DataTypeDescriptor dataTypeDescriptor = DynamicTypes.DynamicTypeManager.GetDataTypeDescriptor(dataType);
-
-            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("IFileBuildNewHandler: " + dataType.FullName);
-
-            CodeTypeDeclaration codeTypeDeclaration = EmptyDataClassCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptor, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
-            
-            CodeNamespace codeNamespace = new CodeNamespace("EmptyDataClassCodeGenerator.NamespaceName");
-            codeNamespace.Types.Add(codeTypeDeclaration);
-
-            codeGenerationBuilder.AddNamespace(codeNamespace);
-            codeGenerationBuilder.AddReference(dataType.Assembly);
-            codeGenerationBuilder.AddReference(typeof(IFileEmptyDataClassBase).Assembly);
-
-            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
-
-            string fullName = EmptyDataClassCodeGenerator.GetEmptyClassTypeFullName(dataTypeDescriptor);
-
-            return types.Where(f => f.FullName == fullName).Single();
+            return codeAttributeDeclaration;
         }
     }
 

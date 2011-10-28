@@ -29,9 +29,12 @@ namespace Composite.Data.Foundation.CodeGeneration
 
 
 
-        internal static void AddEmptyDataClassTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
+        internal static void AddEmptyDataClassTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor, Type baseClassType = null, CodeAttributeDeclaration codeAttributeDeclaration = null)
         {
-            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor, typeof(EmptyDataClassBase), null);
+            if (baseClassType == null) baseClassType = typeof(EmptyDataClassBase);
+
+            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor, baseClassType, codeAttributeDeclaration);
+            
             codeGenerationBuilder.AddType(NamespaceName, codeTypeDeclaration);
         }
 

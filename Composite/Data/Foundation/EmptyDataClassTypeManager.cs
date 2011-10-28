@@ -6,6 +6,7 @@ using Composite.Core.Collections.Generic;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Types;
 using Composite.Data.Foundation.CodeGeneration;
+using System.CodeDom;
 
 
 namespace Composite.Data.Foundation
@@ -72,6 +73,17 @@ namespace Composite.Data.Foundation
             }
             */
 
+#warning MRJ: BM: Refac this to nother method
+            if (!string.IsNullOrEmpty(dataTypeDescriptor.BuildNewHandlerTypeName))
+            {
+                Type buildNewHandlerType = TypeManager.GetType(dataTypeDescriptor.BuildNewHandlerTypeName);
+                IBuildNewHandler buildNewHandler = (IBuildNewHandler)Activator.CreateInstance(buildNewHandlerType);
+
+                //INFO: Due to the way IBuildNewHandler is defined, we have to get the interface type here /MRJ
+                Type dataType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+
+                return buildNewHandler.GetTypeToBuild(dataType);
+            }
 
 
             if (forceReCompilation)
@@ -115,28 +127,15 @@ namespace Composite.Data.Foundation
 
 
 
-        private static Type CreateEmptyDataClassType(DataTypeDescriptor dataTypeDescriptor)
+        internal static Type CreateEmptyDataClassType(DataTypeDescriptor dataTypeDescriptor, Type baseClassType = null, CodeAttributeDeclaration codeAttributeDeclaration = null)
         {
-            if (string.IsNullOrEmpty(dataTypeDescriptor.BuildNewHandlerTypeName))
-            {
-                CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("EmptyDataClass: " + dataTypeDescriptor.Name);
-                EmptyDataClassCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
-                EmptyDataClassCodeGenerator.AddEmptyDataClassTypeCode(codeGenerationBuilder, dataTypeDescriptor);
+            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("EmptyDataClass: " + dataTypeDescriptor.Name);
+            EmptyDataClassCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
+            EmptyDataClassCodeGenerator.AddEmptyDataClassTypeCode(codeGenerationBuilder, dataTypeDescriptor, baseClassType, codeAttributeDeclaration);
 
-                IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
 
-                return types.Single();
-            }
-            else
-            {
-                Type buildNewHandlerType = TypeManager.GetType(dataTypeDescriptor.BuildNewHandlerTypeName);
-                IBuildNewHandler buildNewHandler = (IBuildNewHandler)Activator.CreateInstance(buildNewHandlerType);
-
-                //INFO: Due to the way IBuildNewHandler is defined, we have to get the interface type here /MRJ
-                Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
-
-                return buildNewHandler.GetTypeToBuild(interfaceType);
-            }
+            return types.Single();
         }
 
 

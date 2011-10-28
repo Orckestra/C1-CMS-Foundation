@@ -1,5 +1,5 @@
-﻿//#warning REMOVE THIS LINE!!!
-//#define OUTPUT_SOURCE_CODE_ON_ERROR
+﻿#warning REMOVE THIS LINE!!!
+#define OUTPUT_SOURCE_CODE_ON_ERROR
 
 using System;
 using System.CodeDom;
@@ -44,11 +44,15 @@ namespace Composite.Core.Types
 
             foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.AllDataTypeDescriptors)
             {
-#warning MRJ: This need to get the type of the data interface for handling custom builders
-                EmptyDataClassCodeGenerator.AddAssemblyReferences(builder, dataTypeDescriptor);
-                EmptyDataClassCodeGenerator.AddEmptyDataClassTypeCode(builder, dataTypeDescriptor);
-            }
+#warning MRJ: BM: This need to get the type of the data interface for handling custom builders. DONT THINK SO! Builders can be anything
 
+                if (string.IsNullOrEmpty(dataTypeDescriptor.BuildNewHandlerTypeName))
+                {
+                    EmptyDataClassCodeGenerator.AddAssemblyReferences(builder, dataTypeDescriptor);
+                    EmptyDataClassCodeGenerator.AddEmptyDataClassTypeCode(builder, dataTypeDescriptor);
+                }
+            }
+            // IPageTemplateFile
         }
     }
 
