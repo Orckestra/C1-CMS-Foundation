@@ -438,6 +438,31 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 );
 
 
+
+
+
+                //if (dataFieldDescriptor.StoreType.NumericPrecision == 0)
+                //{
+                //    // ({Type}) this._element.Attribute("{field name}");
+                //    resultExpression = new CodeCastExpression(dataFieldDescriptor.InstanceType, getAttributeValueExpression);
+                //}
+                //else
+                //{
+                    
+                //    // FixDecimal(this._element.Attribute("{field name}").Value, {decimal precision});
+                //    resultExpression = new CodeMethodInvokeExpression(
+                //        new CodeMethodReferenceExpression(
+                //            new CodeTypeReferenceExpression(typeof(DataProviderHelperBase)),
+                //            "ParseDecimal"),
+                //            new CodePropertyReferenceExpression(getAttributeValueExpression, "Value"),
+                //            new CodePrimitiveExpression(dataFieldDescriptor.StoreType.NumericPrecision)
+                //    );
+                //}
+
+
+
+
+
 #warning MRJ: BM: Will this work???
                 //if (dataFieldDescriptor.StoreType.NumericPrecision == 0)
                 if (!dataFieldDescriptor.StoreType.IsDecimal)
@@ -455,7 +480,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             "ParseDecimal"),
                             new CodePropertyReferenceExpression(getAttributeValueExpression, "Value"),
 #warning MRJ: BM: Will this work???
-                            new CodePrimitiveExpression(dataFieldDescriptor.StoreType.NumericPrecision)
+                            new CodePrimitiveExpression(dataFieldDescriptor.StoreType.NumericScale)
                     );
                 }
 
