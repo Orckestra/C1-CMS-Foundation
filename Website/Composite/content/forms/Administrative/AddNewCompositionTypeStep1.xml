@@ -7,7 +7,6 @@
 		<cms:binding name="DataFieldDescriptors" type="System.Object" />
 		<cms:binding name="LabelFieldName" type="System.String" optional="true" />
 		<cms:binding name="HasCaching" type="System.Boolean" />
-		<cms:binding name="HasLocalization" type="System.Boolean" />
 	</cms:bindings>
 	<cms:layout>
 		<TabPanels Label="${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewCompositionTypeWorkflow.DocumentTitle}">
@@ -34,12 +33,7 @@
 							<CheckBox.Checked>
 								<cms:bind source="HasCaching" />
 							</CheckBox.Checked>
-						</CheckBox>
-						<CheckBox Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}" ItemLabel="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.HasLocalization}">
-							<CheckBox.Checked>
-								<cms:bind source="HasLocalization" />
-							</CheckBox.Checked>
-						</CheckBox>
+						</CheckBox>						
 					</PlaceHolder>
 				</FieldGroup>
 			</PlaceHolder>
