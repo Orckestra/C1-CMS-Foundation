@@ -68,18 +68,28 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             this.Bindings.Add("DataFieldDescriptors", fieldDescriptors);
 
+            this.Bindings.Add("OldTypeName", dataTypeDescriptor.Name);
+            this.Bindings.Add("OldTypeNamespace", dataTypeDescriptor.Namespace);
+
             this.BindingsValidationRules.Add(this.NewTypeNameBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });           
         }
 
 
+        private Type GetOldTypeFromBindings()
+        {
+            string typeFullName = GetBinding<string>("OldTypeNamespace") + "." + GetBinding<string>("OldTypeName");
+
+            return TypeManager.GetType(typeFullName);
+        }
+
 
         private void saveTypeCodeActivity_Save_ExecuteCode(object sender, EventArgs e)
         {
             try
             {
-                Type oldType = TypeManager.GetType(this.Payload);
+                Type oldType = GetOldTypeFromBindings();
 
                 string typeName = this.GetBinding<string>("TypeName");
                 string typeNamespace = this.GetBinding<string>("TypeNamespace");
@@ -145,10 +155,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 helper.CreateType(originalTypeDataExists);
+
+                UpdateBinding("OldTypeName", typeName);
+                UpdateBinding("OldTypeNamespace", typeNamespace);
+
                 SetSaveStatus(true);
 
+                GeneratedDataTypesElementProviderRootEntityToken rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId);
                 SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
-                specificTreeRefresher.PostRefreshMesseges(new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId));
+                specificTreeRefresher.PostRefreshMesseges(rootEntityToken);
             }
             catch (Exception ex)
             {

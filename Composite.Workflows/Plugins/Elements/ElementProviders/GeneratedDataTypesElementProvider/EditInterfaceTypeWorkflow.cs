@@ -74,7 +74,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
-        private Type GetTypeFromBindings()
+        private Type GetOldTypeFromBindings()
         {
             string typeFullName = GetBinding<string>("OldTypeNamespace") + "." + GetBinding<string>("OldTypeName");
 
@@ -83,7 +83,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void finalizeStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Type oldType = GetTypeFromBindings();
+            Type oldType = GetOldTypeFromBindings();
 
             string typeName = this.GetBinding<string>("TypeName");
             string typeNamespace = this.GetBinding<string>("TypeNamespace");
@@ -165,8 +165,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             SetSaveStatus(true);
 
-            ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
-            parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 1);
+            GeneratedDataTypesElementProviderRootEntityToken rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
+            SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
+            specificTreeRefresher.PostRefreshMesseges(rootEntityToken);
         }
 
         private static void UpdateWhiteListedGeneratedTypes(string oldTypeName, string newTypeName)
