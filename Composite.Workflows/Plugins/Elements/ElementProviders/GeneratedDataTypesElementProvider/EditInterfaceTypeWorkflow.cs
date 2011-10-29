@@ -36,6 +36,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
+        private Type GetTypeFromEntityToken()
+        {
+            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
+            return TypeManager.GetType(entityToken.SerializedTypeName);
+
+        }
+
+
         private void initialStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
@@ -55,6 +63,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             bindings.Add("HasPublishing", helper.IsPublishControlled);
             bindings.Add("HasLocalization", helper.IsLocalizedControlled);
             bindings.Add("EditProcessControlledAllowed", helper.IsEditProcessControlledAllowed);
+            bindings.Add("OldTypeName", dataTypeDescriptor.Name);
+            bindings.Add("OldTypeNamespace", dataTypeDescriptor.Namespace);
 
             this.UpdateBindings(bindings);
 
@@ -64,15 +74,16 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         }
 
 
-        private Type GetTypeFromEntityToken()
+        private Type GetTypeFromBindings()
         {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
-            return TypeManager.GetType(entityToken.SerializedTypeName);
+            string typeFullName = GetBinding<string>("OldTypeNamespace") + "." + GetBinding<string>("OldTypeName");
+
+            return TypeManager.GetType(typeFullName);
         }
 
         private void finalizeStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Type oldType = GetTypeFromEntityToken();
+            Type oldType = GetTypeFromBindings();
 
             string typeName = this.GetBinding<string>("TypeName");
             string typeNamespace = this.GetBinding<string>("TypeNamespace");
@@ -138,7 +149,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return;
             }
 
-            string oldSerializedTypeName = ((GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken).SerializedTypeName;
+            string newOldDataTypeFullName = typeNamespace + "." + typeName;
+            
+            string oldSerializedTypeName = GetSerializedTypeName(GetBinding<string>("OldTypeNamespace"), GetBinding<string>("OldTypeName"));
             string newSerializedTypeName = GetSerializedTypeName(typeNamespace, typeName);
             if (newSerializedTypeName != oldSerializedTypeName)
             {
@@ -146,6 +159,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             }
 
             helper.CreateType(originalTypeHasData);
+
+            UpdateBinding("OldTypeName", typeName);
+            UpdateBinding("OldTypeNamespace", typeNamespace);
 
             SetSaveStatus(true);
 
