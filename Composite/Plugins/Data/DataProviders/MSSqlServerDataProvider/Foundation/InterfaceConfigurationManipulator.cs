@@ -24,10 +24,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
-                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId) == true)
+
+                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId.Value) == true)
+                {
+                    string typeFullName = (dataTypeDescriptor.Namespace ?? string.Empty) + "." + dataTypeDescriptor.Name;
+                
                     throw new InvalidOperationException(
-                        string.Format("Configuration already contains a interface named '{0}'",
-                                      interfaceConfig.DataTypeId));
+                        string.Format("Configuration already contains an interface with data type ID '{0}', type name '{1}'",
+                                      interfaceConfig.DataTypeId,
+                                      typeFullName));
+                }
 
                 configuration.Section.Interfaces.Add(interfaceConfig);
 
@@ -51,7 +57,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
-                return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId);
+                return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId.Value);
             }
         }
 

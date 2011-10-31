@@ -166,10 +166,12 @@ namespace Composite.Data
         {
             foreach (Guid metaDataContainerId in GetAllowedMetaDataDefinitions(page).Select(f => f.MetaDataContainerId).Distinct())
             {
-                yield return
-                    DataFacade.GetData<ICompositionContainer>().
-                    Where(f => f.Id == metaDataContainerId).
-                    Single();
+                Guid containerId = metaDataContainerId; // moving Guid to a local variable to build a correct linq expression
+
+                yield return DataFacade.GetData<ICompositionContainer>().
+                             Where(f => f.Id == containerId).
+                             SingleOrException("Cannot find ICompositionContainer by ID: '{0}'", 
+                                               "More than one ICompositionContainer object for the same ID: '{0}'", containerId);
             }
         }
 
