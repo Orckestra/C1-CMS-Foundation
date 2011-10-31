@@ -351,6 +351,8 @@ namespace Composite.Core.Types
         {
             int t1 = Environment.TickCount;
 
+            _compositeGeneratedCompiled = false; // When compiling a new type, Composite.Generated.dll should always be recompiled
+
 #warning MRJ: BM: Duplicated code, refact!
             CompilerParameters compilerParameters = new CompilerParameters();
             compilerParameters.GenerateExecutable = false;
