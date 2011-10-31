@@ -277,6 +277,44 @@ namespace Composite.Data
         }
 
 
+        internal static Dictionary<string, Guid> GetTypeManagerTypeNameToTypeIdMap()
+        {
+            string metaDataFolderPath = PathUtil.Resolve(GlobalSettingsFacade.DataMetaDataDirectory);
+
+            List<string> filepaths = C1Directory.GetFiles(metaDataFolderPath, "*.xml").ToList();
+
+            var result = new Dictionary<string, Guid>();
+
+            foreach (string filepath in filepaths)
+            {
+                try
+                {
+                    XDocument doc = XDocument.Load(filepath);
+
+                    XAttribute dataTypeIdAttr = doc.Root.Attribute("dataTypeId");
+                    XAttribute typeManagerTypeNameAttr = doc.Root.Attribute("typeManagerTypeName");
+
+                    if (dataTypeIdAttr == null || typeManagerTypeNameAttr == null) continue;
+
+                    string typeManagerTypeName = typeManagerTypeNameAttr.Value;
+                    Guid dataTypeId = new Guid(dataTypeIdAttr.Value);
+
+                    if (!result.ContainsKey(typeManagerTypeName))
+                    {
+                        result.Add(typeManagerTypeName, dataTypeId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning("DataMetaDataFacade", "Error while parsing meta data file '{0}'".FormatWith(filepath));
+                    Log.LogWarning("DataMetaDataFacade", ex);
+                    continue;
+                }
+            }
+
+            return result;
+        }
+
 
         private static void Flush()
         {

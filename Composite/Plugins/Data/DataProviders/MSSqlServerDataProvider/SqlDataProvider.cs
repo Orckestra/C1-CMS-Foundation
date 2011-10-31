@@ -647,7 +647,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     continue;
                 }
 
-                typeNameToTypeIdMap = typeNameToTypeIdMap ?? GetTypeNameToTypeIdMap();
+                typeNameToTypeIdMap = typeNameToTypeIdMap ?? DataMetaDataFacade.GetTypeManagerTypeNameToTypeIdMap();
 
                 if (!typeNameToTypeIdMap.ContainsKey(interfaceTypeName))
                 {
@@ -662,43 +662,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 #pragma warning restore 612,618
         }
 
-        private static Dictionary<string, Guid> GetTypeNameToTypeIdMap()
-        {
-            string metaDataFolderPath = PathUtil.Resolve(GlobalSettingsFacade.DataMetaDataDirectory);
 
-            List<string> filepaths = C1Directory.GetFiles(metaDataFolderPath, "*.xml").ToList();
-
-            var result = new Dictionary<string, Guid>();
-
-            foreach (string filepath in filepaths)
-            {
-                try
-                {
-                    XDocument doc = XDocument.Load(filepath);
-
-                    XAttribute dataTypeIdAttr = doc.Root.Attribute("dataTypeId");
-                    XAttribute typeManagerTypeNameAttr = doc.Root.Attribute("typeManagerTypeName");
-
-                    if(dataTypeIdAttr == null || typeManagerTypeNameAttr == null) continue;
-
-                    string typeManagerTypeName = typeManagerTypeNameAttr.Value;
-                    Guid dataTypeId = new Guid(dataTypeIdAttr.Value);
-
-                    if(!result.ContainsKey(typeManagerTypeName))
-                    {
-                        result.Add(typeManagerTypeName, dataTypeId);
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Log.LogWarning(LogTitle, "Error while parsing meta data file '{0}'".FormatWith(filepath));
-                    Log.LogWarning(LogTitle, ex);
-                    continue;
-                }
-            }
-
-            return result;
-        }
 
         #endregion Build manager upgrade C1 2.0 -> 3.0
     }
