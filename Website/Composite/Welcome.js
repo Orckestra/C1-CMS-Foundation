@@ -202,19 +202,6 @@ var Welcome = new function () {
 
 					tabindex = index;
 
-					/*
-					switch ( this.id ) {
-					case "websitelanguage" :
-					document.getElementById ( "websitehelp" ).style.display = "block";
-					document.getElementById ( "consolehelp" ).style.display = "none";
-					break;
-					case "consolelanguage" :
-					document.getElementById ( "websitehelp" ).style.display = "none";
-					document.getElementById ( "consolehelp" ).style.display = "block";
-					break;
-					}
-					*/
-
 					if (this.type == "text" || this.type == "password") {
 						var input = this;
 						setTimeout(function () {
@@ -532,23 +519,20 @@ var Welcome = new function () {
 			CoverBinding.fadeIn(top.bindingMap.introcover);
 		}
 
-		if (Client.isSafari) {
-			try {
-				SetupService.SetUp(serial, username, password, websitelanguage, consolelanguage);
-			}
-			catch (exception) { };
-			Application.reload(true);
-		} else {
-
-			setTimeout(function () {
-				if (SetupService.SetUp(serial, username, password, websitelanguage, consolelanguage)) {
-					Application.reload(true);
-				} else {
-					top.bindingMap.introcover.hide();
-					top.bindingMap.offlinetheatre.stop();
-					alert("An unfortunate error has occured.");
+		setTimeout(function () {
+			SetupService.SetUp(serial, username, password, websitelanguage, consolelanguage,
+				function (response) {
+					if (response) {
+						Application.reload(true);
+					} else {
+						top.bindingMap.introcover.hide();
+						top.bindingMap.offlinetheatre.stop();
+						alert("An unfortunate error has occured.");
+					}
 				}
-			}, Client.isExplorer ? 0 : 500);
-		}
+			);
+		}, Client.isExplorer ? 0 : 500);
+
+
 	}
 }

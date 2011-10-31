@@ -181,6 +181,30 @@ SOAPRequest.prototype.invoke = function ( url ) {
 }
 
 /**
+* Invoke request.
+* @param {string} url
+* @return {SOAPRequestResponse}
+*/
+SOAPRequest.prototype.asyncInvoke = function (url, onresponse) {
+
+	var request = DOMUtil.getXMLHTTPRequest();
+
+	request.open("post", url, true);
+	request.setRequestHeader("Content-Type", "text/xml; charset=UTF-8");
+	request.setRequestHeader("SOAPAction", this.action);
+
+	request.onreadystatechange = function () {
+		if (request.readyState == 4) {
+			var response = SOAPRequest._parseResponse(request);
+			onresponse(response);
+			request = null;
+		}
+	}
+
+	request.send(this.document);
+}
+
+/**
  * Each request wraps a full DOM document. 
  * No time to wait for the garbage collector.
  */

@@ -40,7 +40,7 @@ WebServiceProxy.createProxy = function ( url ) {
 	
 	var operations 	= wsdl.getOperations ();	
 	operations.each ( function ( operation ) {
-		proxy [ operation.name ] = WebServiceProxy.createProxyOperation ( operation );
+		proxy[operation.name] = WebServiceProxy.createProxyOperation(operation);
 	});
 	
 	return proxy;
@@ -65,38 +65,68 @@ WebServiceProxy.prototype._log = function ( operation, soapMessage ) {
  * @param {WebServiceOperation} operation
  * @return {function}
  */
-WebServiceProxy.createProxyOperation = function ( operation ) {
-	
+WebServiceProxy.createProxyOperation = function (operation) {
+
 	/*
-	 * Method returns a function which in turn returns:
-	 * On request success, an {Object} or a {DOMDocument}.
-	 * On request error, a {SOAPFault}.
-	 */
+	* Method returns a function which in turn returns:
+	* On request success, an {Object} or a {DOMDocument}.
+	* On request error, a {SOAPFault}.
+	*/
 	return function () {
-		
-		var result = null, request = operation.encoder.encode ( 
-			new List ( arguments )
-		);
-		this._log ( operation, request );
-		var response = request.invoke ( operation.address );
-		this._log ( operation, response );
-		
-		if ( response ) {
-			if ( response.fault ) {
-				result = SOAPFault.newInstance ( operation, response.fault );
-				if ( WebServiceProxy.isFaultHandler ) {
-					WebServiceProxy.handleFault ( result, request, response );
+		var parameters = new List(arguments);
+		var result = null;
+		if (typeof (parameters.getLast()) == "function") {
+			var onresponse = parameters.extractLast();
+			var request = operation.encoder.encode(
+				parameters
+			);
+			this._log(operation, request);
+			var self = this;
+			var response = request.asyncInvoke(operation.address, function (response) {
+				self._log(operation, response);
+
+				if (response) {
+					if (response.fault) {
+						result = SOAPFault.newInstance(operation, response.fault);
+						if (WebServiceProxy.isFaultHandler) {
+							WebServiceProxy.handleFault(result, request, response);
+						}
+					} else {
+						if (WebServiceProxy.isDOMResult) {
+							result = response.document;
+						} else {
+							result = operation.decoder.decode(response);
+						}
+					}
 				}
-			} else {
-				if ( WebServiceProxy.isDOMResult ) {
-					result = response.document;
+				request.dispose();
+				onresponse(result);
+			});
+		} else {
+			var request = operation.encoder.encode(
+				new List(arguments)
+			);
+			this._log(operation, request);
+			var response = request.invoke(operation.address);
+			this._log(operation, response);
+
+			if (response) {
+				if (response.fault) {
+					result = SOAPFault.newInstance(operation, response.fault);
+					if (WebServiceProxy.isFaultHandler) {
+						WebServiceProxy.handleFault(result, request, response);
+					}
 				} else {
-					result = operation.decoder.decode ( response );
+					if (WebServiceProxy.isDOMResult) {
+						result = response.document;
+					} else {
+						result = operation.decoder.decode(response);
+					}
 				}
 			}
+			request.dispose();
+			return result;
 		}
-		request.dispose ();
-		return result;
 	}
 }
 
