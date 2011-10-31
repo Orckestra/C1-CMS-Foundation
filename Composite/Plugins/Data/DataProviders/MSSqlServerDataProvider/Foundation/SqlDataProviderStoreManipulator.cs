@@ -12,6 +12,7 @@ using Composite.Core.Sql;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
+using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation
 {
@@ -213,15 +214,41 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             lock (_lock)
 			{
+                foreach (DataScopeIdentifier dataScope in changeDescriptor.AddedDataScopes)
+                {
+                    CreateScopeData(changeDescriptor.AlteredType, dataScope);
+                }
+
 				foreach (DataScopeIdentifier dataScope in changeDescriptor.ExistingDataScopes)
 				{
-					AlterScopeData(changeDescriptor, dataScope);
+                    AlterScopeData(updateDataTypeDescriptor, changeDescriptor, dataScope);
 				}
 
-				foreach (DataScopeIdentifier dataScope in changeDescriptor.AddedDataScopes)
-				{
-					CreateScopeData(changeDescriptor.AlteredType, dataScope);
-				}
+
+                if (updateDataTypeDescriptor.PublicationAdded)
+                {                    
+                    IEnumerable<CultureInfo> locales = GetCultures(changeDescriptor.OriginalType);
+
+                    foreach (CultureInfo locale in locales)
+                    {
+                        // Copy from public to admin
+                        // Remove public
+
+                        string oldTableName = GetConfiguredTableName(changeDescriptor.OriginalType, DataScopeIdentifier.Public, locale.Name);
+                        string newTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, DataScopeIdentifier.Administrated, locale);
+
+                        string copyCommandText = string.Format(@"
+                            SELECT * 
+                            INTO {0}
+                            FROM {1};", oldTableName, newTableName);
+                        ExecuteNonQuery(copyCommandText);                        
+
+                        string removeCommandText = string.Format(@"DELETE FROM {0};", oldTableName);
+                        ExecuteNonQuery(oldTableName);
+                    }
+                }
+
+
 
 				foreach (DataScopeIdentifier dataScope in changeDescriptor.DeletedDataScopes)
 				{
@@ -230,7 +257,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			}
 		}
 
-		private void AlterScopeData(DataTypeChangeDescriptor changeDescriptor, DataScopeIdentifier dataScope)
+		private void AlterScopeData(UpdateDataTypeDescriptor updateDataTypeDescriptor, DataTypeChangeDescriptor changeDescriptor, DataScopeIdentifier dataScope)
 		{
 			var culturesToDelete = new List<CultureInfo>();
 			var culturesToChange = new List<CultureInfo>();
@@ -252,12 +279,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 			var culturesToAdd = newCultures.Where(culture => !oldCultures.Contains(culture)).ToList();
 
-			culturesToChange.ForEach(culture => AlterStore(changeDescriptor, dataScope, culture));
+            culturesToChange.ForEach(culture => AlterStore(updateDataTypeDescriptor, changeDescriptor, dataScope, culture));
 			culturesToAdd.ForEach(culture => CreateStore(changeDescriptor.AlteredType, dataScope, culture));
 			culturesToDelete.ForEach(culture => DropStore(changeDescriptor.OriginalType, dataScope, culture));
 		}
 
-		private void AlterStore(DataTypeChangeDescriptor changeDescriptor, DataScopeIdentifier dataScope, CultureInfo culture)
+
+
+		private void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, DataTypeChangeDescriptor changeDescriptor, DataScopeIdentifier dataScope, CultureInfo culture)
 		{
 			try
 			{
@@ -285,7 +314,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 				}
 				DropFields(alteredTableName, changeDescriptor.DeletedFields, changeDescriptor.OriginalType.Fields);
 				ImplementFieldChanges(alteredTableName, changeDescriptor.ExistingFields);
-				AppendFields(alteredTableName, changeDescriptor.OriginalType.Fields, changeDescriptor.AddedFields);
+
+
+                Dictionary<string, object> defaultValues = null;
+                if (updateDataTypeDescriptor.PublicationAdded)
+                {
+                    defaultValues = new Dictionary<string, object>();
+                    defaultValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
+                }
+
+                AppendFields(alteredTableName, changeDescriptor.OriginalType.Fields, changeDescriptor.AddedFields, defaultValues);
 
 				//string sql = SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, (changeDescriptor.AlteredType.HasCustomPhysicalSortOrder == false));
 				//ExecuteNonQuery(sql);
@@ -297,10 +335,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 		}
 
+
+
 		internal void RenameTable(string oldTableName, string newTableName)
 		{
 			ExecuteStoredProcedure("sp_rename", new[] { oldTableName, newTableName });
 		}
+
+
 
 		internal void DropStoresForType(string providerName, DataTypeDescriptor typeDescriptor)
 		{
@@ -384,7 +426,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			ExecuteNonQuery(sql.ToString());
 		}
 
-		private void AppendFields(string tableName, IEnumerable<DataFieldDescriptor> originalFieldDescriptions, IEnumerable<DataFieldDescriptor> addedFieldDescriptions)
+
+
+		private void AppendFields(string tableName, IEnumerable<DataFieldDescriptor> originalFieldDescriptions, IEnumerable<DataFieldDescriptor> addedFieldDescriptions, Dictionary<string, object> defaultValues = null)
 		{
 			foreach (var addedFieldDescriptor in addedFieldDescriptions)
 			{
@@ -395,10 +439,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 				}
 				else
 				{
-					CreateColumn(tableName, addedFieldDescriptor);
+                    object defaultValue = null;
+                    if (defaultValues != null && defaultValues.ContainsKey(addedFieldDescriptor.Name)) defaultValue = defaultValues[addedFieldDescriptor.Name];
+
+                    CreateColumn(tableName, addedFieldDescriptor, defaultValue);
 				}
 			}
 		}
+
+
 
 		private IEnumerable<string> GetConstraints(string tableName, string constraintType = null)
 		{
@@ -473,14 +522,29 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 			return new InvalidOperationException(message.ToString(), ex);
 		}
 
-		private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor)
+
+
+		private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor, object defaultValue = null)
 		{
 			var sql = new StringBuilder();
 			string columnInfo = GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true);
 
 			sql.AppendFormat("ALTER TABLE {0} ADD {1};", tableName, columnInfo);
 			ExecuteNonQuery(sql.ToString());
+
+            if (defaultValue == null) return;
+
+            sql = new StringBuilder();
+            sql.AppendFormat("UPDATE{0} SET {1} = ", tableName, fieldDescriptor.Name);
+            if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
+            sql.Append(defaultValue.ToString());
+            if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
+            sql.Append(";");
+
+            ExecuteNonQuery(sql.ToString());
 		}
+
+
 
 		private void ConfigureColumn(string tableName, string columnName, DataFieldDescriptor fieldDescriptor, bool changes)
 		{
