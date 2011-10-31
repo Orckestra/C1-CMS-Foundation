@@ -241,10 +241,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                             SELECT * 
                             INTO {0}
                             FROM {1};", oldTableName, newTableName);
-                        ExecuteNonQuery(copyCommandText);                        
+                   //     ExecuteNonQuery(copyCommandText);                        
 
                         string removeCommandText = string.Format(@"DELETE FROM {0};", oldTableName);
-                        ExecuteNonQuery(oldTableName);
+                //        ExecuteNonQuery(oldTableName);
                     }
                 }
 
@@ -541,7 +541,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
             sql.Append(";");
 
-            ExecuteNonQuery(sql.ToString());
+         //   ExecuteNonQuery(sql.ToString());
 		}
 
 
