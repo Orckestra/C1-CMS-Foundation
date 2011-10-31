@@ -28,8 +28,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, XmlProviderInterfaceConfigurationElement oldConfigurationElement, XmlProviderInterfaceConfigurationElement newConfigurationElement)
         {
-#warning MRJ: BM: HANDLE STORE CHANGE AND COPY DATA!! See updateDataTypeDescriptor.LocalesToCopyTo, updateDataTypeDescriptor.LocaleToCopyFrom, updateDataTypeDescriptor.PublicationAdded, updateDataTypeDescriptor.PublicationRemoved
-
             DataTypeChangeDescriptor dataTypeChangeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
 
             foreach (KeyValuePair<string, Type> kvp in oldConfigurationElement.PropertyInitializers)
@@ -92,7 +90,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             }
 
 
-#warning MRJ: BM: At this point copy data if anything is specified in updateDataTypeDescriptor.LocalesToCopyTo or updateDataTypeDescriptor.LocaleToCopyFrom
 
             if (updateDataTypeDescriptor.LocalesToCopyTo != null)
             {
