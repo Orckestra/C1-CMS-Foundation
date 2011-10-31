@@ -522,7 +522,6 @@ var _6e=_6d&&(_6b.indexOf("webrunner")>-1||_6b.indexOf("prism")>-1);
 var _6f=history.pushState!=null;
 this.isMozilla=_6d;
 this.isWebKit=_6b.indexOf("webkit")>-1;
-this.isSafari=_6b.indexOf("safari")>-1;
 this.isExplorer=!_6d;
 this.isExplorer6=this.isExplorer&&(_6b.indexOf("msie 6.0")>-1||_6b.indexOf("msie 6.1")>-1);
 this.isExplorer8=this.isExplorer&&window.XDomainRequest!=null;
@@ -28893,9 +28892,23 @@ throw exception;
 _1187=null;
 return _1188;
 };
+SOAPRequest.prototype.asyncInvoke=function(url,_118b){
+var _118c=DOMUtil.getXMLHTTPRequest();
+_118c.open("post",url,true);
+_118c.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+_118c.setRequestHeader("SOAPAction",this.action);
+_118c.onreadystatechange=function(){
+if(_118c.readyState==4){
+var _118d=SOAPRequest._parseResponse(_118c);
+_118b(_118d);
+_118c=null;
+}
+};
+_118c.send(this.document);
+};
 SOAPRequest.prototype.dispose=function(){
-for(var _118a in this){
-this[_118a]=null;
+for(var _118e in this){
+this[_118e]=null;
 }
 };
 SOAPRequestResponse.prototype=new SOAPMessage;
@@ -28907,26 +28920,26 @@ SOAPRequestResponse.logger=SystemLogger.getLogger("SOAPRequestResponse");
 SOAPRequestResponse.resolver=new XPathResolver();
 SOAPRequestResponse.resolver.setNamespacePrefixResolver({"soap":Constants.NS_ENVELOPE});
 SOAPRequestResponse.newInstance=function(doc){
-var _118c=null;
+var _1190=null;
 if(doc&&doc.documentElement){
-_118c=new SOAPRequestResponse();
-var _118d=SOAPRequestResponse.resolver;
-_118c.document=doc;
-_118c.envelope=_118d.resolve("soap:Envelope",_118c.document);
-_118c.header=_118d.resolve("soap:Header",_118c.envelope);
-_118c.body=_118d.resolve("soap:Body",_118c.envelope);
-var fault=_118d.resolve("soap:Fault",_118c.body);
+_1190=new SOAPRequestResponse();
+var _1191=SOAPRequestResponse.resolver;
+_1190.document=doc;
+_1190.envelope=_1191.resolve("soap:Envelope",_1190.document);
+_1190.header=_1191.resolve("soap:Header",_1190.envelope);
+_1190.body=_1191.resolve("soap:Body",_1190.envelope);
+var fault=_1191.resolve("soap:Fault",_1190.body);
 if(fault){
 SOAPRequestResponse.logger.fatal(DOMSerializer.serialize(fault,true));
-_118c.fault={element:fault,faultNamespaceURI:fault.namespaceURI,faultCode:DOMUtil.getTextContent(_118d.resolve("faultcode",fault)),faultString:DOMUtil.getTextContent(_118d.resolve("faultstring",fault)),detail:fault.getElementsByTagName("detail").item(0)};
+_1190.fault={element:fault,faultNamespaceURI:fault.namespaceURI,faultCode:DOMUtil.getTextContent(_1191.resolve("faultcode",fault)),faultString:DOMUtil.getTextContent(_1191.resolve("faultstring",fault)),detail:fault.getElementsByTagName("detail").item(0)};
 }
 }
-return _118c;
+return _1190;
 };
-function SOAPFault(_118f,_1190,_1191){
-this._operationName=_118f;
-this._operationAddress=_1190;
-this._faultString=_1191;
+function SOAPFault(_1193,_1194,_1195){
+this._operationName=_1193;
+this._operationAddress=_1194;
+this._faultString=_1195;
 }
 SOAPFault.prototype.getOperationName=function(){
 return this._operationName;
@@ -28937,52 +28950,52 @@ return this._operationAddress;
 SOAPFault.prototype.getFaultString=function(){
 return this._faultString;
 };
-SOAPFault.newInstance=function(_1192,fault){
-return new SOAPFault(_1192.name,_1192.address,fault.faultString);
+SOAPFault.newInstance=function(_1196,fault){
+return new SOAPFault(_1196.name,_1196.address,fault.faultString);
 };
-function SOAPEncoder(wsdl,_1195){
+function SOAPEncoder(wsdl,_1199){
 this.logger=SystemLogger.getLogger("SOAPEncoder");
 this._wsdl=wsdl;
-this._operation=_1195;
+this._operation=_1199;
 this._namespace=wsdl.getTargetNamespace();
 }
 SOAPEncoder.prototype.encode=function(args){
-var _1197=SOAPRequest.newInstance(this._namespace,this._operation);
-var root=this._appendElement(_1197.body,this._operation);
-var _1199=this._wsdl.getSchema();
-var _119a=_1199.lookup(this._operation);
-var _119b=_119a.getListedDefinitions();
-while(_119b.hasNext()){
-var def=_119b.getNext();
+var _119b=SOAPRequest.newInstance(this._namespace,this._operation);
+var root=this._appendElement(_119b.body,this._operation);
+var _119d=this._wsdl.getSchema();
+var _119e=_119d.lookup(this._operation);
+var _119f=_119e.getListedDefinitions();
+while(_119f.hasNext()){
+var def=_119f.getNext();
 var elm=this._appendElement(root,def.name);
 var val=args.getNext();
 this._resolve(elm,def,val);
 }
-return _1197;
+return _119b;
 };
-SOAPEncoder.prototype._resolve=function(_119f,_11a0,value){
-var _11a2=this._wsdl.getSchema();
-if(_11a0.isSimpleValue){
-this._appendText(_119f,value,_11a0.type=="string");
+SOAPEncoder.prototype._resolve=function(_11a3,_11a4,value){
+var _11a6=this._wsdl.getSchema();
+if(_11a4.isSimpleValue){
+this._appendText(_11a3,value,_11a4.type=="string");
 }else{
-var _11a3=_11a2.lookup(_11a0.type);
-if(_11a3 instanceof SchemaSimpleType){
+var _11a7=_11a6.lookup(_11a4.type);
+if(_11a7 instanceof SchemaSimpleType){
 alert("SOAPEncoder: SchemaSimpleType support not implemented!");
 }else{
-var defs=_11a3.getListedDefinitions();
-if(_11a3.isArray){
-var _11a5=new List(value);
+var defs=_11a7.getListedDefinitions();
+if(_11a7.isArray){
+var _11a9=new List(value);
 var def=defs.getNext();
-while(_11a5.hasNext()){
-var elm=this._appendElement(_119f,def.name);
-var val=_11a5.getNext();
+while(_11a9.hasNext()){
+var elm=this._appendElement(_11a3,def.name);
+var val=_11a9.getNext();
 this._resolve(elm,def,val);
 }
 }else{
 while(defs.hasNext()){
 try{
 var def=defs.getNext();
-var elm=this._appendElement(_119f,def.name);
+var elm=this._appendElement(_11a3,def.name);
 var val=value[def.name];
 this._resolve(elm,def,val);
 }
@@ -28999,43 +29012,43 @@ var child=DOMUtil.createElementNS(this._namespace,name,node.ownerDocument);
 node.appendChild(child);
 return child;
 };
-SOAPEncoder.prototype._appendText=function(_11ac,value,_11ae){
+SOAPEncoder.prototype._appendText=function(_11b0,value,_11b2){
 if(value!=null){
 value=new String(value);
 var safe=new String("");
 var chars=value.split("");
-var _11b1=false;
+var _11b5=false;
 var i=0,c;
 while(c=chars[i++]){
-var _11b4=true;
+var _11b8=true;
 var code=c.charCodeAt(0);
 switch(code){
 case 9:
 case 10:
 case 13:
-_11b4=false;
+_11b8=false;
 break;
 default:
 if((code>=32&&code<=55295)||(code>=57344&&code<=65533)||(code>=65536&&code<=1114111)){
-_11b4=false;
+_11b8=false;
 }
 break;
 }
-if(!_11b4){
+if(!_11b8){
 safe+=c;
 }else{
-_11b1=true;
+_11b5=true;
 }
 }
-if(_11b1){
+if(_11b5){
 this.logger.debug("Illegal XML character(s) was deleted from the string: "+value);
 }
-_11ac.appendChild(_11ac.ownerDocument.createTextNode(safe));
+_11b0.appendChild(_11b0.ownerDocument.createTextNode(safe));
 }
 };
-function SOAPDecoder(wsdl,_11b7){
+function SOAPDecoder(wsdl,_11bb){
 this._wsdl=wsdl;
-this._operation=_11b7;
+this._operation=_11bb;
 this._resolver=new XPathResolver();
 this._resolver.setNamespacePrefixResolver({"result":wsdl.getTargetNamespace()});
 }
@@ -29045,57 +29058,57 @@ return this._resolver.resolve("result:"+xpath,node);
 SOAPDecoder.prototype.resolveAll=function(xpath,node){
 return this._resolver.resolveAll("result:"+xpath,node);
 };
-SOAPDecoder.prototype.decode=function(_11bc){
-var _11bd=null;
-var _11be=this._wsdl.getSchema();
+SOAPDecoder.prototype.decode=function(_11c0){
+var _11c1=null;
+var _11c2=this._wsdl.getSchema();
 var id=this._operation+"Response";
-var _11c0=this.resolve(id,_11bc.body);
-var _11c1=_11be.lookup(id);
-var _11c2=_11c1.getListedDefinitions();
-while(!_11bd&&_11c2.hasNext()){
-var def=_11c2.getNext();
-var elm=this.resolve(def.name,_11c0);
+var _11c4=this.resolve(id,_11c0.body);
+var _11c5=_11c2.lookup(id);
+var _11c6=_11c5.getListedDefinitions();
+while(!_11c1&&_11c6.hasNext()){
+var def=_11c6.getNext();
+var elm=this.resolve(def.name,_11c4);
 if(def.type==SchemaDefinition.TYPE_XML_DOCUMENT){
-_11bd=DOMUtil.getDOMDocument();
+_11c1=DOMUtil.getDOMDocument();
 var e=elm.getElementsByTagName("*").item(0);
-if(typeof _11bd.importNode!=Types.UNDEFINED){
-_11bd.appendChild(_11bd.importNode(e,true));
+if(typeof _11c1.importNode!=Types.UNDEFINED){
+_11c1.appendChild(_11c1.importNode(e,true));
 }else{
-_11bd.loadXML(DOMSerializer.serialize(e));
+_11c1.loadXML(DOMSerializer.serialize(e));
 }
 }else{
-_11bd=this._compute(elm,def);
+_11c1=this._compute(elm,def);
 }
 }
-return _11bd;
+return _11c1;
 };
-SOAPDecoder.prototype._compute=function(_11c6,_11c7){
-var _11c8=null;
-var _11c9=this._wsdl.getSchema();
-if(_11c7.isSimpleValue){
-_11c8=this._getSimpleValue(_11c6,_11c7.type);
+SOAPDecoder.prototype._compute=function(_11ca,_11cb){
+var _11cc=null;
+var _11cd=this._wsdl.getSchema();
+if(_11cb.isSimpleValue){
+_11cc=this._getSimpleValue(_11ca,_11cb.type);
 }else{
-var _11ca=_11c9.lookup(_11c7.type);
-if(_11ca instanceof SchemaSimpleType){
-_11c8=this._getSimpleValue(_11c6,_11ca.restrictionType);
+var _11ce=_11cd.lookup(_11cb.type);
+if(_11ce instanceof SchemaSimpleType){
+_11cc=this._getSimpleValue(_11ca,_11ce.restrictionType);
 }else{
-var defs=_11ca.getListedDefinitions();
-if(_11ca.isArray){
-_11c8=[];
+var defs=_11ce.getListedDefinitions();
+if(_11ce.isArray){
+_11cc=[];
 var def=defs.getNext();
-var elms=this.resolveAll(def.type,_11c6);
+var elms=this.resolveAll(def.type,_11ca);
 while(elms.hasNext()){
 var elm=elms.getNext();
-_11c8.push(this._compute(elm,def));
+_11cc.push(this._compute(elm,def));
 }
 }else{
-_11c8={};
+_11cc={};
 defs.reset();
 while(defs.hasNext()){
 var def=defs.getNext();
-var elm=this.resolve(def.name,_11c6);
+var elm=this.resolve(def.name,_11ca);
 if(elm){
-_11c8[def.name]=this._compute(elm,def);
+_11cc[def.name]=this._compute(elm,def);
 }else{
 if(def.isRequired){
 throw new Error("SOAPDecoder: invalid SOAP response.");
@@ -29105,48 +29118,48 @@ throw new Error("SOAPDecoder: invalid SOAP response.");
 }
 }
 }
-return _11c8;
+return _11cc;
 };
-SOAPDecoder.prototype._getSimpleValue=function(_11cf,type){
-var _11d1=null;
-if(_11cf.firstChild&&_11cf.firstChild.nodeType==Node.TEXT_NODE){
-if(Client.isMozilla&&_11cf.childNodes.length>1){
-_11cf.normalize();
+SOAPDecoder.prototype._getSimpleValue=function(_11d3,type){
+var _11d5=null;
+if(_11d3.firstChild&&_11d3.firstChild.nodeType==Node.TEXT_NODE){
+if(Client.isMozilla&&_11d3.childNodes.length>1){
+_11d3.normalize();
 }
-_11d1=_11cf.firstChild.data;
+_11d5=_11d3.firstChild.data;
 switch(type){
 case Schema.types.STRING:
-_11d1=_11d1;
+_11d5=_11d5;
 break;
 case Schema.types.INT:
 case Schema.types.FLOAT:
 case Schema.types.DOUBLE:
-_11d1=Number(_11d1);
+_11d5=Number(_11d5);
 break;
 case Schema.types.BOOLEAN:
-_11d1=_11d1=="true";
+_11d5=_11d5=="true";
 break;
 default:
 throw ("SOAPDecoder: schema type \""+type+"\" not handled.");
 break;
 }
 }
-return _11d1;
+return _11d5;
 };
 Schema.prototype=new XPathResolver;
 Schema.prototype.constructor=Schema;
 Schema.superclass=XPathResolver.prototype;
 Schema.types={STRING:"string",INT:"int",FLOAT:"float",DOUBLE:"double",BOOLEAN:"boolean"};
 Schema.notSupportedException=new Error("Schema: Schema structure not supported!");
-function Schema(_11d2){
+function Schema(_11d6){
 this.logger=SystemLogger.getLogger("Schema");
-this._map=this._parseSchema(_11d2);
+this._map=this._parseSchema(_11d6);
 }
-Schema.prototype._parseSchema=function(_11d3){
+Schema.prototype._parseSchema=function(_11d7){
 this.setNamespacePrefixResolver({"wsdl":Constants.NS_WSDL,"soap":Constants.NS_SOAP,"s":Constants.NS_SCHEMA});
-var _11d4={};
+var _11d8={};
 var entry=null;
-var rules=this.resolveAll("s:*[@name]",_11d3);
+var rules=this.resolveAll("s:*[@name]",_11d7);
 while(rules.hasNext()){
 var rule=rules.getNext();
 switch(DOMUtil.getLocalName(rule)){
@@ -29160,34 +29173,34 @@ case "simpleType":
 entry=new SchemaSimpleType(this,rule);
 break;
 }
-_11d4[rule.getAttribute("name")]=entry;
+_11d8[rule.getAttribute("name")]=entry;
 }
-return _11d4;
+return _11d8;
 };
 Schema.prototype.lookup=function(name){
 return this._map[name];
 };
 SchemaDefinition.TYPE_XML_DOCUMENT="xmldocument";
-function SchemaDefinition(_11d9){
+function SchemaDefinition(_11dd){
 this.logger=SystemLogger.getLogger("SchemaDefinition");
 this.isRequired=null;
 this.type=null;
-this._parse(_11d9);
+this._parse(_11dd);
 }
-SchemaDefinition.prototype._parse=function(_11da){
-var min=_11da.getAttribute("minOccurs");
-var max=_11da.getAttribute("maxOccurs");
-var type=_11da.getAttribute("type");
-this.name=_11da.getAttribute("name");
+SchemaDefinition.prototype._parse=function(_11de){
+var min=_11de.getAttribute("minOccurs");
+var max=_11de.getAttribute("maxOccurs");
+var type=_11de.getAttribute("type");
+this.name=_11de.getAttribute("name");
 this.isRequired=min!="0";
 if(type){
 var split=type.split(":");
 var sort=split[0];
-var _11e0=split[1];
+var _11e4=split[1];
 this.isSimpleValue=sort!="tns";
-this.type=_11e0;
+this.type=_11e4;
 }else{
-var elm=_11da.getElementsByTagName("*").item(0);
+var elm=_11de.getElementsByTagName("*").item(0);
 if(elm&&DOMUtil.getLocalName(elm)=="complexType"&&elm.getAttribute("mixed")=="true"){
 elm=elm.getElementsByTagName("*").item(0);
 if(elm&&DOMUtil.getLocalName(elm)=="sequence"){
@@ -29205,13 +29218,13 @@ SchemaType.prototype={};
 SchemaElementType.prototype=new SchemaType;
 SchemaElementType.prototype.constructor=SchemaElementType;
 SchemaElementType.superclass=SchemaType.prototype;
-function SchemaElementType(_11e2,_11e3){
+function SchemaElementType(_11e6,_11e7){
 this.logger=SystemLogger.getLogger("SchemaElementType");
 this._definitions=new List();
-this._parseListedDefinitions(_11e2,_11e3);
+this._parseListedDefinitions(_11e6,_11e7);
 }
-SchemaElementType.prototype._parseListedDefinitions=function(_11e4,_11e5){
-var els=_11e4.resolveAll("s:complexType/s:sequence/s:element",_11e5);
+SchemaElementType.prototype._parseListedDefinitions=function(_11e8,_11e9){
+var els=_11e8.resolveAll("s:complexType/s:sequence/s:element",_11e9);
 if(els.hasEntries()){
 while(els.hasNext()){
 this._definitions.add(new SchemaDefinition(els.getNext()));
@@ -29227,13 +29240,13 @@ return this._definitions.copy();
 SchemaComplexType.prototype=new SchemaType;
 SchemaComplexType.prototype.constructor=SchemaComplexType;
 SchemaComplexType.superclass=SchemaType.prototype;
-function SchemaComplexType(_11e7,_11e8){
+function SchemaComplexType(_11eb,_11ec){
 this._definitions=new List();
-this._parseListedDefinitions(_11e7,_11e8);
-this.isArray=_11e8.getAttribute("name").indexOf("ArrayOf")>-1;
+this._parseListedDefinitions(_11eb,_11ec);
+this.isArray=_11ec.getAttribute("name").indexOf("ArrayOf")>-1;
 }
-SchemaComplexType.prototype._parseListedDefinitions=function(_11e9,_11ea){
-var els=_11e9.resolveAll("s:sequence/s:element",_11ea);
+SchemaComplexType.prototype._parseListedDefinitions=function(_11ed,_11ee){
+var els=_11ed.resolveAll("s:sequence/s:element",_11ee);
 if(els.hasEntries()){
 while(els.hasNext()){
 var el=els.getNext();
@@ -29249,14 +29262,14 @@ return this._definitions.copy();
 SchemaSimpleType.prototype=new SchemaType;
 SchemaSimpleType.prototype.constructor=SchemaSimpleType;
 SchemaSimpleType.superclass=SchemaType.prototype;
-function SchemaSimpleType(_11ed,_11ee){
+function SchemaSimpleType(_11f1,_11f2){
 this.restrictionType=null;
-this._parse(_11ed,_11ee);
+this._parse(_11f1,_11f2);
 }
-SchemaSimpleType.prototype._parse=function(_11ef,_11f0){
-var _11f1=_11ef.resolve("s:restriction",_11f0);
-if(_11f1){
-this.restrictionType=_11f1.getAttribute("base").split(":")[1];
+SchemaSimpleType.prototype._parse=function(_11f3,_11f4){
+var _11f5=_11f3.resolve("s:restriction",_11f4);
+if(_11f5){
+this.restrictionType=_11f5.getAttribute("base").split(":")[1];
 }else{
 throw Schema.notSupportedException;
 }
@@ -29275,17 +29288,17 @@ this._schema=new Schema(this.resolve("wsdl:types/s:schema",this._root));
 this._WSDLURL=url;
 }
 WebServiceResolver.prototype._getDocumentElement=function(url){
-var _11f4=null;
-var _11f5=DOMUtil.getXMLHTTPRequest();
-_11f5.open("get",url,false);
-_11f5.send(null);
-if(_11f5.responseXML){
-_11f4=_11f5.responseXML.documentElement;
+var _11f8=null;
+var _11f9=DOMUtil.getXMLHTTPRequest();
+_11f9.open("get",url,false);
+_11f9.send(null);
+if(_11f9.responseXML){
+_11f8=_11f9.responseXML.documentElement;
 }else{
-alert(_11f5.responseText);
+alert(_11f9.responseText);
 throw new Error("WebServiceResolver: Could not read WSDL: "+url);
 }
-return _11f4;
+return _11f8;
 };
 WebServiceResolver.prototype.getPortAddress=function(){
 return this._WSDLURL.split("?WSDL")[0];
@@ -29294,27 +29307,27 @@ WebServiceResolver.prototype.getTargetNamespace=function(){
 return this._root.getAttribute("targetNamespace");
 };
 WebServiceResolver.prototype.getOperations=function(){
-var _11f6=new List();
-var _11f7=this.resolveAll("wsdl:portType/wsdl:operation",this._root);
-if(_11f7.hasEntries()){
-while(_11f7.hasNext()){
-var _11f8=_11f7.getNext();
-var name=_11f8.getAttribute("name");
-_11f6.add(new WebServiceOperation(name,this.getPortAddress(),new SOAPEncoder(this,name),new SOAPDecoder(this,name)));
+var _11fa=new List();
+var _11fb=this.resolveAll("wsdl:portType/wsdl:operation",this._root);
+if(_11fb.hasEntries()){
+while(_11fb.hasNext()){
+var _11fc=_11fb.getNext();
+var name=_11fc.getAttribute("name");
+_11fa.add(new WebServiceOperation(name,this.getPortAddress(),new SOAPEncoder(this,name),new SOAPDecoder(this,name)));
 }
 }else{
 throw new Error("WebServiceResolver: No portType found.");
 }
-return _11f6;
+return _11fa;
 };
 WebServiceResolver.prototype.getSchema=function(){
 return this._schema;
 };
-function WebServiceOperation(name,_11fb,_11fc,_11fd){
+function WebServiceOperation(name,_11ff,_1200,_1201){
 this.name=name;
-this.address=_11fb;
-this.encoder=_11fc;
-this.decoder=_11fd;
+this.address=_11ff;
+this.encoder=_1200;
+this.decoder=_1201;
 }
 WebServiceOperation.prototype={name:null,address:null,encoder:null,decoder:null};
 WebServiceProxy.isLoggingEnabled=true;
@@ -29326,50 +29339,78 @@ this.logger=SystemLogger.getLogger("WebServiceProxy");
 WebServiceProxy.createProxy=function(url){
 var wsdl=new WebServiceResolver(url);
 var proxy=new WebServiceProxy();
-var _1201=wsdl.getOperations();
-_1201.each(function(_1202){
-proxy[_1202.name]=WebServiceProxy.createProxyOperation(_1202);
+var _1205=wsdl.getOperations();
+_1205.each(function(_1206){
+proxy[_1206.name]=WebServiceProxy.createProxyOperation(_1206);
 });
 return proxy;
 };
-WebServiceProxy.prototype._log=function(_1203,_1204){
-if(WebServiceProxy.isLoggingEnabled&&Application.isDeveloperMode&&_1204){
-var log=_1204 instanceof SOAPRequest?"SOAPRequest for ":"SOAPResponse from ";
-log+=_1203.address+": "+_1203.name+"\n\n";
-log+=DOMSerializer.serialize(_1204.document,true);
+WebServiceProxy.prototype._log=function(_1207,_1208){
+if(WebServiceProxy.isLoggingEnabled&&Application.isDeveloperMode&&_1208){
+var log=_1208 instanceof SOAPRequest?"SOAPRequest for ":"SOAPResponse from ";
+log+=_1207.address+": "+_1207.name+"\n\n";
+log+=DOMSerializer.serialize(_1208.document,true);
 this.logger.fine(log);
 }
 };
-WebServiceProxy.createProxyOperation=function(_1206){
+WebServiceProxy.createProxyOperation=function(_120a){
 return function(){
-var _1207=null,_1208=_1206.encoder.encode(new List(arguments));
-this._log(_1206,_1208);
-var _1209=_1208.invoke(_1206.address);
-this._log(_1206,_1209);
-if(_1209){
-if(_1209.fault){
-_1207=SOAPFault.newInstance(_1206,_1209.fault);
+var _120b=new List(arguments);
+var _120c=null;
+if(typeof (_120b.getLast())=="function"){
+var _120d=_120b.extractLast();
+var _120e=_120a.encoder.encode(_120b);
+this._log(_120a,_120e);
+var self=this;
+var _1210=_120e.asyncInvoke(_120a.address,function(_1211){
+self._log(_120a,_1211);
+if(_1211){
+if(_1211.fault){
+_120c=SOAPFault.newInstance(_120a,_1211.fault);
 if(WebServiceProxy.isFaultHandler){
-WebServiceProxy.handleFault(_1207,_1208,_1209);
+WebServiceProxy.handleFault(_120c,_120e,_1211);
 }
 }else{
 if(WebServiceProxy.isDOMResult){
-_1207=_1209.document;
+_120c=_1211.document;
 }else{
-_1207=_1206.decoder.decode(_1209);
+_120c=_120a.decoder.decode(_1211);
 }
 }
 }
-_1208.dispose();
-return _1207;
+_120e.dispose();
+_120d(_120c);
+});
+}else{
+var _120e=_120a.encoder.encode(new List(arguments));
+this._log(_120a,_120e);
+var _1210=_120e.invoke(_120a.address);
+this._log(_120a,_1210);
+if(_1210){
+if(_1210.fault){
+_120c=SOAPFault.newInstance(_120a,_1210.fault);
+if(WebServiceProxy.isFaultHandler){
+WebServiceProxy.handleFault(_120c,_120e,_1210);
+}
+}else{
+if(WebServiceProxy.isDOMResult){
+_120c=_1210.document;
+}else{
+_120c=_120a.decoder.decode(_1210);
+}
+}
+}
+_120e.dispose();
+return _120c;
+}
 };
 };
-WebServiceProxy.handleFault=function(_120a,_120b,_120c){
+WebServiceProxy.handleFault=function(_1212,_1213,_1214){
 try{
-Dialog.invokeModal(Dialog.URL_SERVICEFAULT,null,{soapFault:_120a,soapRequest:_120b,soapResponse:_120c});
+Dialog.invokeModal(Dialog.URL_SERVICEFAULT,null,{soapFault:_1212,soapRequest:_1213,soapResponse:_1214});
 }
 catch(exception){
-alert(_120a.getFaultString());
+alert(_1212.getFaultString());
 }
 };
 var ConfigurationService=null;
@@ -29394,19 +29435,19 @@ this.INTERVAL_OFFLINE=4*1000;
 this._actions=new List();
 this._index={};
 this.index=0;
-var _120d=SystemLogger.getLogger("MessageQueue");
-var _120e=null;
-var _120f=0;
-var _1210=null;
-var _1211=new Map();
-var _1212=new Map();
-var _1213=false;
-var _1214=false;
-var _1215={"Main":DockBinding.MAIN,"BottomLeft":DockBinding.BOTTOMLEFT,"BottomRight":DockBinding.BOTTOMRIGHT,"RightTop":DockBinding.RIGHTTOP,"RightBottom":DockBinding.RIGHTBOTTOM,"AbsBottomLeft":DockBinding.ABSBOTTOMLEFT,"AbsBottomRight":DockBinding.ABSBOTTOMRIGHT};
+var _1215=SystemLogger.getLogger("MessageQueue");
+var _1216=null;
+var _1217=0;
+var _1218=null;
+var _1219=new Map();
+var _121a=new Map();
+var _121b=false;
+var _121c=false;
+var _121d={"Main":DockBinding.MAIN,"BottomLeft":DockBinding.BOTTOMLEFT,"BottomRight":DockBinding.BOTTOMRIGHT,"RightTop":DockBinding.RIGHTTOP,"RightBottom":DockBinding.RIGHTBOTTOM,"AbsBottomLeft":DockBinding.ABSBOTTOMLEFT,"AbsBottomRight":DockBinding.ABSBOTTOMRIGHT};
 this.initialize=function(){
-_120e=ConsoleMessageQueueService;
-_120f=_120e.GetCurrentSequenceNumber("dummyparam!");
-this.index=_120f;
+_1216=ConsoleMessageQueueService;
+_1217=_1216.GetCurrentSequenceNumber("dummyparam!");
+this.index=_1217;
 EventBroadcaster.subscribe(BroadcastMessages.VIEW_COMPLETED,this);
 EventBroadcaster.subscribe(BroadcastMessages.VIEW_CLOSED,this);
 EventBroadcaster.subscribe(BroadcastMessages.SERVER_OFFLINE,this);
@@ -29414,21 +29455,21 @@ EventBroadcaster.subscribe(BroadcastMessages.SERVER_ONLINE,this);
 window.messageQueueInterval=window.setInterval(MessageQueue._autoupdate,MessageQueue.INTERVAL_ONLINE);
 };
 this._autoupdate=function(){
-if(!_1213){
+if(!_121b){
 if(!MessageQueue._actions.hasEntries()){
-var _1216=WebServiceProxy.isLoggingEnabled;
+var _121e=WebServiceProxy.isLoggingEnabled;
 if(Application.isLoggedIn){
-_1214=true;
+_121c=true;
 WebServiceProxy.isLoggingEnabled=false;
 MessageQueue.update();
-WebServiceProxy.isLoggingEnabled=_1216;
-_1214=false;
+WebServiceProxy.isLoggingEnabled=_121e;
+_121c=false;
 }
 }
 }
 };
 this._pokeserver=function(){
-if(_1213==true){
+if(_121b==true){
 if(ReadyService.IsServerReady(true)){
 MessageQueue._lockSystem(false);
 }
@@ -29436,114 +29477,114 @@ MessageQueue._lockSystem(false);
 };
 this.update=function(){
 if(Application.isLoggedIn){
-EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED,_1214);
-var _1217=_120e.GetMessages(Application.CONSOLE_ID,this.index);
-if(_1217!=null){
-if(Types.isDefined(_1217.CurrentSequenceNumber)){
-var _1218=_1217.CurrentSequenceNumber;
-if(_1218<this.index){
-_120d.debug("SERVER WAS RESTARTED! old messagequeue index: "+this.index+", new messagequeue index: "+_1218);
+EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED,_121c);
+var _121f=_1216.GetMessages(Application.CONSOLE_ID,this.index);
+if(_121f!=null){
+if(Types.isDefined(_121f.CurrentSequenceNumber)){
+var _1220=_121f.CurrentSequenceNumber;
+if(_1220<this.index){
+_1215.debug("SERVER WAS RESTARTED! old messagequeue index: "+this.index+", new messagequeue index: "+_1220);
 }
-this.index=_1218;
-var _1219=new List(_1217.ConsoleActions);
-if(_1219.hasEntries()){
-this.evaluate(_1219);
+this.index=_1220;
+var _1221=new List(_121f.ConsoleActions);
+if(_1221.hasEntries()){
+this.evaluate(_1221);
 }else{
 if(!this._actions.hasEntries()){
 broadcastUpdateEvaluated();
 }
 }
 }else{
-_120d.error("No sequencenumber in MessageQueue response!");
+_1215.error("No sequencenumber in MessageQueue response!");
 }
 }
 }
 };
-this.evaluate=function(_121a){
-var _121b=new List();
-if(_121a.hasEntries()){
-_121a.each(function(_121c){
-if(this._index[_121c.Id]!=true){
-_121b.add(_121c);
+this.evaluate=function(_1222){
+var _1223=new List();
+if(_1222.hasEntries()){
+_1222.each(function(_1224){
+if(this._index[_1224.Id]!=true){
+_1223.add(_1224);
 }
-this._index[_121c.Id]=true;
+this._index[_1224.Id]=true;
 },this);
-if(_121b.hasEntries()){
+if(_1223.hasEntries()){
 if(this._actions.hasEntries()){
-this._actions.merge(_121b);
+this._actions.merge(_1223);
 }else{
-this._actions=_121b;
+this._actions=_1223;
 }
 this._nextAction();
 }
 }
 };
-this._closeAllViews=function(_121d){
-var _121e="(No reason)";
-if(_121d!=null){
-_121e=_121d.Reason;
+this._closeAllViews=function(_1225){
+var _1226="(No reason)";
+if(_1225!=null){
+_1226=_1225.Reason;
 }
 var title="Warning";
 var text="The server has requested a close of all active editors for the following reason: \"${reason}\". It is recommended that you accept this request by clicking OK.";
-text=text.replace("${reason}",_121e);
+text=text.replace("${reason}",_1226);
 var self=this;
-Dialog.warning(title,text,Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_1222){
-if(_1222==Dialog.RESPONSE_ACCEPT){
+Dialog.warning(title,text,Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_122a){
+if(_122a==Dialog.RESPONSE_ACCEPT){
 EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEWS);
 }
 self._nextAction();
 }});
 };
 this._nextAction=function(){
-var _1223=null;
+var _122b=null;
 if(this._actions.hasEntries()){
-var _1224=this._actions.extractFirst();
-_120f=_1224.SequenceNumber;
-_120d.debug("MessageQueue action: "+_1224.ActionType+" > QUEUE-MAX-SEQNUM: "+this.index+" > CURRENT SEQNUM: "+_120f+" > ACTIONS-LEFT: "+this._actions.getLength());
-switch(_1224.ActionType){
+var _122c=this._actions.extractFirst();
+_1217=_122c.SequenceNumber;
+_1215.debug("MessageQueue action: "+_122c.ActionType+" > QUEUE-MAX-SEQNUM: "+this.index+" > CURRENT SEQNUM: "+_1217+" > ACTIONS-LEFT: "+this._actions.getLength());
+switch(_122c.ActionType){
 case "OpenView":
-_1223=_1224.OpenViewParams;
-if(_1223.ViewType=="ModalDialog"){
-openDialogView(_1223);
+_122b=_122c.OpenViewParams;
+if(_122b.ViewType=="ModalDialog"){
+openDialogView(_122b);
 }else{
-_1210=_1223.ViewId;
-openView(_1223);
+_1218=_122b.ViewId;
+openView(_122b);
 }
 break;
 case "CloseView":
-_1223=_1224.CloseViewParams;
-_1210=_1223.ViewId;
-closeView(_1223);
+_122b=_122c.CloseViewParams;
+_1218=_122b.ViewId;
+closeView(_122b);
 break;
 case "RefreshTree":
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,_1224.RefreshTreeParams.EntityToken);
-var debug="REFRESHING TREES: "+_1211.countEntries()+"\n";
-_1211.each(function(token){
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,_122c.RefreshTreeParams.EntityToken);
+var debug="REFRESHING TREES: "+_1219.countEntries()+"\n";
+_1219.each(function(token){
 debug+="\n\tTOKEN: "+token;
 });
-_120d.debug(debug);
-if(!_1211.hasEntries()){
+_1215.debug(debug);
+if(!_1219.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
 break;
 case "SelectElement":
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS,_1224.BindEntityTokenToViewParams.EntityToken);
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS,_122c.BindEntityTokenToViewParams.EntityToken);
 this._nextAction();
 break;
 case "MessageBox":
-openMessageBox(_1224.MessageBoxParams);
+openMessageBox(_122c.MessageBoxParams);
 break;
 case "OpenViewDefinition":
-_1223=_1224.OpenViewDefinitionParams;
-_1210=_1223.Handle;
-openViewDefinition(_1223);
+_122b=_122c.OpenViewDefinitionParams;
+_1218=_122b.Handle;
+openViewDefinition(_122b);
 break;
 case "LogEntry":
-logEntry(_1224.LogEntryParams);
+logEntry(_122c.LogEntryParams);
 this._nextAction();
 break;
 case "Reboot":
@@ -29553,9 +29594,9 @@ case "LockSystem":
 MessageQueue._lockSystem(true);
 break;
 case "BroadcastMessage":
-_1223=_1224.BroadcastMessageParams;
-_120d.debug("Server says: EventBroadcaster.broadcast ( \""+_1223.Name+"\", "+_1223.Value+" )");
-EventBroadcaster.broadcast(_1223.Name,_1223.Value);
+_122b=_122c.BroadcastMessageParams;
+_1215.debug("Server says: EventBroadcaster.broadcast ( \""+_122b.Name+"\", "+_122b.Value+" )");
+EventBroadcaster.broadcast(_122b.Name,_122b.Value);
 this._nextAction();
 break;
 case "CollapseAndRefresh":
@@ -29563,37 +29604,37 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL);
-if(!_1211.hasEntries()){
+if(!_1219.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
 break;
 case "CloseAllViews":
-this._closeAllViews(_1224.CloseAllViewsParams);
+this._closeAllViews(_122c.CloseAllViewsParams);
 break;
 case "SaveStatus":
-saveStatus(_1224.SaveStatusParams);
+saveStatus(_122c.SaveStatusParams);
 this._nextAction();
 break;
 case "DownloadFile":
-Download.init(_1224.DownloadFileParams.Url);
+Download.init(_122c.DownloadFileParams.Url);
 this._nextAction();
 break;
 case "ExpandTreeNode":
 this._nextAction();
 break;
 case "BindEntityTokenToView":
-_1223=_1224.BindEntityTokenToViewParams;
-EventBroadcaster.broadcast(BroadcastMessages.BIND_TOKEN_TO_VIEW,{handle:_1223.ViewId,entityToken:_1223.EntityToken});
+_122b=_122c.BindEntityTokenToViewParams;
+EventBroadcaster.broadcast(BroadcastMessages.BIND_TOKEN_TO_VIEW,{handle:_122b.ViewId,entityToken:_122b.EntityToken});
 this._nextAction();
 break;
 case "OpenGenericView":
-_1223=_1224.OpenGenericViewParams;
-openGenericView(_1223);
+_122b=_122c.OpenGenericViewParams;
+openGenericView(_122b);
 break;
 default:
-Dialog.error("Dysfunction","Unhandled action: "+_1224.ActionType);
+Dialog.error("Dysfunction","Unhandled action: "+_122c.ActionType);
 break;
 }
 }else{
@@ -29601,54 +29642,54 @@ broadcastUpdateEvaluated();
 }
 };
 function broadcastUpdateEvaluated(){
-EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED,_1214);
+EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED,_121c);
 }
-function logEntry(_1227){
-var _1228=_1227.Level.toLowerCase();
-SystemLogger.getLogger(_1227.SenderId)[_1228](_1227.Message);
+function logEntry(_122f){
+var _1230=_122f.Level.toLowerCase();
+SystemLogger.getLogger(_122f.SenderId)[_1230](_122f.Message);
 }
-function openView(_1229){
-var list=paramsToList(_1229.Argument);
+function openView(_1231){
+var list=paramsToList(_1231.Argument);
 if(list.hasEntries()){
-var def=ViewDefinition.clone("Composite.Management.PostBackView",_1229.ViewId);
-def.entityToken=_1229.EntityToken;
-def.flowHandle=_1229.FlowHandle;
-def.position=_1215[_1229.ViewType],def.label=_1229.Label;
-def.image=_1229.Image;
-def.toolTip=_1229.ToolTip;
-def.argument={"url":_1229.Url,"list":list};
+var def=ViewDefinition.clone("Composite.Management.PostBackView",_1231.ViewId);
+def.entityToken=_1231.EntityToken;
+def.flowHandle=_1231.FlowHandle;
+def.position=_121d[_1231.ViewType],def.label=_1231.Label;
+def.image=_1231.Image;
+def.toolTip=_1231.ToolTip;
+def.argument={"url":_1231.Url,"list":list};
 StageBinding.presentViewDefinition(def);
 }else{
-StageBinding.presentViewDefinition(new HostedViewDefinition({handle:_1229.ViewId,entityToken:_1229.EntityToken,flowHandle:_1229.FlowHandle,position:_1215[_1229.ViewType],url:_1229.Url,label:_1229.Label,image:_1229.Image,toolTip:_1229.ToolTip}));
+StageBinding.presentViewDefinition(new HostedViewDefinition({handle:_1231.ViewId,entityToken:_1231.EntityToken,flowHandle:_1231.FlowHandle,position:_121d[_1231.ViewType],url:_1231.Url,label:_1231.Label,image:_1231.Image,toolTip:_1231.ToolTip}));
 }
 }
-function openDialogView(_122c){
-StageBinding.presentViewDefinition(new DialogViewDefinition({handle:_122c.ViewId,flowHandle:_122c.FlowHandle,position:Dialog.MODAL,url:_122c.Url,handler:{handleDialogResponse:function(){
+function openDialogView(_1234){
+StageBinding.presentViewDefinition(new DialogViewDefinition({handle:_1234.ViewId,flowHandle:_1234.FlowHandle,position:Dialog.MODAL,url:_1234.Url,handler:{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
 }}}));
 }
-function openMessageBox(_122d){
-var _122e=_122d.DialogType.toLowerCase();
-if(_122e=="question"){
+function openMessageBox(_1235){
+var _1236=_1235.DialogType.toLowerCase();
+if(_1236=="question"){
 throw "Not supported!";
 }else{
-Dialog[_122e](_122d.Title,_122d.Message,null,{handleDialogResponse:function(){
+Dialog[_1236](_1235.Title,_1235.Message,null,{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
 }});
 }
 }
-function openViewDefinition(_122f){
+function openViewDefinition(_1237){
 var map={};
-var _1231=false;
-new List(_122f.Argument).each(function(entry){
+var _1239=false;
+new List(_1237.Argument).each(function(entry){
 map[entry.Key]=entry.Value;
-_1231=true;
+_1239=true;
 });
-var proto=ViewDefinitions[_122f.Handle];
+var proto=ViewDefinitions[_1237.Handle];
 if(proto!=null){
 var def=null;
 if(proto.isMutable==false){
@@ -29658,40 +29699,40 @@ def=new HostedViewDefinition();
 for(var prop in proto){
 def[prop]=proto[prop];
 }
-def.handle=_122f.ViewId;
+def.handle=_1237.ViewId;
 }
-def.argument=_1231?map:null;
+def.argument=_1239?map:null;
 StageBinding.presentViewDefinition(def);
 }else{
 throw "Unknown ViewDefinition: "+param.Handle;
 }
 }
-function openGenericView(_1236){
-var def=ViewBinding.clone("Composite.Management.GenericView",_1236.ViewId);
-def.label=_1236.Label;
-def.toolTip=_1236.ToolTip;
-def.image=_1236.Image;
-def.argument={"url":_1236.Url,"list":paramsToList(_1236.UrlPostArguments)};
+function openGenericView(_123e){
+var def=ViewBinding.clone("Composite.Management.GenericView",_123e.ViewId);
+def.label=_123e.Label;
+def.toolTip=_123e.ToolTip;
+def.image=_123e.Image;
+def.argument={"url":_123e.Url,"list":paramsToList(_123e.UrlPostArguments)};
 StageBinding.presentViewDefinition(def);
 }
-function closeView(_1238){
-if(StageBinding.isViewOpen(_1238.ViewId)){
-EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_1238.ViewId);
+function closeView(_1240){
+if(StageBinding.isViewOpen(_1240.ViewId)){
+EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_1240.ViewId);
 }else{
 MessageQueue._nextAction();
 }
 }
-function saveStatus(_1239){
-EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED,{handle:_1239.ViewId,isSuccess:_1239.Succeeded});
+function saveStatus(_1241){
+EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED,{handle:_1241.ViewId,isSuccess:_1241.Succeeded});
 }
-this._lockSystem=function(_123a){
-var _123b=top.bindingMap.offlinetheatre;
-if(_123a){
-_123b.play(true);
+this._lockSystem=function(_1242){
+var _1243=top.bindingMap.offlinetheatre;
+if(_1242){
+_1243.play(true);
 window.clearInterval(window.messageQueueInterval);
 window.messageQueueInterval=window.setInterval(MessageQueue._pokeserver,MessageQueue.INTERVAL_OFFLINE);
 }else{
-_123b.stop();
+_1243.stop();
 window.clearInterval(window.messageQueueInterval);
 window.messageQueueInterval=window.setInterval(MessageQueue._autoupdate,MessageQueue.INTERVAL_ONLINE);
 var self=this;
@@ -29701,32 +29742,32 @@ self._nextAction();
 }
 },0);
 }
-_1213=_123a;
+_121b=_1242;
 };
-this.handleBroadcast=function(_123d,arg){
-switch(_123d){
+this.handleBroadcast=function(_1245,arg){
+switch(_1245){
 case BroadcastMessages.APPLICATION_LOGIN:
 this.initialize();
 break;
 case BroadcastMessages.VIEW_COMPLETED:
 case BroadcastMessages.VIEW_CLOSED:
-if(_1210!=null&&arg==_1210){
-_1210=null;
+if(_1218!=null&&arg==_1218){
+_1218=null;
 this._nextAction();
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHING:
 if(arg!=null){
-_1211.set(arg,true);
+_1219.set(arg,true);
 }else{
-_120d.debug("Saa har vi balladen!");
+_1215.debug("Saa har vi balladen!");
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
-if(_1211.hasEntries()){
-_1211.del(arg);
-_120d.debug("Refreshed tree: "+arg+"\n("+_1211.countEntries()+" trees left!)");
-if(!_1211.hasEntries()){
+if(_1219.hasEntries()){
+_1219.del(arg);
+_1215.debug("Refreshed tree: "+arg+"\n("+_1219.countEntries()+" trees left!)");
+if(!_1219.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 setTimeout(function(){
@@ -29736,12 +29777,12 @@ MessageQueue._nextAction();
 }
 break;
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN:
-_1212.set(arg,true);
+_121a.set(arg,true);
 break;
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN:
-if(_1212.hasEntries()==true){
-_1212.del(arg);
-if(!_1212.hasEntries()){
+if(_121a.hasEntries()==true){
+_121a.del(arg);
+if(!_121a.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN,this);
 MessageQueue._nextAction();
@@ -29756,9 +29797,9 @@ MessageQueue._lockSystem(false);
 break;
 }
 };
-function paramsToList(_123f){
+function paramsToList(_1247){
 var list=new List();
-new List(_123f).each(function(entry){
+new List(_1247).each(function(entry){
 list.add({name:entry.Key,value:entry.Value});
 });
 return list;
@@ -29767,15 +29808,15 @@ EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN,this);
 };
 var ViewDefinitions={"Composite.Management.Null":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.Null"}),"Composite.Management.PostBackDialog":new DialogViewDefinition({handle:"Composite.Management.PostBackDialog",isMutable:true,position:Dialog.MODAL,url:"${root}/content/dialogs/postback/postbackdialog.aspx",argument:{"url":null,"list":null}}),"Composite.Management.PostBackView":new HostedViewDefinition({handle:"Composite.Management.PostBackView",isMutable:true,position:DockBinding.MAIN,url:"${root}/postback.aspx",argument:{"url":null,"list":null}}),"Composite.Management.GenericView":new HostedViewDefinition({handle:"Composite.Management.GenericView",isMutable:true,position:DockBinding.MAIN,url:"${root}/content/views/generic/generic.aspx",label:null,image:null,toolTip:null,argument:{"url":null,"list":null}}),"Composite.Management.Start":new HostedViewDefinition({handle:"Composite.Management.Start",position:DockBinding.START,label:"Welcome Travellers",url:"${root}/content/views/start/start.aspx"}),"Composite.Management.About":new DialogViewDefinition({handle:"Composite.Management.About",position:Dialog.MODAL,url:"${root}/content/dialogs/about/about.aspx"}),"Composite.Management.PermissionEditor":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.PermissionEditor",position:DockBinding.MAIN,url:"${root}/content/views/editors/permissioneditor/permissioneditor.aspx",argument:{serializedEntityToken:"entityTokenType='Composite\\.Plugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.Plugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""}}),"Composite.Management.SystemLog":new HostedViewDefinition({handle:"Composite.Management.SystemLog",position:DockBinding.ABSBOTTOMLEFT,label:"System Log",url:"${root}/content/views/dev/systemlog/systemlog.aspx"}),"Composite.Management.Developer":new HostedViewDefinition({handle:"Composite.Management.Developer",position:DockBinding.ABSBOTTOMRIGHT,label:"Developer",url:"${root}/content/views/dev/developer/developer.aspx"}),"Composite.Management.IconPack.System":new HostedViewDefinition({handle:"Composite.Management.IconPack.System",position:DockBinding.ABSBOTTOMLEFT,label:"Freja",image:"${icon:icon}",url:"${root}/content/views/dev/icons/system/Default.aspx"}),"Composite.Management.IconPack.Republic":new HostedViewDefinition({handle:"Composite.Management.IconPack.Republic",position:DockBinding.ABSBOTTOMLEFT,label:"Republic",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/republic.aspx"}),"Composite.Management.IconPack.Harmony":new HostedViewDefinition({handle:"Composite.Management.IconPack.Harmony",position:DockBinding.ABSBOTTOMLEFT,label:"Harmony",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/harmony.aspx"}),"Composite.Management.Explorer":new HostedViewDefinition({handle:"Composite.Management.Explorer",position:DockBinding.EXPLORER,url:"${root}/content/views/explorer/explorer.aspx",label:"Explorer"}),"Composite.Management.Options":new DialogViewDefinition({handle:"Composite.Management.Options",position:Dialog.MODAL,url:"${root}/content/dialogs/options/options.aspx",label:"Options"}),"Composite.Management.VisualEditorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.VisualEditorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx",width:600,argument:{"formattingconfiguration":null,"elementclassconfiguration":null,"configurationstylesheet":null,"presentationstylesheet":null,"embedablefieldstypenames":null}}),"Composite.Management.MultiSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.MultiSelectorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/multiselector/multiselectordialog.aspx"}),"Composite.Management.Search":new HostedViewDefinition({handle:"Composite.Management.Search",position:DockBinding.RIGHTBOTTOM,url:"${root}/content/views/search/search.aspx",label:"Search",image:"${icon:view_search}",argument:null}),"Composite.Management.Browser":new HostedViewDefinition({isMutable:false,handle:"Composite.Management.Browser",position:DockBinding.MAIN,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,label:"Page Browser",image:"${icon:page-view-administrated-scope}",toolTip:"Browse unpublished pages",url:"${root}/content/views/browser/browser.aspx",argument:{"URL":null}}),"Composite.Management.SEOAssistant":new HostedViewDefinition({handle:"Composite.Management.SEOAssistant",position:DockBinding.RIGHTTOP,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,url:"${root}/content/views/seoassist/seoassist.aspx",label:"${string:Composite.Web.SEOAssistant:SEOAssistant}",image:"${icon:seoassistant}",toolTip:"Search engine optimization"}),"Composite.Management.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.SourceCodeViewer",position:DockBinding.ABSBOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.User.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.User.SourceCodeViewer",position:DockBinding.BOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.Management.Help":new HostedViewDefinition({label:"${string:Website.App.LabelHelp}",image:"${icon:help}",handle:"Composite.Management.Help",position:DockBinding.ABSRIGHTTOP,url:"${root}/content/views/help/help.aspx"}),"Composite.Management.Dialog.Translations":new DialogViewDefinition({handle:"Composite.Management.TranslationsDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/translations/translations.aspx",label:"Translations",image:"${icon:users-changepublicculture}"}),"Composite.Management.ImageSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.ImageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_IMAGESELECTOR,argument:{label:"${string:Composite.Management:Website.Image.SelectDialog.Title}",image:"${icon:image}",selectionProperty:"ElementType",selectionValue:"image/jpeg image/gif image/png image/bmp image/tiff",selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:"MediaFileElementProvider.WebImages"}]}}),"Composite.Management.EmbeddableMediaSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.Media.SelectDialog.Title}",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:null}]}}),"Composite.Management.FrontendFileSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.FrontendFile.SelectDialog.Title}",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"LayoutFileElementProvider"}]}}),"Composite.Management.PageSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Page.SelectDialog.Title}",image:"${icon:page}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.PageIdSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageIdSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Page.SelectDialog.Title}",image:"${icon:page}",selectionProperty:"DataId",selectionValue:null,selectionResult:"DataId",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.LinkableSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.LinkableSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"},{key:"MediaFileElementProvider"}]}}),"Composite.Management.MediaSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.MediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider"}]}}),"Composite.Management.FunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.FunctionSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Function.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider"}]}}),"Composite.Management.WidgetFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.WidgetFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Widget.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllWidgetFunctionsElementProvider"}]}}),"Composite.Management.XhtmlDocumentFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.XhtmlDocumentFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Function.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider",search:"AllFunctionsElementProvider.VisualEditorFunctions"}]}})};
 var KickStart=new function(){
-var _1242=false;
-var _1243=false;
-var _1244=null;
-var _1245=false;
-var _1246=Client.qualifies();
-var _1247="admin";
-var _1248="123456";
+var _124a=false;
+var _124b=false;
+var _124c=null;
+var _124d=false;
+var _124e=Client.qualifies();
+var _124f="admin";
+var _1250="123456";
 this.fireOnLoad=function(){
-if(_1246){
+if(_124e){
 Application.lock(this);
 fileEventBroadcasterSubscriptions(true);
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_SHUTDOWN,this);
@@ -29788,11 +29829,11 @@ EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
 document.location="unsupported.aspx";
 }
 };
-this.handleBroadcast=function(_1249){
-switch(_1249){
+this.handleBroadcast=function(_1251){
+switch(_1251){
 case BroadcastMessages.AUDIO_INITIALIZED:
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-kickStart(_1249);
+kickStart(_1251);
 break;
 case BroadcastMessages.APPLICATION_STARTUP:
 break;
@@ -29800,8 +29841,8 @@ case BroadcastMessages.KEY_ENTER:
 this.login();
 break;
 case BroadcastMessages.APPLICATION_LOGIN:
-var _124a=window.bindingMap.appwindow;
-_124a.setURL("app.aspx");
+var _1252=window.bindingMap.appwindow;
+_1252.setURL("app.aspx");
 break;
 case BroadcastMessages.APPLICATION_OPERATIONAL:
 showWorkbench();
@@ -29814,28 +29855,28 @@ bindingMap.cover.show();
 break;
 }
 };
-function fileEventBroadcasterSubscriptions(_124b){
-new List([BroadcastMessages.AUDIO_INITIALIZED,BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_124c){
-if(_124b){
-EventBroadcaster.subscribe(_124c,KickStart);
+function fileEventBroadcasterSubscriptions(_1253){
+new List([BroadcastMessages.AUDIO_INITIALIZED,BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_1254){
+if(_1253){
+EventBroadcaster.subscribe(_1254,KickStart);
 }else{
-EventBroadcaster.unsubscribe(_124c,KickStart);
+EventBroadcaster.unsubscribe(_1254,KickStart);
 }
 });
 }
-function kickStart(_124d){
-switch(_124d){
+function kickStart(_1255){
+switch(_1255){
 case BroadcastMessages.AUDIO_INITIALIZED:
-_1243=true;
+_124b=true;
 setTimeout(function(){
 Persistance.initialize();
 },0);
 break;
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-_1242=true;
+_124a=true;
 break;
 }
-if(_1242&&_1243){
+if(_124a&&_124b){
 if(bindingMap.decks!=null&&LoginService.IsLoggedIn(true)){
 accessGranted();
 }else{
@@ -29866,8 +29907,8 @@ Application.unlock(KickStart);
 bindingMap.decks.select("logindeck");
 setTimeout(function(){
 if(Application.isDeveloperMode&&Application.isLocalHost){
-DataManager.getDataBinding("username").setValue(_1247);
-DataManager.getDataBinding("password").setValue(_1248);
+DataManager.getDataBinding("username").setValue(_124f);
+DataManager.getDataBinding("password").setValue(_1250);
 }
 setTimeout(function(){
 DataManager.getDataBinding("username").focus();
@@ -29901,18 +29942,18 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_1250,_1251){
-var _1252=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_1258,_1259){
+var _125a=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _1253=false;
-var _1254=LoginService.ValidateAndLogin(_1250,_1251);
-if(_1254 instanceof SOAPFault){
-alert(_1254.getFaultString());
+var _125b=false;
+var _125c=LoginService.ValidateAndLogin(_1258,_1259);
+if(_125c instanceof SOAPFault){
+alert(_125c.getFaultString());
 }else{
-_1253=_1254;
+_125b=_125c;
 }
-if(_1253){
+if(_125b){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -29922,7 +29963,7 @@ accesssDenied();
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_1252){
+if(_125a){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -29937,24 +29978,24 @@ Application.login();
 },0);
 }
 function accesssDenied(){
-var _1255=DataManager.getDataBinding("username");
-var _1256=DataManager.getDataBinding("password");
-_1255.blur();
-_1256.blur();
-_1255.setValue("");
-_1256.setValue("");
-_1255.clean();
-_1256.clean();
-_1255.focus();
+var _125d=DataManager.getDataBinding("username");
+var _125e=DataManager.getDataBinding("password");
+_125d.blur();
+_125e.blur();
+_125d.setValue("");
+_125e.setValue("");
+_125d.clean();
+_125e.clean();
+_125d.focus();
 document.getElementById("loginerror").style.display="block";
-var _1257={handleAction:function(_1258){
+var _125f={handleAction:function(_1260){
 document.getElementById("loginerror").style.display="none";
-_1258.target.removeActionListener(Binding.ACTION_DIRTY,_1257);
+_1260.target.removeActionListener(Binding.ACTION_DIRTY,_125f);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_1257);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_125f);
 }
 WindowManager.fireOnLoad(this);
-if(!_1246){
+if(!_124e){
 UpdateManager.isEnabled=false;
 }
 };
