@@ -117,9 +117,21 @@ namespace Composite.Data.DynamicTypes
                        (NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false);
             }
         }
-    }
 
+
+
+
+        public bool NewHasPublication
+        {
+            get
+            {
+                return NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled));
+            }
+        }
+    }
 }
+
+
 
 namespace Composite.Data.GeneratedTypes
 {

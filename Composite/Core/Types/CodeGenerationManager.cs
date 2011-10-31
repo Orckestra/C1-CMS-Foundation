@@ -831,14 +831,21 @@ namespace Composite.Core.Types
         {
             Type newType = newAssembly.GetTypes().First();
 
+            List<Assembly> assembliesToRemove = new List<Assembly>();
             foreach (Assembly assembly in CompiledAssemblies)
             {
                 Type type = assembly.GetTypes().Where(f => f.FullName == newType.FullName).SingleOrDefault();
                 if (type != null)
                 {
+                    assembliesToRemove.Add(assembly);
 #warning MRJ: BM: Fix this !!!!!!!!!!!!!
-                    throw new NotImplementedException("The old assembly should be removed! Just want to see if this happens :)");
+//                    throw new NotImplementedException("The old assembly should be removed! Just want to see if this happens :)");
                 }
+            }
+
+            foreach (Assembly assemblyToRemove in assembliesToRemove)
+            {
+                CompiledAssemblies.Remove(assemblyToRemove);
             }
 
             CompiledAssemblies.Add(newAssembly);
