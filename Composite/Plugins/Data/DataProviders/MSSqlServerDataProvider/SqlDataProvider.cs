@@ -642,7 +642,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 string interfaceTypeName = interfaceConfigurationElement.InterfaceType;
 
-                if (interfaceTypeName == null)
+                if (interfaceTypeName.IsNullOrEmpty())
                 {
                     continue;
                 }

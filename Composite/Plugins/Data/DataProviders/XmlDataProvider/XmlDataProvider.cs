@@ -360,7 +360,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             {
                 string interfaceTypeName = interfaceConfigurationElement.InterfaceType;
 
-                if (interfaceTypeName == null)
+                if (interfaceTypeName.IsNullOrEmpty())
                 {
                     continue;
                 }
