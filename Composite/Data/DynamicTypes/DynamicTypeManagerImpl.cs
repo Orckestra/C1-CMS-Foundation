@@ -6,6 +6,7 @@ using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.Data.Transactions;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.DynamicTypes
@@ -138,10 +139,12 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            if (makeAFlush == true)
-            {
-                GlobalEventSystemFacade.FlushTheSystem();
-            }
+#warning MRJ: BM: Can this be done smarter?
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+            //if (makeAFlush == true)
+            //{
+            //    GlobalEventSystemFacade.FlushTheSystem();
+            //}
         }
 
 
@@ -158,10 +161,12 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            if (makeAFlush == true)
-            {
-                GlobalEventSystemFacade.FlushTheSystem();
-            }
+#warning MRJ: BM: Can this be done smarter?
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+            //if (makeAFlush == true)
+            //{
+            //    GlobalEventSystemFacade.FlushTheSystem();
+            //}
         }
     }
 }

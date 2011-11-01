@@ -43,10 +43,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             }
         }
 
-        internal static void RefreshLocalizationInfo(string providerName, DataTypeDescriptor dataTypeDescriptor)
+        internal static InterfaceConfigurationElement RefreshLocalizationInfo(string providerName, DataTypeDescriptor dataTypeDescriptor)
         {
             var changeDescriptor = new DataTypeChangeDescriptor(dataTypeDescriptor, dataTypeDescriptor);
-            Change(providerName, changeDescriptor, true);
+
+            return Change(providerName, changeDescriptor, true);
         }
 
         internal static bool ConfigurationExists( string providerName, DataTypeDescriptor dataTypeDescriptor)
