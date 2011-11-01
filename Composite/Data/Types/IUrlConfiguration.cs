@@ -10,7 +10,6 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]  
     [Title("Hostname configuration")]
     [AutoUpdateble]
-    [TypeVersion(1)]
     [ImmutableTypeId("{5552C35A-A72A-55F1-9630-ACC66FE44BBE}")]
     [DataScope(DataScopeIdentifier.PublicName)]
     [KeyPropertyName("Id")]

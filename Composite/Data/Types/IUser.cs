@@ -12,7 +12,6 @@ namespace Composite.Data.Types
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
-    [TypeVersion(2)]
     [KeyPropertyName("Id")]
     [LabelPropertyName("Username")]
     [DataScope(DataScopeIdentifier.PublicName)]

@@ -265,7 +265,7 @@ namespace Composite
 
         internal static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage, bool initializeHooksInTheSameThread)
         {
-#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup got fucked
+#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup should be fixed
             //if (_hookingFacadeThread != null)
             //{
             //    _hookingFacadeThread.Join(TimeSpan.FromSeconds(30));
@@ -292,7 +292,7 @@ namespace Composite
                 InitializeTheSystem();
 
                 // Updating "hooks" either in the same thread, or in another
-#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup got fucked
+#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup should be fixed
                 //if (initializeHooksInTheSameThread)
                 //{
                 //    object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());

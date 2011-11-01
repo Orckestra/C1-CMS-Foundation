@@ -10,7 +10,6 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]  
     [Title("Hostname mapping")]
     [AutoUpdateble]
-    [TypeVersion(1)]
     [ImmutableTypeId("{2B0B1268-7237-4482-97A3-1BD4CAD6A08C}")]
     [KeyPropertyName("Id")]
     [LabelPropertyName("Hostname")]

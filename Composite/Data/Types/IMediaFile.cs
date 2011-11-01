@@ -1,7 +1,6 @@
 ﻿using System;
 using Composite.Data.Hierarchy;
 using Composite.Core.WebClient.Renderings.Data;
-using Composite.Data.Types;
 
 
 namespace Composite.Data.Types
@@ -10,7 +9,6 @@ namespace Composite.Data.Types
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [TypeVersion(2)]
     [Title("C1 Media File")]
     [KeyPropertyName("KeyPath")]
     [DataAncestorProviderAttribute(typeof(MediaFileDataAncesorProvider))]

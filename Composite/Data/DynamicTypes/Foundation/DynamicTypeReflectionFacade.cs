@@ -24,7 +24,7 @@ namespace Composite.Data.DynamicTypes.Foundation
         }
 
 
-
+        [Obsolete("Type versioning concept isn't used any more")]
         public static int GetVersion(Type type)
         {
             List<TypeVersionAttribute> typeVersionAttributes = type.GetCustomInterfaceAttributes<TypeVersionAttribute>().ToList();

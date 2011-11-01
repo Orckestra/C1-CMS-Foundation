@@ -7,7 +7,6 @@ namespace Composite.Data.Types
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
-    [TypeVersion(2)]
     [ImmutableTypeId("{cb22316c-4e41-4fe5-a30d-5abc35af124a}")]
     [KeyPropertyName("Id")]
     [DataScope(DataScopeIdentifier.PublicName)]

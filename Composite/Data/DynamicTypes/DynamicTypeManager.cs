@@ -293,10 +293,12 @@ namespace Composite.Data.DynamicTypes
 
                 if (dataTypeChangeDescriptor.AlteredTypeHasChanges == false) return false;
 
-                if (interfaceType.GetCustomInterfaceAttributes<TypeVersionAttribute>().Count() != 0)
-                {
-                    if (newDataTypeDescriptor.Version < oldDataTypeDescriptor.Version) return false;
-                }
+#warning MRJ: BM: Clean this
+
+                //if (interfaceType.GetCustomInterfaceAttributes<TypeVersionAttribute>().Count() != 0)
+                //{
+                //    if (newDataTypeDescriptor.Version < oldDataTypeDescriptor.Version) return false;
+                //}
 
                 return dataTypeChangeDescriptor.AlteredTypeHasChanges;
             }
@@ -324,11 +326,12 @@ namespace Composite.Data.DynamicTypes
                 if (dataTypeChangeDescriptor.AlteredTypeHasChanges == false) return false;
 
 
-                if (interfaceType.GetCustomInterfaceAttributes<TypeVersionAttribute>().Count() != 0)
-                {
-                    if (newDataTypeDescriptor.Version == oldDataTypeDescriptor.Version) throw new TypeUpdateVersionException(string.Format("Please pump the version number of the type '{0}' by using the '{1}' attribute", interfaceType, typeof(TypeVersionAttribute)));
-                    if (newDataTypeDescriptor.Version < oldDataTypeDescriptor.Version) LoggingService.LogError("DynamicTypeManager", string.Format("The version of the type '{0}' is not up to date, please update your code", interfaceType));
-                }
+#warning MRJ: BM: Clean this
+                //if (interfaceType.GetCustomInterfaceAttributes<TypeVersionAttribute>().Count() != 0)
+                //{
+                //    if (newDataTypeDescriptor.Version == oldDataTypeDescriptor.Version) throw new TypeUpdateVersionException(string.Format("Please pump the version number of the type '{0}' by using the '{1}' attribute", interfaceType, typeof(TypeVersionAttribute)));
+                //    if (newDataTypeDescriptor.Version < oldDataTypeDescriptor.Version) LoggingService.LogError("DynamicTypeManager", string.Format("The version of the type '{0}' is not up to date, please update your code", interfaceType));
+                //}
 
                 LoggingService.LogVerbose("DynamicTypeManager", string.Format("Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName));
 

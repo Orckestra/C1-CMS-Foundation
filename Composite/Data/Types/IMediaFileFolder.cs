@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Composite.Data.Hierarchy;
-using Composite.Data.Types;
 
 
 namespace Composite.Data.Types
@@ -11,7 +10,6 @@ namespace Composite.Data.Types
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Title("C1 Media Folder")]
-    [TypeVersion(2)]
     [KeyPropertyName("KeyPath")]
     [DataAncestorProviderAttribute(typeof(MediaFileDataAncesorProvider))]
     [DataScope(DataScopeIdentifier.PublicName)]

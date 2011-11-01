@@ -17,7 +17,6 @@ namespace Composite.Data.Types
     /// </summary>
     [Title("C1 Page")]
     [AutoUpdateble]
-    [TypeVersion(4)]
     [ImmutableTypeId("{C046F704-D3E4-4b3d-8CB9-77564FB0B9E7}")]
     [KeyPropertyName("Id")]
     [DataAncestorProvider(typeof(PageDataAncestorProvider))]
