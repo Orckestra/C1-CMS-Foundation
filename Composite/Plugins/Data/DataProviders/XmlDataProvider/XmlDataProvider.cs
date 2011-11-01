@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Composite.Core;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Data;
@@ -50,12 +48,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
-                if(element.DataTypeId == null || element.DataTypeId.Value == Guid.Empty)
-                {
-                    continue;
-                }
-
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId);
 
                 codeBuilder.AddDataType(dataTypeDescriptor);
             }
@@ -307,8 +300,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
     internal sealed class XmlDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
     {
-        private static readonly string LogTitle = typeof (XmlDataProviderAssembler).Name;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
@@ -341,46 +332,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 dataTypeConfigurationElements.Add(interfaceElement);
             }
 
-            ReplaceTypeNamesWithTypeIDs(dataTypeConfigurationElements);
-
             XmlDataProvider provider = new XmlDataProvider(PathUtil.Resolve(data.StoreDirectory), dataTypeConfigurationElements);
 
             return provider;
         }
-
-        #region Build manager upgrade C1 2.0 -> 3.0
-
-        private static void ReplaceTypeNamesWithTypeIDs(IEnumerable<XmlProviderInterfaceConfigurationElement> configurationElements)
-        {
-#pragma warning disable 612,618
-
-            Dictionary<string, Guid> typeNameToTypeIdMap = null;
-
-            foreach (var interfaceConfigurationElement in configurationElements)
-            {
-                string interfaceTypeName = interfaceConfigurationElement.InterfaceType;
-
-                if (interfaceTypeName == null)
-                {
-                    continue;
-                }
-
-                typeNameToTypeIdMap = typeNameToTypeIdMap ?? DataMetaDataFacade.GetTypeManagerTypeNameToTypeIdMap();
-
-                if (!typeNameToTypeIdMap.ContainsKey(interfaceTypeName))
-                {
-                    Log.LogWarning(LogTitle, "Failed to find DataTypeId for interface '{0}'".FormatWith(interfaceTypeName));
-                    continue;
-                }
-
-                interfaceConfigurationElement.DataTypeId = typeNameToTypeIdMap[interfaceTypeName];
-                interfaceConfigurationElement.InterfaceType = null;
-            }
-
-#pragma warning restore 612,618
-        }
-
-        #endregion Build manager upgrade C1 2.0 -> 3.0
     }
 
 
@@ -437,30 +392,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
-            Guid? key = ((XmlProviderInterfaceConfigurationElement) element).DataTypeId;
-
-            if (key != null) return key.Value.ToString();
-
-#pragma warning disable 612,618
-
-            string interfaceTypeName = ((XmlProviderInterfaceConfigurationElement) element).InterfaceType;
-
-#pragma warning restore 612,618
-
-            Verify.IsNotNull(interfaceTypeName, "Missing attribute @dataTypeId");
-
-            return interfaceTypeName;
+            return ((XmlProviderInterfaceConfigurationElement)element).DataTypeId;
         }
 
         internal object GetKey(Guid dataTypeId)
         {
-            string dataTypeIdStr = dataTypeId.ToString();
-
             object[] allKeys = BaseGetAllKeys();
 
-            foreach (string key in allKeys)
+            foreach (Guid key in allKeys)
             {
-                if (key == dataTypeIdStr) return key;
+                if (key == dataTypeId) return key;
             }
 
             return null;
@@ -558,22 +499,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
-        private const string _dataTypeIdName = "dataTypeId";
-        [System.Configuration.ConfigurationProperty(_dataTypeIdName, IsRequired = false)]
-        public Guid? DataTypeId
+        private const string _dataTypeIdPropertyName = "dataTypeId";
+        [System.Configuration.ConfigurationProperty(_dataTypeIdPropertyName, IsKey = true, IsRequired = true)]
+        public Guid DataTypeId
         {
-            get { return (Guid?)base[_dataTypeIdName]; }
-            set { base[_dataTypeIdName] = value; }
-        }
+            get { return (Guid)base[_dataTypeIdPropertyName]; }
+            set { base[_dataTypeIdPropertyName] = value; }
 
-
-        private const string _interfaceTypePropertyName = "interfaceType";
-        [System.Configuration.ConfigurationProperty(_interfaceTypePropertyName, IsRequired = false)]
-        [Obsolete("Attribute 'dataTypeId' should be used instead, used for upgrade procedure")]
-        public string InterfaceType
-        {
-            get { return (string)base[_interfaceTypePropertyName]; }
-            set { base[_interfaceTypePropertyName] = value; }
         }
 
 
