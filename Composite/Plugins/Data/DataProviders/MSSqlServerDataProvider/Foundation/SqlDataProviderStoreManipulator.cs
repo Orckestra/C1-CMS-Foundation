@@ -339,18 +339,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             if (updateDataTypeDescriptor.LocalesToCopyTo != null)
             {
-                List<DataScopeIdentifier> scopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Public };
-                if (updateDataTypeDescriptor.NewHasPublication) scopes.Add(DataScopeIdentifier.Administrated);
+                //List<DataScopeIdentifier> scopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Public };
+                //if (updateDataTypeDescriptor.NewHasPublication) scopes.Add(DataScopeIdentifier.Administrated);
 
                 StringBuilder fieldList = GetCommonFields(changeDescriptor);
 
-                foreach (DataScopeIdentifier scope in scopes)
+                //foreach (DataScopeIdentifier scope in scopes)
                 {
-                    string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, scope, "");
+                    string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, "");
 
                     foreach (CultureInfo locale in updateDataTypeDescriptor.LocalesToCopyTo)
                     {
-                        string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, scope, locale);
+                        string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, locale);
 
                         string copyCommandText = string.Format(@"
                             INSERT INTO {0} ({2})
@@ -369,15 +369,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             if (updateDataTypeDescriptor.LocaleToCopyFrom != null)
             {
-                List<DataScopeIdentifier> scopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Public };
-                if (updateDataTypeDescriptor.NewHasPublication) scopes.Add(DataScopeIdentifier.Administrated);
+                //List<DataScopeIdentifier> scopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Public };
+                //if (updateDataTypeDescriptor.NewHasPublication) scopes.Add(DataScopeIdentifier.Administrated);
 
                 StringBuilder fieldList = GetCommonFields(changeDescriptor);
 
-                foreach (DataScopeIdentifier scope in scopes)
+                //foreach (DataScopeIdentifier scope in scopes)
                 {
-                    string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, scope, updateDataTypeDescriptor.LocaleToCopyFrom.Name);
-                    string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, scope, CultureInfo.InvariantCulture);
+                    string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, updateDataTypeDescriptor.LocaleToCopyFrom.Name);
+                    string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, CultureInfo.InvariantCulture);
 
                     string copyCommandText = string.Format(@"
                             INSERT INTO {0} ({2})

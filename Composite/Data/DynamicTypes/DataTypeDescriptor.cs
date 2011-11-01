@@ -231,7 +231,7 @@ namespace Composite.Data.DynamicTypes
 
                     this.Fields.Add(dataFieldDescriptor);
 
-                    if (DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true)
+                    if ((DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true) && (!KeyPropertyNames.Contains(propertyInfo.Name)))
                     {
                         this.KeyPropertyNames.Add(propertyInfo.Name);
                     }
