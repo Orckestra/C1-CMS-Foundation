@@ -965,12 +965,17 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         internal bool ContainsInterfaceType(Guid dataTypeId)
         {
             object[] allKeys = BaseGetAllKeys();
-            return allKeys.Contains(dataTypeId);
+            return allKeys.Contains(GetKey(dataTypeId));
+        }
+
+        private static object GetKey(Guid dataTypeId)
+        {
+            return dataTypeId.ToString();
         }
 
         internal void Remove(Guid dataTypeId)
         {
-            BaseRemove(dataTypeId);
+            BaseRemove(GetKey(dataTypeId));
         }
     }
 
