@@ -1007,16 +1007,19 @@ namespace Composite.Data.GeneratedTypes
                      select dfd).Single();
 
                 dataTypeDescriptor.Fields.Add(idDataFieldDescriptor);
+
+                dataTypeDescriptor.KeyPropertyNames.Add(IdFieldName);
             }
 
             dataTypeDescriptor.Title = _newTypeTitle;
 
 
 
-            if (_dataAssociationType == DataAssociationType.None)
+            if (_dataAssociationType == DataAssociationType.None && dataTypeDescriptor.KeyPropertyNames.Count == 0)
             {
                 dataTypeDescriptor.KeyPropertyNames.Add(IdFieldName);
             }
+
             dataTypeDescriptor.LabelFieldName = _newLabelFieldName;
 
             foreach (DataFieldDescriptor dataFieldDescriptor in _newDataFieldDescriptors)
