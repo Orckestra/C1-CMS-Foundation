@@ -82,7 +82,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId, true);
 
                 Type dataProviderHelperType;
                 Type dataIdClassType;

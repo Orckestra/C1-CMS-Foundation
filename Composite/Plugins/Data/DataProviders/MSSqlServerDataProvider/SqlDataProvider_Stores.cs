@@ -104,7 +104,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 sqlDataTypeStoreDataScopes.Add(sqlDataTypeStoreDataScope);
             }
 
-            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId, true);
 
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 
@@ -299,7 +299,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId, true);
 
                 List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
 

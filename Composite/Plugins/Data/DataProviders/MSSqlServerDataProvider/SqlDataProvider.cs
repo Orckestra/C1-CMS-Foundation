@@ -5,12 +5,11 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Transactions;
-using System.Xml.Linq;
-using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.IO;
+using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -59,9 +58,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                if(element.DataTypeId == null || element.DataTypeId == Guid.Empty) continue;
-
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId);
                 
                 List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
 
@@ -531,15 +528,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
     internal sealed class SqlDataProviderAssembler : IAssembler<IDataProvider, DataProviderData>
     {
-        private static readonly string LogTitle = typeof (SqlDataProviderAssembler).Name;
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
             SqlDataProviderData sqlDataProviderData = (SqlDataProviderData)objectConfiguration;
 
-            string configFilePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", sqlDataProviderData.Name));
-            C1Configuration configuration = new C1Configuration(configFilePath);
+            C1Configuration configuration = new C1Configuration(Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", sqlDataProviderData.Name)));
 
             SqlDataProviderConfigurationSection section = configuration.GetSection(SqlDataProviderConfigurationSection.SectionName) as SqlDataProviderConfigurationSection;
             if (section == null)
@@ -555,8 +549,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 interfaceConfigurationElements.Add(table);
             }
-
-            ReplaceTypeNamesWithTypeIDs(interfaceConfigurationElements);
 
 
             SqlLoggingContext sqlLoggingContext = new SqlLoggingContext();
@@ -629,43 +621,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             return new SqlDataProvider(sqlDataProviderData.ConnectionString, typesTableElements, generatedTypesTableElements, sqlLoggingContext);*/
         }
-
-        #region Build manager upgrade C1 2.0 -> 3.0
-
-        private static void ReplaceTypeNamesWithTypeIDs(IEnumerable<InterfaceConfigurationElement> configurationElements)
-        {
-#pragma warning disable 612,618
-
-            Dictionary<string, Guid> typeNameToTypeIdMap = null;
-
-            foreach (var interfaceConfigurationElement in configurationElements)
-            {
-                string interfaceTypeName = interfaceConfigurationElement.InterfaceType;
-
-                if (interfaceTypeName == null)
-                {
-                    continue;
-                }
-
-                typeNameToTypeIdMap = typeNameToTypeIdMap ?? DataMetaDataFacade.GetTypeManagerTypeNameToTypeIdMap();
-
-                if (!typeNameToTypeIdMap.ContainsKey(interfaceTypeName))
-                {
-                    Log.LogWarning(LogTitle, "Failed to find DataTypeId for interface '{0}'".FormatWith(interfaceTypeName));
-                    continue;
-                }
-
-                interfaceConfigurationElement.DataTypeId = typeNameToTypeIdMap[interfaceTypeName];
-                interfaceConfigurationElement.InterfaceType = null;
-            }
-
-#pragma warning restore 612,618
-        }
-
-
-
-        #endregion Build manager upgrade C1 2.0 -> 3.0
     }
+
 
 
     internal sealed class SqlLoggingContext
@@ -877,21 +834,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
         private const string _dataTypeIdName = "dataTypeId";
-        [System.Configuration.ConfigurationProperty(_dataTypeIdName, IsRequired = false)]
-        public Guid? DataTypeId
+        [System.Configuration.ConfigurationProperty(_dataTypeIdName, IsRequired = true)]
+        public Guid DataTypeId
         {
-            get { return (Guid?)base[_dataTypeIdName]; }
+            get { return (Guid)base[_dataTypeIdName]; }
             set { base[_dataTypeIdName] = value; }
-        }
-
-
-        private const string _interfaceTypePropertyName = "interfaceType";
-        [System.Configuration.ConfigurationProperty(_interfaceTypePropertyName, IsRequired = false)]
-        [Obsolete("Attribute 'dataTypeId' should be used instead, used for upgrade procedure")]
-        public string InterfaceType
-        {
-            get { return (string)base[_interfaceTypePropertyName]; }
-            set { base[_interfaceTypePropertyName] = value; }
         }
 
 
@@ -946,20 +893,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
-            Guid? dataTypeId = ((InterfaceConfigurationElement) element).DataTypeId;
-            if(dataTypeId != null)
-            {
-                return dataTypeId.ToString();
-            }
-
-
-#pragma warning disable 612,618
-            string interfaceTypeName = ((InterfaceConfigurationElement) element).InterfaceType;
-#pragma warning restore 612,618
-
-            Verify.IsNotNull(interfaceTypeName, "Configuration element is missing attribute 'dataTypeId'");
-
-            return interfaceTypeName;
+            return ((InterfaceConfigurationElement)element).DataTypeId;
         }
 
         internal bool ContainsInterfaceType(Guid dataTypeId)
