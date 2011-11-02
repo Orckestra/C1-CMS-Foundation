@@ -30,8 +30,9 @@ namespace Composite.Data.DynamicTypes
             _id = id;
             _name = NameValidation.ValidateName(name);
             this.StoreType = storeType;
-            this.InstanceType = instanceType;
+            this.InstanceType = instanceType;            
             this.FormRenderingProfile = new DataFieldFormRenderingProfile();
+            this.IsReadOnly = false;
         }
 
 
@@ -45,6 +46,7 @@ namespace Composite.Data.DynamicTypes
             this.InstanceType = instanceType;
             this.FormRenderingProfile = new DataFieldFormRenderingProfile();
             this.Inherited = inherited;
+            this.IsReadOnly = false;
         }
 
 
@@ -145,6 +147,14 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        public bool IsReadOnly
+        {
+            get;
+            set;
+        }
+
+
+
         /// <exclude />
         public List<string> ValidationFunctionMarkup
         {
@@ -199,6 +209,7 @@ namespace Composite.Data.DynamicTypes
             element.Add(new XAttribute("inherited", this.Inherited));
             element.Add(new XAttribute("instanceType", TypeManager.SerializeType(this.InstanceType)));
             element.Add(new XAttribute("storeType", this.StoreType.Serialize()));
+            element.Add(new XAttribute("isReadOnly", this.IsReadOnly));
             
             if (this.NewInstanceDefaultFieldValue != null)
             {
@@ -262,11 +273,15 @@ namespace Composite.Data.DynamicTypes
             XAttribute inheritedAttribute = element.Attribute("inherited");
             XAttribute instanceTypeAttribute = element.Attribute("instanceType");
             XAttribute storeTypeAttribute = element.Attribute("storeType");
+            XAttribute isReadOnlyAttribute = element.Attribute("isReadOnly");
             XAttribute newInstanceDefaultFieldValueAttribute = element.Attribute("newInstanceDefaultFieldValue");
 
             if (groupByPriorityAttribute==null) groupByPriorityAttribute = new XAttribute("groupByPriority", "0" );
 
             if ((idAttribute == null) || (nameAttribute == null) || (isNullableAttribute == null) || (positionAttribute == null) || (inheritedAttribute == null) || (instanceTypeAttribute == null) || (storeTypeAttribute == null)) throw new ArgumentException("The xml is not correctly formattet");
+
+#warning MRJ: BM: This is for making it possible to install existing packages but is wrong!
+            if (isReadOnlyAttribute == null) isReadOnlyAttribute = new XAttribute("isReadOnly", false);
 
             XAttribute defaultValueAttribute = element.Attribute("defaultValue");
             XAttribute foreignKeyReferenceTypeNameAttribute = element.Attribute("foreignKeyReferenceTypeName");
@@ -286,6 +301,7 @@ namespace Composite.Data.DynamicTypes
             dataFieldDescriptor.IsNullable = isNullable;
             dataFieldDescriptor.Position = position;
             dataFieldDescriptor.GroupByPriority = groupByPriority;
+            dataFieldDescriptor.IsReadOnly = (bool)isReadOnlyAttribute;
 
             if (newInstanceDefaultFieldValueAttribute != null)
             {

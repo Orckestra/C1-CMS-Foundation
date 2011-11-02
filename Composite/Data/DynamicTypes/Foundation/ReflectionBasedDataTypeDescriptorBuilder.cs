@@ -138,6 +138,8 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             fieldDescriptor.NewInstanceDefaultFieldValue = DynamicTypeReflectionFacade.NewInstanceDefaultFieldValue(propertyInfo);
 
+            fieldDescriptor.IsReadOnly = !propertyInfo.CanWrite;
+
             return fieldDescriptor;
         }
 

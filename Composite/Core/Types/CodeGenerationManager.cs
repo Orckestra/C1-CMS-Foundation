@@ -622,7 +622,7 @@ namespace Composite.Core.Types
 
                 if (compileResult.Errors.Count == 0) return;
 
-                if (i == 0)
+                if (i == NumberOfCompileRetries - 1)
                 {
 #warning MRJ: BM: Remove this
                     using (FileStream file = File.Create(Path.Combine(PathUtil.BaseDirectory, "output.cs")))
@@ -634,12 +634,19 @@ namespace Composite.Core.Types
                     }
 
 
+                    StringBuilder sb = new StringBuilder();
                     foreach (CompilerError compilerError in compileResult.Errors)
                     {
                         if (compilerError.IsWarning) continue;
 
-                        Log.LogError(LogTitle, "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}"));
+                        string entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
+
+                        Log.LogError(LogTitle, entry);
+
+                        sb.AppendLine(entry);
                     }
+
+                    throw new InvalidOperationException(sb.ToString());                    
                 }
             }
         }

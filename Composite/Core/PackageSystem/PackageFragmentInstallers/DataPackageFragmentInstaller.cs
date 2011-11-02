@@ -164,7 +164,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     localizedControlled.SourceCultureName = LocalizationScopeManager.MapByType(dataType.InterfaceType).Name;
                 }
 
-                DataFacade.AddNew(data);
+                DataFacade.AddNew(data, false, true, false); // Ignore validation, this should have been done in the validation face
 
                 XElement keysElement = new XElement("Keys");
 

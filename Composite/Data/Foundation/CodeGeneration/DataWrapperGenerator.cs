@@ -124,10 +124,9 @@ namespace Composite.Data.Foundation.CodeGeneration
         {
             string fullName = dataTypeDescriptor.GetFullInterfaceName();
 
-#warning MRJ: BM: Handle readonly (Datatype descriptor)
             IEnumerable<Tuple<string, Type, bool>> properties =
                 dataTypeDescriptor.Fields.
-                Select(f => new Tuple<string, Type, bool>(f.Name, f.InstanceType, false)).
+                Select(f => new Tuple<string, Type, bool>(f.Name, f.InstanceType, f.IsReadOnly)).
                 Concat(new[] { new Tuple<string, Type, bool>("DataSourceId", typeof(DataSourceId), true)});
 
             return CreateCodeTypeDeclaration(fullName,properties);
