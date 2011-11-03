@@ -1,4 +1,6 @@
 using System;
+using System.Web;
+using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.C1Console.Security.Plugins.LoginProvider;
@@ -103,20 +105,50 @@ namespace Composite.C1Console.Security
             }
             else if(loginResult == LoginResult.IncorrectPassword)
             {
-                LoggingService.LogWarning("UserValidation", String.Format("Login as [{0}] failed. Incorrect password.", userName), LoggingService.Category.Audit);
+                LogLoginFailed(userName, "Incorrect password.");
             }
             else if (loginResult == LoginResult.UserDoesNotExist)
             {
-                LoggingService.LogWarning("UserValidation", String.Format("Login as [{0}] failed. User does not exist.", userName), LoggingService.Category.Audit);
+                LogLoginFailed(userName, "User does not exist.");
             }
             else if (loginResult == LoginResult.PolicyViolated)
             {
-                LoggingService.LogWarning("UserValidation", String.Format("Login as [{0}] failed. Login policy violated.", userName), LoggingService.Category.Audit);
+                LogLoginFailed(userName, "Login policy violated.");
             }
 
             return loginResult == LoginResult.Success;
         }
 
+        private static void LogLoginFailed(string userName, string message)
+        {
+            LoggingService.LogWarning("UserValidation", 
+                                      "Login as [{0}] failed. {1} {2}".FormatWith(userName, message, GetIpInformation()),
+                                      LoggingService.Category.Audit);
+        }
+
+
+        private static string GetIpInformation()
+        {
+            var httpContext = HttpContext.Current;
+            if(httpContext == null)
+            {
+                return string.Empty;
+            }
+
+            string ipaddress = httpContext.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+                  
+            if (String.IsNullOrWhiteSpace(ipaddress))
+            {
+                ipaddress = httpContext.Request.ServerVariables["REMOTE_ADDR"]; 
+            }
+
+            if (String.IsNullOrWhiteSpace(ipaddress))
+            {
+                return string.Empty;
+            }
+
+            return " IP address: " + ipaddress;
+        }
 
 
         /// <exclude />
