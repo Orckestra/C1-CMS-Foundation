@@ -11,6 +11,7 @@ using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
 using System.IO;
 using Composite.Data.Foundation;
 using Composite.Core.Serialization.CodeGeneration;
+using Composite.Core;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -86,7 +87,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                 Type dataProviderHelperType;
                 Type dataIdClassType;
-                EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
+                bool typeOk = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
+                if (!typeOk)
+                {
+                    Log.LogError("XmlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
+                    continue;
+                }
 
                 List<XmlDataTypeStoreDataScope> xmlDataTypeStoreDataScopes = new List<XmlDataTypeStoreDataScope>();
                 foreach (DataScopeConfigurationElement dataScopeConfigurationElement in element.ConfigurationStores)
@@ -129,7 +135,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 #warning MRJ: BM: Move these classes to something like XmlDataExistingStoresInitializer
-        private void EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, out Type dataProviderHelperType, out Type dataIdClassType)
+        private bool EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, out Type dataProviderHelperType, out Type dataIdClassType)
         {
             string namespaceName = NamesCreator.MakeNamespaceName(_dataProviderContext.ProviderName);
 
@@ -139,7 +145,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             // Getting the interface (ensuring that it exists)
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
-            
+            if (interfaceType == null)
+            {
+                dataProviderHelperType = null;
+                dataIdClassType = null;
+                return false;
+            }            
 
             dataProviderHelperType = TypeManager.TryGetType(dataProviderHelperClassFullName);
             dataIdClassType = TypeManager.TryGetType(dataIdClassFullName);
@@ -167,6 +178,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 dataProviderHelperType = types.Where(f => f.FullName == dataProviderHelperClassFullName).Single();
                 dataIdClassType = types.Where(f => f.FullName == dataIdClassFullName).Single();
             }
+
+            return true;
         }
     }    
 }

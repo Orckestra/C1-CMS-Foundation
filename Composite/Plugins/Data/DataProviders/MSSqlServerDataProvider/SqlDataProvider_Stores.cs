@@ -9,6 +9,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
+using Composite.Core;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
@@ -107,6 +108,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
 
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            if (interfaceType == null)
+            {
+                Log.LogError("SqlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
+                return;
+            }
 
             Type dataContextClassType; // This is the same for all stores!
 
