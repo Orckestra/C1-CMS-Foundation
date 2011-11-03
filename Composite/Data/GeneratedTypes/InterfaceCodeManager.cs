@@ -33,6 +33,8 @@ namespace Composite.Data.GeneratedTypes
                 if (type != null) return type;
             }
 
+            if (!dataTypeDescriptor.IsCodeGenerated) return null;
+
 #warning MRJ: BM: Refacture this one
             BuildManagerCompileUnit unit = InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor);
 

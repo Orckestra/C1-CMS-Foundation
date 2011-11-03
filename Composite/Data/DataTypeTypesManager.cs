@@ -49,8 +49,6 @@ namespace Composite.Data
             Type addedtype = _addedTypes.Where(f => f.FullName == dataTypeDescriptor.GetFullInterfaceName()).FirstOrDefault();
             if (addedtype != null) return addedtype;
 
-            if (!dataTypeDescriptor.IsCodeGenerated) return null;
-
             Type type = InterfaceCodeManager.GetType(dataTypeDescriptor);
 
             return type;
