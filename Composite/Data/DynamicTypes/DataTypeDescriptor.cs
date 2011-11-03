@@ -19,7 +19,7 @@ namespace Composite.Data.DynamicTypes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [EditorBrowsable(EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     [DebuggerDisplay("Name = {Name}")]
     public class DataTypeDescriptor
     {
@@ -107,7 +107,7 @@ namespace Composite.Data.DynamicTypes
             {
                 throw new InvalidOperationException("The TypeManagerTypeName has not been set");
             }
-            
+
 #warning MRJ: BM: Will this be bad if the interface does not yet exist?
             return DataTypeTypesManager.GetDataType(this);
             //return TypeManager.GetType(this.TypeManagerTypeName);
@@ -259,7 +259,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void RemoveSuperInterface(Type interfaceType)
         {
-            if (interfaceType == typeof (IData))
+            if (interfaceType == typeof(IData))
             {
                 return;
             }
@@ -434,14 +434,14 @@ namespace Composite.Data.DynamicTypes
             {
                 dataTypeDescriptor.DataAssociations.Add(
                     new DataTypeAssociationDescriptor(
-                        dataTypeAssociationDescriptor.AssociatedInterfaceType, 
-                        dataTypeAssociationDescriptor.ForeignKeyPropertyName, 
+                        dataTypeAssociationDescriptor.AssociatedInterfaceType,
+                        dataTypeAssociationDescriptor.ForeignKeyPropertyName,
                         dataTypeAssociationDescriptor.AssociationType
                     ));
             }
-            
+
             dataTypeDescriptor.DataScopes = new List<DataScopeIdentifier>(this.DataScopes);
-            
+
             foreach (DataFieldDescriptor dataFieldDescriptor in this.Fields)
             {
                 if (dataFieldDescriptor.Inherited == false)
@@ -513,7 +513,7 @@ namespace Composite.Data.DynamicTypes
             {
                 keyPropertyNamesElement.Add(new XElement("KeyPropertyName", new XAttribute("name", keyPropertyName)));
             }
-            element.Add(keyPropertyNamesElement);            
+            element.Add(keyPropertyNamesElement);
 
             XElement superInterfacesElement = new XElement("SuperInterfaces");
             foreach (Type superInterface in this.SuperInterfaces)
@@ -545,7 +545,7 @@ namespace Composite.Data.DynamicTypes
             XAttribute namespaceAttribute = element.Attribute("namespace");
             XAttribute hasCustomPhysicalSortOrderAttribute = element.Attribute("hasCustomPhysicalSortOrder");
             XAttribute isCodeGeneratedAttribute = element.Attribute("isCodeGenerated");
-            XAttribute cachableAttribute = element.Attribute("cachable");            
+            XAttribute cachableAttribute = element.Attribute("cachable");
             XAttribute versionAttribute = element.Attribute("version");
             XAttribute buildNewHandlerTypeNameAttribute = element.Attribute("buildNewHandlerTypeName");
             XElement dataAssociationsElement = element.Element("DataAssociations");
@@ -568,9 +568,9 @@ namespace Composite.Data.DynamicTypes
             string namespaceName = namespaceAttribute.Value;
             bool isCodeGeneretaed = (bool)isCodeGeneratedAttribute;
             bool cachable = false;
-            if(cachableAttribute != null)
+            if (cachableAttribute != null)
             {
-                cachable = (bool) cachableAttribute;
+                cachable = (bool)cachableAttribute;
             }
 
             // TODO: check why "hasCustomPhysicalSortOrder" and "version" isn't used
@@ -619,7 +619,7 @@ namespace Composite.Data.DynamicTypes
                 XAttribute superInterfaceTypeAttribute = elm.Attribute("type");
 
                 if (superInterfaceTypeAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
-                
+
                 if (superInterfaceTypeAttribute.Value.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled") == false)
                 {
                     Type type = TypeManager.GetType(superInterfaceTypeAttribute.Value);
@@ -652,7 +652,7 @@ namespace Composite.Data.DynamicTypes
                 {
                     dataTypeDescriptor.KeyPropertyNames.Add(propertyName);
                 }
-            }            
+            }
 
             return dataTypeDescriptor;
         }
@@ -706,7 +706,7 @@ namespace Composite.Data.DynamicTypes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [EditorBrowsable(EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DataTypeDescriptorExtensions
     {
         /// <summary>
@@ -726,6 +726,22 @@ namespace Composite.Data.DynamicTypes
             //if (fullInterfaceName.IndexOf(",") >= 0) fullInterfaceName = fullInterfaceName.Remove(fullInterfaceName.IndexOf(","));
 
             //return fullInterfaceName;
+        }
+
+
+        /// <summary>
+        /// This method will return false if the type is not code generated and does exists
+        /// </summary>
+        /// <param name="dataTypeDescriptor"></param>
+        /// <returns></returns>
+        public static bool ValidateRuntimeType(this DataTypeDescriptor dataTypeDescriptor)
+        {
+            if (dataTypeDescriptor.IsCodeGenerated) return true;
+
+            Type dataType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
+            if (dataType == null) return false;
+
+            return true;
         }
     }
 }

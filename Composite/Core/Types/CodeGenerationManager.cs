@@ -46,6 +46,12 @@ namespace Composite.Core.Types
             {
 #warning MRJ: BM: This need to get the type of the data interface for handling custom builders. DONT THINK SO! Builders can be anything
 
+                if (!dataTypeDescriptor.ValidateRuntimeType())
+                {
+                    Log.LogError("EmptyDataClassCodeProvider", "The non code generated interface type '{0}' was not found, skipping code generation for that type");
+                    continue;
+                }
+
                 if (string.IsNullOrEmpty(dataTypeDescriptor.BuildNewHandlerTypeName))
                 {
                     EmptyDataClassCodeGenerator.AddAssemblyReferences(builder, dataTypeDescriptor);
@@ -67,6 +73,12 @@ namespace Composite.Core.Types
         {
             foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.AllDataTypeDescriptors)
             {
+                if (!dataTypeDescriptor.ValidateRuntimeType())
+                {
+                    Log.LogError("DataWrapperClassCodeProvider", "The non code generated interface type '{0}' was not found, skipping code generation for that type");
+                    continue;
+                }
+
                 DataWrapperCodeGenerator.AddDataWrapperClassCode(builder, dataTypeDescriptor);
             }
         }

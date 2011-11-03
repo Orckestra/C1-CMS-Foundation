@@ -57,6 +57,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                 DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
 
+                if (!dataTypeDescriptor.ValidateRuntimeType())
+                {
+                    Log.LogError("XmlDataProvider", "The non code generated interface type '{0}' was not found, skipping code generation for that type");
+                    continue;
+                }
+                
                 codeBuilder.AddDataType(dataTypeDescriptor);
             }
         }

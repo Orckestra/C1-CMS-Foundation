@@ -62,7 +62,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 if(element.DataTypeId == null || element.DataTypeId == Guid.Empty) continue;
 
                 DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
-                
+
+                if (!dataTypeDescriptor.ValidateRuntimeType())
+                {
+                    Log.LogError("SqlDataProvider", "The non code generated interface type '{0}' was not found, skipping code generation for that type");
+                    continue;
+                }
+
                 List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
 
                 foreach (StorageInformation storageInformation in element.Stores)

@@ -77,8 +77,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
                 if (type != null)
                 {
+                    
                     _codeGenerationBuilder.AddReference(type.Assembly.Location);
                     _entityClassNamesAndDataContextFieldNames.Add(name);
+
+                    foreach (Type interfaceType in type.GetInterfaces())
+                    {
+                        _codeGenerationBuilder.AddReference(interfaceType.Assembly);
+                    }
                 }
             }
         }
