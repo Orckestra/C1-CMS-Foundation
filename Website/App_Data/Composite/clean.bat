@@ -91,6 +91,14 @@ del ..\..\Bin\Composite.Community.EventCalendar.dll
 del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.EventCalendar.EventsApp.xml
 
 
+:: ContactForm cleanup
+del ..\..\App_GlobalResources\Composite\Community\ContactForm.resx
+del ..\..\App_GlobalResources\Composite\Community\ContactForm.ru-RU.resx
+del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactForm.xml
+del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactFrom.EmailTemplate.xml
+del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactForm.xml 
+del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactFrom.EmailTemplate.xml 
+
 :: Versioning cleanup
 del ..\..\Bin\Composite.Versioning.ContentVersioning.dll
 
@@ -127,3 +135,4 @@ del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
 rd ..\..\Composite\content\forms\InstalledPackages\Composite.Tools.PackageCreator /S /Q
 del ..\..\Bin\Composite.Tools.PackageCreator.dll 
 del ..\..\Composite\InstalledPackages\localization\Composite.Tools.PackageCreator.en-us.xml
+
