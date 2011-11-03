@@ -65,7 +65,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 if (!dataTypeDescriptor.ValidateRuntimeType())
                 {
-                    Log.LogError("SqlDataProvider", "The non code generated interface type '{0}' was not found, skipping code generation for that type");
+                    Log.LogError("SqlDataProvider", string.Format("The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.BuildNewHandlerTypeName));
                     continue;
                 }
 
