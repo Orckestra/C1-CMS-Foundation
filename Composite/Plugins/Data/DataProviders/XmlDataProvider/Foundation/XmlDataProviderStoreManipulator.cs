@@ -35,7 +35,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 newConfigurationElement.AddPropertyInitializer(kvp.Key, kvp.Value);
             }
 
-
+#warning MRJ: BM: Move this into scopes
             Dictionary<string, object> newFieldValues = new Dictionary<string, object>();
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.AddedDataScopes)
@@ -47,10 +47,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             }
 
 
-            if (updateDataTypeDescriptor.PublicationAdded) // Data provider has to handle this with the new build manager
-            {
-                newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
-            }
+            //if (updateDataTypeDescriptor.PublicationAdded) // Data provider has to handle this with the new build manager
+            //{
+            //    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
+            //}
 
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.ExistingDataScopes)
@@ -59,6 +59,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
                     DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[scopeIdentifier.Name][kvp.Key];
+
+                    newFieldValues = new Dictionary<string, object>();
+                    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
 
                     CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues);
                 }
@@ -72,9 +75,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
                     DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][kvp.Key];
 
+                    newFieldValues = new Dictionary<string, object>();
+                    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
+
                     CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
 
-                    DeleteData(updateDataTypeDescriptor.ProviderName, oldDataScopeConfigurationElement);
+                    //DeleteData(updateDataTypeDescriptor.ProviderName, oldDataScopeConfigurationElement);
                 }
             }
 

@@ -301,11 +301,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                             FROM {1};", newTableName, oldTableName, fieldList);
                 ExecuteNonQuery(copyCommandText);
 
-                string updateCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", newTableName, "PublicationStatus", GenericPublishProcessController.Draft);
-                ExecuteNonQuery(updateCommandTesxt);
+                string updateOldCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", oldTableName, "PublicationStatus", GenericPublishProcessController.Published);
+                ExecuteNonQuery(updateOldCommandTesxt);
 
-                string removeCommandText = string.Format(@"DELETE FROM {0};", oldTableName);
-                ExecuteNonQuery(removeCommandText);
+                string updateNewCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", newTableName, "PublicationStatus", GenericPublishProcessController.Draft);
+                ExecuteNonQuery(updateNewCommandTesxt);
             }
         }
 
