@@ -1,19 +1,43 @@
 <%@ WebHandler Language="C#" Class="PingTester" %>
 using System;
+using System.Net;
 using System.Web;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.WebClient.Setup;
 
 public class PingTester : IHttpHandler
 {
     public void ProcessRequest(HttpContext context)
     {
+        context.Response.ContentType = "text/plain";
+        
         if (SystemSetupFacade.IsSystemFirstTimeInitialized)
         {
             return;
         }
+
+        IPHostEntry packageServerAddress;
+
+        const string packageServerHostName = "package.composite.net";
         
-        context.Response.ContentType = "text/plain";
+        try
+        {
+            packageServerAddress = Dns.GetHostEntry(packageServerHostName);
+        }
+        catch (Exception ex)
+        {
+            context.Response.Write("Failed to resolve IP address of '{0}'\n".FormatWith(packageServerHostName) + ex);
+            return;
+        }
+
+        context.Response.Write("IP address{0}: ".FormatWith(packageServerAddress.AddressList.Length > 1 ? "es" : string.Empty));
+        foreach(var address in packageServerAddress.AddressList)
+        {
+            context.Response.Write(address + "; ");
+        }
+        
+        context.Response.Write("\n");
 
         bool pingSuccessful;
         
