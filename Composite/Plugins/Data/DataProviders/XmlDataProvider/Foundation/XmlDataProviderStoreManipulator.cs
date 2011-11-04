@@ -76,7 +76,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][kvp.Key];
 
                     newFieldValues = new Dictionary<string, object>();
-                    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
+                    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
 
                     CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
 

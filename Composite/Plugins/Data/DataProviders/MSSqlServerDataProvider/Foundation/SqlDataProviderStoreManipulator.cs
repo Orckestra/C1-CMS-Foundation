@@ -304,7 +304,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 string updateOldCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", oldTableName, "PublicationStatus", GenericPublishProcessController.Published);
                 ExecuteNonQuery(updateOldCommandTesxt);
 
-                string updateNewCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", newTableName, "PublicationStatus", GenericPublishProcessController.Draft);
+                string updateNewCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", newTableName, "PublicationStatus", GenericPublishProcessController.Published);
                 ExecuteNonQuery(updateNewCommandTesxt);
             }
         }
