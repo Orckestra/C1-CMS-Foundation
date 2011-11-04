@@ -10,6 +10,7 @@ using Composite.Core.Routing.Pages;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Plugins.Routing.Pages;
 
 namespace Composite.Core.WebClient.Renderings
 {
@@ -225,8 +226,10 @@ namespace Composite.Core.WebClient.Renderings
 
         private void ValidateViewUnpublishedRequest(HttpContext httpContext)
         {
-            if (_pageUrl != null
-                && _pageUrl.PublicationScope != PublicationScope.Published
+            bool isPreviewingUrl = httpContext.Request.Url.OriginalString.Contains(PageUrlBuilder.UrlMarker_RelativeUrl);
+            bool isUnpublishedPage = _pageUrl != null && _pageUrl.PublicationScope != PublicationScope.Published;
+
+            if ((isUnpublishedPage || isPreviewingUrl)
                 && !UserValidationFacade.IsLoggedIn())
             {
                 string redirectUrl = UrlUtils.PublicRootPath + "/Composite/Login.aspx?ReturnUrl=" +
