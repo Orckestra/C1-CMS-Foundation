@@ -94,43 +94,28 @@ namespace Composite.Core.WebClient.Presentation
 
             public Colors ( User user )
             {
-                if (user.isVista)
-                {
-                    scheme.Add("threedface", "rgb(240,240,240)");
-                    scheme.Add("threedshadow", "rgb(160,160,160)");
-                    scheme.Add("threedlightshadow", "rgb(227,227,227)");
-                    scheme.Add("threedhighlight", "rgb(255,255,255)");
-                    scheme.Add("threeddarkshadow", "rgb(105,105,105)");
-                    scheme.Add("highlighttext", "rgb(255,255,255)");
-                    scheme.Add("highlight", "rgb(51,153,255)");
-                    scheme.Add("appworkspace", "rgb(171,171,171)");
-                    scheme.Add("graytext", "rgb(109,109,109)");
-                    scheme.Add("infobackground", "rgb(255,255,225)");
-                    scheme.Add("infotext", "rgb(0,0,0)");
-                    scheme.Add("menutext", "rgb(0,0,0)");
-                    scheme.Add("menu", "rgb(240,240,240)");
-                    scheme.Add("windowtext", "rgb(0,0,0)");
-                    scheme.Add("window", "rgb(250,250,250)");
-                    scheme.Add("toolbar", "#D3DAED"); // c1 special!
-                    /*
-                    scheme.Add ( "buttonface", "pink" );
-                    scheme.Add ( "buttonhighlight", "pink");
-                    scheme.Add ( "buttonshadow", "pink" );
-                    scheme.Add("buttontext", "pink");
-                    */
-                }
-                else if (user.isOSX)
-                {
-                    scheme.Add("menutext", "rgb(0,0,0)");
-                    scheme.Add("menu", "rgb(240,240,240)");
-                    scheme.Add("threeddarkshadow", "-moz-mac-chrome-active");
-                    scheme.Add("threedshadow", "-moz-mac-menushadow");
-                    scheme.Add("highlight", "-moz-mac-menuselect");
-                    scheme.Add("highlighttext", "-moz-mac-menutextselect");
-                    scheme.Add("activecaption", "-moz-mac-chrome-active"); // -moz-mac-focusring
-                    //scheme.Add("captiontext", "-moz-mac-menutextselect");
-                    scheme.Add("toolbar", "-moz-mac-chrome-inactive");
-                }
+                scheme.Add("threedface", "rgb(240,240,240)");
+                scheme.Add("threedshadow", "rgb(160,160,160)");
+                scheme.Add("threedlightshadow", "rgb(227,227,227)");
+                scheme.Add("threedhighlight", "rgb(255,255,255)");
+                scheme.Add("threeddarkshadow", "rgb(105,105,105)");
+                scheme.Add("highlighttext", "rgb(255,255,255)");
+                scheme.Add("highlight", "rgb(51,153,255)");
+                scheme.Add("appworkspace", "rgb(171,171,171)");
+                scheme.Add("graytext", "rgb(109,109,109)");
+                scheme.Add("infobackground", "rgb(255,255,225)");
+                scheme.Add("infotext", "rgb(0,0,0)");
+                scheme.Add("menutext", "rgb(0,0,0)");
+                scheme.Add("menu", "rgb(240,240,240)");
+                scheme.Add("windowtext", "rgb(0,0,0)");
+                scheme.Add("window", "rgb(250,250,250)");
+                scheme.Add("toolbar", "#D3DAED"); // c1 special!
+                /*
+                scheme.Add ( "buttonface", "pink" );
+                scheme.Add ( "buttonhighlight", "pink");
+                scheme.Add ( "buttonshadow", "pink" );
+                scheme.Add("buttontext", "pink");
+                */
             }
 
             public string get (string key)
