@@ -263,8 +263,6 @@
 	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip" value="View recent server events" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast message" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
-	<string key="VirtualElementProviderElementProvider.RootActions.RebuildAssemblyCacheLabel" value="Rebuild assembly cache" />
-	<string key="VirtualElementProviderElementProvider.RootActions.RebuildAssemblyCacheTooltip" value="Rebuild the assembly cache" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
 	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast message to all C1 Consoles" />

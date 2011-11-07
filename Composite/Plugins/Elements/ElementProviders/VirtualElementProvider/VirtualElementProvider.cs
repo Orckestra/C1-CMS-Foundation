@@ -239,26 +239,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new RebuildAssemblyCacheActionToken()))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RebuildAssemblyCacheLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.RebuildAssemblyCacheTooltip"),
-                    Icon = VirtualElementProvider.RestartApplicationIcon, // TODO: change icon
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Other,
-                        IsInFolder = false,
-                        IsInToolbar = false,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            });
-
-
-
             element.AddAction(new ElementAction(new ActionHandle(new RestartApplicationActionToken()))
             {
                 VisualData = new ActionVisualizedData
@@ -772,30 +752,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
 
     
-    [ActionExecutor(typeof(RebuildAssemblyCacheActionExecutor))]
-    internal sealed class RebuildAssemblyCacheActionToken : ActionToken
-    {
-        private static readonly IEnumerable<PermissionType> _permissionType = new [] { PermissionType.Administrate };
-
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionType; }
-        }
-
-        public override string Serialize()
-        {
-            return "RebuildAssemblyCacheActionToken";
-        }
-
-
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new RebuildAssemblyCacheActionToken();
-        }
-    }
-
-
-
     [ActionExecutor(typeof(RestartApplicationActionExecutor))]
     internal sealed class RestartApplicationActionToken : ActionToken
     {
@@ -821,39 +777,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             return new RestartApplicationActionToken();
         }
     }
-
-
-#warning MRJ: BM: This is a strange feature now or what? Just restart the server?
-    internal sealed class RebuildAssemblyCacheActionExecutor : IActionExecutor
-    {
-        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
-        {
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly();
-
-            //var interfaceCompilationUnits = new List<BuildManagerCompileUnit>();
-
-            //foreach(var type in DataFacade.GetAllInterfaces())
-            //{
-            //    Guid typeId;
-            //    DataTypeDescriptor dataTypeDescriptor;
-            //    if(!DataAttributeFacade.TryGetImmutableTypeId(type, out typeId)
-            //       || !DynamicTypeManager.TryGetDataTypeDescriptor(typeId, out dataTypeDescriptor)
-            //       || !dataTypeDescriptor.IsCodeGenerated)
-            //    {
-            //        continue;
-            //    }
-
-            //    interfaceCompilationUnits.Add(InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor));
-            //}
-
-            //BuildManager.RebuildCache(interfaceCompilationUnits.ToArray());
-
-            //HostingEnvironment.InitiateShutdown();
-
-            return null;
-        }
-    }
-
 
 
     internal sealed class RestartApplicationActionExecutor : Composite.C1Console.Actions.IActionExecutor
