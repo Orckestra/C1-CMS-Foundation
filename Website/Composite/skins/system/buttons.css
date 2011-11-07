@@ -4,26 +4,13 @@
 
 /* FOCUS */
 
-#region vista
-	ui|clickbutton.focused table.matrix,
-	ui|clickbutton.default table.matrix {
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
-		background-repeat: repeat-x;
-		background-position: 0 50%;
-	}
-#endregion
 
-#region osx
-	ui|clickbutton.focused table.matrix,
-	ui|clickbutton.default table.matrix {
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
-		background-repeat: repeat-x;
-		background-position: 0 50%;
-	}
-	ui|clickbutton {
-		filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
-	}
-#endregion
+ui|clickbutton.focused table.matrix,
+ui|clickbutton.default table.matrix {
+	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
+	background-repeat: repeat-x;
+	background-position: 0 50%;
+}
 
 ui|clickbutton.focused table.matrix td.n,
 ui|clickbutton.default table.matrix td.n {

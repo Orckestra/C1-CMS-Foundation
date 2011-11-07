@@ -70,17 +70,6 @@ ui|toolbar#toolbar ui|clickbutton table.matrix td.c {
 ui|toolbarbody#moreactionstoolbargroup ui|toolbarbutton ui|labeltext {
 	font-weight: bold;	
 }
-/*
-ui|toolbar#toolbar ui|toolbarbutton table.matrix td.c,
-ui|toolbar#toolbar ui|clickbutton table.matrix td.c {
-	padding: 6px;
-}
-*/
-#region osx
-	ui|toolbar#toolbar ui|toolbarbutton {
-		filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
-	}
-#endregion
 
 /*
  This ought to be enabled on ALL buttons (in buttons.css) 

@@ -1,14 +1,5 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-/*
-#region osx
-	ui|explorer ui|toolbarbutton,
-	ui|explorer ui|explorertoolbarbutton {
-		filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
-	}
-#endregion
-*/
-
 ui|explorersplitter,
 ui|explorertoolbarbutton {
 	border-bottom: 1px solid $(color:threedshadow);
