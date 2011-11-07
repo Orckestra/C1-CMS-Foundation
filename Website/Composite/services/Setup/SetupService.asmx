@@ -143,6 +143,7 @@ namespace Composite.Core.WebClient.Setup
             try
             {
                 SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language, consolelanguage);
+                Log.LogInformation(LogTitle, "Setup complete. Enjoy!");
             }
             catch(Exception ex)
             {
@@ -167,9 +168,8 @@ namespace Composite.Core.WebClient.Setup
                 CheckAccessToFile(Server.MapPath("~/default.aspx"));
                 CheckAccessToFile(Server.MapPath("~/Frontend/Config/VisualEditor/Common.xml"));
 
-                if (!RuntimeInformation.IsDebugBuild
-                    && (FileIsReadOnly(Server.MapPath("~/web.config"))
-                        || FileIsReadOnly(Server.MapPath("~/App_Data/Composite/Composite.config"))))
+                if (FileIsReadOnly(Server.MapPath("~/web.config"))
+                        || FileIsReadOnly(Server.MapPath("~/App_Data/Composite/Composite.config")))
                 {
                     return false;
                 }
