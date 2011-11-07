@@ -483,6 +483,7 @@ namespace Composite.Core.Types
         {
             List<string> filesToCompile = GetAppCodeFiles().ToList();
 
+            if (filesToCompile.Count == 0) return new CompatibilityCheckResult();
             
 
 #warning MRJ: BM: Refac this out using the CodeGeneratorBuilder as parameter
