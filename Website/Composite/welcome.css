@@ -236,7 +236,8 @@ ui|deck#license form {
 ui|deck#license input {
 	position: relative;
 	top: 1px;
-	cursor: default;	
+	cursor: default;
+	margin: 3px 3px 3px 4px;
 }
 p#crumbs {
 	color: GrayText;
