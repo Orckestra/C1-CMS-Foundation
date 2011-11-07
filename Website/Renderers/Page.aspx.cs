@@ -39,20 +39,23 @@ public partial class Renderers_Page : System.Web.UI.Page
 
         IEnumerable<IPagePlaceholderContent> contents = _renderingContext.GetPagePlaceholderContents();
 
-        Control renderedPage;
-        using (Profiler.Measure("Executing C1 functions"))
+        if (Master == null)
         {
-            renderedPage = PageRenderer.Render(PageRenderer.CurrentPage, contents);
-        }
+            Control renderedPage;
+            using (Profiler.Measure("Executing C1 functions"))
+            {
+                    renderedPage = PageRenderer.Render(PageRenderer.CurrentPage, contents);
+            }
 
-        if (_renderingContext.PreviewMode)
-        {
-            PageRenderer.DisableAspNetPostback(renderedPage);
-        }
+            if (_renderingContext.PreviewMode)
+            {
+                PageRenderer.DisableAspNetPostback(renderedPage);
+            }
 
-        using (Profiler.Measure("ASP.NET controls: PageInit"))
-        {
-            Controls.Add(renderedPage);
+            using (Profiler.Measure("ASP.NET controls: PageInit"))
+            {
+                Controls.Add(renderedPage);
+            }
         }
 
         _pageEventsPageMeasuring = Profiler.Measure("ASP.NET controls: PageLoad, Event handling, PreRender");
