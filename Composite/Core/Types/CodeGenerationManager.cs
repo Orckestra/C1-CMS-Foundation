@@ -399,7 +399,6 @@ namespace Composite.Core.Types
 
                 foreach (Type resultType in resultTypes)
                 {
-                    Log.LogInformation(LogTitle, "Type compiled: " + resultType.FullName);
                     TypeManager.CompiledTypes.Add(resultType);
                 }
 
@@ -670,11 +669,7 @@ namespace Composite.Core.Types
         {
             foreach (ICodeProvider provider in CodeProviders)
             {
-                int t1 = Environment.TickCount;
                 provider.GetCodeToCompile(builder);
-                int t2 = Environment.TickCount;
-
-                Log.LogInformation(LogTitle, "Building code from for " + provider.GetType().FullName + " took: " + (t2 - t1));
             }
         }
 
