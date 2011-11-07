@@ -605,12 +605,7 @@ StageDialogBinding.prototype.setPosition = function ( p ) {
  * @param {Dimension} dim
  */
 StageDialogBinding.prototype.setDimension = function ( dim ) {
-	
-	// HARDCODE ALERT
-	if ( !Client.isWindows ) { // OSX
-		dim.w -= 6; // because of no window borders on mac...
-	}
-	
+
 	StageDialogBinding.superclass.setDimension.call ( this, dim );
 	this._body.dispatchAction (
 		Binding.ACTION_DIMENSIONCHANGED 
