@@ -24351,9 +24351,6 @@ StageDialogBinding.superclass.setPosition.call(this,p);
 this._body.dispatchAction(Binding.ACTION_POSITIONCHANGED);
 };
 StageDialogBinding.prototype.setDimension=function(dim){
-if(!Client.isWindows){
-dim.w-=6;
-}
 StageDialogBinding.superclass.setDimension.call(this,dim);
 this._body.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
 };
