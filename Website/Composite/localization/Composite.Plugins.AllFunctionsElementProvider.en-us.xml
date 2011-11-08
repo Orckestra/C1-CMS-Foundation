@@ -9,7 +9,7 @@
   <string key="AllFunctionsElementProvider.ViewFunctionInformation" value="Information" />
   <string key="AllFunctionsElementProvider.ViewFunctionInformationTooltip" value="View function information" />
 
-  <string key="FunctionTesterWorkflow.Layout.Label" value="Function Tester" />
+  <string key="FunctionTesterWorkflow.Layout.Label" value="Test: {0}" />
   <string key="FunctionTesterWorkflow.FunctionCalls.Label" value="Functions" />  
   <string key="FunctionTesterWorkflow.Preview.Label" value="Results" />
   <string key="FunctionTesterWorkflow.Runtime.FieldGroup.Label" value="Runtime" />

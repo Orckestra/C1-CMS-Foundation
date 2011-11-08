@@ -49,6 +49,9 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
                 NamedFunctionCall namedFunctionCall = new NamedFunctionCall("", (BaseFunctionRuntimeTreeNode)baseRuntimeTreeNode);
 
                 namedFunctionCalls.Add(namedFunctionCall);
+
+                string layoutLabel = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "FunctionTesterWorkflow.Layout.Label"), function.Name);
+                this.Bindings.Add("LayoutLabel", layoutLabel);
             }
 
             this.Bindings.Add("FunctionCalls", namedFunctionCalls);

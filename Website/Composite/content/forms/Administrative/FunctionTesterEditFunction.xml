@@ -11,9 +11,13 @@
     
     <cms:binding name="SessionStateProvider" type="System.String" />
     <cms:binding name="SessionStateId" type="System.Guid" />
+    
+    <cms:binding name="LayoutLabel" type="System.String" />
   </cms:bindings>
-  <cms:layout label="${Composite.Plugins.AllFunctionsElementProvider, FunctionTesterWorkflow.Layout.Label}" iconhandle="functioncall">
-
+  <cms:layout iconhandle="functioncall">
+    <cms:layout.label>
+      <cms:read source="LayoutLabel"/>
+    </cms:layout.label>
     <TabPanels PreSelectedIndex="1">
 
       <PlaceHolder Label="${Composite.Plugins.AllFunctionsElementProvider, FunctionTesterWorkflow.Runtime.FieldGroup.Label}">        

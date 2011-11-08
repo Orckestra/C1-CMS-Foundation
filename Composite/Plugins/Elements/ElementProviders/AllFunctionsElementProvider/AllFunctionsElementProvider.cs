@@ -39,10 +39,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
         private const string FunctionsProviderType = "functions";
         private const string WidgetFunctionsProviderType = "widgetFunctions";
 
-        public static ResourceHandle DocumentFunctionsIcon = GetIconHandle("all-functions-generatedocumentation"); 
+        public static ResourceHandle DocumentFunctionsIcon = GetIconHandle("all-functions-generatedocumentation");
         private static ResourceHandle TestFunctionIcon = GetIconHandle("base-function-function");
         private static ResourceHandle GetIconHandle(string name) { return new ResourceHandle(BuildInIconProviderName.ProviderName, name); }
-        
+
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
@@ -187,11 +187,11 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                 {
                     yield return
                         new AllFunctionsTreeBuilderLeafInfo
-                            {
-                                Name = metaFunction.Name,
-                                Namespace = metaFunction.Namespace,
-                                EntityToken = metaFunction.EntityToken
-                            };
+                        {
+                            Name = metaFunction.Name,
+                            Namespace = metaFunction.Namespace,
+                            EntityToken = metaFunction.EntityToken
+                        };
                 }
             }
         }
@@ -207,9 +207,10 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
             bool isWidget = !(metaFunction is IFunction);
 
-
-            yield return CreateFunctionTesterAction(functionName);
-
+            if (!isWidget)
+            {
+                yield return CreateFunctionTesterAction(functionName);
+            }
 
             yield return new ElementAction(new ActionHandle(new FunctionInfoActionToken(functionName, isWidget)))
             {
@@ -227,16 +228,13 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                         IsInToolbar = true
                     }
                 }
-            };            
-        }        
-        
+            };
+        }
+
 
 
         protected override IEnumerable<ElementAction> OnGetFolderActions()
         {
-            yield return CreateFunctionTesterAction();
-
-
             yield return new ElementAction(new ActionHandle(new DocumentFunctionsActionToken()))
             {
                 VisualData = new ActionVisualizedData
@@ -419,7 +417,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                         throw new NotImplementedException();
                 }
             }
-        }       
+        }
     }
 
 
