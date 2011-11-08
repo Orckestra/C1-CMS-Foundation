@@ -121,14 +121,6 @@ namespace Composite.Core.PackageSystem
 
 
         /// <exclude />
-        public static bool RequestLicenseUpdate(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
-        {
-            return _packageServerFacade.RequestLicenseUpdate(packageServerUrl, installationId, packageId, localUserName, localUserIp);
-        }
-
-
-
-        /// <exclude />
         public static void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             _packageServerFacade.RegisterAddonInstallationCompletion(packageServerUrl, installationId, packageId, localUserName, localUserIp);

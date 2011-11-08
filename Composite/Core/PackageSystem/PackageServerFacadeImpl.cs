@@ -128,15 +128,6 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public bool RequestLicenseUpdate(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
-        {
-            PackagesSoapClient client = CreateClient(packageServerUrl);
-
-            return client.RequestLicenseUpdate(installationId, packageId, localUserName, localUserIp);
-        }
-
-
-
         public void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);

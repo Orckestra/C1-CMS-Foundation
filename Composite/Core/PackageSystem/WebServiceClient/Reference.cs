@@ -537,11 +537,6 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponse RegisterPackageUninstall(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallRequest request);
 
         /// <exclude />
-        // CODEGEN: Generating message contract since element name localUserName from namespace http://package.composite.net/package.asmx is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RequestLicenseUpdate", ReplyAction="*")]
-        Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponse RequestLicenseUpdate(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest request);
-
-        /// <exclude />
         // CODEGEN: Generating message contract since element name LocalUserName from namespace http://package.composite.net/package.asmx is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://package.composite.net/package.asmx/RegisterPackageInstallationCompletion", ReplyAction="*")]
         Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionResponse RegisterPackageInstallationCompletion(Composite.Core.PackageSystem.WebServiceClient.RegisterPackageInstallationCompletionRequest request);
@@ -865,117 +860,6 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class RequestLicenseUpdateRequest {
-
-        /// <exclude />
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RequestLicenseUpdate", Namespace="http://package.composite.net/package.asmx", Order=0)]
-        public Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequestBody Body;
-
-        /// <exclude />
-        public RequestLicenseUpdateRequest() {
-        }
-
-        /// <exclude />
-        public RequestLicenseUpdateRequest(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequestBody Body) {
-            this.Body = Body;
-        }
-    }
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
-    public partial class RequestLicenseUpdateRequestBody {
-
-        /// <exclude />
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public System.Guid InstallationId;
-
-        /// <exclude />
-        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-        public System.Guid PackageId;
-
-        /// <exclude />
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
-        public string localUserName;
-
-        /// <exclude />
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
-        public string localUserIp;
-
-        /// <exclude />
-        public RequestLicenseUpdateRequestBody() {
-        }
-
-        /// <exclude />
-        public RequestLicenseUpdateRequestBody(System.Guid InstallationId, System.Guid PackageId, string localUserName, string localUserIp) {
-            this.InstallationId = InstallationId;
-            this.PackageId = PackageId;
-            this.localUserName = localUserName;
-            this.localUserIp = localUserIp;
-        }
-    }
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class RequestLicenseUpdateResponse {
-
-        /// <exclude />
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RequestLicenseUpdateResponse", Namespace="http://package.composite.net/package.asmx", Order=0)]
-        public Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponseBody Body;
-
-        /// <exclude />
-        public RequestLicenseUpdateResponse() {
-        }
-
-        /// <exclude />
-        public RequestLicenseUpdateResponse(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponseBody Body) {
-            this.Body = Body;
-        }
-    }
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://package.composite.net/package.asmx")]
-    public partial class RequestLicenseUpdateResponseBody {
-
-        /// <exclude />
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public bool RequestLicenseUpdateResult;
-
-        /// <exclude />
-        public RequestLicenseUpdateResponseBody() {
-        }
-
-        /// <exclude />
-        public RequestLicenseUpdateResponseBody(bool RequestLicenseUpdateResult) {
-            this.RequestLicenseUpdateResult = RequestLicenseUpdateResult;
-        }
-    }
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RegisterPackageInstallationCompletionRequest {
 
         /// <exclude />
@@ -1271,24 +1155,6 @@ namespace Composite.Core.PackageSystem.WebServiceClient {
             inValue.Body.localUserName = localUserName;
             inValue.Body.localUserIp = localUserIp;
             Composite.Core.PackageSystem.WebServiceClient.RegisterPackageUninstallResponse retVal = ((Composite.Core.PackageSystem.WebServiceClient.PackagesSoap)(this)).RegisterPackageUninstall(inValue);
-        }
-
-        /// <exclude />
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponse Composite.Core.PackageSystem.WebServiceClient.PackagesSoap.RequestLicenseUpdate(Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest request) {
-            return base.Channel.RequestLicenseUpdate(request);
-        }
-
-        /// <exclude />
-        public bool RequestLicenseUpdate(System.Guid InstallationId, System.Guid PackageId, string localUserName, string localUserIp) {
-            Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest inValue = new Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequest();
-            inValue.Body = new Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateRequestBody();
-            inValue.Body.InstallationId = InstallationId;
-            inValue.Body.PackageId = PackageId;
-            inValue.Body.localUserName = localUserName;
-            inValue.Body.localUserIp = localUserIp;
-            Composite.Core.PackageSystem.WebServiceClient.RequestLicenseUpdateResponse retVal = ((Composite.Core.PackageSystem.WebServiceClient.PackagesSoap)(this)).RequestLicenseUpdate(inValue);
-            return retVal.Body.RequestLicenseUpdateResult;
         }
 
         /// <exclude />

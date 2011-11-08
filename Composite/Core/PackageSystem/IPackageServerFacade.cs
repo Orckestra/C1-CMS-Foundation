@@ -13,7 +13,6 @@ namespace Composite.Core.PackageSystem
         string GetEulaText(string packageServerUrl, Guid eulaId, CultureInfo userCulture);
         Stream GetInstallFileStream(string packageFileDownloadUrl);
 
-        bool RequestLicenseUpdate(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp);
         void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp);
         void RegisterAddonInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString);
 

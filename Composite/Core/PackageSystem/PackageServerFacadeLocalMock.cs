@@ -159,15 +159,6 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public bool RequestLicenseUpdate(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
-        {
-            LoggingService.LogVerbose("AddOnServerFacadeLocalMock", string.Format("RequestLicenseUpdate: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}", installationId, packageId, localUserName, localUserIp));
-
-            return false;
-        }
-
-
-
         public void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             LoggingService.LogVerbose("AddOnServerFacadeLocalMock", string.Format("RegisterAddonInstallationCompletion: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}", installationId, packageId, localUserName, localUserIp));
