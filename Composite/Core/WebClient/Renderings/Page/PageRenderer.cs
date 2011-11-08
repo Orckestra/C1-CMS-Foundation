@@ -108,7 +108,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                             {
                                 try
                                 {
-                                    XhtmlDocument xhtmlDocument = XhtmlDocument.Parse(placeHolderContent.Content);
+                                    XhtmlDocument xhtmlDocument = XhtmlDocument.Parse(placeHolderContent.Content, LoadOptions.PreserveWhitespace);
                                     placeHolder.ReplaceWith(xhtmlDocument.Root);
                                     contentParsedAsXhtmlDocument = true;
                                 }
