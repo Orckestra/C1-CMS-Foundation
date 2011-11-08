@@ -343,10 +343,10 @@ namespace Composite.Core.Xml
                     sb.Append(value.Substring(oldIndex, index - oldIndex));
                     sb.Append(" ");
 
-                    while (WhitespaceCharsLookup.Contains(value[index]) == true)
+                    do
                     {
                         ++index;
-                    }
+                    } while (WhitespaceCharsLookup.Contains(value[index]));
 
                     oldIndex = index;
                 }

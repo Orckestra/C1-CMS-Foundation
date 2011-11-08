@@ -148,9 +148,8 @@ namespace Composite.Core.Xml
             XElement element = node as XElement;
             if (element == null) return false;
 
-            if ((element.Name.LocalName.ToLower() != "pre") && (element.Name.LocalName.ToLower() != "textarea")) return false;
-
-            return true;
+            string localName = element.Name.LocalName.ToLower();
+            return (localName == "pre") || (localName == "textarea");
         }      
     }
 }
