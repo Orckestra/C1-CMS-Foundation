@@ -7,7 +7,8 @@ using Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvi
 namespace Composite.C1Console.Elements
 {
     // This class is dependend on the values in the configuration
-    internal sealed class AttachingPoint
+    /// <exclude />
+    public sealed class AttachingPoint
     {
         private static AttachingPoint _rootPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "ID01", Source = "VirtualElementProvider" };
 
@@ -22,17 +23,27 @@ namespace Composite.C1Console.Elements
         private static AttachingPoint _systemPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "SystemPerspective", Source = "VirtualElementProvider" };
 
 
+        /// <exclude />
         public static AttachingPoint PerspectivesRoot { get { return _rootPerspectiveAttachingPoint; } }
 
+        /// <exclude />
         public static AttachingPoint ContentPerspective { get { return _contentPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint ContentPerspectiveWebsiteItems { get { return _contentPerspectiveWebsiteItemsAttachingPoint; } }
 
+        /// <exclude />
         public static AttachingPoint MediaPerspective { get { return _mediaPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint DataPerspective { get { return _dataPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint DesignPerspective { get { return _designPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint LayoutPerspective { get { return _designPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint FunctionPerspective { get { return _functionPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint UserPerspective { get { return _userPerspectiveAttachingPoint; } }
+        /// <exclude />
         public static AttachingPoint SystemPerspective { get { return _systemPerspectiveAttachingPoint; } }
 
 
@@ -47,6 +58,7 @@ namespace Composite.C1Console.Elements
         internal string Id { get; set; }
         internal string Source { get; set; }
 
+        /// <exclude />
         public EntityToken EntityToken
         {
             get

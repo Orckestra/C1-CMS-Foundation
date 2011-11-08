@@ -15,7 +15,8 @@ namespace Composite.Core.Types
 
         internal static ITypeManager Implementation { get { return _implementation; } set { _implementation = value; } }
 
-#warning MRJ: BM: MAJOC HACK!!!
+#warning MRJ: BM: MAJOR HACK!!!
+        /// <exclude />
         public static List<Type> CompiledTypes = new List<Type>();
 
 
@@ -46,6 +47,7 @@ namespace Composite.Core.Types
 
 
 #warning MRJ: BM: Is this needed? Should we kill the DynamicType: ?
+        /// <exclude />
         public static string GetRuntimeFullName(string fullName)
         {
             if (fullName.StartsWith("DynamicType:")) return fullName.Remove(0, "DynamicType:".Length);

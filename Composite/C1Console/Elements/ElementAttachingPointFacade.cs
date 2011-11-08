@@ -3,8 +3,10 @@
 
 namespace Composite.C1Console.Elements
 {
-    internal static class ElementAttachingPointFacade
+    /// <exclude />
+    public static class ElementAttachingPointFacade
     {
+        /// <exclude />
         public static bool IsAttachingPoint(EntityToken entityToken, AttachingPoint attachingPoint)
         {
             if (attachingPoint.EntityTokenType != entityToken.GetType()) return false;
@@ -16,6 +18,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static bool IsAttachingPoint(EntityToken leftEntityToken, EntityToken rightEntityToken)
         {
             if (leftEntityToken.GetType() != rightEntityToken.GetType()) return false;
@@ -28,6 +31,7 @@ namespace Composite.C1Console.Elements
 
 
 
+        /// <exclude />
         public static AttachingPoint GetAttachingPoint(EntityToken entityToken)
         {
             if (IsAttachingPoint(entityToken, AttachingPoint.PerspectivesRoot) == true) return AttachingPoint.PerspectivesRoot;

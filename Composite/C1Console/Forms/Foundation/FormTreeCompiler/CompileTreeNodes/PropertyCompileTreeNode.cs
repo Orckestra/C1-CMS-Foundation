@@ -30,6 +30,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
         }
 
 
+        /// <exclude />
         public bool IsNamespaceDeclaration
         {
             get;

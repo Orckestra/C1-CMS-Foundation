@@ -147,6 +147,7 @@ namespace Composite.Data.DynamicTypes
 
 
 
+        /// <exclude />
         public bool IsReadOnly
         {
             get;

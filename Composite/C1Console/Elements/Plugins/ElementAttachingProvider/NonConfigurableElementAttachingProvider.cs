@@ -7,7 +7,6 @@ using Microsoft.Practices.ObjectBuilder;
 namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
 {
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(NonConfigurableElementAttachingProviderAssembler))]
     public class NonConfigurableElementAttachingProvider : ElementAttachingProviderData
     {
