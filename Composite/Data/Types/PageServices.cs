@@ -291,7 +291,7 @@ namespace Composite.Data.Types
         {
             List<IPageStructure> pageStructures = DataFacade.GetData<IPageStructure>(ps => ps.ParentId == parentId).ToList();
 
-            pageStructures.OrderBy(ps => ps.LocalOrdering);
+            pageStructures = pageStructures.OrderBy(ps => ps.LocalOrdering).ToList();
 
             for (int i = pageStructures.Count - 1; i >= 0; i--)
             {
