@@ -24,6 +24,7 @@ namespace Composite.Core.WebClient
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
         private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
         private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media(";
+        private static readonly string RawMediaUrlPrefix = "~/media(";
 
         /// <exclude />
         public static string GetUrl(IMediaFile file)
@@ -198,6 +199,9 @@ namespace Composite.Core.WebClient
         public static string ChangeInternalMediaUrlsToPublic(string content)
         {
             StringBuilder result = null;
+
+            // Urls, generated in UserControl-s may still have "~/" as a prefix
+            content = UrlUtils.ReplaceUrlPrefix(content, RawMediaUrlPrefix, InternalMediaUrlPrefix);
 
             // We assume that url starts with "{Site root}/media({MediaId})[?{Query}]" 
             List<UrlUtils.UrlMatch> internalUrls = UrlUtils.FindUrlsInHtml(content, InternalMediaUrlPrefix);

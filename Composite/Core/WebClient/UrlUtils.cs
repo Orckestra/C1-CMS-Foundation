@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Web.Hosting;
 using System.Collections.Generic;
 
@@ -15,6 +16,7 @@ namespace Composite.Core.WebClient
         private static readonly string _adminFolderName = "Composite";
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
+        private static readonly string[] UrlStartMarkers = new[] {"\"", "\'", "&#39;"};
 
 
         static UrlUtils()
@@ -187,6 +189,16 @@ namespace Composite.Core.WebClient
             }
 
             return result;
+        }
+
+        internal static string ReplaceUrlPrefix(string html, string oldPrefix, string newPrefix)
+        {
+            foreach (string urlStartMarker in UrlStartMarkers)
+            {
+                html = html.Replace(urlStartMarker + oldPrefix, urlStartMarker + newPrefix);
+            }
+
+            return html;
         }
     }
 }

@@ -108,6 +108,7 @@ namespace Composite.Core.WebClient
 
         private static readonly string RendererUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
         private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/page";
+        private static readonly string RawInternalUrlPrefix = "~/page";
 
 
         /// <exclude />
@@ -437,11 +438,13 @@ namespace Composite.Core.WebClient
         {
             StringBuilder result = null;
 
+            // Urls, generated in UserControl-s may still have "~/" as a prefix
+            html = UrlUtils.ReplaceUrlPrefix(html, RawInternalUrlPrefix, InternalUrlPrefix);
+
             // We assume that url starts with either 
-            // "{virtual folder path}/Renderers/Page.aspx"  or "~/page("
+            // "{virtual folder path}/Renderers/Page.aspx"  or "{virtual folder path}/page("
             // and ends with one of the following characters: 
             // double quote, single quote, or "&#39;" which is single quote mark (') encoded in xml attribute 
-
             List<UrlUtils.UrlMatch> internalUrls = UrlUtils.FindUrlsInHtml(html, RendererUrlPrefix);
             internalUrls.AddRange(UrlUtils.FindUrlsInHtml(html, InternalUrlPrefix));
 
