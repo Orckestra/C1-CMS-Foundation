@@ -6,6 +6,7 @@ window.onload = function () {
 	setTimeout(function () {
 		var editor = CodeMirror.fromTextArea(div, {
 			mode: "text/html",
+			indentUnit: 8,
 			indentWithTabs: true,
 			tabMode: "classic",
 			lineNumbers: true
