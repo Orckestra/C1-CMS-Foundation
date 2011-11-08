@@ -208,7 +208,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             bool isWidget = !(metaFunction is IFunction);
 
 
-            yield return CreateFunctionTesterAction(functionName);
+            yield return CreateFunctionTesterAction(functionName, function.Name);
 
 
             yield return new ElementAction(new ActionHandle(new FunctionInfoActionToken(functionName, isWidget)))
@@ -258,12 +258,9 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
 
 
-        private static ElementAction CreateFunctionTesterAction(string functionName = "")
+        private static ElementAction CreateFunctionTesterAction()
         {
-            WorkflowActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider.FunctionTesterWorkflow"))
-            {
-                Payload = functionName
-            };
+            WorkflowActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider.FunctionTesterWorkflow"));
 
             return new ElementAction(new ActionHandle(actionToken))
             {
@@ -283,6 +280,32 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                 }
             };
         }
+
+		private static ElementAction CreateFunctionTesterAction(string functionName, string name)
+		{
+			WorkflowActionToken actionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElementProvider.FunctionTesterWorkflow"))
+			{
+				Payload = functionName
+			};
+
+			return new ElementAction(new ActionHandle(actionToken))
+			{
+				VisualData = new ActionVisualizedData
+				{
+					Label = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.TestFunction.Label"), name),
+					ToolTip = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.AllFunctionsElementProvider", "AllFunctionsElementProvider.TestFunction.ToolTip"), name),
+					Icon = TestFunctionIcon,
+					Disabled = false,
+					ActionLocation = new ActionLocation
+					{
+						ActionType = ActionType.Other,
+						IsInFolder = false,
+						IsInToolbar = true,
+						ActionGroup = PrimaryActionGroup
+					}
+				}
+			};
+		}
 
 
 

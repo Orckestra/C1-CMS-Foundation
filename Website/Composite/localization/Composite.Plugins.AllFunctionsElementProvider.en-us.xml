@@ -26,4 +26,6 @@
 
   <string key="AllFunctionsElementProvider.FunctionTester.Label" value="Test function" />
   <string key="AllFunctionsElementProvider.FunctionTester.ToolTip" value="Test function" />
+	<string key="AllFunctionsElementProvider.TestFunction.Label" value="Test: {0}" />
+	<string key="AllFunctionsElementProvider.TestFunction.ToolTip" value="Test: {0}" />
 </strings>
