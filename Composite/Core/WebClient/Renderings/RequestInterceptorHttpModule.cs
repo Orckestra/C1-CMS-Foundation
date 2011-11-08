@@ -121,6 +121,8 @@ namespace Composite.Core.WebClient.Renderings
 
         void context_PreRequestHandlerExecute(object sender, EventArgs e)
         {
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized) return;
+
             // Left for backward compatibility with Contrib master pages support, to be removed 
             // when support for master pages is implemented in C1
             // RenderingContext.PreRenderRedirectCheck() does the same logic
