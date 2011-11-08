@@ -978,6 +978,19 @@ namespace Composite.Data.GeneratedTypes
 
             dataTypeDescriptor.Cachable = _cachable;
 
+
+            Type[] indirectlyInheritedInterfaces = new[] { typeof(IPublishControlled), typeof(ILocalizedControlled), typeof(IPageData), typeof(IPageFolderData), typeof(IPageMetaData) };
+
+            // Foreign interfaces should stay inherited
+            foreach (var superInterface in _oldDataTypeDescriptor.SuperInterfaces)
+            {
+                if (!indirectlyInheritedInterfaces.Contains(superInterface))
+                {
+                    dataTypeDescriptor.AddSuperInterface(superInterface);
+                }
+            }
+
+
             if ((_publishControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));

@@ -67,6 +67,12 @@ namespace Composite.Core.Xml
         }
 
 
+        /// <exclude />
+        public new static XhtmlDocument Parse(string xhtml, LoadOptions options)
+        {
+            return new XhtmlDocument(XDocument.Parse(xhtml, options));
+        }
+
 
         private void Validate()
         {
