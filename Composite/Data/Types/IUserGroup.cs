@@ -7,9 +7,8 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 namespace Composite.Data.Types
 {
     /// <summary>    
+    /// This data interface represents a user group in Composite C1. This can be used to query user groups through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [KeyPropertyName("Id")]
     [LabelPropertyName("Name")]

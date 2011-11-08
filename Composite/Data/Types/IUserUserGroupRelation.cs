@@ -6,9 +6,8 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 namespace Composite.Data.Types
 {
     /// <summary>    
+    /// This data interface represents a user relation to a user group in Composite C1. This can be used to query user group members through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [AutoUpdateble]
     [KeyPropertyName("UserId")]
     [KeyPropertyName("UserGroupId")]
