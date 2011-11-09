@@ -18,6 +18,7 @@ CodeMirrorEditorBinding.syntax = {
 	CSS: "css",
 	JAVASCRIPT: "js",
 	CSHARP: "cs",
+	CSHTML: "cshtml",
 	SQL: "sql"
 }
 
@@ -248,7 +249,8 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
 							break;
 						case CodeMirrorEditorBinding.syntax.CSHARP:
-							this._codemirrorEditor.setOption("mode", "text/x-c++src");
+						case CodeMirrorEditorBinding.syntax.CSHTML:
+							this._codemirrorEditor.setOption("mode", "text/x-csharp");
 							break;
 						case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
 							this._codemirrorEditor.setOption("mode", "text/javascript");

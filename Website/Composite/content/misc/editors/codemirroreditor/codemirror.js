@@ -9,7 +9,8 @@ window.onload = function () {
 			indentUnit: 8,
 			indentWithTabs: true,
 			tabMode: "classic",
-			lineNumbers: true
+			lineNumbers: true,
+			theme: "composite"
 		});
 
 		var broadcaster = top.EventBroadcaster;

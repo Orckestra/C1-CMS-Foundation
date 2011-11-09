@@ -111,16 +111,10 @@
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\css\font.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\xmlpure.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\theme\cobalt.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\theme\default.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\theme\eclipse.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\theme\elegant.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\theme\neat.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\theme\night.css" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin_src.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\example_dependency\editor_plugin.js" />
@@ -500,16 +494,9 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirror.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirroreditor.aspx" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\codemirroreditor.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\compress.html" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\css\baboon.png" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\css\baboon_vector.svg" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\css\docs.css" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\index.html" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\internals.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\codemirror.css" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\codemirror.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\overlay.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\manual.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\clike\clike.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\clike\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\css\css.js" />
@@ -525,7 +512,6 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\javascript\javascript.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xml\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xml\xml.js" />
-    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\oldrelease.html" />
     <Content Include="Composite\content\misc\editors\functioncalleditor\bindings\ToolBarButtonDataBindingAddNew.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\ClassNameSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\FormatSelectorBinding.js" />
@@ -6208,8 +6194,6 @@
     <Content Include="App_Data\Composite\Azure.Composite.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\LICENSE" />
-    <None Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\README.md" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbarsimple.inc" />
     <None Include="Composite\extensions\compositec1\chrome.manifest" />

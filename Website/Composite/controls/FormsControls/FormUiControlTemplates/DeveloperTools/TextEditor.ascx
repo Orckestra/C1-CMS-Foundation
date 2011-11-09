@@ -33,14 +33,16 @@
             case "text/javascript":
             case "text/js":
                 return "js";
-			case "text/x-csharp":
+            case "text/x-csharp":
                 return "cs";
+            case "application/x-cshtml":
+                return "cshtml";
             default:
                 return "text";
         }
     }
     
-    // html, text, xml, css, javascript, sql
+    // html, text, xml, css, javascript, cs, cshtml
 </script>
 
 <!-- This should be deprecated for the more generalized "SorceEditor"! -->
