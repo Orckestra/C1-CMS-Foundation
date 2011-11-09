@@ -25,7 +25,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
-                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId.Value) == true)
+                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig) == true)
                 {
                     string typeFullName = (dataTypeDescriptor.Namespace ?? string.Empty) + "." + dataTypeDescriptor.Name;
                 
@@ -58,7 +58,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
-                return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig.DataTypeId.Value);
+                return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig);
             }
         }
 
@@ -84,10 +84,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 Guid dataTypeId = changeDescriptor.OriginalType.DataTypeId;
 
-                Verify.IsTrue(configuration.Section.Interfaces.ContainsInterfaceType(dataTypeId),
+                Verify.IsTrue(configuration.Section.Interfaces.ContainsInterfaceType(changeDescriptor.OriginalType),
                         "Configuration does not contain the original interface named '{0}'".FormatWith(dataTypeId));
 
-                configuration.Section.Interfaces.Remove(dataTypeId);
+                configuration.Section.Interfaces.Remove(changeDescriptor.OriginalType);
 
                 InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType);
 
@@ -106,11 +106,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                Guid dataTypeId = dataTypeDescriptor.DataTypeId;
-
-                if (configuration.Section.Interfaces.ContainsInterfaceType(dataTypeId))
+                if (configuration.Section.Interfaces.ContainsInterfaceType(dataTypeDescriptor))
                 {
-                    configuration.Section.Interfaces.Remove(dataTypeId);
+                    configuration.Section.Interfaces.Remove(dataTypeDescriptor);
                     configuration.Save();
                 }
             }

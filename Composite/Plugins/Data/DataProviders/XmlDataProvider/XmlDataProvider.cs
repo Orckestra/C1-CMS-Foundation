@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -443,38 +444,59 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         protected override object GetElementKey(System.Configuration.ConfigurationElement element)
         {
-            Guid? key = ((XmlProviderInterfaceConfigurationElement) element).DataTypeId;
-
-            if (key != null) return key.Value.ToString();
+            Guid? dataTypeId = ((XmlProviderInterfaceConfigurationElement)element).DataTypeId;
 
 #pragma warning disable 612,618
-
             string interfaceTypeName = ((XmlProviderInterfaceConfigurationElement) element).InterfaceType;
-
 #pragma warning restore 612,618
 
-            Verify.IsNotNull(interfaceTypeName, "Missing attribute @dataTypeId");
-
-            return interfaceTypeName;
+            return GetKey(dataTypeId, interfaceTypeName);
         }
 
-        internal object GetKey(Guid dataTypeId)
+        internal object GetKey(DataTypeDescriptor dataTypeDescriptor)
         {
-            string dataTypeIdStr = dataTypeId.ToString();
-
             object[] allKeys = BaseGetAllKeys();
 
-            foreach (string key in allKeys)
-            {
-                if (key == dataTypeIdStr) return key;
-            }
-
-            return null;
+            return GetKeys(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName).FirstOrDefault(key => allKeys.Contains(key));
         }
 
         internal XmlProviderInterfaceConfigurationElement Get(object key)
         {
             return (XmlProviderInterfaceConfigurationElement)BaseGet(key);
+        }
+
+
+
+        private static IEnumerable<string> GetKeys(Guid? dataTypeId, string typeName)
+        {
+            var result = new List<string>();
+
+            if (dataTypeId != null)
+            {
+                result.Add(GetKey(dataTypeId, null));
+            }
+
+            if (typeName != null)
+            {
+                result.Add(GetKey(null, typeName));
+            }
+
+            return result;
+        }
+
+        private static string GetKey(Guid? dataTypeId, string typeName)
+        {
+            if (dataTypeId != null) return dataTypeId.ToString();
+
+            Verify.IsNotNull(typeName, "Both 'interfaceType' and 'dataTypeId' attributes are empty");
+
+            string canonicTypeName = typeName;
+            if (!typeName.StartsWith("DynamicType:") && !typeName.Contains(","))
+            {
+                canonicTypeName = "DynamicType:" + canonicTypeName;
+            }
+
+            return canonicTypeName;
         }
     }
 

@@ -963,7 +963,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             Guid? dataTypeId = ((InterfaceConfigurationElement) element).DataTypeId;
             if(dataTypeId != null)
             {
-                return dataTypeId.ToString();
+                return GetKey(dataTypeId, null);
             }
 
 
@@ -973,23 +973,68 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             Verify.IsNotNull(interfaceTypeName, "Configuration element is missing attribute 'dataTypeId'");
 
-            return interfaceTypeName;
+            return GetKey(null, interfaceTypeName);
         }
 
-        internal bool ContainsInterfaceType(Guid dataTypeId)
+        internal bool ContainsInterfaceType(InterfaceConfigurationElement interfaceConfigurationElement)
+        {
+#pragma warning disable 612,618
+            return ContainsInterfaceType(interfaceConfigurationElement.DataTypeId, interfaceConfigurationElement.InterfaceType);
+#pragma warning restore 612,618
+        }
+
+        internal bool ContainsInterfaceType(DataTypeDescriptor dataTypeDescriptor)
+        {
+            return ContainsInterfaceType(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName);
+        }
+
+        internal bool ContainsInterfaceType(Guid? dataTypeId, string typeName)
         {
             object[] allKeys = BaseGetAllKeys();
-            return allKeys.Contains(GetKey(dataTypeId));
+
+            return GetKeys(dataTypeId, typeName).Any(key => allKeys.Contains(key));
         }
 
-        private static object GetKey(Guid dataTypeId)
+        internal void Remove(DataTypeDescriptor dataTypeDescriptor)
         {
-            return dataTypeId.ToString();
+            Remove(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName);
         }
 
-        internal void Remove(Guid dataTypeId)
+        internal void Remove(Guid? dataTypeId, string typeName)
         {
-            BaseRemove(GetKey(dataTypeId));
+            GetKeys(dataTypeId, typeName).ForEach(this.BaseRemove);
+        }
+
+        private static IEnumerable<object> GetKeys(Guid? dataTypeId, string typeName)
+        {
+            var result = new List<object>();
+
+            if(dataTypeId != null)
+            {
+                result.Add(GetKey(dataTypeId, null));
+            }
+
+            if(typeName != null)
+            {
+                result.Add(GetKey(null, typeName));
+            }
+
+            return result;
+        }
+
+        private static object GetKey(Guid? dataTypeId, string typeName)
+        {
+            if (dataTypeId != null) return dataTypeId;
+
+            Verify.IsNotNull(typeName, "Both 'interfaceType' and 'dataTypeId' attributes are empty");
+
+            string canonicTypeName = typeName;
+            if (!typeName.StartsWith("DynamicType:") && !typeName.Contains(","))
+            {
+                canonicTypeName = "DynamicType:" + canonicTypeName;
+            }
+
+            return canonicTypeName;
         }
     }
 

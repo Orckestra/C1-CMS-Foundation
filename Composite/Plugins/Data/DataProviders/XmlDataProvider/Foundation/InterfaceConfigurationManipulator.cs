@@ -31,7 +31,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             if (interfaceType != null)
             {
-                object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
+                object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
 
                 if (key != null)
                 {
@@ -54,9 +54,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(updateDataTypeDescriptor.ProviderName);
 
-            Guid oldDataTypeId = changeDescriptor.OriginalType.DataTypeId;
-
-            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(oldDataTypeId);
+            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(changeDescriptor.OriginalType);
 
             XmlProviderInterfaceConfigurationElement oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
             XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(changeDescriptor.AlteredType);
@@ -75,7 +73,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(providerName);
 
-            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
+            object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
 
             if (key != null)
             {
@@ -100,7 +98,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
-                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
+                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
                     XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, cultureInfo, null);
 
                     xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
@@ -128,7 +126,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
-                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor.DataTypeId);
+                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
 
                     XmlProviderInterfaceConfigurationElement oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
                     foreach (var kvp in oldConfigurationElement.DataScopes.Values)
