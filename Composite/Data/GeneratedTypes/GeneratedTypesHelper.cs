@@ -1142,7 +1142,7 @@ namespace Composite.Data.GeneratedTypes
 
         private bool IsDataFieldEditable(DataTypeDescriptor dataTypeDescriptor, DataFieldDescriptor dataFieldDescriptor)
         {
-            if (dataFieldDescriptor.Inherited == true)
+            if (dataFieldDescriptor.Inherited && dataFieldDescriptor.InstanceType.Assembly == typeof(IData).Assembly)
             {
                 return false;
             }
