@@ -22,29 +22,48 @@ namespace Composite.C1Console.Trees.Workflows
     public sealed partial class GenericAddDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
-        private GenericAddDataActionNode _genericAddDataActionNode;        
-
-        [NonSerialized]
-        private IEnumerable<KeyValuePair<string, string>> _dataPayload = null;
+        private IDictionary<string, string> _dataPayload = null;
 
         [NonSerialized]
         private DataTypeDescriptorFormsHelper _dataTypeDescriptorFormsHelper = null;
 
         [NonSerialized]
         private string _typeName = null;
-        private string TypeName { get { return _typeName; } set { _typeName = value; } }        
+        private string TypeName { get { return _typeName; } set { _typeName = value; } }
 
+        private Type InterfaceType
+        {
+            get { return StringConversionServices.DeserializeValueType(DataPayload["_InterfaceType_"]); }
+        }
 
+        private string CustomFormMarkupPath
+        {
+            get
+            {
+                if (DataPayload.ContainsKey("_CustomFormMarkupPath_"))
+                {
+                    return StringConversionServices.DeserializeValueString(DataPayload["_CustomFormMarkupPath_"]);
+                }
+
+                return null;
+            }
+        }
+
+        private string IconResourceName
+        {
+            get { return StringConversionServices.DeserializeValueString(DataPayload["_IconResourceName_"]); }
+        }
 
         private void Initialize()
         {
-            if (_genericAddDataActionNode == null)
+            if (_dataTypeDescriptorFormsHelper == null)
             {
-                if (string.IsNullOrEmpty(this.Payload) == true) throw new InvalidOperationException("The interface type should be a part of the workflows payload");
+                if (String.IsNullOrEmpty(this.Payload))
+                {
+                    throw new InvalidOperationException("The interface type should be a part of the workflows payload");
+                }
 
                 Dictionary<string, string> serializedValues = StringConversionServices.ParseKeyValueCollection(this.Payload);
-
-                _genericAddDataActionNode = (GenericAddDataActionNode)ActionNode.Deserialize(serializedValues, true);
 
                 _dataPayload = serializedValues;
             }
@@ -52,12 +71,9 @@ namespace Composite.C1Console.Trees.Workflows
 
 
 
-        private IEnumerable<KeyValuePair<string, string>> DataPayload
+        private IDictionary<string, string> DataPayload
         {
-            get
-            {
-                return _dataPayload;
-            }
+            get { return _dataPayload; }
         }
 
 
@@ -68,18 +84,18 @@ namespace Composite.C1Console.Trees.Workflows
             {
                 if (_dataTypeDescriptorFormsHelper == null)
                 {
-                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(_genericAddDataActionNode.InterfaceType);
+                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(InterfaceType);
 
                     this.TypeName = dataTypeDescriptor.Name;
 
                     GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForiegnKeyEditing = true };
 
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
-                    if (string.IsNullOrEmpty(_genericAddDataActionNode.CustomFormMarkupPath) == false)
+                    if (string.IsNullOrEmpty(CustomFormMarkupPath) == false)
                     {
-                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(_genericAddDataActionNode.CustomFormMarkupPath);
+                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(CustomFormMarkupPath);
                     }
-                    _dataTypeDescriptorFormsHelper.LayoutIconHandle = _genericAddDataActionNode.Icon.ResourceName;
+                    _dataTypeDescriptorFormsHelper.LayoutIconHandle = IconResourceName;
                     _dataTypeDescriptorFormsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
                 }
 
@@ -102,9 +118,9 @@ namespace Composite.C1Console.Trees.Workflows
 
             this.FormsHelper.UpdateWithNewBindings(this.Bindings);
 
-            IData newData = DataFacade.BuildNew(_genericAddDataActionNode.InterfaceType);
+            IData newData = DataFacade.BuildNew(InterfaceType);
 
-            if (PageFolderFacade.GetAllFolderTypes().Contains(_genericAddDataActionNode.InterfaceType) == true)
+            if (PageFolderFacade.GetAllFolderTypes().Contains(InterfaceType) == true)
             {
                 Dictionary<string, string> piggybag = PiggybagSerializer.Deserialize(this.ExtraPayload);
                 PiggybagDataFinder piggybagDataFinder = new PiggybagDataFinder(piggybag, this.EntityToken);
@@ -113,7 +129,7 @@ namespace Composite.C1Console.Trees.Workflows
                 {
                     PageFolderFacade.AssignFolderDataSpecificValues(newData, page);
                 }
-            }            
+            }
 
             IPublishControlled publishControlled = newData as IPublishControlled;
             if (publishControlled != null)
@@ -138,17 +154,24 @@ namespace Composite.C1Console.Trees.Workflows
                 }
             }
 
+            var props = InterfaceType.GetPropertiesRecursively().ToDictionary(prop => prop.Name);
+
             foreach (var kvp in this.DataPayload)
             {
-                if (values.ContainsKey(kvp.Key) == false)
+                // Filtering payload data which is not default field values
+                if (props.ContainsKey(kvp.Key))
                 {
-                    values.Add(kvp.Key, StringConversionServices.DeserializeValueString(kvp.Value));
-                }
-                else
-                {
-                    values[kvp.Key] = StringConversionServices.DeserializeValueString(kvp.Value);
+                    if (values.ContainsKey(kvp.Key) == false)
+                    {
+                        values.Add(kvp.Key, StringConversionServices.DeserializeValueString(kvp.Value));
+                    }
+                    else
+                    {
+                        values[kvp.Key] = StringConversionServices.DeserializeValueString(kvp.Value);
+                    }
                 }
             }
+
             newData.SetValues(values);
 
 
@@ -192,7 +215,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             IData newData = this.GetBinding<IData>("NewData");
 
-            if(!BindAndValidate(FormsHelper, newData))
+            if (!BindAndValidate(FormsHelper, newData))
             {
                 isValid = false;
             }

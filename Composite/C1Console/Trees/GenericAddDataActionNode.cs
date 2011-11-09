@@ -19,15 +19,9 @@ namespace Composite.C1Console.Trees
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class GenericAddDataActionNode : ActionNode
-	{
-        /// <exclude />
-        public static string InterfaceTypeWorkflowPayloadKeyName = "_InterfaceType_";
-
-        /// <exclude />
-        public static string CustomFormMarkupPathWorkflowPayloadKeyName = "_CustomFormMarkupPath_";
-
+    {
         /// <exclude />
         public Type InterfaceType { get; internal set; }            // Requried
 
@@ -63,9 +57,17 @@ namespace Composite.C1Console.Trees
                     StringConversionServices.SerializeKeyValuePair(payload, parentIdEntry.SourcePropertyName, keyValue);
                 }
             }
-            
 
-            actionAdder(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.GenericAddDataWorkflow"), this.PermissionTypes) { 
+            StringConversionServices.SerializeKeyValuePair(payload, "_InterfaceType_", InterfaceType);
+            StringConversionServices.SerializeKeyValuePair(payload, "_IconResourceName_", Icon.ResourceName);
+
+            if (!String.IsNullOrEmpty(CustomFormMarkupPath))
+            {
+                StringConversionServices.SerializeKeyValuePair(payload, "_CustomFormMarkupPath_", CustomFormMarkupPath);
+            }
+
+            actionAdder(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.GenericAddDataWorkflow"), this.PermissionTypes)
+            {
                 Payload = payload.ToString(),
                 ExtraPayload = PiggybagSerializer.Serialize(dynamicContext.Piggybag.PreparePiggybag(dynamicContext.CurrentTreeNode, dynamicContext.CurrentEntityToken))
             }))
@@ -85,7 +87,7 @@ namespace Composite.C1Console.Trees
             }
 
             this.ParentIdEntrys = new List<ParentIdEntry>();
-            
+
             IEnumerable<TreeNode> treeNodes = this.OwnerNode.Descendants(true).ToList();
             foreach (TreeNode treeNode in treeNodes)
             {
@@ -177,5 +179,5 @@ namespace Composite.C1Console.Trees
                 return this.TargetInterface.GetHashCode() ^ this.TargetPropertyInfo.GetHashCode() ^ this.SourcePropertyName.GetHashCode();
             }
         }
-	}
+    }
 }

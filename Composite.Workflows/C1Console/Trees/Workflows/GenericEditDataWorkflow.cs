@@ -18,9 +18,6 @@ namespace Composite.C1Console.Trees.Workflows
     public sealed partial class GenericEditDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
-        private GenericEditDataActionNode _genericEditDataActionNode;
-
-        [NonSerialized]
         private DataTypeDescriptorFormsHelper _dataTypeDescriptorFormsHelper = null;
 
         [NonSerialized]
@@ -33,11 +30,20 @@ namespace Composite.C1Console.Trees.Workflows
             {
                 if (_dataTypeDescriptorFormsHelper == null)
                 {
-                    if (string.IsNullOrEmpty(this.Payload) == true) throw new InvalidOperationException("The interface type should be a part of the workflows payload");
+                    if (String.IsNullOrEmpty(this.Payload))
+                    {
+                        throw new InvalidOperationException("The interface type should be a part of the workflows payload");
+                    }
 
                     Dictionary<string, string> serializedValues = StringConversionServices.ParseKeyValueCollection(this.Payload);
 
-                    _genericEditDataActionNode = (GenericEditDataActionNode)ActionNode.Deserialize(serializedValues, true);
+                    string iconResourceName = StringConversionServices.DeserializeValueString(serializedValues["_IconResourceName_"]);
+
+                    string customFormMarkupPath = null;
+                    if (serializedValues.ContainsKey("_CustomFormMarkupPath_"))
+                    {
+                        customFormMarkupPath = StringConversionServices.DeserializeValueString(serializedValues["_CustomFormMarkupPath_"]);
+                    }
 
                     Type interfaceType;
 
@@ -59,11 +65,11 @@ namespace Composite.C1Console.Trees.Workflows
                     GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForiegnKeyEditing = true };
 
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
-                    if (string.IsNullOrEmpty(_genericEditDataActionNode.CustomFormMarkupPath) == false)
+                    if (string.IsNullOrEmpty(customFormMarkupPath) == false)
                     {
-                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(_genericEditDataActionNode.CustomFormMarkupPath);
+                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(customFormMarkupPath);
                     }
-                    _dataTypeDescriptorFormsHelper.LayoutIconHandle = _genericEditDataActionNode.Icon.ResourceName;
+                    _dataTypeDescriptorFormsHelper.LayoutIconHandle = iconResourceName;
                     _dataTypeDescriptorFormsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
                 }
 
@@ -124,7 +130,7 @@ namespace Composite.C1Console.Trees.Workflows
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
             bool isValid = ValidateBindings();
-            if(!BindAndValidate(this.FormsHelper, data))
+            if (!BindAndValidate(this.FormsHelper, data))
             {
                 isValid = false;
             }
