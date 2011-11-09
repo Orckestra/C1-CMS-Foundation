@@ -22,11 +22,11 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void OnPreInit(EventArgs e)
     {
-        base.OnPreInit(e);
-
         _renderingContext = RenderingContext.InitializeFromHttpContext();
 
         InitializeCulture();
+
+        base.OnPreInit(e);
     }
 
     protected override void OnInit(EventArgs e)
