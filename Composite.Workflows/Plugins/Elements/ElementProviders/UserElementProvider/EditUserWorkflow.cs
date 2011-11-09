@@ -34,8 +34,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
     public sealed partial class EditUserWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static string UserBindingName { get { return "User"; } }
-
-
+        private static string NotPassword { get { return Uri.UnescapeDataString("%C9%AF%C7%9D%C9%A5%CA%87pu%C4%B1qo%CA%87s%C9%AF%C9%94%C7%9Duo"); } } // should be a very unlikely real life password
 
         public EditUserWorkflow()
         {
@@ -57,7 +56,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             IUser user = (IUser)dataEntityToken.Data;
 
-            user.EncryptedPassword = user.EncryptedPassword.Decrypt();
+            user.EncryptedPassword = NotPassword;
 
             this.Bindings.Add(UserBindingName, user);
 
@@ -236,7 +235,18 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             {
                 UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
 
-                user.EncryptedPassword = user.EncryptedPassword.Encrypt();
+                if (user.EncryptedPassword != NotPassword)
+                {
+                    user.EncryptedPassword = user.EncryptedPassword.Encrypt();
+                }
+                else
+                {
+                    using(var connection = new DataConnection())
+                    {
+                        string currentPwdFromDataProvider = connection.Get<IUser>().Where(f => f.Id == user.Id).First().EncryptedPassword;
+                        user.EncryptedPassword = currentPwdFromDataProvider;
+                    }
+                }
 
                 bool reloadUsersConsoles = false;
 
