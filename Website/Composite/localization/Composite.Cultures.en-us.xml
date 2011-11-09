@@ -70,6 +70,7 @@
   <string key="fr-CH" value="French, Switzerland" />
   <string key="fy-NL" value="Frisian, Netherlands" />
 
+  <string key="gd-GB" value="Gaelic, United Kingdom" />
   <string key="gl-ES" value="Galician, Galician" />
   <string key="ka-GE" value="Georgian, Georgia" />
   <string key="de-AT" value="German, Austria" />
@@ -137,11 +138,16 @@
   <string key="sma-NO" value="Sami (Southern) (Norway)" />
   <string key="sma-SE" value="Sami (Southern) (Sweden)" />
   <string key="sa-IN" value="Sanskrit, India" />
-  <string key="sr-Cyrl-BA" value="Serbian (Cyrillic) (Bosnia and Herzegovina)" />
-  <string key="sr-Cyrl-CS" value="Serbian, Cyrillic Serbia" />
 
-  <string key="sr-Latn-BA" value="Serbian (Latin) (Bosnia and Herzegovina)" />
-  <string key="sr-Latn-CS" value="Serbian, Latin Serbia" />
+  <string key="sr-Cyrl-BA" value="Serbian, Cyrillic (Bosnia and Herzegovina)" />
+  <string key="sr-Cyrl-ME" value="Serbian, Cyrillic (Montenegro)" />
+  <string key="sr-Cyrl-CS" value="Serbian, Cyrillic (Serbia and Montenegro - former)" />
+  <string key="sr-Cyrl-RS" value="Serbian, Cyrillic (Serbia)" />
+  <string key="sr-Latn-BA" value="Serbian, Latin (Bosnia and Herzegovina)" />
+  <string key="sr-Latn-ME" value="Serbian, Latin (Montenegro)" />
+  <string key="sr-Latn-CS" value="Serbian, Latin (Serbia and Montenegro - former)" />
+  <string key="sr-Latn-RS" value="Serbian, Latin (Serbia)" />
+
   <string key="ns-ZA" value="Sesotho sa Leboa, South Africa" />
   <string key="tn-ZA" value="Setswana, South Africa" />
   <string key="sk-SK" value="Slovak, Slovakia" />
