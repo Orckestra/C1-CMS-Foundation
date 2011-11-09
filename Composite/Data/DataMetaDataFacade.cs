@@ -303,6 +303,16 @@ namespace Composite.Data
                     {
                         result.Add(typeManagerTypeName, dataTypeId);
                     }
+
+                    if(!typeManagerTypeName.Contains(",") && !typeManagerTypeName.StartsWith("DynamicType:"))
+                    {
+                        string fixedTypeManagerTypeName = "DynamicType:" + typeManagerTypeName;
+
+                        if (!result.ContainsKey(fixedTypeManagerTypeName))
+                        {
+                            result.Add(fixedTypeManagerTypeName, dataTypeId);
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {

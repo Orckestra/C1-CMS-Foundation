@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Types;
 using Composite.Data;
@@ -16,6 +18,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 {
     internal partial class SqlDataProvider
     {
+        private static readonly string LogTitle = typeof (SqlDataProvider).Name;
+
         public void CreateStore(DataTypeDescriptor dataTypeDescriptor)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
@@ -105,6 +109,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 sqlDataTypeStoreDataScopes.Add(sqlDataTypeStoreDataScope);
             }
 
+            Verify.That(element.DataTypeId.HasValue, "Missing 'dataTypeId' attribute");
             DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
 
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
@@ -305,6 +310,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
+                if(!element.DataTypeId.HasValue)
+                {
+#pragma warning disable 612,618
+                    string interfaceName = element.InterfaceType ?? "<unknown type name>";
+#pragma warning restore 612,618
+
+                    Log.LogWarning(LogTitle, "Failed to create store for type '{0}' as it doesn't have an assigned 'dataTypeId' attribute, or it wasn't correctly loaded from meta data files".FormatWith(interfaceName));
+                    continue;
+                }
+
                 DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
 
                 List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
