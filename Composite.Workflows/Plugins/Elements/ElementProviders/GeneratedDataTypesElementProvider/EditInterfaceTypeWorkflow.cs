@@ -149,7 +149,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return;
             }
 
-            string newOldDataTypeFullName = typeNamespace + "." + typeName;
+            //string newOldDataTypeFullName = typeNamespace + "." + typeName;
             
             string oldSerializedTypeName = GetSerializedTypeName(GetBinding<string>("OldTypeNamespace"), GetBinding<string>("OldTypeName"));
             string newSerializedTypeName = GetSerializedTypeName(typeNamespace, typeName);

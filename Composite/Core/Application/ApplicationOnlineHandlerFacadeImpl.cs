@@ -59,18 +59,26 @@ namespace Composite.Core.Application
             Log.LogVerbose("ApplicationOnlineHandlerFacade", "Turning on the application");
 
 #warning MRJ: BM: Cleanup here
-                if (_recompileCompositeGenerated)
+            if (_recompileCompositeGenerated)
+            {
+                try
                 {
                     CodeGenerationManager.GenerateCompositeGeneratedAssembly();
                 }
-                //if (_buildManagerCachingWasDisabled)
-                //{
-                //    BuildManager.CachingEnabled = true;
-                //    BuildManager.ClearCache();
-                //    // We're not turning-on caching since in this case changing of Composite.Generated will be done 
-                //    // at the same time with loading a new application domain.
-                //    BuildManager.CachingEnabled = false;
-                //}
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, "Failed to recompile Composite.Generated.dll");
+                    Log.LogError(LogTitle, ex);
+                }
+            }
+            //if (_buildManagerCachingWasDisabled)
+            //{
+            //    BuildManager.CachingEnabled = true;
+            //    BuildManager.ClearCache();
+            //    // We're not turning-on caching since in this case changing of Composite.Generated will be done 
+            //    // at the same time with loading a new application domain.
+            //    BuildManager.CachingEnabled = false;
+            //}
             
 
             _shutdownGuard.Dispose();
