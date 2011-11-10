@@ -783,8 +783,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     {
         public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            ApplicationOnlineHandlerFacade.TurnApplicationOffline(false, false);
-            ApplicationOnlineHandlerFacade.TurnApplicationOnline();
+            HostingEnvironment.InitiateShutdown();
 
             return null;
         }
