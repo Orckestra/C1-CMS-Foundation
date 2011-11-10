@@ -14,29 +14,39 @@ namespace Composite.Core.Application
 
         private bool _isApplicationOnline = true;
         private bool _wasLastTurnOffSoft = false;
-        private bool _buildManagerCachingWasDisabled;
+        //private bool _buildManagerCachingWasDisabled;
         private bool _recompileCompositeGenerated;
         private ShutdownGuard _shutdownGuard;
 
         public void TurnApplicationOffline(bool softTurnOff, bool recompileCompositeGenerated)
         {
-            if (this.IsApplicationOnline == false) throw new InvalidOperationException("The application is already offline");
+            Verify.IsTrue(this.IsApplicationOnline, "The application is already offline");
 
-            LoggingService.LogVerbose("ApplicationOnlineHandlerFacade", string.Format("Turning off the application ({0})", softTurnOff == true ? "Soft" : "Hard"));
+            Log.LogVerbose("ApplicationOnlineHandlerFacade", string.Format("Turning off the application ({0})", softTurnOff == true ? "Soft" : "Hard"));
 
 
             _recompileCompositeGenerated = recompileCompositeGenerated;
 
             _shutdownGuard = new ShutdownGuard();
 
-            if (softTurnOff == false)
+            try
             {
-                ApplicationOnlineHandlerPluginFacade.TurnApplicationOffline();
-                if (ApplicationOnlineHandlerPluginFacade.IsApplicationOnline() == true) throw new InvalidOperationException("Plugin failed to turn the application offline");
+                if (softTurnOff == false)
+                {
+                    ApplicationOnlineHandlerPluginFacade.TurnApplicationOffline();
+                    Verify.IsFalse(ApplicationOnlineHandlerPluginFacade.IsApplicationOnline(), "Plugin failed to turn the application offline");
+                }
+                else
+                {
+                    ConsoleMessageQueueFacade.Enqueue(new LockSystemConsoleMessageQueueItem(), "");
+                }
             }
-            else
+            catch(Exception)
             {
-                ConsoleMessageQueueFacade.Enqueue(new LockSystemConsoleMessageQueueItem(), "");
+                _shutdownGuard.Dispose();
+                _shutdownGuard = null;
+
+                throw;
             }
 
             _isApplicationOnline = false;
@@ -54,7 +64,7 @@ namespace Composite.Core.Application
 
         public void TurnApplicationOnline()
         {
-            if (this.IsApplicationOnline == true) throw new InvalidOperationException("The application is already online");
+            Verify.IsFalse(this.IsApplicationOnline, "The application is already online");
 
             Log.LogVerbose("ApplicationOnlineHandlerFacade", "Turning on the application");
 
@@ -89,7 +99,7 @@ namespace Composite.Core.Application
                 if (_wasLastTurnOffSoft == false)
                 {
                     ApplicationOnlineHandlerPluginFacade.TurnApplicationOnline();
-                    if (ApplicationOnlineHandlerPluginFacade.IsApplicationOnline() == false) throw new InvalidOperationException("Plugin failed to turn the application online");
+                    Verify.IsTrue(ApplicationOnlineHandlerPluginFacade.IsApplicationOnline(), "Plugin failed to turn the application online");
                 }
             }
             finally
