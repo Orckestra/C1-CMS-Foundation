@@ -52,7 +52,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             GeneratedTypesHelper helper = new GeneratedTypesHelper(dataTypeDescriptor);
 
-            List<DataFieldDescriptor> fieldDescriptors = helper.EditableDataFieldDescriptors.ToList();
+            List<DataFieldDescriptor> fieldDescriptors = helper.EditableOwnDataFields.ToList();
 
             bindings.Add("TypeName", dataTypeDescriptor.Name);
             bindings.Add("TypeNamespace", dataTypeDescriptor.Namespace);

@@ -99,22 +99,31 @@ namespace Composite.Data.GeneratedTypes
 
 
         /// <exclude />
+        [Obsolete("Use EditableOwnDataFieldDesciptors which does not return inherited fields")]
         public IEnumerable<DataFieldDescriptor> EditableDataFieldDescriptors
         {
             get
             {
-                if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
-                foreach (DataFieldDescriptor dataFieldDescriptor in _oldDataTypeDescriptor.Fields)
-                {
-                    if (IsDataFieldEditable(_oldDataTypeDescriptor, dataFieldDescriptor) == true)
-                    {
-                        yield return dataFieldDescriptor;
-                    }
-                }
+                var fields = _oldDataTypeDescriptor.Fields;
+
+                return fields.Where(field => IsDataFieldBindable(_oldDataTypeDescriptor, field));
             }
         }
 
+        /// <exclude />
+        public IEnumerable<DataFieldDescriptor> EditableOwnDataFields
+        {
+            get
+            {
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
+
+                var fields = _oldDataTypeDescriptor.Fields;
+
+                return fields.Where(field => IsDataFieldBindable(_oldDataTypeDescriptor, field) && !field.Inherited);
+            }
+        }
 
 
         /// <exclude />
@@ -122,15 +131,11 @@ namespace Composite.Data.GeneratedTypes
         {
             get
             {
-                if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
-                foreach (DataFieldDescriptor dataFieldDescriptor in _oldDataTypeDescriptor.Fields)
-                {
-                    if (IsDataFieldEditable(_oldDataTypeDescriptor, dataFieldDescriptor) == false)
-                    {
-                        yield return dataFieldDescriptor.Name;
-                    }
-                }
+                return from field in _oldDataTypeDescriptor.Fields
+                       where !IsDataFieldBindable(_oldDataTypeDescriptor, field)
+                       select field.Name;
             }
         }
 
@@ -1140,7 +1145,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        private bool IsDataFieldEditable(DataTypeDescriptor dataTypeDescriptor, DataFieldDescriptor dataFieldDescriptor)
+        private bool IsDataFieldBindable(DataTypeDescriptor dataTypeDescriptor, DataFieldDescriptor dataFieldDescriptor)
         {
             if (dataFieldDescriptor.Inherited && dataFieldDescriptor.InstanceType.Assembly == typeof(IData).Assembly)
             {

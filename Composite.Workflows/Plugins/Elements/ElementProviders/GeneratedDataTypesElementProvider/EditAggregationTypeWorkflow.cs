@@ -55,7 +55,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
             GeneratedTypesHelper helper = new GeneratedTypesHelper(dataTypeDescriptor);
-            List<DataFieldDescriptor> fieldDescriptors = helper.EditableDataFieldDescriptors.ToList();
+            List<DataFieldDescriptor> fieldDescriptors = helper.EditableOwnDataFields.ToList();
 
             this.Bindings.Add("TypeName", dataTypeDescriptor.Name);
             this.Bindings.Add("TypeNamespace", dataTypeDescriptor.Namespace);
