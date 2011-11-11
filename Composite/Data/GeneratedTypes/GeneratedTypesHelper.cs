@@ -1147,9 +1147,14 @@ namespace Composite.Data.GeneratedTypes
 
         private bool IsDataFieldBindable(DataTypeDescriptor dataTypeDescriptor, DataFieldDescriptor dataFieldDescriptor)
         {
-            if (dataFieldDescriptor.Inherited && dataFieldDescriptor.InstanceType.Assembly == typeof(IData).Assembly)
+            if (dataFieldDescriptor.Inherited)
             {
-                return false;
+                Type superInterface =  dataTypeDescriptor.SuperInterfaces.FirstOrDefault(type => type.GetProperty(dataFieldDescriptor.Name) != null);
+                
+                if(superInterface != null && superInterface.Assembly == typeof(IData).Assembly)
+                {
+                    return false;
+                }
             }
 
             if (dataFieldDescriptor.Name == IdFieldName)
