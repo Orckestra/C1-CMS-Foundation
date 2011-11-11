@@ -374,15 +374,16 @@ namespace Composite.Data.GeneratedTypes
                 return false;
             }
 
-            foreach (var fieldDescriptor in newDataFieldDescriptors)
-            {
-                if (fieldDescriptor.FormRenderingProfile == null ||
-                   fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup.IsNullOrEmpty())
-                {
-                    message = GetString("FieldDoesNotHaveWidget").FormatWith(fieldDescriptor.Name);
-                    return false;
-                }
-            }
+            // Removing this check in 3.0 RC3 - it can actually make sense to have fields with no widget, like a "CreationDate" date field with a default value "Now"
+            //foreach (var fieldDescriptor in newDataFieldDescriptors)
+            //{
+            //    if (fieldDescriptor.FormRenderingProfile == null ||
+            //       fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup.IsNullOrEmpty())
+            //    {
+            //        message = GetString("FieldDoesNotHaveWidget").FormatWith(fieldDescriptor.Name);
+            //        return false;
+            //    }
+            //}
 
             return true;
         }

@@ -116,5 +116,7 @@
   <string key="AddNewAggregationTypeWorkflow.ErrorTitle" value="Error" />
 
   <string key="EditCompositionTypeWorkflow.ErrorTitle" value="Error" />
+  <string key="EditAggregationTypeWorkflow.ErrorTitle" value="Error" />
+  
   <string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
 </strings>
