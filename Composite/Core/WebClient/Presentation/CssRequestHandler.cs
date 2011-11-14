@@ -193,7 +193,12 @@ namespace Composite.Core.WebClient.Presentation
         {
             string trim = line.Trim();
 
-            if (trim.StartsWith("#endregion") == true)
+            if (trim.Length == 0) return null;
+
+            char firstChar = trim[0];
+
+
+            if (firstChar == '#' && trim.StartsWith("#endregion", StringComparison.Ordinal) == true)
             {
                 state.isValid = true;
                 return null;
@@ -204,7 +209,7 @@ namespace Composite.Core.WebClient.Presentation
 			    return null;
 			}
 
-            if (trim.StartsWith("-vendor-") == true)
+            if (firstChar == '-' && trim.StartsWith("-vendor-", StringComparison.Ordinal) == true)
             {
                 String was = line;
                 if (user.isWebKit)
@@ -225,9 +230,9 @@ namespace Composite.Core.WebClient.Presentation
                 }
                 line += "\n" + was.Replace("-vendor-", "");
             }
-            
 
-		    if (trim.StartsWith("#region") == true )
+
+            if (firstChar == '#' && trim.StartsWith("#region", StringComparison.Ordinal))
             {
             	if ( trim.IndexOf ( " " ) >-1 ) {
 					string statement = trim.Split(' ')[ 1 ];
@@ -256,7 +261,7 @@ namespace Composite.Core.WebClient.Presentation
                 return null;
             }
 
-            if (trim.StartsWith("@") == true )
+            if (firstChar == '@')
             {
                 string statement = line.Substring(0, line.IndexOf(" "));
                 switch (statement)
@@ -270,7 +275,7 @@ namespace Composite.Core.WebClient.Presentation
                         break;
                 }
             }
-            else if (trim.StartsWith("#") == true )
+            else if (firstChar == '#')
             {
                 string originalLine = line;
 
@@ -350,26 +355,15 @@ namespace Composite.Core.WebClient.Presentation
                     line = line.Replace("ui|", "ui\\:");
                 }
 
-                if (line.Contains("${root}"))
+                if(line.Contains("$"))
                 {
-                    line = line.Replace("${root}", state.rootPath);
-                }
+                    line = line.Replace("${root}", state.rootPath)
+                               .Replace("${folder}", state.folderPath)
+                               .Replace("${skin}", state.skinPath);
 
-                if (line.Contains("${folder}"))
-                {
-                    line = line.Replace("${folder}", state.folderPath);
-                }
-
-                if (line.Contains("${skin}"))
-                {
-                    line = line.Replace("${skin}", state.skinPath);
-                }
-
-                if (line.Contains("$(color:"))
-                {
-                    while (line.Contains("$(color:")) 
+                    while (line.Contains("$(color:"))
                     {
-                        line = colorize ( line, colors );
+                        line = colorize(line, colors);
                     }
                 }
             }
