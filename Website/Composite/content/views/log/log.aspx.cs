@@ -35,11 +35,9 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         DateTime selectedDate = DateTime.Now.Date;
 
         string selectDateStr = SelectedDateStr;
-        if(!_allLogsHaveBeenDeleted && !string.IsNullOrEmpty(SelectedDateStr))
+        if(!_allLogsHaveBeenDeleted && !string.IsNullOrEmpty(SelectedDateStr) && this.Pager.Items.FindByText(SelectedDateStr) != null)
         {
             selectedDate = DateTime.ParseExact(selectDateStr, DateTimeFormat, CultureInfo.InvariantCulture);
-
-            this.Pager.SelectedValue = SelectedDateStr;
         }
         else
         {
