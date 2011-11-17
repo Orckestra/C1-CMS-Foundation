@@ -22121,8 +22121,10 @@ SystemToolBarBinding.superclass.handleBroadcast.call(this,_d7d,arg);
 switch(_d7d){
 case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
 var self=this;
-if(arg!=null&&arg.activePosition==this.getActivePosition()){
-this._actionProfile=arg;
+if(arg!=null){
+if(arg.activePosition==this.getActivePosition()){
+if(arg.actionProfile!=null){
+this._actionProfile=arg.actionProfile;
 var key=this._getProfileKey();
 if(key!=this._currentProfileKey){
 setTimeout(function(){
@@ -22142,6 +22144,8 @@ if(_d81!=null){
 _d81.hide();
 }
 },0);
+}
+}
 }
 break;
 case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
@@ -22386,7 +22390,7 @@ case TreeNodeBinding.ACTION_BLUR:
 var self=this;
 setTimeout(function(){
 if(!self._focusedTreeNodeBindings.hasEntries()){
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,{position:self._activePosition});
 }
 },0);
 if(_dab.type==TreeNodeBinding.ACTION_BLUR){
@@ -22423,7 +22427,7 @@ if(this.getFocusedTreeNodeBindings().hasEntries()){
 this._computeClipboardSetup();
 this._computeRefreshSetup();
 if(this._isActionProfileAware){
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,this.getCompiledActionProfile());
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,{activePosition:this._activePosition,actionProfile:this.getCompiledActionProfile()});
 }
 }
 };
@@ -22469,9 +22473,6 @@ this.logger.fatal("SystemTreeBinding out of synch: unRegisterTreeNodeBinding");
 if(Application.isDeveloperMode){
 Dialog.error("Attention Developer","Tree is out of synch. Please reproduce this bug and file a report.");
 }
-}
-if(_db3.isRefreshing){
-this._updateRefreshingTrees(binding.key);
 }
 if(!this.isLockedToEditor){
 if(_db3.isFocused&&this._backupfocushandle==null){
@@ -22552,8 +22553,8 @@ break;
 case BroadcastMessages.STAGEDIALOG_OPENED:
 if(this.isLockedToEditor){
 this.blurSelectedTreeNodes();
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
 }
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,{activePosition:this._activePosition});
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_FOCUS:
 var self=this,_dc2=arg;
@@ -22801,7 +22802,7 @@ this._defaultTreeNode=null;
 }
 };
 SystemTreeBinding.prototype.collapse=function(_df4){
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,null);
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,{position:this._activePosition});
 if(_df4){
 this.blurSelectedTreeNodes();
 var _df5=this.getRootTreeNodeBindings();
@@ -22896,8 +22897,8 @@ SystemTreePopupBinding.prototype.handleBroadcast=function(_e06,arg){
 SystemTreePopupBinding.superclass.handleBroadcast.call(this,_e06,arg);
 switch(_e06){
 case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
-if(arg!=null){
-this._actionProfile=arg;
+if(arg!=null&&arg.actionProfile!=null){
+this._actionProfile=arg.actionProfile;
 }else{
 this._currentProfileKey=null;
 }
@@ -23188,8 +23189,10 @@ setTimeout(function(){
 if(Binding.exists(self)){
 self._performRefresh(_e3b);
 Application.unlock(self);
-StatusBar.clear();
+}else{
+Application.unlock(Application,true);
 }
+StatusBar.clear();
 },0);
 };
 SystemTreeNodeBinding.prototype._performRefresh=function(_e3d){
