@@ -299,6 +299,12 @@ namespace Composite.Data
                     string typeManagerTypeName = typeManagerTypeNameAttr.Value;
                     Guid dataTypeId = new Guid(dataTypeIdAttr.Value);
 
+                    const string redundantSuffix = ",Composite.Generated";
+                    if (typeManagerTypeName.EndsWith(redundantSuffix, StringComparison.OrdinalIgnoreCase))
+                    {
+                        typeManagerTypeName = typeManagerTypeName.Substring(0, typeManagerTypeName.Length - redundantSuffix.Length);
+                    }
+
                     if (!result.ContainsKey(typeManagerTypeName))
                     {
                         result.Add(typeManagerTypeName, dataTypeId);
