@@ -46,7 +46,11 @@
 		<ui:theatre id="offlinetheatre" hidden="true">
 			<div id="offlinesplash">
 				<div id="offlineimage"/>
-				<div id="offlinetext">Installing</div>
+				<div id="offlinetext">
+				<script type="text/javascript">
+					document.write("Installing")
+				</script>
+				<noscript>Your browser does not support JavaScript</noscript> </div>
 			</div>
 		</ui:theatre>
 		
