@@ -121,58 +121,58 @@ SystemToolBarBinding.prototype.onBindingInitialize = function () {
  * @param {string} broadcast
  * @param {object} arg
  */
-SystemToolBarBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
+SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
-	SystemToolBarBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
-	switch ( broadcast ) {
-		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED :
-		
+	SystemToolBarBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+	switch (broadcast) {
+		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED:
+
 			var self = this;
+			if (arg != null) {
+				if (arg.activePosition == this.getActivePosition()) {
+					if (arg.actionProfile != null) {
+						this._actionProfile = arg.actionProfile;
+						var key = this._getProfileKey();
+						if (key != this._currentProfileKey) {
 
-			if (arg != null && arg.activePosition == this.getActivePosition()) {
-				this._actionProfile = arg;
-				var key = this._getProfileKey ();
-				if ( key != this._currentProfileKey ) {
-					
-					// Uncomment to debug if toolbar starts redrawing on apparently similar actions...
-					// this.logger.debug ( Math.random () + "\n" + key + "\n" + this._currentProfileKey );
-					
-					/*
-					 * Timeout prevents "freezing" tree selection.
-					 */
-					setTimeout ( function () {	
-						self.emptyLeft ();
-						self._actionFolderNames = {};
-						self.buildLeft ();
-						self._currentProfileKey = key;
-					}, 0 );
-				}
-			} else {
-				setTimeout ( function () {
-					self.emptyLeft ();
-					self._actionFolderNames = {};
-					self._currentProfileKey = null;
-					var mores = self.bindingWindow.bindingMap.moreactionstoolbargroup;
-					if ( mores != null ) {
-						mores.hide ();
+							/*
+							* Timeout prevents "freezing" tree selection.
+							*/
+							setTimeout(function () {
+								self.emptyLeft();
+								self._actionFolderNames = {};
+								self.buildLeft();
+								self._currentProfileKey = key;
+							}, 0);
+						}
+					} else {
+						setTimeout(function () {
+							self.emptyLeft();
+							self._actionFolderNames = {};
+							self._currentProfileKey = null;
+							var mores = self.bindingWindow.bindingMap.moreactionstoolbargroup;
+							if (mores != null) {
+								mores.hide();
+							}
+						}, 0);
 					}
-				}, 0 );
+				}
 			}
 			break;
-			
-		case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST :
-			
+
+		case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
+
 			var manager = this.bindingWindow.WindowManager;
-			this._toolBarBodyLeft.refreshToolBarGroups ();
-			this._containAllButtons ();
+			this._toolBarBodyLeft.refreshToolBarGroups();
+			this._containAllButtons();
 			break;
-			
-		case BroadcastMessages.INVOKE_DEFAULT_ACTION :
+
+		case BroadcastMessages.INVOKE_DEFAULT_ACTION:
 			var self = this;
-			setTimeout ( function () { // timeout because binding attachment may happen now
-				self._invokeDefaultAction ();
-			}, 0 );
+			setTimeout(function () { // timeout because binding attachment may happen now
+				self._invokeDefaultAction();
+			}, 0);
 			break;
 	}
 }

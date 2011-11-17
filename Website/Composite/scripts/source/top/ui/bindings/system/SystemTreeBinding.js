@@ -247,7 +247,7 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 				if (!self._focusedTreeNodeBindings.hasEntries()) {
 					EventBroadcaster.broadcast(
 						BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,
-						null
+						{ position: self._activePosition }
 					);
 				}
 			}, 0);
@@ -311,14 +311,14 @@ SystemTreeBinding.prototype._attemptRestorableFocus = function () {
  * AND when lock-tree-to-editor feature updates the treenode focus.
  */
 SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
-	
-	if ( this.getFocusedTreeNodeBindings ().hasEntries ()) {
-		this._computeClipboardSetup ();
-		this._computeRefreshSetup ();
-		if ( this._isActionProfileAware ) {
-			EventBroadcaster.broadcast ( 
-				BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, 
-				this.getCompiledActionProfile ()
+
+	if (this.getFocusedTreeNodeBindings().hasEntries()) {
+		this._computeClipboardSetup();
+		this._computeRefreshSetup();
+		if (this._isActionProfileAware) {
+			EventBroadcaster.broadcast(
+				BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED,
+				{ activePosition: this._activePosition, actionProfile: this.getCompiledActionProfile() }
 			);
 		}
 	}
@@ -413,13 +413,6 @@ SystemTreeBinding.prototype.unRegisterTreeNodeBinding = function ( treenode ) {
 		if ( Application.isDeveloperMode ) {
 			Dialog.error ( "Attention Developer", "Tree is out of synch. Please reproduce this bug and file a report." );
 		}
-	}
-	
-	/*
-	 * Was the treenode deleted while refreshing?
-	 */
-	if ( treenode.isRefreshing ) {
-		this._updateRefreshingTrees ( binding.key );
 	}
 	
 	/*
@@ -548,8 +541,8 @@ SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
 		case BroadcastMessages.STAGEDIALOG_OPENED:
 			if (this.isLockedToEditor) {
 				this.blurSelectedTreeNodes();
-				EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, null);
 			}
+			EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { activePosition: this._activePosition });
 			break;
 		case BroadcastMessages.SYSTEMTREEBINDING_FOCUS:
 			var self = this, token = arg;
@@ -983,8 +976,8 @@ SystemTreeBinding.prototype.selectDefault = function () {
  * @param {boolean} isDestructive
  */
 SystemTreeBinding.prototype.collapse = function ( isDestructive ) {
-	
-	EventBroadcaster.broadcast ( BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, null );
+
+	EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { position: this._activePosition });
 	
 	if ( isDestructive ) {
 		this.blurSelectedTreeNodes ();

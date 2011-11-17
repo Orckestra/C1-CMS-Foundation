@@ -70,8 +70,8 @@ SystemTreePopupBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	
 	switch ( broadcast ) {
 		case BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED :
-			if ( arg != null ) {
-				this._actionProfile = arg;
+			if ( arg != null && arg.actionProfile != null ) {
+				this._actionProfile = arg.actionProfile;
 			} else {
 				this._currentProfileKey = null;
 			}

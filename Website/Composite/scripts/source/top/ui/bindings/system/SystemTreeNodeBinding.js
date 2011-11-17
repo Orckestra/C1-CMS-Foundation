@@ -276,29 +276,32 @@ SystemTreeNodeBinding.prototype.refresh = function () {
 
 	// descendant treenodes already opened?
 	var branch = null;
-	if ( this.isContainer ) {
-		branch = this.getOpenSystemNodes ();
+	if (this.isContainer) {
+		branch = this.getOpenSystemNodes();
 	}
-	
+
 	/*
-	 * Begin refresh...
-	 */
+	* Begin refresh...
+	*/
 	this.isRefreshing = true;
-	Application.lock ( this );
-	StatusBar.busy ();
-	
+	Application.lock(this);
+	StatusBar.busy();
+
 	/*
-	 * We timeout to lock the GUI while tree 
-	 * is refreshed; this can take some time. 
-	 */
+	* We timeout to lock the GUI while tree 
+	* is refreshed; this can take some time. 
+	*/
 	var self = this;
 	setTimeout ( function () {
-		if ( Binding.exists ( self )) {
-			self._performRefresh ( branch );
-			Application.unlock ( self );
-			StatusBar.clear ();
+		if (Binding.exists(self)) {
+			self._performRefresh(branch);
+			Application.unlock(self);
+		} else {
+			Application.unlock(Application, true);
 		}
-	}, 0 );
+		StatusBar.clear();
+	}, 0);
+
 }
 
 /**
