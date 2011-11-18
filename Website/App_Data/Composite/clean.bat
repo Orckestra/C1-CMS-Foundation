@@ -73,6 +73,12 @@ del TreeDefinitions\Composite.Community.Blog.Entries.xml
 del TreeDefinitions\Composite.Community.Blog.Entries.xmll
 
 
+:: Razor package cleanup
+del ..\..\Bin\CompositeC1Contrib.RazorFunctions.dll
+del ..\..\Bin\Microsoft.Web.*.dll
+del ..\..\Bin\System.Web.*.dll
+
+
 :: Extranet cleanup
 del ..\..\Bin\Composite.Community.Extranet.dll
 
@@ -135,4 +141,3 @@ del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
 rd ..\..\Composite\content\forms\InstalledPackages\Composite.Tools.PackageCreator /S /Q
 del ..\..\Bin\Composite.Tools.PackageCreator.dll 
 del ..\..\Composite\InstalledPackages\localization\Composite.Tools.PackageCreator.en-us.xml
-
