@@ -5,6 +5,8 @@ using System.Reflection;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
+using Composite.Core;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Data
@@ -17,6 +19,8 @@ namespace Composite.Data
     /// <exclude />
     internal static class DataTypeTypesManager
     {
+        private static readonly string LogTitle = typeof(DataTypeTypesManager).Name;
+
         /// <summary>
         /// Gets the runtime data type for the given data type id.
         /// In case of generated types, this call might result in a interface code compilation.
@@ -89,11 +93,25 @@ namespace Composite.Data
 
         public static void AddNewAssembly(Assembly assembly)
         {
-            foreach(Type type in assembly.GetTypes())
+            try
             {
-                if (typeof(IData).IsAssignableFrom(type))
+                foreach (Type type in assembly.GetTypes())
                 {
-                    _addedTypes.Add(type);
+                    if (typeof(IData).IsAssignableFrom(type))
+                    {
+                        _addedTypes.Add(type);
+                    }
+                }
+            }
+            catch (ReflectionTypeLoadException exception)
+            {
+                if (exception.LoaderExceptions!=null)
+                {
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception.LoaderExceptions.First()));
+                }
+                else
+                {
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
                 }
             }
         }

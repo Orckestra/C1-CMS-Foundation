@@ -352,6 +352,19 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 types = null;
                 return false;
             }
+            catch(ReflectionTypeLoadException exception)
+            {
+                if (exception.LoaderExceptions != null)
+                {
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception.LoaderExceptions.First()));
+                }
+                else
+                {
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
+                }
+                types = null;
+                return false;
+            }
         }
 
 
