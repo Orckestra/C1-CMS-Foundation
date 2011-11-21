@@ -175,20 +175,23 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
 */
 ClassNameSelectorBinding.prototype.canApplyDirect = function (formatName, element) {
 
-    var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
+	if (VisualEditorBinding.isReservedElement(element))
+		return false;
 
-    if (!Client.isExplorer) {
-        // explorer works best with the element we pass. Others 
-        element = this._tinyInstance.selection.getStart();
-    }
+	var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
 
-    for (x = formatList.length - 1; x >= 0; x--) {
-        selector = formatList[x].selector;
-        if (!selector || this._tinyInstance.dom.is(element, selector)) {
-            return true;
-        }
-    }
-    return false;
+	if (!Client.isExplorer) {
+		// explorer works best with the element we pass. Others 
+		element = this._tinyInstance.selection.getStart();
+	}
+
+	for (x = formatList.length - 1; x >= 0; x--) {
+		selector = formatList[x].selector;
+		if (!selector || this._tinyInstance.dom.is(element, selector)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 
