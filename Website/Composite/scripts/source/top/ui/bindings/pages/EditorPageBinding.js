@@ -461,9 +461,7 @@ EditorPageBinding.prototype.handleAction = function ( action ) {
 					 */
 					if ( EventBroadcaster.hasSubscribers ( BroadcastMessages.XHTML_MARKUP_ON )) {
 						var markup = WindowBinding.getMarkup ( this._windowBinding );
-						if ( markup != null ) {
-							EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_ON, markup );
-						}
+						EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_ON, markup );
 					}
 				}
 			}

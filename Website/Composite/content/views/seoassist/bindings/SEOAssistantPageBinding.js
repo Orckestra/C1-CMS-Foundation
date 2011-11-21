@@ -255,27 +255,45 @@ SEOAssistantPageBinding.prototype.handleBroadcast = function ( broadcast, arg ) 
  * @overloads {MarkupAwarePageBinding#_handleMarkup}
  * @param {string} markup
  */
-SEOAssistantPageBinding.prototype._handleMarkup = function ( markup ) {
-	
-	SEOAssistantPageBinding.superclass._handleMarkup.call ( this, markup );
-	
-	if ( this._keywords.hasEntries ()) {
-		this._parseMarkup ( markup );
-	} else {
-		this._noKeyWords ();
+SEOAssistantPageBinding.prototype._handleMarkup = function (markup) {
+
+	SEOAssistantPageBinding.superclass._handleMarkup.call(this, markup);
+
+	if (markup == null || markup == "") {
+		this._incorrectHtml();
 	}
-	
+	else if (this._keywords.hasEntries()) {
+		this._parseMarkup(markup);
+	} else {
+		this._noKeyWords();
+	}
+
 	/*
-	 * Select the result deck.
-	 */
+	* Select the result deck.
+	*/
 	var decks = this.bindingWindow.bindingMap.decks;
-	decks.select ( "resultdeck" );
-	
+	decks.select("resultdeck");
+
 	/*
-	 * Select the scoretab.
-	 */
+	* Select the scoretab.
+	*/
 	var decks = this.bindingWindow.bindingMap.tabbox;
-	decks.select ( "scoretab" );
+	decks.select("scoretab");
+}
+
+
+/**
+* @overloads {MarkupAwarePageBinding#_handleWrongMarkup}
+* @param {string} markup
+*/
+SEOAssistantPageBinding.prototype._incorrectHtml = function () {
+
+	var tree = this.bindingWindow.bindingMap.tree;
+	tree.empty();
+	var node = tree.add(TreeNodeBinding.newInstance(tree.bindingDocument));
+	node.setImage("${icon:warning}");
+	node.setLabel(StringBundle.getString(SEOAssistantPageBinding.LOCALIZATION, "IncorrectHtml"));
+	node.attach();
 }
 
 /**

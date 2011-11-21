@@ -55,35 +55,33 @@ MarkupAwarePageBinding.prototype.onBeforePageInitialize = function () {
  * @param {string} broadcast
  * @param {object} arg
  */
-MarkupAwarePageBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
+MarkupAwarePageBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
-	MarkupAwarePageBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+	MarkupAwarePageBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
 	var self = this;
-	
-	switch ( broadcast ) {
-		case BroadcastMessages.XHTML_MARKUP_ON :
-			this._activate ( true );
-			if ( arg != null ) {
-				this._handleMarkup ( arg );
-			}
+
+	switch (broadcast) {
+		case BroadcastMessages.XHTML_MARKUP_ON:
+			this._activate(true);
+			this._handleMarkup(arg);
 			break;
-		case BroadcastMessages.XHTML_MARKUP_OFF :
-			this._activate ( false );
+		case BroadcastMessages.XHTML_MARKUP_OFF:
+			this._activate(false);
 			break;
-		case BroadcastMessages.XHTML_MARKUP_ACTIVATE :
+		case BroadcastMessages.XHTML_MARKUP_ACTIVATE:
 			this._isWaiting = true;
-			this._activate ( true );
-			setTimeout ( function () {
+			this._activate(true);
+			setTimeout(function () {
 				self._isWaiting = false;
-			}, 20 );
+			}, 20);
 			break;
-		case BroadcastMessages.XHTML_MARKUP_DEACTIVATE :
-			setTimeout ( function () {
-				if ( !self._isActivated ) {
-					self._activate ( false );
+		case BroadcastMessages.XHTML_MARKUP_DEACTIVATE:
+			setTimeout(function () {
+				if (!self._isActivated) {
+					self._activate(false);
 				}
-			}, 0 );
+			}, 0);
 			break;
 	}
 }
