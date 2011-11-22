@@ -47,7 +47,8 @@ namespace Composite.Data.DynamicTypes
                 alteredTypeHasChanges |= (this.AlteredType.Name != this.OriginalType.Name);
                 //                alteredTypeHasChanges |= (this.AlteredType.Title != this.OriginalType.Title);
                 alteredTypeHasChanges |= (this.AlteredType.Namespace != this.OriginalType.Namespace);
-                alteredTypeHasChanges |= (this.AlteredType.TypeManagerTypeName != this.OriginalType.TypeManagerTypeName);
+                // Do we really need to regenerated the type if it has a new type manager type name?
+                //alteredTypeHasChanges |= (this.AlteredType.TypeManagerTypeName != this.OriginalType.TypeManagerTypeName);
                 alteredTypeHasChanges |= this.AddedFields.Any();
                 alteredTypeHasChanges |= this.DeletedFields.Any();
                 alteredTypeHasChanges |= this.AddedKeyFields.Any();

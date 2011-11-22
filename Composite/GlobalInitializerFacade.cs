@@ -21,7 +21,6 @@ using Composite.Core.PackageSystem;
 using Composite.Core.Threading;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
-using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
 
@@ -484,8 +483,6 @@ namespace Composite
 
         private static void DoInitialize()
         {
-            bool flushNeeded;
-
             int startTime = Environment.TickCount;
 
             Guid installationId = InstallationInformationFacade.InstallationId;
@@ -498,32 +495,34 @@ namespace Composite
                 DataProviderRegistry.Initialize_DynamicTypes();
             }
 
-#warning MRJ: BM: Fix this
-         /*   using (new TimeMeasurement("Auto update of static data types"))
-            {
-                flushNeeded = AutoUpdateStaticDataTypes();
-            }
 
-            if (flushNeeded)
+            using (new TimeMeasurement("Auto update of static data types"))
             {
-                LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
-                _initializing = false;
-                GlobalEventSystemFacade.FlushTheSystem();
-                return;
-            }*/
+                bool typesUpdated = AutoUpdateStaticDataTypes();
+                if (typesUpdated)
+                {
+                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
+                    _initializing = false;
+                    GlobalEventSystemFacade.FlushTheSystem();
+                    return;
+                }
+            }
+            
 
             using (new TimeMeasurement("Ensure data stores"))
             {
-                flushNeeded = DataStoreExistenceVerifier.EnsureDataStores();
+                bool dataStoresCreated = DataStoreExistenceVerifier.EnsureDataStores();
+
+                if (dataStoresCreated)
+                {
+                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
+                    _initializing = false;
+                    GlobalEventSystemFacade.FlushTheSystem();
+                    return;
+                }
             }
 
-            if (flushNeeded)
-            {
-                LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
-                _initializing = false;
-                GlobalEventSystemFacade.FlushTheSystem();
-                return;
-            }
+            
 
 #warning MRJ: This should be obsolete
          /*   using (new TimeMeasurement("Compilation of the dynamic data types"))
