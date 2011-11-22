@@ -123,7 +123,13 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
             if (clientCaching && file.LastWriteTime != null)
             {
-                context.Response.Cache.SetLastModified(file.LastWriteTime.Value);
+                var lastModified = file.LastWriteTime.Value;
+
+                // Checking if @lastModified is not a future date. Note that the time isn't a UTC time
+                if (lastModified < DateTime.Now)
+                {
+                    context.Response.Cache.SetLastModified(lastModified);
+                }
             }            
 
             inputStream.CopyTo(context.Response.OutputStream);
