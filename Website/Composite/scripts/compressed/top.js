@@ -21777,9 +21777,7 @@ Application.unlock(self);
 },100);
 if(EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)){
 var _d53=WindowBinding.getMarkup(this._windowBinding);
-if(_d53!=null){
 EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_ON,_d53);
-}
 }
 }
 }
@@ -22028,9 +22026,7 @@ var self=this;
 switch(_d6f){
 case BroadcastMessages.XHTML_MARKUP_ON:
 this._activate(true);
-if(arg!=null){
 this._handleMarkup(arg);
-}
 break;
 case BroadcastMessages.XHTML_MARKUP_OFF:
 this._activate(false);
