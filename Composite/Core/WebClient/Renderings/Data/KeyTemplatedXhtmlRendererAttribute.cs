@@ -16,11 +16,12 @@ namespace Composite.Core.WebClient.Renderings.Data
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class KeyTemplatedXhtmlRendererAttribute : XhtmlRendererProviderAttribute
     {
         private XhtmlRenderingType _supportedRenderingType;
         private IDataXhtmlRenderer _renderer;
+        private XhtmlRenderingEncoding _renderingEncoding;
 
         /// <summary>
         /// Created a XHTML Renderer that uses the specified template to create markup.
@@ -34,6 +35,23 @@ namespace Composite.Core.WebClient.Renderings.Data
         {
             this.FormatedTemplate = formatedTemplate;
             _supportedRenderingType = renderingType;
+            _renderingEncoding = XhtmlRenderingEncoding.None;
+        }
+
+
+        /// <summary>
+        /// Created a XHTML Renderer that uses the specified template to create markup.
+        /// The key of the data will be inserted into the specified template where '{id}' is.
+        /// If you spcify '{label}' the system will fetch the value of the label field and insert it.
+        /// You also can use '{field:__a field name__}' syntax to insert a field value.
+        /// Use '~' to create absolute paths.
+        /// Example: <example>&lt;a href='~/showProduct.aspx?id={id}'>read more about {label}&lt;/a></example>
+        /// </summary>
+        public KeyTemplatedXhtmlRendererAttribute(XhtmlRenderingType renderingType, XhtmlRenderingEncoding renderingEncoding, string formatedTemplate)
+        {
+            this.FormatedTemplate = formatedTemplate;
+            _supportedRenderingType = renderingType;
+            _renderingEncoding = renderingEncoding;
         }
 
 
@@ -50,7 +68,7 @@ namespace Composite.Core.WebClient.Renderings.Data
         {
             if (_renderer == null)
             {
-                _renderer = new KeyBasedXhtmlRenderer(this.FormatedTemplate);
+                _renderer = new KeyBasedXhtmlRenderer(this.FormatedTemplate, _renderingEncoding);
             }
             return _renderer;
         }
@@ -76,10 +94,11 @@ namespace Composite.Core.WebClient.Renderings.Data
             private readonly List<string> _fieldPatterns = new List<string>();
             private readonly bool _labelHasToBeEvaluated;
             private readonly bool _idHasToBeEvaluated;
+            private readonly XhtmlRenderingEncoding _renderingEncoding;
 
             private readonly Hashtable<Type, Hashtable<string, PropertyInfo>> _reflectionCache = new Hashtable<Type, Hashtable<string, PropertyInfo>>();
 
-            public KeyBasedXhtmlRenderer(string templateString)
+            public KeyBasedXhtmlRenderer(string templateString, XhtmlRenderingEncoding renderingEncoding)
             {
                 templateString = templateString.Replace("~", UrlUtils.PublicRootPath);
                 templateString = templateString.Replace("{label}", "{0}");
@@ -87,13 +106,14 @@ namespace Composite.Core.WebClient.Renderings.Data
 
                 _labelHasToBeEvaluated = templateString.Contains("{0}");
                 _idHasToBeEvaluated = templateString.Contains("{1}");
+                _renderingEncoding = renderingEncoding;
 
                 int stringFormattingIndex = 2;
 
-                while(true)
+                while (true)
                 {
                     int fieldDefinitionOffset = templateString.IndexOf("{field:");
-                    if(fieldDefinitionOffset < 0) break;
+                    if (fieldDefinitionOffset < 0) break;
 
                     int closingBraceIndex = templateString.IndexOf("}", fieldDefinitionOffset + 7);
                     Verify.That(closingBraceIndex > 0, "Invalid rendering template.");
@@ -120,10 +140,10 @@ namespace Composite.Core.WebClient.Renderings.Data
 
                 IData dataToRender;
 
-                if(dataReferenceToRender.ReferencedType == typeof(IPage))
+                if (dataReferenceToRender.ReferencedType == typeof(IPage))
                 {
                     dataToRender = DataFacade.TryGetDataByUniqueKey<IPage>(dataReferenceToRender.KeyValue);
-                    if(dataToRender == null)
+                    if (dataToRender == null)
                     {
                         return new XhtmlDocument();
                     }
@@ -154,7 +174,7 @@ namespace Composite.Core.WebClient.Renderings.Data
                 parameters[1] = keyValue;
 
                 // Getting field values
-                for(int i=0; i<_fieldNames.Count; i++)
+                for (int i = 0; i < _fieldNames.Count; i++)
                 {
                     Type referenceType = dataReferenceToRender.ReferencedType;
 
@@ -164,11 +184,11 @@ namespace Composite.Core.WebClient.Renderings.Data
                     string fieldName = _fieldNames[i];
 
                     PropertyInfo propertyInfo;
-                    if(!propertiesMap.TryGetValue(fieldName, out propertyInfo))
+                    if (!propertiesMap.TryGetValue(fieldName, out propertyInfo))
                     {
-                        lock(propertiesMap)
+                        lock (propertiesMap)
                         {
-                            if(!propertiesMap.TryGetValue(fieldName, out propertyInfo))
+                            if (!propertiesMap.TryGetValue(fieldName, out propertyInfo))
                             {
                                 Type type = referenceType;
 
@@ -193,19 +213,31 @@ namespace Composite.Core.WebClient.Renderings.Data
                                         .FormatWith(fieldName, referenceType.FullName));
 
                                     propertiesMap.Add(fieldName, null);
-                                } 
+                                }
                             }
                         }
                     }
 
-                    object value = null;
+                    string value = String.Empty;
 
-                    if(propertyInfo != null)
+                    if (propertyInfo != null)
                     {
-                        value = propertyInfo.GetValue(dataToRender, new object[0]);
+                        value = (propertyInfo.GetValue(dataToRender, new object[0]) ?? String.Empty).ToString();
                     }
 
-                    value = value == null ? string.Empty : value.ToString();
+                    switch (_renderingEncoding)
+                    {
+                        case XhtmlRenderingEncoding.None:
+                            break;
+                        case XhtmlRenderingEncoding.AttributeContent:
+                            value = HttpUtility.HtmlAttributeEncode(value);
+                            break;
+                        case XhtmlRenderingEncoding.TextContent:
+                            value = HttpUtility.HtmlEncode(value);
+                            break;
+                        default:
+                            throw new NotImplementedException("Unexpected XhtmlRenderingEncoding value");
+                    }
 
                     parameters[2 + i] = value;
                 }

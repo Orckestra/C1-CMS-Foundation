@@ -255,6 +255,7 @@
     <Compile Include="Core\WebClient\Media\ImageResizer.cs" />
     <Compile Include="Core\WebClient\Media\ResizingOptions.cs" />
     <Compile Include="Core\WebClient\Presentation\LessRequestHandler.cs" />
+    <Compile Include="Core\WebClient\Renderings\Data\XhtmlRenderingEncodingEnum.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PagePreviewBuilder.cs" />
     <Compile Include="Core\Routing\Pages\C1PageRoute.cs" />
     <Compile Include="Core\Routing\Pages\C1PageRouteHander.cs" />
