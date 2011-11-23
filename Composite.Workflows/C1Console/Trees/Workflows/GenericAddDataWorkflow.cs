@@ -226,6 +226,7 @@ namespace Composite.C1Console.Trees.Workflows
                 return;
             }
 
+            this.RefreshCurrentEntityToken();
 
             if (this.BindingExist("DataAdded") == false)
             {
@@ -242,9 +243,7 @@ namespace Composite.C1Console.Trees.Workflows
             {
                 DataFacade.Update(newData);
                 SetSaveStatus(true);
-            }
-
-            this.RefreshCurrentEntityToken();
+            }            
         }
     }
 }
