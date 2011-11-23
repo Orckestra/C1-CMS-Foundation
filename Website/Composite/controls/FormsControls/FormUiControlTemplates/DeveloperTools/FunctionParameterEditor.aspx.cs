@@ -475,8 +475,18 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 XElement functionElement = XElement.Parse(widgetMarkup);
                 if (functionElement.Name.Namespace!=Namespaces.Function10)
                     functionElement = functionElement.Elements().First();
-                BaseFunctionRuntimeTreeNode widgetNode = (BaseFunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
-                return widgetNode.GetName();
+
+                try
+                {
+                    BaseFunctionRuntimeTreeNode widgetNode = (BaseFunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
+                    return widgetNode.GetName();
+                }
+                catch (Exception ex)
+                {
+                    Composite.Core.Log.LogError("FunctionParamter", ex);
+                    Baloon(btnWidgetFunctionMarkup,"Error: "+ex.Message);
+                    return GetString("NoWidgetSpecifiedLabel");
+                }
             }
         }
 
