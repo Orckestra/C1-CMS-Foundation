@@ -7,13 +7,13 @@ window.MessageQueue = new function () {
 	 * Update interval in milliseconds when server is online.	 
 	 * @type {int}
 	 */
-	this.INTERVAL_ONLINE = 15 * 1000;
+	this.INTERVAL_ONLINE = 5 * 1000;
 	
 	/**
 	 * Update interval in milliseconds when server is offline.
 	 * @type {int}
 	 */
-	this.INTERVAL_OFFLINE = 4 * 1000;
+	this.INTERVAL_OFFLINE = 1* 1000;
 	
 	/**
 	 * List of actions waiting to be executed.
