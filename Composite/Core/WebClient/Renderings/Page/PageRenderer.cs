@@ -393,55 +393,58 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 ParallelFacade.For("PageRenderer. Embedded function execution", 0, functionCalls.Count, i =>
                 {
-                        XElement functionCallDefinition = functionCalls[i];
+                    XElement functionCallDefinition = functionCalls[i];
+                    string functionName = null;
 
-                        object functionResult;
-                        try
+                    object functionResult;
+                    try
+                    {
+                        // Evaluating function calls in parameters
+                        IEnumerable<XElement> parameters = functionCallDefinition.Elements();
+                        if (parameters != null)
                         {
-                            // Evaluating function calls in parameters
-                            IEnumerable<XElement> parameters = functionCallDefinition.Elements();
-                            if (parameters != null)
+                            foreach (XElement parameterNode in parameters.ToList())
                             {
-                                foreach (XElement parameterNode in parameters.ToList())
-                                {
-                                    ExecuteEmbeddedFunctions(parameterNode, contextContainer);
-                                }
-                            }
-
-                            // Executing a function call
-                            BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
-
-                            object result = runtimeTreeNode.GetValue(contextContainer);
-
-                            if (result != null)
-                            {
-                                // Evaluating functions in a result of a function call
-                                object embedableResult = contextContainer.MakeXEmbedable(result);
-
-                                foreach (XElement xelement in GetXElements(embedableResult))
-                                {
-                                    ExecuteEmbeddedFunctions(xelement, contextContainer);
-                                }
-
-                                functionResult = embedableResult;
-                            }
-                            else
-                            {
-                                functionResult = null;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            using (Profiler.Measure("PageRenderer. Logging an exception"))
-                            {
-                                LoggingService.LogError(LogTitle, ex);
-
-                                XElement errorDescriptionElement = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex);
-                                functionResult = errorDescriptionElement;
+                                ExecuteEmbeddedFunctions(parameterNode, contextContainer);
                             }
                         }
 
-                        functionExecutionResults[i] = functionResult;
+                        // Executing a function call
+                        BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
+
+                        functionName = runtimeTreeNode.GetAllSubFunctionNames().FirstOrDefault();
+
+                        object result = runtimeTreeNode.GetValue(contextContainer);
+
+                        if (result != null)
+                        {
+                            // Evaluating functions in a result of a function call
+                            object embedableResult = contextContainer.MakeXEmbedable(result);
+
+                            foreach (XElement xelement in GetXElements(embedableResult))
+                            {
+                                ExecuteEmbeddedFunctions(xelement, contextContainer);
+                            }
+
+                            functionResult = embedableResult;
+                        }
+                        else
+                        {
+                            functionResult = null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        using (Profiler.Measure("PageRenderer. Logging an exception"))
+                        {
+                            LoggingService.LogError(LogTitle, ex);
+
+                            XElement errorDescriptionElement = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex, functionName);
+                            functionResult = errorDescriptionElement;
+                        }
+                    }
+
+                    functionExecutionResults[i] = functionResult;
                 });
 
                 // Applying changes

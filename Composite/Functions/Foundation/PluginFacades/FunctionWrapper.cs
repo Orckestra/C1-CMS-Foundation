@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Composite.C1Console.Security;
+using Composite.Core.Xml;
 
 
 namespace Composite.Functions.Foundation.PluginFacades
@@ -80,7 +81,21 @@ namespace Composite.Functions.Foundation.PluginFacades
 
         public object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            return _functionToWrap.Execute(parameters, context);
+            try
+            {
+                return _functionToWrap.Execute(parameters, context);
+            }
+            catch (Exception ex)
+            {
+                if (_functionToWrap.ReturnType == typeof(XhtmlDocument))
+                {
+                    return XhtmlErrorFormatter.GetErrorDescriptionXhtmlDocument(ex, _functionToWrap.CompositeName());
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         public EntityToken EntityToken
