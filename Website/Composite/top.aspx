@@ -47,10 +47,9 @@
 			<div id="offlinesplash">
 				<div id="offlineimage"/>
 				<div id="offlinetext">
-				<script type="text/javascript">
-					document.write("Installing")
-				</script>
-				<noscript>Your browser does not support JavaScript</noscript> </div>
+                    Working... Please wait.
+    				<noscript><div>ERROR! Your browser does not support JavaScript</div></noscript> 
+                </div>
 			</div>
 		</ui:theatre>
 		
