@@ -286,7 +286,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
 
-                if (fileToCopy.TargetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase))
+                if (fileToCopy.TargetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase)
+                    && fileToCopy.TargetFilePath.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
                     Assembly assembly = Assembly.LoadFrom(fileToCopy.TargetFilePath);
                     DataTypeTypesManager.AddNewAssembly(assembly);
