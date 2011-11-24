@@ -312,13 +312,13 @@ namespace Composite.Core.Types
 
 
 
-        public static void GenerateCompositeGeneratedAssembly()
+        public static void GenerateCompositeGeneratedAssembly(bool forceGeneration = false)
         {
-            if (!_compositeGeneratedCompiled)
+            if (forceGeneration || !_compositeGeneratedCompiled)
             {
                 lock (_lock)
                 {
-                    if (!_compositeGeneratedCompiled)
+                    if (forceGeneration || !_compositeGeneratedCompiled)
                     {
                         Log.LogVerbose(LogTitle, string.Format("Compiling new assembly in this application domain ({0})", AppDomain.CurrentDomain.Id));
 

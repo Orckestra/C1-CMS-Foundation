@@ -23,6 +23,7 @@ using Composite.Data.Caching;
 using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
+using Composite.Core.Types;
 
 
 namespace Composite
@@ -489,6 +490,7 @@ namespace Composite
 
             LoggingService.LogVerbose(LogTitle, string.Format("Initializing the system core - installation id = ", installationId));            
 
+#warning MRJ: BM: Cleanup here - wrong title
             using (new TimeMeasurement("Initialization of the static data types"))
             {
                 DataProviderRegistry.Initialize_StaticTypes();
@@ -501,9 +503,11 @@ namespace Composite
                 bool typesUpdated = AutoUpdateStaticDataTypes();
                 if (typesUpdated)
                 {
-                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
-                    _initializing = false;
-                    GlobalEventSystemFacade.FlushTheSystem();
+                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted");
+
+                    // We made type changes, so we _have_ to recompile Composite.Generated.dll
+                    CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+
                     return;
                 }
             }
