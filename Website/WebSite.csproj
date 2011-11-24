@@ -584,12 +584,6 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositetext\text.aspx" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositetext\text.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositetext\TextDialogPageBinding.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\editor_plugin.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\word.aspx" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\word.css" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\wordcontent.aspx" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\wordcontent.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeword\WordDialogPageBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\contextmenu\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\contextmenu\editor_plugin_src.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\directionality\editor_plugin.js" />
@@ -6127,8 +6121,6 @@
     <Content Include="Composite\skins\system\wysiwygeditor\underline-disabled.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\underline.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\unlink.png" />
-    <Content Include="Composite\skins\system\wysiwygeditor\word-disabled.png" />
-    <Content Include="Composite\skins\system\wysiwygeditor\word.png" />
     <Content Include="Composite\styles\default\balloons.css" />
     <Content Include="Composite\styles\default\base.css" />
     <Content Include="Composite\styles\default\bindingmappings.css" />
@@ -6184,7 +6176,6 @@
     <Content Include="Composite\top.aspx" />
     <Content Include="Composite\top.css" />
     <Content Include="Composite\transformations\viewsource-xml.xsl" />
-    <Content Include="Composite\transformations\WysiwygEditor_MsWordContentToTinyContent.xsl" />
     <Content Include="Composite\transformations\WysiwygEditor_StructuredContentToTinyContent.xsl" />
     <Content Include="Composite\transformations\WysiwygEditor_TinyContentToStructuredContent.xsl" />
     <Content Include="Composite\updated.aspx" />

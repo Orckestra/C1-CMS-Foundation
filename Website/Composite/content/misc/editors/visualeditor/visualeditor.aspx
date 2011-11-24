@@ -38,7 +38,6 @@
 			<ui:popup id="pastepopup">
 				<ui:menubody>
 					<ui:menugroup rel="insertions">
-						<ui:menuitem cmd="compositeInsertWord" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelFromWord}" image="${skin}/wysiwygeditor/word.png" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertText" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelAsText}" image="${icon:page}" binding="EditorMenuItemBinding" />
 					</ui:menugroup>
 				</ui:menubody>

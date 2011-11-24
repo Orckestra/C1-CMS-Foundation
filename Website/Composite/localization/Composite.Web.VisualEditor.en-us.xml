@@ -44,7 +44,6 @@
   <string key="ContextMenu.LabelTable" value="Table…" />
   <string key="ContextMenu.LabelTableManage" value="Manage table" />
   <string key="ContextMenu.LabelImage" value="Image…" />
-  <string key="ContextMenu.LabelFromWord" value="From Word…" />
   <string key="ContextMenu.LabelAsText" value="As Simple Text…" />
   <string key="ContextMenu.LabelField" value="Field" />
   <string key="ContextMenu.LabelFieldDelete" value="Delete field" />
@@ -173,9 +172,6 @@
   <string key="CharMap.LabelMathAndLogic" value="Math and Logic" />
   <string key="CharMap.LabelSymbols" value="Symbols" />
   <string key="CharMap.LabelArrows" value="Arrows" />
-  <!-- word paste -->
-  <string key="WordPaste.Label" value="Paste from Word" />
-  <string key="WordPaste.PasteHereContent" value="Paste Word content here. Then press OK." />
   <!-- text paste -->
   <string key="TextPaste.Label" value="Paste as Text" />
   <string key="TextPaste.PasteHereContent" value="Paste content here. Then press OK." />

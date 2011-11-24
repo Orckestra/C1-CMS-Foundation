@@ -42,34 +42,6 @@ namespace Composite.Services
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class XhtmlTransformations : System.Web.Services.WebService
     {
-        [WebMethod]
-        public XhtmlTransformationResult MsWordContentToTinyContent(string htmlFragment)
-        {
-            try
-            {
-                string warnings = "";
-                string xsltPath = Server.MapPath("..\\..\\transformations\\WysiwygEditor_MsWordContentToTinyContent.xsl");
-
-                XDocument structuredResult;
-
-                structuredResult = MarkupTransformationServices.RepairXhtmlAndTransform(WrapInnerBody(htmlFragment), xsltPath, null, out warnings);
-
-                string bodyInnerXhtml = MarkupTransformationServices.OutputBodyDescendants(structuredResult);
-
-                return new XhtmlTransformationResult
-                {
-                    Warnings = warnings,
-                    XhtmlFragment = FixXhtmlFragment(bodyInnerXhtml)
-                };
-            }
-            catch (Exception ex)
-            {
-                LoggingService.LogWarning("XhtmlTransformation", ex.ToString());
-
-                throw;
-            }
-        }
-
 
         [WebMethod]
         public XhtmlTransformationResult TinyContentToStructuredContent(string htmlFragment)
@@ -533,68 +505,6 @@ namespace Composite.Services
             }
 
             return sb.ToString();
-        }
-
-        /*
-         * NOT USED!
-         */
-        [WebMethod]
-        public string MsWordContentCleanup(string htmlFragment)
-        {
-            try
-            {
-                htmlFragment = CleanWordHtml(htmlFragment);
-                //htmlFragment = FixEntities(htmlFragment);
-                return htmlFragment;
-            }
-            catch (Exception ex)
-            {
-                LoggingService.LogError("XhtmlTransformation", ex.ToString());
-                throw;
-            }
-        }
-
-        /*
-         * NOT USED!
-         */
-        private string CleanWordHtml(string html)
-        {
-            StringCollection sc = new StringCollection();
-            // get rid of unnecessary tag spans (comments and title)
-            sc.Add(@"<!--(\w|\W)+?-->");
-            sc.Add(@"<title>(\w|\W)+?</title>");
-            // Get rid of classes and styles
-            sc.Add(@"\s?class=\w+");
-            sc.Add(@"\s+style='[^']+'");
-            // Get rid of unnecessary tags
-            sc.Add(
-            @"<(meta|link|/?o:|/?style|/?div|/?st\d|/?head|/?html|body|/?body|/?span|!\[)[^>]*?>");
-            // Get rid of empty paragraph tags
-            sc.Add(@"(<[^>]+>)+&nbsp;(</\w+>)+");
-            // remove bizarre v: element attached to <img> tag
-            sc.Add(@"\s+v:\w+=""[^""]+""");
-            // remove extra lines
-            sc.Add(@"(\n\r){2,}");
-            foreach (string s in sc)
-            {
-                html = Regex.Replace(html, s, "", RegexOptions.IgnoreCase);
-            }
-            return html;
-        }
-
-        /*
-         * NOT USED!
-         */
-        private string FixEntities(string html)
-        {
-            NameValueCollection nvc = new NameValueCollection();
-            nvc.Add("\"", "&quot;");
-            nvc.Add("\"", "&quot;");
-            foreach (string key in nvc.Keys)
-            {
-                html = html.Replace(key, nvc[key]);
-            }
-            return html;
         }
 
     }
