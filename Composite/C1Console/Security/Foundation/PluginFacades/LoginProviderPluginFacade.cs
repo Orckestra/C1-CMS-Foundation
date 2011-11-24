@@ -74,13 +74,13 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         }
 
 
-        public static void FormAddNewUser(string userName, string password, string group)
+        public static void FormAddNewUser(string userName, string password, string group, string email)
         {
             IFormLoginProvider validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
 
             if (validator.CanAddNewUser == false) throw new InvalidOperationException("Login provider does not support adding users");
 
-            validator.AddNewUser(userName, password, group);
+            validator.AddNewUser(userName, password, group, email);
         }
 
 

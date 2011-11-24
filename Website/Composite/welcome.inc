@@ -83,6 +83,10 @@
 								<input id="username" class="text" type="text" value="admin"/>
 							</div>
 							<div>
+								<label>Email</label>
+								<input id="email" class="text" type="text" value=""/>
+							</div>
+							<div>
 								<label>Password</label>
 								<input id="password" class="text" type="password"/>
 							</div>
@@ -96,14 +100,9 @@
 									<select id="consolelanguage"/>
 								</span>
 							</div>
-							<!-- 
 							<div>
-								<label>Website language</label>
-								<span>
-									<select id="language"/>
-								</span>
+								<label class="innerlabel" for="newsletter">Sign up for our newsletter</label> <input id="newsletter" class="newslettercheckbox" type="checkbox" checked="checked"/>
 							</div>
-							-->
 						</form>
 						<br/>
 						<div style="position:relative;">

@@ -164,7 +164,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
         }
 
 
-        public void AddNewUser(string userName, string password, string group)
+        public void AddNewUser(string userName, string password, string group, string email)
         {
             IUser user = DataFacade.BuildNew<IUser>();
 
@@ -172,6 +172,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             user.Username = userName;
             user.EncryptedPassword = password.Encrypt();
             user.Group = group;
+            user.Email = email;
 
             DataFacade.AddNew<IUser>(user);
 

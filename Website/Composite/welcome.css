@@ -177,6 +177,24 @@ form.fields select {
 		border: 1px solid #B2B2B2;
 	#endregion
 }
+form.fields label.innerlabel {
+	float: none;
+	position: relative;
+	top: 4px;
+    #region moz
+        top: 0;
+    #endregion
+}
+form.fields input.newslettercheckbox {
+    padding: 0;
+    position: relative;
+    #region moz
+        margin-right: 6px;
+        top: 2px;
+    #endregion
+    vertical-align: bottom;
+    width: auto;
+}
 form.fields input:focus,
 form.fields select:focus {
 	border-color: black;

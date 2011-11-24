@@ -72,11 +72,20 @@ namespace Composite.Core.WebClient.Setup
 
 
         /// <exclude />
-        public static void SetUp(string setupDescriptionXml, string username, string password, string language, string consoleLanguage)
+        public static void SetUp(string setupDescriptionXml, string username, string password, string email, string language, string consoleLanguage, bool newsletter)
         {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
 
             username = username.ToLowerInvariant();
+
+            XElement setupDescription = XElement.Parse(setupDescriptionXml);
+
+            XElement setupRegisrtatoinDescription = new XElement("registration",
+                new XElement("user_email", email),
+                new XElement("user_newsletter", newsletter),
+                new XElement("user_consolelanguage", consoleLanguage),
+                new XElement("user_websitelanguage", language),
+                setupDescription);
 
             try
             {
@@ -93,12 +102,10 @@ namespace Composite.Core.WebClient.Setup
 
 
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Creating first user: " + username);
-                AdministratorAutoCreator.AutoCreatedAdministrator(username, password, false);
+                AdministratorAutoCreator.AutoCreatedAdministrator(username, password, email, false);
                 UserValidationFacade.FormValidateUser(username, password);
 
                 UserSettings.SetUserCultureInfo(username, userCulture);                
-
-                XElement setupDescription = XElement.Parse(setupDescriptionXml);
 
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Packages to install:");
                 foreach (string packageUrl in GetPackageUrls(setupDescription))
@@ -113,14 +120,14 @@ namespace Composite.Core.WebClient.Setup
                 }
 
                 InstallLanguagePackage(userCulture);
-                
-                RegisterSetup(setupDescriptionXml, "");
+
+                RegisterSetup(setupRegisrtatoinDescription.ToString(), "");
 
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Done settingup the system for the first time! Enjoy!");
             }
             catch (Exception ex)
             {
-                RegisterSetup(setupDescriptionXml, ex.ToString());
+                RegisterSetup(setupRegisrtatoinDescription.ToString(), ex.ToString());
 
                 if (RuntimeInformation.IsDebugBuild == true)
                 {

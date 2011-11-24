@@ -90,7 +90,7 @@ namespace Composite.C1Console.Security
                     {
                         if (AdministratorAutoCreator.CanBeAutoCreated(userName) == true)
                         {
-                            AdministratorAutoCreator.AutoCreatedAdministrator(userName, password);
+                            AdministratorAutoCreator.AutoCreatedAdministrator(userName, password, "");
 
                             loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
                         }

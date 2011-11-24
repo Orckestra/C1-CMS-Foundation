@@ -60,7 +60,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.ConfigBasedFormLoginPr
         }
 
 
-        public void AddNewUser(string userName, string password, string group)
+        public void AddNewUser(string userName, string password, string group, string email)
         {
             throw new NotImplementedException();
         }

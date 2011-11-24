@@ -134,15 +134,15 @@ namespace Composite.Core.WebClient.Setup
         
 
         [WebMethod]
-        public bool SetUp(string setupDescriptionXML, string username, string password, string language, string consolelanguage)
-        {                        
+        public bool SetUp(string setupDescriptionXML, string username, string email, string password, string language, string consolelanguage, bool newsletter)
+        {
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == true) return true;
 
             SystemSetupFacade.IsSystemFirstTimeInitialized = true;
 
             try
             {
-                SetupServiceFacade.SetUp(setupDescriptionXML, username, password, language, consolelanguage);
+                SetupServiceFacade.SetUp(setupDescriptionXML, username, password, email, language, consolelanguage, newsletter);
                 Log.LogInformation(LogTitle, "Setup complete. Enjoy!");
             }
             catch(Exception ex)

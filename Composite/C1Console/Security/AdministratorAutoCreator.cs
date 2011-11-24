@@ -53,7 +53,7 @@ namespace Composite.C1Console.Security
         /// <param name="password">A password that meets a minimum requirement.</param>
         /// <param name="validateAutoCreateUserName">When true only the username specified in Composite.config as auto createable (usually 'admin') is allowed. Set to false to use a different user name.</param>
         /// <returns>true if the user was auto created. Otherwise false.</returns>
-        public static void AutoCreatedAdministrator(string userName, string password, bool validateAutoCreateUserName = true)
+        public static void AutoCreatedAdministrator(string userName, string password, string email, bool validateAutoCreateUserName = true)
         {
             if (validateAutoCreateUserName == true && AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
             {
@@ -81,7 +81,7 @@ namespace Composite.C1Console.Security
             // All seems bo be ok green light go for auto creating the user.
             string group = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "AdministratorAutoCreator.DefaultGroupName");
 
-            LoginProviderPluginFacade.FormAddNewUser(userName, password, group);
+            LoginProviderPluginFacade.FormAddNewUser(userName, password, group, email);
             LoggingService.LogVerbose("AdministratorAutoCreator", String.Format("Auto Created Administrator with user name '{0}'.", userName), LoggingService.Category.Audit);
 
             IUser user = DataFacade.GetData<IUser>().Where(f => f.Username == userName).SingleOrDefault();
