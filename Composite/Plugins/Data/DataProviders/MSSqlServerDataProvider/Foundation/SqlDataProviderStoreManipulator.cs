@@ -99,7 +99,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             var sql = new StringBuilder();
             var sqlColumns = typeDescriptor.Fields.Select(fieldDescriptor => GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true)).ToList();
 
-            sql.AppendFormat("CREATE TABLE {0}({1});", tableName, string.Join(",", sqlColumns));
+            sql.AppendFormat("CREATE TABLE [{0}]({1});", tableName, string.Join(",", sqlColumns));
             sql.Append(SetPrimaryKey(tableName, typeDescriptor.KeyPropertyNames, (typeDescriptor.HasCustomPhysicalSortOrder == false)));
 
             try
@@ -255,13 +255,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 StringBuilder fieldList = GetCommonFields(changeDescriptor);
 
-                string removeCommandText = string.Format(@"DELETE FROM {0};", newTableName);
+                string removeCommandText = string.Format(@"DELETE FROM [{0}];", newTableName);
                 ExecuteNonQuery(removeCommandText);
 
                 string copyCommandText = string.Format(@"
-                            INSERT INTO {0} ({2})
+                            INSERT INTO [{0}] ({2})
                             SELECT {2}                             
-                            FROM {1};", newTableName, oldTableName, fieldList);
+                            FROM [{1}];", newTableName, oldTableName, fieldList);
                 ExecuteNonQuery(copyCommandText);
             }
         }
@@ -277,7 +277,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 if (fieldList.Length > 0) fieldList.Append(", ");
 
-                fieldList.Append(dataFieldDescriptor.Name);
+                fieldList.Append("[" + dataFieldDescriptor.Name + "]");
             }
             return fieldList;
         }
@@ -296,15 +296,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 StringBuilder fieldList = GetCommonFields(changeDescriptor);
 
                 string copyCommandText = string.Format(@"
-                            INSERT INTO {0} ({2})
+                            INSERT INTO [{0}] ({2})
                             SELECT {2}                             
-                            FROM {1};", newTableName, oldTableName, fieldList);
+                            FROM [{1}];", newTableName, oldTableName, fieldList);
                 ExecuteNonQuery(copyCommandText);
 
-                string updateOldCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", oldTableName, "PublicationStatus", GenericPublishProcessController.Published);
+                string updateOldCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}'", oldTableName, "PublicationStatus", GenericPublishProcessController.Published);
                 ExecuteNonQuery(updateOldCommandTesxt);
 
-                string updateNewCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}'", newTableName, "PublicationStatus", GenericPublishProcessController.Published);
+                string updateNewCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}'", newTableName, "PublicationStatus", GenericPublishProcessController.Published);
                 ExecuteNonQuery(updateNewCommandTesxt);
             }
         }
@@ -353,16 +353,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                         string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, locale);
 
                         string copyCommandText = string.Format(@"
-                            INSERT INTO {0} ({2})
+                            INSERT INTO [{0}] ({2})
                             SELECT {2}                             
-                            FROM {1};", toTableName, fromTableName, fieldList);
+                            FROM [{1}];", toTableName, fromTableName, fieldList);
                         ExecuteNonQuery(copyCommandText);
 
-                        string updateCommandTesxt = string.Format("UPDATE {0} SET {1} = '{2}', {3} = '{4}'", toTableName, "CultureName", locale.Name, "SourceCultureName", locale.Name);
+                        string updateCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}', [{3}] = '{4}'", toTableName, "CultureName", locale.Name, "SourceCultureName", locale.Name);
                         ExecuteNonQuery(updateCommandTesxt);
                     }
 
-                    string removeCommandText = string.Format(@"DELETE FROM {0};", fromTableName);
+                    string removeCommandText = string.Format(@"DELETE FROM [{0}];", fromTableName);
                     ExecuteNonQuery(removeCommandText);
                 }
             }
@@ -380,9 +380,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, CultureInfo.InvariantCulture);
 
                     string copyCommandText = string.Format(@"
-                            INSERT INTO {0} ({2})
+                            INSERT INTO [{0}] ({2})
                             SELECT {2}                             
-                            FROM {1};", toTableName, fromTableName, fieldList);
+                            FROM [{1}];", toTableName, fromTableName, fieldList);
                     ExecuteNonQuery(copyCommandText);
                 }
             }
@@ -482,7 +482,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                     if (tables.Contains(tableName))
                     {
-                        ExecuteNonQuery(string.Format("DROP TABLE {0};", tableName));
+                        ExecuteNonQuery(string.Format("DROP TABLE [{0}];", tableName));
                     }
                 }
             }
@@ -508,7 +508,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         internal void RenameColumn(string tableName, string oldColumnName, string newColumnName)
         {
             string oldName = string.Format("'{0}.{1}'", tableName, oldColumnName);
-            ExecuteStoredProcedure("sp_rename", new[] { oldName, newColumnName, "'COLUMN'" });
+            ExecuteStoredProcedure("sp_rename", new[] { oldName, "'" + newColumnName + "'", "'COLUMN'" });
         }
 
         private void DropFields(string tableName, IEnumerable<DataFieldDescriptor> fieldsToDrop, IEnumerable<DataFieldDescriptor> fields)
@@ -521,7 +521,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 if (column)
                 {
-                    sql.AppendFormat("ALTER TABLE {0} DROP COLUMN {1};", tableName, deletedFieldDescriptor.Name);
+                    sql.AppendFormat("ALTER TABLE [{0}] DROP COLUMN [{1}];", tableName, deletedFieldDescriptor.Name);
                 }
                 else
                 {
@@ -596,7 +596,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 if (!IsPrimaryKeyContraint(constraint))
                 {
-                    sql.AppendFormat("ALTER TABLE {0} DROP CONSTRAINT {1};", tableName, constraint);
+                    sql.AppendFormat("ALTER TABLE [{0}] DROP CONSTRAINT [{1}];", tableName, constraint);
                 }
             }
 
@@ -612,8 +612,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             string primaryKeyIndexName = GeneratePrimaryKeyContraintName(tableName);
 
-            return string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} PRIMARY KEY{2}({3});", tableName, primaryKeyIndexName,
-                                    createAsClustered ? " CLUSTERED " : string.Empty, string.Join(",", fieldNames.Distinct()));
+            return string.Format("ALTER TABLE [{0}] ADD CONSTRAINT [{1}] PRIMARY KEY{2}({3});", tableName, primaryKeyIndexName,
+                                    createAsClustered ? " CLUSTERED " : string.Empty, string.Join(",", fieldNames.Distinct().Select(field => "[" + field + "]")));
         }
 
         private Exception MakeVerboseException(Exception ex)
@@ -636,13 +636,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             var sql = new StringBuilder();
             string columnInfo = GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true);
 
-            sql.AppendFormat("ALTER TABLE {0} ADD {1};", tableName, columnInfo);
+            sql.AppendFormat("ALTER TABLE [{0}] ADD {1};", tableName, columnInfo);
             ExecuteNonQuery(sql.ToString());
 
             if (defaultValue == null) return;
 
             sql = new StringBuilder();
-            sql.AppendFormat("UPDATE {0} SET {1} = ", tableName, fieldDescriptor.Name);
+            sql.AppendFormat("UPDATE [{0}] SET [{1}] = ", tableName, fieldDescriptor.Name);
             if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
             sql.Append(defaultValue.ToString());
             if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
@@ -662,7 +662,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             if (changes)
             {
-                ExecuteNonQuery(string.Format("ALTER TABLE {0} ALTER COLUMN {1};", tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false)));
+                ExecuteNonQuery(string.Format("ALTER TABLE [{0}] ALTER COLUMN {1};", tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false)));
             }
 
             ExecuteNonQuery(SetDefaultValue(tableName, fieldDescriptor.Name, fieldDescriptor.DefaultValue));
@@ -676,7 +676,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 if (includeDefault)
                 {
-                    defaultInfo = string.Format("CONSTRAINT {0} DEFAULT {1}", SqlSafeName("DF", tableName, columnName), GetDefaultValueText(fieldDescriptor.DefaultValue));
+                    defaultInfo = string.Format("CONSTRAINT [{0}] DEFAULT {1}", SqlSafeName("DF", tableName, columnName), GetDefaultValueText(fieldDescriptor.DefaultValue));
                 }
             }
 
@@ -694,7 +694,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 return string.Empty;
 
             string constraintName = SqlSafeName("DF", tableName, columnName);
-            return string.Format("ALTER TABLE {0} ADD CONSTRAINT {1} DEFAULT {2} FOR {3};", tableName, constraintName, GetDefaultValueText(defaultValue), columnName);
+            return string.Format("ALTER TABLE [{0}] ADD CONSTRAINT [{1}] DEFAULT {2} FOR [{3}];", tableName, constraintName, GetDefaultValueText(defaultValue), columnName);
         }
 
         private string GetDefaultValueText(DefaultValue defaultValue)
