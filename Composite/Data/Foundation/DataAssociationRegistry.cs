@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Data.ProcessControlled;
 using Composite.C1Console.Events;
 using Composite.Core.Linq;
 using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Data.Types;
+using Composite.Core;
 
 
 namespace Composite.Data.Foundation
@@ -208,58 +210,65 @@ namespace Composite.Data.Foundation
         {
             List<DataAssociationAttribute> attributes = interfaceType.GetCustomAttributesRecursively<DataAssociationAttribute>().ToList();
 
-            if (attributes.Count > 0)
+            if (attributes.Count == 0)
             {
-                Dictionary<Type, DataAssociationInfo> dataAssociationInfos = new Dictionary<Type, DataAssociationInfo>();
+                return;
+            }
 
-                foreach (DataAssociationAttribute attribute in attributes)
+            Dictionary<Type, DataAssociationInfo> dataAssociationInfos = new Dictionary<Type, DataAssociationInfo>();
+
+            foreach (DataAssociationAttribute attribute in attributes)
+            {
+                if (attribute.AssociationType == DataAssociationType.None) throw new ArgumentException(string.Format("The associationType on the attribute '{0}' on the interface type '{1}' may not be '{2}'", typeof(DataAssociationAttribute), interfaceType, DataAssociationType.None));
+                if (attribute.AssociatedInterfaceType == null) throw new ArgumentNullException(string.Format("The associatedInterfaceType on the attribute '{0}' on the interface type '{1}' is null", typeof(DataAssociationAttribute), interfaceType));
+
+                List<Type> associatedTypes;
+
+                Type associatedInterface = attribute.AssociatedInterfaceType;
+
+                if (_associatedTypes.TryGetValue(associatedInterface, out associatedTypes) == false)
                 {
-                    if (attribute.AssociationType == DataAssociationType.None) throw new ArgumentException(string.Format("The associationType on the attribute '{0}' on the interface type '{1}' may not be '{2}'", typeof(DataAssociationAttribute), interfaceType, DataAssociationType.None));
-                    if (attribute.AssociatedInterfaceType == null) throw new ArgumentNullException(string.Format("The associatedInterfaceType on the attribute '{0}' on the interface type '{1}' is null", typeof(DataAssociationAttribute), interfaceType));
+                    associatedTypes = new List<Type>();
 
-                    List<Type> associatedTypes;
+                    _associatedTypes.Add(associatedInterface, associatedTypes);
 
-                    if (_associatedTypes.TryGetValue(attribute.AssociatedInterfaceType, out associatedTypes) == false)
-                    {
-                        associatedTypes = new List<Type>();
-
-                        _associatedTypes.Add(attribute.AssociatedInterfaceType, associatedTypes);
-
-                        DataEventSystemFacade.SubscribeToDataAfterUpdate(attribute.AssociatedInterfaceType, OnAfterDataUpdated, false);
-                    }
-
-                    associatedTypes.Add(interfaceType);
-
-
-                    PropertyInfo propertyInfo =
-                        (from pi in interfaceType.GetAllProperties()
-                         where pi.Name == attribute.ForeignKeyPropertyName
-                         select pi).FirstOrDefault();
-
-                    if (propertyInfo == null) throw new ArgumentException(string.Format("The foreign key property name '{0}' set on the attribute '{1}' does not exist on the interface '{2}'", attribute.ForeignKeyPropertyName, typeof(DataAssociationAttribute), interfaceType));
-
-                    DataAssociationInfo dataAssociationInfo = new DataAssociationInfo
-                        {
-                            AssociatedInterfaceType = attribute.AssociatedInterfaceType,
-                            ForeignKeyPropertyName = attribute.ForeignKeyPropertyName,
-                            ForeignKeyPropertyInfo = propertyInfo,
-                            AssociationType = attribute.AssociationType,
-                        };
-
-                    dataAssociationInfos.Add(dataAssociationInfo.AssociatedInterfaceType, dataAssociationInfo);
-
-                    if (DataProviderRegistry.AllInterfaces.Contains(attribute.AssociatedInterfaceType) == true)
-                    {
-                        LoggingService.LogVerbose("DataReferenceRegistry", string.Format("The data type '{0}' is associated to the data type '{1}'", interfaceType, attribute.AssociatedInterfaceType));
-                    }
-                    else
-                    {
-                        LoggingService.LogCritical("DataReferenceRegistry", string.Format("The one type '{0}' is associated to the non supported data type '{1}'", interfaceType, attribute.AssociatedInterfaceType));
-                    }
+                    DataEventSystemFacade.SubscribeToDataAfterUpdate(associatedInterface, OnAfterDataUpdated, false);
                 }
 
-                _dataAccociationInfoes.Add(interfaceType, dataAssociationInfos);
+                associatedTypes.Add(interfaceType);
+
+
+                PropertyInfo propertyInfo =
+                    (from pi in interfaceType.GetAllProperties()
+                     where pi.Name == attribute.ForeignKeyPropertyName
+                     select pi).FirstOrDefault();
+
+                if (propertyInfo == null) throw new ArgumentException(string.Format("The foreign key property name '{0}' set on the attribute '{1}' does not exist on the interface '{2}'", attribute.ForeignKeyPropertyName, typeof(DataAssociationAttribute), interfaceType));
+
+                
+
+                DataAssociationInfo dataAssociationInfo = new DataAssociationInfo
+                                                              {
+                                                                  AssociatedInterfaceType = associatedInterface,
+                                                                  ForeignKeyPropertyName = attribute.ForeignKeyPropertyName,
+                                                                  ForeignKeyPropertyInfo = propertyInfo,
+                                                                  AssociationType = attribute.AssociationType,
+                                                              };
+
+                Verify.IsFalse(dataAssociationInfos.ContainsKey(associatedInterface), "Failed to register interface '{0}'. Data association already exist, type: '{1}'".FormatWith(interfaceType, associatedInterface));
+                dataAssociationInfos.Add(associatedInterface, dataAssociationInfo);
+
+                if (DataProviderRegistry.AllInterfaces.Contains(associatedInterface) == true)
+                {
+                    Log.LogVerbose("DataReferenceRegistry", string.Format("The data type '{0}' is associated to the data type '{1}'", interfaceType, associatedInterface));
+                }
+                else
+                {
+                    Log.LogCritical("DataReferenceRegistry", string.Format("The one type '{0}' is associated to the non supported data type '{1}'", interfaceType, associatedInterface));
+                }
             }
+
+            _dataAccociationInfoes.Add(interfaceType, dataAssociationInfos);
         }
 
 
