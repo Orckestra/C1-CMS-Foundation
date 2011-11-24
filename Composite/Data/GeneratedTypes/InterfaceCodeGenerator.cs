@@ -474,7 +474,15 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
+            if (dataFieldDescriptor.Position < 1000) // Hmm, 1000 is kinda random
+            {
+                CodeAttributeDeclaration fieldPositionAttribute = new CodeAttributeDeclaration(
+                    new CodeTypeReference(typeof(FieldPositionAttribute)),
+                    new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.Position))
+                );
 
+                codeMemberProperty.CustomAttributes.Add(fieldPositionAttribute);
+            }
 
 
 
@@ -518,7 +526,7 @@ namespace Composite.Data.GeneratedTypes
                 codeMemberProperty.CustomAttributes.Add(decimalPrecisionAttribute);
             }
 
-            if (!dataFieldDescriptor.IsNullable && dataFieldDescriptor.DefaultValue != null)
+            if (dataFieldDescriptor.DefaultValue != null)
             {
                 CodeAttributeDeclaration codeAttributeDeclaration = dataFieldDescriptor.DefaultValue.GetCodeAttributeDeclaration();
 
