@@ -348,7 +348,7 @@ namespace Composite.Data.GeneratedTypes
                         }
                     ));
 
-            if (isKeyField && dataFieldDescriptor.InstanceType == typeof(Guid))
+            if (isKeyField && dataFieldDescriptor.InstanceType == typeof(Guid) && dataFieldDescriptor.NewInstanceDefaultFieldValue == null)
             {
                 codeMemberProperty.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
@@ -358,6 +358,17 @@ namespace Composite.Data.GeneratedTypes
                         }
                     ));
             }
+            else if (dataFieldDescriptor.NewInstanceDefaultFieldValue != null)
+            {
+                codeMemberProperty.CustomAttributes.Add(
+                    new CodeAttributeDeclaration(
+                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
+                        new CodeAttributeArgument[] {
+                            new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.NewInstanceDefaultFieldValue))
+                        }
+                    ));
+            }
+
 
             List<CodeAttributeArgument> arguments = new List<CodeAttributeArgument>();
 
@@ -556,16 +567,7 @@ namespace Composite.Data.GeneratedTypes
                     ));
             }
 
-            if (dataFieldDescriptor.NewInstanceDefaultFieldValue != null)
-            {
-                codeMemberProperty.CustomAttributes.Add(
-                    new CodeAttributeDeclaration(
-                        typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute).FullName,
-                        new CodeAttributeArgument[] {
-                            new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.NewInstanceDefaultFieldValue))
-                        }
-                    ));
-            }
+            
         }
 
 
