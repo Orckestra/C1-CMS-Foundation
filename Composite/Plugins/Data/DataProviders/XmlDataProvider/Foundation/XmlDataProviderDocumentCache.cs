@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
@@ -338,12 +339,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             lock (_cacheSyncRoot)
             {
-                foreach (string filename in _cache.GetKeys())
+                var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
+                if (dirtyRecords.Any())
                 {
-                    var record = _cache[filename];
-                    if (record.Dirty)
+                    string lockFilename = _cache.GetKeys().First();
+                    MakeGlobalFileLock(lockFilename);
+                    try
                     {
-                        SaveChanges(record);
+                        foreach (FileRecord record in dirtyRecords)
+                        {
+                            SaveChanges(record);
+                        }
+                    }
+                    finally
+                    {
+                        ReleaseGlobalFileLock(lockFilename);                        
                     }
                 }
             }
@@ -400,6 +410,61 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     Monitor.Exit(SyncRoot);
                 }
             }
+        }
+
+        private static void ReleaseGlobalFileLock(string filename, int retryCount = 50)
+        {
+            string globalLockFilename = GetGlobalLockFilename(filename);
+            if (File.Exists(globalLockFilename))
+            {
+                File.Delete(globalLockFilename);
+            }
+        }
+
+
+        private static bool MakeGlobalFileLock(string filename, int retryCount = 50)
+        {
+            bool lockObtained = false;
+
+            string globalLockFilename = GetGlobalLockFilename(filename);
+            string tmpFileName = globalLockFilename + "." + System.IO.Path.GetRandomFileName();
+
+            double existingLockFileAge = (File.Exists(globalLockFilename)
+                                           ? (DateTime.Now - File.GetLastWriteTime(globalLockFilename)).TotalSeconds
+                                           : 0);
+
+            if (existingLockFileAge > 30)
+            {
+                File.Delete(globalLockFilename);
+            }
+
+            File.WriteAllText(tmpFileName, "(I lock stuff when I'm here)");
+
+            try
+            {
+                File.Move(tmpFileName, globalLockFilename);
+                lockObtained = true;
+            }
+            catch (IOException)
+            {
+                File.Delete(tmpFileName);
+            }
+
+            if (!lockObtained)
+            {
+                retryCount--;
+                if (retryCount > 0)
+                {
+                    Thread.Sleep(100);
+                    lockObtained = MakeGlobalFileLock(filename, retryCount);
+                }
+            }
+            return lockObtained;
+        }
+
+        private static string GetGlobalLockFilename(string filename)
+        {
+            return filename + ".lock";
         }
     }
 }
