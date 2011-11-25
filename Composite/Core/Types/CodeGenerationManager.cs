@@ -371,7 +371,7 @@ namespace Composite.Core.Types
             compilerParameters.GenerateInMemory = false;
 
 #warning MRJ: BM: Fix this path stuff!
-            compilerParameters.OutputAssembly = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory), Guid.NewGuid() + ".dll");
+            compilerParameters.OutputAssembly = Path.Combine(TempAssemblyPath(), Guid.NewGuid() + ".dll");
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(codeGenerationBuilder.AssemblyLocations.ToArray());
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CompiledAssemblies.Select(f => f.Location).ToArray());
@@ -464,6 +464,20 @@ namespace Composite.Core.Types
         public static CompatibilityCheckResult CheckIfAppCodeDependsOnInterface(DataTypeDescriptor dataTypeDescriptorToTest)
         {
             return CheckAgainsAppCode(dataTypeDescriptorToTest, false);
+        }
+
+
+
+        internal static string TempAssemblyPath()
+        {
+            return PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
+        }
+
+
+
+        internal static string BinFolder()
+        {
+            return Path.Combine(PathUtil.BaseDirectory, "Bin");
         }
 
 
@@ -617,7 +631,7 @@ namespace Composite.Core.Types
             compilerParameters.GenerateExecutable = false;
             compilerParameters.GenerateInMemory = false;
 #warning MRJ: BM: Assembly file name fix
-            compilerParameters.OutputAssembly = Path.Combine(PathUtil.BaseDirectory, "Bin", "Composite.Generated.dll");
+            compilerParameters.OutputAssembly = Path.Combine(BinFolder(), "Composite.Generated.dll");
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(builder.AssemblyLocations.ToArray());
             AddAssemblyLocationsFromBin(compilerParameters);

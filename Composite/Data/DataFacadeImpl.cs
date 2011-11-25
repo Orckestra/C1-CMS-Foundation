@@ -15,6 +15,8 @@ using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Types;
 using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
+using System.IO;
+using Composite.Core.IO;
 
 
 namespace Composite.Data
@@ -287,6 +289,13 @@ namespace Composite.Data
                 (typeof(T).GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any()) &&
                 (allowStoreCreation == true))
             {
+                if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(typeof(T)))
+                {
+                    string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", typeof(T));
+                    LoggingService.LogError("DataFacade", message);
+                    throw new InvalidOperationException(message);
+                }
+
                 LoggingService.LogVerbose("DataFacade", string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers adding it to the default dynamic type data provider", typeof(T)));
 
                 List<T> result;
@@ -295,12 +304,17 @@ namespace Composite.Data
                 result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performeValidation, null);
                 return result;
             }
+
             if (writeableProviders.Count == 1)
             {
                 return AddNew_AddingMethod<T>(writeableProviders[0], datas, suppressEventing, performForeignKeyIntegrityCheck, performeValidation);
             }
+
             throw new InvalidOperationException(string.Format("{0} writeable data providers exists for data '{1}'.", writeableProviders.Count, typeof(T)));
         }
+        
+
+
 
         private static List<T> AddNew_AddingMethod<T>(string providerName, IEnumerable<T> datas, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
              where T : class, IData
@@ -373,6 +387,8 @@ namespace Composite.Data
         {
             Delete(dataset, suppressEventing, cascadeDeleteType, referencesFromAllScopes, new HashSet<DataSourceId>());
         }
+
+
 
         private void Delete<T>(IEnumerable<T> dataset, bool suppressEventing, CascadeDeleteType cascadeDeleteType, bool referencesFromAllScopes, HashSet<DataSourceId> dataPendingDeletion)
             where T : class, IData

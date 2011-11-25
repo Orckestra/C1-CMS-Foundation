@@ -7,6 +7,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Core.Types;
 using Composite.Data.Foundation.CodeGeneration;
 using System.CodeDom;
+using Composite.Core;
 
 
 namespace Composite.Data.Foundation
@@ -40,6 +41,13 @@ namespace Composite.Data.Foundation
         /// <returns>The empty class type for the given data interface type.</returns>
         public static Type GetEmptyDataClassType(Type interfaceType, bool forceReCompilation = false)
         {
+            if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(interfaceType))
+            {
+                string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", interfaceType);
+                Log.LogError("EmptyDataClassTypeManager", message);
+                throw new InvalidOperationException(message);
+            }
+
             DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId(), true);
 
             return GetEmptyDataClassType(dataTypeDescriptor, forceReCompilation);
@@ -64,6 +72,14 @@ namespace Composite.Data.Foundation
         /// <returns>The empty class type for the given data interface type.</returns>
         public static Type GetEmptyDataClassType(DataTypeDescriptor dataTypeDescriptor, bool forceReCompilation = false)
         {
+            //INFO: Due to the way IBuildNewHandler is defined, we have to get the interface type here /MRJ
+
+            
+            
+
+
+            
+
 #warning MRJ: BM: Why even have this cache?? If changed, change the doc for this class
             /* Type emptyClassType;
             using (ResourceLocker.Locker)
@@ -79,8 +95,14 @@ namespace Composite.Data.Foundation
                 Type buildNewHandlerType = TypeManager.GetType(dataTypeDescriptor.BuildNewHandlerTypeName);
                 IBuildNewHandler buildNewHandler = (IBuildNewHandler)Activator.CreateInstance(buildNewHandlerType);
 
-                //INFO: Due to the way IBuildNewHandler is defined, we have to get the interface type here /MRJ
                 Type dataType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+
+                if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(dataType))
+                {
+                    string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", dataType);
+                    Log.LogError("EmptyDataClassTypeManager", message);
+                    throw new InvalidOperationException(message);
+                }
 
                 return buildNewHandler.GetTypeToBuild(dataType);
             }
@@ -124,6 +146,7 @@ namespace Composite.Data.Foundation
 
             return emptyClassType;
         }
+       
 
 
 
