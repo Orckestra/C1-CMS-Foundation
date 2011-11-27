@@ -13,6 +13,7 @@ using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
+using Composite.Core.Configuration;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -447,7 +448,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 if(_globalLockFileName==null)
                 {
-                    _globalLockFileName = Path.Combine(Path.GetDirectoryName(_cache.GetKeys().First()), "_lock");
+                    _globalLockFileName = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "XmlDataProviderDocumentCache.lock");
                 }
                 return _globalLockFileName;
             }
@@ -457,8 +458,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static bool MakeGlobalFileLock(int retryCount = 50)
         {
             bool lockObtained = false;
-
-            string filename = Path.Combine(Path.GetDirectoryName(_cache.GetKeys().First()), "_lock");
 
             string tmpFileName = GlobalLockFileName + "." + System.IO.Path.GetRandomFileName();
 
