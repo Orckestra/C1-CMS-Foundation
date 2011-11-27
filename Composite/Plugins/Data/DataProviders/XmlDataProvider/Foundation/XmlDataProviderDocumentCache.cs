@@ -21,6 +21,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
     {
         private const int NumberOfRetries = 30;
         private static readonly string LogTitle = "XmlDataProvider";
+        private static string _globalLockFileName = null;
 
         internal class FileRecord
         {
@@ -139,6 +140,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             bool failed = true;
                             bool fileNotFound = false;
                             Exception lastException = null;
+                            Composite.Core.Log.LogWarning(LogTitle,"Did not find file '{0}' as expected, will look for .tmp. This can happen is a critical system failure killed the last save".FormatWith(filename));
                             for (int i = 0; i < NumberOfRetries; i++)
                             {
                                 try
@@ -147,6 +149,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                     if (File.Exists(filename + ".tmp"))
                                     {
                                         File.Move(filename + ".tmp", filename);
+                                        Composite.Core.Log.LogInformation(LogTitle, "Was able to restore '{0}' from .tmp file.".FormatWith(filename));
                                         failed = false;
                                         break;
                                     }
@@ -342,8 +345,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
                 if (dirtyRecords.Any())
                 {
-                    string lockFilename = _cache.GetKeys().First();
-                    MakeGlobalFileLock(lockFilename);
+                    MakeGlobalFileLock();
                     try
                     {
                         foreach (FileRecord record in dirtyRecords)
@@ -353,7 +355,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     finally
                     {
-                        ReleaseGlobalFileLock(lockFilename);                        
+                        ReleaseGlobalFileLock();                        
                     }
                 }
             }
@@ -412,37 +414,50 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             }
         }
 
-        private static void ReleaseGlobalFileLock(string filename, int retryCount = 50)
+
+        private static void ReleaseGlobalFileLock()
         {
-            string globalLockFilename = GetGlobalLockFilename(filename);
-            if (File.Exists(globalLockFilename))
+            if (File.Exists(GlobalLockFileName))
             {
-                File.Delete(globalLockFilename);
+                File.Delete(GlobalLockFileName);
             }
         }
 
 
-        private static bool MakeGlobalFileLock(string filename, int retryCount = 50)
+        private static string GlobalLockFileName
+        {
+            get
+            {
+                if(_globalLockFileName==null)
+                {
+                    _globalLockFileName = Path.Combine(Path.GetDirectoryName(_cache.GetKeys().First()), "_lock");
+                }
+                return _globalLockFileName;
+            }
+        }
+
+        private static bool MakeGlobalFileLock(int retryCount = 50)
         {
             bool lockObtained = false;
 
-            string globalLockFilename = GetGlobalLockFilename(filename);
-            string tmpFileName = globalLockFilename + "." + System.IO.Path.GetRandomFileName();
+            string filename = Path.Combine(Path.GetDirectoryName(_cache.GetKeys().First()), "_lock");
 
-            double existingLockFileAge = (File.Exists(globalLockFilename)
-                                           ? (DateTime.Now - File.GetLastWriteTime(globalLockFilename)).TotalSeconds
+            string tmpFileName = GlobalLockFileName + "." + System.IO.Path.GetRandomFileName();
+
+            double existingLockFileAgeSeconds = (File.Exists(GlobalLockFileName)
+                                           ? (DateTime.Now - File.GetLastWriteTime(GlobalLockFileName)).TotalSeconds
                                            : 0);
 
-            if (existingLockFileAge > 30)
+            if (existingLockFileAgeSeconds > 5)
             {
-                File.Delete(globalLockFilename);
+                File.Delete(GlobalLockFileName);
             }
 
-            File.WriteAllText(tmpFileName, "(I lock stuff when I'm here)");
+            File.WriteAllText(tmpFileName, "(I lock xml file write access for other processes when I'm here.)");
 
             try
             {
-                File.Move(tmpFileName, globalLockFilename);
+                File.Move(tmpFileName, GlobalLockFileName);
                 lockObtained = true;
             }
             catch (IOException)
@@ -456,15 +471,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 if (retryCount > 0)
                 {
                     Thread.Sleep(100);
-                    lockObtained = MakeGlobalFileLock(filename, retryCount);
+                    lockObtained = MakeGlobalFileLock(retryCount);
                 }
             }
-            return lockObtained;
-        }
 
-        private static string GetGlobalLockFilename(string filename)
-        {
-            return filename + ".lock";
+            if (!lockObtained)
+            {
+                Composite.Core.Log.LogWarning(LogTitle,
+                                              "A global lock to prevent multiple processes/appdomains could not be obtained.");
+            }
+
+            return lockObtained;
         }
     }
 }
