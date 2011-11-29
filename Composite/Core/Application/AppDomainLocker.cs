@@ -2,6 +2,7 @@
 using System.Threading;
 using Composite.Core.Logging;
 using Composite.Core.Types;
+using System.Diagnostics;
 
 
 namespace Composite.Core.Application
@@ -64,20 +65,20 @@ namespace Composite.Core.Application
         {
             if (RuntimeInformation.AppDomainLockingDisabled) return;
 
-            if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' are going to aquire system wide lock ({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquriedLock, EventWaitHandleId));
+            if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' are going to aquire system wide lock ({1}) on key '{2}' and process id '{3}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquried, EventWaitHandleId, Process.GetCurrentProcess().Id));
 
             lock (_numberOfLocksAquriedLock)
             {
                 if (!IsCurrentAppDomainLockingAppDomain())
                 {
                     bool entered = _systemGlobalEventWaitHandle.Enter(timeout);
-                    if (!entered) throw new WaitHandleCannotBeOpenedException(string.Format("The AppDomain '{0}' failed to aquired system wide lock on key '{1}' within the timeout period of '{2}' ms.", AppDomain.CurrentDomain.Id, EventWaitHandleId, timeout));
+                    if (!entered) throw new WaitHandleCannotBeOpenedException(string.Format("The AppDomain '{0}' failed to aquired system wide lock on key '{1}' and process id '{2}' within the timeout period of '{3}' ms.", AppDomain.CurrentDomain.Id, EventWaitHandleId, Process.GetCurrentProcess().Id, timeout));
                 }
 
                 _numberOfLocksAquried++;
             }
 
-            if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' aquired system wide lock ({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquriedLock, EventWaitHandleId));
+            if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' aquired system wide lock ({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquried, EventWaitHandleId));
         }
 
 
@@ -95,7 +96,7 @@ namespace Composite.Core.Application
             {
                 if (IsAllReleased())
                 {
-                    Log.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain '{0}' released a non locked lock on key '{1}'", AppDomain.CurrentDomain.Id, EventWaitHandleId));
+                    Log.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain '{0}' released a non locked lock on key '{1}' and process id '{2}'", AppDomain.CurrentDomain.Id, EventWaitHandleId, Process.GetCurrentProcess().Id));
                     return;
                 }
 
@@ -106,7 +107,7 @@ namespace Composite.Core.Application
 
                 _numberOfLocksAquried--;
 
-                if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' released system wide lock({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquriedLock, EventWaitHandleId));
+                if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' released system wide lock({1}) on key '{2}' and process id '{3}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquried, EventWaitHandleId, Process.GetCurrentProcess().Id));
             }
         }
 
