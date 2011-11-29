@@ -22,7 +22,7 @@ namespace Composite.Core.WebClient
     {
         readonly static object _syncRoot = new object();
         private static bool _systemIsInitialized = false;
-
+        private static EventHandler _domainUnloadedEventHandler = null;
 
         /// <exclude />
         public static bool LogRequestDetails { get; set; }
@@ -34,6 +34,8 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_Start(object sender, EventArgs e)
         {
+            DateTime startTime = DateTime.Now;
+
             SystemSetupFacade.SetFirstTimeStart();
 
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
@@ -51,7 +53,12 @@ namespace Composite.Core.WebClient
                 throw new InvalidOperationException("Windows limitation problem detected! You have installed the website at a place where the total path length of the file with the longest filename exceeds the maximum allowed in Windows. See http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx#paths");
             }
 
-            AppDomainLocker.EnsureLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
+            
+            AppDomainLocker.AquireLock((int)GlobalSettingsFacade.DefaultWriterLockWaitTimeout.TotalMilliseconds);
+            AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
+            
+            CodeGenerationManager.ValidateCompositeGenerate(startTime);
+
 
             lock (_syncRoot)
             {
@@ -62,7 +69,7 @@ namespace Composite.Core.WebClient
                 _systemIsInitialized = true;
             }
         }
-      
+        
 
 
         /// <exclude />
@@ -85,26 +92,30 @@ namespace Composite.Core.WebClient
                     }
                     Composite.C1Console.Events.GlobalEventSystemFacade.ShutDownTheSystem();
 
-                    // Checking if another app domain holds the lock
-                    bool haveLock = true;
-                    try
-                    {
-                        AppDomainLocker.EnsureLock(TimeSpan.FromMilliseconds(1));
-                    }
-                    catch (Exception)
-                    {
-                        haveLock = false;
-                        LoggingService.LogWarning("Global.asax", "Failed to obtain the lock for updating Composite.Generated.dll");
-                    }
+#warning MRJ: Is this really needed?? Was this needed to the bug in AppDomainLocker where all locks were released?
+                    //// Checking if another app domain holds the lock
+                    //bool haveLock = true;
+                    //try
+                    //{
+                    //    AppDomainLocker.EnsureLock(TimeSpan.FromMilliseconds(1));
+                    //}
+                    //catch (Exception)
+                    //{
+                    //    haveLock = false;
+                    //    LoggingService.LogWarning("Global.asax", "Failed to obtain the lock for updating Composite.Generated.dll");
+                    //}
 
-                    if (haveLock)
-                    {
-                        //Composite.Core.Types.BuildManager.FinalizeCachingSytem();
+                    //if (haveLock)
+                    //{
+                    //    //Composite.Core.Types.BuildManager.FinalizeCachingSytem();
 
-                        CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+                    //    CodeGenerationManager.GenerateCompositeGeneratedAssembly();
 
-                        TempDirectoryFacade.OnApplicationEnd();
-                    }
+                    //    TempDirectoryFacade.OnApplicationEnd();
+                    //}
+
+                    CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+                    TempDirectoryFacade.OnApplicationEnd();
 
                     LoggingService.LogVerbose("Global.asax",
                                                 string.Format("--- Web Application End, {0} Id = {1}---",
@@ -122,7 +133,7 @@ namespace Composite.Core.WebClient
                 }
                 finally
                 {
-                    AppDomainLocker.ReleaseAnyLock();
+                    AppDomainLocker.ReleaseLock();
                 }
             }
         }
@@ -270,6 +281,13 @@ namespace Composite.Core.WebClient
             ThreadDataManager.FinalizeThroughHttpContext();
         }
 
+
+        private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
+        {
+            if (!AppDomainLocker.CurrentAppDomainHasLock) return;
+            
+            AppDomainLocker.ReleaseLock(); // This is for VS dev server, it does not always call Application_End :S /MRJ
+        }
 
 
         private static void LogShutDownReason()

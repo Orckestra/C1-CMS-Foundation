@@ -6,142 +6,219 @@ using Composite.Core.Types;
 
 namespace Composite.Core.Application
 {
-    /// <summary>    
+    /// <summary>
+    /// This class provides system wide locking throughout all app domains for the given C1 installation. 
+    /// It does lock lock between C1 installations if more than one runs on the same machine.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    public static class AppDomainLocker
+    internal static class AppDomainLocker
     {
-        private static EventWaitHandle _eventWaitHandle = null;
-        private static string _appDomainLockKey;
-        private static bool _gotSignaled = false;
-        private static readonly object _lock = new object();
+        private static SystemGlobalEventWaitHandle _systemGlobalEventWaitHandle = new SystemGlobalEventWaitHandle(EventWaitHandleId);
+        private static int _numberOfLocksAquried = 0;
+        private static object _numberOfLocksAquriedLock = new object();
+
 
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)AppDomainLocker";
         private const string _warningLogEntryTitle = "AppDomainLocker";
 
 
 
-
         /// <summary>
-        /// Releases the OS wide lock on the applications file directory if it were aquired.
+        /// Returns an IDisposalbe and requires the lock. Disposing the IDisposable releases the lock.
         /// </summary>
-        public static void ReleaseAnyLock()
-        {
-            if (RuntimeInformation.AppDomainLockingDisabled) return;
-
-            lock (_lock)
-            {
-                if (_gotSignaled == true)
-                {
-                    _eventWaitHandle.Set();
-                    _eventWaitHandle.Close();
-                    LoggingService.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) has unlocked for other AppDomains on key '{1}'", AppDomain.CurrentDomain.Id, _appDomainLockKey));
-                }
-                _eventWaitHandle = null;
-                _gotSignaled = false;
-            }
-        }
-
-
-
-        /// <summary>
-        /// Returns true if a valid lock has been aquired
-        /// </summary>
-        public static bool HasValidLock
+        /// <example>
+        /// <code>
+        /// using (AppDomainLocker.NewLock)
+        /// {
+        ///     /* This code will only run in one app domain at any time */
+        /// }
+        /// </code>
+        /// </example>
+        public static IDisposable NewLock
         {
             get
             {
-                if (RuntimeInformation.AppDomainLockingDisabled) return true;
-
-                lock (_lock)
-                {
-                    return _gotSignaled == true;
-                }
+                return new DisposableLock();
             }
         }
 
 
+
         /// <summary>
-        /// Ensures that a valid lock has been aquired. 
-        /// If a lock could not be aqquired within the specified timeout period, WaitHandleCannotBeOpenedException is thrown. 
+        /// Returns an IDisposalbe and requires the lock. Disposing the IDisposable releases the lock.
         /// </summary>
-        /// <param name="timeoutPeriod">maximum time to wait</param>
-        public static void EnsureLock(TimeSpan timeoutPeriod)
+        /// <example>
+        /// <code>
+        /// using (AppDomainLocker.NewLock)
+        /// {
+        ///     /* This code will only run in one app domain at any time */
+        /// }
+        /// </code>
+        /// </example>
+        public static IDisposable NewLockNonVerbose
+        {
+            get
+            {
+                return new DisposableLock(verbose: false);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the calling app domain has the lock.
+        /// </summary>
+        public static bool CurrentAppDomainHasLock
+        {
+            get
+            {
+                return IsCurrentAppDomainLockingAppDomain();
+            }
+        }
+
+
+
+        /// <summary>
+        /// Aquires a system wide lock accross all app domains for the current C1 installation. 
+        /// This call be called multiple times from the same thread.
+        /// To release the lock, call <see cref="ReleaseLock"/>
+        /// </summary>
+        /// <param name="timeout">Aquire lock timeout in milliseconds</param>
+        public static void AquireLock(int timeout = 30000, bool verbose = true)
         {
             if (RuntimeInformation.AppDomainLockingDisabled) return;
 
-            lock (_lock)
+            if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' are going to aquire system wide lock ({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquriedLock, EventWaitHandleId));
+
+            lock (_numberOfLocksAquriedLock)
             {
-                if (AppDomainLocker.HasValidLock == false)
+                if (!IsCurrentAppDomainLockingAppDomain())
                 {
-                    if (AppDomainLocker.TryLock(timeoutPeriod) == false)
-                    {
-                        LoggingService.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain ({0}) failed to obtain a mandatory lock on other AppDomains on key '{1}'", AppDomain.CurrentDomain.Id, _appDomainLockKey));
-                        throw new WaitHandleCannotBeOpenedException("Could not ensure a global resource lock within the specified timeout period.");
-                    }
+                    bool entered = _systemGlobalEventWaitHandle.Enter(timeout);
+                    if (!entered) throw new WaitHandleCannotBeOpenedException(string.Format("The AppDomain '{0}' failed to aquired system wide lock on key '{1}' within the timeout period of '{2}' ms.", AppDomain.CurrentDomain.Id, EventWaitHandleId, timeout));
                 }
+
+                _numberOfLocksAquried++;
+            }
+
+            if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' aquired system wide lock ({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquriedLock, EventWaitHandleId));
+        }
+
+
+
+        /// <summary>
+        /// Releases the aquired system wide lock. 
+        /// If the same thread has aqired the lock more than once, only the last call to this method
+        /// from that thread will release the lock.         
+        /// </summary>
+        public static void ReleaseLock(bool verbose = true)
+        {
+            if (RuntimeInformation.AppDomainLockingDisabled) return;
+
+            lock (_numberOfLocksAquriedLock)
+            {
+                if (IsAllReleased())
+                {
+                    Log.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain '{0}' released a non locked lock on key '{1}'", AppDomain.CurrentDomain.Id, EventWaitHandleId));
+                    return;
+                }
+
+                if (IsLastReleaseForLockHoldingAppDomain())
+                {
+                    _systemGlobalEventWaitHandle.Leave();                    
+                }
+
+                _numberOfLocksAquried--;
+
+                if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}' released system wide lock({1}) on key '{2}'", AppDomain.CurrentDomain.Id, _numberOfLocksAquriedLock, EventWaitHandleId));
             }
         }
 
+
+
+        /// <summary>
+        /// Used to name the EventWaitHandle, making it a system wide EventWaitHandle
+        /// </summary>
+        private static string EventWaitHandleId
+        {
+            get
+            {
+                return RuntimeInformation.UniqueInstanceName;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Returns true if the current thread is the thread holding the lock
+        /// </summary>
+        /// <returns></returns>
+        private static bool IsCurrentAppDomainLockingAppDomain()
+        {
+            return _numberOfLocksAquried > 0;
+        }
 
 
 
 
         /// <summary>
-        /// Tries to aquire a OS wide lock on the applications file directory. 
+        /// Returns true if there will be no more releases for the lock holding thread.
         /// </summary>
-        /// <param name="maxWaitTime">Maximum period of time to wait for a lock</param>
-        /// <returns>True if the lock was aquired</returns>
-        private static bool TryLock(TimeSpan maxWaitTime)
+        /// <returns></returns>
+        private static bool IsLastReleaseForLockHoldingAppDomain()
         {
-#warning MRJ: BM: Only add once? Cleanup
-            AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
-
-            if (RuntimeInformation.AppDomainLockingDisabled) return true;
-
-            lock (_lock)
-            {
-                if (AppDomainLocker.HasValidLock == true) return true;
-
-                bool isNewHandle;
-
-                DateTime time = DateTime.Now;
-                _appDomainLockKey = RuntimeInformation.UniqueInstanceNameSafe;
-                _eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, _appDomainLockKey, out isNewHandle);
-
-                if (isNewHandle == true)
-                {
-                    _eventWaitHandle.Set();
-                }
-                else
-                {
-                    Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) detected existing handle will now wait ({1}ms max) for other AppDomains to unlock on key '{2}'", AppDomain.CurrentDomain.Id, maxWaitTime.TotalMilliseconds, _appDomainLockKey));
-                }
-
-
-                _gotSignaled = _eventWaitHandle.WaitOne(maxWaitTime, false);
-
-                if (_gotSignaled == false)
-                {
-                    Log.LogWarning(_warningLogEntryTitle, string.Format("The AppDomain ({0}) has stopped waiting for signal on key '{1}'. Continuing without syncronization...", AppDomain.CurrentDomain.Id, _appDomainLockKey));
-                }
-                else
-                {
-                    Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain ({0}) has locked for other AppDomains on key '{1}'", AppDomain.CurrentDomain.Id, _appDomainLockKey));
-                }
-
-                CodeGenerationManager.ValidateCompositeGenerate(time);
-
-                return _gotSignaled;
-            }
+            return _numberOfLocksAquried == 1;
         }
 
-  
 
-        static void CurrentDomain_DomainUnload(object sender, EventArgs e)
-        {          
-            ReleaseAnyLock(); // This is for VS dev server, it does not always call Application_End :S /MRJ
+
+        /// <summary>
+        /// Returns true if all locks have been released.
+        /// </summary>
+        /// <returns></returns>
+        private static bool IsAllReleased()
+        {
+            return _numberOfLocksAquried == 0;
+        }
+
+
+        /// <summary>
+        /// Used for implementing the disposable pattern for <see cref="AppDomainLocker"/>
+        /// </summary>
+        private class DisposableLock : IDisposable
+        {
+            private bool _disposed = false;
+            private bool _verbose;
+
+            public DisposableLock(bool verbose = true)
+            {
+                _verbose = verbose;
+                AppDomainLocker.AquireLock(verbose: _verbose);
+            }
+
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!disposing || _disposed) return;
+
+                _disposed = true;
+
+                AppDomainLocker.ReleaseLock(verbose: _verbose);
+            }
+
+
+
+            ~DisposableLock()
+            {
+                Dispose(false);
+            }
         }
     }
 }

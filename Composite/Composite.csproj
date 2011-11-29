@@ -157,6 +157,8 @@
     <Compile Include="C1Console\Forms\IValidatingUiControl.cs" />
     <Compile Include="C1Console\Forms\ReadBindingControlValueOverload.cs" />
     <Compile Include="C1Console\Security\LoginResult.cs" />
+    <Compile Include="Core\Application\GlobalFileLocker.cs" />
+    <Compile Include="Core\Application\SystemGlobalEventWaitHandle.cs" />
     <Compile Include="Core\Configuration\C1Configuration.cs" />
     <Compile Include="Core\Configuration\Configuration.cs" />
     <Compile Include="Core\Configuration\FileConfigurationSource.cs" />

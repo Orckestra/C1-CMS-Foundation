@@ -14,6 +14,8 @@ using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 using Composite.Core.Configuration;
+using Composite.Core;
+using Composite.Core.Application;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -132,11 +134,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 lock (_cacheSyncRoot)
                 {
-                    MakeGlobalFileLock(); // we do not want other app domains saving while we are reading.
-
-                    try
+                    using (AppDomainLocker.NewLockNonVerbose)
                     {
-
                         cachedData = _cache[cacheKey];
 
                         if (cachedData == null)
@@ -146,9 +145,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                 bool failed = true;
                                 bool fileNotFound = false;
                                 Exception lastException = null;
-                                Composite.Core.Log.LogWarning(LogTitle,
-                                                              "Did not find file '{0}' as expected, will look for .tmp. This can happen is a critical system failure killed the last save"
-                                                                  .FormatWith(filename));
+                                Log.LogWarning(LogTitle, "Did not find file '{0}' as expected, will look for .tmp. This can happen is a critical system failure killed the last save".FormatWith(filename));
+
                                 for (int i = 0; i < NumberOfRetries; i++)
                                 {
                                     try
@@ -172,7 +170,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                     catch (Exception ex)
                                     {
                                         lastException = ex;
-                                        Thread.Sleep(10*(i + 1));
+                                        Thread.Sleep(10 * (i + 1));
                                     }
                                 }
 
@@ -183,12 +181,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                                 if (failed)
                                 {
-                                    LoggingService.LogCritical("XmlDataProvider",
+                                    Log.LogCritical("XmlDataProvider",
                                                                "Failed moving file " + filename + " to file " + filename +
                                                                ".tmp");
                                     if (lastException != null)
                                     {
-                                        LoggingService.LogCritical(LogTitle, lastException);
+                                        Log.LogCritical(LogTitle, lastException);
                                         throw lastException;
                                     }
                                 }
@@ -201,9 +199,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             }
                             catch (Exception ex)
                             {
-                                LoggingService.LogCritical("XmlDataProvider",
+                                Log.LogCritical("XmlDataProvider",
                                                            "Failed to load data from the file: " + filename);
-                                LoggingService.LogCritical("XmlDataProvider", ex);
+                                Log.LogCritical("XmlDataProvider", ex);
 
                                 throw;
                             }
@@ -228,7 +226,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                              {
                                                  FileName = filename,
                                                  ElementName = elementName,
-                                                 RecordSet = new RecordSet {/* Elements = elements,*/ Index = index},
+                                                 RecordSet = new RecordSet {/* Elements = elements,*/ Index = index },
                                                  ReadOnlyElementsList = new List<XElement>(elements),
                                                  LastModified = DateTime.Now,
                                                  FileModificationDate = C1File.GetLastWriteTime(filename)
@@ -239,14 +237,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             _cache.Add(cacheKey, cachedData);
                         }
                     }
-                    finally
-                    {
-                        ReleaseGlobalFileLock();
-                    }
                 }
             }
+
             return cachedData;
         }
+
+
 
         public static IEnumerable<XElement> GetElements(string filename, string elementName, IXmlDataProviderHelper helper)
         {
@@ -255,6 +252,27 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             return GetFileRecord(filename, elementName, helper.CreateDataId).ReadOnlyElementsList;
         }
+
+
+
+
+        public static void SaveChanges()
+        {
+            lock (_cacheSyncRoot)
+            {
+                var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
+                if (!dirtyRecords.Any()) return;
+
+                using (AppDomainLocker.NewLockNonVerbose)
+                {
+                    foreach (FileRecord record in dirtyRecords)
+                    {
+                        SaveChanges(record);
+                    }
+                }
+            }
+        }
+
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, to handle broken saves")]
@@ -317,7 +335,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                         if (failed)
                         {
-                            LoggingService.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FileName);
+                            Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FileName);
                             if (lastException != null) throw lastException;
 
                             throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
@@ -331,14 +349,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception)
                     {
-                        LoggingService.LogCritical(LogTitle, "Failed to move file: " + fileRecord.TempFileName);
+                        Log.LogCritical(LogTitle, "Failed to move file: " + fileRecord.TempFileName);
                         throw;
                     }
                 }
                 catch (Exception exception)
                 {
-                    LoggingService.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FileName);
-                    LoggingService.LogCritical(LogTitle, exception);
+                    Log.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FileName);
+                    Log.LogCritical(LogTitle, exception);
                     thrownException = exception;
                 }
             }
@@ -356,28 +374,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             fileRecord.Dirty = false;
         }
 
-        public static void SaveChanges()
-        {
-            lock (_cacheSyncRoot)
-            {
-                var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
-                if (dirtyRecords.Any())
-                {
-                    MakeGlobalFileLock();
-                    try
-                    {
-                        foreach (FileRecord record in dirtyRecords)
-                        {
-                            SaveChanges(record);
-                        }
-                    }
-                    finally
-                    {
-                        ReleaseGlobalFileLock();                        
-                    }
-                }
-            }
-        }
+
 
         public static void UndoUncommitedChanges()
         {
@@ -393,10 +390,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             }
         }
 
+
+
         public static void ClearCache()
         {
             _cache.Clear();
         }
+
+
 
         private static List<XElement> ExtractElements(XDocument xDocument)
         {
@@ -407,10 +408,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             return result;
         }
 
+
+
         public static IDisposable CreateEditingContext()
         {
             return new EditingContext();
         }
+
+
 
         private class EditingContext : IDisposable
         {
@@ -430,75 +435,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     Monitor.Exit(SyncRoot);
                 }
             }
-        }
-
-
-        private static void ReleaseGlobalFileLock()
-        {
-            if (File.Exists(GlobalLockFileName))
-            {
-                File.Delete(GlobalLockFileName);
-            }
-        }
-
-
-        private static string GlobalLockFileName
-        {
-            get
-            {
-                if(_globalLockFileName==null)
-                {
-                    _globalLockFileName = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "XmlDataProviderDocumentCache.lock");
-                }
-                return _globalLockFileName;
-            }
-        }
-
-
-        private static bool MakeGlobalFileLock(int retryCount = 50)
-        {
-            bool lockObtained = false;
-
-            string tmpFileName = GlobalLockFileName + "." + System.IO.Path.GetRandomFileName();
-
-            double existingLockFileAgeSeconds = (File.Exists(GlobalLockFileName)
-                                           ? (DateTime.Now - File.GetLastWriteTime(GlobalLockFileName)).TotalSeconds
-                                           : 0);
-
-            if (existingLockFileAgeSeconds > 5)
-            {
-                File.Delete(GlobalLockFileName);
-            }
-
-            File.WriteAllText(tmpFileName, "(I lock xml file write access for other processes when I'm here.)");
-
-            try
-            {
-                File.Move(tmpFileName, GlobalLockFileName);
-                lockObtained = true;
-            }
-            catch (IOException)
-            {
-                File.Delete(tmpFileName);
-            }
-
-            if (!lockObtained)
-            {
-                retryCount--;
-                if (retryCount > 0)
-                {
-                    Thread.Sleep(100);
-                    lockObtained = MakeGlobalFileLock(retryCount);
-                }
-            }
-
-            if (!lockObtained)
-            {
-                Composite.Core.Log.LogWarning(LogTitle,
-                                              "A global lock to prevent multiple processes/appdomains could not be obtained.");
-            }
-
-            return lockObtained;
         }
     }
 }
