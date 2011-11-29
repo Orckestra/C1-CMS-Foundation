@@ -202,8 +202,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 _dataGroupingProviderHelper.OnCreateGhostedLeafElement = data => { return GetGhostedElementFromData(data); };
                 _dataGroupingProviderHelper.OnCreateDisabledLeafElement = data => { return GetDisabledElementFromData(data); };
                 _dataGroupingProviderHelper.OnAddActions = (element, propertyValues) => { return AddGroupFolderActions(element, propertyValues); };
-                _dataGroupingProviderHelper.OnGetRootParentEntityToken = 
-                    (type, entityToken) => { return new GeneratedDataTypesElementProviderTypeEntityToken(TypeManager.SerializeType(type), _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId); };
+                _dataGroupingProviderHelper.OnGetRootParentEntityToken = GetRootParentEntityToken;
                 _dataGroupingProviderHelper.OnOwnsType = type =>
                 {
                     if (type.IsGenerated() == false) return false;
@@ -212,10 +211,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                     if (_onlyShowGlobalDatas == true)
                     {
-                        string typeManagerTypeName = TypeManager.SerializeType(type);
-                        IEnumerable<IGeneratedTypeWhiteList> whileList = DataFacade.GetData<IGeneratedTypeWhiteList>(true);
-                        bool isWhiteListed = whileList.Where(f => f.TypeManagerTypeName == typeManagerTypeName).Any();
-                        if (isWhiteListed == false) return false;
+                        return IsTypeWhiteListed(type);
                     }
 
                     return true;
@@ -224,7 +220,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             }
         }
-
+        
 
 
         /// <exclude />
@@ -1143,6 +1139,44 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     });
 
             return element;
+        }
+
+
+        private static bool IsTypeWhiteListed(Type type)
+        {
+            string typeManagerTypeName = TypeManager.SerializeType(type);
+
+            IEnumerable<IGeneratedTypeWhiteList> whileList = DataFacade.GetData<IGeneratedTypeWhiteList>(true);
+
+            bool isWhiteListed = whileList.Where(f => f.TypeManagerTypeName == typeManagerTypeName).Any();
+
+            return isWhiteListed;
+        }
+
+
+
+        private EntityToken GetRootParentEntityToken(Type type, EntityToken entityToken)
+        {
+            bool isPageFolder = PageFolderFacade.GetAllFolderTypes().Contains(type);
+
+            if (!isPageFolder)
+            {
+                if (_onlyShowGlobalDatas && !IsTypeWhiteListed(type)) return null;
+
+                return new GeneratedDataTypesElementProviderTypeEntityToken(
+                    TypeManager.SerializeType(type),
+                    _providerContext.ProviderName,
+                    GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
+                );
+            }
+
+            if (_onlyShowGlobalDatas) return null;
+
+            return new GeneratedDataTypesElementProviderTypeEntityToken(
+                    TypeManager.SerializeType(type),
+                    _providerContext.ProviderName,
+                    GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId
+                );
         }
 
 
