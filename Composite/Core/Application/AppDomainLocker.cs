@@ -25,6 +25,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Returns an IDisposalbe and requires the lock. Disposing the IDisposable releases the lock.
         /// </summary>
+        /// <param name="verbose">If this is true, verbose logging is done. Default is false</param>
         /// <example>
         /// <code>
         /// using (AppDomainLocker.NewLock)
@@ -33,34 +34,10 @@ namespace Composite.Core.Application
         /// }
         /// </code>
         /// </example>
-        public static IDisposable NewLock
+        public static IDisposable NewLock(bool verbose = false)
         {
-            get
-            {
-                return new DisposableLock();
-            }
-        }
-
-
-
-        /// <summary>
-        /// Returns an IDisposalbe and requires the lock. Disposing the IDisposable releases the lock.
-        /// </summary>
-        /// <example>
-        /// <code>
-        /// using (AppDomainLocker.NewLock)
-        /// {
-        ///     /* This code will only run in one app domain at any time */
-        /// }
-        /// </code>
-        /// </example>
-        public static IDisposable NewLockNonVerbose
-        {
-            get
-            {
-                return new DisposableLock(verbose: false);
-            }
-        }
+            return new DisposableLock(verbose);
+        }       
 
 
 
@@ -124,7 +101,7 @@ namespace Composite.Core.Application
 
                 if (IsLastReleaseForLockHoldingAppDomain())
                 {
-                    _systemGlobalEventWaitHandle.Leave();                    
+                    _systemGlobalEventWaitHandle.Leave();
                 }
 
                 _numberOfLocksAquried--;

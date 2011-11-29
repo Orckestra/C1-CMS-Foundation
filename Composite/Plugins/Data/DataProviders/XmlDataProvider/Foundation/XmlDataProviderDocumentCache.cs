@@ -134,7 +134,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 lock (_cacheSyncRoot)
                 {
-                    using (AppDomainLocker.NewLockNonVerbose)
+                    using (AppDomainLocker.NewLock())
                     {
                         cachedData = _cache[cacheKey];
 
@@ -263,7 +263,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
                 if (!dirtyRecords.Any()) return;
 
-                using (AppDomainLocker.NewLockNonVerbose)
+                using (AppDomainLocker.NewLock())
                 {
                     foreach (FileRecord record in dirtyRecords)
                     {
