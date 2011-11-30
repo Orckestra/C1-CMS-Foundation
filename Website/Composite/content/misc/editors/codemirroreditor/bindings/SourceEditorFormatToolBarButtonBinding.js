@@ -82,23 +82,31 @@ SourceEditorFormatToolbarButtonBinding.prototype.oncommand = function () {
 SourceEditorFormatToolbarButtonBinding.prototype._doIt = function () {
 
 	var markup = bindingMap.editorpage.getContent();
-	var dom = XMLParser.parse ( markup, true );
-	
-	if ( dom != null ) {
-		var result = MarkupFormatService.AutoIndentDocument ( encodeURIComponent ( markup ));
-		bindingMap.editorpage.setContent ( decodeURIComponent ( result ));
-		this._editorBinding.checkForDirty ();
-		Application.unlock ( this );
+	var dom = XMLParser.parse(markup, true);
+
+	if (dom != null) {
+		WebServiceProxy.isFaultHandler = false;
+		var result = MarkupFormatService.AutoIndentDocument(encodeURIComponent(markup));
+		WebServiceProxy.isFaultHandler = true;
+		if (result instanceof SOAPFault) {
+			Application.unlock(this);
+			this._editorBinding.validate();
+		}
+		else {
+			bindingMap.editorpage.setContent(decodeURIComponent(result));
+			this._editorBinding.checkForDirty();
+			Application.unlock(this);
+		}
 	} else {
-		Application.unlock ( this );
+		Application.unlock(this);
 		var editor = this._editorBinding;
-		Dialog.warning ( 
-			StringBundle.getString ( "Composite.Web.SourceEditor", "Format.XML.ErrorDialog.Title" ), 
-			StringBundle.getString ( "Composite.Web.SourceEditor", "Format.XML.ErrorDialog.Text" ),
+		Dialog.warning(
+			StringBundle.getString("Composite.Web.SourceEditor", "Format.XML.ErrorDialog.Title"),
+			StringBundle.getString("Composite.Web.SourceEditor", "Format.XML.ErrorDialog.Text"),
 			null,
 			{
-				handleDialogResponse : function () {
-					editor.validate ();
+				handleDialogResponse: function () {
+					editor.validate();
 				}
 			}
 		);
