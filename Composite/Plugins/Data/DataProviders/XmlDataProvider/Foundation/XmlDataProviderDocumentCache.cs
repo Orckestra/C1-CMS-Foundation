@@ -134,108 +134,105 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 lock (_cacheSyncRoot)
                 {
-                    using (AppDomainLocker.NewLock())
+                    cachedData = _cache[cacheKey];
+
+                    if (cachedData == null)
                     {
-                        cachedData = _cache[cacheKey];
-
-                        if (cachedData == null)
+                        if (!File.Exists(filename))
                         {
-                            if (!File.Exists(filename))
+                            bool failed = true;
+                            bool fileNotFound = false;
+                            Exception lastException = null;
+                            Log.LogWarning(LogTitle, "Did not find file '{0}' as expected, will look for .tmp. This can happen is a critical system failure killed the last save".FormatWith(filename));
+
+                            for (int i = 0; i < NumberOfRetries; i++)
                             {
-                                bool failed = true;
-                                bool fileNotFound = false;
-                                Exception lastException = null;
-                                Log.LogWarning(LogTitle, "Did not find file '{0}' as expected, will look for .tmp. This can happen is a critical system failure killed the last save".FormatWith(filename));
-
-                                for (int i = 0; i < NumberOfRetries; i++)
+                                try
                                 {
-                                    try
+                                    // Restore broken save
+                                    if (File.Exists(filename + ".tmp"))
                                     {
-                                        // Restore broken save
-                                        if (File.Exists(filename + ".tmp"))
-                                        {
-                                            File.Move(filename + ".tmp", filename);
-                                            Composite.Core.Log.LogInformation(LogTitle,
-                                                                              "Was able to restore '{0}' from .tmp file."
-                                                                                  .FormatWith(filename));
-                                            failed = false;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            fileNotFound = true;
-                                            break;
-                                        }
+                                        File.Move(filename + ".tmp", filename);
+                                        Composite.Core.Log.LogInformation(LogTitle,
+                                                                          "Was able to restore '{0}' from .tmp file."
+                                                                              .FormatWith(filename));
+                                        failed = false;
+                                        break;
                                     }
-                                    catch (Exception ex)
+                                    else
                                     {
-                                        lastException = ex;
-                                        Thread.Sleep(10 * (i + 1));
+                                        fileNotFound = true;
+                                        break;
                                     }
                                 }
-
-                                if (fileNotFound)
+                                catch (Exception ex)
                                 {
-                                    throw new InvalidOperationException("File '{0}' not found".FormatWith(filename));
-                                }
-
-                                if (failed)
-                                {
-                                    Log.LogCritical("XmlDataProvider",
-                                                               "Failed moving file " + filename + " to file " + filename +
-                                                               ".tmp");
-                                    if (lastException != null)
-                                    {
-                                        Log.LogCritical(LogTitle, lastException);
-                                        throw lastException;
-                                    }
+                                    lastException = ex;
+                                    Thread.Sleep(10 * (i + 1));
                                 }
                             }
 
-                            XDocument xDoc;
-                            try
+                            if (fileNotFound)
                             {
-                                xDoc = XDocumentUtils.Load(filename);
+                                throw new InvalidOperationException("File '{0}' not found".FormatWith(filename));
                             }
-                            catch (Exception ex)
+
+                            if (failed)
                             {
                                 Log.LogCritical("XmlDataProvider",
-                                                           "Failed to load data from the file: " + filename);
-                                Log.LogCritical("XmlDataProvider", ex);
-
-                                throw;
-                            }
-
-                            List<XElement> elements = ExtractElements(xDoc);
-
-                            var index = new Hashtable<IDataId, XElement>();
-                            foreach (var element in elements)
-                            {
-                                IDataId id = keyGetter(element);
-                                if (!index.ContainsKey(id))
+                                                           "Failed moving file " + filename + " to file " + filename +
+                                                           ".tmp");
+                                if (lastException != null)
                                 {
-                                    index.Add(id, element);
-                                }
-                                else
-                                {
-                                    // TODO: handle the dublicated id behaviour
+                                    Log.LogCritical(LogTitle, lastException);
+                                    throw lastException;
                                 }
                             }
-
-                            cachedData = new FileRecord
-                                             {
-                                                 FileName = filename,
-                                                 ElementName = elementName,
-                                                 RecordSet = new RecordSet {/* Elements = elements,*/ Index = index },
-                                                 ReadOnlyElementsList = new List<XElement>(elements),
-                                                 LastModified = DateTime.Now,
-                                                 FileModificationDate = C1File.GetLastWriteTime(filename)
-                                             };
-
-                            EnsureFileChangesSubscription(filename);
-
-                            _cache.Add(cacheKey, cachedData);
                         }
+
+                        XDocument xDoc;
+                        try
+                        {
+                            xDoc = XDocumentUtils.Load(filename);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.LogCritical("XmlDataProvider",
+                                                       "Failed to load data from the file: " + filename);
+                            Log.LogCritical("XmlDataProvider", ex);
+
+                            throw;
+                        }
+
+                        List<XElement> elements = ExtractElements(xDoc);
+
+                        var index = new Hashtable<IDataId, XElement>();
+                        foreach (var element in elements)
+                        {
+                            IDataId id = keyGetter(element);
+                            if (!index.ContainsKey(id))
+                            {
+                                index.Add(id, element);
+                            }
+                            else
+                            {
+                                // TODO: handle the dublicated id behaviour
+                            }
+                        }
+
+                        cachedData = new FileRecord
+                                         {
+                                             FileName = filename,
+                                             ElementName = elementName,
+                                             RecordSet = new RecordSet {/* Elements = elements,*/ Index = index },
+                                             ReadOnlyElementsList = new List<XElement>(elements),
+                                             LastModified = DateTime.Now,
+                                             FileModificationDate = C1File.GetLastWriteTime(filename)
+                                         };
+
+                        EnsureFileChangesSubscription(filename);
+
+                        _cache.Add(cacheKey, cachedData);
                     }
                 }
             }
@@ -263,12 +260,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
                 if (!dirtyRecords.Any()) return;
 
-                using (AppDomainLocker.NewLock())
+                foreach (FileRecord record in dirtyRecords)
                 {
-                    foreach (FileRecord record in dirtyRecords)
-                    {
-                        SaveChanges(record);
-                    }
+                    SaveChanges(record);
                 }
             }
         }
