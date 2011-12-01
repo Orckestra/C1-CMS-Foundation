@@ -5,6 +5,7 @@ using Composite.Core.Types;
 using Composite.Core.Types.Plugins.TypeManagerTypeHandler;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+using Composite.Data;
 
 
 namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerTypeManagerTypeHandler
@@ -71,9 +72,12 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
 
         private string SerializeTypeImpl(Type type)
         {
-            if (type.Assembly.Location.StartsWith(PathUtil.BaseDirectory, StringComparison.InvariantCultureIgnoreCase))
+            string assemblyLocation = type.Assembly.Location;
+
+            if ((assemblyLocation.StartsWith(CodeGenerationManager.TempAssemblyFolderPath, StringComparison.InvariantCultureIgnoreCase)) ||
+                (assemblyLocation.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.InvariantCultureIgnoreCase) >= 0))
             {
-                return type.FullName;    
+                return type.FullName;
             }
                 
             return null;

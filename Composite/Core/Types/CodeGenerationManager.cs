@@ -371,7 +371,7 @@ namespace Composite.Core.Types
             compilerParameters.GenerateInMemory = false;
 
 #warning MRJ: BM: Fix this path stuff!
-            compilerParameters.OutputAssembly = Path.Combine(TempAssemblyPath(), Guid.NewGuid() + ".dll");
+            compilerParameters.OutputAssembly = Path.Combine(TempAssemblyFolderPath, Guid.NewGuid() + ".dll");
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(codeGenerationBuilder.AssemblyLocations.ToArray());
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CompiledAssemblies.Select(f => f.Location).ToArray());
@@ -468,17 +468,43 @@ namespace Composite.Core.Types
 
 
 
-        internal static string TempAssemblyPath()
+        internal static string TempAssemblyFolderPath
         {
-            return PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
+            get
+            {
+                return PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
+            }
         }
 
 
 
-        internal static string BinFolder()
+        internal static string BinFolder
         {
-            return Path.Combine(PathUtil.BaseDirectory, "Bin");
+            get
+            {
+                return Path.Combine(PathUtil.BaseDirectory, "Bin");
+            }
         }
+
+
+
+        internal static string CompositeGeneratedFileName
+        {
+            get
+            {
+                return "Composite.Generated.dll";
+            }
+        }
+
+
+        internal static string CompositeGeneratedAssemblyPath
+        {
+            get
+            {
+                return Path.Combine(BinFolder, "Composite.Generated.dll");
+            }
+        }
+
 
 
 #warning MRJ: BM: Consider moving this to a helper class
@@ -631,7 +657,7 @@ namespace Composite.Core.Types
             compilerParameters.GenerateExecutable = false;
             compilerParameters.GenerateInMemory = false;
 #warning MRJ: BM: Assembly file name fix
-            compilerParameters.OutputAssembly = Path.Combine(BinFolder(), "Composite.Generated.dll");
+            compilerParameters.OutputAssembly = CompositeGeneratedAssemblyPath; 
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(builder.AssemblyLocations.ToArray());
             AddAssemblyLocationsFromBin(compilerParameters);

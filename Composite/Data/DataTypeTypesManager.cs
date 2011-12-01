@@ -95,11 +95,11 @@ namespace Composite.Data
         {
             string assemblyPath = dataType.Assembly.Location;
 
-            if (assemblyPath.StartsWith(CodeGenerationManager.TempAssemblyPath(), StringComparison.InvariantCultureIgnoreCase)) return true;
-            if (assemblyPath.StartsWith(CodeGenerationManager.BinFolder(), StringComparison.InvariantCultureIgnoreCase)) return true;
+            if (assemblyPath.StartsWith(CodeGenerationManager.TempAssemblyFolderPath, StringComparison.InvariantCultureIgnoreCase)) return true;
+            if (assemblyPath.StartsWith(CodeGenerationManager.BinFolder, StringComparison.InvariantCultureIgnoreCase)) return true;
 
             string assemblyFileName = Path.GetFileName(assemblyPath);
-            bool locatedInBinFolder = C1Directory.GetFiles(CodeGenerationManager.BinFolder()).Where(f => Path.GetFileName(f).Equals(assemblyFileName, StringComparison.InvariantCultureIgnoreCase)).Any();
+            bool locatedInBinFolder = C1Directory.GetFiles(CodeGenerationManager.BinFolder).Where(f => Path.GetFileName(f).Equals(assemblyFileName, StringComparison.InvariantCultureIgnoreCase)).Any();
             if (locatedInBinFolder) return true;
 
 
