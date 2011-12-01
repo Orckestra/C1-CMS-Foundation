@@ -34,21 +34,14 @@ new function () {
 			
 			this.editor = ed;
 			
-			/*
-			 * Doubleclick feature enabled for Mozilla only. 
-			 * IE looses the selection-bookmark when IMG gets  
-			 * doubleclicked immediately after closing the dialog.
-			 */
-			if ( Client.isMozilla ) {
-				var self = this;
-				ed.onDblClick.add ( function ( editor, e ) {
-					if (VisualEditorBinding.isFunctionElement(e.target)) {
-						self._img = e.target;
-						self.execCommand ( "compositeInsertRendering", true, "update" );
-						self._img = null;
-					}
-				});
-			}
+			var self = this;
+			ed.onDblClick.add ( function ( editor, e ) {
+				if (VisualEditorBinding.isFunctionElement(e.target)) {
+					self._img = e.target;
+					self.execCommand ( "compositeInsertRendering", true, "update" );
+					self._img = null;
+				}
+			});
 		},
 			
 		/**
