@@ -6,8 +6,8 @@ using Composite.Core.Logging;
 
 namespace Composite.Data.Foundation
 {
-	internal static class DataInterfaceAutoUpdater
-	{
+    internal static class DataInterfaceAutoUpdater
+    {
         internal static bool EnsureUpdateAllInterfaces()
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
@@ -16,35 +16,31 @@ namespace Composite.Data.Foundation
 
                 foreach (Type interfaceType in DataProviderRegistry.AllKnownInterfaces)
                 {
-                    if (interfaceType.IsAutoUpdateble() == true)
+                    if (!interfaceType.IsAutoUpdateble()) continue;
+                    if (interfaceType.IsGenerated()) continue;
+
+                    foreach (string providerName in DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType))
                     {
-                        foreach (string providerName in DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType))
+                        try
                         {
-                            try
+                            if (DynamicTypeManager.EnsureUpdateStore(interfaceType, providerName, false) == true)
                             {
-                                if (DynamicTypeManager.EnsureUpdateStore(interfaceType, providerName, false) == true)
-                                {
-                                    doFlush = true;
-                                }
-                            }
-                            catch (TypeUpdateVersionException)
-                            {
-                                throw;
-                            }
-                            catch (TypeInitializationException tiex)
-                            {
-                                throw new InvalidOperationException("The data type meta stored did not initialize. Check configuration", tiex);
-                            }
-                            catch (Exception ex)
-                            {
-                                LoggingService.LogCritical("DataInterfaceAutoUpdater", string.Format("Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName));
-                                LoggingService.LogCritical("DataInterfaceAutoUpdater", ex);
+                                doFlush = true;
                             }
                         }
-                    }
-                    else
-                    {
-                        // LoggingService.LogWarning("DataInterfaceAutoUpdater", string.Format("'{0}' can not be updated.", interfaceType));
+                        catch (TypeUpdateVersionException)
+                        {
+                            throw;
+                        }
+                        catch (TypeInitializationException tiex)
+                        {
+                            throw new InvalidOperationException("The data type meta stored did not initialize. Check configuration", tiex);
+                        }
+                        catch (Exception ex)
+                        {
+                            LoggingService.LogCritical("DataInterfaceAutoUpdater", string.Format("Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName));
+                            LoggingService.LogCritical("DataInterfaceAutoUpdater", ex);
+                        }
                     }
                 }
 
@@ -60,26 +56,26 @@ namespace Composite.Data.Foundation
             {
                 foreach (Type interfaceType in DataProviderRegistry.AllInterfaces)
                 {
-                    if (interfaceType.IsAutoUpdateble() == true)
+                    if (!interfaceType.IsAutoUpdateble()) continue;
+                    if (interfaceType.IsGenerated()) continue;
+
+                    foreach (string providerName in DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType))
                     {
-                        foreach (string providerName in DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType))
+                        try
                         {
-                            try
+                            if (DynamicTypeManager.IsEnsureUpdateStoreNeeded(interfaceType) == true)
                             {
-                                if (DynamicTypeManager.IsEnsureUpdateStoreNeeded(interfaceType) == true)
-                                {
-                                    LoggingService.LogError("DataInterfaceAutoUpdater", string.Format("Autoupdating the data interface '{0}' on the '{1}' data provider failed!", interfaceType, providerName));
-                                }
+                                LoggingService.LogError("DataInterfaceAutoUpdater", string.Format("Autoupdating the data interface '{0}' on the '{1}' data provider failed!", interfaceType, providerName));
                             }
-                            catch (Exception ex)
-                            {
-                                LoggingService.LogCritical("DataInterfaceAutoUpdater", string.Format("Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName));
-                                LoggingService.LogCritical("DataInterfaceAutoUpdater", ex);
-                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            LoggingService.LogCritical("DataInterfaceAutoUpdater", string.Format("Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName));
+                            LoggingService.LogCritical("DataInterfaceAutoUpdater", ex);
                         }
                     }
                 }
             }
         }
-	}
+    }
 }
