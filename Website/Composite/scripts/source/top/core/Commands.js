@@ -79,9 +79,10 @@ _Commands.prototype = {
 	/**
 	 * Save current editor [CTRL+S].  This broadcast is intercepted by the DockTabBinding.
 	 */
-	save : function () {
-		
-		EventBroadcaster.broadcast ( BroadcastMessages.SAVE_CURRENT );
+	save: function () {
+		//Skip saving on Ctrl+S fo webkit. Smth wrong with blur for codeeditor if invalid markup
+		if (!Client.isWebKit)
+			EventBroadcaster.broadcast ( BroadcastMessages.SAVE_CURRENT );
 	},
 	
 	/**
