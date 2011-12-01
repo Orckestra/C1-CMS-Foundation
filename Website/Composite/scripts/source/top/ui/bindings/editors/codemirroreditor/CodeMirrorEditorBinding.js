@@ -697,10 +697,16 @@ CodeMirrorEditorBinding.prototype._isValidHTML = function (xml) {
 	*/
 	if (errors.hasEntries()) {
 		result = false;
-		Dialog.error(
+		//Workarround for webkit and codemirror
+		if (Client.isWebKit) {
+			alert(StringBundle.getString("Composite.Web.SourceEditor", "Invalid.HTML." + errors.getFirst()));
+		}
+		else {
+			Dialog.error(
 			StringBundle.getString("Composite.Web.SourceEditor", "Invalid.HTML.DialogTitle"),
 			StringBundle.getString("Composite.Web.SourceEditor", "Invalid.HTML." + errors.getFirst())
 		);
+		}
 	}
 
 	return result;
