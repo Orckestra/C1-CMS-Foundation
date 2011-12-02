@@ -193,12 +193,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         XDocument xDoc;
                         try
                         {
-                            xDoc = XDocumentUtils.Load(filename);
+                            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+                            xmlReaderSettings.CheckCharacters = false;
+
+                            using (XmlReader xmlWriter = XmlReader.Create(filename, xmlReaderSettings))
+                            {
+                                xDoc = XDocument.Load(xmlWriter);
+                            }
                         }
                         catch (Exception ex)
                         {
-                            Log.LogCritical("XmlDataProvider",
-                                                       "Failed to load data from the file: " + filename);
+                            Log.LogCritical("XmlDataProvider", "Failed to load data from the file: " + filename);
                             Log.LogCritical("XmlDataProvider", ex);
 
                             throw;
@@ -296,6 +301,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 try
                 {
                     // Saving to temp file and file move to prevent broken saves
+#warning MRJ: Clean this
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
@@ -304,6 +310,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         xDocument.Save(xmlWriter);
                     }
+
 
                     if (File.Exists(fileRecord.FileName))
                     {
