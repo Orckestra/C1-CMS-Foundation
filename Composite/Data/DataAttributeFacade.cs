@@ -138,7 +138,10 @@ namespace Composite.Data
 
             lock (interfaceToImmutableTypeIdCache)
             {
-                interfaceToImmutableTypeIdCache.Add(interfaceType, immutableTypeId);
+                if (!interfaceToImmutableTypeIdCache.ContainsKey(interfaceType))
+                {
+                    interfaceToImmutableTypeIdCache.Add(interfaceType, immutableTypeId);
+                }
             }
 
 			return true;
