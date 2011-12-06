@@ -21,6 +21,7 @@ using Composite.Functions.ManagedParameters;
 using Composite.Functions.Plugins.FunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
+using Composite.Core;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider
@@ -201,14 +202,24 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
                             string folderPath = Path.GetDirectoryName(_xsltFunction.XslFilePath);
                             string fileName = Path.GetFileName(_xsltFunction.XslFilePath);
 
-                            var xsltFileHandles =
-                                (from file in DataFacade.GetData<IXsltFile>()
-                                 where String.Equals(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase)
-                                       && String.Equals(file.FileName, fileName, StringComparison.OrdinalIgnoreCase) 
-                                 select file).ToList();
+                            IXsltFile xsltFileHandle = null;
 
-                            Verify.That(xsltFileHandles.Count == 1, "XSLT file path {0} found {1} times. Only one instance was expected.".FormatWith(_xsltFunction.XslFilePath, xsltFileHandles.Count));
-                            IXsltFile xsltFileHandle = xsltFileHandles[0];
+                            try
+                            {
+                                var xsltFileHandles =
+                                    (from file in DataFacade.GetData<IXsltFile>()
+                                     where String.Equals(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase)
+                                           && String.Equals(file.FileName, fileName, StringComparison.OrdinalIgnoreCase)
+                                     select file).ToList();
+
+                                Verify.That(xsltFileHandles.Count == 1, "XSLT file path {0} found {1} times. Only one instance was expected.".FormatWith(_xsltFunction.XslFilePath, xsltFileHandles.Count));
+                                xsltFileHandle = xsltFileHandles[0];
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogError("XsltBasedFunctionProvider", ex);    
+                                throw;
+                            }
 
                             if(!_subscribedToFileChanges)
                             {
