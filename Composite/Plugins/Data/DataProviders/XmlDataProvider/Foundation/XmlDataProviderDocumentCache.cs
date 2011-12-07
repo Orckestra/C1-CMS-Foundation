@@ -8,14 +8,10 @@ using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Logging;
-using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
-using Composite.Core.Configuration;
 using Composite.Core;
-using Composite.Core.Application;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -153,9 +149,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                                     if (File.Exists(filename + ".tmp"))
                                     {
                                         File.Move(filename + ".tmp", filename);
-                                        Composite.Core.Log.LogInformation(LogTitle,
-                                                                          "Was able to restore '{0}' from .tmp file."
-                                                                              .FormatWith(filename));
+                                        Log.LogInformation(LogTitle,"Was able to restore '{0}' from .tmp file.".FormatWith(filename));
                                         failed = false;
                                         break;
                                     }
@@ -196,15 +190,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
                             xmlReaderSettings.CheckCharacters = false;
 
-                            using (XmlReader xmlWriter = XmlReader.Create(filename, xmlReaderSettings))
+                            using (XmlReader xmlReader = XmlReader.Create(filename, xmlReaderSettings))
                             {
-                                xDoc = XDocument.Load(xmlWriter);
+                                xDoc = XDocument.Load(xmlReader);
                             }
                         }
                         catch (Exception ex)
                         {
-                            Log.LogCritical("XmlDataProvider", "Failed to load data from the file: " + filename);
-                            Log.LogCritical("XmlDataProvider", ex);
+                            Log.LogCritical(LogTitle, "Failed to load data from the file: " + filename);
+                            Log.LogCritical(LogTitle, ex);
 
                             throw;
                         }
