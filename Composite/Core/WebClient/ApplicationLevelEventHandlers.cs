@@ -22,6 +22,7 @@ namespace Composite.Core.WebClient
     {
         readonly static object _syncRoot = new object();
         private static bool _systemIsInitialized = false;
+        private static bool _haveAppDomainLock = false;
         private static EventHandler _domainUnloadedEventHandler = null;
 
         /// <exclude />
@@ -56,7 +57,9 @@ namespace Composite.Core.WebClient
             
             AppDomainLocker.AquireLock((int)GlobalSettingsFacade.DefaultWriterLockWaitTimeout.TotalMilliseconds);
             AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);
-            
+
+            _haveAppDomainLock = true;
+
             CodeGenerationManager.ValidateCompositeGenerate(startTime);
 
 
@@ -133,7 +136,10 @@ namespace Composite.Core.WebClient
                 }
                 finally
                 {
-                    AppDomainLocker.ReleaseLock();
+                    if (_haveAppDomainLock)
+                    {
+                        AppDomainLocker.ReleaseLock();
+                    }
                 }
             }
         }
