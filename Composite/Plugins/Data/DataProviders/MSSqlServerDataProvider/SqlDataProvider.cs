@@ -509,9 +509,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 var typeDesrciptor = DynamicTypeManager.GetDataTypeDescriptor(type);
                 SqlStoreManipulator.AddLocale(typeDesrciptor, cultureInfo);
 
-                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor);
+                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == typeDesrciptor.DataTypeId).Single();
 
-                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == newElement.DataTypeId).Single();
+                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor, oldElement);
+                
                 _interfaceConfigurationElements.Remove(oldElement);
                 _interfaceConfigurationElements.Add(newElement);
             }
@@ -530,9 +531,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 var typeDesrciptor = DynamicTypeManager.GetDataTypeDescriptor(type);
                 SqlStoreManipulator.RemoveLocale(_dataProviderContext.ProviderName, typeDesrciptor, cultureInfo);
 
-                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor);
-                
-                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == newElement.DataTypeId).Single();
+                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == typeDesrciptor.DataTypeId).Single();
+
+                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor, oldElement);
+                                
                 _interfaceConfigurationElements.Remove(oldElement);
                 _interfaceConfigurationElements.Add(newElement);
             }

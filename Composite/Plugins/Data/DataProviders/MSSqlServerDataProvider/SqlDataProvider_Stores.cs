@@ -53,10 +53,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 bool localizationChanged = dataTypeChangeDescriptor.AlteredType.Localizeable !=
                                            dataTypeChangeDescriptor.OriginalType.Localizeable;
 
-                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.Change(_dataProviderContext.ProviderName, dataTypeChangeDescriptor, localizationChanged);
+                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == updateDataTypeDescriptor.OldDataTypeDescriptor.DataTypeId).Single();
+
+                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.Change(_dataProviderContext.ProviderName, dataTypeChangeDescriptor, localizationChanged, oldElement);
                 if (newElement != null)
-                {
-                    InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == newElement.DataTypeId).Single();
+                {                    
                     _interfaceConfigurationElements.Remove(oldElement);
                     _interfaceConfigurationElements.Add(newElement);
                 }
