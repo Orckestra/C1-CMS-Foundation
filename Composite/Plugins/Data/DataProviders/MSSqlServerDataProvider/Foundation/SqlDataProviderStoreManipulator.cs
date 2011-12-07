@@ -398,7 +398,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             try
             {
                 string originalTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, culture.Name);
-                string alteredTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, culture);
+                string alteredTableName = originalTableName;
+
+                // This could be done more nicely! But only give the table a new name if the type has changed its name and not because we changed the naming scheme
+                if (updateDataTypeDescriptor.OldDataTypeDescriptor.Name != updateDataTypeDescriptor.NewDataTypeDescriptor.Name ||
+                    updateDataTypeDescriptor.OldDataTypeDescriptor.Namespace != updateDataTypeDescriptor.NewDataTypeDescriptor.Namespace)
+                {
+                    alteredTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, culture);
+                }
+
                 var tables = GetTablesList();
 
                 if (!tables.Contains(originalTableName))
