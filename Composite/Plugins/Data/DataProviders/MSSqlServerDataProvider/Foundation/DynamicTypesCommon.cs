@@ -33,12 +33,30 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 					throw new InvalidOperationException("Unsupported data scope identifier: '{0}'".FormatWith(dataScope.Name));
 			}
 
-            string result = string.Format("{0}_{1}_{2}", tableNameStem, dataTypeDescriptor.Name, publicationScope);
+            string storageKey = GetStorageName(publicationScope.ToString(), cultureInfo.Name);
 
-            if (!string.IsNullOrEmpty(cultureInfo.ToString())) result += "_" + cultureInfo.ToString().Replace("-", "");
+            return string.Format("{0}_{1}_{2}", tableNameStem, dataTypeDescriptor.Name, storageKey);
 
-            return result;
+#warning MRJ: BM: Clean this
+            //string result = string.Format("{0}_{1}_{2}", tableNameStem, dataTypeDescriptor.Name, publicationScope);
+
+            //if (!string.IsNullOrEmpty(cultureInfo.ToString())) result += "_" + cultureInfo;
+
+            //return result;
 		}
+
+
+        internal static string GetStorageName(string dataScope, string cultureName)
+        {
+            string result = dataScope;
+            if (!cultureName.IsNullOrEmpty())
+            {
+                result += "_" + cultureName.Replace('-', '_').Replace(' ', '_');
+            }
+            return result;
+        }
+
+
 
 		internal static string GenerateListTableName(DataTypeDescriptor typeDescriptor, DataFieldDescriptor fieldDescriptor)
 		{
