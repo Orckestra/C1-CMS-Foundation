@@ -26,12 +26,12 @@ namespace Composite.Core.Types
 {
 #warning MRJ: Major cleanup
 
-    
 
 
 
 
-    
+
+
 
 
 
@@ -299,7 +299,7 @@ namespace Composite.Core.Types
         internal static void ValidateCompositeGenerate(DateTime time)
         {
             string filePath = Path.Combine(PathUtil.BaseDirectory, "Bin", "Composite.Generated.dll");
-            
+
             if (!C1File.Exists(filePath)) return;
 
             DateTime lastWrite = C1File.GetLastWriteTime(filePath);
@@ -337,7 +337,7 @@ namespace Composite.Core.Types
 
                         Log.LogVerbose(LogTitle, "Number of types build: " + numberOfTypes);
                         Log.LogVerbose(LogTitle, "Building code dom: " + (t2 - t1) + "ms");
-                        Log.LogVerbose(LogTitle, "Compiling code dom: " + (t3 - t2) + "ms");                     
+                        Log.LogVerbose(LogTitle, "Compiling code dom: " + (t3 - t2) + "ms");
                         Log.LogVerbose(LogTitle, "Total compilation: " + (t3 - t1) + "ms");
 
                         _compositeGeneratedCompiled = true;
@@ -363,7 +363,10 @@ namespace Composite.Core.Types
         {
             int t1 = Environment.TickCount;
 
-            _compositeGeneratedCompiled = false; // When compiling a new type, Composite.Generated.dll should always be recompiled
+            if (!AppDomain.CurrentDomain.IsFinalizingForUnload())
+            {
+                _compositeGeneratedCompiled = false; // When compiling a new type, Composite.Generated.dll should always be recompiled
+            }
 
 #warning MRJ: BM: Duplicated code, refact!
             CompilerParameters compilerParameters = new CompilerParameters();
@@ -393,7 +396,7 @@ namespace Composite.Core.Types
                 Type[] resultTypes = resultAssembly.GetTypes();
 
                 int t2 = Environment.TickCount;
-                
+
                 Log.LogVerbose(LogTitle, string.Format("Compile '{0}' in {1}ms", codeGenerationBuilder.DebugLabel, t2 - t1));
                 Log.LogVerbose(LogTitle, string.Format("Types from : {0}", compilerParameters.OutputAssembly));
 
@@ -454,7 +457,7 @@ namespace Composite.Core.Types
             return CheckAgainsAppCode(dataTypeDescriptorToTest, true);
         }
 
-        #warning MRJ: BM: Consider moving this to a helper class
+#warning MRJ: BM: Consider moving this to a helper class
         /// <summary>
         /// This method will try to compile the given type to see if any changes done to the type
         /// will conflict with code in App_Code
@@ -523,7 +526,7 @@ namespace Composite.Core.Types
             List<string> filesToCompile = GetAppCodeFiles().ToList();
 
             if (filesToCompile.Count == 0) return new CompatibilityCheckResult();
-            
+
 
 #warning MRJ: BM: Refac this out using the CodeGeneratorBuilder as parameter
             CSharpCodeProvider csCompiler = new CSharpCodeProvider();
@@ -532,7 +535,7 @@ namespace Composite.Core.Types
             Dictionary<string, List<CodeTypeDeclaration>> codeTypeDeclarations = new Dictionary<string, List<CodeTypeDeclaration>>();
 
             foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
-            {           
+            {
                 if ((!includeDataTypeDescriptor) && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) continue;
 
                 DataTypeDescriptor dataTypeDescriptorToUse = dataTypeDescriptor;
@@ -570,7 +573,7 @@ namespace Composite.Core.Types
 
                 }
             }
-            
+
 
 #warning MRJ: BM: Duplicated code, refact!
             CompilerParameters compilerParameters = new CompilerParameters();
@@ -579,7 +582,7 @@ namespace Composite.Core.Types
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(referencedAssemblies.Select(f => f.Location).ToArray());
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CompiledAssemblies.Select(f => f.Location).ToArray());
-#warning MRJ: BM: 
+#warning MRJ: BM:
             AddAssemblyLocationsFromBin(compilerParameters);
             AddLoadedAssemblies(compilerParameters);
             AddCommonAssemblies(compilerParameters);
@@ -657,7 +660,7 @@ namespace Composite.Core.Types
             compilerParameters.GenerateExecutable = false;
             compilerParameters.GenerateInMemory = false;
 #warning MRJ: BM: Assembly file name fix
-            compilerParameters.OutputAssembly = CompositeGeneratedAssemblyPath; 
+            compilerParameters.OutputAssembly = CompositeGeneratedAssemblyPath;
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(builder.AssemblyLocations.ToArray());
             AddAssemblyLocationsFromBin(compilerParameters);
@@ -698,7 +701,7 @@ namespace Composite.Core.Types
                         sb.AppendLine(entry);
                     }
 
-                    throw new InvalidOperationException(sb.ToString());                    
+                    throw new InvalidOperationException(sb.ToString());
                 }
             }
         }
@@ -734,7 +737,7 @@ namespace Composite.Core.Types
             }
         }
 
-        
+
 
 
         private static void AddAssemblyLocationsFromBin(CompilerParameters compilerParameters)
@@ -871,7 +874,7 @@ namespace Composite.Core.Types
 #warning MRJ: BM: Hardcoded name here
             List<string> assembliesToRemove = compilerParameters.ReferencedAssemblies.
                 OfType<string>().
-                Where(f => f.IndexOf("Composite.Generated.dll", StringComparison.InvariantCultureIgnoreCase) >= 0 || 
+                Where(f => f.IndexOf("Composite.Generated.dll", StringComparison.InvariantCultureIgnoreCase) >= 0 ||
                            f.StartsWith(PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory), StringComparison.InvariantCultureIgnoreCase)).
                 Select(f => f).
                 ToList();
@@ -896,7 +899,7 @@ namespace Composite.Core.Types
                 {
                     assembliesToRemove.Add(assembly);
 #warning MRJ: BM: Fix this !!!!!!!!!!!!!
-//                    throw new NotImplementedException("The old assembly should be removed! Just want to see if this happens :)");
+                    //                    throw new NotImplementedException("The old assembly should be removed! Just want to see if this happens :)");
                 }
             }
 
@@ -934,6 +937,6 @@ namespace Composite.Core.Types
         private static void OnFlushEvent(FlushEventArgs args)
         {
             Flush();
-        }        
+        }
     }
 }
