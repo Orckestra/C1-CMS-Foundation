@@ -112,7 +112,7 @@ namespace Composite.Core.Application
                     }
 
 
-                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Aquire the system wide lock with the key '{2}'!", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id));
+                    if (verbose) Log.LogVerbose(_verboseLogEntryTitle, string.Format("The AppDomain '{0}', Process '{1}': Aquired the system wide lock with the key '{2}'!", AppDomain.CurrentDomain.Id, Process.GetCurrentProcess().Id, _systemGlobalEventWaitHandle.Id));
                 }
                 else
                 {
