@@ -217,11 +217,11 @@ namespace Composite.Services
 
                 var unHandledHtmlElementNames = new List<XName>
                                                     {
-                                                        Namespaces.Xhtml + "area",
                                                         Namespaces.Xhtml + "audio",
                                                         Namespaces.Xhtml + "canvas",
                                                         Namespaces.Xhtml + "embed",
                                                         Namespaces.Xhtml + "iframe",
+                                                        Namespaces.Xhtml + "map",
                                                         Namespaces.Xhtml + "object",
                                                         Namespaces.Xhtml + "script",
                                                         Namespaces.Xhtml + "video"
