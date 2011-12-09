@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using Composite.Core;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation.CodeGeneration;
+using Composite.Data.Foundation;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
-using System.IO;
-using Composite.Data.Foundation;
-using Composite.Core.Serialization.CodeGeneration;
-using Composite.Core;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -24,7 +22,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             Type dataProviderHelperType;
             Type dataIdClassType;
-            EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
+            bool typesExists = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
+            if (!typesExists) throw new InvalidOperationException(string.Format("Could not find og code generated the type '{0}' or one of the needed helper types", dataTypeDescriptor.GetFullInterfaceName()));
+                
 
             XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);            
 
