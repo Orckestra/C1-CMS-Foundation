@@ -361,12 +361,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static IEnumerable<Type> CompileRuntimeTempTypes(CodeGenerationBuilder codeGenerationBuilder)
         {
-            int t1 = Environment.TickCount;
-
-            if (!AppDomain.CurrentDomain.IsFinalizingForUnload())
-            {
-                _compositeGeneratedCompiled = false; // When compiling a new type, Composite.Generated.dll should always be recompiled
-            }
+            int t1 = Environment.TickCount;           
 
 #warning MRJ: BM: Duplicated code, refact!
             CompilerParameters compilerParameters = new CompilerParameters();
