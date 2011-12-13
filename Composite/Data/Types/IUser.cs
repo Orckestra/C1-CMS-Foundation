@@ -17,6 +17,7 @@ namespace Composite.Data.Types
     [ImmutableTypeId("{AA086DC1-E5F6-4568-8BED-460D3275380F}")]
     [Caching(CachingType.Full)]    
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
+    [Title("C1 Console User")]
     public interface IUser : IData
     {
         /// <exclude />
