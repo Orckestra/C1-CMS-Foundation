@@ -1,5 +1,5 @@
 ﻿#warning REMOVE THIS LINE!!!
-#define OUTPUT_SOURCE_CODE_ON_ERROR
+//#define OUTPUT_SOURCE_CODE_ON_ERROR
 
 using System;
 using System.CodeDom;
@@ -675,6 +675,7 @@ namespace Composite.Core.Types
                 if (i == NumberOfCompileRetries - 1)
                 {
 #warning MRJ: BM: Remove this
+#if OUTPUT_SOURCE_CODE_ON_ERROR
                     using (FileStream file = File.Create(Path.Combine(PathUtil.BaseDirectory, "output.cs")))
                     {
                         using (var sw = new StreamWriter(file))
@@ -682,6 +683,7 @@ namespace Composite.Core.Types
                             compiler.GenerateCodeFromCompileUnit(codeCompileUnit, sw, new CodeGeneratorOptions());
                         }
                     }
+#endif
 
 
                     StringBuilder sb = new StringBuilder();
