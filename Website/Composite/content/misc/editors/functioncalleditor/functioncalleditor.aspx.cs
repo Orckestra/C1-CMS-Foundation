@@ -1017,6 +1017,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         if (parameterNode.Attribute("inputParameter") != null)
         {
             ShowInputParameterSelector(parameterProfile, parameterNode);
+            mlvWidget.Visible = true;
             return;
         }
 
