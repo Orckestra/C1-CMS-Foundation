@@ -221,6 +221,7 @@ namespace Composite.Core.IO
             // css
             _toCanonical.Add("text/css", Css);
             AddExtensionMapping("css", Css);
+            AddExtensionMapping("less", Css);
             _mimeTypeToResourceName.Add(Css, "mimetype-css");
 
             // Resx
