@@ -51,6 +51,11 @@ namespace Composite.Core.WebClient.Setup
                 	Key = "diskspace",
                     Title = "Disk space requirements",
                     Success = DiskSpaceCheck()
+                },
+                new CheckResult {
+                	Key = "iisversion",
+                    Title = "Web server version",
+                    Success = WebServerVersionCheck()
                 }
             };
         }
@@ -273,7 +278,12 @@ namespace Composite.Core.WebClient.Setup
             return true; // Fake! This check is made by the client before this service is even invoked.
         }
 
+        private bool WebServerVersionCheck()
+        {
+            string iisVersion = Context.Request.ServerVariables["SERVER_SOFTWARE"];
 
+            return (iisVersion != "Microsoft-IIS/5.0") && (iisVersion != "Microsoft-IIS/5.1");
+        }
 
         private bool DiskSpaceCheck()
         {
@@ -296,8 +306,6 @@ namespace Composite.Core.WebClient.Setup
                 return false;
             }
         }
-
-
 
 
         public class CheckResult
