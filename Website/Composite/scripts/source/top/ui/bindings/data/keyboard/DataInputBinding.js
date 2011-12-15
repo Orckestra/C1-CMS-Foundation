@@ -704,8 +704,6 @@ DataInputBinding.prototype.validate = function ( isInternal ) {
 							if ( Client.isMozilla ) {
 								this.shadowTree.input.type = "text";
 								this.setValue ( message );
-							} else {
-								alert ( message );
 							}
 						} else {
 							this.setValue ( message );
