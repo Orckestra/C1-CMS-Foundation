@@ -278,6 +278,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             if(newParameterValueType != null)
             {
                 ParameterValueTypeChanged(newParameterValueType.Value);
+				ctlFeedback.MarkAsDirty();
             }
         }
 
@@ -581,8 +582,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         }
 
         TreePathToIdMapping = newPathToIdMap;
-
-        ctlFeedback.MarkAsDirty();
     }
 
 

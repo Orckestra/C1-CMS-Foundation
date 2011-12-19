@@ -45,39 +45,43 @@ ResponseBinding.prototype.onBindingAttach = function () {
  * Update stuff!
  */
 ResponseBinding.prototype._update = function () {
-	
+
+	// Mark as Dirty
+	if (this.getProperty("dirty") === true) {
+		this.dispatchAction(Binding.ACTION_DIRTY);
+	}
 	/*
-	 * Any status updates? These ations get intercepted somewhere in PageBinding.
-	 * @see {PageBinding#_setupDotNet}
-	 */
-	var status = this.getProperty ( "status" );
-	if ( status != null ) {
-		switch ( status ) {
-			case "success" :
-				this.dispatchAction ( ResponseBinding.ACTION_SUCCESS );
+	* Any status updates? These ations get intercepted somewhere in PageBinding.
+	* @see {PageBinding#_setupDotNet}
+	*/
+	var status = this.getProperty("status");
+	if (status != null) {
+		switch (status) {
+			case "success":
+				this.dispatchAction(ResponseBinding.ACTION_SUCCESS);
 				break;
-			case "failure" :
-				this.dispatchAction ( ResponseBinding.ACTION_FAILURE );
+			case "failure":
+				this.dispatchAction(ResponseBinding.ACTION_FAILURE);
 				break;
-			case "ooookay" :
-				this.dispatchAction ( ResponseBinding.ACTION_OOOOKAY );
+			case "ooookay":
+				this.dispatchAction(ResponseBinding.ACTION_OOOOKAY);
 				break;
 		}
 	}
-	
+
 	/*
-	 * Any messages?
-	 */
-	var index = this.getProperty ( "messagequeueindex" );
-	if ( index != null ) {
+	* Any messages?
+	*/
+	var index = this.getProperty("messagequeueindex");
+	if (index != null) {
 		/*
 		this.logger.debug ( 
-			"Client MessageQueue index: " + MessageQueue.index + "\n" + 
-			"Server MessageQueue index: " + index 
+		"Client MessageQueue index: " + MessageQueue.index + "\n" + 
+		"Server MessageQueue index: " + index 
 		);
 		*/
-		if ( index > MessageQueue.index ) {
-			MessageQueue.update ();
+		if (index > MessageQueue.index) {
+			MessageQueue.update();
 		}
 	}
 }

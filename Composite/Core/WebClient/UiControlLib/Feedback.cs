@@ -185,7 +185,7 @@ namespace Composite.Core.WebClient.UiControlLib
         /// <exclude />
         public void MarkAsDirty()
         {
-             this.Attributes["dirty"] = "true";
+             this._responseTag.Attributes["dirty"] = "true";
         }
     }
 }
