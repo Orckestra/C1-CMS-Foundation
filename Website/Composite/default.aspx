@@ -20,10 +20,10 @@
 			<div id="backdrop"></div>
 			<div id="buzzwords">
 				<div id="welcome">
-	        		<p>Welcome to your C1 website. You can start the Composite console or go back to your website <a href=".." title="Go to the main page">frontpage</a>.</p>
+	        		<p>Welcome to your Composite C1 website. You can start the C1 console or go back to your website <a href=".." title="Go to the main page">frontpage</a>.</p>
 	        	</div>
 				<div id="start">
-					<a href="javascript:Composite.start();" title="Open Composite C1 in a new window"><span><img alt="" src="images/blank.png" />Start Composite</span></a>
+					<a href="javascript:Composite.start();" title="Open Composite C1 in a new window"><span><img alt="" src="images/blank.png" />Start Composite C1</span></a>
 				</div>
 			</div>
 		</div>
