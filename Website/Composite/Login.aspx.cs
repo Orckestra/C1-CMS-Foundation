@@ -1,8 +1,8 @@
 using System;
+using System.Web.Hosting;
+using System.Web.UI.HtmlControls;
+using Composite.C1Console.Security;
 using Composite.Core.Configuration;
-using Composite.Core.WebClient.Foundation.PluginFacades;
-using Composite.Core.WebClient.Plugins.WebRequestHandler;
-
 
 public partial class Composite_Management_Login : System.Web.UI.Page
 {
@@ -11,11 +11,63 @@ public partial class Composite_Management_Login : System.Web.UI.Page
         if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
         {
             Response.Redirect("/Composite");
+            return;
         }
-        else
+
+        if (UserValidationFacade.IsLoggedIn())
         {
-            WebRequestHandler handler = WebRequestHandlerPluginFacade.GetHandler("Login");
-            Form1.Controls.Add(handler);
+            RedirectToReturnUrl();
+            return;
+        }
+
+        if (Request.RequestType == "POST")
+        {
+            OnPost();
+        }
+    }
+
+    private void RedirectToReturnUrl()
+    {
+        var returnUrl = Request.QueryString["ReturnUrl"];
+        if (!string.IsNullOrEmpty(returnUrl))
+        {
+            Response.Redirect(returnUrl, false);
+            return;
+        }
+
+        Response.Redirect(HostingEnvironment.ApplicationVirtualPath, false);
+    }
+
+    private void OnPost()
+    {
+        bool isValid = true;
+
+        string username = Request.Form["txtUsername"];
+        string password = Request.Form["txtPassword"];
+
+        if (string.IsNullOrEmpty(username))
+        {
+            isValid = false;
+            txtUsername.Attributes["class"] = "error";
+        }
+
+        if (string.IsNullOrEmpty(password) || password.Length < 6)
+        {
+            isValid = false;
+            txtPassword.Attributes["class"] = "error";
+        }
+
+        txtUsername.Attributes.Add("value", username);
+
+        if(isValid)
+        {
+            if(UserValidationFacade.FormValidateUser(username, password))
+            {
+                RedirectToReturnUrl();
+                return;
+            }
+
+            divLoginFailed.Visible = true;
         }
     }
 }
