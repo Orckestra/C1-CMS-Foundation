@@ -11685,8 +11685,6 @@ if(this.isPassword){
 if(Client.isMozilla){
 this.shadowTree.input.type="text";
 this.setValue(_823);
-}else{
-alert(_823);
 }
 }else{
 this.setValue(_823);
@@ -28569,6 +28567,9 @@ this.propertyMethodMap["checksum"]=this._update;
 this._update();
 };
 ResponseBinding.prototype._update=function(){
+if(this.getProperty("dirty")===true){
+this.dispatchAction(Binding.ACTION_DIRTY);
+}
 var _1149=this.getProperty("status");
 if(_1149!=null){
 switch(_1149){
