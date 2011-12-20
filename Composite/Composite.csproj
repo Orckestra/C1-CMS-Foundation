@@ -1118,7 +1118,6 @@
     <Compile Include="Core\WebClient\FlowPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Core\WebClient\Foundation\PluginFacades\WebRequestHandlerPluginFacade.cs" />
     <Compile Include="Core\WebClient\FunctionCallEditor\FunctionCallEditorStateSimple.cs" />
     <Compile Include="Core\WebClient\FunctionCallEditor\IFunctionCallEditorState.cs" />
     <Compile Include="Core\WebClient\FunctionCallEditor\TreeHelper.cs" />
@@ -1130,19 +1129,9 @@
     <Compile Include="Core\WebClient\HttpModules\AdministrativeResponseFilterHttpModule.cs" />
     <Compile Include="Core\WebClient\MediaUrlHelper.cs" />
     <Compile Include="Core\WebClient\PageUrlHelper.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\NonConfigurableWebRequestHandler.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerCustomFactory.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerDefaultNameRetriever.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerFactory.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\Runtime\WebRequestHandlerSettings.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\WebRequestHandler.cs" />
-    <Compile Include="Core\WebClient\Plugins\WebRequestHandler\WebRequestHandlerData.cs" />
     <Compile Include="Core\WebClient\Presentation\CssRequestHandler.cs" />
     <Compile Include="Core\WebClient\Presentation\JsRequestHandler.cs" />
     <Compile Include="Core\WebClient\Presentation\OutputTransformationManager.cs" />
-    <Compile Include="Core\WebClient\RequestHandler.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Core\WebClient\ScriptHandler.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\ActionTypeEnum.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\BindEntityTokenToViewParams.cs" />
@@ -1186,8 +1175,6 @@
     <Compile Include="Core\WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\ISessionStateEntry.cs" />
     <Compile Include="Core\WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\SerializationUtil.cs" />
     <Compile Include="Core\WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\XmlSerializationWrapper.cs" />
-    <Compile Include="Core\WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\LoginWebRequestHandler.cs" />
-    <Compile Include="Core\WebClient\StandardPlugins\WebRequestHandlers\LoginWebRequestHandler\PathUtils.cs" />
     <Compile Include="Core\WebClient\State\ISessionStateProvider.cs" />
     <Compile Include="Core\WebClient\State\Runtime\SessionStateProviderCustomFactory.cs" />
     <Compile Include="Core\WebClient\State\Runtime\SessionStateProviderFactory.cs" />
