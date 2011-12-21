@@ -77,6 +77,8 @@
             border-style: solid;
             border-width: 1px;
             border-color: rgb(127,157,185);
+            padding: 4px 7px 4px 7px;
+            height: 25px;
         }
         
         div.field div.value input:focus {
@@ -95,14 +97,14 @@
         
         div.LoginButton {
             float: right;
-            padding-top: 3px;
+            padding-top: 5px;
         }
         
         div.LoginButton a {
             text-transform: uppercase;
-            display: block;
+            display: inline-block;
             color: white;
-            padding: 7px 10px 7px 30px;
+            padding: 6px 10px 6px 30px;
             background-color: rgb(204, 7, 30);
             text-decoration: none;
             border-radius: 10px;
@@ -115,7 +117,7 @@
         }
         
         div.clear {
-            height: 0px;
+            /* height: 0px;*/
             clear: both;
         }
         
