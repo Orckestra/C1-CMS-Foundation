@@ -88,11 +88,11 @@
         }
         
         input.error {
-            border-color: rgb(204, 7, 30) !important;
+            border-color: #CC071E !important;
         }
         
         div#divLoginFailed {
-            color: rgb(204, 7, 30);
+            color: #CC071E;
         }
         
         div.LoginButton {
@@ -105,7 +105,7 @@
             display: inline-block;
             color: white;
             padding: 6px 10px 6px 30px;
-            background-color: rgb(204, 7, 30);
+            background-color: #CC071E;
             text-decoration: none;
             border-radius: 10px;
             font-weight: bold;
@@ -115,6 +115,11 @@
             background-position: 8px 7px;
             background-repeat: no-repeat;
         }
+        
+        div.LoginButton a:hover {
+            background-color: #D63548;
+        }
+        
         
         div.clear {
             /* height: 0px;*/
