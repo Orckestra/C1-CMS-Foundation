@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Data.ProcessControlled;
 using Composite.Core.ResourceSystem.Icons;
@@ -25,29 +26,37 @@ namespace Composite.Data
         {
             IPublishControlled publishControlled = data as IPublishControlled;
 
-            if (publishControlled != null)
-            {
-                switch (publishControlled.PublicationStatus)
-                {
-                    case GenericPublishProcessController.Draft:
-                        return DataDraftIcon;
-
-                    case GenericPublishProcessController.AwaitingApproval:
-                        return DataAwaitingApprovalIcon;
-
-                    case GenericPublishProcessController.AwaitingPublication:
-                        return DataAwaitingPublicationIcon;
-
-                    case GenericPublishProcessController.Published:
-                        return DataPublishedIcon;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-            }
-            else
+            if (publishControlled == null)
             {
                 return DataIcon;
+            }
+
+            switch (publishControlled.PublicationStatus)
+            {
+                case GenericPublishProcessController.Draft:
+                    return DataDraftIcon;
+
+                case GenericPublishProcessController.AwaitingApproval:
+                    return DataAwaitingApprovalIcon;
+
+                case GenericPublishProcessController.AwaitingPublication:
+                    return DataAwaitingPublicationIcon;
+
+                case GenericPublishProcessController.Published:
+                    return DataPublishedIcon;
+
+                default:
+                    var allowedPublicationStatuses = new[] {
+                        GenericPublishProcessController.Draft, 
+                        GenericPublishProcessController.AwaitingApproval,
+                        GenericPublishProcessController.AwaitingPublication, 
+                        GenericPublishProcessController.Published, 
+                    };
+
+                    string allowedValues = string.Join(", ", allowedPublicationStatuses.Select(status => "'" + status + "'"));
+
+                    throw new InvalidOperationException("Unexpected publication status '{0}'. Allowed values: {1}"
+                                                         .FormatWith(publishControlled.PublicationStatus ?? "(null)", allowedValues));
             }
         }
 
