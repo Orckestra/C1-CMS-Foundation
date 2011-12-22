@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
+using Composite.Core.Extensions;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Composite.C1Console.Trees.Foundation;
@@ -236,7 +237,7 @@ namespace Composite.C1Console.Trees
 
                 if (this.GroupingValues != null)
                 {
-                    foreach (var kvp in this.GroupingValues)
+                    foreach (var kvp in this.GroupingValues.SortByKeys())
                     {
                         _hashCode ^= kvp.Key.GetHashCode();
                         if (kvp.Value != null)
@@ -248,7 +249,7 @@ namespace Composite.C1Console.Trees
 
                 if (this.FolderRangeValues != null)
                 {
-                    foreach (var kvp in this.FolderRangeValues)
+                    foreach (var kvp in this.FolderRangeValues.SortByKeys())
                     {
                         _hashCode ^= kvp.Key.GetHashCode();
                         _hashCode ^= kvp.Value.GetHashCode();
@@ -277,7 +278,7 @@ namespace Composite.C1Console.Trees
             StringBuilder sb = new StringBuilder();
             DoSerialize(sb);
 
-            foreach (var kvp in this.GroupingValues)
+            foreach (var kvp in this.GroupingValues.SortByKeys())
             {
                 if (kvp.Value != null)
                 {
@@ -290,7 +291,7 @@ namespace Composite.C1Console.Trees
             }
 
 
-            foreach (var kvp in this.FolderRangeValues)
+            foreach (var kvp in this.FolderRangeValues.SortByKeys())
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "·" + kvp.Key, kvp.Value, kvp.Value.GetType());
             }
@@ -343,12 +344,12 @@ namespace Composite.C1Console.Trees
         public override string OnGetExtraPrettyHtml()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var kvp in this.GroupingValues)
+            foreach (var kvp in this.GroupingValues.SortByKeys())
             {
                 sb.Append("<b>" + kvp.Key + " = </b> " + kvp.Value.ToString() + "<br />");
             }
 
-            foreach (var kvp in this.FolderRangeValues)
+            foreach (var kvp in this.FolderRangeValues.SortByKeys())
             {
                 sb.Append("<b>" + kvp.Key + " = </b> " + kvp.Value.ToString() + "<br />");
             }

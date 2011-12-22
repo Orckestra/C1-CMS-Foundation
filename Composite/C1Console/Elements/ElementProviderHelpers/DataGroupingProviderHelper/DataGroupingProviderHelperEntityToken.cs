@@ -93,7 +93,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 StringConversionServices.SerializeKeyValuePair(sb, "Payload", _payload, typeof(string));
             }
 
-            foreach (var kvp in this.GroupingValues)
+            foreach (var kvp in this.GroupingValues.SortByKeys())
             {
                 if (kvp.Value != null)
                 {
@@ -156,7 +156,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         {
             int hashCode = this.Id.GetHashCode() ^ this.Type.GetHashCode() ^ this.Source.GetHashCode();
 
-            foreach (var kvp in this.GroupingValues)
+            foreach (var kvp in this.GroupingValues.SortByKeys())
             {
                 hashCode ^= kvp.Key.GetHashCode();
                 if (kvp.Value != null)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 
@@ -7,6 +8,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
 {
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [DebuggerDisplay("ClientElement: '{Label}'")]
     public sealed class ClientElement
     {
         /// <exclude />
