@@ -5,6 +5,7 @@
     <title>Composite.Management</title>
     
     <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="X-UA-Compatible" content="IE=9" />
     <style type="text/css">
         body {
             background-color: #F0F0F0;
@@ -77,8 +78,8 @@
             border-style: solid;
             border-width: 1px;
             border-color: rgb(127,157,185);
-            padding: 4px 7px 4px 7px;
-            height: 25px;
+            padding: 4px 0 4px 7px;
+            max-height: 25px;
         }
         
         div.field div.value input:focus {
@@ -93,6 +94,7 @@
         
         div#divLoginFailed {
             color: #CC071E;
+            font-weight: bold;
         }
         
         div.LoginButton {
@@ -140,7 +142,7 @@
                 
                 <div id="divLoginFailed" runat="server" Visible="false">
                     <br/>
-                    Login failed.
+                    Username or password is incorrect.
                 </div>
             </div>
 
@@ -150,7 +152,7 @@
                         <label for="txtUsername">Username</label>
                     </div>
                     <div class="value">
-                        <input runat="server" type="text" id="txtUsername" />
+                        <input runat="server" tabindex="1" type="text" id="txtUsername" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()"/>
                     </div>
                     <div class="clear"></div>
                 </div>
@@ -159,13 +161,13 @@
                         <label for="txtPassword">Password</label>
                     </div>
                     <div class="value">
-                        <input runat="server" type="password" id="txtPassword" />
+                        <input runat="server" tabindex="2" type="password" id="txtPassword" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()"/>
                     </div>
                     <div class="clear"></div>
                 </div>
                 
                 <div class="LoginButton">
-                    <a href="#" onclick="document.forms['form_login'].submit();">
+                    <a href="#" id="aLogin" tabindex="3" onclick="document.forms['form_login'].submit();">
                         <!--img src="skins/system/splash/button.png" /-->
                         Login
                     </a>
@@ -173,7 +175,9 @@
             </div>
             </form>
         </div>
-        
+        <script type="text/javascript">
+            document.getElementById('txtUsername').focus();
+        </script>
         
     </div>
 </body>
