@@ -9,8 +9,6 @@ namespace Composite.Core.Implementation
     /// </summary>
     public class LogImplementation
     {
-        private static readonly object[] EmptyParametersList = new object[0];
-
         /// <summary>
         /// Stateless constructor. This is used when implementations of static methods needs to be called        
         /// </summary>
@@ -76,7 +74,7 @@ namespace Composite.Core.Implementation
         /// <param name="message"></param>
         public virtual void LogWarning(string title, string message)
         {
-            LogWarning(title, message, EmptyParametersList);
+            LoggingService.LogWarning(title, message);
         }
 
 
@@ -89,7 +87,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogWarning(string title, string messageFormat, params object[] args) 
         {
-            LoggingService.LogWarning(title, string.Format(messageFormat, args));
+            LogWarning(title, string.Format(messageFormat, args));
         }
 
 
@@ -113,7 +111,7 @@ namespace Composite.Core.Implementation
         /// <param name="message"></param>
         public virtual void LogError(string title, string message)
         {
-            LogError(title, message, EmptyParametersList);
+            LoggingService.LogError(title, message);
         }
 
 
@@ -126,7 +124,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogError(string title, string messageFormat, params object[] args) 
         {
-            LoggingService.LogError(title, string.Format(messageFormat, args));
+            LogError(title, string.Format(messageFormat, args));
         }
 
 
