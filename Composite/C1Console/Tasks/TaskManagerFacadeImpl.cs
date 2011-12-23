@@ -15,10 +15,10 @@ namespace Composite.C1Console.Tasks
 {
     internal class TaskManagerFacadeImpl : ITaskManagerFacade
     {
-        private List<Func<EntityToken, ActionToken, Task>> _taskCreators = new List<Func<EntityToken, ActionToken, Task>>();
-        private List<Task> _tasks = new List<Task>();
+        private readonly List<Func<EntityToken, ActionToken, Task>> _taskCreators = new List<Func<EntityToken, ActionToken, Task>>();
+        private readonly List<Task> _tasks = new List<Task>();
 
-        private object _lock = new object();
+        private readonly object _lock = new object();
 
 
         public TaskManagerFacadeImpl()
@@ -53,6 +53,15 @@ namespace Composite.C1Console.Tasks
 
                         _tasks.Add(task);
                         newTasks.Add(task);
+
+                        ITaskItem taskItem = DataFacade.BuildNew<ITaskItem>();
+                        taskItem.Id = Guid.NewGuid();
+                        taskItem.TaskId = task.Id;
+                        taskItem.TaskManagerType = TypeManager.SerializeType(task.TaskManagerType);
+                        taskItem.SerializedFlowToken = task.FlowToken;
+                        taskItem.StartTime = task.StartTime;
+
+                        DataFacade.AddNew<ITaskItem>(taskItem);
                     }
                     catch (Exception ex)
                     {
@@ -93,17 +102,12 @@ namespace Composite.C1Console.Tasks
                 {
                     task.TaskManager.OnCompleted(task.Id, null);
                     _tasks.Remove(task);
+
+                    DataFacade.Delete<ITaskItem>(f => f.TaskId == task.Id);
                 }
             }
         }
-
-
-
-        public void OnShutDown()
-        {
-            PersistTasks();
-        }
-
+     
 
 
         private void LoadTasks()
@@ -129,30 +133,6 @@ namespace Composite.C1Console.Tasks
                     _tasks.Add(task);
                 }
             }
-        }
-
-
-
-        private void PersistTasks()
-        {
-            lock (_lock)
-            {
-                DataFacade.Delete<ITaskItem>(f => true);
-
-                foreach (Task task in _tasks)
-                {
-                    ITaskItem taskItem = DataFacade.BuildNew<ITaskItem>();
-                    taskItem.Id = Guid.NewGuid();
-                    taskItem.TaskId = task.Id;
-                    taskItem.TaskManagerType = TypeManager.SerializeType(task.TaskManagerType);
-                    taskItem.SerializedFlowToken = task.FlowToken;
-                    taskItem.StartTime = task.StartTime;
-
-                    DataFacade.AddNew<ITaskItem>(taskItem);
-                }
-
-                _tasks = new List<Task>();
-            }
-        }
+        }        
     }
 }

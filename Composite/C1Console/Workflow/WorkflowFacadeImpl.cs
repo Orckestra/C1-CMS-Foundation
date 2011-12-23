@@ -43,9 +43,14 @@ namespace Composite.C1Console.Workflow
 
         private Dictionary<Type, bool> _hasEntityTokenLockAttributeCache = new Dictionary<Type, bool>();
 
+        private TwoPhaseFileLock _twoPhaseFileLock;
 
         public WorkflowFacadeImpl()
         {
+            string lockFileDirectory = Path.Combine(Path.GetDirectoryName(PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory)), "LockFiles");
+            if (!C1Directory.Exists(lockFileDirectory)) C1Directory.CreateDirectory(lockFileDirectory);
+
+            _twoPhaseFileLock = new TwoPhaseFileLock("Workflows", lockFileDirectory);
             if (RuntimeInformation.IsDebugBuild == true)
             {
                 _oldFileExistensTimeout = TimeSpan.FromMinutes(10.0);
@@ -716,7 +721,8 @@ namespace Composite.C1Console.Workflow
 
         public void ShutDown()
         {
-            LoggingService.LogVerbose("WorkflowFacade", "Shutting down");
+            LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "----------========== Finalizing Workflows ==========----------");
+            int startTime = Environment.TickCount;
 
             if (_workflowRuntime != null)
             {
@@ -735,6 +741,11 @@ namespace Composite.C1Console.Workflow
                     }
                 }
             }
+
+            int endTime = Environment.TickCount;
+            LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done finalizing Workflows ({0} ms ) ==========----------", endTime - startTime));
+
+            _twoPhaseFileLock.Release();
         }
 
 
@@ -761,6 +772,8 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
+                _twoPhaseFileLock.Acquire();
+
                 LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "----------========== Initializing Workflows ==========----------");
                 int startTime = Environment.TickCount;
 
@@ -781,7 +794,7 @@ namespace Composite.C1Console.Workflow
                 LoadPerssistedFormDatas();
 
                 int endTime = Environment.TickCount;
-                LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime));
+                LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime));                
             }
         }
 

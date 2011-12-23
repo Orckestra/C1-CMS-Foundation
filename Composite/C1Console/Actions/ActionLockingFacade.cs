@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
-using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.Core.Logging;
 using Composite.Data;
@@ -17,17 +17,11 @@ namespace Composite.C1Console.Actions
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ActionLockingFacade
     {
         private static Dictionary<EntityToken, LockingInformation> _lockingInformations = null;
-        private static object _lock = new object();
-
-
-        static ActionLockingFacade()
-        {
-            GlobalEventSystemFacade.SubscribeToShutDownEvent(OnShutDownEvent);
-        }
+        private static readonly object _lock = new object();
 
 
 
@@ -58,26 +52,7 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                LockingInformation lockingInformation;
-                if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == false)
-                {
-                    lockingInformation = new LockingInformation
-                    {
-                        Username = UserValidationFacade.GetUsername(),
-                        OwnerId = ownerId
-                    };
-
-                    _lockingInformations.Add(entityToken, lockingInformation);
-                }
-                else if (object.Equals(lockingInformation.OwnerId, ownerId) == true)
-                {
-                    // NOOP: The owner me acqure a lock multiple times
-                }
-                else
-                {
-                    // This will only happen if an entity token subclass not not rightly implemented
-                    throw new ActionLockingException("This item is used by another user, try again.");
-                }
+                AddLockingInformation(entityToken, ownerId);
             }
         }
 
@@ -94,17 +69,11 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                LockingInformation lockingInformation;
-                if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == true)
-                {
-                    lockingInformation.OwnerId = newOwnerId;
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                UpdateLockingInformation(entityToken, newOwnerId);
             }
         }
+
+
 
 
 
@@ -119,16 +88,11 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                LockingInformation lockingInformation;
-                if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == true)
-                {
-                    if (object.Equals(lockingInformation.OwnerId, ownerId))
-                    {
-                        _lockingInformations.Remove(entityToken);
-                    }
-                }
+                RemoveLockingInformation(entityToken, ownerId);
             }
-        }        
+        }
+
+
 
 
 
@@ -149,7 +113,7 @@ namespace Composite.C1Console.Actions
 
                 foreach (EntityToken entityToken in entityTokens)
                 {
-                    _lockingInformations.Remove(entityToken);
+                    RemoveLockingInformation(entityToken, ownerId);
                 }
             }
         }
@@ -210,20 +174,21 @@ namespace Composite.C1Console.Actions
         }
 
 
+
         internal static void ReleaseAll(string username)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 EnsureInitialization();
 
-                List<EntityToken> entityTokensToRemove =
+                List<Tuple<EntityToken, object>> itemsToRemove =
                     (from info in _lockingInformations
                      where info.Value.Username == username
-                     select info.Key).ToList();
+                     select new Tuple<EntityToken, object>(info.Key, info.Value.OwnerId)).ToList();
 
-                foreach (EntityToken entityToken in entityTokensToRemove)
+                foreach (var item in itemsToRemove)
                 {
-                    _lockingInformations.Remove(entityToken);
+                    RemoveLockingInformation(item.Item1, item.Item2);
                 }
             }
         }
@@ -240,9 +205,9 @@ namespace Composite.C1Console.Actions
             {
                 EnsureInitialization();
 
-                if (_lockingInformations.ContainsKey(entityToken) == true)
+                if (_lockingInformations.ContainsKey(entityToken))
                 {
-                    _lockingInformations.Remove(entityToken);
+                    RemoveLockingInformation(entityToken, _lockingInformations[entityToken].OwnerId);
                 }
             }
         }
@@ -289,8 +254,8 @@ namespace Composite.C1Console.Actions
 
                 LockingInformation li = new LockingInformation
                 {
-                     OwnerId = ownerId, 
-                     Username = lockingInformation.Username                    
+                    OwnerId = ownerId,
+                    Username = lockingInformation.Username
                 };
 
                 EntityToken entityToken = EntityTokenSerializer.Deserialize(lockingInformation.SerializedEntityToken);
@@ -314,32 +279,106 @@ namespace Composite.C1Console.Actions
 
 
 
-        private static void PersistLockingInformation()
-        {            
-            DataFacade.Delete<ILockingInformation>(f => true);
-
-            IFormatter formatter = new BinaryFormatter();
-            foreach (var lockingInformation in _lockingInformations)
+        private static void AddLockingInformation(EntityToken entityToken, object ownerId)
+        {
+            LockingInformation lockingInformation;
+            if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == false)
             {
-                string serializedOwnerId;
-
-                using (MemoryStream ms = new MemoryStream())
+                lockingInformation = new LockingInformation
                 {
-                    formatter.Serialize(ms, lockingInformation.Value.OwnerId);
+                    Username = UserValidationFacade.GetUsername(),
+                    OwnerId = ownerId
+                };
 
-                    byte[] bytes = ms.ToArray();
-
-                    serializedOwnerId = Convert.ToBase64String(bytes);
-                }
+                string serializedOwnerId = SerializeOwnerId(lockingInformation.OwnerId);
 
                 ILockingInformation li = DataFacade.BuildNew<ILockingInformation>();
                 li.Id = Guid.NewGuid();
-                li.SerializedEntityToken = EntityTokenSerializer.Serialize(lockingInformation.Key);
+                li.SerializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
                 li.SerializedOwnerId = serializedOwnerId;
-                li.Username = lockingInformation.Value.Username;
+                li.Username = lockingInformation.Username;
 
                 DataFacade.AddNew<ILockingInformation>(li);
+                _lockingInformations.Add(entityToken, lockingInformation);
             }
+            else if (object.Equals(lockingInformation.OwnerId, ownerId) == true)
+            {
+                // NOOP: The owner me acqure a lock multiple times
+            }
+            else
+            {
+                // This will only happen if an entity token subclass not not rightly implemented
+                throw new ActionLockingException("This item is used by another user, try again.");
+            }
+        }
+
+
+
+        private static void UpdateLockingInformation(EntityToken entityToken, object newOwnerId)
+        {
+            LockingInformation lockingInformation;
+            if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation)) throw new NotImplementedException();
+
+            string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
+
+            ILockingInformation lockingInformationDataItem =
+                DataFacade.GetData<ILockingInformation>().
+                Where(f => f.SerializedEntityToken == serializedEntityToken).
+                Single();
+
+            lockingInformationDataItem.SerializedOwnerId = SerializeOwnerId(newOwnerId);
+            DataFacade.Update(lockingInformationDataItem);
+
+            lockingInformation.OwnerId = newOwnerId;
+        }
+
+
+
+        private static void RemoveLockingInformation(EntityToken entityToken, object ownerId)
+        {
+            LockingInformation lockingInformation;
+            if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation)) return;
+
+            if (Equals(lockingInformation.OwnerId, ownerId))
+            {
+                _lockingInformations.Remove(entityToken);
+            }
+
+            string serializedOwnerId = SerializeOwnerId(ownerId);
+            string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
+
+            ILockingInformation lockingInformationDataItem =
+                DataFacade.GetData<ILockingInformation>().
+                Where(f => f.SerializedEntityToken == serializedEntityToken && f.SerializedOwnerId == serializedOwnerId).
+                SingleOrDefault();
+
+            DataFacade.Delete(lockingInformationDataItem);
+        }
+
+
+
+        private static string SerializeOwnerId(object ownerId)
+        {
+            IFormatter formatter = new BinaryFormatter();
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                formatter.Serialize(ms, ownerId);
+
+                byte[] bytes = ms.ToArray();
+
+                string serializedOwnerId = Convert.ToBase64String(bytes);
+
+                return serializedOwnerId;
+            }
+        }
+
+
+
+        private sealed class LockingInformation
+        {
+            public string Username { get; set; }
+            public object OwnerId { get; set; }
         }
 
 
@@ -362,20 +401,6 @@ namespace Composite.C1Console.Actions
             Monitor.Exit(_lock);
         }
 
-
-
-        private static void OnShutDownEvent(ShutDownEventArgs args)
-        {
-            PersistLockingInformation();
-        }
-
-
-
-        private sealed class LockingInformation
-        {
-            public string Username { get; set; }
-            public object OwnerId { get; set; }
-        }
 
 
 

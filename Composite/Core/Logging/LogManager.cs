@@ -16,7 +16,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         public static int LogLinesRequestLimit = 5000;
 
-        private static FileLogger.LogFileReader[] _logFiles;
+        private static LogFileReader[] _logFiles;
         private static readonly object _syncRoot = new object();
 
         /// <exclude />
@@ -33,16 +33,16 @@ namespace Composite.Core.Logging
             }
         }
 
-        private static FileLogger.LogFileReader[] LogFiles
+        private static LogFileReader[] LogFiles
         {
             get
             {
                 var result = _logFiles;
-                if (result == null)
+                if (_logFiles == null || _logFiles.Length == 0)
                 {
                     lock (_syncRoot)
                     {
-                        if (_logFiles == null)
+                        if (_logFiles == null || _logFiles.Length == 0)
                         {
                             _logFiles = FileLogger.GetLogFiles();
                         }

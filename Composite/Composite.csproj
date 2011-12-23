@@ -249,6 +249,7 @@
     <Compile Include="Core\Routing\UrlSpace.cs" />
     <Compile Include="Core\Serialization\PrettyPrinter.cs" />
     <Compile Include="Core\Sql\SqlConnectionManager.cs" />
+    <Compile Include="Core\Threading\TwoPhaseFileLock.cs" />
     <Compile Include="Core\Types\CodeGenerationManager.cs" />
     <Compile Include="Core\Types\ICodeProvider.cs" />
     <Compile Include="Core\WebClient\ApplicationLevelEventHandlers.cs" />
@@ -539,6 +540,10 @@
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoIntFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\RegisterPathInfoUsageFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoFunction.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CurrentFileReader.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
+    <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
     <Compile Include="Plugins\Routing\Hostnames\FormFunctions.cs" />
     <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />
     <Compile Include="Core\WebClient\Renderings\Plugins\RenderingResponseHandler\IDataRenderingResponseHandler.cs" />

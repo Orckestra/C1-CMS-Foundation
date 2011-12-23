@@ -11,6 +11,5 @@ namespace Composite.C1Console.Tasks
         TaskContainer CreateNewTasks(EntityToken entityToken, ActionToken actionToken, TaskManagerEvent taskManagerEvent);
         TaskContainer RuntTasks(FlowToken flowToken, TaskManagerEvent taskManagerEvent);
         void CompleteTasks(FlowToken flowToken);
-        void OnShutDown();
 	}
 }

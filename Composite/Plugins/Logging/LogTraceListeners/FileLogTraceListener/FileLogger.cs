@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Web.Hosting;
 using Composite.Core.Extensions;
-//using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.IO;
+using Composite.Core.Logging;
 
 
 namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
@@ -26,8 +24,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         public static event ThreadStart OnReset;
 
 
-        private LogFileInfo _fileConnection;
-        private readonly object _syncRoot = new object();
+        internal LogFileInfo _fileConnection;
+        internal readonly object _syncRoot = new object();
         private DateTime _lastLogFileTouch = DateTime.MinValue;
 
 
@@ -36,9 +34,15 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             Verify.ArgumentNotNull(logDirectoryPath, "logDirectoryPath");
 
             _logDirectoryPath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, logDirectoryPath);
+            if (C1Directory.Exists(_logDirectoryPath))
+            {
+                C1Directory.CreateDirectory(_logDirectoryPath);
+            }
             _flushImmediately = flushImmediately;
-        }
 
+            TouchLockFile();
+        }
+        
 
 
         public DateTime StartupTime
@@ -110,12 +114,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
         public LogFileReader[] GetLogFiles()
         {
-            if (!Directory.Exists(_logDirectoryPath))
-            {
-                return new LogFileReader[] { };
-            }
-
             EnsureInitialize();
+
+            if (MoreThanOneAppDomainRunning()) return new LogFileReader[] { };
 
             string[] filePathes = Directory.GetFiles(_logDirectoryPath);
 
@@ -225,6 +226,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
         private void EnsureInitialize()
         {
+            TouchLockFile();
+
+            RemoveOldLockFiles();            
+
             TouchLogFiles();
 
             if (_fileConnection != null) return;
@@ -232,11 +237,6 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             lock (_syncRoot)
             {
                 if (_fileConnection != null) return;
-
-                if (!Directory.Exists(_logDirectoryPath))
-                {
-                    Directory.CreateDirectory(_logDirectoryPath);
-                }
 
                 DateTime creationDate = DateTime.Now;
 
@@ -295,6 +295,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                                           };
                     return;
                 }
+
                 throw new InvalidOperationException("Failed to open/create a log file");
             }
 
@@ -318,18 +319,56 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                     DateTime creationDate = DateTime.Now;
                     string fileNamePrefix = creationDate.ToString("yyyyMMdd");
 
-                    if (Directory.Exists(_logDirectoryPath))
+                    foreach (string filepath in Directory.GetFiles(_logDirectoryPath))
                     {
-                        foreach (string filepath in Directory.GetFiles(_logDirectoryPath))
+                        if (!Path.GetFileName(filepath).StartsWith(fileNamePrefix))
                         {
-                            if (!Path.GetFileName(filepath).StartsWith(fileNamePrefix))
-                            {
-                                C1File.Touch(filepath);
-                            }
+                            C1File.Touch(filepath);
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+
+        private void RemoveOldLockFiles()
+        {
+            DateTime now = DateTime.Now;
+            foreach (string filePath in Directory.GetFiles(_logDirectoryPath, "*.lock"))
+            {
+                string appDomainIdString = Path.GetFileNameWithoutExtension(filePath);
+                int appDomainId;
+                if (!int.TryParse(appDomainIdString, out appDomainId)) continue;
+
+                if (appDomainId != AppDomain.CurrentDomain.Id)
+                {
+                    DateTime lastWrite = File.GetLastWriteTime(filePath);
+
+                    TimeSpan fileAge = now - lastWrite;
+
+                    if (fileAge.TotalSeconds >= 60)
+                    {
+                        try
+                        {
+                            File.Delete(filePath);
+                        }
+                        catch (Exception)
+                        {
+                            // Ignore
                         }
                     }
                 }
             }
+        }
+
+
+
+
+        private bool MoreThanOneAppDomainRunning()
+        {
+            return Directory.GetFiles(_logDirectoryPath, "*.lock").Length > 1;
         }
 
 
@@ -353,273 +392,83 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             }
         }
 
+
         private static void WriteUTF8EncodingHeader(Stream stream)
         {
             byte[] preamble = Encoding.UTF8.GetPreamble();
             stream.Write(preamble, 0, preamble.Length);
         }
 
-        internal abstract class LogFileReader
+
+
+        private void TouchLockFile()
         {
-
-            public DateTime Date { get; protected set; }
-
-            public abstract int EntriesCount { get; }
-
-            public abstract bool Open();
-            public abstract void Close();
-
-            public abstract bool Delete();
-
-            public abstract IEnumerable<LogEntry> GetLogEntries(DateTime timeFrom, DateTime timeFromTo);
-        }
-
-        private class PlainFileReader : LogFileReader
-        {
-            private FileStream _file;
-            private string _filePath;
-            private int? _entriesCount;
-
-            public PlainFileReader(string filePath, DateTime date)
+            // Create .lock file
+            try
             {
-                _filePath = filePath;
-                Date = date;
+                File.WriteAllText(LockFileName, "");
             }
-
-            [DebuggerStepThrough]
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
-            public override bool Open()
+            catch (Exception)
             {
-                try
-                {
-                    _file = File.OpenRead(_filePath);
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-                return true;
-            }
-
-            public override void Close()
-            {
-                if (_file == null) return;
-
-                _file.Close();
-                _file.Dispose();
-                _file = null;
-            }
-
-            public override IEnumerable<LogEntry> GetLogEntries(DateTime timeFrom, DateTime timeFromTo)
-            {
-                StringBuilder sb = new StringBuilder();
-
-                LogEntry previousEntry = null;
-                using (var reader = new StreamReader(_file, Encoding.UTF8))
-                {
-                    while (reader.Peek() >= 0)
-                    {
-                        string line = reader.ReadLine();
-
-                        LogEntry entry = LogEntry.Parse(line);
-                        if (entry != null)
-                        {
-                            if (previousEntry != null)
-                            {
-                                if (sb.Length > 0)
-                                {
-                                    previousEntry.Message = sb.ToString();
-                                    sb.Clear();
-                                }
-
-                                yield return previousEntry;
-                            }
-                            previousEntry = entry;
-                        }
-                        else
-                        {
-                            if (previousEntry != null)
-                            {
-                                if (sb.Length == 0)
-                                {
-                                    sb.Append(previousEntry.Message);
-                                }
-
-                                sb.Append("\n").Append(line);
-                            }
-                        }
-                    }
-                }
-                if (previousEntry != null)
-                {
-                    if (sb.Length > 0)
-                    {
-                        previousEntry.Message = sb.ToString();
-                        sb.Clear();
-                    }
-
-                    yield return previousEntry;
-                }
-            }
-
-
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
-            public override int EntriesCount
-            {
-                get
-                {
-                    if (_entriesCount == null)
-                    {
-                        try
-                        {
-                            Open();
-
-                            _entriesCount = GetLogEntries(DateTime.MinValue, DateTime.MaxValue).Count();
-                        }
-                        finally
-                        {
-                            Close();
-                        }
-                    }
-
-                    return (int)_entriesCount;
-                }
-            }
-
-
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
-            public override bool Delete()
-            {
-                try
-                {
-                    File.Delete(_filePath);
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                // Ignore
             }
         }
 
-        private class CurrentFileReader : LogFileReader
+
+
+        private string LockFileName
         {
-            private readonly FileLogger _fileLogger;
-
-            public CurrentFileReader(FileLogger fileLogger)
+            get
             {
-                _fileLogger = fileLogger;
+                string lockFileName = Path.Combine(_logDirectoryPath, AppDomain.CurrentDomain.Id + ".lock");
 
-                lock (_fileLogger._syncRoot)
-                {
-                    var fileConnection = _fileLogger._fileConnection;
-
-                    if (fileConnection != null)
-                    {
-                        Date = fileConnection.CreationDate;
-                    }
-                }
-
-            }
-
-            public override bool Open()
-            {
-                // do nothing
-                return true;
-            }
-
-            public override void Close()
-            {
-                // do nothing
-            }
-
-            public override int EntriesCount
-            {
-                get
-                {
-                    lock (_fileLogger._syncRoot)
-                    {
-                        return _fileLogger._fileConnection.OldEntries.Length +
-                               _fileLogger._fileConnection.NewEntries.Count;
-                    }
-                }
-            }
-
-            public override IEnumerable<LogEntry> GetLogEntries(DateTime timeFrom, DateTime timeTo)
-            {
-                if (timeFrom < _fileLogger.StartupTime)
-                {
-                    foreach (var str in _fileLogger._fileConnection.OldEntries)
-                    {
-                        var oldEntry = LogEntry.Parse(str);
-                        if (oldEntry != null)
-                        {
-                            yield return oldEntry;
-                        }
-                    }
-                }
-
-
-                LogEntry[] newEntries = null;
-
-                lock (_fileLogger._syncRoot)
-                {
-                    var fileConnection = _fileLogger._fileConnection;
-                    if (fileConnection != null)
-                    {
-                        newEntries = fileConnection.NewEntries.ToArray();
-                    }
-                }
-
-                if (newEntries != null)
-                {
-                    foreach (var logEntry in newEntries) yield return logEntry;
-                }
-            }
-
-            public override bool Delete()
-            {
-                return false;
+                return lockFileName;
             }
         }
 
-        private class LogFileInfo : IDisposable
+
+
+        bool _disposed = false;
+        protected virtual void Dispose(bool disposing)
         {
-            public string FileName;
-            public string FilePath;
-            public FileStream FileStream;
-            public string[] OldEntries; // Keeping old log entries in memory isn't a good idea, easely can eat up 10-20 megabytes of memory
-            public List<LogEntry> NewEntries = new List<LogEntry>();
-            public DateTime CreationDate;
-            public DateTime StartupTime;
-
-            private bool disposed = false;
-
-            public void Dispose()
+            if (!_disposed)
             {
-                if (!disposed)
+                if (disposing)
                 {
-                    FileStream.Close();
-                    disposed = true;
+                    if (_fileConnection != null)
+                    {
+                        _fileConnection.Dispose();
+                        _fileConnection = null;
+                    }
                 }
+
+                _disposed = true;
             }
 
-            ~LogFileInfo()
+            // Delete the file in any case
+            try
             {
-                Dispose();
+                if (File.Exists(LockFileName))
+                {
+                    File.Delete(LockFileName);
+                }
+            }
+            catch (Exception)
+            {
+                // Ignore
             }
         }
 
-        #region IDisposable Members
 
         public void Dispose()
         {
-            if (_fileConnection != null)
-            {
-                _fileConnection.Dispose();
-            }
+            Dispose(true);
         }
 
-        #endregion
+
+        ~FileLogger()
+        {
+            Dispose(false);
+        }
     }
 }

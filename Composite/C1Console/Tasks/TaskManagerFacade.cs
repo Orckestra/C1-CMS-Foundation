@@ -14,14 +14,7 @@ namespace Composite.C1Console.Tasks
     {
         private static ITaskManagerFacade _implementation = new TaskManagerFacadeImpl();
 
-        internal static ITaskManagerFacade Implementation { get { return _implementation; } set { _implementation = value; } }
-
-
-        static TaskManagerFacade()
-        {
-            GlobalEventSystemFacade.SubscribeToShutDownEvent(OnShutDown);
-        }
-
+        internal static ITaskManagerFacade Implementation { get { return _implementation; } set { _implementation = value; } }       
 
 
 
@@ -51,13 +44,6 @@ namespace Composite.C1Console.Tasks
         internal static void CompleteTasks(FlowToken flowToken)
         {
             _implementation.CompleteTasks(flowToken);
-        }
-
-
-
-        private static void OnShutDown(ShutDownEventArgs args)
-        {
-            _implementation.OnShutDown();
         }
     }
 }

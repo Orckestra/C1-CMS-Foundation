@@ -6,7 +6,6 @@ using System.Threading;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.Serialization;
 using Composite.Core.Xml;
 
@@ -15,24 +14,25 @@ namespace Composite.C1Console.Events.Foundation
 {
     internal sealed class ConsoleMessageQueue
     {
+        private const string MessageQueueFileName = "ConsoleMessages.xml";
         private int _queueItemCounter = 1;
-        private List<ConsoleMessageQueueElement> _elements = new List<ConsoleMessageQueueElement>();
-
-        private Timer _timer;
-        private TimeSpan _timeInterval;
-
-        private object _lock = new object();
-
-
+        private readonly object _lock = new object();
+        private readonly TimeSpan _timeInterval;
+        private readonly List<ConsoleMessageQueueElement> _elements = new List<ConsoleMessageQueueElement>();
+        private string MessageQueueFilePath { get; set; }
 
         public ConsoleMessageQueue(int secondsForItemToLive)
         {
+            string directory = PathUtil.Resolve(GlobalSettingsFacade.SerializedConsoleMessagesDirectory);
+            if (!C1Directory.Exists(directory)) C1Directory.CreateDirectory(directory);
+
+            MessageQueueFilePath = Path.Combine(directory, MessageQueueFileName);
+
             _timeInterval = new TimeSpan(0, 0, secondsForItemToLive);
-
+            
             DeserializeMessagesFromFileSystem();
-            GlobalEventSystemFacade.SubscribeToShutDownEvent(OnShutDownEvent);
 
-            _timer = new Timer(OnWeed, null, new TimeSpan(0, 0, 0), _timeInterval);
+            Timer timer = new Timer(OnWeed, null, new TimeSpan(0, 0, 0), _timeInterval);
         }
 
 
@@ -60,8 +60,9 @@ namespace Composite.C1Console.Events.Foundation
 
 
                 _elements.Add(queueElement);
-            }
 
+                SerializeMessagesToFileSystem();
+            }
         }
 
 
@@ -87,13 +88,14 @@ namespace Composite.C1Console.Events.Foundation
         }
 
 
+
         public int GetLatestMessageNumber(string consoleId)
         {
             Verify.ArgumentNotNull(consoleId, "consoleId");
 
-            lock(_lock)
+            lock (_lock)
             {
-                for(int i=_elements.Count-1; i >= 0 ; i--)
+                for (int i = _elements.Count - 1; i >= 0; i--)
                 {
                     string receiverConsoleId = _elements[i].ReceiverConsoleId;
                     if (receiverConsoleId == null || receiverConsoleId == consoleId)
@@ -106,6 +108,7 @@ namespace Composite.C1Console.Events.Foundation
         }
 
 
+
         public int CurrentQueueItemNumber
         {
             get
@@ -115,13 +118,7 @@ namespace Composite.C1Console.Events.Foundation
                     return _queueItemCounter;
                 }
             }
-        }
-
-
-        public void DoDebugSerializationToFileSystem()
-        {
-            SerializeMessagesToFileSystem(true);
-        }
+        }        
 
 
 
@@ -133,106 +130,105 @@ namespace Composite.C1Console.Events.Foundation
             }
         }
 
-
-
-        private void OnShutDownEvent(ShutDownEventArgs args)
-        {
-            SerializeMessagesToFileSystem(false);
-        }
-
-
+      
 
         private void CleanOutOldMessages(List<ConsoleMessageQueueElement> listToClean)
         {
             DateTime now = DateTime.Now;
 
             int count = listToClean.Count<ConsoleMessageQueueElement>(element => element.EnqueueTime + _timeInterval < now);
-
-            listToClean.RemoveRange(0, count);
+           
+            if (count > 0)
+            {
+                listToClean.RemoveRange(0, count);
+                SerializeMessagesToFileSystem();
+            }
         }
 
 
 
-        private void SerializeMessagesToFileSystem(bool forDebug)
+        public void DoDebugSerializationToFileSystem()
+        {
+            SerializeMessagesToFileSystem(true);
+        }
+
+
+
+        private void SerializeMessagesToFileSystem(bool forDebug = false)
         {
             lock (_lock)
-            {
-                CleanOutOldMessages(_elements);
-
+            {                
                 if (_elements != null && _elements.Count > 0)
                 {
                     IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
 
                     XElement serializedMessages = xmlSerializer.Serialize(_elements.GetType(), _elements);
-                    
+
                     string serializedConsoleMessagesDir = PathUtil.Resolve((forDebug ? GlobalSettingsFacade.TempDirectory : GlobalSettingsFacade.SerializedConsoleMessagesDirectory));
 
-                    if (C1Directory.Exists(serializedConsoleMessagesDir) == false)
-                    {
-                        C1Directory.CreateDirectory(serializedConsoleMessagesDir);
-                    }
-
-                    string timeSortedUniqueFileName = string.Format("{0}.{1}.xml", (long.MaxValue - DateTime.Now.Ticks), Guid.NewGuid());
-                    string queueElementsXmlFilePath = Path.Combine(serializedConsoleMessagesDir, timeSortedUniqueFileName);
+                    //string timeSortedUniqueFileName = string.Format("{0}.{1}.xml", (long.MaxValue - DateTime.Now.Ticks), Guid.NewGuid());
+                    string queueElementsXmlFilePath = Path.Combine(serializedConsoleMessagesDir, MessageQueueFileName);
 
                     serializedMessages.SaveToPath(queueElementsXmlFilePath);
                 }
             }
         }
 
-
+        
 
         private void DeserializeMessagesFromFileSystem()
         {
             lock (_lock)
             {
-                string serializedConsoleMessagesDir = PathUtil.Resolve(GlobalSettingsFacade.SerializedConsoleMessagesDirectory);
+                if (!C1File.Exists(MessageQueueFilePath)) return;
 
-                if (C1Directory.Exists(serializedConsoleMessagesDir) == true)
+                XElement serializedMessages = XElementUtils.Load(MessageQueueFilePath);
+
+                IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
+                List<ConsoleMessageQueueElement> messageList = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
+
+                CleanOutOldMessages(messageList);
+
+                //foreach (string xmlFilePath in C1Directory.GetFiles(serializedConsoleMessagesDir).OrderBy(f => f))
+                //{
+                //    try
+                //    {
+                //        XElement serializedMessages = XElementUtils.Load(xmlFilePath);
+
+                //        List<ConsoleMessageQueueElement> messageList = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
+
+                //        CleanOutOldMessages(messageList);
+
+                //        var unknownElements = messageList.Where(f => _elements.Any(g => g.QueueItemNumber == f.QueueItemNumber) == false).ToList();
+
+                //        if (unknownElements.Count > 0)
+                //        {
+                //            _elements.AddRange(unknownElements);
+
+                //            LoggingService.LogVerbose("ConsoleMessageQueue", string.Format("Succesfully loaded {0} Console Messages from the file '{1}'", unknownElements.Count(), xmlFilePath));
+                //        }
+                //        else
+                //        {
+                //            C1File.Delete(xmlFilePath); // cleaning up obsolete files
+                //        }
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        LoggingService.LogCritical("ConsoleMessageQueue", ex);
+
+                //        try
+                //        {
+                //            C1File.Delete(xmlFilePath); // Delete broken file
+                //        }
+                //        catch // Ignore exceptions
+                //        {
+                //        }
+                //    }
+                //}
+
+                if (_elements.Any())
                 {
-                    IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
-
-                    foreach (string xmlFilePath in C1Directory.GetFiles(serializedConsoleMessagesDir).OrderBy(f=>f))
-                    {
-                        try
-                        {
-                            XElement serializedMessages = XElementUtils.Load(xmlFilePath);
-
-                            List<ConsoleMessageQueueElement> messageList = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
-
-                            CleanOutOldMessages(messageList);
-
-                            var unknownElements = messageList.Where(f => _elements.Any(g => g.QueueItemNumber == f.QueueItemNumber) == false).ToList();
-
-                            if (unknownElements.Count > 0)
-                            {
-                                _elements.AddRange(unknownElements);
-
-                                LoggingService.LogVerbose("ConsoleMessageQueue", string.Format("Succesfully loaded {0} Console Messages from the file '{1}'", unknownElements.Count(), xmlFilePath));
-                            }
-                            else
-                            {
-                                C1File.Delete(xmlFilePath); // cleaning up obsolete files
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            LoggingService.LogCritical("ConsoleMessageQueue", ex);
-
-                            try
-                            {
-                                C1File.Delete(xmlFilePath); // Delete broken file
-                            }
-                            catch // Ignore exceptions
-                            {
-                            }
-                        }
-                    }
-
-                    if (_elements.Any() == true)
-                    {
-                        _queueItemCounter = _elements.Max(f => f.QueueItemNumber);
-                    }
+                    _queueItemCounter = _elements.Max(f => f.QueueItemNumber);
                 }
             }
         }
