@@ -91,31 +91,6 @@ new function () {
 				
 				var elm = elementArray [ i ];
 				this._attribLink ( elm, result, false );
-				
-				/*
-				 * Sometimes the caret may be trapped inside 
-				 * a link, inserting new links on Enter key.
-				 * This may or may not help it.
-				 */
-				if ( Client.isMozilla ) {
-				
-					var sp = editor.getDoc().createTextNode ( " " );
-					if ( elm.nextSibling ) {
-						elm.parentNode.insertBefore( sp, elm.nextSibling );
-					} else {
-						elm.parentNode.appendChild ( sp );
-					}
-	
-					// Set range after link
-					var rng = editor.getDoc ().createRange ();
-					rng.setStartAfter ( elm );
-					rng.setEndAfter ( elm );
-	
-					// Update selection
-					var sel = editor.selection.getSel ();
-					sel.removeAllRanges ();
-					sel.addRange ( rng );
-				}
 			}
 		},
 		
