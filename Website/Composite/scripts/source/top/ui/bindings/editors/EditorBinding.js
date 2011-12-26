@@ -331,6 +331,7 @@ EditorBinding.prototype.onBindingDispose = function () {
 EditorBinding.prototype._initialize = function () {
 
 	this.subscribe ( BroadcastMessages.APPLICATION_BLURRED );
+	this.subscribe ( BroadcastMessages.STAGEDIALOG_OPENED );
 	this.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEUP );
 	
 	// if all else failed, at least we have a string
@@ -572,7 +573,13 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				this._activateEditor ( false );
 			}
 			break;
-			
+
+		case BroadcastMessages.STAGEDIALOG_OPENED:
+
+			if (this._isActivated) {
+				this._activateEditor(false);
+			}
+			break;
 		/*
 		 * When a mouseup was performed on something, we need to analyze 
 		 * whether or not this something should deactivate the editor. 
