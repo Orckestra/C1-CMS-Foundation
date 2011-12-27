@@ -152,27 +152,32 @@ namespace Composite.Core.WebClient
             while (true)
             {
                 int urlOffset = html.IndexOf(urlPrefix, startIndex, StringComparison.OrdinalIgnoreCase);
-                if (urlOffset < 0) break;
+                if (urlOffset < 5) break;
 
                 int prefixEndOffset = urlOffset + urlPrefix.Length;
+                int endOffset = -1;
 
-                int endOffset = html.IndexOf('\"', prefixEndOffset);
+                char lastQuoteSymbol = html[urlOffset - 1];
 
-                int singleQuoteIndex =
-                    (endOffset == -1)
-                    ? html.IndexOf('\'', prefixEndOffset)
-                    : html.IndexOf('\'', prefixEndOffset, endOffset - prefixEndOffset);
-
-                if (singleQuoteIndex > 0)
+                // If starts with a quote symbol- should end with the same quote symbol
+                if (lastQuoteSymbol == '\''
+                    || lastQuoteSymbol == '\"')
                 {
-                    endOffset = singleQuoteIndex;
+                    endOffset = html.IndexOf(lastQuoteSymbol, prefixEndOffset);
+                }
+                else if (lastQuoteSymbol == ';' && html.Substring(startIndex - 5, 4) == "&#39")
+                {
+                    endOffset = html.IndexOf("&#39;", prefixEndOffset, StringComparison.Ordinal);
                 }
 
-                if (endOffset < 0) break;
+                // Skippnig match if the quotes aren't defined
+                if(endOffset < 0)
+                {
+                    startIndex = prefixEndOffset;
+                    continue;
+                }
 
-                int encodedSingleQuoteIndex = html.IndexOf("&#39;", prefixEndOffset, endOffset - prefixEndOffset);
-                if (encodedSingleQuoteIndex > 0) endOffset = encodedSingleQuoteIndex;
-
+                // Skipping html anchors 
                 int hashSignIndex = html.IndexOf('#', prefixEndOffset, endOffset - prefixEndOffset);
                 if (hashSignIndex > 0)
                 {
