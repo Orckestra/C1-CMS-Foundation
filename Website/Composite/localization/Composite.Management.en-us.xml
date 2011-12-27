@@ -55,6 +55,8 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.PerspectivesTabLabel" value="Perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel" value="User Groups" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp" value="Select the user groups that the selected user should be a member of." />
+	<string key="EditUserWorkflow.EditErrorTitle" value="Error" />
+	<string key="EditUserWorkflow.EditOwnAccessToUsersPerspective" value="You can not delete your own access rights to 'Users' perspective." />
 	<string key="UserElementProvider.RootLabel" value="Users" />
 	<string key="UserElementProvider.RootToolTip" value="Users" />
 	<string key="UserElementProvider.AddUserLabel" value="Add user..." />
