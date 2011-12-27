@@ -25846,6 +25846,7 @@ _f8d.unRegisterDataBinding(name);
 };
 EditorBinding.prototype._initialize=function(){
 this.subscribe(BroadcastMessages.APPLICATION_BLURRED);
+this.subscribe(BroadcastMessages.STAGEDIALOG_OPENED);
 this.subscribe(BroadcastMessages.MOUSEEVENT_MOUSEUP);
 if(this._startContent==null){
 this._startContent=new String("");
@@ -25962,6 +25963,11 @@ EditorBinding.superclass.handleBroadcast.call(this,_f9c,arg);
 var _f9e=null;
 switch(_f9c){
 case BroadcastMessages.APPLICATION_BLURRED:
+if(this._isActivated){
+this._activateEditor(false);
+}
+break;
+case BroadcastMessages.STAGEDIALOG_OPENED:
 if(this._isActivated){
 this._activateEditor(false);
 }
