@@ -236,7 +236,7 @@ namespace Composite.Core.WebClient.Media
                 resizedImage.SetResolution(72, 72);
 
                 Graphics newGraphic = Graphics.FromImage(resizedImage);
-                newGraphic.Clear(Color.White);
+                newGraphic.Clear(Color.Transparent);
                 newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
