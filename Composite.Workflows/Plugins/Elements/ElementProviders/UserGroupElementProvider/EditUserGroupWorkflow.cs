@@ -4,6 +4,8 @@ using System.Linq;
 using System.Workflow.Activities;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Users;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
@@ -106,8 +108,16 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
         private void saveCodeActivity_Save_ExecuteCode(object sender, EventArgs e)
         {
-            UpdateTreeRefresher updateTreeRefresher = CreateUpdateTreeRefresher(this.EntityToken);
             IUserGroup userGroup = this.GetBinding<IUserGroup>("UserGroup");
+            List<string> newUserGroupEntityTokens = ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings).ToList();
+
+            // If current user belongs to currenctly edited group -> checking that user won't lost access "Users" perspective
+            if (!ValidateUserPreservsAdminRights(userGroup, newUserGroupEntityTokens))
+            {
+                return;
+            }
+
+            UpdateTreeRefresher updateTreeRefresher = CreateUpdateTreeRefresher(this.EntityToken);
 
             EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();
             IEnumerable<PermissionType> newPermissionTypes = GlobalPermissionsFormsHelper.GetSelectedPermissionTypes(this.Bindings);
@@ -121,7 +131,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             PermissionTypeFacade.SetUserGroupPermissionDefinition(userGroupPermissionDefinition);
 
-            UserGroupPerspectiveFacade.SetSerializedEntityTokens(userGroup.Id, ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings));
+            UserGroupPerspectiveFacade.SetSerializedEntityTokens(userGroup.Id, newUserGroupEntityTokens);
 
             SetSaveStatus(true);
 
@@ -135,7 +145,38 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             }
         }
 
+        private bool ValidateUserPreservsAdminRights(IUserGroup userGroup, List<string> newUserGroupEntityTokens)
+        {
+            string usersPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.UserPerspective.EntityToken);
 
+            Guid groupId = userGroup.Id;
+            string userName = UserSettings.Username;
+
+            List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(userName);
+
+            HashSet<Guid> groupsWithAccessToUsersPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(usersPerspectiveEntityToken));
+
+            if (groupsWithAccessToUsersPerspective.Contains(groupId)
+                && !newUserGroupEntityTokens.Contains(usersPerspectiveEntityToken)
+                && !UserPerspectiveFacade.GetSerializedEntityTokens(userName).Contains(usersPerspectiveEntityToken)
+                && !userGroupIds.Any(anotherGroupId => anotherGroupId != groupId && groupsWithAccessToUsersPerspective.Contains(anotherGroupId)))
+            {
+                this.ShowMessage(DialogType.Message,
+                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditErrorTitle"),
+                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditOwnAccessToUsersPerspective"));
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private List<Guid> GetGroupsThatHasAccessToPerspective(string usersPerspectiveEntityToken)
+        {
+            return DataFacade.GetData<IUserGroupActivePerspective>()
+                             .Where(ug => ug.SerializedEntityToken == usersPerspectiveEntityToken)
+                             .Select(ug => ug.UserGroupId).ToList();
+        }
 
         private void UpdateFormDefinitionWithGlobalPermissions(IUserGroup userGroup, XElement bindingsElement, XElement placeHolderElement)
         {

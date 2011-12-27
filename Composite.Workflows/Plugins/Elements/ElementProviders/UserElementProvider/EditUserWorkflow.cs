@@ -231,6 +231,29 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
 
 
+            string usersPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.UserPerspective.EntityToken);
+
+            List<Guid> newUserGroupIds = UserGroupsFormsHelper.GetSelectedUserGroupIds(this.Bindings);
+            List<string> newSerializedEnitityTokens = ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings).ToList();
+
+            // Current user shouldn't be able to remove its own access to "Users" perspective
+            if(string.Compare(user.Username, UserSettings.Username, StringComparison.InvariantCultureIgnoreCase) == 0)
+            {
+
+                HashSet<Guid> groupsWithAccessToUsersPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(usersPerspectiveEntityToken));
+
+               if(!newSerializedEnitityTokens.Contains(usersPerspectiveEntityToken)
+                   && !newUserGroupIds.Any(groupsWithAccessToUsersPerspective.Contains))
+               {
+                   this.ShowMessage(DialogType.Message,
+                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditErrorTitle"),
+                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditOwnAccessToUsersPerspective"));
+
+                   userValidated = false;
+               }
+            }
+
+
             if (userValidated == true)
             {
                 UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
@@ -258,13 +281,14 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     UserSettings.SetUserCultureInfo(user.Username, CultureInfo.CreateSpecificCulture(cultureName));
 
 
-                    IEnumerable<string> newSerializedEntityToken = ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings);
-                    IEnumerable<string> existingSerializedEntityToken = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username);
+                    
+                    List<string> existingSerializedEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username).ToList();
 
-                    int intersectCount = existingSerializedEntityToken.Intersect(newSerializedEntityToken).Count();
-                    if ((intersectCount != newSerializedEntityToken.Count()) || (intersectCount != existingSerializedEntityToken.Count()))
+                    int intersectCount = existingSerializedEntityTokens.Intersect(newSerializedEnitityTokens).Count();
+                    if ((intersectCount != newSerializedEnitityTokens.Count) 
+                        || (intersectCount != existingSerializedEntityTokens.Count))
                     {
-                        UserPerspectiveFacade.SetSerializedEntityTokens(user.Username, ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings));
+                        UserPerspectiveFacade.SetSerializedEntityTokens(user.Username, newSerializedEnitityTokens);
 
                         if (UserSettings.Username == user.Username)
                         {
@@ -272,8 +296,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                         }
                     }
 
-                    UserToken userToken = new UserToken(user.Username);
-                    EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();
+                    /*UserToken userToken = new UserToken(user.Username);
+                    EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();*/
 
                     /*IEnumerable<PermissionType> oldPermissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(userToken, rootEntityToken);
                     IEnumerable<PermissionType> newPermissionTypes = GlobalPermissionsFormsHelper.GetSelectedPermissionTypes(this.Bindings);
@@ -296,7 +320,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     PermissionTypeFacade.SetUserPermissionDefinition(userPermissionDefinition);*/
 
 
-                    if (DataLocalizationFacade.ActiveLocalizationCultures.Count() > 0)
+                    if (DataLocalizationFacade.ActiveLocalizationCultures.Any())
                     {
                         foreach (CultureInfo cultureInfo in newActiveLocales)
                         {
@@ -323,7 +347,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
                             UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, selectedActiveLocal);
                         }
-                        else if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Count() > 0)
+                        else if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Any())
                         {
                             UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, UserSettings.GetActiveLocaleCultureInfos(user.Username).First());
                         }
@@ -331,7 +355,6 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
                     List<IUserUserGroupRelation> oldRelations = DataFacade.GetData<IUserUserGroupRelation>(f => f.UserId == user.Id).ToList();
-                    List<Guid> newUserGroupIds = UserGroupsFormsHelper.GetSelectedUserGroupIds(this.Bindings);
 
                     IEnumerable<IUserUserGroupRelation> deleteRelations =
                         from r in oldRelations
@@ -344,7 +367,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     foreach (Guid newUserGroupId in newUserGroupIds)
                     {
                         Guid groupId = newUserGroupId;
-                        if (oldRelations.Where(f => f.UserGroupId == groupId).Any() == true) continue;
+                        if (oldRelations.Any(f => f.UserGroupId == groupId) == true) continue;
 
                         IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
                         userUserGroupRelation.UserId = user.Id;
@@ -369,7 +392,12 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
         }
 
-
+        private List<Guid> GetGroupsThatHasAccessToPerspective(string usersPerspectiveEntityToken)
+        {
+            return DataFacade.GetData<IUserGroupActivePerspective>()
+                             .Where(ug => ug.SerializedEntityToken == usersPerspectiveEntityToken)
+                             .Select(ug => ug.UserGroupId).ToList();
+        }
 
         private void IsUserLoggedOn(object sender, System.Workflow.Activities.ConditionalEventArgs e)
         {
