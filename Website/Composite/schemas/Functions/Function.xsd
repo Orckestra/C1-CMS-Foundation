@@ -7,24 +7,31 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 
-  <xs:complexType name="FunctionType">
-    <xs:sequence>
-      <xs:element name="param" type="ParamType" minOccurs="0" maxOccurs="unbounded" />
-    </xs:sequence>
-    
-    <xs:attribute name="name" type="xs:string" use="required"/>
-  </xs:complexType>
+	<xs:complexType name="FunctionType">
+		<xs:sequence>
+			<xs:element name="param" type="ParamType" minOccurs="0" maxOccurs="unbounded" />
+		</xs:sequence>
 
-  <xs:complexType name="ParamType">
-    <xs:sequence>
-      <xs:element name="function" type="FunctionType" minOccurs="0" maxOccurs="1" />
-    </xs:sequence>
-    
-    <xs:attribute name="name" type="xs:string" use="required"/>
-    <xs:attribute name="value" type="xs:string" use="optional"/>
-  </xs:complexType>
+		<xs:attribute name="name" type="xs:string" use="required"/>
+	</xs:complexType>
 
-    
-  <xs:element name="function" type="FunctionType" />  
-  
+	<xs:complexType name="ParamType">
+		<xs:choice>
+			<xs:element name="function" type="FunctionType" minOccurs="0" maxOccurs="1" />
+
+			<xs:sequence minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="paramelement" type="ParametersValueElement" />
+			</xs:sequence>
+		</xs:choice>
+
+		<xs:attribute name="name" type="xs:string" use="required"/>
+		<xs:attribute name="value" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="ParametersValueElement">
+		<xs:attribute name="value" type="xs:string" use="required"/>
+	</xs:complexType>
+
+
+	<xs:element name="function" type="FunctionType" />
 </xs:schema>
