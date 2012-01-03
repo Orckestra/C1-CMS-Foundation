@@ -29,19 +29,22 @@ namespace Composite.C1Console.Actions
         /// <exclude />
         public static void Initialize()
         {
-            lock (_lock)
+            WorkflowFacade.RunWhenInitialized(() =>
             {
-                if (_initialized == false)
+                lock (_lock)
                 {
-                    WorkflowInstance workflowInstance = WorkflowFacade.CreateNewWorkflow(WorkflowFacade.GetWorkflowType("Composite.C1Console.Actions.Workflows.FlowInformationScavengerWorkflow"));
-                    workflowInstance.Start();
-                    WorkflowFacade.RunWorkflow(workflowInstance);
+                    if (_initialized == false)
+                    {
+                        WorkflowInstance workflowInstance = WorkflowFacade.CreateNewWorkflow(WorkflowFacade.GetWorkflowType("Composite.C1Console.Actions.Workflows.FlowInformationScavengerWorkflow"));
+                        workflowInstance.Start();
+                        WorkflowFacade.RunWorkflow(workflowInstance);
 
-                    LoggingService.LogVerbose("FlowControllerFacade", "Flow scavenger started");
+                        LoggingService.LogVerbose("FlowControllerFacade", "Flow scavenger started");
 
-                    _initialized = true;
+                        _initialized = true;
+                    }
                 }
-            }
+            });
         }
 
 

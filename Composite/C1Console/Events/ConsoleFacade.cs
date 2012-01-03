@@ -53,19 +53,22 @@ namespace Composite.C1Console.Events
         /// <exclude />
         public static void Initialize()
         {
-            lock (_lock)
+            WorkflowFacade.RunWhenInitialized(() =>
             {
-                if (_initialized == false)
+                lock (_lock)
                 {
-                    WorkflowInstance workflowInstance = WorkflowFacade.CreateNewWorkflow(WorkflowFacade.GetWorkflowType("Composite.C1Console.Events.Workflows.UserConsoleInformationScavengerWorkflow"));
-                    workflowInstance.Start();
-                    WorkflowFacade.RunWorkflow(workflowInstance);
+                    if (_initialized == false)
+                    {
+                        WorkflowInstance workflowInstance = WorkflowFacade.CreateNewWorkflow(WorkflowFacade.GetWorkflowType("Composite.C1Console.Events.Workflows.UserConsoleInformationScavengerWorkflow"));
+                        workflowInstance.Start();
+                        WorkflowFacade.RunWorkflow(workflowInstance);
 
-                    LoggingService.LogVerbose("ConsoleFacade", "Scavenger started");
+                        LoggingService.LogVerbose("ConsoleFacade", "Scavenger started");
 
-                    _initialized = true;
+                        _initialized = true;
+                    }
                 }
-            }
+            });
         }
 
 

@@ -16,6 +16,8 @@ namespace Composite.C1Console.Workflow
         void EnsureInitialization();
         WorkflowRuntime WorkflowRuntime { get; }
 
+        void RunWhenInitialized(Action action);
+
 
         #region Workflow methods
         WorkflowInstance CreateNewWorkflow(Type workflowType);

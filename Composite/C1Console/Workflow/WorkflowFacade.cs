@@ -76,6 +76,13 @@ namespace Composite.C1Console.Workflow
 
 
 
+        public static void RunWhenInitialized(Action action)
+        {
+            _workflowFacade.RunWhenInitialized(action);
+        }
+
+
+
         #region Workflow methods
         /// <exclude />
         public static WorkflowInstance CreateNewWorkflow(Type workflowType)
