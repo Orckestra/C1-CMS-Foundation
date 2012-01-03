@@ -1216,20 +1216,16 @@ namespace Composite.C1Console.Workflow
                         }
                     }
                     catch (DataSerilizationException)
-                    {
-                        AbortWorkflow(id);
-
+                    {                        
                         LoggingService.LogVerbose("WorkflowFacade", string.Format("The workflow {0} contained one or more bindings where data was deleted or data type changed, workflow can not be resumed", id));
 
+                        //AbortWorkflow(id);
                     }
                     catch (Exception ex)
-                    {                        
-                        AbortWorkflow(id);
-
+                    {
                         LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
-                        LoggingService.LogCritical("WorkflowFacade", "Original form data:");
-                        LoggingService.LogCritical("WorkflowFacade", doc.Root.ToString());
-                        LoggingService.LogCritical("WorkflowFacade", ex);
+
+                       // AbortWorkflow(id);                        
                     }
                 }
             }
