@@ -185,7 +185,7 @@ LabelBinding.prototype.setAlphaTransparentBackdrop = function ( url ) {
 			if ( Client.isExplorer6 ) {
 				this.shadowTree.labelBody.style.filter = LabelBinding.EXPLORER_IMAGE_FILTER.replace ( "${url}", url );
 			} else {
-				this.shadowTree.labelBody.style.backgroundImage = "url(" + url + ")";
+				this.shadowTree.labelBody.style.backgroundImage = "url('" + url + "')";
 			}
 		} else {
 			if ( Client.isExplorer6 ) {
