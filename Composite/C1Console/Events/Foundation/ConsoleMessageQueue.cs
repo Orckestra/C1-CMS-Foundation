@@ -19,7 +19,7 @@ namespace Composite.C1Console.Events.Foundation
         private int _queueItemCounter = 1;
         private readonly object _lock = new object();
         private readonly TimeSpan _timeInterval;
-        private List<ConsoleMessageQueueElement> _elements;
+        private List<ConsoleMessageQueueElement> _elements = new List<ConsoleMessageQueueElement>();
         private string MessageQueueFilePath { get; set; }
 
 
@@ -31,7 +31,7 @@ namespace Composite.C1Console.Events.Foundation
             MessageQueueFilePath = Path.Combine(directory, MessageQueueFileName);
 
             _timeInterval = new TimeSpan(0, 0, secondsForItemToLive);
-            
+
             DeserializeMessagesFromFileSystem();
 
             Timer timer = new Timer(OnWeed, null, new TimeSpan(0, 0, 0), _timeInterval);
@@ -120,7 +120,7 @@ namespace Composite.C1Console.Events.Foundation
                     return _queueItemCounter;
                 }
             }
-        }        
+        }
 
 
 
@@ -132,17 +132,19 @@ namespace Composite.C1Console.Events.Foundation
             }
         }
 
-      
+
 
         private void CleanOutOldMessages(List<ConsoleMessageQueueElement> listToClean)
         {
+            if (listToClean == null) return;
+
             DateTime now = DateTime.Now;
 
             int count = listToClean.Count<ConsoleMessageQueueElement>(element => element.EnqueueTime + _timeInterval < now);
-           
+
             if (count > 0)
             {
-                listToClean.RemoveRange(0, count);                
+                listToClean.RemoveRange(0, count);
             }
         }
 
@@ -158,7 +160,7 @@ namespace Composite.C1Console.Events.Foundation
         private void SerializeMessagesToFileSystem(bool forDebug = false)
         {
             lock (_lock)
-            {                
+            {
                 if (_elements != null && _elements.Count > 0)
                 {
                     IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
@@ -174,7 +176,7 @@ namespace Composite.C1Console.Events.Foundation
             }
         }
 
-        
+
 
         private void DeserializeMessagesFromFileSystem()
         {
@@ -185,6 +187,7 @@ namespace Composite.C1Console.Events.Foundation
                 XElement serializedMessages = XElementUtils.Load(MessageQueueFilePath);
 
                 IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
+
                 _elements = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
                 if (_elements == null) _elements = new List<ConsoleMessageQueueElement>();
 
@@ -201,11 +204,11 @@ namespace Composite.C1Console.Events.Foundation
 
         private static void LogMessageQueue(IEnumerable<ConsoleMessageQueueElement> messageQueue, string title = null)
         {
-            if (title != null) Log.LogInformation("ConsoleMessageQueue", title);                        
+            if (title != null) Log.LogInformation("ConsoleMessageQueue", title);
 
             foreach (ConsoleMessageQueueElement element in messageQueue)
             {
-                Log.LogInformation("ConsoleMessageQueue", string.Format("Message: ItemNumber: {0}, Type: {1}", element.QueueItemNumber, element.QueueItem.GetType().Name));                
+                Log.LogInformation("ConsoleMessageQueue", string.Format("Message: ItemNumber: {0}, Type: {1}", element.QueueItemNumber, element.QueueItem.GetType().Name));
             }
         }
 
