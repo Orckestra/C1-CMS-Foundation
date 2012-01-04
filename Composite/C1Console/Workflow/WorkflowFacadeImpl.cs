@@ -61,7 +61,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-        
+
         public void EnsureInitialization()
         {
             if (_initializeThread == null)
@@ -78,7 +78,7 @@ namespace Composite.C1Console.Workflow
                                 Thread.Sleep(100);
                             }
 
-                            if (_workflowRuntime != null) 
+                            if (_workflowRuntime != null)
                             {
                                 LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "Already initialized, skipping delayed initialization");
                                 return;
@@ -104,7 +104,7 @@ namespace Composite.C1Console.Workflow
                     }
                 }
             }
-            
+
         }
 
 
@@ -120,7 +120,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-        
+
         public void RunWhenInitialized(Action action)
         {
             _actionToRunWhenInitialized.Add(action);
@@ -167,7 +167,7 @@ namespace Composite.C1Console.Workflow
                 WorkflowInstance workflowInstance = _workflowRuntime.CreateWorkflow(workflowType, arguments);
 
                 SetWorkflowPersistingType(workflowType, workflowInstance.InstanceId);
-                
+
                 if ((arguments.ContainsKey("SerializedEntityToken") == true) &&
                     (arguments.ContainsKey("SerializedActionToken") == true))
                 {
@@ -286,7 +286,7 @@ namespace Composite.C1Console.Workflow
                 {
                     WorkflowRuntime.GetWorkflow(instanceId).Abort();
 
-                    _manualWorkflowSchedulerService.RunWorkflow(instanceId);                    
+                    _manualWorkflowSchedulerService.RunWorkflow(instanceId);
 
                     Exception exception;
                     if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception) == true)
@@ -508,9 +508,11 @@ namespace Composite.C1Console.Workflow
                             _resourceLocker.Resources.WorkflowStatusDictionary.Add(instanceId, WorkflowInstanceStatus.Idle);
                         }
 
-                        _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Idle;
+                        _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Idle;                        
 
                         LoggingService.LogVerbose("WorkflowFacade", string.Format("Workflow instance status changed to idle. Id = {0}", instanceId));
+
+                        PersistFormData(instanceId);
 
                         break;
 
@@ -811,7 +813,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-        
+
         public void ShutDown()
         {
             _isShutDown = true;
@@ -838,7 +840,7 @@ namespace Composite.C1Console.Workflow
             }
 
             _workflowRuntime = null;
-            
+
             int endTime = Environment.TickCount;
             LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done finalizing Workflows ({0} ms ) ==========----------", endTime - startTime));
         }
@@ -936,7 +938,7 @@ namespace Composite.C1Console.Workflow
 
             _workflowRuntime.WorkflowCompleted += delegate(object sender, WorkflowCompletedEventArgs args)
             {
-                using(ThreadDataManager.EnsureInitialize())
+                using (ThreadDataManager.EnsureInitialize())
                 {
                     OnWorkflowInstanceTerminatedCleanup(args.WorkflowInstance.InstanceId);
                 }
@@ -1045,7 +1047,7 @@ namespace Composite.C1Console.Workflow
             catch (Exception)
             {
                 LoggingService.LogVerbose("WorkflowFacade", "Workflow persisted, Id = {0}" + instance.InstanceId);
-            }                
+            }
         }
 
 
@@ -1056,23 +1058,23 @@ namespace Composite.C1Console.Workflow
             var instance = args.WorkflowInstance;
 
             try
-            {                
+            {
                 LoggingService.LogVerbose(
                     "WorkflowFacade",
                     string.Format("Workflow aborted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId));
             }
             catch (Exception)
             {
-                LoggingService.LogVerbose("WorkflowFacade", "Workflow aborted Id = "+ instance.InstanceId);
+                LoggingService.LogVerbose("WorkflowFacade", "Workflow aborted Id = " + instance.InstanceId);
             }
         }
-        
+
 
 
         private void AddWorkflowLoggingEvents()
         {
             _workflowRuntime.WorkflowAborted += HandleWorkflowAbortedEvent;
-            
+
 
             //_workflowRuntime.WorkflowCompleted += delegate(object sender, WorkflowCompletedEventArgs args)
             //{
@@ -1105,21 +1107,21 @@ namespace Composite.C1Console.Workflow
 
             _workflowRuntime.WorkflowPersisted += HandleWorkflowPersistedEvent;
 
-          /*  _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
-            {                
-                //try
-                //{
-                //    LoggingService.LogVerbose(
-                //        "WorkflowFacade",
-                //        string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
-                //}
-                //catch (Exception)
-                //{
-                //    LoggingService.LogVerbose(
-                //        "WorkflowFacade",
-                //        string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
-                //}                
-            };*/
+            /*  _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
+              {                
+                  //try
+                  //{
+                  //    LoggingService.LogVerbose(
+                  //        "WorkflowFacade",
+                  //        string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+                  //}
+                  //catch (Exception)
+                  //{
+                  //    LoggingService.LogVerbose(
+                  //        "WorkflowFacade",
+                  //        string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
+                  //}                
+              };*/
 
             //_workflowRuntime.WorkflowResumed += delegate(object sender, WorkflowEventArgs args)
             //{
@@ -1182,7 +1184,7 @@ namespace Composite.C1Console.Workflow
                         _fileWorkFlowPersisetenceService.RemovePersistedWorkflow(instanceId);
                     }
 
-                    if(workflowInstance != null
+                    if (workflowInstance != null
                         && !_resourceLocker.Resources.WorkflowPersistingTypeDictionary.ContainsKey(instanceId))
                     {
                         Type workflowType = workflowInstance.GetWorkflowDefinition().GetType();
@@ -1216,16 +1218,16 @@ namespace Composite.C1Console.Workflow
                         }
                     }
                     catch (DataSerilizationException)
-                    {                        
-                        LoggingService.LogVerbose("WorkflowFacade", string.Format("The workflow {0} contained one or more bindings where data was deleted or data type changed, workflow can not be resumed", id));
+                    {
+                        //LoggingService.LogVerbose("WorkflowFacade", string.Format("The workflow {0} contained one or more bindings where data was deleted or data type changed, workflow can not be resumed", id));
 
                         //AbortWorkflow(id);
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
+                        //LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
 
-                       // AbortWorkflow(id);                        
+                        //AbortWorkflow(id);                        
                     }
                 }
             }
@@ -1274,7 +1276,7 @@ namespace Composite.C1Console.Workflow
 
             foreach (Guid instanceId in _resourceLocker.Resources.WorkflowStatusDictionary.Keys.ToList())
             {
-                if(abortedWorkflows.Contains(instanceId))
+                if (abortedWorkflows.Contains(instanceId))
                 {
                     continue;
                 }
@@ -1291,6 +1293,8 @@ namespace Composite.C1Console.Workflow
             _fileWorkFlowPersisetenceService.PersistAll = false;
         }
 
+
+
         [DebuggerHidden]
         private void UnloadSilent(Guid instanceId)
         {
@@ -1304,6 +1308,47 @@ namespace Composite.C1Console.Workflow
                 // Ignore, the workflow is already dead
             }
         }
+
+
+        private void PersistFormData(Guid instanceId)
+        {
+            var resources = _resourceLocker.Resources;
+
+            bool shouldPersist =
+                resources.WorkflowPersistingTypeDictionary.
+                Where(f => f.Key == instanceId && f.Value != WorkflowPersistingType.Never).
+                Any();
+
+            if (!shouldPersist) return;
+
+
+            FormData formData = resources.FormDatas.
+                Where(f => f.Key == instanceId).
+                Select(f => f.Value).
+                SingleOrDefault();
+
+            if (formData == null) return;
+
+            try
+            {
+                XElement element = formData.Serialize();
+
+                string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
+
+                XDocument doc = new XDocument(element);
+                doc.SaveToFile(filename);
+
+                LoggingService.LogVerbose("WorkflowFacade", string.Format("FormData persisted for workflow id = {0}", instanceId));
+            }
+            catch (Exception ex)
+            {
+                // Stop trying serializing this workflow
+                AbortWorkflow(instanceId);
+
+                LoggingService.LogCritical("WorkflowFacade", ex);
+            }
+        }
+
 
 
         private void PersistFormDatas()

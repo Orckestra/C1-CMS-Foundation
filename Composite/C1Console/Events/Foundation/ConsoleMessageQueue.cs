@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Serialization;
@@ -18,8 +19,9 @@ namespace Composite.C1Console.Events.Foundation
         private int _queueItemCounter = 1;
         private readonly object _lock = new object();
         private readonly TimeSpan _timeInterval;
-        private readonly List<ConsoleMessageQueueElement> _elements = new List<ConsoleMessageQueueElement>();
+        private List<ConsoleMessageQueueElement> _elements;
         private string MessageQueueFilePath { get; set; }
+
 
         public ConsoleMessageQueue(int secondsForItemToLive)
         {
@@ -140,8 +142,7 @@ namespace Composite.C1Console.Events.Foundation
            
             if (count > 0)
             {
-                listToClean.RemoveRange(0, count);
-                SerializeMessagesToFileSystem();
+                listToClean.RemoveRange(0, count);                
             }
         }
 
@@ -166,7 +167,6 @@ namespace Composite.C1Console.Events.Foundation
 
                     string serializedConsoleMessagesDir = PathUtil.Resolve((forDebug ? GlobalSettingsFacade.TempDirectory : GlobalSettingsFacade.SerializedConsoleMessagesDirectory));
 
-                    //string timeSortedUniqueFileName = string.Format("{0}.{1}.xml", (long.MaxValue - DateTime.Now.Ticks), Guid.NewGuid());
                     string queueElementsXmlFilePath = Path.Combine(serializedConsoleMessagesDir, MessageQueueFileName);
 
                     serializedMessages.SaveToPath(queueElementsXmlFilePath);
@@ -185,51 +185,27 @@ namespace Composite.C1Console.Events.Foundation
                 XElement serializedMessages = XElementUtils.Load(MessageQueueFilePath);
 
                 IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
-                List<ConsoleMessageQueueElement> messageList = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
+                _elements = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
+                if (_elements == null) _elements = new List<ConsoleMessageQueueElement>();
 
-                CleanOutOldMessages(messageList);
-
-                //foreach (string xmlFilePath in C1Directory.GetFiles(serializedConsoleMessagesDir).OrderBy(f => f))
-                //{
-                //    try
-                //    {
-                //        XElement serializedMessages = XElementUtils.Load(xmlFilePath);
-
-                //        List<ConsoleMessageQueueElement> messageList = xmlSerializer.Deserialize(serializedMessages) as List<ConsoleMessageQueueElement>;
-
-                //        CleanOutOldMessages(messageList);
-
-                //        var unknownElements = messageList.Where(f => _elements.Any(g => g.QueueItemNumber == f.QueueItemNumber) == false).ToList();
-
-                //        if (unknownElements.Count > 0)
-                //        {
-                //            _elements.AddRange(unknownElements);
-
-                //            LoggingService.LogVerbose("ConsoleMessageQueue", string.Format("Succesfully loaded {0} Console Messages from the file '{1}'", unknownElements.Count(), xmlFilePath));
-                //        }
-                //        else
-                //        {
-                //            C1File.Delete(xmlFilePath); // cleaning up obsolete files
-                //        }
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        LoggingService.LogCritical("ConsoleMessageQueue", ex);
-
-                //        try
-                //        {
-                //            C1File.Delete(xmlFilePath); // Delete broken file
-                //        }
-                //        catch // Ignore exceptions
-                //        {
-                //        }
-                //    }
-                //}
+                CleanOutOldMessages(_elements);
 
                 if (_elements.Any())
                 {
                     _queueItemCounter = _elements.Max(f => f.QueueItemNumber);
                 }
+            }
+        }
+
+
+
+        private static void LogMessageQueue(IEnumerable<ConsoleMessageQueueElement> messageQueue, string title = null)
+        {
+            if (title != null) Log.LogInformation("ConsoleMessageQueue", title);                        
+
+            foreach (ConsoleMessageQueueElement element in messageQueue)
+            {
+                Log.LogInformation("ConsoleMessageQueue", string.Format("Message: ItemNumber: {0}, Type: {1}", element.QueueItemNumber, element.QueueItem.GetType().Name));                
             }
         }
 
