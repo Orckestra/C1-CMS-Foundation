@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using Composite.C1Console.Events;
 using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -8,8 +9,6 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
-using System.IO;
-using Composite.Core.IO;
 
 
 namespace Composite.Core.WebClient
@@ -22,9 +21,8 @@ namespace Composite.Core.WebClient
     {
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)ApplicationEventHandler";
         readonly static object _syncRoot = new object();
+        private static DateTime _startTime;
         private static bool _systemIsInitialized = false;
-        private static bool _haveAppDomainLock = false;
-        private static EventHandler _domainUnloadedEventHandler = null;
 
         /// <exclude />
         public static bool LogRequestDetails { get; set; }
@@ -33,14 +31,13 @@ namespace Composite.Core.WebClient
         public static bool LogApplicationLevelErrors { get; set; }
 
 
-        private static DateTime _startTime;
+        
 
         /// <exclude />
         public static void Application_Start(object sender, EventArgs e)
         {
-            DateTime startTime = DateTime.Now;
             _startTime = DateTime.Now;
-            Log.LogVerbose(_verboseLogEntryTitle, "AppDomain {0} started at {1}", AppDomain.CurrentDomain.Id, _startTime.ToString("HH:mm:ss:ff"));
+            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} started at {1}", AppDomain.CurrentDomain.Id, _startTime.ToString("HH:mm:ss:ff"));
 
             SystemSetupFacade.SetFirstTimeStart();
 
@@ -59,32 +56,15 @@ namespace Composite.Core.WebClient
                 throw new InvalidOperationException("Windows limitation problem detected! You have installed the website at a place where the total path length of the file with the longest filename exceeds the maximum allowed in Windows. See http://msdn.microsoft.com/en-us/library/aa365247%28VS.85%29.aspx#paths");
             }
 
-
-#warning MRJ: BM: Cleanup logging here!
-            //_haveAppDomainLock = AppDomainLocker.AcquireLock(10000);
-            //if (!_haveAppDomainLock)
-            //{
-            //    Log.LogInformation("AppDomainLocker", "Failed to get the lock");
-
-            //    AppDomainLocker.ReleaseLock(forceRelease: true);
-            //    _haveAppDomainLock = AppDomainLocker.AcquireLock(0);
-
-            //    if (!_haveAppDomainLock)
-            //    {
-            //        Log.LogInformation("AppDomainLocker", "Failed to release the lock and get it");
-            //    }
-            //}
             
-            AppDomain.CurrentDomain.DomainUnload += new EventHandler(CurrentDomain_DomainUnload);            
-
-       //     CodeGenerationManager.ValidateCompositeGenerate(startTime);
+            AppDomain.CurrentDomain.DomainUnload += CurrentDomain_DomainUnload;
 
 
             lock (_syncRoot)
             {
-                if (_systemIsInitialized == true) return;
+                if (_systemIsInitialized) return;
 
-                ApplicationStartInitialize(Composite.RuntimeInformation.IsDebugBuild);
+                ApplicationStartInitialize(RuntimeInformation.IsDebugBuild);
 
                 _systemIsInitialized = true;
             }
@@ -95,9 +75,9 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_End(object sender, EventArgs e)
         {
-            Log.LogVerbose(_verboseLogEntryTitle, "AppDomain {0} ended at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));
+            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} ended at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));
 
-            if (Composite.Core.Configuration.SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
             {
                 return;
             }
@@ -107,12 +87,12 @@ namespace Composite.Core.WebClient
             {
                 try
                 {
-                    Composite.C1Console.Events.GlobalEventSystemFacade.PrepareForShutDown();
-                    if (Composite.RuntimeInformation.IsDebugBuild)
+                    GlobalEventSystemFacade.PrepareForShutDown();
+                    if (RuntimeInformation.IsDebugBuild)
                     {
                         LogShutDownReason();
                     }
-                    Composite.C1Console.Events.GlobalEventSystemFacade.ShutDownTheSystem();
+                    GlobalEventSystemFacade.ShutDownTheSystem();
 
                     CodeGenerationManager.ValidateCompositeGenerate(_startTime);
                     CodeGenerationManager.GenerateCompositeGeneratedAssembly();
@@ -131,33 +111,8 @@ namespace Composite.Core.WebClient
                     }
 
                     throw;
-                }
-                finally
-                {
-//                    if (_haveAppDomainLock)
-//                    {
-//                        try
-//                        {
-//                            if (AppDomainLocker.AcquireLock(0, false))
-//                            {
-//                                AppDomainLocker.ReleaseLock();
-//                                AppDomainLocker.ReleaseLock();
-//                            }
-//                            else
-//                            {
-//#warning MRJ: BM: Cleanup logging here!
-//                                Log.LogInformation("AppDomainLocker", "Another AppDomain released the lock for this AppDomain");   
-//                            }
-//                        }
-//                        catch(Exception)
-//                        {
-//                            // Ignore
-//                        }
-//                    }
-                }
+                }               
             }
-
-            //System.Threading.Thread.Sleep(10000);
         }
 
 
@@ -292,7 +247,6 @@ namespace Composite.Core.WebClient
             ApplicationStartupFacade.FireBeforeSystemInitialize();
 
             TempDirectoryFacade.OnApplicationStart();
-            BuildManager.InitializeCachingSytem();
 
             Routing.Routes.Register();
 
@@ -304,13 +258,12 @@ namespace Composite.Core.WebClient
         }
 
 
+
         private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
         {
-            Log.LogVerbose(_verboseLogEntryTitle, "AppDomain {0} unloaded at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));
-           // if (!AppDomainLocker.CurrentAppDomainHasLock) return;
-            
-            //AppDomainLocker.ReleaseLock(); // This is for VS dev server, it does not always call Application_End :S /MRJ
+            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} unloaded at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));           
         }
+
 
 
         private static void LogShutDownReason()

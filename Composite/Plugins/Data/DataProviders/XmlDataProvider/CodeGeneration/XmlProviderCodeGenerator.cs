@@ -1,11 +1,16 @@
 ﻿using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Composite.Data.DynamicTypes;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     internal class XmlProviderCodeGenerator
     {
         private readonly DataTypeDescriptor _dataTypeDescriptor;
@@ -37,8 +42,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 dataProviderHelperClassName,
                 wrapperClassName,
                 dataIdClassName,
-                _dataTypeDescriptor,
-                _dataTypeDescriptor.KeyPropertyNames
+                _dataTypeDescriptor                
             );
             CodeTypeDeclaration dataHelperClassCodeTypeDeclaration = classGenerator.CreateClass();
             yield return dataHelperClassCodeTypeDeclaration;

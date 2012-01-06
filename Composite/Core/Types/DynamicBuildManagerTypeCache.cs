@@ -5,7 +5,7 @@ using Composite.Core.Collections.Generic;
 
 namespace Composite.Core.Types
 {
-    internal sealed class DynamicBuildManagerTypeCache<TValue>
+    internal sealed class CompiledTypeCache<TValue>
     {
         private readonly Hashtable<string, CacheItem> _cache = new Hashtable<string, CacheItem>();
 
@@ -16,12 +16,7 @@ namespace Composite.Core.Types
 
             CacheItem cacheItem;
             if (_cache.TryGetValue(cacheKey, out cacheItem))
-            {
-                if (cacheItem.Type != key)
-                {
-                    ValidateKeyVersions(cacheItem.Type, key);
-                }
-
+            {               
                 _cache.Remove(cacheKey);
             }
         }
@@ -37,8 +32,6 @@ namespace Composite.Core.Types
             {
                 if (cacheItem.Type == key) throw new ArgumentException("Adding an item with duplicate key");
 
-                ValidateKeyVersions(cacheItem.Type, key);
-
                 _cache[cacheKey] = new CacheItem { Type = key, Value = value };
             }
             else
@@ -53,16 +46,7 @@ namespace Composite.Core.Types
         {
             CacheItem cacheItem;
             if (_cache.TryGetValue(GetCacheKey(key), out cacheItem) == false) return false;
-
-
-            if (cacheItem.Type != key)
-            {
-                int existingVersion, newVersion;
-
-                ValidateKeyVersions(cacheItem.Type, key, out existingVersion, out newVersion);
-
-                return existingVersion == newVersion;
-            }
+           
             return true;
         }
 
@@ -82,16 +66,7 @@ namespace Composite.Core.Types
             }
            
 
-            value = cacheItem.Value;
-
-            if (cacheItem.Type != key)
-            {
-                int existingVersion, newVersion;
-
-                ValidateKeyVersions(cacheItem.Type, key, out existingVersion, out newVersion);
-
-                return existingVersion == newVersion;
-            }
+            value = cacheItem.Value;            
 
             return true;
         }
@@ -119,16 +94,7 @@ namespace Composite.Core.Types
                 if (_cache.TryGetValue(GetCacheKey(key), out cacheItem) == false)
                 {
                     throw new ArgumentException("Key not found");
-                }
-
-                if (cacheItem.Type != key)
-                {
-                    int existingVersion, newVersion;
-
-                    ValidateKeyVersions(cacheItem.Type, key, out existingVersion, out newVersion);
-
-                    if (existingVersion < newVersion) throw new ArgumentException("Key not found");
-                }
+                }                
 
                 return cacheItem.Value;
             }
@@ -137,12 +103,7 @@ namespace Composite.Core.Types
                 string cacheKey = GetCacheKey(key);
 
                 CacheItem cacheItem;
-                if (!_cache.TryGetValue(cacheKey, out cacheItem)) throw new ArgumentException("Key not found");
-
-                if (cacheItem.Type != key)
-                {
-                    ValidateKeyVersions(cacheItem.Type, key);
-                }
+                if (!_cache.TryGetValue(cacheKey, out cacheItem)) throw new ArgumentException("Key not found");               
 
                 _cache[cacheKey] = new CacheItem { Type = key, Value = value };
             }
@@ -150,26 +111,7 @@ namespace Composite.Core.Types
 
 
 
-        private void ValidateKeyVersions(Type existingKey, Type newKey)
-        {
-            int existingVersion, newVersion;
-
-            ValidateKeyVersions(existingKey, newKey, out existingVersion, out newVersion);
-        }
-
-
-
-        private void ValidateKeyVersions(Type existingKey, Type newKey, out int existingVersion, out int newVersion)
-        {
-            existingVersion = BuildManager.GetAssemblyVersion(existingKey.Assembly);
-            newVersion = BuildManager.GetAssemblyVersion(newKey.Assembly);
-
-            if (existingVersion > newVersion)
-            {
-                throw new InvalidOperationException(string.Format("Trying to add a item with a key that is of older version than the existing key. Existing key version '{0}', new key version '{1}', existing key type '{2}', new key type '{3}'", existingVersion, newVersion, existingKey, newKey));
-            }
-        }
-
+        
 
 
         private sealed class CacheItem

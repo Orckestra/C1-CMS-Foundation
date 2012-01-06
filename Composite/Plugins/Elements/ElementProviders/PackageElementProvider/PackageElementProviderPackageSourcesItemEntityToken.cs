@@ -5,7 +5,7 @@ using Composite.C1Console.Security;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
-    internal sealed class AddOnElementProviderAddOnSourcesItemEntityTokenAncestorProvider : ISecurityAncestorProvider
+    internal sealed class PackageElementProviderPackageSourcesItemEntityTokenAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
@@ -17,7 +17,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-    [SecurityAncestorProvider(typeof(AddOnElementProviderAddOnSourcesItemEntityTokenAncestorProvider))]
+    [SecurityAncestorProvider(typeof(PackageElementProviderPackageSourcesItemEntityTokenAncestorProvider))]
     internal sealed class PackageElementProviderPackageSourcesItemEntityToken : EntityToken
     {
         string _id;

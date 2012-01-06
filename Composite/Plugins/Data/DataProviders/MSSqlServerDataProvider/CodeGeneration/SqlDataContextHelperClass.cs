@@ -3,12 +3,11 @@ using System.Data.Linq;
 using System.Reflection;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
-using Composite.Core.Types;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration
 {
-#warning MRJ: BM: Look close to where this class is used
     /// <summary>    
     /// Provides an api to work with generated tables of a DataContext object.
     /// </summary>
@@ -18,11 +17,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
     {
         readonly DataContext _dataContext;
 
-        private readonly Hashtable<string, Type> _typeResolvingTable = new Hashtable<string, Type>();
         private readonly Hashtable<string, ITable> _tables = new Hashtable<string, ITable>();
         private readonly object _syncRoot = new object();
-
-        private static readonly object _typeResolvingSyncRoot = new object();
 
 
         /// <exclude />
@@ -100,52 +96,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 value = helper._tables[fi.Name];
             }
             return Verify.ResultNotNull(value as ITable);
-        }
-
-
-#warning MRJ: BM: This method is not used!!
-        /// <summary>
-        /// Searches a type by the type name in all loaded auto-generated asseblies.
-        /// </summary>
-        /// <param name="typeName">The type's name.</param>
-        /// <returns>The last version of type.</returns>
-        private Type ResolveType(string typeName)
-        {
-            Type resolvedType;
-
-            if(_typeResolvingTable.TryGetValue(typeName, out resolvedType))
-            {
-                return resolvedType;
-            }
-
-            lock(_typeResolvingSyncRoot)
-            {
-                if(_typeResolvingTable.TryGetValue(typeName, out resolvedType))
-                {
-                    return resolvedType;
-                }
-
-                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-                // Assemblies are checked in back order, so the newly created will be checked firstly
-                for(int i=assemblies.Length-1; i>=0; i--)
-                {
-                    var assebmly = assemblies[i];
-
-                    if(assebmly.GetCustomAttributes(typeof(BuildManagerCompileUnitAssemblyAttribute), true).Length == 0)
-                    {
-                        continue;
-                    }
-
-                    Type type = assebmly.GetType(typeName, false, false);
-                    if (type == null) continue;
-
-                    _typeResolvingTable.Add(typeName, type);
-                    return type;
-                }
-
-            }
-            throw new InvalidOperationException("Type '{0}' has not been found".FormatWith(typeName));
         }
     }
 }

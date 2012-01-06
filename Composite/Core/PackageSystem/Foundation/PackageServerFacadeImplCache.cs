@@ -26,11 +26,11 @@ namespace Composite.Core.PackageSystem.Foundation
         }
 
 
-        public List<PackageDescription> GetCachedAddOnDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
+        public List<PackageDescription> GetCachedPackageDescription(string packageServerUrl, Guid installationId, CultureInfo userCulture)
         {
             if ((_packageDescriptionsCacheTimestamp + _cacheLiveTime) < DateTime.Now)
             {
-                LoggingService.LogVerbose("AddOnServerFacadeCache", "AddOnDescriptions cache miss");
+                LoggingService.LogVerbose("PackageServerFacadeCache", "PackageDescription cache miss");
                 return null;
             }
 
@@ -50,19 +50,19 @@ namespace Composite.Core.PackageSystem.Foundation
 
             if (dic2.ContainsKey(userCulture) == false)
             {
-                LoggingService.LogVerbose("AddOnServerFacadeCache", "AddOnDescriptions cache miss");
+                LoggingService.LogVerbose("PackageServerFacadeCache", "PackageDescription cache miss");
                 return null;
             }
 
-            LoggingService.LogVerbose("AddOnServerFacadeCache", "AddOnDescriptions returned from cache");
+            LoggingService.LogVerbose("PackageServerFacadeCache", "PackageDescription returned from cache");
             return dic2[userCulture];
         }
 
 
 
-        public void AddCachedAddOnDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture, List<PackageDescription> packageDescription)
+        public void AddCachedPackageDescription(string packageServerUrl, Guid installationId, CultureInfo userCulture, List<PackageDescription> packageDescription)
         {
-            LoggingService.LogVerbose("AddOnServerFacadeCache", "AddOnDescriptions added to cache");
+            LoggingService.LogVerbose("PackageServerFacadeCache", "PackageDescription added to cache");
 
             Dictionary<Guid, Dictionary<CultureInfo, List<PackageDescription>>> dic1;
             if (_packageDescriptionsCache.TryGetValue(packageServerUrl, out dic1) == false)

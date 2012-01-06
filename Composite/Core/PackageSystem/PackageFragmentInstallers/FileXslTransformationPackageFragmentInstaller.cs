@@ -109,7 +109,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         if (pathXMLAttribute == null)
                         {
                             validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                GetResourceString("FileAddOnFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
+                                GetResourceString("FilePackageFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
                                 fileElement));
                             continue;
                         }

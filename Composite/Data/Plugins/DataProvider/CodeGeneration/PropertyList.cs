@@ -135,7 +135,6 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
                     Type = propertyInfo.PropertyType,
                     ReadOnly = readOnly,
                     PropertyType = PropertyType.Interface,
-                    BeforeSetHandlerTypes = GetBeforeSetHandlerTypes(propertyInfo)
                 };
 
                 if(propertyInfo.PropertyType == typeof(Decimal))
@@ -193,15 +192,7 @@ namespace Composite.Data.Plugins.DataProvider.CodeGeneration
                 }
             }
         }
-
-
-
-        private List<Type> GetBeforeSetHandlerTypes(PropertyInfo propertyInfo)        
-        {
-            return
-                (from obj in propertyInfo.GetCustomAttributes(typeof(BeforeSetAttribute), true).Cast<BeforeSetAttribute>()
-                 select ((BeforeSetAttribute)obj).BeforeSetHandlerType).ToList();
-        }
+       
 
 
 

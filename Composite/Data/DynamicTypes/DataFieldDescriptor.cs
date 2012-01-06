@@ -281,8 +281,11 @@ namespace Composite.Data.DynamicTypes
 
             if ((idAttribute == null) || (nameAttribute == null) || (isNullableAttribute == null) || (positionAttribute == null) || (inheritedAttribute == null) || (instanceTypeAttribute == null) || (storeTypeAttribute == null)) throw new ArgumentException("The xml is not correctly formattet");
 
-#warning MRJ: BM: This is for making it possible to install existing packages but is wrong!
-            if (isReadOnlyAttribute == null) isReadOnlyAttribute = new XAttribute("isReadOnly", false);
+            if (isReadOnlyAttribute == null)
+            {
+                // For 3.0 backward compatibility. Future packages should contain this
+                isReadOnlyAttribute = new XAttribute("isReadOnly", false);
+            }
 
             XAttribute defaultValueAttribute = element.Attribute("defaultValue");
             XAttribute foreignKeyReferenceTypeNameAttribute = element.Attribute("foreignKeyReferenceTypeName");

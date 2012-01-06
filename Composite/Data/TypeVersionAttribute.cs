@@ -3,7 +3,6 @@
 
 namespace Composite.Data
 {
-#warning MRJ: BM: Remove all references to this class
     /// <summary>    
     /// </summary>
     /// <exclude />

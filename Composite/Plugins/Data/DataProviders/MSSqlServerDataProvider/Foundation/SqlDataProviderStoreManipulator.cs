@@ -14,6 +14,7 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
+
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation
 {
     internal sealed class SqlDataProviderStoreManipulator
@@ -210,8 +211,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             DataTypeChangeDescriptor changeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
 
-#warning MRJ: BM: HANDLE STORE CHANGE AND COPY DATA!! See updateDataTypeDescriptor.LocalesToCopyTo, updateDataTypeDescriptor.LocaleToCopyFrom, updateDataTypeDescriptor.PublicationAdded, updateDataTypeDescriptor.PublicationRemoved
-
             lock (_lock)
             {
                 foreach (DataScopeIdentifier dataScope in changeDescriptor.AddedDataScopes)
@@ -233,7 +232,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 if (updateDataTypeDescriptor.PublicationRemoved)
                 {
                     HandleDisablingOfPublication(changeDescriptor);
-                }                
+                }
 
                 foreach (DataScopeIdentifier dataScope in changeDescriptor.DeletedDataScopes)
                 {
@@ -333,58 +332,46 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             var culturesToAdd = newCultures.Where(culture => !oldCultures.Contains(culture)).ToList();
 
-            
+
             culturesToAdd.ForEach(culture => CreateStore(changeDescriptor.AlteredType, dataScope, culture));
             culturesToChange.ForEach(culture => AlterStore(updateDataTypeDescriptor, changeDescriptor, dataScope, culture));
 
             if (updateDataTypeDescriptor.LocalesToCopyTo != null)
             {
-                //List<DataScopeIdentifier> scopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Public };
-                //if (updateDataTypeDescriptor.NewHasPublication) scopes.Add(DataScopeIdentifier.Administrated);
-
                 StringBuilder fieldList = GetCommonFields(changeDescriptor);
 
-                //foreach (DataScopeIdentifier scope in scopes)
+                string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, "");
+
+                foreach (CultureInfo locale in updateDataTypeDescriptor.LocalesToCopyTo)
                 {
-                    string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, "");
-
-                    foreach (CultureInfo locale in updateDataTypeDescriptor.LocalesToCopyTo)
-                    {
-                        string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, locale);
-
-                        string copyCommandText = string.Format(@"
-                            INSERT INTO [{0}] ({2})
-                            SELECT {2}                             
-                            FROM [{1}];", toTableName, fromTableName, fieldList);
-                        ExecuteNonQuery(copyCommandText);
-
-                        string updateCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}', [{3}] = '{4}'", toTableName, "CultureName", locale.Name, "SourceCultureName", locale.Name);
-                        ExecuteNonQuery(updateCommandTesxt);
-                    }
-
-                    string removeCommandText = string.Format(@"DELETE FROM [{0}];", fromTableName);
-                    ExecuteNonQuery(removeCommandText);
-                }
-            }
-
-            if (updateDataTypeDescriptor.LocaleToCopyFrom != null)
-            {
-                //List<DataScopeIdentifier> scopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Public };
-                //if (updateDataTypeDescriptor.NewHasPublication) scopes.Add(DataScopeIdentifier.Administrated);
-
-                StringBuilder fieldList = GetCommonFields(changeDescriptor);
-
-                //foreach (DataScopeIdentifier scope in scopes)
-                {
-                    string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, updateDataTypeDescriptor.LocaleToCopyFrom.Name);
-                    string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, CultureInfo.InvariantCulture);
+                    string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, locale);
 
                     string copyCommandText = string.Format(@"
                             INSERT INTO [{0}] ({2})
                             SELECT {2}                             
                             FROM [{1}];", toTableName, fromTableName, fieldList);
                     ExecuteNonQuery(copyCommandText);
+
+                    string updateCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}', [{3}] = '{4}'", toTableName, "CultureName", locale.Name, "SourceCultureName", locale.Name);
+                    ExecuteNonQuery(updateCommandTesxt);
                 }
+
+                string removeCommandText = string.Format(@"DELETE FROM [{0}];", fromTableName);
+                ExecuteNonQuery(removeCommandText);
+            }
+
+            if (updateDataTypeDescriptor.LocaleToCopyFrom != null)
+            {
+                StringBuilder fieldList = GetCommonFields(changeDescriptor);
+
+                string fromTableName = GetConfiguredTableName(changeDescriptor.OriginalType, dataScope, updateDataTypeDescriptor.LocaleToCopyFrom.Name);
+                string toTableName = DynamicTypesCommon.GenerateTableName(changeDescriptor.AlteredType, dataScope, CultureInfo.InvariantCulture);
+
+                string copyCommandText = string.Format(@"
+                            INSERT INTO [{0}] ({2})
+                            SELECT {2}                             
+                            FROM [{1}];", toTableName, fromTableName, fieldList);
+                ExecuteNonQuery(copyCommandText);
             }
 
 
@@ -439,9 +426,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
 
                 AppendFields(alteredTableName, changeDescriptor.OriginalType.Fields, changeDescriptor.AddedFields, defaultValues);
-
-                //string sql = SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, (changeDescriptor.AlteredType.HasCustomPhysicalSortOrder == false));
-                //ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {

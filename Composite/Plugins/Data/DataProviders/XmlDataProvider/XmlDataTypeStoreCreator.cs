@@ -19,7 +19,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         /// <summary>
         /// </summary>
-        /// <param name="fileStoreDirectory">This is used when default <see cref="XmlDataTypeStoreDataScopes"/> is created</param>
+        /// <param name="fileStoreDirectory"></param>
         public XmlDataTypeStoreCreator(string fileStoreDirectory)
         {
             _fileStoreDirectory = fileStoreDirectory;
@@ -35,7 +35,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         /// configuration is validated.
         /// </summary>
         /// <param name="dataTypeDescriptor"></param>
-        /// <param name="dataProviderHelperClassType">The runtime type for the generated implementation of <see cref="Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.IXmlDataProviderHelper"/></param>
+        /// <param name="dataProviderHelperClassType">The runtime type for the generated implementation of <see cref="IXmlDataProviderHelper"/></param>
         /// <param name="dataIdClassType">The runtime type for the generated data id class.</param>
         /// <param name="xmlDataTypeStoreDataScopes">If this is null, default values will be created.</param>
         /// <returns>
@@ -81,7 +81,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             
             XmlDataTypeStore xmlDataTypeStore = new XmlDataTypeStore(dataTypeDescriptor, dataProviderHelperClassType, dataIdClassType, xmlDataTypeStoreDataScopes, dataTypeDescriptor.IsCodeGenerated);
 
-#warning MRJ: Validate and return null if its not valid
+#warning MRJ BM: Validate and return null if its not valid
 
             return xmlDataTypeStore;
         }

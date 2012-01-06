@@ -80,7 +80,7 @@
             </TextArea.Text>
           </TextArea>
 
-          <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.AddOnSourceTextLabel}">
+          <TextBox Type="ReadOnly" Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.PackageSourceTextLabel}">
             <TextBox.Text>
               <cms:read source="AddOnServerSource" />
             </TextBox.Text>

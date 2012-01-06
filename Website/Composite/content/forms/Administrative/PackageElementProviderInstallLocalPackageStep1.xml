@@ -3,11 +3,11 @@
   <cms:bindings>
     <cms:binding name="UploadedFile" type="Composite.C1Console.Forms.CoreUiControls.UploadedFile, Composite" />
   </cms:bindings>
-  <cms:layout iconhandle="package-installer-install" label="${Composite.Plugins.PackageElementProvider, InstallLocalAddOn.Step1.LayoutLabel}">
-    <FieldGroup Label="${Composite.Plugins.PackageElementProvider, InstallLocalAddOn.Step1.FieldGroupLabel}">
+  <cms:layout iconhandle="package-installer-install" label="${Composite.Plugins.PackageElementProvider, InstallLocalPackage.Step1.LayoutLabel}">
+    <FieldGroup Label="${Composite.Plugins.PackageElementProvider, InstallLocalPackage.Step1.FieldGroupLabel}">
       <FileUpload
-          Label="${Composite.Plugins.PackageElementProvider, InstallLocalAddOn.Step1.FileUploadLabel}"
-          Help="${Composite.Plugins.PackageElementProvider, InstallLocalAddOn.Step1.FileUploadHelp}">
+          Label="${Composite.Plugins.PackageElementProvider, InstallLocalPackage.Step1.FileUploadLabel}"
+          Help="${Composite.Plugins.PackageElementProvider, InstallLocalPackage.Step1.FileUploadHelp}">
         <FileUpload.UploadedFile>
           <cms:bind source="UploadedFile" />
         </FileUpload.UploadedFile>

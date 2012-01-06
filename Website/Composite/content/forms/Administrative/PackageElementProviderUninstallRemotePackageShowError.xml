@@ -4,9 +4,9 @@
     <cms:binding name="ErrorHeader" type="System.Object" />
     <cms:binding name="Errors" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="package-uninstall-package" label="${Composite.Plugins.PackageElementProvider, UninstallRemoteAddOn.ShowError.LayoutLabel}">
+  <cms:layout iconhandle="package-uninstall-package" label="${Composite.Plugins.PackageElementProvider, UninstallRemotePackage.ShowError.LayoutLabel}">
     <PlaceHolder>
-      <InfoBox Label="${Composite.Plugins.PackageElementProvider, UninstallRemoteAddOn.ShowError.InfoTableCaption}">
+      <InfoBox Label="${Composite.Plugins.PackageElementProvider, UninstallRemotePackage.ShowError.InfoTableCaption}">
         <InfoTable>
           <InfoTable.Headers>
             <cms:read source="ErrorHeader" />

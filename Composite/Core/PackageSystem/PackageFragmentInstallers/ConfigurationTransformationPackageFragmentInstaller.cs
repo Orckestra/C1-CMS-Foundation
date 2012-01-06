@@ -29,7 +29,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             List<PackageFragmentValidationResult> validationResults = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Count() > 2) validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.ExpectedExactlyTwoElements"), _installElementName, _uninstallElementName)));
+            if (this.Configuration.Count() > 2) validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.ExpectedExactlyTwoElements"), _installElementName, _uninstallElementName)));
 
             ValidateXslt(
                 validationResults,
@@ -88,19 +88,19 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             if (elementProvider() == null)
             {
-                validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.MissingElement"), elementName)));
+                validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.MissingElement"), elementName)));
             }
             else
             {
                 if (xsltFilePathProvider() == null)
                 {
-                    validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.MissingAttribute"), _xsltFilePathAttributeName), elementProvider()));
+                    validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.MissingAttribute"), _xsltFilePathAttributeName), elementProvider()));
                 }
                 else
                 {
                     if (zipFileSystem.ContainsFile(xsltFilePathProvider()) == false)
                     {
-                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.PathDoesNotExist"), xsltFilePathProvider()), xsltPathAttributeProvider()));
+                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.PathDoesNotExist"), xsltFilePathProvider()), xsltPathAttributeProvider()));
                     }
                     else
                     {
@@ -116,7 +116,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                 }
                                 catch (Exception ex)
                                 {
-                                    validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.UnableToParsXslt"), xsltFilePathProvider(), ex.Message), xsltPathAttributeProvider()));
+                                    validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.UnableToParsXslt"), xsltFilePathProvider(), ex.Message), xsltPathAttributeProvider()));
                                 }
 
                                 if (xslt != null && validateResultingConfigurationFile == true)
@@ -127,11 +127,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                     }
                                     catch (ConfigurationException ex)
                                     {
-                                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.XsltWillGeneratedInvalid"), xsltFilePathProvider(), ex.BareMessage), xsltPathAttributeProvider()));
+                                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid"), xsltFilePathProvider(), ex.BareMessage), xsltPathAttributeProvider()));
                                     }
                                     catch (Exception ex)
                                     {
-                                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationAddOnFragmentInstaller.XsltWillGeneratedInvalid"), xsltFilePathProvider(), ex.Message), xsltPathAttributeProvider()));
+                                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid"), xsltFilePathProvider(), ex.Message), xsltPathAttributeProvider()));
                                     }
                                 }
                             }

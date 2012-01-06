@@ -36,17 +36,11 @@ namespace Composite.Functions.Foundation
 
 
 
-        public void Initialize_StaticTypeDependentFunctions()
+        public void Initialize()
         {
             InitializeAllFunctions(FunctionTypesToReturn.StaticDependentFunctions, false);
-        }
-
-
-
-        public void Initialize_DynamicTypeDependentFunctions()
-        {
             InitializeAllFunctions(FunctionTypesToReturn.DynamicDependentOnlyFunctions, false);
-        }
+        }        
 
 
 

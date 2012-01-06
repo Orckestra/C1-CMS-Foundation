@@ -27,7 +27,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             {                
                 InstalledPackageInformation installedAddOnInformation =
                     (from info in PackageManager.GetInstalledPackages()
-                     where info.Id == castedToken.AddOnId
+                     where info.Id == castedToken.PackageId
                      select info).Single();
 
                 string name = installedAddOnInformation.Name;
@@ -72,14 +72,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             InstalledPackageInformation installedAddOnInformation =
                 (from info in PackageManager.GetInstalledPackages()
-                 where info.Id == castedToken.AddOnId
+                 where info.Id == castedToken.PackageId
                  select info).FirstOrDefault();
 
             if (installedAddOnInformation != null)
             {
                 if (installedAddOnInformation.IsLocalInstalled == true)
                 {
-                    this.ExecuteWorklow(this.EntityToken, typeof(UninstallLocalAddOnWorkflow));
+                    this.ExecuteWorklow(this.EntityToken, typeof(UninstallLocalPackageWorkflow));
                 }
                 else
                 {

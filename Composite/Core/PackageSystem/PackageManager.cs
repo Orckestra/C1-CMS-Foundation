@@ -15,10 +15,11 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.PackageSystem
 {
+
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class PackageManager
     {
         /// <exclude />
@@ -109,7 +110,7 @@ namespace Composite.Core.PackageSystem
         }
 
 
-        private static XAttribute GetAttributeNotNull(string fileName, XElement packageInfoElement,  string attributeName)
+        private static XAttribute GetAttributeNotNull(string fileName, XElement packageInfoElement, string attributeName)
         {
             XAttribute attribute = packageInfoElement.Attribute(attributeName);
             Verify.IsNotNull(attribute, "File: '{0}', failed to find '{1}' attribute.", fileName, attributeName);
@@ -163,7 +164,7 @@ namespace Composite.Core.PackageSystem
 
             PackageFragmentValidationResult packageFragmentValidationResult;
             try
-            {                
+            {
                 packageFragmentValidationResult = SaveZipFile(zipFileStream, out zipFilename);
                 if (packageFragmentValidationResult != null) return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { packageFragmentValidationResult }, null);
 
@@ -173,10 +174,10 @@ namespace Composite.Core.PackageSystem
 
                 PackageInformation packageInformation;
                 packageFragmentValidationResult = ValidatePackageInformation(installContent, out packageInformation);
-                if (packageFragmentValidationResult != null) return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { packageFragmentValidationResult }, zipFilename);                
+                if (packageFragmentValidationResult != null) return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { packageFragmentValidationResult }, zipFilename);
 
                 if ((RuntimeInformation.ProductVersion < packageInformation.MinCompositeVersionSupported) ||
-                    (RuntimeInformation.ProductVersion > packageInformation.MaxCompositeVersionSupported)) return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.CompositeVersionMisMatch")) }, zipFilename);
+                    (RuntimeInformation.ProductVersion > packageInformation.MaxCompositeVersionSupported)) return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.CompositeVersionMisMatch")) }, zipFilename);
 
                 if (IsInstalled(packageInformation.Id) == true)
                 {
@@ -187,7 +188,7 @@ namespace Composite.Core.PackageSystem
 
                     if (newVersion <= currentVersion)
                     {
-                        string messageKey = (newVersion == currentVersion) ? "AddOnManager.PackageAlreadyInstalled" : "AddOnManager.NewerVersionInstalled";
+                        string messageKey = (newVersion == currentVersion) ? "PackageManager.PackageAlreadyInstalled" : "PackageManager.NewerVersionInstalled";
                         string validationError = StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", messageKey);
 
                         return new PackageManagerInstallProcess(
@@ -231,7 +232,7 @@ namespace Composite.Core.PackageSystem
                     packageInfoElement.Add(new XAttribute(PackageSystemSettings.PackageInfo_PackageServerAddressAttributeName, packageServerAddress));
                 }
 
-                string infoFilename = Path.Combine(packageInstallDirectory, PackageSystemSettings.PackageInformationFilename);              
+                string infoFilename = Path.Combine(packageInstallDirectory, PackageSystemSettings.PackageInformationFilename);
                 doc.SaveToFile(infoFilename);
 
                 PackageInstaller packageInstaller = new PackageInstaller(new PackageInstallerUninstallerFactory(), packageZipFilename, packageInstallDirectory, TempDirectoryFacade.CreateTempDirectory(), packageInformation);
@@ -255,21 +256,21 @@ namespace Composite.Core.PackageSystem
                 string absolutePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), id.ToString());
 
                 InstalledPackageInformation installedPackageInformation =
-                    (from addon in GetInstalledPackages()
-                     where addon.Id == id
-                     select addon).SingleOrDefault();
+                    (from package in GetInstalledPackages()
+                     where package.Id == id
+                     select package).SingleOrDefault();
 
-                if (installedPackageInformation == null) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAddOnDirectory"), absolutePath)) });
+                if (installedPackageInformation == null) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingPackageDirectory"), absolutePath)) });
 
                 LoggingService.LogVerbose("PackageManager", string.Format("Uninstalling package: {0}, Id = {1}", installedPackageInformation.Name, installedPackageInformation.Id));
 
-                if (installedPackageInformation.CanBeUninstalled == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.Uninstallable")) });
+                if (installedPackageInformation.CanBeUninstalled == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.Uninstallable")) });
 
                 string zipFilePath = Path.Combine(absolutePath, PackageSystemSettings.ZipFilename);
-                if (C1File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingZipFile"), zipFilePath)) });           
+                if (C1File.Exists(zipFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingZipFile"), zipFilePath)) });
 
                 string uninstallFilePath = Path.Combine(absolutePath, PackageSystemSettings.UninstallFilename);
-                if (C1File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingUninstallFile"), uninstallFilePath)) });
+                if (C1File.Exists(uninstallFilePath) == false) return new PackageManagerUninstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingUninstallFile"), uninstallFilePath)) });
 
                 PackageInformation packageInformation = new PackageInformation
                 {
@@ -305,7 +306,7 @@ namespace Composite.Core.PackageSystem
             packageInformation = null;
 
             XElement packageInformationElement = installContent.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageInformationElementName));
-            if (packageInformationElement == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingElement"), PackageSystemSettings.PackageInformationElementName), installContent);
+            if (packageInformationElement == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingElement"), PackageSystemSettings.PackageInformationElementName), installContent);
 
             XAttribute idAttribute = packageInformationElement.Attribute(PackageSystemSettings.IdAttributeName);
             XAttribute nameAttribute = packageInformationElement.Attribute(PackageSystemSettings.NameAttributeName);
@@ -318,61 +319,61 @@ namespace Composite.Core.PackageSystem
             XAttribute flushOnCompletionAttribute = packageInformationElement.Attribute(PackageSystemSettings.FlushOnCompletionAttributeName);
             XAttribute reloadConsoleOnCompletionAttribute = packageInformationElement.Attribute(PackageSystemSettings.ReloadConsoleOnCompletionAttributeName);
 
-            if (idAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.IdAttributeName), packageInformationElement);
-            if (nameAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.NameAttributeName), packageInformationElement);
-            if (groupNameAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.GroupNameAttributeName), packageInformationElement);
-            if (authorAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.AuthorAttributeName), packageInformationElement);
-            if (websiteAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.WebsiteAttributeName), packageInformationElement);
-            if (versionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.VersionAttributeName), packageInformationElement);
-            if (canBeUninstalledAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.CanBeUninstalledAttributeName), packageInformationElement);
-            if (systemLockingAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.SystemLockingAttributeName), packageInformationElement);
+            if (idAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.IdAttributeName), packageInformationElement);
+            if (nameAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.NameAttributeName), packageInformationElement);
+            if (groupNameAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.GroupNameAttributeName), packageInformationElement);
+            if (authorAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.AuthorAttributeName), packageInformationElement);
+            if (websiteAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.WebsiteAttributeName), packageInformationElement);
+            if (versionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.VersionAttributeName), packageInformationElement);
+            if (canBeUninstalledAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.CanBeUninstalledAttributeName), packageInformationElement);
+            if (systemLockingAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.SystemLockingAttributeName), packageInformationElement);
 
-            if (string.IsNullOrEmpty(nameAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.NameAttributeName), nameAttribute);
-            if (string.IsNullOrEmpty(groupNameAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.GroupNameAttributeName), groupNameAttribute);
-            if (string.IsNullOrEmpty(authorAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.AuthorAttributeName), authorAttribute);
-            if (string.IsNullOrEmpty(websiteAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.WebsiteAttributeName), websiteAttribute);
-            if (string.IsNullOrEmpty(versionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
-            if (string.IsNullOrEmpty(packageInformationElement.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidElementValue"), PackageSystemSettings.PackageInformationElementName), packageInformationElement);
+            if (string.IsNullOrEmpty(nameAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.NameAttributeName), nameAttribute);
+            if (string.IsNullOrEmpty(groupNameAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.GroupNameAttributeName), groupNameAttribute);
+            if (string.IsNullOrEmpty(authorAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.AuthorAttributeName), authorAttribute);
+            if (string.IsNullOrEmpty(websiteAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.WebsiteAttributeName), websiteAttribute);
+            if (string.IsNullOrEmpty(versionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
+            if (string.IsNullOrEmpty(packageInformationElement.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidElementValue"), PackageSystemSettings.PackageInformationElementName), packageInformationElement);
 
             Guid id;
-            if (idAttribute.TryGetGuidValue(out id) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.IdAttributeName), idAttribute);
+            if (idAttribute.TryGetGuidValue(out id) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.IdAttributeName), idAttribute);
 
 
             string newVersion;
 
             if (VersionStringHelper.ValidateVersion(versionAttribute.Value, out newVersion) == true) versionAttribute.Value = newVersion;
-            else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
+            else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
 
             bool canBeUninstalled;
-            if (canBeUninstalledAttribute.TryGetBoolValue(out canBeUninstalled) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.CanBeUninstalledAttributeName), canBeUninstalledAttribute);
+            if (canBeUninstalledAttribute.TryGetBoolValue(out canBeUninstalled) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.CanBeUninstalledAttributeName), canBeUninstalledAttribute);
 
             SystemLockingType systemLockingType;
-            if (systemLockingAttribute.TryDeserialize(out systemLockingType) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.SystemLockingAttributeName), systemLockingAttribute);
+            if (systemLockingAttribute.TryDeserialize(out systemLockingType) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.SystemLockingAttributeName), systemLockingAttribute);
 
             bool flushOnCompletion = false;
-            if ((flushOnCompletionAttribute != null) && (flushOnCompletionAttribute.TryGetBoolValue(out flushOnCompletion) == false)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.FlushOnCompletionAttributeName), flushOnCompletionAttribute);
+            if ((flushOnCompletionAttribute != null) && (flushOnCompletionAttribute.TryGetBoolValue(out flushOnCompletion) == false)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.FlushOnCompletionAttributeName), flushOnCompletionAttribute);
 
             bool reloadConsoleOnCompletion = false;
-            if ((reloadConsoleOnCompletionAttribute != null) && (reloadConsoleOnCompletionAttribute.TryGetBoolValue(out reloadConsoleOnCompletion) == false)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.ReloadConsoleOnCompletionAttributeName), reloadConsoleOnCompletionAttribute);
+            if ((reloadConsoleOnCompletionAttribute != null) && (reloadConsoleOnCompletionAttribute.TryGetBoolValue(out reloadConsoleOnCompletion) == false)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.ReloadConsoleOnCompletionAttributeName), reloadConsoleOnCompletionAttribute);
 
 
             XElement packageRequirementsElement = installContent.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageRequirementsElementName));
-            if (packageRequirementsElement == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingElement"), PackageSystemSettings.PackageRequirementsElementName), installContent);
+            if (packageRequirementsElement == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingElement"), PackageSystemSettings.PackageRequirementsElementName), installContent);
 
             XAttribute minimumCompositeVersionAttribute = packageRequirementsElement.Attribute(PackageSystemSettings.MinimumCompositeVersionAttributeName);
             XAttribute maximumCompositeVersionAttribute = packageRequirementsElement.Attribute(PackageSystemSettings.MaximumCompositeVersionAttributeName);
 
-            if (minimumCompositeVersionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.MinimumCompositeVersionAttributeName), packageRequirementsElement);
-            if (maximumCompositeVersionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.MissingAttribute"), PackageSystemSettings.MaximumCompositeVersionAttributeName), packageRequirementsElement);
+            if (minimumCompositeVersionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.MinimumCompositeVersionAttributeName), packageRequirementsElement);
+            if (maximumCompositeVersionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.MissingAttribute"), PackageSystemSettings.MaximumCompositeVersionAttributeName), packageRequirementsElement);
 
-            if (string.IsNullOrEmpty(minimumCompositeVersionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.MinimumCompositeVersionAttributeName), minimumCompositeVersionAttribute);
-            if (string.IsNullOrEmpty(maximumCompositeVersionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.MaximumCompositeVersionAttributeName), maximumCompositeVersionAttribute);
+            if (string.IsNullOrEmpty(minimumCompositeVersionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.MinimumCompositeVersionAttributeName), minimumCompositeVersionAttribute);
+            if (string.IsNullOrEmpty(maximumCompositeVersionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.MaximumCompositeVersionAttributeName), maximumCompositeVersionAttribute);
 
             if (VersionStringHelper.ValidateVersion(minimumCompositeVersionAttribute.Value, out newVersion) == true) minimumCompositeVersionAttribute.Value = newVersion;
-            else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), minimumCompositeVersionAttribute);
-            
+            else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), minimumCompositeVersionAttribute);
+
             if (VersionStringHelper.ValidateVersion(maximumCompositeVersionAttribute.Value, out newVersion) == true) maximumCompositeVersionAttribute.Value = newVersion;
-            else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "AddOnManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), maximumCompositeVersionAttribute);
+            else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), maximumCompositeVersionAttribute);
 
 
             packageInformation = new PackageInformation();

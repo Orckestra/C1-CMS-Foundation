@@ -29,9 +29,9 @@ namespace Composite.Data.DynamicTypes
         void DropStore(string providerName, DataTypeDescriptor typeDescriptor, bool makeAFlush);
 
         /// <exclude />
-        void AddLocale(string providerName, CultureInfo cultureInfo, bool doFlush);
+        void AddLocale(string providerName, CultureInfo cultureInfo);
 
         /// <exclude />
-        void RemoveLocale(string providerName, CultureInfo cultureInfo, bool doFlush);
+        void RemoveLocale(string providerName, CultureInfo cultureInfo);
 	}
 }

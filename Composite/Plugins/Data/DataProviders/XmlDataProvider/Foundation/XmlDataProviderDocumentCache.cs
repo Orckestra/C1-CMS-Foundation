@@ -20,7 +20,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
     {
         private const int NumberOfRetries = 30;
         private static readonly string LogTitle = "XmlDataProvider";
-        private static string _globalLockFileName = null;
 
         internal class FileRecord
         {
@@ -295,7 +294,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 try
                 {
                     // Saving to temp file and file move to prevent broken saves
-#warning MRJ: Clean this
                     XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;

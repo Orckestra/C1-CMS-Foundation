@@ -359,6 +359,7 @@ namespace Composite.Data
         }
 
 
+
         private void InitializeTagInformation()
         {
              if(_tagInformation == null)
@@ -367,21 +368,11 @@ namespace Composite.Data
              }
         }
 
+
+
         private static IDataId EnsureDataIdType(IDataId dataId)
         {
-            if (BuildManager.IsAssemlbyCurrentBuildedAssembly(dataId.GetType().Assembly) == false)
-            {
-                string serializedType = TypeManager.SerializeType(dataId.GetType());
-
-                Type newType = TypeManager.GetType(serializedType);
-
-                IDataId newDataId = (IDataId)Activator.CreateInstance(newType);
-
-                dataId.FullCopyTo(newDataId);
-
-                return newDataId;
-            }
-
+            // After the new build manager this should always be the right type
             return dataId;
         }
     }

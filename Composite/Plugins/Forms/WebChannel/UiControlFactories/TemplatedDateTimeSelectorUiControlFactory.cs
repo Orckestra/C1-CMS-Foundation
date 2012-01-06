@@ -62,6 +62,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             set;
         }
 
+        /// <exclude />
         public bool ReadOnly
         {
             get;

@@ -28,13 +28,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private PackageDescription GetAddOnDescription()
+        private PackageDescription GetPackageDescription()
         {
             PackageElementProviderAvailablePackagesItemEntityToken castedEntityToken = (PackageElementProviderAvailablePackagesItemEntityToken)this.EntityToken;
 
             PackageDescription packageDescription =
                 (from description in PackageSystemServices.GetFilteredAllAvailablePackages()
-                 where description.Id == castedEntityToken.AddOnId
+                 where description.Id == castedEntityToken.PackageId
                  select description).SingleOrDefault();
 
             if (packageDescription == null)
@@ -47,7 +47,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private void IsAddOnFree(object sender, ConditionalEventArgs e)
+        private void IsPackageFree(object sender, ConditionalEventArgs e)
         {
             e.Result = _packageIsFree;
         }
@@ -70,16 +70,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void initializeStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowError.LayoutLabel"));
-            this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowError.InfoTableCaption"));
+            this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemotePackage.ShowError.LayoutLabel"));
+            this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemotePackage.ShowError.InfoTableCaption"));
 
             try
             {
-                _packageIsFree = GetAddOnDescription().IsFree;
+                _packageIsFree = GetPackageDescription().IsFree;
             }
             catch (Exception ex)
             {
-                LoggingService.LogVerbose("InstallRemoteAddOnWorkflowRGB(100, 100, 255)", ex.Message);
+                LoggingService.LogVerbose("InstallRemotePackageWorkflowRGB(100, 100, 255)", ex.Message);
                 this.UpdateBinding("Errors", new List<List<string>> { new List<string> { ex.Message, "" } });
             }
         }
@@ -92,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             {
                 if (this.BindingExist("EulaText") == false)
                 {
-                    PackageDescription packageDescription = GetAddOnDescription();
+                    PackageDescription packageDescription = GetPackageDescription();
                     string eulaText = PackageSystemServices.GetEulaText(packageDescription);
                     this.Bindings.Add("EulaText", eulaText);
                 }
@@ -115,14 +115,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             try
             {
-                PackageDescription packageDescription = GetAddOnDescription();
+                PackageDescription packageDescription = GetPackageDescription();
 
                 string packageServerSource = PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo);
 
                 System.IO.Stream installFileStream = PackageServerFacade.GetInstallFileStream(packageDescription.PackageFileDownloadUrl);
 
                 PackageManagerInstallProcess packageManagerInstallProcess = PackageManager.Install(installFileStream, false, packageServerSource);
-                this.Bindings.Add("AddOnManagerInstallProcess", packageManagerInstallProcess);
+                this.Bindings.Add("PackageManagerInstallProcess", packageManagerInstallProcess);
 
                 this.Bindings.Add("FlushOnCompletion", packageManagerInstallProcess.FlushOnCompletion);
                 this.Bindings.Add("ReloadConsoleOnCompletion", packageManagerInstallProcess.ReloadConsoleOnCompletion);
@@ -137,8 +137,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                     if (validationResult.Count > 0)
                     {
-                        this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowWarning.LayoutLabel"));
-                        this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemoteAddOn.ShowWarning.InfoTableCaption"));
+                        this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemotePackage.ShowWarning.LayoutLabel"));
+                        this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallRemotePackage.ShowWarning.InfoTableCaption"));
                         this.UpdateBinding("Errors", WorkflowHelper.ValidationResultToBinding(validationResult));
                     }
                     else
@@ -158,7 +158,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, InstallRemotePackage.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }
@@ -167,9 +167,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void step4CodeActivity_Install_ExecuteCode(object sender, EventArgs e)
         {
-            PackageDescription packageDescription = GetAddOnDescription();
+            PackageDescription packageDescription = GetPackageDescription();
 
-            PackageManagerInstallProcess packageManagerInstallProcess = this.GetBinding<PackageManagerInstallProcess>("AddOnManagerInstallProcess");
+            PackageManagerInstallProcess packageManagerInstallProcess = this.GetBinding<PackageManagerInstallProcess>("PackageManagerInstallProcess");
 
             bool installOk = false;
             string packageServerUrl = null;
@@ -199,7 +199,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             {
                 if (installOk == true)
                 {
-                    PackageServerFacade.RegisterAddonInstallationCompletion(packageServerUrl, InstallationInformationFacade.InstallationId, packageDescription.Id, UserSettings.Username, UserSettings.UserIPAddress.ToString());
+                    PackageServerFacade.RegisterPackageInstallationCompletion(packageServerUrl, InstallationInformationFacade.InstallationId, packageDescription.Id, UserSettings.Username, UserSettings.UserIPAddress.ToString());
                 }
                 else
                 {
@@ -217,12 +217,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                         }
                     }
 
-                    PackageServerFacade.RegisterAddonInstallationFailure(packageServerUrl, InstallationInformationFacade.InstallationId, packageDescription.Id, UserSettings.Username, UserSettings.UserIPAddress.ToString(), sb.ToString());
+                    PackageServerFacade.RegisterPackageInstallationFailure(packageServerUrl, InstallationInformationFacade.InstallationId, packageDescription.Id, UserSettings.Username, UserSettings.UserIPAddress.ToString(), sb.ToString());
                 }
             }
             catch (Exception ex)
             {
-                LoggingService.LogWarning("InstallRemoteAddOnWorkflow", ex);
+                LoggingService.LogWarning("InstallRemotePackageWorkflow", ex);
             }
         }
 
@@ -231,7 +231,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void cleanupCodeActivity_Cleanup_ExecuteCode(object sender, EventArgs e)
         {
             PackageManagerInstallProcess packageManagerInstallProcess;
-            if (this.TryGetBinding<PackageManagerInstallProcess>("AddOnManagerInstallProcess", out packageManagerInstallProcess) == true)
+            if (this.TryGetBinding<PackageManagerInstallProcess>("PackageManagerInstallProcess", out packageManagerInstallProcess) == true)
             {
                 packageManagerInstallProcess.CancelInstallation();
             }
@@ -259,7 +259,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                 PackageElementProviderAvailablePackagesItemEntityToken castedEntityToken = (PackageElementProviderAvailablePackagesItemEntityToken)this.EntityToken;
 
-                InstalledPackageInformation installedPackage = PackageManager.GetInstalledPackages().FirstOrDefault(f => f.Id == castedEntityToken.AddOnId);
+                InstalledPackageInformation installedPackage = PackageManager.GetInstalledPackages().FirstOrDefault(f => f.Id == castedEntityToken.PackageId);
 
                 var installedPackageEntityToken = new PackageElementProviderInstalledPackageItemEntityToken(
                     installedPackage.Id,

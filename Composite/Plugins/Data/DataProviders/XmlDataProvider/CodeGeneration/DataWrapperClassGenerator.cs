@@ -6,22 +6,20 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.Plugins.DataProvider.CodeGeneration;
 using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-#warning MRJ: BM: Cleanup this class
     internal sealed class DataWrapperClassGenerator
     {
         private readonly string _wrapperClassName;
         private readonly DataTypeDescriptor _dataTypeDescriptor;
+        private string _interfaceName;
 
-
-        private static readonly string WrappedElementFieldName = "_element";
-        private static readonly string DataSourceIdFieldName = "_dataSourceId";
-        private static readonly string ElementMethodInfoFieldName = "_elementMethodInfo";
+        private const string WrappedElementFieldName = "_element";
+        private const string DataSourceIdFieldName = "_dataSourceId";
+        private const string ElementMethodInfoFieldName = "_elementMethodInfo";
 
         public DataWrapperClassGenerator(string wrapperClassName, DataTypeDescriptor dataTypeDescriptor)
         {
@@ -29,28 +27,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             _dataTypeDescriptor = dataTypeDescriptor;
         }
 
-
-#warning MRJ: BM: Cleanup here
-        private string InterfaceFullName { get { return TypeManager.GetRuntimeFullName(_dataTypeDescriptor.TypeManagerTypeName); } }
-
-#warning MRJ: BM: The InterfaceFullName and InterfaceName is used more than one, refacture this
-        private string _interfaceName;
-        private string InterfaceName
-        {
-            get
-            {
-                if (_interfaceName == null)
-                {
-                    _interfaceName = InterfaceFullName;
-                    if (_interfaceName.IndexOf(',') >= 0)
-                    {
-                        _interfaceName = _interfaceName.Remove(_interfaceName.IndexOf(','));
-                    }
-                }
-
-                return _interfaceName;
-            }
-        }
 
 
         public CodeTypeDeclaration CreateClass()
@@ -166,8 +142,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
                 List<CodeStatement> newStatements = AddCommitDataMethodHelper(
                     "attribute",
-#warning MRJ: BM: Handle mapped name
-                    new CodePrimitiveExpression(dataFieldDescriptor.Name),                    
+                    new CodePrimitiveExpression(dataFieldDescriptor.Name),
                     new CodePropertyReferenceExpression(
                         new CodeFieldReferenceExpression(
                             new CodeThisReferenceExpression(),
@@ -187,7 +162,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
 
-        private CodeStatement AddCommitDataMethodFinalHelper(DataFieldDescriptor dataFieldDescriptor, List<CodeStatement> statements)
+        private static CodeStatement AddCommitDataMethodFinalHelper(DataFieldDescriptor dataFieldDescriptor, List<CodeStatement> statements)
         {
             string fieldName = CreateNullableFieldName(dataFieldDescriptor);
 
@@ -374,7 +349,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                             typeof(InvalidOperationException),
                                             new CodeExpression[] {
                                                 new CodePrimitiveExpression(
-#warning MRJ: BM: Handle mapped name
                                                     string.Format("The element tag {0} is missing from the xml file", dataFieldDescriptor.Name)
                                                 )
                                             }
@@ -415,7 +389,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                             WrappedElementFieldName
                                         ),
                                         "Attribute",
-#warning MRJ: BM: Handle mapped name
                                         new CodePrimitiveExpression(dataFieldDescriptor.Name)
                                     ),
                                     CodeBinaryOperatorType.IdentityEquality,
@@ -433,40 +406,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 CodeExpression getAttributeValueExpression = new CodeMethodInvokeExpression(
                     new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), WrappedElementFieldName),
                     "Attribute",
-#warning MRJ: BM: Handle mapped name
                     new CodeExpression[] { new CodePrimitiveExpression(dataFieldDescriptor.Name) }
                 );
 
 
 
-
-
-                //if (dataFieldDescriptor.StoreType.NumericPrecision == 0)
-                //{
-                //    // ({Type}) this._element.Attribute("{field name}");
-                //    resultExpression = new CodeCastExpression(dataFieldDescriptor.InstanceType, getAttributeValueExpression);
-                //}
-                //else
-                //{
-                    
-                //    // FixDecimal(this._element.Attribute("{field name}").Value, {decimal precision});
-                //    resultExpression = new CodeMethodInvokeExpression(
-                //        new CodeMethodReferenceExpression(
-                //            new CodeTypeReferenceExpression(typeof(DataProviderHelperBase)),
-                //            "ParseDecimal"),
-                //            new CodePropertyReferenceExpression(getAttributeValueExpression, "Value"),
-                //            new CodePrimitiveExpression(dataFieldDescriptor.StoreType.NumericPrecision)
-                //    );
-                //}
-
-
-
-
-
-#warning MRJ: BM: Will this work???
-                //if (dataFieldDescriptor.StoreType.NumericPrecision == 0)
                 if (!dataFieldDescriptor.StoreType.IsDecimal)
-                //if ((prop.DecimalPrecision) == 0)
                 {
                     // ({Type}) this._element.Attribute("{field name}");
                     resultExpression = new CodeCastExpression(dataFieldDescriptor.InstanceType, getAttributeValueExpression);
@@ -479,7 +424,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeTypeReferenceExpression(typeof(DataProviderHelperBase)),
                             "ParseDecimal"),
                             new CodePropertyReferenceExpression(getAttributeValueExpression, "Value"),
-#warning MRJ: BM: Will this work???
                             new CodePrimitiveExpression(dataFieldDescriptor.StoreType.NumericScale)
                     );
                 }
@@ -487,27 +431,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 property.GetStatements.Add(new CodeMethodReturnStatement(resultExpression));
 
 
-#warning MRJ: BM: Find a way to handle this readonly, on the DataFieldDescriptor??
-                //if (false == prop.ReadOnly)
-                //{
-#warning MRJ: BM: Find a way to handle this BeforeSetHandlerTypes
-                    //foreach (Type type in prop.BeforeSetHandlerTypes)
-                    //{
-                    //    property.SetStatements.Add(
-                    //        new CodeMethodInvokeExpression(
-                    //            new CodeMethodReferenceExpression(
-                    //                new CodeTypeReferenceExpression(typeof(DataPropertyHandlerFacade)),
-                    //                "HandleSet"
-                    //            ),
-                    //            new CodeExpression[] {
-                    //                new CodeTypeOfExpression(type),
-                    //                new CodeThisReferenceExpression(),
-                    //                new CodePropertySetValueReferenceExpression()
-                    //            }
-                    //        ));
-                    //}
-
-
+                if (!dataFieldDescriptor.IsReadOnly)
+                {
                     property.SetStatements.Add(
                         new CodeAssignStatement(
                             new CodePropertyReferenceExpression(
@@ -519,15 +444,39 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             ),
                             new CodePropertySetValueReferenceExpression()
                         ));
-                //}
+                }
 
                 declaration.Members.Add(property);
             }
         }
 
+
+
         private static string CreateNullableFieldName(DataFieldDescriptor dataFieldDescriptor)
         {
             return string.Format("_{0}Nullable", dataFieldDescriptor.Name.ToLower());
         }
-    }    
+
+
+
+        private string InterfaceFullName { get { return TypeManager.GetRuntimeFullName(_dataTypeDescriptor.TypeManagerTypeName); } }
+
+
+        private string InterfaceName
+        {
+            get
+            {
+                if (_interfaceName == null)
+                {
+                    _interfaceName = InterfaceFullName;
+                    if (_interfaceName.IndexOf(',') >= 0)
+                    {
+                        _interfaceName = _interfaceName.Remove(_interfaceName.IndexOf(','));
+                    }
+                }
+
+                return _interfaceName;
+            }
+        }
+    }
 }

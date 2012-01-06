@@ -59,7 +59,6 @@ namespace Composite.Data.Foundation
                 typeDescriptorMetaData.Namespace = dataTypeDescriptor.Namespace;
                 typeDescriptorMetaData.Title = dataTypeDescriptor.Title ?? "";
                 typeDescriptorMetaData.LabelFieldName = dataTypeDescriptor.LabelFieldName;
-                typeDescriptorMetaData.Version = dataTypeDescriptor.Version;
                 typeDescriptorMetaData.CodeGenerated = dataTypeDescriptor.IsCodeGenerated;
                 typeDescriptorMetaData.TypeManagerTypeName = dataTypeDescriptor.TypeManagerTypeName;
                 DataFacade.AddNew<IDataTypeDescriptor>(typeDescriptorMetaData);
@@ -265,7 +264,6 @@ namespace Composite.Data.Foundation
             dataTypeDescriptor.Title = typeDescriptorMetaData.Title;
             dataTypeDescriptor.LabelFieldName = typeDescriptorMetaData.LabelFieldName;
             dataTypeDescriptor.TypeManagerTypeName = typeDescriptorMetaData.TypeManagerTypeName;
-            dataTypeDescriptor.Version = typeDescriptorMetaData.Version;
 
             foreach (IDataFieldDescriptor fieldDescriptorMetaData in fieldMetaDatas)
             {

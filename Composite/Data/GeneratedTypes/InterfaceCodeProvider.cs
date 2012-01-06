@@ -11,17 +11,8 @@ namespace Composite.Data.GeneratedTypes
         {
             foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
             {
-                BuildManagerCompileUnit unit = InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor);
-
-                foreach (var type in unit.Types)
-                {
-                    builder.AddType(type.CodeNamespaceName, type.CodeTypeDeclaration);
-                }
-
-                foreach (Assembly assembly in unit.ReferencedAssemblies)
-                {
-                    builder.AddReference(assembly);
-                }
+                InterfaceCodeGenerator.AddAssemblyReferences(builder, dataTypeDescriptor);
+                InterfaceCodeGenerator.AddInterfaceTypeCode(builder, dataTypeDescriptor);                
             }
         }
     }

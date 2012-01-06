@@ -22,7 +22,7 @@ namespace Composite.Core.Implementation
         public virtual PackageElementProviderInstalledPackageItemEntityToken GetInstalledPackageEntityToken(Guid packageId, string groupName)
         {
             PackageElementProviderAvailablePackagesItemEntityToken castedEntityToken = new PackageElementProviderAvailablePackagesItemEntityToken(packageId.ToString(), groupName);
-            InstalledPackageInformation installedPackage = PackageManager.GetInstalledPackages().FirstOrDefault(f => f.Id == castedEntityToken.AddOnId);
+            InstalledPackageInformation installedPackage = PackageManager.GetInstalledPackages().FirstOrDefault(f => f.Id == castedEntityToken.PackageId);
             PackageElementProviderInstalledPackageItemEntityToken installedPackageEntityToken = new PackageElementProviderInstalledPackageItemEntityToken(
                 installedPackage.Id,
                 installedPackage.GroupName,

@@ -10,9 +10,9 @@ using Composite.C1Console.Workflow;
 namespace Composite.Core.PackageSystem.Workflow
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class UninstallLocalAddOnWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class UninstallLocalPackageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        public UninstallLocalAddOnWorkflow()
+        public UninstallLocalPackageWorkflow()
         {
             InitializeComponent();
         }
@@ -30,8 +30,8 @@ namespace Composite.Core.PackageSystem.Workflow
         {
             PackageElementProviderInstalledPackageItemEntityToken castedEntityToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
 
-            PackageManagerUninstallProcess packageManagerUninstallProcess = PackageManager.Uninstall(castedEntityToken.AddOnId);
-            this.Bindings.Add("AddOnManagerUninstallProcess", packageManagerUninstallProcess);
+            PackageManagerUninstallProcess packageManagerUninstallProcess = PackageManager.Uninstall(castedEntityToken.PackageId);
+            this.Bindings.Add("PackageManagerUninstallProcess", packageManagerUninstallProcess);
 
             this.Bindings.Add("FlushOnCompletion", packageManagerUninstallProcess.FlushOnCompletion);
             this.Bindings.Add("ReloadConsoleOnCompletion", packageManagerUninstallProcess.ReloadConsoleOnCompletion);
@@ -55,7 +55,7 @@ namespace Composite.Core.PackageSystem.Workflow
 
         private void step2CodeActivity_Uninstall_ExecuteCode(object sender, EventArgs e)
         {
-            PackageManagerUninstallProcess packageManagerUninstallProcess = this.GetBinding<PackageManagerUninstallProcess>("AddOnManagerUninstallProcess");
+            PackageManagerUninstallProcess packageManagerUninstallProcess = this.GetBinding<PackageManagerUninstallProcess>("PackageManagerUninstallProcess");
 
             List<PackageFragmentValidationResult> uninstallResult = packageManagerUninstallProcess.Uninstall();
             if (uninstallResult.Count > 0)
@@ -87,7 +87,7 @@ namespace Composite.Core.PackageSystem.Workflow
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, UninstallLocalAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, UninstallLocalPackage.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }

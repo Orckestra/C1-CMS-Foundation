@@ -197,27 +197,16 @@ namespace Composite.Functions.Foundation
 
 
 
-        public void Initialize_PostStaticTypes()
+        public void Initialize_PostDataTypes()
         {
             _resourceLocker.ResetInitialization();
 
             using (_resourceLocker.Locker)
             {
-                _resourceLocker.Resources.FunctionContainer.Initialize_StaticTypeDependentFunctions();
-                _resourceLocker.Resources.WidgetFunctionContainer.Initialize_StaticTypeDependentFunctions();
+                _resourceLocker.Resources.FunctionContainer.Initialize();                
+                _resourceLocker.Resources.WidgetFunctionContainer.Initialize();
             }
-        }
-
-
-
-        public void Initialize_PostDynamicTypes()
-        {
-            using (_resourceLocker.Locker)
-            {
-                _resourceLocker.Resources.FunctionContainer.Initialize_DynamicTypeDependentFunctions();
-                _resourceLocker.Resources.WidgetFunctionContainer.Initialize_DynamicTypeDependentFunctions();
-            }
-        }
+        }       
 
 
 

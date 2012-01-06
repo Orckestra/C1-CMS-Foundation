@@ -6,117 +6,12 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
-using Composite.C1Console.Events;
-using Composite.Core.Collections.Generic;
 using Composite.Core.Serialization.CodeGeneration.Foundation;
 using Composite.Core.Types;
 
 
 namespace Composite.Core.Serialization.CodeGeneration
 {
-#warning MRJ: BM: Move this class
-    internal static class PropertySerializerManager
-    {
-        private static readonly ResourceLocker<Resources> ResourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
-
-
-        static PropertySerializerManager()
-        {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
-        }
-
-        /// <summary>
-        /// Returns a property serializer for the given property type.
-        /// If no serializer exists, one will be runtime code generated.
-        /// </summary>
-        /// <param name="propertyClassType"></param>
-        /// <returns></returns>
-        public static ISerializer GetPropertySerializer(Type propertyClassType)
-        {
-            ISerializer serializer;
-
-            if (!ResourceLocker.Resources.SerializersTypesCache.TryGetValue(propertyClassType, out serializer))
-            {
-                using (ResourceLocker.Locker)
-                {
-                    if (!ResourceLocker.Resources.SerializersTypesCache.TryGetValue(propertyClassType, out serializer))
-                    {
-                        Type propertySerializerType = GetPropertySerializerType(propertyClassType);
-
-                        serializer = (ISerializer)Activator.CreateInstance(propertySerializerType);
-
-                        ResourceLocker.Resources.SerializersTypesCache.Add(propertySerializerType, serializer);
-                    }
-                }
-            }
-
-            return serializer;
-        }
-
-
-
-        private static Type GetPropertySerializerType(Type propertyClassType)
-        {
-            string propertySerializerTypeName = PropertySerializerTypeCodeGenerator.CreateSerializerClassFullName(propertyClassType);            
-
-            Type propertySerializerType = TypeManager.TryGetType(propertySerializerTypeName);
-
-            if (propertySerializerType == null)
-            {
-                propertySerializerType = CodeGeneratePropertySerializer(propertyClassType);
-            }
-
-            return propertySerializerType;
-        }
-
-
-
-
-        private static Type CodeGeneratePropertySerializer(Type propertyClassType)
-        {
-            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("PropertySerializer: " + propertyClassType.FullName);
-
-            PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(codeGenerationBuilder, propertyClassType);
-
-            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
-
-            return types.Single();
-        }
-
-
-
-        private static void Flush()
-        {
-            ResourceLocker.ResetInitialization();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
-
-
-        private sealed class Resources
-        {
-            public Dictionary<Type, ISerializer> SerializersTypesCache;
-
-            public static void Initialize(Resources resources)
-            {
-                resources.SerializersTypesCache = new Dictionary<Type, ISerializer>();
-            }
-        }
-    }
-
-
-
-
-
-
-
-#warning MRJ: BM: Move this class or rename file
     /// <summary>
     /// This class creates the CodeDOM for a given property class
     /// </summary>
@@ -415,41 +310,7 @@ namespace Composite.Core.Serialization.CodeGeneration
             isUseable = isUseable && TypeUseableForSerialization(property.PropertyType);
 
             return isUseable;
-        }
-
-
-
-        private static IEnumerable<BuildManagerPropertyInfo> GetSerializeableProperties(IEnumerable<BuildManagerPropertyInfo> buildManagerPropertyInfos)
-        {
-            if (buildManagerPropertyInfos == null) throw new ArgumentNullException("buildManagerPropertyInfos");
-
-            foreach (BuildManagerPropertyInfo buildManagerPropertyInfo in buildManagerPropertyInfos)
-            {
-                if (UseableForSerialization(buildManagerPropertyInfo))
-                {
-                    yield return buildManagerPropertyInfo;
-                }
-            }
-        }
-
-
-
-        private static bool UseableForSerialization(BuildManagerPropertyInfo buildManagerPropertyInfo)
-        {
-            bool isUseable = buildManagerPropertyInfo.CanRead && buildManagerPropertyInfo.CanWrite;
-
-            //if (isUseable == true)
-            //{
-            //    foreach (MethodInfo mi in property.GetAccessors(false))
-            //    {
-            //        isUseable = isUseable && mi.IsPublic;
-            //    }
-            //}
-
-            isUseable = isUseable && TypeUseableForSerialization(buildManagerPropertyInfo.PropertyType);
-
-            return isUseable;
-        }
+        }              
 
 
 

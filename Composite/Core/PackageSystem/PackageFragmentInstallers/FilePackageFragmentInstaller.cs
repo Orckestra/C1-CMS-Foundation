@@ -17,7 +17,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class FilePackageFragmentInstaller : BasePackageFragmentInstaller
     {
         private List<FileToCopy> _filesToCopy = null;
@@ -31,13 +31,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Files").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.OnlyOneFilesElement"), this.ConfigurationParent));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.OnlyOneFilesElement"), this.ConfigurationParent));
                 return validationResult;
             }
 
             if (this.Configuration.Where(f => f.Name == "Directories").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.OnlyOneDirectoriesElement"), this.ConfigurationParent));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.OnlyOneDirectoriesElement"), this.ConfigurationParent));
                 return validationResult;
             }
 
@@ -54,9 +54,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute sourceFilenameAttribute = fileElement.Attribute("sourceFilename");
                     XAttribute targetFilenameAttribute = fileElement.Attribute("targetFilename");
 
-                    if (sourceFilenameAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "sourceFilename"), fileElement)); continue; }
-                    if (targetFilenameAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "targetFilename"), fileElement)); continue; }
-                    
+                    if (sourceFilenameAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "sourceFilename"), fileElement)); continue; }
+                    if (targetFilenameAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "targetFilename"), fileElement)); continue; }
+
                     XAttribute allowOverwriteAttribute = fileElement.Attribute("allowOverwrite");
                     XAttribute assemblyLoadAttribute = fileElement.Attribute("assemblyLoad");
                     XAttribute deleteTargetDirectoryAttribute = fileElement.Attribute("deleteTargetDirectory");
@@ -64,7 +64,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (deleteTargetDirectoryAttribute != null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.DeleteTargetDirectoryNotAllowed"), fileElement));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.DeleteTargetDirectoryNotAllowed"), fileElement));
                         continue;
                     }
 
@@ -73,7 +73,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         if (allowOverwriteAttribute.TryGetBoolValue(out allowOverwrite) == false)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.WrongAttributeBoolFormat"), allowOverwriteAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.WrongAttributeBoolFormat"), allowOverwriteAttribute));
                             continue;
                         }
                     }
@@ -83,7 +83,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         if (assemblyLoadAttribute.TryGetBoolValue(out loadAssembly) == false)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.WrongAttributeBoolFormat"), assemblyLoadAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.WrongAttributeBoolFormat"), assemblyLoadAttribute));
                             continue;
                         }
                     }
@@ -93,7 +93,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         if (onlyUpdateAttribute.TryGetBoolValue(out onlyUpdate) == false)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.WrongAttributeBoolFormat"), onlyUpdateAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.WrongAttributeBoolFormat"), onlyUpdateAttribute));
                             continue;
                         }
                     }
@@ -101,46 +101,46 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string sourceFilename = sourceFilenameAttribute.Value;
                     if (this.InstallerContext.ZipFileSystem.ContainsFile(sourceFilename) == false)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingFile"), sourceFilename), sourceFilenameAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingFile"), sourceFilename), sourceFilenameAttribute));
                         continue;
                     }
 
                     if ((loadAssembly == true) && (onlyUpdate == true))
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby"), onlyUpdateAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby"), onlyUpdateAttribute));
                         continue;
                     }
 
                     string targetFilename = PathUtil.Resolve(targetFilenameAttribute.Value);
                     if (C1File.Exists(targetFilename) == true)
-                    {                        
+                    {
                         if ((allowOverwrite == false) && (onlyUpdate == false))
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileExists"), targetFilename), targetFilenameAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.FileExists"), targetFilename), targetFilenameAttribute));
                             continue;
                         }
 
                         if (((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0) && (allowOverwrite == false))
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileReadOnly"), targetFilename), targetFilenameAttribute));
-                            continue;                            
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.FileReadOnly"), targetFilename), targetFilenameAttribute));
+                            continue;
                         }
                     }
                     else if (onlyUpdate == true)
                     {
-                        LoggingService.LogVerbose("FileAddOnFragmentInstaller", string.Format("Skipping updating of the file '{0}' because it does not exist", targetFilename));
+                        LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Skipping updating of the file '{0}' because it does not exist", targetFilename));
                         continue; // Target file does not, so skip this
                     }
 
-                    FileToCopy fileToCopy = new FileToCopy 
+                    FileToCopy fileToCopy = new FileToCopy
                     {
-                        SourceFilename = sourceFilename, 
+                        SourceFilename = sourceFilename,
                         TargetRelativeFilePath = targetFilenameAttribute.Value,
-                        TargetFilePath = targetFilename, 
+                        TargetFilePath = targetFilename,
                         AllowOverwrite = allowOverwrite
                     };
 
-                    _filesToCopy.Add(fileToCopy);                    
+                    _filesToCopy.Add(fileToCopy);
 
                     if (loadAssembly == true)
                     {
@@ -148,7 +148,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                         this.InstallerContext.ZipFileSystem.WriteFileToDisk(sourceFilename, tempFilename);
 
-                        BuildManager.LoadAssemlby(tempFilename);
+                        PackageAssemblyHandler.AddAssembly(tempFilename);
                     }
                 }
             }
@@ -160,8 +160,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute sourceDirectoryAttribute = directoryElement.Attribute("sourceDirectory");
                     XAttribute targetDirectoryAttribute = directoryElement.Attribute("targetDirectory");
 
-                    if (sourceDirectoryAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "sourceDirectory"), directoryElement)); continue; }
-                    if (targetDirectoryAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingAttribute"), "targetDirectory"), directoryElement)); continue; }
+                    if (sourceDirectoryAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "sourceDirectory"), directoryElement)); continue; }
+                    if (targetDirectoryAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "targetDirectory"), directoryElement)); continue; }
 
 
                     XAttribute allowOverwriteAttribute = directoryElement.Attribute("allowOverwrite");
@@ -171,13 +171,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (assemblyLoadAttribute != null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.AssemblyLoadNotAllowed"), directoryElement));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.AssemblyLoadNotAllowed"), directoryElement));
                         continue;
                     }
 
                     if (onlyUpdateAttribute != null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.OnlyUpdateNotAllowed"), directoryElement));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.OnlyUpdateNotAllowed"), directoryElement));
                         continue;
                     }
 
@@ -187,7 +187,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         if (allowOverwriteAttribute.TryGetBoolValue(out allowOverwrite) == false)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.WrongAttributeBoolFormat"), allowOverwriteAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.WrongAttributeBoolFormat"), allowOverwriteAttribute));
                             continue;
                         }
                     }
@@ -197,7 +197,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         if (deleteTargetDirectoryAttribute.TryGetBoolValue(out deleteTargetDirectory) == false)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.WrongAttributeBoolFormat"), deleteTargetDirectoryAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.WrongAttributeBoolFormat"), deleteTargetDirectoryAttribute));
                             continue;
                         }
                     }
@@ -205,7 +205,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string sourceDirectory = sourceDirectoryAttribute.Value;
                     if (this.InstallerContext.ZipFileSystem.ContainsDirectory(sourceDirectory) == false)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.MissingDirectory"), sourceDirectory), sourceDirectoryAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingDirectory"), sourceDirectory), sourceDirectoryAttribute));
                         continue;
                     }
 
@@ -231,15 +231,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                         if ((C1File.Exists(targetFilename) == true) && (deleteTargetDirectory == false) && (allowOverwrite == false))
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FileAddOnFragmentInstaller.FileExists"), targetFilename), targetDirectoryAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.FileExists"), targetFilename), targetDirectoryAttribute));
                             continue;
                         }
 
                         FileToCopy fileToCopy = new FileToCopy
                         {
-                            SourceFilename = sourceFilename, 
+                            SourceFilename = sourceFilename,
                             TargetRelativeFilePath = Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
-                            TargetFilePath = targetFilename, 
+                            TargetFilePath = targetFilename,
                             AllowOverwrite = allowOverwrite
                         };
                         _filesToCopy.Add(fileToCopy);
@@ -271,7 +271,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             List<XElement> fileElements = new List<XElement>();
             foreach (FileToCopy fileToCopy in _filesToCopy)
             {
-                LoggingService.LogVerbose("FileAddOnFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
+                LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
 
                 string targetDirectory = Path.GetDirectoryName(fileToCopy.TargetFilePath);
                 if (Directory.Exists(targetDirectory) == false)

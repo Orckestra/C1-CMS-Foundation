@@ -128,7 +128,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public void AddLocale(string providerName, CultureInfo cultureInfo, bool makeAFlush)
+        public void AddLocale(string providerName, CultureInfo cultureInfo)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
@@ -139,18 +139,13 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-#warning MRJ: BM: Can this be done smarter?
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly();
-            //if (makeAFlush == true)
-            //{
-            //    GlobalEventSystemFacade.FlushTheSystem();
-            //}
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly();           
         }
 
 
 
         /// <exclude />
-        public void RemoveLocale(string providerName, CultureInfo cultureInfo, bool makeAFlush)
+        public void RemoveLocale(string providerName, CultureInfo cultureInfo)
         {
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
@@ -161,12 +156,7 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-#warning MRJ: BM: Can this be done smarter?
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly();
-            //if (makeAFlush == true)
-            //{
-            //    GlobalEventSystemFacade.FlushTheSystem();
-            //}
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly();            
         }
     }
 }

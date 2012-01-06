@@ -17,6 +17,11 @@ namespace Composite.Functions
     /// </summary>
     public class StandardFunctionSecurityAncestorProvider : ISecurityAncestorProvider
     {
+        /// <summary>
+        /// Returns a parent entity token for the given function entity token.
+        /// </summary>
+        /// <param name="entityToken"></param>
+        /// <returns></returns>
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
             string fullname = entityToken.Id;

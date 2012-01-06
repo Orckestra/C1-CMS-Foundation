@@ -56,7 +56,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 _urlIsValid = true;
                 if (serverUrlValidationResult == ServerUrlValidationResult.Invalid)
                 {
-                    this.ShowFieldMessage("Url", "${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.UrlNonAddOnServer}");
+                    this.ShowFieldMessage("Url", "${Composite.Plugins.PackageElementProvider, AddPackageSource.Step1.UrlNonPackageServer}");
                     _urlIsValid = false;
                 }
                 else if (serverUrlValidationResult == ServerUrlValidationResult.Https)
@@ -73,7 +73,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             }
             catch (Exception)
             {
-                this.ShowFieldMessage("Url", "${Composite.Plugins.PackageElementProvider, AddAddOnSource.Step1.UrlNotValid}");
+                this.ShowFieldMessage("Url", "${Composite.Plugins.PackageElementProvider, AddPackageSource.Step1.UrlNotValid}");
             }
         }
 

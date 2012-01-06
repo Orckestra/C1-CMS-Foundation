@@ -51,6 +51,7 @@ namespace Composite.C1Console.Security
         /// </summary>
         /// <param name="userName">The user name - must match GlobalSettingsProvider.AutoCreatedAdministratorUserName</param>
         /// <param name="password">A password that meets a minimum requirement.</param>
+        /// <param name="email">THe users email.</param>
         /// <param name="validateAutoCreateUserName">When true only the username specified in Composite.config as auto createable (usually 'admin') is allowed. Set to false to use a different user name.</param>
         /// <returns>true if the user was auto created. Otherwise false.</returns>
         public static void AutoCreatedAdministrator(string userName, string password, string email, bool validateAutoCreateUserName = true)

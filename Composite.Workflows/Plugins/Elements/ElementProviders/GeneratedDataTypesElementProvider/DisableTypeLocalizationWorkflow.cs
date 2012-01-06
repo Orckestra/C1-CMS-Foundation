@@ -104,79 +104,21 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
-#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
-            //Type interfaceType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
+            DataTypeDescriptor newDataTypeDescriptor = dataTypeDescriptor.Clone();
+            newDataTypeDescriptor.RemoveSuperInterface(typeof(ILocalizedControlled));
 
-            //using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-            //{
-            //    List<IData> administratedDatas = null;
-            //    List<IData> publicDatas = null;
 
-            //    if (this.BindingExist("CultureName") == true)
-            //    {
-            //        string cultureName = this.GetBinding<string>("CultureName");
-            //        CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
+            UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(dataTypeDescriptor, newDataTypeDescriptor, false);
 
-            //        using (new DataScope(cultureInfo))
-            //        {
-            //            administratedDatas = DataFacade.GetData(interfaceType).ToDataList();
-            //            DataFacade.Delete((IEnumerable<IData>)administratedDatas, true, CascadeDeleteType.Disable);
+            if (this.BindingExist("CultureName") == true)
+            {
+                string cultureName = this.GetBinding<string>("CultureName");
+                CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
 
-            //            if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true)
-            //            {
-            //                using (new DataScope(DataScopeIdentifier.Public))
-            //                {
-            //                    publicDatas = DataFacade.GetData(interfaceType).ToDataList();
-            //                    DataFacade.Delete((IEnumerable<IData>)publicDatas, true, CascadeDeleteType.Disable);
-            //                }
-            //            }
-            //        }
-            //    }
+                updateDataTypeDescriptor.LocaleToCopyFrom = cultureInfo;
+            }
 
-                DataTypeDescriptor newDataTypeDescriptor = dataTypeDescriptor.Clone();
-                newDataTypeDescriptor.RemoveSuperInterface(typeof(ILocalizedControlled));
-                
-
-                UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(dataTypeDescriptor, newDataTypeDescriptor, false);
-
-                if (this.BindingExist("CultureName") == true)
-                {
-                    string cultureName = this.GetBinding<string>("CultureName");
-                    CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
-
-                    updateDataTypeDescriptor.LocaleToCopyFrom = cultureInfo;
-                }
-
-                GeneratedTypesFacade.UpdateType(updateDataTypeDescriptor);
-
-#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
-            //    if (administratedDatas != null)
-            //    {
-            //        foreach (IData data in administratedDatas)
-            //        {
-            //            IData newData = DataFacade.BuildNew(interfaceType);
-            //            data.ProjectedCopyTo(newData);
-            //            DataFacade.AddNew(newData, true, false, false);
-            //        }
-
-            //        if (publicDatas != null)
-            //        {
-            //            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
-            //            {
-            //                foreach (IData data in publicDatas)
-            //                {
-            //                    IData newData = DataFacade.BuildNew(interfaceType);
-            //                    data.ProjectedCopyTo(newData);
-            //                    DataFacade.AddNew(newData, true, false, false);
-            //                }
-            //            }
-            //        }
-            //    }
-
-            //    transactionScope.Complete();
-            //}
-
-            //EntityTokenCacheFacade.ClearCache();
+            GeneratedTypesFacade.UpdateType(updateDataTypeDescriptor);
 
             this.CloseCurrentView();
             this.CollapseAndRefresh();

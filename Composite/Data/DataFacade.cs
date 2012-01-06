@@ -809,18 +809,7 @@ namespace Composite.Data
         public static T BuildNew<T>(bool suppressEventing)
             where T : class, IData
         {
-            Type generatedType = DataTypeTypesManager.GetDataTypeEmptyClass(typeof(T));
-
-            IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
-
-            SetNewInstancaFieldDefaultValues(data);
-
-            if (suppressEventing == false)
-            {
-                DataEventSystemFacade.FireDataAfterBuildNewEvent<T>(data);
-            }
-
-            return (T)data;
+            return _dataFacade.BuildNew<T>(suppressEventing);
         }
 
 
@@ -829,8 +818,6 @@ namespace Composite.Data
         /// <exclude />
         public static IData BuildNew(Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-
             return BuildNew(interfaceType, false);
         }
 
@@ -839,53 +826,12 @@ namespace Composite.Data
         /// <exclude />
         public static IData BuildNew(Type interfaceType, bool suppressEventling)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-
-            Type generatedType = DataTypeTypesManager.GetDataTypeEmptyClass(interfaceType);
-
-            IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
-
-            SetNewInstancaFieldDefaultValues(data);
-
-            if (suppressEventling == false)
-            {
-                DataEventSystemFacade.FireDataAfterBuildNewEvent(generatedType, data);
-            }
-
-            return data;
+            return _dataFacade.BuildNew(interfaceType, suppressEventling);
         }
 
 
 
-        private static void SetNewInstancaFieldDefaultValues(IData data)
-        {
-            Type interfaceType = data.DataSourceId.InterfaceType;
-            List<PropertyInfo> properties = interfaceType.GetPropertiesRecursively();
-            foreach (PropertyInfo propertyInfo in properties)
-            {
-                try
-                {
-                    NewInstanceDefaultFieldValueAttribute attribute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().SingleOrDefault();
-                    if (attribute == null || attribute.HasValue == false) continue;
-                    if (propertyInfo.CanWrite == false)
-                    {
-                        LoggingService.LogError("DataFacade", string.Format("The property '{0}' on the interface '{1}' has defined a standard value, but no setter", propertyInfo.Name, interfaceType));
-                        continue;
-                    }
-
-                    object value = attribute.GetValue();
-                    value = ValueTypeConverter.Convert(value, propertyInfo.PropertyType);
-
-                    PropertyInfo targetPropertyInfo = data.GetType().GetProperties().Where(f => f.Name == propertyInfo.Name).Single();
-                    targetPropertyInfo.SetValue(data, value, null);
-                }
-                catch (Exception ex)
-                {
-                    LoggingService.LogError("DataFacade", string.Format("Failed to set the standard value on the property '{0}' on the interface '{1}'", propertyInfo.Name, interfaceType));
-                    LoggingService.LogError("DataFacade", ex);
-                }
-            }
-        }
+        
 
         #endregion
 

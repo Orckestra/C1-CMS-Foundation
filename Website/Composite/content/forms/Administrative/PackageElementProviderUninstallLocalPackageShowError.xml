@@ -4,9 +4,9 @@
     <cms:binding name="ErrorHeader" type="System.Object" />
     <cms:binding name="Errors" type="System.Object" />
   </cms:bindings>
-  <cms:layout iconhandle="package-uninstall-local-package" label="${Composite.Plugins.PackageElementProvider, UninstallLocalAddOn.ShowError.LayoutLabel}">
+  <cms:layout iconhandle="package-uninstall-local-package" label="${Composite.Plugins.PackageElementProvider, UninstallLocalPackage.ShowError.LayoutLabel}">
     <PlaceHolder>
-      <InfoBox Label="${Composite.Plugins.PackageElementProvider, UninstallLocalAddOn.ShowError.InfoTableCaption}">
+      <InfoBox Label="${Composite.Plugins.PackageElementProvider, UninstallLocalPackage.ShowError.InfoTableCaption}">
         <InfoTable>
           <InfoTable.Headers>
             <cms:read source="ErrorHeader" />

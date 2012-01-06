@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 
@@ -15,6 +14,10 @@ namespace Composite.Data.GeneratedTypes
     /// </summary>
     internal static class InterfaceCodeManager
     {
+        private static readonly object _lock = new object();
+
+
+
         /// <summary>
         /// This method will return type given by the dataTypeDescriptor.
         /// If the data type does not exist, one will be dynamically
@@ -35,24 +38,19 @@ namespace Composite.Data.GeneratedTypes
 
             if (!dataTypeDescriptor.IsCodeGenerated) return null;
 
-#warning MRJ: BM: Refacture this one
-            BuildManagerCompileUnit unit = InterfaceCodeGenerator.GenerateCompilationUnit(dataTypeDescriptor);
-
-            CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("DataInterface: " + dataTypeDescriptor.Name);
-
-            foreach (var t in unit.Types)
+            lock (_lock)
             {
-                codeGenerationBuilder.AddType(t.CodeNamespaceName, t.CodeTypeDeclaration);
+                Type type = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
+                if (type != null) return type;
+
+                CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("DataInterface: " + dataTypeDescriptor.Name);
+                InterfaceCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
+                InterfaceCodeGenerator.AddInterfaceTypeCode(codeGenerationBuilder, dataTypeDescriptor);
+
+                IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+                return types.Single();
             }
-
-            foreach (Assembly assembly in unit.ReferencedAssemblies)
-            {
-                codeGenerationBuilder.AddReference(assembly);
-            }
-
-            IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
-
-            return types.Single();
         }
     }
 }

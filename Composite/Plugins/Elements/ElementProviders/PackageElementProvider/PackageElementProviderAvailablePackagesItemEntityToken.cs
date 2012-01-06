@@ -7,7 +7,7 @@ using Composite.Core.Serialization;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
-    internal sealed class AddOnElementProviderAvailableAddOnsItemEntityTokenAncestorProvider : ISecurityAncestorProvider
+    internal sealed class PackageElementProviderAvailablePackagesItemEntityTokenAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
@@ -24,7 +24,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [SecurityAncestorProvider(typeof(AddOnElementProviderAvailableAddOnsItemEntityTokenAncestorProvider))]
+    [SecurityAncestorProvider(typeof(PackageElementProviderAvailablePackagesItemEntityTokenAncestorProvider))]
     public sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
     {
         private string _id;
@@ -40,7 +40,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         public string GroupName { get; private set; }
 
         /// <exclude />
-        public Guid AddOnId { get { return new Guid(this.Id); } }
+        public Guid PackageId { get { return new Guid(this.Id); } }
 
         /// <exclude />
         public override string Type

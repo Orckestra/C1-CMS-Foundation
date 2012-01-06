@@ -41,7 +41,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         public DataTypeDescriptor DataTypeDescriptor { get; private set; }
 
         /// <summary>
-        /// This is a implementation of <see cref="IXmlDataProviderHelper"/> and <see cref="DataProviderHelperBase"/>
+        /// This is a implementation of <see cref="IXmlDataProviderHelper"/> and <see cref="Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration.DataProviderHelperBase"/>
         /// </summary>
         public Type DataProviderHelperType { get; private set; }
 

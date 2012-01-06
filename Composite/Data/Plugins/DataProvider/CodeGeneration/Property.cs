@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Plugins.DataProvider.CodeGeneration
 {
+#warning MRJ: BM: Is this even used any more?
     /// <summary>    
     /// </summary>
     /// <exclude />

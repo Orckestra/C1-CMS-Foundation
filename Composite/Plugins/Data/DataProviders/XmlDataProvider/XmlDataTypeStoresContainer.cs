@@ -1,31 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
-#warning MRJ: BM: Rethink the errors and configured part of this class
     internal sealed class XmlDataTypeStoresContainer
     {
         private readonly string _providerName;
-        private readonly string _fileStoreDirectory;
 
         private readonly List<Type> _supportedInterface = new List<Type>();
         private readonly List<Type> _knownInterface = new List<Type>();
         private readonly List<Type> _generatedInterface = new List<Type>();
 
         // Data type -> XmlDataTypeStore
-        private readonly Dictionary<Type, XmlDataTypeStore> _dataTypeStores = new Dictionary<Type, XmlDataTypeStore>();
-
-        // Data type -> XmlDataTypeStore
-        private readonly Dictionary<Type, List<string>> _dataTypeErrors = new Dictionary<Type, List<string>>();
+        private readonly Dictionary<Type, XmlDataTypeStore> _dataTypeStores = new Dictionary<Type, XmlDataTypeStore>();        
 
 
-        public XmlDataTypeStoresContainer(string providerName, string fileStoreDirectory)
+        public XmlDataTypeStoresContainer(string providerName)
         {
             _providerName = providerName;
-            _fileStoreDirectory = fileStoreDirectory;
         }
 
 
@@ -57,20 +50,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 throw new ArgumentException(string.Format("The interface type '{0}' is not supported by the XmlDataProvider named '{1}", interfaceType, _providerName));
             }
 
-#warning MRJ: Display errors here??? Not on creation of the datatypoestore????
-            List<string> errors = this.GetErrors(interfaceType);
-            if (errors != null)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(string.Format("The interface type '{0}' was not configured correctly with the following errors:", interfaceType));
-                foreach (string error in errors)
-                {
-                    sb.AppendLine(error);
-                }
-
-                throw new InvalidOperationException(sb.ToString());
-            }
-
             return result;
         }
 
@@ -99,63 +78,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         internal void AddKnownInterface(Type interfaceType)
         {
             _knownInterface.Add(interfaceType);
-        }
-
-
-
-
-
-
-
-
-#warning MRJ: Clean this!!!!!!
-
-
-        private List<string> GetErrors(Type interfaceType)
-        {
-            List<string> errors = null;
-
-            foreach (KeyValuePair<Type, List<string>> kvp in _dataTypeErrors)
-            {
-                if (kvp.Key == interfaceType)
-                {
-                    if (errors == null)
-                    {
-                        errors = new List<string>();
-                    }
-
-                    errors.AddRange(kvp.Value);
-                }
-            }
-
-            return errors;
-        }
-
-
-
-
-
-
-        internal void AddStoreError(Type interfaceType, List<string> errors)
-        {
-#warning MRJ: Implement this!
-            /*   List<string> errorList = null;
-            foreach (KeyValuePair<Type, List<string>> kvp in _dataTypeErrors)
-            {
-                if (kvp.Key == interfaceType)
-                {
-                    errorList = kvp.Value;
-                }
-            }
-
-            if (errorList == null)
-            {
-                _dataTypeErrors.Add()
-            }
-            else
-            {
-                errorList.AddRange(errors);
-            }*/
         }
     }
 }

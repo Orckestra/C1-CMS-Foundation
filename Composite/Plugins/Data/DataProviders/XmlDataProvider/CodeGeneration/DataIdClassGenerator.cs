@@ -115,7 +115,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeMethodInvokeExpression(
                                 new CodeVariableReferenceExpression("element"),
                                 "Attribute",
-#warning MRJ: BM: Handle mapped name
                                 new CodePrimitiveExpression(keyProperty.Name)
                             ),
                             CodeBinaryOperatorType.IdentityEquality,
@@ -127,7 +126,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                     typeof(InvalidOperationException),
                                     new CodeExpression[] {
                                         new CodePrimitiveExpression(
-#warning MRJ: BM: Handle mapped name
                                             string.Format("The element tag {0} is missing from the xml file", keyProperty.Name)
                                         )
                                     }
@@ -144,7 +142,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeMethodInvokeExpression(
                                 new CodeVariableReferenceExpression("element"),
                                 "Attribute",
-#warning MRJ: BM: Handle mapped name
                                 new CodePrimitiveExpression(keyProperty.Name)
                             )
                         )

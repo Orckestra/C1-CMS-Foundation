@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using Composite.Data.Foundation;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
-using Composite.Core.Types;
+using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
-using Composite.Data.GeneratedTypes;
 
 
 namespace Composite.Data.DynamicTypes
@@ -181,24 +179,15 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public static void AddLocale(CultureInfo cultureInfo)
         {
-            AddLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, true);
+            AddLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo);
         }
-
-
-
-        // Overload
-        /// <exclude />
-        public static void AddLocale(CultureInfo cultureInfo, bool makeFlush)
-        {
-            AddLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, makeFlush);
-        }
-
+       
 
 
         /// <exclude />
-        public static void AddLocale(string providerName, CultureInfo cultureInfo, bool doFlush)
+        public static void AddLocale(string providerName, CultureInfo cultureInfo)
         {
-            _dynamicTypeManager.AddLocale(providerName, cultureInfo, doFlush);
+            _dynamicTypeManager.AddLocale(providerName, cultureInfo);
         }
 
 
@@ -207,24 +196,15 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public static void RemoveLocale(CultureInfo cultureInfo)
         {
-            RemoveLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, true);
+            RemoveLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo);
         }
-
-
-
-        // Overload
-        /// <exclude />
-        public static void RemoveLocale(CultureInfo cultureInfo, bool makeFlush)
-        {
-            RemoveLocale(DataProviderRegistry.DefaultDynamicTypeDataProviderName, cultureInfo, makeFlush);
-        }
-
+       
 
 
         /// <exclude />
-        public static void RemoveLocale(string providerName, CultureInfo cultureInfo, bool doFlush)
+        public static void RemoveLocale(string providerName, CultureInfo cultureInfo)
         {
-            _dynamicTypeManager.RemoveLocale(providerName, cultureInfo, doFlush);
+            _dynamicTypeManager.RemoveLocale(providerName, cultureInfo);
         }
 
 
@@ -293,13 +273,6 @@ namespace Composite.Data.DynamicTypes
 
                 if (dataTypeChangeDescriptor.AlteredTypeHasChanges == false) return false;
 
-#warning MRJ: BM: Clean this
-
-                //if (interfaceType.GetCustomInterfaceAttributes<TypeVersionAttribute>().Count() != 0)
-                //{
-                //    if (newDataTypeDescriptor.Version < oldDataTypeDescriptor.Version) return false;
-                //}
-
                 return dataTypeChangeDescriptor.AlteredTypeHasChanges;
             }
         }
@@ -324,14 +297,6 @@ namespace Composite.Data.DynamicTypes
                 DataTypeChangeDescriptor dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);                
 
                 if (dataTypeChangeDescriptor.AlteredTypeHasChanges == false) return false;
-
-
-#warning MRJ: BM: Clean this
-                //if (interfaceType.GetCustomInterfaceAttributes<TypeVersionAttribute>().Count() != 0)
-                //{
-                //    if (newDataTypeDescriptor.Version == oldDataTypeDescriptor.Version) throw new TypeUpdateVersionException(string.Format("Please pump the version number of the type '{0}' by using the '{1}' attribute", interfaceType, typeof(TypeVersionAttribute)));
-                //    if (newDataTypeDescriptor.Version < oldDataTypeDescriptor.Version) LoggingService.LogError("DynamicTypeManager", string.Format("The version of the type '{0}' is not up to date, please update your code", interfaceType));
-                //}
 
                 LoggingService.LogVerbose("DynamicTypeManager", string.Format("Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName));
 

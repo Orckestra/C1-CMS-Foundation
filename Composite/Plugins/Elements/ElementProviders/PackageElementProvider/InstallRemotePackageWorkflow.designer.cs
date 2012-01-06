@@ -143,7 +143,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             // ifElseBranchActivity1
             // 
             this.ifElseBranchActivity1.Activities.Add(this.setStateActivity2);
-            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.IsAddOnFree);
+            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.IsPackageFree);
             this.ifElseBranchActivity1.Condition = codecondition1;
             this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 
@@ -175,7 +175,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             // showFieldMessageActivity1
             // 
             this.showFieldMessageActivity1.FieldBindingPath = "EulaAccepted";
-            this.showFieldMessageActivity1.Message = "${Composite.Plugins.PackageElementProvider, InstallRemoteAddOn.Step2.AcceptMissin" +
+            this.showFieldMessageActivity1.Message = "${Composite.Plugins.PackageElementProvider, InstallRemotePackage.Step2.AcceptMissin" +
                 "g}";
             this.showFieldMessageActivity1.Name = "showFieldMessageActivity1";
             // 

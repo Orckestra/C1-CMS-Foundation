@@ -40,7 +40,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         static PackageServerFacade()
         {
-            string testFilePath = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "App_Data/Composite/AddOnDescriptions.xml");
+            string testFilePath = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "App_Data/Composite/PackageDescriptions.xml");
             if (C1File.Exists(testFilePath) == true)
             {
                 _packageServerFacade = new PackageServerFacadeLocalMock(testFilePath);
@@ -72,7 +72,7 @@ namespace Composite.Core.PackageSystem
 
 
         /// <summary>
-        /// Given a cleaned url, returns a series of AddOnDescriptions 
+        /// Given a cleaned url, returns a series of PackageDescriptions 
         /// </summary>
         /// <param name="packageServerUrl">
         /// Cleaned url (ex: www.composite.net)
@@ -82,7 +82,7 @@ namespace Composite.Core.PackageSystem
         /// <returns></returns>
         public static IEnumerable<PackageDescription> GetPackageDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
         {
-            return _packageServerFacade.GetAddOnDescriptions(packageServerUrl, installationId, userCulture);
+            return _packageServerFacade.GetPackageDescriptions(packageServerUrl, installationId, userCulture);
         }
 
 
@@ -121,25 +121,25 @@ namespace Composite.Core.PackageSystem
 
 
         /// <exclude />
-        public static void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
+        public static void RegisterPackageInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
-            _packageServerFacade.RegisterAddonInstallationCompletion(packageServerUrl, installationId, packageId, localUserName, localUserIp);
+            _packageServerFacade.RegisterPackageInstallationCompletion(packageServerUrl, installationId, packageId, localUserName, localUserIp);
         }
 
 
 
         /// <exclude />
-        public static void RegisterAddonInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
+        public static void RegisterPackageInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
         {
-            _packageServerFacade.RegisterAddonInstallationFailure(packageServerUrl, installationId, packageId, localUserName, localUserIp, exceptionString);
+            _packageServerFacade.RegisterPackageInstallationFailure(packageServerUrl, installationId, packageId, localUserName, localUserIp, exceptionString);
         }
 
 
 
         /// <exclude />
-        public static void RegisterAddOnUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
+        public static void RegisterPackageUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
-            _packageServerFacade.RegisterAddOnUninstall(packageServerUrl, installationId, packageId, localUserName, localUserIp);
+            _packageServerFacade.RegisterPackageUninstall(packageServerUrl, installationId, packageId, localUserName, localUserIp);
         }
 
 

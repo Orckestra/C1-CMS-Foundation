@@ -65,8 +65,5 @@ namespace Composite.Data
         /// </param>
         /// <returns>Should return a type that will be used to create an object that implements the given <paramref name="dataType"/> interface.</returns>
         Type GetTypeToBuild(Type dataType);
-
-#warning MRJ: BM: Clean this
-        //CodeAttributeDeclaration GetCodeAttributeDeclaration(Type dataType);
     }
 }

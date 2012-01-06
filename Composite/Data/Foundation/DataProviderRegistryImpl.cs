@@ -135,8 +135,7 @@ namespace Composite.Data.Foundation
 
 
 
-#warning MRJ: BM: Merge these two methods
-        public void Initialize_StaticTypes()
+        public void InitializeDataTypes()
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
             {
@@ -157,37 +156,6 @@ namespace Composite.Data.Foundation
                 }
             }
         }
-
-
-
-        public void Initialize_DynamicTypes()
-        {
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                foreach (string providerName in _dataProviderNames)
-                {
-                    if (!DataProviderPluginFacade.IsGeneratedTypesProvider(providerName))
-                    {
-                        continue;
-                    }
-
-                    IEnumerable<Type> types = DataProviderPluginFacade.GetGeneratedInterfaces(providerName);
-
-                    bool writeableProvider = DataProviderPluginFacade.IsWriteableProvider(providerName);
-
-                    foreach (Type type in types)
-                    {
-                        AddType(type, providerName, writeableProvider);
-
-                        if (_generatedInterfaceTypes.Contains(type) == false)
-                        {
-                            _generatedInterfaceTypes.Add(type);
-                        }
-                    }
-                }
-            }
-        }
-
 
 
 
@@ -296,6 +264,22 @@ namespace Composite.Data.Foundation
                     {
                         AddType(type, providerName, writeableProvider);
                     }
+
+
+                    if (DataProviderPluginFacade.IsGeneratedTypesProvider(providerName))
+                    {
+                        IEnumerable<Type> generatedTypes = DataProviderPluginFacade.GetGeneratedInterfaces(providerName);
+
+                        foreach (Type type in generatedTypes)
+                        {
+                            AddType(type, providerName, writeableProvider);
+
+                            if (_generatedInterfaceTypes.Contains(type) == false)
+                            {
+                                _generatedInterfaceTypes.Add(type);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -320,13 +304,13 @@ namespace Composite.Data.Foundation
 
                                     _knownInterfaceTypeToDynamicProviderNamesDictionary.Add(knownType, providerNames);
 
-                                    Core.Logging.LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding known IData interface: {0}", knownType));
+                                    LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding known IData interface: {0}", knownType));
                                 }
 
                                 providerNames.Add(providerName);
                             }
                         }
-                    }
+                    }                    
                 }
             }
         }

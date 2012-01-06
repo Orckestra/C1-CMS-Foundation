@@ -50,7 +50,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public IEnumerable<PackageDescription> GetAddOnDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
+        public IEnumerable<PackageDescription> GetPackageDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
         {
             Initialize();
 
@@ -159,23 +159,23 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
+        public void RegisterPackageInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
-            LoggingService.LogVerbose("AddOnServerFacadeLocalMock", string.Format("RegisterAddonInstallationCompletion: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}", installationId, packageId, localUserName, localUserIp));
+            LoggingService.LogVerbose("PackageServerFacadeLocalMock", string.Format("RegisterPackageInstallationCompletion: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}", installationId, packageId, localUserName, localUserIp));
         }
 
 
 
-        public void RegisterAddonInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
+        public void RegisterPackageInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
         {
-            LoggingService.LogVerbose("AddOnServerFacadeLocalMock", string.Format("RegisterAddonInstallationFailure: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}, error = {4}", installationId, packageId, localUserName, localUserIp, exceptionString));
+            LoggingService.LogVerbose("PackageServerFacadeLocalMock", string.Format("RegisterPackageInstallationFailure: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}, error = {4}", installationId, packageId, localUserName, localUserIp, exceptionString));
         }
 
 
 
-        public void RegisterAddOnUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
+        public void RegisterPackageUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
-            LoggingService.LogVerbose("AddOnServerFacadeLocalMock", string.Format("RegisterAddOnUninstall: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}", installationId, packageId, localUserName, localUserIp));
+            LoggingService.LogVerbose("PackageServerFacadeLocalMock", string.Format("RegisterPackageUninstall: installationId = {0}, packageId = {1}, localUserName = {2}, localUserIp = {3}", installationId, packageId, localUserName, localUserIp));
         }
 
 
@@ -209,7 +209,7 @@ namespace Composite.Core.PackageSystem
                 XAttribute urlAttribute = element.Attribute("url");
 
                 List<KeyValuePair<PackageDescription, ExtraInfo>> packageDescriptions = new List<KeyValuePair<PackageDescription, ExtraInfo>>();
-                foreach (XElement packageElement in element.Elements("AddOnDescription"))
+                foreach (XElement packageElement in element.Elements("PackageDescription"))
                 {
                     PackageDescription packageDescription = new PackageDescription();
 

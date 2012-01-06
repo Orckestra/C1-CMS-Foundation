@@ -1,18 +1,17 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using Composite.Data.Foundation;
+using System.Transactions;
+using Composite.Core.Extensions;
+using Composite.Core.Logging;
 using Composite.Data.DynamicTypes;
+using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.ProcessControlled;
-using Composite.C1Console.Events;
 using Composite.Data.Transactions;
-using System.Transactions;
-using Composite.Core.Logging;
-using Composite.Core.Extensions;
 
 
 namespace Composite.Data
@@ -56,25 +55,20 @@ namespace Composite.Data
 
                         LoggingService.LogVerbose(LogTitle, "Full copy started");
 
-                        IEnumerable<Type> allInterfaces =
+                        IEnumerable<Type> allInterfacesToEnsure =
                             (from type in DataFacade.GetAllInterfaces()
                              where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) == true
                              select type).ToList();
 
                         LoggingService.LogVerbose(LogTitle, "Ensuring interfaces...");
-#warning MRJ: BM: Cleanup, and maybe refac: allInterfaces used twice
-                        EnsureInterfaces(allInterfaces);
-                        //bool flushed = EnsureInterfaces(allInterfaces);
+                        EnsureInterfaces(allInterfacesToEnsure);
 
                         LoggingService.LogVerbose(LogTitle, "Done insuring interfaces!");
 
-                        //if (flushed == true)
-                        //{
-                            allInterfaces =
+                        IEnumerable<Type> allInterfaces =
                                 (from type in DataFacade.GetAllInterfaces()
                                  where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) == true
                                  select type).ToList();
-                        //}
 
                         List<Type> handleLastInterfaceTypes = new List<Type>();
 
@@ -82,7 +76,7 @@ namespace Composite.Data
                         {
                             if (_specialHandleInterfaces.ContainsKey(interfaceType) == false)
                             {
-                                    CopyData(interfaceType);
+                                CopyData(interfaceType);
                             }
                             else
                             {
@@ -92,17 +86,17 @@ namespace Composite.Data
 
                         foreach (Type interfaceType in handleLastInterfaceTypes)
                         {
-                                CopyData(interfaceType);
+                            CopyData(interfaceType);
                         }
 
-                        if(transactionScope != null)
+                        if (transactionScope != null)
                         {
                             transactionScope.Complete();
                         }
                     }
                     finally
                     {
-                        if(transactionScope != null)
+                        if (transactionScope != null)
                         {
                             transactionScope.Dispose();
                         }
@@ -114,11 +108,9 @@ namespace Composite.Data
         }
 
 
-#warning MRJ: BM: CLeanup
+
         private void EnsureInterfaces(IEnumerable<Type> allInterfaces)
         {
-            //bool storeCreated = false;
-
             foreach (Type interfaceType in allInterfaces)
             {
                 if (DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType).Contains(this.TargetProviderName) == false)
@@ -128,28 +120,21 @@ namespace Composite.Data
                     dataTypeDescriptor.Validate();
 
                     DataProviderPluginFacade.CreateStore(this.TargetProviderName, dataTypeDescriptor);
-
-                    //storeCreated = true;
                 }
             }
-
-            //if (storeCreated == true)
-            //{
-            //    GlobalEventSystemFacade.FlushTheSystem();
-            //}
-
-            //return storeCreated;
         }
 
 
-        CultureInfo[] GetSupportedCultures(Type interfaceType)
+
+        private CultureInfo[] GetSupportedCultures(Type interfaceType)
         {
-            if(DataLocalizationFacade.IsLocalized(interfaceType))
+            if (DataLocalizationFacade.IsLocalized(interfaceType))
             {
                 return DataLocalizationFacade.ActiveLocalizationCultures.ToArray();
             }
-            return new [] { CultureInfo.InvariantCulture };
+            return new[] { CultureInfo.InvariantCulture };
         }
+
 
 
         private void CopyData(Type interfaceType)
@@ -201,7 +186,7 @@ namespace Composite.Data
                                 string dataId = data.DataSourceId.ToString();
                                 if (dataIDs.Contains(dataId))
                                 {
-                                        LoggingService.LogWarning(LogTitle, "Cannot insert a data row, since it's data ID is already used. DataID: '{0}'".FormatWith(dataId));
+                                    LoggingService.LogWarning(LogTitle, "Cannot insert a data row, since it's data ID is already used. DataID: '{0}'".FormatWith(dataId));
                                     continue;
                                 }
                                 dataIDs.Add(dataId);
@@ -234,8 +219,8 @@ namespace Composite.Data
 
         private static void AddData(Type type, IEnumerable<IData> dataset, IWritableDataProvider dataProvider)
         {
-            MethodInfo genericMethod = typeof (DataProviderCopier).GetMethod("AddData1", BindingFlags.Static | BindingFlags.NonPublic);
-            genericMethod.MakeGenericMethod(new[] {type}).Invoke(null, new object[] {dataset, dataProvider});
+            MethodInfo genericMethod = typeof(DataProviderCopier).GetMethod("AddData1", BindingFlags.Static | BindingFlags.NonPublic);
+            genericMethod.MakeGenericMethod(new[] { type }).Invoke(null, new object[] { dataset, dataProvider });
         }
 
         /// <summary>
@@ -244,14 +229,14 @@ namespace Composite.Data
         /// <typeparam name="T"></typeparam>
         /// <param name="dataset"></param>
         /// <param name="dataProvider"></param>
-        private static void AddData1<T>(IEnumerable<IData> dataset, IWritableDataProvider dataProvider) where T: class, IData
+        private static void AddData1<T>(IEnumerable<IData> dataset, IWritableDataProvider dataProvider) where T : class, IData
         {
             dataProvider.AddNew(dataset.Cast<T>());
         }
 
         private static void FixData(IData data)
         {
-            if(data is ILocalizedControlled)
+            if (data is ILocalizedControlled)
             {
                 var localizedData = data as ILocalizedControlled;
                 if (localizedData.CultureName == null)

@@ -15,7 +15,6 @@ using Composite.Data.Types;
 
 namespace Composite.Data.DynamicTypes
 {
-#warning MRJ: BM: Remove version from here
     /// <summary>    
     /// </summary>
     /// <exclude />
@@ -49,7 +48,6 @@ namespace Composite.Data.DynamicTypes
             this.DataTypeId = dataTypeId;
             this.Namespace = dataTypeNamespace;
             this.Name = dataTypeName;
-            this.Version = 1;
             this.IsCodeGenerated = isCodeGenerated;
         }
 
@@ -62,7 +60,6 @@ namespace Composite.Data.DynamicTypes
             this.Namespace = dataTypeNamespace;
             this.Name = dataTypeName;
             this.TypeManagerTypeName = typeManagerTypeName;
-            this.Version = 1;
             this.IsCodeGenerated = false;
         }
 
@@ -75,7 +72,6 @@ namespace Composite.Data.DynamicTypes
             this.Namespace = dataTypeNamespace;
             this.Name = dataTypeName;
             this.TypeManagerTypeName = typeManagerTypeName;
-            this.Version = 1;
             this.IsCodeGenerated = isCodeGenerated;
         }
 
@@ -108,14 +104,16 @@ namespace Composite.Data.DynamicTypes
                 throw new InvalidOperationException("The TypeManagerTypeName has not been set");
             }
 
-#warning MRJ: BM: Will this be bad if the interface does not yet exist?
             return DataTypeTypesManager.GetDataType(this);
             //return TypeManager.GetType(this.TypeManagerTypeName);
         }
 
 
+
         /// <exclude />
         public string TypeManagerTypeName { get; set; }
+
+
 
         /// <summary>
         /// A list of field names that the provider should use when physically storing data. 
@@ -168,10 +166,6 @@ namespace Composite.Data.DynamicTypes
                 _labelFieldName = value;
             }
         }
-
-#warning MRJ: BM: Is this needed any more?
-        /// <exclude />
-        public int Version { get; internal set; }
 
 
         /// <exclude />
@@ -468,7 +462,6 @@ namespace Composite.Data.DynamicTypes
             }
 
             dataTypeDescriptor.Title = this.Title;
-            dataTypeDescriptor.Version = this.Version;
             dataTypeDescriptor.BuildNewHandlerTypeName = this.BuildNewHandlerTypeName;
 
             return dataTypeDescriptor;
@@ -490,7 +483,6 @@ namespace Composite.Data.DynamicTypes
             element.Add(new XAttribute("cachable", this.Cachable));
             if (this.LabelFieldName != null) element.Add(new XAttribute("labelFieldName", this.LabelFieldName));
             if (this.TypeManagerTypeName != null) element.Add(new XAttribute("typeManagerTypeName", this.TypeManagerTypeName));
-            element.Add(new XAttribute("version", this.Version));
             if (!string.IsNullOrEmpty(this.BuildNewHandlerTypeName)) element.Add(new XAttribute("buildNewHandlerTypeName", this.BuildNewHandlerTypeName));
 
 
@@ -546,17 +538,16 @@ namespace Composite.Data.DynamicTypes
             XAttribute hasCustomPhysicalSortOrderAttribute = element.Attribute("hasCustomPhysicalSortOrder");
             XAttribute isCodeGeneratedAttribute = element.Attribute("isCodeGenerated");
             XAttribute cachableAttribute = element.Attribute("cachable");
-            XAttribute versionAttribute = element.Attribute("version");
             XAttribute buildNewHandlerTypeNameAttribute = element.Attribute("buildNewHandlerTypeName");
             XElement dataAssociationsElement = element.Element("DataAssociations");
             XElement dataScopesElement = element.Element("DataScopes");
             XElement keyPropertyNamesElement = element.Element("KeyPropertyNames");
-#warning MRJ: BM: Why is this not used?
+            // TODO: check why "superInterfaceKeyPropertyNamesElement" is not used
             XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
             XElement superInterfacesElement = element.Element("SuperInterfaces");
             XElement fieldsElement = element.Element("Fields");
 
-            if ((dataTypeIdAttribute == null) || (nameAttribute == null) || (namespaceAttribute == null) || (hasCustomPhysicalSortOrderAttribute == null) || (isCodeGeneratedAttribute == null) || (versionAttribute == null) ||
+            if ((dataTypeIdAttribute == null) || (nameAttribute == null) || (namespaceAttribute == null) || (hasCustomPhysicalSortOrderAttribute == null) || (isCodeGeneratedAttribute == null) ||
                 (dataAssociationsElement == null) || (dataScopesElement == null) || (keyPropertyNamesElement == null) || (superInterfacesElement == null) || (fieldsElement == null)) throw new ArgumentException("The xml is not correctly formattet");
 
             XAttribute titleAttribute = element.Attribute("title");
@@ -573,14 +564,11 @@ namespace Composite.Data.DynamicTypes
                 cachable = (bool)cachableAttribute;
             }
 
-            // TODO: check why "hasCustomPhysicalSortOrder" and "version" isn't used
-#warning MRJ: BM: Why is this not used?
+            // TODO: check why "hasCustomPhysicalSortOrder"  is not used
             bool hasCustomPhysicalSortOrder = (bool)hasCustomPhysicalSortOrderAttribute;
-            int version = (int)versionAttribute;
 
             DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, namespaceName, name, isCodeGeneretaed);
             dataTypeDescriptor.Cachable = cachable;
-            dataTypeDescriptor.Version = version;
 
             if (titleAttribute != null) dataTypeDescriptor.Title = titleAttribute.Value;
             if (labelFieldNameAttribute != null) dataTypeDescriptor.LabelFieldName = labelFieldNameAttribute.Value;
@@ -662,7 +650,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public override int GetHashCode()
         {
-            return this.DataTypeId.GetHashCode() ^ this.Version.GetHashCode();
+            return this.DataTypeId.GetHashCode();
         }
 
 
@@ -680,9 +668,7 @@ namespace Composite.Data.DynamicTypes
         {
             if (dataTypeDescriptor == null) return false;
 
-            return
-                dataTypeDescriptor.DataTypeId == this.DataTypeId &&
-                dataTypeDescriptor.Version == this.Version;
+            return dataTypeDescriptor.DataTypeId == this.DataTypeId;
         }
 
 
@@ -718,14 +704,6 @@ namespace Composite.Data.DynamicTypes
         public static string GetFullInterfaceName(this DataTypeDescriptor dataTypeDescriptor)
         {
             return dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name;
-            //string interfaceTypeName = dataTypeDescriptor.TypeManagerTypeName;
-            //if (interfaceTypeName.StartsWith("DynamicType:")) interfaceTypeName = interfaceTypeName.Remove(0, "DynamicType:".Length);
-
-
-            //string fullInterfaceName = interfaceTypeName.Replace('.', '_').Replace('+', '_');
-            //if (fullInterfaceName.IndexOf(",") >= 0) fullInterfaceName = fullInterfaceName.Remove(fullInterfaceName.IndexOf(","));
-
-            //return fullInterfaceName;
         }
 
 

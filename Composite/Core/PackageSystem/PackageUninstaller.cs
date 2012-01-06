@@ -23,7 +23,7 @@ namespace Composite.Core.PackageSystem
 
         private string ZipFilename { get; set; }
         private string UninstallFilename { get; set; }
-        private string AddOnInstallationDirectory { get; set; }
+        private string PackageInstallationDirectory { get; set; }
         private string TempDirectory { get; set; }
         private bool UseTransaction { get; set; }
         private PackageInformation PackageInformation { get; set; }
@@ -39,7 +39,7 @@ namespace Composite.Core.PackageSystem
 
             this.ZipFilename = zipFilename;
             this.UninstallFilename = uninstallFilename;
-            this.AddOnInstallationDirectory = packageInstallationDirectory;
+            this.PackageInstallationDirectory = packageInstallationDirectory;
             this.TempDirectory = tempDirectory;
             this.FlushOnCompletion = flushOnCompletion;
             this.ReloadConsoleOnCompletion = reloadConsoleOnCompletion;
@@ -150,7 +150,7 @@ namespace Composite.Core.PackageSystem
             if (_isInitialized == true) throw new InvalidOperationException("Initialize may only be called once");
             _isInitialized = true;
 
-            List<PackageFragmentValidationResult> result1 = LoadAddOnFragmentInstallerBinaries().ToList();
+            List<PackageFragmentValidationResult> result1 = LoadPackageFragmentInstallerBinaries().ToList();
             if (result1.Count > 0) return result1;
 
             XElement uninstallElement = null;
@@ -171,7 +171,7 @@ namespace Composite.Core.PackageSystem
             XElement packageFragmentUninstallersElement = uninstallElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentUninstallersElementName));
             if (packageFragmentUninstallersElement == null) return new PackageFragmentValidationResult[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The {0} file is wrongly formattet", this.UninstallFilename)) };
 
-            List<PackageFragmentValidationResult> result2 = LoadAddOnFramentUninstallers(packageFragmentUninstallersElement).ToList();
+            List<PackageFragmentValidationResult> result2 = LoadPackageFramentUninstallers(packageFragmentUninstallersElement).ToList();
             if (result2.Count > 0) return result2;
 
             _packageFramentUninstallers.Reverse();
@@ -181,9 +181,9 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private IEnumerable<PackageFragmentValidationResult> LoadAddOnFragmentInstallerBinaries()
+        private IEnumerable<PackageFragmentValidationResult> LoadPackageFragmentInstallerBinaries()
         {
-            string binariesDirectory = Path.Combine(this.AddOnInstallationDirectory, PackageSystemSettings.BinariesDirectoryName);
+            string binariesDirectory = Path.Combine(this.PackageInstallationDirectory, PackageSystemSettings.BinariesDirectoryName);
 
             if (C1Directory.Exists(binariesDirectory) == true)
             {
@@ -192,12 +192,12 @@ namespace Composite.Core.PackageSystem
                     string newFilename = Path.Combine(this.TempDirectory, Path.GetFileName(filename));
                     C1File.Copy(filename, newFilename);
 
-                    LoggingService.LogVerbose("AddOnUninstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newFilename));
+                    LoggingService.LogVerbose("PackageUninstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newFilename));
 
                     Exception exception = null;
                     try
                     {
-                        BuildManager.LoadAssemlby(newFilename);
+                        PackageAssemblyHandler.AddAssembly(newFilename);
                     }
                     catch (Exception ex)
                     {
@@ -216,7 +216,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private IEnumerable<PackageFragmentValidationResult> LoadAddOnFramentUninstallers(XElement packageFragmentInstallersElement)
+        private IEnumerable<PackageFragmentValidationResult> LoadPackageFramentUninstallers(XElement packageFragmentInstallersElement)
         {
             PackageUninstallerContext packageUninstallerContex = null;
 

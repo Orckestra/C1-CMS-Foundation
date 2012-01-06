@@ -15,7 +15,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Core.PackageSystem.Workflow
 {
-    partial class UninstallLocalAddOnWorkflow
+    partial class UninstallLocalPackageWorkflow
     {
         #region Designer generated code
         
@@ -363,7 +363,7 @@ namespace Composite.Core.PackageSystem.Workflow
             this.eventDrivenActivity_GlobalCancel.Activities.Add(this.setStateActivity1);
             this.eventDrivenActivity_GlobalCancel.Name = "eventDrivenActivity_GlobalCancel";
             // 
-            // UninstallLocalAddOnWorkflow
+            // UninstallLocalPackageWorkflow
             // 
             this.Activities.Add(this.eventDrivenActivity_GlobalCancel);
             this.Activities.Add(this.initializeStateActivity);
@@ -375,7 +375,7 @@ namespace Composite.Core.PackageSystem.Workflow
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initializeStateActivity";
-            this.Name = "UninstallLocalAddOnWorkflow";
+            this.Name = "UninstallLocalPackageWorkflow";
             this.CanModifyActivities = false;
 
         }

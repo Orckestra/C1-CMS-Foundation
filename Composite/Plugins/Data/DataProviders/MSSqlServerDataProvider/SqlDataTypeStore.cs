@@ -3,62 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
-using System.Reflection;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider;
-// using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
-using System.ComponentModel;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 {
-#warning MRJ: BM: Move this class
-    internal class SqlDataTypeStoreTableKey : Tuple<string, string>
-    {
-        public SqlDataTypeStoreTableKey(string dataScopeIdentifierName, string localeCultureName)
-            :base(dataScopeIdentifierName, localeCultureName)
-        {
-            
-        }
-
-
-        public string DataScopeIdentifierName
-        {
-            get
-            {
-                return Item1;
-            }
-        }
-
-
-        public string LocaleCultureName
-        {
-            get
-            {
-                return Item2;
-            }
-        }
-    }
-
-
-
-#warning MRJ: BM: Move this class
-    internal sealed class SqlDataTypeStoreTable
-    {
-        public SqlDataTypeStoreTable(FieldInfo dataContextQueryableFieldInfo, ISqlDataProviderHelper sqlDataProviderHelper)
-        {
-            DataContextQueryableFieldInfo = dataContextQueryableFieldInfo;
-            SqlDataProviderHelper = sqlDataProviderHelper;
-        }
-
-        public FieldInfo DataContextQueryableFieldInfo { get; set; }
-
-        public ISqlDataProviderHelper SqlDataProviderHelper { get; set; }
-    }
-
-
-
     internal sealed class SqlDataTypeStore
     {
         private readonly SqlDataTypeStoresContainer _sqlDataTypeStoresContainer;

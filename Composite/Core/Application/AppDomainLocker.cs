@@ -9,34 +9,6 @@ using Composite.Core.IO;
 
 namespace Composite.Core.Application
 {
-#warning MRJ: REMOVE THIS CODE
-    //internal static class DaMonkeyLogger
-    //{
-    //    static string _logFilePath;
-
-    //    static DaMonkeyLogger()
-    //    {
-    //        _logFilePath = Path.Combine(PathUtil.BaseDirectory, "log.txt");
-    //    }
-
-
-    //    public static void AddEntry(string entry)
-    //    {
-    //        for (int i = 0; i < 100; i++)
-    //        {
-    //            try
-    //            {
-    //                File.AppendAllLines(_logFilePath, new[] { DateTime.Now.ToString("HH:mm:ss:ff") + ": " + entry });
-    //                return;
-    //            }
-    //            catch (Exception)
-    //            {
-    //                Thread.Sleep(10);
-    //            }
-    //        }
-    //    }
-    //}
-
     /// <summary>
     /// This class provides system wide locking throughout all app domains for the given C1 installation. 
     /// It does lock lock between C1 installations if more than one runs on the same machine.

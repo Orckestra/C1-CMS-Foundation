@@ -12,6 +12,7 @@ using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data.Transactions;
+using System.Reflection;
 
 
 namespace Composite.Core.PackageSystem
@@ -267,14 +268,14 @@ namespace Composite.Core.PackageSystem
             XElement packageFragmentInstallerBinariesElement = installElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallerBinariesElementName));
             if (packageFragmentInstallerBinariesElement != null)
             {
-                List<PackageFragmentValidationResult> result1 = LoadAddOnFragmentInstallerBinaries(packageFragmentInstallerBinariesElement).ToList();
+                List<PackageFragmentValidationResult> result1 = LoadPackageFragmentInstallerBinaries(packageFragmentInstallerBinariesElement).ToList();
                 if (result1.Count > 0) return result1;
             }
 
             XElement packageFragmentInstallersElement = installElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallersElementName));
             if (packageFragmentInstallersElement == null) return new PackageFragmentValidationResult[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The {0} file is wrongly formattet", PackageSystemSettings.InstallFilename)) };
 
-            List<PackageFragmentValidationResult> result2 = LoadAddOnFragmentInstallers(packageFragmentInstallersElement).ToList();
+            List<PackageFragmentValidationResult> result2 = LoadPackageFragmentInstallers(packageFragmentInstallersElement).ToList();
             if (result2.Count > 0) return result2;
 
             return new PackageFragmentValidationResult[] { };
@@ -282,7 +283,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private IEnumerable<PackageFragmentValidationResult> LoadAddOnFragmentInstallerBinaries(XElement packageFragmentInstallerBinariesElement)
+        private IEnumerable<PackageFragmentValidationResult> LoadPackageFragmentInstallerBinaries(XElement packageFragmentInstallerBinariesElement)
         {
             string binariesDirectory = Path.Combine(this.PackageInstallDirectory, PackageSystemSettings.BinariesDirectoryName);
 
@@ -308,8 +309,9 @@ namespace Composite.Core.PackageSystem
                 string newTargetFilename = Path.Combine(this.TempDirectory, Path.GetFileName(targetFilename));
                 C1File.Copy(targetFilename, newTargetFilename);
 
-                LoggingService.LogVerbose("AddOnInstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newTargetFilename));
-                BuildManager.LoadAssemlby(newTargetFilename);
+                LoggingService.LogVerbose("PackageInstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newTargetFilename));
+
+                PackageAssemblyHandler.AddAssembly(newTargetFilename);
             }
 
             yield break;
@@ -317,7 +319,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private IEnumerable<PackageFragmentValidationResult> LoadAddOnFragmentInstallers(XElement packageFragmentInstallersElement)
+        private IEnumerable<PackageFragmentValidationResult> LoadPackageFragmentInstallers(XElement packageFragmentInstallersElement)
         {
             Exception exception = null;
             foreach (XElement element in packageFragmentInstallersElement.Elements(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallersAddElementName)))

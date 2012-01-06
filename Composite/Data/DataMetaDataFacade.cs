@@ -170,9 +170,6 @@ namespace Composite.Data
 
             if (dataTypeDescriptor != null) return dataTypeDescriptor;
 
-#warning MRJ: Move this code!
-            /////
-
 
             if (allowDataTypeCreation == false) return null;
 
@@ -194,7 +191,6 @@ namespace Composite.Data
                 }
             }
 
-            /////
 
             Log.LogError("DataMetaDataFacade", string.Format("No data type found with the given data type id '{0}'", dataTypeId));
 

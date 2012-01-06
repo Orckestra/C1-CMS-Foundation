@@ -16,7 +16,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
-    [ConfigurationElementType(typeof(AddOnElementProviderData))]
+    [ConfigurationElementType(typeof(PackageElementProviderData))]
     internal sealed class PackageElementProvider : IHooklessElementProvider, IAuxiliarySecurityAncestorProvider
     {
         private ElementProviderContext _context;
@@ -90,31 +90,31 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             }
             else if ((entityToken is PackageElementProviderAvailablePackagesFolderEntityToken) == true)
             {
-                return GetAvailableAddOnsFolderChildren(seachToken);
+                return GetAvailablePackagesFolderChildren(seachToken);
             }
             else if ((entityToken is PackageElementProviderAvailablePackagesGroupFolderEntityToken) == true)
             {
                 PackageElementProviderAvailablePackagesGroupFolderEntityToken castedToken = entityToken as PackageElementProviderAvailablePackagesGroupFolderEntityToken;
 
-                return GetAvailableAddOnGroupFolderChildren(castedToken.GroupName, seachToken);
+                return GetAvailablePackageGroupFolderChildren(castedToken.GroupName, seachToken);
             }
             else if ((entityToken is PackageElementProviderInstalledPackageFolderEntityToken) == true)
             {
-                return GetInstalledAddOnFolderChildren(seachToken);
+                return GetInstalledPackageFolderChildren(seachToken);
             }
             else if ((entityToken is PackageElementProviderPackageSourcesFolderEntityToken) == true)
             {
-                return GetAddOnSourcesFolderChildren(seachToken);
+                return GetPackageSourcesFolderChildren(seachToken);
             }
             else if ((entityToken is PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken) == true)
             {
-                return GetInstalledLocalAddOnsFolderChildren(seachToken);
+                return GetInstalledLocalPackagesFolderChildren(seachToken);
             }
             else if ((entityToken is PackageElementProviderInstalledPackageGroupFolderEntityToken) == true)
             {
                 PackageElementProviderInstalledPackageGroupFolderEntityToken castedToken = entityToken as PackageElementProviderInstalledPackageGroupFolderEntityToken;
 
-                return GetInstalledAddOnGroupFolderChildren(castedToken.GroupName, seachToken);
+                return GetInstalledPackageGroupFolderChildren(castedToken.GroupName, seachToken);
             }
 
             throw new NotImplementedException();
@@ -145,16 +145,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private IEnumerable<Element> GetRootChildren(SearchToken seachToken)
         {
-            Element availableAddOnsElement = new Element(_context.CreateElementHandle(new PackageElementProviderAvailablePackagesFolderEntityToken()));
-            availableAddOnsElement.VisualData = new ElementVisualizedData
+            Element availablePackagesElement = new Element(_context.CreateElementHandle(new PackageElementProviderAvailablePackagesFolderEntityToken()));
+            availablePackagesElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AvailableAddOnsFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AvailableAddOnsFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AvailablePackagesFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AvailablePackagesFolderToolTip"),
                 HasChildren = true,
                 Icon = AvailablePackagesClosedIcon,
                 OpenedIcon = AvailablePackagesOpenedIcon
             };
-            availableAddOnsElement.AddAction(new ElementAction(new ActionHandle(new ClearServerCacheActionToken()))
+            availablePackagesElement.AddAction(new ElementAction(new ActionHandle(new ClearServerCacheActionToken()))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -171,28 +171,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     }
                 }
             });            
-            yield return availableAddOnsElement;
+            yield return availablePackagesElement;
 
 
 
-            Element installedAddOnsElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageFolderEntityToken()));
-            installedAddOnsElement.VisualData = new ElementVisualizedData
+            Element installedPackagesElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageFolderEntityToken()));
+            installedPackagesElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstalledAddOnFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstalledAddOnFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstalledPackageFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstalledPackageFolderToolTip"),
                 HasChildren = true,
                 Icon = InstalledPackagesClosedIcon,
                 OpenedIcon = InstalledPackagesOpenedIcon
             };
-            yield return installedAddOnsElement;
+            yield return installedPackagesElement;
 
 
 
             Element packageSourcesElement = new Element(_context.CreateElementHandle(new PackageElementProviderPackageSourcesFolderEntityToken()));
             packageSourcesElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddOnSourcesFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddOnSourcesFolderToolTip"),
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "PackageSourcesFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "PackageSourcesFolderToolTip"),
                 HasChildren = DataFacade.GetData<IPackageServerSource>().Count() > 0,
                 Icon = PackageSourcesClosedIcon,
                 OpenedIcon = PackageSourcesOpenedIcon
@@ -201,8 +201,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddAddOnSourceLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddAddOnSourceToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddPackageSourceLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "AddPackageSourceToolTip"),
                     Disabled = false,
                     Icon = AddPackageSourceIcon,
                     ActionLocation = new ActionLocation
@@ -219,7 +219,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private IEnumerable<Element> GetAvailableAddOnsFolderChildren(SearchToken seachToken)
+        private IEnumerable<Element> GetAvailablePackagesFolderChildren(SearchToken seachToken)
         {
             IEnumerable<string> groupNames =
                 (from description in PackageSystemServices.GetFilteredAllAvailablePackages()
@@ -244,7 +244,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private IEnumerable<Element> GetAvailableAddOnGroupFolderChildren(string groupName, SearchToken seachToken)
+        private IEnumerable<Element> GetAvailablePackageGroupFolderChildren(string groupName, SearchToken seachToken)
         {
             IEnumerable<PackageDescription> packageDescriptions =
                 (from description in PackageSystemServices.GetFilteredAllAvailablePackages()
@@ -292,29 +292,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private IEnumerable<Element> GetInstalledAddOnFolderChildren(SearchToken seachToken)
+        private IEnumerable<Element> GetInstalledPackageFolderChildren(SearchToken seachToken)
         {
-            bool hasLocalAddonChildren =
+            bool hasLocalPackageChildren =
                 (from info in PackageManager.GetInstalledPackages()
                  where info.IsLocalInstalled == true
                  select info.Name).FirstOrDefault() != null;
 
-            Element localAddOnsElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken()));
-            localAddOnsElement.VisualData = new ElementVisualizedData
+            Element localPackagesElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken()));
+            localPackagesElement.VisualData = new ElementVisualizedData
             {
-                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "LocalAddOnsFolderLabel"),
-                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "LocalAddOnsFolderToolTip"),
-                HasChildren = hasLocalAddonChildren,
+                Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "LocalPackagesFolderLabel"),
+                ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "LocalPackagesFolderToolTip"),
+                HasChildren = hasLocalPackageChildren,
                 Icon = LocalPackagesClosedIcon,
                 OpenedIcon = LocalPackagesOpenedIcon
             };
 
-            localAddOnsElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+            localPackagesElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOnLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOnToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackageLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackageToolTip"),
                     Disabled = false,
                     Icon = InstallLocalPackageIcon,
                     ActionLocation = new ActionLocation
@@ -328,7 +328,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             });
 
 
-            yield return localAddOnsElement;
+            yield return localPackagesElement;
 
 
             IEnumerable<string> groupNames =
@@ -355,7 +355,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private IEnumerable<Element> GetAddOnSourcesFolderChildren(SearchToken seachToken)
+        private IEnumerable<Element> GetPackageSourcesFolderChildren(SearchToken seachToken)
         {
             List<IPackageServerSource> packageServerSources = 
                 (from a in DataFacade.GetData<IPackageServerSource>()
@@ -377,8 +377,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 {
                     VisualData = new ActionVisualizedData
                     {
-                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "DeleteAddOnSourceLabel"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "DeleteAddOnSourceToolTip"),
+                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "DeletePackageSourceLabel"),
+                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "DeletePackageSourceToolTip"),
                         Icon = DeletePackageSourceIcon,
                         Disabled = false,
                         ActionLocation = new ActionLocation
@@ -398,28 +398,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
 
-        private IEnumerable<Element> GetInstalledLocalAddOnsFolderChildren(SearchToken seachToken)
+        private IEnumerable<Element> GetInstalledLocalPackagesFolderChildren(SearchToken seachToken)
         {
-            IEnumerable<InstalledPackageInformation> installedAddOnInformations =
+            IEnumerable<InstalledPackageInformation> installedPackageInformations =
                 from info in PackageManager.GetInstalledPackages()
                 where info.IsLocalInstalled == true
                 orderby info.Name
                 select info;
 
-            foreach (InstalledPackageInformation installedAddOnInformation in installedAddOnInformations)
+            foreach (InstalledPackageInformation installedPackageInformation in installedPackageInformations)
             {
                 Element element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
-                    installedAddOnInformation.Id,
-                    installedAddOnInformation.GroupName,
-                    installedAddOnInformation.IsLocalInstalled,
-                    installedAddOnInformation.CanBeUninstalled)));
+                    installedPackageInformation.Id,
+                    installedPackageInformation.GroupName,
+                    installedPackageInformation.IsLocalInstalled,
+                    installedPackageInformation.CanBeUninstalled)));
 
                 element.VisualData = new ElementVisualizedData
                 {
-                    Label = installedAddOnInformation.Name,
-                    ToolTip = installedAddOnInformation.Name,
+                    Label = installedPackageInformation.Name,
+                    ToolTip = installedPackageInformation.Name,
                     HasChildren = false,
-                    Icon = GetIconForPackageItem(installedAddOnInformation.Id),
+                    Icon = GetIconForPackageItem(installedPackageInformation.Id),
                 };
 
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
@@ -458,29 +458,29 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         }
 
 
-        private IEnumerable<Element> GetInstalledAddOnGroupFolderChildren(string groupName, SearchToken seachToken)
+        private IEnumerable<Element> GetInstalledPackageGroupFolderChildren(string groupName, SearchToken seachToken)
         {
-            IEnumerable<InstalledPackageInformation> installedAddOnInformations =
+            IEnumerable<InstalledPackageInformation> installedPackageInformations =
                 from info in PackageManager.GetInstalledPackages()
                 where info.GroupName == groupName &&
                       info.IsLocalInstalled == false
                 orderby info.Name
                 select info;
 
-            foreach (InstalledPackageInformation installedAddOnInformation in installedAddOnInformations)
+            foreach (InstalledPackageInformation installedPackageInformation in installedPackageInformations)
             {
                 Element element = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageItemEntityToken(
-                    installedAddOnInformation.Id,
-                    installedAddOnInformation.GroupName,
-                    installedAddOnInformation.IsLocalInstalled,
-                    installedAddOnInformation.CanBeUninstalled)));
+                    installedPackageInformation.Id,
+                    installedPackageInformation.GroupName,
+                    installedPackageInformation.IsLocalInstalled,
+                    installedPackageInformation.CanBeUninstalled)));
 
                 element.VisualData = new ElementVisualizedData
                 {
-                    Label = installedAddOnInformation.Name,
-                    ToolTip = installedAddOnInformation.Name,
+                    Label = installedPackageInformation.Name,
+                    ToolTip = installedPackageInformation.Name,
                     HasChildren = false,
-                    Icon = GetIconForPackageItem(installedAddOnInformation.Id),
+                    Icon = GetIconForPackageItem(installedPackageInformation.Id),
                 };
 
                 element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
@@ -517,7 +517,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
     [Assembler(typeof(NonConfigurableHooklessElementProviderAssembler))]
-    internal sealed class AddOnElementProviderData : HooklessElementProviderData
+    internal sealed class PackageElementProviderData : HooklessElementProviderData
     {
     }
 }

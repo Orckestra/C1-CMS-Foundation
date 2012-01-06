@@ -2,8 +2,6 @@
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Types;
@@ -14,11 +12,11 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Validation.Validators;
+using System.Reflection;
 
 
 namespace Composite.Data.GeneratedTypes
 {
-#warning MRJ: BM: This class need major cleanup
     internal static class InterfaceCodeGenerator
     {
         private const string CompileUnitId = "Composite.Data.GeneratedInterfaces";
@@ -34,85 +32,37 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
-        [Obsolete("Use InterfaceCodeManager")]
-        public static Type CreateType(DataTypeDescriptor dataTypeDescriptor)
+
+        internal static void AddAssemblyReferences(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
-            if (dataTypeDescriptor == null) throw new ArgumentNullException("dataTypeDescriptor");
-
-            Type interfaceType;
-
-            using (ResourceLocker.Locker)
+            foreach (Assembly assembly in GetReferencedAssemblies(dataTypeDescriptor))
             {
-                ResourceLocker.Resources.CompiledInterfaces.TryGetValue(dataTypeDescriptor, out interfaceType);
+                codeGenerationBuilder.AddReference(assembly);
             }
-
-            if (interfaceType == null)
-            {
-                interfaceType = GenerateType(dataTypeDescriptor);
-
-                using (ResourceLocker.Locker)
-                {
-                    if (ResourceLocker.Resources.CompiledInterfaces.ContainsKey(dataTypeDescriptor) == false)
-                    {
-                        ResourceLocker.Resources.CompiledInterfaces.Add(dataTypeDescriptor, interfaceType);
-                    }
-                }
-            }
-
-            return interfaceType;
         }
 
 
-#warning MRJ: BM: This is no longer needed
-        public static CompatibilityCheckResult CheckCompatibilityWithAppCodeFolder(DataTypeDescriptor dataTypeDescriptor)
+
+        internal static void AddInterfaceTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
-            BuildManagerCompileUnit compileUnit = GenerateCompilationUnit(dataTypeDescriptor);
-            return BuildManager.CheckAppCodeCompatibility(compileUnit);
+            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor);
+
+            CodeNamespace codeNamespace = new CodeNamespace(dataTypeDescriptor.Namespace);
+            codeNamespace.Types.Add(codeTypeDeclaration);
+            codeGenerationBuilder.AddNamespace(codeNamespace);
         }
 
 
 
-        internal static BuildManagerCompileUnit GenerateCompilationUnit(DataTypeDescriptor dataTypeDescriptor)
+        internal static IEnumerable<Assembly> GetReferencedAssemblies(DataTypeDescriptor dataTypeDescriptor)
         {
-            string compileUnitId = CreateCompileUnitId(dataTypeDescriptor);
-            string fingerprint = CreateFingerprint(dataTypeDescriptor);
-
-            BuildManagerCompileUnit buildManagerCompileUnit = new BuildManagerCompileUnit(compileUnitId, fingerprint);
-
-            List<Assembly> referencedAssemblies = new List<Assembly>();
-            buildManagerCompileUnit.AddType(dataTypeDescriptor.Namespace, new KeyValuePair<string, Func<CodeTypeDeclaration>>(dataTypeDescriptor.Name, () => CreateCodeTypeDeclaration(dataTypeDescriptor, referencedAssemblies)));
-
-            buildManagerCompileUnit.AddAssemblyReference(typeof(ImmutableTypeIdAttribute).Assembly);
-            buildManagerCompileUnit.AddAssemblyReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute).Assembly);
-            foreach (Assembly referencedAssembly in referencedAssemblies)
-            {
-                buildManagerCompileUnit.AddAssemblyReference(referencedAssembly);
-            }
-
-            return buildManagerCompileUnit;
+            yield return typeof(ImmutableTypeIdAttribute).Assembly;
+            yield return  typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute).Assembly;
         }
 
 
 
-        private static Type GenerateType(DataTypeDescriptor dataTypeDescriptor)
-        {
-            BuildManagerCompileUnit compilationUnit = GenerateCompilationUnit(dataTypeDescriptor);
-
-            BuildManager.GetCompiledTypes(compilationUnit);
-
-            return compilationUnit.GetGeneretedTypeByName(dataTypeDescriptor.Name);
-        }
-
-
-
-#warning MRJ: BM: Change this into the CodeGenerationBuilder
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataTypeDescriptor"></param>
-        /// <param name="referencedAssemblies">Needed references will be added to this list</param>
-        /// <returns></returns>
-        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor, List<Assembly> referencedAssemblies)
+        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
         {
             try
             {
@@ -132,16 +82,22 @@ namespace Composite.Data.GeneratedTypes
                 }
 
                 AddInterfaceAttributes(codeTypeDeclaration, dataTypeDescriptor);
-                AddInterfaceProperties(codeTypeDeclaration, dataTypeDescriptor, referencedAssemblies, propertyNamesToSkrip);
+                AddInterfaceProperties(codeTypeDeclaration, dataTypeDescriptor, propertyNamesToSkrip);
 
                 return codeTypeDeclaration;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(
-                    string.Format("Failed to generate interface for type '{0}'", dataTypeDescriptor.TypeManagerTypeName),
-                    ex);
+                throw new InvalidOperationException(string.Format("Failed to generate interface for type '{0}'", dataTypeDescriptor.TypeManagerTypeName), ex);
             }
+        }
+
+
+
+        [Obsolete("Use InterfaceCodeManager")]
+        public static Type CreateType(DataTypeDescriptor dataTypeDescriptor)
+        {
+            throw new NotSupportedException("This method is no longer supported. See the InterfaceCodeManager class for alternative");
         }
 
 
@@ -318,7 +274,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        private static void AddInterfaceProperties(CodeTypeDeclaration codeTypeDeclaratoin, DataTypeDescriptor dataTypeDescriptor, List<Assembly> referencedAssemblies, List<string> propertyNamesToSkip)
+        private static void AddInterfaceProperties(CodeTypeDeclaration codeTypeDeclaratoin, DataTypeDescriptor dataTypeDescriptor, List<string> propertyNamesToSkip)
         {
             foreach (DataFieldDescriptor dataFieldDescriptor in dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
             {
@@ -330,7 +286,7 @@ namespace Composite.Data.GeneratedTypes
                 codeMemberProperty.HasGet = true;
                 codeMemberProperty.HasSet = true;
 
-                AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name), referencedAssemblies);
+                AddPropertyAttributes(codeMemberProperty, dataFieldDescriptor, dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name));
 
                 codeTypeDeclaratoin.Members.Add(codeMemberProperty);
             }
@@ -338,7 +294,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        private static void AddPropertyAttributes(CodeMemberProperty codeMemberProperty, DataFieldDescriptor dataFieldDescriptor, bool isKeyField, List<Assembly> referencedAssemblies)
+        private static void AddPropertyAttributes(CodeMemberProperty codeMemberProperty, DataFieldDescriptor dataFieldDescriptor, bool isKeyField)
         {
             codeMemberProperty.CustomAttributes.Add(
                     new CodeAttributeDeclaration(
@@ -449,15 +405,11 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.IsNullable == false)
             {
-                Assembly assembly = typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute).Assembly;
-                referencedAssemblies.Add(assembly);
                 CodeAttributeDeclaration notNullAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
                 codeMemberProperty.CustomAttributes.Add(notNullAttribute);
 
                 if (dataFieldDescriptor.StoreType.IsDateTime == true)
                 {
-                    referencedAssemblies.Add(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.DateTimeRangeValidator).Assembly);
-
                     CodeAttributeDeclaration dateRangeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.DateTimeRangeValidatorAttribute)));
 
                     // 1753 is what sql server has as minimum date...
@@ -467,8 +419,6 @@ namespace Composite.Data.GeneratedTypes
                 }
                 else if (dataFieldDescriptor.ForeignKeyReferenceTypeName != null && dataFieldDescriptor.InstanceType == typeof(Guid))
                 {
-                    referencedAssemblies.Add(typeof(GuidNotEmptyAttribute).Assembly);
-
                     codeMemberProperty.CustomAttributes.Add(new CodeAttributeDeclaration(new CodeTypeReference(typeof(GuidNotEmptyAttribute))));
                 }
             }
@@ -574,37 +524,6 @@ namespace Composite.Data.GeneratedTypes
                         codeAttributeArgument.ToArray()
                     ));
             }
-
-            
-        }
-
-
-
-        private static string CreateCompileUnitId(DataTypeDescriptor dataTypeDescriptor)
-        {
-            if (dataTypeDescriptor.Namespace == "")
-            {
-                return string.Format("{0}.{1}", CompileUnitId, dataTypeDescriptor.Name);
-            }
-            else
-            {
-                return string.Format("{0}.{1}.{2}", CompileUnitId, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
-            }
-        }
-
-
-
-        private static string CreateFingerprint(DataTypeDescriptor dataTypeDescriptor)
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.Append(dataTypeDescriptor.DataTypeId);
-            sb.Append("·");
-
-            sb.Append(dataTypeDescriptor.Version);
-            sb.Append("·");
-
-            return sb.ToString();
         }
 
 

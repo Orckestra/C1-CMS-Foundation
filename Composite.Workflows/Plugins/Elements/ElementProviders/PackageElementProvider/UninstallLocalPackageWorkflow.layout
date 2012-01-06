@@ -1,6 +1,6 @@
-<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="UninstallLocalAddOnWorkflow" Location="30; 30" Size="1146; 958" AutoSize="False" AutoSizeMargin="16; 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Name="UninstallLocalPackageWorkflow" Location="30; 30" Size="1146; 958" AutoSize="False" AutoSizeMargin="16; 24" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
 	<StateMachineWorkflowDesigner.DesignerConnectors>
-		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finalStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="UninstallLocalAddOnWorkflow" SourceConnectionEdge="Right" TargetActivity="finalStateActivity" SourceActivity="UninstallLocalAddOnWorkflow" EventHandlerName="eventDrivenActivity_GlobalCancel">
+		<StateDesignerConnector TargetConnectionIndex="0" TargetStateName="finalStateActivity" SourceConnectionIndex="0" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceStateName="UninstallLocalPackageWorkflow" SourceConnectionEdge="Right" TargetActivity="finalStateActivity" SourceActivity="UninstallLocalPackageWorkflow" EventHandlerName="eventDrivenActivity_GlobalCancel">
 			<StateDesignerConnector.Segments>
 				<ns0:Point X="240" Y="71" />
 				<ns0:Point X="1058" Y="71" />

@@ -32,7 +32,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 
-            AddDataTypeStore(interfaceType, xmlDateTypeStore);
+            AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
         }
 
 
@@ -74,12 +74,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
-#warning MRJ: BM: Move these classes to something like XmlDataExistingStoresInitializer
+
         private void InitializeExistingStores()
         {
             XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
 
-            _xmlDataTypeStoresContainer = new XmlDataTypeStoresContainer(_dataProviderContext.ProviderName, _fileStoreDirectory);            
+            _xmlDataTypeStoresContainer = new XmlDataTypeStoresContainer(_dataProviderContext.ProviderName);            
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
@@ -112,16 +112,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                 Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 
-                AddDataTypeStore(interfaceType, xmlDateTypeStore);
+                AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
             }
         }
 
 
 
-#warning MRJ: BM: Move these classes to something like XmlDataExistingStoresInitializer
-        private void AddDataTypeStore(Type interfaceType, XmlDataTypeStore xmlDateTypeStore)
+        private void AddDataTypeStore(DataTypeDescriptor dataTypeDescriptor, Type interfaceType, XmlDataTypeStore xmlDateTypeStore)
         {
-            if (xmlDateTypeStore != null)
+            bool interfaceValidated = DataTypeValidationRegitry.IsValidate(interfaceType, dataTypeDescriptor);
+
+            if (xmlDateTypeStore != null && interfaceValidated)
             {
                 _xmlDataTypeStoresContainer.AddSupportedDataTypeStore(interfaceType, xmlDateTypeStore);
                 DataProviderRegistry.AddNewDataType(interfaceType, _dataProviderContext.ProviderName);
@@ -134,52 +135,46 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-#warning MRJ: BM: Move these classes to something like XmlDataExistingStoresInitializer
         private bool EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, out Type dataProviderHelperType, out Type dataIdClassType)
         {
-            string namespaceName = NamesCreator.MakeNamespaceName(_dataProviderContext.ProviderName);
-
-#warning MRJ: BM: Find a bette way of creating the full type name -> Use XmlDataProviderCodeBuilder
-            string dataProviderHelperClassFullName = namespaceName + "." + NamesCreator.MakeDataProviderHelperClassName(dataTypeDescriptor);
-            string dataIdClassFullName = namespaceName + "." + NamesCreator.MakeDataIdClassName(dataTypeDescriptor);
-
-            // Getting the interface (ensuring that it exists)
-            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
-            if (interfaceType == null)
+            lock (_lock)
             {
-                dataProviderHelperType = null;
-                dataIdClassType = null;
-                return false;
-            }            
+                string namespaceName = NamesCreator.MakeNamespaceName(_dataProviderContext.ProviderName);
 
-            dataProviderHelperType = TypeManager.TryGetType(dataProviderHelperClassFullName);
-            dataIdClassType = TypeManager.TryGetType(dataIdClassFullName);
+                string dataProviderHelperClassFullName = namespaceName + "." + NamesCreator.MakeDataProviderHelperClassName(dataTypeDescriptor);
+                string dataIdClassFullName = namespaceName + "." + NamesCreator.MakeDataIdClassName(dataTypeDescriptor);
 
-            bool isRecompileNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new [] { dataProviderHelperType, dataIdClassType });            
+                // Getting the interface (ensuring that it exists)
+                Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+                if (interfaceType == null)
+                {
+                    dataProviderHelperType = null;
+                    dataIdClassType = null;
+                    return false;
+                }
 
-            if (isRecompileNeeded)
-            {
-#warning MRJ: BM: Move this code?? Same as with CreateStore,... Runtime create the types needed
-                CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":" + dataTypeDescriptor.Name);
+                dataProviderHelperType = TypeManager.TryGetType(dataProviderHelperClassFullName);
+                dataIdClassType = TypeManager.TryGetType(dataIdClassFullName);
 
-                // XmlDataProvider types                
-                XmlDataProviderCodeBuilder codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
-                codeBuilder.AddDataType(dataTypeDescriptor);
+                bool isRecompileNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { dataProviderHelperType, dataIdClassType });
 
-                //// Property serializer for entity tokens and more
-                //Dictionary<string, Type> serializerProperties = dataTypeDescriptor.Fields.Where(f => dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)).ToDictionary(f => f.Name, f => f.InstanceType);
-                //PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(codeGenerationBuilder, dataIdClassFullName, serializerProperties);
+                if (isRecompileNeeded)
+                {
+                    CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":" + dataTypeDescriptor.Name);
 
-                //// Data wrapper for caching
-                //DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, dataTypeDescriptor);
+                    // XmlDataProvider types                
+                    XmlDataProviderCodeBuilder codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
+                    codeBuilder.AddDataType(dataTypeDescriptor);
 
-                IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
 
-                dataProviderHelperType = types.Where(f => f.FullName == dataProviderHelperClassFullName).Single();
-                dataIdClassType = types.Where(f => f.FullName == dataIdClassFullName).Single();
+                    IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+                    dataProviderHelperType = types.Where(f => f.FullName == dataProviderHelperClassFullName).Single();
+                    dataIdClassType = types.Where(f => f.FullName == dataIdClassFullName).Single();
+                }
+
+                return true;
             }
-
-            return true;
         }
     }    
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,8 +19,7 @@ namespace Composite.Core.Types
     {
         private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
         private ConcurrentDictionary<Type, string> _serializedTypeLookup = new ConcurrentDictionary<Type, string>();
-
-
+       
 
         public Type GetType(string fullName)
         {
@@ -69,6 +67,8 @@ namespace Composite.Core.Types
             return serializedType;
         }
 
+
+
         public string TrySerializeType(Type type)
         {
             if (type == null) throw new ArgumentNullException("type");
@@ -76,6 +76,14 @@ namespace Composite.Core.Types
             return _serializedTypeLookup.GetOrAdd(type,
                 t => t.IsGenericType ? TrySerializeGenericType(t).ToString() : TrySerializeNonGenericType(t));
         }
+
+
+
+        public void AddCompiledType(Type compiledType)
+        {
+        }
+
+
 
         /// <summary>
         /// This method return true if there is type with the fullname <para>typeFullname</para> anywhere in the system.
@@ -181,17 +189,10 @@ namespace Composite.Core.Types
             }
 
 
-#warning MRJ: BM: It is important to check the dynamic compiled assemblies first, due to the fact the the newest types will be in there
-#warning MRJ: BM: Fix this hardcoded string stuff.
             if (fullName.StartsWith("DynamicType:"))
             {
                 fullName = fullName.Remove(0, "DynamicType:".Length);
             }
-
-#warning MRJ: BM: Redo this. The last one is used if more than one is genereted due to this list is not flushed.
-            Type compiledType = TypeManager.CompiledTypes.Where(f => f.FullName == fullName).LastOrDefault();
-            if (compiledType != null) return compiledType;
-
 
 
             List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
@@ -305,6 +306,7 @@ namespace Composite.Core.Types
         {
             public List<ProviderEntry> ProviderNameList;
             public ITypeManagerTypeHandler BuildinHandler;
+            public static List<Type> CompiledTypes = new List<Type>();
 
             public static void Initialize(Resources resources)
             {

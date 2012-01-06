@@ -26,7 +26,6 @@ namespace Composite.Data.GeneratedTypes
             Type type = InterfaceCodeManager.GetType(dataTypeDescriptor);
 
             dataTypeDescriptor.TypeManagerTypeName = TypeManager.SerializeType(type);
-            dataTypeDescriptor.Version = 1;
 
             DynamicTypeManager.CreateStore(providerName, dataTypeDescriptor, makeAFlush);
 
@@ -60,7 +59,7 @@ namespace Composite.Data.GeneratedTypes
 
         public bool CanDeleteType(DataTypeDescriptor dataTypeDescriptor, out string errorMessage)
         {
-            CompatibilityCheckResult compatibilityCheckResult = CodeGenerationManager.CheckIfAppCodeDependsOnInterface(dataTypeDescriptor);
+            CompatibilityCheckResult compatibilityCheckResult = CodeCompatibilityChecker.CheckIfAppCodeDependsOnInterface(dataTypeDescriptor);
 
             if (!compatibilityCheckResult.Successful)
             {
@@ -80,10 +79,6 @@ namespace Composite.Data.GeneratedTypes
             Verify.ArgumentNotNullOrEmpty(updateDataTypeDescriptor.ProviderName, "providerName");
             Verify.ArgumentNotNull(updateDataTypeDescriptor.OldDataTypeDescriptor, "oldDataTypeDescriptor");
             Verify.ArgumentNotNull(updateDataTypeDescriptor.NewDataTypeDescriptor, "newDataTypeDescriptor");
-
-            updateDataTypeDescriptor.NewDataTypeDescriptor.Version = updateDataTypeDescriptor.OldDataTypeDescriptor.Version + 1;
-
-            BuildManager.RemoveCompiledType(updateDataTypeDescriptor.OldDataTypeDescriptor.DataTypeId);
 
             Type interfaceType = null;
             if (updateDataTypeDescriptor.OldDataTypeDescriptor.IsCodeGenerated)

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
 using Composite.Core.Configuration;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.Core.ResourceSystem;
-using Composite.C1Console.Users;
-using Composite.C1Console.Workflow;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
@@ -41,8 +41,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             PackageElementProviderInstalledPackageItemEntityToken castedEntityToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
 
-            PackageManagerUninstallProcess packageManagerUninstallProcess = PackageManager.Uninstall(castedEntityToken.AddOnId);
-            this.Bindings.Add("AddOnManagerUninstallProcess", packageManagerUninstallProcess);
+            PackageManagerUninstallProcess packageManagerUninstallProcess = PackageManager.Uninstall(castedEntityToken.PackageId);
+            this.Bindings.Add("PackageManagerUninstallProcess", packageManagerUninstallProcess);
 
             this.Bindings.Add("FlushOnCompletion", packageManagerUninstallProcess.FlushOnCompletion);
             this.Bindings.Add("ReloadConsoleOnCompletion", packageManagerUninstallProcess.ReloadConsoleOnCompletion);
@@ -67,25 +67,25 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void step2CodeActivity_Uninstall_ExecuteCode(object sender, EventArgs e)
         {
             PackageElementProviderInstalledPackageItemEntityToken castedToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
-            PackageManagerUninstallProcess packageManagerUninstallProcess = this.GetBinding<PackageManagerUninstallProcess>("AddOnManagerUninstallProcess");
+            PackageManagerUninstallProcess packageManagerUninstallProcess = this.GetBinding<PackageManagerUninstallProcess>("PackageManagerUninstallProcess");
 
             Exception exception = null;
             try
             {
                 string packageServerAddress =
                     (from a in PackageManager.GetInstalledPackages()
-                     where a.Id == castedToken.AddOnId
+                     where a.Id == castedToken.PackageId
                      select a.PackageServerAddress).Single();
 
                 List<PackageFragmentValidationResult> uninstallResult = packageManagerUninstallProcess.Uninstall();
 
                 try
                 {
-                    PackageServerFacade.RegisterAddOnUninstall(packageServerAddress, InstallationInformationFacade.InstallationId, castedToken.AddOnId, UserSettings.Username, UserSettings.UserIPAddress.ToString());
+                    PackageServerFacade.RegisterPackageUninstall(packageServerAddress, InstallationInformationFacade.InstallationId, castedToken.PackageId, UserSettings.Username, UserSettings.UserIPAddress.ToString());
                 }
                 catch (Exception ex)
                 {
-                    LoggingService.LogWarning("UninstallRemoveAddOnWorkflow", ex);
+                    LoggingService.LogWarning("UninstallRemovePackageWorkflow", ex);
                     this.UpdateBinding("UnregisterError", true);
                 }
 
@@ -123,7 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, UninstallRemoteAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, UninstallRemotePackage.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }

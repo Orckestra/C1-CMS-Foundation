@@ -1,15 +1,13 @@
 using System;
-using System.Linq;
 using System.CodeDom;
+using System.Collections.Generic;
 using System.IO;
+using Composite.C1Console.Events;
+using Composite.Core.Types;
+using Composite.Data.DynamicTypes;
+using Composite.Data.Foundation;
 using Composite.Data.Foundation.CodeGeneration;
 using Composite.Data.Streams;
-using Composite.Data;
-using Composite.Data.DynamicTypes;
-using Composite.Core.Types;
-using System.Collections.Generic;
-using Composite.C1Console.Events;
-using Composite.Data.Foundation;
 
 
 namespace Composite.Data.Types
@@ -44,33 +42,13 @@ namespace Composite.Data.Types
 
                         if (result == null)
                         {
-#warning MRJ: BM: Rethink this !!
-#warning MRJ: BM: CACHING!!
                             CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(
                                 new CodeTypeReference(typeof(FileStreamManagerAttribute)),
                                 new [] {
                                 new CodeAttributeArgument(new CodeTypeOfExpression(typeof(IFileEmptyDataClassFileStreamManager)))
                             });
 
-
-                            //CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("IFileBuildNewHandler: " + dataType.FullName);
-
-                            //CodeTypeDeclaration codeTypeDeclaration = EmptyDataClassCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptor, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
-
-                            //CodeNamespace codeNamespace = new CodeNamespace(EmptyDataClassCodeGenerator.NamespaceName);
-                            //codeNamespace.Types.Add(codeTypeDeclaration);
-
                             result = EmptyDataClassTypeManager.CreateEmptyDataClassType(dataTypeDescriptor, typeof(IFileEmptyDataClassBase), codeAttributeDeclaration);
-                            //codeGenerationBuilder.AddReference(typeof(System.ComponentModel.EditorBrowsableAttribute).Assembly);
-                            //codeGenerationBuilder.AddNamespace(codeNamespace);
-                            //codeGenerationBuilder.AddReference(dataType.Assembly);
-                            //codeGenerationBuilder.AddReference(typeof(IFileEmptyDataClassBase).Assembly);
-
-                            //IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
-
-
-
-                            //result = types.Where(f => f.FullName == fullName).Single();
                         }
 
                         _fileBuildNewHandlerTypes.Add(dataType, result);
@@ -102,22 +80,8 @@ namespace Composite.Data.Types
     {
         public Type GetTypeToBuild(Type dataType)
         {
-           // DataTypeTypesManager.GetDataTypeEmptyClass()
             return FileBuildNewHandlerTypesManager.GetFileBuilderNewHandler(dataType);
-        }
-
-
-        public CodeAttributeDeclaration GetCodeAttributeDeclaration(Type dataType)
-        {
-            CodeAttributeDeclaration codeAttributeDeclaration = new CodeAttributeDeclaration(
-                new CodeTypeReference(typeof(FileStreamManagerAttribute)),
-                new [] {
-                    new CodeAttributeArgument(new CodeTypeOfExpression(typeof(IFileEmptyDataClassFileStreamManager)))
-                }
-            );
-
-            return codeAttributeDeclaration;
-        }
+        }       
     }
 
 

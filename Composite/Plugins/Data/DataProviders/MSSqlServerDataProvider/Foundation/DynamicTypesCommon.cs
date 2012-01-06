@@ -5,6 +5,7 @@ using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 
+
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation
 {
 	internal static class DynamicTypesCommon
@@ -36,13 +37,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             string storageKey = GetStorageName(publicationScope.ToString(), cultureInfo.Name);
 
             return string.Format("{0}_{1}_{2}", tableNameStem, dataTypeDescriptor.Name, storageKey);
-
-#warning MRJ: BM: Clean this
-            //string result = string.Format("{0}_{1}_{2}", tableNameStem, dataTypeDescriptor.Name, publicationScope);
-
-            //if (!string.IsNullOrEmpty(cultureInfo.ToString())) result += "_" + cultureInfo;
-
-            //return result;
 		}
 
 

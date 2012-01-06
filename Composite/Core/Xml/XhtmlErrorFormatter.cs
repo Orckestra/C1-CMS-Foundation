@@ -14,6 +14,7 @@ namespace Composite.Core.Xml
         /// exception information is more verbose.
         /// </summary>
         /// <param name="ex"></param>
+        /// <param name="functionName"></param>
         /// <returns></returns>
         internal static XhtmlDocument GetErrorDescriptionXhtmlDocument(Exception ex, string functionName)
         {
@@ -27,6 +28,7 @@ namespace Composite.Core.Xml
         /// exception information is more verbose.
         /// </summary>
         /// <param name="ex"></param>
+        /// <param name="functionName"></param>
         /// <returns></returns>
         internal static XElement GetErrorDescriptionHtmlElement(Exception ex, string functionName)
         {

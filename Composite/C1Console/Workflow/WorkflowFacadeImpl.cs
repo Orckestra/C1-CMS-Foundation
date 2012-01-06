@@ -1223,7 +1223,7 @@ namespace Composite.C1Console.Workflow
 
                         //AbortWorkflow(id);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
 

@@ -38,8 +38,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void initializeCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowError.LayoutLabel"));
-            this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowError.InfoTableCaption"));
+            this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackage.ShowError.LayoutLabel"));
+            this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackage.ShowError.InfoTableCaption"));
 
             this.Bindings.Add("UploadedFile", new UploadedFile());
         }
@@ -64,13 +64,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                     if (validationResult.Count > 0)
                     {
-                        this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowWarning.LayoutLabel"));
-                        this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalAddOn.ShowWarning.InfoTableCaption"));
+                        this.UpdateBinding("LayoutLabel", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackage.ShowWarning.LayoutLabel"));
+                        this.UpdateBinding("TableCaption", StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackage.ShowWarning.InfoTableCaption"));
                         this.UpdateBinding("Errors", WorkflowHelper.ValidationResultToBinding(validationResult));
                     }
                     else
                     {
-                        this.Bindings.Add("AddOnManagerInstallProcess", packageManagerInstallProcess);
+                        this.Bindings.Add("PackageManagerInstallProcess", packageManagerInstallProcess);
 
                         this.Bindings.Add("FlushOnCompletion", packageManagerInstallProcess.FlushOnCompletion);
                         this.Bindings.Add("ReloadConsoleOnCompletion", packageManagerInstallProcess.ReloadConsoleOnCompletion);
@@ -89,7 +89,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             try
             {
-                PackageManagerInstallProcess packageManagerInstallProcess = this.GetBinding<PackageManagerInstallProcess>("AddOnManagerInstallProcess");
+                PackageManagerInstallProcess packageManagerInstallProcess = this.GetBinding<PackageManagerInstallProcess>("PackageManagerInstallProcess");
 
                 List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
                 if (installResult.Count > 0)
@@ -108,7 +108,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void cleanupCodeActivity_Cleanup_ExecuteCode(object sender, EventArgs e)
         {
             PackageManagerInstallProcess packageManagerInstallProcess;
-            if (this.TryGetBinding<PackageManagerInstallProcess>("AddOnManagerInstallProcess", out packageManagerInstallProcess) == true)
+            if (this.TryGetBinding<PackageManagerInstallProcess>("PackageManagerInstallProcess", out packageManagerInstallProcess) == true)
             {
                 packageManagerInstallProcess.CancelInstallation();
             }
@@ -137,7 +137,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void showErrorCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             List<string> rowHeader = new List<string>();
-            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, InstallLocalAddOn.ShowError.MessageTitle}"));
+            rowHeader.Add(StringResourceSystemFacade.ParseString("${Composite.Plugins.PackageElementProvider, InstallLocalPackage.ShowError.MessageTitle}"));
 
             this.UpdateBinding("ErrorHeader", rowHeader);
         }

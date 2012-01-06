@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -9,7 +10,6 @@ using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using System.Globalization;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -35,7 +35,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 newConfigurationElement.AddPropertyInitializer(kvp.Key, kvp.Value);
             }
 
-#warning MRJ: BM: Move this into scopes
             Dictionary<string, object> newFieldValues = new Dictionary<string, object>();
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.AddedDataScopes)
@@ -45,12 +44,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     CreateStore(updateDataTypeDescriptor.ProviderName, dataScopeConfigurationElement);
                 }
             }
-
-
-            //if (updateDataTypeDescriptor.PublicationAdded) // Data provider has to handle this with the new build manager
-            //{
-            //    newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
-            //}
+           
 
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.ExistingDataScopes)
@@ -79,8 +73,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
 
                     CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
-
-                    //DeleteData(updateDataTypeDescriptor.ProviderName, oldDataScopeConfigurationElement);
                 }
             }
 
@@ -324,8 +316,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static string ResolvePath(string filename, string providerName)
         {
             XmlDataProviderData providerConfiguration = GetProviderSettings(providerName);
-
-            string s = Path.Combine(providerConfiguration.StoreDirectory, filename);
 
             return PathUtil.Resolve(Path.Combine(providerConfiguration.StoreDirectory, filename));
         }

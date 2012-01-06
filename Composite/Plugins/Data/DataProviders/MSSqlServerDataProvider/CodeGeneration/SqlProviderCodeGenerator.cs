@@ -26,12 +26,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             string dataIdClassName = NamesCreator.MakeDataIdClassName(dataTypeDescriptor);
             string entityBaseClassName = NamesCreator.MakeEntityBaseClassName(dataTypeDescriptor);            
 
-            DataIdClassGenerator_NEW dataIdClassGenerator = new DataIdClassGenerator_NEW(dataTypeDescriptor, dataIdClassName);
+            DataIdClassGenerator dataIdClassGenerator = new DataIdClassGenerator(dataTypeDescriptor, dataIdClassName);
             CodeTypeDeclaration dataIdClassCodeTypeDeclaration = dataIdClassGenerator.CreateClass();
             result.Add(dataIdClassCodeTypeDeclaration);
 
 
-            EntityBaseClassGenerator_NEW entityBaseClassGenerator = new EntityBaseClassGenerator_NEW(dataTypeDescriptor, entityBaseClassName, dataIdClassName, _providerName);
+            EntityBaseClassGenerator entityBaseClassGenerator = new EntityBaseClassGenerator(dataTypeDescriptor, entityBaseClassName, dataIdClassName, _providerName);
             CodeTypeDeclaration entityBaseClassCodeTypeDeclaration = entityBaseClassGenerator.CreateClass();
             result.Add(entityBaseClassCodeTypeDeclaration);
 
@@ -40,14 +40,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             {
                 string entityClassName = NamesCreator.MakeEntityClassName(dataTypeDescriptor, dataScope.DataScopeName, dataScope.CultureName);
 
-                EntityClassGenerator_NEW entityClassGenerator = new EntityClassGenerator_NEW(dataTypeDescriptor, entityClassName, entityBaseClassName, dataScope.TableName, dataScope.DataScopeName, dataScope.CultureName);
+                EntityClassGenerator entityClassGenerator = new EntityClassGenerator(dataTypeDescriptor, entityClassName, entityBaseClassName, dataScope.TableName, dataScope.DataScopeName, dataScope.CultureName);
                 CodeTypeDeclaration entityClassCodeTypeDeclaration = entityClassGenerator.CreateClass();
                 result.Add(entityClassCodeTypeDeclaration);
 
                 string sqlDataProviderHelperClassName = NamesCreator.MakeSqlDataProviderHelperClassName(dataTypeDescriptor, dataScope.DataScopeName, dataScope.CultureName);
                 string dataContextFieldName = NamesCreator.MakeDataContextFieldName(dataScope.TableName);
 
-                SqlDataProviderHelperGenerator_NEW sqlDataProviderHelperGenerator = new SqlDataProviderHelperGenerator_NEW(dataTypeDescriptor, sqlDataProviderHelperClassName, dataIdClassName, entityClassName, dataContextFieldName);
+                SqlDataProviderHelperGenerator sqlDataProviderHelperGenerator = new SqlDataProviderHelperGenerator(dataTypeDescriptor, sqlDataProviderHelperClassName, dataIdClassName, entityClassName, dataContextFieldName);
                 CodeTypeDeclaration sqlDataProviderHelperTypeDeclaration = sqlDataProviderHelperGenerator.CreateClass();
                 result.Add(sqlDataProviderHelperTypeDeclaration);
 
@@ -65,7 +65,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
         {
             List<Tuple<string, string>> entityClassNamesAndDataContextFieldNames = new List<Tuple<string, string>>();
 
-#warning MRJ: BM: Duplicate code, see above method
             foreach (SqlDataTypeStoreDataScope dataScope in sqlDataTypeStoreDataScopes)
             {
                 string entityClassName = NamesCreator.MakeEntityClassName(dataTypeDescriptor, dataScope.DataScopeName, dataScope.CultureName);
@@ -83,7 +82,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
         {
             string dataContextClassName = NamesCreator.MakeDataContextClassName(_providerName);
 
-            DataContextClassGenerator_NEW dataContextClassGenerator = new DataContextClassGenerator_NEW(dataContextClassName, entityClassNamesAndDataContextFieldNames);
+            DataContextClassGenerator dataContextClassGenerator = new DataContextClassGenerator(dataContextClassName, entityClassNamesAndDataContextFieldNames);
             CodeTypeDeclaration dataContextTypeDeclaration = dataContextClassGenerator.CreateClass();
             yield return dataContextTypeDeclaration;
         }

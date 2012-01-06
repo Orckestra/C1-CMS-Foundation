@@ -35,6 +35,12 @@ namespace Composite.Data.Validation.Validators
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="targetType"></param>
+        /// <returns></returns>
+        /// <exclude />
         protected override Validator DoCreateValidator(Type targetType)
         {
             try

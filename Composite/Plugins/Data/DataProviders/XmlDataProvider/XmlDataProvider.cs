@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using Composite.Core;
@@ -15,72 +16,23 @@ using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.Data.Foundation.PluginFacades;
 
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
-#warning MRJ: BM: Move this class
-    internal class XmlDataProviderCodeProvider : ICodeProvider
-    {
-        public string ProviderName { get; private set;  }
 
-        public XmlDataProviderCodeProvider(string providerName)
-        {
-            ProviderName = providerName;
-        }
-
-
-        public void GetCodeToCompile(CodeGenerationBuilder builder)
-        {
-            XmlDataProvider xmlDataProvider = (XmlDataProvider)DataProviderPluginFacade.GetDataProvider(ProviderName);
-
-            xmlDataProvider.BuildAllCode(builder);
-        }
-    }
-
-
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     [ConfigurationElementType(typeof(XmlDataProviderData))]
     internal partial class XmlDataProvider : IWritableDataProvider, IDynamicDataProvider, IGeneratedTypesDataProvider, ILocalizedDataProvider, ISupportCachingDataProvider
     {
-#warning MRJ: This is used by XmlDataProviderCodeGenerator that is current hardcoded. Find fix
-        public void BuildAllCode(CodeGenerationBuilder codeGenerationBuilder)
-        {
-            XmlDataProviderCodeBuilder codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
-
-            foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
-            {
-                if(element.DataTypeId == null || element.DataTypeId.Value == Guid.Empty)
-                {
-                    continue;
-                }
-
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
-
-                if (!dataTypeDescriptor.ValidateRuntimeType())
-                {
-                    Log.LogError("XmlDataProvider", string.Format("The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.BuildNewHandlerTypeName));
-                    continue;
-                }
-                
-                codeBuilder.AddDataType(dataTypeDescriptor);
-            }
-        }
-
-        /////////////////// 
-
-
-
         private readonly string _fileStoreDirectory;
-
         private readonly IEnumerable<XmlProviderInterfaceConfigurationElement> _dataTypeConfigurationElements;
-
-
         private XmlDataTypeStoresContainer _xmlDataTypeStoresContainer;
-
-        private DataProviderContext _dataProviderContext;
-
+        private DataProviderContext _dataProviderContext;        
         private readonly object _lock = new object();
 
 
@@ -129,183 +81,34 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-
-
-
-
-
-
-
-
-#warning MRJ: BM: Remove this code
-        /*        private XmlDataTypeStoresContainer GenerateResult(IEnumerable<XmlProviderInterfaceConfigurationElement> storeElementsToGenerated, bool staticOnly)
-        {
-            throw  new NotImplementedException();*/
-        /* XmlDataTypeStoresContainer result = new XmlDataTypeStoresContainer();
-
-#warning MRJ: All this is very stupid done. Major refac is needed
-         List<Type> interfaceTypes = new List<Type>();
-         foreach (var element in _dataTypeConfigurationElements)
-         {
-
-
-
-
-#warning MRJ: BM: Redundant code, refac!
-             DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId, true);
-             string interfaceTypeName = dataTypeDescriptor.TypeManagerTypeName;
-             if (interfaceTypeName.StartsWith("DynamicType:")) interfaceTypeName = interfaceTypeName.Remove(0, "DynamicType:".Length);
-
-
-             string classNamePrefrix = interfaceTypeName.Replace('.', '_').Replace('+', '_');
-             if (classNamePrefrix.IndexOf(",") >= 0) classNamePrefrix = classNamePrefrix.Remove(classNamePrefrix.IndexOf(","));
-
-
-             string wrapperClassName = string.Format("{0}Wrapper", classNamePrefrix);
-             string dataIdClassName = string.Format("{0}DataId", classNamePrefrix);
-             string dataProviderHelperClassName = string.Format("{0}DataProviderHelper", classNamePrefrix);
-
-             string namespaceName = "GeneratedTypes." + _dataProviderContext.ProviderName;
-
-#warning MRJ: BM: Nasty hack here!
-             Type interfaceType = DataTypeTypesManager.GetDataType(element.DataTypeId);
-
-
-
-             interfaceTypes.Add(interfaceType);
-
-#warning MRJ: BM: FIX THIS NOW! - by calling general method
-
-             /*XmlDataTypeStore storeResult = new XmlDataTypeStore();
-             storeResult.DataProviderHelperType = TypeManager.TryGetType(namespaceName + "." + dataProviderHelperClassName);
-             storeResult.DataIdClassType = TypeManager.TryGetType(namespaceName + "." + dataIdClassName);
-
-             if (storeResult.DataProviderHelperType == null || storeResult.DataIdClassType == null)
-             {
-#warning MRJ: BM: If the type is not there we need to make a mini compile
-                 //throw new NotImplementedException();
-                 continue;
-             }
-
-             storeResult.DataScopesNames = new List<string>();
-             storeResult.DataScope = new Dictionary<string, Dictionary<string, XmlDataTypeStore.XmlDateTypeStoreDataScopeElement>>();
-             foreach (DataScopeConfigurationElement storeElement in element.ConfigurationStores)
-             {
-                 if (!storeResult.DataScopesNames.Contains(storeElement.DataScope))
-                 {
-                     storeResult.DataScopesNames.Add(storeElement.DataScope);
-                 }
-
-                 string filename = PathUtil.Resolve(Path.Combine(_storeDirectory, storeElement.Filename));
-
-                 if (C1File.Exists(filename) == false)
-                 {
-                     XDocument document = new XDocument();
-                     document.Add(new XElement(string.Format("{0}s", storeElement.DataScope)));
-                     XDocumentUtils.Save(document, filename);
-
-                 }
-
-
-                 Dictionary<string, XmlDataTypeStore.XmlDateTypeStoreDataScopeElement> dic;
-                 if (storeResult.DataScope.TryGetValue(storeElement.DataScope, out dic) == false)
-                 {
-                     dic = new Dictionary<string, XmlDataTypeStore.XmlDateTypeStoreDataScopeElement>();
-                     storeResult.DataScope.Add(storeElement.DataScope, dic);
-                 }
-
-                 dic.Add(
-                     storeElement.CultureName,
-                     new XmlDataTypeStore.XmlDateTypeStoreDataScopeElement { ElementName = storeElement.ElementName, Filename = filename }
-                 );
-             }
-
-             result.AddStoreResult(interfaceType, storeResult);*/
-        /*   }
-
-           result.SupportedInterface = interfaceTypes;
-           result.KnownInterfaces = interfaceTypes;
-
-           return result;
-
-           /*
-           List<XmlDataProviderCodeGeneratorStore> stores = new List<XmlDataProviderCodeGeneratorStore>();
-
-           foreach (XmlProviderInterfaceConfigurationElement element in storeElementsToGenerated)
-           {
-               string interfaceTypeName = element.InterfaceType;
-               Type interfaceType = TypeManager.TryGetType(interfaceTypeName);
-
-               if(interfaceType == null)
-               {
-                   LoggingService.LogWarning("XmlDataProvider", "Cannot load type '{0}', related data storage will not be loaded.".FormatWith(interfaceTypeName));
-                   continue;
-               }
-
-               XmlDataProviderCodeGeneratorStore store = new XmlDataProviderCodeGeneratorStore
-               {
-                   InterfaceType = interfaceType,
-                   InterfaceTypeName = element.InterfaceType,
-                   DataIdProperties = element.DataIdProperties,
-                   PropertyNameMapping = element.PropertyNameMappings,
-                   PropertyInitializers = element.PropertyInitializers
-               };
-
-               store.DataScopes = new List<string>();
-               store.Stores = new Dictionary<string, Dictionary<string, XmlDataProviderCodeGeneratorStore.StoreInformaion>>();
-
-               string resolvedDirectoryPath = PathUtil.Resolve(_storeDirectory);
-               if (C1Directory.Exists(resolvedDirectoryPath) == false)
-               {
-                   C1Directory.CreateDirectory(resolvedDirectoryPath);
-               }
-
-               foreach (DataScopeConfigurationElement storeElement in element.ConfigurationStores)
-               {
-                   if (store.DataScopes.Contains(storeElement.DataScope) == false)
-                   {
-                       store.DataScopes.Add(storeElement.DataScope);
-                   }
-
-                   string filename = PathUtil.Resolve(Path.Combine(_storeDirectory, storeElement.Filename));
-
-                   if (C1File.Exists(filename) == false)
-                   {
-                       XDocument document = new XDocument();
-                       document.Add(new XElement(string.Format("{0}s", storeElement.DataScope)));
-                       XDocumentUtils.Save(document, filename);
-
-                   }
-
-                   Dictionary<string, XmlDataProviderCodeGeneratorStore.StoreInformaion> dic;
-                   if (store.Stores.TryGetValue(storeElement.DataScope, out dic) == false)
-                   {
-                       dic = new Dictionary<string, XmlDataProviderCodeGeneratorStore.StoreInformaion>();
-                       store.Stores.Add(storeElement.DataScope, dic);
-                   }
-
-                   dic.Add(
-                       storeElement.CultureName,
-                       new XmlDataProviderCodeGeneratorStore.StoreInformaion { ElementName = storeElement.ElementName, Filename = filename }
-                       );
-               }
-
-               stores.Add(store);
-           }
-
-           XmlDataProviderHelperGenerator generator = new XmlDataProviderHelperGenerator(_dataProviderContext.ProviderName, stores);
-
-           XmlDataProviderCodeGeneratorResult result = generator.Generate(staticOnly);
-
-           return result;*/
-        //   }
-
-
-
-
         public bool AllowResultsWrapping
         {
             get { return false; }
+        }
+
+
+
+        internal void BuildAllCode(CodeGenerationBuilder codeGenerationBuilder)
+        {
+            XmlDataProviderCodeBuilder codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
+
+            foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
+            {
+                if (element.DataTypeId == null || element.DataTypeId.Value == Guid.Empty)
+                {
+                    continue;
+                }
+
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
+
+                if (!dataTypeDescriptor.ValidateRuntimeType())
+                {
+                    Log.LogError("XmlDataProvider", string.Format("The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.BuildNewHandlerTypeName));
+                    continue;
+                }
+
+                codeBuilder.AddDataType(dataTypeDescriptor);
+            }
         }
     }
 
@@ -354,6 +157,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             return provider;
         }
+
 
         #region Build manager upgrade C1 2.0 -> 3.0
 

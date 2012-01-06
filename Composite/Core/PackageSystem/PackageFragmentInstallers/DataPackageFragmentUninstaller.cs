@@ -30,7 +30,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Types").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.OnlyOneElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.OnlyOneElement")));
                 return validationResult;
             }
 
@@ -45,8 +45,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute typeAttribute = typeElement.Attribute("type");
                     XAttribute dataScopeIdentifierAttribute = typeElement.Attribute("dataScopeIdentifier");
 
-                    if (typeAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "type"), typeElement)); continue; }
-                    if (dataScopeIdentifierAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "dataScopeIdentifier"), typeElement)); continue; }
+                    if (typeAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.MissingAttribute"), "type"), typeElement)); continue; }
+                    if (dataScopeIdentifierAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.MissingAttribute"), "dataScopeIdentifier"), typeElement)); continue; }
 
                     Type type = TypeManager.TryGetType(typeAttribute.Value);
                     if (type == null) continue;
@@ -88,8 +88,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                                 if ((keyNameAttribute == null) || (keyValueAttribute == null))
                                 {
-                                    if (keyNameAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "name"), keyElement));
-                                    if (keyValueAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingAttribute"), "value"), keyElement));
+                                    if (keyNameAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.MissingAttribute"), "name"), keyElement));
+                                    if (keyValueAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.MissingAttribute"), "value"), keyElement));
 
                                     allKeyPropertiesValidated = false;
                                     continue;
@@ -100,7 +100,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                     PropertyInfo keyPropertyInfo = type.GetPropertiesRecursively().Where(f => f.Name == keyName).SingleOrDefault();
                                     if (keyPropertyInfo == null)
                                     {
-                                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.MissingKeyProperty"), type, keyName)));
+                                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.MissingKeyProperty"), type, keyName)));
                                         allKeyPropertiesValidated = false;
                                     }
                                     else
@@ -113,7 +113,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                         catch (Exception)
                                         {
                                             allKeyPropertiesValidated = false;
-                                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataAddOnFragmentUninstaller.DataAddOnFragmentUninstaller"), keyValueAttribute.Value, keyPropertyInfo.PropertyType)));
+                                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataPackageFragmentUninstaller.DataPackageFragmentUninstaller"), keyValueAttribute.Value, keyPropertyInfo.PropertyType)));
                                         }
                                     }
                                 }

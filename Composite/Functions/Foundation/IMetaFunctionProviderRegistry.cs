@@ -22,8 +22,7 @@ namespace Composite.Functions.Foundation
         void ReinitializeFunctionFromProvider(string providerName);
         void ReinitializeWidgetFunctionFromProvider(string providerName);
 
-        void Initialize_PostStaticTypes();
-        void Initialize_PostDynamicTypes();
+        void Initialize_PostDataTypes();
         void Flush();
     }
 }

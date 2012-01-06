@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.Core;
-using Composite.Core.Extensions;
-using System.IO;
-using Composite.Core.IO;
-using Composite.Core.Types;
 
 
 namespace Composite.Data
@@ -23,6 +23,8 @@ namespace Composite.Data
     internal static class DataTypeTypesManager
     {
         private static readonly string LogTitle = typeof(DataTypeTypesManager).Name;
+        private static List<Type> _LoadedDataTypes = new List<Type>();
+
 
         /// <summary>
         /// Gets the runtime data type for the given data type id.
@@ -52,9 +54,8 @@ namespace Composite.Data
         {
             if (dataTypeDescriptor == null) throw new ArgumentNullException("dataTypeDescriptor", "dataTypeDescriptor");
 
-#warning MRJ: BM: Rename?
-            Type addedtype = _addedTypes.Where(f => f.FullName == dataTypeDescriptor.GetFullInterfaceName()).FirstOrDefault();
-            if (addedtype != null) return addedtype;
+            Type loadedDataType = _LoadedDataTypes.Where(f => f.FullName == dataTypeDescriptor.GetFullInterfaceName()).FirstOrDefault();
+            if (loadedDataType != null) return loadedDataType;
 
             Type type = InterfaceCodeManager.GetType(dataTypeDescriptor);
 
@@ -91,6 +92,39 @@ namespace Composite.Data
         }
 
 
+
+        /// <summary>
+        /// Call this method whan a new assembly is load/added into the app domain.
+        /// 
+        /// </summary>
+        /// <param name="assembly"></param>
+        public static void AddNewAssembly(Assembly assembly)
+        {
+            try
+            {
+                foreach (Type type in assembly.GetTypes())
+                {
+                    if (typeof(IData).IsAssignableFrom(type))
+                    {
+                        _LoadedDataTypes.Add(type);
+                    }
+                }
+            }
+            catch (ReflectionTypeLoadException exception)
+            {
+                if (exception.LoaderExceptions != null)
+                {
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception.LoaderExceptions.First()));
+                }
+                else
+                {
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
+                }
+            }
+        }
+
+
+
         internal static bool IsAllowedDataTypeAssembly(Type dataType)
         {
             string assemblyPath = dataType.Assembly.Location;
@@ -104,35 +138,6 @@ namespace Composite.Data
 
 
             return false;
-        }
-
-
-#warning MRJ: BM: Rename and cleanup
-        private static List<Type> _addedTypes = new List<Type>();
-
-        public static void AddNewAssembly(Assembly assembly)
-        {
-            try
-            {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (typeof(IData).IsAssignableFrom(type))
-                    {
-                        _addedTypes.Add(type);
-                    }
-                }
-            }
-            catch (ReflectionTypeLoadException exception)
-            {
-                if (exception.LoaderExceptions!=null)
-                {
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception.LoaderExceptions.First()));
-                }
-                else
-                {
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
-                }
-            }
         }
     }
 }

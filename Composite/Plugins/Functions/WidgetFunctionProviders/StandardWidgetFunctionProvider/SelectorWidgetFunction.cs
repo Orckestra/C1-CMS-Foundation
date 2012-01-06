@@ -120,35 +120,13 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     new ConstantValueProvider(true),
                     StandardWidgetFunctions.GetBoolSelectorWidget("Yes, selection is required", "No, a 'none' selection is allowed.") ,
                     null,
-                    "Selection required", new HelpDefinition("When true the user is forced to make a selection. This feature is not available when 'multiple selection' is enabled.")));
-
-            //base.AddParameterProfile(
-            //    new ParameterProfile("Multiple",
-            //        typeof(bool),
-            //        false,
-            //        new ConstantValueProvider(false),
-            //        StandardWidgetFunctions.GetBoolSelectorWidget("Yes, allow multiple selections.", "No, allow only one selection."),
-            //        null,
-            //        "Multiple selection", new HelpDefinition("When true the user can select zero, one or more values. The selected values will be joined in a comma seperated string like 'A,B,C'.")));
-
-            //base.AddParameterProfile(
-            //    new ParameterProfile("Compact",
-            //        typeof(bool),
-            //        false,
-            //        new ConstantValueProvider(false),
-            //        StandardWidgetFunctions.GetBoolSelectorWidget("Yes, use compact/popup UI.", "No, show all options."),
-            //        null,
-            //        "Compact mode", new HelpDefinition("When true the UI element will be compact.")));
-
+                    "Selection required", new HelpDefinition("When true the user is forced to make a selection. This feature is not available when 'multiple selection' is enabled.")));          
         }
 
 
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)
         {
             BaseRuntimeTreeNode runtimeTreeNode = null;
-
-#warning MRJ: C1FinM: Create a f(IEnumerable, keyPropName, valuePropName) -> IDic
-#warning MRJ: C1FinM: Create a f(XElement, keyAttrName, valueAttrName) -> IDic
 
             if (parameters.TryGetParameterRuntimeTreeNode("Options", out runtimeTreeNode))
             {

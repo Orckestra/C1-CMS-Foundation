@@ -49,9 +49,9 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public IEnumerable<PackageDescription> GetAddOnDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
+        public IEnumerable<PackageDescription> GetPackageDescriptions(string packageServerUrl, Guid installationId, CultureInfo userCulture)
         {
-            List<PackageDescription> packageDescriptions = _packageServerFacadeImplCache.GetCachedAddOnDescriptions(packageServerUrl, installationId, userCulture);
+            List<PackageDescription> packageDescriptions = _packageServerFacadeImplCache.GetCachedPackageDescription(packageServerUrl, installationId, userCulture);
             if (packageDescriptions != null) return packageDescriptions;
 
             PackageDescriptor[] packageDescriptors = null;
@@ -63,7 +63,7 @@ namespace Composite.Core.PackageSystem
             }
             catch (Exception ex)
             {
-                LoggingService.LogError("AddOnServerFacade", ex);
+                LoggingService.LogError("PackageServerFacade", ex);
             }
 
             packageDescriptions = new List<PackageDescription>();
@@ -99,7 +99,7 @@ namespace Composite.Core.PackageSystem
                     }
                 }
 
-                _packageServerFacadeImplCache.AddCachedAddOnDescriptions(packageServerUrl, installationId, userCulture, packageDescriptions);
+                _packageServerFacadeImplCache.AddCachedPackageDescription(packageServerUrl, installationId, userCulture, packageDescriptions);
             }            
 
             return packageDescriptions;
@@ -120,7 +120,7 @@ namespace Composite.Core.PackageSystem
 
         public Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
-            LoggingService.LogVerbose("AddOnServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
+            LoggingService.LogVerbose("PackageServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
 
             System.Net.WebClient client = new System.Net.WebClient();
             return client.OpenRead(packageFileDownloadUrl);
@@ -128,7 +128,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public void RegisterAddonInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
+        public void RegisterPackageInstallationCompletion(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
@@ -137,7 +137,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public void RegisterAddonInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
+        public void RegisterPackageInstallationFailure(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp, string exceptionString)
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
@@ -146,7 +146,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-        public void RegisterAddOnUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
+        public void RegisterPackageUninstall(string packageServerUrl, Guid installationId, Guid packageId, string localUserName, string localUserIp)
         {
             PackagesSoapClient client = CreateClient(packageServerUrl);
 
@@ -167,7 +167,7 @@ namespace Composite.Core.PackageSystem
             string newVersion;
             if (VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion) == false)
             {
-                LoggingService.LogWarning("AddOnServerFacade", string.Format("The add on '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                LoggingService.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
                 return false;
             }
             else
@@ -177,7 +177,7 @@ namespace Composite.Core.PackageSystem
 
             if (VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion) == false)
             {
-                LoggingService.LogWarning("AddOnServerFacade", string.Format("The add on '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                LoggingService.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
                 return false;
             }
             else
@@ -187,7 +187,7 @@ namespace Composite.Core.PackageSystem
 
             if (VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion) == false)
             {
-                LoggingService.LogWarning("AddOnServerFacade", string.Format("The add on '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                LoggingService.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
                 return false;
             }
             else

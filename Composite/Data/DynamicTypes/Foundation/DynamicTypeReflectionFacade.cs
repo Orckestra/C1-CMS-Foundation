@@ -21,18 +21,7 @@ namespace Composite.Data.DynamicTypes.Foundation
             if (immutableTypeId.Equals(Guid.Empty)) throw new InvalidOperationException(string.Format("{0} has an invalid {1} definition. A unique Guid is expected.", type, typeof(ImmutableTypeIdAttribute).Name));
 
             return immutableTypeId;
-        }
-
-
-        [Obsolete("Type versioning concept isn't used any more")]
-        public static int GetVersion(Type type)
-        {
-            List<TypeVersionAttribute> typeVersionAttributes = type.GetCustomInterfaceAttributes<TypeVersionAttribute>().ToList();
-
-            if (typeVersionAttributes.Count == 0) return 1;
-
-            return typeVersionAttributes[0].Version;
-        }
+        }      
 
 
 

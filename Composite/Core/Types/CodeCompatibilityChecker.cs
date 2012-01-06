@@ -1,0 +1,148 @@
+﻿using System;
+using System.CodeDom;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
+using Composite.Data;
+using Composite.Data.DynamicTypes;
+using Composite.Data.GeneratedTypes;
+using Microsoft.CSharp;
+
+
+namespace Composite.Core.Types
+{
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    internal static class CodeCompatibilityChecker
+    {
+        /// <summary>
+        /// This method will try to compile the given type to see if any changes done to the type
+        /// will conflict with code in App_Code
+        /// </summary>
+        /// <param name="dataTypeDescriptorToTest"></param>
+        /// <returns></returns>
+        public static CompatibilityCheckResult CheckCompatibilityWithAppCodeFolder(DataTypeDescriptor dataTypeDescriptorToTest)
+        {
+            return CheckAgainsAppCode(dataTypeDescriptorToTest, true);
+        }
+
+
+
+        /// <summary>
+        /// This method will check if any code in en App_Code folder depends on the given data interface.
+        /// </summary>
+        /// <param name="dataTypeDescriptorToTest"></param>
+        /// <returns></returns>
+        public static CompatibilityCheckResult CheckIfAppCodeDependsOnInterface(DataTypeDescriptor dataTypeDescriptorToTest)
+        {
+            return CheckAgainsAppCode(dataTypeDescriptorToTest, false);
+        }
+
+
+
+        /// <summary>
+        /// This method checks to see if any change in the given data type descriptor will make code 
+        /// in App_Code fail and hence the site will fail.
+        /// </summary>
+        /// <param name="dataTypeDescriptorToTest"></param>
+        /// <param name="includeDataTypeDescriptor">
+        /// If true, the data type descriptor will be used instead of the original.
+        /// If false, it will be excluded.
+        /// </param>
+        /// <returns></returns>
+        private static CompatibilityCheckResult CheckAgainsAppCode(DataTypeDescriptor dataTypeDescriptorToTest, bool includeDataTypeDescriptor)
+        {
+            List<string> filesToCompile = GetAppCodeFiles().ToList();
+
+            if (filesToCompile.Count == 0) return new CompatibilityCheckResult();
+
+            CSharpCodeProvider csCompiler = new CSharpCodeProvider();
+
+            List<Assembly> referencedAssemblies = new List<Assembly>();
+            Dictionary<string, List<CodeTypeDeclaration>> codeTypeDeclarations = new Dictionary<string, List<CodeTypeDeclaration>>();
+
+            foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
+            {
+                if ((!includeDataTypeDescriptor) && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) continue;
+
+                DataTypeDescriptor dataTypeDescriptorToUse = dataTypeDescriptor;
+                if ((includeDataTypeDescriptor) && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) dataTypeDescriptorToUse = dataTypeDescriptorToTest;
+
+                referencedAssemblies.AddRange(InterfaceCodeGenerator.GetReferencedAssemblies(dataTypeDescriptorToUse));
+                CodeTypeDeclaration codeTypeDeclaration = InterfaceCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptorToUse);
+
+                List<CodeTypeDeclaration> declarations;
+                if (!codeTypeDeclarations.TryGetValue(dataTypeDescriptorToUse.Namespace, out declarations))
+                {
+                    declarations = new List<CodeTypeDeclaration>();
+                    codeTypeDeclarations.Add(dataTypeDescriptorToUse.Namespace, declarations);
+                }
+                declarations.Add(codeTypeDeclaration);
+
+                string tempFilePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory), dataTypeDescriptorToUse.DataTypeId + ".cs");
+                filesToCompile.Add(tempFilePath);
+
+                using (FileStream file = File.Create(tempFilePath))
+                {
+                    using (var sw = new StreamWriter(file))
+                    {
+                        CodeNamespace codeNamespace = new CodeNamespace(dataTypeDescriptorToUse.Namespace);
+                        codeNamespace.Types.Add(codeTypeDeclaration);
+                        csCompiler.GenerateCodeFromNamespace(codeNamespace, sw, new CodeGeneratorOptions());
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+                    using (var sw = new StringWriter(sb))
+                    {
+                        csCompiler.GenerateCodeFromMember(codeTypeDeclaration, sw, new CodeGeneratorOptions());
+                    }
+
+                }
+            }
+
+
+            CompilerParameters compilerParameters = new CompilerParameters();
+            compilerParameters.GenerateExecutable = false;
+            compilerParameters.GenerateInMemory = true;
+
+            compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(referencedAssemblies.Select(f => f.Location).ToArray());
+            compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CodeGenerationManager.CompiledAssemblies.Select(f => f.Location).ToArray());
+            compilerParameters.AddAssemblyLocationsFromBin();
+            compilerParameters.AddLoadedAssemblies();
+            compilerParameters.AddCommonAssemblies();
+            compilerParameters.RemoveGeneratedAssemblies();
+
+            CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
+            foreach (var kvp in codeTypeDeclarations)
+            {
+                CodeNamespace codeNamespace = new CodeNamespace(kvp.Key);
+                codeNamespace.Types.AddRange(kvp.Value.ToArray());
+                codeCompileUnit.Namespaces.Add(codeNamespace);
+            }
+
+            CSharpCodeProvider compiler = new CSharpCodeProvider();
+            CompilerResults compileResult = compiler.CompileAssemblyFromFile(compilerParameters, filesToCompile.ToArray());
+
+            if (compileResult.Errors.Count == 0) return new CompatibilityCheckResult();
+
+            return new CompatibilityCheckResult(compileResult);
+        }
+
+
+
+        private static string[] GetAppCodeFiles()
+        {
+            string appCodeFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);
+
+            if (!Directory.Exists(appCodeFolderPath)) return new string[0];
+
+            return Directory.GetFiles(appCodeFolderPath, "*.cs", SearchOption.AllDirectories);
+        }
+    }
+}

@@ -62,7 +62,7 @@ namespace Composite.Data.Foundation
 
 
 
-        internal static void Initialize_PostDynamic()
+        internal static void Initialize_PostDataTypes()
         {
             if (RuntimeInformation.IsDebugBuild == true)
             {

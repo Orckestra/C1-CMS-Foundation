@@ -168,7 +168,7 @@ namespace Composite.Core.Localization
                 transactionScope.Complete();
             }
 
-            DynamicTypeManager.AddLocale(cultureInfo, makeFlush);
+            DynamicTypeManager.AddLocale(cultureInfo);
         }
 
 
@@ -347,7 +347,7 @@ namespace Composite.Core.Localization
                 transactionScope.Complete();
             }
 
-            DynamicTypeManager.RemoveLocale(cultureInfo, makeFlush);
+            DynamicTypeManager.RemoveLocale(cultureInfo);
         }
     }
 }

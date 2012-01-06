@@ -145,27 +145,14 @@ namespace Composite.Data.Foundation
 
 
 
-        internal static void Initialize_StaticTypes()
+        internal static void InitializeDataTypes()
         {
             if (RuntimeInformation.IsDebugBuild == true)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }
 
-            _dataProviderRegistry.Initialize_StaticTypes();
-        }
-
-
-
-
-        internal static void Initialize_DynamicTypes()
-        {
-            if (RuntimeInformation.IsDebugBuild == true)
-            {
-                GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
-            }
-
-            _dataProviderRegistry.Initialize_DynamicTypes();
+            _dataProviderRegistry.InitializeDataTypes();
         }
 
 

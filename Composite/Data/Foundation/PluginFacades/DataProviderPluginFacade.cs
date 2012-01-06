@@ -493,24 +493,7 @@ namespace Composite.Data.Foundation.PluginFacades
             Flush();
 
             throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration.", DataProviderSettings.SectionName), ex);
-        }
-
-
-
-        private static IDataProvider BuildFallbackUnittestDataProvider()
-        {
-            Composite.Plugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider provider = new Composite.Plugins.Data.DataProviders.MemoryDataProvider.MemoryDataProvider();
-
-            foreach (Type interfaceType in DataStoreExistenceVerifier.InterfaceTypes)
-            {
-                Dictionary<string, Type> dataIdProperties = interfaceType.GetKeyPropertyInfoes().ToDictionary(f => f.Name, f => f.PropertyType);
-                List<string> dataScopes = interfaceType.GetSupportedDataScopes().Select(f => f.Name).Distinct().ToList();
-
-                provider.AddSupportedInterface(interfaceType, dataIdProperties, dataScopes);
-            }
-
-            return provider;
-        }
+        }        
 
 
 

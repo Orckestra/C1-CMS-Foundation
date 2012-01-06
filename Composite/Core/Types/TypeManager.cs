@@ -15,10 +15,6 @@ namespace Composite.Core.Types
 
         internal static ITypeManager Implementation { get { return _implementation; } set { _implementation = value; } }
 
-#warning MRJ: BM: MAJOR HACK!!!
-        /// <exclude />
-        public static List<Type> CompiledTypes = new List<Type>();
-
 
         static TypeManager()
         {
@@ -46,7 +42,6 @@ namespace Composite.Core.Types
 
 
 
-#warning MRJ: BM: Is this needed? Should we kill the DynamicType: ?
         /// <exclude />
         public static string GetRuntimeFullName(string fullName)
         {
@@ -69,7 +64,7 @@ namespace Composite.Core.Types
         {
             return _implementation.TrySerializeType(type);
         }
-
+      
 
 
         /// <summary>

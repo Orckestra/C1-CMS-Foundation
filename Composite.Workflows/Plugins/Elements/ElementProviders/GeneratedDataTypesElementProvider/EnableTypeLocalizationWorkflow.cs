@@ -74,28 +74,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
-
-#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
-            //Type interfaceType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
-
-            // Saving & deleting current data
-            //var supportedDataScopes = new List<DataScopeIdentifier> { DataScopeIdentifier.Administrated };
-            //if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled))) supportedDataScopes.Add(DataScopeIdentifier.Public);
-                
-
-            //var dataset = new Dictionary<DataScopeIdentifier, List<IData>>();
-            //foreach(var dataScope in supportedDataScopes)
-            //{
-            //    using (new DataScope(dataScope))
-            //    {
-            //        var dataFromScope = DataFacade.GetData(interfaceType).ToDataList();
-            //        DataFacade.Delete((IEnumerable<IData>)dataFromScope, true, CascadeDeleteType.Disable);
-
-            //        dataset.Add(dataScope, dataFromScope);
-            //    }
-            //}
-
-
             // Making changes to type
             DataTypeDescriptor newDataTypeDescriptor = dataTypeDescriptor.Clone();
             newDataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
@@ -117,59 +95,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             };
 
             GeneratedTypesFacade.UpdateType(updateDataTypeDescriptor);
-
-#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
-            //var culturesToProcess = new List<CultureInfo>();
-            //if(ThereAreReferencesInLocalizedData())
-            //{
-            //    culturesToProcess.AddRange(DataLocalizationFacade.ActiveLocalizationCultures);
-            //}
-            //else
-            //{
-            //    string cultureName = this.GetBinding<string>("CultureName");
-            //    culturesToProcess.Add(CultureInfo.CreateSpecificCulture(cultureName));
-            //}
-
-            //Type emptyClassType = DataTypeTypesManager.GetDataTypeEmptyClass(interfaceType, true);
-
-            //try
-            //{
-            //    using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-            //    {
-            //        foreach (CultureInfo cultureInfo in culturesToProcess)
-            //        {
-            //            foreach (DataScopeIdentifier dataScopeIdentifier in supportedDataScopes)
-            //            {
-            //                using (new DataScope(dataScopeIdentifier, cultureInfo))
-            //                {
-            //                    var dataFromScope = dataset[dataScopeIdentifier];
-
-            //                    foreach (IData data in dataFromScope)
-            //                    {
-            //                        ILocalizedControlled newData = DataFacade.BuildNew(interfaceType) as ILocalizedControlled;
-            //                        data.ProjectedCopyTo(newData);
-            //                        newData.CultureName = cultureInfo.Name;
-            //                        newData.SourceCultureName = cultureInfo.Name;
-
-            //                        DataFacade.AddNew(newData, interfaceType, true, false, false);
-            //                    }
-            //                }
-            //            }
-            //        }
-
-            //        transactionScope.Complete();
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    var exceptionToLog = new InvalidOperationException("Failed to copy data from non-localized type to localized", ex);
-            //    LoggingService.LogError(typeof(EnableTypeLocalizationWorkflow).Name, exceptionToLog);
-
-            //    throw;
-            //}
-
-
-            //EntityTokenCacheFacade.ClearCache();
 
             this.CloseCurrentView();
             this.CollapseAndRefresh();

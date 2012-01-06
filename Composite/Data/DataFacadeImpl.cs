@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
@@ -15,8 +16,7 @@ using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Types;
 using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using System.IO;
-using Composite.Core.IO;
+using Composite.Core;
 
 
 namespace Composite.Data
@@ -461,6 +461,94 @@ namespace Composite.Data
                 foreach (IData element in dataset)
                 {
                     DataEventSystemFacade.FireDataDeletedEvent(element.DataSourceId.InterfaceType, element);
+                }
+            }
+        }
+
+
+
+        public T BuildNew<T>(bool suppressEventing)
+            where T : class, IData
+        {
+            ValidateBuildNewType(typeof(T));
+
+            Type generatedType = DataTypeTypesManager.GetDataTypeEmptyClass(typeof(T));            
+
+            IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
+
+            SetNewInstancaFieldDefaultValues(data);
+
+            if (suppressEventing == false)
+            {
+                DataEventSystemFacade.FireDataAfterBuildNewEvent<T>(data);
+            }
+
+            return (T)data;
+        }
+
+
+
+        public IData BuildNew(Type interfaceType, bool suppressEventling)
+        {
+            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+
+            ValidateBuildNewType(interfaceType);
+
+            Type generatedType = DataTypeTypesManager.GetDataTypeEmptyClass(interfaceType);
+
+            IData data = (IData)Activator.CreateInstance(generatedType, new object[] { });
+
+            SetNewInstancaFieldDefaultValues(data);
+
+            if (suppressEventling == false)
+            {
+                DataEventSystemFacade.FireDataAfterBuildNewEvent(generatedType, data);
+            }
+
+            return data;
+        }
+
+
+
+        private void ValidateBuildNewType(Type interfaceType)
+        {
+            string errorMessage;
+
+            if(!DataTypeValidationRegitry.IsValidate(interfaceType, null, out errorMessage))
+            {
+                Log.LogCritical("DataFacade", errorMessage);
+                throw new InvalidOperationException(errorMessage);
+            }
+        }
+
+
+
+        private void SetNewInstancaFieldDefaultValues(IData data)
+        {
+            Type interfaceType = data.DataSourceId.InterfaceType;
+            List<PropertyInfo> properties = interfaceType.GetPropertiesRecursively();
+            foreach (PropertyInfo propertyInfo in properties)
+            {
+                try
+                {
+                    NewInstanceDefaultFieldValueAttribute attribute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().SingleOrDefault();
+                    if (attribute == null || attribute.HasValue == false) continue;
+                    if (propertyInfo.CanWrite == false)
+                    {
+                        LoggingService.LogError("DataFacade", string.Format("The property '{0}' on the interface '{1}' has defined a standard value, but no setter", propertyInfo.Name, interfaceType));
+                        continue;
+                    }
+
+                    object value = attribute.GetValue();
+                    value = ValueTypeConverter.Convert(value, propertyInfo.PropertyType);
+
+                    PropertyInfo targetPropertyInfo = data.GetType().GetProperties().Where(f => f.Name == propertyInfo.Name).Single();
+                    targetPropertyInfo.SetValue(data, value, null);
+                }
+                catch (Exception ex)
+                {
+                    LoggingService.LogError("DataFacade", string.Format("Failed to set the standard value on the property '{0}' on the interface '{1}'", propertyInfo.Name, interfaceType));
+                    LoggingService.LogError("DataFacade", ex);
                 }
             }
         }

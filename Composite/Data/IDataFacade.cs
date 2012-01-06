@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Composite.Data.Types;
@@ -37,6 +38,8 @@ namespace Composite.Data
 
         void Delete<T>(IEnumerable<T> datas, bool suppressEventing, CascadeDeleteType cascadeDeleteType, bool referencesFromAllScopes) where T : class, IData;
 
+        T BuildNew<T>(bool suppressEventing) where T : class, IData;
+        IData BuildNew(Type interfaceType, bool suppressEventling);
 
         DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier, bool allowCascadeMove) where T : class, IData;
 

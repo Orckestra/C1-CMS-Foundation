@@ -24,7 +24,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Files").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("FileAddOnFragmentUninstaller.OnlyOneFilesElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("FilePackageFragmentUninstaller.OnlyOneFilesElement")));
                 return validationResult;
             }
 
@@ -46,7 +46,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute filenameAttribute = fileElement.Attribute("filename");
                     if (filenameAttribute == null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetResourceString("FileAddOnFragmentInstaller.MissingAttribute"), "filename"), fileElement));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetResourceString("FilePackageFragmentInstaller.MissingAttribute"), "filename"), fileElement));
                         continue;
                     }
 
@@ -147,7 +147,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if(!fileExists)
                     {
                         // Showing a message if we don't have a match
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("FileAddOnFragmentInstaller.WrongBasePath")));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("FilePackageFragmentInstaller.WrongBasePath")));
                     }
                     else
                     {
@@ -190,7 +190,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (string filename in _filesToDelete)
             {
-                LoggingService.LogVerbose("FileAddOnFragmentUninstaller", string.Format("Uninstalling the file '{0}'", filename));
+                LoggingService.LogVerbose("FilePackageFragmentUninstaller", string.Format("Uninstalling the file '{0}'", filename));
 
                 FileUtils.Delete(filename);
             }

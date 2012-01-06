@@ -1,18 +1,15 @@
 using System;
 using System.CodeDom;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 {
-#warning MRJ: BM: Cleanup
     /// <summary>
     /// Creates a implementation of DataProviderHelperBase
     /// It does NOT depend on the data type to exist
@@ -25,46 +22,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
         private readonly string _helperClassName;
         private readonly string _wrapperClassName;
         private readonly string _dataIdClassName;
-
-
-        private DataTypeDescriptor _dataTypeDescriptor;
-        private IEnumerable<string> _idProperyNames;
-
-#warning MRJ: BM: Cleanup here
-        private string InterfaceFullName { get { return TypeManager.GetRuntimeFullName(_dataTypeDescriptor.TypeManagerTypeName); } }
-
-#warning MRJ: BM: The InterfaceFullName and InterfaceName is used more than one, refacture this
         private string _interfaceName;
-        private string InterfaceName
-        {
-            get
-            {
-                if (_interfaceName == null)
-                {
-                    _interfaceName = InterfaceFullName;
-                    if (_interfaceName.IndexOf(',') >= 0)
-                    {
-                        _interfaceName = _interfaceName.Remove(_interfaceName.IndexOf(','));
-                    }
-                }
 
-                return _interfaceName;
-            }
-        }
+        private readonly DataTypeDescriptor _dataTypeDescriptor;
 
 
         public DataProviderHelperClassGenerator(
                 string helperClassName,
                 string wrapperClassName,
                 string dataIdClassName,
-                DataTypeDescriptor dataTypeDescriptor,
-                IEnumerable<string> idProperyNames)
+                DataTypeDescriptor dataTypeDescriptor)
         {
             _helperClassName = helperClassName;
             _wrapperClassName = wrapperClassName;
             _dataIdClassName = dataIdClassName;
             _dataTypeDescriptor = dataTypeDescriptor;
-            _idProperyNames = idProperyNames;
         }
 
 
@@ -327,8 +299,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                     new CodeObjectCreateExpression(
                                         typeof(XAttribute),
                                         new CodeExpression[] {
-#warning MRJ: BM: Handle mapped name
-                                            //new CodePrimitiveExpression(field.MappedName),
                                             new CodePrimitiveExpression(field.Name),
                                             new CodePropertyReferenceExpression(
                                                 new CodeVariableReferenceExpression("xmlData"),
@@ -384,66 +354,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 else
                 {
                     method.Statements.Add(codeExpression);
-                }
-                /*}
-                /*else if (_idProperyNames.Contains(field.Name))
-                {
-                    string tempVariableName = string.Format("value{0}", field.Name);
-                    string tempInitializeName = string.Format("tempInitialize{0}", field.Name);
-
-                    Type initializerType = typeof(Guid);
-
-
-                    method.Statements.Add(new CodeCommentStatement(string.Format("Property initializeer for property {0}", field.Name)));
-
-                    method.Statements.Add(new CodeVariableDeclarationStatement(
-                            typeof(object),
-                            tempVariableName
-                        ));
-
-                    method.Statements.Add(new CodeVariableDeclarationStatement(
-                            initializerType,
-                            tempInitializeName,
-                            new CodeObjectCreateExpression(
-                                initializerType,
-                                new CodeExpression[] { }
-                            )
-                        ));
-
-                    method.Statements.Add(new CodeExpressionStatement(
-                            new CodeMethodInvokeExpression(
-                                new CodeVariableReferenceExpression(tempInitializeName),
-                                "GetValue",
-                                new CodeExpression[] {
-                                    new CodeDirectionExpression(
-                                        FieldDirection.Out,                                            
-                                        new CodeVariableReferenceExpression(tempVariableName)                                            
-                                    )
-                                }
-                            )
-                        ));
-
-                    method.Statements.Add(
-                            new CodeMethodInvokeExpression(
-                                new CodeVariableReferenceExpression(newElementVariableName),
-                                "Add",
-                                new CodeExpression[] {
-                                    new CodeObjectCreateExpression(
-                                        typeof(XAttribute),
-                                        new CodeExpression[] {
-#warning MRJ: BM: name mapping here                                            
-                                            //new CodePrimitiveExpression(field.MappedName),
-                                            new CodePrimitiveExpression(field.Name),
-                                            new CodeVariableReferenceExpression(tempVariableName)
-                                        }
-                                    )
-                                }
-                            ));
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }*/
+                }                
             }
 
 
@@ -482,6 +393,27 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
 
             declaration.Members.Add(method);
+        }
+
+
+        private string InterfaceFullName { get { return TypeManager.GetRuntimeFullName(_dataTypeDescriptor.TypeManagerTypeName); } }
+
+        
+        private string InterfaceName
+        {
+            get
+            {
+                if (_interfaceName == null)
+                {
+                    _interfaceName = InterfaceFullName;
+                    if (_interfaceName.IndexOf(',') >= 0)
+                    {
+                        _interfaceName = _interfaceName.Remove(_interfaceName.IndexOf(','));
+                    }
+                }
+
+                return _interfaceName;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         public override string Serialize()
         {
-            return "AddOnElementProvider.ClearServerCache";
+            return "PackageElementProvider.ClearServerCache";
         }
 
 

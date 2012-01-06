@@ -105,11 +105,11 @@ namespace Composite.Core.Serialization
 
         private sealed class Resources
         {
-            public DynamicBuildManagerTypeCache<ISerializer> SerializerCache { get; set; }
+            public CompiledTypeCache<ISerializer> SerializerCache { get; set; }
 
             public static void Initialize(Resources resources)
             {
-                resources.SerializerCache = new DynamicBuildManagerTypeCache<ISerializer>();
+                resources.SerializerCache = new CompiledTypeCache<ISerializer>();
             }
         }
     }

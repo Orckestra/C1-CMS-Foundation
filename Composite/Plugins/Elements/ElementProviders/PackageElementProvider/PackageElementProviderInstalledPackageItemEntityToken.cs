@@ -7,7 +7,7 @@ using Composite.Core.Serialization;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
-    internal sealed class AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider : ISecurityAncestorProvider
+    internal sealed class PackageElementProviderInstalledPackageItemEntityTokenAncestorProvider : ISecurityAncestorProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
@@ -26,13 +26,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [SecurityAncestorProvider(typeof(AddOnElementProviderInstalledAddOnItemEntityTokenAncestorProvider))]
+    [SecurityAncestorProvider(typeof(PackageElementProviderInstalledPackageItemEntityTokenAncestorProvider))]
     public sealed class PackageElementProviderInstalledPackageItemEntityToken : EntityToken
     {
         /// <exclude />
         public PackageElementProviderInstalledPackageItemEntityToken(Guid packageId, string groupName, bool isLocalInstalled, bool canBeUninstalled)
         {
-            this.AddOnId = packageId;
+            this.PackageId = packageId;
             this.GroupName = groupName;
             this.IsLocalInstalled = isLocalInstalled;
             this.CanBeUninstalled = canBeUninstalled;
@@ -40,7 +40,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
 
         /// <exclude />
-        public Guid AddOnId { get; private set; }
+        public Guid PackageId { get; private set; }
 
         /// <exclude />
         public string GroupName { get; private set; }
@@ -69,7 +69,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         /// <exclude />
         public override string Id
         {
-            get { return this.AddOnId.ToString(); }
+            get { return this.PackageId.ToString(); }
         }
 
 

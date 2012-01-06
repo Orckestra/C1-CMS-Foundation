@@ -117,26 +117,14 @@ namespace Composite.Functions.Foundation
 
 
 
-        internal static void Initialize_PostStaticTypes()
+        internal static void Initialize_PostDataTypes()
         {
             if (RuntimeInformation.IsDebugBuild == true)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }
 
-            _metaFunctionProviderRegistry.Initialize_PostStaticTypes();
-        }
-
-
-
-        internal static void Initialize_PostDynamicTypes()
-        {
-            if (RuntimeInformation.IsDebugBuild == true)
-            {
-                GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
-            }
-
-            _metaFunctionProviderRegistry.Initialize_PostDynamicTypes();
+            _metaFunctionProviderRegistry.Initialize_PostDataTypes();
         }
 
 

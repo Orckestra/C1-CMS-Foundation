@@ -34,8 +34,6 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
     internal sealed class AllFunctionsElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider, ICustomSearchElementProvider
 #pragma warning restore 612
     {
-        private List<EntityTokenHook> _currentEntityTokenHooks = null;
-
         private const string FunctionsProviderType = "functions";
         private const string WidgetFunctionsProviderType = "widgetFunctions";
 

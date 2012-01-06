@@ -4,15 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Transactions;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Functions;
 using Microsoft.CSharp;
@@ -332,7 +329,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            CompatibilityCheckResult compatibilityCheckResult = CodeGenerationManager.CheckCompatibilityWithAppCodeFolder(dataTypeDescriptor);
+            CompatibilityCheckResult compatibilityCheckResult = CodeCompatibilityChecker.CheckCompatibilityWithAppCodeFolder(dataTypeDescriptor);
 
             if (!compatibilityCheckResult.Successful)
             {
@@ -759,6 +756,8 @@ namespace Composite.Data.GeneratedTypes
                 : new [] { CultureInfo.InvariantCulture } ;
         }
 
+
+
         private bool UpdateOldType(bool validateOnly, bool originalTypeDataExists, out string errorMessage)
         {
             errorMessage = "";
@@ -779,108 +778,9 @@ namespace Composite.Data.GeneratedTypes
                 return true;
             }
 
-#warning MRJ: BM: DP: THIS CODE IS NOT NEEDED HERE ANY MORE AND SHOULD BE HANDLED BY DATA PROVIDER
-
             GeneratedTypesFacade.UpdateType(new UpdateDataTypeDescriptor(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists));
-            return true;
 
-            // Unpublishable -> Publishble: Change type, copy data from public to admin WITHOUT: Eventing, Cascade and validation
-            // Publishble -> Unpublishable: Copy data from admin to public WITHOUT: Eventing, Cascade and validation
-
-            //if ((_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false) &&
-            //    (_newDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true))
-            //{
-                // Unpublishable -> Publishable
-
-
-                //using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-                //{
-                //    GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
-                //    Type newInterfaceType = _newDataTypeDescriptor.GetInterfaceType();
-
-                //    foreach (CultureInfo locale in GetLocalizationScopes(_newDataTypeDescriptor))
-                //    {
-                //        using (new DataScope(locale))
-                //        {
-                //            IEnumerable<IData> dataset;
-                //            using (new DataScope(DataScopeIdentifier.Public))
-                //            {
-                //                dataset = DataFacade.GetData(newInterfaceType).ToDataList();
-
-                //                foreach (IData data in dataset)
-                //                {
-                //                    IPublishControlled publishControlled = data as IPublishControlled;
-                //                    publishControlled.PublicationStatus = GenericPublishProcessController.Published;
-                //                }
-
-                //                DataFacade.Update(dataset, true, false, false);
-                //            }
-
-                //            using (new DataScope(DataScopeIdentifier.Administrated))
-                //            {
-                //                foreach (IData data in dataset)
-                //                {
-                //                    IData newData = DataFacade.BuildNew(newInterfaceType);
-
-                //                    data.ProjectedCopyTo(newData);
-
-                //                    IPublishControlled publishControlled = newData as IPublishControlled;
-                //                    publishControlled.PublicationStatus = GenericPublishProcessController.Published;
-
-                //                    DataFacade.AddNew(newData, true, false, false);
-                //                }
-                //            }
-                //        }
-                //    }
-
-                //    transactionScope.Complete();
-                //}
-            //    return true;
-            //}
-
-            //if ((_oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true) &&
-            //    (_newDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false))
-            //{
-            //    // Publishable -> Unpublishable
-            //    using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-            //    {
-            //        foreach (CultureInfo locale in GetLocalizationScopes(_newDataTypeDescriptor))
-            //        {
-            //            using (new DataScope(locale))
-            //            {
-            //                IEnumerable<IData> datas;
-            //                using (new DataScope(DataScopeIdentifier.Administrated))
-            //                {
-            //                    datas = DataFacade.GetData(_oldType).ToDataList();
-            //                }
-
-            //                using (new DataScope(DataScopeIdentifier.Public))
-            //                {
-            //                    DataFacade.Delete(DataFacade.GetData(_oldType).ToDataEnumerable(), true, CascadeDeleteType.Disable);
-
-            //                    foreach (IData data in datas)
-            //                    {
-            //                        IData newData = DataFacade.BuildNew(_oldType);
-
-            //                        data.ProjectedCopyTo(newData);
-
-            //                        IPublishControlled publishControlled = newData as IPublishControlled;
-            //                        if (publishControlled != null)
-            //                        {
-            //                            publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
-            //                        }
-
-            //                        DataFacade.AddNew(newData, true, false, false);
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        transactionScope.Complete();
-            //    }
-
-            //    GeneratedTypesFacade.UpdateType(_oldDataTypeDescriptor, _newDataTypeDescriptor, originalTypeDataExists);
-            //    return true;
-            //}            
+            return true;   
         }
 
 

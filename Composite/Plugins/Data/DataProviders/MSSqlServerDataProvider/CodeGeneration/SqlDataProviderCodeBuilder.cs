@@ -48,7 +48,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             _entityClassNamesAndDataContextFieldNames.AddRange(names);
 
-#warning MRJ: BM: This seems to be needed, but why? Is it also needed for the xml provider?
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
             _codeGenerationBuilder.AddReference(interfaceType.Assembly);
 

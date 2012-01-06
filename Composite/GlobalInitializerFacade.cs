@@ -19,11 +19,10 @@ using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.Core.Threading;
-using Composite.Data.Caching;
+using Composite.Core.Types;
 using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
-using Composite.Core.Types;
 
 
 namespace Composite
@@ -50,43 +49,19 @@ namespace Composite
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
 
 
-        private sealed class Resources
-        {
-            public Dictionary<int, int> WriterLocksPerThreadId { get; set; }
-            public Dictionary<int, LockCookie> LockCockiesPreThreadId { get; set; }
+        /// <exclude />
+        public static bool DynamicTypesGenerated { get; private set; }
 
-            public static void DoInitializeResources(Resources resources)
-            {
-                resources.WriterLocksPerThreadId = new Dictionary<int, int>();
-                resources.LockCockiesPreThreadId = new Dictionary<int, LockCookie>();
-            }
-        }
+        /// <exclude />
+        public static bool SystemCoreInitializing { get { return _initializing; } }
 
+        /// <exclude />
+        public static bool SystemCoreInitialized { get { return _coreInitialized; } }
 
-
-        private class TimeMeasurement : IDisposable
-        {
-            private string _message;
-            private int _startTime;
-
-            public TimeMeasurement(string message)
-            {
-                _message = message;
-                _startTime = Environment.TickCount;
-                LoggingService.LogVerbose(LogTitle, "Starting: " + _message);
-            }
-
-
-            #region IDisposable Members
-
-            public void Dispose()
-            {
-                int executionTime = Environment.TickCount - _startTime;
-                LoggingService.LogVerbose(LogTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
-            }
-
-            #endregion
-        }
+        /// <summary>
+        /// This is true durring a total flush of the system (re-initialize).
+        /// </summary>
+        public static bool IsReinitializingTheSystem { get; private set; }
 
 
 
@@ -104,6 +79,7 @@ namespace Composite
         {
             InitializeTheSystem();
         }
+
 
 
         /// <summary>
@@ -169,91 +145,137 @@ namespace Composite
                     TreeFacade.Initialize();
                 }
             }
-
-          /*  if (AppDomain.CurrentDomain.Id == 3)
-            {
-                SimpleDebug.AddEntry(string.Format("INITIALIZING DONE {0}", Thread.CurrentThread.ManagedThreadId));
-             //   SimpleDebug.AddStack();
-              //  SimpleDebug.AddEntry("-------------------------------------------------");
-              //  SimpleDebug.AddEntry("");
-            }*/
         }
 
 
 
-        /// <summary>
-        /// Using this in a using-statement will ensure that the code are 
-        /// executed AFTER the system has been initialized.
-        /// </summary>
-        public static IDisposable CoreIsInitializedScope
+        private static void DoInitialize()
         {
-            get
-            {
-                // This line ensures that the system is always initialized. 
-                // Even if the InitializeTheSystem method is NOT called durring
-                // application startup.
-                InitializeTheSystem();
+            int startTime = Environment.TickCount;
 
-                return new LockerToken();
+            Guid installationId = InstallationInformationFacade.InstallationId;
+
+            LoggingService.LogVerbose(LogTitle, string.Format("Initializing the system core - installation id = ", installationId));
+
+            using (new TimeMeasurement("Initialization of the static data types"))
+            {
+                DataProviderRegistry.InitializeDataTypes();
             }
-        }
 
 
-
-        /// <summary>
-        /// Using this in a using-statement will ensure that the code is 
-        /// executed AFTER any existing locks has been released.
-        /// </summary>
-        public static IDisposable CoreNotLockedScope
-        {
-            get
+            using (new TimeMeasurement("Auto update of static data types"))
             {
-                return new LockerToken();
-            }
-        }
-
-
-
-        /// <exclude />
-        public static void WaitUntilAllIsInitialized()
-        {
-            using (CoreIsInitializedScope)
-            {
-                Thread hookingFacadeThread = _hookingFacadeThread;
-                if (hookingFacadeThread != null)
+                bool typesUpdated = AutoUpdateStaticDataTypes();
+                if (typesUpdated)
                 {
-                    hookingFacadeThread.Join();
+                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted");
+
+                    // We made type changes, so we _have_ to recompile Composite.Generated.dll
+                    CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+
+                    return;
                 }
             }
-        }
 
 
-
-        /// <summary>
-        /// Locks the initialization token untill disposed. Use this in a using {} statement. 
-        /// </summary>
-        internal static IDisposable CoreLockScope
-        {
-            get
+            using (new TimeMeasurement("Ensure data stores"))
             {
-                StackTrace stackTrace = new StackTrace();
-                StackFrame stackFrame = stackTrace.GetFrame(1);
-                string lockSource = string.Format("{0}.{1}", stackFrame.GetMethod().DeclaringType.Name, stackFrame.GetMethod().Name);
-                return new LockerToken(true, lockSource);
+                bool dataStoresCreated = DataStoreExistenceVerifier.EnsureDataStores();
+
+                if (dataStoresCreated)
+                {
+                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
+                    _initializing = false;
+                    GlobalEventSystemFacade.FlushTheSystem();
+                    return;
+                }
             }
+
+           
+
+            using (new TimeMeasurement("Initializing data process controllers"))
+            {
+                ProcessControllerFacade.Initialize_PostDataTypes();
+            }
+
+
+            using (new TimeMeasurement("Initializing data type references"))
+            {
+                DataReferenceRegistry.Initialize_PostDataTypes();
+            }
+
+
+            using (new TimeMeasurement("Initializing data type associations"))
+            {
+                DataAssociationRegistry.Initialize_PostDataTypes();
+            }
+
+
+            using (new TimeMeasurement("Initializing functions"))
+            {
+                MetaFunctionProviderRegistry.Initialize_PostDataTypes();
+               
+            }
+
+
+            LoggingService.LogVerbose(LogTitle, "Starting initialization of administrative secondaries");
+
+
+            using (new TimeMeasurement("Initializing workflow runtime"))
+            {
+                WorkflowFacade.EnsureInitialization();
+            }
+
+
+            if (!RuntimeInformation.IsUnittest)
+            {
+                using (new TimeMeasurement("Initializing flow system"))
+                {
+                    FlowControllerFacade.Initialize();
+                }
+
+                using (new TimeMeasurement("Initializing console system"))
+                {
+                    ConsoleFacade.Initialize();
+                }
+            }
+
+
+            using (new TimeMeasurement("Auto installing packages"))
+            {
+                DoAutoInstallPackages();
+            }
+
+
+            int executionTime = Environment.TickCount - startTime;
+
+            LoggingService.LogVerbose(LogTitle, "Done initializing of the system core. ({0} ms)".FormatWith(executionTime));
         }
 
 
 
-        /// <exclude />
-        public static void FatalResetTheSytem()
+        private static bool AutoUpdateStaticDataTypes()
         {
-            LoggingService.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
+            if (!GlobalSettingsFacade.EnableDataTypesAutoUpdate)
+            {
+                return false;
+            }
 
-            ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
+            if (_typesAutoUpdated)
+            {
+                // This is here to catch update -> failed -> update -> failed -> ... loop
+                DataInterfaceAutoUpdater.TestEnsureUpdateAllInterfaces();
+                return false;
+            }
+
+            bool flushTheSystem = DataInterfaceAutoUpdater.EnsureUpdateAllInterfaces();
+
+            _typesAutoUpdated = true;
+
+            return flushTheSystem;
         }
 
-
+       
 
         /// <exclude />
         public static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
@@ -265,16 +287,14 @@ namespace Composite
 
         internal static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage, bool initializeHooksInTheSameThread)
         {
-#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup should be fixed
-            //if (_hookingFacadeThread != null)
-            //{
-            //    _hookingFacadeThread.Join(TimeSpan.FromSeconds(30));
-            //    if (_hookingFacadeException != null)
-            //    {
-            //        //LoggingService.LogCritical("GlobalInitializerFacade", _hookingFacadeException);
-            //        throw new InvalidOperationException("The initilization of the HookingFacade failed before this reinitialization was issued", _hookingFacadeException);
-            //    }
-            //}
+            if (_hookingFacadeThread != null)
+            {
+                _hookingFacadeThread.Join(TimeSpan.FromSeconds(30));
+                if (_hookingFacadeException != null)
+                {
+                    throw new InvalidOperationException("The initilization of the HookingFacade failed before this reinitialization was issued", _hookingFacadeException);
+                }
+            }
 
             using (GlobalInitializerFacade.CoreLockScope)
             {
@@ -292,21 +312,73 @@ namespace Composite
                 InitializeTheSystem();
 
                 // Updating "hooks" either in the same thread, or in another
-#warning MRJ: BM: DISABLED HOOKING INITIALIZATION!! - Should be reintroduced at some point, but first startup should be fixed
-                //if (initializeHooksInTheSameThread)
-                //{
-                //    object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
-                //    EnsureHookingFacade(threadStartParameter);
-                //}
-                //else
-                //{
-                //    _hookingFacadeThread = new Thread(EnsureHookingFacade);
-                //    _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
-                //}
+                if (initializeHooksInTheSameThread)
+                {
+                    object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
+                    EnsureHookingFacade(threadStartParameter);
+                }
+                else
+                {
+                    _hookingFacadeThread = new Thread(EnsureHookingFacade);
+                    _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
+                }
 
                 IsReinitializingTheSystem = false;
             }
         }
+
+
+
+        private static void EnsureHookingFacade(object timeSpanToDelayStart)
+        {
+            // NOTE: Condition is  made for unit-testing
+            if (System.Web.Hosting.HostingEnvironment.IsHosted)
+            {
+                var kvp = (KeyValuePair<TimeSpan, StackTrace>)timeSpanToDelayStart;
+                _hookingFacadeException = null;
+
+                Thread.Sleep(kvp.Key);
+
+                try
+                {
+                    using (ThreadDataManager.EnsureInitialize())
+                    {
+                        HookingFacade.EnsureInitialization();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _hookingFacadeException = ex;
+                }
+            }
+
+            _hookingFacadeThread = null;
+        }
+
+
+
+        /// <exclude />
+        public static void WaitUntilAllIsInitialized()
+        {
+            using (CoreIsInitializedScope)
+            {
+                Thread hookingFacadeThread = _hookingFacadeThread;
+                if (hookingFacadeThread != null)
+                {
+                    hookingFacadeThread.Join();
+                }
+            }
+        }
+
+      
+
+        /// <exclude />
+        public static void FatalResetTheSytem()
+        {
+            LoggingService.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
+
+            ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
+        }        
 
 
 
@@ -326,49 +398,10 @@ namespace Composite
             }
         }
 
+           
 
 
-        /// <exclude />
-        public delegate void RunInWriterLockScopeDelegage();
-
-        /// <exclude />
-        public static void RunInWriterLockScope(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
-        {
-            using (GlobalInitializerFacade.CoreLockScope)
-            {
-                runInWriterLockScopeDelegage();
-            }
-        }
-
-
-
-        /// <exclude />
-        public static void ValidateIsOnlyCalledFromGlobalInitializerFacade(StackTrace stackTrace)
-        {
-            MethodBase methodInfo = stackTrace.GetFrame(1).GetMethod();
-
-            if (methodInfo.DeclaringType != typeof(GlobalInitializerFacade))
-            {
-                throw new SystemException(string.Format("The method {0} may only be called by the {1}", stackTrace.GetFrame(1).GetMethod(), typeof(GlobalInitializerFacade)));
-            }
-        }
-
-
-
-        /// <exclude />
-        public static bool DynamicTypesGenerated { get; private set; }
-
-        /// <exclude />
-        public static bool SystemCoreInitializing { get { return _initializing; } }
-
-        /// <exclude />
-        public static bool SystemCoreInitialized { get { return _coreInitialized; } }
-
-        /// <summary>
-        /// This is true durring a total flush of the system (re-initialize).
-        /// </summary>
-        public static bool IsReinitializingTheSystem { get; private set; }
-
+        #region Package installation
 
         private class AutoInstallPackageInfo
         {
@@ -408,8 +441,8 @@ namespace Composite
                         Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", workflowTestDir));
                         zipFiles.AddRange(C1Directory.GetFiles(workflowTestDir, "*.zip")
                                           .OrderBy(f => f)
-                                          .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = false }));                        
-                    }                    
+                                          .Select(f => new AutoInstallPackageInfo { FilePath = f, ToBeDeleted = false }));
+                    }
                 }
 
 
@@ -441,7 +474,7 @@ namespace Composite
                                 continue;
                             }
 
-                            
+
                             List<PackageFragmentValidationResult> installResult = packageManagerInstallProcess.Install();
                             if (installResult.Count > 0)
                             {
@@ -449,7 +482,7 @@ namespace Composite
                                 LogErrors(installResult);
 
                                 continue;
-                            }                            
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -469,6 +502,26 @@ namespace Composite
             }
         }
 
+        #endregion 
+
+
+
+        #region Utilities
+
+
+        /// <exclude />
+        public static void ValidateIsOnlyCalledFromGlobalInitializerFacade(StackTrace stackTrace)
+        {
+            MethodBase methodInfo = stackTrace.GetFrame(1).GetMethod();
+
+            if (methodInfo.DeclaringType != typeof(GlobalInitializerFacade))
+            {
+                throw new SystemException(string.Format("The method {0} may only be called by the {1}", stackTrace.GetFrame(1).GetMethod(), typeof(GlobalInitializerFacade)));
+            }
+        }
+
+        
+
         private static void LogErrors(IEnumerable<PackageFragmentValidationResult> packageErrors)
         {
             foreach (PackageFragmentValidationResult packageFragmentValidationResult in packageErrors)
@@ -482,200 +535,6 @@ namespace Composite
             }
         }
 
-        private static void DoInitialize()
-        {
-            int startTime = Environment.TickCount;
-
-            Guid installationId = InstallationInformationFacade.InstallationId;
-
-            LoggingService.LogVerbose(LogTitle, string.Format("Initializing the system core - installation id = ", installationId));            
-
-#warning MRJ: BM: Cleanup here - wrong title
-            using (new TimeMeasurement("Initialization of the static data types"))
-            {
-                DataProviderRegistry.Initialize_StaticTypes();
-                DataProviderRegistry.Initialize_DynamicTypes();
-            }
-
-
-            using (new TimeMeasurement("Auto update of static data types"))
-            {
-                bool typesUpdated = AutoUpdateStaticDataTypes();
-                if (typesUpdated)
-                {
-                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted");
-
-                    // We made type changes, so we _have_ to recompile Composite.Generated.dll
-                    CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
-
-                    return;
-                }
-            }
-            
-
-            using (new TimeMeasurement("Ensure data stores"))
-            {
-                bool dataStoresCreated = DataStoreExistenceVerifier.EnsureDataStores();
-
-                if (dataStoresCreated)
-                {
-                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
-                    _initializing = false;
-                    GlobalEventSystemFacade.FlushTheSystem();
-                    return;
-                }
-            }
-
-            
-
-#warning MRJ: This should be obsolete
-         /*   using (new TimeMeasurement("Compilation of the dynamic data types"))
-            {
-                GeneratedTypesFacade.GenerateTypes();
-            }*/
-
-#warning MRJ: This should be merged into statis type stuff
-         /*   DynamicTypesGenerated = true;
-
-            using (new TimeMeasurement("Initialization of the dynamic data types"))
-            {
-                DataProviderRegistry.Initialize_DynamicTypes();
-            }*/
-
-            using (new TimeMeasurement("Initializing functions"))
-            {
-                MetaFunctionProviderRegistry.Initialize_PostStaticTypes();
-            }
-
-            Initialize_PostDynamicTypes();
-
-
-            LoggingService.LogVerbose(LogTitle, "Starting initialization of administrative secondaries");
-
-            using (new TimeMeasurement("Initializing workflow runtime"))
-            {
-                WorkflowFacade.EnsureInitialization();
-            }
-
-            if (!RuntimeInformation.IsUnittest)
-            {
-                using (new TimeMeasurement("Initializing flow system"))
-                {
-                    FlowControllerFacade.Initialize();
-                }
-
-                using (new TimeMeasurement("Initializing console system"))
-                {
-                    ConsoleFacade.Initialize();
-                }
-            }
-
-
-            using (new TimeMeasurement("Auto installing packages"))
-            {
-                DoAutoInstallPackages();
-            }
-
-
-            //MRJ: DevelopConfig: This should be moved to a develop config file
-            /*if ((RuntimeInformation.IsDebugBuild == true) && (DataFacade.GetData<IWhiteListedLocale>().Count() == 0))
-            {
-                IWhiteListedLocale whiteListedLocale = DataFacade.BuildNew<IWhiteListedLocale>();
-                whiteListedLocale.CultureName = "en-AU";
-                DataFacade.AddNew<IWhiteListedLocale>(whiteListedLocale);
-            }*/
-
-
-            int executionTime = Environment.TickCount - startTime;
-
-            LoggingService.LogVerbose(LogTitle, "Done initializing of the system core. ({0} ms)".FormatWith(executionTime));
-        }
-
-
-
-        private static void EnsureHookingFacade(object timeSpanToDelayStart)
-        {
-            // NOTE: Condition is  made for unit-testing
-            if (System.Web.Hosting.HostingEnvironment.IsHosted)
-            {
-                var kvp = (KeyValuePair<TimeSpan, StackTrace>) timeSpanToDelayStart;
-                _hookingFacadeException = null;
-
-                Thread.Sleep(kvp.Key);
-
-                try
-                {
-                    using(ThreadDataManager.EnsureInitialize())
-                    {
-                        HookingFacade.EnsureInitialization();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _hookingFacadeException = ex;
-                }
-            }
-
-            _hookingFacadeThread = null;
-        }
-
-
-
-        //private static void EnsureWorkflowFacade(object timeSpanToDelayStart)
-        //{
-        //    Thread.Sleep((TimeSpan)timeSpanToDelayStart);
-        //    WorkflowFacade.EnsureInitialization();
-        //}
-
-
-
-        private static bool AutoUpdateStaticDataTypes()
-        {
-            if (!GlobalSettingsFacade.EnableDataTypesAutoUpdate)
-            {
-                return false;
-            }
-
-            if (_typesAutoUpdated)
-            {
-                // This is here to catch update -> failed -> update -> failed -> ... loop
-                DataInterfaceAutoUpdater.TestEnsureUpdateAllInterfaces();
-                return false;
-            }
-
-            bool flushTheSystem = DataInterfaceAutoUpdater.EnsureUpdateAllInterfaces();
-
-            _typesAutoUpdated = true;
-
-            return flushTheSystem;
-        }
-
-        private static void Initialize_PostDynamicTypes()
-        {
-            // Flush the system, so no old generated types exists in the cache
-            DataCachingFacade.Flush();
-
-            using (new TimeMeasurement("Initializing data process controllers"))
-            {
-                ProcessControllerFacade.Initialize_PostDynamic();
-            }
-
-            using (new TimeMeasurement("Initializing data type references"))
-            {
-                DataReferenceRegistry.Initialize_PostDynamic();
-            }
-
-            using (new TimeMeasurement("Initializing data type associations"))
-            {
-                DataAssociationRegistry.Initialize_PostDynamic();
-            }
-
-            using (new TimeMeasurement("Initializing functions (dynamic data type only)"))
-            {
-                MetaFunctionProviderRegistry.Initialize_PostDynamicTypes();
-            }
-        }
-
 
 
         private static void OnFlushEvent(FlushEventArgs args)
@@ -686,6 +545,71 @@ namespace Composite
             }
         }
 
+        #endregion
+
+
+
+        #region Locking
+
+        /// <exclude />
+        public delegate void RunInWriterLockScopeDelegage();
+
+        /// <exclude />
+        public static void RunInWriterLockScope(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
+        {
+            using (GlobalInitializerFacade.CoreLockScope)
+            {
+                runInWriterLockScopeDelegage();
+            }
+        }
+
+
+        /// <summary>
+        /// Locks the initialization token untill disposed. Use this in a using {} statement. 
+        /// </summary>
+        internal static IDisposable CoreLockScope
+        {
+            get
+            {
+                StackTrace stackTrace = new StackTrace();
+                StackFrame stackFrame = stackTrace.GetFrame(1);
+                string lockSource = string.Format("{0}.{1}", stackFrame.GetMethod().DeclaringType.Name, stackFrame.GetMethod().Name);
+                return new LockerToken(true, lockSource);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Using this in a using-statement will ensure that the code are 
+        /// executed AFTER the system has been initialized.
+        /// </summary>
+        public static IDisposable CoreIsInitializedScope
+        {
+            get
+            {
+                // This line ensures that the system is always initialized. 
+                // Even if the InitializeTheSystem method is NOT called durring
+                // application startup.
+                InitializeTheSystem();
+
+                return new LockerToken();
+            }
+        }
+
+
+
+        /// <summary>
+        /// Using this in a using-statement will ensure that the code is 
+        /// executed AFTER any existing locks has been released.
+        /// </summary>
+        public static IDisposable CoreNotLockedScope
+        {
+            get
+            {
+                return new LockerToken();
+            }
+        }
 
 
         private static void AcquireReaderLock()
@@ -845,6 +769,47 @@ namespace Composite
                 #endregion
 
                 ReleaseWriterLock();
+            }
+        }
+        #endregion
+
+
+
+        private class TimeMeasurement : IDisposable
+        {
+            private string _message;
+            private int _startTime;
+
+            public TimeMeasurement(string message)
+            {
+                _message = message;
+                _startTime = Environment.TickCount;
+                LoggingService.LogVerbose(LogTitle, "Starting: " + _message);
+            }
+
+
+            #region IDisposable Members
+
+            public void Dispose()
+            {
+                int executionTime = Environment.TickCount - _startTime;
+                LoggingService.LogVerbose(LogTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
+            }
+
+            #endregion
+        }
+
+
+
+        private sealed class Resources
+        {
+            public Dictionary<int, int> WriterLocksPerThreadId { get; set; }
+            public Dictionary<int, LockCookie> LockCockiesPreThreadId { get; set; }
+
+            public static void DoInitializeResources(Resources resources)
+            {
+                resources.WriterLocksPerThreadId = new Dictionary<int, int>();
+                resources.LockCockiesPreThreadId = new Dictionary<int, LockCookie>();
             }
         }
     }
