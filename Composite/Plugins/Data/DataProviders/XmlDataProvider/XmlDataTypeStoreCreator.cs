@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
-using System.Xml.Linq;
-using Composite.Core.Xml;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -80,8 +80,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             }
             
             XmlDataTypeStore xmlDataTypeStore = new XmlDataTypeStore(dataTypeDescriptor, dataProviderHelperClassType, dataIdClassType, xmlDataTypeStoreDataScopes, dataTypeDescriptor.IsCodeGenerated);
-
-#warning MRJ BM: Validate and return null if its not valid
 
             return xmlDataTypeStore;
         }
