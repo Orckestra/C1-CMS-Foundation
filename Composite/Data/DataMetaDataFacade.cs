@@ -23,6 +23,8 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class DataMetaDataFacade
     {
+        private static readonly string LogTitle = "DataMetaDataFacade";
+
         private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache = null;
         private static Dictionary<Guid, string> _dataTypeDescriptorFilesnamesCache = null;
         private static readonly object _lock = new object();
@@ -176,7 +178,17 @@ namespace Composite.Data
 
             foreach (Assembly assembly in AssemblyFacade.GetAssembliesFromBin())
             {
-                foreach (Type type in assembly.GetTypes())
+                Type[] types;
+                try
+                {
+                    types = assembly.GetTypes();
+                }
+                catch(ReflectionTypeLoadException ex)
+                {
+                    throw new InvalidOperationException("Failed to get types from assembly '{0}'".FormatWith(assembly.FullName), ex);
+                }
+
+                foreach (Type type in types )
                 {
                     if (type.GetInterfaces().Contains(typeof(IData)))
                     {
@@ -192,7 +204,7 @@ namespace Composite.Data
             }
 
 
-            Log.LogError("DataMetaDataFacade", string.Format("No data type found with the given data type id '{0}'", dataTypeId));
+            Log.LogError(LogTitle, string.Format("No data type found with the given data type id '{0}'", dataTypeId));
 
             return null;
         }
@@ -318,8 +330,8 @@ namespace Composite.Data
                 }
                 catch (Exception ex)
                 {
-                    Log.LogWarning("DataMetaDataFacade", "Error while parsing meta data file '{0}'".FormatWith(filepath));
-                    Log.LogWarning("DataMetaDataFacade", ex);
+                    Log.LogWarning(LogTitle, "Error while parsing meta data file '{0}'".FormatWith(filepath));
+                    Log.LogWarning(LogTitle, ex);
                     continue;
                 }
             }
