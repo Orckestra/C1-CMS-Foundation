@@ -9,6 +9,8 @@ using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
+using Composite.Data.Transactions;
+using System.Transactions;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider
@@ -203,64 +205,69 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 filename = uploadedFile.FileName;
             }
 
-            IMediaFileStore store = DataFacade.GetData<IMediaFileStore>(x => x.Id == this.StoreId).First();
-
-            IMediaFile existingFile = GetExistingFile(this.FolderPath, filename);
-            
-            if (existingFile == null)
+            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                WorkflowMediaFile mediaFile = new WorkflowMediaFile();
-                mediaFile.FileName = System.IO.Path.GetFileName(filename);
-                mediaFile.FolderPath = this.FolderPath;
-                mediaFile.Title = this.GetBinding<string>("Title");
-                mediaFile.Description = this.GetBinding<string>("Description");
-                mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;                
-                mediaFile.Length = uploadedFile.ContentLength;
-                mediaFile.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
-                
-                if (mediaFile.MimeType == MimeTypeInfo.Default)
-                {
-                    mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
-                }
+                IMediaFileStore store = DataFacade.GetData<IMediaFileStore>(x => x.Id == this.StoreId).First();
 
-                using (System.IO.Stream readStream = uploadedFile.FileStream)
+                IMediaFile existingFile = GetExistingFile(this.FolderPath, filename);
+
+                if (existingFile == null)
                 {
-                    using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
+                    WorkflowMediaFile mediaFile = new WorkflowMediaFile();
+                    mediaFile.FileName = System.IO.Path.GetFileName(filename);
+                    mediaFile.FolderPath = this.FolderPath;
+                    mediaFile.Title = this.GetBinding<string>("Title");
+                    mediaFile.Description = this.GetBinding<string>("Description");
+                    mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;
+                    mediaFile.Length = uploadedFile.ContentLength;
+                    mediaFile.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+
+                    if (mediaFile.MimeType == MimeTypeInfo.Default)
                     {
-                        readStream.CopyTo(writeStream);
+                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
                     }
-                }
-                
-                IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(mediaFile, store.DataSourceId.ProviderName);
 
-                addNewTreeRefresher.PostRefreshMesseges(addedFile.GetDataEntityToken());
-
-                SelectElement(addedFile.GetDataEntityToken());
-            }
-            else
-            {
-                Guid fileId = existingFile.Id;
-                IMediaFileData fileData = DataFacade.GetData<IMediaFileData>(file => file.Id == fileId).FirstOrDefault();
-
-                fileData.Title = this.GetBinding<string>("Title");
-                fileData.Description = this.GetBinding<string>("Description");
-                fileData.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
-                fileData.Length = uploadedFile.ContentLength;
-
-                using (System.IO.Stream readStream = uploadedFile.FileStream)
-                {
-                    using (System.IO.Stream writeStream = existingFile.GetNewWriteStream())
+                    using (System.IO.Stream readStream = uploadedFile.FileStream)
                     {
-                        readStream.CopyTo(writeStream);
+                        using (System.IO.Stream writeStream = mediaFile.GetNewWriteStream())
+                        {
+                            readStream.CopyTo(writeStream);
+                        }
                     }
+
+                    IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(mediaFile, store.DataSourceId.ProviderName);
+
+                    addNewTreeRefresher.PostRefreshMesseges(addedFile.GetDataEntityToken());
+
+                    SelectElement(addedFile.GetDataEntityToken());
+                }
+                else
+                {
+                    Guid fileId = existingFile.Id;
+                    IMediaFileData fileData = DataFacade.GetData<IMediaFileData>(file => file.Id == fileId).FirstOrDefault();
+
+                    fileData.Title = this.GetBinding<string>("Title");
+                    fileData.Description = this.GetBinding<string>("Description");
+                    fileData.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+                    fileData.Length = uploadedFile.ContentLength;
+
+                    using (System.IO.Stream readStream = uploadedFile.FileStream)
+                    {
+                        using (System.IO.Stream writeStream = existingFile.GetNewWriteStream())
+                        {
+                            readStream.CopyTo(writeStream);
+                        }
+                    }
+
+                    DataFacade.Update(existingFile);
+                    DataFacade.Update(fileData);
+
+                    addNewTreeRefresher.PostRefreshMesseges(existingFile.GetDataEntityToken());
+
+                    SelectElement(existingFile.GetDataEntityToken());
                 }
 
-                DataFacade.Update(existingFile);
-                DataFacade.Update(fileData);
-
-                addNewTreeRefresher.PostRefreshMesseges(existingFile.GetDataEntityToken());
-
-                SelectElement(existingFile.GetDataEntityToken());
+                transactionScope.Complete();
             }
         }        
     }
