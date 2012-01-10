@@ -11,13 +11,17 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
+using System.Data.SqlClient;
+using System.Text;
+using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 {
     internal partial class SqlDataProvider
     {
-        private static readonly string LogTitle = typeof (SqlDataProvider).Name;
+        private static readonly string LogTitle = typeof(SqlDataProvider).Name;
         private readonly List<SqlDataTypeStoreTable> _createdSqlDataTypeStoreTables = new List<SqlDataTypeStoreTable>();
 
         public void CreateStore(DataTypeDescriptor dataTypeDescriptor)
@@ -57,7 +61,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.Change(_dataProviderContext.ProviderName, dataTypeChangeDescriptor, localizationChanged, oldElement);
                 if (newElement != null)
-                {                    
+                {
                     _interfaceConfigurationElements.Remove(oldElement);
                     _interfaceConfigurationElements.Add(newElement);
                 }
@@ -88,14 +92,20 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                InitializeStore(element, allSqlDataTypeStoreDataScopes);
+                InitializeStoreResult initializeStoreResult = InitializeStore(element, allSqlDataTypeStoreDataScopes);
+
+                if (initializeStoreResult.InterfaceType == null) continue;
+
+                AddDataTypeStore(initializeStoreResult);
             }
         }
 
 
 
-        private void InitializeStore(InterfaceConfigurationElement element, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes)
+        private InitializeStoreResult InitializeStore(InterfaceConfigurationElement element, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes)
         {
+            InitializeStoreResult result = new InitializeStoreResult();
+
             List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
 
             foreach (StorageInformation storageInformation in element.Stores)
@@ -111,14 +121,17 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
 
             Verify.That(element.DataTypeId.HasValue, "Missing 'dataTypeId' attribute");
-            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);            
+            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
 
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+
             if (interfaceType == null)
             {
                 Log.LogError("SqlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
-                return;
+                return result;
             }
+
+            result.InterfaceType = interfaceType;
 
             string validationMessage;
             bool isValid = DataTypeValidationRegitry.IsValidate(interfaceType, dataTypeDescriptor, out validationMessage);
@@ -135,10 +148,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             _sqlDataTypeStoresContainer.DataContextType = dataContextClassType;
 
+
+
             Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable> sqlDataTypeStoreTables = new Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable>();
             foreach (SqlDataTypeStoreDataScope storeDataScope in sqlDataTypeStoreDataScopes)
             {
                 SqlDataTypeStoreTableKey key = new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName);
+
+                result.TableNames.Add(key, storeDataScope.TableName);
 
                 FieldInfo dataContextFieldInfo = sqlDataStoreTableTypes[key].Item1;
                 Type sqlDataProvdierHelperType = sqlDataStoreTableTypes[key].Item2;
@@ -151,29 +168,139 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 sqlDataTypeStoreTables.Add(key, sqlDataTypeStoreTable);
             }
 
+
             SqlDataTypeStore sqlDataTypeStore = new SqlDataTypeStore(interfaceType, sqlDataTypeStoreTables, dataTypeDescriptor.IsCodeGenerated, _sqlDataTypeStoresContainer);
+            result.SqlDataTypeStore = sqlDataTypeStore;
 
-            AddDataTypeStore(interfaceType, sqlDataTypeStore);
+            return result;
         }
 
 
-
-        private void AddDataTypeStore(Type interfaceType, SqlDataTypeStore sqlDataTypeStore)
+        private class InitializeStoreResult
         {
-            if (sqlDataTypeStore != null)
+            public InitializeStoreResult()
             {
-                _sqlDataTypeStoresContainer.AddSupportedDataTypeStore(interfaceType, sqlDataTypeStore);
-                DataProviderRegistry.AddNewDataType(interfaceType, _dataProviderContext.ProviderName);
+                TableNames = new Dictionary<SqlDataTypeStoreTableKey, string>();
             }
-            else
+
+            public Type InterfaceType { get; set; }
+            public SqlDataTypeStore SqlDataTypeStore { get; set; }
+            public Dictionary<SqlDataTypeStoreTableKey, string> TableNames { get; set; }
+        }
+
+
+
+        private void AddDataTypeStore(InitializeStoreResult initializeStoreResult)
+        {
+            if (initializeStoreResult.SqlDataTypeStore != null)
             {
-                _sqlDataTypeStoresContainer.AddKnownInterface(interfaceType);
+                bool isValid = ValidateTables(initializeStoreResult);
+
+                if (isValid)
+                {
+                    _sqlDataTypeStoresContainer.AddSupportedDataTypeStore(initializeStoreResult.InterfaceType, initializeStoreResult.SqlDataTypeStore);
+                    DataProviderRegistry.AddNewDataType(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
+                }
+                else
+                {
+                    _sqlDataTypeStoresContainer.AddKnownInterface(initializeStoreResult.InterfaceType);
+                }
+            }
+            else if (initializeStoreResult.InterfaceType != null)
+            {
+                _sqlDataTypeStoresContainer.AddKnownInterface(initializeStoreResult.InterfaceType);
             }
         }
 
 
 
-        
+        private bool ValidateTables(InitializeStoreResult initializeStoreResult)
+        {
+            StringBuilder errors = new StringBuilder();
+
+            bool isValid = true;
+            foreach (string tableName in initializeStoreResult.TableNames.Values)
+            {
+                bool isTableValid = ValidateTable(initializeStoreResult.InterfaceType, tableName, errors);
+                if (!isTableValid) isValid = false;
+            }
+
+            if (!isValid)
+            {
+                DataTypeValidationRegitry.AddValidationError(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName, errors.ToString());
+                Log.LogCritical("SqlDataProvider", string.Format("The data interface '{0}' will not work for the SqlDataProvider '{1}'", initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName));
+                Log.LogCritical("SqlDataProvider", errors.ToString());
+            }
+
+            return isValid;
+        }
+
+
+
+        private bool ValidateTable(Type interfaceType, string tableName, StringBuilder errors)
+        {
+            ISqlTableInformation sqlTableInformation;
+
+            try
+            {
+                sqlTableInformation = SqlTableInformationStore.GetTableInformation(_connectionString, tableName);
+            }
+            catch (SqlException sqlException)
+            {
+                Log.LogCritical("SqlDataProvider", sqlException);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                errors.AppendLine(ex.ToString());
+                return false;
+            }
+
+            if (sqlTableInformation == null)
+            {
+                errors.AppendLine("Table '{0}' does not exist".FormatWith(tableName));
+                return false;
+            }
+
+            int primaryKeyCount =
+                (from column in sqlTableInformation.ColumnInformations
+                 where column.IsPrimaryKey == true
+                 select column).Count();
+
+            if (primaryKeyCount == 0)
+            {
+                errors.AppendLine(string.Format("The table '{0}' is missing a primary key", tableName));
+                return false;
+            }
+
+
+            List<SqlColumnInformation> columns = new List<SqlColumnInformation>(sqlTableInformation.ColumnInformations);
+            foreach (PropertyInfo property in interfaceType.GetPropertiesRecursively())
+            {
+                if (property.Name == "DataSourceId") continue;
+
+                SqlColumnInformation column = columns.Find(col => col.ColumnName == property.Name);
+                if (null == column)
+                {
+                    errors.AppendLine(string.Format("The interface property named '{0}' does not exist in the table '{1}' as a column", property.Name, sqlTableInformation.TableName)); 
+                    return false;
+                }
+
+                if ((column.IsNullable == false) || (column.Type == typeof(string)))
+                {
+                    if (column.Type != property.PropertyType)
+                    {
+                        errors.AppendLine(string.Format("Type mismatch. The interface type '{0}' does not match the database type '{1}'", property.PropertyType, column.Type)); 
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+       
+
+
         /// <summary>
         /// </summary>
         /// <param name="dataTypeDescriptor"></param>
@@ -302,7 +429,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                if(!element.DataTypeId.HasValue)
+                if (!element.DataTypeId.HasValue)
                 {
 #pragma warning disable 612,618
                     string interfaceName = element.InterfaceType ?? "<unknown type name>";

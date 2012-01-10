@@ -87,6 +87,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             using (TimerProfilerFacade.CreateTimerProfiler(typeof(T).ToString()))
             {
+                string errorMessage;
+                if (!DataTypeValidationRegitry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
+
                 SqlDataTypeStore result = _sqlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
                 return (IQueryable<T>)result.GetQueryable();
@@ -101,6 +107,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             using (TimerProfilerFacade.CreateTimerProfiler(string.Format("dataId ({0})", typeof(T))))
             {
                 if (dataId == null) throw new ArgumentNullException("dataId");
+
+                string errorMessage;
+                if (!DataTypeValidationRegitry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
 
                 SqlDataTypeStore result = _sqlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
@@ -132,7 +144,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         throw new ArgumentException(string.Format("Only one data interface per enumerable type supported"));
                     }
-                }                
+                }
+
+                string errorMessage;
+                if (!DataTypeValidationRegitry.IsValidateForProvider(interfaceType, _dataProviderContext.ProviderName, out errorMessage))
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
 
                 _sqlDataTypeStoresContainer.Update(datas);
             }
@@ -146,6 +164,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 if (datas == null) throw new ArgumentNullException("datas");
+
+                string errorMessage;
+                if (!DataTypeValidationRegitry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
+                {
+                    throw new InvalidOperationException(errorMessage);
+                }
 
                 RequireTransactionScope scope = null;
                 try
@@ -196,6 +220,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         throw new ArgumentException(string.Format("Only one data interface per enumerable type supported"));
                     }
+                }
+
+                string errorMessage;
+                if (!DataTypeValidationRegitry.IsValidateForProvider(interfaceType, _dataProviderContext.ProviderName, out errorMessage))
+                {
+                    throw new InvalidOperationException(errorMessage);
                 }
 
                 _sqlDataTypeStoresContainer.Delete(dataSourceIds, _dataProviderContext);
