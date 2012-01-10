@@ -2,6 +2,8 @@
 using Composite.Core.Xml;
 using System;
 using Composite.Core.Types;
+using System.Linq;
+using System.Collections.Generic;
 
 
 namespace Composite.Core.Xml
@@ -9,13 +11,13 @@ namespace Composite.Core.Xml
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [XhtmlDocumentConverter()]
-	public sealed class XhtmlDocument : XDocument
-	{
+    public sealed class XhtmlDocument : XDocument
+    {
         /// <exclude />
         public XhtmlDocument()
-            : base( new XElement( Namespaces.Xhtml + "html",
+            : base(new XElement(Namespaces.Xhtml + "html",
                 new XElement(Namespaces.Xhtml + "head"),
                 new XElement(Namespaces.Xhtml + "body")))
         { }
@@ -63,14 +65,33 @@ namespace Composite.Core.Xml
         /// <exclude />
         public new static XhtmlDocument Parse(string xhtml)
         {
-            return new XhtmlDocument(XDocument.Parse(xhtml));
+            XhtmlDocument doc = new XhtmlDocument(XDocument.Parse(xhtml));
+
+            List<XElement> sourceWhitespaceSensitiveElements = GetWhitespaceSensitiveElements(doc);
+
+            if (sourceWhitespaceSensitiveElements.Any())
+            {
+                XhtmlDocument docWithWhitespaces = new XhtmlDocument(XDocument.Parse(xhtml, LoadOptions.PreserveWhitespace));
+                List<XElement> fixedWhitespaceSensitiveElements = GetWhitespaceSensitiveElements(docWithWhitespaces);
+
+                for (int i = 0; i < sourceWhitespaceSensitiveElements.Count; i++)
+                {
+                    sourceWhitespaceSensitiveElements[i].ReplaceWith(fixedWhitespaceSensitiveElements[i]);
+                }
+            }
+
+            return doc;
         }
+
 
 
         /// <exclude />
         public new static XhtmlDocument Parse(string xhtml, LoadOptions options)
         {
-            return new XhtmlDocument(XDocument.Parse(xhtml, options));
+            if (options != LoadOptions.None)
+                throw new NotImplementedException("PreserveWhitespace (anything but None) option is explicitly disallowed to prevent bugs - it will turn insignificant whitespace into text nodes, changing the DOM.");
+
+            return Parse(xhtml);
         }
 
 
@@ -82,6 +103,12 @@ namespace Composite.Core.Xml
                 if (this.Head == null) throw new InvalidOperationException("XHTML document is missing <head /> element");
                 if (this.Body == null) throw new InvalidOperationException("XHTML document is missing <body /> element");
             }
+        }
+
+
+        private static List<XElement> GetWhitespaceSensitiveElements(XhtmlDocument doc)
+        {
+            return doc.Descendants().Where(node => node.Name.Namespace == Namespaces.Xhtml && (node.Name.LocalName == "pre" || node.Name.LocalName == "textarea")).ToList();
         }
     }
 
