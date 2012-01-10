@@ -10,14 +10,14 @@ using System.Runtime.InteropServices;
 #if !InternalBuild
 [assembly: AssemblyTitle("Composite C1 3.0.1")]
 #else
-[assembly: AssemblyTitle("Composite C1 3.0.0 (Internal build)")]
+[assembly: AssemblyTitle("Composite C1 3.0.1 (Internal build)")]
 #endif
 
 [assembly: AssemblyDescription("Composite C1 Core classes")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Composite A/S")]
 [assembly: AssemblyProduct("Composite C1")]
-[assembly: AssemblyCopyright("Copyright © Composite A/S 2011")]
+[assembly: AssemblyCopyright("Copyright © Composite A/S 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
