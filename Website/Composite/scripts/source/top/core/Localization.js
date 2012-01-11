@@ -8,6 +8,7 @@ function _Localization () {
 	EventBroadcaster.subscribe ( BroadcastMessages.APPLICATION_LOGIN, this );
 	EventBroadcaster.subscribe ( BroadcastMessages.LANGUAGES_UPDATED, this );
 	EventBroadcaster.subscribe ( BroadcastMessages.FROMLANGUAGE_UPDATED, this );
+	EventBroadcaster.subscribe ( BroadcastMessages.TOLANGUAGE_UPDATED, this );
 }
 
 _Localization.prototype = {
@@ -47,7 +48,8 @@ _Localization.prototype = {
 		 */
 		switch ( broadcast ) {
 			case BroadcastMessages.APPLICATION_LOGIN :
-			case BroadcastMessages.LANGUAGES_UPDATED :
+			case BroadcastMessages.LANGUAGES_UPDATED:
+			case BroadcastMessages.TOLANGUAGE_UPDATED:
 				var languages = LocalizationService.GetActiveLocales ( true );
 				if ( languages.length >= 1 ) {
 					this.languages = new List ( languages );
@@ -77,6 +79,23 @@ _Localization.prototype = {
 				});
 				break;
 		}
+	},
+
+	/**
+	 * Return current lang in short format
+	 */
+	currentLang : function()
+	{
+		if (this.languages != null) {
+			var languages = this.languages.copy();
+			while (languages.hasNext()) {
+				var lang = languages.getNext();
+				if (lang.IsCurrent) {
+					return lang.IsoName;
+				}
+			}
+		}
+		return null;
 	}
 }
 

@@ -241,56 +241,62 @@ DataInputBinding.prototype._parseDOMProperties = function () {
  * Build DOM content.
  */
 DataInputBinding.prototype._buildDOMContent = function () {
-	
-	this.shadowTree.input = this._getInputElement ();
-	this.shadowTree.box = DOMUtil.createElementNS ( Constants.NS_UI, "ui:box", this.bindingDocument );
-	
-	if ( Client.isExplorer == true ) {
+
+	this.shadowTree.input = this._getInputElement();
+	this.shadowTree.box = DOMUtil.createElementNS(Constants.NS_UI, "ui:box", this.bindingDocument);
+
+	if (Client.isExplorer == true) {
 		this.bindingElement.hideFocus = true;
 	}
-	
-	var value = this.getProperty ( "value" );
-	if ( value != null ) {
-		this.setValue ( String ( value ));
+
+	var value = this.getProperty("value");
+	if (value != null) {
+		this.setValue(String(value));
 	}
-	
-	var name = this.getProperty ( "name" );
-	if ( name != null ) {
-		this.setName ( name );
+
+	var name = this.getProperty("name");
+	if (name != null) {
+		this.setName(name);
 	}
-	
-	var isDisabled = this.getProperty ( "isdisabled" );
-	if ( isDisabled == true ) {
-		this.setDisabled ( true );
+
+	var isDisabled = this.getProperty("isdisabled");
+	if (isDisabled == true) {
+		this.setDisabled(true);
 	}
-	
-	var isReadOnly = this.getProperty ( "readonly" );
-	if ( isReadOnly == true ) {
-		this.setReadOnly ( true );
+
+	var isReadOnly = this.getProperty("readonly");
+	if (isReadOnly == true) {
+		this.setReadOnly(true);
 	}
-	
-	var isAutoSelect = this.getProperty ( "autoselect" );
-	if ( isAutoSelect == true ) {
+
+	var isAutoSelect = this.getProperty("autoselect");
+	if (isAutoSelect == true) {
 		this._isAutoSelect = true;
 	}
-	
-	this.shadowTree.box.appendChild ( 
+
+	this.shadowTree.box.appendChild(
 		this.shadowTree.input
 	);
 
-	this.bindingElement.appendChild ( 
+	this.bindingElement.appendChild(
 		this.shadowTree.box
 	);
-	
-	this.shadowTree.input.setAttribute ( "spellcheck", "false" );
-	
+
+	var currentLang = Localization.currentLang();
+	if (currentLang != null) {
+		this.shadowTree.input.setAttribute("spellcheck", "true");
+		this.shadowTree.input.setAttribute("lang", Localization.currentLang());
+	} else {
+		this.shadowTree.input.setAttribute("spellcheck", "false");
+	}
+
 	/*
-	 * Setup ASP.NET identity.
-	 */
-	if ( this.hasCallBackID ()) {
+	* Setup ASP.NET identity.
+	*/
+	if (this.hasCallBackID()) {
 		// Binding.dotnetify not needed - we already have an input element!
-	} else if ( this._isAutoPost ) {
-		this.logger.warn ( "Autopost " + this.toString () + " without a callbackid?" );
+	} else if (this._isAutoPost) {
+		this.logger.warn("Autopost " + this.toString() + " without a callbackid?");
 	}
 }
 
