@@ -39,6 +39,11 @@ namespace Composite.Data.GeneratedTypes
 
 
     /// <summary>    
+    /// This class is used to create/update/delete generated types. That is, types
+    /// that is not defined in code, but designed through the UI and is dynamicly
+    /// compiled. 
+    /// When a data type is created/updated/deleted the interface is (re)code-generated/deleted 
+    /// and the store is created/updated/deleted through <see cref="Composite.Data.DynamicTypes.DynamicTypeManager"/>
     /// </summary>
     /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)] 

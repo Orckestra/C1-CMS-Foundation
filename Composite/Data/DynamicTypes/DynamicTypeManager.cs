@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using Composite.Core.Instrumentation;
@@ -11,9 +12,16 @@ using Composite.Data.Plugins.DataProvider;
 namespace Composite.Data.DynamicTypes
 {
     /// <summary>    
+    /// This class is used for handling DataTypeDescriptors for all C1 data types. 
+    /// Building new from reflection and getting already stored.
+    /// 
+    /// This class is also used for handling stores for a given data type. 
+    /// Including creating/altering/dropping and locales. So through this class
+    /// you can create/alter/drop stores in a specific data provider for a given
+    /// data type.
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public static class DynamicTypeManager
     {
         private static IDynamicTypeManager _dynamicTypeManager = new DynamicTypeManagerImpl();
