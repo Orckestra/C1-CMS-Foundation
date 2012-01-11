@@ -40,7 +40,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes = BuildAllExistingDataTypeStoreDataScopes();
 
-                InitializeStore(element, allSqlDataTypeStoreDataScopes);
+                InitializeStoreResult initializeStoreResult = InitializeStore(element, allSqlDataTypeStoreDataScopes);
+
+                if (initializeStoreResult.InterfaceType == null) return;
+
+                AddDataTypeStore(initializeStoreResult, false);
             }
         }
 
@@ -190,11 +194,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private void AddDataTypeStore(InitializeStoreResult initializeStoreResult)
+        private void AddDataTypeStore(InitializeStoreResult initializeStoreResult, bool doValidate = true)
         {
             if (initializeStoreResult.SqlDataTypeStore != null)
             {
-                bool isValid = ValidateTables(initializeStoreResult);
+                bool isValid = true;
+                if (doValidate) isValid = ValidateTables(initializeStoreResult);
 
                 if (isValid)
                 {
