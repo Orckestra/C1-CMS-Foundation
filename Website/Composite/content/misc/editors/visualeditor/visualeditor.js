@@ -129,7 +129,14 @@ function onInstanceInitialize ( inst ) {
 			tinyInstance.dom.loadCSS ( Constants.CONFIGROOT + file );
 		}
 	})
-	
+
+
+	//Enable SpellCheck
+	if (Client.isMozilla) {
+		tinyInstance.getBody().spellcheck = true;
+		tinyInstance.getBody().lang = Localization.currentLang();
+	}
+
 	/*
 	 * Hacking!!! See notes below...
 	 */

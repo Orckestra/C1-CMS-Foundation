@@ -38,36 +38,42 @@ TextBoxBinding.prototype.toString = function () {
  * @overloads {DataInputBinding#_buildDOMContent}
  */
 TextBoxBinding.prototype._buildDOMContent = function () {
-	
+
 	/*
-	 * Note that we nuke the textarea that may have been used to populate  
-	 * our value. That's because we'll replace it with our own area...
-	 */
-	var defaultarea = DOMUtil.getElementsByTagName ( this.bindingElement, "textarea" ).item ( 0 );
-	if ( defaultarea != null ) {
-		this.setValue ( defaultarea.value );
-		defaultarea.parentNode.removeChild ( defaultarea );
+	* Note that we nuke the textarea that may have been used to populate  
+	* our value. That's because we'll replace it with our own area...
+	*/
+	var defaultarea = DOMUtil.getElementsByTagName(this.bindingElement, "textarea").item(0);
+	if (defaultarea != null) {
+		this.setValue(defaultarea.value);
+		defaultarea.parentNode.removeChild(defaultarea);
 	}
-	
+
 	/*
-	 * Super goes here!
-	 */
-	TextBoxBinding.superclass._buildDOMContent.call ( this );
-	
+	* Super goes here!
+	*/
+	TextBoxBinding.superclass._buildDOMContent.call(this);
+
 	/*
-	 * Textarea specials.
-	 */
-	var currentLang = Localization.currentLang();
-	if (currentLang != null) {
-		this.shadowTree.input.setAttribute("spellcheck", "true");
-		this.shadowTree.input.setAttribute("lang", Localization.currentLang());
-	} else {
+	* Textarea specials.
+	*/
+	if (Client.isMozilla) {
+		var currentLang = Localization.currentLang();
+		if (currentLang != null) {
+			this.shadowTree.input.setAttribute("spellcheck", "true");
+			this.shadowTree.input.setAttribute("lang", Localization.currentLang());
+		} else {
+			this.shadowTree.input.setAttribute("spellcheck", "false");
+		}
+	}
+	else {
 		this.shadowTree.input.setAttribute("spellcheck", "false");
 	}
 
-	if ( !this._hasWordWrap ) {
-		this.shadowTree.input.setAttribute ( "wrap", "off" );
+	if (!this._hasWordWrap) {
+		this.shadowTree.input.setAttribute("wrap", "off");
 	}
+
 }
 
 /**
