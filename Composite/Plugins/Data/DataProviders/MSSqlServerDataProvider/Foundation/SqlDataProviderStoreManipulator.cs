@@ -100,7 +100,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             var sql = new StringBuilder();
             var sqlColumns = typeDescriptor.Fields.Select(fieldDescriptor => GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true)).ToList();
 
-            sql.AppendFormat("CREATE TABLE [{0}]({1});", tableName, string.Join(",", sqlColumns));
+            sql.AppendFormat("CREATE TABLE dbo.[{0}]({1});", tableName, string.Join(",", sqlColumns));
             sql.Append(SetPrimaryKey(tableName, typeDescriptor.KeyPropertyNames, (typeDescriptor.HasCustomPhysicalSortOrder == false)));
 
             try
