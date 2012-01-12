@@ -161,7 +161,7 @@
                         <label for="txtPassword">Password</label>
                     </div>
                     <div class="value">
-                        <input runat="server" tabindex="2" type="password" id="txtPassword" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()"/>
+                        <input runat="server" tabindex="2" type="password" id="txtPassword" onkeydown="if (event.keyCode == 13) document.getElementById('aLogin').click()" autocomplete="off" />
                     </div>
                     <div class="clear"></div>
                 </div>
