@@ -29,6 +29,17 @@ public partial class Composite_Management_Login : System.Web.UI.Page
     private void RedirectToReturnUrl()
     {
         var returnUrl = Request.QueryString["ReturnUrl"];
+
+        try
+        {
+            Uri uri = new Uri(returnUrl);
+            if (uri.Host != Request.Url.Host)
+            {
+                returnUrl = null; // prevent "Arbitrary Redirection" attacks
+            }
+        }
+        catch (Exception) { }
+
         if (!string.IsNullOrEmpty(returnUrl))
         {
             Response.Redirect(returnUrl, false);
