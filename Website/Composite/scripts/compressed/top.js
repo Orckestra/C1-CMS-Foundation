@@ -11432,10 +11432,14 @@ this._isAutoSelect=true;
 }
 this.shadowTree.box.appendChild(this.shadowTree.input);
 this.bindingElement.appendChild(this.shadowTree.box);
+if(Client.isMozilla){
 var _80e=Localization.currentLang();
 if(_80e!=null){
 this.shadowTree.input.setAttribute("spellcheck","true");
 this.shadowTree.input.setAttribute("lang",Localization.currentLang());
+}else{
+this.shadowTree.input.setAttribute("spellcheck","false");
+}
 }else{
 this.shadowTree.input.setAttribute("spellcheck","false");
 }
@@ -11916,10 +11920,14 @@ this.setValue(_83b.value);
 _83b.parentNode.removeChild(_83b);
 }
 TextBoxBinding.superclass._buildDOMContent.call(this);
+if(Client.isMozilla){
 var _83c=Localization.currentLang();
 if(_83c!=null){
 this.shadowTree.input.setAttribute("spellcheck","true");
 this.shadowTree.input.setAttribute("lang",Localization.currentLang());
+}else{
+this.shadowTree.input.setAttribute("spellcheck","false");
+}
 }else{
 this.shadowTree.input.setAttribute("spellcheck","false");
 }
