@@ -32,7 +32,7 @@
         return ClientValidationRules != null && ClientValidationRules.Any(rule => rule is NotNullClientValidationRule) ? "true" : "false";
     }
     
-     private string TypeParam()
+    private string TypeParam()
     {
         switch (this.Type)
         {
@@ -43,13 +43,14 @@
         }        
     }
 
-     public string FilterCharactersAndHtmlEncode(string text)
+
+    public string FilterCharactersAndHtmlEncode(string text)
      {
          // Filtering '\0' character, browsers' xml readers cannot parse neither '\0' nor "&#x0;"
          return Server.HtmlEncode((text ?? string.Empty).Replace('\0', ' '));
      }    
 </script>
 
-<ui:textbox required="<%= IsRequired() %>" name="<%= this.UniqueID  %>" <%= TypeParam() %>>
+<ui:textbox required="<%= IsRequired() %>" name="<%= this.UniqueID  %>" spellcheck="<%= this.SpellCheck.ToString().ToLower() %>" <%= TypeParam() %>>
     <textarea><%= FilterCharactersAndHtmlEncode(_currentStringValue) %></textarea>
 </ui:textbox>

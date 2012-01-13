@@ -67,15 +67,15 @@
 							<cms:bind source="SelectedPage.MenuTitle" />
 						</TextBox.Text>
 					</TextBox>
-					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpUrlTitle}">
+					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpUrlTitle}" SpellCheck="false">
 						<TextBox.Required>
-							<cms:bind source="UrlTitleIsRequired" />
+							<cms:read source="UrlTitleIsRequired" />
 						</TextBox.Required>
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.UrlTitle" />
 						</TextBox.Text>
 					</TextBox>
-					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelFriendlyUrl}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpFriendlyUrl}">
+					<TextBox Label="${Composite.Plugins.PageElementProvider, EditPage.LabelFriendlyUrl}" Help="${Composite.Plugins.PageElementProvider, EditPage.HelpFriendlyUrl}" SpellCheck="false">
 						<TextBox.Text>
 							<cms:bind source="SelectedPage.FriendlyUrl" />
 						</TextBox.Text>

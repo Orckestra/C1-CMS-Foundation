@@ -23,6 +23,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private string _formControlLabel;
         private string _text;
+        private bool _spellCheck = true;
 
         /// <exclude />
         protected abstract void BindStateToProperties();
@@ -61,6 +62,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public bool Required
         {
             get; set;
+        }
+
+        /// <exclude />
+        public bool SpellCheck
+        {
+            get { return _spellCheck; }
+            set { _spellCheck = value; }
         }
 
         /// <exclude />
@@ -105,6 +113,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.ClientValidationRules = this.ClientValidationRules;
             _userControl.Type = this.Type;
             _userControl.Required = this.Required;
+            _userControl.SpellCheck = this.SpellCheck;
 
             return _userControl;
         }

@@ -106,4 +106,4 @@
     }
     
 </script>
-<ui:datainput name="<%= this.UniqueID  %>" value="<%= FilterCharactersAndEncode(_currentStringValue) %>" <%= ValidationParams() %> <%= TypeParam() %> />
+<ui:datainput name="<%= this.UniqueID  %>" value="<%= FilterCharactersAndEncode(_currentStringValue) %>" spellcheck="<%= this.SpellCheck.ToString().ToLower() %>" <%= ValidationParams() %> <%= TypeParam() %> />

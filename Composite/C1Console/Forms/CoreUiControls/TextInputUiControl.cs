@@ -47,6 +47,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
             this.Text = "";
             this.Type = TextBoxType.String;
             this.Required = false;
+            this.SpellCheck = true;
         }
 
         [BindableProperty]
@@ -57,9 +58,13 @@ namespace Composite.C1Console.Forms.CoreUiControls
         [FormsProperty]
         public TextBoxType Type { get; set; }
 
-        [BindableProperty]
+
         [FormsProperty]
         public bool Required { get; set; }
+
+
+        [FormsProperty]
+        public bool SpellCheck { get; set; }
     }
 
 }

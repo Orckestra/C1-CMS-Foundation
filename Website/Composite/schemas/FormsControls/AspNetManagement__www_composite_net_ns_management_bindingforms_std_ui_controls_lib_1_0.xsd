@@ -1761,6 +1761,16 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="TextArea.SpellCheck">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="TextArea.Label">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -1793,6 +1803,7 @@
     <xsd:attribute name="Text" type="xsd:string" use="optional" />
     <xsd:attribute name="Type" type="xsd:string" use="optional" />
     <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="SpellCheck" type="xsd:boolean" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />
   </xsd:complexType>
@@ -1831,6 +1842,16 @@
             </xsd:sequence>
           </xsd:complexType>
         </xsd:element>
+        <xsd:element name="TextBox.SpellCheck">
+          <xsd:complexType mixed="true">
+            <xsd:sequence maxOccurs="1" minOccurs="0">
+              <xsd:choice>
+                <xsd:element ref="cms:read" />
+                <xsd:any namespace="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" />
+              </xsd:choice>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
         <xsd:element name="TextBox.Label">
           <xsd:complexType mixed="true">
             <xsd:sequence maxOccurs="1" minOccurs="0">
@@ -1863,6 +1884,7 @@
     <xsd:attribute name="Text" type="xsd:string" use="optional" />
     <xsd:attribute name="Type" type="xsd:string" use="optional" />
     <xsd:attribute name="Required" type="xsd:boolean" use="optional" />
+    <xsd:attribute name="SpellCheck" type="xsd:boolean" use="optional" />
     <xsd:attribute name="Label" type="xsd:string" use="optional" />
     <xsd:attribute name="Help" type="xsd:string" use="optional" />
   </xsd:complexType>

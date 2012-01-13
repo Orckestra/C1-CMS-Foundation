@@ -9,9 +9,9 @@
   <cms:layout>
     <PlaceHolder>
       <FieldGroup Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelFieldGroup}">
-        <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}">
+        <TextBox Label="${Composite.Plugins.PageElementProvider, AddNewPageStep2.LabelUrlTitle}" Help="${Composite.Plugins.PageElementProvider, AddNewPageStep2.HelpUrlTitle}" SpellCheck="false">
 		  <TextBox.Required>
-		    <cms:bind source="UrlTitleIsRequired" />
+		    <cms:read source="UrlTitleIsRequired" />
 		  </TextBox.Required>
           <TextBox.Text>
             <cms:bind source="NewPage.UrlTitle" />
