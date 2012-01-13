@@ -128,7 +128,14 @@ function DataInputBinding () {
 	 * @type {Map<string><boolean>}
 	 * @overwrites {Binding#crawlerFilters}
 	 */
-	this.crawlerFilters	= new List ([ DocumentCrawler.ID, FocusCrawler.ID ]);
+	this.crawlerFilters = new List([DocumentCrawler.ID, FocusCrawler.ID]);
+
+
+	/**
+	* Enable spellcheck?
+	* @type {boolean}
+	*/
+	this.spellcheck = true;
 	
 	/*
 	 * Returnable.
@@ -196,6 +203,8 @@ DataInputBinding.prototype._parseDOMProperties = function () {
 	this.minlength = this.getProperty ( "minlength" );
 	this.maxlength = this.getProperty ( "maxlength" );
 	this._isAutoPost = this.getProperty ( "autopost" ) == true;
+	this.spellcheck = this.getProperty ("spellcheck") !== false;
+
 	
 	/*
 	 * Regular expression?
@@ -282,7 +291,7 @@ DataInputBinding.prototype._buildDOMContent = function () {
 		this.shadowTree.box
 	);
 
-	if (Client.isFirefox) {
+	if (this.spellcheck && Client.isFirefox) {
 		var currentLang = Localization.currentLang();
 		if (currentLang != null) {
 			this.shadowTree.input.setAttribute("spellcheck", "true");

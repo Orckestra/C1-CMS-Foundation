@@ -57,18 +57,6 @@ TextBoxBinding.prototype._buildDOMContent = function () {
 	/*
 	* Textarea specials.
 	*/
-	if (Client.isFirefox) {
-		var currentLang = Localization.currentLang();
-		if (currentLang != null) {
-			this.shadowTree.input.setAttribute("spellcheck", "true");
-			this.shadowTree.input.setAttribute("lang", Localization.currentLang());
-		} else {
-			this.shadowTree.input.setAttribute("spellcheck", "false");
-		}
-	}
-	else {
-		this.shadowTree.input.setAttribute("spellcheck", "false");
-	}
 
 	if (!this._hasWordWrap) {
 		this.shadowTree.input.setAttribute("wrap", "off");
