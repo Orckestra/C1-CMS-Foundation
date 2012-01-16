@@ -11384,6 +11384,12 @@ this.minlength=this.getProperty("minlength");
 this.maxlength=this.getProperty("maxlength");
 this._isAutoPost=this.getProperty("autopost")==true;
 this.spellcheck=this.getProperty("spellcheck")!==false;
+if(this.type=="programmingidentifier"){
+this.spellcheck=false;
+}
+if(this.type=="programmingnamespace"){
+this.spellcheck=false;
+}
 var _805=this.getProperty("regexrule");
 if(_805!=null){
 this.expression=new RegExp(_805);
