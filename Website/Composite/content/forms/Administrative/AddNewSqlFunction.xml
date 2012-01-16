@@ -18,7 +18,7 @@
         </TextBox>
       </FieldGroup>
       <FieldGroup Label="${Composite.Plugins.SqlFunction, AddEditSqlFunction.LabelSqlEditor}">
-        <TextArea Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelQueryCOmmand}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunction.HelpQueryCOmmand}">
+        <TextArea Label="${Composite.Plugins.SqlFunction, AddNewSqlFunction.LabelQueryCOmmand}" Help="${Composite.Plugins.SqlFunction, AddNewSqlFunction.HelpQueryCOmmand}" SpellCheck="false">
           <cms:bind source="NewSqlQueryInfo.Command" />
         </TextArea>
       </FieldGroup>

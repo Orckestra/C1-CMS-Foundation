@@ -7,7 +7,7 @@
   </cms:bindings>
 	<cms:layout iconhandle="users-adduser">
 		<FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup}">
-			<TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameHelp}">
+			<TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.UserNameHelp}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="NewUser.Username" />
 				</TextBox.Text>

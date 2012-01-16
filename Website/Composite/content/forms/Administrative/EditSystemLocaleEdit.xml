@@ -5,7 +5,7 @@
 	</cms:bindings>
 	<cms:layout iconhandle="localization-editsystemlocale" label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.Dialog.Label}">
 		<FieldGroup Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.FieldGroup.Label}">
-			<TextBox Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Help}">
+			<TextBox Label="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, EditSystemLocaleWorkflow.UrlMappingName.Help}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="SystemActiveLocale.UrlMappingName" />
 				</TextBox.Text>

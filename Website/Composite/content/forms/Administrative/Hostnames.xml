@@ -25,7 +25,7 @@
 		</cms:layout.label>
 
 		<FieldGroup>
-			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Help}">
+			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Hostname.Help}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="Hostname" />
 				</TextBox.Text>
@@ -51,12 +51,12 @@
 					<cms:bind source="IncludeCultureInUrl" />
 				</CheckBox.Checked>
 			</CheckBox>
-			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Help}">
+			<TextBox Label="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Custom404Page.Help}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="PageNotFoundUrl" />
 				</TextBox.Text>
 			</TextBox>
-			<TextArea Label="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Help}">
+			<TextArea Label="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Label}" Help="${Composite.Web.UrlConfiguration, HostnameBinding.Aliases.Help}" SpellCheck="false">
 				<TextArea.Text>
 					<cms:bind source="Aliases" />
 				</TextArea.Text>

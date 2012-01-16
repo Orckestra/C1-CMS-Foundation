@@ -20,12 +20,12 @@
           <cms:bind source="CurrentMethodFunctionInfo.Namespace" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelType}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelTypeHelp}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelType}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelTypeHelp}" SpellCheck="false">
         <TextBox.Text>
           <cms:bind source="CurrentMethodFunctionInfo.Type" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethod}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodHelp}">
+      <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethod}" Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditMethodBasedFunction.LabelMethodHelp}" SpellCheck="false">
         <TextBox.Text>
           <cms:bind source="CurrentMethodFunctionInfo.MethodName" />
         </TextBox.Text>

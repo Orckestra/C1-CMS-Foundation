@@ -4,7 +4,7 @@
 	</cms:bindings>
 	<cms:layout label="${Composite.Web.UrlConfiguration, UrlConfiguration.Title}">
 		<FieldGroup>
-			<TextBox Label="${Composite.Web.UrlConfiguration, UrlConfiguration.PageUrlSuffix.Label}" Help="${Composite.Web.UrlConfiguration, UrlConfiguration.PageUrlSuffix.Help}">
+			<TextBox Label="${Composite.Web.UrlConfiguration, UrlConfiguration.PageUrlSuffix.Label}" Help="${Composite.Web.UrlConfiguration, UrlConfiguration.PageUrlSuffix.Help}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="PageUrlSuffix" />
 				</TextBox.Text>

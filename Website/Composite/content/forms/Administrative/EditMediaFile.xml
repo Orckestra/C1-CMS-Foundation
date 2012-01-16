@@ -8,7 +8,7 @@
   </cms:bindings>
   <cms:layout>
     <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelFieldGroup}">
-      <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelFileName}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpFileName}">
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditMediaFile.LabelFileName}" Help="${Composite.Management, Website.Forms.Administrative.EditMediaFile.HelpFileName}" SpellCheck="false">
         <TextBox.Text>
           <cms:bind source="FileDataFileName" />
         </TextBox.Text>

@@ -197,50 +197,51 @@ DataInputBinding.prototype.onBindingDispose = function () {
  */
 DataInputBinding.prototype._parseDOMProperties = function () {
 
-	this.type = this.getProperty ( "type" );
-	this.isRequired = this.getProperty ( "required" );
-	this.isPassword = this.getProperty ( "password" ) == true;
-	this.minlength = this.getProperty ( "minlength" );
-	this.maxlength = this.getProperty ( "maxlength" );
-	this._isAutoPost = this.getProperty ( "autopost" ) == true;
-	this.spellcheck = this.getProperty ("spellcheck") !== false;
+	this.type = this.getProperty("type");
+	this.isRequired = this.getProperty("required");
+	this.isPassword = this.getProperty("password") == true;
+	this.minlength = this.getProperty("minlength");
+	this.maxlength = this.getProperty("maxlength");
+	this._isAutoPost = this.getProperty("autopost") == true;
+	this.spellcheck = this.getProperty("spellcheck") !== false;
+	if (this.type == "programmingidentifier") this.spellcheck = false;
+	if (this.type == "programmingnamespace") this.spellcheck = false;
 
-	
 	/*
-	 * Regular expression?
-	 */
-	var regexrule = this.getProperty ( "regexrule" );
-	if ( regexrule != null ) {
-		this.expression = new RegExp ( regexrule )
+	* Regular expression?
+	*/
+	var regexrule = this.getProperty("regexrule");
+	if (regexrule != null) {
+		this.expression = new RegExp(regexrule)
 	}
-	
+
 	/*
-	 * Here's a quick hack - we should probably formalize this.
-	 */
-	var onblur = this.getProperty ( "onbindingblur" );
-	if ( onblur != null ) {
+	* Here's a quick hack - we should probably formalize this.
+	*/
+	var onblur = this.getProperty("onbindingblur");
+	if (onblur != null) {
 		this.onblur = function () {
-			Binding.evaluate ( onblur, this );
+			Binding.evaluate(onblur, this);
 		};
 	}
-	
+
 	/*
-	 * Here's another quick hack.
-	 */
-	var onvaluechange = this.getProperty ( "onvaluechange" );
-	if ( onvaluechange != null ) {
+	* Here's another quick hack.
+	*/
+	var onvaluechange = this.getProperty("onvaluechange");
+	if (onvaluechange != null) {
 		this.onValueChange = function () {
-			Binding.evaluate ( onvaluechange, this );
+			Binding.evaluate(onvaluechange, this);
 		};
 	}
-	
+
 	/*
-	 * Certain types should present a default error (balloon). Specifying 
-	 * the error *directly* on the binding will overwrite the default error.
-	 */
-	if ( this.error == null && this.type != null ) {
-		var error = DataBinding.errors [ this.type ];
-		if ( error != null ) {
+	* Certain types should present a default error (balloon). Specifying 
+	* the error *directly* on the binding will overwrite the default error.
+	*/
+	if (this.error == null && this.type != null) {
+		var error = DataBinding.errors[this.type];
+		if (error != null) {
 			this.error = error;
 		}
 	}

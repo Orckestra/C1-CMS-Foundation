@@ -14,7 +14,7 @@
           <cms:bind source="SqlConnection.Name" />
         </TextBox.Text>
       </TextBox>
-      <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelConnectionString}" Help="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.HelpConnectionString}">
+      <TextBox Label="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.LabelConnectionString}" Help="${Composite.Plugins.SqlFunction, EditSqlFunctionConnection.HelpConnectionString}" SpellCheck="false">
         <TextBox.Text>
           <cms:bind source="ConnectionString" />
         </TextBox.Text>
