@@ -37,7 +37,10 @@ namespace Composite.Core.WebClient
         public static void Application_Start(object sender, EventArgs e)
         {
             _startTime = DateTime.Now;
-            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} started at {1}", AppDomain.CurrentDomain.Id, _startTime.ToString("HH:mm:ss:ff"));
+            if (RuntimeInformation.IsDebugBuild)
+            {
+                Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} started at {1}", AppDomain.CurrentDomain.Id, _startTime.ToString("HH:mm:ss:ff"));
+            }
 
             SystemSetupFacade.SetFirstTimeStart();
 
@@ -261,7 +264,10 @@ namespace Composite.Core.WebClient
 
         private static void CurrentDomain_DomainUnload(object sender, EventArgs e)
         {
-            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} unloaded at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));           
+            if (RuntimeInformation.IsDebugBuild)
+            {
+                Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} unloaded at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));
+            }
         }
 
 

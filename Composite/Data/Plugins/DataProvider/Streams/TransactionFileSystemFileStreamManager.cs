@@ -70,7 +70,10 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (Transaction.Current == null)
             {
-                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with delete without transactional support.");
+                if (RuntimeInformation.IsDebugBuild)
+                {
+                    Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with delete without transactional support.");
+                }
                 DeleteFile(baseFile.SystemPath);
             }
             else
