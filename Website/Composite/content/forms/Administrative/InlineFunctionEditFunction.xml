@@ -29,14 +29,14 @@
       <PlaceHolder Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.FieldGroup.Label}">
         <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.FieldGroup.Label}">
           <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Label}"
-                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Help}">
+                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodName.Help}" Type="ProgrammingIdentifier">
             <TextBox.Text>
               <cms:bind source="Function.Name" />
             </TextBox.Text>
           </TextBox>
 
           <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Label}"
-                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Help}">
+                   Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, EditInlineFunctionWorkflow.MethodNamespace.Help}" Type="ProgrammingNamespace">
             <TextBox.Text>
               <cms:bind source="Function.Namespace" />
             </TextBox.Text>

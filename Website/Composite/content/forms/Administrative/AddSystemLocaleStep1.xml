@@ -23,7 +23,7 @@
         </KeySelector.Selected>
       </KeySelector>
 
-			<TextBox Label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.UrlMappingName.Help}">
+			<TextBox Label="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.UrlMappingName.Label}" Help="${Composite.Plugins.LocalizationElementProvider, AddSystemLocaleWorkflow.UrlMappingName.Help}" SpellCheck="false">
 				<TextBox.Text>
 					<cms:bind source="UrlMappingName" />
 				</TextBox.Text>

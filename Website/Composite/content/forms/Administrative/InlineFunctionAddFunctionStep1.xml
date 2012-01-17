@@ -10,14 +10,14 @@
     <FieldGroup Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.FieldGroup.Label}">
 
       <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Label}"
-               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Help}">
+               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodName.Help}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="NewFunction.Name" />
         </TextBox.Text>
       </TextBox>
 
       <TextBox Label="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodNamespace.Label}"
-               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodNamespace.Help}">
+               Help="${Composite.Plugins.MethodBasedFunctionProviderElementProvider, AddInlineFunctionWorkflow.MethodNamespace.Help}" Type="ProgrammingNamespace">
         <TextBox.Text>
           <cms:bind source="NewFunction.Namespace" />
         </TextBox.Text>
