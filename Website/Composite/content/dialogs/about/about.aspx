@@ -28,7 +28,11 @@
 					<div id="version">Build no. ${version}</div>
 					<div id="copyright">© <%=DateTime.Now.Year%> Composite A/S</div>
 					<br/>
-					<div>Installation ID:<span id="id" title="Installation ID">${id}</span></div>
+					<div>
+                        <input id="id" value="${id}" onclick="this.select()" readonly="readonly" />
+                        Installation ID: 
+                    </div>
+                    
 				</div>
 				<div id="fade"/>
 			</div>

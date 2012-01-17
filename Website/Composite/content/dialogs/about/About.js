@@ -19,11 +19,11 @@ var About = new function () {
 		
 		var div0 = document.getElementById ( "prettyversion" );
 		var div1 = document.getElementById ( "version" );
-		var div3 = document.getElementById ( "id" );
+		var idfield = document.getElementById ( "id" );
 		
 		div0.firstChild.data = div0.firstChild.data.replace ( "${pretty}", Installation.versionPrettyString );
 		div1.firstChild.data = div1.firstChild.data.replace ( "${version}", Installation.versionString );
-		div3.firstChild.data = div3.firstChild.data.replace ( "${id}", Installation.installationID );
+		idfield.value = idfield.value.replace("${id}", Installation.installationID);
 		
 		DOMEvents.addEventListener ( window, DOMEvents.UNLOAD, this );
 		DOMEvents.addEventListener ( document, DOMEvents.MOUSEOVER, this );

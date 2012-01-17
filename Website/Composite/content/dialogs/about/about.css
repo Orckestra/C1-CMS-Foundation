@@ -28,18 +28,16 @@ div#info {
 	width: 348px;
 	height: 160px;
 }
-div#id {
-	padding-top: 1em;
+input#id {
+    float: right;
+    margin-right: 10px;
+	width: 235px;
+	margin-top: -2px;
+	border: 1px solid silver;
+	background-color:transparent;
 }
 div#version, 
 div#copyright,
-span#id {
-	cursor: text;
-}
-span#id {
-	padding-right: 1em;
-	padding-left: 0.5em;	
-}
 ui|toolbarbody,
 ui|toolbargroup {
 	float: none;	
