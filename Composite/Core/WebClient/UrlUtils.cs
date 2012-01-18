@@ -16,7 +16,7 @@ namespace Composite.Core.WebClient
         private static readonly string _adminFolderName = "Composite";
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
-        private static readonly string[] UrlStartMarkers = new[] {"\"", "\'", "&#39;"};
+        private static readonly string[] UrlStartMarkers = new[] { "\"", "\'", "&#39;", "&#34;" };
 
 
         static UrlUtils()
@@ -165,9 +165,15 @@ namespace Composite.Core.WebClient
                 {
                     endOffset = html.IndexOf(lastQuoteSymbol, prefixEndOffset);
                 }
-                else if (lastQuoteSymbol == ';' && urlOffset > 5 && html.Substring(urlOffset - 5, 4) == "&#39")
+                else if (lastQuoteSymbol == ';' && urlOffset > 5)
                 {
-                    endOffset = html.IndexOf("&#39;", prefixEndOffset, StringComparison.Ordinal);
+                    string fiveCharsPrefix = html.Substring(urlOffset - 5, 5);
+
+                    if (fiveCharsPrefix == "&#34;" 
+                        || fiveCharsPrefix == "&#39;")
+                    {
+                        endOffset = html.IndexOf(fiveCharsPrefix, prefixEndOffset, StringComparison.Ordinal);
+                    }
                 }
 
                 // Skippnig match if the quotes aren't defined

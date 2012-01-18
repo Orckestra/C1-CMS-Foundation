@@ -23,8 +23,9 @@ namespace Composite.Core.WebClient
         private static readonly string DefaultMediaStorePrefix = DefaultMediaStore + ":";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
         private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
-        private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media(";
-        private static readonly string RawMediaUrlPrefix = "~/media(";
+        private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media";
+        private static readonly string DecodedFullInternalMediaUrlPrefix = InternalMediaUrlPrefix + "(";
+        private static readonly string RawMediaUrlPrefix = "~/media";
 
         /// <exclude />
         public static string GetUrl(IMediaFile file)
@@ -210,15 +211,21 @@ namespace Composite.Core.WebClient
             internalUrls.Reverse();
 
 
-            var converionCache = new Dictionary<string, string>();
+            var convertionCache = new Dictionary<string, string>();
             foreach (UrlUtils.UrlMatch mediaUrlMatch in internalUrls)
             {
                 string internalMediaUrl = mediaUrlMatch.Value;
                 string publicMediaUrl;
 
-                if (!converionCache.TryGetValue(internalMediaUrl, out publicMediaUrl))
+                if (!convertionCache.TryGetValue(internalMediaUrl, out publicMediaUrl))
                 {
-                    int closingBracketOffset = internalMediaUrl.IndexOf(")");
+                    string decodedMediaUrl = internalMediaUrl.Replace("%28", "(").Replace("%29", ")").Replace("&amp;", "&");
+                    if(!decodedMediaUrl.StartsWith(DecodedFullInternalMediaUrlPrefix))
+                    {
+                        continue;
+                    }
+
+                    int closingBracketOffset = decodedMediaUrl.IndexOf(")", StringComparison.InvariantCulture);
 
                     if(closingBracketOffset < 0)
                     {
@@ -226,9 +233,9 @@ namespace Composite.Core.WebClient
                     }
 
                     Guid mediaId;
-                    int prefixLength = InternalMediaUrlPrefix.Length;
+                    int prefixLength = DecodedFullInternalMediaUrlPrefix.Length;
 
-                    string mediaIdStr = internalMediaUrl.Substring(prefixLength, closingBracketOffset - prefixLength);
+                    string mediaIdStr = decodedMediaUrl.Substring(prefixLength, closingBracketOffset - prefixLength);
                     if (mediaIdStr.StartsWith(DefaultMediaStorePrefix, StringComparison.InvariantCultureIgnoreCase))
                     {
                         mediaIdStr = mediaIdStr.Substring(DefaultMediaStorePrefix.Length);
@@ -243,12 +250,12 @@ namespace Composite.Core.WebClient
 
                     try
                     {
-                        parsedOldUrl = new UrlBuilder(internalMediaUrl);
+                        parsedOldUrl = new UrlBuilder(decodedMediaUrl);
                     }
                     catch
                     {
                         Log.LogWarning(LogTitle, "Failed to parse url '{0}'".FormatWith(internalMediaUrl));
-                        converionCache.Add(internalMediaUrl, null);
+                        convertionCache.Add(internalMediaUrl, null);
                         continue;
                     }
 
@@ -263,7 +270,7 @@ namespace Composite.Core.WebClient
                     IMediaFile file = GetFileById(storeId, mediaId);
                     if(file == null)
                     {
-                        converionCache.Add(internalMediaUrl, null);
+                        convertionCache.Add(internalMediaUrl, null);
                         continue;
                     }
 
@@ -289,7 +296,7 @@ namespace Composite.Core.WebClient
                     // Encoding xml attribute value
                     publicMediaUrl = publicMediaUrl.Replace("&", "&amp;");
 
-                    converionCache.Add(internalMediaUrl, publicMediaUrl);
+                    convertionCache.Add(internalMediaUrl, publicMediaUrl);
                 }
                 else
                 {
