@@ -165,7 +165,7 @@ namespace Composite.Core.WebClient
                 {
                     endOffset = html.IndexOf(lastQuoteSymbol, prefixEndOffset);
                 }
-                else if (lastQuoteSymbol == ';' && html.Substring(startIndex - 5, 4) == "&#39")
+                else if (lastQuoteSymbol == ';' && urlOffset > 5 && html.Substring(urlOffset - 5, 4) == "&#39")
                 {
                     endOffset = html.IndexOf("&#39;", prefixEndOffset, StringComparison.Ordinal);
                 }
