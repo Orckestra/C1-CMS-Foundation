@@ -27,6 +27,9 @@ namespace Composite.Core.WebClient
         private static readonly string DecodedFullInternalMediaUrlPrefix = InternalMediaUrlPrefix + "(";
         private static readonly string RawMediaUrlPrefix = "~/media";
 
+        private static readonly string ForbiddenUrlCharacters = @"<>*%&\?";
+        
+
         /// <exclude />
         public static string GetUrl(IMediaFile file)
         {
@@ -275,6 +278,12 @@ namespace Composite.Core.WebClient
                     }
 
                     string pathToFile = UrlUtils.Combine(file.FolderPath, file.FileName);
+
+                    // Hotfix for characters not accepted by ASP.NET by default
+                    foreach (var ch in ForbiddenUrlCharacters)
+                    {
+                        pathToFile = pathToFile.Replace(ch, 'x');
+                    }
 
                     // IIS6 doesn't have wildcard mapping by default, so removing image extension if running in "classic" app pool
                     if(!HttpRuntime.UsingIntegratedPipeline)
