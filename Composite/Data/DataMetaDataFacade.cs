@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.Linq;
+using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data.DynamicTypes;
-using Composite.Core.Types;
-using System.Reflection;
-using Composite.Core;
 using Composite.Data.DynamicTypes.Foundation;
 
 
@@ -125,7 +126,7 @@ namespace Composite.Data
             {
                 Initialize();
 
-                return _dataTypeDescriptorCache.Values;
+                return _dataTypeDescriptorCache.Values.Evaluate();
             }
         }
 
