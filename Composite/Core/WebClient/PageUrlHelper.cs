@@ -393,7 +393,7 @@ namespace Composite.Core.WebClient
         [Obsolete("To be removed. Use Composite.Core.Routings.PageUrls instead.")]
         public static PageUrlOptions ParseQueryString(NameValueCollection queryString, out NameValueCollection notUsedQueryParameters)
         {
-            if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Illigal query string. Expected param 'pageId' with guid.");
+			if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Invalid query string. The 'pageId' parameter of the GUID type is expected.");
 
             string dataScopeName = queryString["dataScope"] ?? DataScopeIdentifier.PublicName;
 

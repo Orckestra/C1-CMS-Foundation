@@ -121,7 +121,7 @@ namespace Composite.Plugins.Routing.Pages
         {
             NameValueCollection queryString = urlBuilder.GetQueryParameters();
 
-            Verify.That(!string.IsNullOrEmpty(queryString["pageId"]), "Illigal query string. Expected param 'pageId' with guid.");
+            Verify.That(!string.IsNullOrEmpty(queryString["pageId"]), "Invalid query string. The 'pageId' parameter of the GUID type is expected.");
 
             string dataScopeName = queryString["dataScope"];
 

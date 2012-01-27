@@ -250,7 +250,7 @@ namespace Composite.Data
         /// <returns></returns>
         internal static PageUrl ParseQueryString(NameValueCollection queryString, out NameValueCollection notUsedQueryParameters)
         {
-            if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Illigal query string. Expected param 'pageId' with guid.");
+            if (string.IsNullOrEmpty(queryString["pageId"])) throw new InvalidOperationException("Invalid query string. The 'pageId' parameter of the GUID type is expected.");
 
             string dataScopeName = queryString["dataScope"];
 
