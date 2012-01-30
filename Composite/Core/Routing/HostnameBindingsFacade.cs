@@ -25,6 +25,8 @@ namespace Composite.Core.Routing
         {
             var configurationNode = dataeventargs.Data as IUrlConfiguration;
 
+            Verify.IsNotNull(configurationNode, "configurationNode is null");
+
             // Trimming page url suffix
             configurationNode.PageUrlSuffix = (configurationNode.PageUrlSuffix ?? string.Empty).Trim();
         }
@@ -33,9 +35,11 @@ namespace Composite.Core.Routing
         {
             var hostnameBinding = dataeventargs.Data as IHostnameBinding;
 
+            Verify.IsNotNull(hostnameBinding, "hostnameBinding is null");
+
             // Trimming and lowercasing hostname
-            hostnameBinding.Hostname = hostnameBinding.Hostname.Trim().ToLowerInvariant();
-            hostnameBinding.PageNotFoundUrl = hostnameBinding.PageNotFoundUrl.Trim();
+            hostnameBinding.Hostname = (hostnameBinding.Hostname ?? string.Empty).Trim().ToLowerInvariant();
+            hostnameBinding.PageNotFoundUrl = (hostnameBinding.PageNotFoundUrl ?? string.Empty).Trim();
         }
 
 
