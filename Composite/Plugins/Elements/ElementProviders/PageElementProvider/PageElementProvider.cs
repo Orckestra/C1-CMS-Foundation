@@ -1013,7 +1013,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             string url = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace)
-                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Internal, urlSpace); 
+                      ?? PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, urlSpace); 
 
             var arguments = new Dictionary<string, string> {{"URL", url}};
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
