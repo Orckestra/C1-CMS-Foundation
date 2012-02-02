@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite.C1Console.Security;
+using System.Reflection;
 
 
 namespace Composite.C1Console.Trees
@@ -96,5 +97,10 @@ namespace Composite.C1Console.Trees
 
 
         internal Dictionary<string, object> CustomData { get; set; }
+
+
+        internal Type SelfParentExcludeFilterDataType { get; set; }
+        internal PropertyInfo SelfParentExcludeFilterPropertyInfo { get; set; }
+        internal object SelfParentExcludeFilterIdValue { get; set; }
     }    
 }

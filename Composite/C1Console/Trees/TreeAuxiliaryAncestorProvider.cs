@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Data;
-using Composite.Core.Logging;
+using System.Reflection;
 using Composite.C1Console.Security;
+using Composite.Core.Logging;
+using Composite.Core.Types;
+using Composite.Data;
+using Composite.Data.DynamicTypes;
 
 
 namespace Composite.C1Console.Trees
@@ -107,12 +110,14 @@ namespace Composite.C1Console.Trees
                         List<TreeNode> treeNodes;
                         if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false) continue;
 
-                        IEnumerable<EntityToken> concatList = null;
+                        UpdateExcludeSelfParentInfor(dynamicContext, dataEntityToken, interfaceType);
+
+                        IEnumerable<EntityToken> concatList = null;                        
 
                         foreach (TreeNode treeNode in treeNodes)
                         {
                             try
-                            {
+                            {                              
                                 dynamicContext.CurrentTreeNode = treeNode;
                                 if (concatList == null)
                                 {
@@ -147,6 +152,21 @@ namespace Composite.C1Console.Trees
             }
 
             return result;
+        }
+
+
+
+        private static void UpdateExcludeSelfParentInfor(TreeNodeDynamicContext dynamicContext, DataEntityToken dataEntityToken, Type interfaceType)
+        {
+            DataTypeDescriptor parentDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId());
+            string idPropertyName = parentDataTypeDescriptor.KeyPropertyNames.SingleOrDefault();
+            // Lookinto caching this one
+            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively(f => f.Name == idPropertyName).Single();
+            object idValue = idPropertyInfo.GetValue(dataEntityToken.Data, null);
+
+            dynamicContext.SelfParentExcludeFilterDataType = interfaceType;
+            dynamicContext.SelfParentExcludeFilterPropertyInfo = idPropertyInfo;
+            dynamicContext.SelfParentExcludeFilterIdValue = idValue;
         }
     }
 }

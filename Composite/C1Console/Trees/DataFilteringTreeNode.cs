@@ -47,9 +47,15 @@ namespace Composite.C1Console.Trees
 
         internal Expression CreateAccumulatedFilterExpression(ParameterExpression parameterExpression, Type affectedInterfaceType, TreeNodeDynamicContext dynamicContext, IEnumerable<int> filtersToSkip = null)
         {
-            TreeNode treeNode = this;
+            TreeNode treeNode = this;            
 
             Expression currentExpression = null;
+
+            if (dynamicContext.SelfParentExcludeFilterDataType != null)
+            {
+                currentExpression =  Expression.Equal(ExpressionHelper.CreatePropertyExpression(dynamicContext.SelfParentExcludeFilterPropertyInfo.Name, parameterExpression), Expression.Constant(dynamicContext.SelfParentExcludeFilterIdValue, dynamicContext.SelfParentExcludeFilterPropertyInfo.PropertyType));
+            }
+
             while (treeNode != null)
             {
                 DataFilteringTreeNode dataFilteringTreeNode = treeNode as DataFilteringTreeNode;
