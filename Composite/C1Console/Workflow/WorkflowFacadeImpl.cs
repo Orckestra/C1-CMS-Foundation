@@ -282,6 +282,9 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
+                if (AbortedWorkflows.Contains(instanceId)) return;
+                AbortedWorkflows.Add(instanceId);
+
                 if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
                 {
                     WorkflowRuntime.GetWorkflow(instanceId).Abort();
@@ -995,6 +998,8 @@ namespace Composite.C1Console.Workflow
 
         private void OnWorkflowInstanceTerminatedCleanup(Guid instanceId)
         {
+            AbortedWorkflows.Remove(instanceId);
+
             WorkflowFlowToken flowToken = new WorkflowFlowToken(instanceId);
 
             TaskManagerFacade.CompleteTasks(flowToken);
@@ -1309,6 +1314,8 @@ namespace Composite.C1Console.Workflow
             }
         }
 
+
+        static List<Guid> AbortedWorkflows = new List<Guid>();
 
         private void PersistFormData(Guid instanceId)
         {
