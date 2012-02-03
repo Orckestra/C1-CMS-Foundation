@@ -90,6 +90,7 @@ del ..\..\Bin\Composite.Community.Newsletter.DataTypeBased.dll
 del ..\..\Bin\Composite.Community.Newsletter.FunctionBased.dll
 del ..\..\Newsletter.ashx
 del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.Newsletter.SubjectBased.xml
+del ..\..\App_GlobalResources\Composite\Community\Newsletter.resx
 
 
 :: Event calender cleanup
