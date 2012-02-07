@@ -12,7 +12,7 @@ namespace Composite.C1Console.Security
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class PermissionTypeFacade
     {
         /// <exclude />
@@ -467,7 +467,7 @@ namespace Composite.C1Console.Security
         public static void RemoveUserPermissionDefinition(Guid userGroupId, EntityToken entityToken)
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");
-            
+
             if ((entityToken is NoSecurityEntityToken) == true) return;
 
             if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions == false) throw new InvalidOperationException("The user permission definition provider does not support altering user permission defintions");
@@ -543,7 +543,7 @@ namespace Composite.C1Console.Security
 
 
         private static IEnumerable<PermissionType> RecursiveUpdateCurrentUserPermissionTypes(UserToken userToken, EntityToken entityToken, IEnumerable<UserPermissionDefinition> userPermissionDefinitions, HashSet<EntityTokenPair> alreadyProcessedTokens)
-        {
+        {            
             IEnumerable<PermissionType> cached = PermissionTypeFacadeCaching.GetUserPermissionTypes(userToken, entityToken);
             if (cached != null)
             {
@@ -604,13 +604,12 @@ namespace Composite.C1Console.Security
 
 
         private static IEnumerable<PermissionType> RecursiveUpdateCurrentUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, HashSet<EntityTokenPair> alreadyProcessedTokens)
-        {
+        {            
             IEnumerable<PermissionType> cached = PermissionTypeFacadeCaching.GetUserGroupPermissionTypes(userToken, entityToken);
             if (cached != null)
             {
                 return cached;
             }
-
 
             IEnumerable<UserGroupPermissionDefinition> selectedUserGroupPermissionDefinitions = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken) == true);
 
@@ -660,10 +659,10 @@ namespace Composite.C1Console.Security
 
             return permisstionTypes;
         }
+        
 
 
-
-        private static IEnumerable<PermissionType> GetInheritedGroupPermissionsTypesRecursivly(EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions)
+        private static IEnumerable<PermissionType> GetInheritedGroupPermissionsTypesRecursivly(EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, List<EntityToken> visitedParents = null)
         {
             UserGroupPermissionDefinition selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken) == true).SingleOrDefault();
             if (selectedUserGroupPermissionDefinition != null)
@@ -679,12 +678,20 @@ namespace Composite.C1Console.Security
                 yield break;
             }
 
-            List<EntityToken> parentEntityTokens = ParentsFacade.GetAllParents(entityToken);
+            List<EntityToken> parentEntityTokens = ParentsFacade.GetAllParents(entityToken);           
+
+            if (visitedParents == null)
+            {
+                visitedParents = new List<EntityToken>();
+            }
 
             IEnumerable<PermissionType> parentsPermisstionTypes = new List<PermissionType>();
             foreach (EntityToken parentEntityToken in parentEntityTokens)
             {
-                IEnumerable<PermissionType> result = GetInheritedGroupPermissionsTypesRecursivly(parentEntityToken, userGroupPermissionDefinitions);
+                if (visitedParents.Contains(parentEntityToken)) continue;
+                visitedParents.Add(parentEntityToken);
+
+                IEnumerable<PermissionType> result = GetInheritedGroupPermissionsTypesRecursivly(parentEntityToken, userGroupPermissionDefinitions, visitedParents).ToList();
 
                 parentsPermisstionTypes = parentsPermisstionTypes.Concat(result);
             }
