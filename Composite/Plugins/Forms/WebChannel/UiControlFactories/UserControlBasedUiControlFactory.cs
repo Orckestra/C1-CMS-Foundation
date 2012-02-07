@@ -16,8 +16,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public abstract class UserControlBasedUiControl : UserControl, IWebUiControl
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public abstract class UserControlBasedUiControl : UserControl, IWebUiControl, IValidatingUiControl
     {
         private string _uiControlId = "IdNotSet";
 
@@ -74,6 +74,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         /// <exclude />
         public List<string> SourceBindingPaths { get; set; }
+
+        public virtual bool IsValid { get; set; }
+
+        public virtual string ValidationError { get; set; }
     }
 
 
@@ -87,6 +91,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public override IUiControl CreateControl()
         {
             UserControlBasedUiControl userControlBasedUiControl = this.UserControlType.ActivateAsUserControl<UserControlBasedUiControl>(null);
+            userControlBasedUiControl.IsValid = true;
 
             return userControlBasedUiControl;
         }
