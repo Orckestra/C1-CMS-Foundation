@@ -3991,6 +3991,11 @@ case KeyEventCodes.VK_PAGE_UP:
 case KeyEventCodes.VK_PAGE_DOWN:
 }
 }
+if(e.keyCode==KeyEventCodes.VK_BACK){
+if(!StandardEventHandler.isBackAllowed){
+DOMEvents.preventDefault(e);
+}
+}
 var _38e=KeySetBinding.handleKey(this._contextDocument,e);
 if(!_38e){
 switch(e.keyCode){
