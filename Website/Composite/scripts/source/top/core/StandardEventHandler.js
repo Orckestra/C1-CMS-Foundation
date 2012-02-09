@@ -331,12 +331,11 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 		} 
 	}
 
-	/* TODO: this code have conflict with Code mirror */
-//	if ( e.keyCode == KeyEventCodes.VK_BACK ) {
-//		if ( !StandardEventHandler.isBackAllowed ) {
-//			DOMEvents.preventDefault ( e );
-//		}
-//	}
+	if ( e.keyCode == KeyEventCodes.VK_BACK ) {
+		if ( !StandardEventHandler.isBackAllowed ) {
+			DOMEvents.preventDefault ( e );
+		}
+	}
 	
 	var isHandled = KeySetBinding.handleKey ( this._contextDocument, e );
 	if ( !isHandled ) {
