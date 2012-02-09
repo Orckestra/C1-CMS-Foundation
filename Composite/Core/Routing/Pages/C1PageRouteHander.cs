@@ -26,7 +26,10 @@ namespace Composite.Core.Routing.Pages
                 string handlersSectionName = isIntegratedPipeline ? "handlers" : "httpHandlers";
 
                 var handlers = XElement.Parse(config.SectionInformation.GetRawXml()).Element(handlersSectionName);
-                Verify.IsNotNull(handlers, "Failed to load section '{0}' from web.config", handlersSectionName);
+                if(handlers == null)
+                {
+                    return;
+                }
 
                 var handler = handlers
                     .Elements("add")
