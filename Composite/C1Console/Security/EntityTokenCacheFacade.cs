@@ -10,6 +10,7 @@ using Composite.Core.Linq;
 using Composite.Core.Instrumentation;
 using Composite.Core.Configuration;
 using Composite.C1Console.Users;
+using System.Globalization;
 
 
 namespace Composite.C1Console.Security
@@ -17,13 +18,14 @@ namespace Composite.C1Console.Security
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class EntityTokenCacheFacade
     {
         private sealed class CacheKey
         {
             public string Username { get; set; }
             public EntityToken EntityToken { get; set; }
+            public CultureInfo Locale { get; set; }
 
 
             public override bool Equals(object obj)
@@ -38,20 +40,20 @@ namespace Composite.C1Console.Security
 
                 return
                     cacheKey.Username.Equals(this.Username) &&
-                    cacheKey.EntityToken.Equals(this.EntityToken);
+                    cacheKey.EntityToken.Equals(this.EntityToken) &&
+                    cacheKey.Locale.Equals(this.Locale);
             }
 
 
             public override int GetHashCode()
             {
-                return this.Username.GetHashCode() ^ this.EntityToken.GetHashCode();
+                return this.Username.GetHashCode() ^ this.EntityToken.GetHashCode() ^ this.Locale.GetHashCode();
             }
         }
 
 
         private static ConcurrentDictionary<CacheKey, CacheEntry> _nativeCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
         private static ConcurrentDictionary<CacheKey, CacheEntry> _hookingCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
-        private static object _lock = new object();
 
         private static bool Enabled { get; set; }
         private static int MaxSize { get; set; }
@@ -84,7 +86,7 @@ namespace Composite.C1Console.Security
                 Timestamp = DateTime.Now
             };
 
-            CacheKey cacheKey = new CacheKey { Username = ResolveUsername(), EntityToken = entityToken };
+            CacheKey cacheKey = new CacheKey { Username = ResolveUsername(), EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             _nativeCache.TryAdd(cacheKey, cacheEntry);
 
@@ -111,7 +113,7 @@ namespace Composite.C1Console.Security
                 Timestamp = DateTime.Now
             };
 
-            CacheKey cacheKey = new CacheKey { Username = ResolveUsername(), EntityToken = entityToken };
+            CacheKey cacheKey = new CacheKey { Username = ResolveUsername(), EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             _hookingCache.TryAdd(cacheKey, cacheEntry);
 
@@ -157,14 +159,14 @@ namespace Composite.C1Console.Security
                 return false;
             }
 
-            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken };
+            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             CacheEntry cacheEntry;
             if (_nativeCache.TryGetValue(cacheKey, out cacheEntry) == true)
             {
                 PerformanceCounterFacade.EntityTokenParentCacheHitIncrement();
                 parentEntityTokens = cacheEntry.ParentEntityTokens;
-                return true;                
+                return true;
             }
             else
             {
@@ -210,7 +212,7 @@ namespace Composite.C1Console.Security
                 return false;
             }
 
-            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken };
+            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             CacheEntry cacheEntry;
             if (_hookingCache.TryGetValue(cacheKey, out cacheEntry) == true)
@@ -221,7 +223,7 @@ namespace Composite.C1Console.Security
             }
             else
             {
-                PerformanceCounterFacade.EntityTokenParentCacheMissIncrement();                
+                PerformanceCounterFacade.EntityTokenParentCacheMissIncrement();
                 parentEntityTokens = null;
                 return false;
             }
@@ -261,7 +263,7 @@ namespace Composite.C1Console.Security
                 return;
             }
 
-            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken };
+            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             CacheEntry nativeCacheEntry;
             _nativeCache.TryRemove(cacheKey, out nativeCacheEntry);
@@ -269,7 +271,7 @@ namespace Composite.C1Console.Security
             CacheEntry hookingCacheEntry;
             _hookingCache.TryRemove(cacheKey, out hookingCacheEntry);
             {
-                _hookingCache = new ConcurrentDictionary<CacheKey,CacheEntry>();
+                _hookingCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
             }
 #endif
         }
@@ -289,7 +291,7 @@ namespace Composite.C1Console.Security
         {
             return UserSettings.Username;
         }
-     
+
 
         private sealed class CacheEntry
         {
