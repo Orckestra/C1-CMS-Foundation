@@ -16,6 +16,7 @@ namespace Composite.Core.WebClient.Captcha
     {
         private static readonly string DateTimeFormat = "yyyyMMddHHmmss";
         private static readonly string CaptchaCharacters = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        private static readonly string CaptchaServiceUrl = UrlUtils.PublicRootPath + "/Renderers/Captcha.ashx";
         private static readonly int CaptchaLength = 4;
         private static readonly int CaptchaExpiration = 30; // In minutes
         private static int _counter = 0;
@@ -170,6 +171,12 @@ namespace Composite.Core.WebClient.Captcha
             return true;
         }
 
+        public static string GetImageUrl(string encryptedCaptchaValue)
+        {
+            var url = new UrlBuilder(CaptchaServiceUrl);
+            url["value"] = encryptedCaptchaValue;
+            return url.ToString();
+        }
 
         private static string GenerateText()
         {
