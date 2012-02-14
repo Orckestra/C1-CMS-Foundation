@@ -285,7 +285,7 @@
     <Compile Include="Data\DataEventArgs.cs" />
     <Compile Include="Data\DataEventHandler.cs" />
     <Compile Include="Data\DataEvents.cs" />
-    <Compile Include="Data\DynamicTypes\DataTypeValidationRegitry.cs" />
+    <Compile Include="Data\DynamicTypes\DataTypeValidationRegistry.cs" />
     <Compile Include="Data\DynamicTypes\DataTypeValidator.cs" />
     <Compile Include="Data\DynamicTypes\UpdateDataTypeDescriptor.cs" />
     <Compile Include="Data\Foundation\CodeGeneration\DataWrapperClassCodeProvider.cs" />

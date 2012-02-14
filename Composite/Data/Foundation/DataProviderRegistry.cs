@@ -128,7 +128,7 @@ namespace Composite.Data.Foundation
 
 
         /// <summary>
-        /// This method adds a new supported data type to the regitry.
+        /// This method adds a new supported data type to the registry.
         /// This should be used if a data provider has extended the
         /// number of supported interfaces at runtime.
         /// </summary>

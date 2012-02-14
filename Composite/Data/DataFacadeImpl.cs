@@ -514,7 +514,7 @@ namespace Composite.Data
         {
             string errorMessage;
 
-            if(!DataTypeValidationRegitry.IsValidate(interfaceType, null, out errorMessage))
+            if(!DataTypeValidationRegistry.IsValidate(interfaceType, null, out errorMessage))
             {
                 Log.LogCritical("DataFacade", errorMessage);
                 throw new InvalidOperationException(errorMessage);

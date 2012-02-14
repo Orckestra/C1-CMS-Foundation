@@ -88,7 +88,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             using (TimerProfilerFacade.CreateTimerProfiler(typeof(T).ToString()))
             {
                 string errorMessage;
-                if (!DataTypeValidationRegitry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
+                if (!DataTypeValidationRegistry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -109,7 +109,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 if (dataId == null) throw new ArgumentNullException("dataId");
 
                 string errorMessage;
-                if (!DataTypeValidationRegitry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
+                if (!DataTypeValidationRegistry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -147,7 +147,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
 
                 string errorMessage;
-                if (!DataTypeValidationRegitry.IsValidateForProvider(interfaceType, _dataProviderContext.ProviderName, out errorMessage))
+                if (!DataTypeValidationRegistry.IsValidateForProvider(interfaceType, _dataProviderContext.ProviderName, out errorMessage))
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -166,7 +166,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 if (datas == null) throw new ArgumentNullException("datas");
 
                 string errorMessage;
-                if (!DataTypeValidationRegitry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
+                if (!DataTypeValidationRegistry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
@@ -223,7 +223,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
 
                 string errorMessage;
-                if (!DataTypeValidationRegitry.IsValidateForProvider(interfaceType, _dataProviderContext.ProviderName, out errorMessage))
+                if (!DataTypeValidationRegistry.IsValidateForProvider(interfaceType, _dataProviderContext.ProviderName, out errorMessage))
                 {
                     throw new InvalidOperationException(errorMessage);
                 }

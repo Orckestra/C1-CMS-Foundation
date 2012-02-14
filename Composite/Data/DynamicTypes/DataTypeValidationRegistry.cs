@@ -12,13 +12,13 @@ namespace Composite.Data.DynamicTypes
     /// </summary>
     /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)]
-    internal static class DataTypeValidationRegitry
+    internal static class DataTypeValidationRegistry
     {
         private static ConcurrentDictionary<Type, string> _typeSpecificValidations = new ConcurrentDictionary<Type, string>();
         private static ConcurrentDictionary<Type, ConcurrentDictionary<string, string>> _providerSpecificValidations = new ConcurrentDictionary<Type, ConcurrentDictionary<string, string>>();
 
 
-        static DataTypeValidationRegitry()
+        static DataTypeValidationRegistry()
         {
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }

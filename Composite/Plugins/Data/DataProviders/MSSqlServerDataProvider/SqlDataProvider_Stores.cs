@@ -138,7 +138,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             result.InterfaceType = interfaceType;
 
             string validationMessage;
-            bool isValid = DataTypeValidationRegitry.IsValidate(interfaceType, dataTypeDescriptor, out validationMessage);
+            bool isValid = DataTypeValidationRegistry.IsValidate(interfaceType, dataTypeDescriptor, out validationMessage);
             if (!isValid)
             {
                 Log.LogCritical("SqlDataProvider", validationMessage);
@@ -232,7 +232,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             if (!isValid)
             {
-                DataTypeValidationRegitry.AddValidationError(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName, errors.ToString());
+                DataTypeValidationRegistry.AddValidationError(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName, errors.ToString());
                 Log.LogCritical("SqlDataProvider", string.Format("The data interface '{0}' will not work for the SqlDataProvider '{1}'", initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName));
                 Log.LogCritical("SqlDataProvider", errors.ToString());
             }

@@ -120,7 +120,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         private void AddDataTypeStore(DataTypeDescriptor dataTypeDescriptor, Type interfaceType, XmlDataTypeStore xmlDateTypeStore)
         {
-            bool interfaceValidated = DataTypeValidationRegitry.IsValidate(interfaceType, dataTypeDescriptor);
+            bool interfaceValidated = DataTypeValidationRegistry.IsValidate(interfaceType, dataTypeDescriptor);
 
             if (xmlDateTypeStore != null && interfaceValidated)
             {
