@@ -96,11 +96,6 @@ namespace Composite.C1Console.Trees
         public TreeNode CurrentTreeNode { get; set; }
 
 
-        internal Dictionary<string, object> CustomData { get; set; }
-
-
-        internal Type SelfParentExcludeFilterDataType { get; set; }
-        internal PropertyInfo SelfParentExcludeFilterPropertyInfo { get; set; }
-        internal object SelfParentExcludeFilterIdValue { get; set; }
+        internal Dictionary<string, object> CustomData { get; set; }        
     }    
 }

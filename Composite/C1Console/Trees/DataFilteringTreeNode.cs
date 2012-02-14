@@ -49,12 +49,7 @@ namespace Composite.C1Console.Trees
         {
             TreeNode treeNode = this;            
 
-            Expression currentExpression = null;
-
-            if (dynamicContext.SelfParentExcludeFilterDataType != null)
-            {
-                currentExpression =  Expression.Equal(ExpressionHelper.CreatePropertyExpression(dynamicContext.SelfParentExcludeFilterPropertyInfo.Name, parameterExpression), Expression.Constant(dynamicContext.SelfParentExcludeFilterIdValue, dynamicContext.SelfParentExcludeFilterPropertyInfo.PropertyType));
-            }
+            Expression currentExpression = null;            
 
             while (treeNode != null)
             {

@@ -402,7 +402,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
-        private static IEnumerable<List<EntityToken>> GetAncestorChains(EntityToken descendant, int deep)
+        private static IEnumerable<List<EntityToken>> GetAncestorChains(EntityToken descendant, int deep, List<EntityToken> visitedParents = null)
         {
             if (deep == 0)
             {
@@ -410,7 +410,13 @@ namespace Composite.Core.WebClient.FlowMediators
                 yield break;
             }
 
+            if (visitedParents == null)
+            {
+                visitedParents = new List<EntityToken>();
+            }
+
             List<EntityToken> parents = ParentsFacade.GetAllParents(descendant);
+            visitedParents.AddRange(parents);
             if (parents.Count == 0)
             {
                 yield return new List<EntityToken>();
@@ -419,7 +425,9 @@ namespace Composite.Core.WebClient.FlowMediators
 
             foreach (var parent in parents)
             {
-                foreach (List<EntityToken> chain in GetAncestorChains(parent, deep - 1))
+                if (visitedParents.Contains(parent)) continue;
+
+                foreach (List<EntityToken> chain in GetAncestorChains(parent, deep - 1, visitedParents))
                 {
                     chain.Add(descendant);
                     yield return chain;

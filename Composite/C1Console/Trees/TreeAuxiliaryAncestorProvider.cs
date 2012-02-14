@@ -109,9 +109,7 @@ namespace Composite.C1Console.Trees
                     {
                         List<TreeNode> treeNodes;
                         if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false) continue;
-
-                        UpdateExcludeSelfParentInfor(dynamicContext, dataEntityToken, interfaceType);
-
+                        
                         IEnumerable<EntityToken> concatList = null;                        
 
                         foreach (TreeNode treeNode in treeNodes)
@@ -152,21 +150,6 @@ namespace Composite.C1Console.Trees
             }
 
             return result;
-        }
-
-
-
-        private static void UpdateExcludeSelfParentInfor(TreeNodeDynamicContext dynamicContext, DataEntityToken dataEntityToken, Type interfaceType)
-        {
-            DataTypeDescriptor parentDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId());
-            string idPropertyName = parentDataTypeDescriptor.KeyPropertyNames.SingleOrDefault();
-            // Lookinto caching this one
-            PropertyInfo idPropertyInfo = interfaceType.GetPropertiesRecursively(f => f.Name == idPropertyName).Single();
-            object idValue = idPropertyInfo.GetValue(dataEntityToken.Data, null);
-
-            dynamicContext.SelfParentExcludeFilterDataType = interfaceType;
-            dynamicContext.SelfParentExcludeFilterPropertyInfo = idPropertyInfo;
-            dynamicContext.SelfParentExcludeFilterIdValue = idValue;
         }
     }
 }
