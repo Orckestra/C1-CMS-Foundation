@@ -38,7 +38,7 @@
   <string key="EditPage.LabelFriendlyUrl" value="Friendly URL" />
   <string key="EditPage.HelpFriendlyUrl" value="The entry specified in this field is a shorter version of the actual page URL and redirects to it, when entered in the browser address bar. Note that some servers may have to be configured to support this feature." />
   <string key="EditPage.LabelAbstract" value="Description" />
-  <string key="EditPage.LabelAbstractHelp" value="Use this field for at short description of the page" />
+  <string key="EditPage.LabelAbstractHelp" value="Use this field for a short description of the page" />
   <string key="EditPage.LabelPublishDate" value="Publish date" />
   <string key="EditPage.HelpPublishDate" value="Specify at which date and time you want the page to be published. At the specified time the page will automatically be published to the site" />
   <string key="EditPage.LabelUnpublishDate" value="Unpublish date" />
