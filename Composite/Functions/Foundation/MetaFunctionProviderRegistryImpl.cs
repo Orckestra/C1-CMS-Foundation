@@ -203,7 +203,7 @@ namespace Composite.Functions.Foundation
 
             using (_resourceLocker.Locker)
             {
-                // Keeping initialization static/dinamic function initialization order for backward compatibility
+                // Keeping static/dynamic function initialization order for backward compatibility
                 _resourceLocker.Resources.FunctionContainer.Initialize(false);
                 _resourceLocker.Resources.WidgetFunctionContainer.Initialize(false);
                 _resourceLocker.Resources.FunctionContainer.Initialize(true);
