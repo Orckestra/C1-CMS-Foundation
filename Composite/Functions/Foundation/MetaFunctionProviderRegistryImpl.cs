@@ -203,8 +203,11 @@ namespace Composite.Functions.Foundation
 
             using (_resourceLocker.Locker)
             {
-                _resourceLocker.Resources.FunctionContainer.Initialize();                
-                _resourceLocker.Resources.WidgetFunctionContainer.Initialize();
+                // Keeping initialization static/dinamic function initialization order for backward compatibility
+                _resourceLocker.Resources.FunctionContainer.Initialize(false);
+                _resourceLocker.Resources.WidgetFunctionContainer.Initialize(false);
+                _resourceLocker.Resources.FunctionContainer.Initialize(true);
+                _resourceLocker.Resources.WidgetFunctionContainer.Initialize(true);
             }
         }       
 
