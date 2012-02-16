@@ -1,6 +1,6 @@
 ﻿
 
-public partial class Composite_Forms_StandardDataDialogExecutionContainer {
+public partial class Composite_Forms_ConfirmDialogExecutionContainer {
     
     /// <summary>
     /// Head1 control.

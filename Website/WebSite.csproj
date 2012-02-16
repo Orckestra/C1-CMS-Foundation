@@ -135,7 +135,7 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\content.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\dialog.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\ui.css" />
-    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelectorBase.cs">
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.cs">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -263,11 +263,11 @@
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.cs">
+    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\ConfirmDialogExecutionContainer.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\StandardDialogExecutionContainer.ascx.designer.cs">
-      <DependentUpon>StandardDialogExecutionContainer.ascx.cs</DependentUpon>
+    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\ConfirmDialogExecutionContainer.ascx.designer.cs">
+      <DependentUpon>ConfirmDialogExecutionContainer.ascx.cs</DependentUpon>
     </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\WizardExecutionContainer.ascx.cs">
       <DependentUpon>WizardExecutionContainer.ascx</DependentUpon>
@@ -374,9 +374,6 @@
     </Compile>
     <Compile Include="Composite\controls\StyleLoaderControl.ascx.designer.cs">
       <DependentUpon>StyleLoaderControl.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Composite\controls\StyleLoaderControl2.ascx.cs">
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Composite\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

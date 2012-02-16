@@ -10,7 +10,7 @@ using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 
 
-public partial class Composite_Forms_StandardDataDialogExecutionContainer : TemplatedUiContainerBase
+public partial class Composite_Forms_ConfirmDialogExecutionContainer : TemplatedUiContainerBase
 {
     private PlaceHolder formPlaceHolder2 = new PlaceHolder();
     private PlaceHolder messagePlaceHolder2 = new PlaceHolder();

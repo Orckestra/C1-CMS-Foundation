@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelectors.DateSelectorBase" Src="~/Composite/controls/FormsControls/FormUiControlTemplates/DateTimeSelectors/DateSelectorBase.cs" %>
+<%@ Control Language="C#" Inherits="Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelectors.DateSelectorBase" Src="~/Composite/controls/FormsControls/FormUiControlTemplates/DateTimeSelectors/DateSelector.cs" %>
 <script runat="server">
     public override bool ShowHours
     {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="StandardDialogExecutionContainer.ascx.cs" Inherits="Composite_Forms_StandardDataDialogExecutionContainer" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeFile="ConfirmDialogExecutionContainer.ascx.cs" Inherits="Composite_Forms_ConfirmDialogExecutionContainer" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<head id="Head1" runat="server">
 	    <title>Composite.Management.WarningDialog</title>
