@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Data;
 using Composite.Core.Linq;
 using Composite.Data.Types;
@@ -53,28 +54,17 @@ namespace Composite.C1Console.Tasks
 
                         _tasks.Add(task);
                         newTasks.Add(task);
-
-                        ITaskItem taskItem = DataFacade.BuildNew<ITaskItem>();
-                        taskItem.Id = Guid.NewGuid();
-                        taskItem.TaskId = task.Id;
-                        taskItem.TaskManagerType = TypeManager.SerializeType(task.TaskManagerType);
-                        taskItem.SerializedFlowToken = task.FlowToken;
-                        taskItem.StartTime = task.StartTime;
-
-                        DataFacade.AddNew<ITaskItem>(taskItem);
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("TaskManagerFacade", "Starting new task failed with following exception");
-                        LoggingService.LogError("TaskManagerFacade", ex);
+                        Log.LogError("TaskManagerFacade", "Starting new task failed with following exception");
+                        Log.LogError("TaskManagerFacade", ex);
                     }
                 }
             }
 
             return new TaskContainer(newTasks, null);
         }
-
-
 
         public TaskContainer RuntTasks(FlowToken flowToken, TaskManagerEvent taskManagerEvent)
         {
@@ -109,7 +99,9 @@ namespace Composite.C1Console.Tasks
         }
      
 
-
+        /// <summary>
+        /// Loads task persisted in database
+        /// </summary>
         private void LoadTasks()
         {
             using (ThreadDataManager.EnsureInitialize())

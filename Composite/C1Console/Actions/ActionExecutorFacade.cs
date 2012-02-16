@@ -94,6 +94,8 @@ namespace Composite.C1Console.Actions
 
                     taskContainer.SetOnIdleTaskManagerEvent(new FlowTaskManagerEvent(flowToken));
                     taskContainer.UpdateTasksWithFlowToken(flowToken);
+
+                    taskContainer.SaveTasks();
                 }
 
                 ActionEventSystemFacade.FireOnAfterActionExecution(entityToken, actionToken, flowToken);

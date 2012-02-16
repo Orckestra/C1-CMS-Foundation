@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Composite.C1Console.Actions;
+using Composite.Core;
+using Composite.Core.Types;
+using Composite.Data;
+using Composite.Data.Types;
 
 
 namespace Composite.C1Console.Tasks
@@ -11,6 +15,8 @@ namespace Composite.C1Console.Tasks
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class TaskContainer : IDisposable
     {
+        private static readonly string LogTitle = typeof (TaskContainer).Name;
+
         private List<Task> _tasks;
         private bool _disposed = false;
 
@@ -58,6 +64,33 @@ namespace Composite.C1Console.Tasks
 
 
         private TaskManagerEvent _onIdleTaskManagerEvent;
+
+
+        /// <summary>
+        /// Saves tasks to database
+        /// </summary>
+        public void SaveTasks()
+        {
+            foreach (Task task in _tasks)
+            {
+                try
+                {
+                    ITaskItem taskItem = DataFacade.BuildNew<ITaskItem>();
+                    taskItem.Id = Guid.NewGuid();
+                    taskItem.TaskId = task.Id;
+                    taskItem.TaskManagerType = TypeManager.SerializeType(task.TaskManagerType);
+                    taskItem.SerializedFlowToken = task.FlowToken;
+                    taskItem.StartTime = task.StartTime;
+
+                    DataFacade.AddNew<ITaskItem>(taskItem);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, "Error while attempt to persist a task");
+                    Log.LogError(LogTitle, ex);
+                }
+            }
+        }
 
 
         /// <exclude />
