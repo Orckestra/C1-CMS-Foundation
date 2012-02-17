@@ -5,6 +5,7 @@ using System.Web;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient.Setup;
+using Composite.C1Console.Users;
 
 public class PingTester : IHttpHandler
 {
@@ -14,7 +15,21 @@ public class PingTester : IHttpHandler
         
         if (SystemSetupFacade.IsSystemFirstTimeInitialized)
         {
-            return;
+            try
+            {
+                if (string.IsNullOrEmpty(UserSettings.Username))
+                {
+                    context.Response.Write("Log in to use this feature\n");
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                context.Response.Write("Log in to use this feature\n");
+                return;
+            }
+            
+            context.Response.Write("This Composite C1 site has been initialized (info)\n\n");
         }
 
         IPHostEntry packageServerAddress;
