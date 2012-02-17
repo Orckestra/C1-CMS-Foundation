@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Globalization;
+using System.Web;
 using System.Web.Routing;
 using Composite.Core.WebClient;
 using Composite.Core.Configuration;
@@ -135,11 +136,11 @@ namespace Composite.Core.Routing.Pages
                 // Checking casing in url, so the same page will appear as a few pages by a crawler
                 string correctUrl = urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
 
-                string originalFilePath = new UrlBuilder(currentUrl).FilePath;
-                string correctFilePath = new UrlBuilder(correctUrl).FilePath;
+                string originalFilePath = new UrlBuilder(currentUrl).RelativeFilePath;
+                string correctFilePath = new UrlBuilder(correctUrl).RelativeFilePath;
 
-                if (string.Compare(originalFilePath, correctFilePath, false) != 0 &&
-                    string.Compare(originalFilePath, correctFilePath, true) == 0)
+                if (string.Compare(originalFilePath, correctFilePath, false, CultureInfo.InvariantCulture) != 0 &&
+                    string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0)
                 {
                     // redirect to a url with right casing
                     return SeoFriendlyRedirect(context, correctUrl);

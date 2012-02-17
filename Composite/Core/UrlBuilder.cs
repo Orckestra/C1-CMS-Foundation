@@ -273,6 +273,16 @@ namespace Composite.Core
         }
 
         /// <exclude />
+        public string RelativeFilePath
+        {
+            get 
+            { 
+                string serverUrl = ServerUrl;
+                return (serverUrl == string.Empty) ? _filePath : _filePath.Substring(serverUrl.Length - 1);
+            }
+        }
+
+        /// <exclude />
         public string ServerUrl
         {
             get

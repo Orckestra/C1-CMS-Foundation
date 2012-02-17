@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Web;
 using Composite.C1Console.Events;
 using Composite.Core.Application;
@@ -206,15 +207,20 @@ namespace Composite.Core.WebClient
         {
             if (custom == "C1Page")
             {
+                string rawUrl = context.Request.RawUrl;
+
                 UrlKind urlKind;
-                var pageUrl = PageUrls.UrlProvider.ParseUrl(context.Request.RawUrl, new UrlSpace(context), out urlKind);
+                var pageUrl = PageUrls.UrlProvider.ParseUrl(rawUrl, new UrlSpace(context), out urlKind);
 
                 if (pageUrl != null)
                 {
                     var page = pageUrl.GetPage();
                     if (page != null)
                     {
-                        string pageCacheKey = page.ChangeDate.ToString();
+                        string pageCacheKey = page.ChangeDate.ToString(CultureInfo.InvariantCulture);
+
+                        // Adding the relative path from RawUrl as a part of cache key to make ASP.NET cache respect casing of urls
+                        pageCacheKey += new UrlBuilder(rawUrl).RelativeFilePath;
 
                         if(context.Request.IsSecureConnection)
                         {
