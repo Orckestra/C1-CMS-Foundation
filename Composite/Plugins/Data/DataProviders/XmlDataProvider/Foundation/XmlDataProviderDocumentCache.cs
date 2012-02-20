@@ -342,8 +342,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception)
                     {
-                        Log.LogCritical(LogTitle, "Failed to move file: " + fileRecord.TempFileName);
-                        throw;
+                        // Ignore exception here. The tmp file might have been "recovered" by the load method
                     }
                 }
                 catch (Exception exception)
