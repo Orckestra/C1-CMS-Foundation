@@ -15,7 +15,7 @@
         Public = 1,
         /// <summary>
         /// Url to an ASP.NET handler. F.e. link to a page: "/Renderers/Page.aspx?id=7446ceda-df90-49f0-a183-4e02ed6f6eec"
-        /// Internal url is expected to be handled without routing.
+        /// Renderer url is expected to be handled without routing.
         /// </summary>
         Renderer = 2,
         /// <summary>

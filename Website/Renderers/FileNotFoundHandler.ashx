@@ -2,8 +2,8 @@
 
 using System;
 using System.Web;
-using Composite.Data;
-
+using Composite.Core;
+using Composite.Core.Routing;
 
 public class FileNotFoundHandler : IHttpHandler
 {
@@ -13,14 +13,19 @@ public class FileNotFoundHandler : IHttpHandler
 
         try
         {
-            PageUrl pageUrl;
-           
-            if (Composite.Data.PageUrl.TryParseFriendlyUrl(path, out pageUrl))
+            UrlKind urlKind;
+
+            var pageUrlData = PageUrls.ParseUrl(path, out urlKind);
+            if (pageUrlData != null && urlKind == UrlKind.Friendly || urlKind == UrlKind.Redirect)
             {
-                string redurectUrl = pageUrl.Build(PageUrlType.Public).ToString();
-                Composite.Core.Log.LogVerbose("Friendly URL", redurectUrl);
-                context.Response.Redirect(redurectUrl);
-                return;
+                string redirectUrl = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, new UrlSpace());
+                
+                if(redirectUrl != null)
+                {
+                    Log.LogVerbose("Friendly URL", redirectUrl);
+                    context.Response.Redirect(redirectUrl, false);
+                    return;
+                }
             }
         }
         catch

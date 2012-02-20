@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
-using Composite;
 using Composite.C1Console.Users;
 using Composite.Core.Routing;
 using Composite.Core.WebClient;
@@ -46,14 +45,14 @@ namespace Composite.Services
                 return url;
             }
 
-            var pageUrlOptions = PageUrl.Parse(url);
+            var pageUrlData = PageUrls.ParseUrl(url);
 
-            if (pageUrlOptions == null)
+            if (pageUrlData == null)
             {
                 return string.Empty;
             }
 
-            return pageUrlOptions.Build(PageUrlType.Internal);
+            return PageUrls.BuildUrl(pageUrlData, UrlKind.Renderer, new UrlSpace());
         }
         
         [WebMethod]

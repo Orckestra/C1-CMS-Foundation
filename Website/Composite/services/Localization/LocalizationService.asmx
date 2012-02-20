@@ -5,6 +5,7 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Core;
 using Composite.Core.WebClient.Services.LocalizationServiceObjects;
@@ -83,7 +84,7 @@ namespace Composite.Services
         [WebMethod]
         public List<PageLocale> GetPageOtherLocales(string url)
         {
-            var pageUrl = PageUrl.Parse(url);
+            var pageUrl = PageUrls.ParseUrl(url);
             if (pageUrl == null)
             {
                 return new List<PageLocale>();
@@ -95,7 +96,7 @@ namespace Composite.Services
 
             foreach (CultureInfo locale in UserSettings.ActiveLocaleCultureInfos)
             {
-                bool exists = false;
+                bool exists;
                 using (DataConnection dataConnection = new DataConnection(pageUrl.PublicationScope, locale))
                 {
                     exists = dataConnection.Get<IPage>().Any(page => page.Id == pageUrl.PageId);
@@ -108,11 +109,16 @@ namespace Composite.Services
                 pageLocale.Name = DataLocalizationFacade.GetCultureTitle(locale);
                 pageLocale.IsoName = locale.Name;
                 pageLocale.UrlMappingName = DataLocalizationFacade.GetUrlMappingName(locale);
-                pageLocale.IsCurrent = locale.Equals(pageUrl.Locale);
+                pageLocale.IsCurrent = locale.Equals(pageUrl.LocalizationScope);
 
-                PageUrl pageUrl2 = new PageUrl(pageUrl.PublicationScope, locale, pageUrl.PageId);
+                PageUrlData pageUrl2 = new PageUrlData(pageUrl.PageId, pageUrl.PublicationScope, locale);
 
-                UrlBuilder newUrlBuilder = pageUrl2.Build(PageUrlType.Public) ?? pageUrl2.Build(PageUrlType.Internal);
+                var urlSpace = new UrlSpace();
+
+                string newUrl = PageUrls.BuildUrl(pageUrl2, UrlKind.Public, urlSpace)
+                                ?? PageUrls.BuildUrl(pageUrl2, UrlKind.Renderer, urlSpace);
+
+                UrlBuilder newUrlBuilder = new UrlBuilder(newUrl);
                 newUrlBuilder.ServerUrl = urlBuilder.ServerUrl;
 
                 pageLocale.Url = newUrlBuilder.ToString();
