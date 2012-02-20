@@ -12,7 +12,7 @@
   <string key="AddNewPageTemplateStep1.LabelDialog" value="Add new Website Template" />
   <string key="AddNewPageTemplateStep1.LabelFieldGroup" value="Website Template" />
   <string key="AddNewPageTemplateStep1.LabelTemplateTitle" value="Template Title" />
-  <string key="AddNewPageTemplateStep1.LabelTemplateTitleHelp" value="The title identifies this templates in lists. Consider selecting a short but meaningful name." />
+  <string key="AddNewPageTemplateStep1.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
   <string key="AddNewPageTemplateStep1.LabelCopyFrom" value="Copy from" />
   <string key="AddNewPageTemplateStep1.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
   <string key="AddNewPageTemplateStep1.LabelCopyFromEmptyOption" value="(New template)" />
@@ -22,7 +22,7 @@
   <string key="EditPageTemplate.LabelMarkUpCode" value="Markup code" />
   <string key="EditPageTemplate.LabelTemplateIdentification" value="Template info" />
   <string key="EditPageTemplate.LabelTemplateTitle" value="Template Title" />
-  <string key="EditPageTemplate.LabelTemplateTitleHelp" value="The title identifies this templates in lists. Consider selecting a short but meaningful name." />
+  <string key="EditPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
 
   <string key="EditPageTemplateWorkflow.InvalidXmlTitle" value="Unable to save page" />
   <string key="EditPageTemplateWorkflow.InvalidXmlMessage" value="The page template markup did not validate. {0}" />

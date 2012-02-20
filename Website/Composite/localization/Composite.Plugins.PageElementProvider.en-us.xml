@@ -65,7 +65,7 @@
   <string key="PageElementProvider.ViewUnpublishedItems" value="List unpublished pages" />
   <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
   <string key="PageElementProvider.ViewUnpublishedItems-document-title" value="Unpublished content" />
-  <string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below display pages and page data which are currently being edited or are ready to be approved / published." />
+  <string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below displays pages and page data which are currently being edited or are ready to be approved / published." />
   <string key="PageElementProvider.EditPage" value="Edit Page" />
   <string key="PageElementProvider.EditPageToolTip" value="Edit selected page" />
   <string key="PageElementProvider.Delete" value="Delete" />
