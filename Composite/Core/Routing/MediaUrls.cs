@@ -21,7 +21,7 @@ namespace Composite.Core.Routing
         private static readonly string MediaUrl_InternalPrefix = UrlUtils.PublicRootPath + "/media(";
         private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
 
-        private static readonly string ForbiddenUrlCharacters = @"<>*%&\?";
+        private static readonly string ForbiddenUrlCharacters = @"<>*%&\?#";
 
         /// <exclude />
         public static MediaUrlData ParseUrl(string relativeUrl)
