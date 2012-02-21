@@ -15,7 +15,7 @@ namespace Composite.Data.Types
     [ImmutableTypeId("{A8716C78-1499-4155-875B-2545006385B2}")]
     [LabelPropertyName("CompositePath")]
     [RelevantToUserType(UserType.Developer)]
-    [KeyTemplatedXhtmlRenderer(XhtmlRenderingType.Embedable, "<a href='~/media({field:Id})?store={field:StoreId}'>{label}</a>")]
+    [KeyTemplatedXhtmlRenderer(XhtmlRenderingType.Embedable, "<a href='~/media({field:StoreId}:{field:Id})'>{label}</a>")]
     public interface IMediaFile : IFile
     {
         /// <exclude />

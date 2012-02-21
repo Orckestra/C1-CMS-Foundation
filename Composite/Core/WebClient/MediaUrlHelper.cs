@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using Composite.Core.Extensions;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -26,9 +26,6 @@ namespace Composite.Core.WebClient
         private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media";
         private static readonly string DecodedFullInternalMediaUrlPrefix = InternalMediaUrlPrefix + "(";
         private static readonly string RawMediaUrlPrefix = "~/media";
-
-        private static readonly string ForbiddenUrlCharacters = @"<>*%&\?";
-        
 
         /// <exclude />
         public static string GetUrl(IMediaFile file)
@@ -58,12 +55,8 @@ namespace Composite.Core.WebClient
             }
             else
             {
-                urlBuilder = new UrlBuilder("~/media(" + file.Id + ")");
-
-                if(file.StoreId != DefaultMediaStore)
-                {
-                    urlBuilder["store"] = file.StoreId;
-                }
+                string storeId = (file.StoreId == DefaultMediaStore ? "" : file.StoreId + ":");
+                urlBuilder = new UrlBuilder("~/media(" + storeId + file.Id + ")");
             }
 
             if (downloadableMedia == true)
@@ -160,13 +153,11 @@ namespace Composite.Core.WebClient
                 if (query.IsEnumerableQuery())
                 {
                     return (query as IEnumerable<IMediaFile>)
-                        .Where(f => f.StoreId == storeId && f.Id == fileId)
-                        .FirstOrDefault();
+                        .FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
                 }
-                
+
                 return query
-                    .Where(f => f.StoreId == storeId && f.Id == fileId)
-                    .FirstOrDefault();
+                    .FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
             }
         }
 
@@ -179,13 +170,11 @@ namespace Composite.Core.WebClient
                 if (query.IsEnumerableQuery())
                 {
                     return (query as IEnumerable<IMediaFile>)
-                        .Where(f => f.StoreId == storeId && f.CompositePath == compositePath)
-                        .FirstOrDefault();
+                        .FirstOrDefault(f => f.StoreId == storeId && f.CompositePath == compositePath);
                 }
 
                 return query
-                    .Where(f => f.StoreId == storeId && f.CompositePath == compositePath)
-                    .FirstOrDefault();
+                    .FirstOrDefault(f => f.StoreId == storeId && f.CompositePath == compositePath);
             }
         }
 
@@ -264,43 +253,20 @@ namespace Composite.Core.WebClient
 
                     NameValueCollection queryParams = parsedOldUrl.GetQueryParameters();
 
-                    string storeId = "MediaArchive";
-                    if(queryParams.AllKeys.Contains("store"))
-                    {
-                        storeId = queryParams["store"];
-                    }
+                    publicMediaUrl = MediaUrls.BuildUrl(
+                        new MediaUrlData
+                        {
+                            MediaId = mediaId,
+                            MediaStore = MediaUrls.DefaultMediaStore,
+                            QueryParameters = queryParams
+                        },
+                        UrlKind.Public);
 
-                    IMediaFile file = GetFileById(storeId, mediaId);
-                    if(file == null)
+                    if (publicMediaUrl == null)
                     {
                         convertionCache.Add(internalMediaUrl, null);
                         continue;
                     }
-
-                    string pathToFile = UrlUtils.Combine(file.FolderPath, file.FileName);
-
-                    // Hotfix for characters not accepted by ASP.NET by default
-                    foreach (var ch in ForbiddenUrlCharacters)
-                    {
-                        pathToFile = pathToFile.Replace(ch, 'x');
-                    }
-
-                    // IIS6 doesn't have wildcard mapping by default, so removing image extension if running in "classic" app pool
-                    if(!HttpRuntime.UsingIntegratedPipeline)
-                    {
-                        int dotOffset = pathToFile.IndexOf(".");
-                        if(dotOffset >= 0)
-                        {
-                            pathToFile = pathToFile.Substring(0, dotOffset);
-                        }
-                    }
-
-                    var newUrl = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaId);
-
-                    newUrl.PathInfo = pathToFile;
-                    newUrl.AddQueryParameters(queryParams);
-
-                    publicMediaUrl = newUrl.ToString();
 
                     // Encoding xml attribute value
                     publicMediaUrl = publicMediaUrl.Replace("&", "&amp;");

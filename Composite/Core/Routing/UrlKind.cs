@@ -10,7 +10,9 @@
         /// <exclude />
         Undefined = 0,
         /// <summary>
-        /// A main url by with a C1 page is accessed. F.e. "/Home/About.aspx"
+        /// A main, human friendly url by which a resource is accessed. F.e.:
+        /// Page: "/Home/About"
+        /// An image: "/media/6fb4c70b-12a6-4522-add6-1f40828c5452/Sample images/Colors of Inspiration.jpg"
         /// </summary>
         Public = 1,
         /// <summary>
@@ -25,7 +27,7 @@
         ///   Full:  ~/page({Page id})[ /c1mode(unpublished) ][ /{PathInfo} ][ ?{Query string} ]
         /// For media archive
         ///   Short: ~/media({Media file Id})
-        ///   Full:  ~/media({Media file Id})[ ?{Query string} ]
+        ///   Full:  ~/media([{Media store}:]{Media file Id})[ ?{Query string} ]
         /// </summary>
         Internal = 5,
         /// <summary>

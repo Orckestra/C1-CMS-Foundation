@@ -39,9 +39,10 @@ namespace Composite.Core.WebClient.Media
         /// <param name="file">The media file.</param>
         /// <param name="resizingOptions">The resizing options.</param>
         /// <param name="targetImageFormat">The target image format.</param>
-        /// <returns>A full file path to a resized image</returns>
+        /// <returns>A full file path to a resized image; null if there's no need to resize the image</returns>
         public static string GetResizedImage(HttpServerUtility httpServerUtility, IMediaFile file, ResizingOptions resizingOptions, ImageFormat targetImageFormat)
         {
+            Verify.ArgumentNotNull(file, "file");
             Verify.That(ImageFormatIsSupported(targetImageFormat), "Unsupported image format '{0}'", targetImageFormat);
 
             if (_resizedImagesDirectoryPath == null)
@@ -56,6 +57,8 @@ namespace Composite.Core.WebClient.Media
 
             string imageKey = file.CompositePath;
 
+            bool isNativeProvider = file is FileSystemFileBase;
+
             string imageSizeCacheKey = "ShowMedia.ashx image size " + imageKey;
             Size? imageSize = HttpRuntime.Cache.Get(imageSizeCacheKey) as Size?;
 
@@ -68,7 +71,8 @@ namespace Composite.Core.WebClient.Media
 
                     imageSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
 
-                    var cacheDependency = new CacheDependency((file as FileSystemFileBase).SystemPath);
+                    // We can provider cache dependency only for the native media provider
+                    var cacheDependency = isNativeProvider ? new CacheDependency((file as FileSystemFileBase).SystemPath) : null;
 
                     HttpRuntime.Cache.Add(imageSizeCacheKey, imageSize, cacheDependency, DateTime.MaxValue, CacheExpirationTimeSpan, CacheItemPriority.Normal, null);
                 }
@@ -79,7 +83,7 @@ namespace Composite.Core.WebClient.Media
 
                 if (!needToResize)
                 {
-                    return (file as FileSystemFileBase).SystemPath;
+                    return null;
                 }
 
                 int filePathHash = imageKey.GetHashCode();

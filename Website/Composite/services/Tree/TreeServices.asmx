@@ -304,17 +304,19 @@ namespace Composite.Services
 		[WebMethod]
 		public string GetMediaLabel(string path)
 		{
-			var result = path;
-			var re = new Regex(@"media(\(|\/|%28)([\d-abcdef]{36})");
-			var match = re.Match(path);
-			Guid id;
-			if (match.Success && Guid.TryParse(match.Groups[2].Value, out id))
-			{
-				result = DataFacade.GetData<IMediaFile>(d => d.Id == id)
-				         	.Select(d => d.GetLabel())
-				         	.FirstOrDefault() ?? path;
-			}
-			return result;
+		    var mediaUrlData = MediaUrls.ParseUrl(path);
+            
+            if(mediaUrlData != null)
+            {
+                Guid mediaId = mediaUrlData.MediaId;
+                string store = mediaUrlData.MediaStore;
+
+                IMediaFile matchingMedia = DataFacade.GetData<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+
+                return matchingMedia != null ? matchingMedia.GetLabel() : path;
+            }
+            
+			return path;
 		}
     }
 }

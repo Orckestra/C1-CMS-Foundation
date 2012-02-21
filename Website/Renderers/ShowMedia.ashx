@@ -233,7 +233,9 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         try
         {
-            return new C1FileStream(resizedImageFilePath, FileMode.OpenOrCreate, FileAccess.Read);
+            return resizedImageFilePath != null 
+                ? new C1FileStream(resizedImageFilePath, FileMode.OpenOrCreate, FileAccess.Read)
+                : file.GetReadStream();
         }
         catch (Exception ex)
         {

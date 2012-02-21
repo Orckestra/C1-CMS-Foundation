@@ -189,7 +189,7 @@ public class ImageManipulator : IHttpHandler
     {
         Bitmap scaled = new Bitmap(width, height, GetAcceptablePixelFormat(source));
         Graphics graphics = Graphics.FromImage(scaled);
-        graphics.Clear(Color.Black);
+        graphics.Clear(Color.Transparent);
         graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
