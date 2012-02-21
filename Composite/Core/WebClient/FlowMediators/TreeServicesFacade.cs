@@ -415,8 +415,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 visitedParents = new List<EntityToken>();
             }
 
-            List<EntityToken> parents = ParentsFacade.GetAllParents(descendant);
-            visitedParents.AddRange(parents);
+            List<EntityToken> parents = ParentsFacade.GetAllParents(descendant);            
             if (parents.Count == 0)
             {
                 yield return new List<EntityToken>();
@@ -426,6 +425,7 @@ namespace Composite.Core.WebClient.FlowMediators
             foreach (var parent in parents)
             {
                 if (visitedParents.Contains(parent)) continue;
+                else visitedParents.Add(parent);
 
                 foreach (List<EntityToken> chain in GetAncestorChains(parent, deep - 1, visitedParents))
                 {
