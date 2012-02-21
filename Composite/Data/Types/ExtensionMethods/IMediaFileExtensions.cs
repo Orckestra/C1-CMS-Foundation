@@ -25,7 +25,7 @@
         {
             if (folderPath != "/")
             {
-                return storeId + ":/" + folderPath + "/" + filename;
+                return storeId + ":" + folderPath + "/" + filename;
             }
             return storeId + ":/" + filename;
         }
