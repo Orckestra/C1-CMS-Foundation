@@ -341,9 +341,11 @@ namespace Composite.Core.IO
             AddExtensionMapping("config", "text/xml");
             _mimeTypeToResourceName.Add("text/xml", "mimetype-xml");
 
-            _toCanonical.Add("application/zip", "application/zip");
-            AddExtensionMapping("zip", "application/zip");
-            _mimeTypeToResourceName.Add("application/zip", "mimetype-zip");
+            string mimeTypeZip = "application/zip";
+            _toCanonical.Add(mimeTypeZip, mimeTypeZip);
+            _toCanonical.Add("application/x-zip-compressed", mimeTypeZip);
+            AddExtensionMapping("zip", mimeTypeZip);
+            _mimeTypeToResourceName.Add(mimeTypeZip, "mimetype-zip");
 
             _toCanonical.Add("text/plain", "text/plain");
             _toCanonical.Add("text/txt", "text/plain");

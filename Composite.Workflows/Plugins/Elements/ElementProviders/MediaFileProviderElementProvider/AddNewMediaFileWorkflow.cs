@@ -222,7 +222,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     mediaFile.Length = uploadedFile.ContentLength;
                     mediaFile.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
 
-                    if (mediaFile.MimeType == MimeTypeInfo.Default)
+                    // Default MIME type for Chrome is "application/xml"
+                    // Default MIME type for IE is "text/plain"
+                    // for the rest it is "application/octet-stream"
+                    if (mediaFile.MimeType == MimeTypeInfo.Default 
+                        || mediaFile.MimeType == "application/xml"
+                        || mediaFile.MimeType == "text/plain")
                     {
                         mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
                     }
