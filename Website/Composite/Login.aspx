@@ -52,7 +52,7 @@
         }
         
         div#backdrop {
-            background-image: url("/Composite/images/box.png");
+            background-image: url("images/box.png");
             height: 100%;
             left: 0;
             position: absolute;
