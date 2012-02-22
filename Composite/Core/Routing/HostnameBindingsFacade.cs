@@ -113,6 +113,35 @@ namespace Composite.Core.Routing
             return DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
         }
 
+        internal static bool IsPageNotFoundRequest()
+        {
+            HttpContext context = HttpContext.Current;
+            if(context == null)
+            {
+                return false;
+            }
+
+            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+
+            if (customPageNotFoundUrl.IsNullOrEmpty())
+            {
+                return false;
+            }
+
+            customPageNotFoundUrl = customPageNotFoundUrl.Trim();
+
+            if(!customPageNotFoundUrl.StartsWith("/") && !customPageNotFoundUrl.Contains("://"))
+            {
+                customPageNotFoundUrl = "/" + customPageNotFoundUrl;
+            }
+
+            var request = context.Request;
+
+            return request.RawUrl == customPageNotFoundUrl
+                    || request.Url.PathAndQuery == customPageNotFoundUrl
+                    || request.Url.PathAndQuery.StartsWith(customPageNotFoundUrl + "?");
+        }
+
         internal static string GetCustomPageNotFoundUrl()
         {
             var binding = GetBindingForCurrentRequest();

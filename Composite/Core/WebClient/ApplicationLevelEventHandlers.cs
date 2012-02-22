@@ -163,7 +163,7 @@ namespace Composite.Core.WebClient
             {
                 string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
 
-                if (customPageNotFoundUrl != null)
+                if (!customPageNotFoundUrl.IsNullOrEmpty())
                 {
                     string rawUrl = httpContext.Request.RawUrl;
 

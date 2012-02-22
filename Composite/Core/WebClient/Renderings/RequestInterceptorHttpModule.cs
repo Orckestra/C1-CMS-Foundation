@@ -96,11 +96,7 @@ namespace Composite.Core.WebClient.Renderings
             }
 
             // Setting 404 response code if it is a request to a custom "Page not found" page
-            string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
-            if (!customPageNotFoundUrl.IsNullOrEmpty()
-                && customPageNotFoundUrl.StartsWith("/")
-                && (httpContext.Request.RawUrl == customPageNotFoundUrl
-                    || httpContext.Request.Url.PathAndQuery == customPageNotFoundUrl))
+            if (HostnameBindingsFacade.IsPageNotFoundRequest())
             {
                 page.PreRender += (a, b) =>
                 {
