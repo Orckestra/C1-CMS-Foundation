@@ -5,6 +5,8 @@ using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Workflow;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Types;
@@ -18,6 +20,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
     [AllowPersistingWorkflow(WorkflowPersistingType.Never)]
     public sealed partial class AddNewMediaFileWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        private static readonly string LogTitle = typeof (AddNewMediaFileWorkflow).Name;
+
         public AddNewMediaFileWorkflow()
         {
             InitializeComponent();
@@ -230,6 +234,14 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         || mediaFile.MimeType == "text/plain")
                     {
                         mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
+
+                        Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extention: '{1}'"
+                                            .FormatWith(mediaFile.FileName, mediaFile.MimeType));
+                    }
+                    else
+                    {
+                        Log.LogInformation(LogTitle, "Uploading file '{0}'. Browser provided MIME type: '{1}'. Canonical MIME type: '{2}'"
+                                            .FormatWith(mediaFile.FileName, uploadedFile.ContentType ?? string.Empty, mediaFile.MimeType));
                     }
 
                     using (System.IO.Stream readStream = uploadedFile.FileStream)
