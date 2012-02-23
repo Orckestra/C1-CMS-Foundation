@@ -469,71 +469,59 @@ EditorBinding.prototype.getCheckSum = function () {
  * @overloads {Binding#handleEvent}
  * @param {eEvent} e
  */
-EditorBinding.prototype.handleEvent = function ( e ) {
-	
-	EditorBinding.superclass.handleEvent.call ( this, e );
-	
-	var target = DOMEvents.getTarget ( e );
-	
-	switch ( e.type ) {
-		
+EditorBinding.prototype.handleEvent = function (e) {
+
+	EditorBinding.superclass.handleEvent.call(this, e);
+
+	var target = DOMEvents.getTarget(e);
+
+	switch (e.type) {
+
 		/*
-		 * Note that the contextmenu is build when first shown.
-		 */
-		case DOMEvents.CONTEXTMENU :
-			DOMEvents.preventDefault ( e );
-			this._popupBinding.editorBinding = this;
-			this.handleContextMenu ( e );
-			break;
-		
-		/*
-		 * Check for dirty on all keystrokes.
-		 */
-		case DOMEvents.KEYPRESS :
-			this.checkForDirty ();
-			if (!this._isActivated || this.isFocusable && !this.isFocused) {
-				this._activateEditor ( true );
+		* Note that the contextmenu is build when first shown.
+		*/ 
+		case DOMEvents.CONTEXTMENU:
+			if (Client.isFirefox && e.ctrlKey) {
+				// nothing, default FF contextmenu
+			} else {
+				DOMEvents.preventDefault ( e );
+				this._popupBinding.editorBinding = this;
+				this.handleContextMenu ( e );
 			}
 			break;
-			
+
 		/*
-		 * Activate editor on editor mousedown.
-		 */
-		case DOMEvents.MOUSEDOWN :
-			
-			/*
-			 * TODO: MOVE THIS!
-			 */
-//			if ( this instanceof BespinEditorBinding ) {	
-//				if ( target == this._bespinElement ) {
-//					this.dispatchAction ( Binding.ACTION_ACTIVATED );
-//					if ( !this._isActivated ) {
-//						this._activateEditor ( true );
-//					}
-//					if ( DOMEvents.isRightButton ( e )) { // block contextmenu for now...	
-//						DOMEvents.stopPropagation ( e );
-//						DOMEvents.preventDefault ( e );
-//					}
-//				}
-//			} else {
-				if ( target.ownerDocument == this.getEditorDocument ()) {
-					if (!this._isActivated || this.isFocusable && !this.isFocused) {
-						this._activateEditor ( true );
-					}
-				}
-//			}
+		* Check for dirty on all keystrokes.
+		*/ 
+		case DOMEvents.KEYPRESS:
+			this.checkForDirty();
+			if (!this._isActivated || this.isFocusable && !this.isFocused) {
+				this._activateEditor(true);
+			}
 			break;
-		
+
 		/*
-		 * A pityful and desperate attempt to fix the case where IE thinks 
-		 * that no window has the current focus combined with IE's assumption 
-		 * that mousedown on a contenteditable document should not invoke focus. 
-		 */
-		case DOMEvents.MOUSEMOVE :
-			if ( Client.isExplorer ) {
-				if ( Application.isBlurred ) {
-					if ( !this._isActivated ) {
-						this.getContentWindow ().focus ();
+		* Activate editor on editor mousedown.
+		*/ 
+		case DOMEvents.MOUSEDOWN:
+
+			if (target.ownerDocument == this.getEditorDocument()) {
+				if (!this._isActivated || this.isFocusable && !this.isFocused) {
+					this._activateEditor(true);
+				}
+			}
+			break;
+
+		/*
+		* A pityful and desperate attempt to fix the case where IE thinks 
+		* that no window has the current focus combined with IE's assumption 
+		* that mousedown on a contenteditable document should not invoke focus. 
+		*/ 
+		case DOMEvents.MOUSEMOVE:
+			if (Client.isExplorer) {
+				if (Application.isBlurred) {
+					if (!this._isActivated) {
+						this.getContentWindow().focus();
 					}
 				}
 			}

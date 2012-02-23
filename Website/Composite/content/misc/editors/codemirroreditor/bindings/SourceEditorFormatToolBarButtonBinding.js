@@ -23,7 +23,13 @@ function SourceEditorFormatToolbarButtonBinding () {
 	 * @type {Codemirror}
 	 */
 	this._codemirrorEditor = null;
-	
+
+	/**
+	* Syntax defaults to plain text.
+	* @type {string}
+	*/
+	this.syntax = new String(CodeMirrorEditorBinding.syntax.TEXT);
+
 	/*
 	 * Returnable.
 	 */
@@ -53,10 +59,12 @@ SourceEditorFormatToolbarButtonBinding.prototype.onBindingAttach = function () {
  * @param {CodemirrorEditorBinding} binding
  * @param {Codemirror} editor
  */
-SourceEditorFormatToolbarButtonBinding.prototype.initializeSourceEditorComponent = function ( binding, editor ) {
+SourceEditorFormatToolbarButtonBinding.prototype.initializeSourceEditorComponent = function (binding, editor) {
 
 	this._editorBinding = binding;
 	this._codemirrorEditor = editor;
+	if (binding != null)
+		this.syntax = binding.syntax;
 }
 
 /**
@@ -86,7 +94,13 @@ SourceEditorFormatToolbarButtonBinding.prototype._doIt = function () {
 
 	if (dom != null) {
 		WebServiceProxy.isFaultHandler = false;
-		var result = MarkupFormatService.AutoIndentDocument(encodeURIComponent(markup));
+		var result;
+		if (this.syntax == CodeMirrorEditorBinding.syntax.HTML) {
+			result = MarkupFormatService.AutoIndentDocument(encodeURIComponent(markup));
+		}
+		else {
+			result = MarkupFormatService.AutoIndentXml(encodeURIComponent(markup));
+		}
 		WebServiceProxy.isFaultHandler = true;
 		if (result instanceof SOAPFault) {
 			Application.unlock(this);

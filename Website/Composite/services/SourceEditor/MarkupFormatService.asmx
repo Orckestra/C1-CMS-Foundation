@@ -44,32 +44,32 @@ namespace Composite.Services
             }
         }
 
+        [WebMethod]
+        public string AutoIndentXml(string xml)
+        {
+            try
+            {
+                var server = HttpContext.Current.Server;
 
-        //[WebMethod]
-        //public string AutoIndentFragment(string xml)
-        //{
-        //    try
-        //    {
-        //        XElement wrapperElement = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", PrepareForIndention(xml)));
+                string decodedXml = server.UrlDecode(xml);
 
-        //        List<XElement> mixedChildrenParents = wrapperElement.Descendants().Where(f => f.Nodes().Any(g => g is XText) && f.Elements().Any()).ToList();
-        //        List<XNode> textNodes = mixedChildrenParents.Nodes().Where(f => f is XText).ToList();
+                StringBuilder sb = new StringBuilder();
+                XmlWriterSettings xws = new XmlWriterSettings();
+                xws.OmitXmlDeclaration = true;
+                xws.Indent = true;
+                xws.IndentChars = "\t";
+                using (XmlWriter xw = XmlWriter.Create(sb, xws)) {
+                    XDocument.Parse(decodedXml).Save(xw);
+                }
 
-        //        foreach (XNode textNode in textNodes)
-        //        {
-        //            textNode.ReplaceWith(new XElement(_tempNs + "TEXTNODE", textNode));
-        //        }
-
-        //        string indented = wrapperElement.Descendants().Select(x => x.ToString() + "\n").Aggregate(String.Concat);
-
-        //        return CleanUpIndented(indented);
-
-        //    }
-        //    catch (XmlException)
-        //    {
-        //        throw;
-        //    }
-        //}
+                var result = sb.ToString();
+                return server.UrlEncode(result).Replace("+", "%20");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
 
         [WebMethod]
@@ -110,43 +110,6 @@ namespace Composite.Services
 
             return xhtml;
         }
-
-
-        //private string PrepareForIndention(string xml)
-        //{
-        //    xml = xml.Replace("\xA0", _nbspNumeric).Replace(_nbsp, _nbspNumeric);
-        //    xml = xml.Replace("xmlns=\"", "xmlns=\"#DEFAULTNS:");
-        //    xml = xml.Replace("xmlns='", "xmlns='#DEFAULTNS:");
-
-        //    return xml;
-        //}
-
-
-        //private string CleanUpIndented(string xml)
-        //{
-        //    xml = xml.Replace("\xA0", _nbspNumeric).Replace(_nbsp, _nbspNumeric);
-        //    xml = xml.Replace("xmlns=\"#DEFAULTNS:", "xmlns=\"");
-        //    xml = xml.Replace("xmlns='#DEFAULTNS:", "xmlns='");
-
-        //    xml = xml.Replace("<TEXTNODE xmlns=\"" + _tempNs + "\">", "");
-
-        //    xml = xml.Replace("</TEXTNODE>", "");
-
-        //    string[] lines = xml.Split('\n');
-
-        //    StringBuilder result = new StringBuilder();
-
-        //    foreach (string line in lines.Where(f => f.Trim().Length > 0))
-        //    {
-        //        int charCounter = 0;
-        //        while (line.Length > charCounter && line.Substring(charCounter, 1) == " ")
-        //            charCounter++;
-
-        //        result.Append(new string('\t', charCounter / 2) + line.Substring(charCounter));
-        //    }
-
-        //    return result.ToString();
-        //}
 
 
         private static Tidy GetXhtml5ConfiguredTidy()

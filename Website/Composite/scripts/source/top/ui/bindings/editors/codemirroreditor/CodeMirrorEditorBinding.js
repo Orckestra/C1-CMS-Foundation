@@ -146,12 +146,8 @@ CodeMirrorEditorBinding.prototype.onBindingRegister = function () {
 */
 CodeMirrorEditorBinding.prototype.onBindingAttach = function () {
 
-	/*
-	* Only Mozilla loads CodePress.
-	*/
-	//if ( Client.isMozilla == true ) {
 	this.subscribe(BroadcastMessages.CODEMIRROR_LOADED);
-	//}
+
 
 	/*
 	* This has something to do with the editor 
@@ -179,16 +175,9 @@ CodeMirrorEditorBinding.prototype.onBindingAttach = function () {
 	}
 
 	/*
-	* Assign syntax. Fallback to HTML for XML and XSL.
-	* TODO: Create these syntax thingies for CodeMirror.
+	* Assign syntax
 	*/
 	this.syntax = this.getProperty("syntax");
-	switch (this.syntax) {
-		case CodeMirrorEditorBinding.syntax.XML:
-		case CodeMirrorEditorBinding.syntax.XSL:
-			this.syntax = CodeMirrorEditorBinding.syntax.HTML;
-			break;
-	}
 
 	/*
 	* While developing, mount test file based on current syntax
