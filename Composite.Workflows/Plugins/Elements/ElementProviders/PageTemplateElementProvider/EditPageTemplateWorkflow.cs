@@ -191,14 +191,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return;
             }
 
-            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title == newPageTemplate.Title).Any();
+            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title == newPageTemplate.Title
+                && f.Id != newPageTemplate.Id).Any();
         }
 
 
 
         private void ShowMessageCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("PageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditPageTemplateWorkflow.TitleInUseTitle"));
+            ShowFieldMessage("PageTemplate.Title", GetString("EditPageTemplateWorkflow.TitleInUseTitle"));
         }
     }
 }
