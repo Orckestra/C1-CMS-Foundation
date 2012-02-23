@@ -102,9 +102,11 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    if (IsValidGuid(secondPart))
+                    Guid fileId; 
+
+                    if (Guid.TryParse(secondPart, out fileId))
                     {
-                        result = GetFileById(storeId, new Guid(secondPart));
+                        result = GetFileById(storeId, fileId);
                     }
                     else
                     {
@@ -115,7 +117,6 @@ namespace Composite.Core.WebClient
                 {
                     throw new FileNotFoundException("File '{0}' was not found.".FormatWith(compositePath), ex);
                 }
-
             }
             else
             {
@@ -181,6 +182,7 @@ namespace Composite.Core.WebClient
 
 
         /// <exclude />
+        [Obsolete("Use Guid.TryParse()")]
         public static bool IsValidGuid(string value)
         {
             Verify.ArgumentNotNull(value, "value");
