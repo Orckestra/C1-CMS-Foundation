@@ -25962,9 +25962,12 @@ EditorBinding.superclass.handleEvent.call(this,e);
 var _f9d=DOMEvents.getTarget(e);
 switch(e.type){
 case DOMEvents.CONTEXTMENU:
+if(Client.isFirefox&&e.ctrlKey){
+}else{
 DOMEvents.preventDefault(e);
 this._popupBinding.editorBinding=this;
 this.handleContextMenu(e);
+}
 break;
 case DOMEvents.KEYPRESS:
 this.checkForDirty();
@@ -27459,12 +27462,6 @@ if(_10a7!=null){
 this._validator=_10a7;
 }
 this.syntax=this.getProperty("syntax");
-switch(this.syntax){
-case CodeMirrorEditorBinding.syntax.XML:
-case CodeMirrorEditorBinding.syntax.XSL:
-this.syntax=CodeMirrorEditorBinding.syntax.HTML;
-break;
-}
 if(this.getProperty("debug")){
 this._startContent=Templates.getPlainText("sourcecodeeditor/"+this.syntax+".txt");
 }
