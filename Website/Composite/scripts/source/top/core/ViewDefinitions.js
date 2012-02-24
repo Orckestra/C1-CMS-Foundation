@@ -58,7 +58,17 @@ var ViewDefinitions = {
 			"list"	: null
 		}
 	}),
-		
+
+	"Composite.Management.ExternalView" : new HostedViewDefinition ({
+		handle		: "Composite.Management.ExternalView",
+		isMutable	: true,
+		position	: DockBinding.EXTERNAL,
+		url			: null,
+		label		: null,
+		image		: null,
+		toolTip		: null
+	}),
+
 	/*
 	 * Start.
 	 */

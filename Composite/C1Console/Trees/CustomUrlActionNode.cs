@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Composite.C1Console.Actions;
@@ -9,7 +10,6 @@ using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.Core.Serialization;
 using Composite.Core.WebClient;
-using Composite.Core.IO;
 
 
 namespace Composite.C1Console.Trees
@@ -19,7 +19,8 @@ namespace Composite.C1Console.Trees
         GenericView = 0,
         PageBrowser = 1,
         FileDownload = 2,
-        DocumentView = 3
+        DocumentView = 3,
+        ExternalView = 4
     }
 
 
@@ -32,6 +33,7 @@ namespace Composite.C1Console.Trees
         public string ViewLabel { get; internal set; }                              // Optional
         public string ViewToolTip { get; internal set; }                            // Optional
         public ResourceHandle ViewIcon { get; internal set; }                       // Optional
+        public bool External { get; internal set; }                                 // Optional
         public Dictionary<string, string> PostParameters { get; internal set; }     // Optional
 
         // Cached values
@@ -43,16 +45,24 @@ namespace Composite.C1Console.Trees
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
             string url = this.UrlDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
-            url = UrlUtils.ResolvePublicUrl(url);                       
 
-            CustomUrlActionNodeActionToken actoinToken = new CustomUrlActionNodeActionToken(
+            this.External = url.Contains("://");
+
+            if(!External)
+            {
+                url = UrlUtils.ResolvePublicUrl(url);
+            }
+
+            CustomUrlActionNodeActionToken actionToken = new CustomUrlActionNodeActionToken(
                 url,
+                this.External,
+                (this.External ? "externalview" : "documentview"),
                 this.ViewLabelDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.ViewToolTipDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
                 this.Serialize(),
                 this.PermissionTypes);
 
-            ElementAction elementAction = new ElementAction(new ActionHandle(actoinToken))
+            ElementAction elementAction = new ElementAction(new ActionHandle(actionToken))
             {
                 VisualData = CreateActionVisualizedData(dynamicValuesHelperReplaceContext)
             };
@@ -106,6 +116,33 @@ namespace Composite.C1Console.Trees
                             UrlPostArguments = customUrlActionNode.PostParameters
                         };
                         ConsoleMessageQueueFacade.Enqueue(openViewMessageQueueItem, currentConsoleId);
+
+                        BindEntityTokenToViewQueueItem bindEntityTokenToViewQueueItem = new BindEntityTokenToViewQueueItem()
+                        {
+                            ViewId = viewId,
+                            EntityToken = serializedEntityToken
+                        };
+                        ConsoleMessageQueueFacade.Enqueue(bindEntityTokenToViewQueueItem, currentConsoleId);
+                    }
+                    break;
+
+                case CustomUrlActionNodeViewType.ExternalView:
+                    {
+                        string viewId = Guid.NewGuid().ToString();
+                        string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
+
+                        OpenExternalViewQueueItem openExternalViewQueueItem = new OpenExternalViewQueueItem(entityToken)
+                        {
+                            ViewId = viewId,
+                            EntityToken = serializedEntityToken,
+                            Label = customUrlActionNodeActionToken.ViewLabel,
+                            ToolTip = customUrlActionNodeActionToken.ViewToolTip,
+                            IconResourceHandle = customUrlActionNode.ViewIcon,
+                            Url = customUrlActionNodeActionToken.Url,
+                            ViewType = customUrlActionNodeActionToken.ViewType,
+                            UrlPostArguments = customUrlActionNode.PostParameters
+                        };
+                        ConsoleMessageQueueFacade.Enqueue(openExternalViewQueueItem, currentConsoleId);
 
                         BindEntityTokenToViewQueueItem bindEntityTokenToViewQueueItem = new BindEntityTokenToViewQueueItem()
                         {
@@ -178,9 +215,11 @@ namespace Composite.C1Console.Trees
         private List<PermissionType> _permissionTypes;
 
 
-        public CustomUrlActionNodeActionToken(string url, string viewLabel, string viewToolTip, string serializedActionNode, List<PermissionType> permissionTypes)
+        public CustomUrlActionNodeActionToken(string url, bool external, string viewtype, string viewLabel, string viewToolTip, string serializedActionNode, List<PermissionType> permissionTypes)
         {
             this.Url = url;
+            this.Extenal = external;
+            this.ViewType = viewtype;
             this.ViewLabel = viewLabel;
             this.ViewToolTip = viewToolTip;
             _permissionTypes = permissionTypes;
@@ -189,8 +228,10 @@ namespace Composite.C1Console.Trees
 
 
         public string Url { get; private set; }
+        public bool Extenal { get; private set; }
         public string ViewLabel { get; private set; }
         public string ViewToolTip { get; private set; }
+        public string ViewType { get; private set; }
         public string SerializedActionNode { get; private set; }
 
 
@@ -206,6 +247,8 @@ namespace Composite.C1Console.Trees
             StringBuilder sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "Url", this.Url);
+            StringConversionServices.SerializeKeyValuePair(sb, "External", this.Extenal.ToString(CultureInfo.InvariantCulture).ToLower());
+            StringConversionServices.SerializeKeyValuePair(sb, "ViewType", this.ViewType);
             StringConversionServices.SerializeKeyValuePair(sb, "ViewLabel", this.ViewLabel);
             StringConversionServices.SerializeKeyValuePair(sb, "ViewToolTip", this.ViewToolTip);
             StringConversionServices.SerializeKeyValuePair(sb, "SerializedActionNode", this.SerializedActionNode);
@@ -222,6 +265,8 @@ namespace Composite.C1Console.Trees
             return new CustomUrlActionNodeActionToken
             (
                 StringConversionServices.DeserializeValueString(dic["Url"]),
+                StringConversionServices.DeserializeValueBool(dic["External"]),
+                StringConversionServices.DeserializeValueString(dic["ViewType"]),
                 StringConversionServices.DeserializeValueString(dic["ViewLabel"]),
                 StringConversionServices.DeserializeValueString(dic["ViewToolTip"]),
                 StringConversionServices.DeserializeValueString(dic["SerializedActionNode"]),

@@ -722,7 +722,15 @@ StageBinding.prototype._presentViewDefinition = function ( viewDefinition ) {
 						// targetting the developer docks.
 						target = this._dockBindings.get ( viewDefinition.position );
 						break;
-						
+
+		            case DockBinding.EXTERNAL:
+
+		                // Open a new window/tab with the provided url
+		                window.open(viewDefinition.url);
+		                isAbort = true;
+		                break;
+
+
 					default :
 						
 						// targetting the main stage.

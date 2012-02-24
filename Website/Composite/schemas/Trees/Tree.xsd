@@ -1172,6 +1172,7 @@
           <xs:enumeration value="documentview" />
           <xs:enumeration value="pagebrowser" />
           <xs:enumeration value="filedownload" />
+          <xs:enumeration value="externalview" />
         </xs:restriction>
       </xs:simpleType>
     </xs:attribute>

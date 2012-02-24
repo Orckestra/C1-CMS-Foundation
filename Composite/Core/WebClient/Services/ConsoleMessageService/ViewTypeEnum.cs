@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
 {
@@ -7,22 +7,25 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     public enum ViewType
     {
         /// <exclude />
-        Main,
+        External = 6,
 
         /// <exclude />
-        ModalDialog,
+        Main = 0,
 
         /// <exclude />
-        RightTop,
+        ModalDialog = 1,
 
         /// <exclude />
-        RightBottom,
+        RightTop = 2,
 
         /// <exclude />
-        BottomLeft,
+        RightBottom = 3,
 
         /// <exclude />
-        BottomRight
+        BottomLeft = 4,
+
+        /// <exclude />
+        BottomRight = 5
     }
 
     internal static class InternalViewTypeConvertExtensions
@@ -31,6 +34,8 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
         {
             switch (internalViewType)
             {
+                case Composite.C1Console.Events.ViewType.External:
+                    return ViewType.External;
                 case Composite.C1Console.Events.ViewType.Main:
                     return ViewType.Main;
                 case Composite.C1Console.Events.ViewType.ModalDialog:

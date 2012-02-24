@@ -145,6 +145,7 @@
     <Compile Include="C1Console\Actions\ActionLockingFacade.cs" />
     <Compile Include="C1Console\Actions\AddNewTreeRefresher.cs" />
     <Compile Include="C1Console\Actions\FlowTokenSerializer.cs" />
+    <Compile Include="C1Console\Events\OpenExternalViewQueueItem.cs" />
     <Compile Include="C1Console\Forms\Flows\BindingValidationService.cs" />
     <Compile Include="C1Console\Forms\Flows\IBindingValidationService.cs" />
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="Core\Routing\Pages\C1PageRouteHander.cs" />
     <Compile Include="Core\Routing\Routes.cs" />
     <Compile Include="Core\WebClient\Renderings\RenderingContext.cs" />
+    <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenExternalViewParams.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\SelectElementParams.cs" />
     <Compile Include="Core\WebClient\UiControlLib\DocumentDirtyEvent.cs" />
     <Compile Include="Core\Xml\XhtmlErrorFormatter.cs" />

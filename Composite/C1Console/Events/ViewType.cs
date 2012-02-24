@@ -1,5 +1,3 @@
-﻿
-
 namespace Composite.C1Console.Events
 {
     /// <summary>    
@@ -9,21 +7,24 @@ namespace Composite.C1Console.Events
     public enum ViewType
     {
         /// <exclude />
-        Main,
+        Main = 0,
 
         /// <exclude />
-        ModalDialog,
+        ModalDialog = 1,
 
         /// <exclude />
-        RightTop,
+        RightTop = 2,
 
         /// <exclude />
-        RightBottom,
+        RightBottom = 3,
 
         /// <exclude />
-        BottomLeft,
+        BottomLeft = 4,
 
         /// <exclude />
-        BottomRight
+        BottomRight = 5,
+
+        /// <exclude />
+        External = 6
     }
 }

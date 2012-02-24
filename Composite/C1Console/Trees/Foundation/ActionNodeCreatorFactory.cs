@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -187,6 +187,10 @@ namespace Composite.C1Console.Trees.Foundation
                 string viewTypeValue = viewTypeAttribute.GetValueOrDefault("documentview");
                 switch (viewTypeValue)
                 {
+                    case "externalview":
+                        actionNode.ViewType = CustomUrlActionNodeViewType.ExternalView;
+                        break;
+
                     case "genericview":
                         actionNode.ViewType = CustomUrlActionNodeViewType.GenericView;
                         break;

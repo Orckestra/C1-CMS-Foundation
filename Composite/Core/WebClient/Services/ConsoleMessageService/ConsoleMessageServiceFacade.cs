@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Events;
@@ -136,7 +136,39 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                     ActionType = ActionType.OpenGenericView,
                     OpenGenericViewParams = openGenericViewParams
                 });
-            }            
+            }
+
+            // Open external views...
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(OpenExternalViewQueueItem)))
+            {
+                OpenExternalViewQueueItem openExternalView = (OpenExternalViewQueueItem)queueElement.QueueItem;
+
+                List<KeyValuePair> arguments = new List<KeyValuePair>();
+                foreach (var entry in openExternalView.UrlPostArguments)
+                {
+                    arguments.Add(new KeyValuePair(entry.Key, entry.Value));
+                }
+
+                OpenExternalViewParams openExternalViewParams = new OpenExternalViewParams
+                {
+                    ViewId = openExternalView.ViewId,
+                    EntityToken = openExternalView.EntityToken,
+                    Label = openExternalView.Label,
+                    ToolTip = openExternalView.ToolTip ?? openExternalView.Label,
+                    ViewType = openExternalView.ViewType,
+                    Url = openExternalView.Url,
+                    UrlPostArguments = arguments
+                };
+
+                openExternalViewParams.Image = GetImageUrl(openExternalView.IconResourceHandle);
+
+                newMessages.Add(new ConsoleAction
+                {
+                    SequenceNumber = queueElement.QueueItemNumber,
+                    ActionType = ActionType.OpenExternalView,
+                    OpenExternalViewParams = openExternalViewParams
+                });
+            }      
 
 
             // Download files...

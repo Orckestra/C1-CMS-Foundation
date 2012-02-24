@@ -3,6 +3,7 @@ DockBinding.prototype.constructor = DockBinding;
 DockBinding.superclass = TabBoxBinding.prototype;
 
 DockBinding.START					= "start";
+DockBinding.EXTERNAL                = "external";
 DockBinding.EXPLORER				= "explorer";
 DockBinding.MAIN					= "main";
 DockBinding.BOTTOMLEFT				= "bottomleft";

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
@@ -28,6 +28,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
         /// <exclude />
         public OpenGenericViewParams OpenGenericViewParams { get; set; }
+
+        /// <exclude />
+        public OpenExternalViewParams OpenExternalViewParams { get; set; }
 
         /// <exclude />
         public DownloadFileParams DownloadFileParams { get; set; }

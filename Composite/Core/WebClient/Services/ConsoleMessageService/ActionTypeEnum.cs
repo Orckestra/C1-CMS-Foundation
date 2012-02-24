@@ -1,5 +1,3 @@
-﻿
-
 namespace Composite.Core.WebClient.Services.ConsoleMessageService
 {
     /// <exclude />
@@ -7,54 +5,57 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     public enum ActionType
     {
         /// <exclude />
-        OpenView,
+        OpenView = 0,
 
         /// <exclude />
-        OpenGenericView,
+        OpenExternalView = 17,
 
         /// <exclude />
-        OpenViewDefinition,
+        OpenGenericView = 1,
 
         /// <exclude />
-        CloseView,
+        OpenViewDefinition = 2,
 
         /// <exclude />
-        DownloadFile,
+        CloseView = 3,
 
         /// <exclude />
-        MessageBox,
+        DownloadFile = 4,
 
         /// <exclude />
-        RefreshTree,
+        MessageBox = 5,
 
         /// <exclude />
-        LogEntry,
+        RefreshTree = 6,
 
         /// <exclude />
-        Reboot,
+        LogEntry = 7,
 
         /// <exclude />
-        CollapseAndRefresh,
+        Reboot = 8,
 
         /// <exclude />
-        CloseAllViews,
+        CollapseAndRefresh = 9,
 
         /// <exclude />
-        LockSystem,
+        CloseAllViews = 10,
 
         /// <exclude />
-        BroadcastMessage,
+        LockSystem = 11,
 
         /// <exclude />
-        SaveStatus,
+        BroadcastMessage = 12,
 
         /// <exclude />
-        BindEntityTokenToView,
+        SaveStatus = 13,
 
         /// <exclude />
-        ExpandTreeNode,
+        BindEntityTokenToView = 14,
 
         /// <exclude />
-        SelectElement
+        ExpandTreeNode = 15,
+
+        /// <exclude />
+        SelectElement = 16
     }
 }
