@@ -171,6 +171,7 @@ namespace Composite.Core.WebClient.Captcha
             return true;
         }
 
+        /// <exclude />
         public static string GetImageUrl(string encryptedCaptchaValue)
         {
             var url = new UrlBuilder(CaptchaServiceUrl);

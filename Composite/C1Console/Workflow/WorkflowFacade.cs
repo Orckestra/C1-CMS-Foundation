@@ -76,6 +76,10 @@ namespace Composite.C1Console.Workflow
 
 
 
+        /// <summary>
+        /// Runs the when initialized.
+        /// </summary>
+        /// <param name="action">The action.</param>
         public static void RunWhenInitialized(Action action)
         {
             _workflowFacade.RunWhenInitialized(action);

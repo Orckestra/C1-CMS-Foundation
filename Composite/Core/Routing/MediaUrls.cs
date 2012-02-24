@@ -108,6 +108,7 @@ namespace Composite.Core.Routing
                        };
         }
 
+        /// <exclude />
         public static string BuildUrl(MediaUrlData mediaUrlData, UrlKind urlKind)
         {
             Verify.ArgumentNotNull(mediaUrlData, "mediaUrlData");
