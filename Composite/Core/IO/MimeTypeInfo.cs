@@ -208,6 +208,7 @@ namespace Composite.Core.IO
 
             // png
             _toCanonical.Add("image/png", Png);
+            _toCanonical.Add("image/x-png", Png);
             AddExtensionMapping("png", Png);
             _mimeTypeToResourceName.Add(Png, "mimetype-png");
 
