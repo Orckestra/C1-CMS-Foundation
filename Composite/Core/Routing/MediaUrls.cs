@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Text;
 using System.Web;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
@@ -154,11 +155,7 @@ namespace Composite.Core.Routing
 
             string pathToFile = UrlUtils.Combine(file.FolderPath, file.FileName);
 
-            // Hotfix for characters not accepted by ASP.NET by default
-            foreach (var ch in ForbiddenUrlCharacters)
-            {
-                pathToFile = pathToFile.Replace(ch, 'x');
-            }
+            pathToFile = RemoveForbiddenCharactersAndNormalize(pathToFile);
 
             // IIS6 doesn't have wildcard mapping by default, so removing image extension if running in "classic" app pool
             if (!HttpRuntime.UsingIntegratedPipeline)
@@ -172,10 +169,43 @@ namespace Composite.Core.Routing
 
             var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaUrlData.MediaId);
 
-            url.PathInfo = pathToFile;
+            if (pathToFile.Length > 0)
+            {
+                url.PathInfo = pathToFile;
+            }
             url.AddQueryParameters(queryParams);
 
             return url.ToString();
+        }
+
+        private static string RemoveForbiddenCharactersAndNormalize(string path)
+        {
+            foreach (var ch in ForbiddenUrlCharacters)
+            {
+                path = path.Replace(ch, '#');
+            }
+
+            path = path.Replace("#", string.Empty);
+
+            // Removing consequtive white spaces
+            while(path.Contains("  "))
+            {
+                path = path.Replace("  ", " ");
+            }
+
+            string[] parts = path.Split('/');
+
+            var result = new StringBuilder();
+            for(int i=0; i<parts.Length; i++)
+            {
+                string trimmedPart = parts[i].Trim();
+                if(trimmedPart.Length > 0)
+                {
+                    result.Append("/").Append(trimmedPart);
+                }
+            }
+
+            return result.ToString();
         }
 
         private static IMediaFile GetFileById(string storeId, Guid fileId)
