@@ -832,9 +832,6 @@
     <Content Include="Composite\images\icons\templates\del_24.png" />
     <Content Include="Composite\images\icons\templates\edit_16.png" />
     <Content Include="Composite\images\icons\templates\edit_24.png" />
-    <Content Include="Composite\localization\Composite.Plugins.DeveloperApplicationProvider.en-us.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="Composite\localization\Composite.Plugins.PageTypeElementProvider.en-us.xml">
       <SubType>Designer</SubType>
     </Content>
