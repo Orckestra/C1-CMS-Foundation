@@ -224,12 +224,6 @@ namespace Composite.Data.DynamicTypes
 
                 foreach (var existingField in this.ExistingFields)
                 {
-
-                    if (existingField.OriginalField.IsNullable == true && existingField.AlteredField.IsNullable == false)
-                    {
-                        throw new InvalidOperationException(string.Format("Data type change description is invalid. Requested convertion for field {0} is not allowed.", existingField.AlteredField.Name));
-                    }
-
                     if (existingField.OriginalField.StoreType.IsConvertibleTo(existingField.AlteredField.StoreType) == false)
                     {
                         throw new InvalidOperationException(string.Format("Data type change description is invalid. Requested convertion for field {0} is not allowed.", existingField.AlteredField.Name));
