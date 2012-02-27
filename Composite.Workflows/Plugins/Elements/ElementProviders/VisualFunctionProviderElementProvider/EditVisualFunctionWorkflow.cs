@@ -190,7 +190,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 previewPage.Title = function.Name;
 
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
-                previewPage.CultureName = UserSettings.CultureInfo.Name;
+                previewPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
                 TemplatePlaceholdersInfo templatePlaceholderInfo = TemplateInfo.GetRenderingPlaceHolders(previewPage.TemplateId);
                 IPagePlaceholderContent placeHolderContent = DataFacade.BuildNew<IPagePlaceholderContent>();

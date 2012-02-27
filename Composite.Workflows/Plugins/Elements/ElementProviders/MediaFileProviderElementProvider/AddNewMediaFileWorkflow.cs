@@ -222,7 +222,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     mediaFile.FolderPath = this.FolderPath;
                     mediaFile.Title = this.GetBinding<string>("Title");
                     mediaFile.Description = this.GetBinding<string>("Description");
-                    mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;
+                    mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
                     mediaFile.Length = uploadedFile.ContentLength;
                     mediaFile.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
 

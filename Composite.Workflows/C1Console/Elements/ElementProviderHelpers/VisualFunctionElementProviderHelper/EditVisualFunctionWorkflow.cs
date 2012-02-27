@@ -99,7 +99,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.VisualFunctionElem
 
                 IPage previewPage = DataFacade.BuildNew<IPage>();
                 previewPage.Title = function.Name;
-                previewPage.CultureName = UserSettings.CultureInfo.Name;
+                previewPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
 

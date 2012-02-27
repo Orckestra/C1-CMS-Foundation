@@ -144,7 +144,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         mediaFile.FolderPath = parentPath.Combine(theEntry.Name.GetDirectory('/'), '/');
 
                         mediaFile.CreationTime = DateTime.Now;
-                        mediaFile.Culture = C1Console.Users.UserSettings.CultureInfo.Name;
+                        mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
                         mediaFile.LastWriteTime = DateTime.Now;
                         mediaFile.Length = length;
                         mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(theEntry.Name));
