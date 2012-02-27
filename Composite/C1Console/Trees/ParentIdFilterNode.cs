@@ -35,6 +35,15 @@ namespace Composite.C1Console.Trees
 
             Expression expression = Expression.Equal(ExpressionHelper.CreatePropertyExpression(this.ReferenceFieldName, parameterExpression), Expression.Constant(parentFieldValue, this.ReferencePropertyInfo.PropertyType));
 
+            if (ReferencePropertyInfo.PropertyType.IsGenericType && ReferencePropertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                PropertyInfo propertyInfo = ReferencePropertyInfo.PropertyType.GetProperty("HasValue");
+
+                Expression hasValueExpression = Expression.Property(Expression.Property(parameterExpression, this.ReferenceFieldName), propertyInfo);
+
+                expression = Expression.AndAlso(hasValueExpression, expression);
+            }
+
             return expression;
         }
 
