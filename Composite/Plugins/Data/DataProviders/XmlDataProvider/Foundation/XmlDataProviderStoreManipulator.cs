@@ -181,6 +181,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                 }
 
+                // Adding default value for fields that are NULL and become required
+                foreach (var existingFieldInfo in dataTypeChangeDescriptor.ExistingFields)
+                {
+                    bool fieldBecomeRequired = existingFieldInfo.OriginalField.IsNullable && !existingFieldInfo.AlteredField.IsNullable;
+
+                    string fieldName = existingFieldInfo.AlteredField.Name;
+
+                    if (fieldBecomeRequired && !newChildAttributes.Any(attr => attr.Name.LocalName == fieldName))
+                    {
+                        newChildAttributes.Add(new XAttribute(fieldName, existingFieldInfo.AlteredField.DefaultValue.Value));
+                    }
+                }
+
                 foreach (DataFieldDescriptor fieldDescriptor in dataTypeChangeDescriptor.AddedFields)
                 {
                     if (fieldDescriptor.IsNullable == false
