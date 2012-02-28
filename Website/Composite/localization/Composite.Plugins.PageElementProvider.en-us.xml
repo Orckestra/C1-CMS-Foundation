@@ -98,7 +98,7 @@
   <string key="ManageHostNames.Add.FieldGroupLabel" value="Host name association to page" />
   <string key="ManageHostNames.Add.HostNameTextBoxLabel" value="Host name" />
   <string key="ManageHostNames.Add.HostNametextBoxHelp" value="Specify the host name (like 'www.composite.net' or 'composite.net') you want to associate with this page" />
-  <string key="ManageHostNames.Add.InvalidHostNameSyntaxError" value="The syntax of the host name in not valid" />
+  <string key="ManageHostNames.Add.InvalidHostNameSyntaxError" value="The syntax of the host name is not valid" />
   <string key="ManageHostNames.Add.HostNameNotUniqueError" value="This host name is already associated to a page. You must remove the existing association first." />
   <string key="ManageHostNames.Remove.DialogLabel" value="Manage host name" />
   <string key="ManageHostNames.Remove.FieldGroupLabel" value="Remove host name association from page" />
