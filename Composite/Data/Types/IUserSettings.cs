@@ -35,6 +35,13 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{9D62C8D3-E42F-4926-8E45-5B465A59C8A6}")]
         string CultureName { get; set; }
 
+        /// <exclude />
+        [NotNullValidator()]
+        [StringSizeValidator(2, 16)]
+        [StoreFieldType(PhysicalStoreFieldType.String, 16)]
+        [ImmutableFieldId("{F1BC3D80-AD86-4730-A6EE-65E19BEFD443}")]
+        [DefaultFieldStringValue("en-US")] //for easy upgrade
+        string C1ConsoleUiLanguage { get; set; }
 
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 16, IsNullable = true)]

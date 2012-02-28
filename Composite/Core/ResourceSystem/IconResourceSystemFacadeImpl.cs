@@ -60,7 +60,7 @@ namespace Composite.Core.ResourceSystem
             if (null == resourceHandle) throw new ArgumentNullException("resourceHandle");
 
             //TODO: Find the right CultureInfo and use here!! Old: Composite.Management.OLD.GlobalizationService.CultureInfoProxy
-            return ResourceProviderPluginFacade.GetIcon(resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize, C1Console.Users.UserSettings.CultureInfo);
+            return ResourceProviderPluginFacade.GetIcon(resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize, C1Console.Users.UserSettings.C1ConsoleUiLanguage);
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         #region IStringResourceProvider methods
         public static string GetStringValue(string providerName, string stringId)
         {
-            return GetStringValue(providerName, stringId, System.Threading.Thread.CurrentThread.CurrentCulture);
+            return GetStringValue(providerName, stringId, UserSettings.C1ConsoleUiLanguage);
         }
 
         public static string GetStringValue(string providerName, string stringId, CultureInfo cultureInfo)
@@ -89,7 +89,7 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
 
             IStringResourceProvider provider = GetResourceProvider<IStringResourceProvider>(providerName);
 
-            return provider.GetAllStrings(UserSettings.CultureInfo);
+            return provider.GetAllStrings(UserSettings.C1ConsoleUiLanguage);
         }
         #endregion
 

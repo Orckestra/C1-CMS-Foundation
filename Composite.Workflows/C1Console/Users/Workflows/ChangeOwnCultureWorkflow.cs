@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Workflow.Activities;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
+using Composite.Data;
 
 
 namespace Composite.C1Console.Users.Workflows
@@ -21,22 +23,27 @@ namespace Composite.C1Console.Users.Workflows
 
         private void stepInitialize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            LoggingService.LogVerbose("ChangeOwnCultureWorkflow", "ChangeOwnCultureWorkflow flow started");
+            CultureInfo userCulture = UserSettings.CultureInfo; // Copy admins settings
+            CultureInfo c1ConsoleUiLanguage = UserSettings.C1ConsoleUiLanguage; // Copy admins settings
 
-            CultureInfo userCulture = UserSettings.CultureInfo;
+            List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetSupportedCulturesList();
+            Dictionary<string, string> culturesDictionary = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
-            List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetApplicationRegionAndLanguageList();
-
+            this.Bindings.Add("AllCultures", culturesDictionary);
             this.Bindings.Add("CultureName", userCulture.Name);
-            this.Bindings.Add("RegionLanguageList", regionLanguageList);
+
+            this.Bindings.Add("C1ConsoleUiCultures", regionLanguageList);
+            this.Bindings.Add("C1ConsoleUiLanguageName", c1ConsoleUiLanguage.Name);
         }
 
 
         private void stepFinalize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
             string cultureName = this.GetBinding<string>("CultureName");
+            string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
 
             UserSettings.CultureInfo = new CultureInfo(cultureName);
+            UserSettings.C1ConsoleUiLanguage = new CultureInfo(c1ConsoleUiLanguageName);
 
             LoggingService.LogVerbose("ChangeOwnCultureWorkflow", string.Format("Changed culture for user to {0}", cultureName));
         }
@@ -46,8 +53,9 @@ namespace Composite.C1Console.Users.Workflows
         private void CultureHasChanged(object sender, ConditionalEventArgs e)
         {
             string cultureName = this.GetBinding<string>("CultureName");
+            string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
 
-            e.Result = UserSettings.CultureInfo.Name != cultureName;
+            e.Result = UserSettings.CultureInfo.Name != cultureName || UserSettings.C1ConsoleUiLanguage.Name != c1ConsoleUiLanguageName;
         }
 
 

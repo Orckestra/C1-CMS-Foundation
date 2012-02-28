@@ -25,6 +25,17 @@ namespace Composite.C1Console.Users
             }
         }
 
+        public System.Globalization.CultureInfo C1ConsoleUiLanguage
+        {
+            get
+            {
+                return GlobalSettingsFacade.DefaultCultureInfo;
+            }
+            set
+            {
+            }
+        }
+
         public System.Globalization.CultureInfo GetUserCultureInfo(string username)
         {
             throw new NotImplementedException();
@@ -86,5 +97,16 @@ namespace Composite.C1Console.Users
         }
 
         #endregion
+
+
+        public System.Globalization.CultureInfo GetUserC1ConsoleUiLanguage(string username)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetUserC1ConsoleUiLanguage(string username, System.Globalization.CultureInfo cultureInfo)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

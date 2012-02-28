@@ -95,11 +95,18 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
 
             CultureInfo userCulture = UserSettings.CultureInfo; // Copy admins settings
-            List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetApplicationRegionAndLanguageList();
+            CultureInfo c1ConsoleUiLanguage = UserSettings.C1ConsoleUiLanguage; // Copy admins settings
 
+            List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetSupportedCulturesList();
+            Dictionary<string, string> culturesDictionary = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+            
             this.Bindings.Add(NewUserBindingName, newUser);
+
+            this.Bindings.Add("AllCultures", culturesDictionary);
             this.Bindings.Add("CultureName", userCulture.Name);
-            this.Bindings.Add("RegionLanguageList", regionLanguageList);
+
+            this.Bindings.Add("C1ConsoleUiCultures", regionLanguageList);
+            this.Bindings.Add("C1ConsoleUiLanguageName", c1ConsoleUiLanguage.Name);
         }
 
 
@@ -140,8 +147,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             newUser = DataFacade.AddNew<IUser>(newUser);
 
             string cultureName = this.GetBinding<string>("CultureName");
+            string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
 
             UserSettings.SetUserCultureInfo(newUser.Username, CultureInfo.CreateSpecificCulture(cultureName));
+            UserSettings.SetUserC1ConsoleUiLanguage(newUser.Username, CultureInfo.CreateSpecificCulture(c1ConsoleUiLanguageName));
 
             CultureInfo locale = DataLocalizationFacade.DefaultLocalizationCulture;
 
@@ -155,6 +164,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             this.ExecuteWorklow(newUser.GetDataEntityToken(), typeof(EditUserWorkflow));
         }
+
+
 
         private static void NormalizeUsername(IUser user)
         {

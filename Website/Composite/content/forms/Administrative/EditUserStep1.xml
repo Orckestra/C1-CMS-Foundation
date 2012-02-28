@@ -3,7 +3,9 @@
   <cms:bindings>
     <cms:binding name="User" type="Composite.Data.Types.IUser" />
     <cms:binding name="CultureName" type="System.String" />
-    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+    <cms:binding name="C1ConsoleUiLanguageName" type="System.String" />
+    <cms:binding name="C1ConsoleUiCultures" type="System.Collections.IEnumerable" />
+    <cms:binding name="AllCultures" type="System.Collections.IEnumerable" />
     <cms:binding name="ActiveLocaleName" type="System.String" optional="true"/>
     <cms:binding name="ActiveLocaleList" type="System.Collections.IEnumerable" optional="true"/>
   </cms:bindings>
@@ -51,12 +53,22 @@
               </KeySelector>
             </f:NullCheck.WhenNotNull>
           </f:NullCheck>
+        </FieldGroup>
+        <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.LabelLocalizationFieldGroup}">
           <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.CultureLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.CultureHelp}">
             <KeySelector.Options>
-              <cms:read source="RegionLanguageList"/>
+              <cms:read source="AllCultures"/>
             </KeySelector.Options>
             <KeySelector.Selected>
               <cms:bind source="CultureName" />
+            </KeySelector.Selected>
+          </KeySelector>
+          <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.C1ConsoleLanguageHelp}">
+            <KeySelector.Options>
+              <cms:read source="C1ConsoleUiCultures"/>
+            </KeySelector.Options>
+            <KeySelector.Selected>
+              <cms:bind source="C1ConsoleUiLanguageName" />
             </KeySelector.Selected>
           </KeySelector>
         </FieldGroup>

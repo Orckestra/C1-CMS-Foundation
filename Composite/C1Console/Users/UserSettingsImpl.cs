@@ -71,6 +71,26 @@ namespace Composite.C1Console.Users
 
 
 
+        public CultureInfo C1ConsoleUiLanguage
+        {
+            get
+            {
+                if (UserProfileDataAvailable)
+                {
+                    return CultureInfo.CreateSpecificCulture(GetSettings(UserSettings.Username, true).C1ConsoleUiLanguage);
+                }
+                return GlobalSettingsFacade.DefaultCultureInfo;
+            }
+            set
+            {
+                IUserSettings settings = GetSettings(UserSettings.Username, false);
+                settings.C1ConsoleUiLanguage = value.ToString();
+                DataFacade.Update(settings);
+            }
+        }
+
+
+
         public CultureInfo GetUserCultureInfo(string username)
         {
             IUserSettings settings = GetSettings(username, true);
@@ -86,7 +106,24 @@ namespace Composite.C1Console.Users
             DataFacade.Update(settings);
         }
 
-     
+
+
+        public CultureInfo GetUserC1ConsoleUiLanguage(string username)
+        {
+            IUserSettings settings = GetSettings(username, true);
+            return CultureInfo.CreateSpecificCulture(settings.C1ConsoleUiLanguage);
+        }
+
+
+
+        public void SetUserC1ConsoleUiLanguage(string username, CultureInfo cultureInfo)
+        {
+            IUserSettings settings = GetSettings(username, false);
+            settings.C1ConsoleUiLanguage = cultureInfo.Name;
+            DataFacade.Update(settings);
+        }
+
+
 
         public CultureInfo GetCurrentActiveLocaleCultureInfo(string username)
         {
@@ -303,6 +340,7 @@ namespace Composite.C1Console.Users
 
             settings.Username = username;
             settings.CultureName = GlobalSettingsFacade.DefaultCultureName;
+            settings.C1ConsoleUiLanguage = GlobalSettingsFacade.DefaultCultureName;
 
             return DataFacade.AddNew<IUserSettings>(settings);
         }

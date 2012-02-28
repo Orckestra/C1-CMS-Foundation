@@ -2,16 +2,26 @@
 <cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
   <cms:bindings>
     <cms:binding name="CultureName" type="System.String" />
-    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+    <cms:binding name="C1ConsoleUiLanguageName" type="System.String" />
+    <cms:binding name="C1ConsoleUiCultures" type="System.Collections.IEnumerable" />
+    <cms:binding name="AllCultures" type="System.Collections.IEnumerable" />
   </cms:bindings>
   <cms:layout iconhandle="users-changeownculture" label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.Label}">
     <FieldGroup Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.FieldGroup.Label}">
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Label}" Help="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.CultureSelector.Help}">
         <KeySelector.Options>
-          <cms:read source="RegionLanguageList"/>
+          <cms:read source="AllCultures"/>
         </KeySelector.Options>
         <KeySelector.Selected>
           <cms:bind source="CultureName" />
+        </KeySelector.Selected>
+      </KeySelector>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Label}" Help="${Composite.C1Console.Users, ChangeOwnCultureWorkflow.Dialog.C1ConsoleLanguageSelector.Help}">
+        <KeySelector.Options>
+          <cms:read source="C1ConsoleUiCultures"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="C1ConsoleUiLanguageName" />
         </KeySelector.Selected>
       </KeySelector>
     </FieldGroup>

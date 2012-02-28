@@ -61,9 +61,16 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             this.Bindings.Add(UserBindingName, user);
 
             CultureInfo userCulture = UserSettings.GetUserCultureInfo(user.Username);
-            List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetApplicationRegionAndLanguageList();
+            CultureInfo c1ConsoleUiLanguage = UserSettings.GetUserC1ConsoleUiLanguage(user.Username);
+
+            List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetSupportedCulturesList();
+            Dictionary<string, string> culturesDictionary = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+
+            this.Bindings.Add("AllCultures", culturesDictionary);
             this.Bindings.Add("CultureName", userCulture.Name);
-            this.Bindings.Add("RegionLanguageList", regionLanguageList);
+
+            this.Bindings.Add("C1ConsoleUiCultures", regionLanguageList);
+            this.Bindings.Add("C1ConsoleUiLanguageName", c1ConsoleUiLanguage.Name);
 
             if ((UserSettings.GetActiveLocaleCultureInfos(user.Username).Count() > 0) && (user.Username != UserSettings.Username))
             {
@@ -278,7 +285,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     DataFacade.Update(user);
 
                     string cultureName = this.GetBinding<string>("CultureName");
+                    string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
+
                     UserSettings.SetUserCultureInfo(user.Username, CultureInfo.CreateSpecificCulture(cultureName));
+                    UserSettings.SetUserC1ConsoleUiLanguage(user.Username, CultureInfo.CreateSpecificCulture(c1ConsoleUiLanguageName));
 
 
                     

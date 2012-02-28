@@ -9,10 +9,14 @@ namespace Composite.C1Console.Users
     {
         string Username { get; }
         CultureInfo CultureInfo { get; set; }
+        CultureInfo C1ConsoleUiLanguage { get; set; }
 
         CultureInfo GetUserCultureInfo(string username);
         void SetUserCultureInfo(string username, CultureInfo cultureInfo);
-        
+
+        CultureInfo GetUserC1ConsoleUiLanguage(string username);
+        void SetUserC1ConsoleUiLanguage(string username, CultureInfo cultureInfo);
+
         CultureInfo GetCurrentActiveLocaleCultureInfo(string username);
         void SetCurrentActiveLocaleCultureInfo(string username, CultureInfo cultureInfo);
         void AddActiveLocaleCultureInfo(string username, CultureInfo cultureInfo);

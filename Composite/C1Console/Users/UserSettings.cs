@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
+using Composite.C1Console.Security;
+using System.Threading;
 
 
 namespace Composite.C1Console.Users
@@ -26,6 +28,19 @@ namespace Composite.C1Console.Users
         }
 
 
+
+        public static CultureInfo C1ConsoleUiLanguage
+        {
+            get
+            {
+                return _implementation.C1ConsoleUiLanguage;
+            }
+            set
+            {
+                _implementation.C1ConsoleUiLanguage = value;
+            }
+        }
+
         /// <exclude />
         public static CultureInfo CultureInfo
         {
@@ -48,11 +63,25 @@ namespace Composite.C1Console.Users
 
 
         /// <exclude />
+        public static CultureInfo GetUserC1ConsoleUiLanguage(string username)
+        {
+            return _implementation.GetUserC1ConsoleUiLanguage(username);
+        }
+
+
+        /// <exclude />
         public static void SetUserCultureInfo(string username, CultureInfo cultureInfo)
         {
             _implementation.SetUserCultureInfo(username, cultureInfo);
         }
 
+
+
+        /// <exclude />
+        public static void SetUserC1ConsoleUiLanguage(string username, CultureInfo cultureInfo)
+        {
+            _implementation.SetUserC1ConsoleUiLanguage(username, cultureInfo);
+        }
 
 
 

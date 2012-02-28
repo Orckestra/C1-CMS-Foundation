@@ -3,7 +3,9 @@
 	<cms:bindings>
 		<cms:binding name="NewUser" type="Composite.Data.Types.IUser" />
     <cms:binding name="CultureName" type="System.String" />
-    <cms:binding name="RegionLanguageList" type="System.Collections.IEnumerable" />
+    <cms:binding name="C1ConsoleUiLanguageName" type="System.String" />
+    <cms:binding name="C1ConsoleUiCultures" type="System.Collections.IEnumerable" />
+    <cms:binding name="AllCultures" type="System.Collections.IEnumerable" />
   </cms:bindings>
 	<cms:layout iconhandle="users-adduser">
 		<FieldGroup Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup}">
@@ -29,12 +31,21 @@
 			</TextBox>
       <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.CultureLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.CultureHelp}">
         <KeySelector.Options>
-          <cms:read source="RegionLanguageList"/>
+          <cms:read source="AllCultures"/>
         </KeySelector.Options>
         <KeySelector.Selected>
           <cms:bind source="CultureName" />
         </KeySelector.Selected>
       </KeySelector>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.C1ConsoleLanguageHelp}">
+        <KeySelector.Options>
+          <cms:read source="C1ConsoleUiCultures"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="C1ConsoleUiLanguageName" />
+        </KeySelector.Selected>
+      </KeySelector>
+
     </FieldGroup>
 	</cms:layout>
 </cms:formdefinition>

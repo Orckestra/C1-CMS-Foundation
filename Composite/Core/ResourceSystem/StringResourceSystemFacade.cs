@@ -11,6 +11,7 @@ using Composite.Core.Logging;
 using Composite.Core.ResourceSystem.Foundation;
 using Composite.Core.ResourceSystem.Foundation.PluginFacades;
 using Composite.Core.Types;
+using Composite.C1Console.Users;
 
 
 namespace Composite.Core.ResourceSystem
@@ -53,7 +54,7 @@ namespace Composite.Core.ResourceSystem
                 Verify.ArgumentNotNullOrEmpty(stringName, "stringName");
             }
 
-            var culture = Thread.CurrentThread.CurrentCulture;
+            var culture = UserSettings.C1ConsoleUiLanguage;
 
             string cacheKey = culture.Name + providerName + stringName;
             ExtendedNullable<string> cachedValue = _resourceCache.Get(cacheKey);
@@ -152,13 +153,22 @@ namespace Composite.Core.ResourceSystem
         /// application users will get, if they select the specified culture.
         /// </summary>
         /// <returns>A list of (culture name, region/language label) </returns>
+        [Obsolete("Go call GetSupportedCulturesList()")]
         public static List<KeyValuePair> GetApplicationRegionAndLanguageList()
         {
-            IEnumerable<CultureInfo> cultures = GlobalSettingsFacade.ApplicationCultures;
+            throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// Returns a (localized) list of cultures supported by the C1 Console 
+        /// </summary>
+        /// <returns>A list of (culture name, region/language label) </returns>
+        public static List<KeyValuePair> GetSupportedCulturesList()
+        {
             List<CultureInfo> supportedCultures = StringResourceSystemFacade.GetSupportedCultures().ToList();
             CultureInfo defaultCulture = StringResourceSystemFacade.GetDefaultStringCulture();
 
-            List<KeyValuePair> options = new List<KeyValuePair>();
             List<KeyValuePair> translatedOptions = new List<KeyValuePair>();
 
             List<KeyValuePair> culturesLocalizedList = StringResourceSystemFacade.GetLocalization("Composite.Cultures");
@@ -166,29 +176,17 @@ namespace Composite.Core.ResourceSystem
             string defaultCultureDisplayName = culturesLocalizedList.Where(f => f.Key == defaultCulture.Name).Select(f => f.Value).FirstOrDefault();
             if (defaultCultureDisplayName == null) defaultCultureDisplayName = defaultCulture.EnglishName;
 
-            foreach (CultureInfo culture in cultures)
+            foreach (CultureInfo culture in supportedCultures)
             {
                 string cultureDisplayName = culturesLocalizedList.Where(f => f.Key == culture.Name).Select(f => f.Value).FirstOrDefault();
                 if (cultureDisplayName == null) cultureDisplayName = culture.EnglishName;
 
-                if (supportedCultures.Contains(culture) == true)
-                {
-                    string listLabel = string.Format("{0} / {1}", cultureDisplayName, cultureDisplayName);
-                    translatedOptions.Add(new KeyValuePair(culture.Name, listLabel));
-                }
-                else
-                {
-                    string listLabel = string.Format("{0} / {1}", cultureDisplayName, defaultCultureDisplayName);
-                    options.Add(new KeyValuePair(culture.Name, listLabel));
-                }
+                translatedOptions.Add(new KeyValuePair(culture.Name, cultureDisplayName));
             }
 
-            options = options.OrderBy(f => f.Value).ToList();
+            translatedOptions = translatedOptions.OrderBy(f => f.Value).ToList();
 
-            options.InsertRange(0, translatedOptions);
-//            options.Insert(translatedOptions.Count, new KeyValuePair("", " "));
-
-            return options;
+            return translatedOptions;
         }
 
 
