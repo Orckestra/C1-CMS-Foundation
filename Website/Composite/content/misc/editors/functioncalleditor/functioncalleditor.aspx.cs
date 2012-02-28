@@ -224,11 +224,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             nodePath = TreePathToIdMapping.Where(pair => pair.Value == eventTarget).Select(pair => pair.Key).FirstOrDefault();
         }
 
-        // Treeview click
-        if (nodePath != null 
-            || eventTarget == string.Empty 
-            || ctlFeedback.IsPosted
-            || (eventTarget == "switchbutton" || eventArgument == "source"))
         {
             bool isValid = true;
 
@@ -254,9 +249,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             {
                 SelectedNode = nodePath;
             }
-        }
-        else
-        {
+		}
+		#region ButtonClick
+		{
             ParameterValueType? newParameterValueType = null;
 
             switch (eventTarget)
@@ -280,9 +275,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 ParameterValueTypeChanged(newParameterValueType.Value);
 				ctlFeedback.MarkAsDirty();
             }
-        }
-
-        UpdateMenu();
+		}
+		#endregion
+		UpdateMenu();
 
 		if (eventTarget == "switchbutton")
 		{
@@ -300,13 +295,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 			}
 		}
 
-    	SyncTreeAndEditingPanel();
     }
 
 
     private void Page_PreRender(object sender, EventArgs args)
     {
-        //SyncTreeAndEditingPanel();
+        SyncTreeAndEditingPanel();
     }
 
 
@@ -690,6 +684,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string nodeID = SelectedNode;
 
         XElement parameterNode = TreeHelper.FindByPath(FunctionMarkup.Root, nodeID);
+		if (parameterNode == null) return;
         Verify.That(parameterNode != null, "Failed to get a parameter by path '{0}'", nodeID);
 
         string parameterName = parameterNode.Attribute("name").Value;
