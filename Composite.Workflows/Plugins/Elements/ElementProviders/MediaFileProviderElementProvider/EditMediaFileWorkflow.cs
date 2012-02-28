@@ -74,6 +74,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 return;
             }
 
+            Guid mediaFileId = file.Id;
+            if(DataFacade.GetData<IMediaFile>()
+                .Any(mediaFile => string.Compare(mediaFile.CompositePath, compositePath, StringComparison.InvariantCultureIgnoreCase) == 0
+                                  && mediaFile.Id != mediaFileId))
+            {
+                this.ShowFieldMessage("FileDataFileName", "${Composite.Management, Website.Forms.Administrative.EditMediaFile.FileExists.Message}");
+                e.Result = false;
+                return;
+            }
+
             e.Result = true;
         }
     }
