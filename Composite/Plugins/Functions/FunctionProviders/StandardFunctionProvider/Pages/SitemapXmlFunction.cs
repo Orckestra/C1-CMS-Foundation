@@ -73,6 +73,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             yield return new KeyValuePair<SitemapScope, string>(SitemapScope.AncestorsAndCurrent, "Ancestors and current (breadcrumb)");
             yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Ancestors, "Ancestor pages");
             yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Parent, "Parent page");
+            yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Descendants, "Descendant pages");
             yield return new KeyValuePair<SitemapScope, string>(SitemapScope.DescendantsAndCurrent, "Current and descendant pages");
             yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Children, "Child pages");
             yield return new KeyValuePair<SitemapScope, string>(SitemapScope.Siblings, "Sibling pages");

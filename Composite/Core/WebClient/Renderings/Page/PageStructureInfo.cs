@@ -178,6 +178,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                         yield return id;
                     }
                     break;
+                case SitemapScope.Descendants:
                 case SitemapScope.DescendantsAndCurrent:
                 case SitemapScope.Children:
                 case SitemapScope.Siblings:
@@ -383,6 +384,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                     {
                         yield return currentPageElement.Parent;
                     }
+                    break;
+                case SitemapScope.Descendants:
+                    scopeElements = currentPageElement.Descendants(PageElementName);
                     break;
                 case SitemapScope.DescendantsAndCurrent:
                     scopeElements = currentPageElement.DescendantsAndSelf(PageElementName);
@@ -769,6 +773,12 @@ namespace Composite.Core.WebClient.Renderings.Page
                     if (currentPageElement.Parent != null && currentPageElement.Parent.Name == PageElementName)
                     {
                         yield return new XElement(currentPageElement.Parent.Name, currentPageElement.Parent.Attributes());
+                    }
+                    break;
+                case SitemapScope.Descendants:
+                    foreach (XElement child in currentPageElement.Elements(PageElementName))
+                    {
+                        yield return new XElement(child);
                     }
                     break;
                 case SitemapScope.DescendantsAndCurrent:
