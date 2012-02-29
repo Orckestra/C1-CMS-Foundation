@@ -64,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             CultureInfo c1ConsoleUiLanguage = UserSettings.GetUserC1ConsoleUiLanguage(user.Username);
 
             List<KeyValuePair> regionLanguageList = StringResourceSystemFacade.GetSupportedCulturesList();
-            Dictionary<string, string> culturesDictionary = CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+            Dictionary<string, string> culturesDictionary = StringResourceSystemFacade.GetAllCultures();
 
             this.Bindings.Add("AllCultures", culturesDictionary);
             this.Bindings.Add("CultureName", userCulture.Name);

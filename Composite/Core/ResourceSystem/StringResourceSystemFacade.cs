@@ -161,6 +161,35 @@ namespace Composite.Core.ResourceSystem
 
 
         /// <summary>
+        /// Returns a localized label for a culture. Fall back to system display name.
+        /// </summary>
+        /// <param name="culture">culture to get a localized label for</param>
+        /// <returns>Label for the culture</returns>
+        public static string GetCultureTitle(CultureInfo culture)
+        {
+            string localizedLanguageTitle;
+            if (TryGetString("Composite.Cultures", culture.Name, out localizedLanguageTitle))
+            {
+                return localizedLanguageTitle;
+            }
+
+            return culture.DisplayName;
+        }
+
+
+        /// <summary>
+        /// Returns a (localized) list of all cultures
+        /// </summary>
+        /// <returns>A dictionary of (culture name, region/language label) </returns>
+        public static Dictionary<string, string> GetAllCultures()
+        {
+            var cultureInfos = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            Dictionary<string, string> cultures = cultureInfos.ToDictionary(f => f.Name, GetCultureTitle);
+            return cultures.OrderBy(f => f.Value).ToDictionary(f => f.Key, f => f.Value);
+        }
+
+
+        /// <summary>
         /// Returns a (localized) list of cultures supported by the C1 Console 
         /// </summary>
         /// <returns>A list of (culture name, region/language label) </returns>

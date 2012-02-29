@@ -366,13 +366,7 @@ namespace Composite.Data
 
         public string GetCultureTitle(CultureInfo culture)
         {
-            string localizedLanguageTitle;
-            if(StringResourceSystemFacade.TryGetString("Composite.Cultures", culture.Name, out localizedLanguageTitle))
-            {
-                return localizedLanguageTitle;
-            }
-
-            return culture.DisplayName;
+            return StringResourceSystemFacade.GetCultureTitle(culture);
         }
     }
 

@@ -17,6 +17,7 @@ using Composite.Core.PackageSystem;
 using Composite.Core.WebClient.Setup.WebServiceClient;
 using Composite.Core.Xml;
 using Composite.C1Console.Users;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Core.WebClient.Setup
@@ -105,7 +106,7 @@ namespace Composite.Core.WebClient.Setup
                 AdministratorAutoCreator.AutoCreatedAdministrator(username, password, email, false);
                 UserValidationFacade.FormValidateUser(username, password);
 
-                UserSettings.SetUserCultureInfo(username, userCulture);                
+                UserSettings.SetUserCultureInfo(username, userCulture);
 
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Packages to install:");
                 foreach (string packageUrl in GetPackageUrls(setupDescription))
@@ -119,7 +120,9 @@ namespace Composite.Core.WebClient.Setup
                     InstallPackage(packageUrl);
                 }
 
-                InstallLanguagePackage(userCulture);
+                bool translationExists = InstallLanguagePackage(userCulture);
+
+                UserSettings.SetUserC1ConsoleUiLanguage(username, (translationExists ? userCulture : StringResourceSystemFacade.GetDefaultStringCulture()));
 
                 RegisterSetup(setupRegisrtatoinDescription.ToString(), "");
 
@@ -214,7 +217,7 @@ namespace Composite.Core.WebClient.Setup
 
 
 
-        private static void InstallLanguagePackage(CultureInfo userCulture)
+        private static bool InstallLanguagePackage(CultureInfo userCulture)
         {
             string userCultureString = userCulture.Name;
 
@@ -233,7 +236,11 @@ namespace Composite.Core.WebClient.Setup
 
                 Log.LogVerbose("RGB(255, 55, 85)SetupServiceFacade", "Installing package: " + packageUrl);
                 InstallPackage(packageUrl);
+
+                return true;
             }
+
+            return false;
         }
 
 
