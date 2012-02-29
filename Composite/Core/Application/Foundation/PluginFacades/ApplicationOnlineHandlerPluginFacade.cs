@@ -48,6 +48,13 @@ namespace Composite.Core.Application.Foundation.PluginFacades
 
 
 
+        public static bool CanPutApplicationOffline(out string errorMessage)
+        {
+            return GetApplicationOnlineHandler().CanPutApplicationOffline(out errorMessage);
+        }
+
+
+
         private static IApplicationOnlineHandler GetApplicationOnlineHandler()
         {
             IApplicationOnlineHandler handler = null;

@@ -5,7 +5,9 @@ using System.Threading;
 using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -25,13 +27,14 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
 
         public AspNetApplicationOnlineHandler(string appOfflineFilename)
         {
-            if (string.IsNullOrEmpty(appOfflineFilename) == true) throw new ArgumentNullException("appOfflineFilename");
+            Verify.ArgumentNotNullOrEmpty(appOfflineFilename, "appOfflineFilename");
 
-            _sourceFilename = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), PathUtil.Resolve(appOfflineFilename));
+            _sourceFilename = Path.Combine(PathUtil.BaseDirectory, PathUtil.Resolve(appOfflineFilename));
 
             string filename = Path.GetFileName(_sourceFilename);
 
-            _targetFilename = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), filename);
+            // File will be moved to the root of the website
+            _targetFilename = Path.Combine(PathUtil.BaseDirectory, filename);
         }
 
 
@@ -42,8 +45,9 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
             if (File.Exists(_targetFilename))
             {
                 FileUtils.Delete(_targetFilename);
-                C1File.Copy(_sourceFilename, _targetFilename, true);
             }
+
+            C1File.Copy(_sourceFilename, _targetFilename, true);
 
             ApplicationOfflineCheckHttpModule.FilePath = _targetFilename;
             ApplicationOfflineCheckHttpModule.IsOffline = true;
@@ -88,9 +92,24 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         {
             return C1File.Exists(_targetFilename) == false;
         }
+
+
+        public bool CanPutApplicationOffline(out string errorMessage)
+        {
+            // TODO: localize message
+            string websiteRoot = PathUtil.BaseDirectory;
+
+            if(PathUtil.WritePermissionGranted(websiteRoot))
+            {
+                errorMessage = null;
+                return true;
+            }
+
+            errorMessage = StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "NotEnoughNtfsPermissions")
+                           .FormatWith(websiteRoot);
+            return false;
+        }
     }
-
-
 
 
     [Assembler(typeof(AspNetApplicationOnlineHandlerAssembler))]

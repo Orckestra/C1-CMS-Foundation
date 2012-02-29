@@ -101,7 +101,15 @@ namespace Composite.Core.PackageSystem
                 }
                 else
                 {
-                    using (ApplicationOnlineHandlerFacade.TurnOffScope(systemLockingType == SystemLockingType.Soft))
+                    bool isSoftSystemLocking = (systemLockingType == SystemLockingType.Soft);
+
+                    string errorMessage;
+                    if (!ApplicationOnlineHandlerFacade.CanPutApplicationOffline(isSoftSystemLocking, out errorMessage))
+                    {
+                        return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, errorMessage);
+                    }
+
+                    using (ApplicationOnlineHandlerFacade.TurnOffScope(isSoftSystemLocking))
                     {
                         if (this.UseTransaction == true)
                         {

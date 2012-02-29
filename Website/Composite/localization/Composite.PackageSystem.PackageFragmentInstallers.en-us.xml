@@ -96,4 +96,6 @@
   <string key="License.ExpiredTitle" value="Trial period has expired" />
   <string key="License.ExpiredMessage" value="The trial period of the package has expired. You need to obtain a valid license." />
   <string key="License.Failed" value="Failed to get license information. ProductId: {0}" />
+
+  <string key="NotEnoughNtfsPermissions" value="The Windows user under which this C1 instance is running does not have write permission to file or folder '{0}'." />
 </strings>

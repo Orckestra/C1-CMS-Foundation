@@ -11,5 +11,6 @@ namespace Composite.Core.Application.Plugins.ApplicationOnlineHandler
         void TurnApplicationOffline();
         void TurnApplicationOnline();
         bool IsApplicationOnline();
+        bool CanPutApplicationOffline(out string errorMessage);
 	}
 }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
-
 
 namespace Composite.Core.Application
 {
@@ -41,6 +36,12 @@ namespace Composite.Core.Application
             _applicationOnlineHandlerFacade.TurnApplicationOffline(softTurnOff, recompileCompositeGenerated);
         }
 
+
+        /// <exclude />
+        public static bool CanPutApplicationOffline(bool softTurnOff, out string errorMessage)
+        {
+            return _applicationOnlineHandlerFacade.CanPutApplicationOffline(softTurnOff, out errorMessage);
+        }
 
 
         /// <exclude />

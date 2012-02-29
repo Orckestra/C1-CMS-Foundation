@@ -109,13 +109,20 @@ namespace Composite.Core.PackageSystem
                     {
                         return DoInstall();
                     }
-                    else 
-                    {                        
-                        using (ApplicationOnlineHandlerFacade.TurnOffScope(systemLockingType == SystemLockingType.Soft))
-                        {
-                            return DoInstall();
-                        }
+
+                    bool isSoftSystemLocking = (systemLockingType == SystemLockingType.Soft);
+
+                    string errorMessage;
+                    if(!ApplicationOnlineHandlerFacade.CanPutApplicationOffline(isSoftSystemLocking, out errorMessage))
+                    {
+                        return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, errorMessage);
                     }
+
+                    using (ApplicationOnlineHandlerFacade.TurnOffScope(isSoftSystemLocking))
+                    {
+                        return DoInstall();
+                    }
+                    
                 }
             }
             catch (Exception ex)

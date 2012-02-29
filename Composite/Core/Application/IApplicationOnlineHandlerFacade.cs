@@ -18,5 +18,7 @@
         void TurnApplicationOnline();
 
         bool IsApplicationOnline { get; }
+
+	    bool CanPutApplicationOffline(bool softTurnOff, out string errorMessage);
 	}
 }

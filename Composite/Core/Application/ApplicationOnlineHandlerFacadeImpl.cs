@@ -104,5 +104,17 @@ namespace Composite.Core.Application
                 return _isApplicationOnline;
             }
         }
+
+
+        public bool CanPutApplicationOffline(bool softTurnOff, out string errorMessage)
+        {
+            if(softTurnOff)
+            {
+                errorMessage = null;
+                return true;
+            }
+
+            return ApplicationOnlineHandlerPluginFacade.CanPutApplicationOffline(out errorMessage);
+        }
     }
 }
