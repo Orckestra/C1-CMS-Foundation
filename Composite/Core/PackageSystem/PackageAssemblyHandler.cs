@@ -89,6 +89,11 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        public static void ClearAssemblyList()
+        {
+            Flush();
+        }
+
 
         private static void Flush()
         {

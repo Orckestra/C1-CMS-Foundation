@@ -5,6 +5,7 @@ using System.Linq;
 using System.Transactions;
 using System.Xml.Linq;
 using Composite.Core.Application;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.IO.Zip;
 using Composite.Core.Logging;
@@ -260,6 +261,7 @@ namespace Composite.Core.PackageSystem
             }
             if (exception != null) return new PackageFragmentValidationResult[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception) };
 
+            PackageAssemblyHandler.ClearAssemblyList();
 
             XElement installElement;
             PackageFragmentValidationResult packageFragmentValidationResult = XmlHelper.LoadInstallXml(this.ZipFilename, out installElement);
@@ -300,9 +302,29 @@ namespace Composite.Core.PackageSystem
                 string targetFilename = Path.Combine(binariesDirectory, Path.GetFileName(sourceFilename));
 
                 ZipFileSystem zipFileSystem = new ZipFileSystem(this.ZipFilename);
-                if (zipFileSystem.ContainsFile(sourceFilename) == false) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' is missing from the zipfile", sourceFilename)); continue; }
+                if (zipFileSystem.ContainsFile(sourceFilename) == false)
+                {
+                    yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' is missing from the zipfile", sourceFilename)); 
+                    continue;
+                }
 
-                if (C1File.Exists(targetFilename) == true) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' already exists", targetFilename)); continue; }
+                // Extracting dll to package temp folder
+                if (C1File.Exists(targetFilename))
+                {
+                    bool success = false;
+                    try
+                    {
+                        FileUtils.Delete(targetFilename);
+                        success = true;
+                    }
+                    catch(UnauthorizedAccessException) {}
+
+                    if(!success)
+                    {
+                        yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "Access denied to file '{0}'".FormatWith(targetFilename)); 
+                        continue;
+                    }
+                }
 
                 zipFileSystem.WriteFileToDisk(sourceFilename, targetFilename);
 
@@ -313,8 +335,6 @@ namespace Composite.Core.PackageSystem
 
                 PackageAssemblyHandler.AddAssembly(newTargetFilename);
             }
-
-            yield break;
         }
 
 

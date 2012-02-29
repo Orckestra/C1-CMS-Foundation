@@ -217,6 +217,7 @@
     <Compile Include="Core\PackageSystem\LicenseDefinitionUtils.cs" />
     <Compile Include="Core\PackageSystem\LicenseServerFacade.cs" />
     <Compile Include="Core\PackageSystem\PackageAssemblyHandler.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageFragmentValidationExtension.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentInstaller.cs" />

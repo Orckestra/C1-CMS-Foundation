@@ -7,7 +7,7 @@ namespace Composite.Core.Types.Foundation
 {
     internal sealed class AssemblyFilenameCollection
     {
-        private static Dictionary<string, string> _assemblyFilenames = new Dictionary<string, string>();
+        private Dictionary<string, string> _assemblyFilenames = new Dictionary<string, string>();
 
 
 
