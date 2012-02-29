@@ -4,6 +4,7 @@ using System.Workflow.Activities;
 using Composite.C1Console.Events;
 using Composite.C1Console.Forms.DataServices;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.PackageSystem;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
@@ -45,10 +46,24 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
                 if (packageDescription != null)
                 {
-                    string name = packageDescription.Name;
-                    string documentTitle = (name.Contains('.') && !name.EndsWith(".") ?
-                        string.Format("{0} ({1})", name.Substring(name.LastIndexOf('.') + 1), name.Substring(0, name.LastIndexOf('.'))) :
-                        name);
+                    // Valid package names:
+                    //  "Composite.Community.Versioning"
+                    //  "Composite C1 3.0"
+                    string name = packageDescription.Name.Trim();
+
+                    string documentTitle = name;
+
+                    if(name.Contains(".") && !name.EndsWith("."))
+                    {
+                        string packageName = name.Substring(name.LastIndexOf('.') + 1);
+                        string packageNamespace = name.Substring(0, name.LastIndexOf('.'));
+
+                        int temp;
+                        if (!int.TryParse(packageName, out temp))
+                        {
+                            documentTitle = "{0} ({1})".FormatWith(packageName, packageNamespace);
+                        }
+                    }
 
                     this.Bindings.Add("DocumentTitle", documentTitle);
                     this.Bindings.Add("AddOnServerSource", PackageSystemServices.GetPackageSourceNameByPackageId(packageDescription.Id, InstallationInformationFacade.InstallationId, UserSettings.CultureInfo));
