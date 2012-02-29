@@ -95,18 +95,24 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
 
         public bool CanPutApplicationOffline(out string errorMessage)
         {
-            // TODO: localize message
-            string websiteRoot = PathUtil.BaseDirectory;
-
-            if(PathUtil.WritePermissionGranted(websiteRoot))
+            if(!C1File.Exists(_sourceFilename))
             {
-                errorMessage = null;
-                return true;
+                errorMessage = "AspNetApplicationOnlineHandler: Template file '{0}' is missing".FormatWith(_sourceFilename);
+                return false;
             }
 
-            errorMessage = StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "NotEnoughNtfsPermissions")
-                           .FormatWith(websiteRoot);
-            return false;
+            string websiteRoot = PathUtil.BaseDirectory;
+            if (!PathUtil.WritePermissionGranted(websiteRoot))
+            {
+                errorMessage = StringResourceSystemFacade.GetString(
+                    "Composite.Core.PackageSystem.PackageFragmentInstallers", "NotEnoughNtfsPermissions")
+                    .FormatWith(websiteRoot);
+
+                return false;
+            }
+
+            errorMessage = null;
+            return true;
         }
     }
 
