@@ -19,7 +19,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class FileXslTransformationPackageFragmentInstaller : BasePackageFragmentInstaller
 	{
-        private const string _loggerSenderText = "XsltPackageFragmentInstaller";
+        private static readonly string LogTitle = "XsltPackageFragmentInstaller";
 
         internal static readonly string TargetXmlAttributeName = "pathXml";
         internal static readonly string InputXmlAttributeName = "inputXml";
@@ -145,11 +145,17 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                     fileElement));
                             continue;
                         }
-                        else
-                        {
-                            FileUtils.RemoveReadOnly(outputXmlFullPath);
-                            LoggingService.LogWarning(_loggerSenderText, GetResourceString("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride").FormatWith(xslFile.OutputXmlPath));
-                        }
+                        
+                        FileUtils.RemoveReadOnly(outputXmlFullPath);
+                        Log.LogWarning(LogTitle, GetResourceString("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride").FormatWith(xslFile.OutputXmlPath));
+                    }
+
+                    if (!PathUtil.WritePermissionGranted(outputXmlFullPath))
+                    {
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
+                                    GetResourceString("NotEnoughNtfsPermissions").FormatWith(xslFile.OutputXmlPath),
+                                    fileElement));
+                        continue;
                     }
 
 
@@ -182,7 +188,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					"Performing XSL-transformation. xml-file: '{1}'; xsl-file: '{0}'"
 					: "Performing XSL-transformation. xsl-file: '{0}'; input xml file: '{1}'; output xml file: '{2}'";
 
-                LoggingService.LogVerbose(_loggerSenderText, string.Format(messageFormat, xslfile.XslPath, xslfile.InputXmlPath, xslfile.OutputXmlPath));
+                LoggingService.LogVerbose(LogTitle, string.Format(messageFormat, xslfile.XslPath, xslfile.InputXmlPath, xslfile.OutputXmlPath));
 
                 string inputXml = PathUtil.Resolve(xslfile.InputXmlPath);
                 string outputXml = PathUtil.Resolve(xslfile.OutputXmlPath);
@@ -203,7 +209,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     resultDocument.SaveToFile(outputXml);
 
-                    LoggingService.LogVerbose(_loggerSenderText, resultDocument.ToString());
+                    LoggingService.LogVerbose(LogTitle, resultDocument.ToString());
 				}
 			}
 

@@ -1,7 +1,11 @@
 using System;
+using System.ComponentModel;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Text;
 using System.Web.Hosting;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Core.IO
@@ -9,7 +13,7 @@ namespace Composite.Core.IO
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     public static class PathUtil
     {
         private static readonly string _appBasePath;
@@ -47,7 +51,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public static string Resolve(string path)
         {
-            if (string.IsNullOrEmpty(path) == true) throw new ArgumentNullException("path");
+            if (String.IsNullOrEmpty(path) == true) throw new ArgumentNullException("path");
             if (path.StartsWith("~"))
             {
                 if (path == "~")
@@ -86,7 +90,7 @@ namespace Composite.Core.IO
             foreach (var c in s)
             {
                 if ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ -_.1234567890".IndexOf(c) > -1
-                    || (allowUnicodeLetters && char.IsLetter(c)))
+                    || (allowUnicodeLetters && Char.IsLetter(c)))
                 {
                     sb.Append(c);
                 }
@@ -106,6 +110,72 @@ namespace Composite.Core.IO
             }
 
             return s;
+        }
+
+        /// <summary>
+        /// Indicates whether current Windows user has the NTFS write permission to a file or a folder
+        /// </summary>
+        /// <param name="fileOrDirectoryPath">Path to a file or a folder</param>
+        /// <returns></returns>
+        public static bool WritePermissionGranted(string fileOrDirectoryPath)
+        {
+            try
+            {
+                AuthorizationRuleCollection rules;
+
+                if (C1File.Exists(fileOrDirectoryPath))
+                {
+                    FileSystemSecurity security = C1File.GetAccessControl(fileOrDirectoryPath);
+
+                    rules = security.GetAccessRules(true, true, typeof(NTAccount));
+                }
+                else if (C1Directory.Exists(fileOrDirectoryPath))
+                {
+                    DirectorySecurity security = C1Directory.GetAccessControl(fileOrDirectoryPath);
+
+                    rules = security.GetAccessRules(true, true, typeof(NTAccount));
+                }
+                else
+                {
+                    throw new FileNotFoundException("File or directory '{0}' does not exist".FormatWith(fileOrDirectoryPath));
+                }
+
+                var currentuser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+                bool result = false;
+                foreach (FileSystemAccessRule rule in rules)
+                {
+                    if ((rule.FileSystemRights & (FileSystemRights.WriteData | FileSystemRights.Write)) == 0)
+                    {
+                        continue;
+                    }
+
+                    if (rule.IdentityReference.Value.StartsWith("S-1-"))
+                    {
+                        var sid = new SecurityIdentifier(rule.IdentityReference.Value);
+                        if (!currentuser.IsInRole(sid))
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if (!currentuser.IsInRole(rule.IdentityReference.Value))
+                        {
+                            continue;
+                        }
+                    }
+
+                    if (rule.AccessControlType == AccessControlType.Deny)
+                        return false;
+                    if (rule.AccessControlType == AccessControlType.Allow)
+                        result = true;
+                }
+                return result;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

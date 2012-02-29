@@ -44,7 +44,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 this.InstallerContext.ZipFileSystem,
                 true);
 
-            if (this.InstallerContext.PackageInformation.CanBeUninstalled == true)
+            if (validationResults.Count == 0 
+                && this.InstallerContext.PackageInformation.CanBeUninstalled == true)
             {
 
                 ValidateXslt(
@@ -93,24 +94,34 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     .FormatWith(elementName));
                 return;
             }
-            
-            if (xsltFilePathProvider() == null)
+
+            string xslFilePath = xsltFilePathProvider();
+
+            if (xslFilePath == null)
             {
                 validationResults.AddFatal(
                     GetResourceString("ConfigurationTransformationPackageFragmentInstaller.MissingAttribute")
                     .FormatWith(_xsltFilePathAttributeName), elementProvider());
                 return;
             }
-                
-            if (zipFileSystem.ContainsFile(xsltFilePathProvider()) == false)
+
+            if (zipFileSystem.ContainsFile(xslFilePath) == false)
             {
                 validationResults.AddFatal(
                     GetResourceString("ConfigurationTransformationPackageFragmentInstaller.PathDoesNotExist")
-                    .FormatWith(xsltFilePathProvider()), xsltPathAttributeProvider());
+                    .FormatWith(xslFilePath), xsltPathAttributeProvider());
                 return;
             }
-                    
-            using (Stream xsltFileStream = zipFileSystem.GetFileStream(xsltFilePathProvider()))
+
+            if(!PathUtil.WritePermissionGranted(ConfigurationServices.FileConfigurationSourcePath))
+            {
+                validationResults.AddFatal(
+                    GetResourceString("NotEnoughNtfsPermissions")
+                    .FormatWith(ConfigurationServices.FileConfigurationSourcePath));
+                return;
+            }
+
+            using (Stream xsltFileStream = zipFileSystem.GetFileStream(xslFilePath))
             {
                 using (TextReader xsltTextReader = new C1StreamReader(xsltFileStream))
                 {
@@ -124,7 +135,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         validationResults.AddFatal(
                             GetResourceString("ConfigurationTransformationPackageFragmentInstaller.UnableToParsXslt")
-                            .FormatWith(xsltFilePathProvider(), ex.Message), xsltPathAttributeProvider());
+                            .FormatWith(xslFilePath, ex.Message), xsltPathAttributeProvider());
                     }
 
                     if (xslt != null && validateResultingConfigurationFile == true)
@@ -143,7 +154,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             validationResults.AddFatal(
                                 GetResourceString("ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid")
-                                .FormatWith(xsltFilePathProvider(), ex.Message), xsltPathAttributeProvider());
+                                .FormatWith(xslFilePath, ex.Message), xsltPathAttributeProvider());
                         }
                     }
                 }

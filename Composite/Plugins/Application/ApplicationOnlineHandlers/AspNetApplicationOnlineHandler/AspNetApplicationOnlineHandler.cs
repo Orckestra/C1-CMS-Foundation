@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
+using System.Threading;
+using Composite.Core;
 using Composite.Core.Application;
 using Composite.Core.Application.Plugins.ApplicationOnlineHandler;
 using Composite.Core.IO;
@@ -14,8 +16,11 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
     [ConfigurationElementType(typeof(AspNetApplicationOnlineHandlerData))]
     internal sealed class AspNetApplicationOnlineHandler : IApplicationOnlineHandler
     {
-        private string _sourceFilename;
-        private string _targetFilename;
+        private static readonly string LogTitle = typeof (AspNetApplicationOnlineHandler).Name;
+        private const int RetriesCount = 10;
+
+        private readonly string _sourceFilename;
+        private readonly string _targetFilename;
 
 
         public AspNetApplicationOnlineHandler(string appOfflineFilename)
@@ -33,8 +38,12 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
 
         public void TurnApplicationOffline()
         {
-            FileUtils.Delete(_targetFilename);
-            C1File.Copy(_sourceFilename, _targetFilename, true);
+            // If app_offline.htm already exists, no reason do copy it again
+            if (File.Exists(_targetFilename))
+            {
+                FileUtils.Delete(_targetFilename);
+                C1File.Copy(_sourceFilename, _targetFilename, true);
+            }
 
             ApplicationOfflineCheckHttpModule.FilePath = _targetFilename;
             ApplicationOfflineCheckHttpModule.IsOffline = true;
@@ -45,10 +54,35 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         public void TurnApplicationOnline()
         {
             ApplicationOfflineCheckHttpModule.IsOffline = false;
-            FileUtils.Delete(_targetFilename);
+
+            int triesLeft = RetriesCount;
+            Exception lastException = null;
+
+            while (triesLeft > 0)
+            {
+                try
+                {
+                    FileUtils.Delete(_targetFilename);
+                    return;
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    lastException = ex;
+
+                    triesLeft--;
+                    if(triesLeft > 0)
+                    {
+                        Thread.Sleep(200);
+                    }
+                }
+            }
+
+            Log.LogError(LogTitle, "Failed to delete file '{0}' after {1} retries", _targetFilename, RetriesCount);
+            if(lastException != null)
+            {
+                Log.LogError(LogTitle, lastException);
+            }
         }
-
-
 
         public bool IsApplicationOnline()
         {

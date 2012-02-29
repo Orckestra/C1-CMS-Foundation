@@ -643,6 +643,15 @@ namespace Composite.Core.Implementation
         }
 
 
+        /// <summary>
+        /// See <see cref="Composite.Core.IO.C1File"/>.
+        /// </summary>
+        /// <param name="path"></param>
+        public virtual System.Security.AccessControl.FileSecurity GetAccessControl(string path)
+        {
+            return IOFacade.C1File.GetAccessControl(path);
+        }
+
 
         //public virtual FileStream Create(string path, int bufferSize, System.IO.FileOptions options, System.Security.AccessControl.FileSecurity fileSecurity)
         //{ 
@@ -663,14 +672,6 @@ namespace Composite.Core.Implementation
         //{ 
         //    throw new NotImplementedException(); 
         //}
-
-
-
-        //public virtual System.Security.AccessControl.FileSecurity GetAccessControl(string path)
-        //{ 
-        //    throw new NotImplementedException(); 
-        //}
-
 
 
         //public virtual System.Security.AccessControl.FileSecurity GetAccessControl(string path, System.Security.AccessControl.AccessControlSections includeSections)

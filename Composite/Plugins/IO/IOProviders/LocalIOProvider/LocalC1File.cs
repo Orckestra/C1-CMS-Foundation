@@ -404,5 +404,11 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         {
             File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
+        public System.Security.AccessControl.FileSecurity GetAccessControl(string path)
+        {
+            return File.GetAccessControl(path);
+        }
     }
 }

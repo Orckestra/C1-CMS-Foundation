@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.AccessControl;
 using Composite.Core.IO;
 
 
@@ -217,6 +218,16 @@ namespace Composite.Core.Implementation
         }
 
 
+        /// <summary>
+        /// Gets a <see cref="System.Security.AccessControl.DirectorySecurity" /> object that encapsulates the access control list (ACL) entries for a specified directory.
+        /// </summary>
+        /// <param name="path">The path to a directory</param>
+        /// <returns>A <see cref="System.Security.AccessControl.DirectorySecurity" /> object that encapsulates the access control rules for the file described by the <param name="path"></param> parameter.</returns>
+        public virtual DirectorySecurity GetAccessControl(string path)
+        {
+            return IOFacade.C1Directory.GetAccessControl(path);
+        }
+
 
         //public virtual IEnumerable<string> EnumerateDirectories(string path)
         //{
@@ -296,13 +307,6 @@ namespace Composite.Core.Implementation
 
 
         //public virtual string[] GetFileSystemEntries(string path, string searchPattern, SearchOption searchOption)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-
-
-        //public virtual DirectorySecurity GetAccessControl(string path)
         //{
         //    throw new NotImplementedException();
         //}
