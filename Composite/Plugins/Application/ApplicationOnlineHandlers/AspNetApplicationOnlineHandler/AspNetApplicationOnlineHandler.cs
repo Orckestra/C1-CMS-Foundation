@@ -42,12 +42,11 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
         public void TurnApplicationOffline()
         {
             // If app_offline.htm already exists, no reason do copy it again
-            if (File.Exists(_targetFilename))
+            if (!File.Exists(_targetFilename))
             {
                 FileUtils.Delete(_targetFilename);
+                C1File.Copy(_sourceFilename, _targetFilename, true);
             }
-
-            C1File.Copy(_sourceFilename, _targetFilename, true);
 
             ApplicationOfflineCheckHttpModule.FilePath = _targetFilename;
             ApplicationOfflineCheckHttpModule.IsOffline = true;
