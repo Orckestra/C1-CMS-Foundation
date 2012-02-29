@@ -175,8 +175,8 @@ namespace Composite.Core.WebClient.Setup
 
                 if (FileIsReadOnly(Server.MapPath("~/web.config"))
                     || FileIsReadOnly(Server.MapPath("~/App_Data/Composite/Composite.config"))
-                    || !PathUtil.WritePermissionGranted("~/web.config")                    
-                    || !PathUtil.WritePermissionGranted("~/App_Data/Composite/Composite.config"))
+                    || !PathUtil.WritePermissionGranted(Server.MapPath("~/web.config"))
+                    || !PathUtil.WritePermissionGranted(Server.MapPath("~/App_Data/Composite/Composite.config")))
                 {
                     return false;
                 }
