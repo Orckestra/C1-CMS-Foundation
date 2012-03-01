@@ -46,7 +46,14 @@ namespace Composite.C1Console.Trees
 
         public static bool SelfAndParentsHasInterface(this TreeNode treeNode, Type interfaceType)
         {
-            DataFilteringTreeNode dataFilteringTreeNode = treeNode as DataFilteringTreeNode;
+            DataFilteringTreeNode dataFilteringTreeNode = null;
+            while (treeNode != null)
+            {
+                dataFilteringTreeNode = treeNode as DataFilteringTreeNode;
+                if (dataFilteringTreeNode != null) break;
+
+                treeNode = treeNode.ParentNode;
+            }
 
             if (dataFilteringTreeNode == null) return false;
 
