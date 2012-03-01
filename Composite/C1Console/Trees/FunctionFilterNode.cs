@@ -29,7 +29,13 @@ namespace Composite.C1Console.Trees
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
             LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
 
-            ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(parameterExpression);
+            if (expression.Parameters.Count != 1)
+            {
+                throw new InvalidOperationException("Only 1 parameter lamdas supported when calling function: " + markup);
+            }
+
+
+            ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(expression.Parameters.Single(), parameterExpression);
 
             Expression resultExpression = expressionVisitor.Visit(expression.Body);
 
@@ -50,7 +56,12 @@ namespace Composite.C1Console.Trees
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
             LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
 
-            ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(parameterExpression);
+            if (expression.Parameters.Count != 1)
+            {
+                throw new InvalidOperationException("Only 1 parameter lamdas supported when calling function: " + markup);
+            }
+
+            ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(expression.Parameters.Single(), parameterExpression);
 
             Expression resultExpression = expressionVisitor.Visit(expression.Body);
 
@@ -131,18 +142,23 @@ namespace Composite.C1Console.Trees
 
         private sealed class ParameterChangerExpressionVisitor : ExpressionVisitor
         {
-            private ParameterExpression _parameterExpression;
+            private readonly ParameterExpression _parameterExpressionToChange;
+            private readonly ParameterExpression _newParameterExpression;
 
 
-            public ParameterChangerExpressionVisitor(ParameterExpression parameterExpression)
+            public ParameterChangerExpressionVisitor(ParameterExpression parameterExpressionToChange, ParameterExpression newParameterExpression)
             {
-                _parameterExpression = parameterExpression;
+                _parameterExpressionToChange = parameterExpressionToChange;
+                _newParameterExpression = newParameterExpression;
             }
 
 
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                return _parameterExpression;
+                if (node == _parameterExpressionToChange)
+                    return _newParameterExpression;
+                    
+                return node;
             }
         }
     }
