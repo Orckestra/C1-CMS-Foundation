@@ -81,7 +81,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
 
 
-        private static IElementAttachingProvider GetElementAttachingProvider(string providerName)
+        internal static IElementAttachingProvider GetElementAttachingProvider(string providerName)
         {
             IElementAttachingProvider provider;
 

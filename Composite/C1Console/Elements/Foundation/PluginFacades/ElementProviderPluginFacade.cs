@@ -233,7 +233,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
 
 
-        private static IHooklessElementProvider GetElementProvider(string providerName)
+        internal static IHooklessElementProvider GetElementProvider(string providerName)
         {
             IHooklessElementProvider provider;
 

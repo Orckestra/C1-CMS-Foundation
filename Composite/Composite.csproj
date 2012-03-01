@@ -145,6 +145,7 @@
     <Compile Include="C1Console\Actions\ActionLockingFacade.cs" />
     <Compile Include="C1Console\Actions\AddNewTreeRefresher.cs" />
     <Compile Include="C1Console\Actions\FlowTokenSerializer.cs" />
+    <Compile Include="C1Console\Elements\Foundation\ElementProviderLoader.cs" />
     <Compile Include="C1Console\Events\OpenExternalViewQueueItem.cs" />
     <Compile Include="C1Console\Forms\Flows\BindingValidationService.cs" />
     <Compile Include="C1Console\Forms\Flows\IBindingValidationService.cs" />

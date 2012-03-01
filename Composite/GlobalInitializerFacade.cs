@@ -23,6 +23,7 @@ using Composite.Core.Types;
 using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
+using Composite.C1Console.Elements.Foundation;
 
 
 namespace Composite
@@ -30,7 +31,7 @@ namespace Composite
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class GlobalInitializerFacade
     {
         private static readonly string LogTitle = "RGB(194, 252, 131)GlobalInitializerFacade";
@@ -87,7 +88,7 @@ namespace Composite
         /// </summary>
         public static void InitializeTheSystem()
         {
-           // if (AppDomain.CurrentDomain.Id == 3) SimpleDebug.AddEntry(string.Format("INITIALIZING {0} {1} {2}", Thread.CurrentThread.ManagedThreadId, _initializing, _coreInitialized));
+            // if (AppDomain.CurrentDomain.Id == 3) SimpleDebug.AddEntry(string.Format("INITIALIZING {0} {1} {2}", Thread.CurrentThread.ManagedThreadId, _initializing, _coreInitialized));
 
             if (_exceptionThrownDurringInitialization != null)
             {
@@ -104,7 +105,7 @@ namespace Composite
 
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
             {
-                LoggingService.LogWarning("GlobalInitializerFacade", new InvalidOperationException("System is initializing, yet missing first time initialization"));                
+                LoggingService.LogWarning("GlobalInitializerFacade", new InvalidOperationException("System is initializing, yet missing first time initialization"));
             }
 
             if ((_initializing == false) && (_coreInitialized == false))
@@ -117,7 +118,7 @@ namespace Composite
                         {
                             _initializing = true;
 
-                            using(ThreadDataManager.EnsureInitialize())
+                            using (ThreadDataManager.EnsureInitialize())
                             {
                                 DoInitialize();
                             }
@@ -125,7 +126,7 @@ namespace Composite
                             _fatalErrorFlushCount = 0;
                         }
                         catch (Exception ex)
-                        {                            
+                        {
                             _exceptionThrownDurringInitialization = ex;
                             _exceptionThrownDurringInitializationTimeStamp = DateTime.Now;
                             LoggingService.LogCritical("GlobalInitializerFacade", HostingEnvironment.ShutdownReason.ToString());
@@ -191,7 +192,7 @@ namespace Composite
                 }
             }
 
-           
+
 
             using (new TimeMeasurement("Initializing data process controllers"))
             {
@@ -214,7 +215,7 @@ namespace Composite
             using (new TimeMeasurement("Initializing functions"))
             {
                 MetaFunctionProviderRegistry.Initialize_PostDataTypes();
-               
+
             }
 
 
@@ -247,6 +248,12 @@ namespace Composite
             }
 
 
+            using (new TimeMeasurement("Loading element providers"))
+            {
+                ElementProviderLoader.LoadAllProviders();
+            }
+
+
             int executionTime = Environment.TickCount - startTime;
 
             LoggingService.LogVerbose(LogTitle, "Done initializing of the system core. ({0} ms)".FormatWith(executionTime));
@@ -275,7 +282,7 @@ namespace Composite
             return flushTheSystem;
         }
 
-       
+
 
         /// <exclude />
         public static void ReinitializeTheSystem(RunInWriterLockScopeDelegage runInWriterLockScopeDelegage)
@@ -370,7 +377,7 @@ namespace Composite
             }
         }
 
-      
+
 
         /// <exclude />
         public static void FatalResetTheSytem()
@@ -378,7 +385,7 @@ namespace Composite
             LoggingService.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
 
             ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
-        }        
+        }
 
 
 
@@ -398,7 +405,7 @@ namespace Composite
             }
         }
 
-           
+
 
 
         #region Package installation
@@ -502,7 +509,7 @@ namespace Composite
             }
         }
 
-        #endregion 
+        #endregion
 
 
 
@@ -520,7 +527,7 @@ namespace Composite
             }
         }
 
-        
+
 
         private static void LogErrors(IEnumerable<PackageFragmentValidationResult> packageErrors)
         {
@@ -614,7 +621,7 @@ namespace Composite
 
         private static void AcquireReaderLock()
         {
-             _readerWriterLock.AcquireReaderLock(GlobalSettingsFacade.DefaultReaderLockWaitTimeout);
+            _readerWriterLock.AcquireReaderLock(GlobalSettingsFacade.DefaultReaderLockWaitTimeout);
         }
 
 
