@@ -234,7 +234,7 @@
     <Compile Include="Composite\content\views\relationshipgraph\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Composite\content\views\showelementinformation\Default.aspx.design.cs">
+    <Compile Include="Composite\content\views\showelementinformation\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -6353,10 +6353,12 @@
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />
+    <Folder Include="Composite\Test\" />
     <Folder Include="Composite\transformations\temp\masterfilterTEST.xsl\" />
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />
+    <Folder Include="Misc\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

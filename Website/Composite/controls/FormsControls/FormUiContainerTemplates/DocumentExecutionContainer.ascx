@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <%@ Control Language="C#" AutoEventWireup="true" Inherits="Composite_Forms_DocumentExecutionContainer" CodeFile="DocumentExecutionContainer.ascx.cs" %>
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
 	<head runat="server">
 		<title>Composite.Management.Document</title>

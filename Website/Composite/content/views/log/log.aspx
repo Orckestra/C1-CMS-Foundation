@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<%@ Page Language="C#" AutoEventWireup="true" CodeFile="log.aspx.cs" Inherits="Composite_content_views_log_log" %>
+
+<%@ Page Language="C#" AutoEventWireup="true" Inherits="Composite_content_views_log_log" CodeFile="log.aspx.cs" %>
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
 	<control:httpheaders runat="server" />
 	<head>

@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
+
 <%@ Page Inherits="functioneditor" Language="C#" AutoEventWireup="True" EnableEventValidation="true" ValidateRequest="false" CodeFile="functioncalleditor.aspx.cs" %>
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
 	<head runat="server">
 		<title>Composite.Management.FunctionCallEditor</title>
@@ -9,9 +12,9 @@
         <control:httpheaders runat="server" />
         
 		<link rel="stylesheet" type="text/css" href="functioneditor.css.aspx"/>
-		<script type="text/javascript" src="bindings/FunctionEditorPageBinding.js"/>
-		<script type="text/javascript" src="bindings/ToolBarButtonDataBindingAddNew.js"/>
-		<script type="text/javascript" src="bindings/FieldsButtonDataBinding.js"/>       
+		<script type="text/javascript" src="bindings/FunctionEditorPageBinding.js"></script>
+		<script type="text/javascript" src="bindings/ToolBarButtonDataBindingAddNew.js"></script>
+		<script type="text/javascript" src="bindings/FieldsButtonDataBinding.js"></script>
 		
 		<ui:bindingmappingset>
 			<ui:bindingmapping element="ui:fieldsbutton" binding="FieldsButtonDataBinding"/>

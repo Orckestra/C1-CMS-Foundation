@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <%@ Control Language="C#" AutoEventWireup="true" CodeFile="MarkupInOutView.ascx.cs" Inherits="CompositeMarkupInOutView" %>
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
 	<control:httpheaders id="Httpheaders1" runat="server" />
 	<head>

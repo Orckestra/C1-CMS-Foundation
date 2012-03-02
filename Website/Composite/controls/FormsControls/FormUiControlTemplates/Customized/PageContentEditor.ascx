@@ -1,4 +1,6 @@
 <%@ Control Language="C#" Inherits="CompositePageContentEditor.PageContentEditor" CodeFile="PageContentEditor.ascx.cs" %>
+<%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
+
 <%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
 <%@ Import Namespace="System.Xml.Linq" %>
 <%@ Import Namespace="System.Linq" %>
