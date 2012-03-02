@@ -1,9 +1,8 @@
 using System;
-using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Composite.Functions.Foundation;
-using Composite.Core.Types;
 
 
 namespace Composite.Functions
@@ -52,26 +51,23 @@ namespace Composite.Functions
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
 
-            _cachedValue = _functionNode.GetValue(contextContainer);
+            object result = _functionNode.GetValue(contextContainer);
+
+            _cachedValue = result;
+            Thread.MemoryBarrier();
             _cachedValueCalculated = true;
 
-            return _cachedValue;
+            return result;
         }
 
 
         /// <exclude />
+        [Obsolete("This method is not used")]
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            Verify.ArgumentNotNull(contextContainer, "contextContainer");
 
-            if ((_cachedValueCalculated == false))
-            {
-                return GetValue(contextContainer);
-            }
-            else
-            {                
-                return _cachedValue;
-            }
+            return _cachedValueCalculated ? _cachedValue : GetValue(contextContainer);
         }
 
 

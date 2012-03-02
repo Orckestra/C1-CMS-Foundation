@@ -55,7 +55,6 @@ namespace Composite.Functions
                 {
                     object embedableResult = contextContainer.MakeXEmbedable(functionCallResults[i]);
 
-                    // To MAW: PageRenderer supports also XAttribute here
                     if (embedableResult != null && embedableResult is XAttribute)
                     {
                         evaluatedListOfInnerFunctions[i].Parent.Add(embedableResult);

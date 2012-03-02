@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Xml.Linq;
 using Composite.Data;
 using Composite.Functions.Foundation;
@@ -95,6 +96,8 @@ namespace Composite.Functions
                         parameters.AddConstantParameter(parameterProfile.Name, value, parameterProfile.Type, true);
                     }
 
+                    object result;
+
                     IDisposable measurement = null;
                     try
                     {
@@ -104,7 +107,7 @@ namespace Composite.Functions
                             measurement = Profiler.Measure(functionName ?? "<unknown function>");
                         }
 
-                        _cachedValue = _function.Execute(parameters, contextContainer);
+                        result = _function.Execute(parameters, contextContainer);
                     }
                     finally
                     {
@@ -113,9 +116,12 @@ namespace Composite.Functions
                             measurement.Dispose();
                         }
                     }
+
+                    _cachedValue = result;
+                    Thread.MemoryBarrier();
                     _cachedValueCalculated = true;
 
-                    return _cachedValue;
+                    return result;
                 }
                 catch (Exception ex)
                 {
@@ -127,18 +133,12 @@ namespace Composite.Functions
 
 
         /// <exclude />
+        [Obsolete("This method is not used")]
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
             if (contextContainer == null) throw new ArgumentNullException("contextContainer");
 
-            if (_cachedValueCalculated == false)
-            {
-                return GetValue(contextContainer);
-            }
-            else
-            {
-                return _cachedValue;
-            }
+            return _cachedValueCalculated ? _cachedValue : GetValue(contextContainer);
         }
 
 

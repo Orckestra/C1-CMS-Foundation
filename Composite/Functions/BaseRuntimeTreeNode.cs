@@ -61,6 +61,7 @@ namespace Composite.Functions
 
 
         /// <exclude />
+        [Obsolete("This method is not used")]
         public abstract object GetCachedValue(FunctionContextContainer contextContainer);
 
         /// <exclude />

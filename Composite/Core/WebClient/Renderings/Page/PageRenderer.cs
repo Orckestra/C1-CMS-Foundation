@@ -384,7 +384,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                IEnumerable<XElement> functionCallDefinitions = element.DescendantsAndSelf(Namespaces.Function10 + "function").Where(f => f.Ancestors(Namespaces.Function10 + "function").Count() == 0);
+                IEnumerable<XElement> functionCallDefinitions = element.DescendantsAndSelf(Namespaces.Function10 + "function")
+                                                                       .Where(f => !f.Ancestors(Namespaces.Function10 + "function").Any());
 
                 var functionCalls = functionCallDefinitions.ToList();
                 if (functionCalls.Count == 0) return;
@@ -401,13 +402,12 @@ namespace Composite.Core.WebClient.Renderings.Page
                     {
                         // Evaluating function calls in parameters
                         IEnumerable<XElement> parameters = functionCallDefinition.Elements();
-                        if (parameters != null)
+                        
+                        foreach (XElement parameterNode in parameters)
                         {
-                            foreach (XElement parameterNode in parameters.ToList())
-                            {
-                                ExecuteEmbeddedFunctions(parameterNode, contextContainer);
-                            }
+                            ExecuteEmbeddedFunctions(parameterNode, contextContainer);
                         }
+                        
 
                         // Executing a function call
                         BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
