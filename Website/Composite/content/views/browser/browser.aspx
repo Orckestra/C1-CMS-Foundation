@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
+    
+<%@ Page Language="C#" %>
+
 	<control:httpheaders runat="server"/>
 	<head>
 		<title>Composite.Management.Browser</title>
 	    <control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server"/>
 		<link rel="stylesheet" type="text/css" href="browser.css.aspx"/>
-		<script type="text/javascript" src="BrowserAddressBarBinding.js"/>
-		<script type="text/javascript" src="BrowserPageBinding.js"/>
-		<script type="text/javascript" src="BrowserToolBarBinding.js"/>
-		<script type="text/javascript" src="BrowserTabBoxBinding.js"/>
-		<script type="text/javascript" src="BrowserTabBinding.js"/>
-		<script type="text/javascript" src="LanguageSelectorBinding.js"/>
+		<script type="text/javascript" src="BrowserAddressBarBinding.js"></script>
+		<script type="text/javascript" src="BrowserPageBinding.js"></script>
+		<script type="text/javascript" src="BrowserToolBarBinding.js"></script>
+		<script type="text/javascript" src="BrowserTabBoxBinding.js"></script>
+		<script type="text/javascript" src="BrowserTabBinding.js"></script>
+		<script type="text/javascript" src="LanguageSelectorBinding.js"></script>
 	</head>
 	<body>
 		<ui:broadcasterset>

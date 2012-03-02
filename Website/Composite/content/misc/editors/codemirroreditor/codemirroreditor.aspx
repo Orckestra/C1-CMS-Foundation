@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml"
 xmlns:control="http://www.composite.net/ns/uicontrol">
+    
+<%@ Page Language="C#" %>
+
 <control:httpheaders runat="server" />
 <head>
 	<title>Composite.Management.SourceCodeEditor</title>
 	<control:styleloader runat="server" />
 	<control:scriptloader type="sub" runat="server" />
 	<link rel="stylesheet" type="text/css" href="codemirror.css.aspx" />
-	<script type="text/javascript" src="bindings/SourceEditorPageBinding.js" />
-	<script type="text/javascript" src="bindings/SourceEditorToolBarBinding.js" />
-	<script type="text/javascript" src="bindings/SourceEditorInsertToolbarButtonBinding.js" />
-	<script type="text/javascript" src="bindings/SourceEditorFormatToolbarButtonBinding.js" />
+	<script type="text/javascript" src="bindings/SourceEditorPageBinding.js"></script>
+	<script type="text/javascript" src="bindings/SourceEditorToolBarBinding.js"></script>
+	<script type="text/javascript" src="bindings/SourceEditorInsertToolbarButtonBinding.js"></script>
+	<script type="text/javascript" src="bindings/SourceEditorFormatToolbarButtonBinding.js"></script>
 </head>
 <body>
 	<ui:broadcasterset>

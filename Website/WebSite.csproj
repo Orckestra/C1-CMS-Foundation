@@ -135,6 +135,13 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\content.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\dialog.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\themes\advanced\skins\highcontrast\ui.css" />
+    <Content Include="Composite\content\misc\preview\error.aspx" />
+    <Content Include="Composite\content\misc\preview\error.css" />
+    <Content Include="Composite\content\misc\preview\stop.aspx" />
+    <Content Include="Composite\content\misc\preview\stop.css" />
+    <Content Include="Composite\content\misc\preview\StopPageBinding.js" />
+    <Content Include="Composite\content\views\generic\generic.aspx" />
+    <Content Include="Composite\content\views\generic\GenericPageBinding.js" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.cs">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

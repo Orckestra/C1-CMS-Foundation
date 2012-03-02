@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<%@ register tagprefix="control" tagname="iconrenderer" src="~/Composite/controls/IconRendererControl.ascx" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
+    
+<%@ Page Language="C#" %>
+<%@ Register tagprefix="control" tagname="iconrenderer" src="~/Composite/controls/IconRendererControl.ascx" %>
+
 	<control:httpheaders runat="server"/>
 	<head>
 		<title>Composite.Management.IconPack.HarmonyRender</title>

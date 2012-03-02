@@ -1,4 +1,7 @@
 <html>
+    
+<%@ Page Language="C#" %>    
+
 	<head>
 		<title>TinyMCE</title>
 		<script type="text/javascript">

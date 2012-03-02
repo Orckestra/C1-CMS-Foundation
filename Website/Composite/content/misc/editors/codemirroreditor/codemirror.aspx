@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+    
+<%@ Page Language="C#" %>
+
 <head>
 	<title>Codemirror</title>
 
