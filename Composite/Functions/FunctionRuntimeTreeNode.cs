@@ -136,7 +136,7 @@ namespace Composite.Functions
         [Obsolete("This method is not used")]
         public override object GetCachedValue(FunctionContextContainer contextContainer)
         {
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            Verify.ArgumentNotNull(contextContainer, "contextContainer");
 
             return _cachedValueCalculated ? _cachedValue : GetValue(contextContainer);
         }
