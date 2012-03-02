@@ -1,3 +1,5 @@
+<%@ Page Language="C#" %>
+
 <html>
 	<head>
 		<title>Composite.Management.SourceCodeViewerContent</title>
