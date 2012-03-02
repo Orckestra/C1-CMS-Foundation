@@ -111,6 +111,13 @@
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
+    <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
+    <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
+    <Content Include="Composite\content\dialogs\util\comparestrings\comparestrings.aspx" />
+    <Content Include="Composite\content\dialogs\util\comparestrings\comparestrings.css" />
+    <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.css" />
+    <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.html" />
+    <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\xmlpure.js" />

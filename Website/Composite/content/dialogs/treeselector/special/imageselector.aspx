@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
+    
+<%@ Page Language="C#" %>
+
 	<control:httpheaders runat="server"/>
 	<head>
 		<title>Composite.Management.Dialog.ImageSelector</title>
