@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Security.AccessControl;
 
 
 namespace Composite.Core.IO.Plugins.IOProvider
@@ -149,13 +148,5 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// <param name="path">Path of directory.</param>
         /// <returns>Creation date and time of the given directory.</returns>
         DateTime GetCreationTimeUtc(string path);
-
-
-        /// <summary>
-        /// Gets a <see cref="System.Security.AccessControl.DirectorySecurity" /> object that encapsulates the access control list (ACL) entries for a specified directory.
-        /// </summary>
-        /// <param name="path">The path to a directory</param>
-        /// <returns>A <see cref="System.Security.AccessControl.DirectorySecurity" /> object that encapsulates the access control rules for the file described by the <param name="path"></param> parameter.</returns>
-        DirectorySecurity GetAccessControl(string path);
     }
 }

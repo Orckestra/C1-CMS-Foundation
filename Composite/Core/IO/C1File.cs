@@ -646,16 +646,7 @@ namespace Composite.Core.IO
         {
             ImplementationFactory.CurrentFactory.StatelessC1File.SetLastWriteTimeUtc(path, lastWriteTimeUtc);
         }
-        
 
-        /// <summary>
-        /// Gets a FileSecurity object that encapsulates the access control list (ACL) entries for the file described by the current FileInfo object.
-        /// </summary>
-        /// <param name="path">Path to file.</param>
-        public static System.Security.AccessControl.FileSecurity GetAccessControl(string path)
-        {
-            return ImplementationFactory.CurrentFactory.StatelessC1File.GetAccessControl(path);
-        }
 
 
         //public static FileStream Create(string path, int bufferSize, System.IO.FileOptions options, System.Security.AccessControl.FileSecurity fileSecurity)
@@ -674,6 +665,13 @@ namespace Composite.Core.IO
 
 
         //public static void Decrypt(string path)
+        //{ 
+        //    throw new NotImplementedException(); 
+        //}
+
+
+
+        //public static System.Security.AccessControl.FileSecurity GetAccessControl(string path)
         //{ 
         //    throw new NotImplementedException(); 
         //}

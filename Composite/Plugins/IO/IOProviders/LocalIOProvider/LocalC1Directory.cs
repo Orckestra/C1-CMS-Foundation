@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Security.AccessControl;
 using Composite.Core.IO;
 using Composite.Core.IO.Plugins.IOProvider;
 
@@ -143,17 +142,6 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         public DateTime GetCreationTimeUtc(string path)
         {
             return Directory.GetCreationTimeUtc(path);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="System.Security.AccessControl.DirectorySecurity" /> object that encapsulates the access control list (ACL) entries for a specified directory.
-        /// </summary>
-        /// <param name="path">The path to a directory</param>
-        /// <returns>A <see cref="System.Security.AccessControl.DirectorySecurity" /> object that encapsulates the access control rules for the file described by the <param name="path"></param> parameter.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
-        public DirectorySecurity GetAccessControl(string path)
-        {
-            return Directory.GetAccessControl(path);
         }
     }
 }

@@ -117,6 +117,7 @@ namespace Composite.Core.IO
         /// </summary>
         /// <param name="fileOrDirectoryPath">Path to a file or a folder</param>
         /// <returns></returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         public static bool WritePermissionGranted(string fileOrDirectoryPath)
         {
             try
@@ -125,13 +126,13 @@ namespace Composite.Core.IO
 
                 if (C1File.Exists(fileOrDirectoryPath))
                 {
-                    FileSystemSecurity security = C1File.GetAccessControl(fileOrDirectoryPath);
+                    FileSystemSecurity security = File.GetAccessControl(fileOrDirectoryPath);
 
                     rules = security.GetAccessRules(true, true, typeof(NTAccount));
                 }
                 else if (C1Directory.Exists(fileOrDirectoryPath))
                 {
-                    DirectorySecurity security = C1Directory.GetAccessControl(fileOrDirectoryPath);
+                    DirectorySecurity security = Directory.GetAccessControl(fileOrDirectoryPath);
 
                     rules = security.GetAccessRules(true, true, typeof(NTAccount));
                 }

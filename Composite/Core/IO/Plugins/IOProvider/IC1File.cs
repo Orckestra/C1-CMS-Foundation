@@ -441,11 +441,5 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// <param name="path">Path to file.</param>
         /// <param name="lastWriteTimeUtc">New last write utc time.</param>
         void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc);
-
-        /// <summary>
-        /// Gets a FileSecurity object that encapsulates the access control list (ACL) entries for the file described by the current FileInfo object.
-        /// </summary>
-        /// <param name="path">Path to file.</param>
-        System.Security.AccessControl.FileSecurity GetAccessControl(string path);
     }
 }
