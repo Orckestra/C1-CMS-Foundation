@@ -31,10 +31,10 @@ namespace Composite.Core.Types
         private const int NumberOfCompileRetries = 10;
 
         private static readonly object _lock = new object();
-        private static bool _compositeGeneratedCompiled = false;
+        private static bool _compositeGeneratedCompiled = true;
         private static List<ICodeProvider> _dynamicallyAddedCodeProviders = new List<ICodeProvider>();
         private static readonly List<Assembly> _compiledAssemblies = new List<Assembly>();
-        private static List<Type> _compiledTypes = new List<Type>();
+        private static readonly List<Type> _compiledTypes = new List<Type>();
 
      
 

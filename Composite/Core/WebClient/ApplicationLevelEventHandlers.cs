@@ -10,6 +10,7 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
+using System.Diagnostics;
 
 
 namespace Composite.Core.WebClient
@@ -40,7 +41,7 @@ namespace Composite.Core.WebClient
             _startTime = DateTime.Now;
             if (RuntimeInformation.IsDebugBuild)
             {
-                Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} started at {1}", AppDomain.CurrentDomain.Id, _startTime.ToString("HH:mm:ss:ff"));
+                Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} started at {1} in process {2}", AppDomain.CurrentDomain.Id, _startTime.ToString("HH:mm:ss:ff"), Process.GetCurrentProcess().Id);
             }
 
             SystemSetupFacade.SetFirstTimeStart();
@@ -79,7 +80,7 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_End(object sender, EventArgs e)
         {
-            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} ended at {1}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"));
+            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} ended at {1} in process {2}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"), Process.GetCurrentProcess().Id);
 
             if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
             {
