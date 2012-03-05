@@ -183,8 +183,10 @@ namespace Composite.C1Console.Trees.Foundation
                 actionNode.ViewToolTip = viewToolTipAttribute.GetValueOrDefault(actionNode.ToolTip);
                 actionNode.ViewIcon = FactoryHelper.GetIcon(viewIconAttribute.GetValueOrDefault(DefaultCustomUrlResourceName));
 
+                bool urlIsAbsolute = actionNode.Url != null && actionNode.Url.Contains("://");
+
                 XAttribute viewTypeAttribute = element.Attribute("ViewType");
-                string viewTypeValue = viewTypeAttribute.GetValueOrDefault("documentview");
+                string viewTypeValue = viewTypeAttribute.GetValueOrDefault(urlIsAbsolute ? "externalview" : "documentview");
                 switch (viewTypeValue)
                 {
                     case "externalview":
