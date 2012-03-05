@@ -112,7 +112,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
 
-            e.Result = DataFacade.GetData<IPageTemplate>(f => f.Title.Equals(newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase)).Any();
+            e.Result = DataFacade.GetData<IPageTemplate>().ToList()
+                                 .Any(f => f.Title.Equals(newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase));
         }
 
 
