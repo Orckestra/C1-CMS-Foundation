@@ -1,6 +1,7 @@
 ﻿<%@ WebHandler Language="C#" Class="ShowMedia" %>
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Drawing.Imaging;
 using System.Web;
@@ -81,6 +82,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
 
+
         bool clientCaching = false;
         
         if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn() == false)
@@ -130,6 +132,13 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 {
                     context.Response.Cache.SetLastModified(lastModified);
                 }
+
+                DateTime? ifModifiedSince = ExtractIfModifiedSinceHeader(context);
+                if (ifModifiedSince != null && ifModifiedSince.Value.AddSeconds(2.0) >= lastModified)
+                {
+                    context.Response.StatusCode = 304; // Not modified
+                    return;
+                }
             }            
 
             inputStream.CopyTo(context.Response.OutputStream);
@@ -151,6 +160,22 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         {
             // Ignore - user canceled download.
         }
+    }
+    
+    private static DateTime? ExtractIfModifiedSinceHeader(HttpContext context)
+    {
+        string header = context.Request.Headers["If-Modified-Since"];
+
+        if (header != null)
+        {
+            DateTime ifModifiedSince;
+            if (DateTime.TryParse(header, CultureInfo.InvariantCulture, DateTimeStyles.None, out ifModifiedSince))
+            {
+                return ifModifiedSince;
+            }
+        }
+
+        return null;
     }
 
     private static string GetMimeType(IMediaFile file)
