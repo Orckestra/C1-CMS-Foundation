@@ -36,7 +36,7 @@ namespace Composite.Core.Types
         private static readonly List<Assembly> _compiledAssemblies = new List<Assembly>();
         private static readonly List<Type> _compiledTypes = new List<Type>();
 
-     
+
 
         static CodeGenerationManager()
         {
@@ -48,7 +48,7 @@ namespace Composite.Core.Types
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
-        
+
 
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace Composite.Core.Types
 
             Log.LogVerbose(LogTitle, string.Format("New assembly already compiled by this application domain ({0})", AppDomain.CurrentDomain.Id));
         }
-        
-        
+
+
 
         /// <summary>
         /// This method will compile the type defined in <paramref name="codeGenerationBuilder"/>
@@ -124,7 +124,7 @@ namespace Composite.Core.Types
         /// </summary>
         /// <param name="codeGenerationBuilder"></param>
         /// <returns></returns>
-        public static IEnumerable<Type> CompileRuntimeTempTypes(CodeGenerationBuilder codeGenerationBuilder)
+        public static IEnumerable<Type> CompileRuntimeTempTypes(CodeGenerationBuilder codeGenerationBuilder, bool verbose = true)
         {
             int t1 = Environment.TickCount;
 
@@ -194,6 +194,7 @@ namespace Composite.Core.Types
                 }
             }
 
+
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Failed building: " + codeGenerationBuilder.DebugLabel);
             foreach (CompilerError compilerError in compileResult.Errors)
@@ -202,14 +203,17 @@ namespace Composite.Core.Types
 
                 string entry = "Compile error: " + compilerError.ErrorNumber + "(" + compilerError.Line + ")" + ": " + compilerError.ErrorText.Replace("{", "{{").Replace("}", "}}");
 
-                Log.LogError(LogTitle, entry);
+                if (verbose)
+                {
+                    Log.LogError(LogTitle, entry);
+                }
 
                 sb.AppendLine(entry);
             }
 
             throw new InvalidOperationException(sb.ToString());
         }
-        
+
 
 
         /// <summary>
@@ -397,7 +401,7 @@ namespace Composite.Core.Types
             }
         }
 
-       
+
 
         private static void AddCompiledAssembly(Assembly newAssembly)
         {
@@ -421,7 +425,7 @@ namespace Composite.Core.Types
             _compiledAssemblies.Add(newAssembly);
         }
 
-       
+
 
         private static void Flush()
         {

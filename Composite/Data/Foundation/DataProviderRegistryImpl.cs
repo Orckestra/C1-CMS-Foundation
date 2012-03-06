@@ -128,9 +128,24 @@ namespace Composite.Data.Foundation
         }
 
 
+
         public void AddNewDataType(Type interaceType, string providerName, bool isWritableProvider = true)
         {
             AddType(interaceType, providerName, isWritableProvider);
+        }
+
+
+
+        public void AddKnownDataType(Type interaceType, string providerName)
+        {
+            List<string> providers;
+            if (!_knownInterfaceTypeToDynamicProviderNamesDictionary.TryGetValue(interaceType, out providers))
+            {
+                providers = new List<string>();
+                _knownInterfaceTypeToDynamicProviderNamesDictionary.Add(interaceType, providers);
+            }
+
+            providers.Add(providerName);
         }
 
 

@@ -36,6 +36,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         internal void AddDataType(DataTypeDescriptor dataTypeDescriptor)
         {
+            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            if (interfaceType == null) return;
+
             XmlProviderCodeGenerator codeGenerator = new XmlProviderCodeGenerator(dataTypeDescriptor, _namespaceName);
             IEnumerable<CodeTypeDeclaration> codeTypeDeclarations = codeGenerator.CreateCodeDOMs();
             codeTypeDeclarations.ForEach(f => _codeGenerationBuilder.AddType(_namespaceName, f));
@@ -43,10 +46,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             // Property serializer for entity tokens and more
             Dictionary<string, Type> serializerProperties = dataTypeDescriptor.Fields.Where(f => dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)).ToDictionary(f => f.Name, f => f.InstanceType);
             PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, codeGenerator.DataIdClassFullName, serializerProperties);
-
-            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            
             _codeGenerationBuilder.AddReference(interfaceType.Assembly);
-
         }
 
 

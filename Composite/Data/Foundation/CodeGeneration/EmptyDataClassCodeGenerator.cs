@@ -17,6 +17,9 @@ namespace Composite.Data.Foundation.CodeGeneration
 
         internal static void AddEmptyDataClassTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor, Type baseClassType = null, CodeAttributeDeclaration codeAttributeDeclaration = null)
         {
+            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            if (interfaceType == null) return;
+
             if (baseClassType == null) baseClassType = typeof(EmptyDataClassBase);
 
             CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor, baseClassType, codeAttributeDeclaration);
@@ -29,6 +32,7 @@ namespace Composite.Data.Foundation.CodeGeneration
         internal static void AddAssemblyReferences(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
             Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            if (interfaceType == null) return;
 
             codeGenerationBuilder.AddReference(typeof(EmptyDataClassBase).Assembly);
             codeGenerationBuilder.AddReference(typeof(EditorBrowsableAttribute).Assembly);

@@ -145,6 +145,12 @@ namespace Composite.Data.Foundation
 
 
 
+        public static void AddKnownDataType(Type interaceType, string providerName)
+        {
+            _dataProviderRegistry.AddKnownDataType(interaceType, providerName);
+        }
+
+
         internal static void InitializeDataTypes()
         {
             if (RuntimeInformation.IsDebugBuild == true)

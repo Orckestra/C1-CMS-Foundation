@@ -84,35 +84,47 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
                 DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+                Type interfaceType = null;
 
-                Type dataProviderHelperType;
-                Type dataIdClassType;
-                bool typeOk = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
-                if (!typeOk)
+                try
                 {
-                    Log.LogError("XmlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
-                    continue;
-                }
+                    interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 
-                List<XmlDataTypeStoreDataScope> xmlDataTypeStoreDataScopes = new List<XmlDataTypeStoreDataScope>();
-                foreach (DataScopeConfigurationElement dataScopeConfigurationElement in element.ConfigurationStores)
-                {
-                    XmlDataTypeStoreDataScope xmlDataTypeStoreDataScope = new XmlDataTypeStoreDataScope()
+                    Type dataProviderHelperType;
+                    Type dataIdClassType;
+                    bool typeOk = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
+                    if (!typeOk)
                     {
-                        DataScopeName = dataScopeConfigurationElement.DataScope,
-                        CultureName = dataScopeConfigurationElement.CultureName,
-                        ElementName = dataScopeConfigurationElement.ElementName,
-                        Filename = Path.Combine(_fileStoreDirectory, dataScopeConfigurationElement.Filename)
-                    };
+                        Log.LogError("XmlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
+                        continue;
+                    }
 
-                    xmlDataTypeStoreDataScopes.Add(xmlDataTypeStoreDataScope);
+                    List<XmlDataTypeStoreDataScope> xmlDataTypeStoreDataScopes = new List<XmlDataTypeStoreDataScope>();
+                    foreach (DataScopeConfigurationElement dataScopeConfigurationElement in element.ConfigurationStores)
+                    {
+                        XmlDataTypeStoreDataScope xmlDataTypeStoreDataScope = new XmlDataTypeStoreDataScope()
+                        {
+                            DataScopeName = dataScopeConfigurationElement.DataScope,
+                            CultureName = dataScopeConfigurationElement.CultureName,
+                            ElementName = dataScopeConfigurationElement.ElementName,
+                            Filename = Path.Combine(_fileStoreDirectory, dataScopeConfigurationElement.Filename)
+                        };
+
+                        xmlDataTypeStoreDataScopes.Add(xmlDataTypeStoreDataScope);
+                    }
+
+                    XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, xmlDataTypeStoreDataScopes);                    
+
+                    AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
                 }
-
-                XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, xmlDataTypeStoreDataScopes);
-
-                Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
-
-                AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
+                catch(Exception ex)
+                {
+                    if (interfaceType != null)
+                    {
+                        DataProviderRegistry.AddKnownDataType(interfaceType, _dataProviderContext.ProviderName);
+                    }
+                    Log.LogError("XmlDataProvider", string.Format("Failed initialization for the datatype {0}", dataTypeDescriptor.TypeManagerTypeName));
+                }
             }
         }
 
@@ -167,7 +179,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     codeBuilder.AddDataType(dataTypeDescriptor);
 
 
-                    IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+                    IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false);
 
                     dataProviderHelperType = types.Where(f => f.FullName == dataProviderHelperClassFullName).Single();
                     dataIdClassType = types.Where(f => f.FullName == dataIdClassFullName).Single();

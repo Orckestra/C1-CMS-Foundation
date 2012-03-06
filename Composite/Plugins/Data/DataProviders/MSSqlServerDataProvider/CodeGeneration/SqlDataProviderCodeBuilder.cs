@@ -40,6 +40,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         internal void AddDataType(DataTypeDescriptor dataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes)
         {
+            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            if (interfaceType == null) return;
+
             IEnumerable<Tuple<string, string>> names;
 
             SqlProviderCodeGenerator codeGenerator = new SqlProviderCodeGenerator(_providerName);
@@ -47,8 +50,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             codeTypeDeclarations.ForEach(f => _codeGenerationBuilder.AddType(_namespaceName, f));
 
             _entityClassNamesAndDataContextFieldNames.AddRange(names);
-
-            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            
             _codeGenerationBuilder.AddReference(interfaceType.Assembly);
 
             // Property serializer for entity tokens and more

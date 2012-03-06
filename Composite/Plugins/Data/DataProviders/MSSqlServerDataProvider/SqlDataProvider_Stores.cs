@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
@@ -127,56 +128,103 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             Verify.That(element.DataTypeId.HasValue, "Missing 'dataTypeId' attribute");
             DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
 
-            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            Type interfaceType = null;
 
-            if (interfaceType == null)
+            try
             {
-                Log.LogError("SqlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
+                interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+
+                if (interfaceType == null)
+                {
+                    Log.LogError("SqlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be unusable", dataTypeDescriptor.TypeManagerTypeName));
+                    return result;
+                }
+
+                result.InterfaceType = interfaceType;
+
+                string validationMessage;
+                bool isValid = DataTypeValidationRegistry.IsValidate(interfaceType, dataTypeDescriptor, out validationMessage);
+                if (!isValid)
+                {
+                    Log.LogCritical("SqlDataProvider", validationMessage);
+                    throw new InvalidOperationException(validationMessage);
+                }
+
+                Type dataContextClassType; // This is the same for all stores!
+
+                Dictionary<SqlDataTypeStoreTableKey, Tuple<FieldInfo, Type>> sqlDataStoreTableTypes;
+                EnsureNeededTypes(dataTypeDescriptor, sqlDataTypeStoreDataScopes, allSqlDataTypeStoreDataScopes, out dataContextClassType, out sqlDataStoreTableTypes);
+
+                _sqlDataTypeStoresContainer.DataContextType = dataContextClassType;
+
+
+
+                Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable> sqlDataTypeStoreTables = new Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable>();
+                foreach (SqlDataTypeStoreDataScope storeDataScope in sqlDataTypeStoreDataScopes)
+                {
+                    SqlDataTypeStoreTableKey key = new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName);
+
+                    result.TableNames.Add(key, storeDataScope.TableName);
+
+                    FieldInfo dataContextFieldInfo = sqlDataStoreTableTypes[key].Item1;
+                    Type sqlDataProvdierHelperType = sqlDataStoreTableTypes[key].Item2;
+
+                    ISqlDataProviderHelper sqlDataProviderHelper = (ISqlDataProviderHelper)Activator.CreateInstance(sqlDataProvdierHelperType);
+
+                    SqlDataTypeStoreTable sqlDataTypeStoreTable = new SqlDataTypeStoreTable(dataContextFieldInfo, sqlDataProviderHelper);
+                    _createdSqlDataTypeStoreTables.Add(sqlDataTypeStoreTable);
+
+                    sqlDataTypeStoreTables.Add(key, sqlDataTypeStoreTable);
+                }
+
+
+                SqlDataTypeStore sqlDataTypeStore = new SqlDataTypeStore(interfaceType, sqlDataTypeStoreTables, dataTypeDescriptor.IsCodeGenerated, _sqlDataTypeStoresContainer);
+                result.SqlDataTypeStore = sqlDataTypeStore;
+
                 return result;
             }
-
-            result.InterfaceType = interfaceType;
-
-            string validationMessage;
-            bool isValid = DataTypeValidationRegistry.IsValidate(interfaceType, dataTypeDescriptor, out validationMessage);
-            if (!isValid)
+            catch (Exception ex)
             {
-                Log.LogCritical("SqlDataProvider", validationMessage);
-                throw new InvalidOperationException(validationMessage);
+                if (interfaceType != null)
+                {
+                    DataProviderRegistry.AddKnownDataType(interfaceType, _dataProviderContext.ProviderName);
+
+                    Log.LogError("SqlDataProvider", string.Format("Failed initialization for the datatype {0}", dataTypeDescriptor.TypeManagerTypeName));
+                }
+                return result;
+            }
+        }
+
+        [Serializable]
+        public class exException : Exception
+        {
+            //
+            // For guidelines regarding the creation of new exception types, see
+            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+            // and
+            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+            //
+
+            public exException()
+            {
             }
 
-            Type dataContextClassType; // This is the same for all stores!
-
-            Dictionary<SqlDataTypeStoreTableKey, Tuple<FieldInfo, Type>> sqlDataStoreTableTypes;
-            EnsureNeededTypes(dataTypeDescriptor, sqlDataTypeStoreDataScopes, allSqlDataTypeStoreDataScopes, out dataContextClassType, out sqlDataStoreTableTypes);
-
-            _sqlDataTypeStoresContainer.DataContextType = dataContextClassType;
-
-
-
-            Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable> sqlDataTypeStoreTables = new Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable>();
-            foreach (SqlDataTypeStoreDataScope storeDataScope in sqlDataTypeStoreDataScopes)
+            public exException(string message)
+                : base(message)
             {
-                SqlDataTypeStoreTableKey key = new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName);
-
-                result.TableNames.Add(key, storeDataScope.TableName);
-
-                FieldInfo dataContextFieldInfo = sqlDataStoreTableTypes[key].Item1;
-                Type sqlDataProvdierHelperType = sqlDataStoreTableTypes[key].Item2;
-
-                ISqlDataProviderHelper sqlDataProviderHelper = (ISqlDataProviderHelper)Activator.CreateInstance(sqlDataProvdierHelperType);
-
-                SqlDataTypeStoreTable sqlDataTypeStoreTable = new SqlDataTypeStoreTable(dataContextFieldInfo, sqlDataProviderHelper);
-                _createdSqlDataTypeStoreTables.Add(sqlDataTypeStoreTable);
-
-                sqlDataTypeStoreTables.Add(key, sqlDataTypeStoreTable);
             }
 
+            public exException(string message, Exception inner)
+                : base(message, inner)
+            {
+            }
 
-            SqlDataTypeStore sqlDataTypeStore = new SqlDataTypeStore(interfaceType, sqlDataTypeStoreTables, dataTypeDescriptor.IsCodeGenerated, _sqlDataTypeStoresContainer);
-            result.SqlDataTypeStore = sqlDataTypeStore;
-
-            return result;
+            protected exException(
+                SerializationInfo info,
+                StreamingContext context)
+                : base(info, context)
+            {
+            }
         }
 
 
@@ -287,7 +335,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 SqlColumnInformation column = columns.Find(col => col.ColumnName == property.Name);
                 if (null == column)
                 {
-                    errors.AppendLine(string.Format("The interface property named '{0}' does not exist in the table '{1}' as a column", property.Name, sqlTableInformation.TableName)); 
+                    errors.AppendLine(string.Format("The interface property named '{0}' does not exist in the table '{1}' as a column", property.Name, sqlTableInformation.TableName));
                     return false;
                 }
 
@@ -295,7 +343,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 {
                     if (column.Type != property.PropertyType)
                     {
-                        errors.AppendLine(string.Format("Type mismatch. The interface type '{0}' does not match the database type '{1}'", property.PropertyType, column.Type)); 
+                        errors.AppendLine(string.Format("Type mismatch. The interface type '{0}' does not match the database type '{1}'", property.PropertyType, column.Type));
                         return false;
                     }
                 }
@@ -303,7 +351,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             return true;
         }
-       
+
 
 
         /// <summary>
@@ -366,7 +414,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                     sqlDataProviderCodeBuilder.AddDataContext();
 
-                    IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+                    IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false);
 
                     dataContextClassType = types.Where(f => f.FullName == dataContextClassFullName).Single();
 

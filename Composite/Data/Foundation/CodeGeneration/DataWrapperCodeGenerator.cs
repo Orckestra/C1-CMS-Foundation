@@ -33,6 +33,9 @@ namespace Composite.Data.Foundation.CodeGeneration
 
         internal static void AddDataWrapperClassCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
+            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+            if (interfaceType == null) return;
+
             codeGenerationBuilder.AddReference(typeof(IDataWrapper).Assembly);
             codeGenerationBuilder.AddReference(typeof(EditorBrowsableAttribute).Assembly);
 
