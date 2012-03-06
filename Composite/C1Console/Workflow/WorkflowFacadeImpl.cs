@@ -622,6 +622,21 @@ namespace Composite.C1Console.Workflow
 
 
 
+        public void FireSaveAndPublishEvent(Guid instanceId, Dictionary<string, object> bindings)
+        {
+            DoInitialize(0);
+
+            using (_resourceLocker.Locker)
+            {
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                {
+                    _formsWorkflowEventService.FireSaveAndPublishEvent(new FormEventArgs(instanceId, bindings));
+                }
+            }
+        }
+
+
+
         public void FireNextEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             DoInitialize(0);

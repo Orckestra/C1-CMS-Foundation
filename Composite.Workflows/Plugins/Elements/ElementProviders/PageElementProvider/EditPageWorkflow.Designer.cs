@@ -29,18 +29,26 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.CanModifyActivities = true;
             System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition2 = new System.Workflow.Activities.CodeCondition();
+            System.Workflow.Activities.CodeCondition codecondition3 = new System.Workflow.Activities.CodeCondition();
             this.showConsoleMessageBoxActivity1 = new Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity();
             this.saveCodeActivity = new System.Workflow.Activities.CodeActivity();
+            this.setStateActivity10 = new System.Workflow.Activities.SetStateActivity();
+            this.setStateActivity9 = new System.Workflow.Activities.SetStateActivity();
+            this.setToPublishCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity8 = new System.Workflow.Activities.SetStateActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity6 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity5 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity4 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity3 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
             this.newPageTypeSelectedCodeActivity_UpdateView = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
+            this.ifElseActivity2 = new System.Workflow.Activities.IfElseActivity();
+            this.saveAndPublishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveAndPublishHandleExternalEventActivity();
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
             this.customEvent01HandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
@@ -54,6 +62,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
             this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
             this.saveStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
+            this.editEventDrivenActivity_SaveAndPublish = new System.Workflow.Activities.EventDrivenActivity();
             this.editEventDrivenActivity_PageTypeChanged = new System.Workflow.Activities.EventDrivenActivity();
             this.editEventDrivenActivity_Preview = new System.Workflow.Activities.EventDrivenActivity();
             this.editEventDrivenActivity_Save = new System.Workflow.Activities.EventDrivenActivity();
@@ -69,8 +78,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // showConsoleMessageBoxActivity1
             // 
             this.showConsoleMessageBoxActivity1.DialogType = Composite.C1Console.Events.DialogType.Message;
-            this.showConsoleMessageBoxActivity1.Message = "${Composite.Plugins.PageElementProvider, PageSaveValidationFailedMessage}" +
-                "";
+            this.showConsoleMessageBoxActivity1.Message = "${Composite.Plugins.PageElementProvider, PageSaveValidationFailedMessage}";
             this.showConsoleMessageBoxActivity1.Name = "showConsoleMessageBoxActivity1";
             this.showConsoleMessageBoxActivity1.Title = "${Composite.Plugins.PageElementProvider, PageSaveValidationFailedTitle}";
             // 
@@ -78,6 +86,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // 
             this.saveCodeActivity.Name = "saveCodeActivity";
             this.saveCodeActivity.ExecuteCode += new System.EventHandler(this.saveCodeActivity_ExecuteCode);
+            // 
+            // setStateActivity10
+            // 
+            this.setStateActivity10.Name = "setStateActivity10";
+            this.setStateActivity10.TargetStateName = "finalStateActivity";
+            // 
+            // setStateActivity9
+            // 
+            this.setStateActivity9.Name = "setStateActivity9";
+            this.setStateActivity9.TargetStateName = "saveStateActivity";
+            // 
+            // setToPublishCodeActivity
+            // 
+            this.setToPublishCodeActivity.Name = "setToPublishCodeActivity";
+            this.setToPublishCodeActivity.ExecuteCode += new System.EventHandler(this.setToPublishCodeActivity_ExecuteCode);
             // 
             // setStateActivity8
             // 
@@ -101,6 +124,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.ifElseBranchActivity1.Condition = codecondition1;
             this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 
+            // ifElseBranchActivity6
+            // 
+            this.ifElseBranchActivity6.Activities.Add(this.setStateActivity10);
+            this.ifElseBranchActivity6.Name = "ifElseBranchActivity6";
+            // 
+            // ifElseBranchActivity5
+            // 
+            this.ifElseBranchActivity5.Activities.Add(this.setToPublishCodeActivity);
+            this.ifElseBranchActivity5.Activities.Add(this.setStateActivity9);
+            codecondition2.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.PageStillExists);
+            this.ifElseBranchActivity5.Condition = codecondition2;
+            this.ifElseBranchActivity5.Name = "ifElseBranchActivity5";
+            // 
             // ifElseBranchActivity4
             // 
             this.ifElseBranchActivity4.Activities.Add(this.setStateActivity8);
@@ -109,8 +145,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // ifElseBranchActivity3
             // 
             this.ifElseBranchActivity3.Activities.Add(this.setStateActivity2);
-            codecondition2.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.PageStillExists);
-            this.ifElseBranchActivity3.Condition = codecondition2;
+            codecondition3.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.PageStillExists);
+            this.ifElseBranchActivity3.Condition = codecondition3;
             this.ifElseBranchActivity3.Name = "ifElseBranchActivity3";
             // 
             // setStateActivity7
@@ -133,6 +169,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.ifElseActivity1.Activities.Add(this.ifElseBranchActivity1);
             this.ifElseActivity1.Activities.Add(this.ifElseBranchActivity2);
             this.ifElseActivity1.Name = "ifElseActivity1";
+            // 
+            // ifElseActivity2
+            // 
+            this.ifElseActivity2.Activities.Add(this.ifElseBranchActivity5);
+            this.ifElseActivity2.Activities.Add(this.ifElseBranchActivity6);
+            this.ifElseActivity2.Name = "ifElseActivity2";
+            // 
+            // saveAndPublishHandleExternalEventActivity1
+            // 
+            this.saveAndPublishHandleExternalEventActivity1.EventName = "SaveAndPublish";
+            this.saveAndPublishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
+            this.saveAndPublishHandleExternalEventActivity1.Name = "saveAndPublishHandleExternalEventActivity1";
             // 
             // setStateActivity6
             // 
@@ -206,6 +254,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.saveStateInitializationActivity.Activities.Add(this.setStateActivity1);
             this.saveStateInitializationActivity.Name = "saveStateInitializationActivity";
             // 
+            // editEventDrivenActivity_SaveAndPublish
+            // 
+            this.editEventDrivenActivity_SaveAndPublish.Activities.Add(this.saveAndPublishHandleExternalEventActivity1);
+            this.editEventDrivenActivity_SaveAndPublish.Activities.Add(this.ifElseActivity2);
+            this.editEventDrivenActivity_SaveAndPublish.Name = "editEventDrivenActivity_SaveAndPublish";
+            // 
             // editEventDrivenActivity_PageTypeChanged
             // 
             this.editEventDrivenActivity_PageTypeChanged.Activities.Add(this.customEvent01HandleExternalEventActivity1);
@@ -261,6 +315,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.editStateActivity.Activities.Add(this.editEventDrivenActivity_Save);
             this.editStateActivity.Activities.Add(this.editEventDrivenActivity_Preview);
             this.editStateActivity.Activities.Add(this.editEventDrivenActivity_PageTypeChanged);
+            this.editStateActivity.Activities.Add(this.editEventDrivenActivity_SaveAndPublish);
             this.editStateActivity.Name = "editStateActivity";
             // 
             // initializeStateActivity
@@ -304,7 +359,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private SetStateActivity setStateActivity2;
 
-        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
 
         private SetStateActivity setStateActivity3;
 
@@ -312,13 +367,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private EventDrivenActivity editEventDrivenActivity_Preview;
 
-        private Composite.C1Console.Workflow.Activities.PreviewHandleExternalEventActivity previewHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.PreviewHandleExternalEventActivity previewHandleExternalEventActivity1;
 
         private CodeActivity editPreviewCodeActivity;
 
         private SetStateActivity setStateActivity5;
 
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
 
         private StateActivity finalStateActivity;
 
@@ -332,7 +387,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private IfElseActivity ifElseActivity1;
 
-        private Composite.C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity1;
+        private C1Console.Workflow.Activities.ShowConsoleMessageBoxActivity showConsoleMessageBoxActivity1;
 
         private SetStateActivity setStateActivity7;
 
@@ -340,7 +395,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private SetStateActivity setStateActivity6;
 
-        private Composite.C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
+        private C1Console.Workflow.Activities.CustomEvent01HandleExternalEventActivity customEvent01HandleExternalEventActivity1;
 
         private StateInitializationActivity newPageTypeSelectedStateInitializationActivity;
 
@@ -356,7 +411,30 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private SetStateActivity setStateActivity8;
 
+        private EventDrivenActivity editEventDrivenActivity_SaveAndPublish;
+
+        private SetStateActivity setStateActivity10;
+
+        private SetStateActivity setStateActivity9;
+
+        private CodeActivity setToPublishCodeActivity;
+
+        private IfElseBranchActivity ifElseBranchActivity6;
+
+        private IfElseBranchActivity ifElseBranchActivity5;
+
+        private IfElseActivity ifElseActivity2;
+
+        private C1Console.Workflow.Activities.SaveAndPublishHandleExternalEventActivity saveAndPublishHandleExternalEventActivity1;
+
         private StateActivity initializeStateActivity;
+
+
+
+
+
+
+
 
 
 

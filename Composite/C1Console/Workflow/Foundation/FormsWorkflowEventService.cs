@@ -6,6 +6,7 @@ namespace Composite.C1Console.Workflow.Foundation
     internal sealed class FormsWorkflowEventService : IFormsWorkflowEventService
     {
         public event EventHandler<FormEventArgs> Save;
+        public event EventHandler<FormEventArgs> SaveAndPublish;
         public event EventHandler<FormEventArgs> Next;
         public event EventHandler<FormEventArgs> Previous;
         public event EventHandler<FormEventArgs> Finish;
@@ -29,6 +30,16 @@ namespace Composite.C1Console.Workflow.Foundation
             {
                 EventHandler<FormEventArgs> save = Save;
                 save(null, formEventArgs);
+            }
+        }
+
+
+        public void FireSaveAndPublishEvent(FormEventArgs formEventArgs)
+        {
+            if (SaveAndPublish != null)
+            {
+                EventHandler<FormEventArgs> saveAndPublish = SaveAndPublish;
+                saveAndPublish(null, formEventArgs);
             }
         }
 

@@ -120,6 +120,10 @@ namespace Composite.C1Console.Workflow
                         formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Save, new FormFlowEventHandler(OnSave));
                         break;
 
+                    case "SaveAndPublish":
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Save, new FormFlowEventHandler(OnSaveAndPublish));
+                        break;
+
                     case "Next":
                         formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Next, new FormFlowEventHandler(OnNext));
                         break;
@@ -181,6 +185,26 @@ namespace Composite.C1Console.Workflow
                 serviceContainer.AddService(taskManagerFlowControllerService);
 
                 WorkflowFacade.FireSaveEvent(workflowFlowToken.WorkflowInstanceId, bindings);
+                WorkflowFacade.SetFlowControllerServicesContainer(workflowFlowToken.WorkflowInstanceId, serviceContainer);
+                WorkflowFacade.RunWorkflow(workflowFlowToken.WorkflowInstanceId);
+                taskContainer.SetOnIdleTaskManagerEvent(new WorkflowTaskManagerEvent(flowToken, workflowFlowToken.WorkflowInstanceId));
+
+                serviceContainer.RemoveService(taskManagerFlowControllerService);
+            }
+        }
+
+
+
+        private static void OnSaveAndPublish(FlowToken flowToken, Dictionary<string, object> bindings, FlowControllerServicesContainer serviceContainer)
+        {
+            WorkflowFlowToken workflowFlowToken = (WorkflowFlowToken)flowToken;
+
+            using (TaskContainer taskContainer = TaskManagerFacade.RuntTasks(flowToken, new WorkflowTaskManagerEvent(flowToken, workflowFlowToken.WorkflowInstanceId) { EventName = "Save" }))
+            {
+                TaskManagerFlowControllerService taskManagerFlowControllerService = new TaskManagerFlowControllerService(taskContainer);
+                serviceContainer.AddService(taskManagerFlowControllerService);
+
+                WorkflowFacade.FireSaveAndPublishEvent(workflowFlowToken.WorkflowInstanceId, bindings);
                 WorkflowFacade.SetFlowControllerServicesContainer(workflowFlowToken.WorkflowInstanceId, serviceContainer);
                 WorkflowFacade.RunWorkflow(workflowFlowToken.WorkflowInstanceId);
                 taskContainer.SetOnIdleTaskManagerEvent(new WorkflowTaskManagerEvent(flowToken, workflowFlowToken.WorkflowInstanceId));

@@ -2199,6 +2199,9 @@
     <Compile Include="C1Console\Workflow\Activities\SaveHandleExternalEventActivity.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="C1Console\Workflow\Activities\SaveAndPublishHandleExternalEventActivity.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="C1Console\Workflow\Activities\WizardFormActivity.cs">
       <SubType>Component</SubType>
     </Compile>

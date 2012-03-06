@@ -51,6 +51,7 @@ namespace Composite.C1Console.Workflow
         IEnumerable<string> GetCurrentFormEvents(Guid instanceId);
         IEnumerable<string> GetCurrentFormEvents(WorkflowInstance workflowInstance);
         void FireSaveEvent(Guid instanceId, Dictionary<string, object> bindings);
+        void FireSaveAndPublishEvent(Guid instanceId, Dictionary<string, object> bindings);
         void FireNextEvent(Guid instanceId, Dictionary<string, object> bindings);
         void FirePreviousEvent(Guid instanceId, Dictionary<string, object> bindings);
         void FireFinishEvent(Guid instanceId, Dictionary<string, object> bindings);

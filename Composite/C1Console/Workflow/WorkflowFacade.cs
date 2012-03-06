@@ -251,6 +251,13 @@ namespace Composite.C1Console.Workflow
 
 
         /// <exclude />
+        public static void FireSaveAndPublishEvent(Guid instanceId, Dictionary<string, object> bindings)
+        {
+            _workflowFacade.FireSaveAndPublishEvent(instanceId, bindings);
+        }
+
+
+        /// <exclude />
         public static void FireNextEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
             _workflowFacade.FireNextEvent(instanceId, bindings);

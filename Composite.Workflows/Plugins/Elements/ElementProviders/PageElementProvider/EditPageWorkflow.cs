@@ -42,9 +42,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        [NonSerialized]
+        private bool _doPublish = false;
+
         public EditPageWorkflow()
         {
             InitializeComponent();
+            editEventDrivenActivity_Save.Enabled = false;
         }
 
 
@@ -191,7 +195,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     PageMetaDataFacade.AssignMetaDataSpecificValues(metaData, pageMetaDataDefinition.Name, selectedPage);
 
                     ILocalizedControlled localizedData = metaData as ILocalizedControlled;
-                    if(localizedData != null)
+                    if (localizedData != null)
                     {
                         localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                         localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
@@ -466,6 +470,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     updateTreeRefresher.PostRefreshMesseges(selectedPage.GetDataEntityToken());
                 }
 
+                if (_doPublish)
+                {
+                    GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+
+                    FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+
+                    ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
+
+#warning MRJ: TODO: Handle publication status somehow here?
+                }
+
                 this.UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);
             }
             catch (Exception ex)
@@ -519,7 +534,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
                 else
                 {
-                    if(!BindAndValidate(helper, metaData))
+                    if (!BindAndValidate(helper, metaData))
                     {
                         isValid = false;
                     }
@@ -695,7 +710,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             selectedPage.MenuTitle = selectedPage.MenuTitle ?? string.Empty;
             selectedPage.FriendlyUrl = selectedPage.FriendlyUrl ?? string.Empty;
-            
+
             TrimFieldValues(selectedPage);
 
             if (!FieldHasValidLength(selectedPage.Title, "Title", 255)
@@ -766,7 +781,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            if(!ValidateBindings())
+            if (!ValidateBindings())
             {
                 e.Result = false;
             }
@@ -784,6 +799,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
 
             e.Result = originalPage != null;
+        }
+
+
+        private void setToPublishCodeActivity_ExecuteCode(object sender, EventArgs e)
+        {
+            _doPublish = true;
         }
     }
 }

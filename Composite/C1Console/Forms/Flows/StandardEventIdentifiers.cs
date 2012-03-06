@@ -13,6 +13,9 @@ namespace Composite.C1Console.Forms.Flows
         public static IFormEventIdentifier Save { get { return new SaveEvent(); } }
 
         /// <exclude />
+        public static IFormEventIdentifier SaveAndPublish { get { return new SaveAndPublishEvent(); } }        
+
+        /// <exclude />
         public static IFormEventIdentifier SaveAs { get { return new SaveAsEvent(); } }
 
         /// <exclude />
@@ -61,6 +64,20 @@ namespace Composite.C1Console.Forms.Flows
         public string BindingName { get { return "SaveEventHandler"; } }
     }
 
+
+
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public class SaveAndPublishEvent : IFormEventIdentifier
+    {
+        /// <exclude />
+        public SaveAndPublishEvent() { }
+
+        /// <exclude />
+        public string BindingName { get { return "SaveAndPublishEventEventHandler"; } }
+    }
 
 
     /// <summary>    
