@@ -15,6 +15,9 @@ namespace Composite.C1Console.Workflow
         event EventHandler<FormEventArgs> Save;
 
         /// <exclude />
+        event EventHandler<FormEventArgs> SaveAndPublish;
+
+        /// <exclude />
         event EventHandler<FormEventArgs> Next;
 
         /// <exclude />
