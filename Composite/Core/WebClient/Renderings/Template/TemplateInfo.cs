@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Hosting;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.Caching;
+using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 using Composite.Data.Types;
 using Composite.Core.Types;
@@ -73,7 +76,8 @@ namespace Composite.Core.WebClient.Renderings.Template
         {
             IPageTemplate template = GetTemplate(templateId);
 
-            string templateMarkup = PageTemplateFileWrapper.Get(template).Content;
+            var templateWrapper = PageTemplateFileWrapper.Get(template);
+            string templateMarkup = templateWrapper.Content;
 
             XDocument document;
             try
@@ -82,7 +86,8 @@ namespace Composite.Core.WebClient.Renderings.Template
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException(string.Format("Failed to parse template markup for file '{0}'", template.PageTemplateFilePath), ex);
+                throw new InvalidOperationException("Failed to parse template markup for file '{0}'"
+                                                    .FormatWith(templateWrapper.RelativeFilePath), ex);
             }
 
             return document;
@@ -134,8 +139,9 @@ namespace Composite.Core.WebClient.Renderings.Template
         /// </summary>
         private class PageTemplateFileWrapper
         {
-            private string _content;
-            private string _pageTemplateFilePath;
+            private readonly string _content;
+            private readonly string _pageTemplateFilePath;
+            private readonly string _fileFullPath;
 
             private static Cache<string, PageTemplateFileWrapper> _cache = new Cache<string, PageTemplateFileWrapper>("Page template files", 100);
 
@@ -145,12 +151,25 @@ namespace Composite.Core.WebClient.Renderings.Template
                 IFile file = IFileServices.GetFile<IPageTemplateFile>(_pageTemplateFilePath);
                 _content = file.ReadAllText();
 
+                var systemFile = file as FileSystemFileBase;
+                Verify.IsNotNull(systemFile, "File should be of type '{0}'", typeof(FileSystemFileBase).Name);
+
+                _fileFullPath = systemFile.SystemPath;
+
                 file.SubscribeOnChanged(OnFileChanged);
             }
 
             public string Content
             {
                 get { return _content; }
+            }
+
+            public string RelativeFilePath
+            {
+                get
+                {
+                    return _fileFullPath.Substring(HostingEnvironment.ApplicationPhysicalPath.Length - 1);
+                }
             }
 
             private void OnFileChanged(string filePath, FileChangeType changeType)
