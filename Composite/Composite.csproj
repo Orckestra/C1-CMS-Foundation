@@ -147,6 +147,7 @@
     <Compile Include="C1Console\Actions\FlowTokenSerializer.cs" />
     <Compile Include="C1Console\Elements\Foundation\ElementProviderLoader.cs" />
     <Compile Include="C1Console\Events\OpenExternalViewQueueItem.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\SaveButtonUiControl.cs" />
     <Compile Include="C1Console\Forms\Flows\BindingValidationService.cs" />
     <Compile Include="C1Console\Forms\Flows\IBindingValidationService.cs" />
     <Compile Include="C1Console\Actions\IElementInformationService.cs" />
@@ -554,6 +555,9 @@
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.designer.cs">
       <DependentUpon>InstallRemotePackageWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSaveButtonUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedDoubleSelectorUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>

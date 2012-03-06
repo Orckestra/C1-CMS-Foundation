@@ -125,3 +125,4 @@ Changes in 3.1
 
 Changes in 3.2
 - Locale DeveloperApplicationProvider removed
+- SaveButton.ascx got new base class

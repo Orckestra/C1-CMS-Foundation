@@ -10,6 +10,7 @@
     <cms:binding name="Form" type="Composite.C1Console.Forms.IUiControl, Composite" />
     <cms:binding name="CustomToolbarItems" type="Composite.C1Console.Forms.IUiControl, Composite" optional="true" />
     <cms:binding name="SaveEventHandler" type="System.EventHandler" optional="true" />
+    <cms:binding name="SaveAndPublishEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="SaveAsEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="NextEventHandler" type="System.EventHandler" optional="true" />
     <cms:binding name="PreviousEventHandler" type="System.EventHandler" optional="true" />
@@ -26,13 +27,30 @@
           </f:NullCheck.CheckValue>
           <f:NullCheck.WhenNotNull>
             <internal:SaveButton Label="${Composite.Management, Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSave}">
-              <internal:SaveButton.ClickEventHandler>
+              <internal:SaveButton.SaveEventHandler>                
                 <cms:read source="SaveEventHandler" />
-              </internal:SaveButton.ClickEventHandler>
+              </internal:SaveButton.SaveEventHandler>
+              <internal:SaveButton.SaveAndPublishEventHandler>
+                <cms:read source="SaveAndPublishEventHandler" />
+              </internal:SaveButton.SaveAndPublishEventHandler>
             </internal:SaveButton>
           </f:NullCheck.WhenNotNull>
         </f:NullCheck>
-        
+<!--
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="SaveAndPublishEventHandler" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNotNull>
+            <ToolbarButton Label="Save and Publish">
+              <ToolbarButton.ClickEventHandler>
+                <cms:read source="SaveAndPublishEventHandler" />
+              </ToolbarButton.ClickEventHandler>
+            </ToolbarButton>
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
+-->        
+
         <f:NullCheck>
           <f:NullCheck.CheckValue>
             <cms:read source="SaveAsEventHandler" />

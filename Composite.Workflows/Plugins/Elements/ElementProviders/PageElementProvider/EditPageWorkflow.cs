@@ -48,7 +48,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public EditPageWorkflow()
         {
             InitializeComponent();
-            editEventDrivenActivity_Save.Enabled = false;
         }
 
 

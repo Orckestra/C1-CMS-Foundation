@@ -121,7 +121,7 @@ namespace Composite.C1Console.Workflow
                         break;
 
                     case "SaveAndPublish":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Save, new FormFlowEventHandler(OnSaveAndPublish));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.SaveAndPublish, new FormFlowEventHandler(OnSaveAndPublish));
                         break;
 
                     case "Next":

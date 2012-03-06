@@ -76,7 +76,7 @@ namespace Composite.C1Console.Forms.Flows
         public SaveAndPublishEvent() { }
 
         /// <exclude />
-        public string BindingName { get { return "SaveAndPublishEventEventHandler"; } }
+        public string BindingName { get { return "SaveAndPublishEventHandler"; } }
     }
 
 
