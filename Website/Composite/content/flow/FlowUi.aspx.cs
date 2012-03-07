@@ -60,8 +60,8 @@ public partial class Composite_Management_FlowUi : FlowPage
 
     void Composite_Management_FlowUi_Error(object sender, EventArgs e)
     {
-        Composite.Core.WebClient.ErrorServices.DocumentAdministrativeError(Server.GetLastError().GetBaseException());
-        Composite.Core.WebClient.ErrorServices.RedirectUserToErrorPage(_uiContainerName, Server.GetLastError().GetBaseException());
+        Composite.Core.WebClient.ErrorServices.DocumentAdministrativeError(Server.GetLastError());
+        Composite.Core.WebClient.ErrorServices.RedirectUserToErrorPage(_uiContainerName, Server.GetLastError());
     }
 
 

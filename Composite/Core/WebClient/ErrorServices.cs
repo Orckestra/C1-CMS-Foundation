@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Web;
+using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.C1Console.Events;
 
@@ -18,17 +17,18 @@ namespace Composite.Core.WebClient
         {
 
             StringBuilder consoleMsg = new StringBuilder();
-            consoleMsg.AppendLine(exception.ToString());
+            consoleMsg.AppendLine(exception.GetBaseException().ToString());
 
-            LoggingService.LogCritical("Web Application Error, Exception", exception);
+            Log.LogCritical("Web Application Error, Exception", exception);
 
-            if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Request.Url != null)
+            var httpContext = HttpContext.Current;
+            if (httpContext != null && httpContext.Request != null && httpContext.Request.Url != null)
             {
                 consoleMsg.AppendLine();
-                consoleMsg.AppendLine("URL:     " + HttpContext.Current.Request.Url.ToString());
+                consoleMsg.AppendLine("URL:     " + HttpContext.Current.Request.Url);
                 if (HttpContext.Current.Request.UrlReferrer != null)
                 {
-                    consoleMsg.AppendLine("Referer: " + HttpContext.Current.Request.UrlReferrer.AbsolutePath.ToString());
+                    consoleMsg.AppendLine("Referer: " + httpContext.Request.UrlReferrer.AbsolutePath);
                 }
             }
 
@@ -47,40 +47,58 @@ namespace Composite.Core.WebClient
             if (HttpContext.Current == null)
                 return;
 
-            string redirectUrl = null;
+            string redirectUrl;
 
             switch (uiContainerName)
             {
                 case "Document":
-                    {
-                        string encodedExceptionType = HttpUtility.UrlEncode(exception.GetType().Name);
-                        string encodedExceptionMessage = HttpUtility.UrlEncode(exception.Message);
-                        string encodedExceptionStackTrace = HttpUtility.UrlEncode(exception.StackTrace);
-                        if (encodedExceptionStackTrace.Length > 1000) encodedExceptionStackTrace = encodedExceptionStackTrace.Substring(0, 1000);
-                        redirectUrl = string.Format("{0}?type={1}&msg={2}&stack={3}", UrlUtils.ResolveAdminUrl("content/misc/errors/error.aspx"), encodedExceptionType, encodedExceptionMessage, encodedExceptionStackTrace);
-                    }
+                    redirectUrl = UrlUtils.ResolveAdminUrl("content/misc/errors/error.aspx") + "?" + ConvertExceptionToQueryString(exception);
                     break;
+
                 case null:
                 case "Wizard":
                 case "DataDialog":
                 case "ConfirmDialog":
-                    {
-                        string encodedExceptionType = HttpUtility.UrlEncode(exception.GetType().Name);
-                        string encodedExceptionMessage = HttpUtility.UrlEncode(exception.Message);
-                        string encodedExceptionStackTrace = HttpUtility.UrlEncode(exception.StackTrace);
-                        if (encodedExceptionStackTrace.Length > 1000) encodedExceptionStackTrace = encodedExceptionStackTrace.Substring(0, 1000);
-                        redirectUrl = string.Format("{0}?type={1}&msg={2}&stack={3}", UrlUtils.ResolveAdminUrl("content/misc/errors/error_dialog.aspx"), encodedExceptionType, encodedExceptionMessage, encodedExceptionStackTrace);
-                    }
+                    redirectUrl = UrlUtils.ResolveAdminUrl("content/misc/errors/error_dialog.aspx") + "?" + ConvertExceptionToQueryString(exception);
                     break;
+
                 default:
-                    LoggingService.LogWarning("ErrorServices", string.Format("Unhandled redirect! Unknown container: '{0}", uiContainerName));
+                    Log.LogWarning("ErrorServices", string.Format("Unhandled redirect! Unknown container: '{0}", uiContainerName));
                     throw new NotImplementedException(string.Format("Unknown container: '{0}'", uiContainerName));
             }
 
-            if (redirectUrl != null)
+            HttpContext.Current.Response.Redirect(redirectUrl, true);
+        }
+
+        private static string ConvertExceptionToQueryString(Exception exception)
+        {
+            var sbResult = new StringBuilder();
+
+            int exceptionIndex = 0;
+
+            while (exception != null)
             {
-                HttpContext.Current.Response.Redirect(redirectUrl, true);
+                if(sbResult.Length > 0)
+                {
+                    sbResult.Append("&");
+                }
+
+                string encodedExceptionType = HttpUtility.UrlEncode(exception.GetType().Name);
+                string encodedExceptionMessage = HttpUtility.UrlEncode(exception.Message);
+                string encodedExceptionStackTrace = HttpUtility.UrlEncode(exception.StackTrace);
+                if (encodedExceptionStackTrace.Length > 1000) encodedExceptionStackTrace = encodedExceptionStackTrace.Substring(0, 1000);
+
+                string indexStr = exceptionIndex == 0 ? string.Empty : exceptionIndex.ToString();
+
+                sbResult.Append("type{0}=".FormatWith(indexStr) + encodedExceptionType);
+                sbResult.Append("&msg{0}=".FormatWith(indexStr) + encodedExceptionMessage);
+                sbResult.Append("&stack{0}=".FormatWith(indexStr) + encodedExceptionStackTrace);
+
+                exceptionIndex++;
+                exception = exception.InnerException;
             }
+
+            return sbResult.ToString();
         }
     }
 }

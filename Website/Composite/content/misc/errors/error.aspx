@@ -14,11 +14,26 @@
 			label="${string:Website.ServerError.ServerErrorTitle}" 
 			image="${icon:error}">
                 <div id="errerdetails">
-<pre id="errordetailshead"><%= HttpUtility.HtmlAttributeEncode(Request.QueryString["type"])%>:
-<strong><%= HttpUtility.HtmlAttributeEncode(Request.QueryString["msg"])%></strong></pre>
+                    
+<% for(int i=0; i<10; i++)
+   {
+       string indexStr = i == 0 ? string.Empty : i.ToString();
+       string type = Request.QueryString["type" + indexStr];
 
-<pre id="errordetailsstack">Stack trace:
-<%= HttpUtility.HtmlAttributeEncode(Request.QueryString["stack"])%></pre>
+       if (string.IsNullOrEmpty(type)) break;
+
+       string msg = Request.QueryString["msg" + indexStr];
+       string stack = Request.QueryString["stack" + indexStr];
+
+%>                    
+
+<pre class="errordetailshead"><%= HttpUtility.HtmlAttributeEncode(type)%>:
+<strong><%= HttpUtility.HtmlAttributeEncode(msg)%></strong></pre>
+
+<pre class="errordetailsstack">Stack trace:
+<%= HttpUtility.HtmlAttributeEncode(stack)%></pre>
+
+<% } %>
 
 <pre id="errordetailsgenerated">Generated <%= HttpUtility.HtmlAttributeEncode(DateTime.Now.ToString("yyyy-MM-dd HH:mm"))%></pre>
                 </div>

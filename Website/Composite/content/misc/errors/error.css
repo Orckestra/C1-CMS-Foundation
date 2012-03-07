@@ -37,6 +37,8 @@ div#errerdetails {
 	height: 100%;
 	overflow: scroll;
 }
+
+pre.errordetailshead, 
 pre#errordetailshead {
     font-size: 1.5em;
 }
