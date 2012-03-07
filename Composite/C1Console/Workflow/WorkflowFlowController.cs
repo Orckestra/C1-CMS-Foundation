@@ -112,8 +112,12 @@ namespace Composite.C1Console.Workflow
         {
             IEnumerable<string> eventNames = WorkflowFacade.GetCurrentFormEvents(instanceId);
 
+            FormData formData = WorkflowFacade.GetFormData(instanceId);
+
             foreach (string eventName in eventNames)
             {
+                if (formData != null && formData.ExcludedEvents != null && formData.ExcludedEvents.Contains(eventName)) continue; ;
+
                 switch (eventName)
                 {
                     case "Save":

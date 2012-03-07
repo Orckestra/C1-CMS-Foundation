@@ -49,6 +49,9 @@ namespace Composite.C1Console.Workflow.Foundation
         /// <exclude />
         public Type EventHandleFilterType { get; set; }
 
+        /// <exclude />
+        public List<string> ExcludedEvents { get; set; }
+
 
         /// <exclude />
         public XElement Serialize()
@@ -121,6 +124,8 @@ namespace Composite.C1Console.Workflow.Foundation
 
             XElement bindingsValidationRulesElement = xmlSerializer.Serialize(typeof(Dictionary<string, List<ClientValidationRule>>), this.BindingsValidationRules);
 
+            XElement excludedEventsElement = xmlSerializer.Serialize(typeof(List<string>), ExcludedEvents);           
+
             XElement formDataElement = new XElement("FormData");
             formDataElement.Add(containerLabelElement);
             formDataElement.Add(formDefinitionElement);
@@ -128,6 +133,7 @@ namespace Composite.C1Console.Workflow.Foundation
             formDataElement.Add(new XElement("ContainerType", containerTypeElement));
             formDataElement.Add(new XElement("Bindings", bindingsElement));
             formDataElement.Add(new XElement("BindingsValidationRules", bindingsValidationRulesElement));
+            if (excludedEventsElement != null) formDataElement.Add(new XElement("ExcludedEvents", excludedEventsElement));
 
             if (this.EventHandleFilterType != null)
             {
@@ -196,6 +202,13 @@ namespace Composite.C1Console.Workflow.Foundation
             {
                 Type eventHandleFilterType = TypeManager.GetType(eventHandleFilterTypeElement.Attribute("type").Value);
                 formData.EventHandleFilterType = eventHandleFilterType;
+            }
+
+            XElement excludedEventsElement = serializedData.Elements("ExcludedEvents").SingleOrDefault();
+            if (excludedEventsElement != null)
+            {
+                object excludedEvents = xmlSerializer.Deserialize(excludedEventsElement.Elements().Single());
+                formData.ExcludedEvents = (List<string>)excludedEvents;
             }
 
             return formData;

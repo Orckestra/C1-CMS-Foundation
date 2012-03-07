@@ -35,6 +35,8 @@ using Composite.Data.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.C1Console.Workflow.Activities;
+using Composite.C1Console.Workflow.Foundation;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
@@ -48,7 +50,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         public EditPageWorkflow()
         {
             InitializeComponent();
-        }
+        }        
 
 
 
@@ -132,6 +134,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void editStateCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish))
+            {
+                FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+
+                if (formData.ExcludedEvents == null)
+                    formData.ExcludedEvents = new List<string>();
+
+                formData.ExcludedEvents.Add("SaveAndPublish");
+            }
+
+
             IPage selectedPage;
             if (this.BindingExist("SelectedPage") == false)
             {
@@ -476,8 +489,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
                     ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
-
-#warning MRJ: TODO: Handle publication status somehow here?
                 }
 
                 this.UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);

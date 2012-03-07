@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
+using Composite.Core.Serialization;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
-using Composite.Core.Serialization;
-using Composite.Core.Types;
-using Composite.Data.Validation;
-using Composite.C1Console.Workflow;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
+using System.Workflow.Runtime;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -21,6 +21,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        [NonSerialized]
+        private bool _doPublish = false;
+
         [NonSerialized]
         private DataTypeDescriptorFormsHelper _helper = null;
 
@@ -84,10 +87,21 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void initialCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();            
-            helper.UpdateWithNewBindings(this.Bindings);
-            
             Type type = GetInterfaceType();
+            
+            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !typeof(IPublishControlled).IsAssignableFrom(type))
+            {
+                FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+
+                if (formData.ExcludedEvents == null)
+                    formData.ExcludedEvents = new List<string>();
+
+                formData.ExcludedEvents.Add("SaveAndPublish");
+            }
+
+
+            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
+            helper.UpdateWithNewBindings(this.Bindings);            
 
             IData newData = DataFacade.BuildNew(type);
 
@@ -95,8 +109,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             if (publishControlled != null)
             {
                 publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
-            }            
-            
+            }
+
             if (string.IsNullOrEmpty(this.Payload) == false)
             {
                 Dictionary<string, string> serializedValues = StringConversionServices.ParseKeyValueCollection(this.Payload);
@@ -109,7 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 newData.SetValues(values);
             }
 
-            helper.ObjectToBindings(newData, this.Bindings);            
+            helper.ObjectToBindings(newData, this.Bindings);
 
             GeneratedTypesHelper.SetNewIdFieldValue(newData);
 
@@ -124,10 +138,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (this.BindingExist("DataAdded") == false)
             {
-                helper.LayoutLabel = helper.DataTypeDescriptor.Name; 
+                helper.LayoutLabel = helper.DataTypeDescriptor.Name;
             }
 
-            IData newData = this.GetBinding<IData>("NewData");            
+            IData newData = this.GetBinding<IData>("NewData");
 
             this.DeliverFormData(
                     _typeName,
@@ -148,7 +162,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IData newData = this.GetBinding<IData>("NewData");
 
-            if(!BindAndValidate(helper, newData))
+            if (!BindAndValidate(helper, newData))
             {
                 isValid = false;
             }
@@ -168,9 +182,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     this.UpdateBinding("NewData", newData);
                     this.Bindings.Add("DataAdded", true);
 
-                    /*var providerRootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(
-                        this.EntityToken.Source,
-                        GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);*/
+                    PublishIfNeeded(newData);
 
                     ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
                     specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
@@ -178,9 +190,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 else
                 {
                     UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
-                    
+
                     DataFacade.Update(newData);
                     EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
+
+                    PublishIfNeeded(newData);
 
                     updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
                 }
@@ -189,11 +203,26 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             if (justAdded)
             {
                 SetSaveStatus(true, newData);
-            } 
+            }
             else
             {
                 SetSaveStatus(isValid);
             }
-        }   
+        }
+
+        private void PublishIfNeeded(IData newData)
+        {
+            if (newData is IPublishControlled && _doPublish)
+            {
+                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
+            }
+        }
+
+        private void setEnablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)
+        {
+            _doPublish = true;
+        }
     }
 }

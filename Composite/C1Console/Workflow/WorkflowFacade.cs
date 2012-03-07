@@ -334,9 +334,9 @@ namespace Composite.C1Console.Workflow
 
 
         /// <exclude />
-        public static FormData GetFormData(Guid instanceId)
+        public static FormData GetFormData(Guid instanceId, bool allowCreationIfNotExisting = false)
         {
-            return _workflowFacade.GetFormData(instanceId);
+            return _workflowFacade.GetFormData(instanceId, allowCreationIfNotExisting);
         }        
         #endregion
 

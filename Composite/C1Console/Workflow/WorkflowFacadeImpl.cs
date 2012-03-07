@@ -589,8 +589,6 @@ namespace Composite.C1Console.Workflow
         {
             DoInitialize(0);
 
-            var q = ((Composite.C1Console.Workflow.Activities.FormsWorkflow)(new StateMachineWorkflowInstance(WorkflowFacade.WorkflowRuntime, instanceId)).StateMachineWorkflow).ActionToken;
-
             IEnumerable<string> eventNames = new StateMachineWorkflowInstance(WorkflowFacade.WorkflowRuntime, instanceId).GetCurrentEventNames(typeof(IFormsWorkflowEventService));
 
             return eventNames;
@@ -794,11 +792,14 @@ namespace Composite.C1Console.Workflow
 
 
 
-        public FormData GetFormData(Guid instanceId)
+        public FormData GetFormData(Guid instanceId, bool allowCreationIfNotExisting = false)
         {
-            FormData formData = null;
-
-            TryGetFormData(instanceId, out formData);
+            FormData formData;
+            if (!TryGetFormData(instanceId, out formData) && allowCreationIfNotExisting)
+            {
+                formData = new FormData();
+                AddFormData(instanceId, formData);
+            }
 
             return formData;
         }

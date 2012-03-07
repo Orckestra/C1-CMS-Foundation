@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
+using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Foundation;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -24,6 +26,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddAssociatedDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        [NonSerialized]
+        private bool _doPublish = false;
+
         public AddAssociatedDataWorkflow()
         {
             InitializeComponent();
@@ -77,6 +82,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                 IData data = entityToken.GetData();
                 this.UpdateBinding("Data", data);
+
+                if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !typeof(IPublishControlled).IsAssignableFrom(type))
+                {
+                    FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+
+                    if (formData.ExcludedEvents == null)
+                        formData.ExcludedEvents = new List<string>();
+
+                    formData.ExcludedEvents.Add("SaveAndPublish");
+                }
             }
         }
 
@@ -191,7 +206,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             bool isValid = ValidateBindings();
 
-            if(!BindAndValidate(helper, newData))
+            if (!BindAndValidate(helper, newData))
             {
                 isValid = false;
             }
@@ -214,6 +229,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                         justAdded = true;
                     }
 
+                    PublishIfNeeded(newData);
+
                     this.AcquireLock(newData.GetDataEntityToken());
 
                     this.UpdateBinding("NewData", newData);
@@ -234,6 +251,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                     DataFacade.Update(newData);
 
+                    PublishIfNeeded(newData);
+
                     EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
                 }
 
@@ -253,6 +272,21 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             {
                 SetSaveStatus(false);
             }
+        }
+
+        private void PublishIfNeeded(IData newData)
+        {
+            if (newData is IPublishControlled && _doPublish)
+            {
+                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
+            }
+        }
+
+        private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)
+        {
+            _doPublish = true;
         }
     }
 }

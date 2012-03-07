@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
@@ -7,6 +8,9 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.C1Console.Workflow.Foundation;
+using System.Collections.Generic;
+using System.Workflow.Runtime;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -15,6 +19,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        [NonSerialized]
+        private bool _doPublish = false;
+
         [NonSerialized]
         private DataTypeDescriptorFormsHelper _helper;
 
@@ -56,9 +63,19 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void editCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
-
             IData data = ((DataEntityToken)this.EntityToken).Data;
+
+            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !(data is IPublishControlled))
+            {
+                FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+
+                if (formData.ExcludedEvents == null)
+                    formData.ExcludedEvents = new List<string>();
+
+                formData.ExcludedEvents.Add("SaveAndPublish");
+            }
+
+            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
 
             if (data is IPublishControlled)
             {
@@ -89,7 +106,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
 
-            IData data = ((DataEntityToken)this.EntityToken).Data;
+            IData data = ((DataEntityToken)this.EntityToken).Data;            
 
             bool isValid = ValidateBindings();
             if (!BindAndValidate(helper, data))
@@ -114,12 +131,31 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
+                PublishIfNeeded(data);
+
                 updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
             }
             else
             {
                 SetSaveStatus(false);
             }
+        }
+
+
+        private void PublishIfNeeded(IData newData)
+        {
+            if (newData is IPublishControlled && _doPublish)
+            {
+                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
+            }
+        }
+
+
+        private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)
+        {
+            _doPublish = true;
         }
     }
 }

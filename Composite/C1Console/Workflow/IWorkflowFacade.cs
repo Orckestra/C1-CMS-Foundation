@@ -65,7 +65,7 @@ namespace Composite.C1Console.Workflow
         #region FormData methods
         void AddFormData(Guid instanceId, FormData formData);
         bool TryGetFormData(Guid instanceId, out FormData formData);
-        FormData GetFormData(Guid instanceId);
+        FormData GetFormData(Guid instanceId, bool allowCreationIfNotExisting);
         #endregion
 
 

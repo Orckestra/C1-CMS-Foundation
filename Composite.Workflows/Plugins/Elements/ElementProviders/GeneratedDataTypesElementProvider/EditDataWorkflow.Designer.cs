@@ -17,7 +17,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     partial class EditDataWorkflow
     {
         #region Designer generated code
-        
+
         /// <summary> 
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
@@ -28,6 +28,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.CanModifyActivities = true;
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.saveCodeActivity = new System.Workflow.Activities.CodeActivity();
+            this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
+            this.enablePublishCodeActivity = new System.Workflow.Activities.CodeActivity();
+            this.saveAndPublishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveAndPublishHandleExternalEventActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
             this.saveHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity();
             this.editCodeActivity = new System.Workflow.Activities.CodeActivity();
@@ -35,6 +38,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.saveStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.cancelHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
+            this.saveAndPublishEventDrivenActivity = new System.Workflow.Activities.EventDrivenActivity();
             this.saveEditEventDrivenActivity1 = new System.Workflow.Activities.EventDrivenActivity();
             this.editStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
             this.initialStateInitializationActivity = new System.Workflow.Activities.StateInitializationActivity();
@@ -53,6 +57,22 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             // 
             this.saveCodeActivity.Name = "saveCodeActivity";
             this.saveCodeActivity.ExecuteCode += new System.EventHandler(this.saveCodeActivity_ExecuteCode);
+            // 
+            // setStateActivity5
+            // 
+            this.setStateActivity5.Name = "setStateActivity5";
+            this.setStateActivity5.TargetStateName = "saveStateActivity";
+            // 
+            // enablePublishCodeActivity
+            // 
+            this.enablePublishCodeActivity.Name = "enablePublishCodeActivity";
+            this.enablePublishCodeActivity.ExecuteCode += new System.EventHandler(this.enablePublishCodeActivity_ExecuteCode);
+            // 
+            // saveAndPublishHandleExternalEventActivity1
+            // 
+            this.saveAndPublishHandleExternalEventActivity1.EventName = "SaveAndPublish";
+            this.saveAndPublishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
+            this.saveAndPublishHandleExternalEventActivity1.Name = "saveAndPublishHandleExternalEventActivity1";
             // 
             // setStateActivity1
             // 
@@ -92,6 +112,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.cancelHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity1.Name = "cancelHandleExternalEventActivity1";
             // 
+            // saveAndPublishEventDrivenActivity
+            // 
+            this.saveAndPublishEventDrivenActivity.Activities.Add(this.saveAndPublishHandleExternalEventActivity1);
+            this.saveAndPublishEventDrivenActivity.Activities.Add(this.enablePublishCodeActivity);
+            this.saveAndPublishEventDrivenActivity.Activities.Add(this.setStateActivity5);
+            this.saveAndPublishEventDrivenActivity.Name = "saveAndPublishEventDrivenActivity";
+            // 
             // saveEditEventDrivenActivity1
             // 
             this.saveEditEventDrivenActivity1.Activities.Add(this.saveHandleExternalEventActivity1);
@@ -127,6 +154,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             // 
             this.editStateActivity.Activities.Add(this.editStateInitializationActivity);
             this.editStateActivity.Activities.Add(this.saveEditEventDrivenActivity1);
+            this.editStateActivity.Activities.Add(this.saveAndPublishEventDrivenActivity);
             this.editStateActivity.Name = "editStateActivity";
             // 
             // initialStateActivity
@@ -151,23 +179,48 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         #endregion
 
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+        private SetStateActivity setStateActivity5;
+
+        private CodeActivity enablePublishCodeActivity;
+
+        private C1Console.Workflow.Activities.SaveAndPublishHandleExternalEventActivity saveAndPublishHandleExternalEventActivity1;
+
+        private EventDrivenActivity saveAndPublishEventDrivenActivity;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private StateInitializationActivity editStateInitializationActivity;
+
         private StateInitializationActivity initialStateInitializationActivity;
+
         private EventDrivenActivity cancelEventDrivenActivity;
+
         private StateActivity finalStateActivity;
+
         private StateActivity editStateActivity;
+
         private SetStateActivity setStateActivity2;
+
         private SetStateActivity setStateActivity4;
-        private Composite.C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.SaveHandleExternalEventActivity saveHandleExternalEventActivity1;
+
         private CodeActivity editCodeActivity;
+
         private SetStateActivity setStateActivity3;
+
         private StateInitializationActivity saveStateInitializationActivity;
+
         private EventDrivenActivity saveEditEventDrivenActivity1;
+
         private StateActivity saveStateActivity;
+
         private CodeActivity saveCodeActivity;
+
         private SetStateActivity setStateActivity1;
+
         private StateActivity initialStateActivity;
+
 
 
 

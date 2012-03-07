@@ -126,6 +126,8 @@ namespace Composite.Core.Serialization
         {
             XElement result = new XElement("List");
 
+            if (listToSerialize == null) return result;
+
             foreach (T itemValue in listToSerialize)
             {
                 XElement serializedItemValue = xmlSerializer.Serialize(typeof(T), itemValue);
