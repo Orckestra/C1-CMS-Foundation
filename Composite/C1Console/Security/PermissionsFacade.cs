@@ -5,9 +5,9 @@ using Composite.Core.Linq;
 
 namespace Composite.C1Console.Security
 {
-    /// <summary>    
+    /// <summary>
+    /// This class can be use to get allowed permissions for current user or given UserToken and an EntityToken.
     /// </summary>
-    /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class PermissionsFacade
     {
