@@ -301,10 +301,11 @@ namespace Composite.Services
 		}
 		
 		
-		[WebMethod]
-		public string GetMediaLabel(string path)
-		{
-		    var mediaUrlData = MediaUrls.ParseUrl(path);
+        [WebMethod]
+        public string GetMediaLabel(string path)
+        {
+            var relativePath = Regex.Replace(path, @"^http://[\w\.\d]+/", "/");
+            var mediaUrlData = MediaUrls.ParseUrl(relativePath);
             
             if(mediaUrlData != null)
             {
@@ -316,7 +317,7 @@ namespace Composite.Services
                 return matchingMedia != null ? matchingMedia.GetLabel() : path;
             }
             
-			return path;
-		}
+            return path;
+        }
     }
 }
