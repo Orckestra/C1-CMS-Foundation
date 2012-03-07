@@ -494,6 +494,8 @@ namespace Composite.Data.DynamicTypes
                 {
                     PropertyInfo propertyInfo = dataObject.GetType().GetProperty(fieldDescriptor.Name);
 
+                    Verify.IsNotNull(propertyInfo, "Missing property type '{0}' does not contain property '{1}'", dataObject.GetType(), fieldDescriptor.Name);
+
                     if (propertyInfo.CanRead == true)
                     {
                         object newValue = propertyInfo.GetValue(dataObject, null);

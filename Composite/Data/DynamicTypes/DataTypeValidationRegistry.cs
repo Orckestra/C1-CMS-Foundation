@@ -31,11 +31,11 @@ namespace Composite.Data.DynamicTypes
         /// <param name="interfaceType"></param>
         /// <param name="existingDataTypeDescriptor">Use null to get existing data type descriptor</param>
         /// <returns></returns>
-        public static bool IsValidate(Type interfaceType, DataTypeDescriptor existingDataTypeDescriptor)
+        public static bool Validate(Type interfaceType, DataTypeDescriptor existingDataTypeDescriptor)
         {
             string errorMessage;
 
-            return IsValidate(interfaceType, existingDataTypeDescriptor, out errorMessage);
+            return Validate(interfaceType, existingDataTypeDescriptor, out errorMessage);
         }
 
 
@@ -47,7 +47,7 @@ namespace Composite.Data.DynamicTypes
         /// <param name="existingDataTypeDescriptor">Use null to get existing data type descriptor</param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        public static bool IsValidate(Type interfaceType, DataTypeDescriptor existingDataTypeDescriptor, out string errorMessage)
+        public static bool Validate(Type interfaceType, DataTypeDescriptor existingDataTypeDescriptor, out string errorMessage)
         {
             if (existingDataTypeDescriptor == null)
             {

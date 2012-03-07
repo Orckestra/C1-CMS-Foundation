@@ -143,7 +143,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 result.InterfaceType = interfaceType;
 
                 string validationMessage;
-                bool isValid = DataTypeValidationRegistry.IsValidate(interfaceType, dataTypeDescriptor, out validationMessage);
+                bool isValid = DataTypeValidationRegistry.Validate(interfaceType, dataTypeDescriptor, out validationMessage);
                 if (!isValid)
                 {
                     Log.LogCritical("SqlDataProvider", validationMessage);

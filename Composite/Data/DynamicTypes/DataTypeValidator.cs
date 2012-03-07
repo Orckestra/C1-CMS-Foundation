@@ -25,11 +25,21 @@ namespace Composite.Data.DynamicTypes
         /// <returns></returns>
         public static bool Validate(Type interfaceType, DataTypeDescriptor existingDataTypeDescriptor, out string errorMessage)
         {
-            DataTypeDescriptor newDataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
+            DataTypeDescriptor newDataTypeDescriptor;
+            
+            try
+            {
+                newDataTypeDescriptor  = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
 
             try
             {
-                DataTypeChangeDescriptor dataTypeChangeDescriptor = new DataTypeChangeDescriptor(existingDataTypeDescriptor, newDataTypeDescriptor);
+                new DataTypeChangeDescriptor(existingDataTypeDescriptor, newDataTypeDescriptor);
             }
             catch (Exception ex)
             {
