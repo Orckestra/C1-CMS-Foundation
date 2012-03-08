@@ -33,8 +33,9 @@ namespace Composite.Data.DynamicTypes
             }
             catch (Exception ex)
             {
-                errorMessage = ex.Message;
-                return false;
+                //errorMessage = ex.Message;
+                errorMessage = null;
+                return true;
             }
 
             try

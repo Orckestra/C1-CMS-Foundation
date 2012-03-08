@@ -130,11 +130,11 @@ namespace Composite.Core.IO.Foundation.PluginFacades
 
         private static IIOProvider GetIOProvider()
         {
-            if (_factory == null)
+            if (_factory == null || _ioProvider == null)
             {
                 lock (_lock)
                 {
-                    if (_factory == null)
+                    if (_factory == null || _ioProvider == null)
                     {
                         try
                         {
