@@ -139,7 +139,7 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly();           
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);           
         }
 
 
@@ -156,7 +156,7 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly();            
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);            
         }
     }
 }

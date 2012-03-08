@@ -31,7 +31,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (makeAFlush && dataTypeDescriptor.IsCodeGenerated)
             {
-                CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (makeAFlush && dataTypeDescriptor.IsCodeGenerated)
             {
-                CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Composite.Data.GeneratedTypes
 
             DynamicTypeManager.AlterStore(updateDataTypeDescriptor, false);
 
-            CodeGenerationManager.GenerateCompositeGeneratedAssembly();            
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);            
         }
 
 

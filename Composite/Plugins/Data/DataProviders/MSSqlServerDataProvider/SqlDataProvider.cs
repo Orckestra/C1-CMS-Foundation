@@ -379,7 +379,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             sqlLoggingContext.IncludeStack = sqlDataProviderData.SqlQueryLoggingIncludeStack;
             sqlLoggingContext.TypesToIgnore = new List<Type>();
             sqlLoggingContext.TablesToIgnore = new List<string>();
-            if (sqlDataProviderData.SqlQueryLoggingEnabled == true)
+            if (sqlDataProviderData.SqlQueryLoggingEnabled)
             {
                 foreach (LoggingIgnoreInterfacesConfigurationElement element in sqlDataProviderData.LoggingIgnoreInterfaces)
                 {
@@ -389,6 +389,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                         sqlLoggingContext.TypesToIgnore.Add(interfaceType);
 
                         InterfaceConfigurationElement interfaceElement = interfaceConfigurationElements.Where(f => f.DataTypeId == interfaceType.GetImmutableTypeId()).SingleOrDefault();
+                        if (interfaceElement == null) continue;
+
                         foreach (StoreConfigurationElement store in interfaceElement.ConfigurationStores)
                         {
                             sqlLoggingContext.TablesToIgnore.Add(store.TableName);
