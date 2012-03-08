@@ -187,12 +187,20 @@ namespace Composite.Plugins.Routing.Pages
 
                     if (redirectLookupUrlLowerCased != lookupUrlLowerCased)
                     {
-                        RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrlLowerCased, page.Id);
+                        if (!RedirectUrlToIdLookupLowerCased.ContainsKey(redirectLookupUrlLowerCased))
+                        {
+                            RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrlLowerCased, page.Id);
+                        }
                     }
                     
                     if(UrlSuffix == string.Empty)
                     {
-                        RedirectUrlToIdLookupLowerCased.Add(redirectLookupUrlLowerCased + ".aspx", page.Id);
+                        string aspxExtensionRedirectUrl = redirectLookupUrlLowerCased + ".aspx";
+
+                        if (!RedirectUrlToIdLookupLowerCased.ContainsKey(aspxExtensionRedirectUrl))
+                        {
+                            RedirectUrlToIdLookupLowerCased.Add(aspxExtensionRedirectUrl, page.Id);
+                        }
                     }
                 }
             }
@@ -293,8 +301,6 @@ namespace Composite.Plugins.Routing.Pages
                     || _hostnameBinding.IncludeCultureInUrl
                     || _hostnameBinding.Culture != cultureInfo.Name))
             {
-                appliedHostnameBinding = _hostnameBinding;
-
                 return UrlUtils.PublicRootPath + "/" + cultureUrlMapping;
             }
 
