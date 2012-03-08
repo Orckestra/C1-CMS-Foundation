@@ -122,7 +122,7 @@ namespace Composite.Functions.Foundation
 
             if (_functionByNameDictionary.TryGetValue(functionName, out function) == false)
             {
-                throw new ArgumentException(string.Format("The {0} named '{1}' is not known.", this.FunctionType, functionName));
+                throw new ArgumentException(string.Format("The {0} named '{1}' is not known. Ensure it exists with the exact spelling and casing you provided.", this.FunctionType, functionName));
             }
 
             return function;
