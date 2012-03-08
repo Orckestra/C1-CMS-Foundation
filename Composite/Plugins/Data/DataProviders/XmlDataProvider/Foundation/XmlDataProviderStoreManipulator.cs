@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -190,7 +191,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (fieldBecomeRequired && !newChildAttributes.Any(attr => attr.Name.LocalName == fieldName))
                     {
-                        newChildAttributes.Add(new XAttribute(fieldName, existingFieldInfo.AlteredField.DefaultValue.Value));
+                        newChildAttributes.Add(new XAttribute(fieldName, GetDefaultValue(existingFieldInfo.AlteredField)));
                     }
                 }
 
@@ -199,7 +200,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     if (fieldDescriptor.IsNullable == false
                         && !newChildAttributes.Any(attr => attr.Name == fieldDescriptor.Name))
                     {
-                        XAttribute newChildAttribute = new XAttribute(fieldDescriptor.Name, fieldDescriptor.DefaultValue.Value);
+                        XAttribute newChildAttribute = new XAttribute(fieldDescriptor.Name, GetDefaultValue(fieldDescriptor));
 
                         if (newFieldValues.ContainsKey(fieldDescriptor.Name))
                         {
@@ -210,7 +211,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     else if (newFieldValues.ContainsKey(fieldDescriptor.Name))
                     {
-                        XAttribute attribute = newChildAttributes.Where(attr => attr.Name == fieldDescriptor.Name).SingleOrDefault();
+                        XAttribute attribute = newChildAttributes.SingleOrDefault(attr => attr.Name == fieldDescriptor.Name);
                         if (attribute != null)
                         {
                             attribute.SetValue(newFieldValues[fieldDescriptor.Name]);
@@ -237,6 +238,36 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             XDocumentUtils.Save(newDocument, newFilename);
         }
 
+
+        private static object GetDefaultValue(DataFieldDescriptor fieldDescriptor)
+        {
+            Verify.ArgumentNotNull(fieldDescriptor, "fieldDescriptor");
+
+            if (fieldDescriptor.DefaultValue != null)
+            {
+                return fieldDescriptor.DefaultValue.Value;
+            }
+
+            switch (fieldDescriptor.StoreType.PhysicalStoreType)
+            {
+                case PhysicalStoreFieldType.Boolean:
+                    return false;
+                case PhysicalStoreFieldType.DateTime:
+                    return DateTime.Now;
+                case PhysicalStoreFieldType.Integer:
+                case PhysicalStoreFieldType.Long:
+                case PhysicalStoreFieldType.Decimal:
+                    return 0m;
+                case PhysicalStoreFieldType.Guid:
+                    return Guid.Empty;
+                case PhysicalStoreFieldType.String:
+                case PhysicalStoreFieldType.LargeString:
+                    return string.Empty;
+            }
+
+            throw new NotImplementedException("Supplied StoreFieldType contains an unsupported PhysicalStoreType '{0}'."
+                                              .FormatWith(fieldDescriptor.StoreType.PhysicalStoreType));
+        }
 
 
         private static void DeleteData(string providerName, DataScopeConfigurationElement dataScopeConfigurationElement)

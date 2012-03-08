@@ -625,22 +625,35 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor, object defaultValue = null)
         {
-            var sql = new StringBuilder();
-            string columnInfo = GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false);
+            // Creating a column, making it nullable
+            ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
+                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, true)));
 
-            sql.AppendFormat("ALTER TABLE [{0}] ADD {1};", tableName, columnInfo);
-            ExecuteNonQuery(sql.ToString());
+            if (defaultValue != null || (!fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue == null))
+            {
+                string defaultValueStr;
 
-            if (defaultValue == null) return;
+                if(defaultValue != null)
+                {
+                    Type typeOfDefaultValue = defaultValue.GetType();
+                    defaultValueStr = (typeOfDefaultValue == typeof(string) || typeOfDefaultValue == typeof(Guid))
+                                    ? ("'" + defaultValue + "'")
+                                    : defaultValue.ToString();
+                }
+                else
+                {
+                    defaultValueStr = GetDefaultValueText(fieldDescriptor.StoreType);
+                }
 
-            sql = new StringBuilder();
-            sql.AppendFormat("UPDATE [{0}] SET [{1}] = ", tableName, fieldDescriptor.Name);
-            if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
-            sql.Append(defaultValue.ToString());
-            if (defaultValue.GetType() == typeof(string) || defaultValue.GetType() == typeof(Guid)) sql.Append("'");
-            sql.Append(";");
+                ExecuteNonQuery("UPDATE [{0}] SET [{1}] = {2};"
+                                .FormatWith(tableName, fieldDescriptor.Name, defaultValueStr));
+            }
 
-            ExecuteNonQuery(sql.ToString());
+            // Making column not nullable if necessary
+            if(!fieldDescriptor.IsNullable)
+            {
+                AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false));
+            }
         }
 
 
@@ -663,8 +676,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                         AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, true));
                     }
 
+                    string defaultValue = fieldDescriptor.DefaultValue != null
+                                              ? GetDefaultValueText(fieldDescriptor.DefaultValue)
+                                              : GetDefaultValueText(fieldDescriptor.StoreType); 
+
                     ExecuteNonQuery("UPDATE [{0}] SET [{1}] = {2} WHERE [{1}] IS NULL"
-                                    .FormatWith(tableName, fieldDescriptor.Name, GetDefaultValueText(fieldDescriptor.DefaultValue)));
+                                    .FormatWith(tableName, fieldDescriptor.Name, defaultValue));
                 }
 
                 AlterColumn(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, false, false));
@@ -707,8 +724,35 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             return string.Format("ALTER TABLE [{0}] ADD CONSTRAINT [{1}] DEFAULT {2} FOR [{3}];", tableName, constraintName, GetDefaultValueText(defaultValue), columnName);
         }
 
+        private string GetDefaultValueText(StoreFieldType storeFieldType)
+        {
+            Verify.ArgumentNotNull(storeFieldType, "storeFieldType");
+
+            switch (storeFieldType.PhysicalStoreType)
+            {
+                case PhysicalStoreFieldType.String:
+                case PhysicalStoreFieldType.LargeString:
+                    return "N''";
+                case PhysicalStoreFieldType.Guid:
+                    return "'00000000-0000-0000-0000-000000000000'";
+                case PhysicalStoreFieldType.Integer:
+                case PhysicalStoreFieldType.Long:
+                case PhysicalStoreFieldType.Decimal:
+                    return "0";
+                case PhysicalStoreFieldType.Boolean:
+                    return "0";
+                case PhysicalStoreFieldType.DateTime:
+                    return "getdate()";
+            }
+
+            throw new NotImplementedException("Supplied StoreFieldType contains an unsupported PhysicalStoreType '{0}'."
+                                              .FormatWith(storeFieldType.PhysicalStoreType));
+        }
+
         private string GetDefaultValueText(DefaultValue defaultValue)
         {
+            Verify.ArgumentNotNull(defaultValue, "defaultValue");
+
             switch (defaultValue.ValueType)
             {
                 case DefaultValueType.DateTimeNow:
@@ -728,7 +772,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     return ((decimal)defaultValue.Value).ToString("F", CultureInfo.InvariantCulture);
             }
 
-            throw new NotImplementedException("Supplied DefaultValue contains an unsupported DefaultValueType.");
+            throw new NotImplementedException("Supplied DefaultValue contains an unsupported DefaultValueType '{0}'."
+                                              .FormatWith(defaultValue.ValueType));
         }
 
         private string SqlQuoted(object obj)

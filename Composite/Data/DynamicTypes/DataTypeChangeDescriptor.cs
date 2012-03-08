@@ -214,14 +214,6 @@ namespace Composite.Data.DynamicTypes
         {
             if (this.OriginalTypeDataExists == true)
             {
-                foreach (DataFieldDescriptor addedField in this.AddedFields)
-                {
-                    if (IsColumnAddable(addedField) == false)
-                    {
-                        throw new InvalidOperationException("Data type change description is invalid. Added columns must support either null or have a default value. Field name: '{0}'".FormatWith(addedField.Name));
-                    }
-                }
-
                 foreach (var existingField in this.ExistingFields)
                 {
                     if (existingField.OriginalField.StoreType.IsConvertibleTo(existingField.AlteredField.StoreType) == false)
@@ -246,13 +238,6 @@ namespace Composite.Data.DynamicTypes
                     throw new InvalidOperationException("Data type change description is invalid. Sort order field list contains an unknown field name.");
                 }
             }
-        }
-
-
-
-        private bool IsColumnAddable(DataFieldDescriptor dataFieldDescriptor)
-        {
-            return dataFieldDescriptor.IsNullable || dataFieldDescriptor.DefaultValue != null;
         }
 
 
