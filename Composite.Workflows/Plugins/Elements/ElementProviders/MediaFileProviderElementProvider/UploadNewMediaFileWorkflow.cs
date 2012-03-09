@@ -48,7 +48,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (uploadedFile.HasFile)
             {
-                string mimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+                string mimeType = MimeTypeInfo.GetMimeType(uploadedFile);
                 if (mimeType != mediaFile.MimeType)
                 {
                     managementConsoleMessageService.CloseCurrentView();

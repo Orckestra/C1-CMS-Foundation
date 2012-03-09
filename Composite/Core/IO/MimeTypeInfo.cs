@@ -5,6 +5,8 @@ using System.Reflection;
 using System.Web.Configuration;
 using System.Web.Hosting;
 using System.Xml.Linq;
+using Composite.C1Console.Forms.CoreUiControls;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
@@ -16,7 +18,9 @@ namespace Composite.Core.IO
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class MimeTypeInfo
-	{
+    {
+        private static readonly string LogTitle = typeof (MimeTypeInfo).Name;
+
         private static readonly IDictionary<string, string> _toCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
@@ -499,6 +503,41 @@ namespace Composite.Core.IO
 
             string fileName = "filename." + extension;
             return _getMimeMappingMethodInfo.Invoke(null, new object[] { fileName }) as string;
+        }
+
+        /// <exclude />
+        public static string GetMimeType(UploadedFile uploadedFile)
+        {
+            string fileName = System.IO.Path.GetFileName(uploadedFile.FileName);
+
+            string mimeTypeFromExtension = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(fileName));
+            if (mimeTypeFromExtension != MimeTypeInfo.Default)
+            {
+                Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extention: '{1}'"
+                                                .FormatWith(fileName, mimeTypeFromExtension));
+
+                return mimeTypeFromExtension;
+            }
+            
+            string mimeTypeFromBrowser = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+
+            // Default MIME type for Chrome is "application/xml"
+            // Default MIME type for IE is "text/plain"
+            // for the rest it is "application/octet-stream"
+            if (mimeTypeFromBrowser != "application/xml"
+                && mimeTypeFromBrowser != "text/plain")
+            {
+                Log.LogInformation(LogTitle, "Uploading file '{0}'. Browser provided MIME type: '{1}'. Canonical MIME type: '{2}'"
+                                        .FormatWith(fileName, uploadedFile.ContentType ?? string.Empty, mimeTypeFromBrowser));
+                
+
+                return mimeTypeFromBrowser;
+            }
+            
+            Log.LogInformation(LogTitle, "Uploading file '{0}'. Applying default MIME type '{1}'"
+                                            .FormatWith(fileName, MimeTypeInfo.Default));
+
+            return MimeTypeInfo.Default;
         }
 	}
 }

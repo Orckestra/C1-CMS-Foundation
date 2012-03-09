@@ -224,38 +224,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     mediaFile.Description = this.GetBinding<string>("Description");
                     mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
                     mediaFile.Length = uploadedFile.ContentLength;
-
-                    string mimeTypeFromExtension = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
-                    if (mimeTypeFromExtension != MimeTypeInfo.Default)
-                    {
-                        mediaFile.MimeType = mimeTypeFromExtension;
-
-                        Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extention: '{1}'"
-                                                     .FormatWith(mediaFile.FileName, mediaFile.MimeType));
-                    }
-                    else
-                    {
-                        string mimeTypeFromBrowser = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
-
-                        // Default MIME type for Chrome is "application/xml"
-                        // Default MIME type for IE is "text/plain"
-                        // for the rest it is "application/octet-stream"
-                        if (mimeTypeFromBrowser != "application/xml"
-                            && mimeTypeFromBrowser != "text/plain")
-                        {
-                            mediaFile.MimeType = mimeTypeFromBrowser;
-
-                            Log.LogInformation(LogTitle, "Uploading file '{0}'. Browser provided MIME type: '{1}'. Canonical MIME type: '{2}'"
-                                                   .FormatWith(mediaFile.FileName, uploadedFile.ContentType ?? string.Empty, mediaFile.MimeType));
-                        }
-                        else
-                        {
-                            mediaFile.MimeType = MimeTypeInfo.Default;
-
-                            Log.LogInformation(LogTitle, "Uploading file '{0}'. Applying default MIME type '{1}'"
-                                                         .FormatWith(mediaFile.FileName, mediaFile.MimeType));
-                        }
-                    }
+                    mediaFile.MimeType = MimeTypeInfo.GetMimeType(uploadedFile);
 
                     using (System.IO.Stream readStream = uploadedFile.FileStream)
                     {
@@ -278,7 +247,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                     fileData.Title = this.GetBinding<string>("Title");
                     fileData.Description = this.GetBinding<string>("Description");
-                    fileData.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+                    fileData.MimeType = MimeTypeInfo.GetMimeType(uploadedFile);
                     fileData.Length = uploadedFile.ContentLength;
 
                     using (System.IO.Stream readStream = uploadedFile.FileStream)
