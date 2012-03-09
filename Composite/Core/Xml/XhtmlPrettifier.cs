@@ -20,6 +20,8 @@ namespace Composite.Core.Xml
         private static Regex _decodeCDataRegex = new Regex("C1CDATAREPLACE(?<counter>[0-9]*)", RegexOptions.Compiled);
         private static Regex _encodeRegex = new Regex(@"&(?<tag>[^\;]+;)", RegexOptions.Compiled);
         private static Regex _decodeRegex = new Regex(@"C1AMPERSAND(?<tag>[^\;]+;)", RegexOptions.Compiled);
+
+        private static readonly char[] IncorrectEscapeSequenceCharacters = new [] { '\'', '\"', '<', '>', ' ' };
         
 
         private static readonly char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
@@ -369,7 +371,11 @@ namespace Composite.Core.Xml
 
             xmlString = _encodeRegex.Replace(xmlString, delegate(Match match)
             {
-                return _ampersandWord + match.Groups["tag"].Value;
+                string entiryStr =  match.Groups["tag"].Value;
+
+                return IsCorrectEscapeEntity(entiryStr) 
+                    ?  _ampersandWord + entiryStr
+                    : "&" + entiryStr;
             });
 
 
@@ -383,6 +389,11 @@ namespace Composite.Core.Xml
             }
         }
 
+
+        private static bool IsCorrectEscapeEntity(string match)
+        {
+            return (match.Length < 30) && match.IndexOfAny(IncorrectEscapeSequenceCharacters) == -1;
+        }
 
 
         private static IEnumerable<XmlNode> BuildTree(XmlReader xmlReader, int level)
