@@ -224,24 +224,37 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     mediaFile.Description = this.GetBinding<string>("Description");
                     mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
                     mediaFile.Length = uploadedFile.ContentLength;
-                    mediaFile.MimeType = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
 
-                    // Default MIME type for Chrome is "application/xml"
-                    // Default MIME type for IE is "text/plain"
-                    // for the rest it is "application/octet-stream"
-                    if (mediaFile.MimeType == MimeTypeInfo.Default 
-                        || mediaFile.MimeType == "application/xml"
-                        || mediaFile.MimeType == "text/plain")
+                    string mimeTypeFromExtension = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
+                    if (mimeTypeFromExtension != MimeTypeInfo.Default)
                     {
-                        mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(mediaFile.FileName));
+                        mediaFile.MimeType = mimeTypeFromExtension;
 
                         Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extention: '{1}'"
-                                            .FormatWith(mediaFile.FileName, mediaFile.MimeType));
+                                                     .FormatWith(mediaFile.FileName, mediaFile.MimeType));
                     }
                     else
                     {
-                        Log.LogInformation(LogTitle, "Uploading file '{0}'. Browser provided MIME type: '{1}'. Canonical MIME type: '{2}'"
-                                            .FormatWith(mediaFile.FileName, uploadedFile.ContentType ?? string.Empty, mediaFile.MimeType));
+                        string mimeTypeFromBrowser = MimeTypeInfo.GetCanonical(uploadedFile.ContentType);
+
+                        // Default MIME type for Chrome is "application/xml"
+                        // Default MIME type for IE is "text/plain"
+                        // for the rest it is "application/octet-stream"
+                        if (mimeTypeFromBrowser != "application/xml"
+                            && mimeTypeFromBrowser != "text/plain")
+                        {
+                            mediaFile.MimeType = mimeTypeFromBrowser;
+
+                            Log.LogInformation(LogTitle, "Uploading file '{0}'. Browser provided MIME type: '{1}'. Canonical MIME type: '{2}'"
+                                                   .FormatWith(mediaFile.FileName, uploadedFile.ContentType ?? string.Empty, mediaFile.MimeType));
+                        }
+                        else
+                        {
+                            mediaFile.MimeType = MimeTypeInfo.Default;
+
+                            Log.LogInformation(LogTitle, "Uploading file '{0}'. Applying default MIME type '{1}'"
+                                                         .FormatWith(mediaFile.FileName, mediaFile.MimeType));
+                        }
                     }
 
                     using (System.IO.Stream readStream = uploadedFile.FileStream)
