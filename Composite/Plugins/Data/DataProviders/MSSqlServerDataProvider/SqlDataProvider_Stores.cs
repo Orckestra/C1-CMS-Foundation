@@ -15,7 +15,6 @@ using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 using System.Data.SqlClient;
 using System.Text;
-using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
@@ -64,7 +63,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == updateDataTypeDescriptor.OldDataTypeDescriptor.DataTypeId).Single();
 
-                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.Change(_dataProviderContext.ProviderName, dataTypeChangeDescriptor, localizationChanged, oldElement);
+                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.Change(_dataProviderContext.ProviderName, dataTypeChangeDescriptor, localizationChanged);
                 if (newElement != null)
                 {
                     _interfaceConfigurationElements.Remove(oldElement);
@@ -383,7 +382,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     FieldInfo dataContextFieldInfo = null;
                     if (dataContextClassType != null)
                     {
-                        dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.Name == dataContextFieldName).SingleOrDefault();
+                        dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance)
+                                               .SingleOrDefault(f => f.Name == dataContextFieldName);
+
+                        if(dataContextFieldInfo == null)
+                        {
+                            Log.LogWarning(LogTitle, "DataContext class is missing field '{0}'", dataContextFieldName);
+                        }
                     }
 
                     string sqlDataProviderHelperClassFullName = NamesCreator.MakeSqlDataProviderHelperClassFullName(dataTypeDescriptor, storeDataScope.DataScopeName, storeDataScope.CultureName, _dataProviderContext.ProviderName);

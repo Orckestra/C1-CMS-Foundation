@@ -96,7 +96,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                 _columnsInformationCache = columnsCache;
             }
 
-            return columnsCache[tableName];
+            return columnsCache.ContainsKey(tableName) ? columnsCache[tableName] : new List<ColumnInfo>();
         }
 
 
@@ -113,7 +113,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             }
 
             // Performing a query with will get no rows but provide us with columns' types information
-            string queryString = "SELECT * FROM {0} WHERE 1 = 2".FormatWith(tableName);
+            string queryString = "SELECT * FROM [{0}] WHERE 1 = 2".FormatWith(tableName);
 
             Dictionary<string, Type> columnTypes;
             using (var command = new SqlCommand(queryString, connection))

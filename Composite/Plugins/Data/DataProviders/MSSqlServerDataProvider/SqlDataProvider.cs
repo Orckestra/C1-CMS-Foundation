@@ -249,7 +249,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == typeDesrciptor.DataTypeId).Single();
 
-                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor, oldElement);
+                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor);
                 
                 _interfaceConfigurationElements.Remove(oldElement);
                 _interfaceConfigurationElements.Add(newElement);
@@ -273,7 +273,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == typeDesrciptor.DataTypeId).Single();
 
-                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor, oldElement);
+                InterfaceConfigurationElement newElement = InterfaceConfigurationManipulator.RefreshLocalizationInfo(_dataProviderContext.ProviderName, typeDesrciptor);
                                 
                 _interfaceConfigurationElements.Remove(oldElement);
                 _interfaceConfigurationElements.Add(newElement);

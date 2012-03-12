@@ -23,7 +23,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor, null);
+                InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
                 if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig) == true)
                 {
@@ -43,11 +43,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             }
         }
 
-        internal static InterfaceConfigurationElement RefreshLocalizationInfo(string providerName, DataTypeDescriptor dataTypeDescriptor, InterfaceConfigurationElement oldConfigurationElement)
+        internal static InterfaceConfigurationElement RefreshLocalizationInfo(string providerName, DataTypeDescriptor dataTypeDescriptor)
         {
             var changeDescriptor = new DataTypeChangeDescriptor(dataTypeDescriptor, dataTypeDescriptor);
 
-            return Change(providerName, changeDescriptor, true, oldConfigurationElement);
+            return Change(providerName, changeDescriptor, true);
         }
 
         internal static bool ConfigurationExists( string providerName, DataTypeDescriptor dataTypeDescriptor)
@@ -56,7 +56,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 var configuration = new SqlDataProviderConfiguration(providerName);
 
-                InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor, null);
+                InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
                 return configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig);
             }
@@ -64,15 +64,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="providerName"></param>
-        /// <param name="changeDescriptor"></param>
-        /// <param name="localeChanges"></param>
-        /// <param name="oldConfigurationElement">If this has a value, any existing tables names will be used instead of defaulting them</param>
-        /// <returns></returns>
-        internal static InterfaceConfigurationElement Change(string providerName, DataTypeChangeDescriptor changeDescriptor, bool localeChanges, InterfaceConfigurationElement oldConfigurationElement)
+        internal static InterfaceConfigurationElement Change(string providerName, DataTypeChangeDescriptor changeDescriptor, bool localeChanges)
         {
             lock (_syncRoot)
             {
@@ -94,10 +86,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 Verify.IsTrue(configuration.Section.Interfaces.ContainsInterfaceType(changeDescriptor.OriginalType),
                         "Configuration does not contain the original interface named '{0}'".FormatWith(dataTypeId));
-                
+
                 configuration.Section.Interfaces.Remove(changeDescriptor.OriginalType);
 
-                InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType, oldConfigurationElement);
+                InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType);
 
                 configuration.Section.Interfaces.Add(newInterfaceConfig);
 
@@ -123,7 +115,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         }
 
 
-        private static InterfaceConfigurationElement BuildInterfaceConfigurationElement(DataTypeDescriptor dataTypeDescriptor, InterfaceConfigurationElement oldConfigurationElement)
+        private static InterfaceConfigurationElement BuildInterfaceConfigurationElement(DataTypeDescriptor dataTypeDescriptor)
         {
             var tableConfig = new InterfaceConfigurationElement();            
 
@@ -149,24 +141,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 foreach (var culture in SqlDataProviderStoreManipulator.GetCultures(dataTypeDescriptor))
                 {
-                    string tableName = null;
-
-                    if (oldConfigurationElement != null)
-                    {
-                        tableName = oldConfigurationElement.ConfigurationStores.OfType<StoreConfigurationElement>().Where(f => f.CultureName == culture.Name && f.DataScope == dataScope.Name).Select(f => f.TableName).SingleOrDefault();
-                    }
-                    
-                    if (tableName == null)
-                    {
-                        tableName = DynamicTypesCommon.GenerateTableName(dataTypeDescriptor, dataScope, culture);
-                    }
-
+                    string tableName = DynamicTypesCommon.GenerateTableName(dataTypeDescriptor, dataScope, culture);
                     tableConfig.ConfigurationStores.Add(new StoreConfigurationElement
-                    {
-                        TableName = tableName, 
-                        DataScope = dataScope.Name, 
-                        CultureName = culture.Name
-                    });
+                                                            {TableName = tableName, DataScope = dataScope.Name, CultureName = culture.Name});
                 }
             }
 

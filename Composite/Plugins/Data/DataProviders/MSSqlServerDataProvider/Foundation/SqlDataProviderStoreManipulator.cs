@@ -438,7 +438,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         internal void RenameTable(string oldTableName, string newTableName)
         {
-            ExecuteStoredProcedure("sp_rename", new[] { oldTableName, newTableName });
+            ExecuteStoredProcedure("sp_rename", new[] { SqlQuoted(oldTableName), SqlQuoted(newTableName) });
         }
 
 
@@ -499,8 +499,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         internal void RenameColumn(string tableName, string oldColumnName, string newColumnName)
         {
-            string oldName = string.Format("'{0}.{1}'", tableName, oldColumnName);
-            ExecuteStoredProcedure("sp_rename", new[] { oldName, "'" + newColumnName + "'", "'COLUMN'" });
+            string oldName = "{0}.{1}".FormatWith(tableName, oldColumnName);
+            ExecuteStoredProcedure("sp_rename", new[] { SqlQuoted(oldName), SqlQuoted(newColumnName), "'COLUMN'" });
         }
 
         private void DropFields(string tableName, IEnumerable<DataFieldDescriptor> fieldsToDrop, IEnumerable<DataFieldDescriptor> fields)
