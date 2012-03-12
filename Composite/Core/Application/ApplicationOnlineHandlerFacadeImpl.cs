@@ -73,9 +73,6 @@ namespace Composite.Core.Application
                 }
             }            
 
-            _shutdownGuard.Dispose();
-            _shutdownGuard = null;
-
             try
             {
                 if (_wasLastTurnOffSoft == false)
@@ -86,6 +83,9 @@ namespace Composite.Core.Application
             }
             finally
             {
+                _shutdownGuard.Dispose();
+                _shutdownGuard = null;
+
                 if (HostingEnvironment.IsHosted)
                 {
                     HostingEnvironment.InitiateShutdown();
