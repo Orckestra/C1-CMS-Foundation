@@ -24,6 +24,8 @@ using Composite.Data.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Functions.Foundation;
 using Composite.C1Console.Elements.Foundation;
+using Composite.Data.Foundation.PluginFacades;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 
 
 namespace Composite
@@ -169,12 +171,23 @@ namespace Composite
                 bool typesUpdated = AutoUpdateStaticDataTypes();
                 if (typesUpdated)
                 {
+                    using (new TimeMeasurement("Reinitialization of the static data types"))
+                    {
+                        SqlTableInformationStore.Flush();
+                        DataProviderRegistry.Flush();
+                        DataProviderPluginFacade.Flush();
+                        
+                    
+                        DataProviderRegistry.InitializeDataTypes();
+                    }
+
+                    /*
                     LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted");
 
                     // We made type changes, so we _have_ to recompile Composite.Generated.dll
                     CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
 
-                    return;
+                    return;*/
                 }
             }
 

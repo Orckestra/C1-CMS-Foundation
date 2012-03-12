@@ -86,12 +86,12 @@ namespace Composite.Data.DynamicTypes
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if (dataTypeChangeDescriptor.AlteredTypeHasChanges == true)
-                {
-                    DataProviderPluginFacade.AlterStore(updateDataTypeDescriptor);
-                }
-
                 DataMetaDataFacade.PersistMetaData(dataTypeChangeDescriptor.AlteredType);
+
+                if (dataTypeChangeDescriptor.AlteredTypeHasChanges == true)
+                {                    
+                    DataProviderPluginFacade.AlterStore(updateDataTypeDescriptor);
+                }                
 
                 transactionScope.Complete();
             }

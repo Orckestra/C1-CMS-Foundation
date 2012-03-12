@@ -163,7 +163,7 @@ namespace Composite.Data.Foundation
 
 
 
-        private static void Flush()
+        public static void Flush()
         {
             _dataProviderRegistry.Flush();
         }

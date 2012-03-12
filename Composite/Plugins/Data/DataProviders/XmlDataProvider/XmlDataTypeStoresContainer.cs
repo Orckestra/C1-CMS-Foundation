@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
+using Composite.Data;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -71,6 +73,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             {
                 _generatedInterface.Add(interfaceType);
             }
+        }
+
+
+
+        internal void UpdateSupportedDataTypeStore(Type interfaceType, XmlDataTypeStore xmlDataTypeStore)
+        {
+            Type type = _dataTypeStores.Where(f => f.Value.DataTypeDescriptor.DataTypeId == interfaceType.GetImmutableTypeId()).Select(f => f.Key).Single();
+            _dataTypeStores.Remove(type);
+            _dataTypeStores.Add(interfaceType, xmlDataTypeStore);
+
+            _supportedInterface.Remove(type);
+            _supportedInterface.Add(interfaceType);
+
+            _knownInterface.Remove(type);
+            _knownInterface.Add(interfaceType);
         }
 
 

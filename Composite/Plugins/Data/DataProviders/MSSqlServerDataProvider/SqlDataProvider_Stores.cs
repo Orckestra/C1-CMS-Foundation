@@ -69,6 +69,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     _interfaceConfigurationElements.Remove(oldElement);
                     _interfaceConfigurationElements.Add(newElement);
                 }
+
+                ////               
+                Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes = BuildAllExistingDataTypeStoreDataScopes();
+
+                InitializeStoreResult initializeStoreResult = InitializeStore(newElement ?? oldElement, allSqlDataTypeStoreDataScopes, true);                
             }
         }
 
@@ -106,7 +111,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private InitializeStoreResult InitializeStore(InterfaceConfigurationElement element, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes)
+        private InitializeStoreResult InitializeStore(InterfaceConfigurationElement element, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, bool forceCompile = false)
         {
             InitializeStoreResult result = new InitializeStoreResult();
 
@@ -152,7 +157,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 Type dataContextClassType; // This is the same for all stores!
 
                 Dictionary<SqlDataTypeStoreTableKey, Tuple<FieldInfo, Type>> sqlDataStoreTableTypes;
-                EnsureNeededTypes(dataTypeDescriptor, sqlDataTypeStoreDataScopes, allSqlDataTypeStoreDataScopes, out dataContextClassType, out sqlDataStoreTableTypes);
+                EnsureNeededTypes(dataTypeDescriptor, sqlDataTypeStoreDataScopes, allSqlDataTypeStoreDataScopes, out dataContextClassType, out sqlDataStoreTableTypes, forceCompile);
 
                 _sqlDataTypeStoresContainer.DataContextType = dataContextClassType;
 
@@ -360,7 +365,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <param name="allSqlDataTypeStoreDataScopes"></param>
         /// <param name="dataContextClassType"></param>
         /// <param name="sqlDataStoreTableTypes"></param>
-        private void EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, out Type dataContextClassType, out Dictionary<SqlDataTypeStoreTableKey, Tuple<FieldInfo, Type>> sqlDataStoreTableTypes)
+        private void EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, out Type dataContextClassType, out Dictionary<SqlDataTypeStoreTableKey, Tuple<FieldInfo, Type>> sqlDataStoreTableTypes, bool forceCompile = false)
         {
             lock (_lock)
             {
@@ -397,7 +402,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     sqlDataStoreTableTypes.Add(new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName), new Tuple<FieldInfo, Type>(dataContextFieldInfo, sqlDataProviderHelperClassType));
 
                     bool isRecompileNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { sqlDataProviderHelperClassType });
-                    if (isRecompileNeeded) storeDataScopesToCompile.Add(storeDataScope);
+                    if (isRecompileNeeded || forceCompile) storeDataScopesToCompile.Add(storeDataScope);
                     else storeDataScopesAlreadyCompiled.Add(storeDataScope);
                 }
 

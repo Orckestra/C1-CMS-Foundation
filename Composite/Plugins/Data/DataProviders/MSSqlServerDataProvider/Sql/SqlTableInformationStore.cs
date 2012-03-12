@@ -29,6 +29,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
 
 
+        internal static void Flush()
+        {
+            _implementation.OnFlush();
+        }
+
+
+
         private static void OnFlush(FlushEventArgs flushEventArgs)
         {
             _implementation.OnFlush();

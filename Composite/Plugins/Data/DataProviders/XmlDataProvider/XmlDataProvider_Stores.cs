@@ -15,18 +15,18 @@ using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
     internal partial class XmlDataProvider
-    {    
+    {
         public void CreateStore(DataTypeDescriptor dataTypeDescriptor)
-        {            
+        {
             InterfaceConfigurationManipulator.AddNew(_dataProviderContext.ProviderName, dataTypeDescriptor);
 
             Type dataProviderHelperType;
             Type dataIdClassType;
             bool typesExists = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
-            if (!typesExists) throw new InvalidOperationException(string.Format("Could not find og code generated the type '{0}' or one of the needed helper types", dataTypeDescriptor.GetFullInterfaceName()));
-                
+            if (!typesExists) throw new InvalidOperationException(string.Format("Could not find or code generated the type '{0}' or one of the needed helper types", dataTypeDescriptor.GetFullInterfaceName()));
 
-            XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);            
+
+            XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
 
             XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, null);
 
@@ -41,9 +41,24 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             XmlDataProviderDocumentCache.ClearCache();
 
-            DataTypeChangeDescriptor changeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
-
             InterfaceConfigurationManipulator.Change(updateDataTypeDescriptor);
+
+
+
+            DataTypeDescriptor dataTypeDescriptor = updateDataTypeDescriptor.NewDataTypeDescriptor;
+
+            Type dataProviderHelperType;
+            Type dataIdClassType;
+            bool typesExists = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType, true);
+            if (!typesExists) throw new InvalidOperationException(string.Format("Could not find or code generated the type '{0}' or one of the needed helper types", dataTypeDescriptor.GetFullInterfaceName()));
+
+            XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
+
+            XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, null);
+
+            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
+
+            UpdateDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
         }
 
 
@@ -79,7 +94,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
 
-            _xmlDataTypeStoresContainer = new XmlDataTypeStoresContainer(_dataProviderContext.ProviderName);            
+            _xmlDataTypeStoresContainer = new XmlDataTypeStoresContainer(_dataProviderContext.ProviderName);
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
@@ -113,11 +128,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                         xmlDataTypeStoreDataScopes.Add(xmlDataTypeStoreDataScope);
                     }
 
-                    XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, xmlDataTypeStoreDataScopes);                    
+                    XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, xmlDataTypeStoreDataScopes);
 
                     AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
                 }
-                catch(Exception ex)
+                catch (Exception)
                 {
                     if (interfaceType != null)
                     {
@@ -147,7 +162,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-        private bool EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, out Type dataProviderHelperType, out Type dataIdClassType)
+        private void UpdateDataTypeStore(DataTypeDescriptor dataTypeDescriptor, Type interfaceType, XmlDataTypeStore xmlDateTypeStore)
+        {
+            _xmlDataTypeStoresContainer.UpdateSupportedDataTypeStore(interfaceType, xmlDateTypeStore);
+        }
+
+
+
+        private bool EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, out Type dataProviderHelperType, out Type dataIdClassType, bool forceCompile = false)
         {
             lock (_lock)
             {
@@ -170,7 +192,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                 bool isRecompileNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { dataProviderHelperType, dataIdClassType });
 
-                if (isRecompileNeeded)
+                if (isRecompileNeeded || forceCompile)
                 {
                     CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":" + dataTypeDescriptor.Name);
 
@@ -188,5 +210,5 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 return true;
             }
         }
-    }    
+    }
 }
