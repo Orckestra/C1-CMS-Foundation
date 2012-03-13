@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using Composite.Core.Instrumentation;
 using Composite.Data;
@@ -46,7 +47,10 @@ namespace Composite.Core.Parallelization
 
                     var threadWrapper = new ThreadWrapper<int>(body, parentData);
 
-                    Parallel.For(fromInclusive, toExclusive, threadWrapper.WrapperAction);
+                    PromoteThreadAbortException(() =>
+                    {
+                        Parallel.For(fromInclusive, toExclusive, threadWrapper.WrapperAction);
+                    });
                 }
             }
             else
@@ -101,7 +105,10 @@ namespace Composite.Core.Parallelization
 
                     var threadWrapper = new ThreadWrapper<TSource>(body, parentData);
 
-                    Parallel.ForEach(source, threadWrapper.WrapperAction);
+                    PromoteThreadAbortException(() =>
+                    {
+                        Parallel.ForEach(source, threadWrapper.WrapperAction);
+                    });
                 }
             }
             else
@@ -178,7 +185,23 @@ namespace Composite.Core.Parallelization
                         currentThread.CurrentCulture = _parentThreadCulture;
                         currentThread.CurrentUICulture = _parentThreadUiCulture;
 
-                        _body(source);
+                        try
+                        {
+                            _body(source);
+                        }
+                        catch(ThreadAbortException threadAbort)
+                        {
+                            object state = threadAbort.ExceptionState;
+                        
+                            if(state != null)
+                            {
+                                Thread.ResetAbort();
+
+                                // Throwing another exception because Thread.ResetAbort clears ThreadAbortException.ExceptionState
+                                throw new RethrowableThreadAbortException(state);
+                            }
+                        }
+
                     }
                     finally
                     {
@@ -197,6 +220,48 @@ namespace Composite.Core.Parallelization
                         }
                     }
                 }
+            }
+        }
+
+        private static void PromoteThreadAbortException(ThreadStart action)
+        {
+            try
+            {
+                action();
+            }
+            catch (AggregateException aggregateException)
+            {
+                var evaluatedListOfExceptions = aggregateException.Flatten().InnerExceptions.ToList();
+
+                foreach (var innerException in evaluatedListOfExceptions)
+                {
+                    var threadAbort = innerException as RethrowableThreadAbortException;
+
+                    if (threadAbort != null)
+                    {
+                        // ToString will mark aggregateException as handled, so TPL will not tear down the whole application
+                        aggregateException.ToString();
+
+                        threadAbort.Rethrow();
+                    }
+                }
+
+                throw;
+            }
+        }
+
+        private class RethrowableThreadAbortException : Exception
+        {
+            private object _exceptionState { get; set; }
+
+            public RethrowableThreadAbortException(object exceptionState)
+            {
+                _exceptionState = exceptionState;
+            }
+
+            public void Rethrow()
+            {
+                Thread.CurrentThread.Abort(_exceptionState);
             }
         }
 

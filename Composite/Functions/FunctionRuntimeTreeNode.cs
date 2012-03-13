@@ -123,6 +123,10 @@ namespace Composite.Functions
 
                     return result;
                 }
+                catch(ThreadAbortException)
+                {
+                    return null; // Nothing will be returned as ThreadAbort will proporgate
+                }
                 catch (Exception ex)
                 {
                     throw new InvalidOperationException("Failed to get value for function '{0}'".FormatWith(_function.CompositeName()), ex);
