@@ -125,7 +125,7 @@ namespace Composite.Functions
                 }
                 catch(ThreadAbortException)
                 {
-                    return null; // Nothing will be returned as ThreadAbort will proporgate
+                    return null; // Nothing will be returned as ThreadAbort will propagate
                 }
                 catch (Exception ex)
                 {
