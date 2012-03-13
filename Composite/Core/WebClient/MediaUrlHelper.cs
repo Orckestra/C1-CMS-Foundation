@@ -20,7 +20,6 @@ namespace Composite.Core.WebClient
 	public static class MediaUrlHelper
 	{
 	    private static readonly string DefaultMediaStore = "MediaArchive";
-        private static readonly string DefaultMediaStorePrefix = DefaultMediaStore + ":";
         private static readonly Regex GuidRegex = new Regex(@"^(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}$");
         private static readonly string LogTitle = typeof(MediaUrlHelper).Name;
         private static readonly string InternalMediaUrlPrefix = UrlUtils.PublicRootPath + "/media";
@@ -229,10 +228,19 @@ namespace Composite.Core.WebClient
                     Guid mediaId;
                     int prefixLength = DecodedFullInternalMediaUrlPrefix.Length;
 
+                    string mediaStore;
+
                     string mediaIdStr = decodedMediaUrl.Substring(prefixLength, closingBracketOffset - prefixLength);
-                    if (mediaIdStr.StartsWith(DefaultMediaStorePrefix, StringComparison.InvariantCultureIgnoreCase))
+
+                    int semicolonOffset = mediaIdStr.IndexOf(":", StringComparison.Ordinal);
+                    if (semicolonOffset > 0)
                     {
-                        mediaIdStr = mediaIdStr.Substring(DefaultMediaStorePrefix.Length);
+                        mediaStore = mediaIdStr.Substring(0, semicolonOffset);
+                        mediaIdStr = mediaIdStr.Substring(semicolonOffset + 1);
+                    }
+                    else
+                    {
+                        mediaStore = DefaultMediaStore;
                     }
 
                     if (!Guid.TryParse(mediaIdStr, out mediaId))
@@ -259,7 +267,7 @@ namespace Composite.Core.WebClient
                         new MediaUrlData
                         {
                             MediaId = mediaId,
-                            MediaStore = MediaUrls.DefaultMediaStore,
+                            MediaStore = mediaStore,
                             QueryParameters = queryParams
                         },
                         UrlKind.Public);

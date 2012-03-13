@@ -47,26 +47,43 @@ namespace Composite.Core.Routing
                 return result;
             }
 
-
             int minimumLengthOfPublicMediaUrl = MediaUrl_PublicPrefix.Length + 36; /* 36 - length of a guid */
             if (relativeUrl.Length >= minimumLengthOfPublicMediaUrl
                 && relativeUrl.StartsWith(MediaUrl_PublicPrefix))
             {
+                // Parsing urls like /<site root>/media/{MediaId}*
                 Guid mediaId;
-                if (!Guid.TryParse(relativeUrl.Substring(MediaUrl_PublicPrefix.Length, 36), out mediaId))
+
+                if (Guid.TryParse(relativeUrl.Substring(MediaUrl_PublicPrefix.Length, 36), out mediaId))
                 {
-                    return null;
+                    NameValueCollection queryParams = new UrlBuilder(relativeUrl).GetQueryParameters();
+
+                    urlKind = UrlKind.Public;
+                    return new MediaUrlData
+                    {
+                        MediaId = mediaId,
+                        MediaStore = DefaultMediaStore,
+                        QueryParameters = queryParams
+                    };
                 }
 
-                NameValueCollection queryParams = new UrlBuilder(relativeUrl).GetQueryParameters();
+                // Parsing urls like /<site root>/media/<MediaArchive>/{MediaId}*
+                int slashOffset = relativeUrl.IndexOf('/', MediaUrl_PublicPrefix.Length + 1);
+                if (slashOffset > MediaUrl_PublicPrefix.Length + 1 && relativeUrl.Length >= slashOffset + 36
+                    && Guid.TryParse(relativeUrl.Substring(slashOffset + 1, 36), out mediaId))
+                {
+                    string mediaStore = relativeUrl.Substring(MediaUrl_PublicPrefix.Length, slashOffset - MediaUrl_PublicPrefix.Length);
 
-                urlKind = UrlKind.Public;
-                return new MediaUrlData
-                           {
-                               MediaId = mediaId,
-                               MediaStore = DefaultMediaStore,
-                               QueryParameters = queryParams
-                           };
+                    NameValueCollection queryParams = new UrlBuilder(relativeUrl).GetQueryParameters();
+
+                    urlKind = UrlKind.Public;
+                    return new MediaUrlData
+                    {
+                        MediaId = mediaId,
+                        MediaStore = mediaStore,
+                        QueryParameters = queryParams
+                    };
+                }
             }
 
             return null;
@@ -160,14 +177,22 @@ namespace Composite.Core.Routing
             // IIS6 doesn't have wildcard mapping by default, so removing image extension if running in "classic" app pool
             if (!HttpRuntime.UsingIntegratedPipeline)
             {
-                int dotOffset = pathToFile.IndexOf(".");
+                int dotOffset = pathToFile.IndexOf(".", StringComparison.Ordinal);
                 if (dotOffset >= 0)
                 {
                     pathToFile = pathToFile.Substring(0, dotOffset);
                 }
             }
 
-            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaUrlData.MediaId);
+            string mediaStore = string.Empty;
+
+            if(!mediaUrlData.MediaStore.Equals(DefaultMediaStore, StringComparison.InvariantCultureIgnoreCase))
+            {
+                mediaStore = mediaUrlData.MediaStore + "/";
+            }
+
+
+            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + mediaUrlData.MediaId);
 
             if (pathToFile.Length > 0)
             {

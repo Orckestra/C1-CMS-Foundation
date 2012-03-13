@@ -208,7 +208,6 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                     context.Response.AddHeader("Content-Length", ((int)length).ToString(CultureInfo.InvariantCulture));
                 }
                 
-                inputStream.Seek(0, SeekOrigin.Begin);
                 OutputToResponse(context, inputStream);
             }
 
