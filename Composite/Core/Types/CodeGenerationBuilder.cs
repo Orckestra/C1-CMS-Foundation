@@ -1,4 +1,5 @@
-﻿using System.CodeDom;
+﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -56,9 +57,9 @@ namespace Composite.Core.Types
         /// <exclude />
         public void AddReference(string assemblyLocation)
         {
-            if (!_assemblyLocations.Contains(assemblyLocation.ToLower()))
+            if (!_assemblyLocations.Contains(assemblyLocation, StringComparer.InvariantCultureIgnoreCase))
             {
-                _assemblyLocations.Add(assemblyLocation.ToLower());
+                _assemblyLocations.Add(assemblyLocation);
             }
         }
 
