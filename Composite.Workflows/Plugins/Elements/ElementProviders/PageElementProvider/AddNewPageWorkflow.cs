@@ -417,7 +417,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             foreach (string siblingUrlTitle in siblingPageUrlTitles)
             {
-                if (siblingUrlTitle.ToLower() == newPage.UrlTitle.ToLower())
+                if (siblingUrlTitle.Equals(newPage.UrlTitle, StringComparison.InvariantCultureIgnoreCase))
                 {
                     return false;
                 }

@@ -751,7 +751,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             foreach (string siblingUrlTitle in siblingPageUrlTitles)
             {
-                if (siblingUrlTitle.ToLower() == selectedPage.UrlTitle.ToLower())
+                if (siblingUrlTitle.Equals(selectedPage.UrlTitle, StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotUniqueError}");
                     e.Result = false;
@@ -763,7 +763,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 List<string> usedFrendlyUrls = DataFacade.GetData<IPage>(f => f.FriendlyUrl != null && f.FriendlyUrl != string.Empty && f.Id != selectedPage.Id).Select(f => f.FriendlyUrl).ToList();
 
-                if (usedFrendlyUrls.Any(f => f.ToLower() == selectedPage.FriendlyUrl.ToLower()))
+                if (usedFrendlyUrls.Any(f => f.Equals(selectedPage.FriendlyUrl, StringComparison.InvariantCultureIgnoreCase)))
                 {
                     this.ShowFieldMessage("SelectedPage.FriendlyUrl", "${Composite.Plugins.PageElementProvider, FriendlyUrlNotUniqueError}");
                     e.Result = false;

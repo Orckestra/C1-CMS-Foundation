@@ -85,7 +85,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             List<KeyValuePair> assemblies = new List<KeyValuePair>();
             foreach (string assembly in InlineFunctionHelper.GetReferencableAssemblies())
             {
-                assemblies.Add(new KeyValuePair(assembly.ToLower(), System.IO.Path.GetFileName(assembly)));
+                assemblies.Add(new KeyValuePair(assembly.ToLowerInvariant(), System.IO.Path.GetFileName(assembly)));
             }
 
             assemblies.Sort(delegate(KeyValuePair kvp1, KeyValuePair kvp2) { return kvp1.Value.CompareTo(kvp2.Value); });
@@ -98,7 +98,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 Where(f => f.Function == functionInfo.Id).
                 OrderBy(f => f.Name).
                 Evaluate().
-                Select(f => InlineFunctionHelper.GetAssemblyFullPath(f.Name, f.Location).ToLower()).
+                Select(f => InlineFunctionHelper.GetAssemblyFullPath(f.Name, f.Location).ToLowerInvariant()).
                 ToList();
 
             this.Bindings.Add("SelectedAssemblies", selectedAssemblies);
@@ -135,10 +135,12 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                 foreach (string selectedAssembly in selectedAssemblies)
                 {
-                    string name = System.IO.Path.GetFileName(selectedAssembly).ToLower();
-                    string location = InlineFunctionHelper.GetAssemblyLocation(selectedAssembly).ToLower();
+                    string name = System.IO.Path.GetFileName(selectedAssembly).ToLowerInvariant();
+                    string location = InlineFunctionHelper.GetAssemblyLocation(selectedAssembly).ToLowerInvariant();
 
-                    if (assemblyReferences.Where(f => f.Name.ToLower() == name && f.Location.ToLower() == location).Any() == false)
+                    if (assemblyReferences
+                        .Any(f => (string.Compare(f.Name, name, StringComparison.InvariantCultureIgnoreCase) == 0)
+                               && (string.Compare(f.Location, location, StringComparison.InvariantCultureIgnoreCase) == 0)) == false)
                     {
                         IInlineFunctionAssemblyReference assemblyReference = DataFacade.BuildNew<IInlineFunctionAssemblyReference>();
                         assemblyReference.Id = Guid.NewGuid();
@@ -153,9 +155,9 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                 foreach (IInlineFunctionAssemblyReference assemblyReference in assemblyReferences)
                 {
-                    string fullPath = InlineFunctionHelper.GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location).ToLower();
+                    string fullPath = InlineFunctionHelper.GetAssemblyFullPath(assemblyReference.Name, assemblyReference.Location);
 
-                    if (selectedAssemblies.Where(f => f.ToLower() == fullPath).Any() == false)
+                    if (selectedAssemblies.Any(f => string.Compare(f, fullPath, StringComparison.InvariantCultureIgnoreCase) == 0) == false)
                     {
                         DataFacade.Delete(assemblyReference);
                     }

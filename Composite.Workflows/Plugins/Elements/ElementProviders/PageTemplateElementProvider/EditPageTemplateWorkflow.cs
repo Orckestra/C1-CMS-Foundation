@@ -121,14 +121,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             List<XAttribute> valueOrderedIdAttributes = xDocument.Descendants().Attributes("id").OrderBy(f => f.Value).ToList();
 
             XElement rootElement = xDocument.Root;
-            if (rootElement.Name.LocalName.ToLower() == "html")
+            if (rootElement.Name.LocalName.ToLowerInvariant() == "html")
             {
                 if (rootElement.Name.Namespace != Namespaces.Xhtml)
                 {
                     throw new InvalidOperationException(string.Format("Root element 'html' must belong to the namespace '{0}'. Change the \"<html>\" tag to \"<html xmlns='{0}'>\"", Namespaces.Xhtml));
                 }
 
-                if (rootElement.Name.LocalName != rootElement.Name.LocalName.ToLower())
+                if (rootElement.Name.LocalName != rootElement.Name.LocalName.ToLowerInvariant())
                 {
                     throw new InvalidOperationException("Root element 'html' must be written in lower case.");
                 }
