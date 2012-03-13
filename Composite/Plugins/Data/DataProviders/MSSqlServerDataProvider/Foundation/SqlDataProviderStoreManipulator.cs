@@ -539,7 +539,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 else
                 {
                     object defaultValue = null;
-                    if (defaultValues != null && defaultValues.ContainsKey(addedFieldDescriptor.Name)) defaultValue = defaultValues[addedFieldDescriptor.Name];
+                    if (defaultValues != null && defaultValues.ContainsKey(addedFieldDescriptor.Name))
+                    {
+                        defaultValue = defaultValues[addedFieldDescriptor.Name];
+                    }
 
                     CreateColumn(tableName, addedFieldDescriptor, defaultValue);
                 }
@@ -625,10 +628,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private void CreateColumn(string tableName, DataFieldDescriptor fieldDescriptor, object defaultValue = null)
         {
+            if (defaultValue == null && !fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue != null)
+            {
+                ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
+                            .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, false)));
+                return;
+            }
+
             // Creating a column, making it nullable
             ExecuteNonQuery("ALTER TABLE [{0}] ADD {1};"
                             .FormatWith(tableName, GetColumnInfo(tableName, fieldDescriptor.Name, fieldDescriptor, true, true)));
 
+            // Setting default value with "UPDATE" statement
             if (defaultValue != null || (!fieldDescriptor.IsNullable && fieldDescriptor.DefaultValue == null))
             {
                 string defaultValueStr;
