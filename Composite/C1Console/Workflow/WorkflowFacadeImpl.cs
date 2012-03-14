@@ -33,6 +33,7 @@ namespace Composite.C1Console.Workflow
     {
         private static TimeSpan _oldFileExistensTimeout = TimeSpan.FromHours(12.0);
 
+        private volatile bool _initialized = false;
         private Thread _initializeThread = null;
         private readonly object _initializeThreadLock = new object();
         private bool _isShutDown = false;
@@ -78,7 +79,7 @@ namespace Composite.C1Console.Workflow
                                 Thread.Sleep(100);
                             }
 
-                            if (_workflowRuntime != null)
+                            if (_initialized)
                             {
                                 LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "Already initialized, skipping delayed initialization");
                                 return;
@@ -132,7 +133,7 @@ namespace Composite.C1Console.Workflow
         public WorkflowInstance CreateNewWorkflow(Type workflowType)
         {
             GlobalInitializerFacade.EnsureSystemIsInitialized();
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             try
             {
@@ -160,7 +161,7 @@ namespace Composite.C1Console.Workflow
         public WorkflowInstance CreateNewWorkflow(Type workflowType, Dictionary<string, object> arguments)
         {
             GlobalInitializerFacade.EnsureSystemIsInitialized();
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             try
             {
@@ -198,7 +199,7 @@ namespace Composite.C1Console.Workflow
 
         public WorkflowFlowToken StartNewWorkflow(Type workflowType, FlowControllerServicesContainer flowControllerServicesContainer, EntityToken entityToken, ActionToken actionToken)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             Dictionary<string, object> arguments = new Dictionary<string, object> { { "EntityToken", entityToken }, { "ActionToken", actionToken } };
 
@@ -229,7 +230,7 @@ namespace Composite.C1Console.Workflow
 
         public WorkflowInstance GetWorkflow(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             return _workflowRuntime.GetWorkflow(instanceId);
         }
@@ -238,7 +239,7 @@ namespace Composite.C1Console.Workflow
 
         public StateMachineWorkflowInstance GetStateMachineWorkflowInstance(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             return new StateMachineWorkflowInstance(_workflowRuntime, instanceId);
         }
@@ -247,7 +248,7 @@ namespace Composite.C1Console.Workflow
 
         public void RunWorkflow(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -271,14 +272,14 @@ namespace Composite.C1Console.Workflow
 
         public void RunWorkflow(WorkflowInstance workflowInstance)
         {
-            RunWorkflow(workflowInstance.InstanceId);
+            if (!DoInitialize(0)) return;
         }
 
 
 
         public void AbortWorkflow(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -399,7 +400,7 @@ namespace Composite.C1Console.Workflow
         #region FlowControllerServices methods
         public void SetFlowControllerServicesContainer(Guid instanceId, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -418,7 +419,7 @@ namespace Composite.C1Console.Workflow
 
         public FlowControllerServicesContainer GetFlowControllerServicesContainer(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             FlowControllerServicesContainer flowControllerServicesContainer;
 
@@ -434,7 +435,7 @@ namespace Composite.C1Console.Workflow
 
         public void RemoveFlowControllerServicesContainer(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -451,7 +452,7 @@ namespace Composite.C1Console.Workflow
         #region Workflow status methods
         public bool WorkflowExists(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return false;
 
             using (_resourceLocker.Locker)
             {
@@ -463,7 +464,7 @@ namespace Composite.C1Console.Workflow
 
         public Semaphore WaitForIdleStatus(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             using (_resourceLocker.Locker)
             {
@@ -546,7 +547,7 @@ namespace Composite.C1Console.Workflow
         #region Form workflow methods
         public void SetEventHandlerFilter(Guid instanceId, Type eventHandlerFilterType)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             if (eventHandlerFilterType != null)
             {
@@ -564,7 +565,7 @@ namespace Composite.C1Console.Workflow
 
         public IEventHandleFilter GetEventHandleFilter(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             FormData formData = GetFormData(instanceId);
 
@@ -587,7 +588,7 @@ namespace Composite.C1Console.Workflow
 
         public IEnumerable<string> GetCurrentFormEvents(Guid instanceId)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             IEnumerable<string> eventNames = new StateMachineWorkflowInstance(WorkflowFacade.WorkflowRuntime, instanceId).GetCurrentEventNames(typeof(IFormsWorkflowEventService));
 
@@ -598,7 +599,7 @@ namespace Composite.C1Console.Workflow
 
         public IEnumerable<string> GetCurrentFormEvents(WorkflowInstance workflowInstance)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return null;
 
             return GetCurrentFormEvents(workflowInstance.InstanceId);
         }
@@ -607,7 +608,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireSaveEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -622,7 +623,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireSaveAndPublishEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -637,7 +638,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireNextEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -652,7 +653,7 @@ namespace Composite.C1Console.Workflow
 
         public void FirePreviousEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -667,7 +668,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireFinishEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -682,7 +683,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireCancelEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -697,7 +698,7 @@ namespace Composite.C1Console.Workflow
 
         public void FirePreviewEvent(Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -712,7 +713,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireCustomEvent(int customEventNumber, Guid instanceId, Dictionary<string, object> bindings)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             if (customEventNumber < 1 || customEventNumber > 5) throw new ArgumentException("Number must be between 1 and 5", "customEventNumber");
 
@@ -748,7 +749,7 @@ namespace Composite.C1Console.Workflow
 
         public void FireChildWorkflowDoneEvent(Guid parentInstanceId, string workflowResult)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -835,12 +836,17 @@ namespace Composite.C1Console.Workflow
 
         public void ShutDown()
         {
-            _isShutDown = true;
+            _isShutDown = true;            
 
             LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "----------========== Finalizing Workflows ==========----------");
             int startTime = Environment.TickCount;
 
-            if (_workflowRuntime != null)
+            while (!_initialized && Environment.TickCount - startTime < 5000)
+            {
+                Thread.Sleep(10);
+            }
+
+            if (_initialized)
             {
                 // system shut down - close all console bound resources
                 using (_resourceLocker.Locker)
@@ -854,11 +860,11 @@ namespace Composite.C1Console.Workflow
                         PersistExistingWorkflows();
 
                         RemoveAbortedPersistedWorkflow();
+                        _initialized = false;
+                        _workflowRuntime = null;
                     }
                 }
-            }
-
-            _workflowRuntime = null;
+            }            
 
             int endTime = Environment.TickCount;
             LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done finalizing Workflows ({0} ms ) ==========----------", endTime - startTime));
@@ -868,7 +874,7 @@ namespace Composite.C1Console.Workflow
 
         public void ConsoleClosed(ConsoleClosedEventArgs args)
         {
-            DoInitialize(0);
+            if (!DoInitialize(0)) return;
 
             using (_resourceLocker.Locker)
             {
@@ -886,13 +892,15 @@ namespace Composite.C1Console.Workflow
 
 
 
-        private void DoInitialize(int delayedTime)
+        private bool DoInitialize(int delayedTime)
         {
-            if (_workflowRuntime == null)
+            if (_isShutDown) return false;
+
+            if (!_initialized)
             {
                 using (_resourceLocker.Locker)
                 {
-                    if (_workflowRuntime == null)
+                    if (!_initialized)
                     {
                         LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Initializing Workflows (Delayed: {0}) ==========----------", delayedTime));
                         int startTime = Environment.TickCount;
@@ -913,16 +921,22 @@ namespace Composite.C1Console.Workflow
                         LoadPersistedWorkflows();
                         LoadPerssistedFormDatas();
 
+                        _initialized = true;
+
                         int endTime = Environment.TickCount;
                         LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime));
 
                         foreach (Action action in _actionToRunWhenInitialized)
                         {
                             action();
-                        }
+                        }                        
                     }
                 }
             }
+
+            if (_isShutDown) return false;
+
+            return true;
         }
 
 
