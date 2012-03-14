@@ -387,8 +387,9 @@ DockBinding.prototype._setupPageBindingListeners = function ( tabBinding ) {
 					tabBinding.setDirty ( true );
 					// TODO: dont consume - top app menu should listen here!
 					break;
-					
-				case EditorPageBinding.ACTION_SAVE :
+
+				case EditorPageBinding.ACTION_SAVE:
+				case EditorPageBinding.ACTION_SAVE_AND_PUBLISH:
 					tabBinding.onSaveStart ();
 					break;
 					
@@ -436,6 +437,7 @@ DockBinding.prototype._setupPageBindingListeners = function ( tabBinding ) {
 	           EditorPageBinding.ACTION_DIRTY,
 	           EditorPageBinding.ACTION_CLEAN,
 	           EditorPageBinding.ACTION_SAVE,
+               EditorPageBinding.ACTION_SAVE_AND_PUBLISH,
 	           ViewBinding.ACTION_ONCLOSE,
 	           ViewBinding.ACTION_ONCLOSE_FORCE,
 	           DockPanelBinding.ACTION_FORCE_SELECT,

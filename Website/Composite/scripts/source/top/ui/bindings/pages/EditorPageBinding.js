@@ -5,7 +5,8 @@ EditorPageBinding.superclass = PageBinding.prototype;
 EditorPageBinding.ACTION_ATTACHED 	= "editorpage attached";
 EditorPageBinding.ACTION_DIRTY		= "editorpage dirty";
 EditorPageBinding.ACTION_CLEAN		= "editorpage clean";
-EditorPageBinding.ACTION_SAVE 		= "editorpage save";
+EditorPageBinding.ACTION_SAVE		= "editorpage save";
+EditorPageBinding.ACTION_SAVE_AND_PUBLISH = "editorpage save and publish";
 
 /* 
  * Special binding IDs, hardcoded by the server goo.
@@ -18,7 +19,8 @@ EditorPageBinding.ID_PREVIEWWINDOW 	= "previewwindow";
 /*
  * Postback directives. Matched serverside, don't change!
  */
-EditorPageBinding.MESSAGE_SAVE 		= "save";
+EditorPageBinding.MESSAGE_SAVE = "save";
+EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH = "saveandpublish";
 EditorPageBinding.MESSAGE_PERSIST 	= "persist";
 EditorPageBinding.MESSAGE_REFRESH 	= "refresh";
 
@@ -161,6 +163,7 @@ EditorPageBinding.prototype.onBindingRegister = function () {
 	this.addActionListener ( Binding.ACTION_VALID );
 	this.addActionListener ( Binding.ACTION_INVALID );
 	this.addActionListener ( EditorPageBinding.ACTION_SAVE );
+	this.addActionListener ( EditorPageBinding.ACTION_SAVE_AND_PUBLISH );
 	
 	this.addActionListener ( ResponseBinding.ACTION_SUCCESS );
 	this.addActionListener ( ResponseBinding.ACTION_FAILURE );
@@ -273,195 +276,189 @@ EditorPageBinding.prototype.onSaveSuccess = function () {
  * @overloads {PageBinding#handleAction}
  * @param {Action} action
  */
-EditorPageBinding.prototype.handleAction = function ( action ) {
-	
-	EditorPageBinding.superclass.handleAction.call ( this, action );
-	
+EditorPageBinding.prototype.handleAction = function (action) {
+
+	EditorPageBinding.superclass.handleAction.call(this, action);
+
 	var binding = action.target;
-	
-	switch ( action.type ) {
-	
-		case EditorPageBinding.ACTION_SAVE :
-			this.postMessage ( EditorPageBinding.MESSAGE_SAVE );
+
+	switch (action.type) {
+
+		case EditorPageBinding.ACTION_SAVE:
+			this.postMessage(EditorPageBinding.MESSAGE_SAVE);
 			// don't consume - DockTabBinding is listening!
 			break;
-			
-		/*
-		case EditorPageBinding.ACTION_PERSIST : // not currently in use!
-			this.postMessage ( EditorPageBinding.MESSAGE_PERSIST );
-			action.consume ();
+
+		case EditorPageBinding.ACTION_SAVE_AND_PUBLISH:
+			this.postMessage(EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH);
 			break;
-			
-		case EditorPageBinding.ACTION_REFRESH : // not currently in use!
-			this.postMessage ( EditorPageBinding.MESSAGE_REFRESH );
-			action.consume (); 
-			break;
-		*/
-			
-		case ResponseBinding.ACTION_OOOOKAY :
-			if ( Application.isDeveloperMode ) {
+
+		case ResponseBinding.ACTION_OOOOKAY:
+			if (Application.isDeveloperMode) {
 				// alert ( "OOOOKAY "  + binding.bindingDocument.title );
 			}
-			
 			break;
-		
-		case ResponseBinding.ACTION_SUCCESS :
-			
-			if ( Application.isDeveloperMode ) {
+
+		case ResponseBinding.ACTION_SUCCESS:
+
+			if (Application.isDeveloperMode) {
 				// alert ( "SUCCESS " + binding.bindingDocument.title );
 			}
-			
-			if ( this._messengers.hasEntries ()) {
-				
+
+			if (this._messengers.hasEntries()) {
+
 				var index = -1;
-				this._messengers.each ( function ( page ) {
+				this._messengers.each(function (page) {
 					var res = page.bindingWindow == binding.bindingWindow;
-					if ( res ) {
+					if (res) {
 						page.bindingWindow.DataManager.isDirty = false;
-						if ( index == -1 ) {
+						if (index == -1) {
 							index = 0;
 						}
 					} else {
-						index ++;
+						index++;
 					}
 					return res;
 				});
-				if ( index >-1 ) {
-					this._messengers.del ( index );
+				if (index > -1) {
+					this._messengers.del(index);
 				}
-				if ( !this._messengers.hasEntries ()) {
-					switch ( this._message ) {
-						case EditorPageBinding.MESSAGE_SAVE :
-							this._saveEditorPage ();
+				if (!this._messengers.hasEntries()) {
+					switch (this._message) {
+						case EditorPageBinding.MESSAGE_SAVE:
+							this._saveEditorPage();
 							break;
-						case EditorPageBinding.MESSAGE_PERSIST :
-							this._refresh (); // refresh after "persist"
+						case EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH:
+							this._saveAndPublishEditorPage();
+							break;
+						case EditorPageBinding.MESSAGE_PERSIST:
+							this._refresh(); // refresh after "persist"
 							this._message = null;
-							if ( this._isWaitingForPreview ) { // please unhack this!
+							if (this._isWaitingForPreview) { // please unhack this!
 								this._isWaitingForPreview = false;
-								this._startPreview ();
+								this._startPreview();
 							}
 							break;
 					}
 				}
-				
+
 			} else {
-				this._refresh (); // refresh after "save"
+				this._refresh(); // refresh after "save"
 				this._message = null;
 			}
 			break;
-			
-		case ResponseBinding.ACTION_FAILURE :
-			if ( Application.isDeveloperMode ) {
+
+		case ResponseBinding.ACTION_FAILURE:
+			if (Application.isDeveloperMode) {
 				// alert ( "FAILURE " + binding.bindingDocument.title );
 			}
 			this._message = null;
-			this._messengers = new List ();
+			this._messengers = new List();
 			break;
-			
-		case Binding.ACTION_DIRTY :
-			if ( this.canSave ()) {
-				if ( !this.isDirty ) {
-					this.enableSave ( true );
+
+		case Binding.ACTION_DIRTY:
+			if (this.canSave()) {
+				if (!this.isDirty) {
+					this.enableSave(true);
 					this.isDirty = true;
-					this.dispatchAction ( EditorPageBinding.ACTION_DIRTY );
+					this.dispatchAction(EditorPageBinding.ACTION_DIRTY);
 				}
 			}
-			action.consume ();
+			action.consume();
 			break;
-			
-		case Binding.ACTION_INVALID :
-			this.enableSave ( false );
-			this._invalidBindings.set ( binding.key, binding );
-			if ( binding instanceof FieldsBinding ) {
-				this._updateStatusBar ();
+
+		case Binding.ACTION_INVALID:
+			this.enableSave(false);
+			this._invalidBindings.set(binding.key, binding);
+			if (binding instanceof FieldsBinding) {
+				this._updateStatusBar();
 			}
 			break;
-			
-		case Binding.ACTION_VALID :
-			this._invalidBindings.del ( binding.key );
-			if ( binding instanceof FieldsBinding ) {
-				this._updateStatusBar ();
+
+		case Binding.ACTION_VALID:
+			this._invalidBindings.del(binding.key);
+			if (binding instanceof FieldsBinding) {
+				this._updateStatusBar();
 			}
-			if ( !this._invalidBindings.hasEntries ()) {
-				this.enableSave ( true );
+			if (!this._invalidBindings.hasEntries()) {
+				this.enableSave(true);
 			}
 			break;
-			
-		case TabBoxBinding.ACTION_SELECTED : 
-			if ( binding == this._tabBoxBinding ) {
-				if ( this._windowBinding != null ) { // preview stuff
-					var tab = binding.getSelectedTabBinding ();
-					if ( tab.getID () == EditorPageBinding.ID_PREVIEWTAB ) {
+
+		case TabBoxBinding.ACTION_SELECTED:
+			if (binding == this._tabBoxBinding) {
+				if (this._windowBinding != null) { // preview stuff
+					var tab = binding.getSelectedTabBinding();
+					if (tab.getID() == EditorPageBinding.ID_PREVIEWTAB) {
 						this._isPreviewing = true;
-						if ( this._messengers.hasEntries ()) {
-							this._isWaitingForPreview = true;	
+						if (this._messengers.hasEntries()) {
+							this._isWaitingForPreview = true;
 						} else {
-							this._startPreview ();
+							this._startPreview();
 						}
-					} else if ( this._isPreviewing ) {
+					} else if (this._isPreviewing) {
 						this._isPreviewing = false;
-						this._stopPreview ();
+						this._stopPreview();
 					}
 				}
 			}
-			action.consume ();
+			action.consume();
 			break;
-			
-		case TabBoxBinding.ACTION_UNSELECTED :
-			if ( binding == this._tabBoxBinding ) {
-				this.postMessage ( EditorPageBinding.MESSAGE_PERSIST );
+
+		case TabBoxBinding.ACTION_UNSELECTED:
+			if (binding == this._tabBoxBinding) {
+				this.postMessage(EditorPageBinding.MESSAGE_PERSIST);
 			}
-			action.consume ();
+			action.consume();
 			break;
-			
-		case WindowBinding.ACTION_LOADED : // preview
-			
-			if ( binding == this._windowBinding ) {
-				if ( this._isGeneratingPreview == true ) {
-					this._generatePreview ();
+
+		case WindowBinding.ACTION_LOADED: // preview
+
+			if (binding == this._windowBinding) {
+				if (this._isGeneratingPreview == true) {
+					this._generatePreview();
 					this._isGeneratingPreview = false;
 				}
-				action.consume ();
+				action.consume();
 			}
 			break;
-		
-		case WindowBinding.ACTION_ONLOAD : // preview
-			
+
+		case WindowBinding.ACTION_ONLOAD: // preview
+
 			/*
-			 * TODO: Consider how this might impact focus in layout...
-			 */
-			if ( binding == this._windowBinding ) {
-				
+			* TODO: Consider how this might impact focus in layout...
+			*/
+			if (binding == this._windowBinding) {
+
 				/*
-				 * First hit is the postback document. This is neglected.
-				 */
-				if ( binding.getContentWindow ().isPostBackDocument != true ) {
-					
+				* First hit is the postback document. This is neglected.
+				*/
+				if (binding.getContentWindow().isPostBackDocument != true) {
+
 					/*
-					 * Disable new-version lookup. Cache enabled by 
-					 * {@link EditorPageBinding#_startPreview}
-					 */
-					if ( Client.isPrism ) {
-						Prism.enableCache ();
+					* Disable new-version lookup. Cache enabled by 
+					* {@link EditorPageBinding#_startPreview}
+					*/
+					if (Client.isPrism) {
+						Prism.enableCache();
 					}
-					
+
 					/*
-					 * Note that this here code is invoked twice 
-					 * when the preview is first generated!
-					 */
+					* Note that this here code is invoked twice 
+					* when the preview is first generated!
+					*/
 					var self = this;
-					setTimeout ( function () { // COPYPASTED ABOVE!
-						Application.unlock ( self );
-					}, 100 );
-					
+					setTimeout(function () { // COPYPASTED ABOVE!
+						Application.unlock(self);
+					}, 100);
+
 					/*
-					 * Broadcast contained markup for 
-					 * various panels to intercept.
-					 */
-					if ( EventBroadcaster.hasSubscribers ( BroadcastMessages.XHTML_MARKUP_ON )) {
-						var markup = WindowBinding.getMarkup ( this._windowBinding );
-						EventBroadcaster.broadcast ( BroadcastMessages.XHTML_MARKUP_ON, markup );
+					* Broadcast contained markup for 
+					* various panels to intercept.
+					*/
+					if (EventBroadcaster.hasSubscribers(BroadcastMessages.XHTML_MARKUP_ON)) {
+						var markup = WindowBinding.getMarkup(this._windowBinding);
+						EventBroadcaster.broadcast(BroadcastMessages.XHTML_MARKUP_ON, markup);
 					}
 				}
 			}
@@ -512,6 +509,23 @@ EditorPageBinding.prototype._saveEditorPage = function () {
 };
 
 /**
+* Performs the final save and publish transaction.
+*/
+EditorPageBinding.prototype._saveAndPublishEditorPage = function () {
+
+
+	if (this.validateAllDataBindings()) {
+		this.bindingWindow.DataManager.isDirty = false;
+		var postback = this.bindingWindow.bindingMap.__REQUEST;
+		if (postback != null) {
+			postback.postback(EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH);
+		} else {
+			this.logger.error("Save aborted: Could not locate RequestBinding");
+		}
+	}
+};
+
+/**
  * Refresh page!
  */
 EditorPageBinding.prototype._refresh = function () {
@@ -539,6 +553,15 @@ EditorPageBinding.prototype.postMessage = function ( message ) {
 			this._postMessageToDescendants ( message, this._messengers );
 			if ( !this._messengers.hasEntries ()) {
 				this._saveEditorPage ();
+			} else {
+				this._message = message;
+			}
+			break;
+
+		case EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH:
+			this._postMessageToDescendants(message, this._messengers);
+			if (!this._messengers.hasEntries()) {
+				this._saveAndPublishEditorPage();
 			} else {
 				this._message = message;
 			}

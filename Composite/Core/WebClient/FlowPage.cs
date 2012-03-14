@@ -15,5 +15,8 @@ namespace Composite.Core.WebClient
 
         /// <exclude />
         public EventHandler OnSave { get; set; }
+
+        /// <exclude />
+        public EventHandler OnSaveAndPublish { get; set; }
     }
 }
