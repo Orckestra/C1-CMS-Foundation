@@ -896,11 +896,11 @@ namespace Composite.C1Console.Workflow
         {
             if (_isShutDown) return false;
 
-            if (!_initialized)
+            if (_workflowRuntime == null && !_initialized)
             {
                 using (_resourceLocker.Locker)
                 {
-                    if (!_initialized)
+                    if (_workflowRuntime == null && !_initialized)
                     {
                         LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Initializing Workflows (Delayed: {0}) ==========----------", delayedTime));
                         int startTime = Environment.TickCount;
