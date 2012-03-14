@@ -100,10 +100,10 @@ namespace Composite.Core.Types
 
                         int numberOfTypes = builder.Namespaces.SelectMany(f => f.Types.OfType<CodeTypeDeclaration>()).Count();
 
-                        Log.LogVerbose(LogTitle, "Number of types build: " + numberOfTypes);
-                        Log.LogVerbose(LogTitle, "Building code dom: " + (t2 - t1) + "ms");
-                        Log.LogVerbose(LogTitle, "Compiling code dom: " + (t3 - t2) + "ms");
-                        Log.LogVerbose(LogTitle, "Total compilation: " + (t3 - t1) + "ms");
+                        Log.LogVerbose(LogTitle, "Number of types build: " + numberOfTypes +
+                                                 "\nBuilding code dom: " + (t2 - t1) + "ms" + 
+                                                 "\nCompiling code dom: " + (t3 - t2) + "ms" +
+                                                 "\nTotal compilation: " + (t3 - t1) + "ms");
 
                         _compositeGeneratedCompiled = true;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Web.Hosting;
 using Composite.C1Console.Events;
 using Composite.Core.Application.Foundation.PluginFacades;
@@ -83,6 +84,9 @@ namespace Composite.Core.Application
             }
             finally
             {
+                // Adding a sleep, so delayed notification from FileWatcher will not kill a newly spawned AppDomain
+                Thread.Sleep(250); 
+
                 _shutdownGuard.Dispose();
                 _shutdownGuard = null;
 
