@@ -247,7 +247,7 @@ namespace Composite.C1Console.Trees
             StringBuilder sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "Url", this.Url);
-            StringConversionServices.SerializeKeyValuePair(sb, "External", this.Extenal.ToString(CultureInfo.InvariantCulture).ToLower());
+            StringConversionServices.SerializeKeyValuePair(sb, "External", this.Extenal.ToString(CultureInfo.InvariantCulture).ToLowerInvariant());
             StringConversionServices.SerializeKeyValuePair(sb, "ViewType", this.ViewType);
             StringConversionServices.SerializeKeyValuePair(sb, "ViewLabel", this.ViewLabel);
             StringConversionServices.SerializeKeyValuePair(sb, "ViewToolTip", this.ViewToolTip);

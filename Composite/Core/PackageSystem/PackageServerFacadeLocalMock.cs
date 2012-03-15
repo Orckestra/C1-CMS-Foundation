@@ -41,9 +41,9 @@ namespace Composite.Core.PackageSystem
 
         public ServerUrlValidationResult ValidateServerUrl(string packageServerUrl)
         {
-            if (packageServerUrl.ToLower().EndsWith("dk") == true) return ServerUrlValidationResult.Http;
-            if (packageServerUrl.ToLower().EndsWith("net") == true) return ServerUrlValidationResult.Https;
-            if (packageServerUrl.ToLower().EndsWith("xxx") == true) return ServerUrlValidationResult.Invalid;
+            if (packageServerUrl.ToLowerInvariant().EndsWith("dk") == true) return ServerUrlValidationResult.Http;
+            if (packageServerUrl.ToLowerInvariant().EndsWith("net") == true) return ServerUrlValidationResult.Https;
+            if (packageServerUrl.ToLowerInvariant().EndsWith("xxx") == true) return ServerUrlValidationResult.Invalid;
 
             return ServerUrlValidationResult.Http;
         }
@@ -54,7 +54,7 @@ namespace Composite.Core.PackageSystem
         {
             Initialize();
 
-            packageServerUrl = packageServerUrl.ToLower();
+            packageServerUrl = packageServerUrl.ToLowerInvariant();
 
             if (_packageDescriptions.ContainsKey(packageServerUrl) == true)
             {

@@ -28,7 +28,7 @@ namespace Composite.Core.WebClient.HttpModules
                 HttpApplication application = (HttpApplication)sender;
                 HttpContext context = application.Context;
 
-                bool adminRootRequest = context.Request.Path.ToLower().StartsWith(UrlUtils.AdminRootPath.ToLower());
+                bool adminRootRequest = context.Request.Path.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
 
                 if (adminRootRequest == true && UserValidationFacade.IsLoggedIn() == true)
                 {

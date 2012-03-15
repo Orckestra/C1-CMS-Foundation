@@ -40,7 +40,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
                         for (int i = 0; i < _reader.AttributeCount; ++i)
                         {
                             _reader.MoveToAttribute(i);
-                            string loweredName = _reader.Name.ToLower();
+                            string loweredName = _reader.Name.ToLowerInvariant();
                             if ("xmlns" != loweredName)
                             {
                                 PropertyCompileTreeNode property = new PropertyCompileTreeNode(_reader.LocalName, new XmlSourceNodeInformation(_reader.Depth, _reader.LocalName, _reader.Name, ""), loweredName.StartsWith("xmlns:"));

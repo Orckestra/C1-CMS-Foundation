@@ -38,13 +38,13 @@ namespace Composite.Core.WebClient.HttpModules
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 
-            string currentPath = context.Request.Path.ToLower();
+            string currentPath = context.Request.Path.ToLowerInvariant();
 
             if (currentPath.StartsWith(_adminRootPath) == true && currentPath.Length > _adminRootPath.Length)
             {
                 if (UserValidationFacade.IsLoggedIn() == false)
                 {
-                    if (_allAllowedPaths.Any(p => currentPath.StartsWith(p)) == false)
+                    if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
                     {
                         LoggingService.LogWarning("Authorization", string.Format("DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath));
                         string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
@@ -67,7 +67,7 @@ namespace Composite.Core.WebClient.HttpModules
         {
             lock (_lock)
             {
-                _adminRootPath = UrlUtils.AdminRootPath.ToLower();
+                _adminRootPath = UrlUtils.AdminRootPath.ToLowerInvariant();
 
                 if (_adminRootPath.EndsWith("/") == false)
                     _adminRootPath = string.Format("{0}/", _adminRootPath);
@@ -91,7 +91,7 @@ namespace Composite.Core.WebClient.HttpModules
                     XAttribute relativePathAttribute = Verify.ResultNotNull<XAttribute>(allowElement.Attribute(allow_pathAttributeName), "Missing '{0}' attribute on '{1}' element in '{2}'.", allow_pathAttributeName, allowElement, webauthorizationRelativeConfigPath);
                     string relativePath = Verify.StringNotIsNullOrWhiteSpace(relativePathAttribute.Value, "Empty '{0}' attribute on '{1}' element in '{2}'.", allow_pathAttributeName, allowElement, webauthorizationRelativeConfigPath);
 
-                    string fullPath = UrlUtils.ResolveAdminUrl(relativePath).ToLower();
+                    string fullPath = UrlUtils.ResolveAdminUrl(relativePath).ToLowerInvariant();
                     _allAllowedPaths.Add(fullPath);
                 }
             }

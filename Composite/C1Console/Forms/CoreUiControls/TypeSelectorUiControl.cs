@@ -37,21 +37,21 @@ namespace Composite.C1Console.Forms.CoreUiControls
         {
             string val = value as string;
 
-            val = val.ToLower();
+            val = val.ToLowerInvariant();
             string[] options = val.Split('|');
             UiControlTypeSelectorMode mode = new UiControlTypeSelectorMode();
             foreach (string opt in options)
             {
                 string option = opt.Trim();
-                if (option == TypeIncludes.ConcreteTypes.ToString().ToLower())
+                if (option == TypeIncludes.ConcreteTypes.ToString().ToLowerInvariant())
                 {
                     mode = mode | UiControlTypeSelectorMode.ConcreteTypes;
                 }
-                else if (option == TypeIncludes.InterfaceTypes.ToString().ToLower())
+                else if (option == TypeIncludes.InterfaceTypes.ToString().ToLowerInvariant())
                 {
                      mode = mode | UiControlTypeSelectorMode.InterfaceTypes;
                 }
-                else if (option == TypeIncludes.PrimitiveTypes.ToString().ToLower())
+                else if (option == TypeIncludes.PrimitiveTypes.ToString().ToLowerInvariant())
                 {
                      mode = mode | UiControlTypeSelectorMode.PrimitiveTypes;
                 }

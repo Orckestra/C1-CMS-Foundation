@@ -56,7 +56,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
         {
             string val = value as string;
 
-            val = val.ToLower();
+            val = val.ToLowerInvariant();
 
             switch (val)
             {

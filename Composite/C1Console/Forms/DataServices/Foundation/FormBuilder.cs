@@ -13,12 +13,12 @@ namespace Composite.C1Console.Forms.DataServices.Foundation
     {
         internal static FormTreeCompiler Build(string formPath, IFormChannelIdentifier channel, Dictionary<string, object> bindings, bool debugMode)
         {
-            string folderPath = Path.GetDirectoryName(formPath).ToLower();
-            string fileName = Path.GetFileName(formPath).ToLower();
+            string folderPath = Path.GetDirectoryName(formPath).ToLowerInvariant();
+            string fileName = Path.GetFileName(formPath).ToLowerInvariant();
 
             List<IFormDefinitionFile> formFiles =
                 (from file in DataFacade.GetData<IFormDefinitionFile>()
-                 where file.FolderPath.ToLower() == folderPath && file.FileName.ToLower() == fileName
+                 where file.FolderPath.ToLowerInvariant() == folderPath && file.FileName.ToLowerInvariant() == fileName
                  select file).ToList();
 
             if (formFiles.Count == 0) throw new ArgumentException(string.Format("No form definition with path '{0}' was found. Please use a virtual Form Path", formPath), "formPath");

@@ -89,7 +89,8 @@ namespace Composite.Core.Types.Foundation
             {
                 foreach (string referencedAssemblyFileName in parms.ReferencedAssemblies)
                 {
-                    Assembly assembly = knownAssemblies.Where(f => f.CodeBase.ToLower().EndsWith(referencedAssemblyFileName.ToLower())).FirstOrDefault();
+                    Assembly assembly = knownAssemblies
+                                        .FirstOrDefault(f => f.CodeBase.EndsWith(referencedAssemblyFileName, StringComparison.OrdinalIgnoreCase));
 
                     if (assembly != null)
                     {

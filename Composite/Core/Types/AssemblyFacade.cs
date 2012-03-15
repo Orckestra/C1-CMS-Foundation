@@ -19,7 +19,7 @@ namespace Composite.Core.Types
         /// <exclude />
         public static IEnumerable<Assembly> GetAssembliesFromBin()
         {
-            string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower().Replace('\\', '/');
+            string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLowerInvariant().Replace('\\', '/');
 
             List<Assembly> assemblies = new List<Assembly>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -28,7 +28,7 @@ namespace Composite.Core.Types
 
                 try
                 {
-                    string codebase = assembly.CodeBase.ToLower();
+                    string codebase = assembly.CodeBase.ToLowerInvariant();
 
                     if (codebase.Contains(binDirectory) == true)
                     {

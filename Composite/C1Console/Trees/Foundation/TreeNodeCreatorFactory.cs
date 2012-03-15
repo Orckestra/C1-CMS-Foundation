@@ -155,7 +155,7 @@ namespace Composite.C1Console.Trees.Foundation
                     ToolTip = toolTipAttribute.GetValueOrDefault(null),
                     Icon = icon,
                     OpenedIcon = openedIcon,
-                    ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLower() == "true",
+                    ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
                     Display = leafDisplay
                 };
 
@@ -220,7 +220,7 @@ namespace Composite.C1Console.Trees.Foundation
                     DateFormat = dateFormatAttribute.GetValueOrDefault(null),
                     Range = rangeAttribute.GetValueOrDefault(null),
                     FirstLetterOnly = firstLetterOnly,
-                    ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLower() == "true",
+                    ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
                     Display = leafDisplay
                 };
             }

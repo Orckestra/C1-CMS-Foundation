@@ -33,7 +33,7 @@ namespace Composite.Core.ResourceSystem
         {
             string val = value as string;
 
-            val = val.ToLower();
+            val = val.ToLowerInvariant();
 
             switch (val)
             {

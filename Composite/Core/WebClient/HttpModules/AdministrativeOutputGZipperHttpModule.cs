@@ -21,12 +21,12 @@ namespace Composite.Core.WebClient.HttpModules
         {
             HttpApplication application = (HttpApplication) sender;
             HttpContext context = application.Context;
-            bool adminRootRequest = context.Request.Path.ToLower().StartsWith(UrlUtils.AdminRootPath.ToLower());
+            bool adminRootRequest = context.Request.Path.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
 
             if (!adminRootRequest) return;
 
 
-            string requestPathExtension = Path.GetExtension(context.Request.Path).ToLower();
+            string requestPathExtension = Path.GetExtension(context.Request.Path).ToLowerInvariant();
 
             if (requestPathExtension == ".aspx" || requestPathExtension == ".asmx")
             {
@@ -40,11 +40,11 @@ namespace Composite.Core.WebClient.HttpModules
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 
-            bool adminRootRequest = context.Request.Path.ToLower().StartsWith(UrlUtils.AdminRootPath.ToLower());
+            bool adminRootRequest = context.Request.Path.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
 
             if (adminRootRequest == true)
             {
-                string requestPathExtension = Path.GetExtension(context.Request.Path).ToLower();
+                string requestPathExtension = Path.GetExtension(context.Request.Path).ToLowerInvariant();
 
                 if (requestPathExtension == ".aspx" || requestPathExtension == ".asmx")
                 {

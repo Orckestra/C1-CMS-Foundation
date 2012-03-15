@@ -276,7 +276,7 @@ namespace Composite.C1Console.Trees.Foundation
                 actionNode.FunctionMarkup = functionMarkupElement;
 
                 XAttribute refreshTreeAttribute = element.Attribute("RefreshTree");
-                string refreshTreeAttributeValue = refreshTreeAttribute.GetValueOrDefault("false").ToLower();
+                string refreshTreeAttributeValue = refreshTreeAttribute.GetValueOrDefault("false").ToLowerInvariant();
                 if (refreshTreeAttributeValue == "true")
                 {
                     actionNode.RefreshTree = true;
