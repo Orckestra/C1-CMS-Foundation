@@ -78,7 +78,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool makeAFlush)
+        public void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile)
         {
             DataTypeChangeDescriptor dataTypeChangeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor(); 
 
@@ -89,16 +89,11 @@ namespace Composite.Data.DynamicTypes
                 DataMetaDataFacade.PersistMetaData(dataTypeChangeDescriptor.AlteredType);
 
                 if (dataTypeChangeDescriptor.AlteredTypeHasChanges == true)
-                {                    
-                    DataProviderPluginFacade.AlterStore(updateDataTypeDescriptor);
+                {
+                    DataProviderPluginFacade.AlterStore(updateDataTypeDescriptor, forceCompile);
                 }                
 
                 transactionScope.Complete();
-            }
-
-            if (makeAFlush == true)
-            {
-                GlobalEventSystemFacade.FlushTheSystem();
             }
         }
 

@@ -23,7 +23,7 @@ namespace Composite.Data.Foundation
                     {
                         try
                         {
-                            if (DynamicTypeManager.EnsureUpdateStore(interfaceType, providerName, false) == true)
+                            if (DynamicTypeManager.EnsureUpdateStore(interfaceType, providerName, true) == true)
                             {
                                 doFlush = true;
                             }

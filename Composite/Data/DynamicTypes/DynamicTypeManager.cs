@@ -140,15 +140,15 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
-            AlterStore(updateDataTypeDescriptor, true);
+            AlterStore(updateDataTypeDescriptor, false);
         }        
 
 
 
         /// <exclude />
-        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool makeAFlush)
+        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceRecompile)
         {
-            _dynamicTypeManager.AlterStore(updateDataTypeDescriptor, makeAFlush);
+            _dynamicTypeManager.AlterStore(updateDataTypeDescriptor, forceRecompile);
         }
 
 

@@ -23,8 +23,12 @@ namespace Composite.Data.Plugins.DataProvider
         /// <exclude />
         void CreateStore(DataTypeDescriptor typeDescriptor);
 
-        /// <exclude />
-        void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="updateDataTypeDescriptor"></param>
+        /// <param name="forceCompile">If this is true and the provider uses dynamic compilations. It should compile its helper regardless.</param>
+        void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile);
 
         /// <exclude />
         void DropStore(DataTypeDescriptor typeDescriptor);
