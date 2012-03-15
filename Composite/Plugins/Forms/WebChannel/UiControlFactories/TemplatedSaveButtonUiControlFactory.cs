@@ -30,6 +30,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             set { _saveEventHandler = value; }
         }
 
+        /// <exclude />
         public EventHandler SaveAndPublishEventHandler
         {
             get { return _saveAndPublishEventHandler; }

@@ -75,8 +75,10 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         /// <exclude />
         public List<string> SourceBindingPaths { get; set; }
 
+        /// <exclude />
         public virtual bool IsValid { get; set; }
 
+        /// <exclude />
         public virtual string ValidationError { get; set; }
     }
 

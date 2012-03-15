@@ -123,6 +123,7 @@ namespace Composite.Core.Types
         /// deleted when the app domain is terminated.
         /// </summary>
         /// <param name="codeGenerationBuilder"></param>
+        /// <param name="verbose"></param>
         /// <returns></returns>
         public static IEnumerable<Type> CompileRuntimeTempTypes(CodeGenerationBuilder codeGenerationBuilder, bool verbose = true)
         {

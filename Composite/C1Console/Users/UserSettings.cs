@@ -27,8 +27,7 @@ namespace Composite.C1Console.Users
             }
         }
 
-
-
+        /// <exclude />
         public static CultureInfo C1ConsoleUiLanguage
         {
             get

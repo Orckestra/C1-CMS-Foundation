@@ -545,18 +545,6 @@
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionInfoActionExecutor.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionInfoActionToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\StandardFunctionAuxiliarySecurityAncestorProvider.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallLocalPackageWorkflow.designer.cs">
-      <DependentUpon>InstallLocalPackageWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PackageElementProvider\InstallRemotePackageWorkflow.designer.cs">
-      <DependentUpon>InstallRemotePackageWorkflow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedSaveButtonUiControlFactory.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
