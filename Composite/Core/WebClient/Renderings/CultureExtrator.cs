@@ -28,7 +28,7 @@ namespace Composite.Core.WebClient.Renderings
                 int endIndex = requestPath.IndexOf('/', startIndex) - 1;
                 if (endIndex >= 0)
                 {
-                    string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1).ToLower();
+                    string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1).ToLowerInvariant();
 
                     if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName) == true)
                     {

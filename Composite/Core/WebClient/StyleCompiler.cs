@@ -23,7 +23,7 @@ namespace Composite.Core.WebClient
 
         private static void IncludeRecursive(string fileToInclude, C1StreamWriter writer, HashSet<string> alreadyIncludedFiles)
         {
-            fileToInclude = fileToInclude.ToLower();
+            fileToInclude = fileToInclude.ToLowerInvariant();
             alreadyIncludedFiles.Add(fileToInclude);
 
             bool includingEnabled = true;

@@ -64,13 +64,13 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
         {
             if (searchToken.IsValidKeyword() == true)
             {
-                string keyword = searchToken.Keyword.ToLower();
+                string keyword = searchToken.Keyword.ToLowerInvariant();
 
                 return
                     from function in DataFacade.GetData<IMethodBasedFunctionInfo>()
-                    where function.MethodName.ToLower().Contains(keyword) ||
-                          function.Namespace.ToLower().Contains(keyword) ||
-                          function.UserMethodName.ToLower().Contains(keyword)
+                    where function.MethodName.ToLowerInvariant().Contains(keyword) ||
+                          function.Namespace.ToLowerInvariant().Contains(keyword) ||
+                          function.UserMethodName.ToLowerInvariant().Contains(keyword)
                     select (IFunctionTreeBuilderLeafInfo)new MethodFunctionTreeBuilderLeafInfo(function);
             }
             else

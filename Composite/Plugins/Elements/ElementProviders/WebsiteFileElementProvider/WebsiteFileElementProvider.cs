@@ -323,7 +323,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 folders =
                     from folder in folders
-                    where folder.FolderName.ToLower().Contains(searchToken.Keyword.ToLower()) == true
+                    where folder.FolderName.ToLowerInvariant().Contains(searchToken.Keyword.ToLowerInvariant()) == true
                     select folder;
             }
 
@@ -369,7 +369,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 files =
                     from file in files
-                    where file.FileName.ToLower().Contains(searchToken.Keyword.ToLower()) == true
+                    where file.FileName.ToLowerInvariant().Contains(searchToken.Keyword.ToLowerInvariant()) == true
                     select file;
             }
 

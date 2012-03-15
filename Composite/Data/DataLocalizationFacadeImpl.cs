@@ -246,7 +246,7 @@ namespace Composite.Data
             if (cultureInfo == null)
             {
                 string cultureName = (from sal in DataFacade.GetData<ISystemActiveLocale>()
-                                      where sal.UrlMappingName.ToLower() == urlMappingName.ToLower()
+                                      where string.Compare(sal.UrlMappingName, urlMappingName, StringComparison.OrdinalIgnoreCase) == 0
                                       select sal.CultureName).Single();
 
                 cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);
@@ -277,10 +277,10 @@ namespace Composite.Data
                             // Adding lower cased values
                             for(int i=0; i<mappings.Count; i++)
                             {
-                                string loweredValue = mappings[i].ToLower();
+                                string loweredValue = mappings[i].ToLowerInvariant();
                                 if (mappings[i] != loweredValue)
                                 {
-                                    mappings.Add(mappings[i].ToLower());
+                                    mappings.Add(mappings[i].ToLowerInvariant());
                                 }
                             }
 

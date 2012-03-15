@@ -84,12 +84,12 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             }
             else
             {
-                string keyword = searchToken.Keyword.ToLower();
+                string keyword = searchToken.Keyword.ToLowerInvariant();
 
                 return
                     from function in DataFacade.GetData<IXsltFunction>()
-                    where function.Name.ToLower().Contains(keyword) ||
-                          function.Namespace.ToLower().Contains(keyword)
+                    where function.Name.ToLowerInvariant().Contains(keyword) ||
+                          function.Namespace.ToLowerInvariant().Contains(keyword)
                     orderby function.Name
                     select (IFunctionTreeBuilderLeafInfo)new XsltFunctionTreeBuilderLeafInfo(function);
             }

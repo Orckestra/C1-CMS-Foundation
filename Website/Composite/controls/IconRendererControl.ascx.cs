@@ -26,7 +26,7 @@ public partial class IconRendererControl : System.Web.UI.UserControl
 		   		string [] fileEntries = C1Directory.GetFiles ( dirName );
 		   		foreach(string fileName in fileEntries) {
 		   			if ( fileName.Contains ( "_" + size + "px_" )) {
-		   				string string1 = fileName.Replace ( "\\", "/" ).ToLower();
+		   				string string1 = fileName.Replace ( "\\", "/" ).ToLowerInvariant();
 		   				string string2 = string1.Substring ( 
 		   					string1.IndexOf ( "images" ) // Website
 		   				);

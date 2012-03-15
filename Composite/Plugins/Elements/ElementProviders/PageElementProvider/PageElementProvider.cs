@@ -458,12 +458,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return PageServices.GetChildren(itemId.Value).Evaluate().AsQueryable();
             }
 
-            string keyword = searchToken.Keyword.ToLower();
+            string keyword = searchToken.Keyword.ToLowerInvariant();
 
             var predicateItems =
                 from page in DataFacade.GetData<IPage>()
-                where ((page.Description != null) && (page.Description.ToLower().Contains(keyword))) ||
-                      ((page.Title != null) && (page.Title.ToLower().Contains(keyword)))
+                where ((page.Description != null) && (page.Description.ToLowerInvariant().Contains(keyword))) ||
+                      ((page.Title != null) && (page.Title.ToLowerInvariant().Contains(keyword)))
                 select new TreeNode() { Key = page.Id, ParentKey = page.GetParentId() };
 
 

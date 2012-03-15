@@ -261,7 +261,7 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            string loweredRequestPath = requestPath.ToLower();
+            string loweredRequestPath = requestPath.ToLowerInvariant();
             string pagePath = loweredRequestPath;
 
             bool firstCheck = true;

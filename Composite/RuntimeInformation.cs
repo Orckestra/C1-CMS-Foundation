@@ -108,7 +108,7 @@ namespace Composite
             {
                 if (_uniqueInstanceName == null)
                 {
-                    string baseString = PathUtil.BaseDirectory.ToLower();
+                    string baseString = PathUtil.BaseDirectory.ToLowerInvariant();
                     _uniqueInstanceName = string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
                 }
 
@@ -125,7 +125,7 @@ namespace Composite
             {
                 if (_uniqueInstanceNameSafe == null)
                 {
-                    string baseString = PathUtil.BaseDirectory.ToLower().Replace(@"\", "-").Replace("/", "-");
+                    string baseString = PathUtil.BaseDirectory.ToLowerInvariant().Replace(@"\", "-").Replace("/", "-");
                     _uniqueInstanceNameSafe = string.Format("C1@{0}", PathUtil.CleanFileName(baseString));
                 }
 

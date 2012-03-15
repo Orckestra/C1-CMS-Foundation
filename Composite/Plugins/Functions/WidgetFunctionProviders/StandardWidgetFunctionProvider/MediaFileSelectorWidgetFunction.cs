@@ -187,7 +187,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         [Obsolete()]
         private static Expression<Func<IMediaFile, bool>> GetExtensionFilter(string allowedFileExtensions)
         {
-            allowedFileExtensions = allowedFileExtensions.ToLower();
+            allowedFileExtensions = allowedFileExtensions.ToLowerInvariant();
 
             Expression<Func<IMediaFile, bool>> cachedValue = _expressionCache[allowedFileExtensions];
             if (cachedValue != null) return cachedValue;

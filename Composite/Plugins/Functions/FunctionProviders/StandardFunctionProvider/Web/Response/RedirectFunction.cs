@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Composite.Functions;
 using System.Web;
-using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.ResourceSystem;
-using Composite.Core.IO;
+
 using Composite.Core.WebClient;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
+
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Response
 {
@@ -34,15 +31,17 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            if (HttpContext.Current != null && HttpContext.Current.Request != null)
+            var httpContext = HttpContext.Current;
+
+            if (httpContext != null && httpContext.Request != null)
             {
                 string url = parameters.GetParameter<string>("Url");
 
-                bool isAdminConsoleRequest = HttpContext.Current.Request.Url.PathAndQuery.ToLower().StartsWith(UrlUtils.AdminRootPath.ToLower());
+                bool isAdminConsoleRequest = httpContext.Request.Url.PathAndQuery.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
 
                 if (isAdminConsoleRequest == false)
                 {
-                    HttpContext.Current.Response.Redirect(url, false);
+                    httpContext.Response.Redirect(url, false);
                 }
             }
 

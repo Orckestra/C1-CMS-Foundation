@@ -143,11 +143,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
             else
             {
-                string keyword = seachToken.Keyword.ToLower();
+                string keyword = seachToken.Keyword.ToLowerInvariant();
 
                 groups =
                     (from user in DataFacade.GetData<IUser>().ToList()
-                     where user.Username.ToLower().Contains(keyword)
+                     where user.Username.ToLowerInvariant().Contains(keyword)
                      orderby user.Group
                      select user.Group).Distinct().ToList();
             }
@@ -208,12 +208,12 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
             else
             {
-                string keyword = seachToken.Keyword.ToLower();
+                string keyword = seachToken.Keyword.ToLowerInvariant();
 
                 users =
                     (from user in DataFacade.GetData<IUser>().ToList()
                      where user.Group == groupName &&
-                           user.Username.ToLower().Contains(keyword)
+                           user.Username.ToLowerInvariant().Contains(keyword)
                      orderby user.Username
                      select user).ToList();
             }

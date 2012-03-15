@@ -270,15 +270,15 @@ namespace Composite.Functions.Inline
         /// <exclude />
         public static string GetAssemblyLocation(string fullPath)
         {
-            string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location).ToLower();
-            if (fullPath.ToLower().StartsWith(systemPath))
+            string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location).ToLowerInvariant();
+            if (fullPath.ToLowerInvariant().StartsWith(systemPath))
             {
                 return "System";
             }
 
 
-            string binPath = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower();
-            if (fullPath.ToLower().StartsWith(binPath))
+            string binPath = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLowerInvariant();
+            if (fullPath.ToLowerInvariant().StartsWith(binPath))
             {
                 return "Bin";
             }
@@ -291,7 +291,7 @@ namespace Composite.Functions.Inline
         /// <exclude />
         public static string GetAssemblyFullPath(string filename, string location)
         {
-            location = location.ToLower();
+            location = location.ToLowerInvariant();
 
             switch (location)
             {

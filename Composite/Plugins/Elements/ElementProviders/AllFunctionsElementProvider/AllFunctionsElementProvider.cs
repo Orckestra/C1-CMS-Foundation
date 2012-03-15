@@ -118,7 +118,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
             string loweredKeyword = null;
             if (searchToken != null)
             {
-                loweredKeyword = (searchToken.Keyword ?? string.Empty).ToLower();
+                loweredKeyword = (searchToken.Keyword ?? string.Empty).ToLowerInvariant();
             }
 
             foreach (string metaFunctionName in this.MetaFunctionNames.OrderBy(f => f))
@@ -139,7 +139,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
 
                 if (!string.IsNullOrEmpty(loweredKeyword))
                 {
-                    if (!metaFunction.CompositeName().ToLower().Contains(loweredKeyword))
+                    if (!metaFunction.CompositeName().ToLowerInvariant().Contains(loweredKeyword))
                     {
                         continue;
                     }

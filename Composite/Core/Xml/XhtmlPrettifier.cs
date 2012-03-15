@@ -139,7 +139,7 @@ namespace Composite.Core.Xml
                     stringBuilder.Append("<" + node.Name);
                     foreach (XmlAttribute attribute in node.Attributes)
                     {
-                        if ((attribute.Name.ToLower().StartsWith("xmlns") == false) ||
+                        if ((attribute.Name.ToLowerInvariant().StartsWith("xmlns") == false) ||
                             (node.ParentNode == null) || (node.ParentNode.NamespaceDefined(attribute.Name) == false))
                         {
                             stringBuilder.Append(" " + attribute.Name + "=\"" + EncodeAttributeString(attribute.Value) + "\"");
@@ -267,7 +267,7 @@ namespace Composite.Core.Xml
 
                     foreach (XmlAttribute attribute in node.Attributes)
                     {
-                        if (attribute.Name.ToLower() != "system")
+                        if (attribute.Name.ToLowerInvariant() != "system")
                         {
                             stringBuilder.Append(" " + attribute.Name + " \"" + attribute.Value + "\"");
                         }
@@ -565,7 +565,7 @@ namespace Composite.Core.Xml
                 if(_isBlockElement == null)
                 {
                     _isBlockElement = this.NodeType == XmlNodeType.Element
-                                      && !InlineElements.Contains(new NamespaceName { Name = this.Name.ToLower(), Namespace = GetNamespace() });
+                                      && !InlineElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetNamespace() });
                 }
 
                 return _isBlockElement.Value;
@@ -577,7 +577,7 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLower(), Namespace = GetNamespace() }) == true) return true;
+                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLowerInvariant(), Namespace = GetNamespace() }) == true) return true;
 
                 return false;
             }
@@ -588,7 +588,7 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLower(), Namespace = GetNamespace() }) == true) return true;
+                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetNamespace() }) == true) return true;
 
                 return false;
             }
@@ -597,7 +597,7 @@ namespace Composite.Core.Xml
 
             private string GetNamespace()
             {
-                string namespaceName = this.NamespaceURI.ToLower();
+                string namespaceName = this.NamespaceURI.ToLowerInvariant();
                 if (namespaceName == "http://www.w3.org/1999/xhtml")
                 {
                     namespaceName = "";

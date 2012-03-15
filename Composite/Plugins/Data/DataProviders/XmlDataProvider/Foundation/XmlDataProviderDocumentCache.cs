@@ -57,7 +57,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private static void EnsureFileChangesSubscription(string filename)
         {
-            filename = filename.ToLower();
+            filename = filename.ToLowerInvariant();
 
             if (_watchedFiles.Contains(filename))
             {
@@ -79,7 +79,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private static void OnFileExternallyChanged(string filePath, FileChangeType changeType)
         {
-            filePath = filePath.ToLower();
+            filePath = filePath.ToLowerInvariant();
 
             var fileRecord = _cache[filePath];
 
@@ -121,7 +121,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
         public static FileRecord GetFileRecord(string filename, string elementName, Func<XElement, IDataId> keyGetter)
         {
-            string cacheKey = filename.ToLower();
+            string cacheKey = filename.ToLowerInvariant();
 
             FileRecord cachedData = _cache[cacheKey];
 

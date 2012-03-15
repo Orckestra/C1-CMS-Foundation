@@ -100,11 +100,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             }
             else
             {
-                string keyword = searchToken.Keyword.ToLower();
+                string keyword = searchToken.Keyword.ToLowerInvariant();
 
                 pageTemplates = 
                     from template in DataFacade.GetData<IPageTemplate>().ToList()
-                    where ((template.Title != null) && (template.Title.ToLower().Contains(keyword))) ||
+                    where ((template.Title != null) && (template.Title.ToLowerInvariant().Contains(keyword))) ||
                           (IFileServices.GetFile<IPageTemplateFile>(template.PageTemplateFilePath).ReadAllText().Contains(keyword))
                     select template;                    
             }

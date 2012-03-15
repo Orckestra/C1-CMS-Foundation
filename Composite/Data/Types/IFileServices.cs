@@ -20,7 +20,8 @@ namespace Composite.Data.Types
 
             var foundFile =
                 (from file in DataFacade.GetData<T>()
-                 where file.FolderPath.ToLower() == folderPath.ToLower() && file.FileName.ToLower() == fileName.ToLower()
+                 where string.Compare(file.FolderPath, folderPath, StringComparison.OrdinalIgnoreCase) == 0
+                    && string.Compare(file.FileName, fileName, StringComparison.OrdinalIgnoreCase) == 0
                  select file).ToList();
 
             if (foundFile.Count == 0) throw new InvalidOperationException(string.Format("Missing file '{0}'", filePath));
@@ -40,7 +41,8 @@ namespace Composite.Data.Types
 
             var foundFile =
                 (from file in DataFacade.GetData<T>()
-                 where file.FolderPath.ToLower() == folderPath.ToLower() && file.FileName.ToLower() == fileName.ToLower()
+                 where file.FolderPath.Equals(folderPath, StringComparison.OrdinalIgnoreCase) 
+                    && file.FileName.Equals(fileName, StringComparison.OrdinalIgnoreCase)
                  select file).ToList();
 
             if (foundFile.Count == 0) return null;

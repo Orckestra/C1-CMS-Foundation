@@ -39,7 +39,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 if (result != null)
                 {
-                    switch (result.ToLower())
+                    switch (result.ToLowerInvariant())
                     {
                         case "0":
                         case "false":

@@ -183,7 +183,7 @@ namespace Composite.Plugins.Routing.Pages
                 {
                     _redirectFolderPaths.Add(page.Id, redirectFolderPath);
 
-                    string redirectLookupUrlLowerCased = redirectLookupUrl.ToLower();
+                    string redirectLookupUrlLowerCased = redirectLookupUrl.ToLowerInvariant();
 
                     if (redirectLookupUrlLowerCased != lookupUrlLowerCased)
                     {
@@ -233,7 +233,7 @@ namespace Composite.Plugins.Routing.Pages
 
                 if(_friendlyUrlPrefixWithLanguageCode != null)
                 {
-                    string alternativeFriendlyUrl = (_friendlyUrlPrefixWithLanguageCode + MakeRelativeUrl(page.FriendlyUrl)).ToLower();
+                    string alternativeFriendlyUrl = (_friendlyUrlPrefixWithLanguageCode + MakeRelativeUrl(page.FriendlyUrl)).ToLowerInvariant();
                     if(!FriendlyUrlToIdLookup.ContainsKey(alternativeFriendlyUrl))
                     {
                         FriendlyUrlToIdLookup.Add(alternativeFriendlyUrl, page.Id);

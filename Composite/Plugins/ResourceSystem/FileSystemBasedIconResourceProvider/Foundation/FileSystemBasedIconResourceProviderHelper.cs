@@ -47,7 +47,9 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
         {
             EnsureMappings();
 
-            XElement iconElement = _mappings.Elements("Icon").Where(f => f.Attribute("name").Value.ToLower() == name.ToLower()).FirstOrDefault();
+            XElement iconElement = _mappings
+                .Elements("Icon")
+                .FirstOrDefault(f => f.Attribute("name").Value.Equals(name, StringComparison.OrdinalIgnoreCase));
 
             if (iconElement == null) throw new InvalidOperationException(string.Format("No icon with name '{0}' found.", name));
 
@@ -111,7 +113,11 @@ namespace Composite.Plugins.ResourceSystem.FileSystemBasedIconResourceProvider.F
 
         private XElement GetIconFileBySize(XElement iconElement, IconSize iconSize)
         {
-            return iconElement.Elements("IconFile").Where(f => f.Attribute("size").Value.ToLower() == iconSize.ToString().ToLower()).FirstOrDefault();
+            string iconSizeStr = iconSize.ToString();
+
+            return iconElement
+                .Elements("IconFile")
+                .FirstOrDefault(f => f.Attribute("size").Value.Equals(iconSizeStr, StringComparison.OrdinalIgnoreCase));
         }
 
 

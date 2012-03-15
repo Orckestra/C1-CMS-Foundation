@@ -331,7 +331,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
         if (mimeType == MimeTypeInfo.Default)
         {
-            mimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName.ToLower()));
+            mimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName.ToLowerInvariant()));
         }
 
         return mimeType;

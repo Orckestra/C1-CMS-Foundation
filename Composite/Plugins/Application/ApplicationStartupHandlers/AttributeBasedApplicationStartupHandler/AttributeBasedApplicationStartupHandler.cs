@@ -152,7 +152,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private static string[] GetDllFilesFromBin()
         {
-            string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLower().Replace('/', '\\');
+            string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLowerInvariant().Replace('/', '\\');
             return C1Directory.GetFiles(binDirectory, "*.dll");
         }
 

@@ -9,7 +9,7 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
         {
             foreach (string attributeName in uiControl.Attributes.Keys)
             {
-                string attributeNameLower = attributeName.ToLower();
+                string attributeNameLower = attributeName.ToLowerInvariant();
                 if (attributeNameLower.StartsWith("client_"))
                 {
                     string clientAttributeName = attributeNameLower.Substring("client_".Length);
@@ -23,7 +23,7 @@ namespace Composite.Core.WebClient.UiControlLib.Foundation
         {
             foreach (string attributeName in uiControl.Attributes.Keys)
             {
-                string attributeNameLower = attributeName.ToLower();
+                string attributeNameLower = attributeName.ToLowerInvariant();
                 if (attributeNameLower.StartsWith("client_"))
                 {
                     string clientAttributeName = attributeNameLower.Substring("client_".Length);

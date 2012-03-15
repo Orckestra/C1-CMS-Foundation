@@ -312,7 +312,7 @@ namespace Composite.Data.Foundation.CodeGeneration
 
         private static string CreateFieldName(string propertyName)
         {
-            return string.Format("_{0}Nullable", propertyName.ToLower());
+            return string.Format("_{0}Nullable", propertyName.ToLowerInvariant());
         }
     }
 }

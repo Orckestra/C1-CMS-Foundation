@@ -19,19 +19,17 @@ namespace Composite.Data.DynamicTypes.Foundation
             string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor);
             string dynamicDataFormFileName = GetFilename(dataTypeDescriptor);
 
-            IDynamicTypeFormDefinitionFile formOverride = 
-                DataFacade.GetData<IDynamicTypeFormDefinitionFile>().
-                Where(f => f.FolderPath.ToLower() == dynamicDataFormFolderPath.ToLower() && f.FileName.ToLower() == dynamicDataFormFileName.ToLower()).
-                FirstOrDefault();
+            IDynamicTypeFormDefinitionFile formOverride =
+                DataFacade.GetData<IDynamicTypeFormDefinitionFile>()
+                          .FirstOrDefault(f => f.FolderPath.Equals(dynamicDataFormFolderPath, StringComparison.OrdinalIgnoreCase)
+                                            && f.FileName.Equals(dynamicDataFormFileName, StringComparison.OrdinalIgnoreCase));
 
             if (formOverride == null)
             {
                 return null;
             }
-            else
-            {
-                return formOverride.ReadAllText();
-            }
+            
+            return formOverride.ReadAllText();
         }
 
 
@@ -52,8 +50,9 @@ namespace Composite.Data.DynamicTypes.Foundation
             }
 
             IDynamicTypeFormDefinitionFile formDefinitionFile =
-                DataFacade.GetData<IDynamicTypeFormDefinitionFile>().Where(f => f.FolderPath.ToLower() == dynamicDataFormFolderPath.ToLower() && f.FileName.ToLower() == dynamicDataFormFileName.ToLower()).
-                FirstOrDefault();
+                DataFacade.GetData<IDynamicTypeFormDefinitionFile>()
+                  .FirstOrDefault(f => f.FolderPath.Equals(dynamicDataFormFolderPath, StringComparison.OrdinalIgnoreCase) 
+                                    && f.FileName.Equals(dynamicDataFormFileName, StringComparison.OrdinalIgnoreCase));
 
             if (formDefinitionFile == null)
             {

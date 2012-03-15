@@ -65,13 +65,13 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
             }
             else
             {
-                string keyword = searchToken.Keyword.ToLower();
+                string keyword = searchToken.Keyword.ToLowerInvariant();
 
                 return
                     from function in DataFacade.GetData<IVisualFunction>()
-                    where function.Name.ToLower().Contains(keyword) ||
-                          function.Namespace.ToLower().Contains(keyword) ||
-                          function.TypeManagerName.ToLower().Contains(keyword)
+                    where function.Name.ToLowerInvariant().Contains(keyword) ||
+                          function.Namespace.ToLowerInvariant().Contains(keyword) ||
+                          function.TypeManagerName.ToLowerInvariant().Contains(keyword)
                     select (IFunctionTreeBuilderLeafInfo)new VisualFunctionTreeBuilderLeafInfo(function);
             }
         }

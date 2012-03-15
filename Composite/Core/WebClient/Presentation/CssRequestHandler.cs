@@ -120,7 +120,7 @@ namespace Composite.Core.WebClient.Presentation
 
             public string get (string key)
             {
-                key = key.ToLower();
+                key = key.ToLowerInvariant();
                 string result = key;
                 if ( scheme.ContainsKey ( key ))
                 {

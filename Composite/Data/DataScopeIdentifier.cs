@@ -97,7 +97,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsLegasyDataScope(string name)
         {
-            name = name.ToLower();
+            name = name.ToLowerInvariant();
             return name == "deleted" || name == "versioned";
         }
 

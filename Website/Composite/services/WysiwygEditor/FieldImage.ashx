@@ -69,9 +69,9 @@ public class YellowBox : IHttpHandler
         for (int i = 1; i < titleBase.Length; i++)
         {
             string letter = titleBase.Substring(i, 1);
-            if (letter != letter.ToLower())
+            if (letter != letter.ToLowerInvariant())
             {
-                bool nextLetterIsLower = (i < titleBase.Length - 1) && (titleBase.Substring(i + 1, 1).ToLower() == titleBase.Substring(i + 1, 1));
+                bool nextLetterIsLower = (i < titleBase.Length - 1) && (titleBase.Substring(i + 1, 1).ToLowerInvariant() == titleBase.Substring(i + 1, 1));
 
                 if (lastWasUpper == false || nextLetterIsLower == true)
                 {

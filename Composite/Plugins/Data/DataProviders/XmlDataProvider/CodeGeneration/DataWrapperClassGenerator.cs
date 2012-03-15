@@ -454,7 +454,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         private static string CreateNullableFieldName(DataFieldDescriptor dataFieldDescriptor)
         {
-            return string.Format("_{0}Nullable", dataFieldDescriptor.Name.ToLower());
+            return string.Format("_{0}Nullable", dataFieldDescriptor.Name.ToLowerInvariant());
         }
 
 

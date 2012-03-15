@@ -310,9 +310,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         [Obsolete("Use Composite.Core.WebClient.UrlPageHelper class")]
         public static bool TryGetPageUrlByFriendlyUrl(string friendlyUrl, out string pageUrl)
         {
-            string lowerFriendlyUrl = friendlyUrl.ToLower();
+            string lowerFriendlyUrl = friendlyUrl.ToLowerInvariant();
 
-            string matchingUrl = GetSiteMap().DescendantsAndSelf().Attributes("FriendlyUrl").Where(f => f.Value.ToLower() == lowerFriendlyUrl).Select(f => f.Parent.Attribute("URL").Value).FirstOrDefault();
+            string matchingUrl = GetSiteMap().DescendantsAndSelf().Attributes("FriendlyUrl").Where(f => f.Value.ToLowerInvariant() == lowerFriendlyUrl).Select(f => f.Parent.Attribute("URL").Value).FirstOrDefault();
 
             pageUrl = matchingUrl;
 
@@ -571,7 +571,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 foreach (KeyValuePair<string, Guid> keyValuePair in urlToIdLookup)
                 {
-                    string loweredUrl = keyValuePair.Key.ToLower();
+                    string loweredUrl = keyValuePair.Key.ToLowerInvariant();
 
                     if (lowerCaseUrlToIdLookup.ContainsKey(loweredUrl))
                     {

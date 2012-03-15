@@ -131,7 +131,7 @@ namespace Composite.Core.Xml
 
             if (element.Name.Namespace == Namespaces.Xhtml)
             {
-                if (InlineElementsLookup.Contains(element.Name.LocalName.ToLower())) 
+                if (InlineElementsLookup.Contains(element.Name.LocalName.ToLowerInvariant())) 
                     return false;
             }
 
@@ -148,7 +148,7 @@ namespace Composite.Core.Xml
             XElement element = node as XElement;
             if (element == null) return false;
 
-            string localName = element.Name.LocalName.ToLower();
+            string localName = element.Name.LocalName.ToLowerInvariant();
             return (localName == "pre") || (localName == "textarea");
         }      
     }
