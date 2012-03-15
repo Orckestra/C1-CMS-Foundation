@@ -310,77 +310,39 @@ namespace Composite.Core.IO
             AddExtensionMapping("rtf", "application/rtf");
             _mimeTypeToResourceName.Add("application/rtf", "mimetype-rtf");
 
-            _toCanonical.Add("application/x-shockwave-flash", Flash);
-            AddExtensionMapping("swf", Flash);
-            _mimeTypeToResourceName.Add("application/x-shockwave-flash", "mimetype-swf");
+            RegisterMimeType(MimeTypeInfo.Flash, "swf", "mimetype-swf");
+            RegisterMimeType(MimeTypeInfo.Director, new[] { "dcr", "dir" }, "mimetype-dir");
+            RegisterMimeType("application/vnd.visio", "vsd", "mimetype-vsd");
+            RegisterMimeType("application/x-font-woff", "woff");
+            RegisterMimeType("audio/x-wav", "wav", null /* "mimetype-vaw" */);
+            RegisterMimeType(MimeTypeInfo.Wmv, "wmv", "mimetype-wmv");
 
-            _toCanonical.Add("application/x-director", Director);
-            AddExtensionMapping("dcr", Director);
-            AddExtensionMapping("dir", Director);
-            _mimeTypeToResourceName.Add("application/x-director", "mimetype-dir");
+            RegisterMimeType("application/vnd.ms-excel", "xls", "mimetype-xls");
+            RegisterMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx", "mimetype-xls");
 
-            _toCanonical.Add("application/vnd.visio", "application/vnd.visio");
-            AddExtensionMapping("vsd", "application/vnd.visio");
-            _mimeTypeToResourceName.Add("application/vnd.visio", "mimetype-vsd");
+            RegisterMimeType("text/xml", new[] { "xml", "config", "xsl", "xslt" }, "mimetype-xml");
 
-            _toCanonical.Add("audio/x-wav", "audio/x-wav");
-            AddExtensionMapping("wav", "audio/x-wav");
-            _mimeTypeToResourceName.Add("audio/x-wav", "mimetype-vaw");
-
-            _toCanonical.Add("video/x-ms-wmv", Wmv);
-            AddExtensionMapping("wmv", Wmv);
-            _mimeTypeToResourceName.Add("video/x-ms-wmv", "mimetype-wmv");
-
-            _toCanonical.Add("application/vnd.ms-excel", "application/vnd.ms-excel");
-            AddExtensionMapping("xls", "application/vnd.ms-excel");
-            _mimeTypeToResourceName.Add("application/vnd.ms-excel", "mimetype-xls");
-
-            _toCanonical.Add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            AddExtensionMapping("xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            _mimeTypeToResourceName.Add("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "mimetype-xls");
-
-            _toCanonical.Add("text/xml", "text/xml");
-            AddExtensionMapping("xml", "text/xml");
-            AddExtensionMapping("xsl", "text/xml");
-            AddExtensionMapping("xslt", "text/xml");
-            AddExtensionMapping("config", "text/xml");
-            _mimeTypeToResourceName.Add("text/xml", "mimetype-xml");
-
-            string mimeTypeZip = "application/zip";
-            _toCanonical.Add(mimeTypeZip, mimeTypeZip);
+            const string mimeTypeZip = "application/zip";
             _toCanonical.Add("application/x-zip-compressed", mimeTypeZip);
-            AddExtensionMapping("zip", mimeTypeZip);
-            _mimeTypeToResourceName.Add(mimeTypeZip, "mimetype-zip");
+            RegisterMimeType(mimeTypeZip, "zip", "mimetype-zip");
 
-            _toCanonical.Add("text/plain", "text/plain");
+            
             _toCanonical.Add("text/txt", "text/plain");
             _toCanonical.Add("text/text", "text/plain");
-            AddExtensionMapping("txt", "text/plain");
-            _mimeTypeToResourceName.Add("text/plain", "mimetype-txt");
+            RegisterMimeType("text/plain", "txt", "mimetype-txt");
 
 
             // .Cs and asp.net files
-            _toCanonical.Add(MimeTypeInfo.CSharp, MimeTypeInfo.CSharp);
-            AddExtensionMapping("cs", MimeTypeInfo.CSharp);
+            RegisterMimeType(MimeTypeInfo.Ascx, "ascx", "mimetype-ascx");
+            RegisterMimeType(MimeTypeInfo.Aspx, "aspx", "mimetype-aspx");
+            RegisterMimeType(MimeTypeInfo.Ashx, "ashx");
+            RegisterMimeType(MimeTypeInfo.MasterPage, "master");
 
-            _toCanonical.Add(MimeTypeInfo.Ascx, MimeTypeInfo.Ascx);
-            AddExtensionMapping("ascx", MimeTypeInfo.Ascx);
-            _mimeTypeToResourceName.Add(MimeTypeInfo.Ascx, "mimetype-ascx");
+            RegisterMimeType(MimeTypeInfo.CSharp, "cs");
+            RegisterMimeType(MimeTypeInfo.CsHtml, "cshtml", "mimetype-cshtml");
 
-            _toCanonical.Add(MimeTypeInfo.CsHtml, MimeTypeInfo.CsHtml);
-            AddExtensionMapping("cshtml", MimeTypeInfo.CsHtml);
-            _mimeTypeToResourceName.Add(MimeTypeInfo.CsHtml, "mimetype-cshtml");
-
-            _toCanonical.Add(MimeTypeInfo.Aspx, MimeTypeInfo.Aspx);
-            AddExtensionMapping("aspx", MimeTypeInfo.Aspx);
-            _mimeTypeToResourceName.Add(MimeTypeInfo.Aspx, "mimetype-aspx");
-
-            _toCanonical.Add(MimeTypeInfo.Ashx, MimeTypeInfo.Ashx);
-            AddExtensionMapping("ashx", MimeTypeInfo.Ashx);
-
-            _toCanonical.Add(MimeTypeInfo.MasterPage, MimeTypeInfo.MasterPage);
-            AddExtensionMapping("master", MimeTypeInfo.MasterPage);
-
+            
+            
             AddExtensionMapping("mp4", "video/mp4");
             AddExtensionMapping("ogg", "audio/ogg");
             AddExtensionMapping("ogv", "video/ogg");
@@ -389,6 +351,26 @@ namespace Composite.Core.IO
             AddExtensionMapping("svgz", "mage/svg+xml");
             AddExtensionMapping("flv4", "video/mp4");
             AddExtensionMapping("eot", "application/vnd.ms-fontobject");
+        }
+
+        private static void RegisterMimeType(string canonicalMimeTypeName, string extension, string resourceName = null)
+        {
+            RegisterMimeType(canonicalMimeTypeName, new [] { extension }, resourceName);
+        }
+
+        private static void RegisterMimeType(string canonicalMimeTypeName, string[] extensions, string resourceName)
+        {
+            _toCanonical.Add(canonicalMimeTypeName, canonicalMimeTypeName);
+
+            foreach(string extension in extensions)
+            {
+                AddExtensionMapping(extension, canonicalMimeTypeName);
+            }
+
+            if(resourceName != null)
+            {
+                _mimeTypeToResourceName.Add(canonicalMimeTypeName, resourceName);
+            }
         }
 
         private static bool AddExtensionMapping(string extension, string mimeType)
