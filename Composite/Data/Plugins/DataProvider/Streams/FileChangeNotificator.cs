@@ -70,11 +70,11 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
         private static void FireFileChangedEvent(string filePath, FileChangeType changeType)
         {
-            filePath = filePath.ToLower();
+            filePath = filePath.ToLowerInvariant();
 
             ReadOnlyCollection<Pair<MethodInfo, WeakReference>> weakInvocationList;
 
-            if (!_subscribers.TryGetValue(filePath.ToLower(), out weakInvocationList))
+            if (!_subscribers.TryGetValue(filePath.ToLowerInvariant(), out weakInvocationList))
             {
                 return;
             }
@@ -134,7 +134,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 }
             }
 
-            string key = filePath.ToLower();
+            string key = filePath.ToLowerInvariant();
             lock (_syncRoot)
             {
                 if (_subscribers.ContainsKey(key))

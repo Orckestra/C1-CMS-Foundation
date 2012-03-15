@@ -184,7 +184,7 @@ namespace Composite.Data.Foundation.CodeGeneration
 
         private static string CreateFieldName(DataFieldDescriptor dataFieldDescriptor)
         {
-            return string.Format("_{0}", dataFieldDescriptor.Name.ToLower());
+            return string.Format("_{0}", dataFieldDescriptor.Name.ToLowerInvariant());
         }
     }    
 }

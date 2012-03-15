@@ -429,7 +429,7 @@ namespace Composite.Core.IO
 
             foreach(XElement mimeMapping in staticContentConfig.Elements("mimeMap"))
             {
-                string extension = mimeMapping.Attribute("fileExtension").Value.ToLower();
+                string extension = mimeMapping.Attribute("fileExtension").Value.ToLowerInvariant();
                 string mimeType = mimeMapping.Attribute("mimeType").Value;
 
                 if(extension.StartsWith("."))
@@ -452,7 +452,7 @@ namespace Composite.Core.IO
                 return MimeTypeInfo.Default;
             }
 
-            mimeType = mimeType.ToLower();
+            mimeType = mimeType.ToLowerInvariant();
 
             if (_toCanonical.ContainsKey(mimeType))
             {
@@ -489,14 +489,14 @@ namespace Composite.Core.IO
                 return MimeTypeInfo.Default;
             }
 
-            extension = extension.ToLower();
+            extension = extension.ToLowerInvariant();
 
             if (extension.StartsWith("."))
             {
                 extension = extension.Substring(1);
             }
 
-            if (_extensionToCanonical.ContainsKey(extension.ToLower()))
+            if (_extensionToCanonical.ContainsKey(extension.ToLowerInvariant()))
             {
                 return _extensionToCanonical[extension];
             }

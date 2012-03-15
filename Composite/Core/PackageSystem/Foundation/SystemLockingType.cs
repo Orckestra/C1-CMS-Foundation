@@ -40,7 +40,7 @@ namespace Composite.Core.PackageSystem.Foundation
 
         public static string Serialize(this SystemLockingType systemLockingType)
         {
-            return systemLockingType.ToString().ToLower();
+            return systemLockingType.ToString().ToLowerInvariant();
         }
     }
 }

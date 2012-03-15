@@ -52,7 +52,7 @@ namespace Composite.Core.Types
 
             foreach (string location in locations)
             {
-                string locationKey = Path.GetFileName(location).ToLower();
+                string locationKey = Path.GetFileName(location).ToLowerInvariant();
 
 
                 if (foundAssemblyLocations.ContainsKey(locationKey) == false)

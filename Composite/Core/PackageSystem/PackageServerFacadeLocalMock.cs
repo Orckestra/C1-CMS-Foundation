@@ -72,7 +72,7 @@ namespace Composite.Core.PackageSystem
         {
             Initialize();
 
-            packageServerUrl = packageServerUrl.ToLower();
+            packageServerUrl = packageServerUrl.ToLowerInvariant();
 
             if ((_eulaTexts.ContainsKey(packageServerUrl) == true) &&
                 (_eulaTexts[packageServerUrl].ContainsKey(eulaId) == true))
@@ -249,7 +249,7 @@ namespace Composite.Core.PackageSystem
                     packageDescriptions.Add(new KeyValuePair<PackageDescription, ExtraInfo>(packageDescription, extraInfo));
                 }
 
-                _packageDescriptions.Add(element.Attribute("url").Value.ToLower(), packageDescriptions);
+                _packageDescriptions.Add(element.Attribute("url").Value.ToLowerInvariant(), packageDescriptions);
 
 
                 Dictionary<Guid, string> eulaTexts = new Dictionary<Guid, string>();
@@ -260,7 +260,7 @@ namespace Composite.Core.PackageSystem
                         eulaTextElement.Value
                         );
                 }
-                _eulaTexts.Add(element.Attribute("url").Value.ToLower(), eulaTexts);
+                _eulaTexts.Add(element.Attribute("url").Value.ToLowerInvariant(), eulaTexts);
             }
         }
 

@@ -145,7 +145,7 @@ namespace Composite.Core.Types
 
         public static bool IsProbeableAssembly(string assemblyFullName)
         {
-            string lowerAssemblyName = assemblyFullName.ToLower();
+            string lowerAssemblyName = assemblyFullName.ToLowerInvariant();
 
             if (lowerAssemblyName.IndexOf(',') > -1)
             {
@@ -155,12 +155,12 @@ namespace Composite.Core.Types
 
             foreach (string excludeName in GlobalSettingsFacade.NonProbableAssemblyNames.Where(n => n.Contains("*") == false))
             {
-                if (lowerAssemblyName == excludeName.ToLower()) return false;
+                if (lowerAssemblyName == excludeName.ToLowerInvariant()) return false;
             }
 
             foreach (string excludeStartName in GlobalSettingsFacade.NonProbableAssemblyNames.Where(n => n.EndsWith("*") == true))
             {
-                if (lowerAssemblyName.StartsWith(excludeStartName.Replace("*", "").ToLower())) return false;
+                if (lowerAssemblyName.StartsWith(excludeStartName.Replace("*", "").ToLowerInvariant())) return false;
             }
 
             return true;

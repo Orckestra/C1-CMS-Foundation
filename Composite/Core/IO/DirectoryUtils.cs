@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using Composite.Core.Logging;
@@ -37,7 +38,7 @@ namespace Composite.Core.IO
             {
                 currentPath = string.Format("{0}{1}{2}", currentPath, directories[i], Path.DirectorySeparatorChar);
 
-                if (currentPath.ToLower().StartsWith(PathUtil.BaseDirectory.ToLower())) // don't touch dirs outside our own folder!
+                if (currentPath.StartsWith(PathUtil.BaseDirectory, StringComparison.InvariantCultureIgnoreCase)) // don't touch dirs outside our own folder!
                 {
                     if (C1Directory.Exists(currentPath) == false)
                     {

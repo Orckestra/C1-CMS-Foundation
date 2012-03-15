@@ -10,7 +10,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
     {
         public static string GetDbType(SqlDbType dbType, bool isNullable)
         {
-            string s = dbType.ToString().ToLower();
+            string s = dbType.ToString().ToLowerInvariant();
             if (s == "varchar") s = "nvarchar";
 
             return string.Format("{0}{1}", s, isNullable ? "" : " NOT NULL");
