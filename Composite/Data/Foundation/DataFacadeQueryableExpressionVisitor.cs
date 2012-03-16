@@ -1,9 +1,11 @@
 using System;
+using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 
 
 namespace Composite.Data.Foundation
@@ -116,8 +118,36 @@ namespace Composite.Data.Foundation
                 throw new NotImplementedException("Supporing for DataConnection method '{0}' or one of it's overloads not yet implemented".FormatWith(m.Method.Name));
             }
 
+            // Replacing Guid.NewGuid() call with "newid()" sql statement
+            if (m.Method.IsStatic && m.Method.DeclaringType == typeof(Guid) && m.Method.Name == "NewGuid"
+                && _queryable != null)
+            {
+                var dataContext = GetContext(_queryable) as DataContextBase;
+                if(dataContext != null)
+                {
+                    return Expression.Call(Expression.Constant(dataContext), DataContextBase.GetNewIdMethodInfo());
+                }
+            }
+
             return base.VisitMethodCall(m);
         }
+
+
+        private static DataContext GetContext(IQueryable q)
+        {
+            string typeName = q.GetType().FullName;
+
+            if (!typeName.StartsWith("System.Data.Linq.DataQuery`1", StringComparison.Ordinal)
+                && !typeName.StartsWith("System.Data.Linq.Table`1", StringComparison.Ordinal))
+            {
+                return null;
+            }
+
+            var field = q.GetType().GetField("context", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            return field == null ? null : field.GetValue(q) as DataContext;
+        }
+
 
 
         private TResultType EvaluateExpression<TResultType>(Expression expression)
