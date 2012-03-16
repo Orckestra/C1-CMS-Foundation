@@ -43,7 +43,7 @@
   <string key="PageType.EditPageTypeWorkflow.PageTemplatePlaceHolder.Label" value="Layout" />
   <string key="PageType.EditPageTypeWorkflow.PageTemplateRestrictionFieldGroup.Label" value="Layout" />
   <string key="PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Label" value="Layout restrictions" />
-  <string key="PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Help" value="Layout restrictions" />
+  <string key="PageType.EditPageTypeWorkflow.PageTemplateRestrictionMultiKeySelector.Help" value="Select layouts to be only available when editing pages of this page type. If none is selected (default), all will be available." />
   <string key="PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Label" value="Default layout" />
   <string key="PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.Help" value="Select a layout to be the default layout for pages created with this page type" />
   <string key="PageType.EditPageTypeWorkflow.DefaultPageTemplateKeySelector.NoneSelectedLabel" value="[None]" />
