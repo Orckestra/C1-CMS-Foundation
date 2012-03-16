@@ -189,136 +189,57 @@ namespace Composite.Core.IO
         {
             LoadExtensionMappingsFromWebConfig();
 
-            // jpeg
+            // Image formats
             _toCanonical.Add("image/pjpg", Jpeg);
             _toCanonical.Add("image/pjpeg", Jpeg);
             _toCanonical.Add("image/jpg", Jpeg);
-            _toCanonical.Add("image/jpeg", Jpeg);
-            AddExtensionMapping("jpg", Jpeg);
-            AddExtensionMapping("jpe", Jpeg);
-            AddExtensionMapping("jpeg", Jpeg);
-            _mimeTypeToResourceName.Add(Jpeg, "mimetype-jpeg");
+            RegisterMimeType(MimeTypeInfo.Jpeg, new [] {"jpg", "jpe", "jpeg"}, "mimetype-jpeg");
 
-            // gif
-            _toCanonical.Add("image/gif", Gif);
-            AddExtensionMapping("gif", Gif);
-            _mimeTypeToResourceName.Add(Gif, "mimetype-gif");
+            RegisterMimeType(MimeTypeInfo.Gif, "gif", "mimetype-gif");
+            RegisterMimeType(MimeTypeInfo.Bmp, "bmp", "mimetype-bmp");
 
-
-            // bmp
-            _toCanonical.Add("image/bmp", Bmp);
-            AddExtensionMapping("bmp", Bmp);
-            _mimeTypeToResourceName.Add(Bmp, "mimetype-bmp");
-
-            // png
-            _toCanonical.Add("image/png", Png);
             _toCanonical.Add("image/x-png", Png);
-            AddExtensionMapping("png", Png);
-            _mimeTypeToResourceName.Add(Png, "mimetype-png");
+            RegisterMimeType(MimeTypeInfo.Png, "png", "mimetype-png");
 
-            // tiff
-            _toCanonical.Add("image/tif", Tiff);
-            _toCanonical.Add("image/tiff", Tiff);
-            AddExtensionMapping("tif", Tiff);
-            _mimeTypeToResourceName.Add(Tiff, "mimetype-tiff");
+            _toCanonical.Add("image/tif", MimeTypeInfo.Tiff);
+            RegisterMimeType(MimeTypeInfo.Tiff, "tif", "mimetype-tiff");
 
+            // Web
+            RegisterMimeType(MimeTypeInfo.Css, new [] {"css", "less"}, "mimetype-css");
+            RegisterMimeType(MimeTypeInfo.Resx, "resx", "mimetype-resx");
 
-            // css
-            _toCanonical.Add("text/css", Css);
-            AddExtensionMapping("css", Css);
-            AddExtensionMapping("less", Css);
-            _mimeTypeToResourceName.Add(Css, "mimetype-css");
+            _toCanonical.Add("application/x-javascript", MimeTypeInfo.Js);
+            RegisterMimeType(MimeTypeInfo.Js, "js", "mimetype-js");
 
-            // Resx
-            _toCanonical.Add(Resx, Resx);
-            AddExtensionMapping("resx", Resx);
-            _mimeTypeToResourceName.Add(Resx, "mimetype-resx");
+            RegisterMimeType("text/html", new[] { "htm", "html", "xhtml" }, "mimetype-html");
 
-            // js
-            _toCanonical.Add("text/js", Js);
-            _toCanonical.Add("application/x-javascript", Js);
-            AddExtensionMapping("js", Js);
-            _mimeTypeToResourceName.Add(Js, "mimetype-js");
-
-
-            // flv
-            _toCanonical.Add("video/x-flv", Flv);
-            AddExtensionMapping("flv", Flv);
-
-
-            _toCanonical.Add("video/x-ms-asf", Asf);
-            AddExtensionMapping("asf", Asf);
-            _mimeTypeToResourceName.Add(Asf, "mimetype-asf");
-
-            _toCanonical.Add("video/x-msvideo", Avi);
-            AddExtensionMapping("avi", Avi);
-            _mimeTypeToResourceName.Add(Avi, "mimetype-movie");
-
-            _toCanonical.Add("application/msword", "application/msword");
-            AddExtensionMapping("doc", "application/msword");
-            _mimeTypeToResourceName.Add("application/msword", "mimetype-doc");
-
-            _toCanonical.Add("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            AddExtensionMapping("docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-            _mimeTypeToResourceName.Add("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "mimetype-doc");
-
-            _toCanonical.Add("application/postscript", "application/postscript");
-            AddExtensionMapping("eps", "application/postscript");
-            _mimeTypeToResourceName.Add("application/postscript", "mimetype-pps");
-
-            _toCanonical.Add("text/html", "text/html");
-            AddExtensionMapping("htm", "text/html");
-            AddExtensionMapping("html", "text/html");
-            AddExtensionMapping("xhtml", "text/html");
-            _mimeTypeToResourceName.Add("text/html", "mimetype-html");
-
-            _toCanonical.Add("application/msaccess", "application/msaccess");
-            AddExtensionMapping("mdb", "application/msaccess");
-            _mimeTypeToResourceName.Add("application/msaccess", "mimetype-mdb");
-
-            _toCanonical.Add("video/quicktime", QuickTime);
-            AddExtensionMapping("mov", QuickTime);
-            _mimeTypeToResourceName.Add("video/quicktime", "mimetype-mov");
-
-            _toCanonical.Add("audio/mpeg", "audio/mpeg");
-            AddExtensionMapping("mp3", "audio/mpeg");
-            _mimeTypeToResourceName.Add("audio/mpeg", "mimetype-mp3");
-  
-            _toCanonical.Add("video/mpeg", "video/mpeg");
-            AddExtensionMapping("mpeg", "video/mpeg");
-            AddExtensionMapping("mpg", "video/mpeg");
-            _mimeTypeToResourceName.Add("video/mpeg", "mimetype-mpeg");
-
-            _toCanonical.Add("application/pdf", "application/pdf");
-            AddExtensionMapping("pdf", "application/pdf");
-            _mimeTypeToResourceName.Add("application/pdf", "mimetype-pdf");
-
-            _toCanonical.Add("application/vnd.ms-powerpoint", "application/vnd.ms-powerpoint");
-            AddExtensionMapping("ppt", "application/vnd.ms-powerpoint");
-            _mimeTypeToResourceName.Add("application/vnd.ms-powerpoint", "mimetype-ppt");
-
-            _toCanonical.Add("application/vnd.openxmlformats-officedocument.presentationml.presentation", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-            AddExtensionMapping("pptx", "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-            _mimeTypeToResourceName.Add("application/vnd.openxmlformats-officedocument.presentationml.presentation", "mimetype-ppt");
-
-            _toCanonical.Add("audio/x-pn-realaudio", "audio/x-pn-realaudio");
-            AddExtensionMapping("ram", "audio/x-pn-realaudio");
-            AddExtensionMapping("rm", "audio/x-pn-realaudio");
-            _mimeTypeToResourceName.Add("audio/x-pn-realaudio", "mimetype-ram");
-
-            _toCanonical.Add("application/rtf", "application/rtf");
-            AddExtensionMapping("rtf", "application/rtf");
-            _mimeTypeToResourceName.Add("application/rtf", "mimetype-rtf");
-
-            RegisterMimeType(MimeTypeInfo.Flash, "swf", "mimetype-swf");
-            RegisterMimeType(MimeTypeInfo.Director, new[] { "dcr", "dir" }, "mimetype-dir");
-            RegisterMimeType("application/vnd.visio", "vsd", "mimetype-vsd");
-            RegisterMimeType("application/x-font-woff", "woff");
+            // Audio/Video
             RegisterMimeType("audio/x-wav", "wav", null /* "mimetype-vaw" */);
+            RegisterMimeType("audio/x-pn-realaudio", new[] { "ram", "rm" }, "mimetype-ram");
+            RegisterMimeType("audio/mpeg", "mp3", "mimetype-mp3");
+            RegisterMimeType("video/mpeg", new[] { "mpeg", "mpg" }, "mimetype-mpeg");
+            RegisterMimeType(MimeTypeInfo.Flv, "flv");
+            RegisterMimeType(MimeTypeInfo.Asf, "asf", "mimetype-asf");
+            RegisterMimeType(MimeTypeInfo.Avi, "avi", "mimetype-movie");
             RegisterMimeType(MimeTypeInfo.Wmv, "wmv", "mimetype-wmv");
 
+            // Applications
+            RegisterMimeType("application/postscript", "eps", "mimetype-pps");
+            RegisterMimeType("application/msaccess", "mdb", "mimetype-mdb");
+            RegisterMimeType("application/pdf", "pdf", "mimetype-pdf");
+            RegisterMimeType("application/vnd.ms-powerpoint", "ppt", "mimetype-ppt");
+            RegisterMimeType("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx", "mimetype-ppt");
+            RegisterMimeType("application/msword", "doc", "mimetype-doc");
+            RegisterMimeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx", "mimetype-doc");
+            RegisterMimeType("application/rtf", "rtf", "mimetype-rtf");
+            RegisterMimeType("application/vnd.visio", "vsd", "mimetype-vsd");
+            RegisterMimeType("application/x-font-woff", "woff");
             RegisterMimeType("application/vnd.ms-excel", "xls", "mimetype-xls");
             RegisterMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx", "mimetype-xls");
+
+            RegisterMimeType(MimeTypeInfo.QuickTime, "mov", "mimetype-mov");
+            RegisterMimeType(MimeTypeInfo.Flash, "swf", "mimetype-swf");
+            RegisterMimeType(MimeTypeInfo.Director, new[] { "dcr", "dir" }, "mimetype-dir");
 
             RegisterMimeType("text/xml", new[] { "xml", "config", "xsl", "xslt" }, "mimetype-xml");
 
