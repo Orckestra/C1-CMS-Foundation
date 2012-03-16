@@ -41,7 +41,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             XmlDataProviderDocumentCache.ClearCache();
 
-            InterfaceConfigurationManipulator.Change(updateDataTypeDescriptor);
+            XmlProviderInterfaceConfigurationElement element = InterfaceConfigurationManipulator.Change(updateDataTypeDescriptor);
 
             if (forceCompile)
             {
@@ -52,9 +52,23 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 bool typesExists = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType, true);
                 if (!typesExists) throw new InvalidOperationException(string.Format("Could not find or code generated the type '{0}' or one of the needed helper types", dataTypeDescriptor.GetFullInterfaceName()));
 
+                List<XmlDataTypeStoreDataScope> xmlDataTypeStoreDataScopes = new List<XmlDataTypeStoreDataScope>();
+                foreach (DataScopeConfigurationElement dataScopeConfigurationElement in element.ConfigurationStores)
+                {
+                    XmlDataTypeStoreDataScope xmlDataTypeStoreDataScope = new XmlDataTypeStoreDataScope()
+                    {
+                        DataScopeName = dataScopeConfigurationElement.DataScope,
+                        CultureName = dataScopeConfigurationElement.CultureName,
+                        ElementName = dataScopeConfigurationElement.ElementName,
+                        Filename = Path.Combine(_fileStoreDirectory, dataScopeConfigurationElement.Filename)
+                    };
+
+                    xmlDataTypeStoreDataScopes.Add(xmlDataTypeStoreDataScope);
+                }
+
                 XmlDataTypeStoreCreator xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
 
-                XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, null);
+                XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, xmlDataTypeStoreDataScopes);
 
                 Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 

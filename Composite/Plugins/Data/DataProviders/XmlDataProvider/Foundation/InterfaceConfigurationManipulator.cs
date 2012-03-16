@@ -48,7 +48,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void Change(UpdateDataTypeDescriptor updateDataTypeDescriptor)
+        public static XmlProviderInterfaceConfigurationElement Change(UpdateDataTypeDescriptor updateDataTypeDescriptor)
         {
             DataTypeChangeDescriptor changeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
 
@@ -65,6 +65,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
 
             xmlDataProviderConfiguration.Save();
+
+            return newConfigurationElement;
         }
 
 
