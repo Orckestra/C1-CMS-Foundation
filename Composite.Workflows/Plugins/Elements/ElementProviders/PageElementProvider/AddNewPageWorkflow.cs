@@ -478,9 +478,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             newPage.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
             IPageType selectedPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == newPage.PageTypeId).Single();
+
+            IQueryable<IPageTypePageTemplateRestriction> templateRestrictions =
+                DataFacade.GetData<IPageTypePageTemplateRestriction>().
+                Where(f => f.PageTypeId == newPage.PageTypeId);
+
             if (selectedPageType.DefaultTemplateId != Guid.Empty)
             {
                 newPage.TemplateId = selectedPageType.DefaultTemplateId;
+            }
+            else if (templateRestrictions.Any())
+            {
+                newPage.TemplateId = templateRestrictions.First().PageTemplateId;
             }
 
             bool addToTop = this.GetBinding<string>("SelectedSortOrder") == "Top";
