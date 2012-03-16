@@ -759,8 +759,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             return element;
         }
 
-
-
         private IEnumerable<ElementAction> GetFileActions(IMediaFile file)
         {
             IList<ElementAction> fileActions = new List<ElementAction>();
@@ -813,7 +811,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                  }
              });
 
-            if (file.MimeType != null && file.MimeType.StartsWith("text"))
+            if (file.MimeType != null && MimeTypeInfo.IsTextFile(file.MimeType))
             {
                 fileActions.Add(
                  new ElementAction(new ActionHandle(

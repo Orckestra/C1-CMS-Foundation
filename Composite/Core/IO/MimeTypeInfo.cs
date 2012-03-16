@@ -28,6 +28,11 @@ namespace Composite.Core.IO
         private static readonly MethodInfo _getMimeMappingMethodInfo = typeof(System.Web.HttpUtility).Assembly
             .GetType("System.Web.MimeMapping").GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.NonPublic);
 
+        private static List<string> _textMimeTypes =
+            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
+                               MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, 
+                               MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml };
+
         private static ResourceHandle GetIconHandle(string name)
         {
             return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
@@ -441,6 +446,19 @@ namespace Composite.Core.IO
                                             .FormatWith(fileName, MimeTypeInfo.Default));
 
             return MimeTypeInfo.Default;
+        }
+
+
+        /// <summary>
+        /// Indicates whether a file of a specific MIME type can be edited with a text editor
+        /// </summary>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        internal static bool IsTextFile(string mimeType)
+        {
+            string canonicalMimeType = GetCanonical(mimeType);
+
+            return canonicalMimeType.StartsWith("text") || _textMimeTypes.Contains(canonicalMimeType);
         }
 	}
 }

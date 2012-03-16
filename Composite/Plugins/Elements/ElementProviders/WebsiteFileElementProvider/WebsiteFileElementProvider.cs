@@ -62,10 +62,6 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         private static readonly PermissionType[] _uploadWebsiteFilePermissionTypes = new PermissionType[] { PermissionType.Add };
         private static readonly PermissionType[] _changeWhiteListPermissionTypes = new PermissionType[] { PermissionType.Administrate };
 
-        private static List<string> _editableMimeTypes = 
-            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, 
-                               MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml };
-
 
         public WebsiteFileElementProvider(WebsiteFileElementProviderData objectConfiguration)
         {
@@ -634,22 +630,19 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         private static bool IsEditActionAllowed(WebsiteEntity websiteEntity)
         {
-            if ((websiteEntity is WebsiteFile) == true)
+            if (websiteEntity is WebsiteFile)
             {
                 WebsiteFile websiteFile = websiteEntity as WebsiteFile;
 
-                string canonical = MimeTypeInfo.GetCanonical(websiteFile.MimeType);
-
-                return _editableMimeTypes.Contains(canonical);
+                return MimeTypeInfo.IsTextFile(websiteFile.MimeType);
             }
-            else if ((websiteEntity is WebsiteFolder) == true)
+
+            if (websiteEntity is WebsiteFolder)
             {
                 return false;
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+            
+            throw new NotImplementedException();
         }
 
 
