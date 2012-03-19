@@ -22,7 +22,7 @@
  </ProjectOptions>
  <Targets>
   <AssemblyReferenceDirectories>
-   <Directory>$(ProjectDir)/../../../../../Windows/Microsoft.NET/Framework/v2.0.50727/</Directory>
+    <Directory>C:/Windows/Microsoft.NET/Framework/v2.0.50727/</Directory>
   </AssemblyReferenceDirectories>
   <Target Name="$(ProjectDir)/bin/Debug/Composite.dll" Analyze="True" AnalyzeAllChildren="False">
    <Modules AnalyzeAllChildren="False">
