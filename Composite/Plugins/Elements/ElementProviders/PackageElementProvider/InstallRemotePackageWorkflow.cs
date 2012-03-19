@@ -15,13 +15,14 @@ using Composite.Core.ResourceSystem;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
-    [Obsolete("Remove after 3.0 has been released")]
+    /// <exclude />
+    [Obsolete("Is used while processing upgrade packages from C1 3.1 and older. To be removed once lower requirement for upgrade package is at least v3.2")]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class InstallRemotePackageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         bool _packageIsFree = false;
 
-
+        /// <exclude />
         public InstallRemotePackageWorkflow()
         {
             InitializeComponent();

@@ -15,6 +15,7 @@ using Composite.Core.ResourceSystem;
 
 namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 {
+    /// <exlude />
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class InstallRemotePackageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {

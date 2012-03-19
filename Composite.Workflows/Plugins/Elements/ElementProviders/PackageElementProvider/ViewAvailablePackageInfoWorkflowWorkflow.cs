@@ -86,7 +86,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             if (packageDescription != null)
             {
+#pragma warning disable 436
                 this.ExecuteWorklow(this.EntityToken, typeof(InstallRemotePackageWorkflow));
+#pragma warning restore 436
             }
             else
             {
