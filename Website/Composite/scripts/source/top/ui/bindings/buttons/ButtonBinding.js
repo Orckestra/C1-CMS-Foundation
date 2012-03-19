@@ -31,6 +31,11 @@ function ButtonBinding () {
 	 * @type {boolean}
 	 */
 	this.isRadioButton = false;
+
+	/**
+	* @type {boolean}
+	*/
+	this.isComboButton = true;
 	
 	/**
 	 * Flip this exotic property to invoke hover state onmouseover even when 
@@ -531,22 +536,34 @@ ButtonBinding.prototype.flip = function ( isFlipped ) {
  * Fire command.
  */
 ButtonBinding.prototype.fireCommand = function () {
-	
-	if ( !this.isDisabled ) {
-		
-		if ( this.oncommand != null ) {
-			this.oncommand ();
+
+	if (!this.isDisabled) {
+
+		if (this.oncommand != null) {
+			this.oncommand();
 		}
-		this.dispatchAction ( this.commandAction );
-		
-		if ( this.popupBinding ) {
-			if ( !this.isCheckButton || this.isChecked ) {
-				this.popupBinding.snapTo ( this.popupBindingTargetElement );
-				this.popupBinding.show ();
-				this.popupBinding.grabKeyboard ();
+		this.dispatchAction(this.commandAction);
+
+		if(!this.isComboButton)
+			this.invokePopup();
+	}
+}
+
+/**
+* Invoke popup.
+*/
+ButtonBinding.prototype.invokePopup = function () {
+
+	if (!this.isDisabled) {
+
+		if (this.popupBinding) {
+			if (!this.isCheckButton || this.isChecked) {
+				this.popupBinding.snapTo(this.popupBindingTargetElement);
+				this.popupBinding.show();
+				this.popupBinding.grabKeyboard();
 			} else {
-				this.popupBinding.hide ();
-				this.popupBinding.releaseKeyboard ();
+				this.popupBinding.hide();
+				this.popupBinding.releaseKeyboard();
 			}
 		}
 	}

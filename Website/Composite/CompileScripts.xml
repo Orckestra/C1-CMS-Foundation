@@ -244,6 +244,8 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/toolbars/ToolBarButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/toolbars/ToolBarLabelBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/toolbars/DialogToolBarBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/combobutton/ComboBoxBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/combobutton/ToolBarComboButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/buttons/toolboxbutton/ToolBoxToolBarButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreeBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreeBodyBinding.js"/>

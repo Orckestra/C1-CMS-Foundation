@@ -996,6 +996,8 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\checkbutton\CheckButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\checkbutton\CheckButtonImageProfile.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\clickbutton\ClickButtonBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\ComboBoxBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\buttons\combobutton\ToolBarComboButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\radiobutton\RadioButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\radiobutton\RadioGroupBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\buttons\toolboxbutton\ToolBoxToolBarButtonBinding.js" />
@@ -5682,7 +5684,9 @@
     <Content Include="Composite\postback.css" />
     <Content Include="Composite\postback.js" />
     <Content Include="Composite\schemas\default.aspx" />
-    <Content Include="Composite\CompileScripts.xml" />
+    <Content Include="Composite\CompileScripts.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\services\LogService\LogService.svc" />
     <Content Include="Composite\services\WysiwygEditor\ControlConfiguration.xsl" />
     <Content Include="Composite\skins\skin.css" />

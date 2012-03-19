@@ -13,12 +13,29 @@
 		}
 	}
 
+	public string BindingParam()
+	{
+		if (this.SaveAndPublishEventHandler != null)
+		{
+			return @"binding=""ToolBarComboButtonBinding""";
+		}
+		return string.Empty;
+	}
+	public string PopupParam()
+	{
+		if (this.SaveAndPublishEventHandler != null)
+		{
+			return @"popup=""moreactionspopup""";
+		}
+		return string.Empty;
+	}
+
 </script>
-<ui:toolbarbutton oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE);"
+<ui:toolbarbutton <%= this.BindingParam() %>
+	oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE);"
 	id="savebutton" image="${icon:save}" image-disabled="${icon:save-disabled}" label="<%=Server.HtmlEncode(this.FormControlLabel)%>"
-	observes="broadcasterCanSave" />
+	observes="broadcasterCanSave" <%= this.PopupParam() %>/>
 <asp:PlaceHolder ID="SaveAndPublishButtonPlaceholder" Visible="false" runat="server">
-	<ui:toolbarbutton id="moreactionsbutton" label="▼" popup="moreactionspopup" observes="broadcasterCanSave" />
 	<ui:popupset>
 		<ui:popup id="moreactionspopup" position="bottom">
 			<ui:menubody>

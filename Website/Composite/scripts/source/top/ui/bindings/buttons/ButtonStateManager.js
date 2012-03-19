@@ -28,7 +28,12 @@ function ButtonStateManager ( binding ) {
 	/* 
 	 * Assigning event listener.
 	 */
-	this.assignDOMEvents ( true );
+	this.assignDOMEvents(true);
+
+	/*
+	* Returnable.
+	*/
+	return this;
 }
 
 /**
@@ -60,136 +65,174 @@ ButtonStateManager.prototype.dispose = function () {
  * @mplements {IEventListener}.
  * @param {MouseEvent} e
  */
-ButtonStateManager.prototype.handleEvent = function ( e ) {
-	
-	if ( Binding.exists ( this.binding ) && !this.binding.isDisabled && !BindingDragger.isDragging ) {
-	
-		var isCommand = false, state = null;
-		
-		if ( e.button == ButtonStateManager.RIGHT_BUTTON ) {
-			 // do nothing - right clicks are handled by the contextmenu property
+ButtonStateManager.prototype.handleEvent = function (e) {
+
+	if (Binding.exists(this.binding) && !this.binding.isDisabled && !BindingDragger.isDragging) {
+
+		var isCommand = false, isPopup = false, state = null;
+
+		if (e.button == ButtonStateManager.RIGHT_BUTTON) {
+			// do nothing - right clicks are handled by the contextmenu property
 		}
-		else if ( this.binding.isCheckBox ) {
-			
-			switch ( e.type ) {
-				case DOMEvents.MOUSEENTER :
-				case DOMEvents.MOUSEOVER :
+		else if (this.binding.isCheckBox) {
+
+			switch (e.type) {
+				case DOMEvents.MOUSEENTER:
+				case DOMEvents.MOUSEOVER:
 					state = ButtonStateManager.STATE_HOVER; // image decision left to imageprofile!
 					break;
-				case DOMEvents.MOUSELEAVE :
-				case DOMEvents.MOUSEOUT :
+				case DOMEvents.MOUSELEAVE:
+				case DOMEvents.MOUSEOUT:
 					state = this.binding.isChecked ? ButtonStateManager.STATE_ACTIVE : ButtonStateManager.STATE_NORMAL;
 					break;
-				case DOMEvents.MOUSEDOWN :
+				case DOMEvents.MOUSEDOWN:
 					state = ButtonStateManager.STATE_HOVER;
 					break;
-				case DOMEvents.MOUSEUP :
+				case DOMEvents.MOUSEUP:
 					this.binding.isChecked = !this.binding.isChecked;
 					state = this.binding.isChecked ? ButtonStateManager.STATE_ACTIVE : ButtonStateManager.STATE_NORMAL;
-					if ( state == ButtonStateManager.STATE_ACTIVE ) {
-						this.binding._check ( true );
+					if (state == ButtonStateManager.STATE_ACTIVE) {
+						this.binding._check(true);
 					} else {
-						this.binding._uncheck ( true );
+						this.binding._uncheck(true);
 					}
 					isCommand = true;
 					break;
 			}
 		}
-		else if ( this.binding.isCheckButton || this.binding.isRadioButton ) {
-		
-			switch ( e.type ) {
-				case DOMEvents.MOUSEENTER :
-				case DOMEvents.MOUSEOVER :
-					if ( !this.binding.isChecked ) {
+		else if (this.binding.isComboButton) {
+			switch (e.type) {
+				case DOMEvents.MOUSEENTER:
+				case DOMEvents.MOUSEOVER:
+					state = ButtonStateManager.STATE_HOVER;
+					break;
+				case DOMEvents.MOUSELEAVE:
+				case DOMEvents.MOUSEOUT:
+					state = ButtonStateManager.STATE_NORMAL;
+					break;
+				case DOMEvents.MOUSEDOWN:
+					state = ButtonStateManager.STATE_ACTIVE;
+					break;
+				case DOMEvents.MOUSEUP:
+					state = ButtonStateManager.STATE_NORMAL;
+					var targetBinding = UserInterface.getBinding(e.target ? e.target : e.srcElement);
+					if (targetBinding instanceof ComboBoxBinding) {
+						this.binding.isChecked = !this.binding.isChecked;
+						state = this.binding.isChecked ? ButtonStateManager.STATE_ACTIVE : ButtonStateManager.STATE_NORMAL;
+						if (state == ButtonStateManager.STATE_ACTIVE) {
+							this.binding._check(true);
+						} else {
+							this.binding._uncheck(true);
+						}
+						isPopup = true;
+					}
+					else {
+						state = ButtonStateManager.STATE_NORMAL;
+						isCommand = true;
+					}
+					break;
+			}
+		}
+		else if (this.binding.isCheckButton || this.binding.isRadioButton) {
+
+			switch (e.type) {
+				case DOMEvents.MOUSEENTER:
+				case DOMEvents.MOUSEOVER:
+					if (!this.binding.isChecked) {
 						state = ButtonStateManager.STATE_HOVER;
 					}
 					break;
-				case DOMEvents.MOUSELEAVE :
-				case DOMEvents.MOUSEOUT :
-					if ( !this.binding.isChecked ) { // TODO: CHECK DESCENDANT TARGET!
+				case DOMEvents.MOUSELEAVE:
+				case DOMEvents.MOUSEOUT:
+					if (!this.binding.isChecked) { // TODO: CHECK DESCENDANT TARGET!
 						state = ButtonStateManager.STATE_NORMAL;
 					}
 					break;
-				case DOMEvents.MOUSEDOWN :
+				case DOMEvents.MOUSEDOWN:
 					state = ButtonStateManager.STATE_ACTIVE;
 					break;
-				case DOMEvents.MOUSEUP :
-					if ( this.binding.isCheckButton || !this.binding.isChecked ) {
+				case DOMEvents.MOUSEUP:
+					if (this.binding.isCheckButton || !this.binding.isChecked) {
 						this.binding.isChecked = !this.binding.isChecked;
 						state = this.binding.isChecked ? ButtonStateManager.STATE_ACTIVE : ButtonStateManager.STATE_NORMAL;
-						if ( state == ButtonStateManager.STATE_ACTIVE ) {
-							this.binding._check ( true );
+						if (state == ButtonStateManager.STATE_ACTIVE) {
+							this.binding._check(true);
 						} else {
-							this.binding._uncheck ( true );
+							this.binding._uncheck(true);
 						}
 						isCommand = true;
 					}
 					break;
 			}
-		} else {
-			switch ( e.type ) {
-				case DOMEvents.MOUSEENTER :
-				case DOMEvents.MOUSEOVER :
+		}
+		else {
+			switch (e.type) {
+				case DOMEvents.MOUSEENTER:
+				case DOMEvents.MOUSEOVER:
 					state = ButtonStateManager.STATE_HOVER;
 					break;
-				case DOMEvents.MOUSELEAVE :
-				case DOMEvents.MOUSEOUT :
+				case DOMEvents.MOUSELEAVE:
+				case DOMEvents.MOUSEOUT:
 					state = ButtonStateManager.STATE_NORMAL;
 					break;
-				case DOMEvents.MOUSEDOWN :
+				case DOMEvents.MOUSEDOWN:
 					state = ButtonStateManager.STATE_ACTIVE;
 					break;
-				case DOMEvents.MOUSEUP :
+				case DOMEvents.MOUSEUP:
 					state = ButtonStateManager.STATE_NORMAL;
 					isCommand = true;
 					break;
 			}
 		}
-		switch ( state ) {
-			case ButtonStateManager.STATE_NORMAL :
-				this.invokeNormalState ();			
+		switch (state) {
+			case ButtonStateManager.STATE_NORMAL:
+				this.invokeNormalState();
 				break;
-			case ButtonStateManager.STATE_HOVER :
-				this.invokeHoverState ();
+			case ButtonStateManager.STATE_HOVER:
+				this.invokeHoverState();
 				break;
-			case ButtonStateManager.STATE_ACTIVE :
-				this.invokeActiveState ();
+			case ButtonStateManager.STATE_ACTIVE:
+				this.invokeActiveState();
 				break;
 		}
-		
+
 		/*
-		 * Please note that the button command is invoked here!
-		 */
-		if ( isCommand ) {
-			this.binding.fireCommand ();
+		* Please note that the button command is invoked here!
+		*/
+		if (isCommand) {
+			this.binding.fireCommand();
 		}
-		
+
+		if (isPopup) {
+			this.binding.invokePopup();
+		}
+
 		/*
-		 * Check patches explorer in case fireCommand 
-		 * closed the containing window.
-		 */
-		if ( Binding.exists ( this.binding ) == true ) {
-		
+		* Check patches explorer in case fireCommand 
+		* closed the containing window.
+		*/
+		if (Binding.exists(this.binding) == true) {
+
 			/*
-			 * Consuming the event!
-			 */
-			DOMEvents.stopPropagation ( e );
-			
+			* Consuming the event!
+			*/
+			DOMEvents.stopPropagation(e);
+
 			/*
-			 * Broadcast mousedown and mouseup to close open popups and menupopups. 
-			 * Notice that our binding is broadcasted as argument. This will prevent 
-			 * popups associated to *our* binding from closing as soon as it opens. 
-			 * The broadcast argument should really be a MouseEvent, so this is 
-			 * really a terrible way to handle the popup display status problem. 
-			 * UPDATE: we now use Bindings as arguments in other scenarios.
-			 * @see {PopupBinding#handleBroadcast}
-			 */
-			switch ( e.type ) {
-				case DOMEvents.MOUSEDOWN :
-					this.binding.onMouseDown ();
+			* Broadcast mousedown and mouseup to close open popups and menupopups. 
+			* Notice that our binding is broadcasted as argument. This will prevent 
+			* popups associated to *our* binding from closing as soon as it opens. 
+			* The broadcast argument should really be a MouseEvent, so this is 
+			* really a terrible way to handle the popup display status problem. 
+			* UPDATE: we now use Bindings as arguments in other scenarios.
+			* @see {PopupBinding#handleBroadcast}
+			*/
+			switch (e.type) {
+				case DOMEvents.MOUSEDOWN:
+					this.binding.onMouseDown();
 					break;
-				case DOMEvents.MOUSEUP :
-					this.binding.onMouseUp ();
+				case DOMEvents.MOUSEUP:
+					this.binding.onMouseUp();
 					break;
 			}
 		}
