@@ -986,7 +986,10 @@
 		<IconFile size="large" path="harmony\composite\x-savas_24.png" />
 		<IconFile size="xlarge" path="harmony\composite\x-savas_32.png" />
 	</Icon>
-	<Icon name="undo">
+  <Icon name="saveandpublish">
+    <IconFile size="normal" path="harmony\composite\saveandpublish_16.png" />
+  </Icon>
+  <Icon name="undo">
 		<IconFile size="normal" path="harmony\composite\undo_16.png" />
 		<IconFile size="large" path="harmony\composite\undo_24.png" />
 		<IconFile size="xlarge" path="harmony\composite\undo_32.png" />

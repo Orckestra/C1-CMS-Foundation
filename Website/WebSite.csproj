@@ -841,6 +841,7 @@
     <Content Include="Composite\images\icons\harmony\basic\home-edit_16.png" />
     <Content Include="Composite\images\icons\harmony\basic\home-edit_24.png" />
     <Content Include="Composite\images\icons\harmony\composite\housefolder_16.png" />
+    <Content Include="Composite\images\icons\harmony\composite\saveandpublish_16.png" />
     <Content Include="Composite\images\icons\templates\add_16.png" />
     <Content Include="Composite\images\icons\templates\add_24.png" />
     <Content Include="Composite\images\icons\templates\add_32.png" />
