@@ -8,6 +8,8 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
     internal class LocalC1Directory : IC1Directory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1DirectoryInfo CreateDirectory(string path)
@@ -40,7 +42,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         }
 
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
         public bool Exists(string path)
         {
