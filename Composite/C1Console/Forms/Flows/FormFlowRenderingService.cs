@@ -72,7 +72,7 @@ namespace Composite.C1Console.Forms.Flows
         {
             var httpContext = HttpContext.Current;
 
-            (httpContext.Handler as FlowPage).SaveStepSucceded = succeeded;
+            (httpContext.Handler as FlowPage).SaveStepSucceeded = succeeded;
         }
     }
 }

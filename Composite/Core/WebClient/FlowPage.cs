@@ -11,7 +11,11 @@ namespace Composite.Core.WebClient
     public class FlowPage: Page
     {
         /// <exclude />
-        public bool SaveStepSucceded { get; set; }
+        [Obsolete("Use SaveStepSucceeded property instead")]
+        public bool SaveStepSucceded { get { return SaveStepSucceeded; } set { SaveStepSucceeded = value; } }
+
+        /// <exclude />
+        public bool SaveStepSucceeded { get; set; }
 
         /// <exclude />
         public EventHandler OnSave { get; set; }
