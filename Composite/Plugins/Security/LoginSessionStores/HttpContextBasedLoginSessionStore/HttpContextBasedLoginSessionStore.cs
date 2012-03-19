@@ -5,10 +5,9 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Web;
 using System.Web.Security;
+using Composite.C1Console.Security.Plugins.LoginSessionStore;
 using Composite.Core.Caching;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
-using Composite.C1Console.Security.Plugins.LoginSessionStore;
 using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -58,11 +57,8 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
             {
                 HttpContext context = HttpContext.Current;
 
-                if (context == null
-                    || !context.RequestIsAvaliable()
-                    || context.Request == null)
+                if (context == null || !context.RequestIsAvaliable())
                 {
-//                    LoggingService.LogInformation("HttpContextBasedLoginSessionStore", "Unable to return stored username, no HttpContext");
                     return null;
                 }
 
@@ -79,10 +75,6 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
                         {
                             threadDataManagerData.SetValue(ContextKey, value);
                         }                        
-                    }
-                    catch (CryptographicException)
-                    {
-                        return null;
                     }
                     catch (Exception)
                     {
@@ -132,16 +124,8 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
         {
             get
             {
-                return IPAddress.Parse(HttpContext.Current.Request.UserHostAddress);
-            }
-        }
-
-
-        private string AuthCookieName
-        {
-            get
-            {
-                return CookieHandler.GetApplicationSpecificCookieName(_authCookieName);
+                string ipString = HttpContext.Current.Request.UserHostAddress;
+                return ipString != null ? IPAddress.Parse(ipString) : null;
             }
         }
     }

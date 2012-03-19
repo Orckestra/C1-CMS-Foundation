@@ -5,16 +5,24 @@ using System.Net;
 
 namespace Composite.C1Console.Security.Plugins.LoginSessionStore
 {
+    /// <exclude />
     [CustomFactory(typeof(LoginSessionStoreCustomFactory))]
     [ConfigurationNameMapper(typeof(LoginSessionStoreDefaultNameRetriever))]
-    internal interface ILoginSessionStore
-    {
+    public interface ILoginSessionStore
+    {   
+        /// <exclude />
         bool CanPersistAcrossSessions { get; }
 
+        /// <exclude />
         void StoreUsername(string username, bool persistAcrossSessions);
+
+        /// <exclude />
         string StoredUsername { get; }
+
+        /// <exclude />
         void FlushUsername();
 
+        /// <exclude />
         IPAddress UserIpAddress { get; }
     }
 }
