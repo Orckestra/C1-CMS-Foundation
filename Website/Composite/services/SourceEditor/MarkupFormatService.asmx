@@ -84,7 +84,7 @@ namespace Composite.Services
             MatchCollection tagStarterMatchCollection = tagStarterRegEx.Matches(html);
             foreach (string tagStarter in tagStarterMatchCollection.OfType<Match>().Select(f => f.Value).Distinct().OrderBy(f => f.Length))
             {
-                html = html.Replace(tagStarter, tagStarter.ToLower());
+                html = html.Replace(tagStarter, tagStarter.ToLowerInvariant());
             }
 
             byte[] htmlByteArray = Encoding.UTF8.GetBytes(html);

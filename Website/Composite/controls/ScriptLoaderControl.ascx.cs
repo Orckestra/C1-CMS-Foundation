@@ -141,7 +141,7 @@ public partial class ScriptLoaderControl : System.Web.UI.UserControl
 
             if (_mode == CompositeScriptMode.DEVELOP)
             {
-                bool isLocalHost = (Request.Url.Host.ToLower() == "localhost");
+                bool isLocalHost = (Request.Url.Host.ToLowerInvariant() == "localhost");
                 string boolean = isLocalHost ? "true" : "false";
 
                 _builder.AppendLine(@"<script type=""text/javascript"">");

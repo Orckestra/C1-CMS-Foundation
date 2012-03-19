@@ -99,8 +99,8 @@ namespace Composite.Core.WebClient.Setup
         {
             XElement languagesXml = SetupServiceFacade.GetLanguages();
 
-            
-            string clientPreferredCultureName = (this.Context.Request.UserLanguages.FirstOrDefault() ?? "").ToLower();
+
+            string clientPreferredCultureName = (this.Context.Request.UserLanguages.FirstOrDefault() ?? "").ToLowerInvariant();
 
             List<LanguageDef> languages = new List<LanguageDef>();
             bool selectionDone = false;
@@ -118,7 +118,7 @@ namespace Composite.Core.WebClient.Setup
                 {
                     if (selectionDone==false)
                     {
-                        selected = (element.Attribute("Key").Value.ToLower().StartsWith(clientPreferredCultureName));
+                        selected = (element.Attribute("Key").Value.ToLowerInvariant().StartsWith(clientPreferredCultureName));
                         selectionDone = selected;
                     }
                 }
