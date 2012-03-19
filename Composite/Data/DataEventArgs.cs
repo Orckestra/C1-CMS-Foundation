@@ -1,4 +1,5 @@
 ﻿using System;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Data
@@ -122,7 +123,10 @@ namespace Composite.Data
         public TData GetData<TData>()
             where TData : IData
         {
-            if (_dataType.IsAssignableFrom(typeof(TData)) == false) throw new ArgumentException(string.Format("TData is of wrong type ('{0}'). Data type is '{1}'", typeof(TData), _dataType));
+            if (_dataType.IsAssignableFrom(typeof(TData)) == false)
+            {
+                throw new ArgumentException("TData is of wrong type ('{0}'). Data type is '{1}'".FormatWith(typeof(TData), _dataType));
+            }
 
             return (TData)_data;
         }
