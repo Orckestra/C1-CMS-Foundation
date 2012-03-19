@@ -79,9 +79,9 @@ namespace Composite.Core.PackageSystem
                 {
                     assembly = Assembly.LoadFile(filename);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Ignore exceptions
+                    Log.LogError("PackageAssemblyHandler", ex);
                 }
             }
 

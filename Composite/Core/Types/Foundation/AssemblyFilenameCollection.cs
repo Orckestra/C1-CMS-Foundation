@@ -15,7 +15,7 @@ namespace Composite.Core.Types.Foundation
         {
             if (string.IsNullOrEmpty(assemblyFilename) == true) throw new ArgumentNullException("assemblyFilename");
 
-            string assemblyName = AssemblyFilenameCollection.GetAssemblyName(assemblyFilename);
+            string assemblyName = GetAssemblyName(assemblyFilename);
 
             return _assemblyFilenames.ContainsKey(assemblyName);
         }
@@ -35,9 +35,9 @@ namespace Composite.Core.Types.Foundation
         {
             if (string.IsNullOrEmpty(assemblyFilename) == true) throw new ArgumentNullException("assemblyFilename");
 
-            string assemblyName = AssemblyFilenameCollection.GetAssemblyName(assemblyFilename);
+            string assemblyName = GetAssemblyName(assemblyFilename);
 
-            _assemblyFilenames.Add(assemblyName, assemblyFilename);
+            _assemblyFilenames[assemblyName] = assemblyFilename;
         }
 
 
