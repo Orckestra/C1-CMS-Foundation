@@ -414,7 +414,7 @@ BrowserPageBinding.prototype._updateTabBox = function ( url ) {
 	 * update containing dock.
 	 */
 	this.label = this.getContentDocument ().title;
-	this.image = url.indexOf ( "dataScope=administrated" ) > 0 ? 
+	this.image = (url.indexOf("dataScope=administrated") > 0 || url.indexOf("c1mode(unpublished)") > 0) ? 
 			BrowserPageBinding.ICON_UNPUBLISHED : BrowserPageBinding.ICON_PUBLISHED;
 	
 	var tab = this._box.getSelectedTabBinding ();
