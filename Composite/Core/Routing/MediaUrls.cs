@@ -19,6 +19,7 @@ namespace Composite.Core.Routing
     public static class MediaUrls
     {
         internal static readonly string DefaultMediaStore = "MediaArchive";
+        private static readonly string MediaUrl_UnprocessedInternalPrefix = "~/media(";
         private static readonly string MediaUrl_InternalPrefix = UrlUtils.PublicRootPath + "/media(";
         private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
 
@@ -36,9 +37,14 @@ namespace Composite.Core.Routing
         {
             urlKind = UrlKind.Undefined;
 
-            if (relativeUrl.StartsWith(MediaUrl_InternalPrefix))
+            bool isInternalLink = relativeUrl.StartsWith(MediaUrl_InternalPrefix, StringComparison.Ordinal);
+            bool isInternalUnprocessedLink = !isInternalLink && relativeUrl.StartsWith(MediaUrl_UnprocessedInternalPrefix, StringComparison.Ordinal);
+
+            if (isInternalLink || isInternalUnprocessedLink)
             {
-                var result = ParseInternalUrl(relativeUrl);
+                string prefix = isInternalLink ? MediaUrl_InternalPrefix : MediaUrl_UnprocessedInternalPrefix;
+
+                var result = ParseInternalUrl(relativeUrl, prefix);
                 if(result != null)
                 {
                     urlKind = UrlKind.Internal;
@@ -89,12 +95,12 @@ namespace Composite.Core.Routing
             return null;
         }
 
-        private static MediaUrlData ParseInternalUrl(string relativeUrl)
+        private static MediaUrlData ParseInternalUrl(string relativeUrl, string urlPrefix)
         {
             int endBracketOffset = relativeUrl.IndexOf(")", StringComparison.Ordinal);
             if (endBracketOffset < 0) return null;
 
-            string mediaStoreAndId = relativeUrl.Substring(MediaUrl_InternalPrefix.Length, endBracketOffset - MediaUrl_InternalPrefix.Length);
+            string mediaStoreAndId = relativeUrl.Substring(urlPrefix.Length, endBracketOffset - urlPrefix.Length);
 
             string store = null;
             string mediaIdStr;
