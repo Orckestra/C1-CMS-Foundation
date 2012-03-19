@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Transactions;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data.Streams;
 using Composite.Data.Types;
@@ -12,36 +14,36 @@ namespace Composite.Data.Plugins.DataProvider.Streams
     {
         public Stream GetReadStream(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
 
             FileSystemFileBase baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
+            Verify.ArgumentCondition(baseFile != null, "file", "The type '{0}' does not inherit the class '{1}'"
+                                                       .FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
             if (baseFile.CurrentWriteStream == null)
             {
                 return new C1FileStream(baseFile.SystemPath, FileMode.OpenOrCreate, FileAccess.Read);
             }
-            else
+            
+            if (baseFile.CurrentWriteStream.Data == null)
             {
-                if (baseFile.CurrentWriteStream.Data == null)
-                {
-                    throw new InvalidOperationException("Trying to read from a writable stream that is not closed");
-                }
-
-                return new MemoryStream(baseFile.CurrentWriteStream.Data);
+                throw new InvalidOperationException("Trying to read from a writable stream that is not closed");
             }
+
+            return new MemoryStream(baseFile.CurrentWriteStream.Data);
         }
 
 
 
         public Stream GetNewWriteStream(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
 
             FileSystemFileBase baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
+            Verify.ArgumentCondition(baseFile != null, "file", "The type '{0}' does not inherit the class '{1}'"
+                                                       .FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
             baseFile.CurrentWriteStream = new CachedMemoryStream();
 
@@ -52,7 +54,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
         internal static void DeleteFile(string filename)
         {
-            if (string.IsNullOrEmpty(filename) == true) throw new ArgumentNullException("filename");
+            Verify.ArgumentNotNullOrEmpty(filename, "filename");
 
             DirectoryUtils.DeleteFile(filename, true);
         }
@@ -62,18 +64,17 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
         internal static void DeleteFile(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
 
             FileSystemFileBase baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
+            Verify.ArgumentCondition(baseFile != null, "file", "The type '{0}' does not inherit the class '{1}'"
+                                                       .FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
             if (Transaction.Current == null)
             {
-                if (RuntimeInformation.IsDebugBuild)
-                {
-                    Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with delete without transactional support.");
-                }
+                LogNoTransaction();
+
                 DeleteFile(baseFile.SystemPath);
             }
             else
@@ -83,18 +84,18 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         }
 
 
-
         internal static void WriteFileToDisk(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
 
             FileSystemFileBase baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
+            Verify.ArgumentCondition(baseFile != null, "file", "The type '{0}' does not inherit the class '{1}'"
+                                                       .FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
             if (Transaction.Current == null)
             {
-                Core.Logging.LoggingService.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to - going ahead with write to disk without transactional support.");
+                LogNoTransaction();
 
                 if (baseFile.CurrentWriteStream != null)
                 {
@@ -114,6 +115,16 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 Transaction.Current.EnlistVolatile(new WriteToDiskEnlistment(file, baseFile), EnlistmentOptions.None);
             }
         }
+
+
+        private static void LogNoTransaction()
+        {
+            if (RuntimeInformation.IsDebugBuild)
+            {
+                Log.LogWarning("Transaction not active", "There is no current transaction that the File System File Stream manager can attach to.");
+            }
+        }
+
 
         public void SubscribeOnFileChanged(IFile file, OnFileChangedDelegate handler)
         {
