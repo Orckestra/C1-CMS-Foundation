@@ -127,13 +127,13 @@ namespace Composite.Core.Implementation
         {
             XElement homepageElement = null;
             Guid pageId = Guid.Empty;
-            hostname = hostname.ToLowerInvariant();
+            hostname = hostname.ToUpperInvariant();
 
             // Getting the longest not-empty hostname that matches the right part of the current hostname
             List<IHostnameBinding> hostNameMatches =
                 (from binding in _connection.Get<IHostnameBinding>() as IEnumerable<IHostnameBinding>
                  where !binding.Hostname.IsNullOrEmpty()
-                       && hostname.EndsWith(binding.Hostname.ToLowerInvariant())
+                       && hostname.EndsWith(binding.Hostname.ToUpperInvariant(), StringComparison.Ordinal)
                  orderby binding.Hostname.Length descending
                  select binding).Take(1).ToList();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Composite.Core.Extensions;
 using Composite.Data;
 
 
@@ -63,7 +64,7 @@ namespace Composite.Core.Implementation
                     break;
 
                 default:
-                    throw new ArgumentException(string.Format("PublicationScope {0} not supported", scope), "scope");
+                    throw new ArgumentException("PublicationScope {0} not supported".FormatWith(scope), "scope");
             }
         }
     }

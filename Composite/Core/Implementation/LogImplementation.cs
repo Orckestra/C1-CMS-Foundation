@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Composite.Core.Logging;
 
 
@@ -37,7 +38,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogInformation(string title, string messageFormat, params object[] args) 
         {
-            LoggingService.LogInformation(title, string.Format(messageFormat, args));
+            LoggingService.LogInformation(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
         }
 
 
@@ -62,7 +63,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogVerbose(string title, string messageFormat, params object[] args) 
         {
-            LoggingService.LogVerbose(title, string.Format(messageFormat, args));
+            LoggingService.LogVerbose(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
         }
 
 
@@ -87,7 +88,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogWarning(string title, string messageFormat, params object[] args) 
         {
-            LogWarning(title, string.Format(messageFormat, args));
+            LogWarning(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
         }
 
 
@@ -124,7 +125,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogError(string title, string messageFormat, params object[] args) 
         {
-            LogError(title, string.Format(messageFormat, args));
+            LogError(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
         }
 
 
@@ -161,7 +162,7 @@ namespace Composite.Core.Implementation
         /// <param name="args"></param>
         public virtual void LogCritical(string title, string messageFormat, params object[] args) 
         {
-            LoggingService.LogCritical(title, string.Format(messageFormat, args));
+            LoggingService.LogCritical(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
         }
 
 

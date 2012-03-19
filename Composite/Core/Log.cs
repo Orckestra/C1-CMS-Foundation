@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Composite.Core.Implementation;
 
 
@@ -54,7 +55,7 @@ namespace Composite.Core
         /// <param name="args">Arguments to put into the message</param>
         public static void LogVerbose(string title, string messageFormat, params object[] args)
         {
-            ImplementationFactory.CurrentFactory.StatelessLog.LogVerbose(title, string.Format(messageFormat, args));
+            ImplementationFactory.CurrentFactory.StatelessLog.LogVerbose(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));
         }
 
 

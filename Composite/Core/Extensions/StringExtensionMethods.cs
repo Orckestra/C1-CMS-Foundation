@@ -15,7 +15,7 @@ namespace Composite.Core.Extensions
         {
             Verify.ArgumentNotNull(format, "format");
 
-            return string.Format(format, args);
+            return string.Format(CultureInfo.InvariantCulture, format, args);
         }
 
 

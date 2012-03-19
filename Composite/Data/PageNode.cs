@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml.Linq;
 using Composite.Core.WebClient.Renderings.Page;
 
@@ -108,7 +109,7 @@ namespace Composite.Data
             {
                 var depthAttr = _pageElement.Attribute("Depth");
                 // Attribute can be null if a page isn't accessable, f.e. in a case of url collision
-                return depthAttr != null ? Int32.Parse(depthAttr.Value) : -1;
+                return depthAttr != null ? Int32.Parse(depthAttr.Value, CultureInfo.InvariantCulture) : -1;
             }
         }
 
@@ -193,7 +194,7 @@ namespace Composite.Data
         /// </summary>
         public override string ToString()
         {
-            return string.Format("PageNode(Id:'{0}', Title:'{1}', Description:'{2}', MenuTitle:'{3}', Url:'{4}', Level:'{5}')",
+            return string.Format(CultureInfo.InvariantCulture, "PageNode(Id:'{0}', Title:'{1}', Description:'{2}', MenuTitle:'{3}', Url:'{4}', Level:'{5}')",
                 this.Id,
                 this.Title,
                 this.Description,
