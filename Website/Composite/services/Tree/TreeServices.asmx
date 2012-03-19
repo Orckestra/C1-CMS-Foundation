@@ -304,7 +304,7 @@ namespace Composite.Services
         [WebMethod]
         public string GetMediaLabel(string path)
         {
-            var relativePath = Regex.Replace(path, @"^http://[\w\.\d]+/", "/");
+            var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
             var mediaUrlData = MediaUrls.ParseUrl(relativePath);
             
             if(mediaUrlData != null)
@@ -314,7 +314,15 @@ namespace Composite.Services
 
                 IMediaFile matchingMedia = DataFacade.GetData<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
 
-                return matchingMedia != null ? matchingMedia.GetLabel() : path;
+                if (matchingMedia != null)
+                {
+                    string label = string.Format("{0} ({1}:{2})", matchingMedia.FileName, matchingMedia.StoreId, matchingMedia.FolderPath);
+                    return label;
+                }
+                else
+                {
+                    return path;
+                }
             }
             
             return path;

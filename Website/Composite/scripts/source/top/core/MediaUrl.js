@@ -6,7 +6,8 @@
 //TODO Add escaping
 function MediaUrl(url) {
 
-	var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.]*\/)media(\(|%28)[\w\d-\:]+(\)|%29)/;
+    var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)media(\(|%28)[\w\d-\:]+(\)|%29)/;
+
 	if (mediaExpr.test(url)) {
 		var queryString = {};
 		url.replace(/^[^\?]*/g, "").replace(
