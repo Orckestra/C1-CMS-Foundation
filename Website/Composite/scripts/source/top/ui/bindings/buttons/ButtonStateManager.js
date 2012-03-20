@@ -127,6 +127,8 @@ ButtonStateManager.prototype.handleEvent = function (e) {
 						isPopup = true;
 					}
 					else {
+						if (this.binding.isChecked)
+							this.binding._uncheck(true);
 						state = ButtonStateManager.STATE_NORMAL;
 						isCommand = true;
 					}

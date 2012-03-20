@@ -40,10 +40,10 @@
 		<ui:popup id="moreactionspopup" position="bottom">
 			<ui:menubody>
 					<ui:menugroup >
-							<ui:menuitem label="Save " image="${icon:save}" image-disabled="${icon:save-disabled}" observes="broadcasterCanSave"
-							 oncommand="bindingMap.savebutton.setAndFireButton('Save', '${icon:save}','${icon:save-disabled}', 'bindingMap.savebutton.dispatchAction(EditorPageBinding.ACTION_SAVE);');" />
+							<ui:menuitem label="<%=Server.HtmlEncode(this.FormControlLabel)%>" image="${icon:save}" image-disabled="${icon:save-disabled}" observes="broadcasterCanSave"
+							 oncommand="bindingMap.savebutton.setAndFireButton('<%=Server.HtmlEncode(this.FormControlLabel)%>', '${icon:save}','${icon:save-disabled}', 'this.dispatchAction(EditorPageBinding.ACTION_SAVE);');" />
 							<ui:menuitem label="Save and Publish" image="${icon:saveandpublish}" image-disabled="${icon:save-disabled}" observes="broadcasterCanSave"
-							 oncommand="bindingMap.savebutton.setAndFireButton('Save and Publish', '${icon:saveandpublish}', '${icon:save-disabled}', 'bindingMap.savebutton.dispatchAction(EditorPageBinding.ACTION_SAVE_AND_PUBLISH);');" />
+							 oncommand="bindingMap.savebutton.setAndFireButton('Save and Publish', '${icon:saveandpublish}', '${icon:save-disabled}', 'this.dispatchAction(EditorPageBinding.ACTION_SAVE_AND_PUBLISH);');" />
 					</ui:menugroup>
 			</ui:menubody>
 		</ui:popup>

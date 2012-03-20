@@ -544,8 +544,8 @@ ButtonBinding.prototype.fireCommand = function () {
 		}
 		this.dispatchAction(this.commandAction);
 
-		if(!this.isComboButton)
-			this.invokePopup();
+		this.invokePopup();
+
 	}
 }
 
