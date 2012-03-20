@@ -71,9 +71,18 @@ ToolBarComboButtonBinding.prototype.handleBroadcast = function (broadcast, arg) 
 
 /**
 * Set and Fire Commmand from MenuItem
-* views are associated, the button will disable.
 * @param {MenuItemBinding} menuitem
 */
-ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
+ToolBarComboButtonBinding.prototype.setAndFireButton = function (label, image, imageDisabled, oncommand) {
 
+	this.setLabel(label);
+	this.image = image;
+	this.imageDisabled = imageDisabled;
+	this.imageProfile = new ImageProfile(this);
+	this.setImage(this.imageProfile.getDefaultImage());
+
+	this.oncommand = function () {
+		Binding.evaluate(oncommand, this);
+	};
+	this.fireCommand();
 }
