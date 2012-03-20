@@ -545,6 +545,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                              ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFileToolTip"),
                              Icon = DeleteWebsiteFile,
                              Disabled = websiteFile.IsReadOnly,
+                             ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                              ActionLocation = new ActionLocation
                              {
                                  ActionType = ActionType.Delete,
