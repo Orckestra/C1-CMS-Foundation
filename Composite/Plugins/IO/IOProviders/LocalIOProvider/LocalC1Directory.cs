@@ -8,9 +8,9 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
     internal class LocalC1Directory : IC1Directory
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1DirectoryInfo CreateDirectory(string path)
         {
@@ -19,7 +19,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public void Delete(string path)
         {
             Directory.Delete(path);
@@ -27,7 +27,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public void Delete(string path, bool recursive)
         {
             Directory.Delete(path, recursive);
@@ -35,15 +35,15 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public void Move(string sourceDirName, string destDirName)
         {
             Directory.Move(sourceDirName, destDirName);
         }
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public bool Exists(string path)
         {
             return Directory.Exists(path);
@@ -51,7 +51,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string GetCurrentDirectory()
         {
             return Directory.GetCurrentDirectory();
@@ -59,7 +59,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public void SetCurrentDirectory(string path)
         {
             Directory.SetCurrentDirectory(path);
@@ -67,7 +67,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1DirectoryInfo GetParent(string path)
         {
@@ -76,7 +76,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string GetDirectoryRoot(string path)
         {
             return Directory.GetDirectoryRoot(path);
@@ -84,7 +84,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetDirectories(string path)
         {
             return Directory.GetDirectories(path);
@@ -92,7 +92,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetDirectories(string path, string searchPattern)
         {
             return Directory.GetDirectories(path, searchPattern);
@@ -100,7 +100,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetDirectories(string path, string searchPattern, SearchOption searchOption)
         {
             return Directory.GetDirectories(path, searchPattern, searchOption);
@@ -108,7 +108,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetFiles(string path)
         {
             return Directory.GetFiles(path);
@@ -116,7 +116,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetFiles(string path, string searchPattern)
         {
             return Directory.GetFiles(path, searchPattern);
@@ -124,7 +124,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public string[] GetFiles(string path, string searchPattern, SearchOption searchOption)
         {
             return Directory.GetFiles(path, searchPattern, searchOption);
@@ -132,7 +132,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public DateTime GetCreationTime(string path)
         {
             return Directory.GetCreationTime(path);
@@ -140,7 +140,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public DateTime GetCreationTimeUtc(string path)
         {
             return Directory.GetCreationTimeUtc(path);

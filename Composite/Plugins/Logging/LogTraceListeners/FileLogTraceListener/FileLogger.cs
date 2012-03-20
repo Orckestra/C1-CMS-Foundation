@@ -111,7 +111,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass", Justification = "This is what we want, touch is used later on")]
         public LogFileReader[] GetLogFiles()
         {
             EnsureInitialize();
@@ -222,7 +222,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass", Justification = "This is what we want, touch is used later on")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
         private void EnsureInitialize()
         {
@@ -307,7 +307,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         /// Due to the nature of this logger. Keeping files open all the time. It works very badly with Azure blob syncronization.
         /// So this class dont uses the C1 IO classes. But logfiles are nice to have synced to the blob, so old logfiles are touched.
         /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirecotryClass:DoNotUseDirecotryClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass", Justification = "This is what we want, touch is used later on")]
         private void TouchLogFiles()
         {
             if (DateTime.Now - _lastLogFileTouch > TimeSpan.FromHours(12))

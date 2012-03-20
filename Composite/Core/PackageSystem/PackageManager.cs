@@ -440,9 +440,9 @@ namespace Composite.Core.PackageSystem
 
         private static string CreatePackageDirectoryName(PackageInformation packageInformation)
         {
-            string direcotryName = string.Format("{0}", packageInformation.Id);
+            string directoryName = string.Format("{0}", packageInformation.Id);
 
-            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), direcotryName);
+            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), directoryName);
         }
     }
 }

@@ -77,14 +77,14 @@ public partial class Composite_Forms_DocumentExecutionContainer : TemplatedUiCon
             var flowPage = (this.Page as FlowPage);
             flowPage.OnSave(null, null);
 
-            ctlFeedback.SetStatus(flowPage.SaveStepSucceded);
+            ctlFeedback.SetStatus(flowPage.SaveStepSucceeded);
         }
         else if (message == "saveandpublish")
         {
             var flowPage = (this.Page as FlowPage);
             flowPage.OnSaveAndPublish(null, null);
 
-            ctlFeedback.SetStatus(flowPage.SaveStepSucceded);
+            ctlFeedback.SetStatus(flowPage.SaveStepSucceeded);
         }
         else if (message == "persist")
         {
