@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Web;
 using System.Web.Compilation;
@@ -15,6 +16,8 @@ namespace Composite.Core.Routing.Pages
     {
         private static readonly Type _handlerType;
 
+
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass")]
         static C1PageRouteHandler()
         {
             bool isIntegratedPipeline = HttpRuntime.UsingIntegratedPipeline;

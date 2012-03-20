@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Composite.Core.Configuration;
@@ -85,6 +86,7 @@ namespace Composite.Core.Application
         /// <summary>
         /// Consider using the <see cref="Lock"/> for better code safty
         /// </summary>
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         public void ReleaseLock()
         {
             if (File.Exists(GlobalLockFileName))
@@ -102,7 +104,7 @@ namespace Composite.Core.Application
 
 
 
-
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private bool TryAquireLock()
         {
             double existingLockFileAgeSeconds =

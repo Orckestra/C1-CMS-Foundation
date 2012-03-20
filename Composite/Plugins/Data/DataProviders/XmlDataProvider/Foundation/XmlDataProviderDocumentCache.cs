@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
@@ -189,7 +190,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                             XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
                             xmlReaderSettings.CheckCharacters = false;
 
-                            using (XmlReader xmlReader = XmlReader.Create(filename, xmlReaderSettings))
+                            using (XmlReader xmlReader = XmlReaderUtils.Create(filename, xmlReaderSettings))
                             {
                                 xDoc = XDocument.Load(xmlReader);
                             }

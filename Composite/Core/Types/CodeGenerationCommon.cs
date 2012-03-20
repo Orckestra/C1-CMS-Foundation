@@ -22,11 +22,11 @@ namespace Composite.Core.Types
         /// <param name="compilerParameters"></param>
         public static void AddAssemblyLocationsFromBin(this CompilerParameters compilerParameters)
         {
-            foreach (string binFilePath in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
+            foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
             {
                 string assemblyFileName = Path.GetFileName(binFilePath);
 
-                if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.InvariantCultureIgnoreCase) >= 0) continue;
+                if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
 
 
                 compilerParameters.ReferencedAssemblies.AddIfNotContained(binFilePath);
@@ -63,8 +63,8 @@ namespace Composite.Core.Types
                 {
                     string currentUsedLocation = foundAssemblyLocations[locationKey];
 
-                    DateTime currentlyUsedLastWrite = File.GetLastWriteTime(currentUsedLocation);
-                    DateTime locationCandidateLastWrite = File.GetLastWriteTime(location);
+                    DateTime currentlyUsedLastWrite = C1File.GetLastWriteTime(currentUsedLocation);
+                    DateTime locationCandidateLastWrite = C1File.GetLastWriteTime(location);
 
                     if (locationCandidateLastWrite > currentlyUsedLastWrite)
                     {

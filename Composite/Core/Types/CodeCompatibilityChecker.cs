@@ -3,6 +3,7 @@ using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,6 +57,12 @@ namespace Composite.Core.Types
         /// If false, it will be excluded.
         /// </param>
         /// <returns></returns>
+
+
+
+        [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "File api is used for creating temporary files")]
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "File api is used for creating temporary files")]
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "File api is used for creating temporary files")]
         private static CompatibilityCheckResult CheckAgainsAppCode(DataTypeDescriptor dataTypeDescriptorToTest, bool includeDataTypeDescriptor)
         {
             List<string> filesToCompile = GetAppCodeFiles().ToList();
@@ -135,7 +142,7 @@ namespace Composite.Core.Types
         }
 
 
-
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         private static string[] GetAppCodeFiles()
         {
             string appCodeFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, GlobalSettingsFacade.AppCodeDirectory);

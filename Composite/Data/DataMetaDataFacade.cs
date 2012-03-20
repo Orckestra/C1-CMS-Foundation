@@ -298,7 +298,7 @@ namespace Composite.Data
             {
                 try
                 {
-                    XDocument doc = XDocument.Load(filepath);
+                    XDocument doc = XDocumentUtils.Load(filepath);
 
                     XAttribute dataTypeIdAttr = doc.Root.Attribute("dataTypeId");
                     XAttribute typeManagerTypeNameAttr = doc.Root.Attribute("typeManagerTypeName");
@@ -333,7 +333,6 @@ namespace Composite.Data
                 {
                     Log.LogWarning(LogTitle, "Error while parsing meta data file '{0}'".FormatWith(filepath));
                     Log.LogWarning(LogTitle, ex);
-                    continue;
                 }
             }
 

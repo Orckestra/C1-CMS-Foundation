@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 using Composite.Core;
@@ -39,10 +40,11 @@ namespace Composite.Plugins.Application.ApplicationOnlineHandlers.AspNetApplicat
 
 
 
+
         public void TurnApplicationOffline()
         {
             // If app_offline.htm already exists, no reason do copy it again
-            if (!File.Exists(_targetFilename))
+            if (!C1File.Exists(_targetFilename))
             {
                 FileUtils.Delete(_targetFilename);
                 C1File.Copy(_sourceFilename, _targetFilename, true);

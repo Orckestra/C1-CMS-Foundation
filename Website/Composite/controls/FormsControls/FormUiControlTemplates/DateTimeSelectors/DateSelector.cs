@@ -72,7 +72,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
                 }
                 this.IsValid = true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.IsValid = false;
                 this.ValidationError = string.Format("Invalid date string: '{0}'. Use the format '{1}'.",

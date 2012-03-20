@@ -17,6 +17,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
 using Composite.C1Console.Users;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -166,7 +167,7 @@ namespace Composite.C1Console.Trees
         {
             string xslFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
 
-            var fileInfo = new FileInfo(xslFilename);
+            var fileInfo = new C1FileInfo(xslFilename);
 
             // The default xslt transformation does no changes and it's xsl file has size of 358 bytes, skipping this file saves up to 0.5 second on site startup
             if (fileInfo.Exists && fileInfo.Length != 358)
@@ -187,8 +188,8 @@ namespace Composite.C1Console.Trees
                 }
                 catch (Exception ex)
                 {
-                    LoggingService.LogCritical("TreeFacade", string.Format("Failed to apply xslt on the tree {0} with the following exception", treeId));
-                    LoggingService.LogCritical("TreeFacade", ex);
+                    Log.LogCritical("TreeFacade", string.Format("Failed to apply xslt on the tree {0} with the following exception", treeId));
+                    Log.LogCritical("TreeFacade", ex);
                 }
             }
 

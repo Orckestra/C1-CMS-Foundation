@@ -41,9 +41,9 @@ namespace Composite.Core.Types
         static CodeGenerationManager()
         {
             string assemblyTempPath = PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
-            if (!Directory.Exists(assemblyTempPath))
+            if (!C1Directory.Exists(assemblyTempPath))
             {
-                Directory.CreateDirectory(assemblyTempPath);
+                C1Directory.CreateDirectory(assemblyTempPath);
             }
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);

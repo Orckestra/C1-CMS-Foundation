@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Text;
@@ -333,6 +334,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
 
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]        
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private void RemoveOldLockFiles()
         {
             DateTime now = DateTime.Now;
@@ -365,7 +368,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
 
-
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         private bool MoreThanOneAppDomainRunning()
         {
             return Directory.GetFiles(_logDirectoryPath, "*.lock").Length > 1;
@@ -401,6 +404,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
 
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private void TouchLockFile()
         {
             // Create .lock file
@@ -429,6 +433,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
         bool _disposed = false;
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposed)

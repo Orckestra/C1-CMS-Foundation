@@ -204,7 +204,7 @@ namespace Composite.Core.WebClient.Media
                         new XAttribute("name", "large"),
                         new XAttribute("maxheight", "300")));
 
-                    config.Save(_resizedImageKeysFilePath);
+                    config.SaveToPath(_resizedImageKeysFilePath);
                 }
 
                 xel = XElementUtils.Load(_resizedImageKeysFilePath);

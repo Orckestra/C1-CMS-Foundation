@@ -830,7 +830,6 @@
     <Compile Include="Core\Types\CompatibilityCheckResult.cs" />
     <Compile Include="C1Console\Users\UserSettingsMock.cs" />
     <Compile Include="Data\Validation\Validators\StringSizeValidatorAttribute.cs" />
-    <Compile Include="SimpleDebug.cs" />
     <Compile Include="Verify.cs" />
     <Compile Include="C1Console\Events\BroadcastMessageQueueItem.cs" />
     <Compile Include="C1Console\Events\CollapseAndRefreshConsoleMessageQueueItem.cs" />

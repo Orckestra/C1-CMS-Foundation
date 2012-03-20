@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Web.Configuration;
 using System.Web.Hosting;
@@ -310,6 +311,8 @@ namespace Composite.Core.IO
             return false;
         }
 
+
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationClass:DoNotUseConfigurationClass")]
         private static void LoadExtensionMappingsFromWebConfig()
 	    {
             ConfigurationSection config;

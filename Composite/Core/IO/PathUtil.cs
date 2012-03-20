@@ -118,6 +118,7 @@ namespace Composite.Core.IO
         /// <param name="fileOrDirectoryPath">Path to a file or a folder</param>
         /// <returns></returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         public static bool WritePermissionGranted(string fileOrDirectoryPath)
         {
             try

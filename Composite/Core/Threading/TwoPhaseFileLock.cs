@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Threading;
 
@@ -48,6 +49,7 @@ namespace Composite.Core.Threading
         /// Returns true if the lock was obtained successfully. 
         /// Returns false if the lock was acquried due to timeout.
         /// </returns>
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         public bool Acquire()
         {                        
             bool gotTheLock = false;
@@ -86,6 +88,7 @@ namespace Composite.Core.Threading
         /// <summary>
         /// Releases the lock.
         /// </summary>
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         public void Release()
         {
             Log.LogInformation("TwoPhaseFileLock", string.Format("AppDomain {0} releasing the lock", AppDomain.CurrentDomain.Id));
@@ -101,15 +104,14 @@ namespace Composite.Core.Threading
             }
         }
 
-
-
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private bool IsFirstTime()
         {
             return !File.Exists(PhaseOneFilePath) && !File.Exists(PhaseTwoFilePath);
         }
 
 
-
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private static void SafeDelete(string filePath)
         {
             try
