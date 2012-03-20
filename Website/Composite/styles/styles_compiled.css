@@ -857,10 +857,11 @@ font-size: 9px;
 padding-left: 5px;
 padding-right: 5px;
 -moz-user-select: none;
+position: relative;
 }
 
 ui|toolbarbutton.combobutton table.matrix td{
-overflow: auto;
+overflow: visible;
 }
 
 ui|toolbarbutton.hover ui|combobox,
