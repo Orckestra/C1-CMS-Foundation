@@ -35,7 +35,7 @@ function ButtonBinding () {
 	/**
 	* @type {boolean}
 	*/
-	this.isComboButton = true;
+	this.isComboButton = false;
 	
 	/**
 	 * Flip this exotic property to invoke hover state onmouseover even when 

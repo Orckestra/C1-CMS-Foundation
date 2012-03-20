@@ -67,3 +67,13 @@ ToolBarComboButtonBinding.prototype.handleBroadcast = function (broadcast, arg) 
 	ToolBarComboButtonBinding.superclass.handleBroadcast.call(this, broadcast, arg);
 
 }
+
+
+/**
+* Set and Fire Commmand from MenuItem
+* views are associated, the button will disable.
+* @param {MenuItemBinding} menuitem
+*/
+ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
+
+}

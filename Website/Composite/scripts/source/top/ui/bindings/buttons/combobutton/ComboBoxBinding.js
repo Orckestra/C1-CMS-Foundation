@@ -37,7 +37,7 @@ ComboBoxBinding.prototype.onBindingAttach = function () {
 	ComboBoxBinding.superclass.onBindingAttach.call(this);
 
 	var text = this.bindingDocument.createTextNode(
-		Resolver.resolve("▼")
+		Resolver.resolve("\u25BC")
 	);
 	this.bindingElement.appendChild(text);
 
