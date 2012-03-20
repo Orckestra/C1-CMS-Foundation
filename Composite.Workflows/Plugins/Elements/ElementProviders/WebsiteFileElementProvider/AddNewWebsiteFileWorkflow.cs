@@ -67,12 +67,20 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         {
             string currentPath = GetCurrentPath();
             string newFileName = this.GetBinding<string>("NewFileName");
+            string fullPath = Path.Combine(currentPath, newFileName);
 
-            using (C1FileStream fs = C1File.Create(Path.Combine(currentPath, newFileName)))
+            using (C1FileStream fs = C1File.Create(fullPath))
             { }
 
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+
+            if (this.EntityToken is WebsiteFileElementProviderEntityToken)
+            {
+                WebsiteFileElementProviderEntityToken folderToken = (WebsiteFileElementProviderEntityToken)this.EntityToken;
+                var newFileToken = new WebsiteFileElementProviderEntityToken(folderToken.ProviderName, fullPath, folderToken.RootPath);
+                SelectElement(newFileToken);
+            }
         }
     }
 }

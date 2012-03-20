@@ -25,6 +25,13 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
         /// <exclude />
+        public string ProviderName
+        {
+            get { return _providerName; }
+        }
+
+
+        /// <exclude />
         public override string Type
         {
             get { return ""; }

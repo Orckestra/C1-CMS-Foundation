@@ -67,6 +67,14 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+
+            if (this.EntityToken is WebsiteFileElementProviderEntityToken)
+            {
+                WebsiteFileElementProviderEntityToken folderToken = (WebsiteFileElementProviderEntityToken)this.EntityToken;
+                var newFileToken = new WebsiteFileElementProviderEntityToken(folderToken.ProviderName, newFolderPath, folderToken.RootPath);
+                SelectElement(newFileToken);
+            }
+
         }
 
 

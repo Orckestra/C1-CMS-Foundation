@@ -120,6 +120,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFolderToolTip"),
                            Icon = WebsiteFileElementProvider.AddWebsiteFolder,
                            Disabled = false,
+                           ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                            ActionLocation = new ActionLocation
                            {
                                ActionType = ActionType.Add,
@@ -139,6 +140,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFileToolTip"),
                            Icon = WebsiteFileElementProvider.AddWebsiteFile,
                            Disabled = false,
+                           ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                            ActionLocation = new ActionLocation
                            {
                                ActionType = ActionType.Add,
@@ -158,6 +160,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                            ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadWebsiteFileToolTip"),
                            Icon = WebsiteFileElementProvider.UploadWebsiteFile,
                            Disabled = false,
+                           ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                            ActionLocation = new ActionLocation
                            {
                                ActionType = ActionType.Add,
@@ -290,10 +293,6 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                     },
                 };
 
-                //element.MovabilityInfo.AddDropType(typeof(WebsiteFolder));
-                //element.MovabilityInfo.AddDropType(typeof(WebsiteFile));
-                //element.MovabilityInfo.DragType = typeof(WebsiteFolder);
-
                 if (myWhiteLists == null || myWhiteLists.Any(f => websiteFolder.FullPath.StartsWith(f.GetFullPath())))
                 {
                     foreach (ElementAction action in GetFolderActions(websiteFolder, manageableFolderWhiteLists))
@@ -388,6 +387,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFolderToolTip"),
                         Icon = WebsiteFileElementProvider.AddWebsiteFolder,
                         Disabled = false,
+                        ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                         ActionLocation = new ActionLocation
                         {
                             ActionType = ActionType.Add,
@@ -407,6 +407,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "AddWebsiteFileToolTip"),
                        Icon = WebsiteFileElementProvider.AddWebsiteFile,
                        Disabled = false,
+                       ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                        ActionLocation = new ActionLocation
                        {
                            ActionType = ActionType.Add,
@@ -426,6 +427,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "UploadWebsiteFileToolTip"),
                        Icon = WebsiteFileElementProvider.UploadWebsiteFile,
                        Disabled = false,
+                       ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                        ActionLocation = new ActionLocation
                        {
                            ActionType = ActionType.Add,
@@ -449,6 +451,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                              ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "DeleteWebsiteFolderToolTip"),
                              Icon = DeleteWebsiteFolder,
                              Disabled = false,
+                             ActivePositions = ElementActionActivePosition.NavigatorTree | ElementActionActivePosition.SelectorTree,
                              ActionLocation = new ActionLocation
                              {
                                  ActionType = ActionType.Delete,
