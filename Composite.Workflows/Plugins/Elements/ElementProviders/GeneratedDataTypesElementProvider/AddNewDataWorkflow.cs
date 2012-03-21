@@ -194,9 +194,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     DataFacade.Update(newData);
                     EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
 
-                    PublishIfNeeded(newData);
+                    bool published = PublishIfNeeded(newData);
 
-                    updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                    if (!published) updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
                 }
             }
 
@@ -210,14 +210,17 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             }
         }
 
-        private void PublishIfNeeded(IData newData)
+        private bool PublishIfNeeded(IData newData)
         {
             if (newData is IPublishControlled && _doPublish)
             {
                 GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
                 FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                 ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
+                return true;
             }
+
+            return false;
         }
 
         private void setEnablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)

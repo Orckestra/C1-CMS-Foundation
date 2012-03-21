@@ -475,12 +475,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     unpublishWorkflowInstance.Start();
                     WorkflowFacade.RunWorkflow(unpublishWorkflowInstance);
-                }
-
-                if (treeviewRequiresRefreshing)
-                {
-                    updateTreeRefresher.PostRefreshMesseges(selectedPage.GetDataEntityToken());
-                }
+                }                
 
                 if (_doPublish)
                 {
@@ -489,6 +484,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
                     ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
+                }
+                else if (treeviewRequiresRefreshing)
+                {
+                    updateTreeRefresher.PostRefreshMesseges(selectedPage.GetDataEntityToken());
                 }
 
                 this.UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);

@@ -214,6 +214,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             bool justAdded = false;
             if (isValid)
             {
+                bool published = false;
+
                 if (this.BindingExist("DataAdded") == false)
                 {
                     DataScopeIdentifier dataScopeIdentifier = DataScopeIdentifier.Public;
@@ -251,13 +253,16 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
                     DataFacade.Update(newData);
 
-                    PublishIfNeeded(newData);
+                    published = PublishIfNeeded(newData);
 
                     EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
                 }
 
-                ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
-                specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                if (!published)
+                {
+                    ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
+                    specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                }
 
                 if (justAdded)
                 {
@@ -274,14 +279,17 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             }
         }
 
-        private void PublishIfNeeded(IData newData)
+        private bool PublishIfNeeded(IData newData)
         {
             if (newData is IPublishControlled && _doPublish)
             {
                 GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
                 FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                 ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
+                return true;
             }
+
+            return false;
         }
 
         private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)
