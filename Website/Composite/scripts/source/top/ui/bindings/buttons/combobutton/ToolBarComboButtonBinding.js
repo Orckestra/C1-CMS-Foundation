@@ -79,6 +79,7 @@ ToolBarComboButtonBinding.prototype.setAndFireButton = function (label, image, i
 	this.image = image;
 	this.imageDisabled = imageDisabled;
 	this.imageProfile = new ImageProfile(this);
+	this._stateManager.imageProfile = this.imageProfile;
 	this.setImage(this.imageProfile.getDefaultImage());
 
 	this.oncommand = function () {
