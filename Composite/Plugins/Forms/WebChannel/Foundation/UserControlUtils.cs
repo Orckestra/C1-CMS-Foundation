@@ -5,8 +5,11 @@ using System.Web;
 
 namespace Composite.Plugins.Forms.WebChannel.Foundation
 {
-    internal static class UserControlUtils
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static class UserControlUtils
     {
+        /// <exclude />
         public static TBase ActivateAsUserControl<TBase>(this Type userControlType, string uniqueUserControlId)
             where TBase : UserControl
         {
