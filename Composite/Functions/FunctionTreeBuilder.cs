@@ -107,17 +107,20 @@ namespace Composite.Functions
         }
 
 
+        private static string AttributeValueOrEmpty(XElement element, string attributeName)
+        {
+            var attribute = element.Attribute(attributeName);
+            return (attribute == null ? "" : attribute.Value);
+        }
+
 
         private static WidgetFunctionRuntimeTreeNode BuildWidgetFunctionRuntimeNode(XElement element)
         {
             XAttribute nameAttribute = element.Attribute(FunctionTreeConfigurationNames.NameAttributeName);
             if (nameAttribute == null) throw new InvalidOperationException(string.Format("Missing attribute named '{0}'", FunctionTreeConfigurationNames.NameAttributeName));
 
-            XAttribute labelAttribute = element.Attribute(FunctionTreeConfigurationNames.LabelAttributeName);
-            if (labelAttribute == null) throw new InvalidOperationException(string.Format("Missing attribute named '{0}'", FunctionTreeConfigurationNames.LabelAttributeName));
-
-            XAttribute bindingSourceNameAttribute = element.Attribute(FunctionTreeConfigurationNames.BindingSourceNameAttributeName);
-            if (bindingSourceNameAttribute == null) throw new InvalidOperationException(string.Format("Missing attribute named '{0}'", FunctionTreeConfigurationNames.BindingSourceNameAttributeName));
+            string label = AttributeValueOrEmpty(element, FunctionTreeConfigurationNames.LabelAttributeName);
+            string bindingSourceName = AttributeValueOrEmpty(element, FunctionTreeConfigurationNames.BindingSourceNameAttributeName);
 
             HelpDefinition helpDefinition = null;
             List<BaseParameterRuntimeTreeNode> parameters = new List<BaseParameterRuntimeTreeNode>();
@@ -140,10 +143,9 @@ namespace Composite.Functions
                 }
             }
 
-            if (helpDefinition == null) throw new InvalidOperationException(string.Format("Missing sub element named '{0}'", FunctionTreeConfigurationNames.HelpDefinitionTagName));
+            if (helpDefinition == null) helpDefinition = new HelpDefinition("");
 
             IWidgetFunction widgetFunction = FunctionFacade.GetWidgetFunction(nameAttribute.Value);
-
 
             foreach (BaseParameterRuntimeTreeNode parameter in parameters)
             {
@@ -155,7 +157,7 @@ namespace Composite.Functions
                 }
             }
 
-            return new WidgetFunctionRuntimeTreeNode(widgetFunction, labelAttribute.Value, helpDefinition, bindingSourceNameAttribute.Value, parameters);
+            return new WidgetFunctionRuntimeTreeNode(widgetFunction, label, helpDefinition, bindingSourceName, parameters);
         }
 
 
