@@ -42,7 +42,7 @@ ToolBarComboButtonBinding.prototype.toString = function () {
 }
 
 /**
-* @overloads {ButtonBinding#onBindingAttach}
+* @overloads {ToolBarButtonBinding#onBindingAttach}
 */
 ToolBarComboButtonBinding.prototype.onBindingAttach = function () {
 
@@ -58,7 +58,7 @@ ToolBarComboButtonBinding.prototype.onBindingAttach = function () {
 /**
 * Build popup when perspective changes. If no 
 * views are associated, the button will disable.
-* @implements {IBroadcastListener}
+* @overloads {ToolBarButtonBinding#handleBroadcast}
 * @param {string} broadcast
 * @param {object} arg
 */
@@ -68,22 +68,121 @@ ToolBarComboButtonBinding.prototype.handleBroadcast = function (broadcast, arg) 
 
 }
 
+/**
+* @overloads {ToolBarButtonBinding#setPopup}
+* @param {object} arg This can be either a string or a {@link PopupBinding}.
+*/
+ToolBarComboButtonBinding.prototype.setPopup = function (arg) {
+
+	ToolBarComboButtonBinding.superclass.setPopup.call(this, arg);
+	var self = this;
+	var menuitems = this.popupBinding.getDescendantBindingsByType(MenuItemBinding);
+	menuitems.each(
+		function (menuitem) {
+			var hiddenCommand = menuitem.getProperty("oncommand");
+			menuitem.setProperty("hiddencommand", hiddenCommand);
+			menuitem.deleteProperty("oncommand");
+			menuitem.oncommand = function () {
+				self.setAndFireButton(this);
+			};
+		}
+	);
+	var activeMenu = null;
+	var activeMenuId = this.getActiveMenuItemId();
+
+	menuitems.reset();
+	while (menuitems.hasNext()) {
+		var menuitem = menuitems.getNext();
+		if (menuitem.getProperty("id") == activeMenuId) {
+			activeMenu = menuitem;
+			break;
+		}
+	}
+
+	if (activeMenu == null && menuitems.hasEntries()) {
+		activeMenu = menuitems.getFirst();
+	}
+
+	if (activeMenu != null)
+		this.setButton(activeMenu);
+}
 
 /**
 * Set and Fire Commmand from MenuItem
 * @param {MenuItemBinding} menuitem
 */
-ToolBarComboButtonBinding.prototype.setAndFireButton = function (label, image, imageDisabled, oncommand) {
+ToolBarComboButtonBinding.prototype.setButton = function (menuitem) {
 
-	this.setLabel(label);
-	this.image = image;
-	this.imageDisabled = imageDisabled;
-	this.imageProfile = new ImageProfile(this);
-	this._stateManager.imageProfile = this.imageProfile;
-	this.setImage(this.imageProfile.getDefaultImage());
+	if (menuitem instanceof MenuItemBinding) {
+		var label = menuitem.getProperty("label");
+		var image = menuitem.getProperty("image");
+		var imageHover = menuitem.getProperty("image-hover");
+		var imageActive = menuitem.getProperty("image-active");
+		var imageDisabled = menuitem.getProperty("image-disabled");
+		var hiddenCommand = menuitem.getProperty("hiddencommand");
 
-	this.oncommand = function () {
-		Binding.evaluate(oncommand, this);
-	};
-	this.fireCommand();
+
+		this.setLabel(label ? label : "");
+
+		this.image = image;
+		this.imageHover = image;
+		this.imageActive = imageActive;
+		this.imageDisabled = imageDisabled;
+		this.imageProfile = new ImageProfile(this);
+		this._stateManager.imageProfile = this.imageProfile;
+
+		this.setImage(this.imageProfile.getDefaultImage());
+
+		this.oncommand = function () {
+			Binding.evaluate(hiddenCommand, this);
+		};
+
+		this.hideActiveItem(menuitem);
+	}
 }
+
+/**
+* Set and Fire Commmand from MenuItem
+* @param {MenuItemBinding} menuitem
+*/
+ToolBarComboButtonBinding.prototype.setAndFireButton = function (menuitem) {
+
+	if (menuitem instanceof MenuItemBinding) {
+		this.setButton(menuitem);
+		this.setActiveMenuItemId(menuitem.getProperty("id"));
+		this.fireCommand();
+	}
+}
+
+/**
+* Set and Fire Commmand from MenuItem
+* @param {MenuItemBinding} menuitem
+*/
+ToolBarComboButtonBinding.prototype.hideActiveItem = function (activeMenuitem) {
+	this.popupBinding.getDescendantBindingsByType(MenuItemBinding).each(
+		function (menuitem) {
+			if (menuitem == activeMenuitem) {
+				Binding.prototype.hide.call(menuitem);
+			} else {
+				Binding.prototype.show.call(menuitem);
+			}
+		}
+	);
+}
+
+
+/**
+* Set active menuitem id
+* @param {MenuItemBinding} menuitem id
+*/
+ToolBarComboButtonBinding.prototype.setActiveMenuItemId = function (id) {
+	Cookies.createCookie(this.getProperty("id"), id, 365);
+}
+
+/**
+* Get active menuitem id
+*/
+ToolBarComboButtonBinding.prototype.getActiveMenuItemId = function () {
+	return Cookies.readCookie(this.getProperty("id"));
+}
+

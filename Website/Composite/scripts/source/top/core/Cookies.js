@@ -3,7 +3,6 @@
  * TODO: Dont use cookies! Define a functional Persistance instead.
  */
 function _Cookies () {}
-var Cookies = new _Cookies ();
 
 _Cookies.prototype = {
 	
@@ -54,3 +53,4 @@ _Cookies.prototype = {
 		this.createCookie ( name, "", -1 );
 	}
 }
+var Cookies = new _Cookies();
