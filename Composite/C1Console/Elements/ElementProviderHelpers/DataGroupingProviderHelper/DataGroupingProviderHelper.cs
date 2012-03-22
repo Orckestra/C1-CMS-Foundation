@@ -21,6 +21,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         private ElementProviderContext _elementProviderContext;
         private string _undefinedLableValue;
 
+        private static readonly MethodInfo GenericCastMethodInfo = typeof(DataGroupingProviderHelper)
+                                                                   .GetMethod("Cast", BindingFlags.NonPublic | BindingFlags.Static);
+
 
         public DataGroupingProviderHelper(ElementProviderContext elementProviderContext)
         {
@@ -49,7 +52,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         public Func<Type, bool> OnOwnsType { get; set; }
         public Func<Type, EntityToken, EntityToken> OnGetRootParentEntityToken { get; set; }
         public Func<Element, PropertyInfoValueCollection, Element> OnAddActions { get; set; }
-        public Func<EntityToken, Func<IData, bool>> OnGetLeafsFilter { get; set; }
+        public Func<EntityToken, Func<IData, bool>> OnGetLeafsFilter { get; set; } 
         public Func<EntityToken, string> OnGetPayload { get; set; }
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
@@ -182,7 +185,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     if (includeForeignFolders == true)
                     {
-                        using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                        using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
                             elements.AddRange(GetRootGroupFoldersFoldersLeafs(interfaceType, filter, true));
                         }
@@ -197,20 +200,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private IEnumerable<Element> GetRootGroupFoldersFoldersFolders(Type interfaceType, EntityToken parentEntityToken, DataFieldDescriptor firstDataFieldDescriptor, PropertyInfo propertyInfo)
         {
-            IQueryable queryable = DataFacade.GetData(interfaceType);
+            Func<IData, bool> filter = (this.OnGetLeafsFilter != null) ? this.OnGetLeafsFilter(parentEntityToken) : null;
 
-            if (this.OnGetLeafsFilter != null)
-            {
-                Func<IData, bool> filter = null;
-                filter = this.OnGetLeafsFilter(parentEntityToken);
-
-                IQueryable<IData> dataQueryable = (queryable as IQueryable<IData>).Where(filter).AsQueryable();
-
-                queryable = typeof (DataGroupingProviderHelper)
-                    .GetMethod("Cast", BindingFlags.NonPublic | BindingFlags.Static)
-                    .MakeGenericMethod(new [] {interfaceType})
-                    .Invoke(null, new object[] { dataQueryable }) as IQueryable;
-            }
+            IQueryable queryable = GetFilteredData(interfaceType, filter);
 
             ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
@@ -291,19 +283,26 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 return new Element[] { };
             }
 
-            using (DataScope dataScope = new DataScope(this.OnGetDataScopeIdentifier(interfaceType)))
+            Func<IData, bool> filter = null;
+
+            if (this.OnGetLeafsFilter != null)
+            {
+                filter = this.OnGetLeafsFilter(groupEntityToken);
+            }
+
+            using (new DataScope(this.OnGetDataScopeIdentifier(interfaceType)))
             {
                 if (groupingDataFieldDescriptor != null)
                 {
                     PropertyInfoValueCollection propertyInfoValueCol = propertyInfoValueCollection.Clone();
-                    List<Element> elements = GetGroupChildrenFolders(groupEntityToken, interfaceType, groupingDataFieldDescriptor, propertyInfoValueCol).ToList();
+                    List<Element> elements = GetGroupChildrenFolders(groupEntityToken, interfaceType, filter, groupingDataFieldDescriptor, propertyInfoValueCol).ToList();
 
                     if (includeForeignFolders == true)
                     {
-                        using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                        using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
                             PropertyInfoValueCollection foreignPropertyInfoValueCol = propertyInfoValueCollection.Clone();
-                            elements.AddRange(GetGroupChildrenFolders(groupEntityToken, interfaceType, groupingDataFieldDescriptor, foreignPropertyInfoValueCol));
+                            elements.AddRange(GetGroupChildrenFolders(groupEntityToken, interfaceType, filter, groupingDataFieldDescriptor, foreignPropertyInfoValueCol));
                         }
                     }
 
@@ -312,14 +311,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 else
                 {
                     PropertyInfoValueCollection propertyInfoValueCol = propertyInfoValueCollection.Clone();
-                    List<Element> elements = GetGroupChildrenLeafs(interfaceType, propertyInfoValueCol, false).ToList();
+                    List<Element> elements = GetGroupChildrenLeafs(interfaceType, filter, propertyInfoValueCol, false).ToList();
 
                     if (includeForeignFolders == true)
                     {
-                        using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                        using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
                             PropertyInfoValueCollection foreignPropertyInfoValueCol = propertyInfoValueCollection.Clone();
-                            elements.AddRange(GetGroupChildrenLeafs(interfaceType, foreignPropertyInfoValueCol, true));
+                            elements.AddRange(GetGroupChildrenLeafs(interfaceType, filter, foreignPropertyInfoValueCol, true));
                         }
                     }
 
@@ -330,9 +329,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
-        private IEnumerable<Element> GetGroupChildrenFolders(DataGroupingProviderHelperEntityToken groupEntityToken, Type interfaceType, DataFieldDescriptor groupingDataFieldDescriptor, PropertyInfoValueCollection propertyInfoValueCollection)
+        private IEnumerable<Element> GetGroupChildrenFolders(DataGroupingProviderHelperEntityToken groupEntityToken, Type interfaceType, Func<IData, bool> filter, DataFieldDescriptor groupingDataFieldDescriptor, PropertyInfoValueCollection propertyInfoValueCollection)
         {
-            IQueryable queryable = DataFacade.GetData(interfaceType);
+            IQueryable queryable = GetFilteredData(interfaceType, filter);
             ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
             PropertyInfo selectPropertyInfo = interfaceType.GetPropertiesRecursively(f => f.Name == groupingDataFieldDescriptor.Name).Single();
 
@@ -351,9 +350,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         
 
 
-        private IEnumerable<Element> GetGroupChildrenLeafs(Type interfaceType, PropertyInfoValueCollection propertyInfoValueCollection, bool isForeign)
+        private IEnumerable<Element> GetGroupChildrenLeafs(Type interfaceType, Func<IData, bool> filter, PropertyInfoValueCollection propertyInfoValueCollection, bool isForeign)
         {
-            IQueryable queryable = DataFacade.GetData(interfaceType);
+            IQueryable queryable = GetFilteredData(interfaceType, filter);
             ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
             IQueryable resultQueryable = expressionBuilder.
@@ -378,7 +377,18 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             }
         }
 
+        private static IQueryable GetFilteredData(Type interfaceType, Func<IData, bool> filter)
+        {
+            IQueryable queryable = DataFacade.GetData(interfaceType);
 
+            if (filter == null) return queryable;
+
+            var dataQueryable = (queryable as IQueryable<IData>).Where(filter).AsQueryable();
+
+            return GenericCastMethodInfo
+                   .MakeGenericMethod(new[] { interfaceType })
+                   .Invoke(null, new object[] { dataQueryable }) as IQueryable;
+        }
 
         private static Element GetDataFromCorrectScope(IData data, Func<IData, Element> createElementFunc, Func<IData, Element> createDisabledElementFunc, bool isForeign)
         {
