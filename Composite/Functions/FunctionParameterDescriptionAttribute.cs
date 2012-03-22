@@ -6,6 +6,9 @@ namespace Composite.Functions
     /// <summary>
     /// Add information about parameters to functions callable via the "C# Function" feature. 
     /// </summary>
+    /// <remarks>
+    /// This class has been marked as obsolete. Use <see cref="FunctionParameterAttribute" />.
+    /// </remarks>
     /// <example>
     /// Here is an example of how to use <see cref="FunctionParameterDescriptionAttribute" />
     /// <code>
@@ -18,6 +21,9 @@ namespace Composite.Functions
     /// }
     /// </code>
     /// </example>
+    /// <exclude />
+    [Obsolete("Use FunctionParameterAttribute instead ...", false)]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 	public sealed class FunctionParameterDescriptionAttribute : Attribute
 	{

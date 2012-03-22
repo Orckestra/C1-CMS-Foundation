@@ -457,6 +457,7 @@
     <Compile Include="Data\Validation\Validators\LazyFunctionProviedPropertyAttribute.cs" />
     <Compile Include="Data\Validation\Validators\LazyFunctionProviedPropertyValidator.cs" />
     <Compile Include="Data\Validation\Validators\NullIntegerRangeValidatorAttribute.cs" />
+    <Compile Include="Functions\FunctionParameterAttribute.cs" />
     <Compile Include="Functions\Forms\FunctionParameterElementProducer.cs" />
     <Compile Include="Functions\Forms\FunctionProducerMediator.cs" />
     <Compile Include="Functions\Forms\FunctionParameterProducer.cs" />

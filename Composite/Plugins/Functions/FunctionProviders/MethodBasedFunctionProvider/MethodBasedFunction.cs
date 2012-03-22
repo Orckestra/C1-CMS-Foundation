@@ -10,13 +10,14 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
+using System.Xml.Linq;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
 {
     internal class MethodBasedFunction : IFunction
     {
-        private static readonly string LogTitle = typeof (MethodBasedFunction).Name;
+        private static readonly string LogTitle = typeof(MethodBasedFunction).Name;
 
         private readonly IMethodBasedFunctionInfo _methodBasedFunctionInfo;
         private readonly Type _type;
@@ -43,7 +44,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 string errorMessage = "Could not find the type '{0}'".FormatWith(info.Type);
 
                 // Skipping error log while package installation, the type/method may be available after restart
-                if(!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
                 {
                     Log.LogError(LogTitle, errorMessage);
                 }
@@ -78,7 +79,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             IList<object> arguments = new List<object>();
             foreach (ParameterProfile paramProfile in ParameterProfiles)
             {
-                
+
                 arguments.Add(parameters.GetParameter(paramProfile.Name, paramProfile.Type));
             }
 
@@ -122,23 +123,54 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                     Dictionary<string, object> defaultValues = new Dictionary<string, object>();
                     Dictionary<string, string> labels = new Dictionary<string, string>();
                     Dictionary<string, string> helpTexts = new Dictionary<string, string>();
+                    Dictionary<string, XElement> widgetMarkup = new Dictionary<string, XElement>();
                     foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(MethodBasedDefaultValueAttribute), true))
                     {
                         MethodBasedDefaultValueAttribute attribute = (MethodBasedDefaultValueAttribute)obj;
                         defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
                     }
 
+                    // Run through obsolete FunctionParameterDescriptionAttribute
                     foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(FunctionParameterDescriptionAttribute), true))
                     {
                         FunctionParameterDescriptionAttribute attribute = (FunctionParameterDescriptionAttribute)obj;
-                        if (attribute.HasDefaultValue)
-                        {
-                            if (defaultValues.ContainsKey(attribute.ParameterName)==false)
-                                defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
-                        }
+                        if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.ParameterName))
+                            defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
 
                         labels.Add(attribute.ParameterName, attribute.ParameterLabel);
                         helpTexts.Add(attribute.ParameterName, attribute.ParameterHelpText);
+                    }
+
+                    // Run trhough new and improved FunctionParameterAttribute. Many may exist for one parameter.
+                    foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(FunctionParameterAttribute), true))
+                    {
+                        FunctionParameterAttribute attribute = (FunctionParameterAttribute)obj;
+
+                        Verify.That(attribute.HasName, "All [FunctionParameter(...)] definitions on the method '{0}' must have 'Name' specified.", this.MethodInfo.Name);
+
+                        if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.Name))
+                            defaultValues.Add(attribute.Name, attribute.DefaultValue);
+
+                        if (attribute.HasLabel && !labels.ContainsKey(attribute.Name))
+                            labels.Add(attribute.Name, attribute.Label);
+
+                        if (attribute.HasHelp && !helpTexts.ContainsKey(attribute.Name))
+                            helpTexts.Add(attribute.Name, attribute.Help);
+
+                        if (attribute.HasWidgetMarkup && !widgetMarkup.ContainsKey(attribute.Name))
+                        {
+                            try
+                            {
+                                XElement widgetMarkupElement = XElement.Parse(attribute.WidgetMarkup);
+                                widgetMarkup.Add(attribute.Name, widgetMarkupElement);
+                            }
+                            catch (Exception ex)
+                            {
+                                string errText = string.Format("Failed to set Widget Markup for parameter '{0}' on method '{1}'. {2}",
+                                    attribute.Name, this.MethodInfo.Name, ex.Message);
+                                throw new InvalidOperationException(errText);
+                            }
+                        }
                     }
 
                     _parameterProfile = new List<ParameterProfile>();
@@ -169,7 +201,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         if (helpTexts.ContainsKey(parameterInfo.Name)) parameterHelpText = helpTexts[parameterInfo.Name];
 
                         WidgetFunctionProvider widgetFunctionProvider = 
-                            StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType);
+                            (widgetMarkup.ContainsKey(parameterInfo.Name) ?
+                                new WidgetFunctionProvider(widgetMarkup[parameterInfo.Name]) :
+                                StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType) );
 
                         _parameterProfile.Add
                         (
@@ -211,10 +245,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
         public EntityToken EntityToken
         {
-            get 
+            get
             {
                 return _methodBasedFunctionInfo.GetDataEntityToken();
             }
         }
-    }     
+    }
 }
