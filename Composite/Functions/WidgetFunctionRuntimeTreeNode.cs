@@ -162,9 +162,17 @@ namespace Composite.Functions
             XElement element = XElement.Parse(string.Format(@"<f:{0} xmlns:f=""{1}"" />", FunctionTreeConfigurationNames.WidgetFunctionTagName, FunctionTreeConfigurationNames.NamespaceName));
 
             element.Add(new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, _widgetFunction.CompositeName()));
-            element.Add(new XAttribute(FunctionTreeConfigurationNames.LabelAttributeName, this.Label));
-            element.Add(new XAttribute(FunctionTreeConfigurationNames.BindingSourceNameAttributeName, this.BindingSourceName));
-            element.Add(this.HelpDefinition.Serialize());
+
+            if (!string.IsNullOrEmpty(this.Label))
+                element.Add(new XAttribute(FunctionTreeConfigurationNames.LabelAttributeName, this.Label));
+
+            if (!string.IsNullOrEmpty(this.BindingSourceName))
+                element.Add(new XAttribute(FunctionTreeConfigurationNames.BindingSourceNameAttributeName, this.BindingSourceName));
+
+            if (this.HelpDefinition != null && !string.IsNullOrEmpty(this.HelpDefinition.HelpText))
+            {
+                element.Add(this.HelpDefinition.Serialize());
+            }
 
             foreach (ParameterProfile parameterProfile in _widgetFunction.ParameterProfiles)
             {
