@@ -41,7 +41,7 @@ public partial class Composite_content_views_functioninfo_ShowFunctionInfo : Sys
         XElement parametersTable = null;
 
         XNamespace functionNamespace = FunctionTreeConfigurationNames.NamespaceName;
-        XElement codeElement = new XElement(functionNamespace + "function",
+        XElement codeElement = new XElement(functionNamespace + (isWidget ? "widgetfunction" : "function"),
             new XAttribute("name", functionName),
             new XAttribute(XNamespace.Xmlns + "f", FunctionTreeConfigurationNames.NamespaceName));
 
@@ -85,7 +85,7 @@ public partial class Composite_content_views_functioninfo_ShowFunctionInfo : Sys
 
 
 
-                XElement codeParameter = new XElement("param", new XAttribute("name", parameterProfile.Name));
+                XElement codeParameter = new XElement(functionNamespace + "param", new XAttribute("name", parameterProfile.Name));
 
                 string value = parameterProfile.IsRequired ? "[Required Value]" : "[Optional Value]";
 
