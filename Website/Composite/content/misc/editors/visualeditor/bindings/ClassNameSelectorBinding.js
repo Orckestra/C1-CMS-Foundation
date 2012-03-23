@@ -102,7 +102,7 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
             this.selections.each(function (selection) {
                 var id = selection.value;
                 if (id != null) {
-                    if (this._tinyInstance.queryCommandState(id)) {
+                    if (this._tinyInstance.formatter.match(id)) {
                         this._tinyInstance.formatter.remove(id);
                         result = false;
                     }
