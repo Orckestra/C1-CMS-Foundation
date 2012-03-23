@@ -72,7 +72,7 @@ namespace Composite.Functions
         /// <exclude />
         public static string DescriptionLocalized(this IMetaFunction function)
         {
-            if (function.Description.Contains("${"))
+            if (function.Description != null && function.Description.Contains("${"))
             {
                 return StringResourceSystemFacade.ParseString(function.Description);
             }

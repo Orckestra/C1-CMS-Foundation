@@ -1416,7 +1416,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 , new XAttribute("compositename", function.CompositeName())
                 , new XAttribute("name", function.Name)
                 , new XAttribute("namespace", function.Namespace)
-                , new XAttribute("description", function.DescriptionLocalized())
+                , new XAttribute("description", function.DescriptionLocalized() ?? "")
                 , new XAttribute("returntypelabel", function.ReturnType.GetShortLabel()));
 
             foreach (ParameterProfile parameter in function.ParameterProfiles)

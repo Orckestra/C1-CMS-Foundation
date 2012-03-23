@@ -23,6 +23,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         private readonly Type _type;
         private readonly MethodInfo _methodInfo;
         private IList<ParameterProfile> _parameterProfile;
+        private string _functionDescription = null;
         private object _object;
 
 
@@ -102,7 +103,21 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public string Description { get { return string.Format("This is a static method call to the function '{0}' on '{1}'.", _methodBasedFunctionInfo.MethodName, _methodBasedFunctionInfo.Type); } }
+        public string Description 
+        { 
+            get 
+            {
+                if (string.IsNullOrEmpty(_functionDescription))
+                {
+                    _functionDescription = this.MethodInfo.GetCustomAttributes(typeof(FunctionAttribute), true).Select(f => ((FunctionAttribute)f).Description).FirstOrDefault();
+                    if (string.IsNullOrEmpty(_functionDescription))
+                    {
+                        return string.Format("This is a static method call to the function '{0}' on '{1}'.", _methodBasedFunctionInfo.MethodName, _methodBasedFunctionInfo.Type);
+                    }
+                }
+                return _functionDescription;
+            }
+        }
 
 
         public Type ReturnType
