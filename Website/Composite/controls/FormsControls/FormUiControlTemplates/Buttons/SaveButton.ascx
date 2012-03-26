@@ -42,7 +42,7 @@
 					<ui:menugroup >
 							<ui:menuitem id="save" label="<%=Server.HtmlEncode(this.FormControlLabel)%>" image="${icon:save}" image-disabled="${icon:save-disabled}" observes="broadcasterCanSave"
 							 oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE);" />
-							<ui:menuitem id="saveandpublish" label="Save and Publish" image="${icon:saveandpublish}" image-disabled="${icon:save-disabled}" observes="broadcasterCanSave"
+							<ui:menuitem id="saveandpublish" label="${string:Composite.Management:Website.App.LabelSaveAndPublish}" image="${icon:saveandpublish}" image-disabled="${icon:save-disabled}" observes="broadcasterCanSave"
 							 oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE_AND_PUBLISH);" />
 					</ui:menugroup>
 			</ui:menubody>

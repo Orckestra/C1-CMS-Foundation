@@ -496,6 +496,7 @@
 	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelMute" value="Mute" />
 	<string key="Website.Templates.WysiwygEditorPlugins.MediaWinMediaOptions.LabelWindowLessVideo" value="Windowless video" />
 	<string key="Website.App.LabelSave" value="Save" />
+	<string key="Website.App.LabelSaveAndPublish" value="Save and Publish" />
 	<string key="Website.App.LabelCloseTab" value="Close Tab" />
 	<string key="Website.App.LabelCloseOthers" value="Close Others" />
 	<string key="Website.App.LabelRefreshView" value="Refresh View" />
