@@ -200,41 +200,6 @@ div#offlinetext {
 		color: rgb(0,0,0);
 	#endregion
 }
-/*
-span#offlinetext {
-	font-weight: bold;
-	position: relative;
-	#moz top: 6px;
-	#ie top: -4px;
-	#moz: display: none;
-}
-span#offlinetext span.text1 {
-	color: black;
-	position: absolute;
-	#moz: display: none;
-}
-span#offlinetext span.text2 {
-	color: white;
-	position: relative;
-	top: -1px;
-	left: -1px;	
-	#moz: visibility: hidden;
-	#moz: display: none;
-}
-div#offlinemovie {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 0;	
-}
-object#offlineflash {
-	position:absolute;
-	top:0;
-	left:0;	
-}
-*/
 
 /* SPECIAL BUTTON! ............................................. */
 

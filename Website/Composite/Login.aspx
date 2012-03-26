@@ -124,7 +124,6 @@
         
         
         div.clear {
-            /* height: 0px;*/
             clear: both;
         }
         

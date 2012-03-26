@@ -1,14 +1,6 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-/*
- * Notice capitalization of firt-letter on these fellows: TAB, DOCKTAB and TITLEBAR.
- */
-ui|tab ui|labeltext,
-ui|docktab ui|labeltext,
-ui|titlebar ui|labeltext {
-	text-transform: capitalize;
-}
 ui|labelbox {
 	display: block;
 	float: left;

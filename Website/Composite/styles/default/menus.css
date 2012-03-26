@@ -8,7 +8,6 @@ ui|menubar {
 	border-top: 1px solid $(color:threedhighlight);
 	border-bottom: 1px solid $(color:threedshadow);
 	white-space: nowrap;
-	text-transform: capitalize; /* notice all capitalized words! */
 }
 ui|menu {
 	display: block;
@@ -21,7 +20,6 @@ ui|menubody {
 	padding: 4px 2px 4px 2px;
 	background-color: $(color:menu);
 	color: $(color:menutext);
-	/*border: 1px solid $(color:threedshadow);*/
 }
 ui|menugroup {
 	display: block;
