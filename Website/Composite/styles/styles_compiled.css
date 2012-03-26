@@ -195,14 +195,6 @@ font-weight: bold;
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-/*
-* Notice capitalization of firt-letter on these fellows: TAB, DOCKTAB and TITLEBAR.
-*/
-ui|tab ui|labeltext,
-ui|docktab ui|labeltext,
-ui|titlebar ui|labeltext {
-text-transform: capitalize;
-}
 ui|labelbox {
 display: block;
 float: left;
@@ -527,7 +519,6 @@ display: block;
 border-top: 1px solid $(color:threedhighlight);
 border-bottom: 1px solid $(color:threedshadow);
 white-space: nowrap;
-text-transform: capitalize; /* notice all capitalized words! */
 }
 ui|menu {
 display: block;
@@ -540,7 +531,6 @@ display: block;
 padding: 4px 2px 4px 2px;
 background-color: $(color:menu);
 color: $(color:menutext);
-/*border: 1px solid $(color:threedshadow);*/
 }
 ui|menugroup {
 display: block;
