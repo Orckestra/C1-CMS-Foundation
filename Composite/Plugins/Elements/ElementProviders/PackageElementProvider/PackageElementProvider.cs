@@ -77,7 +77,32 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 OpenedIcon = RootOpenedIcon
             };
 
+            AddInstallLocalPackageAction(element);
+
             yield return element;
+        }
+
+
+
+        private static void AddInstallLocalPackageAction(Element element)
+        {
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+            {
+                VisualData = new ActionVisualizedData
+                {
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackageLabel"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackageToolTip"),
+                    Disabled = false,
+                    Icon = InstallLocalPackageIcon,
+                    ActionLocation = new ActionLocation
+                    {
+                        ActionType = ActionType.Add,
+                        IsInFolder = false,
+                        IsInToolbar = true,
+                        ActionGroup = PrimaryActionGroup
+                    }
+                }
+            });
         }
 
 
@@ -309,24 +334,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 OpenedIcon = LocalPackagesOpenedIcon
             };
 
-            localPackagesElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackageLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PackageElementProvider", "InstallLocalPackageToolTip"),
-                    Disabled = false,
-                    Icon = InstallLocalPackageIcon,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Add,
-                        IsInFolder = false,
-                        IsInToolbar = true,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            });
-
+            AddInstallLocalPackageAction(localPackagesElement);
 
             yield return localPackagesElement;
 
