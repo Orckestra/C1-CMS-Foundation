@@ -100,7 +100,7 @@
   <string key="TreeGenericDelete.CascadeDeleteErrorTitle" value="Cascade delete error" />
   <string key="TreeGenericDelete.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
   
-  <string key="TreeGenericDeleteConfirm.LabelFieldGroup" value="Delete data?" />
+  <string key="TreeGenericDeleteConfirm.LabelFieldGroup" value="Delete Data?" />
   <string key="TreeGenericDeleteConfirm.Text" value="Delete" />
   
   <string key="TreeGenericDeleteConfirmDeletingRelatedData.LabelFieldGroup" value="Delete data?" />

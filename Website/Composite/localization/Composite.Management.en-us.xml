@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-	<string key="ManageUserPermissions.ManageUserPermissionsOnBranchLabel" value="Edit permissions" />
-	<string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit permissions" />
-	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="Global permissions" />
+	<string key="ManageUserPermissions.ManageUserPermissionsOnBranchLabel" value="Edit Permissions" />
+	<string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit Permissions" />
+	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="Global Permissions" />
 	<string key="ManageUserPermissions.ManageUserPermissionsToolTip" value="Manage user permissions" />
 	<string key="LogElementProvider.RootLabel" value="Log" />
 	<string key="LogElementProvider.RootLabelToolTip" value="System log" />
 	<string key="LogElementProvider.ShowLogLabel" value="Show the log" />
 	<string key="LogElementProvider.ShowLogToolTip" value="Show the system log" />
 	<string key="DataCompositionVisabilityFacade.DefaultContainerLabel" value="Metadata" />
-	<string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete user?" />
+	<string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete User?" />
 	<string key="Website.Forms.Administrative.DeleteUserStep1.Text" value="Delete the selected user?" />
 	<string key="DeleteUserWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
 	<string key="DeleteUserWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
@@ -62,18 +62,18 @@
 	<string key="EditUserWorkflow.EditOwnAccessToUsersPerspective" value="You can not delete your own access rights to 'Users' perspective." />
 	<string key="UserElementProvider.RootLabel" value="Users" />
 	<string key="UserElementProvider.RootToolTip" value="Users" />
-	<string key="UserElementProvider.AddUserLabel" value="Add user..." />
+	<string key="UserElementProvider.AddUserLabel" value="Add User..." />
 	<string key="UserElementProvider.AddUserToolTip" value="Add new user" />
-	<string key="UserElementProvider.EditUserLabel" value="Edit user" />
+	<string key="UserElementProvider.EditUserLabel" value="Edit User" />
 	<string key="UserElementProvider.EditUserToolTip" value="Edit selected user" />
-	<string key="UserElementProvider.DeleteUserLabel" value="Delete user" />
+	<string key="UserElementProvider.DeleteUserLabel" value="Delete User" />
 	<string key="UserElementProvider.DeleteUserToolTip" value="Delete the selected user" />
 	<string key="UserElementProvider.ChangeOtherActiveLocaleTitle" value="Warning" />
 	<string key="UserElementProvider.ChangeOtherActiveLocaleMessage" value="You have change the active language for a user that is currently logged on. The users console will be reloaded and data might be lost." />
 	<string key="UserElementProvider.ChangeOtherActiveLocaleDialogTitle" value="Cleanup Required" />
 	<string key="UserElementProvider.ChangeOtherActiveLocaleDialogText" value="This requires a stage cleanup. Active editors will be saved and closed." />
 	<string key="AddNewUserWorkflow.UsernameDuplicateError" value="A user with the same name already exists" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup" value="Add new user" />
+	<string key="Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup" value="Add New User" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameLabel" value="User name" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameHelp" value="When you have created a new user the username cannot be changed" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.PasswordLabel" value="Password" />
@@ -89,18 +89,18 @@
   <string key="UserElementProvider.MissingActiveLanguageTitle" value="A language is required" />
 	<string key="UserElementProvider.MissingActiveLanguageMessage" value="To create a user a language is required, but no languages have been added yet. You can add one under the System perspective." />
 	<string key="UserElementProvider.UserLoginIsAlreadyUsed" value="User with the same login already exist" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderTypeLabel" value="Add datafolder" />
+	<string key="AssociatedDataElementProviderHelper.AddDataFolderTypeLabel" value="Add Datafolder" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderTypeToolTip" value="Add datafolder" />
-	<string key="AssociatedDataElementProviderHelper.AddAssociatedDataLabel" value="Add data" />
+	<string key="AssociatedDataElementProviderHelper.AddAssociatedDataLabel" value="Add Data" />
 	<string key="AssociatedDataElementProviderHelper.AddAssociatedDataToolTip" value="Add data" />
-	<string key="AssociatedDataElementProviderHelper.EditAssociatedDataLabel" value="Edit data" />
+	<string key="AssociatedDataElementProviderHelper.EditAssociatedDataLabel" value="Edit Data" />
 	<string key="AssociatedDataElementProviderHelper.EditAssociatedDataToolTip" value="Edit data" />
-	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel" value="Delete data" />
+	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataLabel" value="Delete Data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteAssociatedDataToolTip" value="Delete data" />
 	<string key="AssociatedDataElementProviderHelper.LocalizeData" value="Localize" />
 	<string key="AssociatedDataElementProviderHelper.LocalizeDataToolTip" value="Localize data" />
 	<string key="AssociatedDataElementProviderHelper.DisabledData" value="Not yet approved or published" />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.FieldLabel" value="Add datafolder" />
+	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.FieldLabel" value="Add Datafolder" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorLabel" value="Datafolder type" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExSelectType.SelectorHelp" value="Create new datatype or use an existing datatype (if present)." />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.LabelNewType" value="Settings" />
@@ -116,21 +116,21 @@
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.HasLocalization" value="Has localization" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoTypesTitle" value="No page datafolders exists" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoTypesMessage" value="No page datafolders have been created yet. You can create a page datafolder in the 'Data' perspective." />
-	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesTitle" value="No unused page datafolders exists" />
+	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesTitle" value="No Unused Page Datafolders Exist" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExWorkflow.NoUnusedTypesMessage" value="All available page datafolders have been added already. To create a new page datafolder go to the 'Data' perspective." />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderExCreateNewType.ErrorTitle" value="Error" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.FieldLabel" value="Select existing data folder type to add" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorLabel" value="Existing data folder types" />
 	<string key="AssociatedDataElementProviderHelper.AddDataFolderSelectType.SelectorHelp" value="Select existing data folder type to add" />
-	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeLabel" value="Remove metadata field" />
+	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeLabel" value="Remove Metadata Field" />
 	<string key="AssociatedDataElementProviderHelper.RemoveMetaDataTypeToolTip" value="Remove metadata field" />
-	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.LabelFieldGroup" value="Remove datafolder from page" />
+	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.LabelFieldGroup" value="Remove Datafolder from Page" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.FieldGroupLabel" value="Data cleanup" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataLabel" value="Delete data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataCheckBoxLabel" value="Yes, delete folder data" />
 	<string key="AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow.DeleteFolderDataHelp" value="If you want data in this folder to stay in the database, you should uncheck this option." />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel" value="Add metadata field" />
-	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeLabel" value="Add metadata field" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.LayoutLabel" value="Add Metadata Field" />
+	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeLabel" value="Add Metadata Field" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataTypeToolTip" value="Add metadata field" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.FieldLabel" value="Select existing metadata type to add" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataSelectType.SelectorLabel" value="Existing metadata types" />
@@ -163,13 +163,13 @@
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption3" value="Inherit 3 generations" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.InheritDisplayOption4" value="Always inherit" />
 	<string key="AssociatedDataElementProviderHelper.AddMetaDataWorkflow.FieldGroupNameNotValid" value="The field group name is in use" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectType.LayoutLabel" value="Remove metadata field group" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectType.LayoutLabel" value="Remove Metadata Field Group" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.FieldLabel" value="Select a metadata field group to remove" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorLabel" value="Field group" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorHelp" value="Select a metadata field group to remove" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit page metadata field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit Metadata Field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit Page Metadata Field" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label" value="Page metadata field settings" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Label" value="Label" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Help" value="The label of the metadata field. Used when editing pages" />
@@ -181,13 +181,13 @@
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.InheritDisplaySelectorHelp" value="Inherit display" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Label" value="Metadata field" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataDefinitionSelector.Help" value="Select the metadata field to edit" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Title" value="No metadata fields to edit" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Title" value="No Metadata Fields to Edit" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoMetaDataDefinitionsExists.Message" value="There is no metadata fields defined on this item to edit" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataFieldNameAlreadyUsed" value="The metadata type is used another place with same name but different label" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.MetaDataContainerChangeNotAllowed" value="There exists one or more definitions with the same name, container change is not allowed" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Title" value="Press finish to save" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.NoDefaultValuesNeeded.Description" value="All required information has been gathered. Press Finish to update the metadata field" />
-	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Title" value="No metadata fields to remove" />
+	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Title" value="No Metadata Fields to Remove" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow.NoDefinedTypesExists.Message" value="There is no metadata fields defined on this item to remove" />
 	<string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
 	<string key="DeleteAssociatedDataWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
@@ -202,7 +202,7 @@
 	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.ServicesLabel" value="Services" />
 	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasVersioning" value="Has versioning" />
 	<string key="Website.Forms.Administrative.CreateNewAssociatedTypeStep1.HasPublishing" value="Has publishing" />
-	<string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.FieldGroupLabel" value="Delete data?" />
+	<string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.FieldGroupLabel" value="Delete Data?" />
 	<string key="Website.Forms.Administrative.DeleteAssociatedTypeDataStep1.Text" value="Delete data?" />
 	<string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.FieldGroupLabel" value="Add page data" />
 	<string key="Website.Forms.Administrative.AddAssociatedDataWorkflow.TypeSelectorLabel" value="Select a datatype to add" />
@@ -240,7 +240,7 @@
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ExistingTypeNameHelp" value="The name of the selected existing type in the system to use" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameLabel" value="Foreign key field name" />
 	<string key="Website.Forms.Administrative.AddAssociatedTypeFinalInfo.ForeignKeyFieldNameHelp" value="The name of the field of the existing type to use as a foreign key " />
-	<string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeLabel" value="Remove datafolder" />
+	<string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeLabel" value="Remove Datafolder" />
 	<string key="AssociatedDataElementProviderHelper.RemoveAssociatedTypeToolTip" value="Remove datafolder" />
 	<string key="Website.Forms.Administrative.RemoveAssociatedType.FieldGroupLabel" value="Remove page datatype" />
 	<string key="Website.Forms.Administrative.RemoveAssociatedTypeFinalInfo.AssociationTypeLabel" value="Remove page datatype" />
@@ -266,13 +266,13 @@
 	<string key="VirtualElementProviderElementProvider.ReadOnlyWidgetFunctionPerspective" value="All Widget Functions" />
 	<string key="VirtualElementProviderElementProvider.SqlFunctionPerspective" value="SQL Functions" />
 	<string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
-	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel" value="Server log" />
+	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel" value="Server Log" />
 	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip" value="View recent server events" />
-	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast message" />
+	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationTooltip" value="Restart the server" />
-	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast message to all C1 Consoles" />
+	<string key="SendMessageToConsolesWorkflow.Layout.Label" value="Broadcast Message to All C1 Consoles" />
 	<string key="SendMessageToConsolesWorkflow.FieldGroup.Label" value="Message to broadcast" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Label" value="Title" />
 	<string key="SendMessageToConsolesWorkflow.TitleTextBox.Help" value="Dialog title of broadcast message" />
@@ -299,23 +299,23 @@
 	<string key="MediaFileProviderElementProvider.AddMediaFolderToolTip" value="Add new media folder" />
 	<string key="MediaFileProviderElementProvider.AddMediaFile" value="Upload File" />
 	<string key="MediaFileProviderElementProvider.AddMediaFileToolTip" value="Add new media file" />
-	<string key="MediaFileProviderElementProvider.DeleteMediaFile" value="Delete file" />
+	<string key="MediaFileProviderElementProvider.DeleteMediaFile" value="Delete File" />
 	<string key="MediaFileProviderElementProvider.DeleteMediaFileToolTip" value="Delete the selected media file" />
 	<string key="MediaFileProviderElementProvider.DeleteMediaFolder" value="Delete Folder" />
 	<string key="MediaFileProviderElementProvider.DeleteMediaFolderToolTip" value="Delete the media folder and all items under it." />
 	<string key="MediaFileProviderElementProvider.Download" value="Download" />
 	<string key="MediaFileProviderElementProvider.DownloadToolTip" value="Download file" />
-	<string key="MediaFileProviderElementProvider.EditMediaFile" value="File properties" />
+	<string key="MediaFileProviderElementProvider.EditMediaFile" value="File Properties" />
 	<string key="MediaFileProviderElementProvider.EditMediaFileToolTip" value="Rename the selected media file" />
 	<string key="MediaFileProviderElementProvider.EditMediaFileTextContent" value="Edit text" />
 	<string key="MediaFileProviderElementProvider.EditMediaFileTextContentToolTip" value="Edit text content" />
 	<string key="MediaFileProviderElementProvider.EditImage" value="Image Editor" />
 	<string key="MediaFileProviderElementProvider.EditImageToolTip" value="Open the selected media file in the image editor" />
-	<string key="MediaFileProviderElementProvider.EditMediaFolder" value="Folder properties" />
+	<string key="MediaFileProviderElementProvider.EditMediaFolder" value="Folder Properties" />
 	<string key="MediaFileProviderElementProvider.EditMediaFolderToolTip" value="Edit media folder properties" />
-	<string key="MediaFileProviderElementProvider.ChangeMediaFile" value="Replace file" />
+	<string key="MediaFileProviderElementProvider.ChangeMediaFile" value="Replace File" />
 	<string key="MediaFileProviderElementProvider.ChangeMediaFileToolTip" value="Replace the selected with another media file" />
-	<string key="MediaFileProviderElementProvider.UploadZipFile" value="Upload multiple" />
+	<string key="MediaFileProviderElementProvider.UploadZipFile" value="Upload Multiple" />
 	<string key="MediaFileProviderElementProvider.UploadZipFileToolTip" value="Upload Zip file" />
 	<string key="MediaFileProviderElementProvider.MediaFileItemToolTip" value="Media Item" />
 	<string key="MediaFileProviderElementProvider.OrganizedFilesAndFoldersToolTip" value="Organize folders and files" />
@@ -337,9 +337,9 @@
 	<string key="Website.General.LabelVersionNumber" value="Version No." />
 	<string key="Website.Application.DialogReload.Title" value="Restart?" />
 	<string key="Website.Application.DialogReload.Text" value="Restart Composite C1? All unsaved changes will be lost." />
-	<string key="WebSite.Application.DialogSaveResource.Title" value="Save resource?" />
+	<string key="WebSite.Application.DialogSaveResource.Title" value="Save Resource?" />
 	<string key="WebSite.Application.DialogSaveResource.Text" value="&quot;${resourcename}&quot; has been modified. Save changes?" />
-	<string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save resources?" />
+	<string key="Website.Dialogs.SaveAll.LabelSaveResources" value="Save Resources?" />
 	<string key="Website.Dialogs.SaveAll.LabelUnsavedResources" value="Unsaved resources" />
 	<string key="Website.Dialogs.LabelYes" value="Yes" />
 	<string key="Website.Dialogs.LabelNo" value="No" />
@@ -376,7 +376,7 @@
 	<string key="Website.Dialogs.Options.LabelSoundOff" value="No sound effects" />
 	<string key="Website.Dialogs.WebServices.Error" value="Error in web service method " />
 	<string key="Website.Dialogs.WebServices.LabelWebServiceError" value="Web Service Error" />
-	<string key="Website.Dialogs.SystemTree.DetailedPaste.Title" value="Insert where?" />
+	<string key="Website.Dialogs.SystemTree.DetailedPaste.Title" value="Insert Where?" />
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelPosition" value="Position" />
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertBefore" value="Insert before" />
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertAfter" value="Insert after" />
@@ -400,9 +400,9 @@
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTransform" value="Transform" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFlipHorizontal" value="Flip Horizontally" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFlipVertical" value="Flip Vertically" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CW" value="Rotate 90 degrees CW" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CCW" value="Rotate 90 degrees CCW" />
-	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate180" value="Rotate 180 degrees" />
+	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CW" value="Rotate 90 Degrees CW" />
+	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate90CCW" value="Rotate 90 Degrees CCW" />
+	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelRotate180" value="Rotate 180 Degrees" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelScale" value="Scale Image..." />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelCrop" value="Crop Image" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.ToolBox.ToolTipSelect" value="Select" />
@@ -426,7 +426,7 @@
 	<string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
 	<string key="Website.Content.Views.ViewSource.LabelFormatted" value="Formatted" />
 	<string key="Website.Content.Views.ViewSource.LabelRaw" value="Raw" />
-	<string key="ServerLog.LabelTitle" value="Server log" />
+	<string key="ServerLog.LabelTitle" value="Server Log" />
 	<string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
 	<string key="ServerLog.LabelButtonRefresh" value="Refresh" />
 	<string key="ServerLog.EmptyLabel" value="No log data available..." />
@@ -539,7 +539,7 @@
 	<string key="Website.App.StatusBar.Busy" value="Working..." />
 	<string key="Website.App.StatusBar.Ready" value="Ready!" />
 	<string key="Website.App.StatusBar.ErrorInField" value="Error in" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.Layout.Label" value="Add new media file" />
+	<string key="Website.Forms.Administrative.AddNewMediaFile.Layout.Label" value="Add New Media File" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.FieldGroup.Label" value="Media Properties" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Label" value="Filename" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help" value="Select/enter the filename to upload" />
@@ -564,7 +564,7 @@
 	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameAlreadyUsed" value="The folder already exists" />
 	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNameTooLong" value="The total length of the folder name is too long" />
 	<string key="Website.Forms.Administrative.AddNewMediaFolder.FolderNotOnlySlash" value="The folder name can not only be '/' or '\'" />
-	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelDialog" value="Upload multiple files via a Zip File" />
+	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelDialog" value="Upload Multiple Files via a Zip File" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelFieldGroup" value="Select Zip file containing files to extract" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.LabelFile" value="Zip file" />
 	<string key="Website.Forms.Administrative.AddZipMediaFile.HelpFile" value="Create a Zip file (right click local folder and select Send to -&gt; Compressed folder) and select it using the Browse button" />
@@ -583,11 +583,11 @@
 	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelKeywordHelp" value="Write a keyword to search for." />
 	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelReturnType" value="Return type" />
 	<string key="Website.Forms.Administrative.AllFunctionsElementProviderSearchForm.LabelReturnTypeHelp" value="Select a return type to search for." />
-	<string key="Website.Forms.Administrative.DeleteMediaFile.LabelFieldGroup" value="Delete this file?" />
+	<string key="Website.Forms.Administrative.DeleteMediaFile.LabelFieldGroup" value="Delete This File?" />
 	<string key="Website.Forms.Administrative.DeleteMediaFile.Text" value="Delete this file?" />
 	<string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationHeader" value="Deleting a file" />
 	<string key="Website.Forms.Administrative.DeleteMediaFile.DeleteDataConfirmationText" value="There is some referenced data that will also be deleted, do you want to continue?" />
-	<string key="Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup" value="Delete this folder?" />
+	<string key="Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup" value="Delete This Folder?" />
 	<string key="Website.Forms.Administrative.DeleteMediaFolder.Text" value="Delete this folder?" />
 	<string key="Website.Forms.Administrative.DeleteMediaFolder.HasChildringText" value="This folder contains one or more files or subfolders. Deleting this folder will also delete all sub files and folders. Delete this folder?" />
 	<string key="Website.Forms.Administrative.EditMediaFile.LabelFieldGroup" value="Media Properties" />
@@ -599,7 +599,7 @@
 	<string key="Website.Forms.Administrative.EditMediaFile.HelpDescription" value="Use this field for at short description of the image" />
 	<string key="Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
   <string key="Website.Forms.Administrative.EditMediaFile.FileExists.Message" value="A file with the same name already exists in this folder." />
-  <string key="Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup" value="Folder properties" />
+  <string key="Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup" value="Folder Properties" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.LabelFolderName" value="Folder Name" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.HelpFolderName" value="" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.LabelTitle" value="Title" />
@@ -618,7 +618,7 @@
 	<string key="Website.Forms.Administrative.UploadMediaFile.HelpFile" value="" />
 	<string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorTitle" value="File missing or empty" />
 	<string key="Website.Forms.Administrative.UploadMediaFile.EmptyFileErrorMessage" value="No file data was received. Please use the browse button and ensure that the selected file is not empty." />
-	<string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup" value="Upload New Media File to existing file" />
+	<string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFieldGroup" value="Upload New Media File to Existing File" />
 	<string key="Website.Forms.Administrative.UploadNewMediaFile.LabelFile" value="File name:" />
 	<string key="Website.Forms.Administrative.UploadNewMediaFile.HelpFile" value="" />
 	<string key="Website.Forms.Administrative.AdministrativeTemplates.Document.LabelSave" value="Save" />

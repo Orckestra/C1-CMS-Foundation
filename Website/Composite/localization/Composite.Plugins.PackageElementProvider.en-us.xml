@@ -2,25 +2,25 @@
 <strings>
   <string key="RootFolderLabel" value="Packages" />
   <string key="RootFolderToolTip" value="Explore and manage installed packages" />
-  <string key="AvailablePackagesFolderLabel" value="Available packages" />
+  <string key="AvailablePackagesFolderLabel" value="Available Packages" />
   <string key="AvailablePackagesFolderToolTip" value="Available packages" />
-  <string key="InstalledPackageFolderLabel" value="Installed packages" />
+  <string key="InstalledPackageFolderLabel" value="Installed Packages" />
   <string key="InstalledPackageFolderToolTip" value="Installed packages" />
-  <string key="LocalPackagesFolderLabel" value="Local packages" />
+  <string key="LocalPackagesFolderLabel" value="Local Packages" />
   <string key="LocalPackagesFolderToolTip" value="Local packages" />
-  <string key="PackageSourcesFolderLabel" value="Package sources" />
+  <string key="PackageSourcesFolderLabel" value="Package Sources" />
   <string key="PackageSourcesFolderToolTip" value="Package sources" />
   <string key="ViewAvailableInformationLabel" value="Package Info" />
   <string key="ViewAvailableInformationToolTip" value="View package information" />
   <string key="ViewInstalledInformationLabel" value="Package Info" />
   <string key="ViewInstalledInformationToolTip" value="View package information" />
-  <string key="InstallLocalPackageLabel" value="Install local package..." />
+  <string key="InstallLocalPackageLabel" value="Install Local Package..." />
   <string key="InstallLocalPackageToolTip" value="Install package from local file system" />
-  <string key="AddPackageSourceLabel" value="Add package source" />
+  <string key="AddPackageSourceLabel" value="Add Package Source" />
   <string key="AddPackageSourceToolTip" value="Add package source" />
-  <string key="DeletePackageSourceLabel" value="Delete package source" />
+  <string key="DeletePackageSourceLabel" value="Delete Package Source" />
   <string key="DeletePackageSourceToolTip" value="Delete package source" />
-  <string key="ClearServerCacheLabel" value="Clear cache" />
+  <string key="ClearServerCacheLabel" value="Clear Cache" />
   <string key="ClearServerCacheToolTip" value="Clear cache to get the newest packages" />
   <string key="ViewAvailableInformation.FieldGroupLabel" value="Package Info" />
   <string key="ViewAvailableInformation.NameTextLabel" value="Name" />
@@ -42,7 +42,7 @@
   <string key="ViewAvailableInformation.PriceTextLabel" value="Price (EUR)" />
   <string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
   <string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
-  <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already installed" />
+  <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already Installed" />
   <string key="ViewAvailableInformation.ShowError.MessageMessage" value="The package is already installed, cannot install the selected package." />
   <string key="ViewAvailableInformation.ShowServerError.MessageTitle" value="Package server did not respond" />
   <string key="ViewAvailableInformation.ShowServerError.MessageMessage" value="The package server did not respond, try again or contact the system administrator" />
@@ -59,87 +59,87 @@
 
   <string key="ViewInstalledInformation.Toolbar.UninstallLabel" value="Uninstall" />
   <string key="ViewInstalledInformation.Toolbar.PurchaseLabel" value="Purchase this!" />
-  <string key="ViewInstalledInformation.ShowError.MessageTitle" value="Already uninstalled" />
+  <string key="ViewInstalledInformation.ShowError.MessageTitle" value="Already Uninstalled" />
   <string key="ViewInstalledInformation.ShowError.MessageMessage" value="The package is already uninstalled, cannot uninstall the selected package." />
-  <string key="InstallRemotePackage.Step1.LayoutLabel" value="Install package" />
+  <string key="InstallRemotePackage.Step1.LayoutLabel" value="Install Package" />
   <string key="InstallRemotePackage.Step1.HeadingTitle" value="This is a trial/payment package" />
   <string key="InstallRemotePackage.Step1.HeadingDescription" value="This package is subject to payment - please examine the EULA on the next screen for details about trial period and payment terms." />
-  <string key="InstallRemotePackage.Step2.LayoutLabel" value="Install package" />
+  <string key="InstallRemotePackage.Step2.LayoutLabel" value="Install Package" />
   <string key="InstallRemotePackage.Step2.HeadingTitle" value="License agreement" />
   <string key="InstallRemotePackage.Step2.HeadingDescription" value="If you accept the terms of the agreement, click the check box below. You must accept the agreement to install." />
   <string key="InstallRemotePackage.Step2.IAcceptItemLabel" value="I accept the license agreement" />
   <string key="InstallRemotePackage.Step2.AcceptMissing" value="You must accept the terms of the license agreement before you can proceed." />
-  <string key="InstallRemotePackage.Step3.LayoutLabel" value="Install package" />
+  <string key="InstallRemotePackage.Step3.LayoutLabel" value="Install Package" />
   <string key="InstallRemotePackage.Step3.HeadingTitle" value="Download and validate package" />
   <string key="InstallRemotePackage.Step3.HeadingDescription" value="The package will be downloaded and validated. Please note that this may take several minutes. Click Next to continue." />
-  <string key="InstallRemotePackage.Step4.LayoutLabel" value="Install local package" />
+  <string key="InstallRemotePackage.Step4.LayoutLabel" value="Install Local Package" />
   <string key="InstallRemotePackage.Step4.HeadingTitle" value="Ready to install" />
   <string key="InstallRemotePackage.Step4.HeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Click Next to continue." />
   <string key="InstallRemotePackage.Step4.NonUninstallableHeadingTitle" value="Ready to install" />
   <string key="InstallRemotePackage.Step4.NonUninstallableHeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Also note that this package can not be uninstalled. Click Next to continue." />
-  <string key="InstallRemotePackage.Step5.LayoutLabel" value="Package installed" />
+  <string key="InstallRemotePackage.Step5.LayoutLabel" value="Package Installed" />
   <string key="InstallRemotePackage.Step5.HeadingTitle" value="Package installed successfully" />
   <string key="InstallRemotePackage.Step5.HeadingDescription" value="Package installed successfully." />
   <string key="InstallRemotePackage.ShowError.LayoutLabel" value="Package installation failed" />
-  <string key="InstallRemotePackage.ShowError.InfoTableCaption" value="Package installation failed" />
+  <string key="InstallRemotePackage.ShowError.InfoTableCaption" value="Package Installation Failed" />
   <string key="InstallRemotePackage.ShowError.MessageTitle" value="Message" />
-  <string key="InstallRemotePackage.ShowWarning.LayoutLabel" value="The package did not validate" />
+  <string key="InstallRemotePackage.ShowWarning.LayoutLabel" value="The package Did Not Validate" />
   <string key="InstallRemotePackage.ShowWarning.InfoTableCaption" value="The package did not validate" />
-  <string key="InstallLocalPackage.Step1.LayoutLabel" value="Install local package" />
-  <string key="InstallLocalPackage.Step1.FieldGroupLabel" value="Installed local package" />
+  <string key="InstallLocalPackage.Step1.LayoutLabel" value="Install Local Package" />
+  <string key="InstallLocalPackage.Step1.FieldGroupLabel" value="Path to the local package" />
   <string key="InstallLocalPackage.Step1.FileUploadLabel" value="Package file" />
-  <string key="InstallLocalPackage.Step1.FileUploadHelp" value="Browse to the package file" />
-  <string key="InstallLocalPackage.Step2.LayoutLabel" value="Install local package" />
+  <string key="InstallLocalPackage.Step1.FileUploadHelp" value="Browse to and select the local package file" />
+  <string key="InstallLocalPackage.Step2.LayoutLabel" value="Install Local Package" />
   <string key="InstallLocalPackage.Step2.HeadingTitle" value="Ready to install" />
   <string key="InstallLocalPackage.Step2.HeadingDescription" value="Ready to install the package. Please note that the installation may take several minutes. Click Next to continue." />
   <string key="InstallLocalPackage.Step3.LayoutLabel" value="Package Installed" />
   <string key="InstallLocalPackage.Step3.HeadingTitle" value="Package installed successfully" />
   <string key="InstallLocalPackage.Step3.HeadingDescription" value="Package installed successfully." />
-  <string key="InstallLocalPackage.ShowError.LayoutLabel" value="Package installation failed" />
+  <string key="InstallLocalPackage.ShowError.LayoutLabel" value="Package Installation Failed" />
   <string key="InstallLocalPackage.ShowError.InfoTableCaption" value="Package installation failed" />
   <string key="InstallLocalPackage.ShowError.MessageTitle" value="Message" />
-  <string key="InstallLocalPackage.ShowWarning.LayoutLabel" value="The package did not validate" />
+  <string key="InstallLocalPackage.ShowWarning.LayoutLabel" value="The package Did Not Validate" />
   <string key="InstallLocalPackage.ShowWarning.InfoTableCaption" value="The package did not validate" />
-  <string key="UninstallRemotePackage.Step1.LayoutLabel" value="Uninstall package" />
+  <string key="UninstallRemotePackage.Step1.LayoutLabel" value="Uninstall Package" />
   <string key="UninstallRemotePackage.Step1.HeadingTitle" value="Ready to check uninstallation process" />
   <string key="UninstallRemotePackage.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click Next to continue." />
-  <string key="UninstallRemotePackage.Step2.LayoutLabel" value="Uninstall package" />
+  <string key="UninstallRemotePackage.Step2.LayoutLabel" value="Uninstall Package" />
   <string key="UninstallRemotePackage.Step2.HeadingTitle" value="Ready to uninstall" />
   <string key="UninstallRemotePackage.Step2.HeadingDescription" value="Ready to uninstall the package. Please note that the installation may take several minutes. Click Next to continue." />
-  <string key="UninstallRemotePackage.Step3.LayoutLabel" value="Package uninstalled" />
+  <string key="UninstallRemotePackage.Step3.LayoutLabel" value="Package Uninstalled" />
   <string key="UninstallRemotePackage.Step3.HeadingTitle" value="Package uninstalled successfully" />
   <string key="UninstallRemotePackage.Step3.HeadingDescription" value="Package uninstalled successfully." />
-  <string key="UninstallRemotePackage.ShowError.LayoutLabel" value="Package uninstallation failed" />
+  <string key="UninstallRemotePackage.ShowError.LayoutLabel" value="Package Uninstallation Failed" />
   <string key="UninstallRemotePackage.ShowError.InfoTableCaption" value="Package uninstallation failed" />
   <string key="UninstallRemotePackage.ShowError.MessageTitle" value="Message" />
-  <string key="UninstallRemotePackage.ShowUnregistre.LayoutLabel" value="Uninstall package" />
+  <string key="UninstallRemotePackage.ShowUnregistre.LayoutLabel" value="Uninstall Package" />
   <string key="UninstallRemotePackage.ShowUnregistre.HeadingTitle" value="Registration of uninstallation failed" />
   <string key="UninstallRemotePackage.ShowUnregistre.HeadingDescription" value="The registration of uninstallation failed. Contact the package vendor for manual unregistration." />
-  <string key="UninstallLocalPackage.Step1.LayoutLabel" value="Uninstall local package" />
+  <string key="UninstallLocalPackage.Step1.LayoutLabel" value="Uninstall Local Package" />
   <string key="UninstallLocalPackage.Step1.HeadingTitle" value="Ready to check uninstallation process" />
   <string key="UninstallLocalPackage.Step1.HeadingDescription" value="Ready to check the uninstall process of the package. Click Next to continue." />
-  <string key="UninstallLocalPackage.Step2.LayoutLabel" value="Uninstall local package" />
+  <string key="UninstallLocalPackage.Step2.LayoutLabel" value="Uninstall Local Package" />
   <string key="UninstallLocalPackage.Step2.HeadingTitle" value="Ready to uninstall" />
   <string key="UninstallLocalPackage.Step2.HeadingDescription" value="Ready to uninstall the package. Please note that the installation may take several minutes. Click Next to continue." />
-  <string key="UninstallLocalPackage.Step3.LayoutLabel" value="Package uninstalled" />
+  <string key="UninstallLocalPackage.Step3.LayoutLabel" value="Package Uninstalled" />
   <string key="UninstallLocalPackage.Step3.HeadingTitle" value="Package uninstalled successfully" />
   <string key="UninstallLocalPackage.Step3.HeadingDescription" value="Package uninstalled successfully." />
-  <string key="UninstallLocalPackage.ShowError.LayoutLabel" value="Package uninstallation failed" />
+  <string key="UninstallLocalPackage.ShowError.LayoutLabel" value="Package Uninstallation Failed" />
   <string key="UninstallLocalPackage.ShowError.InfoTableCaption" value="Package uninstallation failed" />
   <string key="UninstallLocalPackage.ShowError.MessageTitle" value="Message" />
-  <string key="AddPackageSource.Step1.LayoutLabel" value="New package source" />
+  <string key="AddPackageSource.Step1.LayoutLabel" value="New Package Source" />
   <string key="AddPackageSource.Step1.FieldGroupLabel" value="Package source data" />
   <string key="AddPackageSource.Step1.UrlLabel" value="Package web service URL" />
   <string key="AddPackageSource.Step1.UrlHelp" value="Packages can be hosted on remote servers. The package web service URL will be validated in the next step." />
   <string key="AddPackageSource.Step1.UrlNotValid" value="The entered text was not a valid URL" />
   <string key="AddPackageSource.Step1.UrlNonPackageServer" value="The server is not a Composite C1 package server" />
-  <string key="AddPackageSource.Step2.LayoutLabel" value="Add package server source" />
+  <string key="AddPackageSource.Step2.LayoutLabel" value="Add Package Server Source" />
   <string key="AddPackageSource.Step2.HeadingTitle" value="Server URL is valid" />
   <string key="AddPackageSource.Step2.HeadingNoHttpsDescription" value="Note that the HTTP protocol is used on this connection. This implies that all information will be send unencrypted. Click Finish to add the source." />
   <string key="AddPackageSource.Step2.HeadingWithHttpsDescription" value="Click Finish to add the source." />
-  <string key="DeletePackageSource.Step1.LayoutLabel" value="Delete confirm" />
+  <string key="DeletePackageSource.Step1.LayoutLabel" value="Delete Confirmation" />
   <string key="DeletePackageSource.Step1.Text" value="Delete the selected server source" />
 
-  <string key="ConfirmLicense.ExpiredTitle" value="Trial period has expired" />
+  <string key="ConfirmLicense.ExpiredTitle" value="Trial Period Has Expired" />
   <string key="ConfirmLicense.ExpiredMessage" value="The trial period of the package has expired. You need to obtain a valid license." />
 </strings>

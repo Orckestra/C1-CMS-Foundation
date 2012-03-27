@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="AddNewPageStep1.DialogLabel" value="Add new page" />
+  <string key="AddNewPageStep1.DialogLabel" value="Add New Page" />
   <string key="GeneralSettings.FieldGroupLabel" value="General settings" />
   <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
   <string key="AdvancedSettings.FieldGroupLabel" value="Advanced settings" />
@@ -62,7 +62,7 @@
   <string key="PageElementProvider.RootLabelToolTip" value="Websites" />
   <string key="PageElementProvider.AddPageAtRoot" value="Add Website..." />
   <string key="PageElementProvider.AddPageAtRootToolTip" value="Add new homepage" />
-  <string key="PageElementProvider.ViewUnpublishedItems" value="List unpublished pages" />
+  <string key="PageElementProvider.ViewUnpublishedItems" value="List Unpublished Pages" />
   <string key="PageElementProvider.ViewUnpublishedItemsToolTip" value="Get an overview of pages and page folder data that haven't been published yet." />
   <string key="PageElementProvider.ViewUnpublishedItems-document-title" value="Unpublished content" />
   <string key="PageElementProvider.ViewUnpublishedItems-document-description" value="The list below displays pages and page data which are currently being edited or are ready to be approved / published." />
@@ -72,11 +72,11 @@
   <string key="PageElementProvider.DeleteToolTip" value="Delete the selected page" />
   <string key="PageElementProvider.LocalizePage" value="Translate Page" />
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
-  <string key="PageElementProvider.AddSubPage" value="Add page..." />
+  <string key="PageElementProvider.AddSubPage" value="Add Page..." />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
-  <string key="PageElementProvider.ViewPublicPage" value="View published" />
+  <string key="PageElementProvider.ViewPublicPage" value="View Published" />
   <string key="PageElementProvider.ViewPublicToolTip" value="View last published version" />
-  <string key="PageElementProvider.ViewDraftPage" value="View unpublished" />
+  <string key="PageElementProvider.ViewDraftPage" value="View Unpublished" />
   <string key="PageElementProvider.ViewDraftToolTip" value="View recent changes" />
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />

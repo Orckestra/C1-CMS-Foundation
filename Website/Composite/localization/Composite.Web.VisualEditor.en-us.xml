@@ -42,7 +42,7 @@
   <string key="ContextMenu.LabelUnLink" value="Unlink" />
   <string key="ContextMenu.LabelLinkProperties" value="Link Properties" />
   <string key="ContextMenu.LabelTable" value="Table…" />
-  <string key="ContextMenu.LabelTableManage" value="Manage table" />
+  <string key="ContextMenu.LabelTableManage" value="Manage Table" />
   <string key="ContextMenu.LabelImage" value="Image…" />
   <string key="ContextMenu.LabelAsText" value="As Simple Text…" />
   <string key="ContextMenu.LabelField" value="Field" />
@@ -137,8 +137,8 @@
   <string key="Tables.Row.LabelOddRows" value="Odd rows in table" />
   <string key="Tables.Row.LabelEvenRows" value="Even rows in table" />
   <string key="Tables.Row.LabelAllRows" value="All rows in table" />
-  <string key="Tables.Table.TitleInsert" value="Insert table" />
-  <string key="Tables.Table.TitleUpdate" value="Table properties" />
+  <string key="Tables.Table.TitleInsert" value="Insert Table" />
+  <string key="Tables.Table.TitleUpdate" value="Table Properties" />
   <string key="Tables.Table.Columns" value="Columns" />
   <string key="Tables.Table.Rows" value="Rows" />
   <string key="Tables.Table.Summary" value="Summary" />

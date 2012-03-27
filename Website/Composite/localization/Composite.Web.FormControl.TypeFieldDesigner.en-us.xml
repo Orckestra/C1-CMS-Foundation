@@ -35,7 +35,7 @@
   <string key="ValidationRulesHelp" value="You can specify strict rules on the data that is entered in this field, i.e. &quot;must be at least 5 characters long&quot;, &quot;must be a valid e-mail address&quot;, &quot;must be a date in the past&quot; etc." />
   <string key="ValidationRulesAdd" value="Add validation rules..." />
   <string key="ValidationRulesEdit" value="Edit validation rules" />
-  <string key="ValidationRulesDialogLabel" value="Field validation rules configuration" />
+  <string key="ValidationRulesDialogLabel" value="Field Validation Rules Configuration" />
 
   
   <string key="FieldValidationGroupLabel" value="Field validation" />
@@ -44,7 +44,7 @@
   
   <string key="Widget" value="Widget type" />
   <string key="WidgetHelp" value="You can select which type of input widget (like a textbox) to use when editing this field." />
-  <string key="WidgetDialogLabel" value="Field widget configuration" />
+  <string key="WidgetDialogLabel" value="Field Widget Configuration" />
   <string key="Position" value="Position" />
   <string key="PositionLast" value="Last" />
   <string key="PositionHelp" value="The position of the field. This controls the order of the fields." />

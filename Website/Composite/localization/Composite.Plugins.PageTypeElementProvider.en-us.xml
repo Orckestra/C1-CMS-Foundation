@@ -1,27 +1,27 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="PageType.Tree.Root.Label" value="Page Types" />
-  <string key="PageType.Tree.DefaultContentElement.Label" value="Placeholder content" />
-  <string key="PageType.Tree.MetaDataFieldsElement.Label" value="Metadata fields" />
+  <string key="PageType.Tree.DefaultContentElement.Label" value="Placeholder Content" />
+  <string key="PageType.Tree.MetaDataFieldsElement.Label" value="Metadata Fields" />
   <string key="PageType.Tree.AddNewPageType.Label" value="Add Page Type" />
   <string key="PageType.Tree.AddNewPageType.ToolTip" value="Add new page type" />
-  <string key="PageType.Tree.EditPageType.Label" value="Edit page type" />
+  <string key="PageType.Tree.EditPageType.Label" value="Edit Page Type" />
   <string key="PageType.Tree.EditPageType.ToolTip" value="Edit selected page type" />
-  <string key="PageType.Tree.DeletePageType.Label" value="Delete page type" />
+  <string key="PageType.Tree.DeletePageType.Label" value="Delete Page Type" />
   <string key="PageType.Tree.DeletePageType.ToolTip" value="Delete selected page type" />
-  <string key="PageType.Tree.AddDefaultPageContent.Label" value="Add default content" />
+  <string key="PageType.Tree.AddDefaultPageContent.Label" value="Add Default Content" />
   <string key="PageType.Tree.AddDefaultPageContent.ToolTip" value="Add placeholder default content" />
-  <string key="PageType.Tree.EditDefaultPageContent.Label" value="Edit default content" />
+  <string key="PageType.Tree.EditDefaultPageContent.Label" value="Edit Default Content" />
   <string key="PageType.Tree.EditDefaultPageContent.ToolTip" value="Edit placeholder default content" />
-  <string key="PageType.Tree.DeleteDefaultPageContent.Label" value="Delete default content" />
+  <string key="PageType.Tree.DeleteDefaultPageContent.Label" value="Delete Default Content" />
   <string key="PageType.Tree.DeleteDefaultPageContent.ToolTip" value="Delete default content" />
-  <string key="PageType.Tree.AddMetaDataField.Label" value="Add Metadata field" />
+  <string key="PageType.Tree.AddMetaDataField.Label" value="Add Metadata Field" />
   <string key="PageType.Tree.AddMetaDataField.ToolTip" value="Add new Metadata field" />
-  <string key="PageType.Tree.EditMetaDataField.Label" value="Edit Metadata field" />
+  <string key="PageType.Tree.EditMetaDataField.Label" value="Edit Metadata Field" />
   <string key="PageType.Tree.EditMetaDataField.ToolTip" value="Edit selected Metadata field" />
-  <string key="PageType.Tree.DeleteMetaDataField.Label" value="Delete Metadata field" />
+  <string key="PageType.Tree.DeleteMetaDataField.Label" value="Delete Metadata Field" />
   <string key="PageType.Tree.DeleteMetaDataField.ToolTip" value="Delete selected Metadata field" />
-  <string key="PageType.AddNewPageTypeWorkflow.Layout.Label" value="Add new page types" />
+  <string key="PageType.AddNewPageTypeWorkflow.Layout.Label" value="Add New Page Type" />
   <string key="PageType.AddNewPageTypeWorkflow.FieldGroup.Label" value="New page type settings" />
   <string key="PageType.AddNewPageTypeWorkflow.NameTextBox.Label" value="Name" />
   <string key="PageType.AddNewPageTypeWorkflow.NameTextBox.Help" value="The name of the new page type" />
@@ -65,11 +65,11 @@
   <string key="PageType.EditPageTypeWorkflow.ApplicationMultiKeySelector.Help" value="Select the applications that should automatically be added to pages using this page type" />
   <string key="PageType.EditPageTypeWorkflow.ValidationError.DefaultTemplateNotInRestrictions" value="The default layout is not one of the selected restricted layouts" />
   <string key="PageType.EditPageTypeWorkflow.ValidationError.HomepageRelationConflictsWithParentRestrictions" value="Page type parent restrictions are not allowed with home pages only" />
-  <string key="PageType.DeletePageTypeWorkflow.Confirm.Layout.Label" value="Delete this page type?" />
-  <string key="PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage" value="Delete the page template {0}?" />
-  <string key="PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Label" value="Page template in use" />
-  <string key="PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message" value="The page template {0} is in use and it is not possible to delete it" />
-  <string key="PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label" value="Add default content" />
+  <string key="PageType.DeletePageTypeWorkflow.Confirm.Layout.Label" value="Delete This Page Type?" />
+  <string key="PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage" value="Delete the page type {0}?" />
+  <string key="PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Label" value="Page Type in Use" />
+  <string key="PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message" value="The page type {0} is in use and it is not possible to delete it" />
+  <string key="PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label" value="Add Default Content" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.FieldGroup.Label" value="Choose placeholder" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label" value="Placeholder ID" />
   <string key="PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help" value="The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (by editing Page Template markup)." />
@@ -81,7 +81,7 @@
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Label" value="Placeholder ID" />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help" value="The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (edit Page Template markup)." />
   <string key="PageType.EditPageTypeDefaultPageContentWorkflow.ContentXhtmlEditor.Label" value="Content" />
-  <string key="PageType.AddPageTypeMetaDataFieldWorkflow.Layout.Label" value="Add Metadata field" />
+  <string key="PageType.AddPageTypeMetaDataFieldWorkflow.Layout.Label" value="Add Metadata Field" />
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.FieldGroup.Label" value="" />
   <!-- "Metadata settings" - but too much text! -->
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.NameTextBox.Label" value="Programmatic name" />
@@ -94,9 +94,9 @@
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Help" value="Select the tab to display the Metadata when editing a page." />
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.AddingDefaultMetaData.Title" value="Add Metadata default values" />
   <string key="PageType.AddPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataFieldNameAlreadyUsed" value="The field name with another type is already used." />
-  <string key="PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Label" value="Delete this Metadata field?" />
+  <string key="PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Label" value="Delete This Metadata Field?" />
   <string key="PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message" value="Delete the Metadata field {0}? Warning: all its existing Metadata items will also be deleted" />
-  <string key="PageType.EditPageTypeMetaDataFieldWorkflow.Layout.Label" value="Edit Metadata field" />
+  <string key="PageType.EditPageTypeMetaDataFieldWorkflow.Layout.Label" value="Edit Metadata Field" />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.FieldGroup.Label" value="Metadata field settings" />
   <!--<string key="PageType.EditPageTypeMetaDataFieldWorkflow.NameTextBox.Label" value="Name" />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.NameTextBox.Help" value="The uniqueue name of the Metadata field" />-->
