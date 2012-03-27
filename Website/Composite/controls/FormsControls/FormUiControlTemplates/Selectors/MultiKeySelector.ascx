@@ -154,7 +154,8 @@
                       <ui:selection 
                           label="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
                           value="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Key) %>"
-                          <%# CustomUiSelectorTagParams( (KeyLabelPair)Container.DataItem ) %> />
+                          <%# CustomUiSelectorTagParams( (KeyLabelPair)Container.DataItem ) %> 
+                          checksum="<%= DateTime.Now.Ticks %>" />
             </ItemTemplate>
         </asp:Repeater>
 </ui:multiselector>
