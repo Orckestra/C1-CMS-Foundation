@@ -144,12 +144,12 @@ ClassNameSelectorBinding.prototype.handleNodeChange = function (element) {
 
                 if (this.canApplyDirect(format.id, element)) {
                     list.add(new SelectorBindingSelection(
-					    format.select.label,
-					    format.id,
-					    this._tinyInstance.queryCommandState(format.id),
-					    null,
-					    format.notes
-					));
+                        format.select.label,
+                        format.id,
+                        this._tinyInstance.formatter.match(format.id),
+                        null,
+                        format.notes
+                    ));
                 }
             }, this);
 
