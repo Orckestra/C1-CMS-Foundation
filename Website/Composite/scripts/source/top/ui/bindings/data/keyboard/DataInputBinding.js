@@ -619,8 +619,11 @@ DataInputBinding.prototype._blur = function () {
 		window.clearInterval ( this._dirtyinterval );
 		this._dirtyinterval = null;
 	}
-	
-	this.checkDirty ();
+
+	this.checkDirty();
+
+	this._isValid = true; // prepare for next validation
+	this._normalizeToValid(); // reset styling and stuff
 	this.validate ( true );
 	
 	if ( Types.isFunction ( this.onblur )) {
