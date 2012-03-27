@@ -22,19 +22,19 @@
   <string key="DefaultValueHelp" value="You can specify a default value for this parameter. If a parameter has a default value, users are not required to specify it when calling the function." />
   <string key="DefaultValueSpecify" value="Specify default value" />
   <string key="DefaultValueEdit" value="Edit default value" />
-  <string key="DefaultValueDialogLabel" value="Parameter default value" />
+  <string key="DefaultValueDialogLabel" value="Parameter Default Value" />
   
   <string key="TestValue" value="Test value" />
   <string key="TestValueHelp" value="When previewing you can test with different input parameter values using this field. If this is left blank, the default value will be used for previews." />
   <string key="TestValueSpecify" value="Specify test value" />
   <string key="TestValueEdit" value="Edit test value" />
-  <string key="TestValueDialogLabel" value="Parameter test value" />
+  <string key="TestValueDialogLabel" value="Parameter Test Value" />
 
   <string key="ParameterPresentationGroupLabel" value="Parameter presentation" />
   <string key="Widget" value="Widget" />
   <string key="WidgetHelp" value="You can select which type of input widget (like a textbox) to use when specifying a value for this parameter. Widgets are only available for simple types." />
   <string key="NoWidgetSpecifiedLabel" value="(no widget specified)" />
-  <string key="WidgetDialogLabel" value="Parameter widget" />
+  <string key="WidgetDialogLabel" value="Parameter Widget" />
   <string key="Position" value="Position" />
   <string key="PositionLast" value="Last" />
   <string key="PositionHelp" value="The position of the parameter. This controls the order of the parameters." />

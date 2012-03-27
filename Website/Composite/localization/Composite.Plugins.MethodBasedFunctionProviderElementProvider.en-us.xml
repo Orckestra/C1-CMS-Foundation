@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="RootFolderLabel" value="C# functions" />
+  <string key="RootFolderLabel" value="C# Functions" />
   <string key="RootFolderToolTip" value="Method functions" />
-  <string key="DeleteFunction.LabelFieldGroup" value="Delete this function" />
+  <string key="DeleteFunction.LabelFieldGroup" value="Delete This Function" />
   <string key="DeleteFunction.Text" value="Delete this function" />
   <string key="Add" value="Add External C# function" />
   <string key="AddToolTip" value="Add an external C# method based function." />

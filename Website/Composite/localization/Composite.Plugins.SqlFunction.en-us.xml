@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="SqlFunctionElementProvider.RootLabel" value="SQL functions" />
+  <string key="SqlFunctionElementProvider.RootLabel" value="SQL Functions" />
   <string key="SqlFunctionElementProvider.RootLabelToolTip" value="Add Connections and then queries to connections" />
-  <string key="SqlFunctionElementProvider.AddConnection" value="Add SQL connection" />
-  <string key="SqlFunctionElementProvider.AddConnectionToolTip" value="Add new SQL Connection" />
+  <string key="SqlFunctionElementProvider.AddConnection" value="Add SQL Connection" />
+  <string key="SqlFunctionElementProvider.AddConnectionToolTip" value="Add new SQL connection" />
   <string key="SqlFunctionElementProvider.EditConnection" value="Edit" />
-  <string key="SqlFunctionElementProvider.EditConnectionToolTip" value="Edit SQL Connection" />
+  <string key="SqlFunctionElementProvider.EditConnectionToolTip" value="Edit SQL connection" />
   <string key="SqlFunctionElementProvider.DeleteConnection" value="Delete" />
-  <string key="SqlFunctionElementProvider.DeleteConnectionToolTip" value="Delete SQL Connection" />
-  <string key="SqlFunctionElementProvider.AddQuery" value="Add new SQL Query" />
+  <string key="SqlFunctionElementProvider.DeleteConnectionToolTip" value="Delete SQL connection" />
+  <string key="SqlFunctionElementProvider.AddQuery" value="Add New SQL Query" />
   <string key="SqlFunctionElementProvider.AddQueryToolTip" value="Add a new SQL XML Provider" />
   <string key="SqlFunctionElementProvider.EditQuery" value="Edit" />
   <string key="SqlFunctionElementProvider.EditQueryToolTip" value="Edit SQL Query" />
@@ -55,10 +55,10 @@
   <string key="EditSqlFunctionConnection.HelpConnectionString" value="" />
   <string key="EditSqlFunctionConnection.LabelIsMSSQL" value="MS SQL Server" />
   <string key="EditSqlFunctionConnection.LabelIsMSSQLCheckBox" value="Database is a MS SQL Server" />
-  <string key="DeleteSqlConnection.LabelFieldGroup" value="Delete this SQL connection?" />
+  <string key="DeleteSqlConnection.LabelFieldGroup" value="Delete This SQL Connection?" />
   <string key="DeleteSqlConnection.Text" value="Delete this SQL connection?" />
-  <string key="DeleteSqlFunction.LabelFieldGroup" value="Delete this SQL function?" />
+  <string key="DeleteSqlFunction.LabelFieldGroup" value="Delete This SQL Function?" />
   <string key="DeleteSqlFunction.Text" value="Delete this SQL function?" />
-  <string key="CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="CascadeDeleteErrorTitle" value="Cascade Delete Error" />
   <string key="CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
 </strings>

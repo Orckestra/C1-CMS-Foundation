@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT functions" />
+  <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT unctions" />
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip" value="XSLT functions" />
   <string key="AddNewXsltFunctionWorkflow.DuplicateName" value="An XSLT function with the same name already exists." />
   <string key="AddNewXsltFunctionWorkflow.MethodEmpty" value="Method name must be non-empty" />
@@ -11,9 +11,9 @@
   <string key="AddNewXsltFunctionWorkflow.MissingPageTitle" value="A page is required" />
   <string key="AddNewXsltFunctionWorkflow.MissingPageMessage" value="To create a XSLT function at least one page has to be added." />
   <string key="AddNewXsltFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the XSL file)." />
-  <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteTitle" value="Delete XSLT?" />
+  <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteTitle" value="Delete XSLT Function?" />
   <string key="DeleteXsltFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected XSLT?" />
-  <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorTitle" value="Cascade delete error" />
+  <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorTitle" value="Cascade Delete Error" />
   <string key="DeleteXsltFunctionWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
   <string key="EditXsltFunctionWorkflow.DuplicateName" value="An XSLT function with the same name already exists." />
   <string key="EditXsltFunctionWorkflow.EmptyMethodName" value="The method name must be non-empty" />
@@ -27,13 +27,13 @@
   <string key="EditXsltFunctionWorkflow.SameLocalFunctionNameClashTitle" value="Duplicate local function names" />
   <string key="EditXsltFunctionWorkflow.SameLocalFunctionNameClashMessage" value="Two or more function calls has the same local name. Change the names so that all are different." />
   
-  <string key="XsltBasedFunctionProviderElementProvider.Add" value="Add XSLT function" />
+  <string key="XsltBasedFunctionProviderElementProvider.Add" value="Add XSLT Function" />
   <string key="XsltBasedFunctionProviderElementProvider.AddToolTip" value="Add new XSLT function" />
   <string key="XsltBasedFunctionProviderElementProvider.Edit" value="Edit" />
   <string key="XsltBasedFunctionProviderElementProvider.EditToolTip" value="Edit XSLT function" />
   <string key="XsltBasedFunctionProviderElementProvider.Delete" value="Delete" />
   <string key="XsltBasedFunctionProviderElementProvider.DeleteToolTip" value="Delete XSLT function" />
-  <string key="AddNewXsltFunctionStep1.LabelDialog" value="Add new XSLT function" />
+  <string key="AddNewXsltFunctionStep1.LabelDialog" value="Add New XSLT Function" />
   <string key="AddNewXsltFunctionStep1.LabelFieldGroup" value="Naming and output type" />
   <string key="AddNewXsltFunctionStep1.LabelName" value="Name" />
   <string key="AddNewXsltFunctionStep1.HelpName" value="" />
@@ -58,11 +58,11 @@
   <string key="EditXsltFunction.HelpActiveLocales" value="Select language to be used while debugging the function." />
   <string key="EditXsltFunction.OutputType" value="Output type" />
   <string key="EditXsltFunction.LabelInputParameters" value="Input Parameters" />
-  <string key="EditXsltFunction.LabelFunctionCalls" value="Function calls" />
+  <string key="EditXsltFunction.LabelFunctionCalls" value="Function Calls" />
   <string key="EditXsltFunction.LabelTemplate" value="Template" />
   <string key="EditXsltFunction.LabelPreview" value="Preview" />
-  <string key="EditXsltFunctionWorkflow.MissingActiveLanguageTitle" value="A language is required" />
+  <string key="EditXsltFunctionWorkflow.MissingActiveLanguageTitle" value="A Language Is Required" />
   <string key="EditXsltFunctionWorkflow.MissingActiveLanguageMessage" value="To edit a XSLT function a language is required, but no languages have been added yet. You can add one under the System perspective." />
-  <string key="EditXsltFunctionWorkflow.MissingPageTitle" value="A page is required" />
+  <string key="EditXsltFunctionWorkflow.MissingPageTitle" value="A Page Is Required" />
   <string key="EditXsltFunctionWorkflow.MissingPageMessage" value="To edit a XSLT function at least one page has to be added." />
 </strings>

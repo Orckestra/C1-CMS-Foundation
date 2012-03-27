@@ -46,7 +46,7 @@
   <string key="ContextMenu.LabelImage" value="Image…" />
   <string key="ContextMenu.LabelAsText" value="As Simple Text…" />
   <string key="ContextMenu.LabelField" value="Field" />
-  <string key="ContextMenu.LabelFieldDelete" value="Delete field" />
+  <string key="ContextMenu.LabelFieldDelete" value="Delete Field" />
   <string key="ContextMenu.LabelRendering" value="Function…" />
   <string key="ContextMenu.LabelCharacter" value="Character…" />
   <string key="ContextMenu.LabelImageProperties" value="Image Properties…" />
