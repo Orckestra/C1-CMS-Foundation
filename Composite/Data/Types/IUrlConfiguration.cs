@@ -13,7 +13,6 @@ namespace Composite.Data.Types
     [ImmutableTypeId("{5552C35A-A72A-55F1-9630-ACC66FE44BBE}")]
     [DataScope(DataScopeIdentifier.PublicName)]
     [KeyPropertyName("Id")]
-    [RelevantToUserType(UserType.Developer)]
     [CachingAttribute(CachingType.Full)]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IUrlConfiguration : IData

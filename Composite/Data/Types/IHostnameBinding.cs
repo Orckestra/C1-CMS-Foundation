@@ -14,7 +14,6 @@ namespace Composite.Data.Types
     [KeyPropertyName("Id")]
     [LabelPropertyName("Hostname")]
     [DataScope(DataScopeIdentifier.PublicName)]
-    [RelevantToUserType(UserType.Developer)]
     [CachingAttribute(CachingType.Full)]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     public interface IHostnameBinding : IData
