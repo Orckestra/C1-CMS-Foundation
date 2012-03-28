@@ -48,14 +48,14 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     private static readonly string FunctionMarkupSessionKey = "fmsk";
 
     // Localization
-    protected string ReturnTypeLabel             { get { return GetString("ReturnTypeLabel"); } } 
-    protected string AddNewFunctionDialogLabel   { get { return GetString("AddNewFunctionDialogLabel"); } } 
-    protected string SelectFunctionDialogLabel   { get { return GetString("ComplexFunctionCallDialogLabel"); }}
-    protected string FunctionLocalNameGroupLabel { get { return GetString("FunctionLocalNameGroupLabel"); }} 
-    protected string FunctionLocalNameLabel      { get { return GetString("FunctionLocalNameLabel"); }} 
-    protected string FunctionLocalNameHelp       { get { return GetString("FunctionLocalNameHelp"); }}
+    protected string ReturnTypeLabel { get { return GetString("ReturnTypeLabel"); } }
+    protected string AddNewFunctionDialogLabel { get { return GetString("AddNewFunctionDialogLabel"); } }
+    protected string SelectFunctionDialogLabel { get { return GetString("ComplexFunctionCallDialogLabel"); } }
+    protected string FunctionLocalNameGroupLabel { get { return GetString("FunctionLocalNameGroupLabel"); } }
+    protected string FunctionLocalNameLabel { get { return GetString("FunctionLocalNameLabel"); } }
+    protected string FunctionLocalNameHelp { get { return GetString("FunctionLocalNameHelp"); } }
 
-    private enum ParameterValueType 
+    private enum ParameterValueType
     {
         Default = 0, Constant, InputParameter, FunctionCall
     }
@@ -91,8 +91,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 string stateIdStr = Request.QueryString[StateIdQueryKey];
 
                 Guid stateId;
-                if (!SessionStateProviderName.IsNullOrEmpty() 
-                    && !stateIdStr.IsNullOrEmpty() 
+                if (!SessionStateProviderName.IsNullOrEmpty()
+                    && !stateIdStr.IsNullOrEmpty()
                     && Guid.TryParse(stateIdStr, out stateId))
                 {
                     _stateId = stateId;
@@ -188,10 +188,10 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         set { ViewState["InputParameterSelectorIsShown"] = value; }
     }
 
-    bool WidgetIsShown 
+    bool WidgetIsShown
     {
         get { return (bool)(ViewState["WidgetIsShown"] ?? false); }
-        set { ViewState["WidgetIsShown"] = value; } 
+        set { ViewState["WidgetIsShown"] = value; }
     }
 
     bool LocalFunctionNameIsShown
@@ -207,7 +207,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             LoadFunctions();
         }
 
-        if(!IsPostBack)
+        if (!IsPostBack)
         {
             InitializeTreeView();
         }
@@ -219,27 +219,32 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         string nodePath = null;
         Guid temp;
-        if(Guid.TryParse(eventTarget, out temp))
+        if (Guid.TryParse(eventTarget, out temp))
         {
             nodePath = TreePathToIdMapping.Where(pair => pair.Value == eventTarget).Select(pair => pair.Key).FirstOrDefault();
         }
 
+        // Treeview click
+        if (nodePath != null
+            || eventTarget == string.Empty
+            || ctlFeedback.IsPosted
+            || (eventTarget == "switchbutton" || eventArgument == "source"))
         {
             bool isValid = true;
 
             // If node is changed, updating changed parameter's value
-            if(!SelectedNode.IsNullOrEmpty())
+            if (!SelectedNode.IsNullOrEmpty())
             {
                 if (WidgetIsShown)
                 {
                     // TODO: insert validation logic
                     UpdateParameterValueFromWidget();
-                } 
-                else if(LocalFunctionNameIsShown)
+                }
+                else if (LocalFunctionNameIsShown)
                 {
                     UpdateFunctionLocalName();
                 }
-                else if(InputParameterSelectorIsShown)
+                else if (InputParameterSelectorIsShown)
                 {
                     UpdateInputParameterName();
                 }
@@ -249,58 +254,59 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             {
                 SelectedNode = nodePath;
             }
-		}
-		#region ButtonClick
-		{
+        }
+        else
+        {
             ParameterValueType? newParameterValueType = null;
 
             switch (eventTarget)
             {
                 case "btnAddFunction": BtnAddFunctionCallClicked();
-                break;
+                    break;
                 case "btnDeleteFunction": BtnDeleteFunctionClicked();
-                break;
+                    break;
                 case "btnDefault": newParameterValueType = ParameterValueType.Default;
-                break;
+                    break;
                 case "btnConstant": newParameterValueType = ParameterValueType.Constant;
-                break;
+                    break;
                 case "btnInputParameter": newParameterValueType = ParameterValueType.InputParameter;
-                break;
+                    break;
                 case "btnFunctionCall": newParameterValueType = ParameterValueType.FunctionCall;
-                break;
+                    break;
             }
 
-            if(newParameterValueType != null)
+            if (newParameterValueType != null)
             {
                 ParameterValueTypeChanged(newParameterValueType.Value);
-				ctlFeedback.MarkAsDirty();
+                ctlFeedback.MarkAsDirty();
             }
-		}
-		#endregion
-		UpdateMenu();
+        }
 
-		if (eventTarget == "switchbutton")
-		{
-			switch (eventArgument)
-			{
-				case "source":
-					EditorMode = EditorModeEnum.Source;
-					break;
-				case "design":
-					if (SaveSourceMarkupChanges())
-					{
-						EditorMode = EditorModeEnum.Design;
-					}
-					break;
-			}
-		}
+        UpdateMenu();
 
+        if (eventTarget == "switchbutton")
+        {
+            switch (eventArgument)
+            {
+                case "source":
+                    EditorMode = EditorModeEnum.Source;
+                    break;
+                case "design":
+                    if (SaveSourceMarkupChanges())
+                    {
+                        EditorMode = EditorModeEnum.Design;
+                    }
+                    break;
+            }
+        }
+
+        SyncTreeAndEditingPanel();
     }
 
 
     private void Page_PreRender(object sender, EventArgs args)
     {
-        SyncTreeAndEditingPanel();
+        //SyncTreeAndEditingPanel();
     }
 
 
@@ -329,11 +335,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     {
         string message = ctlFeedback.GetPostedMessage();
 
-        if(message == "save")
+        if (message == "save")
         {
             ctlFeedback.SetStatus(EditorMode == EditorModeEnum.Source ? SaveSourceMarkupChanges() : ValidateSave());
         }
-        else if ( message == "persist" )
+        else if (message == "persist")
         {
             ctlFeedback.SetStatus(EditorMode == EditorModeEnum.Source ? SaveSourceMarkupChanges() : true);
         }
@@ -358,10 +364,10 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             // Checking if function exists
             IMetaFunction metaFunction = TreeHelper.GetFunction(functionCall);
-            if(metaFunction == null)
+            if (metaFunction == null)
             {
                 XAttribute nameAttr = functionCall.Attribute("name");
-                string functionName = nameAttr != null ? nameAttr.Value : string.Empty; 
+                string functionName = nameAttr != null ? nameAttr.Value : string.Empty;
 
                 Alert(GetString("FunctionNotFound").FormatWith(functionName));
                 FocusTreeNode(functionCall);
@@ -397,7 +403,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
                 Type functionReturnType = metaFunction.ReturnType;
                 Type parameterType = parameterProfile.Type;
-                if(!parameterType.IsAssignableFrom(functionReturnType) 
+                if (!parameterType.IsAssignableFrom(functionReturnType)
                     && !functionReturnType.IsAssignableFrom(parameterType))
                 {
                     FocusTreeNode(functionCall);
@@ -435,11 +441,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         ConsoleMessageQueueFacade.Enqueue(
             new MessageBoxMessageQueueItem
-                {
-                    DialogType = DialogType.Error,
-                    Message = message, 
-                    Title = GetString("ValidationFailedAlertTitle")
-                }, consoleId);
+            {
+                DialogType = DialogType.Error,
+                Message = message,
+                Title = GetString("ValidationFailedAlertTitle")
+            }, consoleId);
     }
 
     private void LoadState()
@@ -461,7 +467,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         Verify.IsNotNull(functionCalls, "Failed to get function calls");
 
         XElement functionsNode = XElement.Parse("<f:functions xmlns:f=\"{0}\" />".FormatWith(Namespaces.Function10.NamespaceName));
-         // new XElement(Namespaces.Function10 + "functions");
+        // new XElement(Namespaces.Function10 + "functions");
 
         foreach (var localNamedFunctionCall in functionCalls)
         {
@@ -470,11 +476,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             BaseFunctionRuntimeTreeNode functionRuntime = localNamedFunctionCall.FunctionCall;
 
             XElement function = functionRuntime.Serialize();
-            if(_state.AllowLocalFunctionNameEditing)
+            if (_state.AllowLocalFunctionNameEditing)
             {
                 function.Add(new XAttribute("localname", localNamedFunctionCall.Name));
             }
-            
+
             function.Add(new XAttribute("handle", handle));
 
             functionsNode.Add(function);
@@ -485,7 +491,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
     private void SaveChanges()
     {
-        if(IsInTestMode)
+        if (IsInTestMode)
         {
             return;
         }
@@ -496,7 +502,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             BaseFunctionRuntimeTreeNode functionDefinition = (BaseFunctionRuntimeTreeNode)FunctionTreeBuilder.Build(functionElement);
 
-            if(_state.WidgetFunctionSelection)
+            if (_state.WidgetFunctionSelection)
             {
                 functionList.Add(new NamedFunctionCall(string.Empty, functionDefinition));
             }
@@ -524,13 +530,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             XElement node = kvp.Key;
             string nodePath = kvp.Value;
 
-            if(_xElementTreeNodeIDs.ContainsKey(node))
+            if (_xElementTreeNodeIDs.ContainsKey(node))
             {
                 string nodeId = _xElementTreeNodeIDs[node];
                 newPathToIdMap.Add(nodePath, nodeId);
 
                 // Copying virtual IDs 
-                if(node.Name == FunctionNodeXName || node.Name == WidgetFunctionNodeXName)
+                if (node.Name == FunctionNodeXName || node.Name == WidgetFunctionNodeXName)
                 {
                     foreach (string parameterName in TreeHelper.GetUndefinedParameterNames(node))
                     {
@@ -539,13 +545,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                         string oldFunctionPath = TreePathToIdMapping.Where(p => p.Value == nodeId).Select(p => p.Key).First();
                         string oldVirtualParameterPath = TreeHelper.GetParameterPath(oldFunctionPath, parameterName);
 
-                        if(TreePathToIdMapping.ContainsKey(oldVirtualParameterPath))
+                        if (TreePathToIdMapping.ContainsKey(oldVirtualParameterPath))
                         {
-                            newPathToIdMap.Add(newVirtualParameterPath, TreePathToIdMapping[oldVirtualParameterPath]); 
+                            newPathToIdMap.Add(newVirtualParameterPath, TreePathToIdMapping[oldVirtualParameterPath]);
                         }
                         else
                         {
-                            newPathToIdMap.Add(newVirtualParameterPath, TreeHelper.GetNewId()); 
+                            newPathToIdMap.Add(newVirtualParameterPath, TreeHelper.GetNewId());
                         }
                     }
                 }
@@ -582,23 +588,23 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
     private void SyncTreeAndEditingPanel()
     {
-    	//Select first parameter if not selected
-		//TODO: refactor this
-		if (Request.UserAgent.IndexOf("MSIE ") == -1) // skip IE
-		{
-			if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
-			{
-				SelectedNode = TreePathToIdMapping.Keys.Skip(1).FirstOrDefault();
-				_xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
-			}
-		}
+        //Select first parameter if not selected
+        //TODO: refactor this
+        if (Request.UserAgent.IndexOf("MSIE ") == -1) // skip IE
+        {
+            if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
+            {
+                SelectedNode = TreePathToIdMapping.Keys.Skip(1).FirstOrDefault();
+                _xElementTreeNodeIDs = TreeHelper.GetElementToIdMap(FunctionMarkup, TreePathToIdMapping);
+            }
+        }
 
-    	// Building tree 
+        // Building tree 
         XDocument functionMarkup = Clone(FunctionMarkup);
-        XElement updatedTreeView =  UpdateTreeView(functionMarkup.Root);
+        XElement updatedTreeView = UpdateTreeView(functionMarkup.Root);
 
         // Building an editing panel
-		if (!SelectedNode.IsNullOrEmpty())
+        if (!SelectedNode.IsNullOrEmpty())
         {
             UpdateEditingPanel(updatedTreeView, SelectedNode);
         }
@@ -612,10 +618,10 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         // Updating "source xml" field
         functionMarkup = Clone(FunctionMarkup);
-        foreach(XElement element in functionMarkup.Descendants().ToList())
+        foreach (XElement element in functionMarkup.Descendants().ToList())
         {
             var attr = element.Attribute("handle");
-            if(attr != null)
+            if (attr != null)
             {
                 attr.Remove();
             }
@@ -624,7 +630,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         var utf8 = System.Text.Encoding.UTF8;
         var xmlWriterSettings = new XmlWriterSettings();
         xmlWriterSettings.Indent = true;
-        xmlWriterSettings.IndentChars = "\t"; 
+        xmlWriterSettings.IndentChars = "\t";
         xmlWriterSettings.NamespaceHandling |= NamespaceHandling.OmitDuplicates;
         xmlWriterSettings.Encoding = utf8;
 
@@ -642,11 +648,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string serializedMarkup = utf8.GetString(serializedXDocument);
         serializedMarkup = serializedMarkup.Substring(serializedMarkup.IndexOf(Environment.NewLine) + Environment.NewLine.Length);
 
-		//Update editor if switching to SourceMode
-		if (Request["__EVENTARGUMENT"] == "source")
-			ctlSourceEditor.Attributes["value"] = Context.Server.UrlEncode(serializedMarkup).Replace("+", "%20");
+        //Update editor if switching to SourceMode
+        if (Request["__EVENTARGUMENT"] == "source")
+            ctlSourceEditor.Attributes["value"] = Context.Server.UrlEncode(serializedMarkup).Replace("+", "%20");
 
-        if(IsInTestMode)
+        if (IsInTestMode)
         {
             ViewState[FunctionMarkupSessionKey] = serializedMarkup;
         }
@@ -684,7 +690,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string nodeID = SelectedNode;
 
         XElement parameterNode = TreeHelper.FindByPath(FunctionMarkup.Root, nodeID);
-		if (parameterNode == null) return;
+        if (parameterNode == null) return;
         Verify.That(parameterNode != null, "Failed to get a parameter by path '{0}'", nodeID);
 
         string parameterName = parameterNode.Attribute("name").Value;
@@ -702,7 +708,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
             new[] { parameterProfile },
             bindings,
-            "",
+            "FORM"+SelectedNode.GetHashCode().ToString(),
             "",
             WebManagementChannel.Identifier);
 
@@ -722,7 +728,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         parameterNode.Remove();
 
-        if(newValueNotEmpty)
+        if (newValueNotEmpty)
         {
             var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, newValue);
 
@@ -770,7 +776,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             }
         }
 
-        if(valueType == ParameterValueType.Default)
+        if (valueType == ParameterValueType.Default)
         {
             BtnDefaultClicked(parameterNode);
         }
@@ -800,7 +806,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         }
 
         object defaultParameterValue = GetDefaultValue(parameterProfile);
-        
+
         var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, defaultParameterValue ?? string.Empty);
         functionNode.Add(newConstantParam.Serialize());
 
@@ -812,7 +818,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         string selectedFunctionName = this.Request.Form["btnAddFunction"];
 
         BaseFunctionRuntimeTreeNode functionRuntime;
-        if(_state.WidgetFunctionSelection)
+        if (_state.WidgetFunctionSelection)
         {
             functionRuntime = new WidgetFunctionRuntimeTreeNode(FunctionFacade.GetWidgetFunction(selectedFunctionName));
         }
@@ -823,7 +829,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         XElement function = functionRuntime.Serialize();
 
-        if(!_state.WidgetFunctionSelection && _state.AllowLocalFunctionNameEditing)
+        if (!_state.WidgetFunctionSelection && _state.AllowLocalFunctionNameEditing)
         {
             string localName = selectedFunctionName;
             int pointOffset = localName.LastIndexOf(".");
@@ -831,9 +837,16 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             {
                 localName = localName.Substring(pointOffset + 1);
             }
-            function.Add(new XAttribute("localname", localName));
+            string uniqueLocalName = localName;
+            int retry = 1;
+            while (FunctionMarkup.Descendants().Attributes("localname").Where(a => a.Value == uniqueLocalName).Any())
+            {
+                uniqueLocalName = string.Format("{0}{1}", localName, ++retry);
+            }
+
+            function.Add(new XAttribute("localname", uniqueLocalName));
         }
-        
+
         function.Add(new XAttribute("handle", Guid.NewGuid()));
 
         FunctionMarkup.Root.Add(function);
@@ -858,7 +871,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         var selectedParameter = _state.Parameters.First(ip => InputParameterCanBeAssigned(parameterProfile.Type, ip.Type));
         string selectedParameterName = selectedParameter != null ? selectedParameter.Name : string.Empty;
 
-        
+
         var newElement = new FunctionParameterRuntimeTreeNode(parameterName, new FunctionRuntimeTreeNode(getInputParameterFunc)).Serialize();
         functionNode.Add(newElement);
 
@@ -878,7 +891,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         // Adding function call to the xml
         string selectedFunction = btnFunctionCall.Value;
         IFunction newFunction = FunctionFacade.GetFunction(selectedFunction);
-        
+
         functionNode.Add(new FunctionParameterRuntimeTreeNode(parameterName, new FunctionRuntimeTreeNode(newFunction)).Serialize());
 
         SaveChanges();
@@ -922,21 +935,21 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         var function = TreeHelper.FindByPath(document, functionID);
 
         Verify.That(function != null, "Failed to get a fuction by path '{0}'", functionID);
-        
-        if(isParameter)
+
+        if (isParameter)
         {
             string parameterName = nodeID.Substring(nodeID.LastIndexOf("@") + 1);
             ShowParameterData(function, parameterName, nodeID);
             return;
         }
-        
+
         ShowFunctionData(function);
     }
 
     private static bool InputParameterCanBeAssigned(Type parameterType, Type inputParameterType)
     {
         return inputParameterType == typeof(object)
-        || (parameterType == typeof(string) 
+        || (parameterType == typeof(string)
             && (inputParameterType == typeof(int) || inputParameterType == typeof(DateTime)))
         || parameterType.IsAssignableFrom(inputParameterType);
     }
@@ -965,8 +978,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         txtFieldDescription.Text = Server.HtmlEncode(StringResourceSystemFacade.ParseString(parameterProfile.HelpDefinition.HelpText));
 
         XElement parameterNode = TreeHelper.GetParameterNode(functionNode, parameterName);
-        
-        if(!_state.AllowSelectingInputParameters)
+
+        if (!_state.AllowSelectingInputParameters)
         {
             btnInputParameter.Visible = false;
         }
@@ -974,7 +987,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             // Input parameter selector should be awaliable only if there's a parameter of an appropriate type
             bool inputParameterSelectorAvailable = _state.Parameters.Any(ip => InputParameterCanBeAssigned(parameterProfile.Type, ip.Type));
-            if(!inputParameterSelectorAvailable)
+            if (!inputParameterSelectorAvailable)
             {
                 btnInputParameter.Attributes["isdisabled"] = "true";
             }
@@ -1031,7 +1044,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         object parameterValue;
 
         List<XElement> parameterElements = parameterNode.Elements(ParameterValueElementXName).ToList();
-        if(parameterElements.Any())
+        if (parameterElements.Any())
         {
             parameterValue = parameterElements.Select(element => element.Attribute("value").Value).ToList();
         }
@@ -1049,12 +1062,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         }
 
         // Adding a widget
-        var bindings = new Dictionary<string, object> {{parameterProfile.Name, parameterValue}};
+        var bindings = new Dictionary<string, object> { { parameterProfile.Name, parameterValue } };
 
         var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
             new[] { parameterProfile },
             bindings,
-            "",
+            "FORM" + SelectedNode.GetHashCode().ToString(),
             "",
             WebManagementChannel.Identifier);
 
@@ -1097,17 +1110,17 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         // string inputParameterName = functionNode.Elements().First().Attribute("value").Value;
 
         btnInputParameter.Attributes["isdisabled"] = "true";
-        btnInputParameter.Attributes["image"] = "${icon:accept}"; 
+        btnInputParameter.Attributes["image"] = "${icon:accept}";
 
         mlvWidget.SetActiveView(viewWidget_InputParameter);
 
         lstInputParameterName.Items.Clear();
 
-        foreach(var parameter in _state.Parameters)
+        foreach (var parameter in _state.Parameters)
         {
             if (InputParameterCanBeAssigned(parameterProfile.Type, parameter.Type))
             {
-                lstInputParameterName.Items.Add(parameter.Name); 
+                lstInputParameterName.Items.Add(parameter.Name);
             }
         }
 
@@ -1149,7 +1162,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             var fallbackValueProvider = parameterProfile.FallbackValueProvider;
 
-            if(!(fallbackValueProvider is NoValueValueProvider))
+            if (!(fallbackValueProvider is NoValueValueProvider))
             {
                 object defaultValue = fallbackValueProvider.GetValue();
 
@@ -1240,13 +1253,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         SaveChanges();
 
-		//Leave selected node if exists in murkup
-		if (SelectedNode != null && !TreePathToIdMapping.ContainsKey(SelectedNode))
-		{
-			SelectedNode = null;
-		}
+        //Leave selected node if exists in murkup
+        if (SelectedNode != null && !TreePathToIdMapping.ContainsKey(SelectedNode))
+        {
+            SelectedNode = null;
+        }
 
-    	return true;
+        return true;
     }
 
     private XElement UpdateTreeView(XElement functionMarkupContainer)
@@ -1257,7 +1270,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         treeInput.Add(GetFunctionDescriptionElements(functionMarkupContainer));
 
-        if(_state.AllowSelectingInputParameters)
+        if (_state.AllowSelectingInputParameters)
         {
             CollapseGetInputParamaterFunctionCalls(treeInput, InputParameterNodeIDs);
         }
@@ -1313,13 +1326,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     private HashSet<string> CalculateGetInputParamaterFunctionCalls(XDocument functionCalls, Dictionary<string, string> pathToIdMapping)
     {
         Verify.That(_state.AllowSelectingInputParameters, "Invalid function call");
-        
+
         var result = new HashSet<string>();
 
         List<string> availableParamters = _state.Parameters.Select(parameter => parameter.Name).ToList();
 
         var elementToPathMap = TreeHelper.GetElementToPathMap(functionCalls);
-        foreach(XElement parameterElement in functionCalls.Descendants(ParameterNodeXName))
+        foreach (XElement parameterElement in functionCalls.Descendants(ParameterNodeXName))
         {
             XElement functionNode = parameterElement.Elements().FirstOrDefault();
             if (functionNode == null
@@ -1330,13 +1343,13 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             }
 
             XElement inputParameterNameNode = functionNode.Elements(ParameterNodeXName).FirstOrDefault();
-            if(inputParameterNameNode == null)
+            if (inputParameterNameNode == null)
             {
                 continue;
             }
 
             var parameterNameAttr = inputParameterNameNode.Attribute("value");
-            if(parameterNameAttr == null 
+            if (parameterNameAttr == null
                 || string.IsNullOrEmpty(parameterNameAttr.Value)
                 || !availableParamters.Contains(parameterNameAttr.Value))
             {
@@ -1359,20 +1372,20 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         var toBeRemoved = new List<XElement>();
 
-        foreach(XElement parameterElement in parameterNodes)
+        foreach (XElement parameterElement in parameterNodes)
         {
             string nodeId = parameterElement.Attribute("id").Value;
-            if(!inputParameterNodeIDs.Contains(nodeId)) continue;
- 
+            if (!inputParameterNodeIDs.Contains(nodeId)) continue;
+
             XElement functionNode = parameterElement.Elements().FirstOrDefault();
-            if (functionNode == null 
+            if (functionNode == null
                 || functionNode.Attribute("name") == null
                 || functionNode.Attribute("name").Value != GetInputParameterFunctionName) continue;
 
             XAttribute parameterNameAttr = functionNode.Elements().First().Attribute("value");
 
             // If parameter value isn't a constant - continue
-            if(parameterNameAttr == null) continue;
+            if (parameterNameAttr == null) continue;
 
             string parameterName = parameterNameAttr.Value;
 
@@ -1395,12 +1408,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             element.Add(new XAttribute("xpath", element.GetXPath()));
         }
-        
+
 
         string[] uniqueFunctionNames = functionMarkupToDescribe.Descendants(FunctionNodeXName).Select(f => f.Attribute("name").Value).Distinct().ToArray();
         string[] uniqueWidgetFunctionNames = functionMarkupToDescribe.Descendants(WidgetFunctionNodeXName).Select(f => f.Attribute("name").Value).Distinct().ToArray();
 
-        List<IMetaFunction> toBeDescribed = 
+        List<IMetaFunction> toBeDescribed =
             uniqueFunctionNames
             .Select(functionName => FunctionFacade.GetFunction(functionName) as IMetaFunction)
             .Union(uniqueWidgetFunctionNames
