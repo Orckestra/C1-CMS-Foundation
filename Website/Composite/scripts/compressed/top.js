@@ -11702,6 +11702,8 @@ window.clearInterval(this._dirtyinterval);
 this._dirtyinterval=null;
 }
 this.checkDirty();
+this._isValid=true;
+this._normalizeToValid();
 this.validate(true);
 if(Types.isFunction(this.onblur)){
 this.onblur();
