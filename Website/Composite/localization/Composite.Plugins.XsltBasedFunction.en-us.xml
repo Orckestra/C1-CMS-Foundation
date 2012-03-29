@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT unctions" />
+  <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderLabel" value="XSLT Functions" />
   <string key="Plugins.XsltBasedFunctionProviderElementProvider.RootFolderToolTip" value="XSLT functions" />
   <string key="AddNewXsltFunctionWorkflow.DuplicateName" value="An XSLT function with the same name already exists." />
   <string key="AddNewXsltFunctionWorkflow.MethodEmpty" value="Method name must be non-empty" />
