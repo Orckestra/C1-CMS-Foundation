@@ -63,13 +63,16 @@ namespace Composite.Core.WebClient.Media
             Size? imageSize = HttpRuntime.Cache.Get(imageSizeCacheKey) as Size?;
 
             Bitmap bitmap = null;
+            Stream fileStream = null;
             try
             {
                 if (imageSize == null)
                 {
-                    bitmap = new Bitmap(file.GetReadStream());
-
+                    fileStream = file.GetReadStream();
+                    bitmap = new Bitmap(fileStream);
+                    
                     imageSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
+                    
 
                     // We can provider cache dependency only for the native media provider
                     var cacheDependency = isNativeProvider ? new CacheDependency((file as FileSystemFileBase).SystemPath) : null;
@@ -99,7 +102,8 @@ namespace Composite.Core.WebClient.Media
                 {
                     if (bitmap == null)
                     {
-                        bitmap = new Bitmap(file.GetReadStream());
+                        fileStream = file.GetReadStream();
+                        bitmap = new Bitmap(fileStream);
                     }
 
                     ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat);
@@ -118,11 +122,18 @@ namespace Composite.Core.WebClient.Media
                 {
                     bitmap.Dispose();
                 }
+
+                if (fileStream != null)
+                {
+                    fileStream.Dispose();
+                }
             }
         }
 
         private static bool CalculateSize(int width, int height, ResizingOptions resizingOptions, out int newWidth, out int newHeight, out bool centerCrop)
         {
+            // Can be refactored to use System.Drawing.Size class instead of (width & height).
+
             if(width == 0 || height == 0)
             {
                 newHeight = newWidth = 0;
