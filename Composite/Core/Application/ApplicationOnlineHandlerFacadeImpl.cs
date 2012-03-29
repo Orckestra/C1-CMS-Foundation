@@ -15,7 +15,7 @@ namespace Composite.Core.Application
         private bool _isApplicationOnline = true;
         private bool _wasLastTurnOffSoft = false;
         private bool _recompileCompositeGenerated;
-        private ShutdownGuard _shutdownGuard;
+        //private ShutdownGuard _shutdownGuard;
 
 
         public void TurnApplicationOffline(bool softTurnOff, bool recompileCompositeGenerated)
@@ -27,7 +27,7 @@ namespace Composite.Core.Application
 
             _recompileCompositeGenerated = recompileCompositeGenerated;
 
-            _shutdownGuard = new ShutdownGuard();
+            //_shutdownGuard = new ShutdownGuard();
 
             try
             {
@@ -43,8 +43,8 @@ namespace Composite.Core.Application
             }
             catch(Exception)
             {
-                _shutdownGuard.Dispose();
-                _shutdownGuard = null;
+               // _shutdownGuard.Dispose();
+                //_shutdownGuard = null;
 
                 throw;
             }
@@ -85,15 +85,15 @@ namespace Composite.Core.Application
             finally
             {
                 // Adding a sleep, so delayed notification from FileWatcher will not kill a newly spawned AppDomain
-                Thread.Sleep(250); 
+                //Thread.Sleep(250); 
 
-                _shutdownGuard.Dispose();
-                _shutdownGuard = null;
+                //_shutdownGuard.Dispose();
+                //_shutdownGuard = null;
 
-                if (HostingEnvironment.IsHosted)
-                {
-                    HostingEnvironment.InitiateShutdown();
-                }
+                //if (HostingEnvironment.IsHosted)
+                //{
+                //    HostingEnvironment.InitiateShutdown();
+                //}
             }
 
             _isApplicationOnline = true;
