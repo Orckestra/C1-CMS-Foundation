@@ -4,11 +4,11 @@ using System.Configuration;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using Composite.Core.Collections.Generic;
+using System.Threading;
 using Composite.C1Console.Events;
+using Composite.Core.Collections.Generic;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider.Runtime;
-using Composite.C1Console.Users;
 
 
 namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
@@ -52,7 +52,7 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         #region IStringResourceProvider methods
         public static string GetStringValue(string providerName, string stringId)
         {
-            return GetStringValue(providerName, stringId, UserSettings.C1ConsoleUiLanguage);
+            return GetStringValue(providerName, stringId, Thread.CurrentThread.CurrentUICulture);
         }
 
         public static string GetStringValue(string providerName, string stringId, CultureInfo cultureInfo)
@@ -89,7 +89,7 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
 
             IStringResourceProvider provider = GetResourceProvider<IStringResourceProvider>(providerName);
 
-            return provider.GetAllStrings(UserSettings.C1ConsoleUiLanguage);
+            return provider.GetAllStrings(Thread.CurrentThread.CurrentUICulture);
         }
         #endregion
 

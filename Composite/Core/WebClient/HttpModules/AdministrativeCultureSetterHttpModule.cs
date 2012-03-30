@@ -31,10 +31,12 @@ namespace Composite.Core.WebClient.HttpModules
                 if (UserValidationFacade.IsLoggedIn() == true)
                 {
                     System.Threading.Thread.CurrentThread.CurrentCulture = C1Console.Users.UserSettings.CultureInfo;
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = C1Console.Users.UserSettings.C1ConsoleUiLanguage;
                 }
                 else
                 {
                     System.Threading.Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(Composite.Core.Configuration.GlobalSettingsFacade.DefaultCultureName);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = CultureInfo.CreateSpecificCulture(Composite.Core.Configuration.GlobalSettingsFacade.DefaultCultureName);
                 }
             }
         }

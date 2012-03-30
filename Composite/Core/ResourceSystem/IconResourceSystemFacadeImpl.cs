@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem.Foundation;
@@ -59,8 +60,7 @@ namespace Composite.Core.ResourceSystem
         {
             if (null == resourceHandle) throw new ArgumentNullException("resourceHandle");
 
-            //TODO: Find the right CultureInfo and use here!! Old: Composite.Management.OLD.GlobalizationService.CultureInfoProxy
-            return ResourceProviderPluginFacade.GetIcon(resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize, C1Console.Users.UserSettings.C1ConsoleUiLanguage);
+            return ResourceProviderPluginFacade.GetIcon(resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize, Thread.CurrentThread.CurrentUICulture);
         }
     }
 }

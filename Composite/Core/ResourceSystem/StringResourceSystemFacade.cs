@@ -54,7 +54,7 @@ namespace Composite.Core.ResourceSystem
                 Verify.ArgumentNotNullOrEmpty(stringName, "stringName");
             }
 
-            var culture = UserSettings.C1ConsoleUiLanguage;
+            var culture = Thread.CurrentThread.CurrentUICulture; 
 
             string cacheKey = culture.Name + providerName + stringName;
             ExtendedNullable<string> cachedValue = _resourceCache.Get(cacheKey);
