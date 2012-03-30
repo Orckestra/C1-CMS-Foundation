@@ -92,15 +92,16 @@ namespace Composite.Core.WebClient
             {
                 try
                 {
+                    CodeGenerationManager.ValidateCompositeGenerate(_startTime);
+                    CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+
                     GlobalEventSystemFacade.PrepareForShutDown();
                     if (RuntimeInformation.IsDebugBuild)
                     {
                         LogShutDownReason();
                     }
                     GlobalEventSystemFacade.ShutDownTheSystem();
-
-                    CodeGenerationManager.ValidateCompositeGenerate(_startTime);
-                    CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+                    
                     TempDirectoryFacade.OnApplicationEnd();
 
                     LoggingService.LogVerbose("Global.asax",
