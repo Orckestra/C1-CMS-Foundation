@@ -167,8 +167,8 @@
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.FieldLabel" value="Select a metadata field group to remove" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorLabel" value="Field group" />
 	<string key="AssociatedDataElementProviderHelper.DeleteMetaDataSelectFieldGroupName.SelectorHelp" value="Select a metadata field group to remove" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit metadata field" />
-	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit Metadata Field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeLabel" value="Edit Metadata Field" />
+	<string key="AssociatedDataElementProviderHelper.EditMetaDataTypeToolTip" value="Edit metadata field" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.Layout.Label" value="Edit Page Metadata Field" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.FieldGroup.Label" value="Page metadata field settings" />
 	<string key="AssociatedDataElementProviderHelper.EditMetaDataWorkflow.LabelTextBox.Label" value="Label" />
