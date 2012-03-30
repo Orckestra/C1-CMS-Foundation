@@ -779,32 +779,3 @@ EditorPageBinding.prototype._generatePreview = function () {
 		}
 	}
 }
-
-
-/**
-* Handle element update?
-* @implements {IUpdateHandler}
-* @param {Element} element
-* @returns {boolean} Return true to trigger method handleElement.
-*/
-EditorPageBinding.prototype.handleElement = function (element) {
-
-	return true;
-}
-
-/**
-* Update element. And stop crawling DOM subtree?
-* @implements {IUpdateHandler}
-* @param {Element} element
-* @returns {boolean} Return true to stop crawling.
-*/
-EditorPageBinding.prototype.updateElement = function (element) {
-
-	this.label = element.getAttribute("label");
-	this.image = element.getAttribute("image");
-	this.tooltip = element.getAttribute("tooltip");
-
-	this.dispatchAction(DockTabBinding.ACTION_UPDATE_VISUAL);
-
-	return false;
-}

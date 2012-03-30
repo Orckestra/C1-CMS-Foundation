@@ -322,19 +322,16 @@ DockTabBinding.prototype._handleContextMenuItemBinding = function ( menuItemBind
  * @overloads {TabBinding#setLabel}
  * @param {string} label
  */
-DockTabBinding.prototype.setLabel = function (label) {
+DockTabBinding.prototype.setLabel = function ( label ) {
 
-	if (!label) {
-		if (!this.getLabel()) {
+	if ( !label ) {
+		if ( !this.getLabel ()) {
 			label = DockTabBinding.LABEL_TABLOADING;
-		} else if (this.getLabel() == DockTabBinding.LABEL_TABLOADING) {
+		} else if ( this.getLabel () == DockTabBinding.LABEL_TABLOADING ) {
 			label = DockTabBinding.LABEL_TABDEFAULT;
 		}
 	}
-	//TODO group dirtification into one place
-	if (this.isDirty)
-		label = "*" + label;
-	DockTabBinding.superclass.setLabel.call(this, label);
+	DockTabBinding.superclass.setLabel.call ( this, label );
 }
 
 /** 
