@@ -8,15 +8,16 @@ function _Client () {
 	
 	var agent = navigator.userAgent.toLowerCase ();
 	var platform = navigator.platform.toLowerCase ();
-	
-	var isMozilla = typeof document.createTreeWalker != "undefined";
+
+	var isExplorer = navigator.appName == "Microsoft Internet Explorer";
+	var isMozilla = !isExplorer && typeof document.createTreeWalker != "undefined";
 	var isPrism = isMozilla && ( agent.indexOf ( "webrunner" ) >-1 || agent.indexOf ( "prism" ) >-1 );
 	var hasTransitions = history.pushState != null;
 
 	this.isMozilla = isMozilla;
 	this.isFirefox = agent.indexOf("firefox") > -1;
 	this.isWebKit = agent.indexOf("webkit") > -1;
-	this.isExplorer = !isMozilla;
+	this.isExplorer = isExplorer;
 	this.isExplorer6 = this.isExplorer && ( agent.indexOf ( "msie 6.0" ) > -1 || agent.indexOf ( "msie 6.1" ) > -1 );
 	this.isExplorer8 = this.isExplorer && window.XDomainRequest != null;
 	this.isPrism = isPrism;
