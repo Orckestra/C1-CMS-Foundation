@@ -84,13 +84,14 @@ VisualEditorPopupBinding.prototype.handleCommand = function ( cmd, gui, val ) {
  */
 VisualEditorPopupBinding.prototype._configure = function () {
 
-	if ( this._isEditorPopupBindingInitialized ) {
-		this._configureLinkGroup ();
-		this._configureInsertGroup ();
-		this._configureTableGroup ();
-		this._configureRenderingGroup ();
-		this._configureFieldGroup ();
-		this._configureImageGroup ();
+	if (this._isEditorPopupBindingInitialized) {
+		this._configureLinkGroup();
+		this._configureInsertGroup();
+		this._configureTableGroup();
+		this._configureRenderingGroup();
+		this._configureFieldGroup();
+		this._configureImageGroup();
+		this._configureSpellCheckGroup();
 	}
 }
 
@@ -247,5 +248,19 @@ VisualEditorPopupBinding.prototype._configureImageGroup = function () {
 		this._showMenuGroups ( "image" );
 	} else {
 		this._hideMenuGroups ( "image" );
+	}
+}
+
+
+
+/**
+* Configures and displays the spellcheckgroup.
+*/
+VisualEditorPopupBinding.prototype._configureSpellCheckGroup = function () {
+
+	if (Client.isFirefox) {
+		this._showMenuGroups("spellcheck");
+	} else {
+		this._hideMenuGroups("spellcheck");
 	}
 }

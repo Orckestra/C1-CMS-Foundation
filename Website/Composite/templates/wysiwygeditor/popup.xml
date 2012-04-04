@@ -115,4 +115,7 @@
 			</ui:menupopup>
 		</ui:menuitem>
 	</ui:menugroup>
+	<ui:menugroup rel="spellcheck">
+		<ui:menuitem cmd="compositeSpellCheckInfo"  label="${string:Composite.Web.VisualEditor:SpellCheck.InfoLabel}" image="${icon:message}" binding="EditorMenuItemBinding"/>
+	</ui:menugroup>
 </ui:menubody>

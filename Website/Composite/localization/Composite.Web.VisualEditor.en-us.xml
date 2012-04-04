@@ -176,4 +176,9 @@
   <string key="TextPaste.Label" value="Paste as Text" />
   <string key="TextPaste.PasteHereContent" value="Paste content here. Then press OK." />
 
+  <!-- spellcheck-->
+  <string key="SpellCheck.InfoLabel" value="How to spell check ..." />
+  <string key="SpellCheck.InfoCaption" value="How to spell check in the Visual Editor" />
+  <string key="SpellCheck.InfoText" value="To get suggestions for a miss spelled word press your SHIFT key down when you invoke the context menu." />
+
 </strings>

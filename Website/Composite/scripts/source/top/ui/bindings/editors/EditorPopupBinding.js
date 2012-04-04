@@ -107,21 +107,26 @@ EditorPopupBinding.prototype._configure = Binding.ABSTRACT_METHOD;
  * @param {string} rel
  */
 EditorPopupBinding.prototype._showMenuGroups = function ( rel ) {
-	
-	this._menuGroups [ rel ].each ( function ( group ) {
-		group.show ();
-	});
+	var menuGroup = this._menuGroups[rel];
+	if(menuGroup instanceof List)
+	{
+		menuGroup.each(function (group) {
+			group.show ();
+		});
+	}
 }
 
 /**
  * Show menugroups.
  * @param {string} rel
  */
-EditorPopupBinding.prototype._hideMenuGroups = function ( rel ) {
-	
-	this._menuGroups [ rel ].each ( function ( group ) {
-		group.hide ();
-	});
+EditorPopupBinding.prototype._hideMenuGroups = function (rel) {
+	var menuGroup = this._menuGroups[rel];
+	if (menuGroup instanceof List) {
+		menuGroup.each(function (group) {
+			group.hide();
+		});
+	}
 }
 
 
