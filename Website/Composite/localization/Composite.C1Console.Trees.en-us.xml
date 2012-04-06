@@ -127,7 +127,7 @@
   <string key="TreeDeleteTreeDefinitionWorkflow.Edit.Label" value="Edit" />
   <string key="TreeDeleteTreeDefinitionWorkflow.Edit.ToolTip" value="Edit tree definition" />
 
-  <string key="AddApplicationWorkflow.AddApplication.Label" value="Add application" />
+  <string key="AddApplicationWorkflow.AddApplication.Label" value="Add Application" />
   <string key="AddApplicationWorkflow.AddApplication.ToolTip" value="Add new application" />
   <string key="AddApplication.Layout.Label" value="Add application" />
   <string key="AddApplication.FieldGroup.Label" value="Select application" />
@@ -138,7 +138,7 @@
   <string key="AddApplication.NoTrees.Title" value="No applications" />
   <string key="AddApplication.NoTrees.Message" value="You have added all available applications" />
 
-  <string key="RemoveApplicationWorkflow.RemoveApplication.Label" value="Remove application" />
+  <string key="RemoveApplicationWorkflow.RemoveApplication.Label" value="Remove Application" />
   <string key="RemoveApplicationWorkflow.RemoveApplication.ToolTip" value="Remove existing application" />
   <string key="RemoveApplication.Layout.Label" value="Remove application" />
   <string key="RemoveApplication.FieldGroup.Label" value="Remove application" />
