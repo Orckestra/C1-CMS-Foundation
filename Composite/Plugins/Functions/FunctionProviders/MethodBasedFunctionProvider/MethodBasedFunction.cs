@@ -146,6 +146,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                     }
 
                     // Run through obsolete FunctionParameterDescriptionAttribute
+#pragma warning disable 612,618
                     foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(FunctionParameterDescriptionAttribute), true))
                     {
                         FunctionParameterDescriptionAttribute attribute = (FunctionParameterDescriptionAttribute)obj;
@@ -155,6 +156,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         labels.Add(attribute.ParameterName, attribute.ParameterLabel);
                         helpTexts.Add(attribute.ParameterName, attribute.ParameterHelpText);
                     }
+#pragma warning restore 612,618
 
                     // Run trhough new and improved FunctionParameterAttribute. Many may exist for one parameter.
                     foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(FunctionParameterAttribute), true))
