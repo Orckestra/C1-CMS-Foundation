@@ -185,8 +185,6 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 List<Range> rangeSegments = ParseRanges(rangeStr, length.Value);
 
                 context.Response.AddHeader("Content-Range", BuildContentRangeResponseHeader(rangeSegments, length.Value));
-
-                context.Response.ContentType = "application/octet-stream";
                 context.Response.StatusCode = 206; // Partial content
 
                 int totalLength = (int)rangeSegments.Select(rs => rs.Length).Sum();
