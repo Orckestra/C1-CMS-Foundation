@@ -211,6 +211,9 @@ namespace Composite.Core.Routing
 
         private static string RemoveForbiddenCharactersAndNormalize(string path)
         {
+            // Replacing dots with underscores, so IIS will not intercept requests in some scenarios
+            path = path.Replace(".", "_");
+
             foreach (var ch in ForbiddenUrlCharacters)
             {
                 path = path.Replace(ch, '#');
