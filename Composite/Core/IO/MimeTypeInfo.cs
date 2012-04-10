@@ -26,8 +26,7 @@ namespace Composite.Core.IO
         private static readonly IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
 
-        private static readonly MethodInfo _getMimeMappingMethodInfo = typeof(System.Web.HttpUtility).Assembly
-            .GetType("System.Web.MimeMapping").GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo _getMimeMappingMethodInfo;
 
         private static List<string> _textMimeTypes =
             new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
@@ -278,6 +277,12 @@ namespace Composite.Core.IO
             AddExtensionMapping("svgz", "mage/svg+xml");
             AddExtensionMapping("flv4", "video/mp4");
             AddExtensionMapping("eot", "application/vnd.ms-fontobject");
+
+            Type mimeMappingType = typeof (System.Web.HttpUtility).Assembly.GetType("System.Web.MimeMapping");
+
+            // Method System.Web.MimeMapping.GetMimeMapping() is public in .NET v4.5, and private in .NET v4.0
+            _getMimeMappingMethodInfo = mimeMappingType.GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.Public)
+                                        ?? mimeMappingType.GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.NonPublic);
         }
 
         private static void RegisterMimeType(string canonicalMimeTypeName, string extension, string resourceName = null)
