@@ -131,7 +131,7 @@ SystemToolBarBinding.prototype.handleBroadcast = function (broadcast, arg) {
 			var self = this;
 			if (arg != null) {
 				if (arg.activePosition == this.getActivePosition()) {
-					if (arg.actionProfile != null) {
+					if (arg.actionProfile != null && arg.actionProfile.hasEntries()) {
 						this._actionProfile = arg.actionProfile;
 						var key = this._getProfileKey();
 						if (key != this._currentProfileKey) {

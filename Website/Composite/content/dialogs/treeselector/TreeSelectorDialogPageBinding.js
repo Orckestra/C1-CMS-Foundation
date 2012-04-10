@@ -19,6 +19,8 @@ TreeSelectorDialogPageBinding.superclass = DialogPageBinding.prototype;
 			selectionProperty 	: "ElementType",
 			selectionValue		: "image/jpg image/gif image/png",
 			selectionResult		: "ElementId"
+			//optional , width : 400
+			//optional , height : 400
 		}
 		Dialog.invokeModal ( Dialog.URL_TREESELECTOR, handler, arg );
 */
@@ -109,6 +111,12 @@ TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
 	this._selectionResult = arg.selectionResult
 	this._nodes = arg.nodes;
 	this._parents = new List();
+	if (arg.width) {
+		this.width = arg.width;
+	}
+	if (arg.height) {
+		this.height = arg.height;
+	}
 
 }
 

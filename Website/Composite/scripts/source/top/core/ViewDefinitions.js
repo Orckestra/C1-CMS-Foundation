@@ -352,7 +352,8 @@ var ViewDefinitions = {
 			selectionResult		: "Uri",
 			nodes : [{
 				key : "LayoutFileElementProvider"
-			}]
+			}],
+			width : 480
 		}
 	}),
 	
