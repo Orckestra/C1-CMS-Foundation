@@ -225,9 +225,24 @@ namespace Composite.Core.WebClient.Renderings.Page
                     continue;
                 }
 
-                if (attribute.Name.LocalName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
+                string localName = attribute.Name.LocalName;
+                if (localName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
                 {
-                    target.Attributes.Add(attribute.Name.LocalName, attribute.Value);
+                    string htmlAttributeName;
+                    
+                    if (attribute.Name.Namespace != source.Name.Namespace
+                        && attribute.Name.Namespace.NamespaceName != string.Empty)
+                    {
+                        string namespacePrefix = source.GetPrefixOfNamespace(attribute.Name.NamespaceName);
+
+                        htmlAttributeName = namespacePrefix + ":" + localName;
+                    }
+                    else
+                    {
+                        htmlAttributeName = localName;
+                    }
+
+                    target.Attributes.Add(htmlAttributeName, attribute.Value);
                 }
             }
         }
