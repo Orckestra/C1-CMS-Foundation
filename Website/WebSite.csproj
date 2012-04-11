@@ -1695,7 +1695,6 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Containers\Toolbar.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Customized\PageContentEditor.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.ascx" />
-    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateTimeSelector.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.css" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionCallsDesigner.Function.TreeBinding.js" />

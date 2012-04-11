@@ -126,3 +126,4 @@ Changes in 3.1
 Changes in 3.2
 - Locale DeveloperApplicationProvider removed
 - SaveButton.ascx got new base class
+- DateSelector and DateTimeSelector changed to have the same ascx control and additional configuration attribute "showHours"

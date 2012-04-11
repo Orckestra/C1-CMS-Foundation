@@ -70,6 +70,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         }
 
         /// <exclude />
+        public bool ShowHours
+        {
+            get;
+            set;
+        }
+
+        /// <exclude />
         public string FormControlLabel
         {
             get { return _formControlLabel; }
@@ -108,6 +115,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.FormControlLabel = this.Label;
             _userControl.Date = this.Date;
             _userControl.ReadOnly = this.ReadOnly;
+            _userControl.ShowHours = this.ShowHours;
             _userControl.IsValid = true;
 
             return _userControl;
@@ -122,6 +130,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             get { return _userControl.IsValid; }
         }
 
+        public bool ShowHours
+        {
+            get; set;
+        }
+
         public string ValidationError
         {
             get { return _userControl.ValidationError; }
@@ -132,13 +145,19 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [ConfigurationElementType(typeof(TemplatedDateTimeSelectorUiControlFactoryData))]
     internal sealed class TemplatedDateTimeSelectorUiControlFactory : Base.BaseTemplatedUiControlFactory
     {
+        private bool _showHours;
+
         public TemplatedDateTimeSelectorUiControlFactory(TemplatedDateTimeSelectorUiControlFactoryData data)
             : base(data)
-        { }
+        {
+            _showHours = data.ShowHours;
+        }
 
         public override IUiControl CreateControl()
         {
             TemplatedDateTimeSelectorUiControl control = new TemplatedDateTimeSelectorUiControl(this.UserControlType);
+
+            control.ShowHours = _showHours;
 
             return control;
         }
@@ -149,6 +168,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     {
         private const string _userControlVirtualPathPropertyName = "userControlVirtualPath";
         private const string _cacheCompiledUserControlTypePropertyName = "cacheCompiledUserControlType";
+        private const string _showHoursPropertyName = "showHours";
 
         [ConfigurationProperty(_userControlVirtualPathPropertyName, IsRequired = true)]
         public string UserControlVirtualPath
@@ -162,6 +182,13 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         {
             get { return (bool)base[_cacheCompiledUserControlTypePropertyName]; }
             set { base[_cacheCompiledUserControlTypePropertyName] = value; }
+        }
+
+        [ConfigurationProperty(_showHoursPropertyName, IsRequired = true)]
+        public bool ShowHours
+        {
+            get { return (bool)base[_showHoursPropertyName]; }
+            set { base[_showHoursPropertyName] = value; }
         }
     }
 

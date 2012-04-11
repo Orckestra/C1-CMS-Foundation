@@ -19,7 +19,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
         public PlaceHolder CalendarPlaceHolder;
         public PlaceHolder MessagesPlaceHolder;
         public string CurrentStringValue;
-        public abstract bool ShowHours { get; }
 
         protected void Page_Init(object sender, EventArgs e)
         {
