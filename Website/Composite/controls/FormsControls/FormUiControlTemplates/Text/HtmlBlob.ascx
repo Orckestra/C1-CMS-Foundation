@@ -16,7 +16,9 @@
     }
 </script>
 
-<%= ConvertRenderingUrls(this.Html) %>
+<ui:scrollbox id="scrollbox">
+    <%= ConvertRenderingUrls(this.Html) %>
+</ui:scrollbox>
 
 
 
