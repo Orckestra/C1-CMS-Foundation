@@ -156,6 +156,12 @@
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\WarningDialogExecutionContainer.ascx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\FormUIStandardDialogs\WarningDialogExecutionContainer.ascx.designer.cs">
+      <DependentUpon>WarningDialogExecutionContainer.ascx.cs</DependentUpon>
+    </Compile>
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\DeveloperTools\FunctionParameterEditor.aspx.designer.cs">
       <DependentUpon>FunctionParameterEditor.aspx</DependentUpon>
     </Compile>

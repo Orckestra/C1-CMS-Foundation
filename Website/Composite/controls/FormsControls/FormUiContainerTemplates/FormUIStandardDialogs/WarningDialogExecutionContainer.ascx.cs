@@ -7,7 +7,7 @@ using Composite.Core.WebClient.UiControlLib;
 using Composite.Plugins.Forms.WebChannel.UiContainerFactories;
 
 
-public partial class Composite_Forms_ConfirmDialogExecutionContainer : TemplatedUiContainerBase
+public partial class Composite_Forms_WarningDialogExecutionContainer : TemplatedUiContainerBase
 {
     private PlaceHolder formPlaceHolder2 = new PlaceHolder();
     private PlaceHolder messagePlaceHolder2 = new PlaceHolder();
