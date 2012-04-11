@@ -7,6 +7,7 @@ using Composite.Core.Logging;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
+using Composite.Core.Types;
 
 
 namespace Composite.Data.DynamicTypes
@@ -218,6 +219,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
+        /// For internal use only!!!
         /// This method will create the store if the interfaceType has not been configured.
         /// </summary>
         /// <param name="interfaceType"></param>
@@ -230,6 +232,7 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <summary>
+        /// For internal use only!!!
         /// This method will create the store if the interfaceType has not been configured.
         /// </summary>
         /// <param name="interfaceType"></param>
@@ -252,6 +255,7 @@ namespace Composite.Data.DynamicTypes
             if (!dataProvider.GetKnownInterfaces().Contains(interfaceType))
             {
                 CreateStore(providerName, dataTypeDescriptor, true);
+                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
             }
         }
         
