@@ -63,11 +63,18 @@ namespace Composite.Data.Foundation
 
             using (_resourceLocker.ReadLocker)
             {
+               
+
                 Dictionary<Type, Type> processControllerTypes;
 
                 if (_resourceLocker.Resources.TypeToProcessControllerTypes.TryGetValue(interfaceType, out processControllerTypes) == false)
                 {
-                    return new Dictionary<Type, Type>();
+                    using (_resourceLocker.Locker)
+                    {
+                        processControllerTypes = Resources.ProcessInterfaceType(_resourceLocker.Resources, interfaceType);
+                    }
+
+                    //return new Dictionary<Type, Type>();
                 }
 
                 return processControllerTypes;
@@ -94,24 +101,37 @@ namespace Composite.Data.Foundation
         {
             public List<Type> ProcessControllerTypes { get; set; }
 
-            // interfaceType -> IProcessController subinterface -> process controller type
+            public List<Type> ProcessedInterfaceTypes { get; set; }
+
+            // interfaceType -> IProcessController subinterface -> process controller type            
             public Dictionary<Type, Dictionary<Type, Type>> TypeToProcessControllerTypes { get; set; }
+
 
 
             public static void Initialize(Resources resources)
             {
                 resources.ProcessControllerTypes = new List<Type>();
+                resources.ProcessedInterfaceTypes = new List<Type>();
                 resources.TypeToProcessControllerTypes = new Dictionary<Type, Dictionary<Type, Type>>();
 
                 foreach (Type interfaceType in DataFacade.GetAllInterfaces())
                 {
-                    Dictionary<Type, Type> processControllerTypes = new Dictionary<Type, Type>();
-
-                    AddProcessController<PublishProcessControllerTypeAttribute>(resources, interfaceType, typeof(IPublishProcessController), processControllerTypes);
-                    AddProcessController<LocalizeProcessControllerTypeAttribute>(resources, interfaceType, typeof(ILocalizeProcessController), processControllerTypes);
-
-                    resources.TypeToProcessControllerTypes.Add(interfaceType, processControllerTypes);
+                    ProcessInterfaceType(resources, interfaceType);
                 }
+            }
+
+
+
+            internal static Dictionary<Type, Type> ProcessInterfaceType(Resources resources, Type interfaceType)
+            {
+                Dictionary<Type, Type> processControllerTypes = new Dictionary<Type, Type>();
+
+                AddProcessController<PublishProcessControllerTypeAttribute>(resources, interfaceType, typeof(IPublishProcessController), processControllerTypes);
+                AddProcessController<LocalizeProcessControllerTypeAttribute>(resources, interfaceType, typeof(ILocalizeProcessController), processControllerTypes);
+
+                resources.TypeToProcessControllerTypes.Add(interfaceType, processControllerTypes);
+
+                return processControllerTypes;
             }
 
 
@@ -119,6 +139,9 @@ namespace Composite.Data.Foundation
             private static void AddProcessController<T>(Resources resources, Type interfaceType, Type superProcessControllerInterfaceType, Dictionary<Type, Type> processControllerTypes)
                 where T : ProcessControllerTypeAttribute
             {
+               // if (resources.ProcessedInterfaceTypes.Contains(interfaceType)) return;
+              //  resources.ProcessedInterfaceTypes.Add(interfaceType);
+                    
                 List<T> publishAttributes = interfaceType.GetCustomAttributesRecursively<T>().ToList();
 
                 if (publishAttributes.Count == 0) return;
