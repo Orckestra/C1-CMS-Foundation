@@ -105,7 +105,8 @@ RadioDataBinding.prototype.onBindingAttach = function () {
 RadioDataBinding.prototype._buildDOMContent = function () {
 	
 	var relate = this.getProperty ( "relate" );
-	var oncommand = this.getProperty ( "oncommand" );
+	var oncommand = this.getProperty("oncommand");
+	var disabled = this.getProperty("isdisabled");
 	
 	if ( relate ) {
 		this.bindingRelate = relate;
@@ -116,7 +117,11 @@ RadioDataBinding.prototype._buildDOMContent = function () {
 			Binding.evaluate ( oncommand, this );
 		};
 	}
-	
+
+	if (disabled == true) {
+		this.disable();
+	}
+
 	/*
 	 * Setup ASP.NET callback.
 	 */
