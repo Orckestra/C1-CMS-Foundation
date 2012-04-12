@@ -181,13 +181,7 @@ namespace Composite
                         DataProviderRegistry.InitializeDataTypes();
                     }
 
-                    /*
-                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted");
-
-                    // We made type changes, so we _have_ to recompile Composite.Generated.dll
-                    CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
-
-                    return;*/
+                    CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);                 
                 }
             }
 
