@@ -750,6 +750,25 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     });
 
 
+                    element.AddAction(new ElementAction(new ActionHandle(new ViewDraftActionToken()))
+                    {
+                        VisualData = new ActionVisualizedData
+                        {
+                            Label = viewDraftPageLabel,
+                            ToolTip = viewDraftPageToolTip,
+                            Icon = PageElementProvider.PageViewAdministratedScope,
+                            Disabled = false,
+                            ActionLocation = new ActionLocation
+                            {
+                                ActionType = ActionType.Other,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = ViewActionGroup
+                            }
+                        }
+                    });
+                    
+
                     element.AddAction(new ElementAction(new ActionHandle(new ViewPublicActionToken()))
                     {
                         VisualData = new ActionVisualizedData
@@ -768,23 +787,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
                     });
 
-                    element.AddAction(new ElementAction(new ActionHandle(new ViewDraftActionToken()))
-                    {
-                        VisualData = new ActionVisualizedData
-                        {
-                            Label = viewDraftPageLabel,
-                            ToolTip = viewDraftPageToolTip,
-                            Icon = PageElementProvider.PageViewAdministratedScope,
-                            Disabled = false,
-                            ActionLocation = new ActionLocation
-                            {
-                                ActionType = ActionType.Other,
-                                IsInFolder = false,
-                                IsInToolbar = false,
-                                ActionGroup = ViewActionGroup
-                            }
-                        }
-                    });
 
                     // Creates a problem for the front-end "toolbar caching" mechanism - dont re-introduce this right befroe a release
                     // Reason: ActionTokin is always unique for a page, making the ActionKey (hash) unique

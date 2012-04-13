@@ -74,9 +74,9 @@
   <string key="PageElementProvider.LocalizePageToolTip" value="Translate selected page" />
   <string key="PageElementProvider.AddSubPage" value="Add Page..." />
   <string key="PageElementProvider.AddSubPageToolTip" value="Add new page below the selected" />
-  <string key="PageElementProvider.ViewPublicPage" value="View Published" />
+  <string key="PageElementProvider.ViewPublicPage" value="Browse Published Page" />
   <string key="PageElementProvider.ViewPublicToolTip" value="View last published version" />
-  <string key="PageElementProvider.ViewDraftPage" value="View Unpublished" />
+  <string key="PageElementProvider.ViewDraftPage" value="Browse Saved Page" />
   <string key="PageElementProvider.ViewDraftToolTip" value="View recent changes" />
   <string key="PageElementProvider.DisplayLocalOrderingLabel" value="Show page local orderings" />
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />
