@@ -38,6 +38,8 @@ namespace Composite.C1Console.Trees
         internal List<IPossibleAttachmentPoint> PossibleAttachmentPoints { get; private set; }
 
 
+        internal bool ShareRootElementById { get; set; }
+
         /// <exclude />
         public Tree(string treeId)
         {

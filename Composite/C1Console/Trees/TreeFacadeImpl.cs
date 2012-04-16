@@ -36,7 +36,6 @@ using Composite.Data.Types;
 using Composite.Plugins.Elements.ElementProviders.DeveloperApplicationProvider;
 
 
-
 namespace Composite.C1Console.Trees
 {
     [FlushAttribute("ReloadAllTrees")]
@@ -45,6 +44,7 @@ namespace Composite.C1Console.Trees
         private const string XslFilename = "Tree.xsl";
 
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
+
 
 
         public void Initialize()
@@ -63,11 +63,13 @@ namespace Composite.C1Console.Trees
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeFunctionElementGeneratorEntityToken>(treeAuxiliaryAncestorProvider, true);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreeDataFieldGroupingElementEntityToken>(treeAuxiliaryAncestorProvider, true);
                     AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<DataEntityToken>(treeAuxiliaryAncestorProvider, true);
+                    AuxiliarySecurityAncestorFacade.AddAuxiliaryAncestorProvider<TreePerspectiveEntityToken>(treeAuxiliaryAncestorProvider, true);
 
                     _resourceLocker.Resources.PersistentAttachmentPoints = new Dictionary<string, List<IAttachmentPoint>>();
 
                     LoadAllTrees();
                     InitializeTreeAttachmentPoints();
+                    TreeSharedRootsFacade.Clear();
 
                     _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
                     _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
@@ -222,9 +224,9 @@ namespace Composite.C1Console.Trees
             {
                 return;
             }
-            
+
             Thread.CurrentThread.CurrentCulture = UserSettings.CultureInfo;
-            
+
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             using (_resourceLocker.Locker)
@@ -248,12 +250,12 @@ namespace Composite.C1Console.Trees
 
                 LoggingService.LogVerbose("TreeFacade", string.Format("Loading all tree definitions from {0}", PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory)));
 
-                foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))                
+                foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))
                 {
                     string treeId = Path.GetFileName(filename);
 
                     try
-                    {                        
+                    {
                         LoggingService.LogVerbose("TreeFacade", "Loading tree from file: " + filename);
 
                         int t1 = Environment.TickCount;
@@ -381,6 +383,8 @@ namespace Composite.C1Console.Trees
                 LoadAllTrees();
 
                 InitializeTreeAttachmentPoints();
+
+                TreeSharedRootsFacade.Clear();
 
                 using (_resourceLocker.ReadLocker)
                 {

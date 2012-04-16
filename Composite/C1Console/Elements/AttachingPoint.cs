@@ -49,8 +49,19 @@ namespace Composite.C1Console.Elements
 
         private EntityToken _entityToken = null;
 
-        internal AttachingPoint()
+        internal AttachingPoint(EntityToken entityToken = null)
         {
+            _entityToken = entityToken;
+        }
+
+
+
+        internal AttachingPoint(AttachingPoint attachingPoint)
+        {
+            _entityToken = attachingPoint._entityToken;
+            EntityTokenType = attachingPoint.EntityTokenType;
+            Id = attachingPoint.Id;
+            Source = attachingPoint.Source;
         }
 
 

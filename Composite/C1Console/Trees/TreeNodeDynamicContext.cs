@@ -96,6 +96,9 @@ namespace Composite.C1Console.Trees
         public TreeNode CurrentTreeNode { get; set; }
 
 
-        internal Dictionary<string, object> CustomData { get; set; }        
+        internal Dictionary<string, object> CustomData { get; set; }
+
+
+        internal bool IsRoot { get; set; }
     }    
 }

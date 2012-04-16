@@ -25,6 +25,8 @@
   <string key="TreeValidationError.AutoAttachments.UnknownAttachmentPosition" value="The attachment position '{0}' is unknown" />
   <string key="TreeValidationError.DataAttachments.NoElementsAllowed" value="No elements are allowed in trees that are used with data attached trees" />
 
+  <string key="TreeValidationError.ElementRoot.ShareRootElementByIdNotAllowed" value="ShareRootElementById is only allowed if the tree has a single named attachment point" />
+
   <string key="TreeValidationError.SimpleElement.WrongIdValue" value="The value of the Id is not allowed. The Id should be non-empty, not start with NodeAutoId_ and not be RootTreeNode" />
   <string key="TreeValidationError.SimpleElement.AlreadyUsedId" value="The id value '{0}' has already been used in this tree" />
 

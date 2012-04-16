@@ -28,6 +28,8 @@ namespace Composite.C1Console.Trees
 
         public bool HaveCustomChildElements(EntityToken parentEntityToken, Dictionary<string, string> piggybag)
         {
+            TreeSharedRootsFacade.Initialize(Context.ProviderName);
+
             foreach (Tree tree in TreeFacade.GetTreesByEntityToken(parentEntityToken))
             {
                 if (tree.RootTreeNode.ChildNodes.Count() > 0) return true;
@@ -47,6 +49,8 @@ namespace Composite.C1Console.Trees
 
         public IEnumerable<ElementAttachingProviderResult> GetAlternateElementLists(EntityToken parentEntityToken, Dictionary<string, string> piggybag)
         {
+            TreeSharedRootsFacade.Initialize(Context.ProviderName);
+
             IEnumerable<Tree> trees = TreeFacade.GetTreesByEntityToken(parentEntityToken);
 
             foreach (Tree tree in trees)
@@ -58,7 +62,8 @@ namespace Composite.C1Console.Trees
                         ElementProviderName = this.Context.ProviderName,
                         Piggybag = piggybag,
                         CurrentEntityToken = parentEntityToken,
-                        CurrentTreeNode = tree.RootTreeNode
+                        CurrentTreeNode = tree.RootTreeNode,
+                        IsRoot = true
                     };
 
                     ElementAttachingProviderResult result = null;
@@ -86,105 +91,143 @@ namespace Composite.C1Console.Trees
                             Elements = new List<Element>() { errorElement },
                             Position = attachmentPoint.Position,
                             PositionPriority = 0
-                        };                        
+                        };
                     }
 
                     yield return result;
                 }
             }
+
+            foreach (CustomTreePerspectiveInfo info in TreeSharedRootsFacade.SharedRootFolders.Values)
+            {
+                if (info.AttachmentPoint.IsAttachmentPoint(parentEntityToken))
+                {
+                    ElementAttachingProviderResult result = new ElementAttachingProviderResult
+                    {
+                        Elements = new [] { info.Element },
+                        Position = ElementAttachingProviderPosition.Bottom,
+                        PositionPriority = 10000
+                    };
+
+                    yield return result;
+                }
+            }           
         }
 
 
 
         public IEnumerable<Element> GetChildren(EntityToken parentEntityToken, Dictionary<string, string> piggybag)
         {
-            string treeId = piggybag.Where(f => f.Key == StringConstants.PiggybagTreeId).Single().Value;
-
-            Tree tree = TreeFacade.GetTree(treeId);
-            if (tree == null) return new Element[] { };
-
-
-            TreeNodeDynamicContext dynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
+            List<Tree> trees;
+            if (parentEntityToken is TreePerspectiveEntityToken)
             {
-                ElementProviderName = this.Context.ProviderName,
-                Piggybag = piggybag,
-                CurrentEntityToken = parentEntityToken
-            };
-
-            IEnumerable<Element> result;
-
-            try
+                trees = TreeSharedRootsFacade.SharedRootFolders[parentEntityToken.Id].Trees;
+            }
+            else
             {
-                if (parentEntityToken is TreeSimpleElementEntityToken)
+                string treeId = piggybag.Where(f => f.Key == StringConstants.PiggybagTreeId).Single().Value;
+                Tree tree = TreeFacade.GetTree(treeId);
+                if (tree == null) return new Element[] { };
+                trees = new List<Tree> { tree };
+            }
+
+            IEnumerable<Element> result = null;
+
+            foreach (Tree tree in trees)
+            {
+                TreeNodeDynamicContext dynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
                 {
-                    TreeNode treeNode = tree.GetTreeNode(parentEntityToken.Id);
-                    if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
+                    ElementProviderName = this.Context.ProviderName,
+                    Piggybag = piggybag,
+                    CurrentEntityToken = parentEntityToken
+                };
 
-                    dynamicContext.CurrentTreeNode = treeNode;
-
-                    result = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
-                }
-                else if (parentEntityToken is TreeFunctionElementGeneratorEntityToken)
+                try
                 {
-                    TreeNode treeNode = tree.GetTreeNode(parentEntityToken.Id);
-                    if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
-
-                    dynamicContext.CurrentTreeNode = treeNode;
-
-                    result = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
-                }
-                else if (parentEntityToken is TreeDataFieldGroupingElementEntityToken)
-                {
-                    TreeDataFieldGroupingElementEntityToken castedParentEntityToken = parentEntityToken as TreeDataFieldGroupingElementEntityToken;
-                    TreeNode treeNode = tree.GetTreeNode(parentEntityToken.Id);
-                    if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
-
-                    dynamicContext.CurrentTreeNode = treeNode;
-                    dynamicContext.FieldGroupingValues = castedParentEntityToken.GroupingValues;
-                    dynamicContext.FieldFolderRangeValues = castedParentEntityToken.FolderRangeValues;
-
-                    result = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
-                }
-                else if (parentEntityToken is DataEntityToken)
-                {
-                    DataEntityToken dataEntityToken = parentEntityToken as DataEntityToken;
-
-                    Type interfaceType = dataEntityToken.InterfaceType;
-
-                    List<TreeNode> treeNodes;
-                    if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false)
+                    if (parentEntityToken is TreePerspectiveEntityToken)
                     {
-                        throw new InvalidOperationException();
+                        TreeNode treeNode = tree.RootTreeNode;
+
+                        dynamicContext.CurrentTreeNode = treeNode;
+
+                        IEnumerable<Element> elements = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
+                        result = result.ConcatOrDefault(elements);
+                    }
+                    else if (parentEntityToken is TreeSimpleElementEntityToken)
+                    {
+                        TreeNode treeNode = tree.GetTreeNode(parentEntityToken.Id);
+                        if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
+
+                        dynamicContext.CurrentTreeNode = treeNode;
+
+                        IEnumerable<Element> elements = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
+                        result = result.ConcatOrDefault(elements);
+                    }
+                    else if (parentEntityToken is TreeFunctionElementGeneratorEntityToken)
+                    {
+                        TreeNode treeNode = tree.GetTreeNode(parentEntityToken.Id);
+                        if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
+
+                        dynamicContext.CurrentTreeNode = treeNode;
+
+                        IEnumerable<Element> elements = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
+                        result = result.ConcatOrDefault(elements);
+                    }
+                    else if (parentEntityToken is TreeDataFieldGroupingElementEntityToken)
+                    {
+                        TreeDataFieldGroupingElementEntityToken castedParentEntityToken = parentEntityToken as TreeDataFieldGroupingElementEntityToken;
+                        TreeNode treeNode = tree.GetTreeNode(parentEntityToken.Id);
+                        if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
+
+                        dynamicContext.CurrentTreeNode = treeNode;
+                        dynamicContext.FieldGroupingValues = castedParentEntityToken.GroupingValues;
+                        dynamicContext.FieldFolderRangeValues = castedParentEntityToken.FolderRangeValues;
+
+                        IEnumerable<Element> elements = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
+                        result = result.ConcatOrDefault(elements);
+                    }
+                    else if (parentEntityToken is DataEntityToken)
+                    {
+                        DataEntityToken dataEntityToken = parentEntityToken as DataEntityToken;
+
+                        Type interfaceType = dataEntityToken.InterfaceType;
+
+                        List<TreeNode> treeNodes;
+                        if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false)
+                        {
+                            throw new InvalidOperationException();
+                        }
+
+                        string parentNodeId = piggybag.GetParentIdFromPiggybag();
+
+                        TreeNode treeNode = treeNodes.Where(f => f.ParentNode.Id == parentNodeId).SingleOrDefault();
+                        if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
+
+                        dynamicContext.CurrentTreeNode = treeNode;
+
+                        IEnumerable<Element> elements = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
+                        result = result.ConcatOrDefault(elements);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException("Unhandled entityt token type");
                     }
 
-                    string parentNodeId = piggybag.GetParentIdFromPiggybag();
 
-                    TreeNode treeNode = treeNodes.Where(f => f.ParentNode.Id == parentNodeId).SingleOrDefault();
-                    if (treeNode == null) throw new InvalidOperationException("Tree is out of sync");
-
-                    dynamicContext.CurrentTreeNode = treeNode;
-
-                    result = treeNode.ChildNodes.GetElements(parentEntityToken, dynamicContext);
+                    result = result.Evaluate();
                 }
-                else
+                catch (Exception ex)
                 {
-                    throw new NotImplementedException("Unhandled entityt token type");
+                    LoggingService.LogError("TreeFacade", string.Format("Getting elements from the three '{0}' failed", tree.TreeId));
+                    LoggingService.LogError("TreeFacade", ex);
+
+                    Element errorElement = ShowErrorElementHelper.CreateErrorElement(
+                        StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "KeyFacade.ErrorTreeNode.Label"),
+                        tree.TreeId,
+                        ex.Message);
+
+                    return new Element[] { errorElement };
                 }
-
-
-                result = result.Evaluate();
-            }
-            catch (Exception ex)
-            {
-                LoggingService.LogError("TreeFacade", string.Format("Getting elements from the three '{0}' failed", tree.TreeId));
-                LoggingService.LogError("TreeFacade", ex);
-
-                Element errorElement = ShowErrorElementHelper.CreateErrorElement(
-                    StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "KeyFacade.ErrorTreeNode.Label"),
-                    tree.TreeId,
-                    ex.Message);
-
-                return new Element[] { errorElement };
             }
 
             return result;

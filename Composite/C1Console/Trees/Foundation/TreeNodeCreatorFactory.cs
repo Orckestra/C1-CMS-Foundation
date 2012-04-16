@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using Composite.Functions.Foundation;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Core.Xml;
+using Composite.C1Console.Trees.Foundation.AttachmentPoints;
 
 
 namespace Composite.C1Console.Trees.Foundation
@@ -21,6 +23,21 @@ namespace Composite.C1Console.Trees.Foundation
         {
             if (element.Name == TreeMarkupConstants.Namespace + "ElementRoot")
             {
+                XAttribute shareRootElementByIdAttribute = element.Attribute("ShareRootElementById");
+                if (shareRootElementByIdAttribute != null)
+                {
+                    tree.ShareRootElementById = (bool)shareRootElementByIdAttribute;
+
+                    if (tree.ShareRootElementById)
+                    {
+                        int count = tree.AttachmentPoints.OfType<NamedAttachmentPoint>().Count();
+                        if (count != 1 || tree.AttachmentPoints.Count - count > 0)
+                        {
+                            tree.AddValidationError(shareRootElementByIdAttribute.GetXPath(), "TreeValidationError.ElementRoot.ShareRootElementByIdNotAllowed");
+                        }
+                    }
+                }
+
                 return new RootTreeNode
                 {
                     Tree = tree,

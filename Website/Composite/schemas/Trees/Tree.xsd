@@ -88,12 +88,14 @@
   <xs:complexType name="ElementRootType">
     <xs:annotation>
       <xs:documentation>Children of this node is the root children of the points where the tree is inserted</xs:documentation>
-    </xs:annotation>
-
+    </xs:annotation>    
+    
     <xs:all>
       <xs:element name="Children" type="ChildrenType" minOccurs="0" maxOccurs="1"/>
       <xs:element name="Actions" type="ActionsType" minOccurs="0" maxOccurs="1"/>
     </xs:all>
+
+    <xs:attribute name="ShareRootElementById" use="optional" default="false" type="xs:boolean" />
   </xs:complexType>
 
 

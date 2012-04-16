@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
-using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
+using Composite.C1Console.Trees.Foundation;
+using Composite.Core.ResourceSystem;
 
 
 namespace Composite.C1Console.Trees
@@ -16,8 +17,8 @@ namespace Composite.C1Console.Trees
         public ResourceHandle OpenIcon { get; internal set; }   // Defaults to 'open-folder' or if Icon is set, then, Icon
 
         // Cached values
-        private DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
-        private DynamicValuesHelper ToolTipDynamicValuesHelper { get; set; }
+        internal DynamicValuesHelper LabelDynamicValuesHelper { get; set; }
+        internal DynamicValuesHelper ToolTipDynamicValuesHelper { get; set; }
 
 
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
@@ -75,7 +76,7 @@ namespace Composite.C1Console.Trees
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             TreeSimpleElementEntityToken entityToken;
-            if ((this.ParentNode is SimpleElementTreeNode) == false)
+            if ((this.ParentNode is SimpleElementTreeNode) == false || parentEntityToken is TreePerspectiveEntityToken)
             {
                 entityToken = new TreeSimpleElementEntityToken(this.Id.ToString(), this.Tree.TreeId, EntityTokenSerializer.Serialize(parentEntityToken));                
             }

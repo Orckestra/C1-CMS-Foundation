@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Composite.C1Console.Security;
+using Composite.C1Console.Trees.Foundation;
 using Composite.Core.Logging;
-using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.DynamicTypes;
 
 
 namespace Composite.C1Console.Trees
@@ -146,6 +144,10 @@ namespace Composite.C1Console.Trees
                             }
                         }
                     }
+                }
+                else if (entityToken is TreePerspectiveEntityToken)
+                {
+                    result.Add(entityToken, new[] { TreeSharedRootsFacade.SharedRootFolders[entityToken.Id].AttachmentPoint.AttachingPoint.EntityToken });
                 }
             }
 
