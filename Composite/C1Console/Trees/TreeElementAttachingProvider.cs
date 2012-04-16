@@ -105,7 +105,7 @@ namespace Composite.C1Console.Trees
                     ElementAttachingProviderResult result = new ElementAttachingProviderResult
                     {
                         Elements = new [] { info.Element },
-                        Position = ElementAttachingProviderPosition.Bottom,
+                        Position = info.AttachmentPoint.Position,
                         PositionPriority = 10000
                     };
 
