@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation.PluginFacades;
@@ -15,7 +14,7 @@ namespace Composite.Data.Foundation
     internal sealed class DataStoreExistenceVerifierImpl : IDataStoreExistenceVerifier
     {
         // Interfaces in this list will have a store created on system start if they do not exists
-        private static List<Type> _interfaceTypes = new List<Type>
+        private static readonly List<Type> _interfaceTypes = new List<Type>
                 {
                     typeof(ICompositionContainer),
                     typeof(IPage),                    
@@ -68,6 +67,7 @@ namespace Composite.Data.Foundation
                     typeof(ISearchEngineOptimizationKeyword),
                     typeof(IDataItemTreeAttachmentPoint),
                     typeof(IGeneratedTypeWhiteList),
+                    typeof(IUrlConfiguration),
 #pragma warning disable 0618
                     typeof(IWhiteListedLocale) // TODO: to be removed
 #pragma warning restore 0618
