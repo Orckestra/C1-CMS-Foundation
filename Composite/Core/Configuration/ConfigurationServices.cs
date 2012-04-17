@@ -254,7 +254,9 @@ namespace Composite.Core.Configuration
         private static string GetFileConfigurationSourcePath()
         {
             // Not using the web.config in order not to make solution depend on specific version of Microsoft Enterprice Library
-            return HostingEnvironment.MapPath("~/App_Data/Composite/Composite.config");
+
+            return PathUtil.Resolve("~/App_Data/Composite/Composite.config");
+            
 
             //lock (_lock)
             //{

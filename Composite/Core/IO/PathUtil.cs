@@ -21,9 +21,9 @@ namespace Composite.Core.IO
         /// <exclude />
         static PathUtil()
         {
-            if (!HostingEnvironment.IsHosted)
+            if (HostingEnvironment.IsHosted)
             {
-                _appBasePath = Environment.CurrentDirectory;
+                _appBasePath = HostingEnvironment.ApplicationPhysicalPath;
             }
             else
             {

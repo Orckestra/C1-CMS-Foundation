@@ -244,7 +244,7 @@ namespace Composite.Core.WebClient
         }
 
 
-        internal static void ApplicationStartInitialize(bool displayDebugInfo = false)
+        public static void ApplicationStartInitialize(bool displayDebugInfo = false)
         {
             ThreadDataManager.InitializeThroughHttpContext();
 
