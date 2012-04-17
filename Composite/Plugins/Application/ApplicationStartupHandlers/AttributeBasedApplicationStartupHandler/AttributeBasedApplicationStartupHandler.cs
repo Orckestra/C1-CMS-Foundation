@@ -402,7 +402,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         {
             get
             {
-                return HostingEnvironment.MapPath(GlobalSettingsFacade.TempDirectory);
+                return PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
             }
         }
 

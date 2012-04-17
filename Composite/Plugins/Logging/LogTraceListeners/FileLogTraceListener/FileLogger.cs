@@ -34,7 +34,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             Verify.ArgumentNotNull(logDirectoryPath, "logDirectoryPath");
 
-            _logDirectoryPath = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, logDirectoryPath);
+            _logDirectoryPath = Path.Combine(PathUtil.BaseDirectory, logDirectoryPath);
             if (!C1Directory.Exists(_logDirectoryPath))
             {
                 C1Directory.CreateDirectory(_logDirectoryPath);
