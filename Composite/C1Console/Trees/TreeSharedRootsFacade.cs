@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
@@ -21,17 +22,19 @@ namespace Composite.C1Console.Trees
     internal static class TreeSharedRootsFacade
     {
         private static Dictionary<string, CustomTreePerspectiveInfo> _sharedRootFolders = null;
+        private static string _elementAttachingProviderName;
         private static readonly object _lock = new object();
 
         public static Dictionary<string, CustomTreePerspectiveInfo> SharedRootFolders
         {
             get
             {
+                Initialize();
                 return _sharedRootFolders;
             }
         }
 
-        public static void Initialize(string elementAttachingProviderName)
+        public static void Initialize(string elementAttachingProviderName = null)
         {
             if (_sharedRootFolders == null)
             {
@@ -39,6 +42,16 @@ namespace Composite.C1Console.Trees
                 {
                     if (_sharedRootFolders == null)
                     {
+                        if (elementAttachingProviderName != null)
+                        {
+                            _elementAttachingProviderName = elementAttachingProviderName;
+                        }
+                        else
+                        {
+                            if (_elementAttachingProviderName == null) throw new InvalidOperationException();
+                            elementAttachingProviderName = _elementAttachingProviderName;
+                        }
+
                         DoInitialize(elementAttachingProviderName);
                     }
                 }

@@ -123,6 +123,11 @@ namespace Composite.C1Console.Trees
             {
                 trees = TreeSharedRootsFacade.SharedRootFolders[parentEntityToken.Id].Trees;
             }
+            /*else if (parentEntityToken is TreeSimpleElementEntityToken)
+            {
+                Tree tree = TreeFacade.GetTree(parentEntityToken.Source);
+                trees = new List<Tree> { tree };
+            }*/
             else
             {
                 string treeId = piggybag.Where(f => f.Key == StringConstants.PiggybagTreeId).Single().Value;
