@@ -92,6 +92,7 @@ namespace Composite.C1Console.Trees
                 dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
                 ));
 
+
             if (parentEntityToken is TreePerspectiveEntityToken)
             {
                 element.ElementHandle.Piggyback[StringConstants.PiggybagTreeId] = Tree.TreeId;

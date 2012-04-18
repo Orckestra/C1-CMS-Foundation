@@ -102,8 +102,20 @@ namespace Composite.C1Console.Trees
             {
                 if (info.AttachmentPoint.IsAttachmentPoint(parentEntityToken))
                 {
-                    ElementAttachingProviderResult result = new ElementAttachingProviderResult
+                    Element element = new Element(new ElementHandle(info.Element.ElementHandle.ProviderName, info.Element.ElementHandle.EntityToken))
                     {
+                        VisualData = info.Element.VisualData
+                    };
+                        
+                    int counter = 0;
+                    foreach (Tree tree in info.Trees)
+                    {
+                        string key = StringConstants.PiggybagSharedTreeId + (counter++);
+                        element.ElementHandle.Piggyback[key] = tree.TreeId;
+                    }
+
+                    ElementAttachingProviderResult result = new ElementAttachingProviderResult
+                    {                        
                         Elements = new [] { info.Element },
                         Position = info.AttachmentPoint.Position,
                         PositionPriority = 10000
@@ -118,25 +130,40 @@ namespace Composite.C1Console.Trees
 
         public IEnumerable<Element> GetChildren(EntityToken parentEntityToken, Dictionary<string, string> piggybag)
         {
+            TreeSharedRootsFacade.Initialize(Context.ProviderName);
+
             List<Tree> trees;
             if (parentEntityToken is TreePerspectiveEntityToken)
             {
                 trees = TreeSharedRootsFacade.SharedRootFolders[parentEntityToken.Id].Trees;
             }
-            /*else if (parentEntityToken is TreeSimpleElementEntityToken)
-            {
-                Tree tree = TreeFacade.GetTree(parentEntityToken.Source);
-                trees = new List<Tree> { tree };
-            }*/
             else
             {
-                string treeId = piggybag.Where(f => f.Key == StringConstants.PiggybagTreeId).Single().Value;
-                Tree tree = TreeFacade.GetTree(treeId);
-                if (tree == null) return new Element[] { };
-                trees = new List<Tree> { tree };
+                if (piggybag.ContainsKey(StringConstants.PiggybagTreeId))
+                {
+                    string treeId = piggybag.Where(f => f.Key == StringConstants.PiggybagTreeId).SingleOrDefault().Value;
+                    Tree tree = TreeFacade.GetTree(treeId);
+                    if (tree == null) return new Element[] { };
+                    trees = new List<Tree> { tree };
+                }
+                else
+                {
+                    trees = new List<Tree>();
+
+                    int counter = 0;
+                    while (true)
+                    {
+                        string key = StringConstants.PiggybagSharedTreeId + (counter++);
+                        if (!piggybag.ContainsKey(key)) break;
+
+                        string treeId = piggybag[key];
+                        Tree tree = TreeFacade.GetTree(treeId);
+                        if (tree != null) trees.Add(tree);
+                    }
+                }
             }
 
-            IEnumerable<Element> result = null;
+            IEnumerable<Element> result = new List<Element>();
 
             foreach (Tree tree in trees)
             {

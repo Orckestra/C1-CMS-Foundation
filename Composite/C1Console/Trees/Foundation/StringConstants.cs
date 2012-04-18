@@ -6,5 +6,6 @@ namespace Composite.C1Console.Trees.Foundation
     {
         public const string RootNodeId = "RootTreeNode";
         public const string PiggybagTreeId = "TreeId";
+        public const string PiggybagSharedTreeId = "SharedTreeId_";
     }
 }

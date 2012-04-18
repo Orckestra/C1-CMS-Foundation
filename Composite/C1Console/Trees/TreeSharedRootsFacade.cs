@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
+using Composite.C1Console.Elements.Foundation;
+using Composite.C1Console.Elements.Foundation.PluginFacades;
+using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
@@ -34,6 +37,7 @@ namespace Composite.C1Console.Trees
             }
         }
 
+
         public static void Initialize(string elementAttachingProviderName = null)
         {
             if (_sharedRootFolders == null)
@@ -42,17 +46,27 @@ namespace Composite.C1Console.Trees
                 {
                     if (_sharedRootFolders == null)
                     {
-                        if (elementAttachingProviderName != null)
+                        if (_elementAttachingProviderName == null)
                         {
-                            _elementAttachingProviderName = elementAttachingProviderName;
-                        }
-                        else
-                        {
-                            if (_elementAttachingProviderName == null) throw new InvalidOperationException();
-                            elementAttachingProviderName = _elementAttachingProviderName;
+                            if (elementAttachingProviderName == null)
+                            {
+                                foreach (string providerName in ElementActionProviderRegistry.ElementActionProviderNames)
+                                {
+                                    IElementAttachingProvider elementAttachingProvider = ElementAttachingProviderPluginFacade.GetElementAttachingProvider(providerName);
+                                    if (elementAttachingProvider is TreeElementAttachingProvider)
+                                    {
+                                        _elementAttachingProviderName = providerName;
+                                        break;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                _elementAttachingProviderName = elementAttachingProviderName;
+                            }
                         }
 
-                        DoInitialize(elementAttachingProviderName);
+                        DoInitialize(_elementAttachingProviderName);
                     }
                 }
             }
@@ -103,10 +117,9 @@ namespace Composite.C1Console.Trees
                         PiggybagDataFinder = new PiggybagDataFinder(new Dictionary<string, string>(), namedAttachmentPoint.AttachingPoint.EntityToken)
                     };
 
-
+#warning MRJ: Collection actions
                     Element element = new Element(new ElementHandle(elementAttachingProviderName, perspectiveEntityToken))
                     {
-
                         VisualData = new ElementVisualizedData
                         {
                             Label = childTreeNode.LabelDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext),
