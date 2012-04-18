@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Web;
@@ -246,44 +247,76 @@ namespace Composite.Core.WebClient.Media
         {
             Verify.ArgumentNotNull(image, "image");
 
-            using (Bitmap resizedImage = new Bitmap(image, newWidth, newHeight))
+            using (Bitmap resizedImage = new Bitmap(newWidth, newHeight))
             {
                 resizedImage.SetResolution(72, 72);
 
-                Graphics newGraphic = Graphics.FromImage(resizedImage);
-                newGraphic.Clear(Color.Transparent);
-                newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-
-                if (centerCrop)
+                using (Graphics newGraphic = Graphics.FromImage(resizedImage))
                 {
-                    float xRatio = image.Width / (float)newWidth;
-                    float yRatio = image.Height / (float)newHeight;
+                    newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
-                    if(xRatio > yRatio)
+                    if (centerCrop)
                     {
-                        float dx = (image.Width / yRatio) - newWidth;
-                        newGraphic.DrawImage(image, -dx / 2.0f, 0.0f, newWidth + dx, newHeight);    
-                    } 
-                    else if(yRatio > xRatio)
-                    {
-                        float dy = (image.Height / xRatio) - newHeight;
-                        newGraphic.DrawImage(image, 0.0f, -dy / 2.0f, newWidth, newHeight + dy);    
+                        float xRatio = image.Width/(float) newWidth;
+                        float yRatio = image.Height/(float) newHeight;
+
+                        if (xRatio > yRatio)
+                        {
+                            float dx = (image.Width/yRatio) - newWidth;
+
+                            DrawWithoutBlending(newGraphic, image, -dx/2.0f, 0.0f, newWidth + dx, newHeight);
+                        }
+                        else if (yRatio > xRatio)
+                        {
+                            float dy = (image.Height/xRatio) - newHeight;
+                            DrawWithoutBlending(newGraphic, image, 0.0f, -dy / 2.0f, newWidth, newHeight + dy);
+                        }
+                        else
+                        {
+                            DrawWithoutBlending(newGraphic, image, 0, 0, newWidth, newHeight);
+                        }
                     }
                     else
                     {
-                        newGraphic.DrawImage(image, 0, 0, newWidth, newHeight);
+                        DrawWithoutBlending(newGraphic, image, 0, 0, newWidth, newHeight);
                     }
-                }
-                else
-                {
-                    newGraphic.DrawImage(image, 0, 0, newWidth, newHeight);
-                }
 
+                }
 
                 resizedImage.Save(outputFilePath, imageFormat);
             }
         }
+
+        /// <summary>
+        /// Draws a bitmap without background blending on first row and first column
+        /// </summary>
+        private static void DrawWithoutBlending(Graphics graphic, Bitmap bitmap, int x, int y, int width, int height)
+        {
+            using (var wrapMode = new ImageAttributes())
+            {
+                wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+
+                graphic.DrawImage(bitmap, 
+                                  new Rectangle(x, y, width, height),
+                                  0, 0, bitmap.Width, bitmap.Height,
+                                  GraphicsUnit.Pixel,
+                                  wrapMode);
+            }
+        }
+
+        private static void DrawWithoutBlending(Graphics graphic, Bitmap bitmap, float x, float y, float width, float height)
+        {
+            const double delta = 0.001;
+
+            DrawWithoutBlending(graphic, bitmap,
+                (int)Math.Floor(x + delta),
+                (int)Math.Floor(y + delta),
+                (int)Math.Floor(width + delta),
+                (int)Math.Floor(height + delta));
+        }
+
+
 
         private static bool ImageFormatIsSupported(ImageFormat imageFormat)
         {

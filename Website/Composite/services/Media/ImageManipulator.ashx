@@ -1,23 +1,18 @@
 <%@ WebHandler Language="C#" Class="ImageManipulator" %>
 
 using System;
+using System.Drawing.Drawing2D;
 using System.IO;
-using System.Collections.Generic;
 using System.Web;
-using System.Linq;
 using System.Drawing.Imaging;
 using System.Drawing;
-using System.Workflow.Runtime;
 using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.IO;
 using Composite.C1Console.Workflow;
 using Composite.Core.WebClient;
-using Composite.C1Console.Tasks;
 using Composite.C1Console.Security;
-using Composite.Core.Extensions;
-using Composite.Core.Logging;
 using Composite.C1Console.Events;
 using Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementProvider;
 
@@ -63,14 +58,15 @@ public class ImageManipulator : IHttpHandler
         // TODO: Caching here?
         using (Stream readStream = mediaFile.GetReadStream())
         {
-            Bitmap lockedSource = new Bitmap(new Bitmap(readStream));  // the double new(new) fixes GIF prb; "a graphics object cannot be created from an image that has an indexed pixel format"
-            Graphics g = Graphics.FromImage(lockedSource);
-            image = new Bitmap(lockedSource);
-            g.DrawImage(image, new Point(0, 0));
-            g.Dispose();
-            lockedSource.Dispose();
+            // the double new Bitmap(new Bitmap(..)) fixes GIF prb; 
+            // "a graphics object cannot be created from an image that has an indexed pixel format"
+            using (var innerBitmap = new Bitmap(readStream))
+            using (Bitmap lockedSource = new Bitmap(innerBitmap))
+            using (Graphics g = Graphics.FromImage(lockedSource)) {
+                image = new Bitmap(lockedSource);
+                g.DrawImage(image, new Point(0, 0));
+            }
         }
-        
         
      
         string[] actions = new string[0];
@@ -159,7 +155,6 @@ public class ImageManipulator : IHttpHandler
         }
 
         string mimeType = mediaFile.MimeType;
-        ImageFormat format = image.RawFormat;
 
         WriteBitmapToResponseSteam(context, image, mimeType);
         if (save != null)
@@ -188,14 +183,17 @@ public class ImageManipulator : IHttpHandler
     private Bitmap ScalePixels(Bitmap source, int width, int height)
     {
         Bitmap scaled = new Bitmap(width, height, GetAcceptablePixelFormat(source));
-        Graphics graphics = Graphics.FromImage(scaled);
-        graphics.Clear(Color.Transparent);
-        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+        using(Graphics graphics = Graphics.FromImage(scaled))
+        {
+            graphics.Clear(Color.Transparent);
+            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-        graphics.DrawImage(source, new Rectangle(-1, -1, width + 1, height + 1), 
-                                   new Rectangle(0, 0, source.Width - 1, source.Height - 1), GraphicsUnit.Pixel);
+            graphics.DrawImage(source, new Rectangle(-1, -1, width + 1, height + 1), 
+                                       new Rectangle(0, 0, source.Width - 1, source.Height - 1), GraphicsUnit.Pixel);
+        }            
         source.Dispose();
+        
         return scaled;
     }
 
@@ -305,10 +303,13 @@ public class ImageManipulator : IHttpHandler
                 
         
         Bitmap croppedImage = new Bitmap(width, height, source.PixelFormat);
-        Graphics graphics = Graphics.FromImage(croppedImage);
-        graphics.Clear(Color.Transparent);
-        graphics.DrawImage(source, new Rectangle(0, 0, croppedImage.Width, croppedImage.Height), new Rectangle(left, top, width, height), GraphicsUnit.Pixel);
+        using(Graphics graphics = Graphics.FromImage(croppedImage))
+        {
+            graphics.Clear(Color.Transparent);
+            graphics.DrawImage(source, new Rectangle(0, 0, croppedImage.Width, croppedImage.Height), new Rectangle(left, top, width, height), GraphicsUnit.Pixel);
+        }
         source.Dispose();
+        
         return croppedImage;
     }
    
@@ -378,11 +379,18 @@ public class ImageManipulator : IHttpHandler
         {
             using (Graphics graphics = Graphics.FromImage(scaled))
             {
-                graphics.Clear(Color.Transparent);
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                
+                using(var wrapMode = new ImageAttributes())
+                {
+                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
 
-                graphics.DrawImage(image, new Rectangle(0, 0, resultWidth, resultHeight));
+                    graphics.DrawImage(image,
+                                       new Rectangle(0, 0, resultWidth, resultHeight),
+                                       0, 0, image.Width, image.Height,
+                                       GraphicsUnit.Pixel, wrapMode);
+                }
             }
             image.Dispose();
         }
