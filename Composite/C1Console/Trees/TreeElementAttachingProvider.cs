@@ -135,7 +135,10 @@ namespace Composite.C1Console.Trees
             List<Tree> trees;
             if (parentEntityToken is TreePerspectiveEntityToken)
             {
-                trees = TreeSharedRootsFacade.SharedRootFolders[parentEntityToken.Id].Trees;
+                if (TreeSharedRootsFacade.SharedRootFolders.ContainsKey(parentEntityToken.Id))
+                    trees = TreeSharedRootsFacade.SharedRootFolders[parentEntityToken.Id].Trees;
+                else 
+                    trees = new List<Tree>();
             }
             else
             {
