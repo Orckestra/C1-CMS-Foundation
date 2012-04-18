@@ -39,7 +39,7 @@
   <string key="ViewAvailableInformation.PackageSourceTextLabel" value="Source" />
 
 
-  <string key="ViewAvailableInformation.PriceTextLabel" value="Price (EUR)" />
+  <string key="ViewAvailableInformation.PriceTextLabel" value="Price (USD)" />
   <string key="ViewAvailableInformation.Toolbar.InstallLabel" value="Install" />
   <string key="ViewAvailableInformation.Toolbar.ReadMoreLabel" value="Read more" />
   <string key="ViewAvailableInformation.ShowError.MessageTitle" value="Already Installed" />
