@@ -108,7 +108,11 @@ namespace Composite.C1Console.Trees.Foundation
             {
                 XElement functionMarkupElement = filterElement.Element((XNamespace)FunctionTreeConfigurationNames.NamespaceName + FunctionTreeConfigurationNames.FunctionTagName);
 
-                if (functionMarkupElement == null) throw new NotImplementedException("Validation");
+                if (functionMarkupElement == null)
+                {
+                    tree.AddValidationError(filterElement.GetXPath(), "TreeValidationError.FunctionFilter.MissingFunctionMarkup");
+                    return null;
+                }
 
                 return new FunctionFilterNode()
                 {

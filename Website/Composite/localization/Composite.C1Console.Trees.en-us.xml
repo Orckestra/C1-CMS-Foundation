@@ -50,6 +50,7 @@
   <string key="TreeValidationError.FieldFilter.ValueCouldNotBeConverted" value="The string value '{0}' could not be converted to the type '{1}'" />
   <string key="TreeValidationError.FieldFilter.OperatorNotSupportedForType" value="The operator '{0}' is not supported for the type '{1}'" />
 
+  <string key="TreeValidationError.FunctionFilter.MissingFunctionMarkup" value="Function markup is missing" />
   <string key="TreeValidationError.FunctionFilter.WrongFunctionMarkup" value="The function could not be created for the provided function markup" />
   <string key="TreeValidationError.FunctionFilter.WrongReturnValue" value="The function does not return value of the type '{0}'" />
   <string key="TreeValidationError.FunctionFilter.WrongFunctionReturnType" value="The return type of the expression returned by the function is '{0}', '{1}' was expected" />
