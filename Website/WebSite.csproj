@@ -148,6 +148,7 @@
     <Content Include="Composite\content\misc\preview\stop.aspx" />
     <Content Include="Composite\content\misc\preview\stop.css" />
     <Content Include="Composite\content\misc\preview\StopPageBinding.js" />
+    <Content Include="Composite\content\views\browser\BrowserToolBarBinding.js" />
     <Content Include="Composite\content\views\dev\developer\tests\fields\nonframework.aspx" />
     <Content Include="Composite\content\views\dev\developer\tests\fields\nulltreeselector.aspx" />
     <Content Include="Composite\content\views\generic\generic.aspx" />

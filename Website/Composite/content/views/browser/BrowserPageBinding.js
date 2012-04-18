@@ -184,41 +184,14 @@ BrowserPageBinding.prototype._newURL = function ( url ) {
  * @param {string} url
  * @return
  */
-BrowserPageBinding.prototype.setURL = function ( url ) {
-	
-	if ( Client.isPrism ) {
-		Prism.disableCache ();
-	}
-	
-	if ( !this._isSameURL ( url )) {
-		var cover = window.bindingMap.cover;
-		cover.show ();
-		this._box.setURL ( url );
-	}
-}
-
-/**
- * Compare a URL to the current location.
- * @param {string} url
- * @return {boolena}
- */
-BrowserPageBinding.prototype._isSameURL = function ( url ) {
-	
-	var result = false;
-	
-	var current = this._box.getLocation ();
-	
-	if ( current == url ) {
-		result = true;
-	}
-	if ( !result ) {
-		var split = current.split ( url );
-		if ( split.length == 2 && split [ 1 ] == "" ) {
-			result = true;
-		}
-	}
-	
-	return result;
+BrowserPageBinding.prototype.setURL = function (url) {
+    if (Client.isPrism) {
+        Prism.disableCache();
+    }
+    
+    var cover = window.bindingMap.cover;
+    cover.show();
+    this._box.setURL(url);
 }
 
 /**
