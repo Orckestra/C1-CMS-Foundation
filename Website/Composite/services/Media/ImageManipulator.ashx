@@ -232,7 +232,7 @@ public class ImageManipulator : IHttpHandler
         }
         Bitmap scaled = new Bitmap(width, height, source.PixelFormat);
         Graphics graphics = Graphics.FromImage(scaled);
-        graphics.Clear(Color.Black);
+        graphics.Clear(Color.Transparent);
         graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
         graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
@@ -306,7 +306,7 @@ public class ImageManipulator : IHttpHandler
         
         Bitmap croppedImage = new Bitmap(width, height, source.PixelFormat);
         Graphics graphics = Graphics.FromImage(croppedImage);
-        graphics.Clear(Color.Pink);
+        graphics.Clear(Color.Transparent);
         graphics.DrawImage(source, new Rectangle(0, 0, croppedImage.Width, croppedImage.Height), new Rectangle(left, top, width, height), GraphicsUnit.Pixel);
         source.Dispose();
         return croppedImage;
@@ -378,7 +378,7 @@ public class ImageManipulator : IHttpHandler
         {
             using (Graphics graphics = Graphics.FromImage(scaled))
             {
-                graphics.Clear(Color.Black);
+                graphics.Clear(Color.Transparent);
                 graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
