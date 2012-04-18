@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Caching;
 using Composite.Core.IO;
@@ -28,6 +29,9 @@ namespace Composite.Core.WebClient.Media
             {ImageFormat.Bmp, "bmp"}, 
             {ImageFormat.Tiff, "tiff"}
         };
+
+        private static ImageCodecInfo JpegCodecInfo = ImageCodecInfo.GetImageEncoders().FirstOrDefault(codec => codec.FormatID == ImageFormat.Jpeg.Guid);
+
         private static readonly TimeSpan CacheExpirationTimeSpan = new TimeSpan(1, 0, 0, 0);
 
         private static string _resizedImagesDirectoryPath;
@@ -255,6 +259,7 @@ namespace Composite.Core.WebClient.Media
                 {
                     newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                     newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    // newGraphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
 
                     if (centerCrop)
                     {
@@ -284,9 +289,25 @@ namespace Composite.Core.WebClient.Media
 
                 }
 
-                resizedImage.Save(outputFilePath, imageFormat);
+                if(imageFormat.Guid == ImageFormat.Jpeg.Guid)
+                {
+                    EncoderParameters parameters = new EncoderParameters(1);
+
+                    // Setting image quality to 100%, the deafult one is 75%
+                    parameters.Param[0] = new EncoderParameter(
+                        System.Drawing.Imaging.Encoder.Quality, 100L);
+
+                    resizedImage.Save(outputFilePath, JpegCodecInfo, parameters);
+                }
+                else
+                {
+                    resizedImage.Save(outputFilePath, imageFormat);
+                }
             }
         }
+
+        
+
 
         /// <summary>
         /// Draws a bitmap without background blending on first row and first column
