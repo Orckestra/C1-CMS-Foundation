@@ -6,12 +6,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Composite.Data.Caching;
-using Composite.Core.Configuration;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem.Foundation;
 using Composite.Core.ResourceSystem.Foundation.PluginFacades;
 using Composite.Core.Types;
-using Composite.C1Console.Users;
 
 
 namespace Composite.Core.ResourceSystem
@@ -79,14 +77,12 @@ namespace Composite.Core.ResourceSystem
 
             if (throwOnError == true)
             {
-                LoggingService.LogCritical("StringResourceSystemFacade", string.Format("String resource povider named '{0}' not found", providerName));
+                Log.LogCritical("StringResourceSystemFacade", string.Format("String resource provider named '{0}' not found", providerName));
 
                 return "*** PROVIDER NOT FOUND ***";
             }
-            else
-            {
-                return null;
-            }
+            
+            return null;
         }
 
 
