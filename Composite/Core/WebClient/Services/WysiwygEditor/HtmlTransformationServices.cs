@@ -400,7 +400,6 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             t.Options.RawOut = true;
             t.Options.TidyMark = false;
-//            t.Options.XmlTags = true;
 
             t.Options.CharEncoding = CharEncoding.UTF8;
             t.Options.DocType = DocType.Omit;
@@ -429,7 +428,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
         private static void AllowNamespacePrefixedElementNames(Tidy tidy, List<string> elementNames)
         {
-            foreach (string elementName in elementNames)
+            foreach (string elementName in elementNames.Where(en => en != "f:function" && en != "f:param")) // f:* written into TidyNet.dll to fix http://compositec1.codeplex.com/workitem/1144
             {
                 tidy.Options.AddTag(elementName.ToLower());
             }
