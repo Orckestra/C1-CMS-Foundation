@@ -32,7 +32,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         internal static readonly string SkipIfNotExistAttributeName = "skipIfNotExist";
         internal static readonly string OverrideReadOnlyAttributeName = "overrideReadOnly";
 
-		private List<XslToAdd> _xslToAdd;
+		private List<XslTransformation> _xslTransformations;
 
 
         /// <exclude />
@@ -49,7 +49,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 			var filesElement = this.Configuration.Where(f => f.Name == "XslFiles");
 
-			_xslToAdd = new List<XslToAdd>();
+			_xslTransformations = new List<XslTransformation>();
 
             if (filesElement != null)
             {
@@ -86,7 +86,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string xslFilePath = (pathXSLAttribute ?? installXSLAttribute).Value;
 
 
-                    XslToAdd xslFile;
+                    XslTransformation xslFile;
                     if (inputXMLAttribute != null)
                     {
                         if (outputXMLAttribute == null)
@@ -97,7 +97,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
 
-                        xslFile = new XslToAdd
+                        xslFile = new XslTransformation
                                       {
                                           XslPath = xslFilePath,
                                           InputXmlPath = inputXMLAttribute.Value,
@@ -116,7 +116,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                         string pathToXmlFile = pathXMLAttribute.Value;
 
-                        xslFile = new XslToAdd
+                        xslFile = new XslTransformation
                                       {
                                           XslPath = xslFilePath,
                                           // UninstallXslPath = uninstallXSLAttribute != null ? uninstallXSLAttribute.Value : null,
@@ -160,14 +160,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
-                    _xslToAdd.Add(xslFile);
+                    _xslTransformations.Add(xslFile);
                 }
             }
 
 
             if (validationResult.Count > 0)
             {
-                _xslToAdd = null;
+                _xslTransformations = null;
             }
             
 
@@ -179,10 +179,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
 		public override IEnumerable<XElement> Install()
 		{
-            if (_xslToAdd == null) throw new InvalidOperationException("FileXslTransformationPackageFragmentInstaller has not been validated");
+            if (_xslTransformations == null) throw new InvalidOperationException("FileXslTransformationPackageFragmentInstaller has not been validated");
 
 			Stream stream;
-			foreach (XslToAdd xslfile in _xslToAdd)
+			foreach (XslTransformation xslfile in _xslTransformations)
 			{
 				string messageFormat = xslfile.InputXmlPath == xslfile.OutputXmlPath ?
 					"Performing XSL-transformation. xml-file: '{1}'; xsl-file: '{0}'"
@@ -217,7 +217,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		}
 
 
-        private sealed class XslToAdd
+        private sealed class XslTransformation
 		{
             public string XslPath { get; set; }
 			public string InputXmlPath { get; set; }
