@@ -295,7 +295,7 @@ namespace Composite.Core.WebClient.Media
 
                     // Setting image quality to 100%, the deafult one is 75%
                     parameters.Param[0] = new EncoderParameter(
-                        System.Drawing.Imaging.Encoder.Quality, 100L);
+                        System.Drawing.Imaging.Encoder.Quality, 80L);
 
                     resizedImage.Save(outputFilePath, JpegCodecInfo, parameters);
                 }
