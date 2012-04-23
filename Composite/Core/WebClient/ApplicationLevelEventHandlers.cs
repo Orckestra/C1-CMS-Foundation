@@ -161,7 +161,9 @@ namespace Composite.Core.WebClient
             var httpContext = (sender as HttpApplication).Context;
             Exception exception = httpContext.Server.GetLastError();
 
-            if (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404)
+            bool is404 = (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404);
+
+            if (is404)
             {
                 string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
 
@@ -185,13 +187,13 @@ namespace Composite.Core.WebClient
 
             if (LogApplicationLevelErrors)
             {
-                System.Diagnostics.TraceEventType eventType = System.Diagnostics.TraceEventType.Critical;
+                TraceEventType eventType = (is404 ? TraceEventType.Verbose : TraceEventType.Error);
 
                 var request = httpContext.Request;
                 if (request != null)
                 {
                     string origianalUrl = request.RawUrl;
-                    LoggingService.LogError("Application Error", "Failed to process '{0}' request to url '{1}'".FormatWith(request.RequestType ?? string.Empty, origianalUrl ?? string.Empty));
+                    LoggingService.LogEntry("Application Error", "Failed to process '{0}' request to url '{1}'".FormatWith(request.RequestType ?? string.Empty, origianalUrl ?? string.Empty), LoggingService.Category.General, eventType);
                 }
 
 

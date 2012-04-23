@@ -56,10 +56,24 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 context.Response.StatusCode = 404;
                 context.Response.Write("File not found");
             }
+            catch (Exception ex)
+            {
+                context.Response.StatusCode = 500;
+                context.Response.Write(ex.Message);
+            }
 
             if (file != null)
             {
-                ValidateAndSend(context, file);
+                try
+                {
+                    ValidateAndSend(context, file);
+                }
+                catch (Exception ex)
+                {
+                    context.Response.ClearHeaders();
+                    context.Response.StatusCode = 500;
+                    context.Response.Write(ex.Message);
+                }
             }
         }
     }
