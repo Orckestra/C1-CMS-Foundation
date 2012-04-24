@@ -359,7 +359,7 @@ TreeNodeBinding.prototype.handleAction = function ( action ) {
 		case TreeNodeBinding.ACTION_FOCUSED :
 			if ( action.target != this ) {
 				if ( this.isContainer && !this.isOpen ) {
-					this.open ();
+					this.open ( true );
 				}
 			}
 			break;
