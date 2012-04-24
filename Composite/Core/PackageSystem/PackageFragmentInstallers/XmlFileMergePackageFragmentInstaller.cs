@@ -44,7 +44,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					XElement source = XElement.Load(stream);
 					XDocument target = XDocumentUtils.Load(targetXmlFile);
 
-					target.Root.Merge(source);
+                    target.Root.ImportSubtree(source);
 					target.SaveToFile(targetXmlFile);
 				}
 			}

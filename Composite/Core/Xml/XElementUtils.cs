@@ -105,13 +105,48 @@ namespace Composite.Core.Xml
         }
 
 
+
         /// <summary>
-        /// Removes atributes and child elements from source which match ditto 100% in target. Elements in source which has other child elements or attributes are not removed.
+        /// Merge in elements and attributes. New child elements and new attibutes are imported to the source. Conflicts are ignored (not merged).
+        /// </summary>
+        /// <param name="source">the structure to add new elements and attributes to</param>
+        /// <param name="toBeImported">what to import</param>
+        /// <returns>The modified source.</returns>
+        public static XElement ImportSubtree(this XElement source, XElement toBeImported)
+        {
+            if (toBeImported != null)
+            {
+                foreach (XAttribute targetAttribute in from targetAttribute in toBeImported.Attributes() let sourceAttribute = source.Attribute(targetAttribute.Name) where sourceAttribute == null select targetAttribute)
+                {
+                    source.Add(targetAttribute);
+                }
+
+                foreach (XElement targetChild in toBeImported.Elements())
+                {
+                    XElement sourceChild = FindElement(source, targetChild);
+
+                    if (sourceChild != null && !HasConflict(sourceChild, targetChild))
+                    {
+                        sourceChild.ImportSubtree(targetChild);
+                    }
+                    else
+                    {
+                        source.Add(targetChild);
+                    }
+                }
+            }
+
+            return source;
+        }
+
+
+        /// <summary>
+        /// Removes atributes and child elements from source which match ditto 100% in tatoBeExcludedget. Elements in source which has other child elements or attributes are not removed.
         /// </summary>
         /// <param name="source">XElement to modify</param>
         /// <param name="toBeExcluded">what to locate and remove</param>
         /// <returns>The modified source.</returns>
-        public static XElement Exclude(this XElement source, XElement toBeExcluded)
+        public static XElement RemoveMatches(this XElement source, XElement toBeExcluded)
         {
             if (toBeExcluded != null)
             {
@@ -125,48 +160,13 @@ namespace Composite.Core.Xml
                     XElement targetChild = FindElement(toBeExcluded, sourceChild);
                     if (targetChild != null && !HasConflict(sourceChild, targetChild))
                     {
-                        Exclude(sourceChild, targetChild);
-                        bool hasContent = sourceChild.HasAttributes || sourceChild.HasElements;
+                        RemoveMatches(sourceChild, targetChild);
 
-                        if (!hasContent)
+                        if (!sourceChild.HasAttributes && !sourceChild.HasElements)
                         {
                             sourceChild.Remove();
                             targetChild.Remove();
                         }
-                    }
-                }
-            }
-
-            return source;
-        }
-
-
-
-        /// <summary>
-        /// Merge in elements and attributes. New child elements and new attibutes are added to the source.
-        /// </summary>
-        /// <param name="source">XElement where new elements and attributes should be imported</param>
-        /// <param name="toBeImported">what to import</param>
-        /// <returns>The modified source.</returns>
-        public static XElement Merge(this XElement source, XElement toBeImported)
-        {
-            if (toBeImported != null)
-            {
-                foreach (XAttribute targetAttribute in from targetAttribute in toBeImported.Attributes() let sourceAttribute = source.Attribute(targetAttribute.Name) where sourceAttribute == null select targetAttribute)
-                {
-                    source.Add(targetAttribute);
-                }
-
-                foreach (XElement targetChild in toBeImported.Elements())
-                {
-                    XElement sourceChild = FindElement(source, targetChild);
-                    if (sourceChild != null && !HasConflict(sourceChild, targetChild))
-                    {
-                        sourceChild.Merge(targetChild);
-                    }
-                    else
-                    {
-                        source.Add(targetChild);
                     }
                 }
             }

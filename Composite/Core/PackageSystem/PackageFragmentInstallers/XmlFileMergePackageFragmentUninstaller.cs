@@ -36,7 +36,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					XElement source = XElement.Load(stream);
 					XDocument target = XDocumentUtils.Load(targetXml);
 
-					target.Root.Exclude(source);
+					target.Root.RemoveMatches(source);
 					target.SaveToFile(targetXml);
 				}
 			}
