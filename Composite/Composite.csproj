@@ -227,8 +227,8 @@
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentUninstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\TransformXmlPackageFragmentInstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\TransformXmlPackageFragmentUninstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\XmlFileMergePackageFragmentInstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\XmlFileMergePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageLicenseDefinition.cs" />
     <Compile Include="Core\PackageSystem\PackageLicenseHelper.cs" />
     <Compile Include="Core\PackageSystem\PackageUtils.cs" />
@@ -284,7 +284,6 @@
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\OpenExternalViewParams.cs" />
     <Compile Include="Core\WebClient\Services\ConsoleMessageService\SelectElementParams.cs" />
     <Compile Include="Core\WebClient\UiControlLib\DocumentDirtyEvent.cs" />
-    <Compile Include="Core\Xml\XElementExtensionMethods.cs" />
     <Compile Include="Core\Xml\XhtmlErrorFormatter.cs" />
     <Compile Include="Core\Xml\UriResolver.cs" />
     <Compile Include="Core\Xml\XDocumentUtils.cs" />
