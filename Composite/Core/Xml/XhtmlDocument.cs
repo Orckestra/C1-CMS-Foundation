@@ -8,14 +8,19 @@ using System.Collections.Generic;
 
 namespace Composite.Core.Xml
 {
-    /// <summary>    
+    /// <summary>
+    /// Represents an XHTML Document inside Composite C1. 
+    /// 
+    /// This structure can contain both head elements and body elements (content) and XhtmlDocuments that are being rendered
+    /// can be nested within each other. The Composite C1 core will normalize such a nested structure when rendering a page, ensuring head elementsa flow to the top level
+    /// document and body content is left, ultimately yielding one complete and correctly structured xhtml page.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [XhtmlDocumentConverter()]
     public sealed class XhtmlDocument : XDocument
     {
-        /// <exclude />
+        /// <summary>
+        /// Constructs an empty XhtmlDocument
+        /// </summary>
         public XhtmlDocument()
             : base(new XElement(Namespaces.Xhtml + "html",
                 new XElement(Namespaces.Xhtml + "head"),
@@ -24,7 +29,10 @@ namespace Composite.Core.Xml
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a XhtmlDocument based on an existing html element
+        /// </summary>
+        /// <param name="htmlElement">Existing html element the XhtmlDocument should be cloned from</param>
         public XhtmlDocument(XElement htmlElement)
             : base(htmlElement)
         {
@@ -33,7 +41,10 @@ namespace Composite.Core.Xml
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a XhtmlDocument based on an existing XDocument
+        /// </summary>
+        /// <param name="other">Existing XDocument instance the XhtmlDocument should be cloned from</param>
         public XhtmlDocument(XDocument other)
             : base(other)
         {
@@ -42,7 +53,9 @@ namespace Composite.Core.Xml
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The head element for the XHTML Document
+        /// </summary>
         public XElement Head
         {
             get
@@ -52,7 +65,10 @@ namespace Composite.Core.Xml
         }
 
 
-        /// <exclude />
+
+        /// <summary>
+        /// The body element for the XHTML Document
+        /// </summary>
         public XElement Body
         {
             get
@@ -62,7 +78,27 @@ namespace Composite.Core.Xml
         }
 
 
-        /// <exclude />
+
+        /// <summary>
+        /// Returns true if the XhtmlDocument has empty head and body sections.
+        /// </summary>
+        public bool IsEmpty
+        {
+            get
+            {
+                bool hasContent = this.Head.Nodes().Any() || this.Body.Nodes().Any() || this.Body.Attributes().Any();
+
+                return !hasContent;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Parses a serialized xhtml document and returns XhtmlDocument.
+        /// </summary>
+        /// <param name="xhtml">xhtml to parse.</param>
+        /// <returns>XhtmlDocument representing the supplied string</returns>
         public new static XhtmlDocument Parse(string xhtml)
         {
             XhtmlDocument doc = new XhtmlDocument(XDocument.Parse(xhtml));
@@ -85,7 +121,12 @@ namespace Composite.Core.Xml
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Parses a serialized xhtml document and returns XhtmlDocument.
+        /// </summary>
+        /// <param name="xhtml">xhtml to parse.</param>
+        /// <param name="options">This parameter is here for informative purposes - only LoadOptions.None is accepted, since anything else is a change to the DOM and a breeding ground for bugs</param>
+        /// <returns>XhtmlDocument representing the supplied string</returns>
         public new static XhtmlDocument Parse(string xhtml, LoadOptions options)
         {
             if (options != LoadOptions.None)
