@@ -19270,7 +19270,7 @@ switch(_c4b.type){
 case TreeNodeBinding.ACTION_FOCUSED:
 if(_c4b.target!=this){
 if(this.isContainer&&!this.isOpen){
-this.open();
+this.open(true);
 }
 }
 break;
