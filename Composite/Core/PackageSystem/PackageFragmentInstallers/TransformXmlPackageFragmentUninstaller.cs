@@ -34,7 +34,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 				using (Stream stream = this.UninstallerContext.ZipFileSystem.GetFileStream(xmlFile.Source))
 				{
 					XElement source = XElement.Load(stream);
-					XDocument target = XDocument.Load(targetXml);
+					XDocument target = XDocumentUtils.Load(targetXml);
 
 					target.Root.Exclude(source);
 					target.SaveToFile(targetXml);

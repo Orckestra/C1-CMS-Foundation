@@ -34,7 +34,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 				using (Stream stream = this.InstallerContext.ZipFileSystem.GetFileStream(xmlFile.Source))
 				{
 					XElement source = XElement.Load(stream);
-					XDocument target = XDocument.Load(targetXmlFile);
+					XDocument target = XDocumentUtils.Load(targetXmlFile);
 
 					target.Root.Merge(source);
 					target.SaveToFile(targetXmlFile);
