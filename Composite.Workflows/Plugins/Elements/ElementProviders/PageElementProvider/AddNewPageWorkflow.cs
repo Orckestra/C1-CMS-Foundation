@@ -436,9 +436,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (this.GetBinding<string>("SelectedSortOrder") == "Relative")
             {
-                var existingPages =
-                    (from page in PageServices.GetChildren(GetParentId())
-                     select new { Title = page.Title, Id = page.Id }).ToList();
+                var existingPages = new Dictionary<Guid, string>();
+
+                foreach (IPage page in PageServices.GetChildren(GetParentId()))
+	            {
+		            existingPages.Add(page.Id, page.Title);
+            	}
 
                 if (this.BindingExist("ExistingPages") == false)
                 {
@@ -451,11 +454,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 if (this.BindingExist("RelativeSelectedPageId") == false)
                 {
-                    this.Bindings.Add("RelativeSelectedPageId", existingPages[0].Id);
+                    this.Bindings.Add("RelativeSelectedPageId", existingPages.First().Key);
                 }
                 else
                 {
-                    this.Bindings["RelativeSelectedPageId"] = existingPages[0].Id;
+                    this.Bindings["RelativeSelectedPageId"] = existingPages.First().Key;
                 }
             }
             else
