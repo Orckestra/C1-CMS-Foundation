@@ -455,7 +455,7 @@ SystemTreeBinding.prototype._updateRefreshingTrees = function ( key ) {
 * @param {String} key
 */
 SystemTreeBinding.prototype._updateFocusedNode = function () {
-	if (!this._focusedTreeNodeBindings.hasEntries()) {
+	if (!this._focusedTreeNodeBindings.hasEntries() && this._activePosition != SystemAction.activePositions.SelectorTree) {
 		var token = StageBinding.entityToken;
 		if (token != null) {
 			this._focusTreeNodeByEntityToken(token);
@@ -666,85 +666,96 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 	/*
 	* Summon fresh nodes from server. 
 	*/
-	var perspectiveEntityToken = StageBinding.perspectiveNode.getEntityToken();
+	var perspectiveEntityTokens = new List();
 	if (this._activePosition == SystemAction.activePositions.SelectorTree) {
-		var perspectiveEntityToken = this.getRootTreeNodeBindings().getFirst().node.getEntityToken();
-	}
-	var openSystemNodes = this.getOpenSystemNodes();
-	var map = System.getInvisibleBranch(
-		perspectiveEntityToken,
-		entityToken,
-		openSystemNodes
-	);
-
-	/*
-	* If server goofed up, we quickly disable the lock-tree-to-editor feature.
-	*/
-	if (map == null) {
-		this.isLockedToEditor = false;
-		if (Application.isDeveloperMode) {
-			Dialog.warning("Ouch!",
-				"Because the web service failed, tree has disabled the lock-tree-to-editor " +
-				"feature. Otherwise, re-focus would fire the error indefinitely. Please try again."
-			);
+		var rootTreeNodeBindings = this.getRootTreeNodeBindings();
+		while (rootTreeNodeBindings.hasNext()) {
+			var rootTreeNodeBinding = rootTreeNodeBindings.getNext();
+			perspectiveEntityTokens.add(rootTreeNodeBinding.node.getEntityToken());
 		}
 	}
+	else {
+		perspectiveEntityTokens.add(StageBinding.perspectiveNode.getEntityToken());
+	}
 
-	/*
-	* Controversially, the TreeService exposes no nested tree   
-	* structure, so the parsing code can get a little complicated.
-	*/
-	else if (map.hasEntries()) {
+	while (perspectiveEntityTokens.hasNext()) {
+		var perspectiveEntityToken = perspectiveEntityTokens.getNext();
+		var openSystemNodes = this.getOpenSystemNodes();
+		var map = System.getInvisibleBranch(
+			perspectiveEntityToken,
+			entityToken,
+			openSystemNodes
+		);
 
-		var self = this;
-		var oldnodes = this._treeNodeBindings;
-		var newnodes = new Map();
-
-		/* 
-		* Handy treenodebuilder function.
-		* @param {TreeNodeBinding} treenode
-		* @param {List<SystemNode>} list
+		/*
+		* If server goofed up, we quickly disable the lock-tree-to-editor feature.
 		*/
-		function fix(treenode, list) {
-
-			if (!treenode.hasBeenOpened) { // true when a refresh is needed, even for old nodes...
-				if (list.hasEntries()) {
-
-					/*
-					* TODO: Since the oldnodes check is needed here, 
-					* do we risk fogging up the display order of nodes?
-					*/
-					list.each(function (node) {
-						if (!oldnodes.has(node.getHandle())) {
-							var newnode = SystemTreeNodeBinding.newInstance(node, self.bindingDocument);
-							newnodes.set(node.getHandle(), newnode);
-							treenode.add(newnode);
-						}
-					});
-					treenode.attachRecursive();
-				}
+		if (map == null) {
+			this.isLockedToEditor = false;
+			if (Application.isDeveloperMode) {
+				Dialog.warning("Ouch!",
+					"Because the web service failed, tree has disabled the lock-tree-to-editor " +
+					"feature. Otherwise, re-focus would fire the error indefinitely. Please try again."
+				);
 			}
-			treenode.open(true); // open node (without causing a new refresh!)
 		}
 
 		/*
-		* Iterate map, building treenodes. Fortunately, 
-		* each sequential entry in the map lists nodes that  
-		* must be appended to a *previously* build node... 
+		* Controversially, the TreeService exposes no nested tree   
+		* structure, so the parsing code can get a little complicated.
 		*/
-		map.each(function (handle, list) {
-			if (oldnodes.has(handle)) {
-				var oldnode = oldnodes.get(handle);
-				fix(oldnode, list);
-			} else {
-				if (newnodes.has(handle)) {
-					var newnode = newnodes.get(handle);
-					fix(newnode, list);
-				} else {
-					// we seem to have encountered a strange hole in the structure
+		else if (map.hasEntries()) {
+
+			var self = this;
+			var oldnodes = this._treeNodeBindings;
+			var newnodes = new Map();
+
+			/* 
+			* Handy treenodebuilder function.
+			* @param {TreeNodeBinding} treenode
+			* @param {List<SystemNode>} list
+			*/
+			function fix(treenode, list) {
+
+				if (!treenode.hasBeenOpened) { // true when a refresh is needed, even for old nodes...
+					if (list.hasEntries()) {
+
+						/*
+						* TODO: Since the oldnodes check is needed here, 
+						* do we risk fogging up the display order of nodes?
+						*/
+						list.each(function (node) {
+							if (!oldnodes.has(node.getHandle())) {
+								var newnode = SystemTreeNodeBinding.newInstance(node, self.bindingDocument);
+								newnodes.set(node.getHandle(), newnode);
+								treenode.add(newnode);
+							}
+						});
+						treenode.attachRecursive();
+					}
 				}
+				treenode.open(true); // open node (without causing a new refresh!)
 			}
-		});
+
+			/*
+			* Iterate map, building treenodes. Fortunately, 
+			* each sequential entry in the map lists nodes that  
+			* must be appended to a *previously* build node... 
+			*/
+			map.each(function (handle, list) {
+				if (oldnodes.has(handle)) {
+					var oldnode = oldnodes.get(handle);
+					fix(oldnode, list);
+				} else {
+					if (newnodes.has(handle)) {
+						var newnode = newnodes.get(handle);
+						fix(newnode, list);
+					} else {
+						// we seem to have encountered a strange hole in the structure
+					}
+				}
+			});
+		}
 	}
 }
 
