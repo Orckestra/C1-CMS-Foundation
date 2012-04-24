@@ -8,21 +8,20 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-	/// <summary>    
+	/// <summary>
 	/// </summary>
 	/// <exclude />
-	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	public class MergeXmlFilePackageFragmentInstaller : BasePackageFragmentInstaller
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+	public class XmlFileMergePackageFragmentInstaller : BasePackageFragmentInstaller
 	{
-        private static readonly string LogTitle = "MergeXmlPackageFragmentInstaller";
 
-        internal static readonly string mergeContainerElementName = "XmlFileMerges";
-        internal static readonly string mergeElementName = "XmlFileMerge";
-        internal static readonly string changeDefFileAttributeName = "changeDefinitionPath";
-        internal static readonly string targetFileAttributeName = "targetFilePath";
+		internal static readonly string mergeContainerElementName = "XmlFileMerges";
+		internal static readonly string mergeElementName = "XmlFileMerge";
+		internal static readonly string changeDefFileAttributeName = "changeDefinitionPath";
+		internal static readonly string targetFileAttributeName = "targetFilePath";
 
 
-        private sealed class XmlFileMerge
+		private sealed class XmlFileMerge
 		{
 			public string ChangeFilePath { get; set; }
 			public string TargetPath { get; set; }
@@ -33,7 +32,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		/// <exclude />
 		public override IEnumerable<XElement> Install()
 		{
-			if (_xmlFileMerges == null) throw new InvalidOperationException("MergeXmlPackageFragmentInstaller has not been validated");
+			if (_xmlFileMerges == null) throw new InvalidOperationException("XmlFileMergePackageFragmentInstaller has not been validated");
 
 			foreach (XmlFileMerge xmlFileMerge in _xmlFileMerges)
 			{
@@ -44,7 +43,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					XElement source = XElement.Load(stream);
 					XDocument target = XDocumentUtils.Load(targetXmlFile);
 
-                    target.Root.ImportSubtree(source);
+					target.Root.ImportSubtree(source);
 					target.SaveToFile(targetXmlFile);
 				}
 			}
@@ -59,21 +58,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		{
 			List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
 
-            if (Configuration.Count(f => f.Name == MergeXmlFilePackageFragmentInstaller.mergeContainerElementName) > 1)
+			if (Configuration.Count(f => f.Name == XmlFileMergePackageFragmentInstaller.mergeContainerElementName) > 1)
 			{
 				validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "OnlyOneFilesElement"));
 
 				return validationResult;
 			}
 
-            IEnumerable<XElement> filesElement = this.Configuration.Where(f => f.Name == MergeXmlFilePackageFragmentInstaller.mergeContainerElementName);
+			IEnumerable<XElement> filesElement = this.Configuration.Where(f => f.Name == XmlFileMergePackageFragmentInstaller.mergeContainerElementName);
 
 			_xmlFileMerges = new List<XmlFileMerge>();
 
-            foreach (XElement fileElement in filesElement.Elements(mergeElementName))
+			foreach (XElement fileElement in filesElement.Elements(mergeElementName))
 			{
-                XAttribute sourceAttribute = fileElement.Attribute(MergeXmlFilePackageFragmentInstaller.mergeContainerElementName);
-                XAttribute targetAttribute = fileElement.Attribute(MergeXmlFilePackageFragmentInstaller.targetFileAttributeName);
+				XAttribute sourceAttribute = fileElement.Attribute(XmlFileMergePackageFragmentInstaller.changeDefFileAttributeName);
+				XAttribute targetAttribute = fileElement.Attribute(XmlFileMergePackageFragmentInstaller.targetFileAttributeName);
 
 				if (sourceAttribute == null || targetAttribute == null)
 				{

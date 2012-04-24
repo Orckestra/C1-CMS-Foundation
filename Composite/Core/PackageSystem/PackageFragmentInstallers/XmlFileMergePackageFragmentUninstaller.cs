@@ -8,26 +8,26 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-	/// <summary>    
+	/// <summary>
 	/// </summary>
 	/// <exclude />
-	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
 	public class XmlFileMergePackageFragmentUninstaller : BasePackageFragmentUninstaller
 	{
-        private sealed class XmlFileMerge
-        {
-            public string ChangeFilePath { get; set; }
-            public string TargetPath { get; set; }
-        }
+		private sealed class XmlFileMerge
+		{
+			public string ChangeFilePath { get; set; }
+			public string TargetPath { get; set; }
+		}
 
-        private IList<XmlFileMerge> _xmlFileMerges;
+		private IList<XmlFileMerge> _xmlFileMerges;
 
 		/// <exclude />
 		public override void Uninstall()
 		{
-			if (_xmlFileMerges == null) throw new InvalidOperationException("MergeXmlPackageFragmentUninstaller has not been validated");
+			if (_xmlFileMerges == null) throw new InvalidOperationException("XmlFileMergePackageFragmentUninstaller has not been validated");
 
-            foreach (XmlFileMerge xmlFileMerge in _xmlFileMerges)
+			foreach (XmlFileMerge xmlFileMerge in _xmlFileMerges)
 			{
 				string targetXml = PathUtil.Resolve(xmlFileMerge.TargetPath);
 
@@ -47,21 +47,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		{
 			List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
 
-            if (Configuration.Count(f => f.Name == MergeXmlFilePackageFragmentInstaller.mergeContainerElementName) > 1)
+			if (Configuration.Count(f => f.Name == XmlFileMergePackageFragmentInstaller.mergeContainerElementName) > 1)
 			{
 				validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "OnlyOneFilesElement"));
 
 				return validationResult;
 			}
 
-            IEnumerable<XElement> filesElement = this.Configuration.Where(f => f.Name == MergeXmlFilePackageFragmentInstaller.mergeContainerElementName);
+			IEnumerable<XElement> filesElement = this.Configuration.Where(f => f.Name == XmlFileMergePackageFragmentInstaller.mergeContainerElementName);
 
 			_xmlFileMerges = new List<XmlFileMerge>();
 
-            foreach (var fileElement in filesElement.Elements(MergeXmlFilePackageFragmentInstaller.mergeElementName))
+			foreach (var fileElement in filesElement.Elements(XmlFileMergePackageFragmentInstaller.mergeElementName))
 			{
-                XAttribute changePathAttribute = fileElement.Attribute(MergeXmlFilePackageFragmentInstaller.changeDefFileAttributeName);
-                XAttribute targetAttribute = fileElement.Attribute(MergeXmlFilePackageFragmentInstaller.targetFileAttributeName);
+				XAttribute changePathAttribute = fileElement.Attribute(XmlFileMergePackageFragmentInstaller.changeDefFileAttributeName);
+				XAttribute targetAttribute = fileElement.Attribute(XmlFileMergePackageFragmentInstaller.targetFileAttributeName);
 
 				if (changePathAttribute == null || targetAttribute == null)
 				{
@@ -70,7 +70,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					continue;
 				}
 
-				XmlFileMerge xmlFileMerge = new XmlFileMerge {
+				XmlFileMerge xmlFileMerge = new XmlFileMerge
+				{
 					ChangeFilePath = changePathAttribute.Value,
 					TargetPath = targetAttribute.Value
 				};
