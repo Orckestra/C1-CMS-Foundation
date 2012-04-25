@@ -252,8 +252,7 @@ namespace Composite.Core.WebClient
 
             if (displayDebugInfo == true)
             {
-                LoggingService.LogVerbose("Global.asax", "cmd_clear_view");
-                LoggingService.LogVerbose("Global.asax", string.Format("--- Web Application Start, {0} Id = {1} ---", DateTime.Now.ToLongTimeString(), AppDomain.CurrentDomain.Id));
+                Log.LogVerbose("Global.asax", "--- Web Application Start, {0} Id = {1} ---", DateTime.Now.ToLongTimeString(), AppDomain.CurrentDomain.Id);
             }
 
             PerformanceCounterFacade.SystemStartupIncrement();

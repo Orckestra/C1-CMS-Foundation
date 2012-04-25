@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Web;
 using Composite.Core.Instrumentation;
@@ -16,6 +18,8 @@ namespace Composite.Core.Parallelization
 {
 	internal static class ParallelFacade
 	{
+        private static readonly FieldInfo HttpContext_ItemsFieldInfo = typeof(HttpContext).GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance);
+
         private static bool ParralelizationPointEnabled(string parallelizationPointName)
         {
             return !ParallelizationProviderRegistry.DisabledParallelizationPoints.Any(name => name == parallelizationPointName);
@@ -41,6 +45,8 @@ namespace Composite.Core.Parallelization
             if (ParallelizationProviderRegistry.Enabled 
                 && (parallelizationPointName.IsNullOrEmpty() || ParralelizationPointEnabled(parallelizationPointName)))
             {
+                EnsureHttpContextItemsCollectionIsThreadSafe();
+
                 using (Profiler.Measure(GetPerformanceMeasureTitle(parallelizationPointName)))
                 {
                     ThreadDataManagerData parentData = ThreadDataManager.Current;
@@ -99,6 +105,8 @@ namespace Composite.Core.Parallelization
             if (ParallelizationProviderRegistry.Enabled  
                 && (string.IsNullOrEmpty(parallelizationPointName) || ParralelizationPointEnabled(parallelizationPointName)))
             {
+                EnsureHttpContextItemsCollectionIsThreadSafe();
+
                 using (Profiler.Measure(GetPerformanceMeasureTitle(parallelizationPointName)))
                 {
                     ThreadDataManagerData parentData = ThreadDataManager.Current;
@@ -120,6 +128,24 @@ namespace Composite.Core.Parallelization
             }
         }
 
+
+        private static void EnsureHttpContextItemsCollectionIsThreadSafe()
+        {
+            var context = HttpContext.Current;
+            if (context == null) return;
+
+            var items = context.Items;
+
+            if(items is Hashtable && items.GetType() == typeof(Hashtable))
+            {
+                object synchronizedCollection = Hashtable.Synchronized((Hashtable) items);
+
+                if(HttpContext_ItemsFieldInfo != null)
+                {
+                    HttpContext_ItemsFieldInfo.SetValue(context, synchronizedCollection);
+                }
+            }
+        }
 
         public static void ForEach<TSource>(IEnumerable<TSource> source, Action<TSource> body)
         {
