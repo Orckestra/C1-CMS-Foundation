@@ -404,7 +404,7 @@ VisualEditorPageBinding.prototype.setContent = function ( content ) {
 		 */
 		content = VisualEditorBinding.getTinyContent ( content, this._editorBinding );
 		if ( content != null ) {
-			this._tinyInstance.setContent ( content );
+			this._tinyInstance.setContent(content, { format: 'raw' });
 			this._editorBinding.resetUndoRedo ();
 			this._editorBinding._checksum = this._editorBinding.getCheckSum (); // ARGH
 		} else {
