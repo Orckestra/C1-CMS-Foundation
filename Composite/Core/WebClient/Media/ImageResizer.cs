@@ -293,7 +293,7 @@ namespace Composite.Core.WebClient.Media
                 {
                     EncoderParameters parameters = new EncoderParameters(1);
 
-                    // Setting image quality to 100%, the deafult one is 75%
+                    // Setting image quality, the deafult value is 75
                     parameters.Param[0] = new EncoderParameter(
                         System.Drawing.Imaging.Encoder.Quality, 80L);
 

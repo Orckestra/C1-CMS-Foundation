@@ -30,12 +30,14 @@ namespace Composite.Core.Configuration
                 {
                     if (typeAttribute.Equals(reader.Name))
                     {
-                        Type providerType = Type.GetType(reader.Value);
+                        string typeReference = reader.Value;
+
+                        Type providerType = Type.GetType(typeReference);
                         if (providerType == null)
                         {
-                            LoggingService.LogCritical("Configuration", string.Format("Could not create type '{0}' ", reader.Value));
+                            Log.LogCritical("Configuration", "Could not create type '{0}' ", typeReference);
 
-                            throw new ConfigurationErrorsException(string.Format("Type '{0}' could not be created", reader.Value));
+                            throw new ConfigurationErrorsException(string.Format("Type '{0}' could not be created", typeReference));
                         }
 
                         Attribute attribute = Attribute.GetCustomAttribute(providerType, typeof(ConfigurationElementTypeAttribute));
