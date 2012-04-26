@@ -135,7 +135,7 @@
 </script>
 
 <asp:PlaceHolder ID="verboseModePlaceHolder" runat="server" Visible="false">
-    <ui:checkboxgroup name="<%= this.ClientID %>" checksum="<%= DateTime.Now.Ticks %>">
+    <ui:checkboxgroup name="<%= this.ClientID %>">
     <asp:Repeater runat="server" ID="CheckBoxRepeater">
         <ItemTemplate>
             <aspui:CheckBox ID="CheckBox" runat="server"
@@ -148,14 +148,13 @@
 </asp:PlaceHolder>
 
 <asp:PlaceHolder ID="compactModePlaceHolder" runat="server" Visible="false">
-    <ui:multiselector name="<%= this.ClientID %>" checksum="<%= DateTime.Now.Ticks %>">
+    <ui:multiselector name="<%= this.ClientID %>">
         <asp:Repeater runat="server" ID="optionsRepeater">
             <ItemTemplate>
                       <ui:selection 
                           label="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
                           value="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Key) %>"
-                          <%# CustomUiSelectorTagParams( (KeyLabelPair)Container.DataItem ) %> 
-                          checksum="<%= DateTime.Now.Ticks %>" />
+                          <%# CustomUiSelectorTagParams( (KeyLabelPair)Container.DataItem ) %> />
             </ItemTemplate>
         </asp:Repeater>
 </ui:multiselector>

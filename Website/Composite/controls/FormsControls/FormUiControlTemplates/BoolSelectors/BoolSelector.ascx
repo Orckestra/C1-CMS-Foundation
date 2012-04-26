@@ -29,6 +29,6 @@
 </script>
 
 <ui:radiodatagroup name="<%= this.ClientID %>">
-	<ui:radio label="<%= this.TrueLabel %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" checksum="<%= DateTime.Now.Ticks %>"/>
-	<ui:radio label="<%= this.FalseLabel %>" value="false" ischecked="<%= (this.IsTrue==false).ToString().ToLower() %>" checksum="<%= DateTime.Now.Ticks %>"/>
+	<ui:radio label="<%= this.TrueLabel %>" value="true" ischecked="<%= this.IsTrue.ToString().ToLower() %>" />
+	<ui:radio label="<%= this.FalseLabel %>" value="false" ischecked="<%= (this.IsTrue==false).ToString().ToLower() %>" />
 </ui:radiodatagroup>
