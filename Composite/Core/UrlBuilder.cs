@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Web;
-using System.Web.Util;
 using Composite.Core.Extensions;
 using Composite.Core.Routing.Pages;
 
@@ -31,7 +29,7 @@ namespace Composite.Core
         {
             _queryParameters = new List<KeyValuePair<string, string>>();
 
-            int anchorIndex = url.IndexOf("#");
+            int anchorIndex = url.IndexOf('#');
             if(anchorIndex > -1)
             {
                 Anchor = (anchorIndex == url.Length - 1) ? string.Empty : url.Substring(anchorIndex + 1);
@@ -39,7 +37,7 @@ namespace Composite.Core
                 url = url.Substring(0, anchorIndex);
             }
 
-            int questionMarkIndex = url.IndexOf("?");
+            int questionMarkIndex = url.IndexOf('?');
             if (questionMarkIndex < 0)
             {
                 ExtractPathInfo(url, url, out _filePath, out _pathInfo);
@@ -133,7 +131,7 @@ namespace Composite.Core
                 return;
             }
 
-            int aspxExtOffset = relativePath.IndexOf(".aspx");
+            int aspxExtOffset = relativePath.IndexOf(".aspx", StringComparison.Ordinal);
             if (aspxExtOffset < 0 || aspxExtOffset == relativePath.Length - 5)
             {
                 pathInfo = null;
@@ -292,13 +290,13 @@ namespace Composite.Core
                     return string.Empty;
                 }
 
-                int index1 = _filePath.IndexOf("://");
+                int index1 = _filePath.IndexOf("://", StringComparison.Ordinal);
                 if (index1 <= 0 || _filePath.Length == index1 + 4)
                 {
                     return string.Empty;
                 }
 
-                int index2 = _filePath.IndexOf("/", index1 + 3);
+                int index2 = _filePath.IndexOf('/', index1 + 3);
                 if (index2 < 0)
                 {
                     return string.Empty;

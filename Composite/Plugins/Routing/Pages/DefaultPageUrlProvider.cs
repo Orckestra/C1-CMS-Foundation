@@ -69,7 +69,7 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            int closingBracketOffset = relativeUrl.IndexOf(")");
+            int closingBracketOffset = relativeUrl.IndexOf(')');
             if (closingBracketOffset < 0)
             {
                 return null;
@@ -183,7 +183,7 @@ namespace Composite.Plugins.Routing.Pages
             // "http://localhost?..." to "http://localhost/?..."
             if((absoluteUrl.Count(c => c == '/') == 2) && absoluteUrl.Contains("//"))
             {
-                int questionMarkIndex = absoluteUrl.IndexOf("?");
+                int questionMarkIndex = absoluteUrl.IndexOf('?');
                 if(questionMarkIndex > 0)
                 {
                     absoluteUrl = absoluteUrl.Insert(questionMarkIndex, "/");
