@@ -21,7 +21,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private const string _installElementName = "Install";
         private const string _uninstallElementName = "Uninstall";
         private const string _xsltFilePathAttributeName = "xsltFilePath";
-        private const string _validateAttributeName = "validate";
+        private const string _validateAttributeName = "validateTypes";
 
 
         /// <exclude />
