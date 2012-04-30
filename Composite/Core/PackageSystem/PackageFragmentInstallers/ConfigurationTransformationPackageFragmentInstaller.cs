@@ -21,6 +21,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private const string _installElementName = "Install";
         private const string _uninstallElementName = "Uninstall";
         private const string _xsltFilePathAttributeName = "xsltFilePath";
+        private const string _validateAttributeName = "validate";
 
 
         /// <exclude />
@@ -42,7 +43,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 () => this.InstallElement.Attribute(_xsltFilePathAttributeName),
                 () => this.InstallXsltFilePath,
                 this.InstallerContext.ZipFileSystem,
-                true);
+                true, ValidateTypes);
 
             if (validationResults.Count == 0 
                 && this.InstallerContext.PackageInformation.CanBeUninstalled == true)
@@ -55,7 +56,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     () => this.UninstallElement.Attribute(_xsltFilePathAttributeName),
                     () => this.UninstallXsltFilePath,
                     this.InstallerContext.ZipFileSystem,
-                    false);
+                    false, false);
 
             }
 
@@ -73,7 +74,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 {
                     XDocument xslt = XDocument.Load(xsltTextReader);
 
-                    ConfigurationServices.TransformConfiguration(xslt, false);
+                    ConfigurationServices.TransformConfiguration(xslt, false, false);
                 }
             }
 
@@ -85,7 +86,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
-        internal static void ValidateXslt(List<PackageFragmentValidationResult> validationResults, Func<XElement> elementProvider, string elementName, Func<XAttribute> xsltPathAttributeProvider, Func<string> xsltFilePathProvider, IZipFileSystem zipFileSystem, bool validateResultingConfigurationFile)
+        internal static void ValidateXslt(
+            List<PackageFragmentValidationResult> validationResults, 
+            Func<XElement> elementProvider, 
+            string elementName, 
+            Func<XAttribute> xsltPathAttributeProvider, 
+            Func<string> xsltFilePathProvider, 
+            IZipFileSystem zipFileSystem, 
+            bool validateResultingConfigurationFile,
+            bool validateTypes)
         {
             if (elementProvider() == null)
             {
@@ -142,7 +151,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         try
                         {
-                            ConfigurationServices.TransformConfiguration(xslt, true);
+                            ConfigurationServices.TransformConfiguration(xslt, true, validateTypes);
                         }
                         //catch (ConfigurationException ex)
                         //{
@@ -172,6 +181,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             get
             {
                 return InstallElement.GetAttributeValue(_xsltFilePathAttributeName);
+            }
+        }
+
+
+        private bool ValidateTypes
+        {
+            get
+            {
+                string value = ConfigurationParent.GetAttributeValue(_validateAttributeName);
+                return value == null || bool.Parse(value);
             }
         }
 

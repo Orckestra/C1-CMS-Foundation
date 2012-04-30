@@ -29,7 +29,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 () => this.UninstallElement.Attribute(_xsltFilePathAttributeName),
                 () => this.UninstallXsltFilePath,
                 this.UninstallerContext.ZipFileSystem,
-                true);
+                true,
+                false);
 
             return validationResults;
         }
