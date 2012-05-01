@@ -165,6 +165,7 @@
     <Compile Include="C1Console\Trees\TreeSharedRootsFacade.cs" />
     <Compile Include="Core\Application\GlobalFileLocker.cs" />
     <Compile Include="Core\Application\SystemGlobalSemaphore.cs" />
+    <Compile Include="Core\Configuration\AppCodeTypeNotFoundConfigurationException.cs" />
     <Compile Include="Core\Configuration\C1Configuration.cs" />
     <Compile Include="Core\Configuration\Configuration.cs" />
     <Compile Include="Core\Configuration\FileConfigurationSource.cs" />

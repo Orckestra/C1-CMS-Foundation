@@ -1,6 +1,5 @@
 using System;
 using System.Configuration;
-using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
@@ -215,7 +214,23 @@ namespace Composite.Core.Configuration
                     if (sectionElement.Attribute("name") != null)
                     {
                         string sectionName = sectionElement.Attribute("name").Value;
-                        testConfigSource.GetSection(sectionName);
+
+                        try
+                        {
+                            testConfigSource.GetSection(sectionName);
+                        }
+                        catch (ConfigurationErrorsException exception)
+                        {
+                            if(exception.InnerException != null &&
+                               exception.InnerException is AppCodeTypeNotFoundConfigurationException)
+                            {
+                                // App_Code classes aren't compiled during package installation, therefore related exceptions are ignored
+                            }
+                            else
+                            {
+                                throw;
+                            }
+                        }
                     }
                 }
 

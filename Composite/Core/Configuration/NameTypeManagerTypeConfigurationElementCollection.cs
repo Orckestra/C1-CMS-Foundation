@@ -1,7 +1,7 @@
 using System;
 using System.Configuration;
 using System.Xml;
-using Composite.Core.Logging;
+using Composite.Core.Extensions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
@@ -35,9 +35,9 @@ namespace Composite.Core.Configuration
                         Type providerType = Type.GetType(typeReference);
                         if (providerType == null)
                         {
-                            Log.LogCritical("Configuration", "Could not create type '{0}' ", typeReference);
+                            Log.LogCritical("Configuration", "Could not resolve type '{0}' ", typeReference);
 
-                            throw new ConfigurationErrorsException(string.Format("Type '{0}' could not be created", typeReference));
+                            throw GetExceptionOnTypeNotFound(typeReference);
                         }
 
                         Attribute attribute = Attribute.GetCustomAttribute(providerType, typeof(ConfigurationElementTypeAttribute));
@@ -68,6 +68,30 @@ namespace Composite.Core.Configuration
                 reader.MoveToElement();
             }
             return configurationElementType;
+        }
+
+        static Exception GetExceptionOnTypeNotFound(string typeReference)
+        {
+            string trimmedTypeReference = typeReference.Trim();
+
+            if(trimmedTypeReference.Length > 0)
+            {
+                int commaOffset = typeReference.IndexOf(',');
+
+                if(commaOffset < 0)
+                {
+                    return new ConfigurationErrorsException("Type '{0}' could not be resolved. Assembly name is not specified, " +
+                        "if type is defined in '/App_Code' folder, specify type reference as '{0},App_Code'".FormatWith(typeReference));
+                }
+
+                string assemblyInfo = trimmedTypeReference.Substring(commaOffset + 1);
+                if(assemblyInfo.ToLowerInvariant().Contains("app_code"))
+                {
+                    return new AppCodeTypeNotFoundConfigurationException("Type '{0}' could not be resolved".FormatWith(typeReference));
+                }
+            }
+
+            return new ConfigurationErrorsException("Type '{0}' could not be resolved".FormatWith(typeReference));
         }
     }
 }
