@@ -128,6 +128,7 @@ namespace Composite.Core.Configuration
             }
         }
 
+
         /// <summary>
         /// Transforms the current configuration file based on the supplied XSLT document. The resulting 
         /// configuration document is validated and no errors are tollerated. Configurationerrors are handled
@@ -136,20 +137,6 @@ namespace Composite.Core.Configuration
         /// <param name="xsltDocument">XSLT document to apply to the configuration document</param>
         /// <param name="simulationOnly">When true the configuration transformation will only be validated, not executed. When false, the configuration change will be persisted.</param>
         public static void TransformConfiguration(XDocument xsltDocument, bool simulationOnly)
-        {
-            TransformConfiguration(xsltDocument, simulationOnly, true);
-        }
-
-
-        /// <summary>
-        /// Transforms the current configuration file based on the supplied XSLT document. The resulting 
-        /// configuration document is validated and no errors are tollerated. Configurationerrors are handled
-        /// as exceptions.
-        /// </summary>
-        /// <param name="xsltDocument">XSLT document to apply to the configuration document</param>
-        /// <param name="simulationOnly">When true the configuration transformation will only be validated, not executed. When false, the configuration change will be persisted.</param>
-        /// <param name="validateTypes">When true the config file will be validated by loading all the referenced types</param>
-        public static void TransformConfiguration(XDocument xsltDocument, bool simulationOnly, bool validateTypes)
         {
             using (GlobalInitializerFacade.CoreLockScope)
             {
@@ -168,11 +155,7 @@ namespace Composite.Core.Configuration
                         transformer.Transform(ConfigurationServices.FileConfigurationSourcePath, writer);
                     }
 
-
-                    if (validateTypes)
-                    {
-                        ValidateConfigurationFile(resultDocument);
-                    }
+                    ValidateConfigurationFile(resultDocument);
 
                     if (simulationOnly == false)
                     {
