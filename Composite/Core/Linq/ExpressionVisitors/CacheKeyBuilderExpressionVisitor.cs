@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.WebClient.Renderings.Page;
+using Composite.Core.Types;
 
 namespace Composite.Core.Linq.ExpressionVisitors
 {
@@ -11,7 +12,8 @@ namespace Composite.Core.Linq.ExpressionVisitors
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class CacheKeyBuilderExpressionVisitor : ExpressionVisitor
     {
-        private static readonly MethodInfo ConstantWrapperMethod = typeof (CacheKeyBuilderExpressionVisitor).GetMethod("A", BindingFlags.Static | BindingFlags.NonPublic);
+        private static readonly MethodInfo ConstantWrapperMethod =
+            StaticReflection.GetGenericMethodInfo(() => CacheKeyBuilderExpressionVisitor.A<object>(string.Empty));
 
         /// <exclude />
         public interface ICacheKeyProvider
@@ -138,7 +140,6 @@ namespace Composite.Core.Linq.ExpressionVisitors
         /// <summary>  
         /// Used for creating cache keys for LINQ expressions, it has a short name to keep the keys short  
         /// </summary>
-        // DO NOT REMOVE, used by "Out" method via reflection
         private static T A<T>(string cacheKeyPart)
         {
             throw new InvalidOperationException("This method is not supposed to be called, used only for building a cache key via ExpressionStringBuilder");

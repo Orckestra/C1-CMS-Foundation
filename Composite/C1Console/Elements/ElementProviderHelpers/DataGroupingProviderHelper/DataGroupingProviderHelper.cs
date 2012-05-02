@@ -21,8 +21,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         private ElementProviderContext _elementProviderContext;
         private string _undefinedLableValue;
 
-        private static readonly MethodInfo GenericCastMethodInfo = typeof(DataGroupingProviderHelper)
-                                                                   .GetMethod("Cast", BindingFlags.NonPublic | BindingFlags.Static);
+        private static readonly MethodInfo GenericCastMethodInfo = 
+            StaticReflection.GetGenericMethodInfo(() => DataGroupingProviderHelper.Cast<IData>((IQueryable<IData>)null));
 
 
         public DataGroupingProviderHelper(ElementProviderContext elementProviderContext)
@@ -217,9 +217,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             return CreateGroupFolderElements(interfaceType, firstDataFieldDescriptor, resultQueryable, parentEntityToken, propertyInfoValueCollection);
         }
 
-        /// <summary>
-        /// Called through reflection
-        /// </summary>
         private static IQueryable Cast<T>(IQueryable<IData> queryable)
         {
             return queryable.Cast<T>();
