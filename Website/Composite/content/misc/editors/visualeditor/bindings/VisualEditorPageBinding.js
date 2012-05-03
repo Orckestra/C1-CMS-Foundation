@@ -342,7 +342,7 @@ VisualEditorPageBinding.prototype.getContent = function () {
 	if ( this.isSourceMode == true ) {
 		result = this._sourceEditor.getValue ();
 	} else {
-		var html = this._tinyInstance.getBody ().innerHTML;
+		var html = this._tinyInstance.getContent();
 		var WEBKITBAD = '"="">'; // what on earth? invalid innerHTML!
 		if ( html.indexOf ( WEBKITBAD ) >-1 ) {
 			html = html.replace ( /\"=\"\">/g, ">" );
