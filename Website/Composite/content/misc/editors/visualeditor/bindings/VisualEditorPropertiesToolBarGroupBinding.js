@@ -150,44 +150,44 @@ VisualEditorPropertiesToolBarGroupBinding.prototype.initializeComponent = functi
  * @implements {IWysiwygEditorNodeChangeHandler}
  * @param {DOMElement} element
  */
-VisualEditorPropertiesToolBarGroupBinding.prototype.handleNodeChange = function ( element ) {
-	
+VisualEditorPropertiesToolBarGroupBinding.prototype.handleNodeChange = function (element) {
+
 	this._tinyElement = element;
 	var classname = VisualEditorPropertiesToolBarGroupBinding.CLASSNAME_FOCUSED;
 
 	if (VisualEditorBinding.isImage(this._tinyElement)) {
-		
-		if ( this._focusedImage != null ) {
-			CSSUtil.detachClassName ( this._focusedImage, classname );
+
+		if (this._focusedImage != null) {
+			this._tinyInstance.dom.removeClass(this._focusedImage, classname);
 		}
-		CSSUtil.attachClassName ( element, classname );
+		this._tinyInstance.dom.addClass(element, classname);
 		this._focusedImage = element;
-		
+
 		var command = null;
 		if (VisualEditorBinding.isFunctionElement(this._tinyElement)) {
 			command = "compositeInsertRendering";
 		} else if (VisualEditorBinding.isImageElement(this._tinyElement)) {
-			command = "compositeInsertImage";	
+			command = "compositeInsertImage";
 		}
-		
-		this._buttons.each ( function ( cmd, button ) {
-			if ( cmd == command ) {
-				button.show ();
+
+		this._buttons.each(function (cmd, button) {
+			if (cmd == command) {
+				button.show();
 			} else {
-				button.hide ();
+				button.hide();
 			}
 		});
-		if ( !this.isVisible ) {
-			this.show ();
+		if (!this.isVisible) {
+			this.show();
 		}
 	} else {
-		
-		if ( this._focusedImage != null ) {
-			CSSUtil.detachClassName ( this._focusedImage, classname );
+
+		if (this._focusedImage != null) {
+			this._tinyInstance.dom.removeClass(this._focusedImage, classname);
 			this._focusedImage = null;
 		}
-		if ( this.isVisible ) {
-			this.hide ();
+		if (this.isVisible) {
+			this.hide();
 		}
 	}
 }
