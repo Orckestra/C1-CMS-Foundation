@@ -127,12 +127,13 @@ VisualEditorStatusBarBinding.prototype.initializeComponent = function ( editor, 
  * @implements {IWysiwygEditorNodeChangeHandler}
  * @param {DOMElement} element
  */
-VisualEditorStatusBarBinding.prototype.handleNodeChange = function ( element ) {
-	
-	if ( element != this._element || element.className != this._classname ) {
-		this._buildToolBar ( element );
-		this._element = element;
-		this._classname = element.classname;
+VisualEditorStatusBarBinding.prototype.handleNodeChange = function (element) {
+
+	var selectedElement = this._getSelectedNode();
+	if (selectedElement != this._element || selectedElement.className != this._classname) {
+		this._buildToolBar(selectedElement);
+		this._element = selectedElement;
+		this._classname = selectedElement.classname;
 	}
 }
 
@@ -144,34 +145,30 @@ VisualEditorStatusBarBinding.prototype.handleNodeChange = function ( element ) {
  */
 VisualEditorStatusBarBinding.prototype.handleAction = function (action) {
 
-    VisualEditorStatusBarBinding.superclass.handleAction.call(this, action);
+	VisualEditorStatusBarBinding.superclass.handleAction.call(this, action);
 
-    switch (action.type) {
-        case ButtonBinding.ACTION_COMMAND:
-            var button = action.target;
-            var depth = button.structuralDepth;
+	switch (action.type) {
+		case ButtonBinding.ACTION_COMMAND:
+			var button = action.target;
+			var depth = button.structuralDepth;
 
-            if (Client.isExplorer) {
-                // ie specific way to get through this.
-                var targetNode = this._tinyInstance.selection.getNode();
-                while (depth-- > 0)
-                    targetNode = targetNode.parentNode;
+			var self = this;
 
-                this._buildToolBar(targetNode);
-                this._tinyInstance.selection.select(targetNode, true);
-                this._tinyInstance.nodeChanged();
-            } else {
-                var self = this;
+			setTimeout(function () { // chrome needs a timeout
+				self._tinyInstance.execCommand("mceSelectNodeDepth", false, depth);
+				self._buildToolBar(self._getSelectedNode());
+			}, 0);
 
-                setTimeout(function () { // chrome needs a timeout
-                    self._tinyInstance.execCommand("mceSelectNodeDepth", false, depth);
-                    self._buildToolBar(self._tinyInstance.selection.getNode());
-                }, 0);
-            }
+			action.consume();
+			break;
+	}
+}
 
-            action.consume();
-            break;
-    }
+/**
+* Returns selected element
+*/
+VisualEditorStatusBarBinding.prototype._getSelectedNode = function () {
+	return this._tinyInstance.selection.getNode();
 }
 
 /**
