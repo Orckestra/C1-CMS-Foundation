@@ -133,7 +133,6 @@ _BroadcastMessages.prototype = {
 	CODEPRESS_INITIALIZED				: "codepress initialized",
 	VISUALEDITOR_FOCUSED				: "visualeditor focused", // TODO?
 	VISUALEDITOR_BLURRED				: "visualditor blurred", // TODO?
-	VISUALEDITOR_HACKED					: "visualeditor hacked",
 	
 	/*
 	 * Misc events

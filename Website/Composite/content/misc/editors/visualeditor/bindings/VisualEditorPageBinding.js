@@ -342,17 +342,11 @@ VisualEditorPageBinding.prototype.getContent = function () {
 	if ( this.isSourceMode == true ) {
 		result = this._sourceEditor.getValue ();
 	} else {
-		var html = this._tinyInstance.getContent();
+		var html = this._tinyInstance.getContent({ format: 'raw' });
 		var WEBKITBAD = '"="">'; // what on earth? invalid innerHTML!
 		if ( html.indexOf ( WEBKITBAD ) >-1 ) {
 			html = html.replace ( /\"=\"\">/g, ">" );
 		}
-//		Conflict with BR 
-//		//Fix <br> in tag <pre> for FF < 4.0
-//		if (html.indexOf("<br>") > -1) {
-//			html = html.replace(/<br>/g, "\n");
-//		}
-
 		result = this._editorBinding.normalizeToDocument ( 
 			VisualEditorBinding.getStructuredContent ( html )
 		);

@@ -381,7 +381,6 @@ VisualEditorBinding.prototype.onBindingAttach = function () {
 	VisualEditorBinding.superclass.onBindingAttach.call ( this );
 	
 	this.subscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
-	this.subscribe ( BroadcastMessages.VISUALEDITOR_HACKED );
 	
 	// this._parseDOMProperties ();
 };
@@ -439,56 +438,48 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	var contentWindow = windowBinding.getContentWindow ();
 	
 	switch ( broadcast ) {
-		
-		/*
-		 * This broadcast is transmitted from inline javascript in the TinyMCE window.
-		 * Window contains a textarea that we need to update *before* TinyMCE is loaded.
-		 */
-		case BroadcastMessages.VISUALEDITOR_HACKED :
-			
-			if ( arg.broadcastWindow == contentWindow ) {
-				
-				/*
-				 * Some kind of devilry going on with the server...
-				 */
-				if ( this._startContent == " " ) {
-					this._startContent = VisualEditorBinding.DEFAULT_CONTENT;
-				}
-				
-				/*
-				 * Normalize start content and extract HEAD and BODY section before we 
-				 * feed it to TinyMCE. Normalization is required while old solutions 
-				 * are upgraded to the new setup (with HEAD and BODY sections). 
-				 */
-				this._startContent = this.normalizeToDocument ( this._startContent );
-				this.extractHead ( this._startContent );
-				this._startContent = this.extractBody ( this._startContent );
-				
-				/*
-				 * Inject BODY markup into TinyMCE. From now on, injection  
-				 * is handled by the VisualEditorPageBinding.
-				 */
-				arg.textareaElement.value = VisualEditorBinding.getTinyContent ( this._startContent );
-				this.unsubscribe ( BroadcastMessages.VISUALEDITOR_HACKED );
-			}
-			break;
-		
+
 		/*
 		 * TinyMCE initialized.
 		 */
 		case BroadcastMessages.TINYMCE_INITIALIZED :
 			
 			if ( arg.broadcastWindow == contentWindow ) {
-				
-				this._tinyEngine	= arg.tinyEngine;
-				this._tinyInstance 	= arg.tinyInstance;
-				this._tinyTheme 	= arg.tinyTheme;
-				
-				this._tinyTheme.initC1 (
+
+				this._tinyEngine = arg.tinyEngine;
+				this._tinyInstance = arg.tinyInstance;
+				this._tinyTheme = arg.tinyTheme;
+
+				this._tinyTheme.initC1(
 					this,
 					this._tinyEngine,
 					this._tinyInstance
 				);
+
+				/*
+				* Some kind of devilry going on with the server...
+				*/
+				if (this._startContent == " ") {
+					this._startContent = VisualEditorBinding.DEFAULT_CONTENT;
+				}
+
+				/*
+				* Normalize start content and extract HEAD and BODY section before we 
+				* feed it to TinyMCE. Normalization is required while old solutions 
+				* are upgraded to the new setup (with HEAD and BODY sections). 
+				*/
+				this._startContent = this.normalizeToDocument(this._startContent);
+				this.extractHead(this._startContent);
+				this._startContent = this.extractBody(this._startContent);
+
+				/*
+				* Inject BODY markup into TinyMCE. From now on, injection  
+				* is handled by the VisualEditorPageBinding.
+				*/
+				arg.tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent), { format: 'raw' });
+
+
+
 				this.initializeEditorComponents ( windowBinding );
 				this._initialize ();
 				

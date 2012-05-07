@@ -25,18 +25,5 @@
 	</head>
 	<body>
 		<textarea id="editor" name="editor" style="width:100%;height:100%;"></textarea>
-		<script type="text/javascript">
-			/*
-			 * The trick here is to summon textarea content as fast 
-			 * as possible (without waiting for the onload event).
-			 */
-			EventBroadcaster.broadcast ( 
-				BroadcastMessages.VISUALEDITOR_HACKED, 
-				{
-					textareaElement : document.getElementById ( "editor" ),
-					broadcastWindow : window
-				}
-			);
-		</script>
 	</body>
 </html>
