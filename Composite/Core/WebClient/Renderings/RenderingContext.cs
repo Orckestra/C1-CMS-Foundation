@@ -11,6 +11,7 @@ using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Plugins.Routing.Pages;
+using Composite.Core.PageTemplates;
 
 namespace Composite.Core.WebClient.Renderings
 {
@@ -222,6 +223,16 @@ namespace Composite.Core.WebClient.Renderings
             PageRenderer.CurrentPage = Page;
 
             _dataScope = new DataScope(_pageUrl.PublicationScope, _pageUrl.LocalizationScope);
+
+            var pagePlaceholderContents = GetPagePlaceholderContents();
+            var pageRenderingJob = new PageRenderingJob(Page, pagePlaceholderContents, PreviewMode);
+
+            Verify.IsNotNull(httpContext.Handler, "HttpHandler isn't defined");
+
+            var aspnetPage = (System.Web.UI.Page)httpContext.Handler;
+            
+            var pageRenderer = PageTemplateFacade.BuildPageRenderer(Page.TemplateId);
+            pageRenderer.AttachToPage(aspnetPage, pageRenderingJob);
         }
 
         private void ValidateViewUnpublishedRequest(HttpContext httpContext)

@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
+using Composite.Core.PageTemplates;
 using Composite.Plugins.Forms.WebChannel.CustomUiControls;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -76,29 +77,31 @@ namespace CompositePageContentEditor
 
         private void SetUpTextAreas(bool flush)
         {
-            TemplatePlaceholdersInfo info = TemplateInfo.GetRenderingPlaceHolders(this.SelectedTemplateId);
+            PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
 
             List<string> handledIds = new List<string>();
 
             ContentsPlaceHolder.Controls.Clear();
-            foreach (KeyValuePair placeHolderInfo in info.Placeholders)
+            foreach (var placeholderDescription in pageTemplate.PlaceholderDescriptions)
             {
-                if (handledIds.Contains(placeHolderInfo.Key) == false)
+                string placeholderId = placeholderDescription.Id;
+
+                if (handledIds.Contains(placeholderId) == false)
                 {
                     TextBox contentTextBox = new Composite.Core.WebClient.UiControlLib.TextBox();
                     contentTextBox.TextMode = TextBoxMode.MultiLine;
-                    contentTextBox.ID = placeHolderInfo.Key;
-                    contentTextBox.Attributes.Add("placeholderid", placeHolderInfo.Key);
-                    contentTextBox.Attributes.Add("placeholdername", placeHolderInfo.Value);
-                    if (placeHolderInfo.Key == info.DefaultPlaceholderId)
+                    contentTextBox.ID = placeholderId;
+                    contentTextBox.Attributes.Add("placeholderid", placeholderId);
+                    contentTextBox.Attributes.Add("placeholdername", placeholderDescription.Title);
+                    if (placeholderId == pageTemplate.DefaultPlaceholderId)
                     {
                         contentTextBox.Attributes.Add("selected", "true");
                     }
                     if (flush == true)
                     {
-                        if (this.NamedXhtmlFragments.ContainsKey(placeHolderInfo.Key))
+                        if (this.NamedXhtmlFragments.ContainsKey(placeholderId))
                         {
-                            contentTextBox.Text = this.NamedXhtmlFragments[placeHolderInfo.Key];
+                            contentTextBox.Text = this.NamedXhtmlFragments[placeholderId];
                         }
                         else
                         {
@@ -106,7 +109,7 @@ namespace CompositePageContentEditor
                         }
                     }
                     ContentsPlaceHolder.Controls.Add(contentTextBox);
-                    handledIds.Add(placeHolderInfo.Key);
+                    handledIds.Add(placeholderId);
                 }
             }
         }

@@ -19,6 +19,7 @@ using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.PageTemplates;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Types;
@@ -35,7 +36,6 @@ using Composite.Data.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.C1Console.Workflow.Activities;
 using Composite.C1Console.Workflow.Foundation;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -93,41 +93,43 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
 
-            IQueryable<IPageTypePageTemplateRestriction> templateRestrictions =
-                DataFacade.GetData<IPageTypePageTemplateRestriction>().
-                Where(f => f.PageTypeId == selectedPage.PageTypeId);
+            List<PageTemplateDescriptor> allPageTemplates = PageTemplateFacade.GetPageTemplates().ToList();
+
+            List<Guid> templateRestrictions = 
+                DataFacade.GetData<IPageTypePageTemplateRestriction>()
+                .Where(f => f.PageTypeId == selectedPage.PageTypeId)
+                .Select(restriction => restriction.PageTemplateId)
+                .ToList();
+
+            IEnumerable<PageTemplateDescriptor> result;
 
             if (templateRestrictions.Any() == true)
             {
-                IEnumerable<IPageTemplate> templates =
-                    DataFacade.GetData<IPageTemplate>().
-                    Join(templateRestrictions, o => o.Id, i => i.PageTemplateId, (pt, i) => pt).
-                    OrderBy(f => f.Title).
-                    Select(f => f).
-                    Evaluate();
+                var allowedTemplatesHash = new HashSet<Guid>(templateRestrictions);
 
-                if (templates.Where(f => f.Id == selectedPage.TemplateId).Any() == false)
+                List<PageTemplateDescriptor> allowedTemplates =
+                    allPageTemplates
+                    .Where(template => allowedTemplatesHash.Contains(template.Id))
+                    .ToList();
+
+                Guid selectedTemplateId = selectedPage.TemplateId;
+                PageTemplateDescriptor selectedTemplate = allPageTemplates.FirstOrDefault(t => t.Id == selectedTemplateId);
+                if (selectedTemplate != null
+                    & !allowedTemplates.Any(t => t.Id == selectedTemplateId))
                 {
-                    templates =
-                        templates.Concat(DataFacade.GetData<IPageTemplate>().Where(f => f.Id == selectedPage.TemplateId)).
-                        OrderBy(f => f.Title).
-                        Evaluate();
+                    allowedTemplates.Add(selectedTemplate);
                 }
 
-                List<KeyValuePair<Guid, string>> result =
-                    templates.
-                    Select(f => new KeyValuePair<Guid, string>(f.Id, f.Title)).
-                    ToList();
-
-                return result;
+                result = allowedTemplates;
             }
             else
             {
-                return
-                    (from template in DataFacade.GetData<IPageTemplate>()
-                     orderby template.Title
-                     select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
+                result = allPageTemplates;
             }
+
+            return result
+                   .OrderBy(template => template.Title)
+                   .Select(f => new KeyValuePair<Guid, string>(f.Id, f.Title)).ToList();
         }
 
 

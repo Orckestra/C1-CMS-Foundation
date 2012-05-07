@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -8,8 +7,6 @@ using System.Web.UI;
 
 using Composite.Core.Instrumentation;
 using Composite.Core.WebClient.Renderings;
-using Composite.Core.WebClient.Renderings.Page;
-using Composite.Data.Types;
 
 
 public partial class Renderers_Page : System.Web.UI.Page
@@ -37,30 +34,12 @@ public partial class Renderers_Page : System.Web.UI.Page
             return;
         }
 
-        IEnumerable<IPagePlaceholderContent> contents = _renderingContext.GetPagePlaceholderContents();
-
-        if (Master == null)
+        using (Profiler.Measure("ASP.NET controls : OnInit"))
         {
-            Control renderedPage;
-            using (Profiler.Measure("Executing C1 functions"))
-            {
-                    renderedPage = PageRenderer.Render(PageRenderer.CurrentPage, contents);
-            }
-
-            if (_renderingContext.PreviewMode)
-            {
-                PageRenderer.DisableAspNetPostback(renderedPage);
-            }
-
-            using (Profiler.Measure("ASP.NET controls: PageInit"))
-            {
-                Controls.Add(renderedPage);
-            }
+            base.OnInit(e);
         }
 
         _pageEventsPageMeasuring = Profiler.Measure("ASP.NET controls: PageLoad, Event handling, PreRender");
-
-        base.OnInit(e);
     }
 
 

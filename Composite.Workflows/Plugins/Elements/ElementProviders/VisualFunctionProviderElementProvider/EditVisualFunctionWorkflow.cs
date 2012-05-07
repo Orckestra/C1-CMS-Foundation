@@ -7,6 +7,7 @@ using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
+using Composite.Core.PageTemplates;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
@@ -86,10 +87,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
             Dictionary<Guid, string> templateInfos = new Dictionary<Guid, string>();
 
-            foreach (IPageTemplate pageTemplate in DataFacade.GetData<IPageTemplate>().ToList())
+            foreach (PageTemplateDescriptor pageTemplate in PageTemplateFacade.GetPageTemplates())
             {
-                TemplatePlaceholdersInfo templatePlaceholderInfo = TemplateInfo.GetRenderingPlaceHolders(pageTemplate.Id);
-                if (templatePlaceholderInfo.Placeholders.Any())
+                if (pageTemplate.PlaceholderDescriptions.Any())
                 {
                     templateInfos.Add(pageTemplate.Id, pageTemplate.Title);
                 }
@@ -192,10 +192,10 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
                 previewPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
-                TemplatePlaceholdersInfo templatePlaceholderInfo = TemplateInfo.GetRenderingPlaceHolders(previewPage.TemplateId);
+                var pageTemplateDescriptor = PageTemplateFacade.GetPageTemplate(previewPage.TemplateId);
                 IPagePlaceholderContent placeHolderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                 placeHolderContent.Content = string.Concat((result.Body.Elements().Select(b => b.ToString())).ToArray());
-                placeHolderContent.PlaceHolderId = templatePlaceholderInfo.DefaultPlaceholderId;
+                placeHolderContent.PlaceHolderId = pageTemplateDescriptor.DefaultPlaceholderId;
 
                 Control renderedPage = previewPage.Render(new List<IPagePlaceholderContent> { placeHolderContent }, fcc);
                 PageRenderer.DisableAspNetPostback(renderedPage);
