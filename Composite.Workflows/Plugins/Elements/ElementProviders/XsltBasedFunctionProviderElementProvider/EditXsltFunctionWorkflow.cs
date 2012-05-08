@@ -650,7 +650,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                 {
                     return new[] {
                     typeof (XDocument), typeof (XElement), typeof (IEnumerable<XElement>),
-                    typeof(bool), typeof(int), typeof(string), typeof(DateTime), typeof(Guid), typeof(CultureInfo),
+                    typeof(bool), typeof(int), typeof(decimal), typeof(string), typeof(DateTime), typeof(Guid), typeof(CultureInfo),
                     typeof(IDataReference), typeof(IXsltExtensionDefinition)};
                 }
             }
