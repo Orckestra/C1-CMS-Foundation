@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Caching;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -73,14 +74,32 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     ResolvePlaceholders(document, page, placeholderContents);
 
-                    Control c = ExecuteFunctions(document, functionContextContainer, mapper, page);
+                    Control c = Render(document, functionContextContainer, mapper, page);
 
                     return c;
                 }
             }
         }
 
+        /// <exclude />
+        public static XhtmlDocument ParsePlaceholderContent(IPagePlaceholderContent placeholderContent)
+        {
+            if(placeholderContent == null || string.IsNullOrEmpty(placeholderContent.Content))
+            {
+                return new XhtmlDocument();
+            }
 
+            if (placeholderContent.Content.StartsWith("<html"))
+            {
+                try
+                {
+                    return XhtmlDocument.Parse(placeholderContent.Content);
+                }
+                catch (Exception) { }
+            }
+
+            return XhtmlDocument.Parse("<html xmlns='{0}'><head/><body>{1}</body></html>".FormatWith(Namespaces.Xhtml, placeholderContent.Content));
+        }
 
         private static void ResolvePlaceholders(XDocument document, IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
@@ -92,40 +111,22 @@ namespace Composite.Core.WebClient.Renderings.Page
                 {
                     foreach (XElement placeHolder in placeHolders.Where(f => f.Attribute(RenderingElementNames.PlaceHolderIdAttribute) != null))
                     {
-                        IPagePlaceholderContent placeHolderContent = placeholderContents.Where(f => f.PlaceHolderId == placeHolder.Attribute(RenderingElementNames.PlaceHolderIdAttribute).Value).FirstOrDefault();
+                        IPagePlaceholderContent placeHolderContent = 
+                            placeholderContents
+                            .FirstOrDefault(f => f.PlaceHolderId == placeHolder.Attribute(RenderingElementNames.PlaceHolderIdAttribute).Value);
 
                         string placeHolderId = null;
-                        if (placeHolder.Attribute("id") != null)
+
+                        XAttribute idAttribute = placeHolder.Attribute("id");
+                        if (idAttribute != null)
                         {
-                            placeHolderId = placeHolder.Attribute("id").Value;
-                            placeHolder.Attribute("id").Remove();
+                            placeHolderId = idAttribute.Value;
+                            idAttribute.Remove();
                         }
 
-                        if (placeHolderContent != null && string.IsNullOrEmpty(placeHolderContent.Content)==false)
-                        {
-                            bool contentParsedAsXhtmlDocument = false; // backwards compatability check
-                            if (placeHolderContent.Content.StartsWith("<html")==true)
-                            {
-                                try
-                                {
-                                    XhtmlDocument xhtmlDocument = XhtmlDocument.Parse(placeHolderContent.Content);
-                                    placeHolder.ReplaceWith(xhtmlDocument.Root);
-                                    contentParsedAsXhtmlDocument = true;
-                                }
-                                catch (Exception) {}
-                            }
+                        XhtmlDocument xhtmlDocument = ParsePlaceholderContent(placeHolderContent);
+                        placeHolder.ReplaceWith(xhtmlDocument.Root);
 
-                            if (contentParsedAsXhtmlDocument==false)
-                            {
-                                XhtmlDocument xhtmlDocument = XhtmlDocument.Parse(string.Format("<html xmlns='{0}'><head/><body>{1}</body></html>", Namespaces.Xhtml, placeHolderContent.Content));
-                                placeHolder.ReplaceWith(xhtmlDocument.Root);
-                                contentParsedAsXhtmlDocument = true;
-                            }
-                        }
-                        else
-                        {
-                            placeHolder.ReplaceWith(new XhtmlDocument().Root);
-                        }
 
                         if (placeHolderId != null)
                         {
@@ -235,8 +236,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-
-        private static Control ExecuteFunctions(XDocument document, FunctionContextContainer contextContainer, IXElementToControlMapper mapper, IPage page)
+        /// <exclude />
+        public static Control Render(XDocument document, FunctionContextContainer contextContainer, IXElementToControlMapper mapper, IPage page)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {

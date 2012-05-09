@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Composite.Core.PageTemplates;
 using System.Web.UI;
+using Composite.Core.PageTemplates;
 using Composite.Core.Instrumentation;
 using Composite.Core.WebClient.Renderings.Page;
 

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Plugins;
-using Composite.Core.PageTemplates.Plugins.Runtime;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Data;
 using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 {
@@ -39,11 +37,8 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                     result.Add(descriptor);
                 }
                 
-                return result as IEnumerable<PageTemplateDescriptor>;
-            
-                // return null;
+                return result;
             }
-            
         }
 
         private static void ParseLayoutFile(IPageTemplate pageTemplate, out PlaceholderDescriptor[] placeholders, out string defaultPlaceholder)

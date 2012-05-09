@@ -72,7 +72,7 @@ namespace Composite.Core.PageTemplates.Foundation
 
                     pageTemplates.AddRange(templates);
 
-                    foreach (var template in pageTemplates)
+                    foreach (var template in templates)
                     {
                         resources.ProviderByTemplate.Add(template.Id, provider);
                     }
