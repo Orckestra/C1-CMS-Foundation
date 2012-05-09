@@ -80,6 +80,12 @@ namespace Composite.Core.WebClient.WCF
             {
                 _httpHandler = (IHttpHandler)WcfHttpHandler.GetConstructor(new Type[0]).Invoke(null);
             }
+
+            if(httpContext.User == null)
+            {
+                httpContext.User = System.Threading.Thread.CurrentPrincipal;
+            }
+
             _httpHandler.ProcessRequest(httpContext);
 
             httpContext.ApplicationInstance.CompleteRequest();
