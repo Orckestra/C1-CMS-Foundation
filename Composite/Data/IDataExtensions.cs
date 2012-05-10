@@ -12,6 +12,24 @@ using Composite.Core.Types;
 
 namespace Composite.Data
 {
+    internal class IdataEquilityCompararer<T> : IEqualityComparer<T> where T : IData
+    {
+        #region IEqualityComparer<T> Members
+
+        public bool Equals(T x, T y)
+        {
+            return x.GetUniqueKey<Guid>().Equals(y.GetUniqueKey<Guid>());
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return obj.GetUniqueKey<Guid>().GetHashCode();
+        }
+
+        #endregion
+    }
+
+
     /// <summary>    
     /// </summary>
     /// <exclude />
@@ -193,7 +211,7 @@ namespace Composite.Data
         /// </summary>
         /// <param name="data"></param>       
         /// <returns></returns>
-        internal static T GetUniqueKey<T>(this IData data)
+        public static T GetUniqueKey<T>(this IData data)
         {
             return (T)data.GetUniqueKey();
         }

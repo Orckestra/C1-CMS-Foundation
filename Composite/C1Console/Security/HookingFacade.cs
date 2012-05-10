@@ -25,7 +25,8 @@ namespace Composite.C1Console.Security
     [EditorBrowsable(EditorBrowsableState.Never)] 
     public static class HookingFacade
     {
-        internal delegate void NewElementProviderRootEntitiesDelegate(HookingFacadeEventArgs hookingFacadeEventArgs);
+        /// <exclude />
+        public delegate void NewElementProviderRootEntitiesDelegate(HookingFacadeEventArgs hookingFacadeEventArgs);
 
 
         private static IHookingFacade _hookingFacade = new HookingFacadeImpl();

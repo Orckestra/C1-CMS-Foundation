@@ -1,12 +1,17 @@
 using System;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using System.ComponentModel;
 
 
 namespace Composite.C1Console.Elements.Plugins.ElementProvider
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
     [Obsolete]
     [ConfigurationElementType(typeof(NonConfigurableElementProvider))]
-    internal class ElementProviderData : HooklessElementProviderData
+    public class ElementProviderData : HooklessElementProviderData
     {
     }
 }

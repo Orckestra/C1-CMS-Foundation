@@ -1,9 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 
 
 namespace Composite.C1Console.Security
 {
-    internal sealed class HookingFacadeEventArgs : EventArgs
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
+    public sealed class HookingFacadeEventArgs : EventArgs
     {
         public HookingFacadeEventArgs(string providerName)
         {
