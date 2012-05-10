@@ -7,14 +7,23 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Security.Foundation;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.Core.Logging;
+using System.ComponentModel;
 
 
 namespace Composite.C1Console.Security
 {
-    internal delegate void DirtyHooksCallbackDelegate();
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
+    public delegate void DirtyHooksCallbackDelegate();
 
 
-    internal static class HookingFacade
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [EditorBrowsable(EditorBrowsableState.Never)] 
+    public static class HookingFacade
     {
         internal delegate void NewElementProviderRootEntitiesDelegate(HookingFacadeEventArgs hookingFacadeEventArgs);
 
@@ -31,6 +40,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void EnsureInitialization()
         {
             _hookingFacade.EnsureInitialization();
@@ -38,6 +48,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<EntityToken> GetHookies(EntityToken hooker)
         {
             try
@@ -59,6 +70,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<EntityToken> GetParentHookers()
         {
             try
@@ -80,6 +92,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static IEnumerable<EntityToken> GetParentToChildHooks(EntityToken parentEntityToken)
         {
             try
@@ -101,6 +114,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void RemoveHook(EntityTokenHook entityTokenHook)
         {
             try
@@ -122,6 +136,8 @@ namespace Composite.C1Console.Security
         }
 
 
+
+        /// <exclude />
         public static void RemoveHooks(IEnumerable<EntityTokenHook> entityTokenHooks)
         {
             try
@@ -143,6 +159,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void AddHook(EntityTokenHook entityTokenHook)
         {
             try
@@ -164,6 +181,8 @@ namespace Composite.C1Console.Security
 
 
 
+
+        /// <exclude />
         public static void AddHooks(IEnumerable<EntityTokenHook> entityTokenHooks)
         {
             try
@@ -192,6 +211,7 @@ namespace Composite.C1Console.Security
         /// for each id.
         /// </param>
         /// <param name="dirtyHooksCallbackDelegate"></param>
+        /// <exclude />
         public static void RegisterDirtyCallback(string id, DirtyHooksCallbackDelegate dirtyHooksCallbackDelegate)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -202,6 +222,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void SubscribeToNewElementProviderRootEntitiesEvent(NewElementProviderRootEntitiesDelegate newElementProviderRootEntitiesDelegate)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -212,6 +233,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void UnsubscribeFromNewElementProviderRootEntitiesEvent(NewElementProviderRootEntitiesDelegate newElementProviderRootEntitiesDelegate)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -222,6 +244,7 @@ namespace Composite.C1Console.Security
 
 
 
+        /// <exclude />
         public static void FireNewElementProviderRootEntitiesEvent(string providerName)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
