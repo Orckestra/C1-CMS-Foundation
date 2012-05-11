@@ -245,6 +245,7 @@
     <Compile Include="Core\PageTemplates\IPageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\PageRenderingJob.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateDescriptor.cs" />
+    <Compile Include="Core\PageTemplates\PageTemplateEntityToken.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateFacade.cs" />
     <Compile Include="Core\PageTemplates\PlaceholderDescriptor.cs" />
     <Compile Include="Core\PageTemplates\Plugins\NonConfigurablePageTemplateProvider.cs" />
@@ -599,6 +600,7 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageRenderer.cs" />
+    <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplate.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProvider.cs" />
     <Compile Include="Plugins\Routing\Hostnames\FormFunctions.cs" />
     <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />

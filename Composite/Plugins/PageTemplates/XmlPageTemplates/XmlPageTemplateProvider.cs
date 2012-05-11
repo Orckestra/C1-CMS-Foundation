@@ -11,7 +11,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 {
     [ConfigurationElementType(typeof(NonConfigurablePageTemplateProvider))]
-    internal class XmlPageTemplateProvider: IPageTemplateProvider
+    internal class XmlPageTemplateProvider : IPageTemplateProvider
     {
         public IEnumerable<PageTemplateDescriptor> GetPageTemplateDescriptors()
         {
@@ -26,7 +26,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 
                     ParseLayoutFile(pageTemplate, out placeholders, out defaultPlaceholderId);
 
-                    PageTemplateDescriptor descriptor = new PageTemplateDescriptor
+                    PageTemplateDescriptor descriptor = new XmlPageTemplate(pageTemplate)
                     {
                         Id = pageTemplate.Id,
                         Title = pageTemplate.Title,

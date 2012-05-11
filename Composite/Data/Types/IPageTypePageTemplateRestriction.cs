@@ -33,7 +33,6 @@ namespace Composite.Data.Types
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{29A3D441-66EB-484D-A15D-077B5F070F42}")]
-        [ForeignKey(typeof(IPageTemplate), "Id")]
         Guid PageTemplateId { get; set; }
     }
 }

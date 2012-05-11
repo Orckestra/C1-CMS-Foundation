@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Workflow.Activities;
+using Composite.Core.PageTemplates;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.Linq;
@@ -10,7 +11,6 @@ using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
-using Composite.Data.DynamicTypes;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
@@ -80,7 +80,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
 
             List<KeyValuePair<Guid, string>> pageTemplates =
-                DataFacade.GetData<IPageTemplate>().
+                PageTemplateFacade.GetPageTemplates().
                 OrderBy(f => f.Title).
                 ToList(f => new KeyValuePair<Guid, string>(f.Id, f.Title));
 

@@ -5,6 +5,7 @@ using Composite.Core.IO.Plugins.IOProvider;
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 {
+    // TODO: has to implement IDisposable as it may contain unmanaged resources
     internal class LocalC1FileSystemWatcher : IC1FileSystemWatcher
     {
         private FileSystemWatcher _fileSystemWatcher;

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Composite.Core.Logging;
 
 
@@ -169,11 +171,21 @@ namespace Composite.C1Console.Elements
 
         }
 
+        internal void AddWorkflowAction(string workflowType, IEnumerable<PermissionType> permissionType, ActionVisualizedData visualizedData)
+        {
+            Type type = WorkflowFacade.GetWorkflowType(workflowType);
+
+            this.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(type, permissionType)))
+                               {
+                                   VisualData = visualizedData
+                               });
+        }
+
 
         /// <exclude />
         public void AddAction(ElementAction elementAction)
         {
-            if (elementAction == null) throw new ArgumentNullException("elementAction");
+            Verify.ArgumentNotNull(elementAction, "elementAction");
 
             if (_elementActions.Contains(elementAction) == false)
             {
@@ -190,7 +202,7 @@ namespace Composite.C1Console.Elements
         /// <exclude />
         public void AddAction(IEnumerable<ElementAction> elementActions)
         {
-            if (elementActions == null) throw new ArgumentNullException("elementActions");
+            Verify.ArgumentNotNull(elementActions, "elementActions");
 
             foreach (ElementAction elementAction in elementActions)
             {

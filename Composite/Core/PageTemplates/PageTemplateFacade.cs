@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.PageTemplates.Foundation.PluginFacade;
-using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 namespace Composite.Core.PageTemplates
 {
@@ -61,6 +60,5 @@ namespace Composite.Core.PageTemplates
 
             return provider.GetPageTemplateDescriptors().FirstOrDefault(t => t.Id == pageTemplateId);
         }
-
     }
 }

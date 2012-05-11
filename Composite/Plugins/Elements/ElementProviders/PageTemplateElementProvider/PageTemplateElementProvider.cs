@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.PageTemplates;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.C1Console.Elements;
@@ -8,10 +9,10 @@ using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
-using Composite.C1Console.Workflow;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
+using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
@@ -30,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
         
-        private static ResourceHandle GetIconHandle(string name)
+        internal static ResourceHandle GetIconHandle(string name)
         {
             return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
         }
@@ -53,25 +54,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             Element element = new Element(_context.CreateElementHandle(new PageTemplateRootEntityToken()));
 
-            bool hasChildren = DataFacade.GetData<IPageTemplate>().Count() != 0;
+            bool hasChildren = DataFacade.GetData<IPageTemplate>().Any();
 
             element.VisualData = new ElementVisualizedData
                          {
-                             Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabel"),
-                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabelToolTip"),
+                             Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabel"),
+                             ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.RootLabelToolTip"),
                              HasChildren = hasChildren,
                              Icon = PageTemplateElementProvider.RootClosed,
                              OpenedIcon = PageTemplateElementProvider.RootOpen
                          };
 
-            element.AddAction(new ElementAction(new ActionHandle(
-                new WorkflowActionToken(
-                    WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewPageTemplateWorkflow"),
-                    new PermissionType[] { PermissionType.Add }
-                ))) {
-                    VisualData = new ActionVisualizedData {
-                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplate"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplateToolTip"),
+            element.AddWorkflowAction(
+                    "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewPageTemplateWorkflow",
+                    new PermissionType[] { PermissionType.Add },
+                    new ActionVisualizedData {
+                        Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplate"),
+                        ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplateToolTip"),
                         Icon = PageTemplateElementProvider.AddTemplate,
                         Disabled = false,
                         ActionLocation = new ActionLocation {
@@ -80,7 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                             IsInToolbar = true,
                             ActionGroup = PrimaryActionGroup
                         }
-                    }});
+                    });
 
             
             return new List<Element> { element };
@@ -92,21 +91,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             if ((entityToken is PageTemplateRootEntityToken) == false) return new Element[] { };
 
+            var pageTemplates = PageTemplateFacade.GetPageTemplates();
 
-            IEnumerable<IPageTemplate> pageTemplates;
-            if (searchToken.IsValidKeyword() == false)
-            {
-                pageTemplates = DataFacade.GetData<IPageTemplate>();
-            }
-            else
+            if (searchToken.IsValidKeyword())
             {
                 string keyword = searchToken.Keyword.ToLowerInvariant();
 
-                pageTemplates = 
-                    from template in DataFacade.GetData<IPageTemplate>().ToList()
-                    where ((template.Title != null) && (template.Title.ToLowerInvariant().Contains(keyword))) ||
-                          (IFileServices.GetFile<IPageTemplateFile>(template.PageTemplateFilePath).ReadAllText().Contains(keyword))
-                    select template;                    
+                pageTemplates = pageTemplates
+                    .Where(t => t.Title.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > 0
+                                || t.Description.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > 0);
             }
 
             pageTemplates = pageTemplates.OrderBy(template => template.Title).ToList();
@@ -137,14 +130,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
 
 
-        private List<Element> GetElements(IEnumerable<IPageTemplate> pageTemplates)
+        private List<Element> GetElements(IEnumerable<PageTemplateDescriptor> pageTemplates)
         {
             List<Element> elements = new List<Element>();
 
-            foreach (IPageTemplate pageTemplate in pageTemplates)
+            foreach (PageTemplateDescriptor pageTemplate in pageTemplates)
             {
-                Element element = new Element(_context.CreateElementHandle(pageTemplate.GetDataEntityToken()));
+                var entityToken = pageTemplate.GetEntityToken();
 
+                Element element = new Element(_context.CreateElementHandle(entityToken));
 
                 element.VisualData = new ElementVisualizedData
                                      {
@@ -154,43 +148,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                                          Icon = PageTemplateElementProvider.DesignTemplate,
                                      };
 
-                element.AddAction(new ElementAction(new ActionHandle(
-                    new WorkflowActionToken(
-                        WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditPageTemplateWorkflow"),
-                        new PermissionType[] { PermissionType.Edit }
-                    )))
-                {
-                    VisualData = new ActionVisualizedData {
-                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplate"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplateToolTip"),
-                        Icon = PageTemplateElementProvider.EditTemplate,
-                        Disabled = false,
-                        ActionLocation = new ActionLocation {
-                            ActionType = ActionType.Edit,
-                            IsInFolder = false,
-                            IsInToolbar = true,
-                            ActionGroup = PrimaryActionGroup
-                        }
-                    }});
 
-
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.DeletePageTemplateWorkflow"), new [] { PermissionType.Delete })))
-                {
-                    VisualData = new ActionVisualizedData
-                    {
-                        Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplate"),
-                        ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplateToolTip"),
-                        Icon = DeleteTemplate,
-                        Disabled = false,
-                        ActionLocation = new ActionLocation
-                        {
-                            ActionType = ActionType.Delete,
-                            IsInFolder = false,
-                            IsInToolbar = true,
-                            ActionGroup = PrimaryActionGroup
-                        }
-                    }
-                });
+                pageTemplate.AppendActions(element);
 
 
                 elements.Add(element);
