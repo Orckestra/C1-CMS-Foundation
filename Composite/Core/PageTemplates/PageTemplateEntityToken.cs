@@ -5,10 +5,12 @@ using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
 
 namespace Composite.Core.PageTemplates
 {
+    /// <exclude />
     [SecurityAncestorProvider(typeof(PageTemplateEntityTokenSecurityAncestorProvider))]
-    internal sealed class PageTemplateEntityToken : EntityToken
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public sealed class PageTemplateEntityToken : EntityToken
     {
-        private string _id;
+        private readonly string _id;
 
         /// <exclude />
         public PageTemplateEntityToken(Guid templateId)

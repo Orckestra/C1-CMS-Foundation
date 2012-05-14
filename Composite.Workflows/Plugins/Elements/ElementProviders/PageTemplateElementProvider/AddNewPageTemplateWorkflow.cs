@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Composite.C1Console.Actions;
+using Composite.Core.PageTemplates.Foundation;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.IO;
@@ -100,6 +101,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             newPageTemplate.PageTemplateFilePath = "/" + pageTemplateFile.FileName;
             newPageTemplate = DataFacade.AddNew<IPageTemplate>(newPageTemplate);
+
+            PageTemplateProviderRegistry.Flush();
 
             addNewTreeRefresher.PostRefreshMesseges(newPageTemplate.GetDataEntityToken());
 

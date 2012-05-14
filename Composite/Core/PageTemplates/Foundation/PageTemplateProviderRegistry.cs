@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Composite.C1Console.Events;
 
 namespace Composite.Core.PageTemplates.Foundation
 {
-    internal static class PageTemplateProviderRegistry
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class PageTemplateProviderRegistry
     {
         private static readonly IPageTemplateProviderRegistry _registry = new PageTemplateProviderRegistryImpl();
 
@@ -14,6 +15,7 @@ namespace Composite.Core.PageTemplates.Foundation
             GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
+        /// <exclude />
         public static IEnumerable<string> ProviderNames
         {
             get
@@ -22,6 +24,7 @@ namespace Composite.Core.PageTemplates.Foundation
             }
         }
 
+        /// <exclude />
         public static IEnumerable<PageTemplateDescriptor> PageTemplates
         {
             get
@@ -30,11 +33,15 @@ namespace Composite.Core.PageTemplates.Foundation
             }
         }
 
+        /// <exclude />
         public static IPageTemplateProvider GetProviderByTemplateId(Guid pageTemplateId)
         {
             return _registry.GetProviderByTemplateId(pageTemplateId);
         }
 
+        /// <summary>
+        /// Flushes list of registered page templates
+        /// </summary>
         public static void Flush()
         {
             _registry.Flush();
