@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.Hierarchy;
@@ -12,24 +11,6 @@ using Composite.Core.Types;
 
 namespace Composite.Data
 {
-    internal class IdataEquilityCompararer<T> : IEqualityComparer<T> where T : IData
-    {
-        #region IEqualityComparer<T> Members
-
-        public bool Equals(T x, T y)
-        {
-            return x.GetUniqueKey<Guid>().Equals(y.GetUniqueKey<Guid>());
-        }
-
-        public int GetHashCode(T obj)
-        {
-            return obj.GetUniqueKey<Guid>().GetHashCode();
-        }
-
-        #endregion
-    }
-
-
     /// <summary>    
     /// </summary>
     /// <exclude />
