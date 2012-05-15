@@ -10,7 +10,10 @@ using Composite.Core.ResourceSystem;
 
 public partial class Composite_content_views_log_log : System.Web.UI.Page
 {
-    private const string DateTimeFormat = "yyyy MM dd";
+    private const string DateTimeFormat = "yyyy-MM-dd";
+
+    private const string View_DateTimeFormat = "yyyy-MM-dd HH:mm:ss.ff";
+    
 
     private string SelectedDateStr
     {
@@ -126,7 +129,7 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
                 XElement row = new XElement("tr");
                 row.Add(
                     new XElement("td", " ", color),
-                    new XElement("td", string.Format("{0} {1}", logEntry.TimeStamp.ToShortDateString(), logEntry.TimeStamp.ToShortTimeString())),
+                    new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
                     new XElement("td", new XElement("pre", logEntry.Message.Replace("\n", ""))),
                     new XElement("td", logEntry.Title),
                     new XElement("td", logEntry.Severity)
