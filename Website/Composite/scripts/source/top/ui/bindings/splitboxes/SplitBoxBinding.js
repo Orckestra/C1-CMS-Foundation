@@ -247,7 +247,7 @@ SplitBoxBinding.prototype.invokeLayout = function ( isFlexing ) {
 			this + " Invalid property (ratio)" 
 		);
 	} else {
-		var total = isHorizontal ? this.getWidth () : this.getHeight ();
+		var total = isHorizontal ? this.getInnerWidth() : this.getInnerHeight();
 		total -= fixedPanelSum;
 		splitterBindings.each ( function ( splitterBinding ) {
 			if ( splitterBinding.isVisible ) {
@@ -320,9 +320,9 @@ SplitBoxBinding.prototype.computeLayout = function () {
 	panelBindings.each ( function ( panelBinding ) {
 		
 		if ( !unit ) { // TODO: collapsed first binding?
-			unit = isHorizontal ? panelBinding.getWidth () : panelBinding.getHeight ();
+			unit = isHorizontal ? panelBinding.getWidth() : panelBinding.getHeight();
 		}
-		span = isHorizontal ? panelBinding.getWidth () : panelBinding.getHeight ();
+		span = isHorizontal ? panelBinding.getWidth() : panelBinding.getHeight();
 		if ( offset ) {
 			span -= offset;
 			offset = null;
@@ -405,7 +405,10 @@ SplitBoxBinding.prototype.setWidth = function ( width ) {
  * Get width.
  * @return {number}
  */
-SplitBoxBinding.prototype.getWidth = function () {
+SplitBoxBinding.prototype.getInnerWidth = function () {
+
+	if (Client.isFirefox)
+		return Math.floor(this.bindingElement.getBoundingClientRect().width);
 
 	return this.bindingElement.offsetWidth;
 }
@@ -423,7 +426,10 @@ SplitBoxBinding.prototype.setHeight = function ( height ) {
  * Get height.
  * @return {number}
  */
-SplitBoxBinding.prototype.getHeight = function () {
+SplitBoxBinding.prototype.getInnerHeight = function () {
+
+	if (Client.isFirefox)
+		return Math.floor(this.bindingElement.getBoundingClientRect().height);
 
 	return this.bindingElement.offsetHeight;
 }
