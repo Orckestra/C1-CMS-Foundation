@@ -8,7 +8,7 @@ namespace Composite.Core.PageTemplates
     /// <summary>
     /// Describes a page layout to the Composite C1 core so it may set up editing UI
     /// </summary>
-    public class PageTemplateDescriptor
+    public class PageTemplate
     {
         /// <summary>
         /// Used to identify page layouts. The value has to be unique for each page template.
@@ -57,9 +57,9 @@ namespace Composite.Core.PageTemplates
         /// Appends actions to a visual element.
         /// </summary>
         /// <param name="element">The element.</param>
-        public virtual void AppendActions(Element element)
+        public virtual IEnumerable<ElementAction> GetActions()
         {
-            // Doing nothing
+            return new ElementAction[0];
         }
     }
 }

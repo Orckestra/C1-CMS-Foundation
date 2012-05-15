@@ -93,7 +93,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
 
-            List<PageTemplateDescriptor> allPageTemplates = PageTemplateFacade.GetPageTemplates().ToList();
+            List<PageTemplate> allPageTemplates = PageTemplateFacade.GetPageTemplates().ToList();
 
             List<Guid> templateRestrictions = 
                 DataFacade.GetData<IPageTypePageTemplateRestriction>()
@@ -101,19 +101,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 .Select(restriction => restriction.PageTemplateId)
                 .ToList();
 
-            IEnumerable<PageTemplateDescriptor> result;
+            IEnumerable<PageTemplate> result;
 
             if (templateRestrictions.Any() == true)
             {
                 var allowedTemplatesHash = new HashSet<Guid>(templateRestrictions);
 
-                List<PageTemplateDescriptor> allowedTemplates =
+                List<PageTemplate> allowedTemplates =
                     allPageTemplates
                     .Where(template => allowedTemplatesHash.Contains(template.Id))
                     .ToList();
 
                 Guid selectedTemplateId = selectedPage.TemplateId;
-                PageTemplateDescriptor selectedTemplate = allPageTemplates.FirstOrDefault(t => t.Id == selectedTemplateId);
+                PageTemplate selectedTemplate = allPageTemplates.FirstOrDefault(t => t.Id == selectedTemplateId);
                 if (selectedTemplate != null
                     & !allowedTemplates.Any(t => t.Id == selectedTemplateId))
                 {

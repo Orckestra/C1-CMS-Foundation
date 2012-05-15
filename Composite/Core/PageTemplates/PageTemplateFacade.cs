@@ -15,16 +15,15 @@ namespace Composite.Core.PageTemplates
         /// Gets the page templates.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<PageTemplateDescriptor> GetPageTemplates()
+        public static IEnumerable<PageTemplate> GetPageTemplates()
         {
-            // TODO: optimize if necessary
-            var result = new List<PageTemplateDescriptor>();
+            var result = new List<PageTemplate>();
 
             foreach (string providerName in PageTemplateProviderRegistry.ProviderNames)
             {
                 var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
 
-                var templates = provider.GetPageTemplateDescriptors();
+                var templates = provider.GetPageTemplates();
 
                 result.AddRange(templates);
             }
@@ -49,7 +48,7 @@ namespace Composite.Core.PageTemplates
         /// </summary>
         /// <param name="pageTemplateId">The page template id.</param>
         /// <returns></returns>
-        public static PageTemplateDescriptor GetPageTemplate(Guid pageTemplateId)
+        public static PageTemplate GetPageTemplate(Guid pageTemplateId)
         {
             var provider = PageTemplateProviderRegistry.GetProviderByTemplateId(pageTemplateId);
 
@@ -58,7 +57,7 @@ namespace Composite.Core.PageTemplates
                 return null;
             }
 
-            return provider.GetPageTemplateDescriptors().FirstOrDefault(t => t.Id == pageTemplateId);
+            return provider.GetPageTemplates().FirstOrDefault(t => t.Id == pageTemplateId);
         }
     }
 }

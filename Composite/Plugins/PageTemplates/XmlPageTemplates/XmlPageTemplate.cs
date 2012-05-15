@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Composite.Core.PageTemplates;
 using Composite.Core.ResourceSystem;
 using Composite.Data;
@@ -11,12 +13,12 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 {
-    internal class XmlPageTemplate: PageTemplateDescriptor
+    internal class XmlPageTemplate: PageTemplate
     {
         public static ResourceHandle DeleteTemplate { get { return PageTemplateElementProvider.GetIconHandle("page-template-delete"); } }
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
-        private IPageTemplate _pageTemplate;
+        private readonly IPageTemplate _pageTemplate;
 
         public XmlPageTemplate(IPageTemplate pageTemplate)
         {
@@ -28,12 +30,15 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
             return _pageTemplate.GetDataEntityToken();
         }
 
-        public override void AppendActions(C1Console.Elements.Element element)
+        public override IEnumerable<ElementAction> GetActions()
         {
-            element.AddWorkflowAction(
-                       "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditPageTemplateWorkflow",
-                        new [] { PermissionType.Edit },
-                new ActionVisualizedData
+            var result = new List<ElementAction>();
+
+            Type type = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditPageTemplateWorkflow");
+
+            result.Add(new ElementAction(new ActionHandle(new WorkflowActionToken(type, new[] { PermissionType.Edit })))
+            {
+                VisualData = new ActionVisualizedData
                 {
                     Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplate"),
                     ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplateToolTip"),
@@ -46,13 +51,14 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                         IsInToolbar = true,
                         ActionGroup = PrimaryActionGroup
                     }
-                });
+                }
+            });
 
+            type = WorkflowFacade.GetWorkflowType( "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.DeletePageTemplateWorkflow");
 
-            element.AddWorkflowAction(
-                "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.DeletePageTemplateWorkflow", 
-                new[] { PermissionType.Delete },
-                new ActionVisualizedData
+            result.Add(new ElementAction(new ActionHandle(new WorkflowActionToken(type, new[] { PermissionType.Delete })))
+            {
+                VisualData = new ActionVisualizedData
                 {
                     Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplate"),
                     ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplateToolTip"),
@@ -66,7 +72,9 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                         ActionGroup = PrimaryActionGroup
                     }
                 }
-            );
+            });
+
+            return result;
         }
     }
 }

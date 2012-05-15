@@ -1,20 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Web;
-using System.Web.Security;
+using System.Collections.Generic;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Xml.Linq;
 using Composite.Core.PageTemplates;
 using Composite.Plugins.Forms.WebChannel.CustomUiControls;
-using Composite.Core.Xml;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.Core.WebClient.Renderings.Template;
-using System.Collections.Generic;
-using Composite.Core.Types;
-using Composite.Core.Logging;
 
 namespace CompositePageContentEditor
 {
@@ -77,7 +66,7 @@ namespace CompositePageContentEditor
 
         private void SetUpTextAreas(bool flush)
         {
-            PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
+            PageTemplate pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
 
             List<string> handledIds = new List<string>();
 
@@ -125,15 +114,7 @@ namespace CompositePageContentEditor
             testContent = testContent.Replace(" ", "");
             testContent = testContent.Replace("<br/>", "");
 
-            if (string.IsNullOrEmpty(testContent) == true)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-            
+            return !string.IsNullOrEmpty(testContent);
         }
 
     }

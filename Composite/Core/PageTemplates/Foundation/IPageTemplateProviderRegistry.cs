@@ -8,7 +8,7 @@ namespace Composite.Core.PageTemplates.Foundation
         void Flush();
 
         IEnumerable<string> ProviderNames { get; }
-        IEnumerable<PageTemplateDescriptor> PageTemplates { get; }
+        IEnumerable<PageTemplate> PageTemplates { get; }
 
         IPageTemplateProvider GetProviderByTemplateId(Guid pageTemplateId);
 

@@ -25,7 +25,7 @@ namespace Composite.Core.PageTemplates.Foundation
         }
 
         /// <exclude />
-        public static IEnumerable<PageTemplateDescriptor> PageTemplates
+        public static IEnumerable<PageTemplate> PageTemplates
         {
             get
             {

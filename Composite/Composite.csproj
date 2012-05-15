@@ -244,7 +244,7 @@
     <Compile Include="Core\PageTemplates\IPageRenderer.cs" />
     <Compile Include="Core\PageTemplates\IPageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\PageRenderingJob.cs" />
-    <Compile Include="Core\PageTemplates\PageTemplateDescriptor.cs" />
+    <Compile Include="Core\PageTemplates\PageTemplate.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateEntityToken.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateFacade.cs" />
     <Compile Include="Core\PageTemplates\PlaceholderDescriptor.cs" />

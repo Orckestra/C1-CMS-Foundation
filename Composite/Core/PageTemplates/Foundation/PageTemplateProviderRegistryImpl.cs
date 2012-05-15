@@ -35,7 +35,7 @@ namespace Composite.Core.PageTemplates.Foundation
         }
 
 
-        public IEnumerable<PageTemplateDescriptor> PageTemplates
+        public IEnumerable<PageTemplate> PageTemplates
         {
             get 
             {
@@ -54,7 +54,7 @@ namespace Composite.Core.PageTemplates.Foundation
         {
             public IEnumerable<string> ProviderNames { get; set; }
 
-            public IEnumerable<PageTemplateDescriptor> PageTemplates { get; set; }
+            public IEnumerable<PageTemplate> PageTemplates { get; set; }
             public Hashtable<Guid, IPageTemplateProvider> ProviderByTemplate { get; set; }
 
 
@@ -63,12 +63,12 @@ namespace Composite.Core.PageTemplates.Foundation
                 resources.ProviderByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
                 resources.ProviderNames = GetProviderNames();
 
-                var pageTemplates = new List<PageTemplateDescriptor>();
+                var pageTemplates = new List<PageTemplate>();
 
                 foreach (string providerName in resources.ProviderNames)
                 {
                     var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
-                    var templates = provider.GetPageTemplateDescriptors();
+                    var templates = provider.GetPageTemplates();
 
                     pageTemplates.AddRange(templates);
 

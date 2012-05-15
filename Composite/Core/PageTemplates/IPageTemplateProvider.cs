@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Composite.C1Console.Elements;
 using Composite.Core.PageTemplates.Plugins.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
@@ -15,7 +16,7 @@ namespace Composite.Core.PageTemplates
         /// Gets the page template descriptors.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<PageTemplateDescriptor> GetPageTemplateDescriptors();
+        IEnumerable<PageTemplate> GetPageTemplates();
 
         /// <summary>
         /// Factory that give Composite C1 a IPageLayouter capable of rendering a Composite C1 page with the specified layout ID.
@@ -23,5 +24,10 @@ namespace Composite.Core.PageTemplates
         /// </summary>
         /// <returns></returns>
         IPageRenderer BuildPageRenderer();
+
+        /// <summary>
+        /// Adds element actions on "Page templates" element
+        /// </summary>
+        IEnumerable<ElementAction> GetRootActions();
     }
 }

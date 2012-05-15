@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
@@ -51,7 +48,7 @@ namespace Composite.Core.PageTemplates.Foundation.PluginFacade
         {
             Flush();
 
-            string sectionName = PageTemplateProviderSettings.SectionName;
+            const string sectionName = PageTemplateProviderSettings.SectionName;
 
             throw new ConfigurationErrorsException(
                 "Failed to load the configuration section '{0}' from the configuration.".FormatWith(sectionName), 

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.PageTemplates;
+using Composite.Core.PageTemplates.Foundation;
+using Composite.Core.PageTemplates.Foundation.PluginFacade;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.C1Console.Elements;
@@ -29,7 +31,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         public static ResourceHandle EditTemplate { get { return GetIconHandle("page-template-edit"); } }
         public static ResourceHandle DeleteTemplate { get { return GetIconHandle("page-template-delete"); } }
 
-        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
         
         internal static ResourceHandle GetIconHandle(string name)
         {
@@ -65,24 +66,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                              OpenedIcon = PageTemplateElementProvider.RootOpen
                          };
 
-            element.AddWorkflowAction(
-                    "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewPageTemplateWorkflow",
-                    new PermissionType[] { PermissionType.Add },
-                    new ActionVisualizedData {
-                        Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplate"),
-                        ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplateToolTip"),
-                        Icon = PageTemplateElementProvider.AddTemplate,
-                        Disabled = false,
-                        ActionLocation = new ActionLocation {
-                            ActionType = ActionType.Add,
-                            IsInFolder = false,
-                            IsInToolbar = true,
-                            ActionGroup = PrimaryActionGroup
-                        }
-                    });
+            foreach(var pageTemplateProviderName in PageTemplateProviderRegistry.ProviderNames)
+            {
+                var provider = PageTemplateProviderPluginFacade.GetProvider(pageTemplateProviderName);
 
-            
-            return new List<Element> { element };
+                Verify.IsNotNull(provider, "Failed to get provider by name '{0}'", pageTemplateProviderName);
+
+                IEnumerable<ElementAction> actions = provider.GetRootActions();
+
+                element.AddAction(actions);
+            }
+
+            return new [] { element };
         }
 
 
@@ -130,11 +125,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
 
 
-        private List<Element> GetElements(IEnumerable<PageTemplateDescriptor> pageTemplates)
+        private IEnumerable<Element> GetElements(IEnumerable<PageTemplate> pageTemplates)
         {
             List<Element> elements = new List<Element>();
 
-            foreach (PageTemplateDescriptor pageTemplate in pageTemplates)
+            foreach (PageTemplate pageTemplate in pageTemplates)
             {
                 var entityToken = pageTemplate.GetEntityToken();
 
@@ -148,9 +143,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                                          Icon = PageTemplateElementProvider.DesignTemplate,
                                      };
 
+                IEnumerable<ElementAction> actions = pageTemplate.GetActions();
 
-                pageTemplate.AppendActions(element);
-
+                element.AddAction(actions);
 
                 elements.Add(element);
             }

@@ -87,7 +87,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
             Dictionary<Guid, string> templateInfos = new Dictionary<Guid, string>();
 
-            foreach (PageTemplateDescriptor pageTemplate in PageTemplateFacade.GetPageTemplates())
+            foreach (PageTemplate pageTemplate in PageTemplateFacade.GetPageTemplates())
             {
                 if (pageTemplate.PlaceholderDescriptions.Any())
                 {
@@ -192,10 +192,10 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
                 previewPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
-                var pageTemplateDescriptor = PageTemplateFacade.GetPageTemplate(previewPage.TemplateId);
+                var pageTemplate = PageTemplateFacade.GetPageTemplate(previewPage.TemplateId);
                 IPagePlaceholderContent placeHolderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                 placeHolderContent.Content = string.Concat((result.Body.Elements().Select(b => b.ToString())).ToArray());
-                placeHolderContent.PlaceHolderId = pageTemplateDescriptor.DefaultPlaceholderId;
+                placeHolderContent.PlaceHolderId = pageTemplate.DefaultPlaceholderId;
 
                 Control renderedPage = previewPage.Render(new List<IPagePlaceholderContent> { placeHolderContent }, fcc);
                 PageRenderer.DisableAspNetPostback(renderedPage);
