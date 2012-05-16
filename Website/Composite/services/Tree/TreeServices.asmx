@@ -34,6 +34,8 @@ namespace Composite.Services
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class TreeServices : WebService
     {
+        private const string LogTitle = "TreeService";
+        
         private void RemoveDuplicateActions(List<ClientElement> listToClean)
         {
             List<string> knownActionKeys = new List<string>();
@@ -70,8 +72,8 @@ namespace Composite.Services
             }
             catch (Exception ex)
             {
-                Log.LogCritical("TreeService", "Unable to get any perspectives, console will not work!");
-                Log.LogCritical("TreeService", ex);
+                Log.LogCritical(LogTitle, "Unable to get any perspectives, console will not work!");
+                Log.LogCritical(LogTitle, ex);
                 return new List<ClientElement>();
             }
         }
@@ -160,7 +162,7 @@ namespace Composite.Services
         [WebMethod]
         public List<ClientElement> GetNamedRootsBySearchToken(string name, string serializedSearchToken)
         {
-            if (true == (string.IsNullOrEmpty(name))) throw new ArgumentNullException("name");
+            Verify.ArgumentNotNullOrEmpty(name, "name");
 
             List<ClientElement> clientElements = TreeServicesFacade.GetRoots(name, serializedSearchToken);
             RemoveDuplicateActions(clientElements);
@@ -208,6 +210,7 @@ namespace Composite.Services
             }
             catch (Exception ex)
             {
+                Log.LogError(LogTitle, ex);
 
                 IConsoleMessageQueueItem errorLogEntry = new LogEntryMessageQueueItem { Sender = typeof(TreeServices), Level = Composite.Core.Logging.LogLevel.Error, Message = ex.ToString() };
                 ConsoleMessageQueueFacade.Enqueue(errorLogEntry, consoleId);
@@ -318,10 +321,6 @@ namespace Composite.Services
                 {
                     string label = string.Format("{0} ({1}:{2})", matchingMedia.FileName, matchingMedia.StoreId, matchingMedia.FolderPath);
                     return label;
-                }
-                else
-                {
-                    return path;
                 }
             }
             
