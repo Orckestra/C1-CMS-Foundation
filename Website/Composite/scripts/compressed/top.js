@@ -17116,7 +17116,7 @@ sum=1;
 if(_b19.getLength()!=_b17.getLength()){
 throw new Error(this+" Invalid property (ratio)");
 }else{
-var _b1e=_b16?this.getWidth():this.getHeight();
+var _b1e=_b16?this.getInnerWidth():this.getInnerHeight();
 _b1e-=_b1c;
 _b18.each(function(_b1f){
 if(_b1f.isVisible){
@@ -17222,13 +17222,19 @@ this.setProperty("layout",layout);
 SplitBoxBinding.prototype.setWidth=function(_b36){
 this.bindingElement.style.width=_b36+"px";
 };
-SplitBoxBinding.prototype.getWidth=function(){
+SplitBoxBinding.prototype.getInnerWidth=function(){
+if(Client.isFirefox){
+return Math.floor(this.bindingElement.getBoundingClientRect().width);
+}
 return this.bindingElement.offsetWidth;
 };
 SplitBoxBinding.prototype.setHeight=function(_b37){
 this.bindingElement.style.height=_b37+"px";
 };
-SplitBoxBinding.prototype.getHeight=function(){
+SplitBoxBinding.prototype.getInnerHeight=function(){
+if(Client.isFirefox){
+return Math.floor(this.bindingElement.getBoundingClientRect().height);
+}
 return this.bindingElement.offsetHeight;
 };
 SplitBoxBinding.prototype.getOrient=function(){
