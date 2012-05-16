@@ -131,7 +131,14 @@ namespace Composite.Core.Xml
                     }
                     else
                     {
-                        source.Add(targetChild);
+                        if (targetChild.Name.LocalName == "configSections")
+                        {
+                            source.AddFirst(targetChild);
+                        }
+                        else
+                        {
+                            source.Add(targetChild);
+                        }
                     }
                 }
             }
