@@ -33,18 +33,27 @@ function submit ( list, url ) {
 	var form = document.forms [ 0 ];
 	form.action = top.Resolver.resolve ( url );
 	var debug = "Posting to: " + form.action +"\n\n";
-	
-	list.each ( function ( object ) {
-		var input = document.createElement ( "input" );
-		input.name = object.name;
-		input.value = object.value;
-		
-		// DELETE THIS NOW???
-		input.setAttribute ( "name", new String ( object.name )); // FF4.0 beta bug!!!
-		input.setAttribute ( "value", new String ( object.value )); // FF4.0 beta bug!!!
-		
-		form.appendChild ( input );
-		debug += object.name + ": " + object.value  + "\n";
+
+	list.each(function (object) {
+		if (object.value != null && object.value.indexOf('\n') > -1) {
+			var textarea = document.createElement("textarea");
+			textarea.name = object.name;
+			textarea.value = object.value;
+
+			form.appendChild(textarea);
+		}
+		else {
+			var input = document.createElement("input");
+			input.name = object.name;
+			input.value = object.value;
+
+			// DELETE THIS NOW???
+			input.setAttribute("name", new String(object.name)); // FF4.0 beta bug!!!
+			input.setAttribute("value", new String(object.value)); // FF4.0 beta bug!!!
+
+			form.appendChild(input);
+		}
+		debug += object.name + ": " + object.value + "\n";
 	});
 	
 	/*
