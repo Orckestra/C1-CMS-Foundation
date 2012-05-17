@@ -91,7 +91,9 @@ TinyDialogPageBinding.prototype._populateClassNameSelector = function (elementNa
 					if (format.props.block == null && format.props.inline == null) {
 						if (this.canApplyDirect(format.id, elementName)) {
 							list.add({
-								value: format.props.classes
+								value: format.props.classes,
+								label: format.label,
+								image: (format.image != null && format.image != "") ? (Constants.CONFIGROOT + format.image) : null
 							});
 							
 						}

@@ -151,49 +151,52 @@ DataInputSelectorBinding.prototype.buildSelections = function () {
 /**
  * @param {List} list
  */
-DataInputSelectorBinding.prototype.populateFromList = function ( list ) {
-	
+DataInputSelectorBinding.prototype.populateFromList = function (list) {
+
 	var bodyBinding = this._menuBodyBinding;
 	var bodyDocument = bodyBinding.bindingDocument;
-	
+
 	/* 
-	 * Dispose existing content, remembering that bindings 
-	 * may not be attached (before the button is pressed).
-	 */
-	while ( bodyBinding.bindingElement.hasChildNodes ()) {
+	* Dispose existing content, remembering that bindings 
+	* may not be attached (before the button is pressed).
+	*/
+	while (bodyBinding.bindingElement.hasChildNodes()) {
 		var node = bodyBinding.bindingElement.lastChild;
-		if ( node.nodeType == Node.ELEMENT_NODE && UserInterface.hasBinding ( node )) {
-			UserInterface.getBinding ( node ).dispose ();
+		if (node.nodeType == Node.ELEMENT_NODE && UserInterface.hasBinding(node)) {
+			UserInterface.getBinding(node).dispose();
 		} else {
-			bodyBinding.removeChild ( node );
+			bodyBinding.removeChild(node);
 		}
 	}
-	 
+
 	/*
-	 * Add new content.
-	 */
-	if ( list.hasEntries ()) {
-	
+	* Add new content.
+	*/
+	if (list.hasEntries()) {
+
 		this._isUpToDate = false;
-	
-		if ( !this._buttonBinding.isVisible ) {
-			this._buttonBinding.show ();
+
+		if (!this._buttonBinding.isVisible) {
+			this._buttonBinding.show();
 		}
-		while ( list.hasNext ()) {
-			var entry = list.getNext ();
-			var itemBinding = MenuItemBinding.newInstance ( bodyDocument );
-			itemBinding.setLabel ( entry.value );
+		while (list.hasNext()) {
+			var entry = list.getNext();
+			var itemBinding = MenuItemBinding.newInstance(bodyDocument);
+			itemBinding.setLabel(entry.label ? entry.label : entry.value);
 			itemBinding.selectionValue = entry.value;
-			if ( entry.toolTip ) {
-				itemBinding.setToolTip ( entry.toolTip );
+			if (entry.image) {
+				itemBinding.setImage(entry.image);
 			}
-			if ( entry.isSelected ) {
-				this.select ( itemBinding, true );
+			if (entry.toolTip) {
+				itemBinding.setToolTip(entry.toolTip);
 			}
-			bodyBinding.add ( itemBinding );
+			if (entry.isSelected) {
+				this.select(itemBinding, true);
+			}
+			bodyBinding.add(itemBinding);
 		}
 	} else {
-		this._buttonBinding.hide ();
+		this._buttonBinding.hide();
 	}
 }
 

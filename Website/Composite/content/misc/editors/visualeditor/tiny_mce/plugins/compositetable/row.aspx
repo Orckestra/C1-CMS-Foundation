@@ -59,6 +59,13 @@
 											</ui:selector>
 										</ui:fielddata>
 									</ui:field>
+									<ui:field>
+										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelClass}"/>
+										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpClass}"/>
+										<ui:fielddata>
+											<ui:datainputselector id="classnameselector" name="classname"/>
+										</ui:fielddata>
+									</ui:field>
 							    </ui:fieldgroup>
 								<ui:fieldgroup label="${string:Composite.Web.VisualEditor:Tables.Row.LabelScope}">
 									<ui:field>
@@ -78,13 +85,6 @@
 						<ui:tabpanel>
 							<ui:fields>
 								 <ui:fieldgroup label="${string:Composite.Web.VisualEditor:LabelPresentation}">
-									<ui:field>
-										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelClass}"/>
-										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpClass}"/>
-										<ui:fielddata>
-											<ui:datainputselector id="classnameselector" name="classname"/>
-										</ui:fielddata>
-									</ui:field>
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelId}"/>
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpId}"/>
