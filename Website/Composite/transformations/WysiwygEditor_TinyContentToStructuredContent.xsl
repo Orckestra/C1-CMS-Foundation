@@ -95,6 +95,24 @@
     </xsl:choose>
   </xsl:template>
 
+	<!-- more tinymce internals -->
+	<xsl:template match="@class[contains(.,'mceItemAnchor')]">
+		<xsl:choose>
+			<xsl:when test=".='mceItemAnchor'" />
+			<xsl:when test="contains(.,' mceItemAnchor')">
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-before(.,' mceItemAnchor')" />
+					<xsl:value-of select="substring-after(.,' mceItemAnchor')" />
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-after(.,'mceItemAnchor ')" />
+				</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
   <!-- more tinymce internals -->
   <xsl:template match="x:a/@tinymcetargetalias">
     <xsl:attribute name="target">
