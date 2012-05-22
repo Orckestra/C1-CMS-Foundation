@@ -23,7 +23,7 @@ namespace Composite.Core.PageTemplates.Foundation.PluginFacade
 
             if (result == null)
             {
-                lock (resources.Locker)
+                using (resources.Locker)
                 {
                     result = resources.Resources.ProviderCache[providerName];
                     if (result == null)
