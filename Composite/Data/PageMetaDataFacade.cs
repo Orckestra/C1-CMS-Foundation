@@ -375,9 +375,10 @@ namespace Composite.Data
 
             Expression whereExpression = ExpressionCreator.Where(DataFacade.GetData(metaDataType).Expression, lambdaExpression);
 
-            IEnumerable<IData> datas = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
+            IEnumerable<IData> dataset = ExpressionHelper.GetCastedObjects<IData>(metaDataType, whereExpression);
 
-            return datas.SingleOrDefault();
+            return dataset.SingleOrDefaultOrException("There're multiple meta data on a page. Page '{0}', definition name '{1}', meta type '{2}'",
+                                                      pageId, definitionName, metaDataType.FullName);
         }
 
 
@@ -649,7 +650,7 @@ namespace Composite.Data
 
             IEnumerable<IPage> affectedPages = PageMetaDataFacade.GetMetaDataAffectedPagesByPageTypeId(definingPageType.Id);
 
-
+            AddNewMetaDataToExistingPages(affectedPages, metaDataDefinitionName, metaDataType, newDataTemplate);
         }
 
 
