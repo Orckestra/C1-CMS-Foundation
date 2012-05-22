@@ -13002,8 +13002,11 @@ this._buttonBinding.show();
 while(list.hasNext()){
 var _8de=list.getNext();
 var _8df=MenuItemBinding.newInstance(_8dc);
-_8df.setLabel(_8de.value);
+_8df.setLabel(_8de.label?_8de.label:_8de.value);
 _8df.selectionValue=_8de.value;
+if(_8de.image){
+_8df.setImage(_8de.image);
+}
 if(_8de.toolTip){
 _8df.setToolTip(_8de.toolTip);
 }
