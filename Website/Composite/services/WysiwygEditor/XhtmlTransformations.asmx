@@ -76,13 +76,7 @@ namespace Composite.Services
                         string html = HttpUtility.UrlDecode(htmlWysiwygImageElement.Attribute("alt").Value);
                         XElement functionElement = XElement.Parse(html);
 
-                        bool functionAloneInParagraph =
-                            htmlWysiwygImageElement.ElementsBeforeSelf().Any() == false &&
-                            htmlWysiwygImageElement.ElementsAfterSelf().Any() == false &&
-                            htmlWysiwygImageElement.Parent.Name == Namespaces.Xhtml + "p" &&
-                            htmlWysiwygImageElement.Parent.Value.Replace("&#160;", "").Trim() == "";
-
-                        if (functionAloneInParagraph == true)
+                        if (IsFunctionAloneInParagraph(htmlWysiwygImageElement))
                         {
                             htmlWysiwygImageElement.Parent.ReplaceWith(functionElement);
                         }
@@ -109,13 +103,7 @@ namespace Composite.Services
                         string functionMarkup = HttpUtility.UrlDecode(functionImageElement.Attribute("alt").Value);
                         XElement functionElement = XElement.Parse(functionMarkup);
 
-                        bool functionAloneInParagraph =
-                            functionImageElement.ElementsBeforeSelf().Any() == false &&
-                            functionImageElement.ElementsAfterSelf().Any() == false &&
-                            functionImageElement.Parent.Name == Namespaces.Xhtml + "p" &&
-                            functionImageElement.Parent.Value.Replace("&#160;", "").Trim() == "";
-
-                        if (functionAloneInParagraph == true)
+                        if (IsFunctionAloneInParagraph(functionImageElement))
                         {
                             functionImageElement.Parent.ReplaceWith(functionElement);
                         }
@@ -165,6 +153,29 @@ namespace Composite.Services
                 throw;
             }
         }
+
+		private static List<XName> paragraphList = new List<XName>(){
+				Namespaces.Xhtml + "p",
+				Namespaces.Xhtml + "h1",
+				Namespaces.Xhtml + "h2",
+				Namespaces.Xhtml + "h3",
+				Namespaces.Xhtml + "h4",
+				Namespaces.Xhtml + "h5",
+				Namespaces.Xhtml + "h6"};
+		
+		private static bool IsFunctionAloneInParagraph(XElement element)
+		{
+			if(element.ElementsBeforeSelf().Where(d=> d.Name != Namespaces.Xhtml + "br").Any())
+				return false;
+			if(element.ElementsAfterSelf().Where(d=> d.Name != Namespaces.Xhtml + "br").Any())
+				return false;
+			if(!paragraphList.Contains(element.Parent.Name))
+				return false;
+			if(element.Parent.Value.Replace("&#160;", "").Trim() != string.Empty)
+				return false;
+			return true;
+
+		}
 
         private static string FixXhtmlFragment(string xhtmlFragment)
         {
