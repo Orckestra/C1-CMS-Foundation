@@ -63,7 +63,7 @@
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:LabelClass}"/>
 										<ui:fieldhelp label="${string:Composite.Web.VisualEditor:HelpClass}"/>
 										<ui:fielddata>
-											<ui:datainputselector id="classnameselector" name="classname"/>
+											<ui:datainputselector id="classnameselector" name="classname" image="${icon:editor-classselector}" emptyentrylabel="${string:Composite.Web.VisualEditor:ClassSelector.LabelNone}"/>
 										</ui:fielddata>
 									</ui:field>
 							    </ui:fieldgroup>

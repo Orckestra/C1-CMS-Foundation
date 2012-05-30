@@ -62,7 +62,13 @@ function DataInputSelectorBinding () {
 	 * @type {Map<string><boolean>}
 	 * @overwrites {Binding#crawlerFilters}
 	 */
-	this.crawlerFilters	= new List ([ DocumentCrawler.ID, FocusCrawler.ID ]);
+	this.crawlerFilters = new List([DocumentCrawler.ID, FocusCrawler.ID]);
+
+	/**
+	* Used for saving value in readonly mode.
+	* @type {string}
+	*/
+	this.value = null;
 }
 
 /**
@@ -90,6 +96,31 @@ DataInputSelectorBinding.prototype._buildDOMContent = function () {
 	this.buildButton ();
 	this.buildPopup ();
 	this.buildSelections ();
+}
+
+
+/**
+* @overloads {Binding#onBindingAttach}
+*/
+DataInputSelectorBinding.prototype.onBindingAttach = function () {
+
+	DataInputSelectorBinding.superclass.onBindingAttach.call(this);
+
+	var image = this.getProperty("image");
+	if (image) {
+		this.setImage(image);
+	}
+
+	var self = this;
+	DOMEvents.addEventListener(this.shadowTree.input, DOMEvents.DOUBLECLICK, {
+		handleEvent: function (e) {
+			if (self.isReadOnly) {
+				self.shadowTree.input.value = self.value;
+				self.setReadOnly(false);
+				self.focus();
+			}
+		}
+	});
 }
 
 /**
@@ -179,6 +210,16 @@ DataInputSelectorBinding.prototype.populateFromList = function (list) {
 		if (!this._buttonBinding.isVisible) {
 			this._buttonBinding.show();
 		}
+
+		var emptyEntryLabel = this.getProperty("emptyentrylabel")
+		if (emptyEntryLabel)
+		{
+			var itemBinding = MenuItemBinding.newInstance(bodyDocument);
+			itemBinding.setLabel(emptyEntryLabel);
+			itemBinding.selectionValue = "";
+			bodyBinding.add(itemBinding);
+		}
+
 		while (list.hasNext()) {
 			var entry = list.getNext();
 			var itemBinding = MenuItemBinding.newInstance(bodyDocument);
@@ -407,3 +448,115 @@ DataInputSelectorBinding.prototype._attachSelections = SelectorBinding.prototype
  * @param {object} result
  */
 DataInputSelectorBinding.prototype.setResult = DataInputSelectorBinding.prototype.setValue;
+
+/**
+* OnBlur event
+* @overloads {DataInputBinding#onblur}
+*/
+DataInputSelectorBinding.prototype.onblur = function () {
+
+	DataInputSelectorBinding.superclass.onblur.call(this);
+
+	if (!self.isReadOnly) {
+		this.setValue(this.getValue());
+	}
+}
+
+/**
+* Set value.
+* @param {String} value
+* @overloads {DataInputBinding#setValue}
+*/
+DataInputSelectorBinding.prototype.setValue = function (value) {
+
+	var oldIsListValue = this.isReadOnly;
+	var label = null;
+
+	if (value != null && value != "") {
+		var items = this._menuBodyBinding.getDescendantBindingsByLocalName("menuitem");
+		while (items.hasNext()) {
+			var item = items.getNext();
+			if (item.selectionValue == value) {
+				label = item.getLabel();
+				break;
+			}
+		}
+	}
+
+	if (label != null) {
+		this.value = value;
+		this.shadowTree.input.value = label;
+		if (!this.isReadOnly)
+			this.setReadOnly(true);
+
+	} else {
+		DataInputSelectorBinding.superclass.setValue.call(this, value);
+		if (this.isReadOnly)
+			this.setReadOnly(false);
+	}
+}
+
+/**
+* Get value.
+* @overloads {DataInputBinding#getValue}
+* @return {string}
+*/
+DataInputSelectorBinding.prototype.getValue = function () {
+
+	if (this.isReadOnly) {
+		result = this.value;
+	} else {
+		result = DataInputSelectorBinding.superclass.getValue.call(this);
+	}
+	return result;
+}
+
+/**
+* Set image.
+* @param {string} url Eh - this could be a boolean!
+* @param {boolean} isNotBuildingClassName Set to true for faster screen update.
+*/
+DataInputSelectorBinding.prototype.setImage = function (url) {
+
+	var class1 = "imagesizenormal";
+
+	if (url != false) {
+		url = url ? url : LabelBinding.DEFAULT_IMAGE;
+		this.setAlphaTransparentBackdrop(
+						Resolver.resolve(url)
+				);
+		this.setProperty("image", url);
+		this.hasImage = true;
+		this.attachClassName(class1); 
+	} else {
+		this.setAlphaTransparentBackdrop(false);
+		this.deleteProperty("image");
+		this.hasImage = false;
+		this.detachClassName(class1);
+	}
+}
+
+/**
+* Attaches a background-image to the labelbody
+* element, supporting 24bit alphatransparency.
+* @param {string} url
+*/
+DataInputSelectorBinding.prototype.setAlphaTransparentBackdrop = function (url) {
+
+	if (this.shadowTree.input) { // sometimes it glitches in moz...
+		if (url != false) {
+			url = Resolver.resolve(url);
+			if (Client.isExplorer6) {
+				this.shadowTree.inputy.style.filter = LabelBinding.EXPLORER_IMAGE_FILTER.replace("${url}", url);
+			} else {
+				this.shadowTree.input.style.backgroundImage = "url('" + url + "')";
+			}
+		} else {
+			if (Client.isExplorer6) {
+				this.shadowTree.input.style.filter = "none";
+			} else {
+				this.shadowTree.input.style.backgroundImage = "none";
+			}
+		}
+	}
+}

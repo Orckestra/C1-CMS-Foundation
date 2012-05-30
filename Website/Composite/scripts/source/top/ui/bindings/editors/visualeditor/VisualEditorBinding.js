@@ -16,22 +16,18 @@ VisualEditorBinding.XHTML = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<h
  * @param {string} classname
  * @return {string}
  */
-VisualEditorBinding.getTinyLessClassName = function ( classname ) {
-	
-	var i = 0, singlename, result = "", split = classname.split ( " " );
-	while (( singlename = split [ i ]) != null ) {
-		if ( singlename.length >= 3 && singlename.substring ( 0, 3 ) == "mce" ) {
-			singlename = "";
-		} else if ( singlename.length >= 14 && singlename.substring ( 0, 14 ) == "compositemedia" ) {
-			singlename = "";
+VisualEditorBinding.getTinyLessClassName = function (classname) {
+
+	var i = 0, singlename, result = [], split = classname.split(" ");
+	while ((singlename = split[i++]) != null) {
+		if (singlename.length >= 3 && singlename.substring(0, 3) == "mce") {
+			continue;
+		} else if (singlename.length >= 14 && singlename.substring(0, 14) == "compositemedia") {
+			continue;
 		}
-		result += singlename;
-		if ( split [ i + 1 ]) {
-			result += " ";
-		}
-		i++;
+		result.push(singlename);
 	}
-	return result;
+	return result.join(" ");
 }
 
 /**
