@@ -80,13 +80,15 @@ namespace Composite.Core.PageTemplates
         /// <param name="template">The template.</param>
         /// <param name="pageRenderingJob">The page rendering job.</param>
         /// <param name="placeholderProperties">The placeholder properties.</param>
-        /// <param name="functionContextContainer">The function context container.</param>
+        /// <param name="functionContextContainer">The function context container, if not null, nested functions fill be evaluated.</param>
         public static void BindPlaceholders(ITemplateDefinition template, 
                                      PageRenderingJob pageRenderingJob,
                                      IDictionary<string, PropertyInfo> placeholderProperties,
                                      FunctionContextContainer functionContextContainer)
         {
-            // TODO: implement
+            Verify.ArgumentNotNull(template, "template");
+            Verify.ArgumentNotNull(pageRenderingJob, "pageRenderingJob");
+            Verify.ArgumentNotNull(placeholderProperties, "placeholderProperties");
 
             foreach (var placeholderContent in pageRenderingJob.Contents)
             {
@@ -97,14 +99,16 @@ namespace Composite.Core.PageTemplates
                     continue;
                 }
 
+                XhtmlDocument placeholderXhtml = PageRenderer.ParsePlaceholderContent(placeholderContent);
 
-                XhtmlDocument placeholderXhtml;
-                using (Profiler.Measure("Evaluating placeholder '{0}'".FormatWith(placeholderId)))
+                if (functionContextContainer != null)
                 {
-                    placeholderXhtml = PageRenderer.ParsePlaceholderContent(placeholderContent);
-                    // PageRenderer.ExecuteEmbeddedFunctions(placeholderXhtml.Root, functionContextContainer);
+                    using (Profiler.Measure("Evaluating placeholder '{0}'".FormatWith(placeholderId)))
+                    {
+                        PageRenderer.ExecuteEmbeddedFunctions(placeholderXhtml.Root, functionContextContainer);
+                    }
                 }
-
+                    
                 PropertyInfo property = placeholderProperties[placeholderId];
 
                 if (!property.ReflectedType.IsAssignableFrom(template.GetType()))
