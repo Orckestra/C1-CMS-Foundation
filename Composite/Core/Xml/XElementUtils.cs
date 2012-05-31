@@ -82,11 +82,13 @@ namespace Composite.Core.Xml
 
 
         /// <summary>
-        /// Returns the value of the XElement attribute with the specified name. 
+        /// Returns the value of the XElement attribute with the specified name.
         /// </summary>
-        /// <param name="element"></param>
-        /// <param name="attributeName">The name of the attribute to (try to) get</param>
-        /// <returns>The value of the attribute or null if the attribute does not exist.</returns>
+        /// <param name="element">The element.</param>
+        /// <param name="attributeXName">XName of the attribute.</param>
+        /// <returns>
+        /// The value of the attribute or null if the attribute does not exist.
+        /// </returns>
         public static string GetAttributeValue(this XElement element, XName attributeXName)
         {
             if (element == null) throw new ArgumentNullException("element");

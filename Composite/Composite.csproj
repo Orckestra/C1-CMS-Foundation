@@ -243,10 +243,12 @@
     <Compile Include="Core\PageTemplates\Foundation\PluginFacade\PageTemplateProviderPluginFacade.cs" />
     <Compile Include="Core\PageTemplates\IPageRenderer.cs" />
     <Compile Include="Core\PageTemplates\IPageTemplateProvider.cs" />
+    <Compile Include="Core\PageTemplates\ITemplateDefinition.cs" />
     <Compile Include="Core\PageTemplates\PageRenderingJob.cs" />
     <Compile Include="Core\PageTemplates\PageTemplate.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateEntityToken.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateFacade.cs" />
+    <Compile Include="Core\PageTemplates\PlaceholderAttribute.cs" />
     <Compile Include="Core\PageTemplates\PlaceholderDescriptor.cs" />
     <Compile Include="Core\PageTemplates\Plugins\NonConfigurablePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\Plugins\PageTemplateProviderData.cs" />
@@ -254,6 +256,7 @@
     <Compile Include="Core\PageTemplates\Plugins\Runtime\PageTemplateProviderCustomFactory.cs" />
     <Compile Include="Core\PageTemplates\Plugins\Runtime\PageTemplateProviderDefaultNameRetriever.cs" />
     <Compile Include="Core\PageTemplates\Plugins\Runtime\PageTemplateProviderFactory.cs" />
+    <Compile Include="Core\PageTemplates\TemplateDefinitionHelper.cs" />
     <Compile Include="Core\Routing\Foundation\PluginFacades\PageUrlProviderPluginFacade.cs" />
     <Compile Include="Core\Routing\HostnameBindingsFacade.cs" />
     <Compile Include="Core\Routing\MediaUrlData.cs" />
@@ -599,6 +602,22 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\C1MasterPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\Function.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\Markup.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\Param.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\ParamCollection.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\ParamObjectConverter.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\ParamTagControlBuilder.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\StringToObjectConverter.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Description.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Placeholder.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Title.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageRenderingInfo.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagesPageRenderer.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagesPageTemplateProvider.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplate.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProvider.cs" />

@@ -18,6 +18,7 @@ namespace Composite.Core.PageTemplates
             _id = templateId.ToString();
         }
 
+        /// <exclude />
         public Guid TemplateId
         {
             get { return new Guid(_id); }

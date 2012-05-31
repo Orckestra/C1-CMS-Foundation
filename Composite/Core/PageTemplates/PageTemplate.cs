@@ -56,7 +56,6 @@ namespace Composite.Core.PageTemplates
         /// <summary>
         /// Appends actions to a visual element.
         /// </summary>
-        /// <param name="element">The element.</param>
         public virtual IEnumerable<ElementAction> GetActions()
         {
             return new ElementAction[0];

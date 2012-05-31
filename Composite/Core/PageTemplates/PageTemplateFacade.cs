@@ -40,6 +40,8 @@ namespace Composite.Core.PageTemplates
         {
             var provider = PageTemplateProviderRegistry.GetProviderByTemplateId(pageTemplateId);
 
+            Verify.IsNotNull(provider, "Failed to get page template '{0}'. Check log for possible compilation errors.", pageTemplateId);
+
             return provider.BuildPageRenderer();
         }
 

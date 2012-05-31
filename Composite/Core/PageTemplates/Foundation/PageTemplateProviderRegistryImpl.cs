@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.PageTemplates.Plugins.Runtime;
 using Composite.Core.PageTemplates.Foundation.PluginFacade;
 
@@ -60,7 +61,7 @@ namespace Composite.Core.PageTemplates.Foundation
 
             public static void DoInitialize(Resources resources)
             {
-                resources.ProviderByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
+                var providerByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
                 resources.ProviderNames = GetProviderNames();
 
                 var pageTemplates = new List<PageTemplate>();
@@ -74,11 +75,15 @@ namespace Composite.Core.PageTemplates.Foundation
 
                     foreach (var template in templates)
                     {
-                        resources.ProviderByTemplate.Add(template.Id, provider);
+                        Verify.That(!providerByTemplate.ContainsKey(template.Id), 
+                                    "There are muliple layouts with the same ID: '{0}'", template.Id);
+
+                        providerByTemplate.Add(template.Id, provider);
                     }
                 }
 
                 resources.PageTemplates = pageTemplates;
+                resources.ProviderByTemplate = providerByTemplate;
             }
         }
     }

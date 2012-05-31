@@ -21,6 +21,12 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 
         private void RendererPage(object sender, EventArgs e)
         {
+            if (_aspnetPage.Master != null)
+            {
+                // Backward compatibility with CompositeC1Contrib.Renderes.MasterPages package
+                return;
+            }
+
             Control renderedPage;
             using (Profiler.Measure("Page build up"))
             {

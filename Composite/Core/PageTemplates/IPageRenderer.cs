@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Composite.Core.PageTemplates
+﻿namespace Composite.Core.PageTemplates
 {
     /// <summary>
     /// This class is responsible for rendering the provided job onto the provided asp.net web forms page. The Render method is called at page construction
@@ -11,6 +7,7 @@ namespace Composite.Core.PageTemplates
     /// </summary>
     public interface IPageRenderer
     {
+        /// <exclude />
         void AttachToPage(System.Web.UI.Page renderTaget, PageRenderingJob renderJob);
     }
 }
