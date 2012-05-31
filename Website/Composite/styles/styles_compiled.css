@@ -1745,7 +1745,6 @@ display: none;
 }
 
 /* DATAINPUTSELECTORS ......................................... */
-
 ui|datainputselector,
 ui|datainputdialog,
 ui|datainputbutton,
@@ -1776,6 +1775,10 @@ ui|fielddata ui|datainputdialog input,
 ui|fielddata ui|datainputbutton input,
 ui|fielddata ui|imageinputdialog input {
 width: 189px;
+}
+ui|fielddata ui|datainputselector.imagesizenormal input{
+background: transparent none no-repeat 4px 4px;
+padding-left: 24px;
 }
 ui|field.fieldhelp ui|fielddata {
 position: relative;
