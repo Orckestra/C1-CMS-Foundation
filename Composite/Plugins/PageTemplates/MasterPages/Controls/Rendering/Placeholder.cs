@@ -49,7 +49,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
         public XhtmlDocument Content
         {
             get { return InnerContent == null ? null : new XhtmlDocument(base.InnerContent); }
-            set { InnerContent = value.Root; }
+            set { InnerContent = value != null ? value.Root : null; }
         }
 
         /// <exclude />
@@ -57,7 +57,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
         {
             DataBind();
 
-            if (Content == null)
+            if (InnerContent == null)
             {
                 var renderingInfo = MasterPagesPageRenderer.GetRenderingInfo(this.Page);
 

@@ -618,6 +618,7 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageRenderingInfo.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagesPageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagesPageTemplateProvider.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagesPageTemplateProviderData.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplate.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProvider.cs" />

@@ -16,14 +16,13 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
-using Composite.Core.PageTemplates.Plugins;
 using Composite.Core.Threading;
 using Composite.Core.WebClient;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
-    [ConfigurationElementType(typeof(NonConfigurablePageTemplateProvider))]
+    [ConfigurationElementType(typeof(MasterPagesPageTemplateProviderData))]
     internal class MasterPagesPageTemplateProvider: IPageTemplateProvider
     {
         private static readonly string LogTitle = typeof (MasterPagesPageTemplateProvider).FullName;
@@ -31,18 +30,24 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private static readonly string MasterPageFileMask = "*.master";
         private static readonly string FileWatcherMask = "*.";
         private static readonly string FileWatcher_Regex = @"\.cs|\.master\.common";
-        private const string _templatesDirectoryVirtualPath = "~/App_Data/PageTemplates";
-        private readonly string _templatesDirectory = PathUtil.Resolve(_templatesDirectoryVirtualPath);
 
-        private List<PageTemplate> _templates = null;
-        private Hashtable<Guid, MasterPageRenderingInfo> _renderingInfo = null;
+        private readonly string _templatesDirectoryVirtualPath;
+        private readonly string _templatesDirectory;
+
+        private List<PageTemplate> _templates;
+        private Hashtable<Guid, MasterPageRenderingInfo> _renderingInfo;
 
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
         private DateTime _lastUpdateTime;
 
-        public MasterPagesPageTemplateProvider()
+        public MasterPagesPageTemplateProvider(string name, string templatesDirectoryVirtualPath)
         {
+            _templatesDirectoryVirtualPath = templatesDirectoryVirtualPath;
+            _templatesDirectory = PathUtil.Resolve(_templatesDirectoryVirtualPath);
+
+            Verify.That(C1Directory.Exists(_templatesDirectory), "Folder '{0}' does not exist", _templatesDirectory);
+
             _watcher = new C1FileSystemWatcher(_templatesDirectory, FileWatcherMask)
             {
                 IncludeSubdirectories = true
