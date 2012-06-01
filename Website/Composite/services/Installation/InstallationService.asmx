@@ -84,7 +84,7 @@ namespace Composite.Services
             
             pair = new KeyValuePair();
             pair.Key = "Special Thanks To";
-            pair.Value = "Jesper Moth for the C1 Console;@burningice for ConpositeC1Contrib;@thorstenh for German translation;huangpin@eov.cn for Chinese translation;@C1er for Russian & Ukrainian translations;HolisticWare team for contributions;@ingmaru for Dutch translation;Jean-Pascal for Dutch translation;@gilmae for contributions";
+            pair.Value = "Jesper Moth for the C1 Console;@burningice for ConpositeC1Contrib;@thorstenh for German translation;huangpin@eov.cn for Chinese translation;@C1er for Russian & Ukrainian translations;Emelie Mikaelsson (Invinn AB) for Swedish translation;HolisticWare team for contributions;@ingmaru for Dutch translation;Jean-Pascal for Dutch translation;@gilmae for contributions";
             list.Add(pair);
 
             return list.ToArray();
