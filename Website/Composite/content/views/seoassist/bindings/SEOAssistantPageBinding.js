@@ -326,8 +326,12 @@ SEOAssistantPageBinding.prototype._parseMarkup = function ( markup ) {
 		tree.empty ();
 		
 		if ( list.hasEntries ()) {
-			while ( list.hasNext ()) {
-				var node = tree.add ( SEOResultTreeNodeBinding.newInstance ( tree.bindingDocument ));
+		    var labelnode = tree.add(TreeNodeBinding.newInstance(tree.bindingDocument));
+		    labelnode.setImage("${icon:generic-search}");
+		    labelnode.setLabel(StringBundle.getString(SEOAssistantPageBinding.LOCALIZATION, "ResultHeading"));
+		    labelnode.attach();
+		    while (list.hasNext()) {
+		        var node = labelnode.add(SEOResultTreeNodeBinding.newInstance(tree.bindingDocument));
 				node.seoresult = list.getNext ();
 				node.attach ();
 			}
