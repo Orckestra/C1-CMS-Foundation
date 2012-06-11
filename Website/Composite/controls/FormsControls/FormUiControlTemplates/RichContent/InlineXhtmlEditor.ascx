@@ -63,7 +63,7 @@
 
 <ui:htmldatadialog 
 	value="<%= _currentStringValue %>" 
-	formattingconfiguration="common"
+	formattingconfiguration="<%= this.ClassConfigurationName %>"
 	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
 	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  

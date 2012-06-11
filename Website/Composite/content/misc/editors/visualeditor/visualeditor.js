@@ -42,9 +42,10 @@ request.send ( null );
 
 var doc = request.responseXML;
 if ( doc == null ) {
-    var cry = "File not found: ~" + relconfigpath;
-	alert ( cry );
-	throw cry;
+//    var cry = "File not found: ~" + relconfigpath;
+//	alert ( cry );
+	//	throw cry;
+	doc = document.createElement("div");
 }
 
 var groups = new List ();
