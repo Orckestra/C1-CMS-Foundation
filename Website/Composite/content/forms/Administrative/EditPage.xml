@@ -32,7 +32,7 @@
 
           <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
 									 Label="${Composite.Plugins.PageElementProvider, EditPage.PageTypeSelectorLabel}"
-									 Help="${Composite.Plugins.PageElementProvider, EditPage.PageTypeSelectorLabel}">
+									 Help="${Composite.Plugins.PageElementProvider, EditPage.PageTypeSelectorHelp}">
             <KeySelector.SelectedIndexChangedEventHandler>
               <cms:read source="CustomEvent01Handler"/>
             </KeySelector.SelectedIndexChangedEventHandler>

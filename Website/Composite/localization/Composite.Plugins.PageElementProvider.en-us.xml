@@ -9,7 +9,7 @@
   <string key="AddNewPageStep1.LabelAbstract" value="Description" />
   <string key="AddNewPageStep1.LabelAbstractHelp" value="Use this field for at short description of the page" />
   <string key="AddNewPageStep1.LabelTemplate" value="Page type" />
-  <string key="AddNewPageStep1.HelpTemplate" value="Select which page type you want the page to be based on." />
+  <string key="AddNewPageStep1.HelpTemplate" value="The page type selection influences the behavior and features of your page, like 'a normal page' or 'a blog'. The options available depend on features installed." />
   <string key="AddNewPageStep1.LabelPosition" value="Position" />
   <string key="AddNewPageStep1.HelpPosition" value="Select where in the content tree you want the page to be placed." />
   <string key="AddNewPageStep1.LabelAddToTop" value="Insert at the top" />
@@ -46,6 +46,7 @@
   <string key="EditPage.LabelContent" value="Content" />
   <string key="EditPage.LabelPreview" value="Preview" />
   <string key="EditPage.PageTypeSelectorLabel" value="Page type" />
+  <string key="EditPage.PageTypeSelectorHelp" value="The page type selection defines the role of the page, like 'a normal page' or 'a blog'. The options available depends on what features have been installed." />
   <string key="EditPage.MaxLength" value="{0} characters maximum" />
   <string key="DeletePage.LabelFieldGroup" value="Delete page?" />
   <string key="DeletePageStep1.Title" value="Delete page and all subpages" />
