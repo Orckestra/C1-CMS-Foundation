@@ -7,7 +7,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
     /// <summary>
     /// Base master page
     /// </summary>
-    public abstract class C1MasterPage : MasterPage, ITemplateDefinition
+    public abstract class MasterPagePageTemplate : MasterPage, ITemplateDefinition
     {
         /// <summary>
         /// Gets the template id.
@@ -17,7 +17,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         /// <summary>
         /// Gets the template title.
         /// </summary>
-        public string TemplateTitle
+        public virtual string TemplateTitle
         {
             get { return null; }
         }

@@ -6,8 +6,8 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
-    [Assembler(typeof(MasterPagesPageTemplateProviderAssembler))]
-    internal class MasterPagesPageTemplateProviderData : PageTemplateProviderData
+    [Assembler(typeof(MasterPagePageTemplateProviderAssembler))]
+    internal class MasterPagePageTemplateProviderData : PageTemplateProviderData
     {
         [ConfigurationProperty("directory", IsRequired = false, DefaultValue = "~/App_Data/Razor/PageTemplates")]
         public string Directory
@@ -17,18 +17,18 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         }
     }
 
-    internal class MasterPagesPageTemplateProviderAssembler : IAssembler<IPageTemplateProvider, PageTemplateProviderData>
+    internal class MasterPagePageTemplateProviderAssembler : IAssembler<IPageTemplateProvider, PageTemplateProviderData>
     {
         public IPageTemplateProvider Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, PageTemplateProviderData objectConfiguration, Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
-            var data = objectConfiguration as MasterPagesPageTemplateProviderData;
+            var data = objectConfiguration as MasterPagePageTemplateProviderData;
             if (data == null)
             {
-                throw new ArgumentException("Expected configuration to be of type " + typeof(MasterPagesPageTemplateProviderAssembler).Name,
+                throw new ArgumentException("Expected configuration to be of type " + typeof(MasterPagePageTemplateProviderAssembler).Name,
                                             "objectConfiguration");
             }
 
-            return new MasterPagesPageTemplateProvider(data.Name, data.Directory);
+            return new MasterPagePageTemplateProvider(data.Name, data.Directory);
         }
     }
 }

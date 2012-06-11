@@ -5,13 +5,13 @@ using Composite.Core.PageTemplates;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
-    internal class MasterPagesPageRenderer: IPageRenderer
+    internal class MasterPagePageRenderer: IPageRenderer
     {
         private static readonly string PageRenderingJob_Key = "MasterPages.PageRenderingJob";
 
         private readonly Hashtable<Guid, MasterPageRenderingInfo> _renderingInfo;
 
-        public MasterPagesPageRenderer(Hashtable<Guid, MasterPageRenderingInfo> renderingInfo)
+        public MasterPagePageRenderer(Hashtable<Guid, MasterPageRenderingInfo> renderingInfo)
         {
             Verify.ArgumentNotNull(renderingInfo, "renderingInfo");
 
@@ -31,7 +31,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             aspnetPage.MasterPageFile = rendering.VirtualPath;  
 
-            var master = aspnetPage.Master as C1MasterPage;
+            var master = aspnetPage.Master as MasterPagePageTemplate;
             TemplateDefinitionHelper.BindPlaceholders(master, renderJob, rendering.PlaceholderProperties, null);
         }
 

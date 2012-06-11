@@ -59,7 +59,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
 
             if (InnerContent == null)
             {
-                var renderingInfo = MasterPagesPageRenderer.GetRenderingInfo(this.Page);
+                var renderingInfo = MasterPagePageRenderer.GetRenderingInfo(this.Page);
 
                 string placeholderId = PlaceholderID ?? ID;
 

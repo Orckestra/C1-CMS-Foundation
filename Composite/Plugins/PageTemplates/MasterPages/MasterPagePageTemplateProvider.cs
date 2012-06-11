@@ -22,10 +22,10 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
-    [ConfigurationElementType(typeof(MasterPagesPageTemplateProviderData))]
-    internal class MasterPagesPageTemplateProvider: IPageTemplateProvider
+    [ConfigurationElementType(typeof(MasterPagePageTemplateProviderData))]
+    internal class MasterPagePageTemplateProvider: IPageTemplateProvider
     {
-        private static readonly string LogTitle = typeof (MasterPagesPageTemplateProvider).FullName;
+        private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
 
         private static readonly string MasterPageFileMask = "*.master";
         private static readonly string FileWatcherMask = "*.";
@@ -41,7 +41,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private readonly C1FileSystemWatcher _watcher;
         private DateTime _lastUpdateTime;
 
-        public MasterPagesPageTemplateProvider(string name, string templatesDirectoryVirtualPath)
+        public MasterPagePageTemplateProvider(string name, string templatesDirectoryVirtualPath)
         {
             _templatesDirectoryVirtualPath = templatesDirectoryVirtualPath;
             _templatesDirectory = PathUtil.Resolve(_templatesDirectoryVirtualPath);
@@ -72,7 +72,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         {
             EnsureInitialization();
 
-            return new MasterPagesPageRenderer(_renderingInfo);
+            return new MasterPagePageRenderer(_renderingInfo);
         }
 
         public IEnumerable<ElementAction> GetRootActions()
@@ -119,12 +119,12 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     continue;
                 }
 
-                if (masterPage == null || !(masterPage is C1MasterPage)) continue;
+                if (masterPage == null || !(masterPage is MasterPagePageTemplate)) continue;
 
                 PageTemplate parsedTemplate;
                 MasterPageRenderingInfo renderingInfo;
 
-                ParseTemplate(virtualPath, fileInfo.FullName, masterPage as C1MasterPage, out parsedTemplate, out renderingInfo);
+                ParseTemplate(virtualPath, fileInfo.FullName, masterPage as MasterPagePageTemplate, out parsedTemplate, out renderingInfo);
                 if(parsedTemplate == null)
                 {
                     return;
@@ -145,7 +145,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         private void ParseTemplate(string virtualPath, 
                                            string fileName, 
-                                           C1MasterPage masterPage, 
+                                           MasterPagePageTemplate masterPage, 
                                            out PageTemplate pageTemplate,
                                            out MasterPageRenderingInfo renderingInfo)
         {
