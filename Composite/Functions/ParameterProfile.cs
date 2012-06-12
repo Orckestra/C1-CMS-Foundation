@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Composite.Data;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Functions
@@ -18,11 +19,11 @@ namespace Composite.Functions
         /// <exclude />
         public ParameterProfile(string name, Type type, bool isRequired, BaseValueProvider fallbackValueProvider, WidgetFunctionProvider widgetFunctionProvider, string label, HelpDefinition helpDefinition)
         {
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
-            if (type == null) throw new ArgumentNullException("type");
-            if (fallbackValueProvider == null) throw new ArgumentNullException("fallbackValueProvider");
-            if (string.IsNullOrEmpty(label) == true) throw new ArgumentException("label may not be null or an empty string");
-            if (helpDefinition == null) throw new ArgumentNullException("helpDefinition");
+            Verify.ArgumentNotNull(name, "name");
+            Verify.ArgumentNotNull(type, "type");
+            Verify.ArgumentNotNull(fallbackValueProvider, "fallbackValueProvider");
+            Verify.ArgumentCondition(!label.IsNullOrEmpty(), "label", "label may not be null or an empty string");
+            Verify.ArgumentNotNull(helpDefinition, "helpDefinition");
 
             this.Name = name;
             this.Type = type;

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Composite.AspNet.Razor.Security;
 using Composite.C1Console.Security;
 using Composite.Functions;
+using Composite.Core.Extensions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
 	internal abstract class FileBasedFunction<T> : IFunction where T : FileBasedFunction<T>
 	{
-		private FileBasedFunctionProvider<T> _provider;
+		private readonly FileBasedFunctionProvider<T> _provider;
 
 		protected string VirtualPath { get; private set; }
 		protected IDictionary<string, FunctionParameterHolder> Parameters { get; private set; }
@@ -34,16 +35,23 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 					foreach (var param in Parameters.Values)
 					{
 						WidgetFunctionProvider widgetProvider = null;
-						var label = param.Name;
-						var isRequired = true;
-						var helpText = String.Empty;
+						string label = param.Name;
+						bool isRequired = true;
+						string helpText = String.Empty;
 
 						if (param.Attribute != null)
 						{
-							label = param.Attribute.Label;
-							helpText = param.Attribute.Help;
+                            if (!param.Attribute.Label.IsNullOrEmpty())
+                            {
+                                label = param.Attribute.Label;
+                            }
 
-							isRequired = !param.Attribute.HasDefaultValue;
+                            if (!param.Attribute.Help.IsNullOrEmpty())
+                            {
+                                helpText = param.Attribute.Help;
+                            }
+
+						    isRequired = !param.Attribute.HasDefaultValue;
 							if (!isRequired)
 							{
 								defaultValueProvider = new ConstantValueProvider(param.Attribute.DefaultValue);
@@ -63,7 +71,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 			}
 		}
 
-		public FileBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameterHolder> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<T> provider)
+		protected FileBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameterHolder> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<T> provider)
 		{
 			_provider = provider;
 
