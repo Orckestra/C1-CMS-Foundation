@@ -6,6 +6,8 @@ using Composite.Core.PageTemplates;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
+using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
+
 namespace Composite.Plugins.PageTemplates.Razor
 {
     internal class RazorPageTemplate: PageTemplate
@@ -34,8 +36,8 @@ namespace Composite.Plugins.PageTemplates.Razor
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.AspNet.RazorFunctions", "EditTemplateAction.Label"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.AspNet.RazorFunctions", "EditTemplateAction.ToolTip"),
+                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorTemplateAction.Label"),
+                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorTemplateAction.ToolTip"),
                     Icon = EditTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation

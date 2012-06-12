@@ -93,14 +93,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     Log.LogWarning(LogTitle, "Compilation failed while validating changes to '{0}'", virtualPath);
                     Log.LogWarning(LogTitle, ex);
 
-                    ShowWarning(GetText("EditTemplate.Validation.CompilationFailed")
+                    ShowWarning(GetText("EditRazorTemplate.Validation.CompilationFailed")
                                 .FormatWith(ex.Message));
                     return false;
                 }
 
                 if(webPageBase == null || !(webPageBase is CompositeC1PageTemplate))
                 {
-                    ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
+                    ShowWarning(GetText("EditRazorTemplate.Validation.IncorrectBaseClass")
                                 .FormatWith(typeof(CompositeC1PageTemplate).FullName));
                     return false;
                 }
@@ -143,7 +143,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 // Placeholder validation also can be made
                 if(newTemplateId != templateId)
                 {
-                    ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged"));
+                    ShowWarning(GetText("EditRazorTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
                     return false;
                 }
             }
@@ -157,14 +157,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void ShowPropertyError(string propertyName, Exception ex)
         {
-            ShowWarning(GetText("EditTemplate.Validation.PropertyError")
+            ShowWarning(GetText("EditRazorTemplate.Validation.PropertyError")
                         .FormatWith(propertyName, ex.Message));
         }
 
         private void ShowWarning(string warning)
         {
             this.ShowMessage(DialogType.Warning,
-                 GetText("EditTemplate.Validation.DialogTitle"),
+                 GetText("EditRazorTemplate.Validation.DialogTitle"),
                  warning);
         }
 
@@ -187,7 +187,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private string GetText(string text)
         {
-            return StringResourceSystemFacade.GetString("Composite.AspNet.RazorFunctions", text);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", text);
         }
 
         private string GetFilePath()
