@@ -119,7 +119,19 @@
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Workflow.Activities" />
     <Reference Include="System.Workflow.ComponentModel" />
     <Reference Include="System.Workflow.Runtime" />
@@ -140,6 +152,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNet\Razor\CompositeC1PageTemplate.cs" />
+    <Compile Include="AspNet\Razor\CompositeC1RazorHost.cs" />
+    <Compile Include="AspNet\Razor\CompositeC1RazorHostFactory.cs" />
+    <Compile Include="AspNet\Razor\CompositeC1WebPage.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FunctionParameterHolder.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderAssembler.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderData.cs" />
+    <Compile Include="AspNet\Razor\Functions.cs" />
+    <Compile Include="AspNet\Razor\C1HtmlHelper.cs" />
+    <Compile Include="AspNet\Razor\HtmlHelperExtensions.cs" />
+    <Compile Include="AspNet\Razor\NoHttpRazorContext.cs" />
+    <Compile Include="AspNet\Razor\NoHttpRazorRequest.cs" />
+    <Compile Include="AspNet\Razor\Parser\CompositeC1CSharpCodeParser.cs" />
+    <Compile Include="AspNet\Razor\Parser\CompositeC1CSharpRazorCodeGenerator.cs" />
+    <Compile Include="AspNet\Razor\Parser\FunctionReturnTypeAttribute.cs" />
+    <Compile Include="AspNet\Razor\Parser\SyntaxTree\DescriptionSpan.cs" />
+    <Compile Include="AspNet\Razor\Parser\SyntaxTree\ReturnTypeSpan.cs" />
+    <Compile Include="AspNet\Razor\Parser\SyntaxTree\TemplateParsingException.cs" />
+    <Compile Include="AspNet\Razor\Security\FileBasedFunctionEntityToken.cs" />
+    <Compile Include="AspNet\Razor\Security\StandardFunctionSecurityAncestorProvider.cs" />
     <Compile Include="C1Console\Actions\ActionEventSystemFacade.cs" />
     <Compile Include="C1Console\Actions\ActionLockingException.cs" />
     <Compile Include="C1Console\Actions\ActionLockingFacade.cs" />
@@ -619,6 +655,12 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateProvider.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateProviderData.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\RazorPageRenderer.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplate.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProvider.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProviderAssembler.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProviderData.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\TemplateRenderingInfo.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplate.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProvider.cs" />

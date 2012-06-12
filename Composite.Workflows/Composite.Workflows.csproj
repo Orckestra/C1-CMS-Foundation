@@ -110,6 +110,10 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web.Services" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Bin\System.Web.WebPages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Workflow.Activities">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -450,6 +454,12 @@
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.Designer.cs">
       <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.designer.cs">
+      <DependentUpon>EditRazorPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.cs">
       <SubType>Component</SubType>
@@ -1034,6 +1044,7 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.layout">
       <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.layout" />
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.layout">
       <DependentUpon>AddNewPageTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
