@@ -86,8 +86,8 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         private void Initialize()
         {
-            var files = new DirectoryInfo(_templatesDirectory)
-                           .EnumerateFiles(LayoutFileMask, SearchOption.AllDirectories)
+            var files = new C1DirectoryInfo(_templatesDirectory)
+                           .GetFiles(LayoutFileMask, SearchOption.AllDirectories)
                            .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
 
 

@@ -94,8 +94,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         private void Initialize()
         {
-            var files = new DirectoryInfo(_templatesDirectory)
-                           .EnumerateFiles(MasterPageFileMask, SearchOption.AllDirectories)
+            var files = new C1DirectoryInfo(_templatesDirectory)
+                           .GetFiles(MasterPageFileMask, SearchOption.AllDirectories)
                            .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
 
 

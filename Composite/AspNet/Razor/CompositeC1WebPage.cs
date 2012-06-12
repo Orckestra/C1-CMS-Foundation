@@ -52,6 +52,7 @@ namespace Composite.AspNet.Razor
 			GC.SuppressFinalize(this);
 		}
 
+        /// <exclude />
 		protected virtual void Dispose(bool disposing)
 		{
 			if (!_disposed)
@@ -65,6 +66,7 @@ namespace Composite.AspNet.Razor
 			}
 		}
 
+        /// <exclude />
 		~CompositeC1WebPage()
 		{
 			Dispose(false);

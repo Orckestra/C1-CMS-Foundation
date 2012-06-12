@@ -38,8 +38,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 			{
                 var returnList = new List<FileBasedFunction<FunctionType>>();
 
-				var files = new DirectoryInfo(PhysicalPath)
-                    .EnumerateFiles("*." + FileExtension, SearchOption.AllDirectories)
+				var files = new C1DirectoryInfo(PhysicalPath)
+                    .GetFiles("*." + FileExtension, SearchOption.AllDirectories)
                     .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
 
 				foreach (var file in files)

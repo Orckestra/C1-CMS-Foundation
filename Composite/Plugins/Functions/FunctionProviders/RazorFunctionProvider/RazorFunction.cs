@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.WebPages;
 using System.Xml;
 using Composite.AspNet.Razor;
-using Composite.AspNet.RazorFunctions;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Functions;

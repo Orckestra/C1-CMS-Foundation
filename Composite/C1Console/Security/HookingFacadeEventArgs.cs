@@ -10,14 +10,15 @@ namespace Composite.C1Console.Security
     [EditorBrowsable(EditorBrowsableState.Never)] 
     public sealed class HookingFacadeEventArgs : EventArgs
     {
+        /// <exclude />
         public HookingFacadeEventArgs(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
 
             this.ProviderName = providerName;
         }
 
-
+        /// <exclude />
         public string ProviderName
         {
             get;

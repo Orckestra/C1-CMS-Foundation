@@ -7,6 +7,11 @@ namespace Composite.AspNet.Razor
     /// </summary>
 	public static class HtmlHelperExtensions
 	{
+        /// <summary>
+        /// Exposes C1 specific functionality
+        /// </summary>
+        /// <param name="helper"></param>
+        /// <returns></returns>
 		public static C1HtmlHelper C1(this HtmlHelper helper)
 		{
 			return new C1HtmlHelper(helper);
