@@ -35,20 +35,22 @@ SEOResultTreeBinding.prototype.toString = function () {
  * @overloads {TreeBinding#focusSingleTreeNodeBinding}
  * @param {TreeNodeBinding} binding
  */
-SEOResultTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
-	
-	SEOResultTreeBinding.superclass.focusSingleTreeNodeBinding.call ( this, binding );
-	
+SEOResultTreeBinding.prototype.focusSingleTreeNodeBinding = function (binding) {
+
+	SEOResultTreeBinding.superclass.focusSingleTreeNodeBinding.call(this, binding);
+
 	var key = null;
-	if ( binding instanceof SEOResultTreeNodeBinding ) {
-		key = binding.getLabel ();
+	if (binding instanceof SEOResultTreeNodeBinding) {
+		key = binding.getLabel();
 	} else {
-		key = binding.getAncestorBindingByLocalName ( "treenode" ).getLabel ();
+		var treenode = binding.getAncestorBindingByLocalName("treenode");
+		if (treenode != null)
+			key = treenode.getLabel();
 	}
-	if ( key != this.keyword ) {
+	if (key != null && key != this.keyword) {
 		this.keyword = key;
-		EventBroadcaster.broadcast ( BroadcastMessages.HIGHLIGHT_KEYWORDS, 
-			new List ([ key ])
+		EventBroadcaster.broadcast(BroadcastMessages.HIGHLIGHT_KEYWORDS,
+			new List([key])
 		);
 	}
 };
