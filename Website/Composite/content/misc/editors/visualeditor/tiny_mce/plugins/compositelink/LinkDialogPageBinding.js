@@ -44,7 +44,8 @@ LinkDialogPageBinding.prototype.onBeforePageInitialize = function () {
 		this._populateDataBindingsFromDOM ();
 	} else {
 		var manager = this.bindingWindow.DataManager;
-		manager.getDataBinding ( "href" ).setValue ( "http://" );
+		manager.getDataBinding("href").setValue("http://");
+		manager.getDataBinding("href").select();
 	}
 }
 
