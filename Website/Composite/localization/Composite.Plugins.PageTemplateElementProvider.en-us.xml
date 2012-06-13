@@ -8,7 +8,13 @@
   <string key="PageTemplateElementProvider.EditTemplateToolTip" value="Edit selected template" />
 	<string key="PageTemplateElementProvider.DeleteTemplate" value="Delete" />
 	<string key="PageTemplateElementProvider.DeleteTemplateToolTip" value="Delete this item" />
-	
+
+  <string key="PageTemplateElementProvider.SharedCodeFolder.Title" value="Shared Code" />
+  <string key="PageTemplateElementProvider.SharedCodeFolder.ToolTip" value="Files used by layout files" />
+  
+  <string key="EditSharedCodeFile.Label" value="Edit" />
+  <string key="EditSharedCodeFile.ToolTip" value="Edit file" />
+
   <string key="AddNewPageTemplateStep1.LabelDialog" value="Add New Website Template" />
   <string key="AddNewPageTemplateStep1.LabelFieldGroup" value="Website Template" />
   <string key="AddNewPageTemplateStep1.LabelTemplateTitle" value="Template Title" />
