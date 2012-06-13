@@ -191,5 +191,10 @@ namespace Composite.Plugins.PageTemplates.Razor
         {
             return new ElementAction[0];
         }
+
+        public IEnumerable<string> GetSharedFiles()
+        {
+            return new string[0];
+        }
     }
 }

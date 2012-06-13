@@ -90,5 +90,11 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                           }
             }};
         }
+
+
+        public IEnumerable<string> GetSharedFiles()
+        {
+            return new string[0];
+        }
     }
 }

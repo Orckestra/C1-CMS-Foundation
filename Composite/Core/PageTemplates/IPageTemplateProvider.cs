@@ -29,5 +29,11 @@ namespace Composite.Core.PageTemplates
         /// Adds element actions on "Page templates" element
         /// </summary>
         IEnumerable<ElementAction> GetRootActions();
+
+        /// <summary>
+        /// Gets the list of shared files, those files will be shown in a "Shared code" folder under "Layout/Page Templates"
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<string> GetSharedFiles();
     }
 }

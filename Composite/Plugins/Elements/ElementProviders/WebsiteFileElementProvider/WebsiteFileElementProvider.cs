@@ -658,7 +658,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
 
-        private ResourceHandle WebsiteFileIcon(string mimeType)
+        internal static ResourceHandle WebsiteFileIcon(string mimeType)
         {
             return MimeTypeInfo.GetResourceHandleFromMimeType(MimeTypeInfo.GetCanonical(mimeType));
         }

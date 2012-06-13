@@ -461,6 +461,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.designer.cs">
       <DependentUpon>EditRazorPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditSharedCodeFileWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditSharedCodeFileWorkflow.designer.cs">
+      <DependentUpon>EditSharedCodeFileWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1044,7 +1050,12 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.layout">
       <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.layout" />
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.layout">
+      <DependentUpon>EditRazorPageTemplateWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditSharedCodeFileWorkflow.layout">
+      <DependentUpon>EditSharedCodeFileWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.layout">
       <DependentUpon>AddNewPageTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>

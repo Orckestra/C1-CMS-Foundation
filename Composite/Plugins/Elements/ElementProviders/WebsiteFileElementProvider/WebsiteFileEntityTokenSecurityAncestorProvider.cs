@@ -20,14 +20,18 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
             string newFolderPath = Path.GetDirectoryName(castedEntityToken.Path);
 
-            if (newFolderPath != castedEntityToken.RootPath)
+            string rootFolder = castedEntityToken.RootPath;
+
+            if (newFolderPath != rootFolder)
             {
+                Verify.That(newFolderPath.Length > rootFolder.Length, 
+                            "File/folder path '{0}' does not much root folder '{1}'",
+                            newFolderPath, rootFolder);
+
                 return new EntityToken[] { new WebsiteFileElementProviderEntityToken(castedEntityToken.Source, newFolderPath, castedEntityToken.RootPath) };
             }
-            else
-            {
-                return new EntityToken[] { new WebsiteFileElementProviderRootEntityToken(castedEntityToken.Source) };
-            }
+            
+            return new EntityToken[] { new WebsiteFileElementProviderRootEntityToken(castedEntityToken.Source) };
         }
     }
 }

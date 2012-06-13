@@ -18,6 +18,12 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public WebsiteFileElementProviderEntityToken(string providerName, string path, string rootPath)
         {
+            // Normalizing directory name
+            if(rootPath.EndsWith("\\"))
+            {
+                rootPath = rootPath.Substring(0, rootPath.Length - 1);
+            }
+
             this.Path = path;
             this.RootPath = rootPath;
             _providerName = providerName;
@@ -55,12 +61,13 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public override string Serialize()
         {
+            // TODO: serialization & desealization to use relative paths
             StringBuilder sb = new StringBuilder();
 
             DoSerialize(sb);
 
             StringConversionServices.SerializeKeyValuePair(sb, "RootPath", this.RootPath);
-
+             
             return sb.ToString();
         }
 
@@ -68,6 +75,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
+            // TODO: serialization & desealization to use relative paths
             Dictionary<string, string> dic;
             string type, source, id;
 

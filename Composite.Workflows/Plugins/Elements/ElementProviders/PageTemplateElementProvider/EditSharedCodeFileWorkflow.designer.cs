@@ -2,7 +2,7 @@ using System.Workflow.Activities;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
-    partial class EditRazorPageTemplateWorkflow
+    partial class EditSharedCodeFileWorkflow
     {
         #region Designer generated code
 
@@ -131,7 +131,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.initialState.Activities.Add(this.initialStateInitializationActivity);
             this.initialState.Name = "initialState";
             // 
-            // EditRazorPageTemplateWorkflow
+            // EditSharedCodeFileWorkflow
             // 
             this.Activities.Add(this.initialState);
             this.Activities.Add(this.editStateActivity);
@@ -141,7 +141,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initialState";
-            this.Name = "EditRazorPageTemplateWorkflow";
+            this.Name = "EditSharedCodeFileWorkflow";
             this.CanModifyActivities = false;
 
         }

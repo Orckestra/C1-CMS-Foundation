@@ -36,6 +36,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         private List<PageTemplate> _templates;
         private Hashtable<Guid, MasterPageRenderingInfo> _renderingInfo;
+        private List<string> _sharedSourceFiles;
 
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
@@ -80,6 +81,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             return new ElementAction[0];
         }
 
+
+        public IEnumerable<string> GetSharedFiles()
+        {
+            EnsureInitialization();
+
+            return _sharedSourceFiles;
+        }
+
         private void EnsureInitialization()
         {
             if (_templates == null)
@@ -101,6 +110,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             var templates = new List<PageTemplate>();
             var templateRenderingData = new Hashtable<Guid, MasterPageRenderingInfo>();
+            var sharedSourceFiles = new List<string>();
 
             // Loading and compiling layout controls
             foreach (var fileInfo in files)
@@ -119,7 +129,22 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     continue;
                 }
 
-                if (masterPage == null || !(masterPage is MasterPagePageTemplate)) continue;
+                if (masterPage == null)
+                {
+                    continue;
+                } 
+                if (!(masterPage is MasterPagePageTemplate))
+                {
+                    sharedSourceFiles.Add(ConvertToVirtualPath(fileInfo.FullName));
+
+                    string csFile = fileInfo.FullName + ".cs";
+                    if (File.Exists(csFile))
+                    {
+                        sharedSourceFiles.Add(ConvertToVirtualPath(csFile));
+                    }
+
+                    continue;
+                }
 
                 PageTemplate parsedTemplate;
                 MasterPageRenderingInfo renderingInfo;
@@ -141,6 +166,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             _templates = templates;
             _renderingInfo = templateRenderingData;
+            _sharedSourceFiles = sharedSourceFiles;
         }
 
         private void ParseTemplate(string virtualPath, 

@@ -28,7 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         }
 
 
-        
+
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             string filePath = GetFilePath();
@@ -53,7 +53,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             bool isValid = ValidateMarkup(filePath, content);
 
-            if(isValid)
+            if (isValid)
             {
                 websiteFile.WriteAllText(content);
 
@@ -98,7 +98,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                if(webPageBase == null || !(webPageBase is CompositeC1PageTemplate))
+                if (webPageBase == null || !(webPageBase is CompositeC1PageTemplate))
                 {
                     ShowWarning(GetText("EditRazorTemplate.Validation.IncorrectBaseClass")
                                 .FormatWith(typeof(CompositeC1PageTemplate).FullName));
@@ -114,7 +114,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 {
                     newTemplateId = pageTemplate.TemplateId;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     ShowPropertyError("TemplateId", ex);
                     return false;
@@ -141,14 +141,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 }
 
                 // Placeholder validation also can be made
-                if(newTemplateId != templateId)
+                if (newTemplateId != templateId)
                 {
                     ShowWarning(GetText("EditRazorTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
                     return false;
                 }
             }
             finally
-            { 
+            {
                 C1File.Delete(tempFile);
             }
 
@@ -181,7 +181,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             var entityToken = this.EntityToken;
             Verify.That(entityToken is PageTemplateEntityToken, "Invalid entity token type '{0}'", entityToken.GetType());
 
-            var pageTemplateEntityToken = (PageTemplateEntityToken) entityToken;
+            var pageTemplateEntityToken = (PageTemplateEntityToken)entityToken;
             return pageTemplateEntityToken.TemplateId;
         }
 

@@ -31,6 +31,27 @@ namespace Composite.Core.PageTemplates
             return result;
         }
 
+
+        /// <summary>
+        /// Gets the shared files.
+        /// </summary>
+        /// <returns></returns>
+        public static IEnumerable<string> GetSharedFiles()
+        {
+            var result = new List<string>();
+
+            foreach (string providerName in PageTemplateProviderRegistry.ProviderNames)
+            {
+                var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
+
+                var sharedFiles = provider.GetSharedFiles();
+
+                result.AddRange(sharedFiles);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Builds the page renderer.
         /// </summary>

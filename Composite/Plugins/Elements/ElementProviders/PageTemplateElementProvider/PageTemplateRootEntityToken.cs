@@ -7,29 +7,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
     internal class PageTemplateRootEntityToken : EntityToken
     {
-        public PageTemplateRootEntityToken()
-        {
-        }
-
-        public override string Type
-        {
-            get { return ""; }
-        }
-
-        public override string Source
-        {
-            get { return ""; }
-        }
-
-        public override string Id
-        {
-            get { return "PageTemplateRootEntityToken"; }
-        }
-
-        public override string Serialize()
-        {
-            return "";
-        }
+        public override string Type { get { return ""; } }
+        public override string Source { get { return ""; } }
+        public override string Id { get { return "PageTemplateRootEntityToken"; } }
+        public override string Serialize() { return ""; }
 
         public static EntityToken Deserialize(string serializedData)
         {
