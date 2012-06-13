@@ -22,8 +22,10 @@ new function () {
 		 * @param {string} url
 		 */
 		init : function ( ed, url ) {
-			
+
 			this.editor = ed;
+
+			ed.addShortcut('ctrl+k', '', 'compositeInsertLink');  
 		},
 		
 		/**
