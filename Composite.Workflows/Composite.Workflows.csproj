@@ -443,6 +443,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.Designer.cs">
       <DependentUpon>AddNewPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditMasterPageWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditMasterPageWorkflow.designer.cs">
+      <DependentUpon>EditMasterPageWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1046,6 +1052,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.layout">
       <DependentUpon>DeletePageTemplateWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditMasterPageWorkflow.layout">
+      <DependentUpon>EditMasterPageWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.layout">
       <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>

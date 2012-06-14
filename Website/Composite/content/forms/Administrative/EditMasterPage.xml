@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="TemplateTitle" type="System.String" />
+    
+    <cms:binding name="File1Content" type="System.String" />
+    <cms:binding name="File1Name" type="System.String" />
+    <cms:binding name="File1MimeType" type="System.String" />
+
+    <cms:binding name="File2Content" type="System.String" optional="true" />
+    <cms:binding name="File2Name" type="System.String" optional="true" />
+    <cms:binding name="File2MimeType" type="System.String" optional="true" />
+  </cms:bindings>
+  <cms:layout>
+    <TabPanels>
+      <TabPanels.Label>
+        <cms:read source="TemplateTitle" />
+      </TabPanels.Label>
+      
+      <TextEditor>
+        <TextEditor.MimeType>
+          <cms:read source="File1MimeType" />
+        </TextEditor.MimeType>
+        <TextEditor.Label>
+          <cms:read source="File1Name" />
+        </TextEditor.Label>
+        <cms:bind source="File1Content" />
+      </TextEditor>
+
+
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="File2Content" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+
+          <TextEditor>
+            <TextEditor.MimeType>
+              <cms:read source="File2MimeType" />
+            </TextEditor.MimeType>
+            <TextEditor.Label>
+              <cms:read source="File2Name" />
+            </TextEditor.Label>
+            <cms:bind source="File2Content" />
+          </TextEditor>
+          
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
+      
+    </TabPanels>
+  </cms:layout>
+</cms:formdefinition>

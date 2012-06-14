@@ -93,14 +93,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     Log.LogWarning(LogTitle, "Compilation failed while validating changes to '{0}'", virtualPath);
                     Log.LogWarning(LogTitle, ex);
 
-                    ShowWarning(GetText("EditRazorTemplate.Validation.CompilationFailed")
+                    ShowWarning(GetText("EditTemplate.Validation.CompilationFailed")
                                 .FormatWith(ex.Message));
                     return false;
                 }
 
                 if (webPageBase == null || !(webPageBase is CompositeC1PageTemplate))
                 {
-                    ShowWarning(GetText("EditRazorTemplate.Validation.IncorrectBaseClass")
+                    ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
                                 .FormatWith(typeof(CompositeC1PageTemplate).FullName));
                     return false;
                 }
@@ -143,7 +143,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 // Placeholder validation also can be made
                 if (newTemplateId != templateId)
                 {
-                    ShowWarning(GetText("EditRazorTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
+                    ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
                     return false;
                 }
             }
@@ -155,16 +155,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             return true;
         }
 
+
         private void ShowPropertyError(string propertyName, Exception ex)
         {
-            ShowWarning(GetText("EditRazorTemplate.Validation.PropertyError")
+            ShowWarning(GetText("EditTemplate.Validation.PropertyError")
                         .FormatWith(propertyName, ex.Message));
         }
+
 
         private void ShowWarning(string warning)
         {
             this.ShowMessage(DialogType.Warning,
-                 GetText("EditRazorTemplate.Validation.DialogTitle"),
+                 GetText("EditTemplate.Validation.DialogTitle"),
                  warning);
         }
 

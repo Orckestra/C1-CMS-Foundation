@@ -120,7 +120,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 string virtualPath = ConvertToVirtualPath(fileInfo.FullName);
                 try
                 {
-                    masterPage = CompileMasterPage(virtualPath);
+                    masterPage = CompilationHelper.CompileMasterPage(virtualPath);
                 }
                 catch (Exception ex)
                 {
@@ -146,7 +146,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     continue;
                 }
 
-                PageTemplate parsedTemplate;
+                MasterPageTemplate parsedTemplate;
                 MasterPageRenderingInfo renderingInfo;
 
                 ParseTemplate(virtualPath, fileInfo.FullName, masterPage as MasterPagePageTemplate, out parsedTemplate, out renderingInfo);
@@ -170,14 +170,17 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         }
 
         private void ParseTemplate(string virtualPath, 
-                                           string fileName, 
-                                           MasterPagePageTemplate masterPage, 
-                                           out PageTemplate pageTemplate,
+                                           string filePath, 
+                                           MasterPagePageTemplate masterPage,
+                                           out MasterPageTemplate pageTemplate,
                                            out MasterPageRenderingInfo renderingInfo)
         {
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
-            pageTemplate = new PageTemplate();
+            string csFile = filePath + ".cs";
+            if (!C1File.Exists(csFile)) csFile = null;
+
+            pageTemplate = new MasterPageTemplate(filePath, csFile);
             IDictionary<string, PropertyInfo> placeholderProperties;
 
             TemplateDefinitionHelper.ExtractPageTemplateInfo(masterPage, pageTemplate, out placeholderProperties);
@@ -188,31 +191,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             }
 
             renderingInfo = new MasterPageRenderingInfo(virtualPath, placeholderProperties);
-        }
-
-        private MasterPage CompileMasterPage(string virtualPath)
-        {
-            // Calling: object virtualPathObj = new System.Web.VirtualPath(virtualPath);
-            Assembly asmSystemWeb = typeof (HttpContext).Assembly;
-            Type tVirtualType = asmSystemWeb.GetType("System.Web.VirtualPath");
-            var virtualTypeConstructor = tVirtualType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance, null,
-                                                                     new[] {typeof (string)}, null);
-            object virtualPathObj = virtualTypeConstructor.Invoke(new object[] {virtualPath});
-
-            // Calling: return System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(null, virtualPathObj, false, false, false)
-
-            IWebObjectFactory factory = typeof(BuildManager)
-                   .GetMethod("GetVPathBuildResultWithNoAssert",
-                              BindingFlags.NonPublic | BindingFlags.Static,
-                              null,
-                              CallingConventions.Any,
-                              new Type[] { typeof(HttpContext), tVirtualType, typeof(bool), typeof(bool), typeof(bool) },
-                              null)
-                    .Invoke(null, new object[] { null, virtualPathObj, false, false, false }) as IWebObjectFactory;
-
-            Verify.IsNotNull(factory, "Failed to compile master page file");
-
-            return factory.CreateInstance() as MasterPage;
         }
 
         public string ConvertToVirtualPath(string filePath)

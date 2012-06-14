@@ -640,6 +640,7 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\CompilationHelper.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplate.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -653,6 +654,7 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Description.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Placeholder.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Title.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageTemplate.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageRenderingInfo.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateProvider.cs" />

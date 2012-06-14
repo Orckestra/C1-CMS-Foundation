@@ -181,7 +181,7 @@ namespace Composite.Core.WebClient.Renderings
             {
                 if (!UserValidationFacade.IsLoggedIn())
                 {
-                    string loginUrl = UrlUtils.AdminRootPath + "/Login.aspx?ReturnUrl=" + HttpUtility.UrlEncode(request.RawUrl);
+                    string loginUrl = GetLoginRedirectUrl(request.RawUrl);
                     response.Write(@"You must be logged into <a href=""" + loginUrl + @""">C1 console</a> to have the performance view enabled");
                     response.End(); // throws ThreadAbortException
                     return;
@@ -243,8 +243,7 @@ namespace Composite.Core.WebClient.Renderings
             if ((isUnpublishedPage || isPreviewingUrl)
                 && !UserValidationFacade.IsLoggedIn())
             {
-                string redirectUrl = UrlUtils.PublicRootPath + "/Composite/Login.aspx?ReturnUrl=" +
-                                     HttpUtility.UrlEncodeUnicode(httpContext.Request.Url.OriginalString);
+                string redirectUrl = GetLoginRedirectUrl(httpContext.Request.Url.OriginalString);
 
                 httpContext.Response.Redirect(redirectUrl, true);
             }
@@ -276,7 +275,12 @@ namespace Composite.Core.WebClient.Renderings
                 httpContext.Response.StatusCode = 404;
             }
         }
-
+        
+        private static string GetLoginRedirectUrl(string url)
+        {
+            return UrlUtils.PublicRootPath + "/Composite/Login.aspx?ReturnUrl=" +
+                   HttpUtility.UrlEncodeUnicode(url);
+        }
 
         /// <exclude />
         public void Dispose()
