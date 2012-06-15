@@ -4,12 +4,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
+using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
+using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
 using Composite.Plugins.PageTemplates.MasterPages;
@@ -21,6 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     public sealed partial class EditMasterPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static readonly string LogTitle = typeof (EditMasterPageWorkflow).Name;
+        private static readonly string HtmlMimeType = "text/html";
 
         private string[] GetFiles()
         {
@@ -104,6 +107,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 this.Bindings.Add(bindingPrefix + "Content", websiteFile.ReadAllText());
                 this.Bindings.Add(bindingPrefix + "Name", websiteFile.FileName);
+                // Assigning "text/html" mimetype so CodeMirror will show it correctly
+
+                // this.Bindings.Add(bindingPrefix + "MimeType", i == 0 ? HtmlMimeType : websiteFile.MimeType);
                 this.Bindings.Add(bindingPrefix + "MimeType", websiteFile.MimeType);
             }
         }
@@ -122,7 +128,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 fileContent.Add(this.GetBinding<string>(bindingPrefix + "Content"));
             }
 
-            if (!CompileAndValidate(files, fileContent))
+            Guid newTemplateId = Guid.Empty;
+            if (!CompileAndValidate(files, fileContent, ref newTemplateId))
             {
                 return;
             }
@@ -134,10 +141,22 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 websiteFile.WriteAllText(fileContent[i]);
             }
 
-            SetSaveStatus(true);
+            PageTemplateProviderRegistry.Flush();
+
+            if(newTemplateId != Guid.Empty)
+            {
+                // Changing current entity token if necessary
+                SetSaveStatus(true, new PageTemplateEntityToken(newTemplateId));
+            }
+            else
+            {
+                SetSaveStatus(true);
+            }
+
+            this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
         }
 
-        private bool CompileAndValidate(string[] files, IList<string> fileContent)
+        private bool CompileAndValidate(string[] files, IList<string> fileContent, ref Guid newTemplateId)
         {
             string tempMasterFile = GetTempFilePath(files[0]);
             string tempCodeBehindFile = null; 
@@ -204,7 +223,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                return Validate(masterPage);
+                return Validate(masterPage, ref newTemplateId);
             }
             finally
             {
@@ -217,26 +236,33 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             }
         }
 
-        private bool Validate(MasterPage masterPage)
+        private bool Validate(MasterPage masterPage, ref Guid newTemplateId)
         {
             if(!(this.EntityToken is PageTemplateEntityToken))
             {
                 return true;
             }
 
+            var pageTemplate = GetPageTemplate();
+
             var templateDefinition = masterPage as MasterPagePageTemplate;
             if(templateDefinition == null)
             {
+                if(!pageTemplate.TemplateIsLoaded)
+                {
+                    return true;
+                }
+
                 ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
                             .FormatWith(typeof(MasterPagePageTemplate).FullName));
                 return false;
             }
 
-            Guid newTemplateId;
+            Guid tempTemplateId;
 
             try
             {
-                newTemplateId = templateDefinition.TemplateId;
+                tempTemplateId = templateDefinition.TemplateId;
             }
             catch (Exception ex)
             {
@@ -264,14 +290,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return false;
             }
 
-            Guid templateId = (this.EntityToken as PageTemplateEntityToken).TemplateId;
-
-            // Placeholder validation also can be made
-            if (newTemplateId != templateId)
+            if(pageTemplate.TemplateIsLoaded)
             {
-                ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
-                return false;
+                Guid templateId = pageTemplate.Id;
+
+                if (newTemplateId != templateId)
+                {
+                    ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
+                    return false;
+                }
             }
+
+            newTemplateId = tempTemplateId;
 
             return true;
         }

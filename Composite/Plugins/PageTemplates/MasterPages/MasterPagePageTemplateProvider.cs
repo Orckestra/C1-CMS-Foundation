@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Web;
-using System.Web.Compilation;
 using System.Web.UI;
-using System.Web.Util;
 using Composite.C1Console.Elements;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
@@ -28,15 +27,13 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
 
         private static readonly string MasterPageFileMask = "*.master";
-        private static readonly string FileWatcherMask = "*.";
-        private static readonly string FileWatcher_Regex = @"\.cs|\.master\.common";
+        private static readonly string FileWatcherMask = "*.master*";
+        private static readonly string FileWatcher_Regex = @"\.cs|\.master";
 
         private readonly string _templatesDirectoryVirtualPath;
         private readonly string _templatesDirectory;
 
-        private List<PageTemplate> _templates;
-        private Hashtable<Guid, MasterPageRenderingInfo> _renderingInfo;
-        private List<string> _sharedSourceFiles;
+        private volatile State _state;
 
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
@@ -64,16 +61,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         public IEnumerable<PageTemplate> GetPageTemplates()
         {
-            EnsureInitialization();
-
-            return _templates;
+            return GetInitializedState().Templates;
         }
 
         public IPageRenderer BuildPageRenderer()
         {
-            EnsureInitialization();
+            var state = GetInitializedState();
 
-            return new MasterPagePageRenderer(_renderingInfo);
+            return new MasterPagePageRenderer(state.RenderingInfo);
         }
 
         public IEnumerable<ElementAction> GetRootActions()
@@ -84,24 +79,32 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         public IEnumerable<string> GetSharedFiles()
         {
-            EnsureInitialization();
+            var state = GetInitializedState();
 
-            return _sharedSourceFiles;
+            return state.SharedSourceFiles;
         }
 
-        private void EnsureInitialization()
+        private State GetInitializedState()
         {
-            if (_templates == null)
-            lock (_initializationLock)
-            if (_templates == null)
+            var state = _state;
+            if(state != null)
             {
-                Initialize();
-
-                Verify.IsNotNull(_templates, "Templates weren't initialized");
+                return state;
             }
+
+            lock (_initializationLock)
+            {
+                state = _state;
+                if (state == null)
+                {
+                    _state = state = Initialize();
+                }
+            }
+
+            return state;
         }
 
-        private void Initialize()
+        private State Initialize()
         {
             var files = new C1DirectoryInfo(_templatesDirectory)
                            .GetFiles(MasterPageFileMask, SearchOption.AllDirectories)
@@ -126,6 +129,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 {
                     Log.LogError(LogTitle, "Failed to compile master page file '{0}'", virtualPath);
                     Log.LogError(LogTitle, ex);
+
+                    Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
+
+                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, compilationException));
                     continue;
                 }
 
@@ -137,7 +144,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 {
                     sharedSourceFiles.Add(ConvertToVirtualPath(fileInfo.FullName));
 
-                    string csFile = fileInfo.FullName + ".cs";
+                    string csFile = GetCodebehindFilePath(fileInfo.FullName);
                     if (File.Exists(csFile))
                     {
                         sharedSourceFiles.Add(ConvertToVirtualPath(csFile));
@@ -149,10 +156,22 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 MasterPageTemplate parsedTemplate;
                 MasterPageRenderingInfo renderingInfo;
 
-                ParseTemplate(virtualPath, fileInfo.FullName, masterPage as MasterPagePageTemplate, out parsedTemplate, out renderingInfo);
-                if(parsedTemplate == null)
+                try
                 {
-                    return;
+                    ParseTemplate(virtualPath, 
+                                  fileInfo.FullName, 
+                                  masterPage as MasterPagePageTemplate, 
+                                  out parsedTemplate, 
+                                  out renderingInfo);
+                }
+                catch(Exception ex)
+                {
+                    Log.LogError(LogTitle, "Failed to load master page template file '{0}'", virtualPath);
+                    Log.LogError(LogTitle, ex);
+
+                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, ex));
+
+                    continue;
                 }
 
                 templates.Add(parsedTemplate);
@@ -164,9 +183,41 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 templateRenderingData.Add(parsedTemplate.Id, renderingInfo);
             }
 
-            _templates = templates;
-            _renderingInfo = templateRenderingData;
-            _sharedSourceFiles = sharedSourceFiles;
+            return new State {
+                Templates = templates,
+                RenderingInfo = templateRenderingData,
+                SharedSourceFiles = sharedSourceFiles
+            };
+        }
+
+        private static Guid GetMD5Hash(string text)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hash = md5.ComputeHash(Encoding.Unicode.GetBytes(text));
+                return new Guid(hash);
+            }
+        }
+
+
+        private PageTemplate GetIncorrectlyLoadedPageTemplate(string filePath, Exception loadingException)
+        {
+            Guid templateId = GetMD5Hash(filePath.ToLowerInvariant());
+            string codeBehindFile = GetCodebehindFilePath(filePath);
+
+            return new MasterPageTemplate(filePath, codeBehindFile)
+                {
+                    Id = templateId,
+                    Title = Path.GetFileName(filePath),
+                    LoadingException = loadingException
+                };
+        }
+
+
+        private static string GetCodebehindFilePath(string masterFilePath)
+        {
+            string csFile = masterFilePath + ".cs";
+            return C1File.Exists(csFile) ? csFile : null;
         }
 
         private void ParseTemplate(string virtualPath, 
@@ -177,8 +228,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         {
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
-            string csFile = filePath + ".cs";
-            if (!C1File.Exists(csFile)) csFile = null;
+            string csFile = GetCodebehindFilePath(filePath);
 
             pageTemplate = new MasterPageTemplate(filePath, csFile);
             IDictionary<string, PropertyInfo> placeholderProperties;
@@ -239,6 +289,22 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
                 _lastUpdateTime = DateTime.Now;
             }
+        }
+
+        public void Flush()
+        {
+            _state = null;
+        }
+
+
+        /// <summary>
+        /// Immutable state - loaded page templates
+        /// </summary>
+        private class State
+        {
+            public List<PageTemplate> Templates;
+            public Hashtable<Guid, MasterPageRenderingInfo> RenderingInfo;
+            public List<string> SharedSourceFiles;   
         }
     }
 }

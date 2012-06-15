@@ -35,5 +35,10 @@ namespace Composite.Core.PageTemplates
         /// </summary>
         /// <returns></returns>
         IEnumerable<string> GetSharedFiles();
+
+        /// <summary>
+        /// Flushes the list of templates
+        /// </summary>
+        void Flush();
     }
 }

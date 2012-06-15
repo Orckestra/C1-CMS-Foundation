@@ -16,6 +16,15 @@ namespace Composite.Core.PageTemplates.Foundation
 
         public void Flush()
         {
+            foreach(var providerName in _resourceLocker.Resources.ProviderNames)
+            {
+                var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
+                if (provider != null)
+                {
+                    provider.Flush();
+                }
+            }
+
             _resourceLocker.ResetInitialization();
         }
 

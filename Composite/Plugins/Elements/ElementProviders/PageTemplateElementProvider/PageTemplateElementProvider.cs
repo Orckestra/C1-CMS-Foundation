@@ -31,6 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         public static ResourceHandle RootOpen { get { return GetIconHandle("page-template-root-open"); } }
         public static ResourceHandle RootClosed { get { return GetIconHandle("page-template-root-closed"); } }
         public static ResourceHandle DesignTemplate { get { return GetIconHandle("page-template-template"); } }
+        public static ResourceHandle TemplateWithError { get { return GetIconHandle("error"); } }
 
         public static ResourceHandle AddTemplate { get { return GetIconHandle("page-template-add"); } }
         public static ResourceHandle EditTemplate { get { return GetIconHandle("page-template-edit"); } }
@@ -229,7 +230,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                                          Label = pageTemplate.Title,
                                          ToolTip = pageTemplate.Title,
                                          HasChildren = false,
-                                         Icon = DesignTemplate,
+                                         Icon = pageTemplate.TemplateIsLoaded ? DesignTemplate : TemplateWithError,
                                      };
 
                 IEnumerable<ElementAction> actions = pageTemplate.GetActions();

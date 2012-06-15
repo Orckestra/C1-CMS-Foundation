@@ -45,6 +45,22 @@ namespace Composite.Core.PageTemplates
         public string DefaultPlaceholderId { get; set; }
 
         /// <summary>
+        /// Gets or sets an exception that occured during loading the template.
+        /// </summary>
+        public Exception LoadingException { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether page template is loaded.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if template is loaded; otherwise, <c>false</c>.
+        /// </value>
+        public bool TemplateIsLoaded
+        {
+            get { return LoadingException == null; }
+        }
+
+        /// <summary>
         /// Gets the entity token.
         /// </summary>
         /// <returns></returns>

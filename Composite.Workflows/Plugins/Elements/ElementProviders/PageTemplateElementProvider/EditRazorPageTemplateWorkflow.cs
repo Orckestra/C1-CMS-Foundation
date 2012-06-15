@@ -71,7 +71,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private bool ValidateMarkup(string filePath, string content)
         {
-            string tempFile = Path.GetDirectoryName(filePath) + @"\_tmp_" + Path.GetFileName(filePath);
+            string fileName = Path.GetFileName(filePath);
+
+            string tempFile = Path.GetDirectoryName(filePath) + @"\_tmp_" + fileName;
             Guid templateId = GetTemplateId();
 
             RazorPageTemplateProvider provider = GetTemplateProvider(templateId);
@@ -93,8 +95,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     Log.LogWarning(LogTitle, "Compilation failed while validating changes to '{0}'", virtualPath);
                     Log.LogWarning(LogTitle, ex);
 
+                    string message = ex.Message;
+
+                    if(message.StartsWith(tempFile, StringComparison.OrdinalIgnoreCase))
+                    {
+                        message = fileName + message.Substring(tempFile.Length);
+                    }
+
                     ShowWarning(GetText("EditTemplate.Validation.CompilationFailed")
-                                .FormatWith(ex.Message));
+                                .FormatWith(message));
                     return false;
                 }
 

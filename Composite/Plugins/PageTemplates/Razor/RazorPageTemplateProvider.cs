@@ -28,12 +28,17 @@ namespace Composite.Plugins.PageTemplates.Razor
         private readonly string _templatesDirectory;
         private readonly string _templatesDirectoryVirtualPath;
         
-        private List<PageTemplate> _templates = null;
-        private Hashtable<Guid, TemplateRenderingInfo> _renderingInfo = null;
-
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
         private DateTime _lastUpdateTime;
+
+        private volatile State _state;
+
+        private class State
+        {
+            public List<PageTemplate> Templates;
+            public Hashtable<Guid, TemplateRenderingInfo> RenderingInfo;
+        }
 
 
         public RazorPageTemplateProvider(string providerName, string templatesDirectoryVirtualPath)
@@ -57,34 +62,38 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         public IPageRenderer BuildPageRenderer()
         {
-            return new RazorPageRenderer(_renderingInfo);
+            var state = GetInitializedState();
+
+            return new RazorPageRenderer(state.RenderingInfo);
         }
 
         public IEnumerable<PageTemplate> GetPageTemplates()
         {
-            EnsureInitialization();
-
-            return _templates;
+            return GetInitializedState().Templates;
         }
 
-        private void EnsureInitialization()
+        private State GetInitializedState()
         {
-            if(_templates == null || _renderingInfo == null)
-            {
-                lock (_initializationLock)
-                {
-                    if (_templates == null)
-                    {
-                        Initialize();
+            var state = _state;
 
-                        Verify.IsNotNull(_templates, "Templates weren't initialized");
-                    }
+            if (state != null) return state;
+            
+            lock (_initializationLock)
+            {
+                state = _state;
+
+                if (state == null)
+                {
+                    _state = state = Initialize();
                 }
             }
+            
+
+            return state;
         }
 
 
-        private void Initialize()
+        private State Initialize()
         {
             var files = new C1DirectoryInfo(_templatesDirectory)
                            .GetFiles(LayoutFileMask, SearchOption.AllDirectories)
@@ -124,8 +133,11 @@ namespace Composite.Plugins.PageTemplates.Razor
                 templateRenderingData.Add(parsedTemplate.Id, new TemplateRenderingInfo(virtualPath, placeholderProperties));
             }
 
-            _templates = templates;
-            _renderingInfo = templateRenderingData;
+            return new State
+                       {
+                           Templates = templates,
+                           RenderingInfo = templateRenderingData
+                       };
         }
 
         public string ConvertToVirtualPath(string filePath)
@@ -195,6 +207,14 @@ namespace Composite.Plugins.PageTemplates.Razor
         public IEnumerable<string> GetSharedFiles()
         {
             return new string[0];
+        }
+
+        public void Flush()
+        {
+            lock(_initializationLock)
+            {
+                _state = null;
+            }
         }
     }
 }

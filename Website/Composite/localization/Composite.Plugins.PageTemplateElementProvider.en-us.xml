@@ -43,7 +43,7 @@
 
 
   <string key="EditTemplate.Validation.DialogTitle" value="Validation error" />
-  <string key="EditTemplate.Validation.CompilationFailed" value="Compilation failed: '{0}'" />
+  <string key="EditTemplate.Validation.CompilationFailed" value="Compilation failed: {0}" />
   <string key="EditTemplate.Validation.IncorrectBaseClass" value="Page template class does not inherit '{0}'" />
   <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Excepton: {1}" />
   <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change template id through current workflow. Original template id is '{0}'" />
