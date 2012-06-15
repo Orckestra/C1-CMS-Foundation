@@ -14,8 +14,8 @@ namespace Composite.Core.PageTemplates
     public static class TemplateDefinitionHelper
     {
         /// <exclude />
-        public static void ExtractPageTemplateInfo(ITemplateDefinition templateDefinition, 
-                                           PageTemplate pageTemplate,
+        public static void ExtractPageTemplateInfo(IPageTemplate templateDefinition, 
+                                           PageTemplateDescriptor pageTemplate,
                                            out IDictionary<string, PropertyInfo> placeholderProperties)
         {
             Verify.ArgumentNotNull(templateDefinition, "templateDefinition");
@@ -32,7 +32,7 @@ namespace Composite.Core.PageTemplates
 
             var type = templateDefinition.GetType();
 
-            while (type.GetInterfaces().Contains(typeof(ITemplateDefinition)))
+            while (type.GetInterfaces().Contains(typeof(IPageTemplate)))
             {
                 foreach (var property in type.GetProperties())
                 {
@@ -81,7 +81,7 @@ namespace Composite.Core.PageTemplates
         /// <param name="pageRenderingJob">The page rendering job.</param>
         /// <param name="placeholderProperties">The placeholder properties.</param>
         /// <param name="functionContextContainer">The function context container, if not null, nested functions fill be evaluated.</param>
-        public static void BindPlaceholders(ITemplateDefinition template, 
+        public static void BindPlaceholders(IPageTemplate template, 
                                      PageRenderingJob pageRenderingJob,
                                      IDictionary<string, PropertyInfo> placeholderProperties,
                                      FunctionContextContainer functionContextContainer)

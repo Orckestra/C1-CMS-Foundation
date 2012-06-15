@@ -13,21 +13,21 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 {
-    internal class XmlPageTemplate: PageTemplate
+    internal class XmlPageTemplateDescriptor: PageTemplateDescriptor
     {
         public static ResourceHandle DeleteTemplate { get { return PageTemplateElementProvider.GetIconHandle("page-template-delete"); } }
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
-        private readonly IPageTemplate _pageTemplate;
+        private readonly IXmlPageTemplate _xmlPageTemplate;
 
-        public XmlPageTemplate(IPageTemplate pageTemplate)
+        public XmlPageTemplateDescriptor(IXmlPageTemplate pageTemplate)
         {
-            _pageTemplate = pageTemplate;
+            _xmlPageTemplate = pageTemplate;
         }
 
         public override C1Console.Security.EntityToken GetEntityToken()
         {
-            return _pageTemplate.GetDataEntityToken();
+            return _xmlPageTemplate.GetDataEntityToken();
         }
 
         public override IEnumerable<ElementAction> GetActions()

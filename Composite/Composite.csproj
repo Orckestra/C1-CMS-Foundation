@@ -152,7 +152,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AspNet\Razor\CompositeC1PageTemplate.cs" />
+    <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
     <Compile Include="AspNet\Razor\CompositeC1RazorHost.cs" />
     <Compile Include="AspNet\Razor\CompositeC1RazorHostFactory.cs" />
     <Compile Include="AspNet\Razor\CompositeC1WebPage.cs" />
@@ -281,9 +281,9 @@
     <Compile Include="Core\PageTemplates\Foundation\PluginFacade\PageTemplateProviderPluginFacade.cs" />
     <Compile Include="Core\PageTemplates\IPageRenderer.cs" />
     <Compile Include="Core\PageTemplates\IPageTemplateProvider.cs" />
-    <Compile Include="Core\PageTemplates\ITemplateDefinition.cs" />
+    <Compile Include="Core\PageTemplates\IPageTemplate.cs" />
     <Compile Include="Core\PageTemplates\PageRenderingJob.cs" />
-    <Compile Include="Core\PageTemplates\PageTemplate.cs" />
+    <Compile Include="Core\PageTemplates\PageTemplateDescriptor.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateEntityToken.cs" />
     <Compile Include="Core\PageTemplates\PageTemplateFacade.cs" />
     <Compile Include="Core\PageTemplates\PlaceholderAttribute.cs" />
@@ -654,19 +654,19 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Description.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Placeholder.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Title.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageTemplate.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateDescriptor.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageRenderingInfo.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateProvider.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateProviderData.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\RazorPageRenderer.cs" />
-    <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplate.cs" />
+    <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateDescriptor.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProvider.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProviderAssembler.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProviderData.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\TemplateRenderingInfo.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageRenderer.cs" />
-    <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplate.cs" />
+    <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateDescriptor.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProvider.cs" />
     <Compile Include="Plugins\Routing\Hostnames\FormFunctions.cs" />
     <Compile Include="Plugins\Routing\Pages\PageUrlBuilder.cs" />
@@ -2049,7 +2049,7 @@
     <Compile Include="Data\Types\ExtensionMethods\IFileExtensions.cs" />
     <Compile Include="Data\Types\IFileServices.cs" />
     <Compile Include="Data\Types\IPage.cs" />
-    <Compile Include="Data\Types\IPageTemplate.cs" />
+    <Compile Include="Data\Types\IXmlPageTemplate.cs" />
     <Compile Include="Data\Types\PageServices.cs" />
     <Compile Include="C1Console\Elements\ElementAction.cs" />
     <Compile Include="C1Console\Elements\ActionCategory.cs" />

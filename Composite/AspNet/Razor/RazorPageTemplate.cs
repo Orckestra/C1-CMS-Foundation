@@ -8,7 +8,7 @@ namespace Composite.AspNet.Razor
     /// <summary>
     /// Base class for a razor control that represends a C1 page tempalte
     /// </summary>
-    public abstract class CompositeC1PageTemplate : CompositeC1WebPage, ITemplateDefinition
+    public abstract class RazorPageTemplate : CompositeC1WebPage, IPageTemplate
     {
         /// <summary>
         /// Defines page template id.

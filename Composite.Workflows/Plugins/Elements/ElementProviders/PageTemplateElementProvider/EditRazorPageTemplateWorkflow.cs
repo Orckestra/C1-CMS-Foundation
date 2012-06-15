@@ -13,6 +13,7 @@ using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
 using Composite.Plugins.PageTemplates.Razor;
+using RazorPageTemplate = Composite.AspNet.Razor.RazorPageTemplate;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
@@ -107,17 +108,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                if (webPageBase == null || !(webPageBase is CompositeC1PageTemplate))
+                if (webPageBase == null || !(webPageBase is RazorPageTemplate))
                 {
                     ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
-                                .FormatWith(typeof(CompositeC1PageTemplate).FullName));
+                                .FormatWith(typeof(RazorPageTemplate).FullName));
                     return false;
                 }
 
                 Guid newTemplateId;
                 string newTitle, newDescription;
 
-                var pageTemplate = webPageBase as CompositeC1PageTemplate;
+                var pageTemplate = webPageBase as RazorPageTemplate;
 
                 try
                 {
@@ -208,7 +209,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             var template = PageTemplateFacade.GetPageTemplates().FirstOrDefault(t => t.Id == templateId);
             Verify.IsNotNull(template, "Faile to find page template by ID '{0}'", templateId);
 
-            var razorTemplate = (RazorPageTemplate)template;
+            var razorTemplate = (PageTemplates.Razor.RazorPageTemplateDescriptor)template;
 
             return razorTemplate.FilePath;
         }

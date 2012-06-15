@@ -10,7 +10,7 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.Razor
 {
-    internal class RazorPageTemplate: PageTemplate
+    internal class RazorPageTemplateDescriptor: PageTemplateDescriptor
     {
         private static readonly PermissionType[] _editWebsiteFilePermissionTypes = new [] { PermissionType.Edit };
 
@@ -19,7 +19,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         private readonly string _filePath;
 
-        public RazorPageTemplate(string filePath)
+        public RazorPageTemplateDescriptor(string filePath)
         {
             _filePath = filePath;
         }

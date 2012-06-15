@@ -17,7 +17,7 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]
     [LabelPropertyName("Title")]
     [CachingAttribute(CachingType.Full)]
-    public interface IPageTemplate : IData
+    public interface IXmlPageTemplate : IData
     {
         /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.Guid)]

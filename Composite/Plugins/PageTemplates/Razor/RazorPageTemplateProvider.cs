@@ -36,7 +36,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         private class State
         {
-            public List<PageTemplate> Templates;
+            public List<PageTemplateDescriptor> Templates;
             public Hashtable<Guid, TemplateRenderingInfo> RenderingInfo;
         }
 
@@ -67,7 +67,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             return new RazorPageRenderer(state.RenderingInfo);
         }
 
-        public IEnumerable<PageTemplate> GetPageTemplates()
+        public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
         {
             return GetInitializedState().Templates;
         }
@@ -100,7 +100,7 @@ namespace Composite.Plugins.PageTemplates.Razor
                            .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
 
 
-            var templates = new List<PageTemplate>();
+            var templates = new List<PageTemplateDescriptor>();
             var templateRenderingData = new Hashtable<Guid, TemplateRenderingInfo>();
 
             // Loading and compiling layout controls
@@ -121,12 +121,12 @@ namespace Composite.Plugins.PageTemplates.Razor
                     continue;
                 }
 
-                if(webPage == null || !(webPage is CompositeC1PageTemplate)) continue;
+                if(webPage == null || !(webPage is AspNet.Razor.RazorPageTemplate)) continue;
                 
-                PageTemplate parsedTemplate;
+                PageTemplateDescriptor parsedTemplate;
                 IDictionary<string, PropertyInfo> placeholderProperties;
 
-                ParseTemplate(fileInfo.FullName, webPage as CompositeC1PageTemplate, out parsedTemplate, out placeholderProperties);
+                ParseTemplate(fileInfo.FullName, webPage as AspNet.Razor.RazorPageTemplate, out parsedTemplate, out placeholderProperties);
 
                 templates.Add(parsedTemplate);
 
@@ -146,11 +146,11 @@ namespace Composite.Plugins.PageTemplates.Razor
         }
 
         private void ParseTemplate(string filePath,
-                                   CompositeC1PageTemplate webPage, 
-                                   out PageTemplate templateDescriptor, 
+                                   AspNet.Razor.RazorPageTemplate webPage, 
+                                   out PageTemplateDescriptor templateDescriptor, 
                                    out IDictionary<string, PropertyInfo> placeholderProperties)
         {
-            templateDescriptor = new RazorPageTemplate(filePath);
+            templateDescriptor = new RazorPageTemplateDescriptor(filePath);
 
             TemplateDefinitionHelper.ExtractPageTemplateInfo(webPage, templateDescriptor, out placeholderProperties);
         }

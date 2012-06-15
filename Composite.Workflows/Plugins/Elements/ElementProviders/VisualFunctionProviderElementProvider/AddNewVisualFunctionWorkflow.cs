@@ -5,6 +5,7 @@ using System.Workflow.Activities;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core.PageTemplates;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
@@ -30,9 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
         private void CheckPageTemplatesExists(object sender, ConditionalEventArgs e)
         {
-            Type type = GetSourceDataType();
-
-            e.Result = DataFacade.GetData<IPageTemplate>().Any();
+            e.Result = PageTemplateFacade.ValidTemplateExists;
         }
 
 

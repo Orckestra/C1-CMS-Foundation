@@ -2,12 +2,13 @@
 using System.Web.UI;
 using Composite.Core.PageTemplates;
 
+
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
     /// <summary>
     /// Base master page
     /// </summary>
-    public abstract class MasterPagePageTemplate : MasterPage, ITemplateDefinition
+    public abstract class MasterPagePageTemplate : MasterPage, IPageTemplate
     {
         /// <summary>
         /// Gets the template id.

@@ -39,7 +39,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
         private void CheckPageTemplatesExists(object sender, ConditionalEventArgs e)
         {
-            e.Result = DataFacade.GetData<IPageTemplate>().Count() > 0;
+            e.Result = PageTemplateFacade.ValidTemplateExists;
         }
 
 
@@ -87,7 +87,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
             Dictionary<Guid, string> templateInfos = new Dictionary<Guid, string>();
 
-            foreach (PageTemplate pageTemplate in PageTemplateFacade.GetPageTemplates())
+            foreach (PageTemplateDescriptor pageTemplate in PageTemplateFacade.GetPageTemplates())
             {
                 if (pageTemplate.PlaceholderDescriptions.Any())
                 {

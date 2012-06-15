@@ -21,23 +21,23 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
     {
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
-        public IEnumerable<PageTemplate> GetPageTemplates()
+        public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
         {
             using (var conn = new DataConnection(PublicationScope.Unpublished))
             {
-                var result = new List<PageTemplate>();
+                var result = new List<PageTemplateDescriptor>();
                 
-                foreach (var pageTemplate in conn.Get<IPageTemplate>())
+                foreach (var xmlPageTemplate in conn.Get<IXmlPageTemplate>())
                 {
                     string defaultPlaceholderId;
                     PlaceholderDescriptor[] placeholders;
 
-                    ParseLayoutFile(pageTemplate, out placeholders, out defaultPlaceholderId);
+                    ParseLayoutFile(xmlPageTemplate, out placeholders, out defaultPlaceholderId);
 
-                    PageTemplate descriptor = new XmlPageTemplate(pageTemplate)
+                    PageTemplateDescriptor descriptor = new XmlPageTemplateDescriptor(xmlPageTemplate)
                     {
-                        Id = pageTemplate.Id,
-                        Title = pageTemplate.Title,
+                        Id = xmlPageTemplate.Id,
+                        Title = xmlPageTemplate.Title,
                         DefaultPlaceholderId = defaultPlaceholderId,
                         PlaceholderDescriptions = placeholders
                     };
@@ -49,7 +49,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
             }
         }
 
-        private static void ParseLayoutFile(IPageTemplate pageTemplate, out PlaceholderDescriptor[] placeholders, out string defaultPlaceholder)
+        private static void ParseLayoutFile(IXmlPageTemplate pageTemplate, out PlaceholderDescriptor[] placeholders, out string defaultPlaceholder)
         {
             var placeholdersInfo = TemplateInfo.GetRenderingPlaceHolders(pageTemplate.Id);
 

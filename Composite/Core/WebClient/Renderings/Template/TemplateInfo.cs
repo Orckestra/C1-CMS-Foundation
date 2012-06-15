@@ -20,18 +20,18 @@ namespace Composite.Core.WebClient.Renderings.Template
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class TemplateInfo
 	{
-        private static readonly Cache<Guid, IPageTemplate> PageTemplateCache = new Cache<Guid, IPageTemplate>("Page templates", 100);
+        private static readonly Cache<Guid, IXmlPageTemplate> PageTemplateCache = new Cache<Guid, IXmlPageTemplate>("Page templates", 100);
 
         /// <exclude />
         static TemplateInfo() {
-	      DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageTemplate>(PageTemplate_Changed, true);
-          DataEventSystemFacade.SubscribeToDataDeleted<IPageTemplate>(PageTemplate_Changed, true);
+            DataEventSystemFacade.SubscribeToDataAfterUpdate<IXmlPageTemplate>(PageTemplate_Changed, true);
+            DataEventSystemFacade.SubscribeToDataDeleted<IXmlPageTemplate>(PageTemplate_Changed, true);
 	    }
 
 
         private static void PageTemplate_Changed(object sender, DataEventArgs dataEventArgs)
 	    {
-            var pageTemplate = dataEventArgs.Data as IPageTemplate;
+            var pageTemplate = dataEventArgs.Data as IXmlPageTemplate;
             Verify.ArgumentCondition(pageTemplate != null, "dataEventArgs", "Data is null or has an incorrect data type.");
             PageTemplateCache.Remove(pageTemplate.Id);
 	    }
@@ -74,7 +74,7 @@ namespace Composite.Core.WebClient.Renderings.Template
         /// <exclude />
         public static XDocument GetTemplateDocument(Guid templateId)
         {
-            IPageTemplate template = GetTemplate(templateId);
+            IXmlPageTemplate template = GetTemplate(templateId);
 
             var templateWrapper = PageTemplateFileWrapper.Get(template);
             string templateMarkup = templateWrapper.Content;
@@ -95,9 +95,9 @@ namespace Composite.Core.WebClient.Renderings.Template
 
 
 
-        private static IPageTemplate GetTemplate(Guid templateId)
+        private static IXmlPageTemplate GetTemplate(Guid templateId)
         {
-            IPageTemplate cachedValue = PageTemplateCache.Get(templateId);
+            IXmlPageTemplate cachedValue = PageTemplateCache.Get(templateId);
 
             if(cachedValue != null)
             {
@@ -105,11 +105,11 @@ namespace Composite.Core.WebClient.Renderings.Template
             }
 
             var templates =
-                from template in DataFacade.GetData<Composite.Data.Types.IPageTemplate>()
+                from template in DataFacade.GetData<Composite.Data.Types.IXmlPageTemplate>()
                 where template.Id == templateId
                 select template;
 
-            IPageTemplate result = templates.FirstOrDefault();
+            IXmlPageTemplate result = templates.FirstOrDefault();
             Verify.That(result != null, "Failed to get a page template by id. Id = '{0}'", templateId);
 
             PageTemplateCache.Add(templateId, result);
@@ -145,7 +145,7 @@ namespace Composite.Core.WebClient.Renderings.Template
 
             private static Cache<string, PageTemplateFileWrapper> _cache = new Cache<string, PageTemplateFileWrapper>("Page template files", 100);
 
-            internal PageTemplateFileWrapper(IPageTemplate pageTemplate)
+            internal PageTemplateFileWrapper(IXmlPageTemplate pageTemplate)
             {
                 _pageTemplateFilePath = pageTemplate.PageTemplateFilePath;
                 IFile file = IFileServices.GetFile<IPageTemplateFile>(_pageTemplateFilePath);
@@ -177,7 +177,7 @@ namespace Composite.Core.WebClient.Renderings.Template
                 _cache.Remove(_pageTemplateFilePath);
             }
 
-            public static PageTemplateFileWrapper Get(IPageTemplate pageTemplate)
+            public static PageTemplateFileWrapper Get(IXmlPageTemplate pageTemplate)
             {
                 PageTemplateFileWrapper result = _cache.Get(pageTemplate.PageTemplateFilePath);
                 if(result != null)

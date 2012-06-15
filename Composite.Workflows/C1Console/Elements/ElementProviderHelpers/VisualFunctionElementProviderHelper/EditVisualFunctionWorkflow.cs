@@ -70,8 +70,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.VisualFunctionElem
 
             this.Bindings.Add("FieldNameList", FieldNames(typeDescriptor));
 
+            // TODO: use page template providers
             IEnumerable templateInfos =
-                (from previewTemplate in DataFacade.GetData<IPageTemplate>()
+                (from previewTemplate in DataFacade.GetData<IXmlPageTemplate>()
                  select new { previewTemplate.Id, previewTemplate.Title }).ToList();
 
             this.Bindings.Add("PreviewTemplateId", Guid.Empty);

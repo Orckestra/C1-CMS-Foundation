@@ -31,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private void codeActivity2_ExecuteCode(object sender, EventArgs e)
         {            
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
-            IPageTemplate pageTemplateToDelete = (IPageTemplate)dataEntityToken.Data;
+            IXmlPageTemplate pageTemplateToDelete = (IXmlPageTemplate)dataEntityToken.Data;
 
             IFile file = IFileServices.GetFile<IPageTemplateFile>(pageTemplateToDelete.PageTemplateFilePath);
 

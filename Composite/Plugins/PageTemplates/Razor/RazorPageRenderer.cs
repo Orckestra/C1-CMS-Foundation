@@ -39,8 +39,8 @@ namespace Composite.Plugins.PageTemplates.Razor
 
             Verify.IsNotNull(renderingInfo, "Missing template '{0}'", templateId);
 
-            var webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as CompositeC1PageTemplate;
-            Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'", typeof(CompositeC1PageTemplate).FullName);
+            var webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as AspNet.Razor.RazorPageTemplate;
+            Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'", typeof(AspNet.Razor.RazorPageTemplate).FullName);
 
             var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
 

@@ -21,9 +21,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             _relativeFilePath = relativeFilePath;
         }
 
+        /// <exclude />
         public override string Type { get { return "_"; } }
+        /// <exclude />
         public override string Source { get { return "_"; } }
+        /// <exclude />
         public override string Id { get { return "_"; } }
+        /// <exclude />
         public override string Serialize() { return _relativeFilePath; }
 
         /// <summary>

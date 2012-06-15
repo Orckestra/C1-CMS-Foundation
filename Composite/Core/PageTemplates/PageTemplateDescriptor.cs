@@ -8,7 +8,7 @@ namespace Composite.Core.PageTemplates
     /// <summary>
     /// Describes a page layout to the Composite C1 core so it may set up editing UI
     /// </summary>
-    public class PageTemplate
+    public class PageTemplateDescriptor
     {
         /// <summary>
         /// Used to identify page layouts. The value has to be unique for each page template.
@@ -50,12 +50,13 @@ namespace Composite.Core.PageTemplates
         public Exception LoadingException { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether page template is loaded.
+        /// Gets a value indicating whether page template is loaded correctly.
+        /// Not valid templates should not be used in data as they can not be used in rendering and their IDs may not be valid.
         /// </summary>
         /// <value>
         ///   <c>true</c> if template is loaded; otherwise, <c>false</c>.
         /// </value>
-        public bool TemplateIsLoaded
+        public bool IsValid
         {
             get { return LoadingException == null; }
         }

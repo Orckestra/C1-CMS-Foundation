@@ -5,7 +5,7 @@ namespace Composite.Core.PageTemplates
     /// <summary>
     /// Basic interface for classes that represent a page template
     /// </summary>
-    public interface ITemplateDefinition
+    public interface IPageTemplate
     {
         /// <summary>
         /// Gets the template id.

@@ -59,7 +59,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             _watcher.EnableRaisingEvents = true;
         }
 
-        public IEnumerable<PageTemplate> GetPageTemplates()
+        public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
         {
             return GetInitializedState().Templates;
         }
@@ -111,7 +111,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                            .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
 
 
-            var templates = new List<PageTemplate>();
+            var templates = new List<PageTemplateDescriptor>();
             var templateRenderingData = new Hashtable<Guid, MasterPageRenderingInfo>();
             var sharedSourceFiles = new List<string>();
 
@@ -153,7 +153,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     continue;
                 }
 
-                MasterPageTemplate parsedTemplate;
+                MasterPagePageTemplateDescriptor parsedPageTemplateDescriptor;
                 MasterPageRenderingInfo renderingInfo;
 
                 try
@@ -161,7 +161,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     ParseTemplate(virtualPath, 
                                   fileInfo.FullName, 
                                   masterPage as MasterPagePageTemplate, 
-                                  out parsedTemplate, 
+                                  out parsedPageTemplateDescriptor, 
                                   out renderingInfo);
                 }
                 catch(Exception ex)
@@ -174,13 +174,13 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     continue;
                 }
 
-                templates.Add(parsedTemplate);
+                templates.Add(parsedPageTemplateDescriptor);
 
-                if (templateRenderingData.ContainsKey(parsedTemplate.Id))
+                if (templateRenderingData.ContainsKey(parsedPageTemplateDescriptor.Id))
                 {
-                    throw new InvalidOperationException("Multiple master page templates defined with the same ID '{0}'".FormatWith(parsedTemplate.Id));
+                    throw new InvalidOperationException("Multiple master page templates defined with the same ID '{0}'".FormatWith(parsedPageTemplateDescriptor.Id));
                 }
-                templateRenderingData.Add(parsedTemplate.Id, renderingInfo);
+                templateRenderingData.Add(parsedPageTemplateDescriptor.Id, renderingInfo);
             }
 
             return new State {
@@ -200,12 +200,12 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         }
 
 
-        private PageTemplate GetIncorrectlyLoadedPageTemplate(string filePath, Exception loadingException)
+        private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string filePath, Exception loadingException)
         {
             Guid templateId = GetMD5Hash(filePath.ToLowerInvariant());
             string codeBehindFile = GetCodebehindFilePath(filePath);
 
-            return new MasterPageTemplate(filePath, codeBehindFile)
+            return new MasterPagePageTemplateDescriptor(filePath, codeBehindFile)
                 {
                     Id = templateId,
                     Title = Path.GetFileName(filePath),
@@ -223,21 +223,21 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private void ParseTemplate(string virtualPath, 
                                            string filePath, 
                                            MasterPagePageTemplate masterPage,
-                                           out MasterPageTemplate pageTemplate,
+                                           out MasterPagePageTemplateDescriptor pagePageTemplateDescriptor,
                                            out MasterPageRenderingInfo renderingInfo)
         {
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
             string csFile = GetCodebehindFilePath(filePath);
 
-            pageTemplate = new MasterPageTemplate(filePath, csFile);
+            pagePageTemplateDescriptor = new MasterPagePageTemplateDescriptor(filePath, csFile);
             IDictionary<string, PropertyInfo> placeholderProperties;
 
-            TemplateDefinitionHelper.ExtractPageTemplateInfo(masterPage, pageTemplate, out placeholderProperties);
+            TemplateDefinitionHelper.ExtractPageTemplateInfo(masterPage, pagePageTemplateDescriptor, out placeholderProperties);
 
-            if(pageTemplate.Title == null)
+            if(pagePageTemplateDescriptor.Title == null)
             {
-                pageTemplate.Title = fileNameWithoutExtension;
+                pagePageTemplateDescriptor.Title = fileNameWithoutExtension;
             }
 
             renderingInfo = new MasterPageRenderingInfo(virtualPath, placeholderProperties);
@@ -250,8 +250,9 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
         {
-            // Ignoring changes to files, not related to master pages
-            if (!Regex.IsMatch(e.Name, FileWatcher_Regex, RegexOptions.IgnoreCase))
+            // Ignoring changes to files, not related to master pages, and temporary files
+            if (e.Name.StartsWith("_")
+                || !Regex.IsMatch(e.Name, FileWatcher_Regex, RegexOptions.IgnoreCase))
             {
                 return;
             }
@@ -302,7 +303,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         /// </summary>
         private class State
         {
-            public List<PageTemplate> Templates;
+            public List<PageTemplateDescriptor> Templates;
             public Hashtable<Guid, MasterPageRenderingInfo> RenderingInfo;
             public List<string> SharedSourceFiles;   
         }

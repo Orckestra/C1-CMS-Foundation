@@ -34,9 +34,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
 
             this.Bindings.Add("PageTemplate", dataEntityToken.Data);
-            this.Bindings.Add("OldTitle", ((IPageTemplate)dataEntityToken.Data).Title);
+            this.Bindings.Add("OldTitle", ((IXmlPageTemplate)dataEntityToken.Data).Title);
 
-            string templatePath = ((IPageTemplate)dataEntityToken.Data).PageTemplateFilePath;
+            string templatePath = ((IXmlPageTemplate)dataEntityToken.Data).PageTemplateFilePath;
             IPageTemplateFile file = IFileServices.TryGetFile<IPageTemplateFile>(templatePath);
 
             this.Bindings.Add("PageTemplateMarkup", file.ReadAllText());
@@ -45,7 +45,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            IPageTemplate pageTemplate = this.GetBinding<IPageTemplate>("PageTemplate");
+            IXmlPageTemplate pageTemplate = this.GetBinding<IXmlPageTemplate>("PageTemplate");
             string pageTemplateMarkup = this.GetBinding<string>("PageTemplateMarkup");
 
             bool xhtmlParseable = true;
@@ -183,7 +183,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void IsTitleUsed(object sender, System.Workflow.Activities.ConditionalEventArgs e)
         {
-            IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("PageTemplate");
+            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("PageTemplate");
 
             if (this.GetBinding<string>("OldTitle") == newPageTemplate.Title)
             {
@@ -191,7 +191,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return;
             }
 
-            e.Result = !DataFacade.GetData<IPageTemplate>().ToList()
+            e.Result = !DataFacade.GetData<IXmlPageTemplate>().ToList()
                 .Any(f => string.Compare(f.Title, newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase) == 0 
                      && f.Id != newPageTemplate.Id);
         }

@@ -53,7 +53,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            IPageTemplate newPageTemplate = DataFacade.BuildNew<IPageTemplate>();
+            IXmlPageTemplate newPageTemplate = DataFacade.BuildNew<IXmlPageTemplate>();
 
             newPageTemplate.Id = Guid.NewGuid();
             newPageTemplate.Title = "";
@@ -61,7 +61,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.Bindings.Add("NewPageTemplate", newPageTemplate);
 
             List<KeyValuePair<Guid, string>> templatesOptions =
-                (from template in DataFacade.GetData<IPageTemplate>()
+                (from template in DataFacade.GetData<IXmlPageTemplate>()
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
@@ -77,7 +77,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
-            IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
+            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
 
             string newPageTemplateMarkup = null;
             Guid copyOfId = this.GetBinding<Guid>("CopyOfId");
@@ -100,7 +100,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             DataFacade.AddNew<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider");
 
             newPageTemplate.PageTemplateFilePath = "/" + pageTemplateFile.FileName;
-            newPageTemplate = DataFacade.AddNew<IPageTemplate>(newPageTemplate);
+            newPageTemplate = DataFacade.AddNew<IXmlPageTemplate>(newPageTemplate);
 
             PageTemplateProviderRegistry.Flush();
 
@@ -113,9 +113,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void IsTitleUsed(object sender, ConditionalEventArgs e)
         {
-            IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
+            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
 
-            e.Result = DataFacade.GetData<IPageTemplate>().ToList()
+            e.Result = DataFacade.GetData<IXmlPageTemplate>().ToList()
                                  .Any(f => f.Title.Equals(newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase));
         }
 
@@ -123,7 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void ValidateFilePath(object sender, ConditionalEventArgs e)
         {
-            IPageTemplate newPageTemplate = this.GetBinding<IPageTemplate>("NewPageTemplate");
+            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
 
             IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
             pageTemplateFile.FolderPath = "/";

@@ -8,6 +8,7 @@ using System.Workflow.Activities;
 
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core.PageTemplates;
 using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -166,7 +167,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void CheckTemplatesExists(object sender, ConditionalEventArgs e)
         {
-            e.Result = (DataFacade.GetData<IPageTemplate>().Count() != 0);
+            e.Result = (DataFacade.GetData<IXmlPageTemplate>().Count() != 0);
         }
 
 
@@ -241,7 +242,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (this.EntityToken is PageElementProviderEntityToken)
             {
                 cultureName = null;
-                templateId = DataFacade.GetData<IPageTemplate>().Select(f => f.Id).FirstOrDefault();
+                templateId = PageTemplateFacade.GetPageTemplates().Select(t => t.Id).FirstOrDefault();
             }
             else if (this.EntityToken is DataEntityToken)
             {

@@ -10,7 +10,7 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
-    internal class MasterPageTemplate : PageTemplate
+    internal class MasterPagePageTemplateDescriptor : PageTemplateDescriptor
     {
         private static readonly PermissionType[] _editWebsiteFilePermissionTypes = new[] { PermissionType.Edit };
 
@@ -21,7 +21,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private readonly string _filePath;
         private readonly string _codeBehindFilePath;
 
-        public MasterPageTemplate(string filePath, string codeBehindFilePath)
+        public MasterPagePageTemplateDescriptor(string filePath, string codeBehindFilePath)
         {
             Verify.ArgumentNotNull(filePath, "filePath");
 

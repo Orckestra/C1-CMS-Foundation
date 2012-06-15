@@ -64,14 +64,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             return pageTemplateEntityToken.TemplateId;
         }
 
-        private MasterPageTemplate GetPageTemplate()
+        private MasterPagePageTemplateDescriptor GetPageTemplate()
         {
             Guid templateId = GetTemplateId();
 
             var template = PageTemplateFacade.GetPageTemplates().FirstOrDefault(t => t.Id == templateId);
             Verify.IsNotNull(template, "Faile to find page template by ID '{0}'", templateId);
 
-            return (MasterPageTemplate)template;   
+            return (MasterPagePageTemplateDescriptor)template;   
         }
 
         public EditMasterPageWorkflow()
@@ -248,7 +248,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             var templateDefinition = masterPage as MasterPagePageTemplate;
             if(templateDefinition == null)
             {
-                if(!pageTemplate.TemplateIsLoaded)
+                if(!pageTemplate.IsValid)
                 {
                     return true;
                 }
@@ -290,7 +290,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return false;
             }
 
-            if(pageTemplate.TemplateIsLoaded)
+            if(pageTemplate.IsValid)
             {
                 Guid templateId = pageTemplate.Id;
 

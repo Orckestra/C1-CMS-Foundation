@@ -65,7 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             Element element = new Element(_context.CreateElementHandle(new PageTemplateRootEntityToken()));
 
-            bool hasChildren = DataFacade.GetData<IPageTemplate>().Any();
+            bool hasChildren = DataFacade.GetData<IXmlPageTemplate>().Any();
 
             element.VisualData = new ElementVisualizedData
                          {
@@ -215,11 +215,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             return SR.GetString("Composite.Plugins.PageTemplateElementProvider", key);
         }
 
-        private IEnumerable<Element> GetElements(IEnumerable<PageTemplate> pageTemplates)
+        private IEnumerable<Element> GetElements(IEnumerable<PageTemplateDescriptor> pageTemplates)
         {
             List<Element> elements = new List<Element>();
 
-            foreach (PageTemplate pageTemplate in pageTemplates)
+            foreach (PageTemplateDescriptor pageTemplate in pageTemplates)
             {
                 var entityToken = pageTemplate.GetEntityToken();
 
@@ -230,7 +230,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                                          Label = pageTemplate.Title,
                                          ToolTip = pageTemplate.Title,
                                          HasChildren = false,
-                                         Icon = pageTemplate.TemplateIsLoaded ? DesignTemplate : TemplateWithError,
+                                         Icon = pageTemplate.IsValid ? DesignTemplate : TemplateWithError,
                                      };
 
                 IEnumerable<ElementAction> actions = pageTemplate.GetActions();

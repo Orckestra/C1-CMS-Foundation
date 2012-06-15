@@ -15,9 +15,9 @@ namespace Composite.Core.PageTemplates
         /// Gets the page templates.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<PageTemplate> GetPageTemplates()
+        public static IEnumerable<PageTemplateDescriptor> GetPageTemplates()
         {
-            var result = new List<PageTemplate>();
+            var result = new List<PageTemplateDescriptor>();
 
             foreach (string providerName in PageTemplateProviderRegistry.ProviderNames)
             {
@@ -71,7 +71,7 @@ namespace Composite.Core.PageTemplates
         /// </summary>
         /// <param name="pageTemplateId">The page template id.</param>
         /// <returns></returns>
-        public static PageTemplate GetPageTemplate(Guid pageTemplateId)
+        public static PageTemplateDescriptor GetPageTemplate(Guid pageTemplateId)
         {
             var provider = PageTemplateProviderRegistry.GetProviderByTemplateId(pageTemplateId);
 
@@ -81,6 +81,17 @@ namespace Composite.Core.PageTemplates
             }
 
             return provider.GetPageTemplates().FirstOrDefault(t => t.Id == pageTemplateId);
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> is there's at least one valid page template.
+        /// </summary>
+        public static bool ValidTemplateExists
+        {
+            get
+            {
+                return GetPageTemplates().Any(template => template.IsValid);
+            }
         }
     }
 }

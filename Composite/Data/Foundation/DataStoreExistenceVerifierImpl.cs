@@ -38,7 +38,7 @@ namespace Composite.Data.Foundation
                     typeof(IPagePlaceholderContent),
                     typeof(IPagePublishSchedule),
                     typeof(IPageStructure),
-                    typeof(IPageTemplate),
+                    typeof(IXmlPageTemplate),
                     typeof(IPageType),
                     typeof(IPageTypeDataFolderTypeLink),
                     typeof(IPageTypeDefaultPageContent),
