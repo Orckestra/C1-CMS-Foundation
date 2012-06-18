@@ -30,6 +30,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private static readonly string FileWatcherMask = "*.master*";
         private static readonly string FileWatcher_Regex = @"\.cs|\.master";
 
+        private readonly string _providerName;
         private readonly string _templatesDirectoryVirtualPath;
         private readonly string _templatesDirectory;
 
@@ -41,6 +42,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         public MasterPagePageTemplateProvider(string name, string templatesDirectoryVirtualPath)
         {
+            _providerName = name;
             _templatesDirectoryVirtualPath = templatesDirectoryVirtualPath;
             _templatesDirectory = PathUtil.Resolve(_templatesDirectoryVirtualPath);
 
@@ -145,7 +147,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     sharedSourceFiles.Add(ConvertToVirtualPath(fileInfo.FullName));
 
                     string csFile = GetCodebehindFilePath(fileInfo.FullName);
-                    if (File.Exists(csFile))
+                    if (C1File.Exists(csFile))
                     {
                         sharedSourceFiles.Add(ConvertToVirtualPath(csFile));
                     }
