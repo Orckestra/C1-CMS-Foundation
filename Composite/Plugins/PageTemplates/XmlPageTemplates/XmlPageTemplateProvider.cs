@@ -23,7 +23,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 
         public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
         {
-            using (var conn = new DataConnection(PublicationScope.Unpublished))
+            using (var conn = new DataConnection(PublicationScope.Published))
             {
                 var result = new List<PageTemplateDescriptor>();
                 
@@ -48,6 +48,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                 return result;
             }
         }
+
 
         private static void ParseLayoutFile(IXmlPageTemplate pageTemplate, out PlaceholderDescriptor[] placeholders, out string defaultPlaceholder)
         {

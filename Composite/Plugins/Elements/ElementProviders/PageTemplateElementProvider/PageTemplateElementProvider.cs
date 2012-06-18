@@ -184,7 +184,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 DataEntityToken dataEntityToken = entityToken as DataEntityToken;
 
                 Type type = dataEntityToken.InterfaceType;
-                if (type != typeof(IPageTemplate)) continue;
+                if (type != typeof(IXmlPageTemplate)) continue;
 
                 PageTemplateRootEntityToken newEntityToken = new PageTemplateRootEntityToken();
 
