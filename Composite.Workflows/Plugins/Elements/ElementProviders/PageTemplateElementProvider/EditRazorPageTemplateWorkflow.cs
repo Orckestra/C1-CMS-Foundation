@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Web.WebPages;
-using Composite.AspNet.Razor;
 using Composite.C1Console.Events;
 using Composite.C1Console.Workflow;
 using Composite.Core;
@@ -52,7 +51,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             string content = this.GetBinding<string>("FileContent");
 
-            bool isValid = ValidateMarkup(filePath, content);
+            Guid newTemplateId = Guid.Empty;
+            bool isValid = ValidateMarkup(filePath, content, ref newTemplateId);
 
             if (isValid)
             {
@@ -63,14 +63,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 PageTemplateProviderRegistry.Flush();
 
-                this.CreateUpdateTreeRefresher(this.EntityToken).PostRefreshMesseges(this.EntityToken);
+                this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
             }
 
-            SetSaveStatus(isValid);
+            if (isValid && newTemplateId != Guid.Empty)
+            {
+                SetSaveStatus(true, new PageTemplateEntityToken(newTemplateId));
+            }
+            else
+            {
+                SetSaveStatus(isValid);
+            }
         }
 
 
-        private bool ValidateMarkup(string filePath, string content)
+        private bool ValidateMarkup(string filePath, string content, ref Guid newTemplateId)
         {
             string fileName = Path.GetFileName(filePath);
 
@@ -115,14 +122,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                Guid newTemplateId;
+                Guid tempTemplateId;
                 string newTitle, newDescription;
 
                 var pageTemplate = webPageBase as RazorPageTemplate;
 
                 try
                 {
-                    newTemplateId = pageTemplate.TemplateId;
+                    tempTemplateId = pageTemplate.TemplateId;
                 }
                 catch (Exception ex)
                 {
@@ -150,11 +157,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                // Placeholder validation also can be made
-                if (newTemplateId != templateId)
+                if(IsPageTemplate)
                 {
-                    ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
-                    return false;
+                    if(GetPageTemplateDescriptor().IsValid)
+                    {
+                        // Forbidding to change template id from this workflow in order to avoid mistakes
+                        if (newTemplateId != templateId)
+                        {
+                            ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        newTemplateId = tempTemplateId;
+                    }
                 }
             }
             finally
@@ -202,16 +219,26 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", text);
         }
 
-        private string GetFilePath()
+        private RazorPageTemplateDescriptor GetPageTemplateDescriptor()
         {
             Guid templateId = GetTemplateId();
 
             var template = PageTemplateFacade.GetPageTemplates().FirstOrDefault(t => t.Id == templateId);
             Verify.IsNotNull(template, "Faile to find page template by ID '{0}'", templateId);
 
-            var razorTemplate = (PageTemplates.Razor.RazorPageTemplateDescriptor)template;
+            return (PageTemplates.Razor.RazorPageTemplateDescriptor)template;
+        }
 
-            return razorTemplate.FilePath;
+        private bool IsPageTemplate
+        {
+            get { return this.EntityToken is PageTemplateEntityToken; }
+        }
+
+        private string GetFilePath()
+        {
+            // TODO: support for shared files editing
+
+            return GetPageTemplateDescriptor().FilePath;
         }
     }
 }

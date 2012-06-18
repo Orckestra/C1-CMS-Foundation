@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
@@ -116,17 +118,37 @@ namespace Composite.Plugins.PageTemplates.Razor
                 }
                 catch(Exception ex)
                 {
-                    Log.LogError(LogTitle, "Failed to parse file '{0}'", virtualPath);
+                    Log.LogError(LogTitle, "Failed to compile razor file '{0}'", virtualPath);
                     Log.LogError(LogTitle, ex);
+
+                    Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
+
+                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, compilationException));
                     continue;
                 }
 
-                if(webPage == null || !(webPage is AspNet.Razor.RazorPageTemplate)) continue;
+                if(webPage == null || !(webPage is AspNet.Razor.RazorPageTemplate))
+                {
+                    // Add shared code file here
+                    continue;
+                }
                 
                 PageTemplateDescriptor parsedTemplate;
                 IDictionary<string, PropertyInfo> placeholderProperties;
 
-                ParseTemplate(fileInfo.FullName, webPage as AspNet.Razor.RazorPageTemplate, out parsedTemplate, out placeholderProperties);
+                try
+                {
+                    ParseTemplate(fileInfo.FullName, webPage as AspNet.Razor.RazorPageTemplate, out parsedTemplate, out placeholderProperties);
+                }
+                catch(Exception ex)
+                {
+                    Log.LogError(LogTitle, "Failed to load razor page template '{0}'", virtualPath);
+                    Log.LogError(LogTitle, ex);
+
+                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, ex));
+                    continue;
+                }
+                
 
                 templates.Add(parsedTemplate);
 
@@ -138,6 +160,27 @@ namespace Composite.Plugins.PageTemplates.Razor
                            Templates = templates,
                            RenderingInfo = templateRenderingData
                        };
+        }
+
+        private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string filePath, Exception loadingException)
+        {
+            Guid templateId = GetMD5Hash(filePath.ToLowerInvariant());
+
+            return new RazorPageTemplateDescriptor(filePath)
+            {
+                Id = templateId,
+                Title = Path.GetFileName(filePath),
+                LoadingException = loadingException
+            };
+        }
+
+        private static Guid GetMD5Hash(string text)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                byte[] hash = md5.ComputeHash(Encoding.Unicode.GetBytes(text));
+                return new Guid(hash);
+            }
         }
 
         public string ConvertToVirtualPath(string filePath)
