@@ -247,9 +247,9 @@ namespace Composite.Plugins.PageTemplates.Razor
             return new ElementAction[0];
         }
 
-        public IEnumerable<string> GetSharedFiles()
+        public IEnumerable<SharedFile> GetSharedFiles()
         {
-            return new string[0];
+            return new SharedFile[0];
         }
 
         public void Flush()

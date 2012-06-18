@@ -93,9 +93,9 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
         }
 
 
-        public IEnumerable<string> GetSharedFiles()
+        public IEnumerable<SharedFile> GetSharedFiles()
         {
-            return new string[0];
+            return new SharedFile[0];
         }
 
 

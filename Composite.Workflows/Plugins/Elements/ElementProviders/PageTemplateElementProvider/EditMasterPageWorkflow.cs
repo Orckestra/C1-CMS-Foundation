@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Web.UI;
-using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Workflow;
 using Composite.Core;
@@ -36,20 +35,30 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return masterTemplate.GetFiles();
             }
 
-            if(entityToken is SharedCodeFolderEntityToken)
+            if (entityToken is SharedCodeFileEntityToken)
             {
-                /*
-                var entityToken = (SharedCodeFileEntityToken)this.EntityToken;
+                var sharedFileEntityToken = (SharedCodeFileEntityToken)this.EntityToken;
 
-                string relativeFilePath = entityToken.RelativeFilePath;
+                string relativeFilePath = sharedFileEntityToken.RelativeFilePath;
 
                 // Security check that validates that the file is a Shared code file 
                 var sharedFiles = PageTemplateFacade.GetSharedFiles();
 
-                Verify.That(sharedFiles.Any(filePath => string.Compare(filePath, relativeFilePath, StringComparison.OrdinalIgnoreCase) == 0),
+                Verify.That(sharedFiles.Any(sharedFile => string.Compare(sharedFile.RelativeFilePath, relativeFilePath, StringComparison.OrdinalIgnoreCase) == 0),
                             "There's no page template provider that would claim ownership over shared code file '{0}'");
 
-                return PathUtil.Resolve(relativeFilePath); */                
+                string fullPath = PathUtil.Resolve(relativeFilePath);
+                string codebehindFile = MasterPagePageTemplateProvider.GetCodebehindFilePath(fullPath);
+
+                var result = new List<string>();
+                result.Add(fullPath);
+
+                if(codebehindFile != null)
+                {
+                    result.Add(codebehindFile);
+                }
+
+                return result.ToArray();
             }
 
             throw new InvalidOperationException("Invalid entity token type '{0}'".FormatWith(entityToken.GetType().Name));

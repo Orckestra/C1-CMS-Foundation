@@ -127,8 +127,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             var result = new List<Element>();
 
-            foreach(string relativeFilePath in PageTemplateFacade.GetSharedFiles())
+            foreach(SharedFile sharedFile in PageTemplateFacade.GetSharedFiles())
             {
+                string relativeFilePath = sharedFile.RelativeFilePath;
+
                 string fullPath = relativeFilePath.StartsWith("~") ? PathUtil.Resolve(relativeFilePath) : relativeFilePath;
                 var websiteFile = new WebsiteFile(fullPath);
 
@@ -148,27 +150,33 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 element.PropertyBag.Add("ElementType", websiteFile.MimeType);
 
                 // Adding "Edit" action for text-editable files
-                if (MimeTypeInfo.IsTextFile(websiteFile.MimeType))
+                if (sharedFile.DefaultEditAction && MimeTypeInfo.IsTextFile(websiteFile.MimeType))
                 {
                     element.AddWorkflowAction(
-                         "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditSharedCodeFileWorkflow",
-                         new [] { PermissionType.Edit },
-                         new ActionVisualizedData
-                         {
-                             Label = GetResourceString("EditSharedCodeFile.Label"),
-                             ToolTip = GetResourceString("EditSharedCodeFile.ToolTip"),
-                             Icon = CommonCommandIcons.Edit,
-                             Disabled = websiteFile.IsReadOnly,
-                             ActionLocation = new ActionLocation
-                             {
-                                 ActionType = ActionType.Edit,
-                                 IsInFolder = false,
-                                 IsInToolbar = true,
-                                 ActionGroup = EditCodeFileActionGroup
-                             }
-                         });
+                        "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditSharedCodeFileWorkflow",
+                        new[] {PermissionType.Edit},
+                        new ActionVisualizedData
+                            {
+                                Label = GetResourceString("EditSharedCodeFile.Label"),
+                                ToolTip = GetResourceString("EditSharedCodeFile.ToolTip"),
+                                Icon = CommonCommandIcons.Edit,
+                                Disabled = websiteFile.IsReadOnly,
+                                ActionLocation = new ActionLocation
+                                                        {
+                                                            ActionType = ActionType.Edit,
+                                                            IsInFolder = false,
+                                                            IsInToolbar = true,
+                                                            ActionGroup = EditCodeFileActionGroup
+                                                        }
+                            });
                 }
 
+                var customActions = sharedFile.GetActions();
+                foreach(var action in customActions)
+                {
+                    element.AddAction(action);
+                }
+                
                 result.Add(element);
             }
 

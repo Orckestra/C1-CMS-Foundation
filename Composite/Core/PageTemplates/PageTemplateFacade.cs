@@ -36,9 +36,9 @@ namespace Composite.Core.PageTemplates
         /// Gets the shared files.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<string> GetSharedFiles()
+        public static IEnumerable<SharedFile> GetSharedFiles()
         {
-            var result = new List<string>();
+            var result = new List<SharedFile>();
 
             foreach (string providerName in PageTemplateProviderRegistry.ProviderNames)
             {

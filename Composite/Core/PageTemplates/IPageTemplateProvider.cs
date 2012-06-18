@@ -34,7 +34,7 @@ namespace Composite.Core.PageTemplates
         /// Gets the list of shared files, those files will be shown in a "Shared code" folder under "Layout/Page Templates"
         /// </summary>
         /// <returns></returns>
-        IEnumerable<string> GetSharedFiles();
+        IEnumerable<SharedFile> GetSharedFiles();
 
         /// <summary>
         /// Flushes the list of templates

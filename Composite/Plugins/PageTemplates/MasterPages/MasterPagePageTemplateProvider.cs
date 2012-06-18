@@ -79,7 +79,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         }
 
 
-        public IEnumerable<string> GetSharedFiles()
+        public IEnumerable<SharedFile> GetSharedFiles()
         {
             var state = GetInitializedState();
 
@@ -115,7 +115,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             var templates = new List<PageTemplateDescriptor>();
             var templateRenderingData = new Hashtable<Guid, MasterPageRenderingInfo>();
-            var sharedSourceFiles = new List<string>();
+            var sharedSourceFiles = new List<SharedFile>();
 
             // Loading and compiling layout controls
             foreach (var fileInfo in files)
@@ -144,14 +144,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 } 
                 if (!(masterPage is MasterPagePageTemplate))
                 {
-                    sharedSourceFiles.Add(ConvertToVirtualPath(fileInfo.FullName));
-
-                    string csFile = GetCodebehindFilePath(fileInfo.FullName);
-                    if (C1File.Exists(csFile))
-                    {
-                        sharedSourceFiles.Add(ConvertToVirtualPath(csFile));
-                    }
-
+                    sharedSourceFiles.Add(new SharedMasterPage(ConvertToVirtualPath(fileInfo.FullName)));
                     continue;
                 }
 
@@ -216,7 +209,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         }
 
 
-        private static string GetCodebehindFilePath(string masterFilePath)
+        internal static string GetCodebehindFilePath(string masterFilePath)
         {
             string csFile = masterFilePath + ".cs";
             return C1File.Exists(csFile) ? csFile : null;
@@ -307,7 +300,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         {
             public List<PageTemplateDescriptor> Templates;
             public Hashtable<Guid, MasterPageRenderingInfo> RenderingInfo;
-            public List<string> SharedSourceFiles;   
+            public List<SharedFile> SharedSourceFiles;   
         }
     }
 }

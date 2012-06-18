@@ -20,7 +20,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // Security check that validates that the file is a Shared code file 
             var sharedFiles = PageTemplateFacade.GetSharedFiles();
 
-            Verify.That(sharedFiles.Any(filePath => string.Compare(filePath, relativeFilePath, StringComparison.OrdinalIgnoreCase) == 0),
+            Verify.That(sharedFiles.Any(sf => string.Compare(sf.RelativeFilePath, relativeFilePath, StringComparison.OrdinalIgnoreCase) == 0),
                         "There's no page template provider that would claim ownership over shared code file '{0}'");
 
             return PathUtil.Resolve(relativeFilePath);
