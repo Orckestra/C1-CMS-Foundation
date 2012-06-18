@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
+using Composite.Data.Types;
 
 
 namespace Composite.Data.Foundation
@@ -10,11 +13,18 @@ namespace Composite.Data.Foundation
     {
         internal static bool EnsureUpdateAllInterfaces()
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 bool doFlush = false;
 
-                foreach (Type interfaceType in DataProviderRegistry.AllKnownInterfaces)
+                var knownInterafces = DataProviderRegistry.AllKnownInterfaces.ToList(); 
+
+                if(!knownInterafces.Contains(typeof(IXmlPageTemplate)))
+                {
+                    knownInterafces.Insert(0, typeof(IXmlPageTemplate));
+                }
+
+                foreach (Type interfaceType in knownInterafces)
                 {
                     if (!interfaceType.IsAutoUpdateble()) continue;
                     if (interfaceType.IsGenerated()) continue;

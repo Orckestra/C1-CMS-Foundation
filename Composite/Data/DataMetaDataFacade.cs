@@ -336,6 +336,9 @@ namespace Composite.Data
                 }
             }
 
+            // Backward compatibility for configuraiton files. (Breaking change C1 3.2 -> C1 4.0)
+            result["Composite.Data.Types.IPageTemplate,Composite"] = new Guid("7b54d7d2-6be6-48a6-9ae1-2e0373073d1d");
+
             return result;
         }
 
