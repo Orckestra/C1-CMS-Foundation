@@ -66,7 +66,7 @@ namespace CompositePageContentEditor
 
         private void SetUpTextAreas(bool flush)
         {
-            PageTemplate pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
+            PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
 
             List<string> handledIds = new List<string>();
 
