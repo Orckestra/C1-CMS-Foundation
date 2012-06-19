@@ -39,7 +39,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             {
                 var sharedFileEntityToken = (SharedCodeFileEntityToken)this.EntityToken;
 
-                string relativeFilePath = sharedFileEntityToken.RelativeFilePath;
+                string relativeFilePath = sharedFileEntityToken.VirtualPath;
 
                 // Security check that validates that the file is a Shared code file 
                 var sharedFiles = PageTemplateFacade.GetSharedFiles();
@@ -102,7 +102,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             {
                 var sharedFileEntityToken = (SharedCodeFileEntityToken)entityToken;
 
-                title = Path.GetFileName(sharedFileEntityToken.RelativeFilePath);
+                title = Path.GetFileName(sharedFileEntityToken.VirtualPath);
             }
 
             this.Bindings.Add("TemplateTitle", title);

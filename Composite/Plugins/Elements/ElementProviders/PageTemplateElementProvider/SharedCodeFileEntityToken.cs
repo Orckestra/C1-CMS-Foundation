@@ -10,15 +10,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [SecurityAncestorProvider(typeof(SharedCodeFileEntityToken.SharedCodeFileSecurityAncestorProvider))]
     public class SharedCodeFileEntityToken : EntityToken
     {
-        private readonly string _relativeFilePath;
+        private readonly string _virtualPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SharedCodeFileEntityToken"/> class.
         /// </summary>
-        /// <param name="relativeFilePath">The relative file path.</param>
-        public SharedCodeFileEntityToken(string relativeFilePath)
+        /// <param name="virtualPath">The relative file path.</param>
+        public SharedCodeFileEntityToken(string virtualPath)
         {
-            _relativeFilePath = relativeFilePath;
+            _virtualPath = virtualPath;
         }
 
         /// <exclude />
@@ -28,14 +28,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         /// <exclude />
         public override string Id { get { return "_"; } }
         /// <exclude />
-        public override string Serialize() { return _relativeFilePath; }
+        public override string Serialize() { return _virtualPath; }
 
         /// <summary>
         /// Gets the relative file path.
         /// </summary>
-        public string RelativeFilePath
+        public string VirtualPath
         {
-            get { return _relativeFilePath; }
+            get { return _virtualPath; }
         }
 
         /// <exclude />

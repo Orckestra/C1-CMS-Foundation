@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
@@ -6,38 +7,32 @@ using Composite.Core.PageTemplates;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 
-using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
-
 namespace Composite.Plugins.PageTemplates.Razor
 {
-    internal class RazorPageTemplateDescriptor: PageTemplateDescriptor
+    internal class SharedRazorFile: SharedFile
     {
-        private static readonly PermissionType[] _editWebsiteFilePermissionTypes = new [] { PermissionType.Edit };
+        private static readonly PermissionType[] _editWebsiteFilePermissionTypes = new[] { PermissionType.Edit };
 
         private static readonly ResourceHandle EditTemplateIcon = new ResourceHandle(BuildInIconProviderName.ProviderName, "page-template-edit");
         private static readonly ActionGroup PrimaryFileActionGroup = new ActionGroup("File", ActionGroupPriority.PrimaryMedium);
 
-        private readonly string _virtualPath;
 
-        public RazorPageTemplateDescriptor(string virtualPath)
+        public SharedRazorFile(string filePath): base(filePath)
         {
-            _virtualPath = virtualPath;
+            this.DefaultEditAction = false;
         }
 
-        public string VirtualPath { get { return _virtualPath; } }
-
-        public override IEnumerable<ElementAction> GetActions()
+        public override IEnumerable<C1Console.Elements.ElementAction> GetActions()
         {
-            
-            return new [] {
+            return new[] {
             new ElementAction(new ActionHandle(new WorkflowActionToken(
                 WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditRazorPageTemplateWorkflow"),
                 _editWebsiteFilePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorTemplateAction.Label"),
-                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorTemplateAction.ToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorFileAction.Label"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorFileAction.ToolTip"),
                     Icon = EditTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation

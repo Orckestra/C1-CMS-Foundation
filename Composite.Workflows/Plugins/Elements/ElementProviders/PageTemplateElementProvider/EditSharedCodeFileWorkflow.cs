@@ -15,7 +15,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             var entityToken = (SharedCodeFileEntityToken)this.EntityToken;
 
-            string relativeFilePath = entityToken.RelativeFilePath;
+            string relativeFilePath = entityToken.VirtualPath;
 
             // Security check that validates that the file is a Shared code file 
             var sharedFiles = PageTemplateFacade.GetSharedFiles();

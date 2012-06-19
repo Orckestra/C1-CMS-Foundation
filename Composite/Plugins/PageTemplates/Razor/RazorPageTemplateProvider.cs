@@ -39,6 +39,7 @@ namespace Composite.Plugins.PageTemplates.Razor
         private class State
         {
             public List<PageTemplateDescriptor> Templates;
+            public List<SharedFile> SharedFiles;
             public Hashtable<Guid, TemplateRenderingInfo> RenderingInfo;
         }
 
@@ -104,6 +105,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
             var templates = new List<PageTemplateDescriptor>();
             var templateRenderingData = new Hashtable<Guid, TemplateRenderingInfo>();
+            var sharedFiles = new List<SharedFile>();
 
             // Loading and compiling layout controls
             foreach (var fileInfo in files)
@@ -123,12 +125,13 @@ namespace Composite.Plugins.PageTemplates.Razor
 
                     Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
 
-                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, compilationException));
+                    templates.Add(GetIncorrectlyLoadedPageTemplate(virtualPath, compilationException));
                     continue;
                 }
 
                 if(webPage == null || !(webPage is AspNet.Razor.RazorPageTemplate))
                 {
+                    sharedFiles.Add(new SharedRazorFile(virtualPath));
                     // Add shared code file here
                     continue;
                 }
@@ -138,14 +141,14 @@ namespace Composite.Plugins.PageTemplates.Razor
 
                 try
                 {
-                    ParseTemplate(fileInfo.FullName, webPage as AspNet.Razor.RazorPageTemplate, out parsedTemplate, out placeholderProperties);
+                    ParseTemplate(virtualPath, fileInfo.FullName, webPage as AspNet.Razor.RazorPageTemplate, out parsedTemplate, out placeholderProperties);
                 }
                 catch(Exception ex)
                 {
                     Log.LogError(LogTitle, "Failed to load razor page template '{0}'", virtualPath);
                     Log.LogError(LogTitle, ex);
 
-                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, ex));
+                    templates.Add(GetIncorrectlyLoadedPageTemplate(virtualPath, ex));
                     continue;
                 }
                 
@@ -158,18 +161,19 @@ namespace Composite.Plugins.PageTemplates.Razor
             return new State
                        {
                            Templates = templates,
-                           RenderingInfo = templateRenderingData
+                           RenderingInfo = templateRenderingData,
+                           SharedFiles = sharedFiles
                        };
         }
 
-        private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string filePath, Exception loadingException)
+        private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string virtualPath, Exception loadingException)
         {
-            Guid templateId = GetMD5Hash(filePath.ToLowerInvariant());
+            Guid templateId = GetMD5Hash(virtualPath.ToLowerInvariant());
 
-            return new RazorPageTemplateDescriptor(filePath)
+            return new RazorPageTemplateDescriptor(virtualPath)
             {
                 Id = templateId,
-                Title = Path.GetFileName(filePath),
+                Title = Path.GetFileName(virtualPath),
                 LoadingException = loadingException
             };
         }
@@ -188,12 +192,13 @@ namespace Composite.Plugins.PageTemplates.Razor
             return UrlUtils.Combine(_templatesDirectoryVirtualPath, filePath.Substring(_templatesDirectory.Length).Replace('\\', '/'));
         }
 
-        private void ParseTemplate(string filePath,
+        private void ParseTemplate(string virtualPath,
+                                   string filePath,
                                    AspNet.Razor.RazorPageTemplate webPage, 
                                    out PageTemplateDescriptor templateDescriptor, 
                                    out IDictionary<string, PropertyInfo> placeholderProperties)
         {
-            templateDescriptor = new RazorPageTemplateDescriptor(filePath);
+            templateDescriptor = new RazorPageTemplateDescriptor(virtualPath);
 
             TemplateDefinitionHelper.ExtractPageTemplateInfo(webPage, templateDescriptor, out placeholderProperties);
         }
@@ -249,7 +254,9 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         public IEnumerable<SharedFile> GetSharedFiles()
         {
-            return new SharedFile[0];
+            var state = GetInitializedState();
+
+            return state.SharedFiles;
         }
 
         public void Flush()

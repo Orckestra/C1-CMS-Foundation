@@ -17,7 +17,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private static readonly ActionGroup PrimaryFileActionGroup = new ActionGroup("File", ActionGroupPriority.PrimaryMedium);
 
 
-        public SharedMasterPage(string filePath): base(filePath)
+        public SharedMasterPage(string virtualFilePath)
+            : base(virtualFilePath)
         {
             this.DefaultEditAction = false;
         }

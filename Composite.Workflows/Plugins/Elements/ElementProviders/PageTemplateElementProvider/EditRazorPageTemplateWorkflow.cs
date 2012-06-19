@@ -31,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            string filePath = GetFilePath();
+            string filePath = PathUtil.Resolve(GetFileVirtualPath());
 
             WebsiteFile websiteFile = new WebsiteFile(filePath);
 
@@ -45,21 +45,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void saveCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            string filePath = GetFilePath();
+            string virtualPath = GetFileVirtualPath();
+            string filePath = PathUtil.Resolve(virtualPath);
 
             WebsiteFile websiteFile = new WebsiteFile(filePath);
 
             string content = this.GetBinding<string>("FileContent");
 
             Guid newTemplateId = Guid.Empty;
-            bool isValid = ValidateMarkup(filePath, content, ref newTemplateId);
+            bool isValid = ValidateMarkup(virtualPath, content, ref newTemplateId);
 
             if (isValid)
             {
                 websiteFile.WriteAllText(content);
-
-                RazorPageTemplateProvider provider = GetTemplateProvider(GetTemplateId());
-                provider.Reinitialize();
 
                 PageTemplateProviderRegistry.Flush();
 
@@ -77,16 +75,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         }
 
 
-        private bool ValidateMarkup(string filePath, string content, ref Guid newTemplateId)
+        private bool ValidateMarkup(string virtualPath, string content, ref Guid newTemplateId)
         {
+            string filePath = PathUtil.Resolve(virtualPath);
             string fileName = Path.GetFileName(filePath);
 
-            string tempFile = Path.GetDirectoryName(filePath) + @"\_tmp_" + fileName;
-            Guid templateId = GetTemplateId();
-
-            RazorPageTemplateProvider provider = GetTemplateProvider(templateId);
-
-            string virtualPath = provider.ConvertToVirtualPath(tempFile);
+            string tempFileName = "_tmp_" + fileName;
+            string tempFileVirtualPath = virtualPath.Substring(0, virtualPath.Length - fileName.Length) + tempFileName;
+            string tempFile = Path.Combine(Path.GetDirectoryName(filePath), tempFileName);
 
             try
             {
@@ -96,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 try
                 {
-                    webPageBase = WebPage.CreateInstanceFromVirtualPath(virtualPath);
+                    webPageBase = WebPage.CreateInstanceFromVirtualPath(tempFileVirtualPath);
                 }
                 catch (Exception ex)
                 {
@@ -115,21 +111,26 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                if (webPageBase == null || !(webPageBase is RazorPageTemplate))
+                if (!(webPageBase is RazorPageTemplate))
                 {
-                    ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
+                    if(IsPageTemplate && GetPageTemplateDescriptor().IsValid)
+                    {
+                        ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
                                 .FormatWith(typeof(RazorPageTemplate).FullName));
-                    return false;
+                        return false;
+                    }
+
+                    return true;
                 }
 
-                Guid tempTemplateId;
-                string newTitle, newDescription;
+                Guid templateId;
+                string templateTitle, templateDescription;
 
                 var pageTemplate = webPageBase as RazorPageTemplate;
 
                 try
                 {
-                    tempTemplateId = pageTemplate.TemplateId;
+                    templateId = pageTemplate.TemplateId;
                 }
                 catch (Exception ex)
                 {
@@ -139,7 +140,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 try
                 {
-                    newTitle = pageTemplate.TemplateTitle;
+                    templateTitle = pageTemplate.TemplateTitle;
                 }
                 catch (Exception ex)
                 {
@@ -149,7 +150,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 try
                 {
-                    newDescription = pageTemplate.TemplateDescription;
+                    templateDescription = pageTemplate.TemplateDescription;
                 }
                 catch (Exception ex)
                 {
@@ -157,21 +158,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                if(IsPageTemplate)
+                
+
+                if(!IsPageTemplate)
                 {
-                    if(GetPageTemplateDescriptor().IsValid)
+                    newTemplateId = templateId;
+                    return true;
+                }
+
+                var pageTemplateDescriptor = GetPageTemplateDescriptor();
+
+                if (pageTemplateDescriptor.IsValid)
+                {
+                    // Forbidding to change template id from this workflow in order to avoid mistakes
+                    if (templateId != pageTemplateDescriptor.Id)
                     {
-                        // Forbidding to change template id from this workflow in order to avoid mistakes
-                        if (tempTemplateId != templateId)
-                        {
-                            ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
-                            return false;
-                        }
+                        ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(pageTemplateDescriptor.Id));
+                        return false;
                     }
-                    else
-                    {
-                        newTemplateId = tempTemplateId;
-                    }
+                }
+                else
+                {
+                    newTemplateId = templateId;
                 }
             }
             finally
@@ -234,11 +242,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             get { return this.EntityToken is PageTemplateEntityToken; }
         }
 
-        private string GetFilePath()
+        private string GetFileVirtualPath()
         {
-            // TODO: support for shared files editing
+            if(IsPageTemplate)
+            {
+                return GetPageTemplateDescriptor().VirtualPath;
+            }
 
-            return GetPageTemplateDescriptor().FilePath;
+            if(EntityToken is SharedCodeFileEntityToken)
+            {
+                return (EntityToken as SharedCodeFileEntityToken).VirtualPath;
+            }
+            
+            throw new InvalidOperationException("Unexpected entity token type " + EntityToken.GetType().FullName);
         }
     }
 }
