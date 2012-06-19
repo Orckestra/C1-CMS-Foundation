@@ -65,7 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             Element element = new Element(_context.CreateElementHandle(new PageTemplateRootEntityToken()));
 
-            bool hasChildren = DataFacade.GetData<IXmlPageTemplate>().Any();
+            bool hasChildren = PageTemplateFacade.GetPageTemplates().Any();
 
             element.VisualData = new ElementVisualizedData
                          {

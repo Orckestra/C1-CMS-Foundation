@@ -167,7 +167,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void CheckTemplatesExists(object sender, ConditionalEventArgs e)
         {
-            e.Result = (DataFacade.GetData<IXmlPageTemplate>().Count() != 0);
+            e.Result = PageTemplateFacade.ValidTemplateExists;
         }
 
 

@@ -162,7 +162,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     if(GetPageTemplateDescriptor().IsValid)
                     {
                         // Forbidding to change template id from this workflow in order to avoid mistakes
-                        if (newTemplateId != templateId)
+                        if (tempTemplateId != templateId)
                         {
                             ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
                             return false;

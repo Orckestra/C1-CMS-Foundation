@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Composite.C1Console.Actions;
+using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Data;
 using Composite.Data.Types;
@@ -61,7 +62,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.Bindings.Add("NewPageTemplate", newPageTemplate);
 
             List<KeyValuePair<Guid, string>> templatesOptions =
-                (from template in DataFacade.GetData<IXmlPageTemplate>()
+                (from template in PageTemplateFacade.GetPageTemplates()
+                 where template.IsValid
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 

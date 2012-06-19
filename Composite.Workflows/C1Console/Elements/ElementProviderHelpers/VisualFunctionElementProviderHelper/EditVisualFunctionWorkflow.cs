@@ -7,6 +7,7 @@ using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
+using Composite.Core.PageTemplates;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
@@ -72,7 +73,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.VisualFunctionElem
 
             // TODO: use page template providers
             IEnumerable templateInfos =
-                (from previewTemplate in DataFacade.GetData<IXmlPageTemplate>()
+                (from previewTemplate in PageTemplateFacade.GetPageTemplates()
+                 where previewTemplate.IsValid
                  select new { previewTemplate.Id, previewTemplate.Title }).ToList();
 
             this.Bindings.Add("PreviewTemplateId", Guid.Empty);
