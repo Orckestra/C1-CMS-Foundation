@@ -100,7 +100,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             }
             else
             {
-                title = "."; // TODO: implement
+                var sharedFileEntityToken = (SharedCodeFileEntityToken)entityToken;
+
+                title = Path.GetFileName(sharedFileEntityToken.RelativeFilePath);
             }
 
             this.Bindings.Add("TemplateTitle", title);

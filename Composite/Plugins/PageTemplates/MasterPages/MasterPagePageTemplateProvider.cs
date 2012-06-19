@@ -252,39 +252,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 return;
             }
 
-            Reinitialize();
-        }
-
-        public void Reinitialize()
-        {
-            lock (_initializationLock)
-            {
-                var timeSpan = DateTime.Now - _lastUpdateTime;
-                if (timeSpan.TotalMilliseconds <= 100)
-                {
-                    return;
-                }
-
-                try
-                {
-                    using (ThreadDataManager.EnsureInitialize())
-                    {
-                        Initialize();
-                    }
-
-                    PageTemplateProviderRegistry.Flush();
-                }
-                catch (ThreadAbortException)
-                {
-                    // No logging, exception will propagate
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, ex);
-                }
-
-                _lastUpdateTime = DateTime.Now;
-            }
+            Flush();
         }
 
         public void Flush()
