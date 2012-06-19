@@ -108,7 +108,9 @@ namespace Composite.Core.WebClient
 
         private static readonly string RendererUrlPrefix = UrlUtils.PublicRootPath + "/Renderers/Page.aspx";
         private static readonly string InternalUrlPrefix = UrlUtils.PublicRootPath + "/page";
+        private static readonly string RawRendererUrlPrefix = "~/Renderers/Page.aspx";
         private static readonly string RawInternalUrlPrefix = "~/page";
+
 
 
         /// <exclude />
@@ -440,6 +442,7 @@ namespace Composite.Core.WebClient
 
             // Urls, generated in UserControl-s may still have "~/" as a prefix
             html = UrlUtils.ReplaceUrlPrefix(html, RawInternalUrlPrefix, InternalUrlPrefix);
+            html = UrlUtils.ReplaceUrlPrefix(html, RawRendererUrlPrefix, RendererUrlPrefix);
 
             // We assume that url starts with either 
             // "{virtual folder path}/Renderers/Page.aspx"  or "{virtual folder path}/page("

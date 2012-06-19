@@ -22,12 +22,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
         }
 
         /// <exclude />
-        public string Title { get; set; }
-
-        /// <exclude />
-        public bool Default { get; set; }
-
-        /// <exclude />
         public bool HasBody
         {
             get
