@@ -41,6 +41,11 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
         public IHtmlString Placeholder(XhtmlDocument content)
         {
+            if(content == null)
+            {
+                return null;
+            }
+
             return Html.Raw(content.ToString());
         }
 
