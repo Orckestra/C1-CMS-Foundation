@@ -1421,7 +1421,6 @@
     <Compile Include="Data\ProcessControlled\IActionRoleProvider.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllerAttributesFacade.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllers\DummyProcessControllers\PublishDummyProcessController.cs" />
-    <Compile Include="Data\ProcessControlled\ProcessControllers\DummyProcessControllers\VersionDummyProcessController.cs" />
     <Compile Include="Data\ProcessControlled\PublishControlledAuxiliaryAttribute.cs" />
     <Compile Include="Data\ProcessControllerTypeAttribute.cs" />
     <Compile Include="Data\TitleAttribute.cs" />
@@ -1635,7 +1634,6 @@
     <Compile Include="Data\Foundation\ProcessControllerRegistry.cs" />
     <Compile Include="Data\IDataIdExtensions.cs" />
     <Compile Include="Data\LabelPropertyNameAttribute.cs" />
-    <Compile Include="Data\ProcessControlled\IVersionProcessController.cs" />
     <Compile Include="Data\RelevantUserGroupAttribute.cs" />
     <Compile Include="Data\Types\IDataFieldDescriptor_ValidatorFunctionMarkup.cs" />
     <Compile Include="Data\Types\IDataTypeDescriptor_SuperInterface.cs" />
@@ -1934,7 +1932,6 @@
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\InterfaceConfigurationManipulator.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\XmlDataProviderStoreManipulator.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessController.cs" />
-    <Compile Include="Data\ProcessControlled\ProcessControllers\GenericVersionProcessController\GenericVersionProcessController.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AssociatedDataElementProviderHelper.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AssociatedDataElementProviderHelperEntityToken.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\AssociatedDataElementProviderHelperSecurityAncestorProvider.cs" />
