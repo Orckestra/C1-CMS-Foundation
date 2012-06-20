@@ -3,7 +3,6 @@ using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericVersionProcessController;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 
