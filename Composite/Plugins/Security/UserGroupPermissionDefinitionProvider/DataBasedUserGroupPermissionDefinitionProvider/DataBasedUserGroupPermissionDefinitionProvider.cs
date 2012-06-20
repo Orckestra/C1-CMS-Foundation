@@ -23,7 +23,6 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
 
         static DataBasedUserGroupPermissionDefinitionProvider()
         {
-            DataEventSystemFacade.SubscribeToDataBeforeUpdate<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
