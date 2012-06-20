@@ -256,7 +256,6 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataDeleted<IPage>(OnPageChanged, true);
 
             DataEventSystemFacade.SubscribeToDataAfterAdd<IPageStructure>(OnPageStructureChanged, true);
-            DataEventSystemFacade.SubscribeToDataBeforeUpdate<IPageStructure>(OnPageStructureChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageStructure>(OnPageStructureChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IPageStructure>(OnPageStructureChanged, true);
         }
