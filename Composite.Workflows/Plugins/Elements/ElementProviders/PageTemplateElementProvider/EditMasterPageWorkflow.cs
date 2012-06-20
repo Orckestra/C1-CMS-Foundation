@@ -269,11 +269,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return false;
             }
 
-            Guid tempTemplateId;
+            Guid templateId;
 
             try
             {
-                tempTemplateId = templateDefinition.TemplateId;
+                templateId = templateDefinition.TemplateId;
             }
             catch (Exception ex)
             {
@@ -303,16 +303,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             if(pageTemplate.IsValid)
             {
-                Guid templateId = pageTemplate.Id;
-
-                if (newTemplateId != templateId)
+                if (templateId != pageTemplate.Id)
                 {
-                    ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(templateId));
+                    ShowWarning(GetText("EditTemplate.Validation.TemplateIdChanged").FormatWith(pageTemplate.Id));
                     return false;
                 }
             }
-
-            newTemplateId = tempTemplateId;
+            else
+            {
+                newTemplateId = templateId;
+            }
 
             return true;
         }
