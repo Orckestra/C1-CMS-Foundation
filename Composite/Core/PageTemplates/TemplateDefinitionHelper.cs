@@ -114,7 +114,11 @@ namespace Composite.Core.PageTemplates
                     {
                         PageRenderer.ExecuteEmbeddedFunctions(placeholderXhtml.Root, functionContextContainer);
                     }
+
+                    PageRenderer.NormalizeXhtmlDocument(placeholderXhtml);
                 }
+
+                PageRenderer.ResolveRelativePaths(placeholderXhtml);
                     
                 PropertyInfo property = placeholderProperties[placeholderId];
 
