@@ -62,11 +62,18 @@ namespace Composite.Core.PageTemplates
 
                     if (placeholderAttribute.IsDefault)
                     {
+                        Verify.IsNull(defaultPlaceholderId, "More than one placeholder is marked as default");
+
                         defaultPlaceholderId = placeholderId;
                     }
                 }
 
                 type = type.BaseType;
+            }
+
+            if (defaultPlaceholderId == null && placeholders.Any())
+            {
+                defaultPlaceholderId = placeholders.First().Id;
             }
 
             pageTemplate.DefaultPlaceholderId = defaultPlaceholderId;
