@@ -34,7 +34,6 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
 
         private static void SubscribeToEvents()
         {
-            DataEventSystemFacade.SubscribeToDataBeforeUpdate<IUserPermissionDefinition>(OnUserPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserPermissionDefinition>(OnUserPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<IUserPermissionDefinition>(OnUserPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IUserPermissionDefinition>(OnUserPermissionChanged, true);
