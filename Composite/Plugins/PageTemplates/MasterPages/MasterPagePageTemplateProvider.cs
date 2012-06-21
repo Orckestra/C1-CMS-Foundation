@@ -252,10 +252,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 return;
             }
 
-            Flush();
+            PageTemplateProviderRegistry.FlushTemplates();
         }
 
-        public void Flush()
+        public void FlushTemplates()
         {
             _state = null;
         }

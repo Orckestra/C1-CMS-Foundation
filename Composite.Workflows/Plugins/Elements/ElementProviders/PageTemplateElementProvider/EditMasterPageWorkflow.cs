@@ -152,7 +152,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 websiteFile.WriteAllText(fileContent[i]);
             }
 
-            PageTemplateProviderRegistry.Flush();
+            PageTemplateProviderRegistry.FlushTemplates();
 
             if(newTemplateId != Guid.Empty)
             {

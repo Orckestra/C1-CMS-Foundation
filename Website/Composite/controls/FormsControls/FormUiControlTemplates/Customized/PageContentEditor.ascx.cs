@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Composite;
 using Composite.Core.PageTemplates;
 using Composite.Plugins.Forms.WebChannel.CustomUiControls;
 
@@ -67,6 +68,8 @@ namespace CompositePageContentEditor
         private void SetUpTextAreas(bool flush)
         {
             PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
+
+            Verify.IsNotNull(pageTemplate, "Failed to get page template by id '{0}'", SelectedTemplateId);
 
             List<string> handledIds = new List<string>();
 

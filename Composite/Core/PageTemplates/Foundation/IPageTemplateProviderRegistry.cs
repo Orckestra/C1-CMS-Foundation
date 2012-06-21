@@ -6,6 +6,7 @@ namespace Composite.Core.PageTemplates.Foundation
     internal interface IPageTemplateProviderRegistry
     {
         void Flush();
+        void FlushTemplates();
 
         IEnumerable<string> ProviderNames { get; }
         IEnumerable<PageTemplateDescriptor> PageTemplates { get; }

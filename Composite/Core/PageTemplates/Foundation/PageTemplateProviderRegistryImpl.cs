@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.PageTemplates.Plugins.Runtime;
 using Composite.Core.PageTemplates.Foundation.PluginFacade;
 
@@ -16,16 +15,24 @@ namespace Composite.Core.PageTemplates.Foundation
 
         public void Flush()
         {
-            foreach(var providerName in _resourceLocker.Resources.ProviderNames)
+            _resourceLocker.ResetInitialization();
+        }
+
+
+        public void FlushTemplates()
+        {
+            var resources = _resourceLocker.Resources;
+
+            foreach (var providerName in resources.ProviderNames)
             {
                 var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
                 if (provider != null)
                 {
-                    provider.Flush();
+                    provider.FlushTemplates();
                 }
             }
 
-            _resourceLocker.ResetInitialization();
+            resources.ResetTemplatesCache();
         }
 
         public IEnumerable<string> ProviderNames
@@ -49,50 +56,78 @@ namespace Composite.Core.PageTemplates.Foundation
         {
             get 
             {
-                return _resourceLocker.Resources.PageTemplates;
+                return _resourceLocker.Resources.Templates.PageTemplates;
             }
         }
 
         public IPageTemplateProvider GetProviderByTemplateId(Guid pageTemplateId)
         {
-            return _resourceLocker.Resources.ProviderByTemplate[pageTemplateId];
+            return _resourceLocker.Resources.Templates.ProviderByTemplate[pageTemplateId];
         }
 
 
 
         private sealed class Resources
         {
-            public IEnumerable<string> ProviderNames { get; set; }
+            public IEnumerable<string> ProviderNames { get; private set; }
+            private volatile TemplatesCache _state;
 
-            public IEnumerable<PageTemplateDescriptor> PageTemplates { get; set; }
-            public Hashtable<Guid, IPageTemplateProvider> ProviderByTemplate { get; set; }
-
-
-            public static void DoInitialize(Resources resources)
+            public TemplatesCache Templates
             {
-                var providerByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
-                resources.ProviderNames = GetProviderNames();
+                get { 
+                    var state = _state;
+                    if (state != null) return state;
 
+                    lock(this)
+                    {
+                        state = _state ?? InitializePageTemplatesCache();
+
+                        _state = state;
+                    }
+
+                    return state;
+                }
+            }
+
+            public class TemplatesCache
+            {
+                public IEnumerable<PageTemplateDescriptor> PageTemplates { get; set; }
+                public Hashtable<Guid, IPageTemplateProvider> ProviderByTemplate { get; set; }
+            }
+
+            public void ResetTemplatesCache()
+            {
+                _state = null;
+            }
+
+            private TemplatesCache InitializePageTemplatesCache()
+            {
                 var pageTemplates = new List<PageTemplateDescriptor>();
+                var providerByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
 
-                foreach (string providerName in resources.ProviderNames)
+                foreach (string providerName in this.ProviderNames)
                 {
                     var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
-                    var templates = provider.GetPageTemplates();
+                    var templates = provider.GetPageTemplates().ToList();
 
                     pageTemplates.AddRange(templates);
 
                     foreach (var template in templates)
                     {
-                        Verify.That(!providerByTemplate.ContainsKey(template.Id), 
+                        Verify.That(!providerByTemplate.ContainsKey(template.Id),
                                     "There are muliple layouts with the same ID: '{0}'", template.Id);
 
                         providerByTemplate.Add(template.Id, provider);
                     }
                 }
 
-                resources.PageTemplates = pageTemplates;
-                resources.ProviderByTemplate = providerByTemplate;
+                return new TemplatesCache { PageTemplates = pageTemplates, ProviderByTemplate = providerByTemplate };
+            }
+
+            public static void DoInitialize(Resources resources)
+            {
+                var providerByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
+                resources.ProviderNames = GetProviderNames();
             }
         }
     }

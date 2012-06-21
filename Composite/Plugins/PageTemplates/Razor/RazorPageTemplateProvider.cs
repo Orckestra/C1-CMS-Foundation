@@ -203,37 +203,6 @@ namespace Composite.Plugins.PageTemplates.Razor
             TemplateDefinitionHelper.ExtractPageTemplateInfo(webPage, templateDescriptor, out placeholderProperties);
         }
 
-        public void Reinitialize()
-        {
-            lock (_initializationLock)
-            {
-                var timeSpan = DateTime.Now - _lastUpdateTime;
-                if (timeSpan.TotalMilliseconds <= 100)
-                {
-                    return;
-                }
-
-                try
-                {
-                    using (ThreadDataManager.EnsureInitialize())
-                    {
-                        Initialize();
-                    }
-
-                    PageTemplateProviderRegistry.Flush();
-                }
-                catch (ThreadAbortException)
-                {
-                    // Exception will propagate
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, ex);
-                }
-
-                _lastUpdateTime = DateTime.Now;
-            }
-        }
 
         private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
         {
@@ -243,7 +212,7 @@ namespace Composite.Plugins.PageTemplates.Razor
                 return;
             }
 
-            Reinitialize();
+            PageTemplateProviderRegistry.FlushTemplates();
         }
 
 
@@ -259,7 +228,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             return state.SharedFiles;
         }
 
-        public void Flush()
+        public void FlushTemplates()
         {
             lock(_initializationLock)
             {

@@ -39,6 +39,6 @@ namespace Composite.Core.PageTemplates
         /// <summary>
         /// Flushes the list of templates
         /// </summary>
-        void Flush();
+        void FlushTemplates();
     }
 }

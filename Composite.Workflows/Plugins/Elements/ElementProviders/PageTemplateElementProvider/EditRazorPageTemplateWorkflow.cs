@@ -59,7 +59,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             {
                 websiteFile.WriteAllText(content);
 
-                PageTemplateProviderRegistry.Flush();
+                PageTemplateProviderRegistry.FlushTemplates();
 
                 this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
             }

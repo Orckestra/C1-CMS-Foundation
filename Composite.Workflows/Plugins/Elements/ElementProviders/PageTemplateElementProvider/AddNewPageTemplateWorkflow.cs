@@ -105,7 +105,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             newPageTemplate.PageTemplateFilePath = "/" + pageTemplateFile.FileName;
             newPageTemplate = DataFacade.AddNew<IXmlPageTemplate>(newPageTemplate);
 
-            PageTemplateProviderRegistry.Flush();
+            PageTemplateProviderRegistry.FlushTemplates();
 
             addNewTreeRefresher.PostRefreshMesseges(newPageTemplate.GetDataEntityToken());
 

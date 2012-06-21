@@ -99,7 +99,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
         }
 
 
-        public void Flush()
+        public void FlushTemplates()
         {
             // Provider holds no state - no need to reinitialize anything
         }
