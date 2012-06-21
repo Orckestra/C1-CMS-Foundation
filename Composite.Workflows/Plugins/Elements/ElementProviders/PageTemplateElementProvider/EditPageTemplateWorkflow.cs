@@ -191,7 +191,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return;
             }
 
-            e.Result = !DataFacade.GetData<IXmlPageTemplate>().ToList()
+            e.Result = DataFacade.GetData<IXmlPageTemplate>().ToList()
                 .Any(f => string.Compare(f.Title, newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase) == 0 
                      && f.Id != newPageTemplate.Id);
         }
