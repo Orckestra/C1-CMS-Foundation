@@ -41,6 +41,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     return FileName + ".tmp";
                 }
             }
+
+            public string InUseFileName
+            {
+                get
+                {
+                    return FileName + ".used";
+                }
+            }
         }
 
         internal class RecordSet
@@ -299,6 +307,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
 
+                    // fix for Antares (running on multiple services of one VHD)
+                    while (File.Exists(fileRecord.InUseFileName)
+                        && (DateTime.Now - File.GetLastWriteTime(fileRecord.InUseFileName)).TotalSeconds < 10)
+                    { 
+                        /*wait */
+                        Thread.Sleep(100);
+                    }
+
+                    File.WriteAllText(fileRecord.InUseFileName, "lock");
+                    
                     using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
@@ -344,6 +362,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     catch (Exception)
                     {
                         // Ignore exception here. The tmp file might have been "recovered" by the load method
+                    }
+                    finally
+                    {
+                        File.Delete(fileRecord.InUseFileName);
                     }
                 }
                 catch (Exception exception)
