@@ -13,6 +13,7 @@ using Composite.Core.ResourceSystem;
 using System.Collections.Generic;
 using Composite.Core.WebClient.Renderings.Template;
 using System.Xml.Linq;
+using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
@@ -63,7 +64,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             List<KeyValuePair<Guid, string>> templatesOptions =
                 (from template in PageTemplateFacade.GetPageTemplates()
-                 where template.IsValid
+                 where template is XmlPageTemplateDescriptor && template.IsValid
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
