@@ -12,7 +12,7 @@ namespace Composite.Core.PageTemplates
         /// <summary>
         /// Initializes a new instance of the <see cref="SharedFile"/> class.
         /// </summary>
-        /// <param name="filePath">The file path.</param>
+        /// <param name="relativeFilePath">The relative file path.</param>
         public SharedFile(string relativeFilePath)
         {
             RelativeFilePath = relativeFilePath;

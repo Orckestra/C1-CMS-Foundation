@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Composite.C1Console.Security;
+using Composite.Core.IO;
 using Composite.Core.Serialization;
 
 
@@ -13,16 +15,31 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
     [SecurityAncestorProvider(typeof(WebsiteFileProviderEntityTokenSecurityAncestorProvider))]
     public sealed class WebsiteFileElementProviderEntityToken : EntityToken
     {
-        private string _providerName;
+        private static readonly string _baseDirectory;
+        private readonly string _providerName;
+        private readonly string _relativePath;
+
+        static WebsiteFileElementProviderEntityToken()
+        {
+            string baseDirectory = PathUtil.BaseDirectory;
+            if(baseDirectory.EndsWith("\\"))
+            {
+                baseDirectory = baseDirectory.Substring(0, baseDirectory.Length - 1);
+            }
+
+            _baseDirectory = baseDirectory;
+        }
 
         /// <exclude />
         public WebsiteFileElementProviderEntityToken(string providerName, string path, string rootPath)
         {
-            // Normalizing directory name
-            if(rootPath.EndsWith("\\"))
-            {
-                rootPath = rootPath.Substring(0, rootPath.Length - 1);
-            }
+            Verify.ArgumentNotNull(path, "path");
+            Verify.ArgumentNotNull(rootPath, "rootPath");
+            Verify.ArgumentCondition(path.StartsWith(rootPath, StringComparison.OrdinalIgnoreCase), "path", "Path should start with root path");
+
+            Verify.That(rootPath.StartsWith(_baseDirectory, StringComparison.OrdinalIgnoreCase), "Path does not belong to the website");
+
+            _relativePath = path.Substring(_baseDirectory.Length);
 
             this.Path = path;
             this.RootPath = rootPath;
@@ -54,19 +71,18 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public override string Id
         {
-            get { return this.Path; }
+            get { return _relativePath; }
         }
 
 
         /// <exclude />
         public override string Serialize()
         {
-            // TODO: serialization & desealization to use relative paths
             StringBuilder sb = new StringBuilder();
 
             DoSerialize(sb);
 
-            StringConversionServices.SerializeKeyValuePair(sb, "RootPath", this.RootPath);
+            StringConversionServices.SerializeKeyValuePair(sb, "root", RelativeRootPath);
              
             return sb.ToString();
         }
@@ -75,15 +91,22 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public static EntityToken Deserialize(string serializedData)
         {
-            // TODO: serialization & desealization to use relative paths
             Dictionary<string, string> dic;
             string type, source, id;
 
             EntityToken.DoDeserialize(serializedData, out type, out source, out id, out dic);
 
-            string rootPath = StringConversionServices.DeserializeValueString(dic["RootPath"]);
+            // Backward compatibility
+            if(dic.ContainsKey("RootPath"))
+            {
+                string rootPath = StringConversionServices.DeserializeValueString(dic["RootPath"]);
 
-            return new WebsiteFileElementProviderEntityToken(source, id, rootPath);
+                return new WebsiteFileElementProviderEntityToken(source, id, rootPath);
+            }
+            
+            string relativeRootPath = StringConversionServices.DeserializeValueString(dic["root"]);
+
+            return new WebsiteFileElementProviderEntityToken(source, _baseDirectory + id, _baseDirectory + relativeRootPath);
         }
 
 
@@ -94,6 +117,10 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             private set;
         }
 
+        private string RelativeRootPath
+        {
+            get { return RootPath.Substring(_baseDirectory.Length); }
+        }
 
         internal string RootPath
         {
@@ -137,7 +164,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         {
             if (this.HashCode == 0)
             {
-                this.HashCode = GetType().GetHashCode() ^ this.Type.GetHashCode() ^ this.Source.GetHashCode() ^ this.Id.GetHashCode() ^ this.Path.GetHashCode() ^ this.RootPath.GetHashCode();
+                this.HashCode = GetType().GetHashCode() ^ this.Type.GetHashCode() ^ this.Source.GetHashCode() ^ this.Id.GetHashCode() ^ this.RelativeRootPath.GetHashCode();
             }
             return this.HashCode;
         }
