@@ -267,7 +267,12 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
-        private static void AppendC1MetaTags(IPage page, XhtmlDocument xhtmlDocument)
+        /// <summary>
+        /// Appends the c1 meta tags to the head section. Those tag are used later on by SEO assistant.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="xhtmlDocument">The XHTML document.</param>
+        public static void AppendC1MetaTags(IPage page, XhtmlDocument xhtmlDocument)
         {
             if (UserValidationFacade.IsLoggedIn())
             {
