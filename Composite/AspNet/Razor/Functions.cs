@@ -15,9 +15,9 @@ namespace Composite.AspNet.Razor
         /// Executes the function.
         /// </summary>
         /// <param name="name">The name.</param>
-		public static void ExecuteFunction(string name)
+		public static object ExecuteFunction(string name)
 		{
-			ExecuteFunction(name, null);
+			return ExecuteFunction(name, null);
 		}
 
         /// <summary>
