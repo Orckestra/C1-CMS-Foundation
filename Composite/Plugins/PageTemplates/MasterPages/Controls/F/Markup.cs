@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 
 using Composite.Core.Localization;
@@ -53,6 +55,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
                 PageRenderer.NormalizeXhtmlDocument(xhmlDocument);
                 PageRenderer.ResolveRelativePaths(xhmlDocument);
 
+                NormalizeAspNetForms(xhmlDocument);
+
                 AddNodesAsControls(xhmlDocument.Body.Nodes(), this, controlMapper);
 
                 var headElement = xhmlDocument.Head;
@@ -64,6 +68,38 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
             }
 
             base.CreateChildControls();
+        }
+
+        
+        private void NormalizeAspNetForms(XhtmlDocument xhtmlDocument)
+        {
+            // If current control is inside <form id="" runat="server"> tag all <asp:forms> tags will be removed from placeholder
+
+            bool isInsideAspNetForm = false;
+
+            var ansestor = this.Parent;
+            while (ansestor != null)
+            {
+                if (ansestor is HtmlForm)
+                {
+                    isInsideAspNetForm = true;
+                    break;
+                }
+
+                ansestor = ansestor.Parent;
+            }
+
+            if (!isInsideAspNetForm)
+            {
+                return;
+            }
+
+            List<XElement> aspNetFormElements = xhtmlDocument.Descendants(Namespaces.AspNetControls + "form").Reverse().ToList();
+
+            foreach (XElement aspNetFormElement in aspNetFormElements)
+            {
+                aspNetFormElement.ReplaceWith(aspNetFormElement.Nodes());
+            }
         }
 
         private void ProcessInternalControls()
