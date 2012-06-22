@@ -13,12 +13,12 @@ using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
-	internal class RazorFunction : FileBasedFunction<RazorFunction>
+	internal class RazorBasedFunction : FileBasedFunction<RazorBasedFunction>
 	{
         private static readonly string ExecutionLock_ItemsKey = "__razor_execute_lock__";
 		private static object _lock = new object();
 
-		public RazorFunction(string ns, string name, string description, IDictionary<string, FunctionParameterHolder> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorFunction> provider)
+		public RazorBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameterHolder> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorBasedFunction> provider)
 			: base(ns, name, description, parameters, returnType, virtualPath, provider)
 		{
 		}

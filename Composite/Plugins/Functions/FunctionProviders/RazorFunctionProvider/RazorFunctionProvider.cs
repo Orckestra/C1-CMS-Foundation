@@ -9,7 +9,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
 	[ConfigurationElementType(typeof(RazorFunctionProviderData))]
-	internal class RazorFunctionProvider : FileBasedFunctionProvider<RazorFunction>
+	internal class RazorFunctionProvider : FileBasedFunctionProvider<RazorBasedFunction>
 	{
 		protected override string FileExtension
 		{
@@ -18,14 +18,19 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
 		protected override Type BaseType
 		{
-			get { return typeof(CompositeC1WebPage); }
+			get { return typeof(RazorFunction); }
 		}
 
 		public RazorFunctionProvider(string name, string folder) : base(name, folder) { }
 
 		protected override Type GetReturnType(object obj)
 		{
-			var attr = obj.GetType().GetCustomAttributes(typeof(FunctionReturnTypeAttribute), false).Cast<FunctionReturnTypeAttribute>().FirstOrDefault();
+            if (obj is RazorFunction)
+            {
+                return (obj as RazorFunction).FunctionReturnType;
+            }
+
+		    var attr = obj.GetType().GetCustomAttributes(typeof(FunctionReturnTypeAttribute), false).Cast<FunctionReturnTypeAttribute>().FirstOrDefault();
 			if (attr != null)
 			{
 				return attr.ReturnType;
@@ -33,6 +38,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
 			return typeof(XhtmlDocument);
 		}
+
+        protected override string GetDescription(object obj)
+        {
+            if (obj is RazorFunction)
+            {
+                return (obj as RazorFunction).FunctionDescription;
+            }
+
+            return base.GetDescription(obj);
+        }
 
 		protected override object InstantiateFile(string virtualPath)
 		{

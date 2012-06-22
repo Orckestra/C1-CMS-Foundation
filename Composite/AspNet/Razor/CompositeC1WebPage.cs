@@ -5,7 +5,7 @@ using Composite.Data;
 namespace Composite.AspNet.Razor
 {
     /// <summary>
-    /// Defines a composite C1 razor function
+    /// Defines a composite C1 razor control
     /// </summary>
 	public abstract class CompositeC1WebPage : WebPage, IDisposable
 	{

@@ -152,6 +152,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
     <Compile Include="AspNet\Razor\CompositeC1RazorHost.cs" />
     <Compile Include="AspNet\Razor\CompositeC1RazorHostFactory.cs" />
@@ -162,7 +163,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FunctionParameterHolder.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderAssembler.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderData.cs" />

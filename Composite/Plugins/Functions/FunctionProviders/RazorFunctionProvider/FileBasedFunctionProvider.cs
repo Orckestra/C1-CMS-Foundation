@@ -140,6 +140,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 				var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.DeclaredOnly);
 				foreach (var prop in properties)
 				{
+                    // Skipping overriden base properties
+                    if (prop.GetAccessors()[0].GetBaseDefinition().DeclaringType == BaseType) continue;
+
 					var propType = prop.PropertyType;
 					var name = prop.Name;
 					var att = prop.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().FirstOrDefault();
@@ -164,7 +167,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 			return dict;
 		}
 
-		private string GetDescription(object obj)
+		protected virtual string GetDescription(object obj)
 		{
 			var attr = obj.GetType().GetCustomAttributes(typeof(FunctionAttribute), false).Cast<FunctionAttribute>().FirstOrDefault();
 			if (attr != null)
