@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web.UI;
 using Composite.C1Console.Events;
+using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Extensions;
@@ -139,8 +140,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 fileContent.Add(this.GetBinding<string>(bindingPrefix + "Content"));
             }
 
-            Guid newTemplateId = Guid.Empty;
-            if (!CompileAndValidate(files, fileContent, ref newTemplateId))
+            EntityToken newEntityToken;
+            if (!CompileAndValidate(files, fileContent, out newEntityToken))
             {
                 return;
             }
@@ -154,10 +155,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             PageTemplateProviderRegistry.FlushTemplates();
 
-            if(newTemplateId != Guid.Empty)
+            if (newEntityToken != null)
             {
-                // Changing current entity token if necessary
-                SetSaveStatus(true, new PageTemplateEntityToken(newTemplateId));
+                SetSaveStatus(true, newEntityToken);
+
+                SerializedEntityToken = EntityTokenSerializer.Serialize(newEntityToken);
             }
             else
             {
@@ -167,7 +169,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
         }
 
-        private bool CompileAndValidate(string[] files, IList<string> fileContent, ref Guid newTemplateId)
+        private bool CompileAndValidate(string[] files, IList<string> fileContent, out EntityToken newEntityToken)
         {
             string tempMasterFile = GetTempFilePath(files[0]);
             string tempCodeBehindFile = null; 
@@ -231,10 +233,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     ShowWarning(GetText("EditTemplate.Validation.CompilationFailed")
                                 .FormatWith(errorMessage));
 
+                    newEntityToken = null;
                     return false;
                 }
 
-                return Validate(masterPage, ref newTemplateId);
+                return Validate(masterPage, out newEntityToken);
             }
             finally
             {
@@ -247,8 +250,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             }
         }
 
-        private bool Validate(MasterPage masterPage, ref Guid newTemplateId)
+        private bool Validate(MasterPage masterPage, out EntityToken newEntityToken)
         {
+            newEntityToken = null;
+
             if(!(this.EntityToken is PageTemplateEntityToken))
             {
                 return true;
@@ -311,7 +316,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             }
             else
             {
-                newTemplateId = templateId;
+                newEntityToken = new PageTemplateEntityToken(templateId);
             }
 
             return true;

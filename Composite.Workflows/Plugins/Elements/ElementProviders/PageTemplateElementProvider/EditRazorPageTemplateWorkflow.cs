@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Web.WebPages;
 using Composite.C1Console.Events;
+using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Extensions;
@@ -52,8 +53,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             string content = this.GetBinding<string>("FileContent");
 
-            Guid newTemplateId = Guid.Empty;
-            bool isValid = ValidateMarkup(virtualPath, content, ref newTemplateId);
+            EntityToken newEntityToken;
+            bool isValid = ValidateMarkup(virtualPath, content, out newEntityToken);
 
             if (isValid)
             {
@@ -64,9 +65,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
             }
 
-            if (isValid && newTemplateId != Guid.Empty)
+            if (isValid && newEntityToken != null)
             {
-                SetSaveStatus(true, new PageTemplateEntityToken(newTemplateId));
+                SetSaveStatus(true, newEntityToken);
+
+                SerializedEntityToken = EntityTokenSerializer.Serialize(newEntityToken);
             }
             else
             {
@@ -75,8 +78,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         }
 
 
-        private bool ValidateMarkup(string virtualPath, string content, ref Guid newTemplateId)
+        private bool ValidateMarkup(string virtualPath, string content, out EntityToken newEntityToken)
         {
+            newEntityToken = null;
+
             string filePath = PathUtil.Resolve(virtualPath);
             string fileName = Path.GetFileName(filePath);
 
@@ -113,11 +118,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 if (!(webPageBase is RazorPageTemplate))
                 {
-                    if(IsPageTemplate && GetPageTemplateDescriptor().IsValid)
+                    if(IsPageTemplate) 
                     {
-                        ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
-                                .FormatWith(typeof(RazorPageTemplate).FullName));
-                        return false;
+                        var templateDescriptor = GetPageTemplateDescriptor();
+                        
+                        if(templateDescriptor.IsValid)
+                        {
+                            ShowWarning(GetText("EditTemplate.Validation.IncorrectBaseClass")
+                                    .FormatWith(typeof(RazorPageTemplate).FullName));
+                            return false;    
+                        }
+
+                        newEntityToken = new SharedCodeFileEntityToken(virtualPath);
+                        return true;
                     }
 
                     return true;
@@ -162,7 +175,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 if(!IsPageTemplate)
                 {
-                    newTemplateId = templateId;
+                    newEntityToken = new PageTemplateEntityToken(templateId);
                     return true;
                 }
 
@@ -179,7 +192,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 }
                 else
                 {
-                    newTemplateId = templateId;
+                    newEntityToken = new PageTemplateEntityToken(templateId);
                 }
             }
             finally
