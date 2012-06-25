@@ -48,6 +48,13 @@
   <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Excepton: {1}" />
   <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change template id through current workflow. Original template id is '{0}'" />
 
+  
+  <string key="RazorPageTemplateProvider.AddTemplate" value="Add New Razor Template" />
+  <string key="RazorPageTemplateProvider.AddTemplateToolTip" value="Add new Razor based page template" />
+
+  <string key="AddNewRazorPageTemplateWorkflow.LabelDialog" value="Add New Razor Template" />
+  
+
   <string key="EditRazorFileAction.Label" value="Edit Razor File" />
   <string key="EditRazorFileAction.ToolTip" value="Edit the cshtml file" />
 

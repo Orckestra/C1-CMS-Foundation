@@ -5,29 +5,32 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
 using System.Web.WebPages;
-using Composite.AspNet.Razor;
 using Composite.C1Console.Elements;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
-using Composite.Core.Threading;
 using Composite.Core.WebClient;
+using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.Razor
 {
     [ConfigurationElementType(typeof(RazorPageTemplateProviderData))]
     internal class RazorPageTemplateProvider : IPageTemplateProvider
     {
+        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
+
         private static readonly string LayoutFileMask = "*.cshtml";
         private static readonly string LogTitle = typeof (RazorPageTemplateProvider).Name;
 
         private readonly string _providerName;
-        private readonly string _templatesDirectory;
+        private readonly string _templateDirectory;
         private readonly string _templatesDirectoryVirtualPath;
         
         private readonly object _initializationLock = new object();
@@ -48,9 +51,9 @@ namespace Composite.Plugins.PageTemplates.Razor
         {
             _providerName = providerName;
             _templatesDirectoryVirtualPath = templatesDirectoryVirtualPath;
-            _templatesDirectory = PathUtil.Resolve(templatesDirectoryVirtualPath);
+            _templateDirectory = PathUtil.Resolve(templatesDirectoryVirtualPath);
 
-            _watcher = new C1FileSystemWatcher(_templatesDirectory, LayoutFileMask)
+            _watcher = new C1FileSystemWatcher(_templateDirectory, LayoutFileMask)
             {
                 IncludeSubdirectories = true
             };
@@ -98,7 +101,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         private State Initialize()
         {
-            var files = new C1DirectoryInfo(_templatesDirectory)
+            var files = new C1DirectoryInfo(_templateDirectory)
                            .GetFiles(LayoutFileMask, SearchOption.AllDirectories)
                            .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
 
@@ -189,7 +192,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         public string ConvertToVirtualPath(string filePath)
         {
-            return UrlUtils.Combine(_templatesDirectoryVirtualPath, filePath.Substring(_templatesDirectory.Length).Replace('\\', '/'));
+            return UrlUtils.Combine(_templatesDirectoryVirtualPath, filePath.Substring(_templateDirectory.Length).Replace('\\', '/'));
         }
 
         private void ParseTemplate(string virtualPath,
@@ -218,7 +221,25 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         public IEnumerable<ElementAction> GetRootActions()
         {
-            return new ElementAction[0];
+            Type type = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewRazorPageTemplateWorkflow");
+
+            return new[] { new ElementAction(new ActionHandle(new WorkflowActionToken(type, new[] { PermissionType.Add })))
+            {
+                VisualData = new ActionVisualizedData
+                          {
+                              Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "RazorPageTemplateProvider.AddTemplate"),
+                              ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "RazorPageTemplateProvider.AddTemplateToolTip"),
+                              Icon = PageTemplateElementProvider.AddTemplate,
+                              Disabled = false,
+                              ActionLocation = new ActionLocation
+                              {
+                                  ActionType = ActionType.Add,
+                                  IsInFolder = false,
+                                  IsInToolbar = true,
+                                  ActionGroup = PrimaryActionGroup
+                              }
+                          }
+            }};
         }
 
         public IEnumerable<SharedFile> GetSharedFiles()
@@ -226,6 +247,11 @@ namespace Composite.Plugins.PageTemplates.Razor
             var state = GetInitializedState();
 
             return state.SharedFiles;
+        }
+
+        public string TemplateDirectoryPath
+        {
+            get { return _templateDirectory; }
         }
 
         public void FlushTemplates()

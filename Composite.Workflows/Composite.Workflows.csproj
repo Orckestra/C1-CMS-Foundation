@@ -443,6 +443,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.Designer.cs">
       <DependentUpon>AddNewPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewRazorPageTemplateWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewRazorPageTemplateWorkflow.Designer.cs">
+      <DependentUpon>AddNewRazorPageTemplateWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditMasterPageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1049,6 +1055,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewPageTemplateWorkflow.layout">
       <DependentUpon>AddNewPageTemplateWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewRazorPageTemplateWorkflow.layout">
+      <DependentUpon>AddNewRazorPageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.layout">
       <DependentUpon>DeletePageTemplateWorkflow.cs</DependentUpon>

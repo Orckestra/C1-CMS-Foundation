@@ -118,7 +118,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         {
             IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
 
-            e.Result = DataFacade.GetData<IXmlPageTemplate>().ToList()
+            e.Result = PageTemplateFacade.GetPageTemplates()
                                  .Any(f => f.Title.Equals(newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase));
         }
 
