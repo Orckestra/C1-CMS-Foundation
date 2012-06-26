@@ -39,7 +39,10 @@
 	<string key="DeletePageTemplateStep1.Text" value="Delete page template?" />
 	
 	<string key="DeletePageTemplateWorkflow.CascadeDeleteErrorTitle" value="Cascade Delete Error" />
-	<string key="DeletePageTemplateWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted" />
+	<string key="DeletePageTemplateWorkflow.CascadeDeleteErrorMessage" value="The type is referenced by another type that does not allow cascade deletes. This operation is halted." />
+
+  <string key="DeletePageTemplateWorkflow.PageReference" value="There are {0} page[s] referencing this template: {1}" /> 
+  <string key="DeletePageTemplateWorkflow.PageTypeReference" value="There are {0} page type[s] referencing this template: {1}" />
 
 
   <string key="EditTemplate.Validation.DialogTitle" value="Validation error" />

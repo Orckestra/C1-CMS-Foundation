@@ -59,33 +59,45 @@ StandardDialogPageBinding.prototype.setPageArgument = function ( arg ) {
  */
 StandardDialogPageBinding.prototype.onBeforePageInitialize = function () {
 
-	this.attachClassName ( this._dialogType );
-	document.getElementById ( "dialogtext" ).firstChild.data = this._dialogText;
+    this.attachClassName(this._dialogType);
 
-	while ( this._dialogButtons.hasNext ()) {
-	
-		var config = this._dialogButtons.getNext ();
-		var button = ClickButtonBinding.newInstance ( document );
-		
-		button.isFocusable = config.isFocusable;
-		button.isFocused = config.isFocused;
-		button.isDefault = config.isDefault;
-		
-		button.setLabel ( config.label );
-		button.setImage ( config.image );
-		button.response = config.response;
-		
-		if ( !button.response ) {
-			button.response = Dialog.DEFAULT_RESPONSE;
-		}
-		bindingMap.dialogtoolbargroup.add ( button );
-	}
-	
-	bindingMap.dialogtoolbargroup.attachRecursive ();
-	bindingMap.dialogtoolbarbody.enforceEqualSize ();
-	bindingMap.dialogtoolbar.indexDialogButtons ();
+    var divDialogText = document.getElementById("dialogtext");
 
-	StandardDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
+    var text = this._dialogText.replace('\r\n', '\n');
+    var textParts = text.split('\n');
+
+    // Adding text and inserting and inserting line breaks
+    for (var i = 0; i < textParts.length; i++) {
+        divDialogText.appendChild(document.createTextNode(textParts[i]));
+        if (i < textParts.length - 1) {
+            divDialogText.appendChild(document.createElement("br"));
+        }
+    }
+
+    while (this._dialogButtons.hasNext()) {
+
+        var config = this._dialogButtons.getNext();
+        var button = ClickButtonBinding.newInstance(document);
+
+        button.isFocusable = config.isFocusable;
+        button.isFocused = config.isFocused;
+        button.isDefault = config.isDefault;
+
+        button.setLabel(config.label);
+        button.setImage(config.image);
+        button.response = config.response;
+
+        if (!button.response) {
+            button.response = Dialog.DEFAULT_RESPONSE;
+        }
+        bindingMap.dialogtoolbargroup.add(button);
+    }
+
+    bindingMap.dialogtoolbargroup.attachRecursive();
+    bindingMap.dialogtoolbarbody.enforceEqualSize();
+    bindingMap.dialogtoolbar.indexDialogButtons();
+
+    StandardDialogPageBinding.superclass.onBeforePageInitialize.call(this);
 }
 
 /**

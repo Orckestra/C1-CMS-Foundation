@@ -21,7 +21,7 @@
 						<td id="dialogvignette">
 							<ui:dialogvignette/>
 						</td>
-						<td id="dialogtext">${dialogtext}</td>
+						<td id="dialogtext"><!-- ${dialogtext} --></td>
 					</tr>
 				</table>
 			</ui:pagebody>
