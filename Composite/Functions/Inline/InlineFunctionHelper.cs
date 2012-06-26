@@ -164,11 +164,13 @@ namespace Composite.Functions.Inline
             get
             {
                 string systemPath = Path.GetDirectoryName(typeof(String).Assembly.Location);
+               
 
-                yield return Path.Combine(systemPath, "System.dll");            // System.dll;
-                yield return Path.Combine(systemPath, "System.Core.dll");       // System.Core.dll;
-                yield return Path.Combine(systemPath, "System.Xml.dll");        // System.Xml.dll;
-                yield return Path.Combine(systemPath, "System.Xml.Linq.dll");   // System.Xml.Linq.dll;
+                yield return Path.Combine(systemPath, "System.dll");            
+                yield return Path.Combine(systemPath, "System.Core.dll");       
+                yield return Path.Combine(systemPath, "System.Xml.dll");        
+                yield return Path.Combine(systemPath, "System.Xml.Linq.dll");   
+                yield return Path.Combine(systemPath, "System.Web.dll");        
 
                 yield return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "Composite.dll");
 
