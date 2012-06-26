@@ -93,19 +93,28 @@ namespace Composite.Functions
             IFunction function = FunctionFacade.GetFunction(nameAttribute.Value);
 
 
-            foreach (BaseParameterRuntimeTreeNode parameter in parameters)
+            if (FunctionInitializedCorrectly(function))
             {
-                int count = function.ParameterProfiles.Where(pp => pp.Name == parameter.Name).Count();
-
-                if (count == 0)
+                foreach (BaseParameterRuntimeTreeNode parameter in parameters)
                 {
-                    throw new InvalidOperationException(string.Format("The parameter '{0}' is not defined in the function named '{1}' parameter profiles", parameter.Name, function.CompositeName()));
+                    int count = function.ParameterProfiles.Count(pp => pp.Name == parameter.Name);
+
+                    if (count == 0)
+                    {
+                        throw new InvalidOperationException(string.Format("The parameter '{0}' is not defined in the function named '{1}' parameter profiles", parameter.Name, function.CompositeName()));
+                    }
                 }
             }
 
             return new FunctionRuntimeTreeNode(function, parameters);
         }
 
+
+        private static bool FunctionInitializedCorrectly(IFunction function)
+        {
+            return !(function is IFunctionInitializationInfo) ||
+                   (function as IFunctionInitializationInfo).FunctionInitializedCorrectly;
+        }
 
         private static string AttributeValueOrEmpty(XElement element, string attributeName)
         {

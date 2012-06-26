@@ -163,6 +163,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FunctionParameterHolder.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\NotLoadedFileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderAssembler.cs" />

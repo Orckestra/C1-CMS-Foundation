@@ -18,8 +18,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
         private static readonly string LogTitle = "FileBasedFunctionProvider";
 		private static readonly object _lock = new object();
 
-        private readonly IDictionary<string, FileBasedFunction<FunctionType>> _functionCache = new Dictionary<string, FileBasedFunction<FunctionType>>();
-
         private readonly C1FileSystemWatcher _watcher;
 		private DateTime _lastUpdateTime;
         private readonly string _rootFolder;
@@ -36,7 +34,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 		{
 			get
 			{
-                var returnList = new List<FileBasedFunction<FunctionType>>();
+                var returnList = new List<IFunction>();
 
 				var files = new C1DirectoryInfo(PhysicalPath)
                     .GetFiles("*." + FileExtension, SearchOption.AllDirectories)
@@ -56,18 +54,19 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 					{
 						obj = InstantiateFile(virtualPath);
 					}
-					catch (Exception exc)
+					catch (Exception ex)
 					{
-                        Log.LogError(LogTitle, "Error instantiating {0} function", _name);
-                        Log.LogError(LogTitle, exc);
+                        Log.LogError(LogTitle, "Error instantiating {0} function", name);
+                        Log.LogError(LogTitle, ex);
 
-						if (_functionCache.ContainsKey(virtualPath))
-						{
-							returnList.Add(_functionCache[virtualPath]);
-						}
-
+                        returnList.Add(new NotLoadedFileBasedFunction(_name, ns, name, virtualPath, ex));
 						continue;
 					}
+
+                    if(!BaseType.IsInstanceOfType(obj))
+                    {
+                        continue;
+                    }
 
 					var parameters = GetParameters(obj);
 					var returnType = GetReturnType(obj);
@@ -75,8 +74,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                     var function = (FileBasedFunction<FunctionType>)typeof(FunctionType)
                         .GetConstructors().First()
                         .Invoke(new object[] { ns, name, description, parameters, returnType, virtualPath, this });
-
-					_functionCache[virtualPath] = function;
 
 					returnList.Add(function);
 				}
@@ -135,7 +132,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 			var dict = new Dictionary<string, FunctionParameterHolder>();
 
 			var type = obj.GetType();
-			while (type != BaseType)
+            while (type != BaseType && type != null)
 			{
 				var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.DeclaredOnly);
 				foreach (var prop in properties)
