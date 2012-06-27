@@ -25,7 +25,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private static readonly string Marker_Codebehind = "%Codebehind%";
         
 
-        private static readonly string NewMasterPage_Markup = 
+        private static readonly string NewMasterPage_Markup =
 @"<%@ Master Language=""C#"" AutoEventWireup=""true"" CodeFile=""%Codebehind%"" Inherits=""page_template"" %>
 <!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
 
@@ -34,13 +34,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     <title><c1:Title id=""title"" runat=""server""/></title>
 </head>
 <body>
-	<div id=""content"">
-  	  <c1:Placeholder  Content=""<%# Content %>"" runat=""server"" />
-	</div>	
+        <h1> Master page </h1>
+        <h2>Content Placeholder</h2>
+        <div>
+            
+            <c1:Placeholder  Content=""<%# Content %>"" runat=""server"" />
 
-	<div id=""bottom"">
-   	     <c1:Placeholder Content=""<%# Bottom %>"" runat=""server"" />
-	</div>	
+        </div>
+        <h2>Bottom Placeholder</h2>
+        <div>
+            
+            <c1:Placeholder Content=""<%# Bottom %>"" runat=""server"" />
+
+        </div>
+
 </body>
 </html>".Replace("    ", "\t");
 

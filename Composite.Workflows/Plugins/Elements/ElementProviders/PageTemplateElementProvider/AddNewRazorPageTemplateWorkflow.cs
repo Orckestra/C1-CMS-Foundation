@@ -19,6 +19,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewRazorPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        private static readonly string Marker_TemplateId = "%TemplateId%";
+        private static readonly string Marker_TemplateTitle = "%TemplateTitle%";
+
         private static readonly string DefaultRazorTemplateMarkup = 
 @"@inherits RazorPageTemplate
               
@@ -97,21 +100,24 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             Guid newTemplateId = Guid.NewGuid();
             string newTitle = this.GetBinding<string>("Title");
 
-            string newPageTemplateMarkup;
+            string newPageTemplateMarkup, folderPath;
 
             Guid copyOfId = this.GetBinding<Guid>("CopyOfId");
             if (copyOfId == Guid.Empty)
             {
-                newPageTemplateMarkup = DefaultRazorTemplateMarkup
-                    .Replace("%TemplateId%", newTemplateId.ToString())
-                    .Replace("%TemplateTitle%", newTitle);
+                newPageTemplateMarkup = DefaultRazorTemplateMarkup;
+                folderPath = GetRazorTemplatesRootFolder();
             }
             else
             {
-                newPageTemplateMarkup = ProcessExistingTemplate(copyOfId, newTemplateId, newTitle);
+                ParseExistingTemplateForCopying(copyOfId, out newPageTemplateMarkup, out folderPath);
             }
 
-            string folderPath = GetRazorTemplatesRootFolder();
+            newPageTemplateMarkup = newPageTemplateMarkup
+                    .Replace(Marker_TemplateId, newTemplateId.ToString())
+                    .Replace(Marker_TemplateTitle, CSharpEncodeString(newTitle));
+
+            
             string filePath = GeneratedCshtmlFileName(folderPath, newTitle, newTemplateId);
 
             C1File.WriteAllText(filePath, newPageTemplateMarkup);
@@ -156,7 +162,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             throw new InvalidOperationException("Failed to get instance of " + typeof(RazorPageTemplateProvider));
         }
 
-        private string ProcessExistingTemplate(Guid templateId, Guid newTemplateId, string newTitle)
+        private void ParseExistingTemplateForCopying(Guid templateId, out string codeTemplate, out string folderPath)
         {
             var razorTemplate = PageTemplateFacade.GetPageTemplate(templateId) as RazorPageTemplateDescriptor;
             Verify.IsNotNull(razorTemplate, "Failed to get razor template descriptor by id '{0}'", templateId);
@@ -167,17 +173,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             string fullPath = PathUtil.Resolve(razorTemplate.VirtualPath);
             string text = C1File.ReadAllText(fullPath);
 
+            
+
             const string quote = @"""";
 
             Verify.That(text.IndexOf(templateId.ToString(), StringComparison.OrdinalIgnoreCase) > 0, 
                 "Failed to replace existing templateId '{0}'", templateId);
 
-            text = ReplaceString(text, templateId.ToString(), newTemplateId.ToString(), StringComparison.OrdinalIgnoreCase);
+            text = ReplaceString(text, templateId.ToString(), Marker_TemplateId, StringComparison.OrdinalIgnoreCase);
 
             // Replacing title
-            text = text.Replace(quote + razorTemplate.Title + quote, quote + newTitle + quote);
+            text = text.Replace("@" + quote + razorTemplate.Title.Replace(quote, quote + quote) + quote,
+                                quote + Marker_TemplateTitle + quote)
+                       .Replace(quote + CSharpEncodeString(razorTemplate.Title) + quote,
+                                quote + Marker_TemplateTitle + quote);
 
-            return text;
+            codeTemplate = text;
+            folderPath = Path.GetDirectoryName(fullPath);
         }
 
 
@@ -194,8 +206,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void ValidateFilePath(object sender, ConditionalEventArgs e)
         {
-            // TODO: check for forbidden characters
-
             e.Result = true;
         }
 
@@ -218,6 +228,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             sb.Append(str.Substring(previousIndex));
 
             return sb.ToString();
+        }
+
+        private static string CSharpEncodeString(string text)
+        {
+            return text.Replace("\\", "\\\\").Replace("\"", "\\\"");
         }
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
