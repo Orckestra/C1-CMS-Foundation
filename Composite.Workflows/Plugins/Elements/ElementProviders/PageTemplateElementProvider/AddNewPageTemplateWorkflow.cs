@@ -130,7 +130,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
             pageTemplateFile.FolderPath = "/";
-            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title, true) ?? newPageTemplate.Id.ToString());
+            pageTemplateFile.FileName = GetTemplateFileName(newPageTemplate);
 
             if (!DataFacade.ValidatePath<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider"))
             {
@@ -142,6 +142,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             e.Result = true;
         }
 
+
+        private string GetTemplateFileName(IXmlPageTemplate xmlTemplateFile)
+        {
+            string name = PathUtil.CleanFileName(xmlTemplateFile.Title, true) ?? xmlTemplateFile.Id.ToString();
+            return name + ".xml";
+        }
 
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)

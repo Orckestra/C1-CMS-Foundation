@@ -74,7 +74,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             }
 
             // Renaming related file if necessary
-            string fileName = pageTemplate.Title + ".xml";
+            string fileName = GetTemplateFileName(pageTemplate);
             if (Path.GetFileName(pageTemplate.PageTemplateFilePath) != fileName)
             {
                 IPageTemplateFile file = IFileServices.GetFile<IPageTemplateFile>(pageTemplate.PageTemplateFilePath);
@@ -108,6 +108,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             updateTreeRefresher.PostRefreshMesseges(pageTemplate.GetDataEntityToken());
 
             SetSaveStatus(true);
+        }
+
+        private string GetTemplateFileName(IXmlPageTemplate xmlTemplateFile)
+        {
+            string name = PathUtil.CleanFileName(xmlTemplateFile.Title, true) ?? xmlTemplateFile.Id.ToString();
+            return name + ".xml";
         }
 
         private static string GetString(string key)
