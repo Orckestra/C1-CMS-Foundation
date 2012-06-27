@@ -56,7 +56,11 @@
   <string key="RazorPageTemplateProvider.AddTemplateToolTip" value="Add new Razor based page template" />
 
   <string key="AddNewRazorPageTemplateWorkflow.LabelDialog" value="Add New Razor Template" />
-  
+
+  <string key="MasterPagePageTemplateProvider.AddTemplate" value="Add New Master Page Template" />
+  <string key="MasterPagePageTemplateProvider.AddTemplateToolTip" value="Add new master page based page template" />
+
+  <string key="AddNewMasterPagePageTemplateWorkflow.LabelDialog" value="Add New Master Page" />
 
   <string key="EditRazorFileAction.Label" value="Edit Razor File" />
   <string key="EditRazorFileAction.ToolTip" value="Edit the cshtml file" />

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Title" type="System.String" />
+    <cms:binding name="CopyOfOptions" type="System.Object" />
+    <cms:binding name="CopyOfId" type="System.Guid" />
+  </cms:bindings>
+  <cms:layout iconhandle="generic-add" label="${Composite.Plugins.PageTemplateElementProvider, AddNewMasterPagePageTemplateWorkflow.LabelDialog}">
+    <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelTemplateTitle}" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelTemplateTitleHelp}">
+        <TextBox.Text>
+          <cms:bind source="Title" />
+        </TextBox.Text>
+      </TextBox>
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelCopyFromHelp}" Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelCopyFrom}">
+        <KeySelector.Selected>
+          <cms:bind source="CopyOfId" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="CopyOfOptions" />
+        </KeySelector.Options>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>
