@@ -131,6 +131,7 @@
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.html" />
     <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
     <Content Include="Composite\content\forms\Administrative\AddNewRazorPageTemplate.xml" />
+    <Content Include="Composite\content\forms\Administrative\AddNewMasterPagePageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMasterPage.xml" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
@@ -875,6 +876,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\localization\Composite.Web.UrlConfiguration.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Plugins.RazorFunction.en-us.xml" />
     <Content Include="Composite\scripts\source\folder-info-readme.txt" />
     <Content Include="Composite\scripts\source\page\data\DataManager.js" />
     <Content Include="Composite\scripts\source\page\document\DocumentCrawler.js" />

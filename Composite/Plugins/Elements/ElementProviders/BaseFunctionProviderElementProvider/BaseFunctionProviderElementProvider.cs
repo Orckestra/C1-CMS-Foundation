@@ -8,8 +8,7 @@ using Composite.Functions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
-using Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider;
-
+using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider
 {
@@ -40,10 +39,10 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         protected abstract IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken);
 
         /// <exclude />
-        protected virtual string RootFolderLabel { get { return StringResourceSystemFacade.GetString("Composite.Management", "BaseFunctionProviderElementProvider.RootFunctionInfos"); } }
+        protected abstract string RootFolderLabel { get; }
 
         /// <exclude />
-        protected virtual string RootFolderToolTip { get { return StringResourceSystemFacade.GetString("Composite.Management", "BaseFunctionProviderElementProvider.RootFunctionInfosToolTip"); } }
+        protected abstract string RootFolderToolTip { get; }
 
         /// <exclude />
         protected virtual ResourceHandle FolderIcon { get { return CommonElementIcons.Folder; } }
