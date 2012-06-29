@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Data.Caching;
-using Composite.Core.Logging;
 using Composite.Core.ResourceSystem.Foundation;
 using Composite.Core.ResourceSystem.Foundation.PluginFacades;
 using Composite.Core.Types;
@@ -19,18 +20,19 @@ namespace Composite.Core.ResourceSystem
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public static class StringResourceSystemFacade
-	{
+    {
+        private static readonly string LogTitle = typeof (StringResourceSystemFacade).Name;
         private static Regex _regex = new Regex(@"\$\{(?<id>.+?)\}", RegexOptions.Compiled);
 
         private static readonly int ResourceCacheSize = 5000;
-        private static Cache<string, ExtendedNullable<string>> _resourceCache = new Cache<string, ExtendedNullable<string>>("Resource strings", ResourceCacheSize);
+        private static readonly Cache<string, ExtendedNullable<string>> _resourceCache = new Cache<string, ExtendedNullable<string>>("Resource strings", ResourceCacheSize);
 
+        private static readonly string Error_SectionNotDefined =  "*** SECTION NOT FOUND ***";
+        private static readonly string Error_StringNotDefined = "*** STRING NOT FOUND ***";
 
         /// <exclude />
         public static void Initialize()
         {
-            // touch the plug-in facade
-            var temp = ResourceProviderRegistry.StringResourceProviderNames;
         }
 
 
@@ -44,17 +46,14 @@ namespace Composite.Core.ResourceSystem
 
 
         /// <exclude />
-        public static string GetString(string providerName, string stringName, bool throwOnError = true)
+        public static string GetString(string section, string stringName, bool throwOnError)
         {
-            if (throwOnError == true)
-            {
-                Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
-                Verify.ArgumentNotNullOrEmpty(stringName, "stringName");
-            }
+            Verify.ArgumentNotNullOrEmpty(section, "section");
+            Verify.ArgumentNotNullOrEmpty(stringName, "stringName");
 
-            var culture = Thread.CurrentThread.CurrentUICulture; 
+            var culture = Thread.CurrentThread.CurrentUICulture;
 
-            string cacheKey = culture.Name + providerName + stringName;
+            string cacheKey = culture.Name + section + stringName;
             ExtendedNullable<string> cachedValue = _resourceCache.Get(cacheKey);
             if (cachedValue != null)
             {
@@ -63,26 +62,34 @@ namespace Composite.Core.ResourceSystem
 
             if (throwOnError == true)
             {
-                Verify.ArgumentCondition(!providerName.Contains(','), "providerName", "providerName may not contain ',' symbol");
+                Verify.ArgumentCondition(!section.Contains(','), "section", "providerName may not contain ',' symbol");
                 Verify.ArgumentCondition(!stringName.Contains(','), "stringName", "stringName may not contain ',' symbol");
             }
 
-            if (ResourceProviderRegistry.StringResourceProviderNames.Contains(providerName) == true)
-            {
-                string result = ResourceProviderPluginFacade.GetStringValue(providerName, stringName, culture);
-                _resourceCache.Add(cacheKey, new ExtendedNullable<string> {Value = result});
 
+            string result = ResourceProviderPluginFacade.GetStringValue(section, stringName, culture);
+            if(result != null)
+            {
+                _resourceCache.Add(cacheKey, new ExtendedNullable<string> {Value = result});
                 return result;
             }
 
-            if (throwOnError == true)
+            if (!throwOnError)
             {
-                Log.LogCritical("StringResourceSystemFacade", string.Format("String resource provider named '{0}' not found", providerName));
-
-                return "*** PROVIDER NOT FOUND ***";
+                return null;
             }
-            
-            return null;
+
+            if (!ResourceProviderPluginFacade.LocalizationSectionDefined(section))
+            {
+                Log.LogCritical(LogTitle, "Localization section not defined '{0}:{1}'".FormatWith(section));
+
+                return Error_SectionNotDefined;
+            }
+
+
+            Log.LogWarning(LogTitle, "Localization string not defined '{0}:{1}'".FormatWith(section, stringName));
+
+            return Error_StringNotDefined;
         }
 
 
@@ -92,39 +99,37 @@ namespace Composite.Core.ResourceSystem
         {
             resultString = GetString(providerName, stringName, false);
 
-            // TODO: refactor, so we don't have starts hardcoded
-            return resultString != null && !(resultString.StartsWith("*** ") && resultString.EndsWith(" ***"));
+            return resultString != null && (resultString != Error_SectionNotDefined) && (resultString != Error_StringNotDefined);
         }
-
 
 
         /// <exclude />
         public static List<KeyValuePair> GetLocalization(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
-            if (providerName.Contains(',') == true) throw new ArgumentException("providerName may not contain ','");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
+            Verify.ArgumentCondition(!providerName.Contains(','),  "providerName", "providerName may not contain ','");
 
             if (providerName == "XmlStringResourceProvider")
             {
                 providerName = "Composite.Management";
             }
 
-            if (ResourceProviderRegistry.StringResourceProviderNames.Contains(providerName))
-            {
-                IDictionary<string, string> translations = ResourceProviderPluginFacade.GetAllStrings(providerName);
-                List<KeyValuePair> result = new List<KeyValuePair>();
-                foreach (KeyValuePair<string, string> pair in translations)
-                {
-                    result.Add(new KeyValuePair(pair.Key, pair.Value));
-                }
+            IDictionary<string, string> translations = ResourceProviderPluginFacade.GetAllStrings(providerName);
 
-                return result;
-            }
-            else
+
+            if(translations == null)
             {
-                Core.Logging.LoggingService.LogCritical("Missing provider", string.Format("Provider not found: '{0}'", providerName));
+                Log.LogCritical(LogTitle, "Missing localization section: '{0}'".FormatWith(providerName));
                 return new List<KeyValuePair>();
             }
+
+            List<KeyValuePair> result = new List<KeyValuePair>();
+            foreach (KeyValuePair<string, string> pair in translations)
+            {
+                result.Add(new KeyValuePair(pair.Key, pair.Value));
+            }
+
+            return result;
         }
 
 

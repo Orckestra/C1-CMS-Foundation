@@ -128,5 +128,6 @@ Changes in 3.2
 - SaveButton.ascx got new base class
 - DateSelector and DateTimeSelector changed to have the same ascx control and additional configuration attribute "showHours"
 
-Changes since 3.2
+Changes in 4.0
 - Added section for page template providers Composite.Core.PageTemplates.Plugins.PageTemplateProviderConfiguration
+- ResourceProviderConfiguration section changed - usage of multiple XmlStringResourceProvider-s replaced with single definition of an XmlLocalizationProvider

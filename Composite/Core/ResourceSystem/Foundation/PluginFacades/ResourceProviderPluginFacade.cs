@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider.Runtime;
 
@@ -47,22 +48,44 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         }
         #endregion
 
+        #region ILocalizationProvider methods
 
-
-        #region IStringResourceProvider methods
-        public static string GetStringValue(string providerName, string stringId)
+        private static IEnumerable<ILocalizationProvider> GetLocalizationProviders()
         {
-            return GetStringValue(providerName, stringId, Thread.CurrentThread.CurrentUICulture);
+            foreach (string localizationProviderName in ResourceProviderRegistry.LocalizationProviderNames)
+            {
+                yield return GetResourceProvider<ILocalizationProvider>(localizationProviderName);
+            }
         }
 
-        public static string GetStringValue(string providerName, string stringId, CultureInfo cultureInfo)
+        public static bool LocalizationSectionDefined(string section)
         {
-            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
+            return GetLocalizationProviders().Any(p => p.GetSections().Contains(section));
+        }
+
+
+        
+        public static string GetStringValue(string section, string stringId)
+        {
+            return GetStringValue(section, stringId, Thread.CurrentThread.CurrentUICulture);
+        }
+
+
+        public static string GetStringValue(string section, string stringId, CultureInfo cultureInfo)
+        {
+            Verify.ArgumentNotNullOrEmpty(section, "section");
             Verify.ArgumentNotNullOrEmpty(stringId, "stringId");
 
-            var provider = GetResourceProvider<IStringResourceProvider>(providerName);
+            foreach(var provider in GetLocalizationProviders())
+            {
+                var result = provider.GetString(section, stringId, cultureInfo);
+                if(result != null)
+                {
+                    return result;
+                }
+            }
 
-            return provider.GetStringValue(stringId, cultureInfo);
+            return null;
         }
 
 
@@ -71,9 +94,9 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         {
             List<CultureInfo> cultures = new List<CultureInfo>();
 
-            foreach (string providerName in ResourceProviderRegistry.StringResourceProviderNames)
+            foreach (string providerName in ResourceProviderRegistry.LocalizationProviderNames)
             {
-                IStringResourceProvider provider = GetResourceProvider<IStringResourceProvider>(providerName);
+                ILocalizationProvider provider = GetResourceProvider<ILocalizationProvider>(providerName);
 
                 cultures.AddRange(provider.GetSupportedCultures());
             }
@@ -83,13 +106,19 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
 
 
 
-        public static IDictionary<string, string> GetAllStrings(string providerName)
+        public static IDictionary<string, string> GetAllStrings(string section)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(section, "section");
 
-            IStringResourceProvider provider = GetResourceProvider<IStringResourceProvider>(providerName);
+            var currentCulture = Thread.CurrentThread.CurrentUICulture;
 
-            return provider.GetAllStrings(Thread.CurrentThread.CurrentUICulture);
+            foreach (var localizationProvider in GetLocalizationProviders())
+            {
+                var result = localizationProvider.GetAllStrings(section, currentCulture);
+                if (result != null) return result;
+            }
+
+            return null;
         }
         #endregion
 
@@ -107,11 +136,10 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         private static T GetResourceProvider<T>(string providerName)
             where T : class, IResourceProvider
         {
-            T provider;
+            T provider = GetResourceProvider(providerName) as T;
 
-            provider = GetResourceProvider(providerName) as T;
-
-            if (provider == null) throw new ArgumentException(string.Format("The Resource Provider identified by the specified provider name ('{0}') does not implement the interface {1}", providerName, typeof(T)));
+            Verify.IsNotNull(provider, "The Resource Provider identified by the specified provider name ('{0}') does not implement the interface {1}"
+                                       .FormatWith(providerName, typeof(T)));
 
             return provider;
         }
