@@ -26,32 +26,48 @@ namespace Composite.C1Console.Security
 
 
     /// <summary>
+    /// EntityToken is used through out Composite C1 to describe artifacts that can have security settings. Also see <see cref="Composite.Data.DataEntityToken"/>.
+    /// </summary>
+    /// <remarks>
     /// When subclassing this class and adding properties that have an impack when identity (equiallity)
     /// of the subclass, remember to overload Equal and GetHashCode!
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    /// </remarks>
     [DebuggerDisplay("Type = {Type}, Source = {Source}, Id = {Id}")]
     [SerializerHandler(typeof(EntityTokenSerializerHandler))]
     public abstract class EntityToken
     {
         private bool _entityTokenUniquenessValidated;
 
-        /// <exclude />
+        /// <summary>
+        /// A string that forms one third of the unique key for the entity being represented. Being the 'type' part of the globally unique key 'type/source/id', 
+        /// this value should be unique for your code and not clash with 'type' strings used in other code modules.
+        /// </summary>
         public abstract string Type { get; }
 
-        /// <exclude />
+        /// <summary>
+        /// A string that forms one third of the unique key for the entity being represented. Being the 'source' part of the globally unique key 'type/source/id', 
+        /// this value should be unique the source (like a file name or sql connection) when whence the entity come. This field is only important if enteties of 
+        /// this type can come from different sources.
+        /// </summary>
         public abstract string Source { get; }
 
-        /// <exclude />
+        /// <summary>
+        /// A string that forms one third of the unique key for the entity being represented. Being the 'id' part of the globally unique key 'type/source/id', 
+        /// this value should identify a specific entity of the given 'type' from the given 'source'.
         public abstract string Id { get; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The state of the EntityToken
+        /// </summary>
+        /// <returns>The state of the EntityToken.</returns>
         public virtual bool IsValid() { return true; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Serialize the EntityToken
+        /// </summary>
+        /// <returns>a string representation of the entity token</returns>
         public abstract string Serialize();
 
 

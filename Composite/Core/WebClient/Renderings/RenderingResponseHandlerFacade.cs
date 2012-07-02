@@ -4,7 +4,7 @@
 namespace Composite.Core.WebClient.Renderings
 {
     /// <summary>
-    /// Pass information about a request through all <see cref="Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler.RenderingResponseHandler"/> 
+    /// Pass information about a request through all <see cref="Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler.IDataRenderingResponseHandler"/> 
     /// plugins registered on the Composite C1 site. Use this if you are handling raw page / media http requests yourself.
     /// 
     /// </summary>
@@ -17,7 +17,7 @@ namespace Composite.Core.WebClient.Renderings
 
 
         /// <summary>
-        /// Pass information about a request through all <see cref="Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler.RenderingResponseHandler"/> 
+        /// Pass information about a request through all <see cref="Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler.IDataRenderingResponseHandler"/> 
         /// plugins registered on the Composite C1 site. The resulting <see cref="RenderingResponseHandlerResult"/> define how you should treat the request.
         /// </summary>
         /// <param name="requestedItemEntityToken">The data being rendered. This can be <see cref="Composite.Data.Types.IPage"/> and <see cref="Composite.Data.Types.IMediaFile"/>.</param>
