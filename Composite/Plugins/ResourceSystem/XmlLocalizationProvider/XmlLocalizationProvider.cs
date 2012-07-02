@@ -29,12 +29,18 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
 
         private readonly C1FileSystemWatcher _watcher;
 
-        public XmlLocalizationProvider(string directory, CultureInfo defaultCulture)
+        public XmlLocalizationProvider(string directoryVirtualPath, CultureInfo defaultCulture)
         {
             _defaultCulture = defaultCulture;
-            _directory = directory;
+            _directory = PathUtil.Resolve(directoryVirtualPath);
 
-            _watcher = new C1FileSystemWatcher(directory, "*.xml");
+            if(!C1Directory.Exists(_directory))
+            {
+                Log.LogVerbose(LogTitle, "Directory '{0}' does not exist", directoryVirtualPath);
+                return;
+            }
+
+            _watcher = new C1FileSystemWatcher(_directory, "*.xml");
 
             _watcher.Created += (sender, args) => Reset();
             _watcher.Changed += (sender, args) => Reset();
@@ -72,7 +78,7 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
             }
 
             // If not found - searching in default culture
-            if(!cultureInfo.Equals(_defaultCulture))
+            if(!cultureInfo.Equals(_defaultCulture) && filesByCulture.ContainsKey(_defaultCulture))
             {
                 var strings = filesByCulture[_defaultCulture].GetStrings();
 
@@ -128,40 +134,44 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
 
         private State Initialize()
         {
-            // File names have format <section name>.<culture name>.xml
             var sections = new Dictionary<string, Dictionary<CultureInfo, LocalizationFile>>();
 
-            foreach (string xmlFile in C1Directory.GetFiles(_directory, "*.xml"))
+            if (C1Directory.Exists(_directory))
             {
-                string fileName = Path.GetFileName(xmlFile);
-
-                fileName = fileName.Substring(0, fileName.Length - 4); // removing ".xml";
-
-                if (!fileName.Contains(".")) continue;
-
-                string cultureName = fileName.Substring(fileName.LastIndexOf(".", StringComparison.Ordinal) + 1);
-
-                CultureInfo cultureInfo;
-                try
+                foreach (string xmlFile in C1Directory.GetFiles(_directory, "*.xml", SearchOption.AllDirectories))
                 {
-                    cultureInfo = CultureInfo.GetCultureInfo(cultureName);
-                }
-                catch (CultureNotFoundException)
-                {
-                    Log.LogInformation(LogTitle, "Skipping file '{0}' as '{1}' is not a valid culture name",
-                                                 Path.GetFileName(xmlFile), cultureName);
-                    continue;
-                }
+                    // File names have format <section name>.<culture name>.xml
 
-                string sectionName = fileName.Substring(0, fileName.Length - cultureName.Length - 1);
+                    string fileName = Path.GetFileName(xmlFile);
 
-                if (!sections.ContainsKey(sectionName))
-                {
-                    sections.Add(sectionName, new Dictionary<CultureInfo, LocalizationFile>());
+                    fileName = fileName.Substring(0, fileName.Length - 4); // removing ".xml";
+
+                    if (!fileName.Contains(".")) continue;
+
+                    string cultureName = fileName.Substring(fileName.LastIndexOf(".", StringComparison.Ordinal) + 1);
+
+                    CultureInfo cultureInfo;
+                    try
+                    {
+                        cultureInfo = CultureInfo.GetCultureInfo(cultureName);
+                    }
+                    catch (CultureNotFoundException)
+                    {
+                        Log.LogInformation(LogTitle, "Skipping file '{0}' as '{1}' is not a valid culture name",
+                                           Path.GetFileName(xmlFile), cultureName);
+                        continue;
+                    }
+
+                    string sectionName = fileName.Substring(0, fileName.Length - cultureName.Length - 1);
+
+                    if (!sections.ContainsKey(sectionName))
+                    {
+                        sections.Add(sectionName, new Dictionary<CultureInfo, LocalizationFile>());
+                    }
+
+                    var localizationFile = new LocalizationFile(xmlFile);
+                    sections[sectionName].Add(cultureInfo, localizationFile);
                 }
-
-                var localizationFile = new LocalizationFile(xmlFile);
-                sections[sectionName].Add(cultureInfo, localizationFile);
             }
 
             return new State { Sections = sections };
@@ -286,11 +296,9 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
                 var data = (XmlLocalizationProviderData)objectConfiguration;
 
                 var defaultCulture = CultureInfo.GetCultureInfo(data.DefaultCultureName);
-                string directory = PathUtil.Resolve(data.Directory);
+                string directoryVirtualPath = data.Directory;
 
-                Verify.That(C1Directory.Exists(directory), "Directory '{0}' does not exist", directory);
-
-                return new XmlLocalizationProvider(directory, defaultCulture);
+                return new XmlLocalizationProvider(directoryVirtualPath, defaultCulture);
             }
         }
 
