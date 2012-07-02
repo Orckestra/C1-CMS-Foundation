@@ -15,6 +15,7 @@ namespace Composite.Data
     /// Represents a reference to a Composite C1 IData item. Unlike <see cref="DataReference{T}"/> this class signals
     /// that a data reference need not be set for this to be in a valid state.
     /// </summary>
+    /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
     [DataReferenceConverter()]
     public class NullableDataReference<T> : DataReference<T> where T : class, IData
     {
@@ -37,6 +38,7 @@ namespace Composite.Data
     /// <summary>
     /// Represents a reference to a Composite C1 IData item. 
     /// </summary>
+    /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
     [DataReferenceConverter()]
     public class DataReference<T> : IDataReference where T : class, IData
     {
@@ -164,8 +166,9 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// A linq predicate that select the data item being referenced.
+        /// A linq predicate that select the data item being referenced. You can use this when filtering data on the <see cref="DataConnection"/>.
         /// </summary>
+        /// <returns>Predicate for referenced data.</returns>
         public Expression<Func<T, bool>> GetPredicateExpression()
         {
             if (this.IsSet == false)

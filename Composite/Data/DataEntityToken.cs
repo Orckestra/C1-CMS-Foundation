@@ -8,7 +8,8 @@ using Composite.Core.Types;
 namespace Composite.Data
 {
     /// <summary>
-    /// Identify a data item based entity in Composite C1. 
+    /// EntityToken that represents a C1 Data item. EntityToken is used through out Composite C1 to describe artifacts that can have security settings and be navigated and this class make it easy
+    /// to move between data items and EntityToken.
     /// </summary>
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
     public sealed class DataEntityToken : EntityToken

@@ -6,7 +6,7 @@ namespace Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler
     /// <summary>
     /// Composite C1 allow you to build a RenderingResponseHandler plug-in. It enables developers to intercept 
     /// page and media requests and control if the request should be accepted or redirected and if the rendered 
-    /// page is allowed to be publicly cached.
+    /// resource is allowed to be publicly cached.
     /// </summary>
     /// <remarks>
     /// To create a RenderingResponseHandler plug-in:
@@ -61,9 +61,8 @@ namespace Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler
     /// <example>
     /// Sample plugin:
     /// <code>
-    /// using System;
-    /// 
-    /// using Composite.Data;
+    ///using System;
+    ///using Composite.Data;
     ///using Composite.Data.Types;
     ///using Composite.Core.Logging;
     ///using Composite.Core.WebClient.Renderings;
