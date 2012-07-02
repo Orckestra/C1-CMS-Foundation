@@ -45,7 +45,9 @@ namespace Composite.Data
         private object _keyValue;
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a 'empty' DataReference.
+        /// </summary>
         public DataReference()
         {
             _keyValue = null;
