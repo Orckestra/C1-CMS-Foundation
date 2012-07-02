@@ -49,24 +49,38 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
 
             var result = FunctionFacade.Execute<object>(function, parseParameters(), new FunctionContextContainer());
 
-            if (function.ReturnType == typeof(XElement) || function.ReturnType == typeof(XhtmlDocument))
+            if (result != null)
             {
-                var element = ValueTypeConverter.Convert<XElement>(result);
-                var markup = new Markup(element);
+                if (function.ReturnType == typeof (XElement) || function.ReturnType == typeof (XhtmlDocument))
+                {
+                    var element = ValueTypeConverter.Convert<XElement>(result);
+                    var markup = new Markup(element);
 
-                Controls.Add(markup);
-            }
-            else if (typeof(Control).IsAssignableFrom(function.ReturnType))
-            {
-                var control = (Control)result;
+                    Controls.Add(markup);
+                }
+                else if (typeof (Control).IsAssignableFrom(function.ReturnType))
+                {
+                    var control = (Control) result;
 
-                Controls.Add(control);
-            }
-            else
-            {
-                var str = result.ToString();
+                    Controls.Add(control);
+                }
+                else if (result is IEnumerable<XNode>)
+                {
+                    var nodes = result as IEnumerable<XNode>;
 
-                Controls.Add(new LiteralControl(str));
+                    foreach (XNode node in nodes)
+                    {
+                        if (node == null) continue;
+
+                        Controls.Add(new LiteralControl(node.ToString()));
+                    }
+                }
+                else 
+                {
+                    var str = result.ToString();
+
+                    Controls.Add(new LiteralControl(str));
+                }
             }
 
             base.OnInit(e);
