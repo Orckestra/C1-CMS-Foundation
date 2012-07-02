@@ -6,10 +6,10 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Core.WebClient.Renderings.Plugins.RenderingResponseHandler
 {
-    /// <summary>    
+    /// <summary>
+    /// Configuration object with no custom config settings. When developing your own <see cref="IRenderingResponseHandler"/> 
+    /// plugin you can use this if you do not require any special configuration in the Composite.config file.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Assembler(typeof(NonConfigurableRenderingResponseHandlerAssembler))]
     public sealed class NonConfigurableRenderingResponseHandler : RenderingResponseHandlerData
     {

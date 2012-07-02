@@ -7,10 +7,9 @@ using Composite.Core.Types;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Identify a data item based entity in Composite C1. 
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(DataSecurityAncestorProvider))]
     public sealed class DataEntityToken : EntityToken
     {
@@ -112,7 +111,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The <see cref="Composite.Data.DataSourceId"/> for the data object. 
+        /// </summary>
         public DataSourceId DataSourceId
         {
             get
@@ -144,7 +145,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Retrieve the data object. Cast this to the expected IData interface to access the data fields.
+        /// </summary>
         public IData Data
         {
             get

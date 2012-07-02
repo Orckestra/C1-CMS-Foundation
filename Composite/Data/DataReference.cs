@@ -11,10 +11,10 @@ using System.Linq.Expressions;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Represents a reference to a Composite C1 IData item. Unlike <see cref="DataReference{T}"/> this class signals
+    /// that a data reference need not be set for this to be in a valid state.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DataReferenceConverter()]
     public class NullableDataReference<T> : DataReference<T> where T : class, IData
     {
@@ -34,10 +34,9 @@ namespace Composite.Data
 
 
 
-    /// <summary>    
+    /// <summary>
+    /// Represents a reference to a Composite C1 IData item. 
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DataReferenceConverter()]
     public class DataReference<T> : IDataReference where T : class, IData
     {
@@ -52,7 +51,10 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a DataReference using a key value.
+        /// </summary>
+        /// <param name="keyValue">The key value, like the Guid for a page's Id.</param>
         public DataReference(object keyValue)
         {
             if (keyValue != null)
@@ -74,7 +76,10 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a DataReference using an instance of the data item.
+        /// </summary>
+        /// <param name="keyValue">The data item to reference.</param>
         public DataReference(T data)
         {
             if (data == null)
@@ -88,7 +93,9 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The type of the data item. This type inherits from IData.
+        /// </summary>
         public Type ReferencedType
         {
             get
@@ -98,7 +105,9 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// If the reference has not been set this is false.
+        /// </summary>
         public bool IsSet
         {
             get 
@@ -111,7 +120,9 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The key value of the data item being referenced, like the Guid for a page id.
+        /// </summary>
         public object KeyValue
         {
             get
@@ -121,7 +132,9 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data item being referenced.
+        /// </summary>
         IData IDataReference.Data
         {
             get
@@ -131,7 +144,9 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data item being referenced.
+        /// </summary>
         public T Data
         {
             get
@@ -148,7 +163,9 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// A linq predicate that select the data item being referenced.
+        /// </summary>
         public Expression<Func<T, bool>> GetPredicateExpression()
         {
             if (this.IsSet == false)

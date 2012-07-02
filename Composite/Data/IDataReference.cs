@@ -5,22 +5,29 @@ using System.Text;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Represents a reference to a Composite C1 IData item. See <see cref="DataReference{T}"/>.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	public interface IDataReference
+    public interface IDataReference
 	{
-        /// <exclude />
+        /// <summary>
+        /// The type of the data item. This type inherits from IData.
+        /// </summary>
         Type ReferencedType { get; }
 
-        /// <exclude />
+        /// <summary>
+        /// If the reference has not been set this is false.
+        /// </summary>
         bool IsSet { get; }
 
-        /// <exclude />
+        /// <summary>
+        /// The key value of the data item being referenced, like the Guid for a page id.
+        /// </summary>
         object KeyValue { get; }
 
-        /// <exclude />
+        /// <summary>
+        /// The data item being referenced.
+        /// </summary>
         IData Data { get; }
 
         /// <exclude />
