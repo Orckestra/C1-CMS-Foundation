@@ -63,7 +63,7 @@
             {
                 if(!HttpRuntime.UsingIntegratedPipeline)
                 {
-                    Response.Write("Home page is mapped to '/' path, for this to work IIS 7.x integrated pipeline mode should be enabled. <br/>");
+                    Response.Write("Home page is mapped to '/' path, for this to work IIS 7.x integrated pipeline mode should be enabled. You can also edit the home page, give it a 'URL Title' on the settings tab and save and publish. <br/>");
                 }
                 else
                 {
