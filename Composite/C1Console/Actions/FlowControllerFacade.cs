@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Runtime;
 using Composite.C1Console.Actions.Foundation;
+using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.Configuration;
@@ -20,6 +22,7 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class FlowControllerFacade
     {
+        private static readonly string LogTitle = typeof (FlowControllerFacade).Name;
         private static TimeSpan? _timeout = null;
         private static bool _initialized = false;
         private static object _lock = new object();
@@ -39,7 +42,7 @@ namespace Composite.C1Console.Actions
                         workflowInstance.Start();
                         WorkflowFacade.RunWorkflow(workflowInstance);
 
-                        LoggingService.LogVerbose("FlowControllerFacade", "Flow scavenger started");
+                        Log.LogVerbose(LogTitle, "Flow scavenger started");
 
                         _initialized = true;
                     }
@@ -165,7 +168,7 @@ namespace Composite.C1Console.Actions
         /// <exclude />
         public static void Scavenge()
         {
-            LoggingService.LogVerbose("FlowControllerFacade", "Starting scavenger run");
+            Log.LogVerbose(LogTitle, "Starting scavenger run");
 
             List<IFlowInformation> flowInformations = DataFacade.GetData<IFlowInformation>().ToList();
 
@@ -175,13 +178,32 @@ namespace Composite.C1Console.Actions
                 TimeSpan timeSpan = DateTime.Now - flowInformation.TimeStamp;
                 if (timeSpan > Timeout)
                 {
-                    FlowToken flowToken = FlowTokenSerializer.Deserialize(flowInformation.SerializedFlowToken);
+                    FlowToken flowToken = null;
+                    string flowTokenStr;
 
-                    LoggingService.LogVerbose("FlowControllerFacade", string.Format("Scavenging flow started by username '{0}', flow = '{1}'", flowInformation.Username, flowToken));
+                    try
+                    {
+                        flowToken = FlowTokenSerializer.Deserialize(flowInformation.SerializedFlowToken);
+
+                        flowTokenStr = flowToken.ToString();
+                    }
+                    catch(Exception)
+                    {
+                        flowTokenStr = flowInformation.SerializedFlowToken ?? string.Empty;
+                        if(flowTokenStr.Length > 200)
+                        {
+                            flowTokenStr = flowTokenStr.Substring(0, 200);
+                        }
+                    }
+
+                    Log.LogVerbose(LogTitle, "Scavenging flow started by username '{0}', flow = '{1}'".FormatWith(flowInformation.Username, flowTokenStr));
 
                     DataFacade.Delete<IFlowInformation>(flowInformation);
 
-                    FlowControllerFacade.CancelFlow(flowToken);
+                    if (flowToken != null)
+                    {
+                        FlowControllerFacade.CancelFlow(flowToken);
+                    }
                 }
             }
         }

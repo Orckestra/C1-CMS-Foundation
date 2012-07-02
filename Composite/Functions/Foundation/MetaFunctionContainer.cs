@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.Logging;
-using Composite.Core.Types;
-using Composite.Functions.Plugins.FunctionProvider;
 using System.Collections;
 
 
@@ -65,7 +63,7 @@ namespace Composite.Functions.Foundation
 
             if (_functionNamesByProviderName.TryGetValue(providerName, out functionNames) == false)
             {
-                throw new ArgumentException(string.Format("Non existing provider named '{0}'", providerName));
+                functionNames = new List<string>();
             }
 
             return functionNames;

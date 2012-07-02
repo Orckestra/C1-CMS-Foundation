@@ -23,7 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     public sealed partial class EditMasterPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static readonly string LogTitle = typeof (EditMasterPageWorkflow).Name;
-        private static readonly string HtmlMimeType = "text/html";
+        // private static readonly string HtmlMimeType = "text/html";
 
         private string[] GetFiles()
         {
