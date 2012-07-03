@@ -222,10 +222,7 @@ namespace Composite.Functions
 
             if(!WidgetFunctionName.IsNullOrEmpty())
             {
-                IWidgetFunction function =  FunctionFacade.GetWidgetFunction(WidgetFunctionName);
-                Verify.IsNotNull(function, "Failed to get widget function '{0}'", WidgetFunctionName);
-
-                return new WidgetFunctionProvider(function);
+                return new WidgetFunctionProvider(WidgetFunctionName);
             }
 
             if(!WidgetFactoryMethod.IsNullOrEmpty())
