@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Threading;
 using Composite.Functions;
@@ -145,11 +146,18 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 					var att = prop.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().FirstOrDefault();
 					WidgetFunctionProvider widgetProvider = null;
 
-					if (att != null && !String.IsNullOrEmpty(att.WidgetMarkup))
+					if (att != null && att.HasWidgetMarkup)
 					{
-						var el = XElement.Parse(att.WidgetMarkup);
-
-						widgetProvider = new WidgetFunctionProvider(el);
+                        try
+                        {
+                            widgetProvider = att.GetWidgetFunctionProvider(type, prop);
+                        }
+						catch(Exception ex)
+					    {
+					        Log.LogWarning(LogTitle, "Failed to get widget function provider for parameter property {0}"
+                                                     .FormatWith(prop.Name));
+					        Log.LogWarning(LogTitle, ex);
+					    }
 					}
 
 					if (!dict.ContainsKey(name))

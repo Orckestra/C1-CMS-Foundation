@@ -138,7 +138,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                     Dictionary<string, object> defaultValues = new Dictionary<string, object>();
                     Dictionary<string, string> labels = new Dictionary<string, string>();
                     Dictionary<string, string> helpTexts = new Dictionary<string, string>();
-                    Dictionary<string, XElement> widgetMarkup = new Dictionary<string, XElement>();
+                    Dictionary<string, WidgetFunctionProvider> widgetProviders = new Dictionary<string, WidgetFunctionProvider>();
                     foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(MethodBasedDefaultValueAttribute), true))
                     {
                         MethodBasedDefaultValueAttribute attribute = (MethodBasedDefaultValueAttribute)obj;
@@ -174,17 +174,17 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         if (attribute.HasHelp && !helpTexts.ContainsKey(attribute.Name))
                             helpTexts.Add(attribute.Name, attribute.Help);
 
-                        if (attribute.HasWidgetMarkup && !widgetMarkup.ContainsKey(attribute.Name))
+                        if (attribute.HasWidgetMarkup && !widgetProviders.ContainsKey(attribute.Name))
                         {
                             try
                             {
-                                XElement widgetMarkupElement = XElement.Parse(attribute.WidgetMarkup);
-                                widgetMarkup.Add(attribute.Name, widgetMarkupElement);
+                                var widgetFunctionProvider = attribute.GetWidgetFunctionProvider(null, null);
+                                widgetProviders.Add(attribute.Name, widgetFunctionProvider);
                             }
                             catch (Exception ex)
                             {
-                                string errText = string.Format("Failed to set Widget Markup for parameter '{0}' on method '{1}'. {2}",
-                                    attribute.Name, this.MethodInfo.Name, ex.Message);
+                                string errText = "Failed to set Widget Markup for parameter '{0}' on method '{1}'. {2}"
+                                                 .FormatWith(attribute.Name, this.MethodInfo.Name, ex.Message);
                                 throw new InvalidOperationException(errText);
                             }
                         }
@@ -218,8 +218,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                         if (helpTexts.ContainsKey(parameterInfo.Name)) parameterHelpText = helpTexts[parameterInfo.Name];
 
                         WidgetFunctionProvider widgetFunctionProvider = 
-                            (widgetMarkup.ContainsKey(parameterInfo.Name) ?
-                                new WidgetFunctionProvider(widgetMarkup[parameterInfo.Name]) :
+                            (widgetProviders.ContainsKey(parameterInfo.Name) ?
+                                widgetProviders[parameterInfo.Name] :
                                 StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType) );
 
                         _parameterProfile.Add

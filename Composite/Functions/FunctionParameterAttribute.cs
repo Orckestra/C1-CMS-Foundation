@@ -1,5 +1,8 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Reflection;
+using System.Xml.Linq;
+using Composite.Core.Extensions;
 
 namespace Composite.Functions
 {
@@ -90,6 +93,46 @@ namespace Composite.Functions
 
 
         /// <summary>
+        /// Gets or sets the name of the widget function.
+        /// </summary>
+        /// <value>
+        /// The name of the widget function.
+        /// </value>
+        public string WidgetFunctionName
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the widget factory method.
+        /// </summary>
+        /// <value>
+        /// The widget factory method.
+        /// </value>
+        public string WidgetFactoryMethod
+        {
+            get;
+            set;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the widget factory class.
+        /// </summary>
+        /// <value>
+        /// The widget factory class.
+        /// </value>
+        public Type WidgetFactoryClass
+        {
+            get;
+            set;
+        }
+
+
+
+        /// <summary>
         /// Optional. Default value that should be assigned to the parameter if not specified by the caller. You can use 'null' for complex objects that can not be expressed in attribute code and the check for null in the code.
         /// </summary>
         public object DefaultValue
@@ -148,7 +191,94 @@ namespace Composite.Functions
         /// </summary>
         public bool HasWidgetMarkup
         {
-            get { return !string.IsNullOrWhiteSpace(this.WidgetMarkup); }
+            get
+            {
+                return !string.IsNullOrWhiteSpace(this.WidgetMarkup)
+                       || !string.IsNullOrWhiteSpace(this.WidgetFunctionName)
+                       || !string.IsNullOrWhiteSpace(this.WidgetFactoryMethod);
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the widget markup
+        /// </summary>
+        /// <param name="owner">Class that contains</param>
+        /// <param name="parameterProperty">The parameter property.</param>
+        /// <returns></returns>
+        public WidgetFunctionProvider GetWidgetFunctionProvider(Type owner, PropertyInfo parameterProperty)
+        {
+            if(!HasWidgetMarkup)
+            {
+                return null;
+            }
+
+            if(!WidgetMarkup.IsNullOrEmpty())
+            {
+                var markup = XElement.Parse(WidgetMarkup);
+
+                return new WidgetFunctionProvider(markup);
+            }
+
+            if(!WidgetFunctionName.IsNullOrEmpty())
+            {
+                IWidgetFunction function =  FunctionFacade.GetWidgetFunction(WidgetFunctionName);
+                Verify.IsNotNull(function, "Failed to get widget function '{0}'", WidgetFunctionName);
+
+                return new WidgetFunctionProvider(function);
+            }
+
+            if(!WidgetFactoryMethod.IsNullOrEmpty())
+            {
+                Type factoryType = WidgetFactoryClass ?? owner;
+                Verify.IsNotNull(factoryType, "WidgetFactoryClass isn't defined");
+
+                var methodInfo = factoryType.GetMethod(WidgetFactoryMethod, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+                Verify.IsNotNull(methodInfo,  "Failed to get static method '{0}' on type '{1}'", WidgetFactoryMethod, factoryType.FullName);
+
+                object result = null;
+
+                var parameters = methodInfo.GetParameters();
+
+                if(parameters.Length == 0)
+                {
+                    result = methodInfo.Invoke(null, new object[0]);
+                } 
+                else if(parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                {
+                    result = methodInfo.Invoke(null, new object[] { Name });
+                } 
+                else if (parameters.Length == 1 && parameters[0].ParameterType == typeof(PropertyInfo))
+                {
+                    Verify.IsNotNull(parameterProperty, "parameterProperty isn't defined");
+
+                    result = methodInfo.Invoke(null, new object[] { parameterProperty });
+                } else
+                {
+                    throw new InvalidOperationException("Unknown method signature");
+                }
+
+                if (result == null) return null;
+
+                if(result is XElement)
+                {
+                    return new WidgetFunctionProvider(result as XElement);
+                }
+
+                if(result is IWidgetFunction)
+                {
+                    return new WidgetFunctionProvider(result as IWidgetFunction);
+                }
+
+                if(result is WidgetFunctionProvider)
+                {
+                    return result as WidgetFunctionProvider;
+                }
+                
+                throw new InvalidOperationException("Unexpected widget type '{0}'".FormatWith(result.GetType()));
+            }
+
+            throw new InvalidOperationException("This line should not be reachable");
         }
     }
 }
