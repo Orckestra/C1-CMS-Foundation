@@ -25,6 +25,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
             get { return typeof(UserControlFunction); }
         }
 
+        protected override string GetDescription(object obj)
+        {
+            if(obj is UserControlFunction)
+            {
+                return (obj as UserControlFunction).FunctionDescription;
+            }
+
+            return null;
+        }
+
         protected override Type GetReturnType(object obj)
         {
             return typeof (UserControl);

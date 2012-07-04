@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.C1Console.Security;
 
-namespace Composite.AspNet.Razor.Security
+namespace Composite.AspNet.Security
 {
 	[SecurityAncestorProvider(typeof(StandardFunctionSecurityAncestorProvider))]
 	internal class FileBasedFunctionEntityToken : EntityToken

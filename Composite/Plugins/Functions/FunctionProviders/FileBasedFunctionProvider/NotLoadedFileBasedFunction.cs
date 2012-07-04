@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.AspNet.Razor.Security;
+using Composite.AspNet.Security;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Functions;

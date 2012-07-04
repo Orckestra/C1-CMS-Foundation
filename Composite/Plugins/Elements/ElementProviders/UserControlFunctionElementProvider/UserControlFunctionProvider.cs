@@ -13,14 +13,14 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
-namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElementProvider
 {
-    [ConfigurationElementType(typeof(RazorFunctionProviderElementProviderData))]
-    internal class RazorFunctionElementProvider: BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
+    [ConfigurationElementType(typeof(UserControlFunctionProviderElementProviderData))]
+    internal class UserControlFunctionElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
         private readonly string _functionProviderName;
 
-        public RazorFunctionElementProvider(string functionProvider)
+        public UserControlFunctionElementProvider(string functionProvider)
         {
             _functionProviderName = functionProvider;
         }
@@ -29,7 +29,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
         {
             var functions = FunctionFacade.GetFunctionsByProvider(_functionProviderName);
 
-            if(searchToken != null && !string.IsNullOrEmpty(searchToken.Keyword))
+            if (searchToken != null && !string.IsNullOrEmpty(searchToken.Keyword))
             {
                 string keyword = searchToken.Keyword.ToLowerInvariant();
 
@@ -37,34 +37,34 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
                                                  || f.Name.IndexOf(keyword, StringComparison.OrdinalIgnoreCase) > 0);
             }
 
-            return functions.Select(f => new RazorFunctionTreeBuilderLeafInfo(f));
+            return functions.Select(f => new UserControlFunctionTreeBuilderLeafInfo(f));
         }
 
         protected override IEnumerable<Type> OnGetEntityTokenTypes()
         {
-            return new [] { typeof(FileBasedFunctionEntityToken)};
+            return new[] { typeof(FileBasedFunctionEntityToken) };
         }
 
         protected override IFunctionTreeBuilderLeafInfo OnIsEntityOwner(EntityToken entityToken)
         {
-            if(entityToken is FileBasedFunctionEntityToken && entityToken.Source == _functionProviderName)
+            if (entityToken is FileBasedFunctionEntityToken && entityToken.Source == _functionProviderName)
             {
                 string functionFullName = entityToken.Id;
 
                 IFunction function = FunctionFacade.GetFunctionsByProvider(_functionProviderName)
                         .FirstOrDefault(func => func.Namespace + "." + func.Name == functionFullName);
 
-                return function == null ? null : new RazorFunctionTreeBuilderLeafInfo(function);
+                return function == null ? null : new UserControlFunctionTreeBuilderLeafInfo(function);
             }
 
             return null;
         }
 
-        private sealed class RazorFunctionTreeBuilderLeafInfo : IFunctionTreeBuilderLeafInfo
+        private sealed class UserControlFunctionTreeBuilderLeafInfo : IFunctionTreeBuilderLeafInfo
         {
             private readonly IFunction _function;
 
-            public RazorFunctionTreeBuilderLeafInfo(IFunction function)
+            public UserControlFunctionTreeBuilderLeafInfo(IFunction function)
             {
                 _function = function;
             }
@@ -87,26 +87,26 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
 
         #region Configuration
 
-        internal sealed class RazorFunctionElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
+        internal sealed class UserControlFunctionElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
         {
             [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
             public IHooklessElementProvider Assemble(IBuilderContext context, HooklessElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
             {
-                var data = (RazorFunctionProviderElementProviderData)objectConfiguration;
+                var data = (UserControlFunctionProviderElementProviderData)objectConfiguration;
 
-                return new RazorFunctionElementProvider(data.RazorFunctionProviderName);
+                return new UserControlFunctionElementProvider(data.UserControlFunctionProviderName);
             }
         }
 
-        [Assembler(typeof(RazorFunctionElementProviderAssembler))]
-        internal sealed class RazorFunctionProviderElementProviderData : HooklessElementProviderData
+        [Assembler(typeof(UserControlFunctionElementProviderAssembler))]
+        internal sealed class UserControlFunctionProviderElementProviderData : HooklessElementProviderData
         {
-            private const string _razorFunctionProviderNameProperty = "razorFunctionProviderName";
-            [ConfigurationProperty(_razorFunctionProviderNameProperty, IsRequired = true)]
-            public string RazorFunctionProviderName
+            private const string _UserControlFunctionProviderNameProperty = "userControlFunctionProviderName";
+            [ConfigurationProperty(_UserControlFunctionProviderNameProperty, IsRequired = true)]
+            public string UserControlFunctionProviderName
             {
-                get { return (string)base[_razorFunctionProviderNameProperty]; }
-                set { base[_razorFunctionProviderNameProperty] = value; }
+                get { return (string)base[_UserControlFunctionProviderNameProperty]; }
+                set { base[_UserControlFunctionProviderNameProperty] = value; }
             }
         }
 
@@ -114,12 +114,12 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
 
         protected override string RootFolderLabel
         {
-            get { return SR.GetString("Composite.Plugins.RazorFunction", "RootElement.Label"); }
+            get { return SR.GetString("Composite.Plugins.UserControlFunction", "RootElement.Label"); }
         }
 
         protected override string RootFolderToolTip
         {
-            get { return SR.GetString("Composite.Plugins.RazorFunction", "RootElement.ToolTip"); }
+            get { return SR.GetString("Composite.Plugins.UserControlFunction", "RootElement.ToolTip"); }
         }
     }
 }

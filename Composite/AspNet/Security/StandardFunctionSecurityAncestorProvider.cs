@@ -3,7 +3,7 @@ using System.Linq;
 using Composite.C1Console.Security;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 
-namespace Composite.AspNet.Razor.Security
+namespace Composite.AspNet.Security
 {
 	internal class StandardFunctionSecurityAncestorProvider : ISecurityAncestorProvider
 	{
