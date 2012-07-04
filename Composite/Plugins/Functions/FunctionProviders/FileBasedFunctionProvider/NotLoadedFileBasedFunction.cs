@@ -5,7 +5,7 @@ using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Functions;
 
-namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
     internal class NotLoadedFileBasedFunction: IFunction, IFunctionInitializationInfo
     {

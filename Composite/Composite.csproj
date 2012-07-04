@@ -163,10 +163,10 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFileEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFolderEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionElementProvider\RazorFunctionElementProvider.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunction.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FileBasedFunctionProvider.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\FunctionParameterHolder.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\NotLoadedFileBasedFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionParameterHolder.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\NotLoadedFileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderAssembler.cs" />
@@ -636,6 +636,10 @@
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoIntFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\RegisterPathInfoUsageFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlBasedFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProvider.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProviderAssembler.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProviderData.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CurrentFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />

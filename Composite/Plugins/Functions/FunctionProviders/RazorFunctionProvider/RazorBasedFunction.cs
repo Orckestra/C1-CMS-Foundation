@@ -10,6 +10,7 @@ using Composite.AspNet.Razor;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
@@ -12,7 +10,7 @@ using Composite.Core.Threading;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
 
-namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
     internal abstract class FileBasedFunctionProvider<FunctionType> : IFunctionProvider where FunctionType : FileBasedFunction<FunctionType>
 	{
@@ -25,6 +23,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
         private readonly string _name;
 
 		protected abstract string FileExtension { get; }
+        protected abstract string DefaultFunctionNamespace { get; }
 		protected abstract Type BaseType { get; }
 
 		public FunctionNotifier FunctionNotifier { private get; set; }
@@ -47,8 +46,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                     string name = Path.GetFileNameWithoutExtension(file.Name);
 
 					var virtualPath = Path.Combine(VirtualPath, 
-                                                   ns.Replace(".", Path.DirectorySeparatorChar.ToString(CultureInfo.InvariantCulture)), 
+                                                   ns.Replace(".", "/"), 
                                                    name + "." + FileExtension);
+
+                    if(ns == string.Empty)
+                    {
+                        ns = DefaultFunctionNamespace;
+                    }
+
 					object obj = null;
 
 					try
@@ -99,7 +104,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
                 ns = parts[i] + "." + ns;
             }
 
-            return ns.Substring(0, ns.Length - 1);
+            return ns.Length > 0 ? ns.Substring(0, ns.Length - 1) : string.Empty /* DefaultFunctionNamespace */;
         }
 
 		public FileBasedFunctionProvider(string name, string folder)

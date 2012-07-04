@@ -5,7 +5,7 @@ using Composite.C1Console.Security;
 using Composite.Functions;
 using Composite.Core.Extensions;
 
-namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
 	internal abstract class FileBasedFunction<T> : IFunction where T : FileBasedFunction<T>
 	{

@@ -7,12 +7,17 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
 	[ConfigurationElementType(typeof(RazorFunctionProviderData))]
-	internal class RazorFunctionProvider : FileBasedFunctionProvider<RazorBasedFunction>
+    internal class RazorFunctionProvider : FileBasedFunctionProvider.FileBasedFunctionProvider<RazorBasedFunction>
 	{
 		protected override string FileExtension
 		{
 			get { return "cshtml"; }
 		}
+
+        protected override string DefaultFunctionNamespace
+        {
+            get { return "Razor"; }
+        }
 
 		protected override Type BaseType
 		{
@@ -48,7 +53,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
 		protected override bool HandleChange(string path)
 		{
-			return path.EndsWith(".cshtml");
+            return path.EndsWith(FileExtension);
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Composite.Functions;
 
-namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
+namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
 	internal class FunctionParameterHolder
 	{
