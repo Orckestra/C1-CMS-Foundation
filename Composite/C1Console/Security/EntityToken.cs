@@ -54,6 +54,7 @@ namespace Composite.C1Console.Security
         /// <summary>
         /// A string that forms one third of the unique key for the entity being represented. Being the 'id' part of the globally unique key 'type/source/id', 
         /// this value should identify a specific entity of the given 'type' from the given 'source'.
+        /// </summary>
         public abstract string Id { get; }
 
 

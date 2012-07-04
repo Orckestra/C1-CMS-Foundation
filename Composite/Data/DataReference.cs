@@ -83,7 +83,7 @@ namespace Composite.Data
         /// <summary>
         /// Constructs a DataReference using an instance of the data item.
         /// </summary>
-        /// <param name="keyValue">The data item to reference.</param>
+        /// <param name="data">The data item to reference.</param>
         public DataReference(T data)
         {
             if (data == null)
