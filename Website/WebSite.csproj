@@ -877,6 +877,7 @@
     </Content>
     <Content Include="Composite\localization\Composite.Web.UrlConfiguration.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.RazorFunction.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Plugins.UserControlFunction.en-us.xml" />
     <Content Include="Composite\scripts\source\folder-info-readme.txt" />
     <Content Include="Composite\scripts\source\page\data\DataManager.js" />
     <Content Include="Composite\scripts\source\page\document\DocumentCrawler.js" />
@@ -6381,6 +6382,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
+    <Folder Include="App_Data\UserControls\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
