@@ -6,6 +6,8 @@ using Composite.AspNet.Security;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
+using Composite.Core.ResourceSystem;
 using Composite.Functions;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -18,6 +20,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
     [ConfigurationElementType(typeof(UserControlFunctionProviderElementProviderData))]
     internal class UserControlFunctionElementProvider : BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
+        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
+
         private readonly string _functionProviderName;
 
         public UserControlFunctionElementProvider(string functionProvider)
@@ -85,6 +89,29 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
             }
         }
 
+
+        /// <exclude />
+        protected override IEnumerable<ElementAction> OnGetFolderActions()
+        {
+            Type workflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider.AddNewUserControlFunctionWorkflow");
+
+            return new [] { new ElementAction(new ActionHandle(new WorkflowActionToken(workflow, new [] { PermissionType.Add }))) {
+                         VisualData = new ActionVisualizedData { 
+                            Label = GetText("AddNewUserControlFunction.Label"), 
+                            ToolTip = GetText("AddNewUserControlFunction.ToolTip"),
+                            Icon = XsltBasedFunctionProviderElementProvider.XsltBasedFunctionProviderElementProvider.AddFunction,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    }
+                };
+        }
+
         #region Configuration
 
         internal sealed class UserControlFunctionElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
@@ -114,12 +141,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
 
         protected override string RootFolderLabel
         {
-            get { return SR.GetString("Composite.Plugins.UserControlFunction", "RootElement.Label"); }
+            get { return GetText("RootElement.Label"); }
         }
 
         protected override string RootFolderToolTip
         {
-            get { return SR.GetString("Composite.Plugins.UserControlFunction", "RootElement.ToolTip"); }
+            get { return GetText("RootElement.ToolTip"); }
+        }
+
+        private static string GetText(string stringId)
+        {
+            return SR.GetString("Composite.Plugins.UserControlFunction", stringId);
         }
     }
 }

@@ -569,6 +569,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.Designer.cs">
       <DependentUpon>EditSqlFunctionProviderWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionProviderElementProvider\AddNewUserControlFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionProviderElementProvider\AddNewUserControlFunctionWorkflow.Designer.cs">
+      <DependentUpon>AddNewUserControlFunctionWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1124,6 +1130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\EditSqlFunctionProviderWorkflow.layout">
       <DependentUpon>EditSqlFunctionProviderWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserControlFunctionProviderElementProvider\AddNewUserControlFunctionWorkflow.layout">
+      <DependentUpon>AddNewUserControlFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.layout">
       <DependentUpon>AddNewUserWorkflow.cs</DependentUpon>

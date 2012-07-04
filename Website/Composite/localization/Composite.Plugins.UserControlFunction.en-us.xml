@@ -2,4 +2,21 @@
 <strings>
   <string key="RootElement.Label" value="UserControl functions" />
   <string key="RootElement.ToolTip" value="Functions based on .ascx controls" />
+
+  <string key="AddNewUserControlFunction.Label" value="Add UserControl Function" />
+  <string key="AddNewUserControlFunction.ToolTip" value="Add a new UserControl function" />  
+
+  <string key="AddNewUserControlFunction.LabelDialog" value="Add UserControl Function" />
+  <string key="AddNewUserControlFunction.LabelFieldGroup" value="Naming" />
+  <string key="AddNewUserControlFunction.LabelName" value="Name" />
+  <string key="AddNewUserControlFunction.HelpName" value="" />
+  <string key="AddNewUserControlFunction.LabelNamespace" value="Namespace" />
+  <string key="AddNewUserControlFunction.HelpNamespace" value="" />
+
+
+  <string key="AddNewUserControlFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
+  <string key="AddNewUserControlFunctionWorkflow.EmptyName" value="Function name is empty" />
+  <string key="AddNewUserControlFunctionWorkflow.NamespaceEmpty" value="Function namespace is empty" />
+  <string key="AddNewUserControlFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
+  <string key="AddNewUserControlFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the ASCX file)." />
 </strings>

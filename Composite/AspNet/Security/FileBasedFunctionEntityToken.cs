@@ -6,13 +6,13 @@ namespace Composite.AspNet.Security
 	[SecurityAncestorProvider(typeof(StandardFunctionSecurityAncestorProvider))]
 	internal class FileBasedFunctionEntityToken : EntityToken
 	{
-		private string _id;
+		private readonly string _id;
 		public override string Id
 		{
 			get { return _id; }
 		}
 
-		private string _source;
+        private readonly string _source;
 		public override string Source
 		{
 			get { return _source; }
@@ -23,10 +23,10 @@ namespace Composite.AspNet.Security
 			get { return String.Empty; }
 		}
 
-		public FileBasedFunctionEntityToken(string source, string id)
+		public FileBasedFunctionEntityToken(string providerName, string functionFullName)
 		{
-			_source = source;
-			_id = id;
+            _source = providerName;
+            _id = functionFullName;
 		}
 
 		public override string Serialize()

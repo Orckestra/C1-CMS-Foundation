@@ -30,6 +30,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 		public string VirtualPath { get; private set; }
 		public string PhysicalPath { get; private set; }
 
+        public string Name
+        {
+            get { return _name; }
+        }
+
 		public IEnumerable<IFunction> Functions
 		{
 			get
@@ -188,23 +193,34 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			return String.Format("A {0} function", _name);
 		}
 
+        public void ReloadFunctions()
+        {
+            lock (_lock)
+            {
+                using (ThreadDataManager.EnsureInitialize())
+                {
+                    FunctionNotifier.FunctionsUpdated();
+                }
+
+                _lastUpdateTime = DateTime.Now;
+            }
+   
+        }
+
 		private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
 		{
 			if (FunctionNotifier != null && HandleChange(e.FullPath))
 			{
-				lock (_lock)
-				{
-					var timeSpan = DateTime.Now - _lastUpdateTime;
-					if (timeSpan.TotalMilliseconds > 100)
-					{
- 					    using (ThreadDataManager.EnsureInitialize())
-						{
-							FunctionNotifier.FunctionsUpdated();
-						}
+                lock (_lock)
+                {
+                    var timeSpan = DateTime.Now - _lastUpdateTime;
+                    if (timeSpan.TotalMilliseconds < 100)
+                    {
+                        return;
+                    }
 
-						_lastUpdateTime = DateTime.Now;
-					}
-				}
+                    ReloadFunctions();
+                }
 			}
 		}
 	}

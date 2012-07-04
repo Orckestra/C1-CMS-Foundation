@@ -63,7 +63,7 @@ namespace Composite.Functions.Foundation.PluginFacades
 
 
 
-        private static IFunctionProvider GetFunctionProvider(string providerName)
+        internal static IFunctionProvider GetFunctionProvider(string providerName)
         {
             IFunctionProvider functionProvider;
 

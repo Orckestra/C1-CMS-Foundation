@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Name" type="System.String" />
+    <cms:binding name="Namespace" type="System.String" />
+  </cms:bindings>
+  <cms:layout label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelDialog}" iconhandle="function">
+    <FieldGroup Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelName}" Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.HelpName}" Type="ProgrammingIdentifier">
+        <TextBox.Text>
+          <cms:bind source="Name" />
+        </TextBox.Text>
+      </TextBox>
+      <TextBox Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelNamespace}" Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.HelpNamespace}" Type="ProgrammingNamespace">
+        <TextBox.Text>
+          <cms:bind source="Namespace" />
+        </TextBox.Text>
+      </TextBox>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>
