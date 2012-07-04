@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
-using Composite.AspNet.Razor.Parser;
 using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
@@ -29,12 +27,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
             {
                 return (obj as RazorFunction).FunctionReturnType;
             }
-
-		    var attr = obj.GetType().GetCustomAttributes(typeof(FunctionReturnTypeAttribute), false).Cast<FunctionReturnTypeAttribute>().FirstOrDefault();
-			if (attr != null)
-			{
-				return attr.ReturnType;
-			}
 
 			return typeof(XhtmlDocument);
 		}

@@ -154,9 +154,10 @@
   <ItemGroup>
     <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
-    <Compile Include="AspNet\Razor\CompositeC1RazorHost.cs" />
-    <Compile Include="AspNet\Razor\CompositeC1RazorHostFactory.cs" />
     <Compile Include="AspNet\Razor\CompositeC1WebPage.cs" />
+    <Compile Include="AspNet\UserControlFunction.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFileEntityToken.cs" />
@@ -175,12 +176,6 @@
     <Compile Include="AspNet\Razor\HtmlHelperExtensions.cs" />
     <Compile Include="AspNet\Razor\NoHttpRazorContext.cs" />
     <Compile Include="AspNet\Razor\NoHttpRazorRequest.cs" />
-    <Compile Include="AspNet\Razor\Parser\CompositeC1CSharpCodeParser.cs" />
-    <Compile Include="AspNet\Razor\Parser\CompositeC1CSharpRazorCodeGenerator.cs" />
-    <Compile Include="AspNet\Razor\Parser\FunctionReturnTypeAttribute.cs" />
-    <Compile Include="AspNet\Razor\Parser\SyntaxTree\DescriptionSpan.cs" />
-    <Compile Include="AspNet\Razor\Parser\SyntaxTree\ReturnTypeSpan.cs" />
-    <Compile Include="AspNet\Razor\Parser\SyntaxTree\TemplateParsingException.cs" />
     <Compile Include="AspNet\Razor\Security\FileBasedFunctionEntityToken.cs" />
     <Compile Include="AspNet\Razor\Security\StandardFunctionSecurityAncestorProvider.cs" />
     <Compile Include="C1Console\Actions\ActionEventSystemFacade.cs" />
