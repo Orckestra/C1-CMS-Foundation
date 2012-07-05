@@ -112,7 +112,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             // dialogFormActivity1
             // 
             this.dialogFormActivity1.ContainerLabel = "Add new";
-            this.dialogFormActivity1.FormDefinitionFileName = "\\Administrative\\AddUserControlFunction.xml";
+            this.dialogFormActivity1.FormDefinitionFileName = "\\Administrative\\AddNewUserControlFunction.xml";
             this.dialogFormActivity1.Name = "dialogFormActivity1";
             // 
             // setStateActivity2
@@ -278,6 +278,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
 
         private StateActivity initializeStateActivity;
+
+
 
 
 

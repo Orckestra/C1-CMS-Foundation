@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Composite.AspNet.Security;
 using Composite.C1Console.Elements;
@@ -22,6 +23,10 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
     {
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
+        protected static ResourceHandle AddFunctionIcon { get { return GetIconHandle("usercontrol-function-add"); } }
+        protected static ResourceHandle EditFunctionIcon { get { return GetIconHandle("usercontrol-function-edit"); } }
+        protected static ResourceHandle DeleteFunctionIcon { get { return GetIconHandle("usercontrol-function-delete"); } }
+
         private readonly string _functionProviderName;
 
         public UserControlFunctionElementProvider(string functionProvider)
@@ -33,7 +38,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
         {
             var functions = FunctionFacade.GetFunctionsByProvider(_functionProviderName);
 
-            if (searchToken != null && !string.IsNullOrEmpty(searchToken.Keyword))
+            if (searchToken != null && !String.IsNullOrEmpty(searchToken.Keyword))
             {
                 string keyword = searchToken.Keyword.ToLowerInvariant();
 
@@ -99,7 +104,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
                          VisualData = new ActionVisualizedData { 
                             Label = GetText("AddNewUserControlFunction.Label"), 
                             ToolTip = GetText("AddNewUserControlFunction.ToolTip"),
-                            Icon = XsltBasedFunctionProviderElementProvider.XsltBasedFunctionProviderElementProvider.AddFunction,
+                            Icon = AddFunctionIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
                                 ActionType = ActionType.Edit,
@@ -112,11 +117,59 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
                 };
         }
 
+
+        /// <exclude />
+        protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
+        {
+            // var editWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider.DeleteUserControlFunctionWorkflow");
+            var deleteWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider.DeleteUserControlFunctionWorkflow");
+
+            return new ElementAction[] 
+                {
+                    //new ElementAction(new ActionHandle(
+                    //    new WorkflowActionToken(
+                    //        editWorkflow, new [] { PermissionType.Edit }
+                    //    ))) {
+                    //    VisualData = new ActionVisualizedData { 
+                    //        Label = GetText("EditUserControlFunction.Label"), 
+                    //        ToolTip = GetText("EditUserControlFunction.ToolTip"),
+                    //        Icon = EditFunctionIcon,
+                    //        Disabled = false, 
+                    //        ActionLocation = new ActionLocation { 
+                    //            ActionType = ActionType.Edit,
+                    //            IsInFolder = false,
+                    //            IsInToolbar = true,
+                    //            ActionGroup = PrimaryActionGroup
+                    //        }
+                    //    }
+                    //},
+
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            deleteWorkflow, new [] { PermissionType.Delete }
+                        ){Payload = GetContext().ProviderName})) {
+                        VisualData = new ActionVisualizedData { 
+                            Label = GetText("DeleteUserControlFunction.Label"), 
+                            ToolTip = GetText("DeleteUserControlFunction.ToolTip"),
+                            Icon = DeleteFunctionIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Delete,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    }
+                };
+        }        
+
+
         #region Configuration
 
         internal sealed class UserControlFunctionElementProviderAssembler : IAssembler<IHooklessElementProvider, HooklessElementProviderData>
         {
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
+            [SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
             public IHooklessElementProvider Assemble(IBuilderContext context, HooklessElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
             {
                 var data = (UserControlFunctionProviderElementProviderData)objectConfiguration;
@@ -151,7 +204,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
 
         private static string GetText(string stringId)
         {
-            return SR.GetString("Composite.Plugins.UserControlFunction", stringId);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", stringId);
         }
     }
 }

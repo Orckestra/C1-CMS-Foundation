@@ -1,33 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.AspNet.Security;
-using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
-    internal class NotLoadedFileBasedFunction: IFunction, IFunctionInitializationInfo
+    internal class NotLoadedFileBasedFunction<T> : FileBasedFunction<T>, IFunctionInitializationInfo where T : FileBasedFunction<T>
     {
-        private string _virtualPath;
-        private string _providerName;
+        private readonly string _virtualPath;
         private Exception _exception;
 
         public NotLoadedFileBasedFunction(
-            string providerName, 
+            FileBasedFunctionProvider<T> provider,
             string @namespace, 
             string functionName,
             string virtualPath,
-            Exception exception)
+            Exception exception): 
+            base(@namespace, functionName, string.Empty, null, typeof(void), virtualPath, provider)
         {
-            _providerName = providerName;
-            Namespace = @namespace;
-            Name = functionName;
             _virtualPath = virtualPath;
             _exception = exception;
         }
 
-        object IFunction.Execute(ParameterList parameters, FunctionContextContainer context)
+        override public object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             throw new InvalidOperationException("Function not loaded. Source '{0}'".FormatWith(_virtualPath), _exception);
         }
@@ -48,15 +43,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         bool IFunctionInitializationInfo.FunctionInitializedCorrectly
         {
             get { return false; }
-        }
-
-        public string Namespace { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get { return string.Empty; } }
-
-        public EntityToken EntityToken
-        {
-            get { return new FileBasedFunctionEntityToken(_providerName, String.Join(".", Namespace, Name)); }
         }
     }
 }

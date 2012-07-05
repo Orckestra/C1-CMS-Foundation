@@ -8,7 +8,7 @@ using Composite.Core.Xml;
 namespace Composite.Functions.Foundation.PluginFacades
 {
     /// <summary>
-    /// This class is used for caching exceptions from plugins and hadling them correcty
+    /// This class is used for catching exceptions from plugins and handling them correctly
     /// </summary>
     [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
     internal sealed class FunctionWrapper : IDowncastableFunction, ICompoundFunction, IFunctionInitializationInfo
@@ -21,6 +21,11 @@ namespace Composite.Functions.Foundation.PluginFacades
             _functionToWrap = functionToWrap;
         }
 
+
+        public IFunction InnerFunction
+        {
+            get { return _functionToWrap; }
+        }
 
 
         public string Name

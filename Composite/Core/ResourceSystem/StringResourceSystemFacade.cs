@@ -81,7 +81,7 @@ namespace Composite.Core.ResourceSystem
 
             if (!ResourceProviderPluginFacade.LocalizationSectionDefined(section))
             {
-                Log.LogCritical(LogTitle, "Localization section not defined '{0}:{1}'".FormatWith(section));
+                Log.LogCritical(LogTitle, "Localization section not defined '{0}:{1}'".FormatWith(section, stringName));
 
                 return Error_SectionNotDefined;
             }

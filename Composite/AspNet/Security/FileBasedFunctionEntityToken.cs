@@ -23,16 +23,28 @@ namespace Composite.AspNet.Security
 			get { return String.Empty; }
 		}
 
+        public string FunctionProviderName
+        {
+            get { return Source; }
+        }
+
+        public string FunctionName
+        {
+            get { return Id; }
+        }
+
 		public FileBasedFunctionEntityToken(string providerName, string functionFullName)
 		{
             _source = providerName;
             _id = functionFullName;
 		}
 
+
 		public override string Serialize()
 		{
 			return DoSerialize();
 		}
+
 
 		public static EntityToken Deserialize(string serializedEntityToken)
 		{

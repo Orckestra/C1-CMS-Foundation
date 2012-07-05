@@ -50,16 +50,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     string ns = ExtractFuctionNamespace(file.FullName);
                     string name = Path.GetFileNameWithoutExtension(file.Name);
 
-					var virtualPath = Path.Combine(VirtualPath, 
-                                                   ns.Replace(".", "/"), 
-                                                   name + "." + FileExtension);
+                    var virtualPath = CombineVirtualPath(VirtualPath, 
+                                                         ns.Replace(".", "/"), 
+                                                         name + "." + FileExtension);
 
                     if(ns == string.Empty)
                     {
                         ns = DefaultFunctionNamespace;
                     }
 
-					object obj = null;
+					object obj;
 
 					try
 					{
@@ -70,7 +70,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         Log.LogError(LogTitle, "Error instantiating {0} function", name);
                         Log.LogError(LogTitle, ex);
 
-                        returnList.Add(new NotLoadedFileBasedFunction(_name, ns, name, virtualPath, ex));
+                        returnList.Add(new NotLoadedFileBasedFunction<FunctionType>(this, ns, name, virtualPath, ex));
 						continue;
 					}
 
@@ -93,23 +93,19 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			}
 		}
 
+        private static string CombineVirtualPath(params string[] parts)
+        {
+            return string.Join("/", parts).Replace('\\', '/').Replace("///", "/").Replace("//", "/");
+        }
+
         private string ExtractFuctionNamespace(string filePath)
         {
-            var parts = filePath.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries);
+            Verify.That(filePath.StartsWith(PhysicalPath, StringComparison.OrdinalIgnoreCase), "File path should start with folder path");
 
-            string ns = String.Empty;
+            string directoryPath = Path.GetDirectoryName(filePath);
+            string relativeDirectoryPath = directoryPath.Substring(PhysicalPath.Length);
 
-            for (int i = parts.Length - 2; i > 0; i--)
-            {
-                if (parts[i].Equals(_rootFolder, StringComparison.OrdinalIgnoreCase))
-                {
-                    break;
-                }
-
-                ns = parts[i] + "." + ns;
-            }
-
-            return ns.Length > 0 ? ns.Substring(0, ns.Length - 1) : string.Empty /* DefaultFunctionNamespace */;
+            return string.Join(".", relativeDirectoryPath.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries));
         }
 
 		public FileBasedFunctionProvider(string name, string folder)

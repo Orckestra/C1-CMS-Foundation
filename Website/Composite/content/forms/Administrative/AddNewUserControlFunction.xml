@@ -4,7 +4,7 @@
     <cms:binding name="Name" type="System.String" />
     <cms:binding name="Namespace" type="System.String" />
   </cms:bindings>
-  <cms:layout label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelDialog}" iconhandle="function">
+  <cms:layout label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelDialog}" iconhandle="usercontrol-function">
     <FieldGroup Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelFieldGroup}">
       <TextBox Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelName}" Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>

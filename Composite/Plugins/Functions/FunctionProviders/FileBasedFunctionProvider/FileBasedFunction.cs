@@ -11,7 +11,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 	{
 		private readonly FileBasedFunctionProvider<T> _provider;
 
-		protected string VirtualPath { get; private set; }
+		internal string VirtualPath { get; private set; }
 		protected IDictionary<string, FunctionParameterHolder> Parameters { get; private set; }
 
 		public string Namespace { get; private set; }
@@ -21,7 +21,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 		public EntityToken EntityToken
 		{
-			get { return new FileBasedFunctionEntityToken(_provider.GetType().Name, String.Join(".", Namespace, Name)); }
+			get { return new FileBasedFunctionEntityToken(_provider.Name, String.Join(".", Namespace, Name)); }
 		}
 
 		public virtual IEnumerable<ParameterProfile> ParameterProfiles

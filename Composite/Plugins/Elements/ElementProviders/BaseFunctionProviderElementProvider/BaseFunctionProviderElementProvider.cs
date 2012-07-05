@@ -90,7 +90,6 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         }
 
 
-
         /// <exclude />
         protected ElementProviderContext GetContext()
         {
@@ -370,8 +369,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         }
 
 
-
-        private static ResourceHandle GetIconHandle(string name)
+        protected static ResourceHandle GetIconHandle(string name)
         {
             return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
         }

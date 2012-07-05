@@ -132,7 +132,8 @@
     <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
     <Content Include="Composite\content\forms\Administrative\AddNewRazorPageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewMasterPagePageTemplate.xml" />
-    <Content Include="Composite\content\forms\Administrative\AddUserControlFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\AddNewUserControlFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMasterPage.xml" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
