@@ -38,36 +38,22 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             string markupFilePath = PathUtil.Resolve((function as FileBasedFunction<UserControlBasedFunction>).VirtualPath);
             string codeFilePath = markupFilePath + ".cs";
 
-            DeleteTreeRefresher deleteTreeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
-
             C1File.Delete(markupFilePath);
             C1File.Delete(codeFilePath);
 
             provider.ReloadFunctions();
 
-            string namespacePrefix = GetFunctionNamespace(functionEntityToken.FunctionName) + ".";
-            int functionsLeftInNamespace = FunctionFacade.GetFunctionNamesByProvider(provider.Name)
-                                           .Count(name => name.StartsWith(namespacePrefix, StringComparison.Ordinal));
-            if (functionsLeftInNamespace == 0)
-            {
-                WorkflowActionToken actionToken = (WorkflowActionToken)this.ActionToken;
-
-                string id = BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider.CreateId("", actionToken.Payload);
-
-                var folderEntityToken = new BaseFunctionFolderElementEntityToken(id);
-
-                SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
-                specificTreeRefresher.PostRefreshMesseges(folderEntityToken);
-            }
-            else
-            {
-                deleteTreeRefresher.PostRefreshMesseges();
-            }
+            RefreshFunctionsTree(functionEntityToken.FunctionProviderName);
         }
 
-        private string GetFunctionNamespace(string functionName)
+        private void RefreshFunctionsTree(string providerName)
         {
-            return functionName.Substring(0, functionName.LastIndexOf('.'));
+            string id = BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider.CreateId("", providerName);
+
+            var folderEntityToken = new BaseFunctionFolderElementEntityToken(id);
+
+            SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
+            specificTreeRefresher.PostRefreshMesseges(folderEntityToken);
         }
     }
 }
