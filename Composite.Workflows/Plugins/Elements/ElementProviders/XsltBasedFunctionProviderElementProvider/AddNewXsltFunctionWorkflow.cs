@@ -107,18 +107,8 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             xsltFunction.OutputXmlSubType = "XHTML";
             xsltFunction.Description = "";
 
-            BaseFunctionFolderElementEntityToken token = (BaseFunctionFolderElementEntityToken)this.EntityToken;
-            xsltFunction.Namespace = token.Id;
-            string prefix = "ROOT:XsltBasedFunctionProviderElementProvider";
-
-            if (xsltFunction.Namespace == prefix)
-            {
-                xsltFunction.Namespace = UserSettings.LastSpecifiedNamespace;
-            }
-            else if (xsltFunction.Namespace.StartsWith(prefix + "."))
-            {
-                xsltFunction.Namespace = xsltFunction.Namespace.Substring(prefix.Length + 1);
-            }
+            BaseFunctionFolderElementEntityToken folderToken = (BaseFunctionFolderElementEntityToken)this.EntityToken;
+            xsltFunction.Namespace = folderToken.FunctionNamespace ?? UserSettings.LastSpecifiedNamespace;
 
             this.Bindings.Add("NewXslt", xsltFunction);
         }

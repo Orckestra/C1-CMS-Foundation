@@ -27,7 +27,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         public static ResourceHandle FunctionError { get { return GetIconHandle("error"); } }
 
         /// <exclude />
-        protected virtual void OnContexSetted() { }
+        protected virtual void OnContextSetted() { }
 
         /// <exclude />
         protected abstract IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken);
@@ -66,7 +66,6 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
         protected virtual TreeLockBehavior OnGetTreeLockBehavior() { return TreeLockBehavior.Normal; }
 
 
-
         /// <exclude />
         public BaseFunctionProviderElementProvider()
         {
@@ -85,7 +84,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
             {
                 _context = value;
 
-                OnContexSetted();
+                OnContextSetted();
             }
         }
 

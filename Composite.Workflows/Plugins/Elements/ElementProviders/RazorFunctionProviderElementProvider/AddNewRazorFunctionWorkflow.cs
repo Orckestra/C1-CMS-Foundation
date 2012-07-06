@@ -11,50 +11,42 @@ using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Functions;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
-using Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvider;
+using Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider;
 using Composite.Plugins.Elements.ElementProviders.Common;
 
-namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewUserControlFunctionWorkflow : BaseFunctionWorkflow
+    public sealed partial class AddNewRazorFunctionWorkflow : BaseFunctionWorkflow
     {
         private static readonly string Binding_Name = "Name";
         private static readonly string Binding_Namespace = "Namespace";
 
+        private static readonly string NewRazorFunction_CSHTML =
+@"@inherits RazorFunction
 
-        private static readonly string Marker_CodeFile = "%CodeFile%";
-
-        private static readonly string NewUserControl_Markup =
-@"<%@ Control Language=""C#"" AutoEventWireup=""true"" CodeFile=""%CodeFile%"" Inherits=""C1Function"" %>
-
-Hello <%= this.Name %>!";
-
-        private static readonly string NewUserControl_CodeFile =
-@"using System;
-using Composite.Functions;
-
-public partial class C1Function : Composite.AspNet.UserControlFunction
-{
+@functions {
     public override string FunctionDescription
     {
-        get 
-        { 
-            return ""A demo function that outputs a hello message.""; 
-        }
+        get  { return ""A demo function that outputs a hello message.""; }
     }
-
+     
     [FunctionParameter(DefaultValue = ""World"")]
     public string Name { get; set; }
+}
 
-    protected void Page_Load(object sender, EventArgs e)
-    {
+<html xmlns=""http://www.w3.org/1999/xhtml"">
+    <head>
+    </head>
+    <body>
+        <div>
+            Hello @Name!
+        </div>
+    </body>
+</html>";
 
-    }
-}";
 
-
-        public AddNewUserControlFunctionWorkflow()
+        public AddNewRazorFunctionWorkflow()
         {
             InitializeComponent();
         }
@@ -72,25 +64,25 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
         {
             string functionName = this.GetBinding<string>(Binding_Name);
             string functionNamespace = this.GetBinding<string>(Binding_Namespace);
-            var provider = GetFunctionProvider<UserControlFunctionProvider>();
+            var provider = GetFunctionProvider<RazorFunctionProvider>();
 
             e.Result = false;
 
             if (functionName == string.Empty)
             {
-                ShowFieldMessage(Binding_Name, GetText("AddNewUserControlFunctionWorkflow.EmptyName"));
+                ShowFieldMessage(Binding_Name, GetText("AddNewRazorFunctionWorkflow.EmptyName"));
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(functionNamespace))
             {
-                ShowFieldMessage(Binding_Namespace, GetText("AddNewUserControlFunctionWorkflow.NamespaceEmpty"));
+                ShowFieldMessage(Binding_Namespace, GetText("AddNewRazorFunctionWorkflow.NamespaceEmpty"));
                 return;
             }
 
             if (!functionNamespace.IsCorrectNamespace('.'))
             {
-                ShowFieldMessage(Binding_Namespace, GetText("AddNewUserControlFunctionWorkflow.InvalidNamespace"));
+                ShowFieldMessage(Binding_Namespace, GetText("AddNewRazorFunctionWorkflow.InvalidNamespace"));
                 return;
             }
 
@@ -99,13 +91,13 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
             bool nameIsUsed = FunctionFacade.FunctionNames.Contains(functionFullName, StringComparer.OrdinalIgnoreCase);
             if (nameIsUsed)
             {
-                ShowFieldMessage(Binding_Namespace, GetText("AddNewUserControlFunctionWorkflow.DuplicateName"));
+                ShowFieldMessage(Binding_Namespace, GetText("AddNewRazorFunctionWorkflow.DuplicateName"));
                 return;
             }
 
             if ((provider.PhysicalPath + functionNamespace + functionName).Length > 240)
             {
-                ShowFieldMessage(Binding_Name, GetText("AddNewUserControlFunctionWorkflow.TotalNameTooLang"));
+                ShowFieldMessage(Binding_Name, GetText("AddNewRazorFunctionWorkflow.TotalNameTooLang"));
                 return;
             }
 
@@ -120,20 +112,17 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
             string functionNamespace = this.GetBinding<string>(Binding_Namespace);
             string functionFullName = functionNamespace + "." + functionName;
 
-            var provider = GetFunctionProvider<UserControlFunctionProvider>();
+            var provider = GetFunctionProvider<RazorFunctionProvider>();
 
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
-            string fileName = functionName + ".ascx";
+            string fileName = functionName + ".cshtml";
             string folder = Path.Combine(provider.PhysicalPath, functionNamespace.Replace('.', '\\'));
-            string markupFilePath = Path.Combine(folder, fileName);
-            string codeFilePath = markupFilePath + ".cs";
+            string cshtmlFilePath = Path.Combine(folder, fileName);
 
 
             C1Directory.CreateDirectory(folder);
-            C1File.WriteAllText(codeFilePath, NewUserControl_CodeFile);
-            C1File.WriteAllText(markupFilePath, NewUserControl_Markup.Replace(Marker_CodeFile, functionName + ".ascx.cs"));
-
+            C1File.WriteAllText(cshtmlFilePath, NewRazorFunction_CSHTML);
 
             UserSettings.LastSpecifiedNamespace = functionNamespace;
 
@@ -145,12 +134,12 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
 
             /* var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var executionService = container.GetService<IActionExecutionService>();
-            executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditUserControlFunctionWorkflow)), null);*/
+            executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditRazorFunctionWorkflow)), null);*/
         }
 
         private static string GetText(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", key);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorFunction", key);
         }
     }
 }

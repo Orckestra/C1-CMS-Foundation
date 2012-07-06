@@ -3,15 +3,15 @@ using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.C1Console.Workflow;
+using Composite.Plugins.Elements.ElementProviders.Common;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteVisualFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteVisualFunctionWorkflow : BaseFunctionWorkflow
     {
         public DeleteVisualFunctionWorkflow()
         {
@@ -38,14 +38,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
 
             if (count == 0)
             {
-                WorkflowActionToken actionToken = (WorkflowActionToken)this.ActionToken;
-
-                string id = BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider.CreateId("", actionToken.Payload);
-
-                BaseFunctionFolderElementEntityToken entityToken = new BaseFunctionFolderElementEntityToken(id);
-
-                SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
-                specificTreeRefresher.PostRefreshMesseges(entityToken);
+                RefreshFunctionTree();
             }
             else
             {

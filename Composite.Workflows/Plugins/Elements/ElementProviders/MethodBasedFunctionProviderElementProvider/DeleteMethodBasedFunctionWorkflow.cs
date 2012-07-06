@@ -7,13 +7,14 @@ using Composite.Data.Types;
 using Composite.Core.ResourceSystem;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.C1Console.Workflow;
+using Composite.Plugins.Elements.ElementProviders.Common;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteMethodBasedFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteMethodBasedFunctionWorkflow : BaseFunctionWorkflow
     {
         public DeleteMethodBasedFunctionWorkflow()
         {
@@ -41,14 +42,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
                 if (count == 0)
                 {
-                    WorkflowActionToken actionToken = (WorkflowActionToken)this.ActionToken;
-
-                    string id = BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider.CreateId("", actionToken.Payload);
-
-                    BaseFunctionFolderElementEntityToken entityToken = new BaseFunctionFolderElementEntityToken(id);
-
-                    SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
-                    specificTreeRefresher.PostRefreshMesseges(entityToken);
+                    RefreshFunctionTree();
                 }
                 else
                 {

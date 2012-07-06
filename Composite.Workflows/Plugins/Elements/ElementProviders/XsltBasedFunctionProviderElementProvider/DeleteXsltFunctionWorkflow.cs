@@ -10,14 +10,14 @@ using Composite.Core.ResourceSystem;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Types;
-using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
+using Composite.Plugins.Elements.ElementProviders.Common;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class DeleteXsltFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class DeleteXsltFunctionWorkflow : BaseFunctionWorkflow
     {
         public DeleteXsltFunctionWorkflow()
         {
@@ -65,14 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
                 if (count == 0)
                 {
-                    WorkflowActionToken actionToken = (WorkflowActionToken)this.ActionToken;
-
-                    string id = BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider.CreateId("", actionToken.Payload);
-
-                    BaseFunctionFolderElementEntityToken entityToken = new BaseFunctionFolderElementEntityToken(id);
-
-                    SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
-                    specificTreeRefresher.PostRefreshMesseges(entityToken);
+                    RefreshFunctionTree();
                 }
                 else
                 {

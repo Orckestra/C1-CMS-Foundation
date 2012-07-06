@@ -6,6 +6,8 @@ using Composite.AspNet.Security;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
+using Composite.Core.ResourceSystem;
 using Composite.Functions;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -18,6 +20,12 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
     [ConfigurationElementType(typeof(RazorFunctionProviderElementProviderData))]
     internal class RazorFunctionElementProvider: BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider
     {
+        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
+
+        protected static ResourceHandle AddFunctionIcon { get { return GetIconHandle("razor-function-add"); } }
+        protected static ResourceHandle EditFunctionIcon { get { return GetIconHandle("razor-function-edit"); } }
+        protected static ResourceHandle DeleteFunctionIcon { get { return GetIconHandle("razor-function-delete"); } }
+
         private readonly string _functionProviderName;
 
         public RazorFunctionElementProvider(string functionProvider)
@@ -59,6 +67,78 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
 
             return null;
         }
+
+
+
+        /// <exclude />
+        protected override IEnumerable<ElementAction> OnGetFolderActions()
+        {
+            Type workflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider.AddNewRazorFunctionWorkflow");
+
+            return new[] { new ElementAction(new ActionHandle(new WorkflowActionToken(workflow, new [] { PermissionType.Add }))) {
+                         VisualData = new ActionVisualizedData { 
+                            Label = GetText("AddNewRazorFunction.Label"), 
+                            ToolTip = GetText("AddNewRazorFunction.ToolTip"),
+                            Icon = AddFunctionIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    }
+                };
+        }
+
+
+        /// <exclude />
+        protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
+        {
+            // var editWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider.EditRazorFunctionWorkflow");
+            var deleteWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider.DeleteRazorFunctionWorkflow");
+
+            return new ElementAction[] 
+                {
+                    //new ElementAction(new ActionHandle(
+                    //    new WorkflowActionToken(
+                    //        editWorkflow, new [] { PermissionType.Edit }
+                    //    ))) {
+                    //    VisualData = new ActionVisualizedData { 
+                    //        Label = GetText("EditRazorFunction.Label"), 
+                    //        ToolTip = GetText("EditRazorFunction.ToolTip"),
+                    //        Icon = EditFunctionIcon,
+                    //        Disabled = false, 
+                    //        ActionLocation = new ActionLocation { 
+                    //            ActionType = ActionType.Edit,
+                    //            IsInFolder = false,
+                    //            IsInToolbar = true,
+                    //            ActionGroup = PrimaryActionGroup
+                    //        }
+                    //    }
+                    //},
+
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            deleteWorkflow, new [] { PermissionType.Delete }
+                        ){Payload = GetContext().ProviderName})) {
+                        VisualData = new ActionVisualizedData { 
+                            Label = GetText("DeleteRazorFunction.Label"), 
+                            ToolTip = GetText("DeleteRazorFunction.ToolTip"),
+                            Icon = DeleteFunctionIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Delete,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    }
+                };
+        }    
+
 
         private sealed class RazorFunctionTreeBuilderLeafInfo : IFunctionTreeBuilderLeafInfo
         {
@@ -114,12 +194,17 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
 
         protected override string RootFolderLabel
         {
-            get { return SR.GetString("Composite.Plugins.RazorFunction", "RootElement.Label"); }
+            get { return GetText("RootElement.Label"); }
         }
 
         protected override string RootFolderToolTip
         {
-            get { return SR.GetString("Composite.Plugins.RazorFunction", "RootElement.ToolTip"); }
+            get { return GetText("RootElement.ToolTip"); }
+        }
+
+        private static string GetText(string stringId)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorFunction", stringId);
         }
     }
 }

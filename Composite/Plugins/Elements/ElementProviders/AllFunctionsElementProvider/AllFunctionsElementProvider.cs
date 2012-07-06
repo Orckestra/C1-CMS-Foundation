@@ -59,7 +59,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
         }
 
 
-        protected override void OnContexSetted()
+        protected override void OnContextSetted()
         {
             string providerName = GetContext().ProviderName;
 

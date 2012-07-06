@@ -2,4 +2,27 @@
 <strings>
   <string key="RootElement.Label" value="Razor functions" />
   <string key="RootElement.ToolTip" value="Razor functions" />
+
+  <string key="AddNewRazorFunction.Label" value="Add Razor Function" />
+  <string key="AddNewRazorFunction.ToolTip" value="Add a new Razor function" />
+  <string key="EditRazorFunction.Label" value="Edit" />
+  <string key="EditRazorFunction.ToolTip" value="Edit Razor function" />
+  <string key="DeleteRazorFunction.Label" value="Delete" />
+  <string key="DeleteRazorFunction.ToolTip" value="Delete Razor function" />
+
+  <string key="AddNewRazorFunction.LabelDialog" value="Add Razor Function" />
+  <string key="AddNewRazorFunction.LabelFieldGroup" value="Naming" />
+  <string key="AddNewRazorFunction.LabelName" value="Name" />
+  <string key="AddNewRazorFunction.HelpName" value="" />
+  <string key="AddNewRazorFunction.LabelNamespace" value="Namespace" />
+  <string key="AddNewRazorFunction.HelpNamespace" value="" />
+
+  <string key="AddNewRazorFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
+  <string key="AddNewRazorFunctionWorkflow.EmptyName" value="Function name is empty" />
+  <string key="AddNewRazorFunctionWorkflow.NamespaceEmpty" value="Function namespace is empty" />
+  <string key="AddNewRazorFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
+  <string key="AddNewRazorFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the .cshtml file)." />
+
+  <string key="DeleteRazorFunctionWorkflow.ConfirmDeleteTitle" value="Delete Razor Function?" />
+  <string key="DeleteRazorFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected Razor function?" />
 </strings>

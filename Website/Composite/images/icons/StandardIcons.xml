@@ -463,6 +463,30 @@
 	</Icon>
 	<!-- end Xslt function provider -->
 
+
+  <!-- Razor Function Provider -->
+  <Icon name="razor-function">
+    <IconFile size="normal" path="harmony\multimedia\effects_16x16.png" />
+    <IconFile size="large" path="harmony\multimedia\effects_24x24.png" />
+    <!-- <IconFile size="xlarge" path="harmony\multimedia\effects_32x32.png" /> -->
+  </Icon>
+  <Icon name="razor-function-add">
+    <IconFile size="normal" path="harmony\composite\functionadd_16.png" />
+    <IconFile size="large" path="harmony\composite\functionadd_24.png" />
+    <!-- <IconFile size="xlarge" path="harmony\composite\functionadd_32.png" /> -->
+  </Icon>
+  <Icon name="razor-function-edit">
+    <IconFile size="normal" path="harmony\composite\functionedit_16.png" />
+    <IconFile size="large" path="harmony\composite\functionedit_24.png" />
+    <!-- <IconFile size="xlarge" path="harmony\composite\functionedit_32.png" /> -->
+  </Icon>
+  <Icon name="razor-function-delete">
+    <IconFile size="normal" path="harmony\composite\functiondel_16.png" />
+    <IconFile size="large" path="harmony\composite\functiondel_24.png" />
+    <!-- <IconFile size="xlarge" path="harmony\composite\functiondel_32.png" /> -->
+  </Icon>
+  <!-- end UserControl function provider -->
+
   <!-- UserControl Function Provider -->
   <Icon name="usercontrol-function">
     <IconFile size="normal" path="harmony\multimedia\effects_16x16.png" />

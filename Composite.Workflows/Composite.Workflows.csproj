@@ -215,6 +215,9 @@
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.designer.cs">
       <DependentUpon>FunctionTesterWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\Common\BaseFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -532,6 +535,18 @@
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.designer.cs">
       <DependentUpon>EditPageTypeWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\AddNewRazorFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\AddNewRazorFunctionWorkflow.Designer.cs">
+      <DependentUpon>AddNewRazorFunctionWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\DeleteRazorFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\DeleteRazorFunctionWorkflow.Designer.cs">
+      <DependentUpon>DeleteRazorFunctionWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.cs">
       <SubType>Component</SubType>
@@ -1118,6 +1133,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\EditPageTypeWorkflow.layout">
       <DependentUpon>EditPageTypeWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\AddNewRazorFunctionWorkflow.layout">
+      <DependentUpon>AddNewRazorFunctionWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\DeleteRazorFunctionWorkflow.layout">
+      <DependentUpon>DeleteRazorFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.layout">
       <DependentUpon>AddNewSqlConnectionWorkflow.cs</DependentUpon>
