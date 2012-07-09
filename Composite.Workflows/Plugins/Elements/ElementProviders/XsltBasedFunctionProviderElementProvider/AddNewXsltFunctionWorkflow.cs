@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using System.Workflow.Activities;
@@ -27,6 +28,9 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewXsltFunctionWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        private static readonly string Binding_CopyFromFunctionId = "CopyFromFunctionId";
+        private static readonly string Binding_CopyFromOptions = "CopyFromOptions";
+
         private static string _newXsltMarkup = string.Format(@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <xsl:stylesheet version=""1.0"" xmlns:xsl=""http://www.w3.org/1999/XSL/Transform""
 	xmlns:in=""{0}""
@@ -111,6 +115,19 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             xsltFunction.Namespace = folderToken.FunctionNamespace ?? UserSettings.LastSpecifiedNamespace;
 
             this.Bindings.Add("NewXslt", xsltFunction);
+
+            var copyOfOptions = new List<KeyValuePair<Guid, string>>();
+
+            copyOfOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, GetText("AddNewXsltFunctionStep1.LabelCopyFromEmptyOption")));
+
+            foreach (IXsltFunction function in DataFacade.GetData<IXsltFunction>())
+            {
+                string fullName = function.Namespace + "." + function.Name;
+                copyOfOptions.Add(new KeyValuePair<Guid, string>(function.Id, fullName));
+            }
+
+            this.Bindings.Add(Binding_CopyFromFunctionId, Guid.Empty);
+            this.Bindings.Add(Binding_CopyFromOptions, copyOfOptions);
         }
 
 
@@ -193,6 +210,13 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
             IXsltFunction xslt = this.GetBinding<IXsltFunction>("NewXslt");
+            Guid copyFromFunctionId = this.GetBinding<Guid>(Binding_CopyFromFunctionId);
+
+            IXsltFunction copyFromFunction = null;
+            if(copyFromFunctionId != Guid.Empty)
+            {
+                copyFromFunction = DataFacade.GetData<IXsltFunction>().First(f => f.Id == copyFromFunctionId);
+            }
 
             xslt.XslFilePath = xslt.CreateXslFilePath();
 
@@ -207,14 +231,28 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
                     xsltfile.FolderPath = System.IO.Path.GetDirectoryName(xslt.XslFilePath);
                     xsltfile.FileName = System.IO.Path.GetFileName(xslt.XslFilePath);
 
+                    string xslTemplate = _newXsltMarkup;
+                    if (copyFromFunction != null)
+                    {
+                        IFile copyFromFile = IFileServices.GetFile<IXsltFile>(copyFromFunction.XslFilePath);
+                        xslTemplate = copyFromFile.ReadAllText();
+                    }
 
-                    xsltfile.SetNewContent(_newXsltMarkup);
+                    xsltfile.SetNewContent(xslTemplate);
+                    
                     DataFacade.AddNew<IXsltFile>(xsltfile, "XslFileProvider");
                 }
 
                 xslt = DataFacade.AddNew<IXsltFunction>(xslt);
 
                 UserSettings.LastSpecifiedNamespace = xslt.Namespace;
+
+                
+                if (copyFromFunction != null)
+                {
+                    CloneFunctionParameters(copyFromFunction, xslt);
+                    CloneFunctionCalls(copyFromFunction, xslt);
+                }
 
                 transactionScope.Complete();
             }
@@ -225,11 +263,45 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             executionService.Execute(xslt.GetDataEntityToken(), new WorkflowActionToken(typeof(EditXsltFunctionWorkflow)), null);
         }
 
+        private void CloneFunctionParameters(IXsltFunction sourceFunction, IXsltFunction copyTo)
+        {
+            var parameters = DataFacade.GetData<IParameter>(p => p.OwnerId == sourceFunction.Id).ToList();
+            foreach (IParameter parameter in parameters)
+            {
+                var clonedFunctionParameter = DataFacade.BuildNew<IParameter>();
+                clonedFunctionParameter.OwnerId = copyTo.Id;
+
+                clonedFunctionParameter.ParameterId = Guid.NewGuid();
+                clonedFunctionParameter.Name = parameter.Name;
+                clonedFunctionParameter.TypeManagerName = parameter.TypeManagerName;
+                clonedFunctionParameter.HelpText = parameter.HelpText;
+                clonedFunctionParameter.Label = parameter.Label;
+                clonedFunctionParameter.DefaultValueFunctionMarkup = parameter.DefaultValueFunctionMarkup;
+                clonedFunctionParameter.Position = parameter.Position;
+                clonedFunctionParameter.TestValueFunctionMarkup = parameter.TestValueFunctionMarkup;
+                clonedFunctionParameter.WidgetFunctionMarkup = parameter.WidgetFunctionMarkup;
+
+                DataFacade.AddNew(clonedFunctionParameter);
+            }
+        }
+
+        private void CloneFunctionCalls(IXsltFunction sourceFunction, IXsltFunction copyTo)
+        {
+            var namedFunctionCalls = DataFacade.GetData<INamedFunctionCall>(nfc => nfc.XsltFunctionId == sourceFunction.Id).ToList();
+            foreach (INamedFunctionCall namedFunctionCall in namedFunctionCalls)
+            {
+                var clonedFunctionCall = DataFacade.BuildNew<INamedFunctionCall>();
+                clonedFunctionCall.XsltFunctionId = copyTo.Id;
+                clonedFunctionCall.Name = namedFunctionCall.Name;
+                clonedFunctionCall.SerializedFunction = namedFunctionCall.SerializedFunction;
+
+                DataFacade.AddNew(clonedFunctionCall);
+            }
+        }
+
         private static string GetText(string key)
         {
             return StringResourceSystemFacade.GetString("Composite.Plugins.XsltBasedFunction", key);
         }
-
-        
     }
 }

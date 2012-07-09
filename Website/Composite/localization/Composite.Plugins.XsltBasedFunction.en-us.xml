@@ -34,12 +34,16 @@
   <string key="XsltBasedFunctionProviderElementProvider.Delete" value="Delete" />
   <string key="XsltBasedFunctionProviderElementProvider.DeleteToolTip" value="Delete XSLT function" />
   <string key="AddNewXsltFunctionStep1.LabelDialog" value="Add New XSLT Function" />
-  <string key="AddNewXsltFunctionStep1.LabelFieldGroup" value="Naming and output type" />
+  <string key="AddNewXsltFunctionStep1.LabelFieldGroup" value="New Xslt function" />
   <string key="AddNewXsltFunctionStep1.LabelName" value="Name" />
   <string key="AddNewXsltFunctionStep1.HelpName" value="" />
   <string key="AddNewXsltFunctionStep1.LabelNamespace" value="Namespace" />
   <string key="AddNewXsltFunctionStep1.HelpNamespace" value="" />
   <string key="AddNewXsltFunctionStep1.LabelOutputType" value="Output type" />
+  <string key="AddNewXsltFunctionStep1.LabelCopyFrom" value="Copy from" />
+  <string key="AddNewXsltFunctionStep1.LabelCopyFromEmptyOption" value="(New Xslt function)" />
+
+
   <string key="EditXsltFunction.LabelSettings" value="Settings" />
   <string key="EditXsltFunction.LabelName" value="Name" />
   <string key="EditXsltFunction.HelpName" value="" />
