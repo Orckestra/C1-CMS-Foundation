@@ -3,8 +3,12 @@ using Composite.C1Console.Security;
 
 namespace Composite.AspNet.Security
 {
+    /// <summary>    
+    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	[SecurityAncestorProvider(typeof(StandardFunctionSecurityAncestorProvider))]
-	internal class FileBasedFunctionEntityToken : EntityToken
+	public class FileBasedFunctionEntityToken : EntityToken
 	{
 		private readonly string _id;
 		public override string Id
@@ -23,19 +27,36 @@ namespace Composite.AspNet.Security
 			get { return String.Empty; }
 		}
 
+        /// <summary>
+        /// Gets the name of the function provider.
+        /// </summary>
+        /// <value>
+        /// The name of the function provider.
+        /// </value>
         public string FunctionProviderName
         {
             get { return Source; }
         }
 
+        /// <summary>
+        /// Gets the name of the function.
+        /// </summary>
+        /// <value>
+        /// The name of the function.
+        /// </value>
         public string FunctionName
         {
             get { return Id; }
         }
 
-		public FileBasedFunctionEntityToken(string providerName, string functionFullName)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FileBasedFunctionEntityToken"/> class.
+        /// </summary>
+        /// <param name="providerName">Name of the fuction provider.</param>
+        /// <param name="functionFullName">Full name of the function.</param>
+		public FileBasedFunctionEntityToken(string functionProviderName, string functionFullName)
 		{
-            _source = providerName;
+            _source = functionProviderName;
             _id = functionFullName;
 		}
 
@@ -46,6 +67,7 @@ namespace Composite.AspNet.Security
 		}
 
 
+        /// <exclude />
 		public static EntityToken Deserialize(string serializedEntityToken)
 		{
 			string type;

@@ -2,17 +2,14 @@ using System;
 using Composite.AspNet.Security;
 using Composite.C1Console.Workflow;
 using Composite.Core.IO;
-using Composite.Functions;
-using Composite.Functions.Foundation.PluginFacades;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
-using Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvider;
 using Composite.Plugins.Elements.ElementProviders.Common;
 using Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class DeleteRazorFunctionWorkflow : BaseFunctionWorkflow
     {
@@ -25,16 +22,12 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
         {
             var functionEntityToken = (FileBasedFunctionEntityToken)EntityToken;
 
-            var provider = (RazorFunctionProvider)FunctionProviderPluginFacade.GetFunctionProvider(functionEntityToken.FunctionProviderName);
-            var function = FunctionFacade.GetFunction(functionEntityToken.FunctionName);
-            Verify.IsNotNull(function, "Failed to get function '{0}'", functionEntityToken.FunctionName);
+            FileBasedFunctionProvider<RazorBasedFunction> provider;
+            RazorBasedFunction function;
 
-            if (function is FunctionWrapper)
-            {
-                function = (function as FunctionWrapper).InnerFunction;
-            }
+            GetProviderAndFunction(functionEntityToken, out provider, out function);
 
-            string markupFilePath = PathUtil.Resolve((function as FileBasedFunction<RazorBasedFunction>).VirtualPath);
+            string markupFilePath = PathUtil.Resolve(function.VirtualPath);
             string codeFilePath = markupFilePath + ".cs";
 
             C1File.Delete(markupFilePath);

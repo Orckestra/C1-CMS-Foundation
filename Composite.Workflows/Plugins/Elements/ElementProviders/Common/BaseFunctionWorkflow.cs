@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Composite.AspNet.Security;
+using Composite.Functions;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Workflow.Activities;
@@ -8,6 +10,7 @@ using Composite.Functions.Plugins.FunctionProvider;
 using Composite.Core.Configuration;
 using Composite.Functions.Plugins.FunctionProvider.Runtime;
 using Composite.Functions.Foundation.PluginFacades;
+using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.Common
@@ -48,6 +51,26 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
             }
 
             throw new InvalidOperationException("Failed to get instance of " + typeof(T).Name);
+        }
+
+        internal void GetProviderAndFunction<FunctionType>(
+            FileBasedFunctionEntityToken entityToken,
+            out FileBasedFunctionProvider<FunctionType> provider,
+            out FunctionType function) where FunctionType : FileBasedFunction<FunctionType>
+        {
+            string functionProviderName = entityToken.FunctionProviderName;
+
+            provider = (FileBasedFunctionProvider<FunctionType>)FunctionProviderPluginFacade.GetFunctionProvider(functionProviderName);
+            IFunction func = FunctionFacade.GetFunction(entityToken.FunctionName);
+
+            Verify.IsNotNull(func, "Failed to get function '{0}'", entityToken.FunctionName);
+
+            if (func is FunctionWrapper)
+            {
+                func = (func as FunctionWrapper).InnerFunction;
+            }
+
+            function = (FunctionType) func;
         }
     }
 }

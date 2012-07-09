@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="FileContent" type="System.String" />
+    <cms:binding name="FileName" type="System.String" />
+    <cms:binding name="FileMimeType" type="System.String" />
+  </cms:bindings>
+  <cms:layout iconhandle="page-template-edit">
+    <TextEditor>
+      <TextEditor.MimeType>
+        <cms:read source="FileMimeType" />
+      </TextEditor.MimeType>
+      <TextEditor.Label>
+        <cms:read source="FileName" />
+      </TextEditor.Label>
+      <cms:bind source="FileContent" />
+    </TextEditor>
+  </cms:layout>
+</cms:formdefinition>

@@ -1,8 +1,8 @@
 using System.Workflow.Activities;
 
-namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
+namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider
 {
-    partial class EditRazorPageTemplateWorkflow
+    partial class EditUserControlFunctionWorkflow
     {
         #region Designer generated code
 
@@ -58,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // 
             this.documentFormActivity1.ContainerLabel = null;
             this.documentFormActivity1.CustomToolbarDefinitionFileName = null;
-            this.documentFormActivity1.FormDefinitionFileName = "/Administrative/EditRazorTemplate.xml";
+            this.documentFormActivity1.FormDefinitionFileName = "/Administrative/EditUserControlFunction.xml";
             this.documentFormActivity1.Name = "documentFormActivity1";
             // 
             // setStateActivity2
@@ -131,7 +131,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.initialState.Activities.Add(this.initialStateInitializationActivity);
             this.initialState.Name = "initialState";
             // 
-            // EditRazorPageTemplateWorkflow
+            // EditMasterPageWorkflow
             // 
             this.Activities.Add(this.initialState);
             this.Activities.Add(this.editStateActivity);
@@ -141,7 +141,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initialState";
-            this.Name = "EditRazorPageTemplateWorkflow";
+            this.Name = "EditMasterPageWorkflow";
             this.CanModifyActivities = false;
 
         }
@@ -183,6 +183,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private SetStateActivity setStateActivity4;
 
         private StateActivity initialState;
+
+
+
 
 
 

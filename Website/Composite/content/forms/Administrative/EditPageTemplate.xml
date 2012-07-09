@@ -4,7 +4,7 @@
     <cms:binding name="PageTemplate" type="Composite.Data.Types.IXmlPageTemplate" />
     <cms:binding name="PageTemplateMarkup" type="System.String" />
   </cms:bindings>
-  <cms:layout>
+  <cms:layout iconhandle="page-template-edit">
     <TabPanels PreSelectedIndex="1">
       <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelTemplateIdentification}">
         <TextBox Label="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelTemplateTitleHelp}">

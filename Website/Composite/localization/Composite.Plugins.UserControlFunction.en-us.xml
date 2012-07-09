@@ -23,6 +23,10 @@
   <string key="AddNewUserControlFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
   <string key="AddNewUserControlFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the ASCX file)." />
 
+  <string key="EditUserControlFunctionWorkflow.Validation.DialogTitle" value="Validation error" />
+  <string key="EditUserControlFunctionWorkflow.Validation.CompilationFailed" value="Compilation failed: {0}" />
+  <string key="EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass" value="User control function should inherit '{0}'" />
+
   <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle" value="Delete UserControl Function?" />
   <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected UserControl?" />
 </strings>

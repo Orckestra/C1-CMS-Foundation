@@ -596,6 +596,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionProviderElementProvider\DeleteUserControlFunctionWorkflow.Designer.cs">
       <DependentUpon>DeleteUserControlFunctionWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionProviderElementProvider\EditUserControlFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionProviderElementProvider\EditUserControlFunctionWorkflow.designer.cs">
+      <DependentUpon>EditUserControlFunctionWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\AddNewUserWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>

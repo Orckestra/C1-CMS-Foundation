@@ -134,6 +134,9 @@
     <Content Include="Composite\content\forms\Administrative\AddNewMasterPagePageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewUserControlFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewRazorFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\EditRazorFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\EditUserControlFunction.xml" />
+    <Content Include="Composite\content\forms\Administrative\EditRazorTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\DeleteRazorFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMasterPage.xml" />

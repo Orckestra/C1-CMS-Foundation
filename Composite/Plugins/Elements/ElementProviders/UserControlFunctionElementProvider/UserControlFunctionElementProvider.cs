@@ -121,28 +121,28 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
         /// <exclude />
         protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
         {
-            // var editWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider.DeleteUserControlFunctionWorkflow");
+            var editWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider.EditUserControlFunctionWorkflow");
             var deleteWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.UserControlFunctionProviderElementProvider.DeleteUserControlFunctionWorkflow");
 
             return new ElementAction[] 
                 {
-                    //new ElementAction(new ActionHandle(
-                    //    new WorkflowActionToken(
-                    //        editWorkflow, new [] { PermissionType.Edit }
-                    //    ))) {
-                    //    VisualData = new ActionVisualizedData { 
-                    //        Label = GetText("EditUserControlFunction.Label"), 
-                    //        ToolTip = GetText("EditUserControlFunction.ToolTip"),
-                    //        Icon = EditFunctionIcon,
-                    //        Disabled = false, 
-                    //        ActionLocation = new ActionLocation { 
-                    //            ActionType = ActionType.Edit,
-                    //            IsInFolder = false,
-                    //            IsInToolbar = true,
-                    //            ActionGroup = PrimaryActionGroup
-                    //        }
-                    //    }
-                    //},
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            editWorkflow, new [] { PermissionType.Edit }
+                        ))) {
+                        VisualData = new ActionVisualizedData { 
+                            Label = GetText("EditUserControlFunction.Label"), 
+                            ToolTip = GetText("EditUserControlFunction.ToolTip"),
+                            Icon = EditFunctionIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    },
 
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(

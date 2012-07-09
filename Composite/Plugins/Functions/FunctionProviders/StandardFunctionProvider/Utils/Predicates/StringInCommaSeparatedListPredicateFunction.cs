@@ -60,8 +60,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             }
 
             StringComparison stringComparison = (ignoreCase
-                                                     ? StringComparison.OrdinalIgnoreCase
-                                                     : StringComparison.Ordinal);
+                                                     ? StringComparison.InvariantCultureIgnoreCase
+                                                     : StringComparison.InvariantCulture);
 
 
             var parameterExpression = Expression.Parameter(typeof(string), "p");
