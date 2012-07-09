@@ -19,7 +19,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
         private readonly C1FileSystemWatcher _watcher;
 		private DateTime _lastUpdateTime;
-        private readonly string _rootFolder;
         private readonly string _name;
 
 		protected abstract string FileExtension { get; }
@@ -40,6 +39,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			get
 			{
                 var returnList = new List<IFunction>();
+
+                if(!C1Directory.Exists(PhysicalPath))
+                {
+                    return returnList;
+                }
 
 				var files = new C1DirectoryInfo(PhysicalPath)
                     .GetFiles("*." + FileExtension, SearchOption.AllDirectories)
@@ -115,7 +119,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			VirtualPath = folder;
 			PhysicalPath = PathUtil.Resolve(VirtualPath);
 
-			_rootFolder = PhysicalPath.Split(new[] { Path.DirectorySeparatorChar }).Last();
+            if (!C1Directory.Exists(PhysicalPath))
+            {
+                return;
+            }
 
 			_watcher = new C1FileSystemWatcher(PhysicalPath, "*")
 			{
