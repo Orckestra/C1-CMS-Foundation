@@ -548,6 +548,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\DeleteRazorFunctionWorkflow.Designer.cs">
       <DependentUpon>DeleteRazorFunctionWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\EditRazorFunctionWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionProviderElementProvider\EditRazorFunctionWorkflow.designer.cs">
+      <DependentUpon>EditRazorFunctionWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\SqlFunctionElementProvider\AddNewSqlConnectionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>

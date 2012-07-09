@@ -96,28 +96,28 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
         /// <exclude />
         protected override IEnumerable<ElementAction> OnGetFunctionActions(IFunctionTreeBuilderLeafInfo function)
         {
-            // var editWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider.EditRazorFunctionWorkflow");
+            var editWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider.EditRazorFunctionWorkflow");
             var deleteWorkflow = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider.DeleteRazorFunctionWorkflow");
 
-            return new ElementAction[] 
+            return new [] 
                 {
-                    //new ElementAction(new ActionHandle(
-                    //    new WorkflowActionToken(
-                    //        editWorkflow, new [] { PermissionType.Edit }
-                    //    ))) {
-                    //    VisualData = new ActionVisualizedData { 
-                    //        Label = GetText("EditRazorFunction.Label"), 
-                    //        ToolTip = GetText("EditRazorFunction.ToolTip"),
-                    //        Icon = EditFunctionIcon,
-                    //        Disabled = false, 
-                    //        ActionLocation = new ActionLocation { 
-                    //            ActionType = ActionType.Edit,
-                    //            IsInFolder = false,
-                    //            IsInToolbar = true,
-                    //            ActionGroup = PrimaryActionGroup
-                    //        }
-                    //    }
-                    //},
+                    new ElementAction(new ActionHandle(
+                        new WorkflowActionToken(
+                            editWorkflow, new [] { PermissionType.Edit }
+                        ))) {
+                        VisualData = new ActionVisualizedData { 
+                            Label = GetText("EditRazorFunction.Label"), 
+                            ToolTip = GetText("EditRazorFunction.ToolTip"),
+                            Icon = EditFunctionIcon,
+                            Disabled = false, 
+                            ActionLocation = new ActionLocation { 
+                                ActionType = ActionType.Edit,
+                                IsInFolder = false,
+                                IsInToolbar = true,
+                                ActionGroup = PrimaryActionGroup
+                            }
+                        }
+                    },
 
                     new ElementAction(new ActionHandle(
                         new WorkflowActionToken(

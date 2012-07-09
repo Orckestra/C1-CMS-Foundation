@@ -23,6 +23,10 @@
   <string key="AddNewRazorFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
   <string key="AddNewRazorFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the .cshtml file)." />
 
+  <string key="EditRazorFunctionWorkflow.Validation.DialogTitle" value="Validation error" />
+  <string key="EditRazorFunctionWorkflow.Validation.CompilationFailed" value="Compilation failed: {0}" />
+  <string key="EditRazorFunctionWorkflow.Validation.IncorrectBaseClass" value="Razor function should inherit '{0}'" />
+
   <string key="DeleteRazorFunctionWorkflow.ConfirmDeleteTitle" value="Delete Razor Function?" />
   <string key="DeleteRazorFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected Razor function?" />
 </strings>
