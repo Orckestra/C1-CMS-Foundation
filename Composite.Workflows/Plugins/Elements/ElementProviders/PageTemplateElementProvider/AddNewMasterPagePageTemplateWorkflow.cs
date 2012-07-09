@@ -12,7 +12,6 @@ using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.PageTemplates.Foundation.PluginFacade;
 using Composite.Core.ResourceSystem;
 using Composite.Plugins.PageTemplates.MasterPages;
-using Composite.Plugins.PageTemplates.Razor;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider

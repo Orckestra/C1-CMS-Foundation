@@ -16,6 +16,10 @@
   <string key="AddNewRazorFunction.HelpName" value="" />
   <string key="AddNewRazorFunction.LabelNamespace" value="Namespace" />
   <string key="AddNewRazorFunction.HelpNamespace" value="" />
+  <string key="AddNewRazorFunction.LabelCopyFrom" value="Copy from" />
+  <string key="AddNewRazorFunction.LabelCopyFromHelp" value="You can copy the code from another razor function by selecting it in this list." />
+  <string key="AddNewRazorFunction.LabelCopyFromEmptyOption" value="(New razor function)" />
+
 
   <string key="AddNewRazorFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
   <string key="AddNewRazorFunctionWorkflow.EmptyName" value="Function name is empty" />

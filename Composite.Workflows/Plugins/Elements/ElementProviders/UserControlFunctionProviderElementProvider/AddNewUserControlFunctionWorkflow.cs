@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Workflow.Activities;
+using System.Workflow.Runtime;
 using Composite.AspNet.Security;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Users;
@@ -143,9 +144,9 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
 
             addNewTreeRefresher.PostRefreshMesseges(newFunctionEntityToken);
 
-            /* var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var executionService = container.GetService<IActionExecutionService>();
-            executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditUserControlFunctionWorkflow)), null);*/
+            executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditUserControlFunctionWorkflow)), null);
         }
 
         private static string GetText(string key)

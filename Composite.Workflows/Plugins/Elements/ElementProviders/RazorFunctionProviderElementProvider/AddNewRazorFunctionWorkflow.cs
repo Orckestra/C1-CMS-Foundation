@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Workflow.Activities;
+using System.Workflow.Runtime;
 using Composite.AspNet.Security;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Users;
@@ -10,6 +12,7 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Functions;
+using Composite.Functions.Foundation.PluginFacades;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider;
 using Composite.Plugins.Elements.ElementProviders.Common;
@@ -21,6 +24,8 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
     {
         private static readonly string Binding_Name = "Name";
         private static readonly string Binding_Namespace = "Namespace";
+        private static readonly string Binding_CopyFromFunctionName = "CopyFromFunctionName";
+        private static readonly string Binding_CopyFromOptions = "CopyFromOptions";
 
         private static readonly string NewRazorFunction_CSHTML =
 @"@inherits RazorFunction
@@ -58,6 +63,18 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
 
             this.Bindings.Add(Binding_Name, string.Empty);
             this.Bindings.Add(Binding_Namespace, @namespace);
+
+            var functionProvider = GetFunctionProvider<RazorFunctionProvider>();
+            var copyOfOptions = new List<KeyValuePair<string, string>>();
+
+            copyOfOptions.Add(new KeyValuePair<string, string>(string.Empty, GetText("AddNewRazorFunction.LabelCopyFromEmptyOption")));
+            foreach (string functionName in FunctionFacade.GetFunctionNamesByProvider(functionProvider.Name))
+            {
+                copyOfOptions.Add(new KeyValuePair<string, string>(functionName, functionName));
+            }
+
+            this.Bindings.Add(Binding_CopyFromFunctionName, string.Empty);
+            this.Bindings.Add(Binding_CopyFromOptions, copyOfOptions);
         }
 
         private void IsValidData(object sender, ConditionalEventArgs e)
@@ -120,9 +137,20 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             string folder = Path.Combine(provider.PhysicalPath, functionNamespace.Replace('.', '\\'));
             string cshtmlFilePath = Path.Combine(folder, fileName);
 
+            string code;
+
+            string copyFromFunction = this.GetBinding<string>(Binding_CopyFromFunctionName);
+            if(string.IsNullOrEmpty(copyFromFunction))
+            {
+                code = NewRazorFunction_CSHTML;
+            }
+            else
+            {
+                code = GetFunctionCode(copyFromFunction);
+            }
 
             C1Directory.CreateDirectory(folder);
-            C1File.WriteAllText(cshtmlFilePath, NewRazorFunction_CSHTML);
+            C1File.WriteAllText(cshtmlFilePath, code);
 
             UserSettings.LastSpecifiedNamespace = functionNamespace;
 
@@ -132,9 +160,24 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
 
             addNewTreeRefresher.PostRefreshMesseges(newFunctionEntityToken);
 
-            /* var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var executionService = container.GetService<IActionExecutionService>();
-            executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditRazorFunctionWorkflow)), null);*/
+            executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditRazorFunctionWorkflow)), null);
+        }
+
+        private string GetFunctionCode(string copyFromFunction)
+        {
+            IFunction function = FunctionFacade.GetFunction(copyFromFunction);
+
+            if (function is FunctionWrapper)
+            {
+                function = (function as FunctionWrapper).InnerFunction;
+            }
+
+            var razorFunction = (RazorBasedFunction) function;
+            string filePath = PathUtil.Resolve(razorFunction.VirtualPath);
+
+            return C1File.ReadAllText(filePath);
         }
 
         private static string GetText(string key)

@@ -3,8 +3,11 @@
   <cms:bindings>
     <cms:binding name="Name" type="System.String" />
     <cms:binding name="Namespace" type="System.String" />
+
+    <cms:binding name="CopyFromFunctionName" type="System.String" />
+    <cms:binding name="CopyFromOptions" type="System.Object" />
   </cms:bindings>
-  <cms:layout label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelDialog}" iconhandle="razor-function">
+  <cms:layout label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelDialog}" iconhandle="razor-function-add">
     <FieldGroup Label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelFieldGroup}">
       <TextBox Label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelName}" Help="${Composite.Plugins.RazorFunction, AddNewRazorFunction.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
@@ -16,6 +19,18 @@
           <cms:bind source="Namespace" />
         </TextBox.Text>
       </TextBox>
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+                   Help="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelCopyFromHelp}"
+                   Label="${Composite.Plugins.RazorFunction, AddNewRazorFunction.LabelCopyFrom}">
+        <KeySelector.Selected>
+          <cms:bind source="CopyFromFunctionName" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="CopyFromOptions" />
+        </KeySelector.Options>
+      </KeySelector>
+      
     </FieldGroup>
   </cms:layout>
 </cms:formdefinition>
