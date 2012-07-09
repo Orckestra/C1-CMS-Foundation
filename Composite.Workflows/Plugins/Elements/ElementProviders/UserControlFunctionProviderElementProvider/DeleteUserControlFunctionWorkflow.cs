@@ -23,7 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             var functionEntityToken = (FileBasedFunctionEntityToken)EntityToken;
 
             FileBasedFunctionProvider<UserControlBasedFunction> provider;
-            UserControlBasedFunction function;
+            FileBasedFunction<UserControlBasedFunction> function;
 
             GetProviderAndFunction(functionEntityToken, out provider, out function);
 

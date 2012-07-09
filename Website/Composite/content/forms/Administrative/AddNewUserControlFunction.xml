@@ -3,19 +3,35 @@
   <cms:bindings>
     <cms:binding name="Name" type="System.String" />
     <cms:binding name="Namespace" type="System.String" />
+    <cms:binding name="CopyFromFunctionName" type="System.String" />
+    <cms:binding name="CopyFromOptions" type="System.Object" />
   </cms:bindings>
   <cms:layout label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelDialog}" iconhandle="usercontrol-function">
     <FieldGroup Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelFieldGroup}">
+      
       <TextBox Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelName}" Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.HelpName}" Type="ProgrammingIdentifier">
         <TextBox.Text>
           <cms:bind source="Name" />
         </TextBox.Text>
       </TextBox>
+      
       <TextBox Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelNamespace}" Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.HelpNamespace}" Type="ProgrammingNamespace">
         <TextBox.Text>
           <cms:bind source="Namespace" />
         </TextBox.Text>
       </TextBox>
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+                   Help="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelCopyFromHelp}"
+                   Label="${Composite.Plugins.UserControlFunction, AddNewUserControlFunction.LabelCopyFrom}">
+        <KeySelector.Selected>
+          <cms:bind source="CopyFromFunctionName" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="CopyFromOptions" />
+        </KeySelector.Options>
+      </KeySelector>
+      
     </FieldGroup>
   </cms:layout>
 </cms:formdefinition>

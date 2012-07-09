@@ -29,7 +29,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             InitializeComponent();
         }
 
-        private string[] GetFiles(UserControlBasedFunction function)
+        private string[] GetFiles(FileBasedFunction<UserControlBasedFunction> function)
         {
             var result = new List<string>();
 
@@ -48,7 +48,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             FileBasedFunctionProvider<UserControlBasedFunction> provider;
-            UserControlBasedFunction function;
+            FileBasedFunction<UserControlBasedFunction> function;
 
             GetProviderAndFunction((FileBasedFunctionEntityToken)this.EntityToken, out provider, out function);
             
@@ -77,7 +77,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             var functionEntityToken = (FileBasedFunctionEntityToken)this.EntityToken;
 
             FileBasedFunctionProvider<UserControlBasedFunction> provider;
-            UserControlBasedFunction function;
+            FileBasedFunction<UserControlBasedFunction> function;
 
             GetProviderAndFunction(functionEntityToken, out provider, out function);
 

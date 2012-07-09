@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using Composite.AspNet.Security;
@@ -11,6 +13,7 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Functions;
+using Composite.Functions.Foundation.PluginFacades;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvider;
 using Composite.Plugins.Elements.ElementProviders.Common;
@@ -22,6 +25,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
     {
         private static readonly string Binding_Name = "Name";
         private static readonly string Binding_Namespace = "Namespace";
+        private static readonly string Binding_CopyFromFunctionName = "CopyFromFunctionName";
+        private static readonly string Binding_CopyFromOptions = "CopyFromOptions";
 
 
         private static readonly string Marker_CodeFile = "%CodeFile%";
@@ -67,6 +72,18 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
 
             this.Bindings.Add(Binding_Name, string.Empty);
             this.Bindings.Add(Binding_Namespace, @namespace);
+
+            var functionProvider = GetFunctionProvider<UserControlFunctionProvider>();
+            var copyOfOptions = new List<KeyValuePair<string, string>>();
+
+            copyOfOptions.Add(new KeyValuePair<string, string>(string.Empty, GetText("AddNewUserControlFunction.LabelCopyFromEmptyOption")));
+            foreach (string functionName in FunctionFacade.GetFunctionNamesByProvider(functionProvider.Name))
+            {
+                copyOfOptions.Add(new KeyValuePair<string, string>(functionName, functionName));
+            }
+
+            this.Bindings.Add(Binding_CopyFromFunctionName, string.Empty);
+            this.Bindings.Add(Binding_CopyFromOptions, copyOfOptions);
         }
 
         private void IsValidData(object sender, ConditionalEventArgs e)
@@ -119,6 +136,7 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
         {
             string functionName = this.GetBinding<string>(Binding_Name);
             string functionNamespace = this.GetBinding<string>(Binding_Namespace);
+            string copyFromFunctionName = this.GetBinding<string>(Binding_CopyFromFunctionName);
             string functionFullName = functionNamespace + "." + functionName;
 
             var provider = GetFunctionProvider<UserControlFunctionProvider>();
@@ -130,10 +148,16 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
             string markupFilePath = Path.Combine(folder, fileName);
             string codeFilePath = markupFilePath + ".cs";
 
+            string markupTemplate = NewUserControl_Markup;
+            string code = NewUserControl_CodeFile;
+            if (!copyFromFunctionName.IsNullOrEmpty())
+            {
+                GetFunctionCode(copyFromFunctionName, out markupTemplate, out code);
+            }
 
             C1Directory.CreateDirectory(folder);
-            C1File.WriteAllText(codeFilePath, NewUserControl_CodeFile);
-            C1File.WriteAllText(markupFilePath, NewUserControl_Markup.Replace(Marker_CodeFile, functionName + ".ascx.cs"));
+            C1File.WriteAllText(codeFilePath, code);
+            C1File.WriteAllText(markupFilePath, markupTemplate.Replace(Marker_CodeFile, functionName + ".ascx.cs"));
 
 
             UserSettings.LastSpecifiedNamespace = functionNamespace;
@@ -147,6 +171,55 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
             var container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
             var executionService = container.GetService<IActionExecutionService>();
             executionService.Execute(newFunctionEntityToken, new WorkflowActionToken(typeof(EditUserControlFunctionWorkflow)), null);
+        }
+
+        private void GetFunctionCode(string copyFromFunctionName, out string markupTemplate, out string code)
+        {
+            IFunction function = FunctionFacade.GetFunction(copyFromFunctionName);
+
+            if (function is FunctionWrapper)
+            {
+                function = (function as FunctionWrapper).InnerFunction;
+            }
+
+            var razorFunction = (UserControlBasedFunction)function;
+            string filePath = PathUtil.Resolve(razorFunction.VirtualPath);
+            string codeFilePath = filePath + ".cs";
+            Verify.That(C1File.Exists(codeFilePath), "Codebehind file not found: {0}", codeFilePath);
+
+            markupTemplate = C1File.ReadAllText(filePath);
+            code = C1File.ReadAllText(codeFilePath);
+
+            const string quote = "\"";
+            string codeFileReference = quote + Path.GetFileName(codeFilePath) + quote;
+
+            int codeReferenceOffset = markupTemplate.IndexOf(codeFileReference, StringComparison.OrdinalIgnoreCase);
+            Verify.That(codeReferenceOffset > 0, "Failed to find codebehind file reference '{0}'".FormatWith(codeFileReference));
+
+            markupTemplate = ReplaceString(markupTemplate, 
+                                           codeFileReference, 
+                                           quote + Marker_CodeFile + quote, 
+                                           StringComparison.OrdinalIgnoreCase);
+        }
+
+        static string ReplaceString(string str, string oldValue, string newValue, StringComparison comparison)
+        {
+            var sb = new StringBuilder();
+
+            int previousIndex = 0;
+            int index = str.IndexOf(oldValue, comparison);
+            while (index != -1)
+            {
+                sb.Append(str.Substring(previousIndex, index - previousIndex));
+                sb.Append(newValue);
+                index += oldValue.Length;
+
+                previousIndex = index;
+                index = str.IndexOf(oldValue, index, comparison);
+            }
+            sb.Append(str.Substring(previousIndex));
+
+            return sb.ToString();
         }
 
         private static string GetText(string key)

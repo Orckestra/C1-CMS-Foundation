@@ -28,7 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             InitializeComponent();
         }
 
-        private string GetFile(RazorBasedFunction function)
+        private string GetFile(FileBasedFunction<RazorBasedFunction> function)
         {
             return PathUtil.Resolve(function.VirtualPath);
         }
@@ -36,7 +36,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             FileBasedFunctionProvider<RazorBasedFunction> provider;
-            RazorBasedFunction function;
+            FileBasedFunction<RazorBasedFunction> function;
 
             GetProviderAndFunction((FileBasedFunctionEntityToken)this.EntityToken, out provider, out function);
             
@@ -60,7 +60,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             var functionEntityToken = (FileBasedFunctionEntityToken)this.EntityToken;
 
             FileBasedFunctionProvider<RazorBasedFunction> provider;
-            RazorBasedFunction function;
+            FileBasedFunction<RazorBasedFunction> function;
 
             GetProviderAndFunction(functionEntityToken, out provider, out function);
 

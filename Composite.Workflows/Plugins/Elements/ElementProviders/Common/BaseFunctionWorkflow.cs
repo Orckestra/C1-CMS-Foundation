@@ -56,7 +56,7 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
         internal void GetProviderAndFunction<FunctionType>(
             FileBasedFunctionEntityToken entityToken,
             out FileBasedFunctionProvider<FunctionType> provider,
-            out FunctionType function) where FunctionType : FileBasedFunction<FunctionType>
+            out FileBasedFunction<FunctionType> function) where FunctionType : FileBasedFunction<FunctionType>
         {
             string functionProviderName = entityToken.FunctionProviderName;
 
@@ -70,7 +70,7 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
                 func = (func as FunctionWrapper).InnerFunction;
             }
 
-            function = (FunctionType) func;
+            function = (FileBasedFunction<FunctionType>) func;
         }
     }
 }

@@ -11,11 +11,14 @@
   <string key="DeleteUserControlFunction.ToolTip" value="Delete UserControl function" />
   
   <string key="AddNewUserControlFunction.LabelDialog" value="Add UserControl Function" />
-  <string key="AddNewUserControlFunction.LabelFieldGroup" value="Naming" />
+  <string key="AddNewUserControlFunction.LabelFieldGroup" value="New UserControl function" />
   <string key="AddNewUserControlFunction.LabelName" value="Name" />
   <string key="AddNewUserControlFunction.HelpName" value="" />
   <string key="AddNewUserControlFunction.LabelNamespace" value="Namespace" />
   <string key="AddNewUserControlFunction.HelpNamespace" value="" />
+  <string key="AddNewUserControlFunction.LabelCopyFrom" value="Copy from" />
+  <string key="AddNewUserControlFunction.LabelCopyFromHelp" value="You can copy the code from another UserControl function by selecting it in this list." />
+  <string key="AddNewUserControlFunction.LabelCopyFromEmptyOption" value="(New UserControl function)" />
 
   <string key="AddNewUserControlFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
   <string key="AddNewUserControlFunctionWorkflow.EmptyName" value="Function name is empty" />

@@ -23,7 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             var functionEntityToken = (FileBasedFunctionEntityToken)EntityToken;
 
             FileBasedFunctionProvider<RazorBasedFunction> provider;
-            RazorBasedFunction function;
+            FileBasedFunction<RazorBasedFunction> function;
 
             GetProviderAndFunction(functionEntityToken, out provider, out function);
 
