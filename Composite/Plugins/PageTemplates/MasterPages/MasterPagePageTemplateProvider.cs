@@ -24,7 +24,7 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
     [ConfigurationElementType(typeof(MasterPagePageTemplateProviderData))]
-    internal class MasterPagePageTemplateProvider: IPageTemplateProvider
+    internal class MasterPagePageTemplateProvider : IPageTemplateProvider, ISharedCodePageTemplateProvider
     {
         private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
 
@@ -70,7 +70,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             return GetInitializedState().Templates;
         }
 
-        public IPageRenderer BuildPageRenderer()
+        public IPageRenderer BuildPageRenderer(Guid templateId)
         {
             var state = GetInitializedState();
 
@@ -240,21 +240,21 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private void ParseTemplate(string virtualPath, 
                                            string filePath, 
                                            MasterPagePageTemplate masterPage,
-                                           out MasterPagePageTemplateDescriptor pagePageTemplateDescriptor,
+                                           out MasterPagePageTemplateDescriptor pageTemplateDescriptor,
                                            out MasterPageRenderingInfo renderingInfo)
         {
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
 
             string csFile = GetCodebehindFilePath(filePath);
 
-            pagePageTemplateDescriptor = new MasterPagePageTemplateDescriptor(filePath, csFile);
             IDictionary<string, PropertyInfo> placeholderProperties;
+            Func<MasterPagePageTemplateDescriptor> constructor = () => new MasterPagePageTemplateDescriptor(filePath, csFile);
 
-            TemplateDefinitionHelper.ExtractPageTemplateInfo(masterPage, pagePageTemplateDescriptor, out placeholderProperties);
+            pageTemplateDescriptor = TemplateDefinitionHelper.BuildPageTemplateDescriptor(masterPage, constructor, out placeholderProperties);
 
-            if(pagePageTemplateDescriptor.Title == null)
+            if (pageTemplateDescriptor.Title == null)
             {
-                pagePageTemplateDescriptor.Title = fileNameWithoutExtension;
+                pageTemplateDescriptor.Title = fileNameWithoutExtension;
             }
 
             renderingInfo = new MasterPageRenderingInfo(virtualPath, placeholderProperties);

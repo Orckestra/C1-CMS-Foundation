@@ -23,7 +23,7 @@ namespace Composite.Core.PageTemplates
         /// The factory will be called for each individual page rendering 
         /// </summary>
         /// <returns></returns>
-        IPageRenderer BuildPageRenderer();
+        IPageRenderer BuildPageRenderer(Guid templateId);
 
         /// <summary>
         /// Adds element actions on "Page templates" element
@@ -31,13 +31,7 @@ namespace Composite.Core.PageTemplates
         IEnumerable<ElementAction> GetRootActions();
 
         /// <summary>
-        /// Gets the list of shared files, those files will be shown in a "Shared code" folder under "Layout/Page Templates"
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<SharedFile> GetSharedFiles();
-
-        /// <summary>
-        /// Flushes the list of templates
+        /// Forces provider to reload all the page templates next time they are requested.
         /// </summary>
         void FlushTemplates();
     }

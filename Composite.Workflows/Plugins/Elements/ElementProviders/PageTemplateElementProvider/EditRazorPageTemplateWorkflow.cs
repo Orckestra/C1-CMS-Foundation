@@ -218,14 +218,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                  warning);
         }
 
-        private RazorPageTemplateProvider GetTemplateProvider(Guid templateId)
-        {
-            var provider = PageTemplateProviderRegistry.GetProviderByTemplateId(templateId) as RazorPageTemplateProvider;
-            Verify.IsNotNull(provider, "Failed to get page template provider");
-
-            return provider;
-        }
-
         private Guid GetTemplateId()
         {
             var entityToken = this.EntityToken;

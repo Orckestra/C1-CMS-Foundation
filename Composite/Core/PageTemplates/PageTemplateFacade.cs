@@ -44,9 +44,11 @@ namespace Composite.Core.PageTemplates
             {
                 var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
 
-                var sharedFiles = provider.GetSharedFiles();
-
-                result.AddRange(sharedFiles);
+                if(provider is ISharedCodePageTemplateProvider)
+                {
+                    var sharedFiles = (provider as ISharedCodePageTemplateProvider).GetSharedFiles();
+                    result.AddRange(sharedFiles);
+                }
             }
 
             return result;
@@ -63,7 +65,7 @@ namespace Composite.Core.PageTemplates
 
             Verify.IsNotNull(provider, "Failed to get page template '{0}'. Check log for possible compilation errors.", pageTemplateId);
 
-            return provider.BuildPageRenderer();
+            return provider.BuildPageRenderer(pageTemplateId);
         }
 
         /// <summary>

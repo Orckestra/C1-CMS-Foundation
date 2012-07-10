@@ -7,15 +7,15 @@ namespace Composite.Core.PageTemplates
     /// <summary>
     /// Describe the page and content desired to be rendered.
     /// </summary>
-    public class PageRenderingJob
+    public class PageContentToRender
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PageRenderingJob"/> class.
+        /// Initializes a new instance of the <see cref="PageContentToRender"/> class.
         /// </summary>
         /// <param name="page">The page.</param>
         /// <param name="contents">The contents.</param>
         /// <param name="isPreview">if set to <c>true</c> the page should be rendered in preview mode.</param>
-        public PageRenderingJob(IPage page, IEnumerable<IPagePlaceholderContent> contents, bool isPreview)
+        public PageContentToRender(IPage page, IEnumerable<IPagePlaceholderContent> contents, bool isPreview)
         {
             this.Page = page;
             this.Contents = contents;

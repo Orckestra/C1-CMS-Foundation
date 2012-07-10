@@ -26,10 +26,7 @@ namespace Composite.Core.PageTemplates.Foundation
             foreach (var providerName in resources.ProviderNames)
             {
                 var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
-                if (provider != null)
-                {
-                    provider.FlushTemplates();
-                }
+                provider.FlushTemplates();
             }
 
             resources.ResetTemplatesCache();
@@ -48,7 +45,7 @@ namespace Composite.Core.PageTemplates.Foundation
             var settings = ConfigurationServices.ConfigurationSource.GetSection(PageTemplateProviderSettings.SectionName)
                                as PageTemplateProviderSettings;
 
-            return settings.PageTemplateProviders.Select(provider => provider.Name).ToArray();
+            return settings.PageTemplateProviders.Select(provider => provider.Name).ToList();
         }
 
 

@@ -225,7 +225,7 @@ namespace Composite.Core.WebClient.Renderings
             _dataScope = new DataScope(_pageUrl.PublicationScope, _pageUrl.LocalizationScope);
 
             var pagePlaceholderContents = GetPagePlaceholderContents();
-            var pageRenderingJob = new PageRenderingJob(Page, pagePlaceholderContents, PreviewMode);
+            var pageRenderingJob = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
 
             Verify.IsNotNull(httpContext.Handler, "HttpHandler isn't defined");
 

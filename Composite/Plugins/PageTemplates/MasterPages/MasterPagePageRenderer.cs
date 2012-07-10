@@ -27,7 +27,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             _renderingInfo = renderingInfo;
         }
 
-        public void AttachToPage(Page aspnetPage, PageRenderingJob renderJob)
+        public void AttachToPage(Page aspnetPage, PageContentToRender renderJob)
         {
             Verify.ArgumentNotNull(aspnetPage, "aspnetPage");
             Verify.ArgumentNotNull(renderJob, "renderJob");
@@ -63,9 +63,9 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             }
         }
 
-        public static PageRenderingJob GetRenderingInfo(Page page)
+        public static PageContentToRender GetRenderingInfo(Page page)
         {
-            return page.Items[PageRenderingJob_Key] as PageRenderingJob;
+            return page.Items[PageRenderingJob_Key] as PageContentToRender;
         }
     }
 }

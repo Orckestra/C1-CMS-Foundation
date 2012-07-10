@@ -79,8 +79,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.Bindings.Add("Title", string.Empty);
 
             List<KeyValuePair<Guid, string>> templatesOptions =
-                (from template in PageTemplateFacade.GetPageTemplates()
-                 where template is RazorPageTemplateDescriptor && template.IsValid
+                (from template in PageTemplateFacade.GetPageTemplates().OfType<RazorPageTemplateDescriptor>()
+                 where template.IsValid
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 

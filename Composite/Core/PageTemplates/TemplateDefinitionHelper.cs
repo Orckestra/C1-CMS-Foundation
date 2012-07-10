@@ -10,16 +10,28 @@ using Composite.Functions;
 
 namespace Composite.Core.PageTemplates
 {
-    /// <exclude />
+    /// <summary>
+    /// Helper class for working with page template definitions based on <see cref="IPageTemplate"/>
+    /// </summary>
     public static class TemplateDefinitionHelper
     {
-        /// <exclude />
-        public static void ExtractPageTemplateInfo(IPageTemplate templateDefinition, 
-                                           PageTemplateDescriptor pageTemplate,
+        /// <summary>
+        /// Builds a page template descriptor. Extracts template's properties and content placeholder properties.
+        /// </summary>
+        /// <param name="templateDefinition">The template definition.</param>
+        /// <param name="descriptorConstructor">The descriptor constructor.</param>
+        /// <param name="placeholderProperties">The placeholder properties.</param>
+        /// <returns></returns>
+        public static DescriptorType BuildPageTemplateDescriptor<DescriptorType>(IPageTemplate templateDefinition,
+                                           Func<DescriptorType> descriptorConstructor,
                                            out IDictionary<string, PropertyInfo> placeholderProperties)
+            where DescriptorType : PageTemplateDescriptor
         {
             Verify.ArgumentNotNull(templateDefinition, "templateDefinition");
-            Verify.ArgumentNotNull(pageTemplate, "pageTemplate");
+            Verify.ArgumentNotNull(descriptorConstructor, "descriptorConstructor");
+
+            DescriptorType pageTemplate = descriptorConstructor();
+            Verify.ArgumentCondition(pageTemplate != null, "descriptorConstructor", "Not null object expected");
 
             pageTemplate.Id = templateDefinition.TemplateId;
             pageTemplate.Title = templateDefinition.TemplateTitle;
@@ -36,10 +48,7 @@ namespace Composite.Core.PageTemplates
             {
                 foreach (var property in type.GetProperties())
                 {
-                    if(property.ReflectedType != property.DeclaringType)
-                    {
-                        continue;
-                    }
+                    if(property.ReflectedType != property.DeclaringType) continue;
 
                     var placeholderAttributes = property.GetCustomAttributes(typeof(PlaceholderAttribute), true);
                     if (placeholderAttributes.Length == 0) continue;
@@ -78,33 +87,32 @@ namespace Composite.Core.PageTemplates
 
             pageTemplate.DefaultPlaceholderId = defaultPlaceholderId;
             pageTemplate.PlaceholderDescriptions = placeholders;
+
+            return pageTemplate;
         }
 
 
         /// <summary>
-        /// Bind placeholders' content to related properties on template definition
+        /// Binds placeholders' content to the related properties on a template definition
         /// </summary>
         /// <param name="template">The template.</param>
-        /// <param name="pageRenderingJob">The page rendering job.</param>
+        /// <param name="pageContentToRender">The page rendering job.</param>
         /// <param name="placeholderProperties">The placeholder properties.</param>
         /// <param name="functionContextContainer">The function context container, if not null, nested functions fill be evaluated.</param>
         public static void BindPlaceholders(IPageTemplate template, 
-                                     PageRenderingJob pageRenderingJob,
+                                     PageContentToRender pageContentToRender,
                                      IDictionary<string, PropertyInfo> placeholderProperties,
                                      FunctionContextContainer functionContextContainer)
         {
             Verify.ArgumentNotNull(template, "template");
-            Verify.ArgumentNotNull(pageRenderingJob, "pageRenderingJob");
+            Verify.ArgumentNotNull(pageContentToRender, "pageContentToRender");
             Verify.ArgumentNotNull(placeholderProperties, "placeholderProperties");
 
-            foreach (var placeholderContent in pageRenderingJob.Contents)
+            foreach (var placeholderContent in pageContentToRender.Contents)
             {
                 string placeholderId = placeholderContent.PlaceHolderId;
 
-                if (!placeholderProperties.ContainsKey(placeholderId))
-                {
-                    continue;
-                }
+                if (!placeholderProperties.ContainsKey(placeholderId)) continue;
 
                 XhtmlDocument placeholderXhtml = PageRenderer.ParsePlaceholderContent(placeholderContent);
 

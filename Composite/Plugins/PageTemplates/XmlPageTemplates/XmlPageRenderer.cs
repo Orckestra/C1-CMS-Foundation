@@ -9,9 +9,9 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
     internal class XmlPageRenderer: IPageRenderer
     {
         private Page _aspnetPage;
-        private PageRenderingJob _job;
+        private PageContentToRender _job;
 
-        public void AttachToPage(Page renderTaget, PageRenderingJob renderJob)
+        public void AttachToPage(Page renderTaget, PageContentToRender renderJob)
         {
             _aspnetPage = renderTaget;
             _job = renderJob;

@@ -62,7 +62,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                            .ToArray();
         }
 
-        public IPageRenderer BuildPageRenderer()
+        public IPageRenderer BuildPageRenderer(Guid templateId)
         {
             return new XmlPageRenderer();
         }
@@ -91,13 +91,6 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
                           }
             }};
         }
-
-
-        public IEnumerable<SharedFile> GetSharedFiles()
-        {
-            return new SharedFile[0];
-        }
-
 
         public void FlushTemplates()
         {

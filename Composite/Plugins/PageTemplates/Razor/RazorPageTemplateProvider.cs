@@ -22,7 +22,7 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 namespace Composite.Plugins.PageTemplates.Razor
 {
     [ConfigurationElementType(typeof(RazorPageTemplateProviderData))]
-    internal class RazorPageTemplateProvider : IPageTemplateProvider
+    internal class RazorPageTemplateProvider : IPageTemplateProvider, ISharedCodePageTemplateProvider
     {
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
@@ -35,7 +35,6 @@ namespace Composite.Plugins.PageTemplates.Razor
         
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
-        private DateTime _lastUpdateTime;
 
         private volatile State _state;
 
@@ -66,7 +65,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             _watcher.EnableRaisingEvents = true;
         }
 
-        public IPageRenderer BuildPageRenderer()
+        public IPageRenderer BuildPageRenderer(Guid templateId)
         {
             var state = GetInitializedState();
 
@@ -201,9 +200,9 @@ namespace Composite.Plugins.PageTemplates.Razor
                                    out PageTemplateDescriptor templateDescriptor, 
                                    out IDictionary<string, PropertyInfo> placeholderProperties)
         {
-            templateDescriptor = new RazorPageTemplateDescriptor(virtualPath);
+            Func<PageTemplateDescriptor> constructor = () => new RazorPageTemplateDescriptor(virtualPath);
 
-            TemplateDefinitionHelper.ExtractPageTemplateInfo(webPage, templateDescriptor, out placeholderProperties);
+            templateDescriptor = TemplateDefinitionHelper.BuildPageTemplateDescriptor(webPage, constructor, out placeholderProperties);
         }
 
 

@@ -5,20 +5,29 @@ using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
 
 namespace Composite.Core.PageTemplates
 {
-    /// <exclude />
+
+    /// <summary>
+    /// Entity token of a page template
+    /// </summary>
     [SecurityAncestorProvider(typeof(PageTemplateEntityTokenSecurityAncestorProvider))]
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PageTemplateEntityToken : EntityToken
     {
         private readonly string _id;
 
-        /// <exclude />
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageTemplateEntityToken"/> class.
+        /// </summary>
+        /// <param name="templateId">The template id.</param>
         public PageTemplateEntityToken(Guid templateId)
         {
             _id = templateId.ToString();
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets the template id.
+        /// </summary>
         public Guid TemplateId
         {
             get { return new Guid(_id); }

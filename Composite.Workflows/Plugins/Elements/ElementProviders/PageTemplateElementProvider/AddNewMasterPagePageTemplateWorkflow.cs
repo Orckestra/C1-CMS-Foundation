@@ -96,15 +96,14 @@ public partial class page_template : MasterPagePageTemplate
             this.Bindings.Add("Title", string.Empty);
 
             List<KeyValuePair<Guid, string>> templatesOptions =
-                (from template in PageTemplateFacade.GetPageTemplates()
-                 where template is MasterPagePageTemplateDescriptor 
-                       && template.IsValid
-                       && TemplateIsClonable(template as MasterPagePageTemplateDescriptor)
+                (from template in PageTemplateFacade.GetPageTemplates().OfType<MasterPagePageTemplateDescriptor>()
+                 where template.IsValid
+                       && TemplateIsClonable(template)
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
             templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
-                Guid.Empty, GetStr("AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+                Guid.Empty, GetText("AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add("CopyOfOptions", templatesOptions);
             this.Bindings.Add("CopyOfId", Guid.Empty);
@@ -292,10 +291,10 @@ public partial class page_template : MasterPagePageTemplate
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("NewPageTemplate.Title", GetStr("AddNewPageTemplateStep1.TitleInUseTitle"));
+            ShowFieldMessage("NewPageTemplate.Title", GetText("AddNewPageTemplateStep1.TitleInUseTitle"));
         }
 
-        private static string GetStr(string stringName)
+        private static string GetText(string stringName)
         {
             return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", stringName);
         }
