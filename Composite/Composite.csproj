@@ -109,6 +109,7 @@
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -152,9 +153,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AspNet\CompositeC1SiteMapProvider.cs" />
     <Compile Include="AspNet\Razor\RazorFunction.cs" />
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
     <Compile Include="AspNet\Razor\CompositeC1WebPage.cs" />
+    <Compile Include="AspNet\CompositeC1SiteMapNode.cs" />
+    <Compile Include="AspNet\SiteMapContext.cs" />
+    <Compile Include="AspNet\SiteMapHandler.cs" />
+    <Compile Include="AspNet\SiteMapNodeChangeFrequency.cs" />
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
