@@ -56,17 +56,10 @@ namespace Composite.AspNet
                 }
                 else
                 {
-                    CultureInfo requestCulture = Thread.CurrentThread.CurrentCulture;
-
-                    try
+                    IPage rootPage = ExtractRootPageFromSiteMapUrl(context.Request.RawUrl);
+                    using(new SiteMapContext(rootPage))
                     {
-                        Thread.CurrentThread.CurrentCulture = ExtractCultureFromSiteMapUrl(context.Request.RawUrl);
-
                         WriteFullSiteMap(provider);
-                    }
-                    finally
-                    {
-                        Thread.CurrentThread.CurrentCulture = requestCulture;
                     }
                 }
 
@@ -85,9 +78,10 @@ namespace Composite.AspNet
             _context.Response.Write(content);
         }
 
-        private CultureInfo ExtractCultureFromSiteMapUrl(string relativeUrl)
+        private IPage ExtractRootPageFromSiteMapUrl(string relativeUrl)
         {
             Verify.That(relativeUrl.StartsWith(UrlUtils.PublicRootPath, StringComparison.OrdinalIgnoreCase), "Incorrect url prefix");
+
 
             string[] requestParts = relativeUrl.Substring(UrlUtils.PublicRootPath.Length)
                                                .Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
@@ -95,9 +89,31 @@ namespace Composite.AspNet
             Verify.That(requestParts.Length > 0, "error parsing url");
             string languageCode = requestParts[0];
 
-            foreach(var culture in DataLocalizationFacade.ActiveLocalizationCultures)
+            string urlTitle = requestParts.Length > 2 ? requestParts[1] : string.Empty;
+            
+            CultureInfo culture = GetActiveCulture(languageCode);
+
+            using(new DataScope(PublicationScope.Published, culture))
             {
-                if(culture.Name.Equals(languageCode, StringComparison.OrdinalIgnoreCase))
+                foreach(Guid rootPageId in PageManager.GetChildrenIDs(Guid.Empty))
+                {
+                    var page = PageManager.GetPageById(rootPageId);
+                    if (page == null) continue;
+                    
+                    if(string.Equals(urlTitle, page.UrlTitle, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return page;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private CultureInfo GetActiveCulture(string languageCode)
+        {
+            foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
+            {
+                if (culture.Name.Equals(languageCode, StringComparison.OrdinalIgnoreCase))
                 {
                     return culture;
                 }
@@ -145,14 +161,26 @@ namespace Composite.AspNet
 
             foreach (var node in rootNodes)
             {
+                string urlTitle = null;
+
+                using(new DataScope(PublicationScope.Published, node.Culture))
+                {
+                    IPage page = PageManager.GetPageById(node.PageNode.Id);
+                    if(page != null)
+                    {
+                        urlTitle = page.UrlTitle;
+                    }
+                }
+
                 _writer.WriteStartElement("sitemap");
 
                 _writer.WriteStartElement("loc");
-                _writer.WriteString("{0}://{1}{2}/{3}/sitemap.xml".FormatWith(
+                _writer.WriteString("{0}://{1}{2}/{3}{4}/sitemap.xml".FormatWith(
                                     _context.Request.Url.Scheme,
                                     UrlUtils.PublicRootPath,
                                     _context.Request.Url.Host, 
-                                    node.Culture));
+                                    node.Culture,
+                                    urlTitle.IsNullOrEmpty() ? string.Empty : "/" + urlTitle));
                 _writer.WriteEndElement();
 
                 _writer.WriteEndElement();

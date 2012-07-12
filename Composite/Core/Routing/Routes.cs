@@ -32,11 +32,20 @@ namespace Composite.Core.Routing
             routes.Ignore("{*all_css_aspx}", new { all_css_aspx = @".*\.css.aspx(/.*)?" });
             routes.Ignore("{*all_js_aspx}", new { all_js_aspx = @".*\.js.aspx(/.*)?" });
 
-            routes.Ignore(UrlUtils.PublicRootPath + "sitemap.xml");
-            routes.Ignore(UrlUtils.PublicRootPath + "{language}/sitemap.xml");
+            routes.Ignore(RelativeRoute("sitemap.xml"));
+            routes.Ignore(RelativeRoute("{language}/sitemap.xml"));
+            routes.Ignore(RelativeRoute("{language}/{urlTitle}/sitemap.xml"));
 
             // Adding 404 handler as the last one
             routes.Add("c1 404 route", new PageNotFoundRoute());
+        }
+
+        private static string RelativeRoute(string route)
+        {
+            var rootPath = UrlUtils.PublicRootPath;
+            if (rootPath == string.Empty) return route;
+
+            return rootPath.Substring(1) + '/' + route;
         }
     }
 }
