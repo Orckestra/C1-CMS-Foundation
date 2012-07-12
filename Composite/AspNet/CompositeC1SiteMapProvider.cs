@@ -36,9 +36,11 @@ namespace Composite.AspNet
             }
         }
 
+
+
         private const string _key = "sitemap";
         private static readonly object _lock = new object();
-
+        private static readonly SiteMapContainer _emptySiteMap = new SiteMapContainer();
 
         /// <exclude />
         public bool ExtranetEnabled { get; private set; }
@@ -94,6 +96,7 @@ namespace Composite.AspNet
             return node;
         }
 
+        /// <exclude />
         public override SiteMapNode FindSiteMapNodeFromKey(string key)
         {
             return FindSiteMapNodeFromKey(key, false);
@@ -107,14 +110,13 @@ namespace Composite.AspNet
                 return FindSiteMapNodeFromKey(key, CultureInfo.CurrentCulture);
             }
 
-            var list = LoadSiteMap();
-            foreach (var container in list.Values)
+            var siteMap = LoadSiteMap();
+            if (siteMap == null) return null;
+
+            SiteMapNode node;
+            if(siteMap.KeyToNodesMap.TryGetValue(key, out node))
             {
-                SiteMapNode node;
-                if (container.KeyToNodesMap.TryGetValue(key, out node))
-                {
-                    return node;
-                }
+                return node;
             }
 
             return null;
@@ -203,12 +205,14 @@ namespace Composite.AspNet
             var list = new List<SiteMapNode>();
             foreach (Guid rootPageId in PageManager.GetChildrenIDs(Guid.Empty))
             {
-                foreach (var container in LoadSiteMap(rootPageId))
+                foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
                 {
-                    var node = container.Value.Root;
-                    if (node != null)
+                    var siteMap = LoadSiteMap(culture, rootPageId);
+
+                    SiteMapNode rootNode;
+                    if (siteMap != null && (rootNode = siteMap.Root) != null)
                     {
-                        list.Add(node);
+                        list.Add(rootNode);
                     }
                 }
             }
@@ -250,29 +254,29 @@ namespace Composite.AspNet
             }
         }
 
-        private SiteMapContainer GetContainer(CultureInfo ci)
+        private SiteMapContainer GetContainer(CultureInfo cultureInfo)
         {
-            var containers = LoadSiteMap();
-            SiteMapContainer container;
-
-            containers.TryGetValue(ci, out container);
-
-            return container;
+            using(new DataScope(cultureInfo))
+            {
+                return LoadSiteMap();
+            }
         }
 
-        private IDictionary<CultureInfo, SiteMapContainer> LoadSiteMap()
+        private SiteMapContainer LoadSiteMap()
         {
             var siteMapContext = SiteMapContext.Current;
 
             if(siteMapContext != null)
             {
-                return LoadSiteMap(siteMapContext.RootPage.Id);
+                var rootPage = siteMapContext.RootPage;
+
+                return LoadSiteMap(rootPage.DataSourceId.LocaleScope, rootPage.Id);
             }
 
             Guid currentHomePage = SitemapNavigator.CurrentHomePageId;
             if (currentHomePage != Guid.Empty)
             {
-                return LoadSiteMap(currentHomePage);
+                return LoadSiteMap(CultureInfo.CurrentCulture, currentHomePage);
             }
 
             var context = HttpContext.Current;
@@ -282,52 +286,57 @@ namespace Composite.AspNet
                 PageNode pageNode = new SitemapNavigator(conn).GetPageNodeByHostname(context.Request.Url.Host);
                 if(pageNode != null)
                 {
-                    return LoadSiteMap(pageNode.Id);
+                    return LoadSiteMap(conn.CurrentLocale, pageNode.Id);
                 }
             }
 
-            return new Dictionary<CultureInfo, SiteMapContainer>();
+            return null;
         }
 
-        private IDictionary<CultureInfo, SiteMapContainer> LoadSiteMap(Guid rootPageId)
+        private SiteMapContainer LoadSiteMap(CultureInfo culture, Guid rootPageId)
         {
             var uri = ProcessUrl(HttpContext.Current.Request.Url);
             var host = uri.Host;
 
-            IDictionary<CultureInfo, SiteMapContainer> list = GetFromCache(host, rootPageId);
-            if (list == null)
+            SiteMapContainer siteMap = GetFromCache(host, culture, rootPageId);
+            if (siteMap == null)
             {
                 lock (_lock)
                 {
-                    list = GetFromCache(host, rootPageId);
+                    siteMap = GetFromCache(host, culture, rootPageId);
 
-                    if (list == null)
+                    if (siteMap == null)
                     {
-                        list = new Dictionary<CultureInfo, SiteMapContainer>();
+                        siteMap = LoadSiteMapInternal(culture, rootPageId);
+                        if (siteMap != null)
+                        {
+                            AddRolesInternal(siteMap);
+                        }
+                        else
+                        {
+                            siteMap = _emptySiteMap;
+                        }
 
-                        LoadSiteMapInternal(list, rootPageId);
-                        AddRolesInternal(list);
-
-                        AddToCache(list, host, rootPageId);
+                        AddToCache(siteMap, host, culture, rootPageId);
                     }
                 }
             }
 
-            return list;
+            return object.ReferenceEquals(siteMap, _emptySiteMap) ? null : siteMap;
         }
 
-        private IDictionary<CultureInfo, SiteMapContainer> GetFromCache(string host, Guid rootPageId)
+        private SiteMapContainer GetFromCache(string host, CultureInfo culture, Guid rootPageId)
         {
-            var key = GetCacheKey(host, rootPageId);
+            var key = GetCacheKey(host, culture, rootPageId);
 
             var context = HttpContext.Current;
-            var container = context.Items[key] as IDictionary<CultureInfo, SiteMapContainer>;
+            var container = context.Items[key] as SiteMapContainer;
 
             if (container == null)
             {
                 if (!CanCache) return null;
 
-                container = MemoryCache.Default.Get(key) as IDictionary<CultureInfo, SiteMapContainer>;
+                container = MemoryCache.Default.Get(key) as SiteMapContainer;
                 if (container != null)
                 {
                     context.Items.Add(key, container);
@@ -337,22 +346,34 @@ namespace Composite.AspNet
             return container;
         }
 
-        private void AddToCache(IDictionary<CultureInfo, SiteMapContainer> container, string host, Guid rootPageId)
+        private void AddToCache(SiteMapContainer siteMap, string host, CultureInfo culture, Guid rootPageId)
         {
-            var key = GetCacheKey(host, rootPageId);
+            var key = GetCacheKey(host, culture, rootPageId);
 
             var context = HttpContext.Current;
-            context.Items[key] = container;
+            context.Items[key] = siteMap;
 
             if (CanCache)
             {
-                MemoryCache.Default.Add(key, container, ObjectCache.InfiniteAbsoluteExpiration);
+                MemoryCache.Default.Add(key, siteMap, ObjectCache.InfiniteAbsoluteExpiration);
             }
         }
 
-        private string GetCacheKey(string host, Guid rootPageId)
+        private string GetCacheKey(string host, CultureInfo culture, Guid rootPageId)
         {
-            return  _key + host + rootPageId.ToString() + GetRequestKey();
+            string hostnameKey;
+
+            var urlSpace = new UrlSpace();
+            if(urlSpace.ForceRelativeUrls)
+            {
+                hostnameKey = string.Empty;
+            }
+            else
+            {
+                hostnameKey = host;
+            }
+
+            return _key + hostnameKey + rootPageId.ToString() + culture.Name + this.PublicationScope;
         }
     
 
@@ -370,11 +391,6 @@ namespace Composite.AspNet
             {
                 return DataScopeManager.CurrentDataScope.ToPublicationScope() == PublicationScope.Published;
             }
-        }
-
-        protected string GetRequestKey()
-        {
-            return PublicationScope.ToString();
         }
 
         protected string GetCurrentNodeKey()
@@ -491,6 +507,30 @@ namespace Composite.AspNet
             }
         }
 
+        protected SiteMapContainer LoadSiteMapInternal(CultureInfo culture, Guid rootPageId)
+        {
+            var scope = PublicationScope;
+
+            using (var data = new DataConnection(scope, culture))
+            {
+                var rootPage = data.SitemapNavigator.GetPageNodeById(rootPageId);
+
+                if (rootPage == null)
+                {
+                    return null;                    
+                }
+
+                var container = new SiteMapContainer
+                {
+                    Root = new CompositeC1SiteMapNode(this, rootPage, data)
+                };
+
+                LoadNodes(rootPage, null, container, data);
+
+                return container;
+            }
+        }
+
         /// <summary>
         ///  Fixes up the hostname when using the preview-tab in the Console, since the requested page can belong to 
         /// a different domain than the console was opened in
@@ -548,7 +588,7 @@ namespace Composite.AspNet
             return @string;
         }
 
-        protected virtual void AddRolesInternal(IDictionary<CultureInfo, SiteMapContainer> list) { }
+        protected virtual void AddRolesInternal(SiteMapContainer siteMapContainer) { }
 
         private void LoadNodes(PageNode pageNode, SiteMapNode parent, SiteMapContainer container, DataConnection data)
         {

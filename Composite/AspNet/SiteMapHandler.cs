@@ -57,6 +57,14 @@ namespace Composite.AspNet
                 else
                 {
                     IPage rootPage = ExtractRootPageFromSiteMapUrl(context.Request.RawUrl);
+
+                    if(rootPage == null)
+                    {
+                        _context.Response.Clear();
+                        _context.Response.StatusCode = 404;
+                        return;
+                    }
+
                     using(new SiteMapContext(rootPage))
                     {
                         WriteFullSiteMap(provider);
