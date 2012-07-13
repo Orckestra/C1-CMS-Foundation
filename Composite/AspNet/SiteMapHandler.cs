@@ -51,7 +51,13 @@ namespace Composite.AspNet
                     }
                     else
                     {
-                        WriteFullSiteMap(provider);
+                        var rootNode = rootNodesFiltered.FirstOrDefault();
+
+                        if (rootNode != null)
+                        {
+                            Thread.CurrentThread.CurrentCulture = rootNode.Culture;
+                            WriteFullSiteMap(provider);
+                        }
                     }
                 }
                 else

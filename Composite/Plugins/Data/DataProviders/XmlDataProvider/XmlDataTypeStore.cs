@@ -53,7 +53,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
         public bool HasDataScopeName(string dataScopeName)
         {
-            return _xmlDateTypeStoreDataScopes.Where(f => f.DataScopeName == dataScopeName).Any();
+            return _xmlDateTypeStoreDataScopes.Any(f => f.DataScopeName == dataScopeName);
         }
 
 
@@ -61,7 +61,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         public XmlDataTypeStoreDataScope GetXmlDateTypeStoreDataScope(string dataScopeName, string cultureName)
         {
             XmlDataTypeStoreDataScope dateTypeStoreDataScope =
-                _xmlDateTypeStoreDataScopes.Where(f => f.DataScopeName == dataScopeName && f.CultureName == cultureName).Single();
+                _xmlDateTypeStoreDataScopes.SingleOrDefault(f => f.DataScopeName == dataScopeName && f.CultureName == cultureName);
+
+
+            Verify.IsNotNull(dateTypeStoreDataScope, "No data store exist for data scope ({0},{1})", dataScopeName, cultureName);
 
             return dateTypeStoreDataScope;
         }
