@@ -261,8 +261,6 @@ namespace Composite.Core.WebClient
 
             TempDirectoryFacade.OnApplicationStart();
 
-            Routing.Routes.Register();
-
             HostnameBindingsFacade.Initialize();
 
             ApplicationStartupFacade.FireSystemInitialized();

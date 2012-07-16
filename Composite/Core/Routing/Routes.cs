@@ -1,51 +1,82 @@
-﻿using System.Web.Routing;
+﻿using System;
+using System.Web.Routing;
 using Composite.Core.Routing.Pages;
-using Composite.Core.WebClient;
 
 namespace Composite.Core.Routing
 {
-    internal static class Routes
+    /// <summary>
+    /// Allows adding custom routes with a priority in relation to defined by CompositeC1 routes.
+    /// </summary>
+    public static class Routes
     {
+        /// <exclude />
+        [Obsolete("Use RegisterPageRoute() and Register404Route() instead", true)]
         public static void Register()
         {
             var routes = RouteTable.Routes;
-            var c1pageRoute = new C1PageRoute();
 
-            if (routes.Count > 2)
+            RegisterPageRoute(routes);
+            Register404Route(routes);
+        }
+
+        /// <summary>
+        /// Registers C1's page route.
+        /// </summary>
+        public static void RegisterPageRoute(RouteCollection routes)
+        {
+            routes.Ignore("Composite/{*pathInfo}");
+            routes.Ignore("{resource}.axd/{*pathInfo}");
+
+            AddSiteMapRoutes(routes);
+
+            if (OnBeforePageRouteAdded != null)
             {
-                // The default routes are
-                // 1. Composite/{*pathInfo}
-                // 2. {resource}.axd/{*pathInfo}
-                // Inserting to the third position, so it is executed before MVC route
-                
-                routes.Insert(2, c1pageRoute);
-            }
-            else
-            {
-                routes.Ignore("Composite/{*pathInfo}");
-                routes.Ignore("{resource}.axd/{*pathInfo}");
-                routes.Add("c1 page route", c1pageRoute);
+                OnBeforePageRouteAdded(routes);
             }
 
+            routes.Add("c1 page route", new C1PageRoute());
+
+            if (OnAfterPageRouteAdded != null)
+            {
+                OnAfterPageRouteAdded(routes);
+            }
+        }
+
+        /// <summary>
+        /// Registers C1's 404 route that catches all requests. 
+        /// This method should be called only after all other routes are registered.
+        /// </summary>
+        public static void Register404Route(RouteCollection routes)
+        {
             // Ignoring routes that shouldn't be caught by 404 handler
             routes.Ignore("Renderers/{*pathInfo}");
             routes.Ignore("{*all_css_aspx}", new { all_css_aspx = @".*\.css.aspx(/.*)?" });
             routes.Ignore("{*all_js_aspx}", new { all_js_aspx = @".*\.js.aspx(/.*)?" });
 
-            routes.Ignore(RelativeRoute("sitemap.xml"));
-            routes.Ignore(RelativeRoute("{language}/sitemap.xml"));
-            routes.Ignore(RelativeRoute("{language}/{urlTitle}/sitemap.xml"));
-
-            // Adding 404 handler as the last one
             routes.Add("c1 404 route", new PageNotFoundRoute());
         }
 
-        private static string RelativeRoute(string route)
+        private static void AddSiteMapRoutes(RouteCollection routes)
         {
-            var rootPath = UrlUtils.PublicRootPath;
-            if (rootPath == string.Empty) return route;
-
-            return rootPath.Substring(1) + '/' + route;
+            routes.Ignore("sitemap.xml");
+            routes.Ignore("{language}/sitemap.xml");
+            routes.Ignore("{language}/{urlTitle}/sitemap.xml");
         }
+
+        /// <summary>
+        /// Occurs before C1 page route is added.
+        /// </summary>
+        public static event RouteRegistration OnBeforePageRouteAdded;
+
+        /// <summary>
+        /// Occurs after C1 page route is added.
+        /// </summary>
+        public static event RouteRegistration OnAfterPageRouteAdded;
+
+        /// <summary>
+        /// Handles route registration
+        /// </summary>
+        /// <param name="routeCollection">The route collection.</param>
+        public delegate void RouteRegistration(RouteCollection routeCollection);
     }
 }

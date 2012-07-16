@@ -1,4 +1,5 @@
 <%@ Application Language="C#" %>
+<%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Core.WebClient" %>
 
 <script RunAt="server">
@@ -8,6 +9,17 @@
         ApplicationLevelEventHandlers.LogApplicationLevelErrors = false;
         
         ApplicationLevelEventHandlers.Application_Start(sender, e);
+
+        RegisterRoutes(RouteTable.Routes);
+    }
+
+    public static void RegisterRoutes(RouteCollection routes)
+    {
+        Routes.RegisterPageRoute(routes);
+
+        // If necessary, add the standard MVC route "{controller}/{action}/{id}" after registering the C1 page route
+        
+        Routes.Register404Route(routes);
     }
 
     
