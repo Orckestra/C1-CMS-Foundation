@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Threading;
 using Composite.Data.Caching;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
@@ -117,10 +118,15 @@ namespace Composite.Data
                     {
                         if (_defaultCulture == null)
                         {
-                            List<string> culturesMarkedAsDefault =
-                                (from data in DataFacade.GetData<ISystemActiveLocale>()
-                                 where data.IsDefault
-                                 select data.CultureName).ToList();
+                            List<string> culturesMarkedAsDefault;
+
+                            using (ThreadDataManager.EnsureInitialize())
+                            {
+                                culturesMarkedAsDefault =
+                                    (from data in DataFacade.GetData<ISystemActiveLocale>()
+                                     where data.IsDefault
+                                     select data.CultureName).ToList();
+                            }
 
                             CultureInfo cultureInfo = null;
 
