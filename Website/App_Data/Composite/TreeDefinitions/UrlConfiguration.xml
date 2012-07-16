@@ -9,13 +9,13 @@
 		<Children>
 			<DataElements Type="Composite.Data.Types.IUrlConfiguration, Composite" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementLabel}" Icon="housefolder" ToolTip="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementToolTip}">
 				<Actions>
-					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}" Icon="media-edit-media-folder"/>
-				</Actions>
+					<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/UrlConfiguration.xml" Label="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.ConfigurationElementEditToolTip}" Icon="media-edit-media-folder"/>
+        </Actions>
 
 				<Children>
 					<Element Id="Hostnames" Label="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.HostnamesFolderToolTip}" Icon="folder" OpenedIcon="folder-open">
 						<Actions>
-							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}" Icon="home-add"/>
+							<AddDataAction Type="Composite.Data.Types.IHostnameBinding" CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Label="${Composite.Web.UrlConfiguration, Tree.AddHostnameLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.AddHostnameToolTip}" Icon="home-add"/>
 						</Actions>
 						<Children>
 
@@ -24,8 +24,8 @@
 									<Field FieldName="Hostname" Direction="ascending"/>
 								</OrderBy>
 								<Actions>
-									<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Icon="home-edit"/>
-									<DeleteDataAction Icon="home-delete"/>
+									<EditDataAction CustomFormMarkupPath="~/Composite/content/forms/Administrative/Hostnames.xml" Icon="home-edit" Label="${Composite.Web.UrlConfiguration, Tree.EditHostnameLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.EditHostnameToolTip}" />
+									<DeleteDataAction Icon="home-delete"  Label="${Composite.Web.UrlConfiguration, Tree.DeleteHostnameLabel}" ToolTip="${Composite.Web.UrlConfiguration, Tree.DeleteHostnameToolTip}"/>
 								</Actions>
 							</DataElements>
 						</Children>
