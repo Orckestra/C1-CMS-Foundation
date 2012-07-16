@@ -10,8 +10,8 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataScope : IDisposable
     {
-        private bool _dataScopePushed = false;
-        private bool _cultureInfoPushed = false;
+        private readonly bool _dataScopePushed = false;
+        private readonly bool _cultureInfoPushed = false;
 
 
         /// <exclude />

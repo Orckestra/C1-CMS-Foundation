@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Composite.Core.Threading;
 using Composite.Data;
 
 
@@ -12,7 +13,8 @@ namespace Composite.Core.Implementation
     /// </summary>
     public class DataConnectionImplementation : DataConnectionBase, IDisposable
     {
-        private DataScope _dataScope;
+        private IDisposable _threadDataManager;
+        private readonly DataScope _dataScope;
 
 
         /// <summary>
@@ -21,6 +23,7 @@ namespace Composite.Core.Implementation
         /// </summary>
         public DataConnectionImplementation()
         {
+            InitializeThreadData();
             InitializeScope();
         }
 
@@ -32,12 +35,16 @@ namespace Composite.Core.Implementation
         /// <param name="locale"></param>
         public DataConnectionImplementation(PublicationScope scope, CultureInfo locale)
         {
+            InitializeThreadData();
             InitializeScope(scope, locale);
 
             _dataScope = new DataScope(this.DataScopeIdentifier, locale);
         }
 
-
+        private void InitializeThreadData()
+        {
+            _threadDataManager = ThreadDataManager.EnsureInitialize();
+        }
 
         /// <summary>
         /// Documentation pending
@@ -233,7 +240,9 @@ namespace Composite.Core.Implementation
         {
             if (disposing)
             {
-                _dataScope.Dispose();                
+                _dataScope.Dispose();
+
+                _threadDataManager.Dispose();
             }
         }
     }
