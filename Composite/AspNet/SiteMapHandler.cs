@@ -14,6 +14,9 @@ using Composite.Data.Types;
 
 namespace Composite.AspNet
 {
+    /// <summary>
+    /// Handles requests to XML Sitemaps: */sitemap.xml
+    /// </summary>
     public class SiteMapHandler : IHttpHandler
     {
         private const string _ns = "http://www.sitemaps.org/schemas/sitemap/0.9";
@@ -36,7 +39,7 @@ namespace Composite.AspNet
             {
                 var provider = SiteMap.Provider;
 
-                _writer = XmlWriter.Create(ms, new XmlWriterSettings() {Encoding = Encoding.UTF8, Indent = true});
+                _writer = XmlWriter.Create(ms, new XmlWriterSettings {Encoding = Encoding.UTF8, Indent = true});
 
                 _writer.WriteStartDocument();
 
@@ -66,8 +69,7 @@ namespace Composite.AspNet
 
                     if(rootPage == null)
                     {
-                        _context.Response.Clear();
-                        _context.Response.StatusCode = 404;
+                        Write404();
                         return;
                     }
 
@@ -106,6 +108,11 @@ namespace Composite.AspNet
             string urlTitle = requestParts.Length > 2 ? requestParts[1] : string.Empty;
             
             CultureInfo culture = GetActiveCulture(languageCode);
+            if(culture == null)
+            {
+                return null;
+            }
+
 
             using(new DataScope(PublicationScope.Published, culture))
             {
@@ -123,6 +130,12 @@ namespace Composite.AspNet
             return null;
         }
 
+        private void Write404()
+        {
+            _context.Response.Clear();
+            _context.Response.StatusCode = 404;
+        }
+
         private CultureInfo GetActiveCulture(string languageCode)
         {
             foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
@@ -133,7 +146,7 @@ namespace Composite.AspNet
                 }
             }
 
-            return Thread.CurrentThread.CurrentCulture;
+            return null;
         }
 
         private IEnumerable<CompositeC1SiteMapNode> FilterOutOtherDomains(IEnumerable<CompositeC1SiteMapNode> rootNodes)
@@ -188,11 +201,14 @@ namespace Composite.AspNet
 
                 _writer.WriteStartElement("sitemap");
 
+                var uri = _context.Request.Url;
+
                 _writer.WriteStartElement("loc");
-                _writer.WriteString("{0}://{1}{2}/{3}{4}/sitemap.xml".FormatWith(
-                                    _context.Request.Url.Scheme,
+                _writer.WriteString("{0}://{1}{2}{3}/{4}{5}/sitemap.xml".FormatWith(
+                                    uri.Scheme,
+                                    uri.Host,
+                                    uri.IsDefaultPort ? string.Empty : ":" + uri.Port,
                                     UrlUtils.PublicRootPath,
-                                    _context.Request.Url.Host, 
                                     node.Culture,
                                     urlTitle.IsNullOrEmpty() ? string.Empty : "/" + urlTitle));
                 _writer.WriteEndElement();

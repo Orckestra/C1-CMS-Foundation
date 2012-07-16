@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Composite.Functions;
-
-using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-using Composite.Core.Extensions;
 using System.Linq.Expressions;
+using Composite.Core.Linq;
+using Composite.Core.Extensions;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Utils.Predicates
 {
@@ -46,7 +46,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                     Expression part = Expression.Equal(parameter, Expression.Constant(temp));
 
-                    body = (body == null) ? part : Expression.Or(body, part);
+                    body = body.NestedOr(part);
                 }
 
                 if(body != null)
