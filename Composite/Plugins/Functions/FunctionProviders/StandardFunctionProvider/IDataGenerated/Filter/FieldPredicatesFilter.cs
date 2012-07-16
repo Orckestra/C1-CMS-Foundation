@@ -72,7 +72,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 Expression predicateBody = predicate.Body;
 
-                ParameterExpressionSwitcher parameterExpressionSwitcher = new ParameterExpressionSwitcher(propertyExpression);
+                ParameterExpressionSwitcher parameterExpressionSwitcher = new ParameterExpressionSwitcher(predicate.Parameters[0], propertyExpression);
 
                 Expression newPredicateBody = parameterExpressionSwitcher.Visit(predicateBody);
 
@@ -92,7 +92,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private PropertyInfo GetProperty(string fieldName)
         {
-            PropertyInfo fieldPropertyInfo = typeof(T).GetAllProperties().Where(f => f.Name == fieldName).Single();
+            PropertyInfo fieldPropertyInfo = typeof(T).GetAllProperties().Single(f => f.Name == fieldName);
             return fieldPropertyInfo;
         }
 
@@ -100,18 +100,25 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private sealed class ParameterExpressionSwitcher : ExpressionVisitor
         {
-            private Expression _newParameterExpression;
+            private readonly Expression _oldParameter;
+            private readonly Expression _newParameterExpression;
 
 
-            public ParameterExpressionSwitcher(Expression newParameterExpression)
+            public ParameterExpressionSwitcher(Expression oldParameter, Expression newParameterExpression)
             {
+                _oldParameter = oldParameter;
                 _newParameterExpression = newParameterExpression;
             }
 
 
             protected override Expression VisitParameter(ParameterExpression node)
             {
-                return _newParameterExpression;
+                if(object.ReferenceEquals(node, _oldParameter))
+                {
+                    return _newParameterExpression;
+                }
+
+                return node;
             }
         }
     }
