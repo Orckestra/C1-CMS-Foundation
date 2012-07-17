@@ -535,7 +535,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                          new XAttribute("Title", page.Title),
                          (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute("MenuTitle", page.MenuTitle)),
                          new XAttribute("UrlTitle", page.UrlTitle),
-                         new XAttribute("Description", page.Description),
+                         new XAttribute("Description", page.Description ?? string.Empty),
                          new XAttribute("ChangedDate", page.ChangeDate),
                          new XAttribute("ChangedBy", page.ChangedBy ?? string.Empty));
 
