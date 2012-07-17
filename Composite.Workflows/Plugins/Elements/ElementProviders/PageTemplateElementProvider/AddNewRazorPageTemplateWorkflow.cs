@@ -22,7 +22,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private static readonly string Marker_TemplateId = "%TemplateId%";
         private static readonly string Marker_TemplateTitle = "%TemplateTitle%";
 
-        private static readonly string DefaultRazorTemplateMarkup = 
+        private static readonly string DefaultRazorTemplateMarkup =
 @"@inherits RazorPageTemplate
               
 @functions {
@@ -37,10 +37,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         get { return ""%TemplateTitle%""; }
     }
 
-    [Placeholder(Title=""Content"", IsDefault=true)]
+    [Placeholder(Id=""content"", Title=""Content"", IsDefault=true)]
 	public XhtmlDocument Content { get; set; }
 
-    [Placeholder(Title=""Bottom"")]
+    [Placeholder(Id=""bottom"", Title=""Bottom"")]
     public XhtmlDocument Bottom { get; set; }    
 }
 
@@ -48,10 +48,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 <html xmlns=""http://www.w3.org/1999/xhtml"" 
  xmlns:f=""http://www.composite.net/ns/function/1.0"" xmlns:lang=""http://www.composite.net/ns/localization/1.0"" xmlns:rendering=""http://www.composite.net/ns/rendering/1.0""  xmlns:asp=""http://www.composite.net/ns/asp.net/controls"">
     <f:function name=""Composite.Web.Html.Template.LangAttribute"" />
-	<head></head>
+	<head>
+        <title>@CurrentPageNode.Title</title>
+        <meta name=""description"" content=""@CurrentPageNode.Description"" />
+        <link rel=""stylesheet"" type=""text/css"" href=""~/Frontend/Styles/VisualEditor.common.css"" />
+        <f:function name=""Composite.Web.Html.Template.CommonMetaTags"" />
+    </head>
     <body>
-        <h1> Razor template </h1>
-        <h2>Content Placeholder</h2>
+        <h1> @CurrentPageNode.Title </h1>
+		<h2> @CurrentPageNode.Description </h2>
         <div>
             
             @Placeholder(Content)

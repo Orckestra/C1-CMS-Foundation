@@ -37,8 +37,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     <f:function runat=""server"" name=""Composite.Web.Html.Template.CommonMetaTags"" />
 </head>
 <body>
-		<h1> <%= this.SitemapNavigator.CurrentPageNode.Title %></h1>
-        <h2> <%= this.SitemapNavigator.CurrentPageNode.Description %></h2>
+		<h1> <%= Server.HtmlEncode(this.SitemapNavigator.CurrentPageNode.Title) %></h1>
+		<h2> <%= Server.HtmlEncode(this.SitemapNavigator.CurrentPageNode.Description) %></h2>
         <div>
             
             <c1:Placeholder  Content=""<%# Content %>"" runat=""server"" />
@@ -75,10 +75,10 @@ public partial class page_template : MasterPagePageTemplate
         get { return ""%TemplateTitle%""; }
     }
 
-	[Placeholder(Title=""Main Content"", IsDefault=true)]
+	[Placeholder(Id=""content"", Title=""Main Content"", IsDefault=true)]
 	public XhtmlDocument Content { get; set; }
 	
-	[Placeholder(Title = ""Bottom"")]
+	[Placeholder(Id=""bottom"", Title = ""Bottom"")]
 	public XhtmlDocument Bottom { get; set; }
 
 	protected void Page_Load(object sender, EventArgs e)

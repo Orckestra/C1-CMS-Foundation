@@ -40,7 +40,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         /// <value>
         /// The data connection.
         /// </value>
-        public DataConnection DataConnection
+        public DataConnection Data
         {
             get
             {
@@ -57,7 +57,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         /// </summary>
         public SitemapNavigator SitemapNavigator
         {
-            get { return DataConnection.SitemapNavigator; }
+            get { return Data.SitemapNavigator; }
         }
 
         /// <exclude />
