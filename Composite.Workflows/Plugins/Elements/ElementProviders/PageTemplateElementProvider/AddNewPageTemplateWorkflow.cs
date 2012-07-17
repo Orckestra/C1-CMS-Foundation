@@ -1,18 +1,12 @@
 using System;
-using System.Linq;
-using Composite.C1Console.Actions;
-using Composite.Core.PageTemplates;
-using Composite.Core.PageTemplates.Foundation;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.Core.IO;
-using Composite.C1Console.Workflow;
-using Composite.Core.Localization;
-using System.Workflow.Activities;
-using Composite.Core.ResourceSystem;
 using System.Collections.Generic;
-using Composite.Core.WebClient.Renderings.Template;
-using System.Xml.Linq;
+using System.Linq;
+using Composite.C1Console.Workflow;
+using Composite.Core.Extensions;
+using Composite.Core.PageTemplates;
+using Composite.Core.ResourceSystem;
+using Composite.Plugins.PageTemplates.MasterPages;
+using Composite.Plugins.PageTemplates.Razor;
 using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 
@@ -21,138 +15,77 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private static string _defaultTemplateMarkup = string.Format(
-@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:f=""http://www.composite.net/ns/function/1.0"" xmlns:lang=""{0}"" xmlns:rendering=""http://www.composite.net/ns/rendering/1.0"" xmlns:asp=""http://www.composite.net/ns/asp.net/controls"">
-<f:function name=""Composite.Web.Html.Template.LangAttribute"" />
-    <head>
-        <title>
-            <rendering:page.title />
-        </title>
-        <f:function name=""Composite.Web.Html.Template.CommonMetaTags"" />
-        <rendering:page.metatag.description />
-        <link rel=""stylesheet"" type=""text/css"" href=""~/Frontend/Styles/VisualEditor.common.css"" />
-    </head>
-    <body>
-        <div style=""float:right; width:10em"">
-            <f:function name=""Composite.Pages.QuickSitemap"" />
-        </div>
-        <h1><rendering:page.title /></h1>
-        <h2><rendering:page.description /></h2>
-        <div id=""main"">
-            <rendering:placeholder id=""content"" title=""Content"" default=""true"" />
-        </div>
-    </body>
-</html>
-", LocalizationXmlConstants.XmlNamespace);
+        private static readonly string Binding_TemplateTypeOptions = "TemplateTypeOptions";
+        private static readonly string Binding_TemplateTypeId = "TemplateTypeId";
+        private const string TemplateType_Razor = "razor";
+        private const string TemplateType_MasterPage = "masterpage";
+        private const string TemplateType_XML = "xml";
 
         public AddNewPageTemplateWorkflow()
         {
             InitializeComponent();
         }
 
-
-
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            IXmlPageTemplate newPageTemplate = DataFacade.BuildNew<IXmlPageTemplate>();
+            // collecting statistics
+            var allTemplates = PageTemplateFacade.GetPageTemplates().ToList();
 
-            newPageTemplate.Id = Guid.NewGuid();
-            newPageTemplate.Title = "";
+            var templateTypes = new List<Tuple<string, string, int>>();
 
-            this.Bindings.Add("NewPageTemplate", newPageTemplate);
+            templateTypes.Add(new Tuple<string, string, int>(
+                TemplateType_Razor,
+                GetText("AddNewPageTemplate.TemplateType.Razor"),
+                allTemplates.OfType<RazorPageTemplateDescriptor>().Count()));
 
-            List<KeyValuePair<Guid, string>> templatesOptions =
-                (from template in PageTemplateFacade.GetPageTemplates()
-                 where template is XmlPageTemplateDescriptor && template.IsValid
-                 orderby template.Title
-                 select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
+            templateTypes.Add(new Tuple<string, string, int>(
+                TemplateType_MasterPage,
+                GetText("AddNewPageTemplate.TemplateType.MasterPage"),
+                allTemplates.OfType<MasterPagePageTemplateDescriptor>().Count()));
 
-            templatesOptions.Insert(0, new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+            templateTypes.Add(new Tuple<string, string, int>(
+                TemplateType_XML,
+                GetText("AddNewPageTemplate.TemplateType.XML"),
+                allTemplates.OfType<XmlPageTemplateDescriptor>().Count()));
 
-            this.Bindings.Add("CopyOfOptions", templatesOptions);
-            this.Bindings.Add("CopyOfId", Guid.Empty);
+            // Most used page template type will be first in the list and preselected
+            templateTypes = templateTypes.OrderByDescending(t => t.Item3).ToList();
+
+            List<KeyValuePair<string, string>> options = templateTypes
+                .Select(t => new KeyValuePair<string, string>(t.Item1, t.Item2)).ToList();
+
+            this.Bindings.Add(Binding_TemplateTypeOptions, options);
+            this.Bindings.Add(Binding_TemplateTypeId, templateTypes[0].Item1);
         }
-
 
 
         private void codeActivity2_ExecuteCode(object sender, EventArgs e)
         {
-            AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
+            string templateType = this.GetBinding<string>(Binding_TemplateTypeId);
 
-            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
+            Type workflowType;
 
-            string newPageTemplateMarkup = null;
-            Guid copyOfId = this.GetBinding<Guid>("CopyOfId");
-            if (copyOfId == Guid.Empty)
+            switch (templateType)
             {
-                newPageTemplateMarkup = _defaultTemplateMarkup.Replace("    ", "\t");
-            }
-            else
-            {
-                XDocument copyDocument = TemplateInfo.GetTemplateDocument(copyOfId);
-                newPageTemplateMarkup = copyDocument.ToString();
-            }
-
-            IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
-            pageTemplateFile.FolderPath = "/";
-            pageTemplateFile.FileName = string.Format("{0}.xml", PathUtil.CleanFileName(newPageTemplate.Title, true) ?? newPageTemplate.Id.ToString());
-            //if (FileNameAlreadyUsed(pageTemplateFile) == true) pageTemplateFile.FileName = newPageTemplate.Id.ToString() + pageTemplateFile.FileName;
-            pageTemplateFile.SetNewContent(newPageTemplateMarkup);
-
-            DataFacade.AddNew<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider");
-
-            newPageTemplate.PageTemplateFilePath = "/" + pageTemplateFile.FileName;
-            newPageTemplate = DataFacade.AddNew<IXmlPageTemplate>(newPageTemplate);
-
-            PageTemplateProviderRegistry.FlushTemplates();
-
-            addNewTreeRefresher.PostRefreshMesseges(newPageTemplate.GetDataEntityToken());
-
-            this.ExecuteAction(newPageTemplate.GetDataEntityToken(), new WorkflowActionToken(typeof(EditPageTemplateWorkflow)));
-        }
-
-
-
-        private void IsTitleUsed(object sender, ConditionalEventArgs e)
-        {
-            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
-
-            e.Result = PageTemplateFacade.GetPageTemplates()
-                                 .Any(f => f.Title.Equals(newPageTemplate.Title, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-
-
-        private void ValidateFilePath(object sender, ConditionalEventArgs e)
-        {
-            IXmlPageTemplate newPageTemplate = this.GetBinding<IXmlPageTemplate>("NewPageTemplate");
-
-            IPageTemplateFile pageTemplateFile = DataFacade.BuildNew<IPageTemplateFile>();
-            pageTemplateFile.FolderPath = "/";
-            pageTemplateFile.FileName = GetTemplateFileName(newPageTemplate);
-
-            if (!DataFacade.ValidatePath<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider"))
-            {
-                ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleTooLong"));
-                e.Result = false;
-                return;
+                case TemplateType_Razor:
+                    workflowType = typeof(AddNewRazorPageTemplateWorkflow);
+                    break;
+                case TemplateType_MasterPage:
+                    workflowType = typeof(AddNewMasterPagePageTemplateWorkflow);
+                    break;
+                case TemplateType_XML:
+                    workflowType = typeof(AddNewXmlPageTemplateWorkflow);
+                    break;
+                default:
+                    throw new InvalidOperationException("Unexpected page template type '{0}'".FormatWith(templateType));
             }
 
-            e.Result = true;
+            this.ExecuteAction(new PageTemplateRootEntityToken(), new WorkflowActionToken(workflowType));
         }
 
-
-        private string GetTemplateFileName(IXmlPageTemplate xmlTemplateFile)
+        private static string GetText(string stringId)
         {
-            string name = PathUtil.CleanFileName(xmlTemplateFile.Title, true) ?? xmlTemplateFile.Id.ToString();
-            return name + ".xml";
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", stringId);
         }
-
-
-        private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
-        {
-            ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleInUseTitle"));
-        }        
     }
 }

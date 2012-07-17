@@ -140,6 +140,7 @@
     <Content Include="Composite\content\forms\Administrative\DeleteRazorFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMasterPage.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\xmlpure.js" />

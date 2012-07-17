@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="TemplateTypeOptions" type="System.Object" />
+    <cms:binding name="TemplateTypeId" type="System.String" />
+  </cms:bindings>
+  <cms:layout iconhandle="generic-add" label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.LabelDialog}">
+    <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.LabelFieldGroup}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.TemplateTypeHelp}" Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplate.TemplateTypeLabel}">
+        <KeySelector.Selected>
+          <cms:bind source="TemplateTypeId" />
+        </KeySelector.Selected>
+        <KeySelector.Options>
+          <cms:read source="TemplateTypeOptions" />
+        </KeySelector.Options>
+      </KeySelector>
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

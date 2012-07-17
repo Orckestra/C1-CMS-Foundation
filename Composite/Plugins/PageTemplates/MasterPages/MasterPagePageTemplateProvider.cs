@@ -8,8 +8,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using Composite.C1Console.Elements;
-using Composite.C1Console.Security;
-using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
@@ -17,9 +15,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
-using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
@@ -27,8 +23,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
     internal class MasterPagePageTemplateProvider : IPageTemplateProvider, ISharedCodePageTemplateProvider
     {
         private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
-
-        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
         private static readonly string MasterPageFileMask = "*.master";
         private static readonly string FileWatcherMask = "*.master*";
@@ -42,7 +36,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
-        private DateTime _lastUpdateTime;
 
         public MasterPagePageTemplateProvider(string name, string templatesDirectoryVirtualPath)
         {
@@ -79,25 +72,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         public IEnumerable<ElementAction> GetRootActions()
         {
-            Type type = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewMasterPagePageTemplateWorkflow");
-
-            return new[] { new ElementAction(new ActionHandle(new WorkflowActionToken(type, new[] { PermissionType.Add })))
-            {
-                VisualData = new ActionVisualizedData
-                          {
-                              Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "MasterPagePageTemplateProvider.AddTemplate"),
-                              ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "MasterPagePageTemplateProvider.AddTemplateToolTip"),
-                              Icon = PageTemplateElementProvider.AddTemplate,
-                              Disabled = false,
-                              ActionLocation = new ActionLocation
-                              {
-                                  ActionType = ActionType.Add,
-                                  IsInFolder = false,
-                                  IsInToolbar = true,
-                                  ActionGroup = PrimaryActionGroup
-                              }
-                          }
-            }};
+            return new ElementAction[0];
         }
 
 

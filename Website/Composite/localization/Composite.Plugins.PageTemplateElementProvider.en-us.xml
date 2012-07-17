@@ -51,15 +51,7 @@
   <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Excepton: {1}" />
   <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change template id through current workflow. Original template id is '{0}'" />
 
-  
-  <string key="RazorPageTemplateProvider.AddTemplate" value="Add New Razor Template" />
-  <string key="RazorPageTemplateProvider.AddTemplateToolTip" value="Add new Razor based page template" />
-
   <string key="AddNewRazorPageTemplateWorkflow.LabelDialog" value="Add New Razor Template" />
-
-  <string key="MasterPagePageTemplateProvider.AddTemplate" value="Add New Master Page Template" />
-  <string key="MasterPagePageTemplateProvider.AddTemplateToolTip" value="Add new master page based page template" />
-
   <string key="AddNewMasterPagePageTemplateWorkflow.LabelDialog" value="Add New Master Page" />
 
   <string key="EditRazorFileAction.Label" value="Edit Razor File" />
@@ -70,5 +62,13 @@
 
   <string key="EditMasterPageAction.Label" value="Edit Master Page" />
   <string key="EditMasterPageAction.ToolTip" value="Edit source code of the master page" />
-  
+
+  <string key="AddNewPageTemplate.LabelDialog" value="Add New Page Template" />
+  <string key="AddNewPageTemplate.LabelFieldGroup" value="New page template" />
+  <string key="AddNewPageTemplate.TemplateTypeHelp" value="Choose one of the possible types of page templates" />
+  <string key="AddNewPageTemplate.TemplateTypeLabel" value="Template type" />
+
+  <string key="AddNewPageTemplate.TemplateType.Razor" value="Razor" />
+  <string key="AddNewPageTemplate.TemplateType.MasterPage" value="Master Page" />
+  <string key="AddNewPageTemplate.TemplateType.XML" value="XML" />
 </strings>

@@ -40,6 +40,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         public static ResourceHandle FolderIcon { get { return GetIconHandle("folder"); } }
 
         private static readonly ActionGroup EditCodeFileActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
+        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
         
         internal static ResourceHandle GetIconHandle(string name)
@@ -75,6 +76,24 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                              Icon = PageTemplateElementProvider.RootClosed,
                              OpenedIcon = PageTemplateElementProvider.RootOpen
                          };
+
+            const string addTemplateWorkflowType = "Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewPageTemplateWorkflow";
+
+            element.AddWorkflowAction(addTemplateWorkflowType, new[] { PermissionType.Add },
+                                      new ActionVisualizedData
+            {
+                Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplate"),
+                ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.AddTemplateToolTip"),
+                Icon = PageTemplateElementProvider.AddTemplate,
+                Disabled = false,
+                ActionLocation = new ActionLocation
+                {
+                    ActionType = ActionType.Add,
+                    IsInFolder = false,
+                    IsInToolbar = true,
+                    ActionGroup = PrimaryActionGroup
+                }
+            });
 
             foreach(var pageTemplateProviderName in PageTemplateProviderRegistry.ProviderNames)
             {

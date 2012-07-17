@@ -15,7 +15,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
-    partial class AddNewPageTemplateWorkflow
+    partial class AddNewXmlPageTemplateWorkflow
     {
         #region Designer generated code
 
@@ -27,12 +27,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private void InitializeComponent()
         {
             this.CanModifyActivities = true;
+            System.Workflow.Activities.CodeCondition codecondition1 = new System.Workflow.Activities.CodeCondition();
+            System.Workflow.Activities.CodeCondition codecondition2 = new System.Workflow.Activities.CodeCondition();
+            this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
+            this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
+            this.ifElseBranchActivity4 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity3 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseActivity2 = new System.Workflow.Activities.IfElseActivity();
+            this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
+            this.showFieldErrorCodeActivity = new System.Workflow.Activities.CodeActivity();
+            this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.codeActivity2 = new System.Workflow.Activities.CodeActivity();
             this.closeCurrentViewActivity1 = new Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
             this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
-            this.setStateActivity5 = new System.Workflow.Activities.SetStateActivity();
+            this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
             this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
             this.wizzardFormActivity1 = new Composite.C1Console.Workflow.Activities.DataDialogFormActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
@@ -49,6 +60,57 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.finializeStateActivity = new System.Workflow.Activities.StateActivity();
             this.step1StateActivity = new System.Workflow.Activities.StateActivity();
             this.initalizeStateActivity = new System.Workflow.Activities.StateActivity();
+            // 
+            // setStateActivity7
+            // 
+            this.setStateActivity7.Name = "setStateActivity7";
+            this.setStateActivity7.TargetStateName = "step1StateActivity";
+            // 
+            // setStateActivity6
+            // 
+            this.setStateActivity6.Name = "setStateActivity6";
+            this.setStateActivity6.TargetStateName = "finializeStateActivity";
+            // 
+            // ifElseBranchActivity4
+            // 
+            this.ifElseBranchActivity4.Activities.Add(this.setStateActivity7);
+            this.ifElseBranchActivity4.Name = "ifElseBranchActivity4";
+            // 
+            // ifElseBranchActivity3
+            // 
+            this.ifElseBranchActivity3.Activities.Add(this.setStateActivity6);
+            codecondition1.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateFilePath);
+            this.ifElseBranchActivity3.Condition = codecondition1;
+            this.ifElseBranchActivity3.Name = "ifElseBranchActivity3";
+            // 
+            // ifElseActivity2
+            // 
+            this.ifElseActivity2.Activities.Add(this.ifElseBranchActivity3);
+            this.ifElseActivity2.Activities.Add(this.ifElseBranchActivity4);
+            this.ifElseActivity2.Name = "ifElseActivity2";
+            // 
+            // setStateActivity5
+            // 
+            this.setStateActivity5.Name = "setStateActivity5";
+            this.setStateActivity5.TargetStateName = "step1StateActivity";
+            // 
+            // showFieldErrorCodeActivity
+            // 
+            this.showFieldErrorCodeActivity.Name = "showFieldErrorCodeActivity";
+            this.showFieldErrorCodeActivity.ExecuteCode += new System.EventHandler(this.showFieldErrorCodeActivity_ExecuteCode);
+            // 
+            // ifElseBranchActivity2
+            // 
+            this.ifElseBranchActivity2.Activities.Add(this.ifElseActivity2);
+            this.ifElseBranchActivity2.Name = "ifElseBranchActivity2";
+            // 
+            // ifElseBranchActivity1
+            // 
+            this.ifElseBranchActivity1.Activities.Add(this.showFieldErrorCodeActivity);
+            this.ifElseBranchActivity1.Activities.Add(this.setStateActivity5);
+            codecondition2.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.IsTitleUsed);
+            this.ifElseBranchActivity1.Condition = codecondition2;
+            this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 
             // setStateActivity2
             // 
@@ -75,10 +137,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
-            // setStateActivity5
+            // ifElseActivity1
             // 
-            this.setStateActivity5.Name = "setStateActivity5";
-            this.setStateActivity5.TargetStateName = "finializeStateActivity";
+            this.ifElseActivity1.Activities.Add(this.ifElseBranchActivity1);
+            this.ifElseActivity1.Activities.Add(this.ifElseBranchActivity2);
+            this.ifElseActivity1.Name = "ifElseActivity1";
             // 
             // finishHandleExternalEventActivity1
             // 
@@ -89,7 +152,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // wizzardFormActivity1
             // 
             this.wizzardFormActivity1.ContainerLabel = "Add new";
-            this.wizzardFormActivity1.FormDefinitionFileName = "\\Administrative\\PageTemplate\\AddNewPageTemplate.xml";
+            this.wizzardFormActivity1.FormDefinitionFileName = "\\Administrative\\AddNewPageTemplateStep1.xml";
             this.wizzardFormActivity1.Name = "wizzardFormActivity1";
             // 
             // setStateActivity1
@@ -129,7 +192,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // step1EventDrivenActivity_Finish
             // 
             this.step1EventDrivenActivity_Finish.Activities.Add(this.finishHandleExternalEventActivity1);
-            this.step1EventDrivenActivity_Finish.Activities.Add(this.setStateActivity5);
+            this.step1EventDrivenActivity_Finish.Activities.Add(this.ifElseActivity1);
             this.step1EventDrivenActivity_Finish.Name = "step1EventDrivenActivity_Finish";
             // 
             // step1StateInitializationActivity
@@ -205,6 +268,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private StateActivity step1StateActivity;
 
+        private SetStateActivity setStateActivity6;
+
         private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
 
         private CodeActivity codeActivity1;
@@ -227,14 +292,25 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
 
+        private IfElseBranchActivity ifElseBranchActivity2;
+
+        private IfElseBranchActivity ifElseBranchActivity1;
+
+        private IfElseActivity ifElseActivity1;
+
+        private CodeActivity showFieldErrorCodeActivity;
+
         private SetStateActivity setStateActivity5;
 
+        private SetStateActivity setStateActivity7;
+
+        private IfElseBranchActivity ifElseBranchActivity4;
+
+        private IfElseBranchActivity ifElseBranchActivity3;
+
+        private IfElseActivity ifElseActivity2;
+
         private StateActivity initalizeStateActivity;
-
-
-
-
-
 
 
 

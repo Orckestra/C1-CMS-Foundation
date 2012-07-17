@@ -7,25 +7,19 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.WebPages;
 using Composite.C1Console.Elements;
-using Composite.C1Console.Security;
-using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
-using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.Razor
 {
     [ConfigurationElementType(typeof(RazorPageTemplateProviderData))]
     internal class RazorPageTemplateProvider : IPageTemplateProvider, ISharedCodePageTemplateProvider
     {
-        private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
-
         private static readonly string LayoutFileMask = "*.cshtml";
         private static readonly string LogTitle = typeof (RazorPageTemplateProvider).Name;
 
@@ -220,25 +214,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
         public IEnumerable<ElementAction> GetRootActions()
         {
-            Type type = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.AddNewRazorPageTemplateWorkflow");
-
-            return new[] { new ElementAction(new ActionHandle(new WorkflowActionToken(type, new[] { PermissionType.Add })))
-            {
-                VisualData = new ActionVisualizedData
-                          {
-                              Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "RazorPageTemplateProvider.AddTemplate"),
-                              ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "RazorPageTemplateProvider.AddTemplateToolTip"),
-                              Icon = PageTemplateElementProvider.AddTemplate,
-                              Disabled = false,
-                              ActionLocation = new ActionLocation
-                              {
-                                  ActionType = ActionType.Add,
-                                  IsInFolder = false,
-                                  IsInToolbar = true,
-                                  ActionGroup = PrimaryActionGroup
-                              }
-                          }
-            }};
+            return new ElementAction[0];
         }
 
         public IEnumerable<SharedFile> GetSharedFiles()

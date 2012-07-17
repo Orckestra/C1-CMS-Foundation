@@ -458,6 +458,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewMasterPagePageTemplateWorkflow.Designer.cs">
       <DependentUpon>AddNewMasterPagePageTemplateWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewXmlPageTemplateWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\AddNewXmlPageTemplateWorkflow.Designer.cs">
+      <DependentUpon>AddNewXmlPageTemplateWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditMasterPageWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
