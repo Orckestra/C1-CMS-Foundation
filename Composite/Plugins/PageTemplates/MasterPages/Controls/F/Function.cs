@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
@@ -73,6 +74,20 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
                         if (node == null) continue;
 
                         Controls.Add(new LiteralControl(node.ToString()));
+                    }
+                }
+                else if (result is XAttribute)
+                {
+                    var parentControl = this.Parent as HtmlGenericControl;
+                    if(parentControl != null)
+                    {
+                        var attr = (XAttribute) result;
+                        parentControl.Attributes.Add(attr.Name.ToString(), attr.Value);
+                    }
+                    else
+                    {
+                        const string comment = @"<!-- Failed to add attribute, parent control should be of type HtmlGenericControl, check that runat=""server"" attribute is added -->";
+                        Controls.Add(new LiteralControl(comment));
                     }
                 }
                 else 

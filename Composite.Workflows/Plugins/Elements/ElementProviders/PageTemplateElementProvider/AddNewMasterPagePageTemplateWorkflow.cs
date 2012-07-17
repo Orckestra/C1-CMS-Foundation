@@ -28,13 +28,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 @"<%@ Master Language=""C#"" AutoEventWireup=""true"" CodeFile=""%Codebehind%"" Inherits=""page_template"" %>
 <!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
 
-<html xmlns=""http://www.w3.org/1999/xhtml"">
+<html xmlns=""http://www.w3.org/1999/xhtml"" runat=""server"">
+<f:function name=""Composite.Web.Html.Template.LangAttribute"" runat=""server"" />
 <head runat=""server"">
     <title><c1:Title id=""title"" runat=""server""/></title>
+    <c1:Description runat=""server"" />
+    <link rel=""stylesheet"" type=""text/css"" href=""~/Frontend/Styles/VisualEditor.common.css"" />
+    <f:function runat=""server"" name=""Composite.Web.Html.Template.CommonMetaTags"" />
 </head>
 <body>
-        <h1> Master page </h1>
-        <h2>Content Placeholder</h2>
+		<h1> <%= this.SitemapNavigator.CurrentPageNode.Title %></h1>
+        <h2> <%= this.SitemapNavigator.CurrentPageNode.Description %></h2>
         <div>
             
             <c1:Placeholder  Content=""<%# Content %>"" runat=""server"" />
@@ -46,7 +50,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             <c1:Placeholder Content=""<%# Bottom %>"" runat=""server"" />
 
         </div>
-
 </body>
 </html>".Replace("    ", "\t");
 

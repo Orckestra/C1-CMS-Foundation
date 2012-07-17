@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using Composite.Core.PageTemplates;
+using Composite.Data;
 
 
 namespace Composite.Plugins.PageTemplates.MasterPages
@@ -10,6 +11,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages
     /// </summary>
     public abstract class MasterPagePageTemplate : MasterPage, IPageTemplate
     {
+        private DataConnection _dataConnection;
+
         /// <summary>
         /// Gets the template id.
         /// </summary>
@@ -29,6 +32,44 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         public virtual string TemplateDescription
         {
             get { return null; }
+        }
+
+        /// <summary>
+        /// Gets or sets the data connection.
+        /// </summary>
+        /// <value>
+        /// The data connection.
+        /// </value>
+        public DataConnection DataConnection
+        {
+            get
+            {
+                if (_dataConnection == null)
+                {
+                    _dataConnection = new DataConnection();
+                }
+                return _dataConnection;
+            }
+        }
+
+        /// <summary>
+        /// Gets the sitemap navigator.
+        /// </summary>
+        public SitemapNavigator SitemapNavigator
+        {
+            get { return DataConnection.SitemapNavigator; }
+        }
+
+        /// <exclude />
+        public override void Dispose()
+        {
+            if(_dataConnection != null)
+            {
+                _dataConnection.Dispose();
+                _dataConnection = null;
+            }
+
+            base.Dispose();
         }
     }
 }
