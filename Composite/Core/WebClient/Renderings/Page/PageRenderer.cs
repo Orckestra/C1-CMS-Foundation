@@ -219,6 +219,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete()]
         public static IEnumerable<IData> GetCurrentPageAssociatedData(Type type)
         {
             return PageRenderer.CurrentPage.GetReferees(type);
@@ -227,6 +228,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete()]
         public static IEnumerable<IData> GetCurrentPageAssociatedData<T>() where T : IData
         {
             foreach (IData data in PageRenderer.CurrentPage.GetReferees(typeof(T)))
