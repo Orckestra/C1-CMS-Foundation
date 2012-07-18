@@ -45,11 +45,11 @@ namespace Composite
         private static Exception _exceptionThrownDurringInitialization = null;
         private static DateTime _exceptionThrownDurringInitializationTimeStamp;
         private static int _fatalErrorFlushCount = 0;
-        private static ReaderWriterLock _readerWriterLock = new ReaderWriterLock();
+        private static readonly ReaderWriterLock _readerWriterLock = new ReaderWriterLock();
         private static Thread _hookingFacadeThread = null; // This is used to wait on the the thread if a reinitialize is issued
         private static Exception _hookingFacadeException = null; // This will hold the exception from the before the reinitialize was issued
 
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
+        private static readonly ThreadLockingInformation _threadLocking = new ThreadLockingInformation();
 
 
         /// <exclude />
@@ -97,7 +97,7 @@ namespace Composite
                 TimeSpan timeSpan = DateTime.Now - _exceptionThrownDurringInitializationTimeStamp;
                 if (timeSpan < TimeSpan.FromMinutes(5.0))
                 {
-                    LoggingService.LogCritical("GlobalInitializerFacade", "Exception recorded:" + timeSpan.ToString() + " ago");
+                    Log.LogCritical(LogTitleNormal, "Exception recorded:" + timeSpan.ToString() + " ago");
 
                     throw _exceptionThrownDurringInitialization;
                 }
@@ -107,7 +107,7 @@ namespace Composite
 
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
             {
-                LoggingService.LogWarning("GlobalInitializerFacade", new InvalidOperationException("System is initializing, yet missing first time initialization"));
+                Log.LogWarning(LogTitleNormal, new InvalidOperationException("System is initializing, yet missing first time initialization"));
             }
 
             if ((_initializing == false) && (_coreInitialized == false))
@@ -131,8 +131,8 @@ namespace Composite
                         {
                             _exceptionThrownDurringInitialization = ex;
                             _exceptionThrownDurringInitializationTimeStamp = DateTime.Now;
-                            LoggingService.LogCritical("GlobalInitializerFacade", HostingEnvironment.ShutdownReason.ToString());
-                            LoggingService.LogCritical("GlobalInitializerFacade", ex);
+                            Log.LogCritical(LogTitleNormal, HostingEnvironment.ShutdownReason.ToString());
+                            Log.LogCritical(LogTitleNormal, ex);
                             throw;
                         }
                         finally
@@ -389,7 +389,7 @@ namespace Composite
         /// <exclude />
         public static void FatalResetTheSytem()
         {
-            LoggingService.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
+            Log.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
 
             ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
         }
@@ -637,27 +637,29 @@ namespace Composite
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
-
-            using (_resourceLocker.Locker)
+            if (_readerWriterLock.IsReaderLockHeld == true)
             {
-                if (_readerWriterLock.IsReaderLockHeld == true)
-                {
-                    LockCookie lockCookie = _readerWriterLock.UpgradeToWriterLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
+                LockCookie lockCookie = _readerWriterLock.UpgradeToWriterLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
 
-                    _resourceLocker.Resources.LockCockiesPreThreadId.Add(threadId, lockCookie);
+                lock(_threadLocking)
+                {
+                    _threadLocking.LockCookiesPerThreadId.Add(threadId, lockCookie);
+                }
+            }
+            else
+            {
+                _readerWriterLock.AcquireWriterLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
+            }
+
+            lock (_threadLocking)
+            {
+                if (_threadLocking.WriterLocksPerThreadId.ContainsKey(threadId) == true)
+                {
+                    _threadLocking.WriterLocksPerThreadId[threadId] = _threadLocking.WriterLocksPerThreadId[threadId] + 1;
                 }
                 else
                 {
-                    _readerWriterLock.AcquireWriterLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
-                }
-
-                if (_resourceLocker.Resources.WriterLocksPerThreadId.ContainsKey(threadId) == true)
-                {
-                    _resourceLocker.Resources.WriterLocksPerThreadId[threadId] = _resourceLocker.Resources.WriterLocksPerThreadId[threadId] + 1;
-                }
-                else
-                {
-                    _resourceLocker.Resources.WriterLocksPerThreadId.Add(threadId, 1);
+                    _threadLocking.WriterLocksPerThreadId.Add(threadId, 1);
                 }
             }
         }
@@ -673,33 +675,38 @@ namespace Composite
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
-            using (_resourceLocker.Locker)
+            if ((_threadLocking.WriterLocksPerThreadId[threadId] == 1) &&
+                (_threadLocking.LockCookiesPerThreadId.ContainsKey(threadId) == true))
             {
-                if ((_resourceLocker.Resources.WriterLocksPerThreadId[threadId] == 1) &&
-                    (_resourceLocker.Resources.LockCockiesPreThreadId.ContainsKey(threadId) == true))
-                {
-                    LockCookie lockCookie = _resourceLocker.Resources.LockCockiesPreThreadId[threadId];
+                LockCookie lockCookie = _threadLocking.LockCookiesPerThreadId[threadId];
 
-                    _resourceLocker.Resources.LockCockiesPreThreadId.Remove(threadId);
-
-                    _readerWriterLock.DowngradeFromWriterLock(ref lockCookie);
-                }
-                else
+                lock(_threadLocking)
                 {
-                    _readerWriterLock.ReleaseWriterLock();
+                    _threadLocking.LockCookiesPerThreadId.Remove(threadId);
                 }
 
+                _readerWriterLock.DowngradeFromWriterLock(ref lockCookie);
+            }
+            else
+            {
+                _readerWriterLock.ReleaseWriterLock();
+            }
 
-                _resourceLocker.Resources.WriterLocksPerThreadId[threadId] = _resourceLocker.Resources.WriterLocksPerThreadId[threadId] - 1;
+            lock (_threadLocking)
+            {
+                _threadLocking.WriterLocksPerThreadId[threadId] = _threadLocking.WriterLocksPerThreadId[threadId] - 1;
 
-                if (_resourceLocker.Resources.WriterLocksPerThreadId[threadId] == 0)
+                if (_threadLocking.WriterLocksPerThreadId[threadId] == 0)
                 {
-                    _resourceLocker.Resources.WriterLocksPerThreadId.Remove(threadId);
+                    _threadLocking.WriterLocksPerThreadId.Remove(threadId);
                 }
             }
         }
 
 
+        /// <summary>
+        /// Encaplulates calls to [Actuare|Release][Reader|Writer]Lock(), keeps log of writer locks
+        /// </summary>
         private sealed class LockerToken : IDisposable
         {
             private readonly bool _isWriterLock;
@@ -743,7 +750,7 @@ namespace Composite
                         methodInfo = ", Method:" + stackFrame.GetMethod().Name;
                     }
                 }
-                LoggingService.LogVerbose(LogTitle, "Writer Lock Acquired (Managed Thread ID: {0}, Source: {1}{2})".FormatWith(Thread.CurrentThread.ManagedThreadId, lockSource, methodInfo));
+                Log.LogVerbose(LogTitle, "Writer Lock Acquired (Managed Thread ID: {0}, Source: {1}{2})".FormatWith(Thread.CurrentThread.ManagedThreadId, lockSource, methodInfo));
 
                 #endregion Logging the action
 
@@ -778,7 +785,7 @@ namespace Composite
                         methodInfo = ", Method: " + stackFrame.GetMethod().Name;
                     }
                 }
-                LoggingService.LogVerbose(LogTitle, "Writer Lock Releasing (Managed Thread ID: {0}, Source: {1}{2})".FormatWith(Thread.CurrentThread.ManagedThreadId, _lockSource, methodInfo));
+                Log.LogVerbose(LogTitle, "Writer Lock Releasing (Managed Thread ID: {0}, Source: {1}{2})".FormatWith(Thread.CurrentThread.ManagedThreadId, _lockSource, methodInfo));
 
                 #endregion
 
@@ -798,7 +805,7 @@ namespace Composite
             {
                 _message = message;
                 _startTime = Environment.TickCount;
-                LoggingService.LogVerbose(LogTitle, "Starting: " + _message);
+                Log.LogVerbose(LogTitle, "Starting: " + _message);
             }
 
 
@@ -807,24 +814,17 @@ namespace Composite
             public void Dispose()
             {
                 int executionTime = Environment.TickCount - _startTime;
-                LoggingService.LogVerbose(LogTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
+                Log.LogVerbose(LogTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
             }
 
             #endregion
         }
 
 
-
-        private sealed class Resources
+        private sealed class ThreadLockingInformation
         {
-            public Dictionary<int, int> WriterLocksPerThreadId { get; set; }
-            public Dictionary<int, LockCookie> LockCockiesPreThreadId { get; set; }
-
-            public static void DoInitializeResources(Resources resources)
-            {
-                resources.WriterLocksPerThreadId = new Dictionary<int, int>();
-                resources.LockCockiesPreThreadId = new Dictionary<int, LockCookie>();
-            }
+            public readonly Hashtable<int, int> WriterLocksPerThreadId = new Hashtable<int, int>();
+            public readonly Hashtable<int, LockCookie> LockCookiesPerThreadId = new Hashtable<int, LockCookie>();
         }
     }
 }
