@@ -253,7 +253,22 @@ public partial class page_template : MasterPagePageTemplate
 
         private void ValidateFilePath(object sender, ConditionalEventArgs e)
         {
-            // TODO: validate title length
+            string title = this.GetBinding<string>(Binding_Title);
+            string rootFolder = GetMasterPagesRootFolder();
+
+            string masterFilePath, csFilePath;
+
+            GenerateFileNames(rootFolder, title, new Guid(), out masterFilePath, out csFilePath);
+
+            const int maximumFilePathLength = 250;
+
+            if (masterFilePath.Length > maximumFilePathLength || csFilePath.Length > maximumFilePathLength)
+            {
+                ShowFieldMessage(Binding_Title, GetText("AddNewMasterPagePageTemplateWorkflow.TitleTooLong"));
+                e.Result = false;
+                return;
+            }
+            
             e.Result = true;
         }
 

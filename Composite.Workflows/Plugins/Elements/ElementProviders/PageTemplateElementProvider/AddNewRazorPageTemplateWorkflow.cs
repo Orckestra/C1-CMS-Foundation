@@ -92,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
             templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
-                Guid.Empty, GetStr("AddNewRazorPageTemplate.LabelCopyFromEmptyOption")));
+                Guid.Empty, GetText("AddNewRazorPageTemplate.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add("CopyOfOptions", templatesOptions);
             this.Bindings.Add("CopyOfId", Guid.Empty);
@@ -213,7 +213,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void ValidateFilePath(object sender, ConditionalEventArgs e)
         {
-            // TODO: validate title length
+            string title = this.GetBinding<string>(Binding_Title);
+            string rootFolder = GetRazorTemplatesRootFolder();
+
+            string cshtmlFilePath = GeneratedCshtmlFileName(rootFolder, title, new Guid());
+
+            const int maximumFilePathLength = 250;
+
+            if (cshtmlFilePath.Length > maximumFilePathLength)
+            {
+                ShowFieldMessage(Binding_Title, GetText("AddNewRazorPageTemplateWorkflow.TitleTooLong"));
+                e.Result = false;
+                return;
+            }
+
             e.Result = true;
         }
 
@@ -245,10 +258,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage(Binding_Title, GetStr("AddNewRazorPageTemplateWorkflow.TitleInUseTitle"));
+            ShowFieldMessage(Binding_Title, GetText("AddNewRazorPageTemplateWorkflow.TitleInUseTitle"));
         }
 
-        private static string GetStr(string stringName)
+        private static string GetText(string stringName)
         {
             return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", stringName);
         }
