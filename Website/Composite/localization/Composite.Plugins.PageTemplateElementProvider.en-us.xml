@@ -15,25 +15,25 @@
   <string key="EditSharedCodeFile.Label" value="Edit" />
   <string key="EditSharedCodeFile.ToolTip" value="Edit file" />
 
-  <string key="AddNewPageTemplateStep1.LabelDialog" value="Add New Website Template" />
-  <string key="AddNewPageTemplateStep1.LabelFieldGroup" value="Website Template" />
-  <string key="AddNewPageTemplateStep1.LabelTemplateTitle" value="Template Title" />
-  <string key="AddNewPageTemplateStep1.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
-  <string key="AddNewPageTemplateStep1.LabelCopyFrom" value="Copy from" />
-  <string key="AddNewPageTemplateStep1.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
-  <string key="AddNewPageTemplateStep1.LabelCopyFromEmptyOption" value="(New template)" />
-  <string key="AddNewPageTemplateStep1.TitleInUseTitle" value="Title already used" />
-  <string key="AddNewPageTemplateStep1.TitleTooLong" value="Title is too long (used as part of the xml filename)." />
+  <string key="AddNewXmlPageTemplate.LabelDialog" value="Add New Website Template" />
+  <string key="AddNewXmlPageTemplate.LabelFieldGroup" value="Website Template" />
+  <string key="AddNewXmlPageTemplate.LabelTemplateTitle" value="Template Title" />
+  <string key="AddNewXmlPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
+  <string key="AddNewXmlPageTemplate.LabelCopyFrom" value="Copy from" />
+  <string key="AddNewXmlPageTemplate.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
+  <string key="AddNewXmlPageTemplate.LabelCopyFromEmptyOption" value="(New template)" />
+  <string key="AddNewXmlPageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
+  <string key="AddNewXmlPageTemplateWorkflow.TitleTooLong" value="Title is too long (used as part of the xml filename)." />
 
-  <string key="EditPageTemplate.LabelMarkUpCode" value="Markup Code" />
-  <string key="EditPageTemplate.LabelTemplateIdentification" value="Template Info" />
-  <string key="EditPageTemplate.LabelTemplateTitle" value="Template Title" />
-  <string key="EditPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
+  <string key="EditXmlPageTemplate.LabelMarkUpCode" value="Markup Code" />
+  <string key="EditXmlPageTemplate.LabelTemplateIdentification" value="Template Info" />
+  <string key="EditXmlPageTemplate.LabelTemplateTitle" value="Template Title" />
+  <string key="EditXmlPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
 
-  <string key="EditPageTemplateWorkflow.InvalidXmlTitle" value="Unable to Save Template" />
-  <string key="EditPageTemplateWorkflow.InvalidXmlMessage" value="The page template markup did not validate. {0}" />
-  <string key="EditPageTemplateWorkflow.CannotRenameFileExists" value="Cannot rename a template - file with name '{0}' already exist." />
-  <string key="EditPageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
+  <string key="EditXmlPageTemplateWorkflow.InvalidXmlTitle" value="Unable to Save Template" />
+  <string key="EditXmlPageTemplateWorkflow.InvalidXmlMessage" value="The page template markup did not validate. {0}" />
+  <string key="EditXmlPageTemplateWorkflow.CannotRenameFileExists" value="Cannot rename a template - file with name '{0}' already exist." />
+  <string key="EditXmlPageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
 
   <string key="DeletePageTemplateStep1.LabelFieldGroup" value="Delete This Page Template?" />
 	<string key="DeletePageTemplateStep1.Text" value="Delete page template?" />
@@ -43,25 +43,6 @@
 
   <string key="DeletePageTemplateWorkflow.PageReference" value="There are {0} page[s] referencing this template: {1}" /> 
   <string key="DeletePageTemplateWorkflow.PageTypeReference" value="There are {0} page type[s] referencing this template: {1}" />
-
-
-  <string key="EditTemplate.Validation.DialogTitle" value="Validation error" />
-  <string key="EditTemplate.Validation.CompilationFailed" value="Compilation failed: {0}" />
-  <string key="EditTemplate.Validation.IncorrectBaseClass" value="Page template class does not inherit '{0}'" />
-  <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Excepton: {1}" />
-  <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change template id through current workflow. Original template id is '{0}'" />
-
-  <string key="AddNewRazorPageTemplateWorkflow.LabelDialog" value="Add New Razor Template" />
-  <string key="AddNewMasterPagePageTemplateWorkflow.LabelDialog" value="Add New Master Page" />
-
-  <string key="EditRazorFileAction.Label" value="Edit Razor File" />
-  <string key="EditRazorFileAction.ToolTip" value="Edit the cshtml file" />
-
-  <string key="EditRazorTemplateAction.Label" value="Edit Razor Template" />
-  <string key="EditRazorTemplateAction.ToolTip" value="Edit the cshtml file behind template" />
-
-  <string key="EditMasterPageAction.Label" value="Edit Master Page" />
-  <string key="EditMasterPageAction.ToolTip" value="Edit source code of the master page" />
 
   <string key="AddNewPageTemplate.LabelDialog" value="Add New Page Template" />
   <string key="AddNewPageTemplate.LabelFieldGroup" value="New page template" />

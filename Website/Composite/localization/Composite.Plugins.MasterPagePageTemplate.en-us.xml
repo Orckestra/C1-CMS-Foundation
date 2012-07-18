@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<strings>
+  <string key="AddNewMasterPagePageTemplateWorkflow.LabelDialog" value="Add New Master Page" />
+
+  <string key="EditMasterPageAction.Label" value="Edit Master Page" />
+  <string key="EditMasterPageAction.ToolTip" value="Edit source code of the master page" />
+
+  <string key="DeleteMasterPageAction.Label" value="Delete" />
+  <string key="DeleteMasterPageAction.ToolTip" value="Delete page template" />
+
+  <string key="EditTemplate.Validation.DialogTitle" value="Validation error" />
+  <string key="EditTemplate.Validation.CompilationFailed" value="Compilation failed: {0}" />
+  <string key="EditTemplate.Validation.IncorrectBaseClass" value="Page template class does not inherit '{0}'" />
+  <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Excepton: {1}" />
+  <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change template id through current workflow. Original template id is '{0}'" />
+
+
+  <string key="AddNewMasterPagePageTemplate.LabelDialog" value="Add New Master Page Template" />
+  <string key="AddNewMasterPagePageTemplate.LabelFieldGroup" value="Master Page Template" />
+  <string key="AddNewMasterPagePageTemplate.LabelTemplateTitle" value="Template Title" />
+  <string key="AddNewMasterPagePageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
+  <string key="AddNewMasterPagePageTemplate.LabelCopyFrom" value="Copy from" />
+  <string key="AddNewMasterPagePageTemplate.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
+  <string key="AddNewMasterPagePageTemplate.LabelCopyFromEmptyOption" value="(New template)" />
+  <string key="AddNewMasterPagePageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
+  <string key="AddNewMasterPagePageTemplateWorkflow.TitleTooLong" value="Title is too long (used as part of the a filename)." />
+</strings>

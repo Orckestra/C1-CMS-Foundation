@@ -21,9 +21,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditXmlPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        public EditPageTemplateWorkflow()
+        public EditXmlPageTemplateWorkflow()
         {
             InitializeComponent();
         }
@@ -68,8 +68,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 var consoleMessageService = serviceContainer.GetService<IManagementConsoleMessageService>();
                 consoleMessageService.ShowMessage(
                     DialogType.Error,
-                    GetString("EditPageTemplateWorkflow.InvalidXmlTitle"),
-                    GetString("EditPageTemplateWorkflow.InvalidXmlMessage").FormatWith(parseError));
+                    GetString("EditXmlPageTemplateWorkflow.InvalidXmlTitle"),
+                    GetString("EditXmlPageTemplateWorkflow.InvalidXmlMessage").FormatWith(parseError));
                 return;
             }
 
@@ -87,8 +87,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     var consoleMessageService = serviceContainer.GetService<IManagementConsoleMessageService>();
                     consoleMessageService.ShowMessage(
                         DialogType.Error,
-                        GetString("EditPageTemplateWorkflow.InvalidXmlTitle"),
-                        GetString("EditPageTemplateWorkflow.CannotRenameFileExists").FormatWith(newSystemPath));
+                        GetString("EditXmlPageTemplateWorkflow.InvalidXmlTitle"),
+                        GetString("EditXmlPageTemplateWorkflow.CannotRenameFileExists").FormatWith(newSystemPath));
                     return;
                 }
 
@@ -206,7 +206,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void ShowMessageCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("PageTemplate.Title", GetString("EditPageTemplateWorkflow.TitleInUseTitle"));
+            ShowFieldMessage("PageTemplate.Title", GetString("EditXmlPageTemplateWorkflow.TitleInUseTitle"));
         }
     }
 }

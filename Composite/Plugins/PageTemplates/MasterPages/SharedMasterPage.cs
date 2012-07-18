@@ -32,8 +32,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditMasterPageAction.Label"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditMasterPageAction.ToolTip"),
+                    Label = GetText("EditMasterPageAction.Label"),
+                    ToolTip = GetText("EditMasterPageAction.ToolTip"),
                     Icon = EditTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -45,6 +45,11 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     }
                 }
             }};
+        }
+
+        private static string GetText(string stringId)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", stringId);
         }
     }
 }

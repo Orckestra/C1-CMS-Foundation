@@ -19,6 +19,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewMasterPagePageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        private static readonly string Binding_Title = "Title";
+
         private static readonly string Marker_TemplateId = "%TemplateId%";
         private static readonly string Marker_TemplateTitle = "%TemplateTitle%";
         private static readonly string Marker_Codebehind = "%Codebehind%";
@@ -96,7 +98,7 @@ public partial class page_template : MasterPagePageTemplate
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            this.Bindings.Add("Title", string.Empty);
+            this.Bindings.Add(Binding_Title, string.Empty);
 
             List<KeyValuePair<Guid, string>> templatesOptions =
                 (from template in PageTemplateFacade.GetPageTemplates().OfType<MasterPagePageTemplateDescriptor>()
@@ -106,7 +108,7 @@ public partial class page_template : MasterPagePageTemplate
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
             templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
-                Guid.Empty, GetText("AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+                Guid.Empty, GetText("AddNewMasterPagePageTemplate.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add("CopyOfOptions", templatesOptions);
             this.Bindings.Add("CopyOfId", Guid.Empty);
@@ -119,7 +121,7 @@ public partial class page_template : MasterPagePageTemplate
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
             Guid newTemplateId = Guid.NewGuid();
-            string newTitle = this.GetBinding<string>("Title");
+            string newTitle = this.GetBinding<string>(Binding_Title);
 
             string newPageTemplate_Markup, newPageTemplate_Codebehind, templateFolder;
 
@@ -241,7 +243,7 @@ public partial class page_template : MasterPagePageTemplate
 
         private void IsTitleUsed(object sender, ConditionalEventArgs e)
         {
-            string title = this.GetBinding<string>("Title");
+            string title = this.GetBinding<string>(Binding_Title);
 
             e.Result = PageTemplateFacade.GetPageTemplates()
                             .Any(f => f.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
@@ -251,6 +253,7 @@ public partial class page_template : MasterPagePageTemplate
 
         private void ValidateFilePath(object sender, ConditionalEventArgs e)
         {
+            // TODO: validate title length
             e.Result = true;
         }
 
@@ -294,12 +297,12 @@ public partial class page_template : MasterPagePageTemplate
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("NewPageTemplate.Title", GetText("AddNewPageTemplateStep1.TitleInUseTitle"));
+            ShowFieldMessage(Binding_Title, GetText("AddNewMasterPagePageTemplateWorkflow.TitleInUseTitle"));
         }
 
         private static string GetText(string stringName)
         {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", stringName);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", stringName);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
         {
             var result = new List<ElementAction>();
 
-            Type type = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditPageTemplateWorkflow");
+            Type type = WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider.EditXmlPageTemplateWorkflow");
 
             result.Add(new ElementAction(new ActionHandle(new WorkflowActionToken(type, new[] { PermissionType.Edit })))
             {

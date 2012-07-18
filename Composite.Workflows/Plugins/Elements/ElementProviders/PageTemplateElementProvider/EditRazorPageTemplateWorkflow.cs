@@ -229,7 +229,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private string GetText(string text)
         {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", text);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", text);
         }
 
         private RazorPageTemplateDescriptor GetPageTemplateDescriptor()

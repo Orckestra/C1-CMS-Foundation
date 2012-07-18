@@ -130,16 +130,16 @@
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.css" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.html" />
     <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
-    <Content Include="Composite\content\forms\Administrative\AddNewRazorPageTemplate.xml" />
-    <Content Include="Composite\content\forms\Administrative\AddNewMasterPagePageTemplate.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewRazorPageTemplate.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewMasterPagePageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewUserControlFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewRazorFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\EditRazorFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\EditUserControlFunction.xml" />
-    <Content Include="Composite\content\forms\Administrative\EditRazorTemplate.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\EditRazorTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\DeleteRazorFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
-    <Content Include="Composite\content\forms\Administrative\EditMasterPage.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
@@ -883,9 +883,11 @@
     <Content Include="Composite\localization\Composite.Plugins.PageTypeElementProvider.en-us.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Composite\localization\Composite.Plugins.RazorPageTemplate.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.UrlConfiguration.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.RazorFunction.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.UserControlFunction.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Plugins.MasterPagePageTemplate.en-us.xml" />
     <Content Include="Composite\scripts\source\folder-info-readme.txt" />
     <Content Include="Composite\scripts\source\page\data\DataManager.js" />
     <Content Include="Composite\scripts\source\page\document\DocumentCrawler.js" />
@@ -1372,7 +1374,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\content\forms\Administrative\AddNewPageStep2.xml" />
-    <Content Include="Composite\content\forms\Administrative\AddNewPageTemplateStep1.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewXmlPageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewSqlFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewSqlFunctionConnection.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewUserStep1.xml" />
@@ -1420,7 +1422,7 @@
     <Content Include="Composite\content\forms\Administrative\EditMediaFolder.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMethodBasedFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\EditPage.xml" />
-    <Content Include="Composite\content\forms\Administrative\EditPageTemplate.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplate\EditXmlPageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\EditSqlFunction.xml" />
     <Content Include="Composite\content\forms\Administrative\EditSqlFunctionConnection.xml" />
     <Content Include="Composite\content\forms\Administrative\EditSystemLocaleEdit.xml" />

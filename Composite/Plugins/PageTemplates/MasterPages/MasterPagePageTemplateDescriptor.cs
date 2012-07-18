@@ -60,8 +60,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditMasterPageAction.Label"),
-                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditMasterPageAction.ToolTip"),
+                    Label = GetText("EditMasterPageAction.Label"),
+                    ToolTip = GetText("EditMasterPageAction.ToolTip"),
                     Icon = EditTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -80,8 +80,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplate"),
-                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplateToolTip"),
+                    Label = GetText("DeleteMasterPageAction.Label"),
+                    ToolTip = GetText("DeleteMasterPageAction.ToolTip"),
                     Icon = DeleteTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -95,6 +95,11 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             });
 
             return result;
+        }
+
+        private static string GetText(string stringId)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.MasterPagePageTemplate", stringId);
         }
     }
 }

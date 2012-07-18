@@ -19,6 +19,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewRazorPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+        private static readonly string Binding_Title = "Title";
+
         private static readonly string Marker_TemplateId = "%TemplateId%";
         private static readonly string Marker_TemplateTitle = "%TemplateTitle%";
 
@@ -81,7 +83,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            this.Bindings.Add("Title", string.Empty);
+            this.Bindings.Add(Binding_Title, string.Empty);
 
             List<KeyValuePair<Guid, string>> templatesOptions =
                 (from template in PageTemplateFacade.GetPageTemplates().OfType<RazorPageTemplateDescriptor>()
@@ -90,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
             templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
-                Guid.Empty, GetStr("AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+                Guid.Empty, GetStr("AddNewRazorPageTemplate.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add("CopyOfOptions", templatesOptions);
             this.Bindings.Add("CopyOfId", Guid.Empty);
@@ -103,7 +105,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             AddNewTreeRefresher addNewTreeRefresher = this.CreateAddNewTreeRefresher(this.EntityToken);
 
             Guid newTemplateId = Guid.NewGuid();
-            string newTitle = this.GetBinding<string>("Title");
+            string newTitle = this.GetBinding<string>(Binding_Title);
 
             string newPageTemplateMarkup, folderPath;
 
@@ -201,7 +203,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void IsTitleUsed(object sender, ConditionalEventArgs e)
         {
-            string title = this.GetBinding<string>("Title");
+            string title = this.GetBinding<string>(Binding_Title);
 
             e.Result = PageTemplateFacade.GetPageTemplates()
                             .Any(f => f.Title.Equals(title, StringComparison.InvariantCultureIgnoreCase));
@@ -211,6 +213,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void ValidateFilePath(object sender, ConditionalEventArgs e)
         {
+            // TODO: validate title length
             e.Result = true;
         }
 
@@ -242,12 +245,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("NewPageTemplate.Title", GetStr("AddNewPageTemplateStep1.TitleInUseTitle"));
+            ShowFieldMessage(Binding_Title, GetStr("AddNewRazorPageTemplateWorkflow.TitleInUseTitle"));
         }
 
         private static string GetStr(string stringName)
         {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", stringName);
+            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", stringName);
         }
     }
 }

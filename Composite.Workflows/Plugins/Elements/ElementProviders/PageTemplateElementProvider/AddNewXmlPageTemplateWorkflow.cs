@@ -68,7 +68,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                  orderby template.Title
                  select new KeyValuePair<Guid, string>(template.Id, template.Title)).ToList();
 
-            templatesOptions.Insert(0, new KeyValuePair<Guid, string>(Guid.Empty, StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.LabelCopyFromEmptyOption")));
+            templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
+                Guid.Empty, GetText("AddNewXmlPageTemplate.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add("CopyOfOptions", templatesOptions);
             this.Bindings.Add("CopyOfId", Guid.Empty);
@@ -109,7 +110,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             addNewTreeRefresher.PostRefreshMesseges(newPageTemplate.GetDataEntityToken());
 
-            this.ExecuteAction(newPageTemplate.GetDataEntityToken(), new WorkflowActionToken(typeof(EditPageTemplateWorkflow)));
+            this.ExecuteAction(newPageTemplate.GetDataEntityToken(), new WorkflowActionToken(typeof(EditXmlPageTemplateWorkflow)));
         }
 
 
@@ -134,7 +135,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             if (!DataFacade.ValidatePath<IPageTemplateFile>(pageTemplateFile, "PageTemplateFileProvider"))
             {
-                ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleTooLong"));
+                ShowFieldMessage("NewPageTemplate.Title", GetText("AddNewXmlPageTemplateWorkflow.TitleTooLong"));
                 e.Result = false;
                 return;
             }
@@ -152,7 +153,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void showFieldErrorCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            ShowFieldMessage("NewPageTemplate.Title", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "AddNewPageTemplateStep1.TitleInUseTitle"));
+            ShowFieldMessage("NewPageTemplate.Title", GetText("AddNewXmlPageTemplateWorkflow.TitleInUseTitle"));
         }        
+
+        private static string GetText(string stringId)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", stringId);
+        }
     }
 }

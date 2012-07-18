@@ -40,8 +40,8 @@ namespace Composite.Plugins.PageTemplates.Razor
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorTemplateAction.Label"),
-                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorTemplateAction.ToolTip"),
+                    Label = GetText("EditRazorTemplateAction.Label"),
+                    ToolTip = GetText( "EditRazorTemplateAction.ToolTip"),
                     Icon = EditTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -60,8 +60,8 @@ namespace Composite.Plugins.PageTemplates.Razor
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplate"),
-                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.DeleteTemplateToolTip"),
+                    Label = GetText("DeleteRazorPageTemplateAction.Label"),
+                    ToolTip = GetText("DeleteRazorPageTemplateAction.ToolTip"),
                     Icon = DeleteTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
@@ -75,6 +75,11 @@ namespace Composite.Plugins.PageTemplates.Razor
             });
 
             return result;
+        }
+
+        private static string GetText(string stringId)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", stringId);
         }
     }
 }

@@ -15,7 +15,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
 {
-    partial class EditPageTemplateWorkflow
+    partial class EditXmlPageTemplateWorkflow
     {
         #region Designer generated code
 
@@ -106,7 +106,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // 
             this.documentFormActivity1.ContainerLabel = null;
             this.documentFormActivity1.CustomToolbarDefinitionFileName = null;
-            this.documentFormActivity1.FormDefinitionFileName = "\\Administrative\\EditPageTemplate.xml";
+            this.documentFormActivity1.FormDefinitionFileName = "\\Administrative\\PageTemplate\\EditXmlPageTemplate.xml";
             this.documentFormActivity1.Name = "documentFormActivity1";
             // 
             // setStateActivity1
@@ -189,7 +189,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             this.CompletedStateName = "finalStateActivity";
             this.DynamicUpdateCondition = null;
             this.InitialStateName = "initializeStateActivity";
-            this.Name = "EditPageTemplateWorkflow";
+            this.Name = "EditXmlPageTemplateWorkflow";
             this.CanModifyActivities = false;
 
         }

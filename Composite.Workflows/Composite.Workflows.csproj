@@ -476,11 +476,11 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\DeletePageTemplateWorkflow.Designer.cs">
       <DependentUpon>DeletePageTemplateWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.cs">
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditXmlPageTemplateWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.Designer.cs">
-      <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditXmlPageTemplateWorkflow.Designer.cs">
+      <DependentUpon>EditXmlPageTemplateWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.cs">
       <SubType>Component</SubType>
@@ -1118,9 +1118,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditMasterPageWorkflow.layout">
       <DependentUpon>EditMasterPageWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditPageTemplateWorkflow.layout">
-      <DependentUpon>EditPageTemplateWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditRazorPageTemplateWorkflow.layout">
       <DependentUpon>EditRazorPageTemplateWorkflow.cs</DependentUpon>

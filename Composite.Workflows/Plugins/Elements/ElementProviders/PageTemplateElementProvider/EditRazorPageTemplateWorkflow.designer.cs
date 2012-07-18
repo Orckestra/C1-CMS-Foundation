@@ -58,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // 
             this.documentFormActivity1.ContainerLabel = null;
             this.documentFormActivity1.CustomToolbarDefinitionFileName = null;
-            this.documentFormActivity1.FormDefinitionFileName = "/Administrative/EditRazorTemplate.xml";
+            this.documentFormActivity1.FormDefinitionFileName = "/Administrative/PageTemplate/EditRazorTemplate.xml";
             this.documentFormActivity1.Name = "documentFormActivity1";
             // 
             // setStateActivity2

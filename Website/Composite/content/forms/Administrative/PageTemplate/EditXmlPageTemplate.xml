@@ -6,8 +6,8 @@
   </cms:bindings>
   <cms:layout iconhandle="page-template-edit">
     <TabPanels PreSelectedIndex="1">
-      <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelTemplateIdentification}">
-        <TextBox Label="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelTemplateTitleHelp}">
+      <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, EditXmlPageTemplate.LabelTemplateIdentification}">
+        <TextBox Label="${Composite.Plugins.PageTemplateElementProvider, EditXmlPageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.PageTemplateElementProvider, EditXmlPageTemplate.LabelTemplateTitleHelp}">
           <TextBox.Text>
             <cms:bind source="PageTemplate.Title" />
           </TextBox.Text>
@@ -16,7 +16,7 @@
       <TabPanels.Label>
         <cms:read source="PageTemplate.Title" />
       </TabPanels.Label>
-      <MarkupEditor Label="${Composite.Plugins.PageTemplateElementProvider, EditPageTemplate.LabelMarkUpCode}">
+      <MarkupEditor Label="${Composite.Plugins.PageTemplateElementProvider, EditXmlPageTemplate.LabelMarkUpCode}">
         <cms:bind source="PageTemplateMarkup" />
       </MarkupEditor>
     </TabPanels>

@@ -152,7 +152,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             // wizzardFormActivity1
             // 
             this.wizzardFormActivity1.ContainerLabel = "Add new";
-            this.wizzardFormActivity1.FormDefinitionFileName = "\\Administrative\\AddNewMasterPagePageTemplate.xml";
+            this.wizzardFormActivity1.FormDefinitionFileName = "\\Administrative\\PageTemplate\\AddNewMasterPagePageTemplate.xml";
             this.wizzardFormActivity1.Name = "wizzardFormActivity1";
             // 
             // setStateActivity1

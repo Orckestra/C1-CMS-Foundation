@@ -6,14 +6,14 @@
     <cms:binding name="CopyOfId" type="System.Guid" />
     
   </cms:bindings>
-  <cms:layout iconhandle="generic-add" label="${Composite.Plugins.PageTemplateElementProvider, AddNewRazorPageTemplateWorkflow.LabelDialog}">
-    <FieldGroup Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelFieldGroup}">
-      <TextBox Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelTemplateTitle}" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelTemplateTitleHelp}">
+  <cms:layout iconhandle="generic-add" label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelDialog}">
+    <FieldGroup Label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelFieldGroup}">
+      <TextBox Label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelTemplateTitleHelp}">
         <TextBox.Text>
           <cms:bind source="Title" />
         </TextBox.Text>
       </TextBox>
-      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelCopyFromHelp}" Label="${Composite.Plugins.PageTemplateElementProvider, AddNewPageTemplateStep1.LabelCopyFrom}">
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Help="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelCopyFromHelp}" Label="${Composite.Plugins.RazorPageTemplate, AddNewRazorPageTemplate.LabelCopyFrom}">
         <KeySelector.Selected>
           <cms:bind source="CopyOfId" />
         </KeySelector.Selected>
