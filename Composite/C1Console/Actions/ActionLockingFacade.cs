@@ -258,15 +258,15 @@ namespace Composite.C1Console.Actions
                     Username = lockingInformation.Username
                 };
 
-                EntityToken entityToken = EntityTokenSerializer.Deserialize(lockingInformation.SerializedEntityToken);
-
-                try
+                try 
                 {
+                    EntityToken entityToken = EntityTokenSerializer.Deserialize(lockingInformation.SerializedEntityToken);
+
                     _lockingInformations.Add(entityToken, li);
                 }
                 catch (Exception)
                 {
-                    // Remove broking locking information (Ex. dead data source ids) /MRJ
+                    // Removing broken locking information (Ex. dead data source ids) /MRJ
                     lockingInformationsToDelete.Add(lockingInformation.Id);
                 }
             }
