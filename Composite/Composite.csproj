@@ -656,13 +656,13 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplate.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\Function.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\Markup.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\Param.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\ParamCollection.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\ParamObjectConverter.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\ParamTagControlBuilder.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\F\StringToObjectConverter.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\Function.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\Markup.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\Param.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\ParamCollection.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\ParamObjectConverter.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\ParamTagControlBuilder.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\StringToObjectConverter.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Description.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Placeholder.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Title.cs" />

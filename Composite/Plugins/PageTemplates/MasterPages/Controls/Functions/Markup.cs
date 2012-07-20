@@ -9,7 +9,7 @@ using Composite.Core.Localization;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 
-namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
+namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 {
     /// <exclude />
     [ParseChildren(false)]

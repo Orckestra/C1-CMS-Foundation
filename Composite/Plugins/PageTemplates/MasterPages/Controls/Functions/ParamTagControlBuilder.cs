@@ -1,6 +1,6 @@
 ﻿using System.Web.UI;
 
-namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
+namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 {
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

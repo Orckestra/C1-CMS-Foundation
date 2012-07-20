@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 using Composite.Core.Localization;
 using Composite.Core.Xml;
-using Composite.Plugins.PageTemplates.MasterPages.Controls.F;
+using Composite.Plugins.PageTemplates.MasterPages.Controls.Functions;
 
 namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
 {

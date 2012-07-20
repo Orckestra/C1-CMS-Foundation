@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 
-namespace Composite.Plugins.PageTemplates.MasterPages.Controls.F
+namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 {
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
