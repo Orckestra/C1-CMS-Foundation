@@ -24,7 +24,17 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
         /// <exclude />
         public Markup(XElement content)
         {
-            InnerContent = content;
+            if(content.Name.LocalName == "html")
+            {
+                InnerContent = content;
+            }
+            else
+            {
+                var document = new XhtmlDocument();
+                document.Body.Add(content);
+
+                InnerContent = document.Root;
+            }
         }
 
         /// <exclude />

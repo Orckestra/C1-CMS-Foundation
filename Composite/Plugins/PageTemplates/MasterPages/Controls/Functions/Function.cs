@@ -5,6 +5,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
+using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Functions;
@@ -17,6 +18,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
     [ParseChildren(true, "Parameters")]
     public class Function : Control
     {
+        private static readonly string LogTitle = "Controls.Function";
+
         /// <exclude />
         public string Name { get; set; }
 
@@ -42,24 +45,42 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
         /// <exclude />
         protected override void OnInit(EventArgs e)
         {
-            IFunction function;
-            if (!FunctionFacade.TryGetFunction(out function, Name))
-            {
-                throw new InvalidOperationException("Invalid function name '{0}'".FormatWith("Name"));
-            }
+            Type returnType;
+            object result;
+            string functionName = null;
 
-            var result = FunctionFacade.Execute<object>(function, parseParameters(), new FunctionContextContainer());
+            try
+            {
+                functionName = Name;
+
+                IFunction function;
+
+                if (!FunctionFacade.TryGetFunction(out function, functionName))
+                {
+                    throw new InvalidOperationException("Invalid function name '{0}'".FormatWith(functionName));
+                }
+
+                returnType = function.ReturnType;
+                result = FunctionFacade.Execute<object>(function, parseParameters(), new FunctionContextContainer());
+            }
+            catch (Exception ex)
+            {
+                LoggingService.LogError(LogTitle, ex);
+
+                result = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex, functionName ?? string.Empty);
+                returnType = typeof (XElement);
+            }
 
             if (result != null)
             {
-                if (function.ReturnType == typeof (XElement) || function.ReturnType == typeof (XhtmlDocument))
+                if (returnType == typeof(XElement) || returnType == typeof(XhtmlDocument))
                 {
                     var element = ValueTypeConverter.Convert<XElement>(result);
                     var markup = new Markup(element);
 
                     Controls.Add(markup);
                 }
-                else if (typeof (Control).IsAssignableFrom(function.ReturnType))
+                else if (typeof(Control).IsAssignableFrom(returnType))
                 {
                     var control = (Control) result;
 
