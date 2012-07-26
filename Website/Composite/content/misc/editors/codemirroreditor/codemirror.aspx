@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="CodeMirror/mode/javascript/javascript.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/css/css.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script type="text/javascript" src="CodeMirror/mode/htmlembedded/htmlembedded.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/clike/clike.js"></script>
 	<link rel="stylesheet" type="text/css" href="codemirror.css" />
 	<link rel="stylesheet" type="text/css" href="theme/composite.css" />

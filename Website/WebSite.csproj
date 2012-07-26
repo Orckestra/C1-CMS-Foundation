@@ -142,6 +142,8 @@
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\lib\runmode.js" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlembedded\htmlembedded.js" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlembedded\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\index.html" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\xmlpure\xmlpure.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />

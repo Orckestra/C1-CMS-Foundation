@@ -37,6 +37,8 @@
                 return "cs";
             case "application/x-cshtml":
                 return "cshtml";
+            case "application/x-master-page":
+                return "aspx";
             default:
                 return "text";
         }

@@ -19,6 +19,7 @@ CodeMirrorEditorBinding.syntax = {
 	JAVASCRIPT: "js",
 	CSHARP: "cs",
 	CSHTML: "cshtml",
+	ASPX: "aspx",
 	SQL: "sql"
 }
 
@@ -243,6 +244,9 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 							break;
 						case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
 							this._codemirrorEditor.setOption("mode", "text/javascript");
+							break;
+						case CodeMirrorEditorBinding.syntax.ASPX:
+							this._codemirrorEditor.setOption("mode", "application/x-aspx");
 							break;
 						case CodeMirrorEditorBinding.syntax.SQL:
 							this._codemirrorEditor.setOption("mode", "");
