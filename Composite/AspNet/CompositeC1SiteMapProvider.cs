@@ -16,28 +16,8 @@ namespace Composite.AspNet
     /// <summary>
     /// CompositeC1 implementation of <see cref="SiteMapProvider"/>
     /// </summary>
-    public class CompositeC1SiteMapProvider : SiteMapProvider
+    public partial class CompositeC1SiteMapProvider : SiteMapProvider
     {
-        protected class SiteMapContainer
-        {
-            public SiteMapNode Root { get; set; }
-
-            public IDictionary<string, SiteMapNode> KeyToNodesMap { get; private set; }
-            public IDictionary<string, SiteMapNode> RawUrlToNodesMap { get; private set; }
-            public IDictionary<string, SiteMapNode> ParentNodesMap { get; private set; }
-            public IDictionary<string, SiteMapNodeCollection> ChildCollectionsMap { get; private set; }
-
-            public SiteMapContainer()
-            {
-                KeyToNodesMap = new Dictionary<string, SiteMapNode>();
-                RawUrlToNodesMap = new Dictionary<string, SiteMapNode>();
-                ParentNodesMap = new Dictionary<string, SiteMapNode>();
-                ChildCollectionsMap = new Dictionary<string, SiteMapNodeCollection>();
-            }
-        }
-
-
-
         private const string _key = "sitemap";
         private static readonly object _lock = new object();
         private static readonly SiteMapContainer _emptySiteMap = new SiteMapContainer();
@@ -230,30 +210,6 @@ namespace Composite.AspNet
             }
         }
 
-        protected void AddNode(SiteMapNode node, SiteMapNode parentNode, SiteMapContainer container)
-        {
-            Verify.ArgumentNotNull(node, "node");
-            Verify.ArgumentNotNull(container, "container");
-
-            container.KeyToNodesMap.Add(node.Key, node);
-            container.ParentNodesMap.Add(node.Key, parentNode);
-
-            if (!container.RawUrlToNodesMap.ContainsKey(node.Url))
-            {
-                container.RawUrlToNodesMap.Add(node.Url, node);
-            }
-
-            if (parentNode != null)
-            {
-                if (!container.ChildCollectionsMap.ContainsKey(parentNode.Key))
-                {
-                    container.ChildCollectionsMap[parentNode.Key] = new SiteMapNodeCollection();
-                }
-
-                container.ChildCollectionsMap[parentNode.Key].Add(node);
-            }
-        }
-
         private SiteMapContainer GetContainer(CultureInfo cultureInfo)
         {
             using(new DataScope(cultureInfo))
@@ -307,7 +263,7 @@ namespace Composite.AspNet
 
                     if (siteMap == null)
                     {
-                        siteMap = LoadSiteMapInternal(culture, rootPageId);
+                        siteMap = SiteMapContainer.LoadSiteMap(this, culture, PublicationScope, rootPageId);
                         if (siteMap != null)
                         {
                             AddRolesInternal(siteMap);
@@ -375,9 +331,9 @@ namespace Composite.AspNet
 
             return _key + hostnameKey + rootPageId.ToString() + culture.Name + this.PublicationScope;
         }
-    
 
-    private PublicationScope PublicationScope
+
+        private PublicationScope PublicationScope
         {
             get
             {
@@ -482,54 +438,6 @@ namespace Composite.AspNet
             base.Initialize(name, attributes);
         }
 
-        protected void LoadSiteMapInternal(IDictionary<CultureInfo, SiteMapContainer> list, Guid rootPageId)
-        {
-            var scope = PublicationScope;
-
-            foreach (var culture in DataLocalizationFacade.ActiveLocalizationCultures)
-            {
-                using (var data = new DataConnection(scope, culture))
-                {
-                    var rootPage = data.SitemapNavigator.GetPageNodeById(rootPageId);
-
-                    if (rootPage != null)
-                    {
-                        var container = new SiteMapContainer
-                        {
-                            Root = new CompositeC1SiteMapNode(this, rootPage, data)
-                        };
-
-                        list.Add(culture, container);
-
-                        LoadNodes(rootPage, null, container, data);
-                    }
-                }
-            }
-        }
-
-        protected SiteMapContainer LoadSiteMapInternal(CultureInfo culture, Guid rootPageId)
-        {
-            var scope = PublicationScope;
-
-            using (var data = new DataConnection(scope, culture))
-            {
-                var rootPage = data.SitemapNavigator.GetPageNodeById(rootPageId);
-
-                if (rootPage == null)
-                {
-                    return null;                    
-                }
-
-                var container = new SiteMapContainer
-                {
-                    Root = new CompositeC1SiteMapNode(this, rootPage, data)
-                };
-
-                LoadNodes(rootPage, null, container, data);
-
-                return container;
-            }
-        }
 
         /// <summary>
         ///  Fixes up the hostname when using the preview-tab in the Console, since the requested page can belong to 
@@ -589,22 +497,5 @@ namespace Composite.AspNet
         }
 
         protected virtual void AddRolesInternal(SiteMapContainer siteMapContainer) { }
-
-        private void LoadNodes(PageNode pageNode, SiteMapNode parent, SiteMapContainer container, DataConnection data)
-        {
-            if (pageNode.Url == null)
-            {
-                return;
-            }
-
-            var node = new CompositeC1SiteMapNode(this, pageNode, data);
-            AddNode(node, parent, container);
-
-            var childs = pageNode.ChildPages;
-            foreach (var child in childs)
-            {
-                LoadNodes(child, node, container, data);
-            }
-        }
     }
 }

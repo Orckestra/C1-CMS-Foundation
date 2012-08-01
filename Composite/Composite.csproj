@@ -158,6 +158,7 @@
     <Compile Include="AspNet\Razor\RazorPageTemplate.cs" />
     <Compile Include="AspNet\Razor\CompositeC1WebPage.cs" />
     <Compile Include="AspNet\CompositeC1SiteMapNode.cs" />
+    <Compile Include="AspNet\SiteMapContainer.cs" />
     <Compile Include="AspNet\SiteMapContext.cs" />
     <Compile Include="AspNet\SiteMapHandler.cs" />
     <Compile Include="AspNet\SiteMapNodeChangeFrequency.cs" />
