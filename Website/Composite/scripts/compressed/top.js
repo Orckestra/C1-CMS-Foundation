@@ -27745,7 +27745,7 @@ CodeMirrorEditorBinding.prototype=new EditorBinding;
 CodeMirrorEditorBinding.prototype.constructor=CodeMirrorEditorBinding;
 CodeMirrorEditorBinding.superclass=EditorBinding.prototype;
 CodeMirrorEditorBinding.ACTION_INITIALIZED="codemirroreditor initialized";
-CodeMirrorEditorBinding.syntax={TEXT:"text",XML:"xml",XSL:"xsl",HTML:"html",CSS:"css",JAVASCRIPT:"js",CSHARP:"cs",CSHTML:"cshtml",SQL:"sql"};
+CodeMirrorEditorBinding.syntax={TEXT:"text",XML:"xml",XSL:"xsl",HTML:"html",CSS:"css",JAVASCRIPT:"js",CSHARP:"cs",CSHTML:"cshtml",ASPX:"aspx",SQL:"sql"};
 function CodeMirrorEditorBinding(){
 this.logger=SystemLogger.getLogger("CodeMirrorEditorBinding");
 this.action_initialized=CodeMirrorEditorBinding.ACTION_INITIALIZED;
@@ -27817,6 +27817,9 @@ this._codemirrorEditor.setOption("mode","text/x-csharp");
 break;
 case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
 this._codemirrorEditor.setOption("mode","text/javascript");
+break;
+case CodeMirrorEditorBinding.syntax.ASPX:
+this._codemirrorEditor.setOption("mode","application/x-aspx");
 break;
 case CodeMirrorEditorBinding.syntax.SQL:
 this._codemirrorEditor.setOption("mode","");
