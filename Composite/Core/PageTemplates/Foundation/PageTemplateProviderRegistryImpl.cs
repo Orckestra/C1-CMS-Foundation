@@ -123,7 +123,6 @@ namespace Composite.Core.PageTemplates.Foundation
 
             public static void DoInitialize(Resources resources)
             {
-                var providerByTemplate = new Hashtable<Guid, IPageTemplateProvider>();
                 resources.ProviderNames = GetProviderNames();
             }
         }

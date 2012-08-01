@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Web.UI;
 using Composite.AspNet;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvider
@@ -20,31 +22,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
             get { return "UserControls"; }
         }
 
-        protected override Type BaseType
-        {
-            get { return typeof(UserControlFunction); }
-        }
-
-        protected override string GetDescription(object obj)
-        {
-            if(obj is UserControlFunction)
-            {
-                return (obj as UserControlFunction).FunctionDescription;
-            }
-
-            return null;
-        }
-
-        protected override Type GetReturnType(object obj)
-        {
-            return typeof (UserControl);
-        }
-
-        protected override object InstantiateFile(string virtualPath)
-        {
-            return CompileFile(virtualPath);
-        }
-
         protected override bool HandleChange(string path)
         {
             return path.EndsWith(".ascx") || path.EndsWith(".ascx.cs");
@@ -54,6 +31,21 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
         { 
             var page = new Page();
             return page.LoadControl(virtualPath) as UserControl;
+        }
+
+        protected override IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
+        {
+            UserControl userControl = CompileFile(virtualPath);
+            
+            if(!(userControl is UserControlFunction))
+            {
+                return null;
+            }
+
+            var userControlFunction = userControl as UserControlFunction;
+            var parameters = FunctionBasedFunctionProviderHelper.GetParameters(userControlFunction, typeof (UserControlFunction));
+
+            return new UserControlBasedFunction(@namespace, name, userControlFunction.FunctionDescription, parameters, typeof(UserControl), virtualPath, this);
         }
     }
 }

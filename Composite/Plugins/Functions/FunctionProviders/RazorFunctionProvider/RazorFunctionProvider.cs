@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
-using Composite.Core.Xml;
+using Composite.Functions;
+using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
@@ -19,41 +20,28 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
             get { return "Razor"; }
         }
 
-		protected override Type BaseType
-		{
-			get { return typeof(RazorFunction); }
-		}
 
 		public RazorFunctionProvider(string name, string folder) : base(name, folder) { }
 
-		protected override Type GetReturnType(object obj)
+
+		override protected IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
 		{
-            if (obj is RazorFunction)
+		    WebPageBase razorPage = WebPage.CreateInstanceFromVirtualPath(virtualPath);
+            if(!(razorPage is RazorFunction))
             {
-                return (obj as RazorFunction).FunctionReturnType;
+                return null;
             }
 
-			return typeof(XhtmlDocument);
-		}
+		    RazorFunction razorFunction = razorPage as RazorFunction;
 
-        protected override string GetDescription(object obj)
-        {
-            if (obj is RazorFunction)
-            {
-                return (obj as RazorFunction).FunctionDescription;
-            }
+		    var functionParameters = FunctionBasedFunctionProviderHelper.GetParameters(razorFunction, typeof(RazorFunction));
 
-            return base.GetDescription(obj);
-        }
-
-		protected override object InstantiateFile(string virtualPath)
-		{
-			return WebPage.CreateInstanceFromVirtualPath(virtualPath);
+            return new RazorBasedFunction(@namespace, name, razorFunction.FunctionDescription, functionParameters, razorFunction.FunctionReturnType, virtualPath, this);
 		}
 
 		protected override bool HandleChange(string path)
 		{
             return path.EndsWith(FileExtension);
 		}
-	}
+    }
 }

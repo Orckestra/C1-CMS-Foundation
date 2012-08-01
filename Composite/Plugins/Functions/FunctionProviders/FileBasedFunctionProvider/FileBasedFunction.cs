@@ -12,7 +12,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 		private readonly FileBasedFunctionProvider<T> _provider;
 
 		internal string VirtualPath { get; private set; }
-		protected IDictionary<string, FunctionParameterHolder> Parameters { get; private set; }
+		protected IDictionary<string, FunctionParameter> Parameters { get; private set; }
 
 		public string Namespace { get; private set; }
 		public string Name { get; private set; }
@@ -71,7 +71,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			}
 		}
 
-		protected FileBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameterHolder> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<T> provider)
+		protected FileBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameter> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<T> provider)
 		{
 			_provider = provider;
 

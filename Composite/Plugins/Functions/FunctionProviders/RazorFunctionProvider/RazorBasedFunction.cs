@@ -19,7 +19,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
         private static readonly string ExecutionLock_ItemsKey = "__razor_execute_lock__";
 		private static object _lock = new object();
 
-		public RazorBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameterHolder> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorBasedFunction> provider)
+		public RazorBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameter> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorBasedFunction> provider)
 			: base(ns, name, description, parameters, returnType, virtualPath, provider)
 		{
 		}

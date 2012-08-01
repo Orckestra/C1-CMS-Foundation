@@ -173,7 +173,8 @@
     <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionElementProvider\UserControlFunctionElementProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunctionProvider.cs" />
-    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionParameterHolder.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionBasedFunctionProviderHelper.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionParameter.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\NotLoadedFileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProvider.cs" />

@@ -12,7 +12,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
     internal class UserControlBasedFunction : FileBasedFunction<UserControlBasedFunction>
     {
         public UserControlBasedFunction(string ns, string name, string description,
-                                        IDictionary<string, FunctionParameterHolder> parameters, Type returnType,
+                                        IDictionary<string, FunctionParameter> parameters, Type returnType,
                                         string virtualPath, FileBasedFunctionProvider<UserControlBasedFunction> provider)
             : base(ns, name, description, parameters, returnType, virtualPath, provider)
         {
