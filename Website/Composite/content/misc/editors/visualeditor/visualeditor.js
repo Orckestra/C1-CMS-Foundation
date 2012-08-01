@@ -78,11 +78,12 @@ window.tinyMCE.init ( config );
  */
 function makeAttrib ( attrib, value ) {
 	var res = "";
-	if ( value ) {
-		res = value.replace(/&/g, '&amp;');
-		res = value.replace(/\"/g, '&quot;');
-		res = value.replace(/</g, '&lt;');
-		res = value.replace(/>/g, '&gt;');
+	if (value) {
+		res = res + value;
+		res = res.replace(/&/g, '&amp;');
+		res = res.replace(/\"/g, '&quot;');
+		res = res.replace(/</g, '&lt;');
+		res = res.replace(/>/g, '&gt;');
 		res = ' ' + attrib + '="' + value + '"';
 	}
 	return res;
