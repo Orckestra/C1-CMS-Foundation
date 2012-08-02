@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.Caching;
 using System.Web;
+using Composite.Core.Routing;
 using Composite.Data;
 
 namespace Composite.AspNet
@@ -13,6 +16,8 @@ namespace Composite.AspNet
         /// </summary>
         protected class SiteMapContainer
         {
+            private const string _cachePrefix = "sitemap";
+
             /// <exclude />
             public SiteMapNode Root { get; set; }
             /// <exclude />
@@ -95,6 +100,98 @@ namespace Composite.AspNet
 
                     container.ChildCollectionsMap[parentNode.Key].Add(node);
                 }
+            }
+
+            /// <summary>
+            /// Gets sitemap from cache.
+            /// </summary>
+            /// <param name="host">The host.</param>
+            /// <param name="culture">The culture.</param>
+            /// <param name="rootPageId">The root page id.</param>
+            /// <returns></returns>
+            public static SiteMapContainer GetFromCache(string host, CultureInfo culture, Guid rootPageId)
+            {
+                var key = GetCacheKey(host, culture, rootPageId);
+
+                var context = HttpContext.Current;
+                var container = context.Items[key] as SiteMapContainer;
+
+                if (container == null)
+                {
+                    if (!CanCache) return null;
+
+                    container = MemoryCache.Default.Get(key) as SiteMapContainer;
+                    if (container != null)
+                    {
+                        context.Items.Add(key, container);
+                    }
+                }
+
+                return container;
+            }
+
+
+            /// <summary>
+            /// Adds sitemap to cache.
+            /// </summary>
+            /// <param name="siteMap">The site map.</param>
+            /// <param name="host">The host.</param>
+            /// <param name="culture">The culture.</param>
+            /// <param name="rootPageId">The root page id.</param>
+            public static void AddToCache(SiteMapContainer siteMap, string host, CultureInfo culture, Guid rootPageId)
+            {
+                var key = GetCacheKey(host, culture, rootPageId);
+
+                var context = HttpContext.Current;
+                context.Items[key] = siteMap;
+
+                if (CanCache)
+                {
+                    MemoryCache.Default.Add(key, siteMap, ObjectCache.InfiniteAbsoluteExpiration);
+                }
+            }
+
+            private static string GetCacheKey(string host, CultureInfo culture, Guid rootPageId)
+            {
+                string hostnameKey;
+
+                var urlSpace = new UrlSpace();
+                if (urlSpace.ForceRelativeUrls)
+                {
+                    hostnameKey = string.Empty;
+                }
+                else
+                {
+                    hostnameKey = host;
+                }
+
+                return _cachePrefix + hostnameKey + rootPageId.ToString() + culture.Name + PublicationScope;
+            }
+
+            private static PublicationScope PublicationScope
+            {
+                get
+                {
+                    return DataScopeManager.CurrentDataScope.ToPublicationScope();
+                }
+            }
+
+            /// <exclude />
+            protected static bool CanCache
+            {
+                get
+                {
+                    return PublicationScope == PublicationScope.Published;
+                }
+            }
+
+            internal static void ClearCache()
+            {
+                var keys = MemoryCache.Default.Where(o => o.Key.StartsWith(_cachePrefix)).Select(o => o.Key);
+                foreach (var key in keys)
+                {
+                    MemoryCache.Default.Remove(key);
+                };
             }
         }
     }

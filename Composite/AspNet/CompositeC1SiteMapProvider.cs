@@ -18,7 +18,7 @@ namespace Composite.AspNet
     /// </summary>
     public partial class CompositeC1SiteMapProvider : SiteMapProvider
     {
-        private const string _key = "sitemap";
+
         private static readonly object _lock = new object();
         private static readonly SiteMapContainer _emptySiteMap = new SiteMapContainer();
 
@@ -203,16 +203,6 @@ namespace Composite.AspNet
             return list.Cast<CompositeC1SiteMapNode>();
         }
 
-        /// <exclude />
-        public void Flush()
-        {
-            var keys = MemoryCache.Default.Where(o => o.Key.StartsWith(_key)).Select(o => o.Key);
-            foreach (var key in keys)
-            {
-                MemoryCache.Default.Remove(key);
-            }
-        }
-
         private SiteMapContainer GetContainer(CultureInfo cultureInfo)
         {
             using(new DataScope(cultureInfo))
@@ -257,16 +247,18 @@ namespace Composite.AspNet
             var uri = ProcessUrl(HttpContext.Current.Request.Url);
             var host = uri.Host;
 
-            SiteMapContainer siteMap = GetFromCache(host, culture, rootPageId);
+            SiteMapContainer siteMap = SiteMapContainer.GetFromCache(host, culture, rootPageId);
             if (siteMap == null)
             {
                 lock (_lock)
                 {
-                    siteMap = GetFromCache(host, culture, rootPageId);
+                    siteMap = SiteMapContainer.GetFromCache(host, culture, rootPageId);
 
                     if (siteMap == null)
                     {
-                        siteMap = SiteMapContainer.LoadSiteMap(this, culture, PublicationScope, rootPageId);
+                        var publicationScope = DataScopeManager.CurrentDataScope.ToPublicationScope();
+
+                        siteMap = SiteMapContainer.LoadSiteMap(this, culture, publicationScope, rootPageId);
                         if (siteMap != null)
                         {
                             AddRolesInternal(siteMap);
@@ -276,7 +268,7 @@ namespace Composite.AspNet
                             siteMap = _emptySiteMap;
                         }
 
-                        AddToCache(siteMap, host, culture, rootPageId);
+                        SiteMapContainer.AddToCache(siteMap, host, culture, rootPageId);
                     }
                 }
             }
@@ -284,74 +276,6 @@ namespace Composite.AspNet
             return object.ReferenceEquals(siteMap, _emptySiteMap) ? null : siteMap;
         }
 
-        private SiteMapContainer GetFromCache(string host, CultureInfo culture, Guid rootPageId)
-        {
-            var key = GetCacheKey(host, culture, rootPageId);
-
-            var context = HttpContext.Current;
-            var container = context.Items[key] as SiteMapContainer;
-
-            if (container == null)
-            {
-                if (!CanCache) return null;
-
-                container = MemoryCache.Default.Get(key) as SiteMapContainer;
-                if (container != null)
-                {
-                    context.Items.Add(key, container);
-                }
-            }
-
-            return container;
-        }
-
-        private void AddToCache(SiteMapContainer siteMap, string host, CultureInfo culture, Guid rootPageId)
-        {
-            var key = GetCacheKey(host, culture, rootPageId);
-
-            var context = HttpContext.Current;
-            context.Items[key] = siteMap;
-
-            if (CanCache)
-            {
-                MemoryCache.Default.Add(key, siteMap, ObjectCache.InfiniteAbsoluteExpiration);
-            }
-        }
-
-        private string GetCacheKey(string host, CultureInfo culture, Guid rootPageId)
-        {
-            string hostnameKey;
-
-            var urlSpace = new UrlSpace();
-            if(urlSpace.ForceRelativeUrls)
-            {
-                hostnameKey = string.Empty;
-            }
-            else
-            {
-                hostnameKey = host;
-            }
-
-            return _key + hostnameKey + rootPageId.ToString() + culture.Name + this.PublicationScope;
-        }
-
-
-        private PublicationScope PublicationScope
-        {
-            get
-            {
-                return DataScopeManager.CurrentDataScope.ToPublicationScope();
-            }
-        }
-
-        /// <exclude />
-        protected bool CanCache
-        {
-            get
-            {
-                return DataScopeManager.CurrentDataScope.ToPublicationScope() == PublicationScope.Published;
-            }
-        }
 
         /// <exclude />
         protected string GetCurrentNodeKey()
@@ -403,7 +327,7 @@ namespace Composite.AspNet
         /// <exclude />
         public override bool IsAccessibleToUser(HttpContext ctx, SiteMapNode node)
         {
-            if (PublicationScope == PublicationScope.Unpublished)
+            if (DataScopeManager.CurrentDataScope == DataScopeIdentifier.Administrated)
             {
                 return true;
             }
@@ -419,7 +343,7 @@ namespace Composite.AspNet
         /// <exclude />
         public override void Initialize(string name, NameValueCollection attributes)
         {
-            DataEventHandler handler = (sender, e) => Flush();
+            DataEventHandler handler = (sender, e) => SiteMapContainer.ClearCache();
 
             DataEventSystemFacade.SubscribeToDataAfterAdd<IPage>(handler, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IPage>(handler, true);
