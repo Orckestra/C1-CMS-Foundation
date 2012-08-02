@@ -39,12 +39,6 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
         public static ResourceHandle DeleteFunction { get { return GetIconHandle("xslt-based-function-delete"); } }
 
 
-        private static ResourceHandle GetIconHandle(string name)
-        {
-            return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
-        }
-
-
         /// <exclude />
         public XsltBasedFunctionProviderElementProvider(string providerName)
         {

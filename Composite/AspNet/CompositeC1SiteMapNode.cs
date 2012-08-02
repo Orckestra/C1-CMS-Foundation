@@ -84,6 +84,7 @@ namespace Composite.AspNet
             Culture = data.CurrentLocale;
         }
 
+        /// <exclude />
         protected CompositeC1SiteMapNode(CompositeC1SiteMapProvider provider, string key)
             :base(provider, key)
         {

@@ -113,6 +113,7 @@ namespace Composite.AspNet
             return node;
         }
 
+        /// <exclude />
         public override SiteMapNodeCollection GetChildNodes(SiteMapNode node)
         {
             Verify.ArgumentNotNull(node, "node");
@@ -147,6 +148,7 @@ namespace Composite.AspNet
             return SiteMapNodeCollection.ReadOnly(returnList);
         }
 
+        /// <exclude />
         public override SiteMapNode GetParentNode(SiteMapNode node)
         {
             Verify.ArgumentNotNull(node, "node");
@@ -168,6 +170,7 @@ namespace Composite.AspNet
             return parentNode;
         }
 
+        /// <exclude />
         protected override SiteMapNode GetRootNodeCore()
         {
             var context = SiteMapContext.Current;
@@ -341,6 +344,7 @@ namespace Composite.AspNet
             }
         }
 
+        /// <exclude />
         protected bool CanCache
         {
             get
@@ -349,11 +353,13 @@ namespace Composite.AspNet
             }
         }
 
+        /// <exclude />
         protected string GetCurrentNodeKey()
         {
             return SitemapNavigator.CurrentPageId.ToString();
         }
 
+        /// <exclude />
         public override SiteMapNode FindSiteMapNode(string rawUrl)
         {
             var culture = DataLocalizationFacade.DefaultLocalizationCulture;
@@ -394,6 +400,7 @@ namespace Composite.AspNet
             || url.StartsWith(UrlUtils.PublicRootPath + "/default.aspx", StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <exclude />
         public override bool IsAccessibleToUser(HttpContext ctx, SiteMapNode node)
         {
             if (PublicationScope == PublicationScope.Unpublished)
@@ -409,6 +416,7 @@ namespace Composite.AspNet
             return true;
         }
 
+        /// <exclude />
         public override void Initialize(string name, NameValueCollection attributes)
         {
             DataEventHandler handler = (sender, e) => Flush();
@@ -496,6 +504,7 @@ namespace Composite.AspNet
             return @string;
         }
 
+        /// <exclude />
         protected virtual void AddRolesInternal(SiteMapContainer siteMapContainer) { }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Composite.Data;
 using Composite.Data.Types;
 
 namespace Composite.AspNet
@@ -11,6 +10,9 @@ namespace Composite.AspNet
     /// </summary>
     public class SiteMapContext: IDisposable
     {
+        /// <summary>
+        /// Gets the root page.
+        /// </summary>
         public IPage RootPage { get; private set; }
 
         /// <summary>

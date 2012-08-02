@@ -37,10 +37,8 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
         private const string FunctionsProviderType = "functions";
         private const string WidgetFunctionsProviderType = "widgetFunctions";
 
-        public static ResourceHandle DocumentFunctionsIcon = GetIconHandle("all-functions-generatedocumentation");
-        private static ResourceHandle TestFunctionIcon = GetIconHandle("base-function-function");
-        private static ResourceHandle GetIconHandle(string name) { return new ResourceHandle(BuildInIconProviderName.ProviderName, name); }
-
+        public static readonly ResourceHandle DocumentFunctionsIcon = GetIconHandle("all-functions-generatedocumentation");
+        private static readonly ResourceHandle TestFunctionIcon = GetIconHandle("base-function-function");
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 

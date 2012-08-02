@@ -367,7 +367,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
             return result;
         }
 
-
+        /// <exclude />
         protected static ResourceHandle GetIconHandle(string name)
         {
             return new ResourceHandle(BuildInIconProviderName.ProviderName, name);

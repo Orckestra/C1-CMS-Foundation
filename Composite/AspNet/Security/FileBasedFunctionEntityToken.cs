@@ -11,18 +11,21 @@ namespace Composite.AspNet.Security
 	public class FileBasedFunctionEntityToken : EntityToken
 	{
 		private readonly string _id;
+        /// <exclude />
 		public override string Id
 		{
 			get { return _id; }
 		}
 
         private readonly string _source;
+        /// <exclude />
 		public override string Source
 		{
 			get { return _source; }
 		}
 
-		public override string Type
+        /// <exclude />
+        public override string Type
 		{
 			get { return String.Empty; }
 		}
@@ -52,7 +55,7 @@ namespace Composite.AspNet.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="FileBasedFunctionEntityToken"/> class.
         /// </summary>
-        /// <param name="providerName">Name of the fuction provider.</param>
+        /// <param name="functionProviderName">Name of the fuction provider.</param>
         /// <param name="functionFullName">Full name of the function.</param>
 		public FileBasedFunctionEntityToken(string functionProviderName, string functionFullName)
 		{
@@ -60,7 +63,7 @@ namespace Composite.AspNet.Security
             _id = functionFullName;
 		}
 
-
+        /// <exclude />
 		public override string Serialize()
 		{
 			return DoSerialize();

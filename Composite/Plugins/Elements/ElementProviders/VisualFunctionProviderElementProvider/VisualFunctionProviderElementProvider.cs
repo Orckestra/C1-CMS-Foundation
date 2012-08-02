@@ -24,18 +24,11 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
         public static ResourceHandle EditFunction { get { return GetIconHandle("visual-function-edit"); } }
         public static ResourceHandle DeleteFunction { get { return GetIconHandle("visual-function-delete"); } }
 
-        private static ResourceHandle GetIconHandle(string name)
-        {
-            return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
-        }
-
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
         public VisualFunctionProviderElementProvider()
         {
         }
-
-
 
         protected override string RootFolderLabel
         {

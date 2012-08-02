@@ -27,12 +27,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
         public static ResourceHandle EditIcon { get { return GetIconHandle("method-based-function-edit"); } }
         public static ResourceHandle DeleteIcon { get { return GetIconHandle("method-based-function-delete"); } }
 
-        private static ResourceHandle GetIconHandle(string name)
-        {
-            return new ResourceHandle(BuildInIconProviderName.ProviderName, name);
-        }
-
-
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
         public MethodBasedFunctionProviderElementProvider(string providerName)

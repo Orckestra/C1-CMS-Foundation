@@ -13,13 +13,18 @@ namespace Composite.AspNet
         /// </summary>
         protected class SiteMapContainer
         {
+            /// <exclude />
             public SiteMapNode Root { get; set; }
-
+            /// <exclude />
             public IDictionary<string, SiteMapNode> KeyToNodesMap { get; private set; }
+            /// <exclude />
             public IDictionary<string, SiteMapNode> RawUrlToNodesMap { get; private set; }
+            /// <exclude />
             public IDictionary<string, SiteMapNode> ParentNodesMap { get; private set; }
+            /// <exclude />
             public IDictionary<string, SiteMapNodeCollection> ChildCollectionsMap { get; private set; }
 
+            /// <exclude />
             public SiteMapContainer()
             {
                 KeyToNodesMap = new Dictionary<string, SiteMapNode>();
@@ -28,6 +33,7 @@ namespace Composite.AspNet
                 ChildCollectionsMap = new Dictionary<string, SiteMapNodeCollection>();
             }
 
+            /// <exclude />
             public static SiteMapContainer LoadSiteMap(CompositeC1SiteMapProvider provider, CultureInfo culture, PublicationScope publicationScope, Guid rootPageId)
             {
                 using (var data = new DataConnection(publicationScope, culture))
