@@ -54,7 +54,7 @@ namespace Composite.Core.Routing
                         return;
                     }
 
-                    ConvertLegasyBindings();
+                    ConvertLegacyBindings();
 
                     var configurationData = DataFacade.BuildNew<IUrlConfiguration>();
                     configurationData.Id = new Guid("c7bd886b-7208-4257-b641-df2571a4872b");
@@ -66,7 +66,7 @@ namespace Composite.Core.Routing
             }
         }
 
-        private static void ConvertLegasyBindings()
+        private static void ConvertLegacyBindings()
         {
             // TODO: remove in v 2.3
             CultureInfo defaultCulture = DataLocalizationFacade.DefaultUrlMappingCulture;

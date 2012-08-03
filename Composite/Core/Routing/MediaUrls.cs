@@ -23,6 +23,9 @@ namespace Composite.Core.Routing
         private static readonly string MediaUrl_InternalPrefix = UrlUtils.PublicRootPath + "/media(";
         private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
 
+        private static readonly string MediaUrl_UnprocessedRenderPrefix = "~/Renderers/ShowMedia.ashx";
+        private static readonly string MediaUrl_RenderPrefix = UrlUtils.PublicRootPath + "/Renderers/ShowMedia.ashx";
+
         private static readonly string ForbiddenUrlCharacters = @"<>*%&\?#";
 
         /// <exclude />
@@ -32,9 +35,15 @@ namespace Composite.Core.Routing
             return ParseUrl(relativeUrl, out urlKind);
         }
 
-        /// <exclude />
+        /// <exclude/>
         public static MediaUrlData ParseUrl(string relativeUrl, out UrlKind urlKind)
         {
+            if(relativeUrl.StartsWith(MediaUrl_RenderPrefix, StringComparison.OrdinalIgnoreCase)
+               || relativeUrl.StartsWith(MediaUrl_UnprocessedRenderPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                return ParseRenderUrl(relativeUrl, out urlKind);
+            }
+
             urlKind = UrlKind.Undefined;
 
             bool isInternalLink = relativeUrl.StartsWith(MediaUrl_InternalPrefix, StringComparison.Ordinal);
@@ -93,6 +102,30 @@ namespace Composite.Core.Routing
             }
 
             return null;
+        }
+
+        private static MediaUrlData ParseRenderUrl(string relativeUrl, out UrlKind urlKind)
+        {
+            try
+            {
+                var queryParameters = new UrlBuilder(relativeUrl).GetQueryParameters();
+                IMediaFile mediaFile = MediaUrlHelper.GetFileFromQueryString(queryParameters);
+                Verify.IsNotNull(mediaFile, "failed to get file from a query string");
+
+                urlKind = UrlKind.Renderer;
+
+                queryParameters.Remove("id");
+                queryParameters.Remove("i");
+                queryParameters.Remove("src");
+                queryParameters.Remove("store");
+
+                return new MediaUrlData { MediaId = mediaFile.Id, MediaStore = mediaFile.StoreId, QueryParameters = queryParameters };
+            }
+            catch(Exception)
+            {
+                urlKind = UrlKind.Undefined;
+                return null;
+            }
         }
 
         private static MediaUrlData ParseInternalUrl(string relativeUrl, string urlPrefix)
