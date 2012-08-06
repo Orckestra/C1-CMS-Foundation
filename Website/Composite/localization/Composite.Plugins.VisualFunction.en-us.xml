@@ -49,7 +49,7 @@
   <string key="Select.FunctionFunctionsHelp" value="Select a visual function to edit or delete" />
   <string key="AddVisualFunctionWorkflow.FunctionNameValidatoinErrorMessage" value="Another function with this name exists. Names must be unique." />
   <string key="EditVisualFunctionWorkflow.FunctionNameValidatoinErrorMessage" value="Another function with this name exists. Names must be unique." />
-  <string key="VisualFunctionElementProvider.RootFolderLabel" value="Visual functions" />
+  <string key="VisualFunctionElementProvider.RootFolderLabel" value="Visual Functions" />
   <string key="VisualFunctionElementProvider.RootFolderToolTip" value="Visual functions" />
   <string key="VisualFunctionElementProvider.AddNewLabel" value="Add Visual Function" />
   <string key="VisualFunctionElementProvider.AddNewToolTip" value="Add new visual function" />

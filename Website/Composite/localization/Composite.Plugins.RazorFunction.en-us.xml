@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="RootElement.Label" value="Razor functions" />
+  <string key="RootElement.Label" value="Razor Functions" />
   <string key="RootElement.ToolTip" value="Razor functions" />
 
   <string key="AddNewRazorFunction.Label" value="Add Razor Function" />
   <string key="AddNewRazorFunction.ToolTip" value="Add a new Razor function" />
   <string key="EditRazorFunction.Label" value="Edit" />
-  <string key="EditRazorFunction.ToolTip" value="Edit Razor function" />
+  <string key="EditRazorFunction.ToolTip" value="Edit Razor Function" />
   <string key="DeleteRazorFunction.Label" value="Delete" />
   <string key="DeleteRazorFunction.ToolTip" value="Delete Razor function" />
 
@@ -27,7 +27,7 @@
   <string key="AddNewRazorFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
   <string key="AddNewRazorFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the .cshtml file)." />
 
-  <string key="EditRazorFunctionWorkflow.Validation.DialogTitle" value="Validation error" />
+  <string key="EditRazorFunctionWorkflow.Validation.DialogTitle" value="Validation Error" />
   <string key="EditRazorFunctionWorkflow.Validation.CompilationFailed" value="Compilation failed: {0}" />
   <string key="EditRazorFunctionWorkflow.Validation.IncorrectBaseClass" value="Razor function should inherit '{0}'" />
 

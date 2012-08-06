@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
-  <string key="RootElement.Label" value="UserControl functions" />
+  <string key="RootElement.Label" value="User Control Functions" />
   <string key="RootElement.ToolTip" value="Functions based on .ascx controls" />
 
-  <string key="AddNewUserControlFunction.Label" value="Add UserControl Function" />
-  <string key="AddNewUserControlFunction.ToolTip" value="Add a new UserControl function" />
+  <string key="AddNewUserControlFunction.Label" value="Add User Control Function" />
+  <string key="AddNewUserControlFunction.ToolTip" value="Add a new User Control function" />
   <string key="EditUserControlFunction.Label" value="Edit" />
-  <string key="EditUserControlFunction.ToolTip" value="Edit UserControl function" />
+  <string key="EditUserControlFunction.ToolTip" value="Edit User Control Function" />
   <string key="DeleteUserControlFunction.Label" value="Delete" />
-  <string key="DeleteUserControlFunction.ToolTip" value="Delete UserControl function" />
+  <string key="DeleteUserControlFunction.ToolTip" value="Delete User Control function" />
   
-  <string key="AddNewUserControlFunction.LabelDialog" value="Add UserControl Function" />
-  <string key="AddNewUserControlFunction.LabelFieldGroup" value="New UserControl function" />
+  <string key="AddNewUserControlFunction.LabelDialog" value="Add User Control Function" />
+  <string key="AddNewUserControlFunction.LabelFieldGroup" value="New User Control function" />
   <string key="AddNewUserControlFunction.LabelName" value="Name" />
   <string key="AddNewUserControlFunction.HelpName" value="" />
   <string key="AddNewUserControlFunction.LabelNamespace" value="Namespace" />
   <string key="AddNewUserControlFunction.HelpNamespace" value="" />
   <string key="AddNewUserControlFunction.LabelCopyFrom" value="Copy from" />
   <string key="AddNewUserControlFunction.LabelCopyFromHelp" value="You can copy the code from another UserControl function by selecting it in this list." />
-  <string key="AddNewUserControlFunction.LabelCopyFromEmptyOption" value="(New UserControl function)" />
+  <string key="AddNewUserControlFunction.LabelCopyFromEmptyOption" value="(New User Control function)" />
 
   <string key="AddNewUserControlFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
   <string key="AddNewUserControlFunctionWorkflow.EmptyName" value="Function name is empty" />
@@ -26,10 +26,10 @@
   <string key="AddNewUserControlFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
   <string key="AddNewUserControlFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the ASCX file)." />
 
-  <string key="EditUserControlFunctionWorkflow.Validation.DialogTitle" value="Validation error" />
+  <string key="EditUserControlFunctionWorkflow.Validation.DialogTitle" value="Validation Error" />
   <string key="EditUserControlFunctionWorkflow.Validation.CompilationFailed" value="Compilation failed: {0}" />
-  <string key="EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass" value="User control function should inherit '{0}'" />
+  <string key="EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass" value="User Control function should inherit '{0}'" />
 
-  <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle" value="Delete UserControl Function?" />
-  <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected UserControl?" />
+  <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle" value="Delete User Control Function?" />
+  <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected User Control?" />
 </strings>
