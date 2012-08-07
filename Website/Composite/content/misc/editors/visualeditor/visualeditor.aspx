@@ -8,17 +8,17 @@
 		<control:scriptloader type="sub" runat="server" />
 		<link rel="stylesheet" type="text/css" href="visualeditor.css.aspx"/>
 		
-		<script type="text/javascript" src="bindings/VisualEditorPageBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorBoxBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorToolBarBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorSimpleToolBarBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorStatusBarBinding.js"/>
-		<script type="text/javascript" src="bindings/FormatSelectorBinding.js"/>
-		<script type="text/javascript" src="bindings/ClassNameSelectorBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorInsertToolbarButtonBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorInsertPlusFieldsToolBarButtonBinding.js"/>
-		<script type="text/javascript" src="bindings/VisualEditorPropertiesToolBarGroupBinding.js"/>
-		<script type="text/javascript" src="bindings/TemplateTreeBinding.js"/>
+		<script type="text/javascript" src="bindings/VisualEditorPageBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorBoxBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorToolBarBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorSimpleToolBarBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorStatusBarBinding.js"></script>
+		<script type="text/javascript" src="bindings/FormatSelectorBinding.js"></script>
+		<script type="text/javascript" src="bindings/ClassNameSelectorBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorInsertToolbarButtonBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorInsertPlusFieldsToolBarButtonBinding.js"></script>
+		<script type="text/javascript" src="bindings/VisualEditorPropertiesToolBarGroupBinding.js"></script>
+		<script type="text/javascript" src="bindings/TemplateTreeBinding.js"></script>
 		
 		<ui:bindingmappingset>
 			<ui:bindingmapping element="ui:toolbarbutton" binding="EditorToolBarButtonBinding" />

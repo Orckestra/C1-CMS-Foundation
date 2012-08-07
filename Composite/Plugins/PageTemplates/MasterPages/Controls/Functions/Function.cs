@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
+using Composite.Core;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Functions;
@@ -61,11 +62,16 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                 }
 
                 returnType = function.ReturnType;
-                result = FunctionFacade.Execute<object>(function, parseParameters(), new FunctionContextContainer());
+
+                IDictionary<string, object> parameters = parseParameters();
+
+                VerifyParameterMatch(function, parameters);
+
+                result = FunctionFacade.Execute<object>(function, parameters, new FunctionContextContainer());
             }
             catch (Exception ex)
             {
-                LoggingService.LogError(LogTitle, ex);
+                Log.LogError(LogTitle, ex);
 
                 result = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex, functionName ?? string.Empty);
                 returnType = typeof (XElement);
@@ -120,6 +126,19 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             }
 
             base.OnInit(e);
+        }
+
+        private static void VerifyParameterMatch(IFunction function, IDictionary<string, object> parameters)
+        {
+            var initializationInfo = function as IFunctionInitializationInfo;
+            if(initializationInfo != null && !initializationInfo.FunctionInitializedCorrectly) return;
+            
+            foreach(string parameterName in parameters.Keys)
+            {
+                Verify.That(function.ParameterProfiles.Any(p => p.Name == parameterName),
+                    "Function '{0}.{1}' does not have parameter '{2}' defined",
+                    function.Namespace, function.Name, parameterName);
+            }
         }
 
         private IDictionary<string, object> parseParameters()

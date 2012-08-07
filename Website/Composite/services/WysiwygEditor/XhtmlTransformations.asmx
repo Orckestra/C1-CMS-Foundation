@@ -214,7 +214,10 @@ namespace Composite.Services
 
                 XDocument xml = MarkupTransformationServices.TidyHtml(html).Output;
 
-                IEnumerable<XElement> functionRoots = xml.Descendants(Namespaces.Function10 + "function").Where(f => f.Ancestors(Namespaces.Function10 + "function").Count() == 0);
+                IEnumerable<XElement> functionRoots = xml
+                    .Descendants(Namespaces.Function10 + "function")
+                    .Where(f => f.Ancestors(Namespaces.Function10 + "function").Any() == false);
+                
                 foreach (var functionElement in functionRoots.ToList())
                 {
                     functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement));
