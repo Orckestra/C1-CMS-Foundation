@@ -42,6 +42,17 @@ function SelectorBinding () {
 	 * @type {string}
 	 */
 	this._selectionValue = null;
+
+	/**
+	* @type {string}
+	*/
+	this._searchString = "";
+
+	/**
+	* @type {boolean}
+	*/
+	this.isSearchSelectionEnabled = false;
+
 	
 	/**
 	 * @type {List<SelectorBindingSelection>}
@@ -139,7 +150,7 @@ function SelectorBinding () {
 	 * @type {boolean}
 	 */
 	this._isValid = true;
-	
+
 	/**
 	 * Block common crawlers.
 	 * @type {Map<string><boolean>}
@@ -160,20 +171,24 @@ SelectorBinding.prototype.toString = function () {
  * @overloads {DataBinding#onBindingAttach}
  */
 SelectorBinding.prototype.onBindingAttach = function () {
-	
-	SelectorBinding.superclass.onBindingAttach.call ( this );
-	
-	this.selections = new List ();
-	
-	this.parseDOMProperties ();
-	this.buildDOMContent ();
-	this.addEventListener ( DOMEvents.FOCUS );
-	this.addActionListener ( ButtonBinding.ACTION_COMMAND );
-	
-	var isDisabled = this.getProperty ( "isdisabled" );
-	if ( this.isDisabled || isDisabled ) {
-		this.disable ();
+
+	SelectorBinding.superclass.onBindingAttach.call(this);
+
+	this.selections = new List();
+
+	this.parseDOMProperties();
+	this.buildDOMContent();
+	this.addEventListener(DOMEvents.FOCUS);
+	this.addEventListener(DOMEvents.KEYDOWN);
+	this.addActionListener(ButtonBinding.ACTION_COMMAND);
+
+	var isDisabled = this.getProperty("isdisabled");
+	if (this.isDisabled || isDisabled) {
+		this.disable();
 	}
+	//Only for FF & Chrome. IE have problem with perfomance.
+	if(Client.isMozilla)
+		this.isSearchSelectionEnabled = true;
 }
 
 /**
@@ -435,7 +450,10 @@ SelectorBinding.prototype.populateFromList = function ( list ) {
 			var firstItem = null;
 			while ( list.hasNext ()) {
 				var selection = list.getNext ();
-				var item = this.addSelection ( selection );
+				var item = this.addSelection(selection);
+				if (selection.isSelected) {
+					this.select(item, true);
+				}
 				if ( !firstItem ) {
 					firstItem = item;
 				}
@@ -473,10 +491,6 @@ SelectorBinding.prototype.addSelection = function ( selection, isPositionFirst )
 		itemBinding.setToolTip ( selection.tooltip )
 	}
 	itemBinding.selectionValue = selection.value;
-	
-	if ( selection.isSelected ) {
-		this.select ( itemBinding, true );
-	}
 	
 	selection.menuItemBinding = itemBinding;
 	if ( isPositionFirst ) {
@@ -640,36 +654,37 @@ SelectorBinding.prototype.reset = function ( isActionBlocked ) {
  * @overloads {Binding#handleAction}
  * @param {Action} action
  */
-SelectorBinding.prototype.handleAction = function ( action ) {
-	
-	SelectorBinding.superclass.handleAction.call ( this, action );
-	
-	switch ( action.type ) {
-	
-		case ButtonBinding.ACTION_COMMAND :
-			this._onButtonCommand ();
-			action.consume ();
+SelectorBinding.prototype.handleAction = function (action) {
+
+	SelectorBinding.superclass.handleAction.call(this, action);
+
+	switch (action.type) {
+
+		case ButtonBinding.ACTION_COMMAND:
+			this._onButtonCommand();
+			action.consume();
 			break;
-		case PopupBinding.ACTION_SHOW :		
-			this._onPopupShowing ();
-			action.consume ();
+		case PopupBinding.ACTION_SHOW:
+			this._onPopupShowing();
+			action.consume();
 			break;
-		case MenuItemBinding.ACTION_COMMAND :
-			this._onMenuItemCommand ( action.target );
-			action.consume ();
+		case MenuItemBinding.ACTION_COMMAND:
+			this._onMenuItemCommand(action.target);
+			action.consume();
 			break;
-		case PopupBinding.ACTION_HIDE :
+		case PopupBinding.ACTION_HIDE:
 			/*
-			 * If TAB key was pressed, closing the popup, we no  
-			 * longer have focus and should not grab the keyboard.
-			 */
+			* If TAB key was pressed, closing the popup, we no  
+			* longer have focus and should not grab the keyboard.
+			*/
 			var self = this;
-			setTimeout ( function () {
-				if ( self.isFocused ) {
-					self._grabKeyboard ();
+			setTimeout(function () {
+				if (self.isFocused) {
+					self._grabKeyboard();
 				}
-			}, 0 );
-			action.consume ();
+			}, 0);
+
+			action.consume();
 			break;
 	}
 }
@@ -679,8 +694,9 @@ SelectorBinding.prototype.handleAction = function ( action ) {
  */
 SelectorBinding.prototype._onButtonCommand = function () {
 
-	this.focus ();
-	this._attachSelections ();
+	this.focus();
+	this._clearSearchSelection();
+	this._attachSelections();
 	this._restoreSelection ();
 	this.dispatchAction ( SelectorBinding.ACTION_COMMAND );
 }
@@ -690,8 +706,8 @@ SelectorBinding.prototype._onButtonCommand = function () {
  */
 SelectorBinding.prototype._onPopupShowing = function () {
 
-	this._fitMenuToSelector ();
-	this._releaseKeyboard ();
+	this._fitMenuToSelector();
+	this._releaseKeyboard();
 }
 
 /**
@@ -735,14 +751,116 @@ SelectorBinding.prototype._fitMenuToSelector = function () {
  * 
  * @param {Event} e
  */
-SelectorBinding.prototype.handleEvent = function ( e ) {
-	
-	SelectorBinding.superclass.handleEvent.call ( this, e );
-	
-	switch ( e.type ) {
-		case DOMEvents.FOCUS :
-			this.focus ();
+SelectorBinding.prototype.handleEvent = function (e) {
+
+	SelectorBinding.superclass.handleEvent.call(this, e);
+
+	switch (e.type) {
+		case DOMEvents.FOCUS:
+			this.focus();
 			break;
+		case DOMEvents.KEYDOWN:
+			var charCode = e.which ? e.which : e.keyCode;
+			if (charCode >= 32) {
+				var letter = String.fromCharCode(charCode);
+				this._pushSearchSelection(letter);
+			}else if (charCode == 8){
+				this._popSearchSelection();
+			}
+			break;
+
+	}
+}
+
+/**
+  * @param {char} letter
+ */
+SelectorBinding.prototype._pushSearchSelection = function (letter) {
+
+	this._searchString += letter.toLowerCase();
+	this._applySearchSelection();
+}
+
+/**
+* @param {char} letter
+*/
+SelectorBinding.prototype._popSearchSelection = function (letter) {
+
+	this._searchString = this._searchString.substring(0, this._searchString.length - 1);
+	this._applySearchSelection();
+}
+
+/**
+* Clear search string
+*/
+SelectorBinding.prototype._clearSearchSelection = function () {
+	if (this._searchString != null && this._searchString != "") {
+		this._searchString = "";
+		this._applySearchSelection();
+	}
+}
+
+/**
+* Filter selection list by filteringString
+*/
+SelectorBinding.prototype._applySearchSelection = function () {
+	
+	if (this.isSearchSelectionEnabled) {
+
+		var bodyBinding = this._menuBodyBinding;
+		if (bodyBinding != null) {
+
+			var menuItemImplementation = this.MENUITEM_IMPLEMENTATION;
+			var bodyDocument = bodyBinding.bindingDocument;
+
+
+			bodyBinding.bindingElement.innerHTML = "";
+			this._popupBinding_menuItemCount = 0;
+
+			var list = this._getSelectionsList();
+
+			if (this._searchString != null && this._searchString != "") {
+
+				if (list.hasEntries()) {
+					while (list.hasNext()) {
+						var selection = list.getNext();
+						if (selection.label.toLowerCase().indexOf(this._searchString) > -1)
+							this.addSelection(selection);
+					}
+				}
+
+				this._attachSelections();
+
+				// Hightlight search text
+				var pattern = new RegExp(this._searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), "gi");
+				var menuitems = bodyBinding.getDescendantBindingsByType(menuItemImplementation);
+				if (menuitems.hasEntries()) {
+					while (menuitems.hasNext()) {
+						var menuitem = menuitems.getNext();
+						var labelBinding = menuitem.labelBinding;
+						if (labelBinding != null && labelBinding.shadowTree != null && labelBinding.shadowTree.labelText != null) {
+							labelBinding.shadowTree.labelText.innerHTML = labelBinding.shadowTree.labelText.innerHTML.replace(pattern, "<b>$&</b>");
+						}
+					}
+				}
+				else {
+
+					labelBinding = LabelBinding.newInstance(bodyDocument);
+					labelBinding.setLabel(StringBundle.getString("ui", "AspNetUiControl.Selector.NoMatchesFor").replace("{0}", this._searchString));
+					bodyBinding.add(labelBinding);
+				}
+			}
+			else {
+				if (list.hasEntries()) {
+					while (list.hasNext()) {
+						var selection = list.getNext();
+						this.addSelection(selection);
+					}
+				}
+				this._attachSelections();
+
+			}
+		} 
 	}
 }
 
