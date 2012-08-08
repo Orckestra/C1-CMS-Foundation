@@ -668,7 +668,7 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\ParamTagControlBuilder.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\StringToObjectConverter.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Description.cs" />
-    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Placeholder.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Render.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\Title.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplateDescriptor.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageRenderingInfo.cs" />

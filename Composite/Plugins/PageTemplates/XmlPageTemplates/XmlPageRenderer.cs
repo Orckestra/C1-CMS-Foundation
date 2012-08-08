@@ -11,10 +11,10 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
         private Page _aspnetPage;
         private PageContentToRender _job;
 
-        public void AttachToPage(Page renderTaget, PageContentToRender renderJob)
+        public void AttachToPage(Page renderTaget, PageContentToRender contentToRender)
         {
             _aspnetPage = renderTaget;
-            _job = renderJob;
+            _job = contentToRender;
 
             _aspnetPage.Init += RendererPage;
         }

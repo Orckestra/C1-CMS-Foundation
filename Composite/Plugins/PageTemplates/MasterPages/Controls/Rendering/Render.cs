@@ -10,7 +10,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
 {
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class Placeholder : Markup
+    public class Render : Markup
     {
         private string _placeholderId;
 
@@ -28,19 +28,19 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
             {
                 EnsureChildControls();
 
-                if (Content == null)
+                if (Markup == null)
                 {
                     return false;
                 }
 
-                var body = new XhtmlDocument(Content).Body;
+                var body = new XhtmlDocument(Markup).Body;
 
                 return body != null && body.Nodes().Any();
             }
         }
 
         /// <exclude />
-        public XhtmlDocument Content
+        public XhtmlDocument Markup
         {
             get { return InnerContent == null ? null : new XhtmlDocument(base.InnerContent); }
             set { InnerContent = value != null ? value.Root : null; }

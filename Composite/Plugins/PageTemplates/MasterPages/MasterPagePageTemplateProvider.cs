@@ -67,7 +67,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         {
             var state = GetInitializedState();
 
-            return new MasterPagePageRenderer(state.RenderingInfo);
+            return new MasterPagePageRenderer(state.RenderingInfo, state.LoadingExceptions);
         }
 
         public IEnumerable<ElementAction> GetRootActions()
@@ -112,6 +112,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             var templates = new List<PageTemplateDescriptor>();
             var templateRenderingData = new Hashtable<Guid, MasterPageRenderingInfo>();
+            var loadingExceptions = new Hashtable<Guid, Exception>();
             var sharedSourceFiles = new List<SharedFile>();
 
             // Loading and compiling layout controls
@@ -131,7 +132,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
                     Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
 
-                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, compilationException));
+                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, compilationException);
+                    
+                    loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
+                    templates.Add(brokenTemplate);
                     continue;
                 }
 
@@ -161,8 +165,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                     Log.LogError(LogTitle, "Failed to load master page template file '{0}'", virtualPath);
                     Log.LogError(LogTitle, ex);
 
-                    templates.Add(GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, ex));
-
+                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, ex);
+                    
+                    loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
+                    templates.Add(brokenTemplate);
                     continue;
                 }
 
@@ -178,6 +184,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             return new State {
                 Templates = templates,
                 RenderingInfo = templateRenderingData,
+                LoadingExceptions = loadingExceptions,
                 SharedSourceFiles = sharedSourceFiles
             };
         }
@@ -194,9 +201,15 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
         private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string filePath, Exception loadingException)
         {
-            Guid templateId = GetMD5Hash(filePath.ToLowerInvariant());
             string codeBehindFile = GetCodebehindFilePath(filePath);
-
+            
+            Guid templateId;
+            
+            if(!TryExtractTemplateIdFromCodebehind(codeBehindFile, out templateId))
+            {
+                templateId = GetMD5Hash(filePath.ToLowerInvariant());
+            }
+            
             return new MasterPagePageTemplateDescriptor(filePath, codeBehindFile)
                 {
                     Id = templateId,
@@ -205,6 +218,42 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 };
         }
 
+        private bool TryExtractTemplateIdFromCodebehind(string codeBehindFile, out Guid templateId)
+        {
+            templateId = Guid.Empty;
+
+            if(!C1File.Exists(codeBehindFile)) return false;
+
+            var allText = C1File.ReadAllText(codeBehindFile, Encoding.UTF8);
+
+            allText = RemoveWhiteSpaces(allText);
+
+            string beginning = RemoveWhiteSpaces("public override Guid TemplateId { get { return new Guid(\"");
+            string ending = RemoveWhiteSpaces("\"); } }");
+
+            int firstIndex = allText.IndexOf(beginning, StringComparison.Ordinal);
+            if (firstIndex < 0) return false;
+
+            int lastIndex = allText.LastIndexOf(beginning, StringComparison.Ordinal);
+            if (lastIndex != firstIndex) return false;
+
+            int endOffset = allText.IndexOf(ending, firstIndex, StringComparison.Ordinal);
+            if (endOffset < 0) return false;
+
+            int guidOffset = firstIndex + beginning.Length;
+            string guidStr = allText.Substring(guidOffset, endOffset - guidOffset);
+
+            return Guid.TryParse(guidStr, out templateId);
+        }
+
+        private static string RemoveWhiteSpaces(string str)
+        {
+            var whiteSpaces = new[] { ' ', '\t', '\r', '\n' };
+
+            whiteSpaces.ForEach(ch => str = str.Replace(new string(ch, 1), ""));
+
+            return str;
+        }
 
         internal static string GetCodebehindFilePath(string masterFilePath)
         {
@@ -270,6 +319,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         {
             public List<PageTemplateDescriptor> Templates;
             public Hashtable<Guid, MasterPageRenderingInfo> RenderingInfo;
+            public Hashtable<Guid, Exception> LoadingExceptions;
             public List<SharedFile> SharedSourceFiles;   
         }
     }

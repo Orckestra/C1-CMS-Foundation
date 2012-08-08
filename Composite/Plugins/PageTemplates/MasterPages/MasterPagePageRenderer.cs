@@ -19,30 +19,44 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private static readonly string PageRenderingJob_Key = "MasterPages.PageRenderingJob";
 
         private readonly Hashtable<Guid, MasterPageRenderingInfo> _renderingInfo;
+        private readonly Hashtable<Guid, Exception> _loadingExceptions;
 
-        public MasterPagePageRenderer(Hashtable<Guid, MasterPageRenderingInfo> renderingInfo)
+        public MasterPagePageRenderer(
+            Hashtable<Guid, MasterPageRenderingInfo> renderingInfo,
+            Hashtable<Guid, Exception> loadingExceptions)
         {
             Verify.ArgumentNotNull(renderingInfo, "renderingInfo");
 
             _renderingInfo = renderingInfo;
+            _loadingExceptions = loadingExceptions;
         }
 
-        public void AttachToPage(Page aspnetPage, PageContentToRender renderJob)
+        public void AttachToPage(Page aspnetPage, PageContentToRender contentToRender)
         {
             Verify.ArgumentNotNull(aspnetPage, "aspnetPage");
-            Verify.ArgumentNotNull(renderJob, "renderJob");
+            Verify.ArgumentNotNull(contentToRender, "contentToRender");
 
-            aspnetPage.Items.Add(PageRenderingJob_Key, renderJob);
+            aspnetPage.Items.Add(PageRenderingJob_Key, contentToRender);
 
-            Guid templateId = renderJob.Page.TemplateId;
+            Guid templateId = contentToRender.Page.TemplateId;
             var rendering = _renderingInfo[templateId];
-            Verify.IsNotNull(rendering, "Failed to get master page by template ID '{0}'. Check for compilation errors", templateId);
+
+            if(rendering == null)
+            {
+                Exception loadingException = _loadingExceptions[templateId];
+                if(loadingException != null)
+                {
+                    throw loadingException;
+                }
+
+                Verify.ThrowInvalidOperationException("Failed to get master page by template ID '{0}'. Check for compilation errors".FormatWith(templateId));
+            }
 
             aspnetPage.MasterPageFile = rendering.VirtualPath;
-            aspnetPage.PreRender += (e, args) => PageOnPreRender(aspnetPage, renderJob.Page);
+            aspnetPage.PreRender += (e, args) => PageOnPreRender(aspnetPage, contentToRender.Page);
 
             var master = aspnetPage.Master as MasterPagePageTemplate;
-            TemplateDefinitionHelper.BindPlaceholders(master, renderJob, rendering.PlaceholderProperties, null);
+            TemplateDefinitionHelper.BindPlaceholders(master, contentToRender, rendering.PlaceholderProperties, null);
         }
 
         private void PageOnPreRender(Page aspnetPage, IPage page)

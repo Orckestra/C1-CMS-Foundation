@@ -10,7 +10,7 @@
         /// Attaches rendering code to an instace of <c cref="System.Web.UI.Page"></c>.
         /// </summary>
         /// <param name="renderTaget">The render taget.</param>
-        /// <param name="renderJob">The render job.</param>
-        void AttachToPage(System.Web.UI.Page renderTaget, PageContentToRender renderJob);
+        /// <param name="contentToRender">The render job.</param>
+        void AttachToPage(System.Web.UI.Page renderTaget, PageContentToRender contentToRender);
     }
 }
