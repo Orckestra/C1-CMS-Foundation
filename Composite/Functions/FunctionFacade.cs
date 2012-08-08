@@ -196,13 +196,13 @@ namespace Composite.Functions
 
 
         /// <exclude />
-        public static BaseRuntimeTreeNode BuildTree(IFunction function, IDictionary<string, object> paramters)
+        public static BaseRuntimeTreeNode BuildTree(IFunction function, IDictionary<string, object> parameters)
         {
             List<BaseParameterRuntimeTreeNode> parameterNodes = new List<BaseParameterRuntimeTreeNode>();
 
-            if (paramters != null)
+            if (parameters != null)
             {
-                foreach (KeyValuePair<string, object> kvp in paramters)
+                foreach (KeyValuePair<string, object> kvp in parameters)
                 {
                     parameterNodes.Add(new ConstantObjectParameterRuntimeTreeNode(kvp.Key, kvp.Value));
                 }

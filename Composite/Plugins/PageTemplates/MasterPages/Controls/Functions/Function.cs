@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Functions;
 
@@ -50,6 +51,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             object result;
             string functionName = null;
 
+            var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
+
             try
             {
                 functionName = Name;
@@ -67,7 +70,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 
                 VerifyParameterMatch(function, parameters);
 
-                result = FunctionFacade.Execute<object>(function, parameters, new FunctionContextContainer());
+                result = ExecuteFunction(function, parameters, functionContextContainer);
             }
             catch (Exception ex)
             {
@@ -82,7 +85,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                 if (returnType == typeof(XElement) || returnType == typeof(XhtmlDocument))
                 {
                     var element = ValueTypeConverter.Convert<XElement>(result);
-                    var markup = new Markup(element);
+                    var markup = new Markup(element, functionContextContainer);
 
                     Controls.Add(markup);
                 }
@@ -126,6 +129,42 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             }
 
             base.OnInit(e);
+        }
+
+        /// <summary>
+        /// Executes the function. Note that all the XhtmlParameters will have all the nested &gt;f:function /&lt; lazily evaluated
+        /// </summary>
+        private static object ExecuteFunction(IFunction function, IDictionary<string, object> parameters, FunctionContextContainer functionContextContainer )
+        {
+            List<BaseParameterRuntimeTreeNode> parameterNodes = new List<BaseParameterRuntimeTreeNode>();
+
+            if (parameters != null)
+            {
+                foreach (KeyValuePair<string, object> kvp in parameters)
+                {
+                    var value = kvp.Value;
+                    if (value != null && value is XhtmlDocument)
+                    {
+                        parameterNodes.Add(new LazyParameterRuntimeTreeNode(kvp.Key,
+                            () => ExecuteNestedFunctions(value as XhtmlDocument, functionContextContainer)));
+                    }
+                    else
+                    {
+                        parameterNodes.Add(new ConstantObjectParameterRuntimeTreeNode(kvp.Key, kvp.Value));
+                    }
+                }
+            }
+
+            var treeNode = new FunctionRuntimeTreeNode(function, parameterNodes);
+
+            return treeNode.GetValue(functionContextContainer);
+        }
+
+        private static XhtmlDocument ExecuteNestedFunctions(XhtmlDocument document, FunctionContextContainer functionContextContainer)
+        {
+            PageRenderer.ExecuteEmbeddedFunctions(document.Root, functionContextContainer);
+
+            return document;
         }
 
         private static void VerifyParameterMatch(IFunction function, IDictionary<string, object> parameters)

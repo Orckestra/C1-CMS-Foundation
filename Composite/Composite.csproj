@@ -656,6 +656,7 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\CompilationHelper.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\LazyParameterRuntimeTreeNode.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplate.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Composite.Core.Localization;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
+using Composite.Functions;
 
 namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 {
@@ -15,6 +16,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
     [ParseChildren(false)]
     public class Markup : Control
     {
+        private FunctionContextContainer _functionContextContainer;
+
         /// <exclude />
         protected XElement InnerContent { get; set; }
 
@@ -22,7 +25,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
         public Markup() { }
 
         /// <exclude />
-        public Markup(XElement content)
+        public Markup(XElement content, FunctionContextContainer functionContextContainer)
         {
             if(content.Name.LocalName == "html")
             {
@@ -35,6 +38,8 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 
                 InnerContent = document.Root;
             }
+
+            _functionContextContainer = functionContextContainer;
         }
 
         /// <exclude />
@@ -55,7 +60,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 
             if (InnerContent != null)
             {
-                var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
+                var functionContextContainer = _functionContextContainer ?? PageRenderer.GetPageRenderFunctionContextContainer();
                 var controlMapper = (IXElementToControlMapper) functionContextContainer.XEmbedableMapper;
 
                 PageRenderer.ExecuteEmbeddedFunctions(InnerContent, functionContextContainer);
