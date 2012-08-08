@@ -15,6 +15,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
+using Composite.Plugins.PageTemplates.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
@@ -205,7 +206,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             
             Guid templateId;
             
-            if(!TryExtractTemplateIdFromCodebehind(codeBehindFile, out templateId))
+            if(!TemplateParsingHelper.TryExtractTemplateIdFromCSharpCode(codeBehindFile, out templateId))
             {
                 templateId = GetMD5Hash(filePath.ToLowerInvariant());
             }
@@ -218,42 +219,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 };
         }
 
-        private bool TryExtractTemplateIdFromCodebehind(string codeBehindFile, out Guid templateId)
-        {
-            templateId = Guid.Empty;
-
-            if(!C1File.Exists(codeBehindFile)) return false;
-
-            var allText = C1File.ReadAllText(codeBehindFile, Encoding.UTF8);
-
-            allText = RemoveWhiteSpaces(allText);
-
-            string beginning = RemoveWhiteSpaces("public override Guid TemplateId { get { return new Guid(\"");
-            string ending = RemoveWhiteSpaces("\"); } }");
-
-            int firstIndex = allText.IndexOf(beginning, StringComparison.Ordinal);
-            if (firstIndex < 0) return false;
-
-            int lastIndex = allText.LastIndexOf(beginning, StringComparison.Ordinal);
-            if (lastIndex != firstIndex) return false;
-
-            int endOffset = allText.IndexOf(ending, firstIndex, StringComparison.Ordinal);
-            if (endOffset < 0) return false;
-
-            int guidOffset = firstIndex + beginning.Length;
-            string guidStr = allText.Substring(guidOffset, endOffset - guidOffset);
-
-            return Guid.TryParse(guidStr, out templateId);
-        }
-
-        private static string RemoveWhiteSpaces(string str)
-        {
-            var whiteSpaces = new[] { ' ', '\t', '\r', '\n' };
-
-            whiteSpaces.ForEach(ch => str = str.Replace(new string(ch, 1), ""));
-
-            return str;
-        }
 
         internal static string GetCodebehindFilePath(string masterFilePath)
         {

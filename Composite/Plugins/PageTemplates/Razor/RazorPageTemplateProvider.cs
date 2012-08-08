@@ -13,6 +13,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
+using Composite.Plugins.PageTemplates.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.PageTemplates.Razor
@@ -37,6 +38,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             public List<PageTemplateDescriptor> Templates;
             public List<SharedFile> SharedFiles;
             public Hashtable<Guid, TemplateRenderingInfo> RenderingInfo;
+            public Hashtable<Guid, Exception> LoadingExceptions;
         }
 
 
@@ -63,7 +65,7 @@ namespace Composite.Plugins.PageTemplates.Razor
         {
             var state = GetInitializedState();
 
-            return new RazorPageRenderer(state.RenderingInfo);
+            return new RazorPageRenderer(state.RenderingInfo, state.LoadingExceptions);
         }
 
         public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
@@ -101,6 +103,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
             var templates = new List<PageTemplateDescriptor>();
             var templateRenderingData = new Hashtable<Guid, TemplateRenderingInfo>();
+            var loadingExceptions = new Hashtable<Guid, Exception>();
             var sharedFiles = new List<SharedFile>();
 
             // Loading and compiling layout controls
@@ -120,8 +123,10 @@ namespace Composite.Plugins.PageTemplates.Razor
                     Log.LogError(LogTitle, ex);
 
                     Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
+                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(virtualPath, compilationException);
 
-                    templates.Add(GetIncorrectlyLoadedPageTemplate(virtualPath, compilationException));
+                    loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
+                    templates.Add(brokenTemplate);
                     continue;
                 }
 
@@ -144,7 +149,10 @@ namespace Composite.Plugins.PageTemplates.Razor
                     Log.LogError(LogTitle, "Failed to load razor page template '{0}'", virtualPath);
                     Log.LogError(LogTitle, ex);
 
-                    templates.Add(GetIncorrectlyLoadedPageTemplate(virtualPath, ex));
+                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(virtualPath, ex);
+
+                    loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
+                    templates.Add(brokenTemplate);
                     continue;
                 }
                 
@@ -158,13 +166,19 @@ namespace Composite.Plugins.PageTemplates.Razor
                        {
                            Templates = templates,
                            RenderingInfo = templateRenderingData,
-                           SharedFiles = sharedFiles
+                           SharedFiles = sharedFiles,
+                           LoadingExceptions = loadingExceptions
                        };
         }
 
         private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string virtualPath, Exception loadingException)
         {
-            Guid templateId = GetMD5Hash(virtualPath.ToLowerInvariant());
+            Guid templateId;
+
+            if (!TemplateParsingHelper.TryExtractTemplateIdFromCSharpCode(PathUtil.Resolve(virtualPath), out templateId))
+            {
+                templateId = GetMD5Hash(virtualPath.ToLowerInvariant());
+            }
 
             return new RazorPageTemplateDescriptor(virtualPath)
             {

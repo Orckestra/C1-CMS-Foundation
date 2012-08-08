@@ -5,7 +5,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.WebPages;
 using System.Xml.Linq;
-using Composite.AspNet.Razor;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.PageTemplates;
 using Composite.Core.WebClient.Renderings.Page;
@@ -14,11 +15,15 @@ namespace Composite.Plugins.PageTemplates.Razor
 {
     internal class RazorPageRenderer : IPageRenderer
     {
-        private readonly Core.Collections.Generic.Hashtable<Guid, TemplateRenderingInfo> _renderingInfo;
+        private readonly Hashtable<Guid, TemplateRenderingInfo> _renderingInfo;
+        private readonly Hashtable<Guid, Exception> _loadingExceptions;
 
-        public RazorPageRenderer(Core.Collections.Generic.Hashtable<Guid, TemplateRenderingInfo> renderingInfo)
+        public RazorPageRenderer(
+            Hashtable<Guid, TemplateRenderingInfo> renderingInfo,
+            Hashtable<Guid, Exception> loadingExceptions)
         {
             _renderingInfo = renderingInfo;
+            _loadingExceptions = loadingExceptions;
         }
 
         private Page _aspnetPage;
@@ -37,7 +42,16 @@ namespace Composite.Plugins.PageTemplates.Razor
             Guid templateId = _job.Page.TemplateId;
             var renderingInfo = _renderingInfo[templateId];
 
-            Verify.IsNotNull(renderingInfo, "Missing template '{0}'", templateId);
+            if (renderingInfo == null)
+            {
+                Exception loadingException = _loadingExceptions[templateId];
+                if (loadingException != null)
+                {
+                    throw loadingException;
+                }
+
+                Verify.ThrowInvalidOperationException("Missing template '{0}'".FormatWith(templateId));
+            }
 
             var webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as AspNet.Razor.RazorPageTemplate;
             Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'", typeof(AspNet.Razor.RazorPageTemplate).FullName);
