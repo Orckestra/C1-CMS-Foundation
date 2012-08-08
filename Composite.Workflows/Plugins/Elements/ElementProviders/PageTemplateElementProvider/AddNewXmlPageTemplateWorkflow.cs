@@ -21,36 +21,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class AddNewXmlPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private static string _defaultTemplateMarkup = string.Format(
-@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:f=""http://www.composite.net/ns/function/1.0"" xmlns:lang=""{0}"" xmlns:rendering=""http://www.composite.net/ns/rendering/1.0"" xmlns:asp=""http://www.composite.net/ns/asp.net/controls"">
-<f:function name=""Composite.Web.Html.Template.LangAttribute"" />
-    <head>
-        <title>
-            <rendering:page.title />
-        </title>
-        <f:function name=""Composite.Web.Html.Template.CommonMetaTags"" />
-        <rendering:page.metatag.description />
-        <link rel=""stylesheet"" type=""text/css"" href=""~/Frontend/Styles/VisualEditor.common.css"" />
-    </head>
-    <body>
-        <div style=""float:right; width:10em"">
-            <f:function name=""Composite.Pages.QuickSitemap"" />
-        </div>
-        <h1><rendering:page.title /></h1>
-        <h2><rendering:page.description /></h2>
-        <div id=""main"">
-            <rendering:placeholder id=""content"" title=""Content"" default=""true"" />
-        </div>
-    </body>
-</html>
-", LocalizationXmlConstants.XmlNamespace);
+        private static readonly string _defaultTemplateMarkup =
+            string.Format(
+                C1File.ReadAllText(PathUtil.Resolve("~/Composite/templates/PageTemplates/XmlPageTemplate.xml")),
+                LocalizationXmlConstants.XmlNamespace).Replace("    ", "\t");
+
 
         public AddNewXmlPageTemplateWorkflow()
         {
             InitializeComponent();
         }
-
 
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)

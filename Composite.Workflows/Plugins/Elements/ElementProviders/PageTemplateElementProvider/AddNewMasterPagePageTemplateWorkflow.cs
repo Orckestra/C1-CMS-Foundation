@@ -27,67 +27,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         
 
         private static readonly string NewMasterPage_Markup =
-@"<%@ Master Language=""C#"" AutoEventWireup=""true"" CodeFile=""%Codebehind%"" Inherits=""page_template"" %>
-<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
-
-<html xmlns=""http://www.w3.org/1999/xhtml"" runat=""server"">
-<f:function name=""Composite.Web.Html.Template.LangAttribute"" runat=""server"" />
-<head runat=""server"">
-    <title><c1:Title id=""title"" runat=""server""/></title>
-    <c1:Description runat=""server"" />
-    <link rel=""stylesheet"" type=""text/css"" href=""~/Frontend/Styles/VisualEditor.common.css"" />
-    <f:function runat=""server"" name=""Composite.Web.Html.Template.CommonMetaTags"" />
-</head>
-<body>
-		<h1> <%= Server.HtmlEncode(this.SitemapNavigator.CurrentPageNode.Title) %></h1>
-		<h2> <%= Server.HtmlEncode(this.SitemapNavigator.CurrentPageNode.Description) %></h2>
-        <div>
-            
-            <c1:Placeholder  Content=""<%# Content %>"" runat=""server"" />
-
-        </div>
-        <h2>Bottom Placeholder</h2>
-        <div>
-            
-            <c1:Placeholder Content=""<%# Bottom %>"" runat=""server"" />
-
-        </div>
-</body>
-</html>".Replace("    ", "\t");
+            C1File.ReadAllText(PathUtil.Resolve("~/Composite/templates/PageTemplates/MasterPage.txt")).Replace("    ", "\t");
 
         private static readonly string NewMasterPage_Codebehind =
-@"using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Composite.Plugins.PageTemplates.MasterPages;
-using Composite.Core.Xml;
-using Composite.Core.PageTemplates; 
-
-public partial class page_template : MasterPagePageTemplate
-{
-	public override Guid TemplateId
-	{
-		get { return new Guid(""%TemplateId%""); }
-	}
-
-    public override string TemplateTitle {
-        get { return ""%TemplateTitle%""; }
-    }
-
-	[Placeholder(Id=""content"", Title=""Main Content"", IsDefault=true)]
-	public XhtmlDocument Content { get; set; }
-	
-	[Placeholder(Id=""bottom"", Title = ""Bottom"")]
-	public XhtmlDocument Bottom { get; set; }
-
-	protected void Page_Load(object sender, EventArgs e)
-    {
-
-    }
-}".Replace("    ", "\t");
+            C1File.ReadAllText(PathUtil.Resolve("~/Composite/templates/PageTemplates/MasterPage.cs.txt")).Replace("    ", "\t");
 
         public AddNewMasterPagePageTemplateWorkflow()
         {
