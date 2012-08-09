@@ -179,6 +179,7 @@ SelectorBinding.prototype.onBindingAttach = function () {
 	this.parseDOMProperties();
 	this.buildDOMContent();
 	this.addEventListener(DOMEvents.FOCUS);
+	this.addEventListener(DOMEvents.KEYPRESS);
 	this.addEventListener(DOMEvents.KEYDOWN);
 	this.addActionListener(ButtonBinding.ACTION_COMMAND);
 
@@ -760,12 +761,16 @@ SelectorBinding.prototype.handleEvent = function (e) {
 			this.focus();
 			break;
 		case DOMEvents.KEYDOWN:
-			var charCode = e.which ? e.which : e.keyCode;
+			var charCode = e.which ? e.which : e.charCode;
+			if (charCode == 8) {
+				this._popSearchSelection();
+			}
+			break;
+		case DOMEvents.KEYPRESS:
+			var charCode = e.which ? e.which : e.charCode;
 			if (charCode >= 32) {
 				var letter = String.fromCharCode(charCode);
 				this._pushSearchSelection(letter);
-			}else if (charCode == 8){
-				this._popSearchSelection();
 			}
 			break;
 
@@ -813,9 +818,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			var menuItemImplementation = this.MENUITEM_IMPLEMENTATION;
 			var bodyDocument = bodyBinding.bindingDocument;
 
-
-			bodyBinding.bindingElement.innerHTML = "";
-			this._popupBinding_menuItemCount = 0;
+			this._popupBinding.clear();
 
 			var list = this._getSelectionsList();
 
@@ -848,6 +851,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 					labelBinding = LabelBinding.newInstance(bodyDocument);
 					labelBinding.setLabel(StringBundle.getString("ui", "AspNetUiControl.Selector.NoMatchesFor").replace("{0}", this._searchString));
 					bodyBinding.add(labelBinding);
+					this._attachSelections();
 				}
 			}
 			else {

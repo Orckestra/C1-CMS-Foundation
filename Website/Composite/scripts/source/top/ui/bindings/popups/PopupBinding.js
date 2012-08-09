@@ -347,7 +347,8 @@ PopupBinding.prototype._count = function ( isPlus ) {
 	if ( this.type == PopupBinding.TYPE_FIXED ) {
 		this._menuItemCount = this._menuItemCount +  ( isPlus ? 1 : -1 );
 		if ( !this._isOverflow ) {
-			if ( this._menuItemCount >= PopupBinding.FIXED_MAX ) {
+			if (this._menuItemCount >= PopupBinding.FIXED_MAX) {
+				this.bindingElement.style.height = "";
 				this.attachClassName ( PopupBinding.CLASSNAME_OVERFLOW );
 				this._isOverflow = true;
 			}
@@ -825,7 +826,10 @@ PopupBinding.prototype.clear = function () {
 		bodyBinding.detachRecursive ();
 		bodyBinding.bindingElement.innerHTML = "";
 	}
-	
+
+	this.bindingElement.style.height = "auto";
+	this.detachClassName(PopupBinding.CLASSNAME_OVERFLOW);
+	this._isOverflow = false;
 	this._menuItemCount = 0;
 }
 
