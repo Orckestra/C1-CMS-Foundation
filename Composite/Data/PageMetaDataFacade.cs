@@ -667,8 +667,6 @@ namespace Composite.Data
                 newData.PublicationStatus = GenericPublishProcessController.Draft;
                 PageMetaDataFacade.AssignMetaDataSpecificValues(newData, metaDataDefinitionName, affectedPage);
 
-                DataFacade.AddNew((IData) newData);
-
                 ILocalizedControlled localizedData = newData as ILocalizedControlled;
                 if(localizedData != null)
                 {

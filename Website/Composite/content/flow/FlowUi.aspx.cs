@@ -1,10 +1,11 @@
 using System;
+using System.Web;
 using System.Web.UI;
 
 using Composite;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
+using Composite.Core;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.FlowMediators;
 
@@ -55,6 +56,8 @@ public partial class Composite_Management_FlowUi : FlowPage
             ConsoleMessageQueueFacade.Enqueue(errorLogEntry, _consoleId);
             throw;
         }
+
+        Response.Cache.SetCacheability(HttpCacheability.NoCache);
     }
 
 
@@ -70,7 +73,7 @@ public partial class Composite_Management_FlowUi : FlowPage
         if (Composite.RuntimeInformation.IsDebugBuild == true)
         {
             int endTickCount = Environment.TickCount;
-            LoggingService.LogVerbose("FlowUi.aspx", string.Format("Time spent serving request: {0} ms", endTickCount - _startTickCount));
+            Log.LogVerbose("FlowUi.aspx", string.Format("Time spent serving request: {0} ms", endTickCount - _startTickCount));
             base.OnUnload(e);
         }
     }
