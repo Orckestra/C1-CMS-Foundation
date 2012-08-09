@@ -9663,6 +9663,7 @@ if(this.type==PopupBinding.TYPE_FIXED){
 this._menuItemCount=this._menuItemCount+(_70e?1:-1);
 if(!this._isOverflow){
 if(this._menuItemCount>=PopupBinding.FIXED_MAX){
+this.bindingElement.style.height="";
 this.attachClassName(PopupBinding.CLASSNAME_OVERFLOW);
 this._isOverflow=true;
 }
@@ -9896,6 +9897,9 @@ if(_730){
 _730.detachRecursive();
 _730.bindingElement.innerHTML="";
 }
+this.bindingElement.style.height="auto";
+this.detachClassName(PopupBinding.CLASSNAME_OVERFLOW);
+this._isOverflow=false;
 this._menuItemCount=0;
 };
 PopupBinding.newInstance=function(_731){
@@ -12247,6 +12251,7 @@ this.selections=new List();
 this.parseDOMProperties();
 this.buildDOMContent();
 this.addEventListener(DOMEvents.FOCUS);
+this.addEventListener(DOMEvents.KEYPRESS);
 this.addEventListener(DOMEvents.KEYDOWN);
 this.addActionListener(ButtonBinding.ACTION_COMMAND);
 var _868=this.getProperty("isdisabled");
@@ -12562,14 +12567,16 @@ case DOMEvents.FOCUS:
 this.focus();
 break;
 case DOMEvents.KEYDOWN:
-var _899=e.which?e.which:e.keyCode;
-if(_899>=32){
-var _89a=String.fromCharCode(_899);
-this._pushSearchSelection(_89a);
-}else{
+var _899=e.which?e.which:e.charCode;
 if(_899==8){
 this._popSearchSelection();
 }
+break;
+case DOMEvents.KEYPRESS:
+var _899=e.which?e.which:e.charCode;
+if(_899>=32){
+var _89a=String.fromCharCode(_899);
+this._pushSearchSelection(_89a);
 }
 break;
 }
@@ -12594,8 +12601,7 @@ var _89d=this._menuBodyBinding;
 if(_89d!=null){
 var _89e=this.MENUITEM_IMPLEMENTATION;
 var _89f=_89d.bindingDocument;
-_89d.bindingElement.innerHTML="";
-this._popupBinding_menuItemCount=0;
+this._popupBinding.clear();
 var list=this._getSelectionsList();
 if(this._searchString!=null&&this._searchString!=""){
 if(list.hasEntries()){
@@ -12621,6 +12627,7 @@ _8a5.shadowTree.labelText.innerHTML=_8a5.shadowTree.labelText.innerHTML.replace(
 _8a5=LabelBinding.newInstance(_89f);
 _8a5.setLabel(StringBundle.getString("ui","AspNetUiControl.Selector.NoMatchesFor").replace("{0}",this._searchString));
 _89d.add(_8a5);
+this._attachSelections();
 }
 }else{
 if(list.hasEntries()){
