@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Logging;
 using Composite.Data;
 using Composite.Data.Types;
@@ -20,6 +21,7 @@ namespace Composite.C1Console.Actions
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ActionLockingFacade
     {
+        private static readonly string LogTitle = typeof(ActionLockingFacade).Name;
         private static Dictionary<EntityToken, LockingInformation> _lockingInformations = null;
         private static readonly object _lock = new object();
 
@@ -348,9 +350,15 @@ namespace Composite.C1Console.Actions
             string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
 
             ILockingInformation lockingInformationDataItem =
-                DataFacade.GetData<ILockingInformation>().
-                Where(f => f.SerializedEntityToken == serializedEntityToken && f.SerializedOwnerId == serializedOwnerId).
-                SingleOrDefault();
+                DataFacade.GetData<ILockingInformation>()
+                          .SingleOrDefault(f => f.SerializedEntityToken == serializedEntityToken
+                                             && f.SerializedOwnerId == serializedOwnerId);
+
+            if (lockingInformationDataItem == null)
+            {
+                Log.LogWarning(LogTitle, "Failed to find entity token lock. EntityToken: " + serializedEntityToken);
+                return;
+            }
 
             DataFacade.Delete(lockingInformationDataItem);
         }

@@ -12,15 +12,15 @@
   <string key="PageTemplateElementProvider.SharedCodeFolder.Title" value="Shared Code" />
   <string key="PageTemplateElementProvider.SharedCodeFolder.ToolTip" value="Files used by layout files" />
   
-  <string key="EditSharedCodeFile.Label" value="Edit" />
+  <string key="EditSharedCodeFile.Label" value="Edit" /> 
   <string key="EditSharedCodeFile.ToolTip" value="Edit file" />
 
-  <string key="AddNewXmlPageTemplate.LabelDialog" value="Add New Website Template" />
-  <string key="AddNewXmlPageTemplate.LabelFieldGroup" value="Website Template" />
+  <string key="AddNewXmlPageTemplate.LabelDialog" value="Add New Xml Page Template" />
+  <string key="AddNewXmlPageTemplate.LabelFieldGroup" value="Xml Template" />
   <string key="AddNewXmlPageTemplate.LabelTemplateTitle" value="Template Title" />
   <string key="AddNewXmlPageTemplate.LabelTemplateTitleHelp" value="The title identifies this template in lists. Consider selecting a short but meaningful name." />
   <string key="AddNewXmlPageTemplate.LabelCopyFrom" value="Copy from" />
-  <string key="AddNewXmlPageTemplate.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
+  <string key="AddNewXmlPageTemplate.LabelCopyFromHelp" value="You can copy the markup from another Xml Page Template by selecting it in this list." />
   <string key="AddNewXmlPageTemplate.LabelCopyFromEmptyOption" value="(New template)" />
   <string key="AddNewXmlPageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
   <string key="AddNewXmlPageTemplateWorkflow.TitleTooLong" value="Title is too long (used as part of the xml filename)." />

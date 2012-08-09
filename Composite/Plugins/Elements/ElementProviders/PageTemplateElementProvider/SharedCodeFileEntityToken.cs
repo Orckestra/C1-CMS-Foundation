@@ -44,6 +44,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             return new SharedCodeFileEntityToken(serializedData);
         }
 
+        /// <exclude />
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj) && (obj as SharedCodeFileEntityToken).VirtualPath == VirtualPath;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() ^ VirtualPath.GetHashCode();
+        }
+
         internal class SharedCodeFileSecurityAncestorProvider : ISecurityAncestorProvider
         {
             public IEnumerable<EntityToken> GetParents(EntityToken entityToken)

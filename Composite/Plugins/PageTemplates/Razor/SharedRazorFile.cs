@@ -31,8 +31,8 @@ namespace Composite.Plugins.PageTemplates.Razor
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorFileAction.Label"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", "EditRazorFileAction.ToolTip"),
+                    Label = StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", "EditRazorFileAction.Label"),
+                    ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", "EditRazorFileAction.ToolTip"),
                     Icon = EditTemplateIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation

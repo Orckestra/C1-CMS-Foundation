@@ -416,7 +416,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             DataFacade.Update(data);
                         }
 
-                        treeviewRequiresRefreshing = (originalPage.Title != selectedPage.Title) ||
+                        treeviewRequiresRefreshing |= (originalPage.Title != selectedPage.Title) ||
                                                    (originalPage.Description != selectedPage.Description) ||
                                                    (originalPage.PublicationStatus != selectedPage.PublicationStatus);
 

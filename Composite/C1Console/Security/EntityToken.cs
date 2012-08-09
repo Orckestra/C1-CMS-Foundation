@@ -166,7 +166,14 @@ namespace Composite.C1Console.Security
 
             if (entityToken == null) return false;
 
-            return Equals(entityToken);
+
+            ValidateEntityToken();
+
+            if (entityToken.GetHashCode() != GetHashCode()) return false;
+
+            return entityToken.Type == this.Type &&
+                   entityToken.Source == this.Source &&
+                   entityToken.Id == this.Id;
         }
 
 
@@ -174,17 +181,8 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public bool Equals(EntityToken entityToken)
         {
-            if (entityToken == null) return false;
-
-            ValidateEntityToken();
-
-            if (entityToken.GetHashCode() != GetHashCode()) return false; 
-
-            return entityToken.Type == this.Type &&
-                   entityToken.Source == this.Source &&
-                   entityToken.Id == this.Id;
+            return Equals(entityToken as object);
         }
-
 
 
         /// <exclude />
@@ -198,7 +196,6 @@ namespace Composite.C1Console.Security
 
             return this.HashCode;
         }
-
 
 
         /// <exclude />
