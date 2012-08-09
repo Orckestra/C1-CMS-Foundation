@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Composite;
+using Composite.Core.Extensions;
 using Composite.Core.PageTemplates;
 using Composite.Plugins.Forms.WebChannel.CustomUiControls;
 
@@ -70,6 +71,12 @@ namespace CompositePageContentEditor
             PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
 
             Verify.IsNotNull(pageTemplate, "Failed to get page template by id '{0}'", SelectedTemplateId);
+            if (!pageTemplate.IsValid)
+            {
+                throw new InvalidOperationException(
+                    "Page template '{0}' contains errors. Edit the template in 'Layout'".FormatWith(SelectedTemplateId),
+                    pageTemplate.LoadingException);
+            }
 
             List<string> handledIds = new List<string>();
 

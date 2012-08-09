@@ -1329,7 +1329,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         var result = new HashSet<string>();
 
-        List<string> availableParamters = _state.Parameters.Select(parameter => parameter.Name).ToList();
+        List<string> availableParameters = _state.Parameters.Select(parameter => parameter.Name).ToList();
 
         var elementToPathMap = TreeHelper.GetElementToPathMap(functionCalls);
         foreach (XElement parameterElement in functionCalls.Descendants(ParameterNodeXName))
@@ -1351,7 +1351,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             var parameterNameAttr = inputParameterNameNode.Attribute("value");
             if (parameterNameAttr == null
                 || string.IsNullOrEmpty(parameterNameAttr.Value)
-                || !availableParamters.Contains(parameterNameAttr.Value))
+                || !availableParameters.Contains(parameterNameAttr.Value))
             {
                 continue;
             }
