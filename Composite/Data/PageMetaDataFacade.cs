@@ -667,7 +667,7 @@ namespace Composite.Data
                 newData.PublicationStatus = GenericPublishProcessController.Draft;
                 PageMetaDataFacade.AssignMetaDataSpecificValues(newData, metaDataDefinitionName, affectedPage);
 
-                DataFacade.AddNew(newData);
+                DataFacade.AddNew((IData) newData);
 
                 ILocalizedControlled localizedData = newData as ILocalizedControlled;
                 if(localizedData != null)
@@ -676,7 +676,7 @@ namespace Composite.Data
                     localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                 }
 
-                newData = DataFacade.AddNew(newData);
+                newData = DataFacade.AddNew((IData) newData) as IPublishControlled;
 
                 if (newData.PublicationStatus != affectedPage.PublicationStatus)
                 {

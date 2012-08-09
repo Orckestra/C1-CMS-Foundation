@@ -74,7 +74,7 @@ namespace CompositePageContentEditor
             if (!pageTemplate.IsValid)
             {
                 throw new InvalidOperationException(
-                    "Page template '{0}' contains errors. Edit the template in 'Layout'".FormatWith(SelectedTemplateId),
+                    "Page template '{0}' contains errors. You can edit the template in the 'Layout' section".FormatWith(SelectedTemplateId),
                     pageTemplate.LoadingException);
             }
 
