@@ -84,7 +84,7 @@ function makeAttrib ( attrib, value ) {
 		res = res.replace(/\"/g, '&quot;');
 		res = res.replace(/</g, '&lt;');
 		res = res.replace(/>/g, '&gt;');
-		res = ' ' + attrib + '="' + value + '"';
+		res = ' ' + attrib + '="' + res + '"';
 	}
 	return res;
 }
