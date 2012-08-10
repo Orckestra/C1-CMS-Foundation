@@ -17,6 +17,7 @@ using Composite.C1Console.Tasks;
 using Composite.C1Console.Workflow.Activities.Foundation;
 using Composite.C1Console.Workflow.Foundation;
 using Composite.C1Console.Workflow.Foundation.PluginFacades;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
@@ -31,7 +32,10 @@ namespace Composite.C1Console.Workflow
 {
     internal sealed class WorkflowFacadeImpl : IWorkflowFacade
     {
-        private static TimeSpan _oldFileExistensTimeout = TimeSpan.FromHours(12.0);
+        private static readonly string LogTitle = "WorkflowFacade";
+        private static readonly string LogTitleColored = "RGB(194, 252, 131)" + LogTitle;
+
+        private static readonly TimeSpan _oldFileExistensTimeout = TimeSpan.FromDays(30.0);
 
         private Thread _initializeThread = null;
         private readonly object _initializeThreadLock = new object();
@@ -51,15 +55,12 @@ namespace Composite.C1Console.Workflow
 
         public WorkflowFacadeImpl()
         {
-            string lockFileDirectory = Path.Combine(Path.GetDirectoryName(PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory)), "LockFiles");
+            string serializedWorflowsDirectory = PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory);
+            string parentDirectory = Path.GetDirectoryName(serializedWorflowsDirectory);
+            string lockFileDirectory = Path.Combine(parentDirectory, "LockFiles");
+
             if (!C1Directory.Exists(lockFileDirectory)) C1Directory.CreateDirectory(lockFileDirectory);
-
-            if (RuntimeInformation.IsDebugBuild == true)
-            {
-                _oldFileExistensTimeout = TimeSpan.FromMinutes(10.0);
-            }
         }
-
 
 
         public void EnsureInitialization()
@@ -80,13 +81,13 @@ namespace Composite.C1Console.Workflow
 
                             if (_workflowRuntime != null)
                             {
-                                LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "Already initialized, skipping delayed initialization");
+                                Log.LogVerbose(LogTitleColored, "Already initialized, skipping delayed initialization");
                                 return;
                             }
 
                             if (_isShutDown)
                             {
-                                LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "System is shutting down, skipping delayed initialization");
+                                Log.LogVerbose(LogTitleColored, "System is shutting down, skipping delayed initialization");
                                 return;
                             }
 
@@ -150,7 +151,7 @@ namespace Composite.C1Console.Workflow
 
                     errors.AppendLine(error.ToString());
                 }
-                LoggingService.LogError("WorkflowFacade", errors.ToString());
+                Log.LogError("WorkflowFacade", errors.ToString());
                 throw exp;
             }
         }
@@ -189,7 +190,7 @@ namespace Composite.C1Console.Workflow
 
                     errors.AppendLine(error.ToString());
                 }
-                LoggingService.LogError("WorkflowFacade", errors.ToString());
+                Log.LogError("WorkflowFacade", errors.ToString());
                 throw exp;
             }
         }
@@ -219,7 +220,7 @@ namespace Composite.C1Console.Workflow
             }
             catch (Exception e)
             {
-                LoggingService.LogCritical("WorkflowFacade", e);
+                Log.LogCritical(LogTitle, e);
 
                 throw;
             }
@@ -260,7 +261,7 @@ namespace Composite.C1Console.Workflow
                 {
                     _resourceLocker.Resources.ExceptionFromWorkflow.Remove(Thread.CurrentThread.ManagedThreadId);
 
-                    LoggingService.LogCritical("WorkflowFacade", exception);
+                    Log.LogCritical(LogTitle, exception);
 
                     throw exception;
                 }
@@ -513,7 +514,7 @@ namespace Composite.C1Console.Workflow
 
                         _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Idle;                        
 
-                        LoggingService.LogVerbose("WorkflowFacade", string.Format("Workflow instance status changed to idle. Id = {0}", instanceId));
+                        Log.LogVerbose(LogTitle, "Workflow instance status changed to idle. Id = {0}", instanceId);
 
                         PersistFormData(instanceId);
 
@@ -522,7 +523,7 @@ namespace Composite.C1Console.Workflow
                     case WorkflowInstanceStatus.Running:
                         _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Running;
 
-                        LoggingService.LogVerbose("WorkflowFacade", string.Format("Workflow instance status changed to running. Id = {0}", instanceId));
+                        Log.LogVerbose(LogTitle, "Workflow instance status changed to running. Id = {0}", instanceId);
                         break;
 
                     case WorkflowInstanceStatus.Terminated:
@@ -534,7 +535,7 @@ namespace Composite.C1Console.Workflow
 
                         _resourceLocker.Resources.WorkflowStatusDictionary.Remove(instanceId);
 
-                        LoggingService.LogVerbose("WorkflowFacade", string.Format("Workflow instance status changed to terminated. Id = {0}", instanceId));
+                        Log.LogVerbose(LogTitle, "Workflow instance status changed to terminated. Id = {0}", instanceId);
                         break;
                 }
             }
@@ -837,7 +838,7 @@ namespace Composite.C1Console.Workflow
         {
             _isShutDown = true;
 
-            LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", "----------========== Finalizing Workflows ==========----------");
+            Log.LogVerbose(LogTitleColored, "----------========== Finalizing Workflows ==========----------");
             int startTime = Environment.TickCount;
 
             while (_workflowRuntime == null && Environment.TickCount - startTime < 5000)
@@ -864,7 +865,7 @@ namespace Composite.C1Console.Workflow
             _workflowRuntime = null;
 
             int endTime = Environment.TickCount;
-            LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done finalizing Workflows ({0} ms ) ==========----------", endTime - startTime));
+            Log.LogVerbose(LogTitleColored, "----------========== Done finalizing Workflows ({0} ms ) ==========----------", endTime - startTime);
         }
 
 
@@ -897,7 +898,7 @@ namespace Composite.C1Console.Workflow
                 {
                     if (_workflowRuntime == null)
                     {
-                        LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Initializing Workflows (Delayed: {0}) ==========----------", delayedTime));
+                        Log.LogVerbose(LogTitleColored, "----------========== Initializing Workflows (Delayed: {0}) ==========----------", delayedTime);
                         int startTime = Environment.TickCount;
 
                         _resourceLocker.ResetInitialization();
@@ -917,7 +918,7 @@ namespace Composite.C1Console.Workflow
                         LoadPerssistedFormDatas();
 
                         int endTime = Environment.TickCount;
-                        LoggingService.LogVerbose("RGB(194, 252, 131)WorkflowFacade", string.Format("----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime));
+                        Log.LogVerbose(LogTitleColored, "----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime);
 
                         foreach (Action action in _actionToRunWhenInitialized)
                         {
@@ -940,7 +941,7 @@ namespace Composite.C1Console.Workflow
             }
             else
             {
-                LoggingService.LogWarning("WorkflowFacade", "Using default workflow runtime");
+                Log.LogVerbose(LogTitle, "Using default workflow runtime");
                 _workflowRuntime = new WorkflowRuntime();
             }
 
@@ -1064,13 +1065,12 @@ namespace Composite.C1Console.Workflow
 
             try
             {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow persisted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId));
+                Log.LogVerbose(LogTitle,
+                    "Workflow persisted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId);
             }
             catch (Exception)
             {
-                LoggingService.LogVerbose("WorkflowFacade", "Workflow persisted, Id = {0}" + instance.InstanceId);
+                Log.LogVerbose(LogTitle, "Workflow persisted, Id = {0}", instance.InstanceId);
             }
         }
 
@@ -1083,13 +1083,12 @@ namespace Composite.C1Console.Workflow
 
             try
             {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow aborted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId));
+                Log.LogVerbose(LogTitle,
+                    "Workflow aborted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId);
             }
             catch (Exception)
             {
-                LoggingService.LogVerbose("WorkflowFacade", "Workflow aborted Id = " + instance.InstanceId);
+                Log.LogVerbose(LogTitle, "Workflow aborted Id = " + instance.InstanceId);
             }
         }
 
