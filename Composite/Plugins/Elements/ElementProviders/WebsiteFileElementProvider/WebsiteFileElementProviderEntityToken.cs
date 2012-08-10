@@ -138,24 +138,8 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         /// <exclude />
         public override bool Equals(object obj)
         {
-            EntityToken entityToken = obj as WebsiteFileElementProviderEntityToken;
-
-            if (entityToken == null) return false;
-
-            return Equals(entityToken);
-        }
-
-
-        /// <exclude />
-        public bool Equals(WebsiteFileElementProviderEntityToken entityToken)
-        {
-            if (entityToken.GetHashCode() != GetHashCode()) return false;
-
-            return entityToken.Type == this.Type &&
-                   entityToken.Source == this.Source &&
-                   entityToken.Id == this.Id &&
-                   entityToken.Path == this.Path &&
-                   entityToken.RootPath == this.RootPath;
+            return base.Equals(obj) 
+                   && (obj as WebsiteFileElementProviderEntityToken).RootPath == this.RootPath;
         }
 
 

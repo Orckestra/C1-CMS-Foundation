@@ -118,19 +118,8 @@ namespace Composite.C1Console.Trees
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as TreeFunctionElementGeneratorEntityToken);
-        }
-
-
-
-        public bool Equals(TreeFunctionElementGeneratorEntityToken treeFunctionElementGeneratorEntityToken)
-        {
-            if (treeFunctionElementGeneratorEntityToken == null) return false;
-
-            return treeFunctionElementGeneratorEntityToken.Type == this.Type &&
-                   treeFunctionElementGeneratorEntityToken.Source == this.Source &&
-                   treeFunctionElementGeneratorEntityToken.Id == this.Id &&
-                   treeFunctionElementGeneratorEntityToken.ElementId == this.ElementId;
+            return base.Equals(obj)
+                && (obj as TreeFunctionElementGeneratorEntityToken).ElementId == this.ElementId;
         }
 
 

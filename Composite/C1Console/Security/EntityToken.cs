@@ -171,9 +171,10 @@ namespace Composite.C1Console.Security
 
             if (entityToken.GetHashCode() != GetHashCode()) return false;
 
-            return entityToken.Type == this.Type &&
+            return entityToken.Id == this.Id &&
+                   entityToken.Type == this.Type &&
                    entityToken.Source == this.Source &&
-                   entityToken.Id == this.Id;
+                   entityToken.GetType() == this.GetType();
         }
 
 
@@ -213,11 +214,16 @@ namespace Composite.C1Console.Security
             _entityTokenUniquenessValidated = true;
 
             if ((string.IsNullOrEmpty(this.Type) == true) &&
-                    (string.IsNullOrEmpty(this.Source) == true) &&
-                    (string.IsNullOrEmpty(this.Id) == true))
+                (string.IsNullOrEmpty(this.Source) == true) &&
+                (string.IsNullOrEmpty(this.Id) == true))
             {
-                throw new InvalidOperationException(string.Format("EntityTokens should be unique for the given element. The properties Type, Source and Id may not all be empty string. This is not the case for this type {0}", GetType()));
+                ThrowNotUniqueException();
             }
+        }
+
+        private void ThrowNotUniqueException()
+        {
+            throw new InvalidOperationException(string.Format("EntityTokens should be unique for the given element. The properties Type, Source and Id may not all be empty string. This is not the case for this type {0}", GetType()));
         }
     }
 }

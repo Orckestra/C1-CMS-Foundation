@@ -120,19 +120,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         /// <exclude />
         public override bool Equals(object obj)
         {
-            return Equals(obj as AssociatedDataElementProviderHelperEntityToken);
-        }
-
-
-        /// <exclude />
-        public bool Equals(AssociatedDataElementProviderHelperEntityToken entityToken)
-        {
-            if (entityToken == null) return false;
-
-            return entityToken.Source == this.Source &&
-                   entityToken.Type == this.Type &&
-                   entityToken.Id == this.Id &&
-                   entityToken.Payload == this.Payload;
+            return base.Equals(obj) 
+                && (obj as AssociatedDataElementProviderHelperEntityToken).Payload == this.Payload;
         }
 
 

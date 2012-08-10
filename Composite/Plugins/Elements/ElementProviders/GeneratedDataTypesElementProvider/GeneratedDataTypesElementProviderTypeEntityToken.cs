@@ -92,23 +92,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         public override bool Equals(object obj)
         {
-            EntityToken entityToken = obj as GeneratedDataTypesElementProviderTypeEntityToken;
-
-            if (entityToken == null) return false;
-
-            return Equals(entityToken);
-        }
-
-
-        /// <exclude />
-        public bool Equals(GeneratedDataTypesElementProviderTypeEntityToken entityToken)
-        {
-            if (entityToken.GetHashCode() != GetHashCode()) return false;
-
-            return entityToken.Type == this.Type &&
-                   entityToken.Source == this.Source &&
-                   entityToken.Id == this.Id &&
-                   entityToken.SerializedTypeName == this.SerializedTypeName;
+            return base.Equals(obj) &&
+                   (obj as GeneratedDataTypesElementProviderTypeEntityToken).SerializedTypeName == this.SerializedTypeName;
         }
 
 

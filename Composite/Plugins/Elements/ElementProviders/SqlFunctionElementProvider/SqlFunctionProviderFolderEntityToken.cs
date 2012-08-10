@@ -88,23 +88,8 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         /// <exclude />
         public override bool Equals(object obj)
         {
-            EntityToken entityToken = obj as SqlFunctionProviderFolderEntityToken;
-
-            if (entityToken == null) return false;
-
-            return Equals(entityToken);
-        }
-
-
-        /// <exclude />
-        public bool Equals(SqlFunctionProviderFolderEntityToken entityToken)
-        {
-            if (entityToken.GetHashCode() != GetHashCode()) return false;
-
-            return entityToken.Type == this.Type &&
-                   entityToken.Source == this.Source &&
-                   entityToken.Id == this.Id &&
-                   entityToken.ConnectionId == this.ConnectionId;
+            return base.Equals(obj)
+                   && (obj as SqlFunctionProviderFolderEntityToken).ConnectionId == this.ConnectionId;
         }
 
 
