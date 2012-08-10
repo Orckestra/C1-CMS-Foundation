@@ -28,20 +28,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            // collecting statistics
             var allTemplates = PageTemplateFacade.GetPageTemplates().ToList();
 
             var templateTypes = new List<Tuple<string, string, int>>();
 
             templateTypes.Add(new Tuple<string, string, int>(
-                TemplateType_Razor,
-                GetText("AddNewPageTemplate.TemplateType.Razor"),
-                allTemplates.OfType<RazorPageTemplateDescriptor>().Count()));
-
-            templateTypes.Add(new Tuple<string, string, int>(
                 TemplateType_MasterPage,
                 GetText("AddNewPageTemplate.TemplateType.MasterPage"),
                 allTemplates.OfType<MasterPagePageTemplateDescriptor>().Count()));
+            
+            templateTypes.Add(new Tuple<string, string, int>(
+                TemplateType_Razor,
+                GetText("AddNewPageTemplate.TemplateType.Razor"),
+                allTemplates.OfType<RazorPageTemplateDescriptor>().Count()));
 
             templateTypes.Add(new Tuple<string, string, int>(
                 TemplateType_XML,
@@ -49,13 +48,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 allTemplates.OfType<XmlPageTemplateDescriptor>().Count()));
 
             // Most used page template type will be first in the list and preselected
-            templateTypes = templateTypes.OrderByDescending(t => t.Item3).ToList();
+            string preseceltedTemplate = templateTypes.OrderByDescending(t => t.Item3).Select(t => t.Item1).First();
 
             List<KeyValuePair<string, string>> options = templateTypes
+                .OrderBy(t => t.Item2) // Sorting alphabetically by label 
                 .Select(t => new KeyValuePair<string, string>(t.Item1, t.Item2)).ToList();
 
             this.Bindings.Add(Binding_TemplateTypeOptions, options);
-            this.Bindings.Add(Binding_TemplateTypeId, templateTypes[0].Item1);
+            this.Bindings.Add(Binding_TemplateTypeId, preseceltedTemplate);
         }
 
 
