@@ -49,7 +49,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 				foreach (var file in files)
 				{
-                    string ns = ExtractFuctionNamespace(file.FullName);
+                    string ns = ExtractFunctionNamespace(file.FullName);
                     string name = Path.GetFileNameWithoutExtension(file.Name);
 
                     var virtualPath = CombineVirtualPath(VirtualPath, 
@@ -93,7 +93,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             return string.Join("/", parts).Replace('\\', '/').Replace("///", "/").Replace("//", "/");
         }
 
-        private string ExtractFuctionNamespace(string filePath)
+        private string ExtractFunctionNamespace(string filePath)
         {
             Verify.That(filePath.StartsWith(PhysicalPath, StringComparison.OrdinalIgnoreCase), "File path should start with folder path");
 

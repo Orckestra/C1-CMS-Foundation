@@ -934,7 +934,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         var function = TreeHelper.FindByPath(document, functionID);
 
-        Verify.That(function != null, "Failed to get a fuction by path '{0}'", functionID);
+        Verify.That(function != null, "Failed to get a function by path '{0}'", functionID);
 
         if (isParameter)
         {

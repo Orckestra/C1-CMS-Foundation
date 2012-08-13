@@ -55,7 +55,7 @@ namespace Composite.AspNet.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="FileBasedFunctionEntityToken"/> class.
         /// </summary>
-        /// <param name="functionProviderName">Name of the fuction provider.</param>
+        /// <param name="functionProviderName">Name of the function provider.</param>
         /// <param name="functionFullName">Full name of the function.</param>
 		public FileBasedFunctionEntityToken(string functionProviderName, string functionFullName)
 		{
