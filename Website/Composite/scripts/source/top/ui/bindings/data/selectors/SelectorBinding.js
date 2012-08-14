@@ -43,6 +43,12 @@ function SelectorBinding () {
 	 */
 	this._selectionValue = null;
 
+
+	/**
+	* @type {string}
+	*/
+	this._selectionLabel = null;
+
 	/**
 	* @type {string}
 	*/
@@ -784,6 +790,9 @@ SelectorBinding.prototype.handleEvent = function (e) {
 SelectorBinding.prototype._pushSearchSelection = function (letter) {
 
 	this._searchString += letter.toLowerCase();
+
+	
+	//this._buttonBinding.labelBinding.shadowTree.labelText.innerHTML = "<i>" + this._searchString + "</i>";
 	this._applySearchSelection();
 }
 
@@ -825,6 +834,8 @@ SelectorBinding.prototype._applySearchSelection = function () {
 
 			if (this._searchString != null && this._searchString != "") {
 
+				this._buttonBinding.setLabel(this._searchString);
+
 				if (list.hasEntries()) {
 					while (list.hasNext()) {
 						var selection = list.getNext();
@@ -839,6 +850,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 				var pattern = new RegExp(this._searchString.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&"), "gi");
 				var menuitems = bodyBinding.getDescendantBindingsByType(menuItemImplementation);
 				if (menuitems.hasEntries()) {
+
 					while (menuitems.hasNext()) {
 						var menuitem = menuitems.getNext();
 						var labelBinding = menuitem.labelBinding;
@@ -846,6 +858,11 @@ SelectorBinding.prototype._applySearchSelection = function () {
 							labelBinding.shadowTree.labelText.innerHTML = labelBinding.shadowTree.labelText.innerHTML.replace(pattern, "<b>$&</b>");
 						}
 					}
+					menuitems.getFirst().focus();
+
+					this.attachClassName(DataBinding.CLASSNAME_INFOBOX);
+					this.detachClassName(DataBinding.CLASSNAME_INVALID);
+
 				}
 				else {
 
@@ -853,16 +870,29 @@ SelectorBinding.prototype._applySearchSelection = function () {
 					labelBinding.setLabel(StringBundle.getString("ui", "AspNetUiControl.Selector.NoMatchesFor").replace("{0}", this._searchString));
 					bodyBinding.add(labelBinding);
 					this._attachSelections();
+
+					this.detachClassName(DataBinding.CLASSNAME_INFOBOX);
+					this.attachClassName(DataBinding.CLASSNAME_INVALID);
+
 				}
 			}
 			else {
+
+				this._buttonBinding.setLabel(this._selectionLabel);
+
 				if (list.hasEntries()) {
 					while (list.hasNext()) {
 						var selection = list.getNext();
 						this.addSelection(selection);
+
 					}
+					
 				}
 				this._attachSelections();
+				this._restoreSelection();
+
+				this.detachClassName(DataBinding.CLASSNAME_INFOBOX);
+				this.detachClassName(DataBinding.CLASSNAME_INVALID);
 
 			}
 		} 
@@ -919,6 +949,7 @@ SelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
 	
 		var button = this._buttonBinding;
 		this._selectionValue = itemBinding.selectionValue;
+		this._selectionLabel = itemBinding.getLabel();
 		button.setLabel ( itemBinding.getLabel ());
 		
 		if ( itemBinding.imageProfile != null ) {

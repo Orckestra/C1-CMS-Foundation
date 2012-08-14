@@ -578,6 +578,9 @@ ui|selector.invalid ui|clickbutton ui|labeltext {
 	font-weight: bold;
 	color: #A40000;
 }
+ui|selector.infobox ui|clickbutton ui|labeltext {
+	font-style:italic;
+}
 ui|checkbox {
 	display: block;
 	width: 100%;

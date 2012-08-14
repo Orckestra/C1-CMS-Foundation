@@ -9,6 +9,7 @@ DataBinding.TYPE_INTEGER = "integer";
 DataBinding.TYPE_STRING = "string";
 
 DataBinding.CLASSNAME_INVALID = "invalid";
+DataBinding.CLASSNAME_INFOBOX = "infobox";
 DataBinding.CLASSNAME_WARNING = "warning";
 DataBinding.CLASSNAME_FOCUSED = "focused";
 DataBinding.CLASSNAME_DISABLED = "disabled";
