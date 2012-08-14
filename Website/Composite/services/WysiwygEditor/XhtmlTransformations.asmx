@@ -238,6 +238,7 @@ namespace Composite.Services
                                                         Namespaces.Xhtml + "map",
                                                         Namespaces.Xhtml + "object",
                                                         Namespaces.Xhtml + "script",
+                                                        Namespaces.Xhtml + "noscript",
                                                         Namespaces.Xhtml + "video"
                                                     };
                 IEnumerable<XElement> unHandledHtmlElements = xml.Descendants().Where(f => unHandledHtmlElementNames.Contains(f.Name));
