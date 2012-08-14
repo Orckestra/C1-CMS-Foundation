@@ -769,7 +769,6 @@ SelectorBinding.prototype.handleEvent = function (e) {
 		case DOMEvents.KEYPRESS:
 			var charCode = e.which ? e.which : e.charCode;
 			if (charCode >= 32) {
-			if(
 				this._buttonBinding.check();
 				var letter = String.fromCharCode(charCode);
 				this._pushSearchSelection(letter);
