@@ -194,7 +194,7 @@ SelectorBinding.prototype.onBindingAttach = function () {
 		this.disable();
 	}
 	//Only for FF & Chrome. IE have problem with perfomance.
-	if(Client.isMozilla)
+	//if(Client.isMozilla)
 		this.isSearchSelectionEnabled = true;
 }
 
@@ -773,7 +773,7 @@ SelectorBinding.prototype.handleEvent = function (e) {
 			}
 			break;
 		case DOMEvents.KEYPRESS:
-			var charCode = e.which ? e.which : e.charCode;
+			var charCode = e.which ? e.which : e.keyCode;
 			if (charCode >= 32) {
 				this._buttonBinding.check();
 				var letter = String.fromCharCode(charCode);
@@ -988,7 +988,10 @@ SelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
 			this.validate ();
 		}
 	}
-	
+
+	this.detachClassName(DataBinding.CLASSNAME_INFOBOX);
+	this.detachClassName(DataBinding.CLASSNAME_INVALID);
+
 	return isSuccess;
 }
 
