@@ -766,7 +766,7 @@ SelectorBinding.prototype.handleEvent = function (e) {
 			this.focus();
 			break;
 		case DOMEvents.KEYDOWN:
-			var charCode = e.which ? e.which : e.charCode;
+			var charCode = Client.isExplorer ? e.keyCode : e.which;
 			if (charCode == 8) {
 				this._popSearchSelection();
 			}
@@ -824,7 +824,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			var menuItemImplementation = this.MENUITEM_IMPLEMENTATION;
 			var bodyDocument = bodyBinding.bindingDocument;
 
-			
+
 
 			var list = this._getSelectionsList();
 
@@ -897,6 +897,19 @@ SelectorBinding.prototype._applySearchSelection = function () {
 				this.detachClassName(DataBinding.CLASSNAME_INVALID);
 
 			}
+
+			this._fitMenuToSelector();
+
+			if (Client.isExplorer) {
+				this._popupBinding._bodyBinding.setDimension(this._popupBinding.getDimension());
+			}
+
+			/*
+			* Position the shadow.
+			*/
+			this._popupBinding.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
+			this._popupBinding.dispatchAction(Binding.ACTION_POSITIONCHANGED);
+			this._popupBinding.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
 		}
 	}
 }
