@@ -690,7 +690,7 @@ SelectorBinding.prototype.handleAction = function (action) {
 					self._grabKeyboard();
 				}
 			}, 0);
-
+			this._clearSearchSelection();
 			action.consume();
 			break;
 	}
@@ -702,7 +702,6 @@ SelectorBinding.prototype.handleAction = function (action) {
 SelectorBinding.prototype._onButtonCommand = function () {
 
 	this.focus();
-	this._clearSearchSelection();
 	this._attachSelections();
 	this._restoreSelection ();
 	this.dispatchAction ( SelectorBinding.ACTION_COMMAND );
@@ -773,7 +772,7 @@ SelectorBinding.prototype.handleEvent = function (e) {
 			}
 			break;
 		case DOMEvents.KEYPRESS:
-			var charCode = e.which ? e.which : e.keyCode;
+			var charCode = Client.isExplorer ? e.keyCode : e.which;
 			if (charCode >= 32) {
 				this._buttonBinding.check();
 				var letter = String.fromCharCode(charCode);
@@ -790,9 +789,6 @@ SelectorBinding.prototype.handleEvent = function (e) {
 SelectorBinding.prototype._pushSearchSelection = function (letter) {
 
 	this._searchString += letter.toLowerCase();
-
-	
-	//this._buttonBinding.labelBinding.shadowTree.labelText.innerHTML = "<i>" + this._searchString + "</i>";
 	this._applySearchSelection();
 }
 
@@ -819,7 +815,7 @@ SelectorBinding.prototype._clearSearchSelection = function () {
 * Filter selection list by filteringString
 */
 SelectorBinding.prototype._applySearchSelection = function () {
-	
+
 	if (this.isSearchSelectionEnabled) {
 
 		var bodyBinding = this._menuBodyBinding;
@@ -828,11 +824,13 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			var menuItemImplementation = this.MENUITEM_IMPLEMENTATION;
 			var bodyDocument = bodyBinding.bindingDocument;
 
-			this._popupBinding.clear();
+			
 
 			var list = this._getSelectionsList();
 
 			if (this._searchString != null && this._searchString != "") {
+
+				this._popupBinding.clear();
 
 				this._buttonBinding.setLabel(this._searchString);
 
@@ -878,15 +876,19 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			}
 			else {
 
+				this.clear();
+
 				this._buttonBinding.setLabel(this._selectionLabel);
 
 				if (list.hasEntries()) {
 					while (list.hasNext()) {
 						var selection = list.getNext();
-						this.addSelection(selection);
+						var item = this.addSelection(selection);
+						if (this._selectionValue == selection.value) {
+							this._selectedItemBinding = item;
+						}
 
 					}
-					
 				}
 				this._attachSelections();
 				this._restoreSelection();
@@ -895,7 +897,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 				this.detachClassName(DataBinding.CLASSNAME_INVALID);
 
 			}
-		} 
+		}
 	}
 }
 
@@ -988,9 +990,6 @@ SelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
 			this.validate ();
 		}
 	}
-
-	this.detachClassName(DataBinding.CLASSNAME_INFOBOX);
-	this.detachClassName(DataBinding.CLASSNAME_INVALID);
 
 	return isSuccess;
 }
