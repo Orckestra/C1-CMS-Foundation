@@ -17,6 +17,7 @@ namespace Composite.Data
         /// <summary>
         /// Create a new PageNode based on a XElement from the sitemap
         /// </summary>
+        /// <param name="sitemapElement">The sitemap element.</param>
         internal PageNode(XElement sitemapElement) 
         {
             Verify.That(sitemapElement.Name == "Page", "Expected element named 'Page', got '{0}'", sitemapElement.Name);
@@ -149,6 +150,8 @@ namespace Composite.Data
         /// <summary>
         /// Returns <see cref="PageNode"/> elements that is with the <see cref="SitemapScope"/> of this page-
         /// </summary>
+        /// <param name="scope">The scope.</param>
+        /// <returns></returns>
         public IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
         {
             if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
@@ -163,6 +166,8 @@ namespace Composite.Data
         /// <summary>
         /// Return the Page Id's that is with the <see cref="SitemapScope"/> of this page-
         /// </summary>
+        /// <param name="scope">The scope.</param>
+        /// <returns></returns>
         public IEnumerable<Guid> GetPageIds(SitemapScope scope) 
         {
             if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
@@ -192,6 +197,9 @@ namespace Composite.Data
         /// <summary>
         /// Serialize the page specific state to a string for reading.
         /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return string.Format(CultureInfo.InvariantCulture, "PageNode(Id:'{0}', Title:'{1}', Description:'{2}', MenuTitle:'{3}', Url:'{4}', Level:'{5}')",
