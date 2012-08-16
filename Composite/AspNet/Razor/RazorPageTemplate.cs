@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using System.Xml.Linq;
 using Composite.Core.PageTemplates;
 using Composite.Core.Xml;
 
@@ -31,15 +32,21 @@ namespace Composite.AspNet.Razor
         /// </summary>
         /// <param name="content">Content of the placeholder.</param>
         /// <returns></returns>
+        [Obsolete("Use Markup() method instead")]
         public IHtmlString Placeholder(XhtmlDocument content)
         {
-            if(content == null)
-            {
-                return null;
-            }
-
-            return Html.Raw(content.ToString());
+            return Markup(content);
         }
 
+
+        /// <summary>
+        /// Renders the specified XNode.
+        /// </summary>
+        /// <param name="xNode">The <see cref="XNode">XNode</see>.</param>
+        /// <returns></returns>
+        public IHtmlString Markup(XNode xNode)
+        {
+            return Html.C1().Markup(xNode);
+        }
     }
 }

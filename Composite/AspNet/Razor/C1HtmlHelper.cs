@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.WebPages.Html;
-
+using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data.Types;
@@ -200,10 +201,53 @@ namespace Composite.AspNet.Razor
         /// </summary>
         /// <param name="xhtmlDocument">The XHTML document.</param>
         /// <returns></returns>
-		public IHtmlString Document(XhtmlDocument xhtmlDocument)
-		{
-			return _helper.Raw(xhtmlDocument.ToString());
-		}
+        [Obsolete("Use Markup() instead")]
+        public IHtmlString Document(XhtmlDocument xhtmlDocument)
+        {
+            return Markup(xhtmlDocument);
+        }
+
+        /// <summary>
+        /// Renders the specified XNode.
+        /// </summary>
+        /// <param name="xNode">The <see cref="XNode">XNode</see>.</param>
+        /// <returns></returns>
+        public IHtmlString Markup(XNode xNode)
+        {
+            if (xNode == null)
+            {
+                return null;
+            }
+
+            // TODO: optimize so XNode doesn't get serialized/deserialized
+
+            return _helper.Raw(xNode.ToString());
+        }
+
+        /// <summary>
+        /// Renders the specified XNode-s.
+        /// </summary>
+        /// <param name="xNodes">The collection of <see cref="XNode">XNode</see> objects.</param>
+        /// <returns></returns>
+        public IHtmlString Markup(IEnumerable<XNode> xNodes)
+        {
+            if (xNodes == null)
+            {
+                return null;
+            }
+
+            // TODO: optimize so XNode-s don't get serialized/deserialized
+
+            var sb = new StringBuilder();
+            foreach (var xNode in xNodes)
+            {
+                if (xNode == null) continue;
+
+                sb.Append(xNode.ToString());
+            }
+
+            return _helper.Raw(sb.ToString());
+        }
 
         /// <summary>
         /// Renders the &lt;body /&gt; part of the specified xhtml document.
@@ -235,7 +279,7 @@ namespace Composite.AspNet.Razor
 				}
 			}
 
-			return Document(xhtmlDocument);
+			return Markup(xhtmlDocument);
 		}
 
         /// <summary>
