@@ -575,7 +575,11 @@ color: $(color:graytext);
 }
 ui|menuitem ui|labelbox,
 ui|menuitem ui|labelbody,
-ui|menuitem ui|labeltext {
+ui|menuitem ui|labeltext,
+ui|menubody ui|labelbox,
+ui|menubody ui|labelbody,
+ui|menubody ui|labeltext
+{
 float: none;
 clear: both;
 }
@@ -1959,6 +1963,9 @@ ui|checkboxgroup ui|labelbox.invalid ui|labeltext,
 ui|selector.invalid ui|clickbutton ui|labeltext {
 font-weight: bold;
 color: #A40000;
+}
+ui|selector.infobox ui|clickbutton ui|labeltext {
+font-style:italic;
 }
 ui|checkbox {
 display: block;
