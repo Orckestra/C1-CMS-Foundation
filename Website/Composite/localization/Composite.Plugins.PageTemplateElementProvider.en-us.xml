@@ -4,9 +4,7 @@
   <string key="PageTemplateElementProvider.RootLabelToolTip" value="You can find the sites XHTML templates here" />
   <string key="PageTemplateElementProvider.AddTemplate" value="Add Template" />
   <string key="PageTemplateElementProvider.AddTemplateToolTip" value="Add new template" />
-  <string key="PageTemplateElementProvider.EditTemplate" value="Edit Template" />
-  <string key="PageTemplateElementProvider.EditTemplateToolTip" value="Edit selected template" />
-	<string key="PageTemplateElementProvider.DeleteTemplate" value="Delete" />
+  <string key="PageTemplateElementProvider.DeleteTemplate" value="Delete" />
 	<string key="PageTemplateElementProvider.DeleteTemplateToolTip" value="Delete this item" />
 
   <string key="PageTemplateElementProvider.SharedCodeFolder.Title" value="Shared Code" />
@@ -14,6 +12,9 @@
   
   <string key="EditSharedCodeFile.Label" value="Edit" /> 
   <string key="EditSharedCodeFile.ToolTip" value="Edit file" />
+
+  <string key="PageTemplateElementProvider.EditXmlTemplate" value="Edit XML Template" />
+  <string key="PageTemplateElementProvider.EditXmlTemplateToolTip" value="Edit selected XML template" />
 
   <string key="AddNewXmlPageTemplate.LabelDialog" value="Add New Xml Page Template" />
   <string key="AddNewXmlPageTemplate.LabelFieldGroup" value="Xml Template" />

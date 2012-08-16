@@ -40,8 +40,8 @@ namespace Composite.Plugins.PageTemplates.XmlPageTemplates
             {
                 VisualData = new ActionVisualizedData
                 {
-                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplate"),
-                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditTemplateToolTip"),
+                    Label = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditXmlTemplate"),
+                    ToolTip = SR.GetString("Composite.Plugins.PageTemplateElementProvider", "PageTemplateElementProvider.EditXmlTemplateToolTip"),
                     Icon = PageTemplateElementProvider.EditTemplate,
                     Disabled = false,
                     ActionLocation = new ActionLocation
