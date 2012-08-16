@@ -4,14 +4,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" runat="server">
 <f:function name="Composite.Web.Html.Template.LangAttribute" runat="server" />
 <head runat="server">
-    <title><c1:Title id="title" runat="server"/></title>
-    <c1:Description runat="server" />
+	<title>
+        <c1:Title id="title" runat="server"/>
+    </title>
+	<c1:DescriptionMetaTag runat="server" />
     <link rel="stylesheet" type="text/css" href="~/Frontend/Styles/VisualEditor.common.css" />
     <f:function runat="server" name="Composite.Web.Html.Template.CommonMetaTags" />
 </head>
 <body>
-		<h1> <%= Server.HtmlEncode(this.SitemapNavigator.CurrentPageNode.Title) %></h1>
-		<h2> <%= Server.HtmlEncode(this.SitemapNavigator.CurrentPageNode.Description) %></h2>
+		<h1>
+            <c1:Title runat="server" />
+        </h1> 
+		<h2>
+            <c1:Description runat="server" />
+        </h2>
         <div>
             
             <c1:Render Markup="<%# Content %>" runat="server" />

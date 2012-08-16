@@ -6,7 +6,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
 {
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public class Description : Control
+    public class DescriptionMetaTag : Control
     {
         /// <exclude />
         protected override void Render(HtmlTextWriter writer)
@@ -14,7 +14,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
             string description = PageRenderer.CurrentPage.Description;
             if(string.IsNullOrEmpty(description)) return;
 
-            writer.WriteEncodedText(description);
+            writer.AddAttribute("name", "description");
+            writer.AddAttribute("content", description, true);
+            writer.RenderBeginTag("meta");
+            writer.RenderEndTag();
         }
     }
 }
