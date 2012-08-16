@@ -133,8 +133,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 string keyword = searchToken.Keyword.ToLowerInvariant();
 
                 pageTemplates = pageTemplates
-                    .Where(t => t.Title.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > 0
-                                || t.Description.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > 0);
+                    .Where(t => t.Title.IndexOf(keyword, StringComparison.InvariantCultureIgnoreCase) > 0);
             }
 
             pageTemplates = pageTemplates.OrderBy(template => template.Title).ToList();

@@ -50,6 +50,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             return base.Equals(obj) && (obj as SharedCodeFileEntityToken).VirtualPath == VirtualPath;
         }
 
+        /// <exclude />
         public override int GetHashCode()
         {
             return base.GetHashCode() ^ VirtualPath.GetHashCode();

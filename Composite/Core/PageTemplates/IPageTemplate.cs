@@ -16,10 +16,5 @@ namespace Composite.Core.PageTemplates
         /// Gets the template title.
         /// </summary>
         string TemplateTitle { get; }
-
-        /// <summary>
-        /// Gets the template description.
-        /// </summary>
-        string TemplateDescription { get; }
     }
 }

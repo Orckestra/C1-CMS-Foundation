@@ -161,18 +161,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                     return false;
                 }
 
-                try
-                {
-                    templateDescription = pageTemplate.TemplateDescription;
-                }
-                catch (Exception ex)
-                {
-                    ShowPropertyError("TemplateDescription", ex);
-                    return false;
-                }
-
-                
-
                 if(!IsPageTemplate)
                 {
                     newEntityToken = new PageTemplateEntityToken(templateId);

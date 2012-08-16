@@ -35,7 +35,6 @@ namespace Composite.Core.PageTemplates
 
             pageTemplate.Id = templateDefinition.TemplateId;
             pageTemplate.Title = templateDefinition.TemplateTitle;
-            pageTemplate.Description = templateDefinition.TemplateDescription;
 
             string defaultPlaceholderId = null;
 

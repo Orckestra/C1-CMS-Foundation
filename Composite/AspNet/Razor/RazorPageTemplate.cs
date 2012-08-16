@@ -27,14 +27,6 @@ namespace Composite.AspNet.Razor
         }
 
         /// <summary>
-        /// Defines page template description.
-        /// </summary>
-        public virtual string TemplateDescription
-        {
-            get { return null; }
-        }
-
-        /// <summary>
         /// Renders the content of specific placeholderPlaceholders the specified placeholder content.
         /// </summary>
         /// <param name="content">Content of the placeholder.</param>

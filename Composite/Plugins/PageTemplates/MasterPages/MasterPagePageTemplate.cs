@@ -27,14 +27,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         }
         
         /// <summary>
-        /// Gets the template description.
-        /// </summary>
-        public virtual string TemplateDescription
-        {
-            get { return null; }
-        }
-
-        /// <summary>
         /// Gets or sets the data connection.
         /// </summary>
         /// <value>

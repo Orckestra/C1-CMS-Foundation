@@ -296,16 +296,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 return false;
             }
 
-            try
-            {
-                string newDescription = templateDefinition.TemplateDescription;
-            }
-            catch (Exception ex)
-            {
-                ShowPropertyError("TemplateDescription", ex);
-                return false;
-            }
-
             if(pageTemplate.IsValid)
             {
                 if (templateId != pageTemplate.Id)
