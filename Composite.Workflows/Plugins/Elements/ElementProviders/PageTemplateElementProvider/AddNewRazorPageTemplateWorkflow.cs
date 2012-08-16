@@ -11,6 +11,7 @@ using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.PageTemplates.Foundation.PluginFacade;
 using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Composite.Plugins.PageTemplates.Razor;
 
 
@@ -24,8 +25,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
         private static readonly string Marker_TemplateId = "%TemplateId%";
         private static readonly string Marker_TemplateTitle = "%TemplateTitle%";
 
-        private static readonly string DefaultRazorTemplateMarkup =
-            C1File.ReadAllText(PathUtil.Resolve("~/Composite/templates/PageTemplates/RazorPageTemplate.txt")).Replace("    ", "\t");
+        private static readonly string DefaultRazorTemplateMarkup = PageTemplateHelper.LoadDefaultTemplateFile("RazorPageTemplate.txt");
 
         public AddNewRazorPageTemplateWorkflow()
         {
@@ -46,8 +46,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
                 Guid.Empty, GetText("AddNewRazorPageTemplate.LabelCopyFromEmptyOption")));
 
+            Guid mostUsedTemplate = PageTemplateHelper.GetTheMostUsedTemplate(templatesOptions.Select(p => p.Key));
+
             this.Bindings.Add("CopyOfOptions", templatesOptions);
-            this.Bindings.Add("CopyOfId", Guid.Empty);
+            this.Bindings.Add("CopyOfId", mostUsedTemplate);
         }
 
 

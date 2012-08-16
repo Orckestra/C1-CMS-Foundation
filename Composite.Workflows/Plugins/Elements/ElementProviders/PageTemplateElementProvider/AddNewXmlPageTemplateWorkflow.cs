@@ -13,6 +13,7 @@ using Composite.Core.ResourceSystem;
 using System.Collections.Generic;
 using Composite.Core.WebClient.Renderings.Template;
 using System.Xml.Linq;
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 
@@ -22,9 +23,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     public sealed partial class AddNewXmlPageTemplateWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         private static readonly string _defaultTemplateMarkup =
-            string.Format(
-                C1File.ReadAllText(PathUtil.Resolve("~/Composite/templates/PageTemplates/XmlPageTemplate.xml")),
-                LocalizationXmlConstants.XmlNamespace).Replace("    ", "\t");
+            string.Format(PageTemplateHelper.LoadDefaultTemplateFile("XmlPageTemplate.xml"),
+                          LocalizationXmlConstants.XmlNamespace);
 
 
         public AddNewXmlPageTemplateWorkflow()
@@ -51,8 +51,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             templatesOptions.Insert(0, new KeyValuePair<Guid, string>(
                 Guid.Empty, GetText("AddNewXmlPageTemplate.LabelCopyFromEmptyOption")));
 
+            Guid mostUsedTemplate = PageTemplateHelper.GetTheMostUsedTemplate(templatesOptions.Select(p => p.Key));
+
             this.Bindings.Add("CopyOfOptions", templatesOptions);
-            this.Bindings.Add("CopyOfId", Guid.Empty);
+            this.Bindings.Add("CopyOfId", mostUsedTemplate);
         }
 
 

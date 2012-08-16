@@ -15,7 +15,8 @@ public partial class page_template : MasterPagePageTemplate
 		get { return new Guid("%TemplateId%"); }
 	}
 
-    public override string TemplateTitle {
+    public override string TemplateTitle 
+	{
         get { return "%TemplateTitle%"; }
     }
 

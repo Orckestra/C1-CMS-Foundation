@@ -218,6 +218,7 @@
     <Compile Include="Plugins\Elements\ElementProviders\Common\BaseFunctionWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\Common\PageTemplateHelper.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\AddTypeToWhiteListWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
