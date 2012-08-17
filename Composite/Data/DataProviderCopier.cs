@@ -4,8 +4,10 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Transactions;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Logging;
+using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
@@ -16,13 +18,21 @@ using Composite.Data.Transactions;
 
 namespace Composite.Data
 {
-    internal sealed class DataProviderCopier
+    /// <summary>
+    /// Class used for copying data from one data provider to another
+    /// </summary>
+    public sealed class DataProviderCopier
     {
         private delegate void HandleSpecialTypeDelegate(List<IData> datas, string sourceProviderName, string targetProviderName);
         private static readonly string LogTitle = "Database copying";
         private static readonly Dictionary<Type, HandleSpecialTypeDelegate> _specialHandleInterfaces = new Dictionary<Type, HandleSpecialTypeDelegate>();
 
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataProviderCopier"/> class.
+        /// </summary>
+        /// <param name="sourceProviderName">Name of the source data provider.</param>
+        /// <param name="targetProviderName">Name of the target data provider.</param>
         public DataProviderCopier(string sourceProviderName, string targetProviderName)
         {
             this.SourceProviderName = sourceProviderName;
@@ -33,12 +43,44 @@ namespace Composite.Data
         }
 
 
+        /// <summary>
+        /// Gets the name of the source data provider.
+        /// </summary>
+        /// <value>
+        /// The name of the source data provider.
+        /// </value>
         public string SourceProviderName { get; private set; }
+
+        /// <summary>
+        /// Gets the name of the target data provider.
+        /// </summary>
+        /// <value>
+        /// The name of the target data provider.
+        /// </value>
         public string TargetProviderName { get; private set; }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether transaction should be used.
+        /// Disabling transaction may help to ignore transaction timeout limitation which is limited to 20 minutes in machine.config
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if transaction should be used; otherwise, <c>false</c>.
+        /// </value>
         public bool UseTransaction { get; set; }
+
+        /// <summary>
+        /// If set to <c>true</c>, records with already used primary keys will be skipped and the copying process will continue.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if [ignore primary key violation]; otherwise, <c>false</c>.
+        /// </value>
         public bool IgnorePrimaryKeyViolation { get; set; }
 
 
+        /// <summary>
+        /// Copies all the data from the source data provider to the target data provider.
+        /// </summary>
         public void FullCopy()
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
@@ -53,17 +95,17 @@ namespace Composite.Data
                             transactionScope = TransactionsFacade.CreateNewScope(TimeSpan.FromHours(6.0));
                         }
 
-                        LoggingService.LogVerbose(LogTitle, "Full copy started");
+                        Log.LogVerbose(LogTitle, "Full copy started");
 
                         IEnumerable<Type> allInterfacesToEnsure =
                             (from type in DataFacade.GetAllInterfaces()
                              where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) == true
                              select type).ToList();
 
-                        LoggingService.LogVerbose(LogTitle, "Ensuring interfaces...");
+                        Log.LogVerbose(LogTitle, "Ensuring interfaces...");
                         EnsureInterfaces(allInterfacesToEnsure);
 
-                        LoggingService.LogVerbose(LogTitle, "Done insuring interfaces!");
+                        Log.LogVerbose(LogTitle, "Done insuring interfaces!");
 
                         IEnumerable<Type> allInterfaces =
                                 (from type in DataFacade.GetAllInterfaces()
@@ -102,7 +144,7 @@ namespace Composite.Data
                         }
                     }
 
-                    LoggingService.LogVerbose(LogTitle, "Full copy done!");
+                    Log.LogVerbose(LogTitle, "Full copy done!");
                 }
             }
         }
@@ -144,7 +186,7 @@ namespace Composite.Data
 
             foreach (DataScopeIdentifier dataScopeIdentifier in interfaceType.GetSupportedDataScopes())
             {
-                LoggingService.LogVerbose(LogTitle, "Copying scope '{0}' data for type '{1}'".FormatWith(dataScopeIdentifier.Name, interfaceType.FullName));
+                Log.LogVerbose(LogTitle, "Copying scope '{0}' data for type '{1}'".FormatWith(dataScopeIdentifier.Name, interfaceType.FullName));
 
                 foreach (CultureInfo cultureInfo in GetSupportedCultures(interfaceType))
                 {
@@ -163,9 +205,8 @@ namespace Composite.Data
                         }
                         catch (Exception)
                         {
-                            LoggingService.LogCritical(LogTitle,
-                                                       "Failed to read data from type '{0}'. See the log for the details."
-                                                           .FormatWith(interfaceType.FullName));
+                            Log.LogCritical(LogTitle,"Failed to read data from type '{0}'. See the log for the details."
+                                                     .FormatWith(interfaceType.FullName));
                             throw;
                         }
 
@@ -208,7 +249,7 @@ namespace Composite.Data
                         }
                         catch (Exception)
                         {
-                            LoggingService.LogWarning("Database copying", "Adding failed.");
+                            Log.LogWarning(LogTitle, "Adding failed.");
                             throw;
                         }
                     }
@@ -219,17 +260,12 @@ namespace Composite.Data
 
         private static void AddData(Type type, IEnumerable<IData> dataset, IWritableDataProvider dataProvider)
         {
-            MethodInfo genericMethod = typeof(DataProviderCopier).GetMethod("AddData1", BindingFlags.Static | BindingFlags.NonPublic);
+            // TODO: check if adding in groups of ~1000 records may improve the performance
+            MethodInfo genericMethod = StaticReflection.GetGenericMethodInfo((a) => AddData<IData>(null, null)); 
             genericMethod.MakeGenericMethod(new[] { type }).Invoke(null, new object[] { dataset, dataProvider });
         }
 
-        /// <summary>
-        /// To be called through reflection.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="dataset"></param>
-        /// <param name="dataProvider"></param>
-        private static void AddData1<T>(IEnumerable<IData> dataset, IWritableDataProvider dataProvider) where T : class, IData
+        private static void AddData<T>(IEnumerable<IData> dataset, IWritableDataProvider dataProvider) where T : class, IData
         {
             dataProvider.AddNew(dataset.Cast<T>());
         }

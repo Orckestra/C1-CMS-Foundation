@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.Extensions;
@@ -10,6 +7,13 @@ namespace Composite.Core.Types
 {
     internal static class StaticReflection
     {
+        public static MethodInfo GetGenericMethodInfo(Expression<Action<object>> expression)
+        {
+            Verify.ArgumentNotNull(expression, "expression");
+
+            return GetMethodInfo(expression.Body).GetGenericMethodDefinition();
+        }
+
         public static MethodInfo GetGenericMethodInfo(Expression<Func<object>> expression)
         {
             Verify.ArgumentNotNull(expression, "expression");
