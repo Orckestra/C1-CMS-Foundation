@@ -445,6 +445,7 @@
     <Compile Include="Composite\schemas\FormsControls\GenerateDynamicSchemas.aspx.designer.cs">
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\LinkableSelector.ascx" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.cs.txt" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.txt" />
