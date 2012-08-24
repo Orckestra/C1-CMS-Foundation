@@ -118,13 +118,16 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             var copyOfOptions = new List<KeyValuePair<Guid, string>>();
 
-            copyOfOptions.Add(new KeyValuePair<Guid, string>(Guid.Empty, GetText("AddNewXsltFunctionStep1.LabelCopyFromEmptyOption")));
-
             foreach (IXsltFunction function in DataFacade.GetData<IXsltFunction>())
             {
                 string fullName = function.Namespace + "." + function.Name;
                 copyOfOptions.Add(new KeyValuePair<Guid, string>(function.Id, fullName));
             }
+
+            // Sorting alphabetically by function's full name
+            copyOfOptions.Sort((a, b) => a.Value.CompareTo(b.Value));
+
+            copyOfOptions.Insert(0, new KeyValuePair<Guid, string>(Guid.Empty, GetText("AddNewXsltFunctionStep1.LabelCopyFromEmptyOption")));
 
             this.Bindings.Add(Binding_CopyFromFunctionId, Guid.Empty);
             this.Bindings.Add(Binding_CopyFromOptions, copyOfOptions);
