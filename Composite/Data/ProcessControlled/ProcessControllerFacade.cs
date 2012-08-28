@@ -441,29 +441,11 @@ namespace Composite.Data.ProcessControlled
         }
 
 
-        // Using thread statis because the request life time cache does not work if a non-asp.net is the invoker /MRJ
-        [ThreadStatic]
-        private static CounterContainer _counterContainer = null;
-
-
         private static CounterContainer ProcessControllersCounter
         {
             get
             {
-                if (_counterContainer == null)
-                {
-                    _counterContainer = new CounterContainer();
-                }
-
-                return _counterContainer;
-                //CounterContainer counterContainer = RequestLifetimeCache.TryGet<CounterContainer>("ProcessControllerFacade:ProcessControllersCounter");
-                //if (counterContainer == null)
-                //{
-                //    counterContainer = new CounterContainer();
-                //    RequestLifetimeCache.Add("ProcessControllerFacade:ProcessControllersCounter", counterContainer);
-                //}
-
-                //return counterContainer;
+                return RequestLifetimeCache.GetCachedOrNew<CounterContainer>("ProcessControllerFacade:ProcessControllersCounter");
             }
         }
     }

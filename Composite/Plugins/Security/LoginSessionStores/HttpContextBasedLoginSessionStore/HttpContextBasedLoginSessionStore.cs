@@ -114,7 +114,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
             string key = typeof(HttpContextBasedLoginSessionStore) + "StoredUsername";
             if (RequestLifetimeCache.HasKey(key))
             {
-                RequestLifetimeCache.ClearAll();
+                RequestLifetimeCache.Remove(key);
             }
         }
 

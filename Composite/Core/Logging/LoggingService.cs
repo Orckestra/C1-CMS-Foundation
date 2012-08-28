@@ -9,6 +9,7 @@ using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
+using Composite.Core.Caching;
 
 
 namespace Composite.Core.Logging
@@ -462,31 +463,12 @@ namespace Composite.Core.Logging
         }
 
 
-        // Using thread statis because the request life time cache does not work if a non-asp.net is the invoker /MRJ
-        [ThreadStatic]
-        private static CounterContainer _counterContainer = null;
-
 
         private static CounterContainer LoggingScopeCounter
         {
             get
             {
-                if (_counterContainer == null)
-                {
-                    _counterContainer = new CounterContainer();
-                }
-
-                return _counterContainer;
-
-
-                //CounterContainer counterContainer = RequestLifetimeCache.TryGet<CounterContainer>("LoggingService:LoggingScopeCounter");
-                //if (counterContainer == null)
-                //{
-                //    counterContainer = new CounterContainer();
-                //    RequestLifetimeCache.Add("LoggingService:LoggingScopeCounter", counterContainer);
-                //}
-
-                //return counterContainer;
+                return RequestLifetimeCache.GetCachedOrNew<CounterContainer>("LoggingService:LoggingScopeCounter");
             }
         }
     }

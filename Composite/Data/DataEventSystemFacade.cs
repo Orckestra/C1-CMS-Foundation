@@ -6,6 +6,7 @@ using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Subscription = Composite.Core.Types.Pair<System.Delegate, bool>;
 using Subscriptions = Composite.Core.Collections.Generic.Hashtable<System.Type, System.Collections.Generic.List<Composite.Core.Types.Pair<System.Delegate, bool>>>;
+using Composite.Core.Caching;
 
 
 namespace Composite.Data
@@ -602,7 +603,24 @@ namespace Composite.Data
                Counter(1);
             }
 
-            [ThreadStatic] private int _counter;
+            private sealed class CounterContainer
+            {
+                public CounterContainer()
+                {
+                    this.Counter = 0;
+                }
+
+                public int Counter { get; set; }
+            }
+
+
+            private static CounterContainer SuppressEventScopeCounter
+            {
+                get
+                {
+                    return RequestLifetimeCache.GetCachedOrNew<CounterContainer>("SuppressEventScope:Counter");
+                }
+            }
 
             static readonly SuppressEventScope _instance = new SuppressEventScope(false);
 
@@ -618,25 +636,10 @@ namespace Composite.Data
             /// <returns></returns>
             private static int Counter(int incrementValue)
             {
-                HttpContext httpContext = HttpContext.Current;
-                
-                if(httpContext != null)
-                {
-                    const string itemsKey = "SuppressEventScope.Counter";
+                CounterContainer counter = SuppressEventScopeCounter;
+                counter.Counter += incrementValue;
 
-                    if(httpContext.Items[itemsKey] == null)
-                    {
-                        httpContext.Items[itemsKey] = incrementValue;
-                        return incrementValue;
-                    }
-                    int value = (int) httpContext.Items[itemsKey] + incrementValue;
-
-                    httpContext.Items[itemsKey] = value;
-                    return value;
-                }
-
-                _instance._counter += incrementValue;
-                return _instance._counter;
+                return counter.Counter;
             }
 
             #region IDisposable Members

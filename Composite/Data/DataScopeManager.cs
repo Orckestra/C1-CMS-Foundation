@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.Caching;
 
 
 namespace Composite.Data
@@ -73,25 +74,12 @@ namespace Composite.Data
         }
 
 
-        // Using thread statis because the request life time cache does not work if a non-asp.net is the invoker /MRJ
-        [ThreadStatic]
-        private static Stack<DataScopeIdentifier> _dataScopeStack = null;
-
 
         private static Stack<DataScopeIdentifier> DataScopeStack
         {
             get
             {
-                if (_dataScopeStack == null)
-                {
-                    var stack = new Stack<DataScopeIdentifier>();
-
-                    _dataScopeStack = stack;
-
-                    return stack;
-                }
-
-                return _dataScopeStack;
+                return RequestLifetimeCache.GetCachedOrNew<Stack<DataScopeIdentifier>>("DataScopeManager:Stack");
             }
         }
     }

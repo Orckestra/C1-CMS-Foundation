@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.Caching;
 
 
 namespace Composite.Data
@@ -69,28 +70,11 @@ namespace Composite.Data
         }
 
 
-
-        // Using thread statis because the request life time cache does not work if a non-asp.net is the invoker /MRJ
-        /// <exclude />
-        [ThreadStatic]
-        public static Stack<CultureInfo> _localizationScopeStack = null;
-
-
         private static Stack<CultureInfo> LocalizationScopeStack
         {
             get
             {
-                var currentScopeStack = _localizationScopeStack;
-                if (currentScopeStack != null)
-                {
-                    return currentScopeStack;
-                }
-
-                var stack = new Stack<CultureInfo>();
-
-                _localizationScopeStack = stack;
-
-                return stack;
+                return RequestLifetimeCache.GetCachedOrNew<Stack<CultureInfo>>("LocalizationScopeManager:Stack");
             }
         }
     }
