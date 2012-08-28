@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Composite.Data.Types;
+using Composite.Core.Caching;
 
 namespace Composite.AspNet
 {
@@ -23,15 +24,8 @@ namespace Composite.AspNet
         {
             RootPage = rootPage;
 
-            if(_stack == null)
-            {
-                _stack = new Stack<SiteMapContext>();
-            }
-            _stack.Push(this);
+            SiteMapStack.Push(this);
         }
-
-        [ThreadStatic]
-        private static Stack<SiteMapContext> _stack;
 
         /// <summary>
         /// Gets the current SiteMapContext. Can be null.
@@ -43,23 +37,28 @@ namespace Composite.AspNet
         {
             get
             {
-                var currentStack = _stack;
+                var currentStack = SiteMapStack;
 
-                return currentStack == null ? null : _stack.Peek();
+                return currentStack.Any() ? currentStack.Peek() : null;
             }
         }
 
         /// <exclude />
         public void Dispose()
         {
-            var top = _stack.Pop();
+            var top = SiteMapStack.Pop();
             Verify.That(object.ReferenceEquals(top, this), "SiteMapContext weren't disposed properly");
+        }
 
-            // Releasing the stack reference if it is empty
-            if(!_stack.Any())
+
+
+        private static Stack<SiteMapContext> SiteMapStack
+        {
+            get
             {
-                _stack = null;
+                return RequestLifetimeCache.GetCachedOrNew<Stack<SiteMapContext>>("SiteMapContext:Stack");
             }
         }
+
     }
 }
