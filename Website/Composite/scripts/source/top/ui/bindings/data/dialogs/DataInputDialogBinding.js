@@ -81,7 +81,8 @@ DataInputDialogBinding.prototype.buildButton = function () {
 						self.logger.debug ( "Usecase scenario was hardcoded into DataInputDialogBinding#buildButton" );
 						var value = result.getFirst ();
 						self.setValue ( value ); // SETUP SPECIFIC - THIS MAY NOT BE SO!!!!
-						self.validate ( true );
+						self.validate(true);
+						self.checkDirty();
 					}
 					self.focus ();
 				}

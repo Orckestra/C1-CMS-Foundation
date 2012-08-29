@@ -45,7 +45,7 @@ ImageDialogPageBinding.prototype.onBeforePageInitialize = function () {
 
 	ImageDialogPageBinding.superclass.onBeforePageInitialize.call(this);
 
-	this.addActionListener(ImageInputDialogBinding.IMAGE_SELECTED);
+	this.addActionListener(LinkableInputDialogBinding.LINK_SELECTED);
 
 	this._populateClassNameSelector("img");
 	if (this._tinyAction == "update") {
@@ -89,7 +89,7 @@ ImageDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 
 		src = src.replace(/%28/g, "(").replace(/%29/g, ")");
 
-		var mediaUrl = new MediaUrl(src);
+		var mediaUrl = new CompositeUrl(src);
 		if (mediaUrl.isMedia) {
 			if (mediaUrl.hasParam("mw"))
 				manager.getDataBinding("maxwidth").setValue(mediaUrl.getParam("mw"));
@@ -118,7 +118,7 @@ ImageDialogPageBinding.prototype.handleAction = function (action) {
 	ImageDialogPageBinding.superclass.handleAction.call(this, action);
 
 	switch (action.type) {
-		case ImageInputDialogBinding.IMAGE_SELECTED:
+		case LinkableInputDialogBinding.LINK_SELECTED:
 			this._configureFields();
 			break;
 	}
@@ -126,19 +126,15 @@ ImageDialogPageBinding.prototype.handleAction = function (action) {
 
 /**
 * Configure fields
-* @param {MediaUrl} mediaUrl
 */
 ImageDialogPageBinding.prototype._configureFields = function () {
 	var manager = this.bindingWindow.DataManager;
-	var src = manager.getDataBinding("src").getValue();
-	var mediaUrl = new MediaUrl(src);
-			
-	if (mediaUrl.isMedia) {
-		manager.getDataBinding("src").setReadOnly(true);
+	var src = manager.getDataBinding("src");
+
+	if (src.compositeUrl != null && src.compositeUrl.isMedia) {
 		manager.getDataBinding("maxwidth").setReadOnly(false);
 		manager.getDataBinding("maxheight").setReadOnly(false);
 	} else {
-		manager.getDataBinding("src").setReadOnly(false);
 		manager.getDataBinding("maxwidth").setReadOnly(true);
 		manager.getDataBinding("maxheight").setReadOnly(true);
 	}

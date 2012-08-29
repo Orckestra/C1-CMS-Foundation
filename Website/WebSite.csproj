@@ -932,7 +932,7 @@
     <Content Include="Composite\scripts\source\top\core\License.DEPRECATED.js" />
     <Content Include="Composite\scripts\source\top\core\Localization.js" />
     <Content Include="Composite\scripts\source\top\core\LocalStore.js" />
-    <Content Include="Composite\scripts\source\top\core\MediaUrl.js" />
+    <Content Include="Composite\scripts\source\top\core\CompositeUrl.js" />
     <Content Include="Composite\scripts\source\top\core\MessageQueue.js" />
     <Content Include="Composite\scripts\source\top\core\MimeTypes.js" />
     <Content Include="Composite\scripts\source\top\core\Persistance.js" />
@@ -1058,7 +1058,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataInputButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataInputDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\HTMLDataDialogBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\ImageInputDialogBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\LinkableInputDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\MultiSelectorDataDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\NullPostBackDataDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\NullPostBackDataDialogSelectorBinding.js" />

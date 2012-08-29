@@ -45,4 +45,4 @@
     }
     
 </script>
-<ui:datainputdialog id="<%= this.UniqueID  %>" type="url" handle="Composite.Management.LinkableSelectorDialog" name="<%= this.UniqueID  %>" required="true" value="<%= FilterCharactersAndEncode(_currentStringValue) %>"  <%= ValidationParams() %>></ui:datainputdialog>
+<ui:linkableinputdialog id="<%= this.UniqueID  %>" type="url" handle="Composite.Management.LinkableSelectorDialog" name="<%= this.UniqueID  %>" required="true" value="<%= FilterCharactersAndEncode(_currentStringValue) %>"  <%= ValidationParams() %> />

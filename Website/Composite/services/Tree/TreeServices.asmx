@@ -304,27 +304,42 @@ namespace Composite.Services
 		}
 		
 		
-        [WebMethod]
-        public string GetMediaLabel(string path)
-        {
-            var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
-            var mediaUrlData = MediaUrls.ParseUrl(relativePath);
-            
-            if(mediaUrlData != null)
-            {
-                Guid mediaId = mediaUrlData.MediaId;
-                string store = mediaUrlData.MediaStore;
+		[WebMethod]
+		public string GetCompositeUrlLabel(string path)
+		{
+			var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
+			var mediaUrlData = MediaUrls.ParseUrl(relativePath);
 
-                IMediaFile matchingMedia = DataFacade.GetData<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+			using (var connection = new DataConnection())
+			{
+				if (mediaUrlData != null)
+				{
+					var mediaId = mediaUrlData.MediaId;
+					var store = mediaUrlData.MediaStore;
 
-                if (matchingMedia != null)
-                {
-                    string label = string.Format("{0} ({1}:{2})", matchingMedia.FileName, matchingMedia.StoreId, matchingMedia.FolderPath);
-                    return label;
-                }
-            }
-            
-            return path;
-        }
-    }
+					var matchingMedia = DataFacade.GetData<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+
+					if (matchingMedia != null)
+					{
+						string label = string.Format("{0} ({1}:{2})", matchingMedia.FileName, matchingMedia.StoreId, matchingMedia.FolderPath);
+						return label;
+					}
+				}
+
+				var pageUrlData = PageUrls.ParseUrl(relativePath);
+				if (pageUrlData != null)
+				{
+					var pageNode = connection.SitemapNavigator.GetPageNodeById(pageUrlData.PageId);
+
+					if (pageNode != null)
+					{
+						string label = string.Format("{0} ({1})", pageNode.Title, pageNode.Url);
+						return label;
+					}
+				}
+			}
+			
+			return path;
+		}
+	}
 }

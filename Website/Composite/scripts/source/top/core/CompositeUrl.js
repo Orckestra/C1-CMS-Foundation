@@ -4,11 +4,12 @@
 * @constructor
 */
 //TODO Add escaping
-function MediaUrl(url) {
+function CompositeUrl(url) {
 
-    var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)media(\(|%28)[\w\d-\:]+(\)|%29)/;
+    var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
+	var result = mediaExpr.exec(url)
 
-	if (mediaExpr.test(url)) {
+	if (result) {
 		var queryString = {};
 		url.replace(/^[^\?]*/g, "").replace(
 			/([^?=&]+)(=([^&]*))?/g, 
@@ -18,8 +19,11 @@ function MediaUrl(url) {
 		this.queryString = queryString;
 
 		this.path = url.replace(/\?.*/g, "");
-		this.isMedia = true;
-
+		if (result[3] == "media") {
+			this.isMedia = true;
+		} else if (result[3] == "page") {
+			this.isPage = true;
+		}
 	}
 	return this;
 }
@@ -29,7 +33,7 @@ function MediaUrl(url) {
 * Get media path without parameters
 * @return {string}
 */
-MediaUrl.prototype.getPath = function () {
+CompositeUrl.prototype.getPath = function () {
 	return this.path;
 }
 
@@ -38,7 +42,7 @@ MediaUrl.prototype.getPath = function () {
 * @param {object} key
 * @return {boolean}
 */
-MediaUrl.prototype.hasParam = function (key) {
+CompositeUrl.prototype.hasParam = function (key) {
 	return this.queryString[key] != null;
 }
 
@@ -47,7 +51,7 @@ MediaUrl.prototype.hasParam = function (key) {
 * @param {object} key
 * @return {boolean}
 */
-MediaUrl.prototype.getParam = function (key) {
+CompositeUrl.prototype.getParam = function (key) {
 	return this.queryString[key];
 }
 
@@ -55,14 +59,14 @@ MediaUrl.prototype.getParam = function (key) {
 * Set param in query string
 * @param {object} key
 */
-MediaUrl.prototype.setParam = function (key, value) {
+CompositeUrl.prototype.setParam = function (key, value) {
 	this.queryString[key] = value;
 }
 
 /**
 * @return {string}
 */
-MediaUrl.prototype.toString = function () {
+CompositeUrl.prototype.toString = function () {
 	var url = this.path;
 
 	var querystring = [];

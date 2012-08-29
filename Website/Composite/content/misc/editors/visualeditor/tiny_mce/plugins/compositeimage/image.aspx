@@ -32,7 +32,7 @@
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Image.Source}"/>
 										<ui:fielddata>
-											<ui:imageinputdialog name="src" required="true"/>
+											<ui:linkableinputdialog handle="Composite.Management.ImageSelectorDialog" name="src" required="true" />
 										</ui:fielddata>
 									</ui:field>
 									<ui:field>

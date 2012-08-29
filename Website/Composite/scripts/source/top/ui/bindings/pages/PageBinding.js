@@ -504,8 +504,9 @@ PageBinding.prototype._postMessageToDescendants = function ( message, list ) {
 PageBinding.prototype._debugDotNetPostback = function () {
 	
 	var list = new List ();
-	new List ( this.bindingDocument.forms [ 0 ].elements ).each ( 
-		function ( element ) {
+	new List ( this.bindingDocument.forms [ 0 ].elements ).each (
+		function (element) {
+			if (element.name == null || element.name == "") return;
 			list.add ({
 				name : element.name,
 				value : element.value
