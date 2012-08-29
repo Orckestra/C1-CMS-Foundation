@@ -153,13 +153,26 @@ ui|toolbarbutton.active table.matrix td.sw {
 
 /* FOCUS */
 
-
+#region vista
 ui|clickbutton.focused table.matrix,
 ui|clickbutton.default table.matrix {
 #alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
 background-repeat: repeat-x;
 background-position: 0 50%;
 }
+#endregion
+
+#region osx
+ui|clickbutton.focused table.matrix,
+ui|clickbutton.default table.matrix {
+#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
+background-repeat: repeat-x;
+background-position: 0 50%;
+}
+ui|clickbutton {
+filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
+}
+#endregion
 
 ui|clickbutton.focused table.matrix td.n,
 ui|clickbutton.default table.matrix td.n {
@@ -854,6 +867,15 @@ ui|treenode ui|labelbox.closed {
 background-image: url("${skin}/trees/icon-treenode-plus.png");
 }
 @namespace ui url("http://www.w3.org/1999/xhtml");
+
+/*
+#region osx
+ui|explorer ui|toolbarbutton,
+ui|explorer ui|explorertoolbarbutton {
+filter: url("${root}/templates/grayscalefilter.xml#grayscale");	
+}
+#endregion
+*/
 
 ui|explorersplitter,
 ui|explorertoolbarbutton {

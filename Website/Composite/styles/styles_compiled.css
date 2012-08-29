@@ -195,6 +195,14 @@ font-weight: bold;
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
+/*
+* Notice capitalization of firt-letter on these fellows: TAB, DOCKTAB and TITLEBAR.
+*/
+ui|tab ui|labeltext,
+ui|docktab ui|labeltext,
+ui|titlebar ui|labeltext {
+text-transform: capitalize;
+}
 ui|labelbox {
 display: block;
 float: left;
@@ -519,6 +527,7 @@ display: block;
 border-top: 1px solid $(color:threedhighlight);
 border-bottom: 1px solid $(color:threedshadow);
 white-space: nowrap;
+text-transform: capitalize; /* notice all capitalized words! */
 }
 ui|menu {
 display: block;
@@ -531,6 +540,7 @@ display: block;
 padding: 4px 2px 4px 2px;
 background-color: $(color:menu);
 color: $(color:menutext);
+/*border: 1px solid $(color:threedshadow);*/
 }
 ui|menugroup {
 display: block;
@@ -575,11 +585,7 @@ color: $(color:graytext);
 }
 ui|menuitem ui|labelbox,
 ui|menuitem ui|labelbody,
-ui|menuitem ui|labeltext,
-ui|menubody ui|labelbox,
-ui|menubody ui|labelbody,
-ui|menubody ui|labeltext
-{
+ui|menuitem ui|labeltext {
 float: none;
 clear: both;
 }
@@ -673,9 +679,6 @@ _padding: 3px 6px 2px 6px;
 ui|toolbar ui|clickbutton table.matrix td.c {
 padding: 0 2px 0 2px;
 }
-/*
-produce a pressed-down effect - unfortunately, 
-this will crop images on small buttons!
 ui|toolbarbutton.active ui|labelbox,
 ui|clickbutton.active ui|labelbox {
 position: relative;
@@ -685,7 +688,6 @@ left: 1px;
 position: static;
 #endregion
 }
-*/
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -776,7 +778,6 @@ ui|toolbarbutton.isdisabled ui|labeltext,
 ui|clickbutton.isdisabled ui|labeltext {
 color: $(color:graytext);
 }
-
 ui|toolbarbody.alignright ui|toolbarbutton,
 ui|toolbarbody.alignright ui|clickbutton {
 margin-right: 0;
@@ -833,35 +834,6 @@ overflow: hidden;
 margin-right: -1px;
 visibility: hidden;
 border: none;
-}
-
-/* combobutton */
-
-ui|toolbarbutton.isdisabled ui|combobox {
-color: $(color:graytext);
-}
-
-ui|toolbarbutton.combobutton ui|combobox {
-border-left: 1px solid transparent;
-margin: -4px -4px -4px 0;
-display: block;
-float: left;
-line-height: 22px;
-font-size: 9px;
-padding-left: 5px;
-padding-right: 5px;
--moz-user-select: none;
-position: relative;
-}
-
-ui|toolbarbutton.combobutton table.matrix td{
-overflow: visible;
-}
-
-ui|toolbarbutton.hover ui|combobox,
-ui|toolbarbutton.active ui|combobox
-{
-border-left: 1px solid #A0A0A0;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -1516,8 +1488,6 @@ display: block;
 ui|datainput ui|box,
 ui|datainputselector ui|box,
 ui|datainputdialog ui|box,
-ui|datainputbutton ui|box,
-ui|imageinputdialog ui|box,
 ui|textbox ui|box,
 ui|editortextbox ui|box,
 ui|multiselector ui|box {
@@ -1531,16 +1501,10 @@ ui|datainput.readonly ui|box,
 ui|datainputselector.disabled ui|box,
 ui|datainputselector.readonly ui|box,
 ui|datainputdialog.disabled ui|box,
-ui|datainputbutton.disabled ui|box,
-ui|imageinputdialog.disabled ui|box,
 ui|datainputdialog.readonly ui|box,
-ui|datainputbutton.readonly ui|box,
-ui|imageinputdialog.readonly ui|box,
 ui|textbox.disabled ui|box,
 ui|textbox.readonly ui|box {
 border-color: $(color:threedshadow);
-background-color: $(color:threedface);
-#alphabackdrop: url("${root}/images/ui/lighten.png");
 }
 ui|textbox ui|box,
 ui|editortextbox ui|box {
@@ -1549,8 +1513,6 @@ ui|editortextbox ui|box {
 }
 ui|datainputselector.invalid ui|box,
 ui|datainputdialog.invalid ui|box,
-ui|datainputbutton.invalid ui|box,
-ui|imageinputdialog.invalid ui|box,
 ui|datainput.invalid ui|box,
 ui|textbox.invalid ui|box,
 ui|editortextbox.invalid ui|box {
@@ -1558,8 +1520,6 @@ border-color: #A40000;
 }
 ui|datainputselector input,
 ui|datainputdialog input,
-ui|datainputbutton input,
-ui|imageinputdialog input,
 ui|datainput input,
 ui|textbox input,
 ui|editortextbox input {
@@ -1567,8 +1527,6 @@ border: none;
 }
 ui|datainputselector.readonly input,
 ui|datainputdialog.readonly input,
-ui|datainputbutton.readonly input,
-ui|imageinputdialog.readonly input,
 ui|datainput.readonly input,
 ui|textbox.readonly textarea,
 ui|editortextbox.readonly textarea {
@@ -1578,8 +1536,6 @@ background-color: $(color:threedface);
 }
 ui|datainputselector.isdisabled input,
 ui|datainputdialog.isdisabled input,
-ui|datainputbutton.isdisabled input,
-ui|imageinputdialog.isdisabled input,
 ui|datainput.isdisabled input,
 ui|textbox.isdisabled textarea,
 ui|editortextbox.isdisabled textarea {
@@ -1591,8 +1547,6 @@ background-color: $(color:threedface);
 }
 ui|datainputselector.isdisabled ui|box,
 ui|datainputdialog.isdisabled ui|box,
-ui|datainputbutton.isdisabled ui|box,
-ui|imageinputdialog.isdisabled ui|box,
 ui|datainput.isdisabled ui|box,
 ui|textbox.isdisabled ui|box,
 ui|editortextbox.isdisabled ui|box,
@@ -1615,8 +1569,6 @@ float: none;
 ui|datainput,
 ui|datainputselector,
 ui|datainputdialog,
-ui|datainputbutton,
-ui|imageinputdialog,
 ui|textbox,
 ui|selector,
 ui|simpleselector,
@@ -1749,17 +1701,14 @@ display: none;
 }
 
 /* DATAINPUTSELECTORS ......................................... */
+
 ui|datainputselector,
-ui|datainputdialog,
-ui|datainputbutton,
-ui|imageinputdialog {
+ui|datainputdialog {
 display: block;
 position: relative;
 }
 ui|datainputselector ui|toolbarbutton,
-ui|datainputdialog ui|toolbarbutton,
-ui|datainputbutton ui|toolbarbutton,
-ui|imageinputdialog ui|toolbarbutton {
+ui|datainputdialog ui|toolbarbutton {
 margin-right: 0;
 position: absolute;
 right: 3px;
@@ -1767,31 +1716,21 @@ top: 3px;
 }
 #region moz
 ui|datainputselector.focused ui|toolbarbutton,
-ui|datainputdialog.focused ui|toolbarbutton,
-ui|datainputbutton.focused ui|toolbarbutton,
-ui|imageinputdialog.focused ui|toolbarbutton {
+ui|datainputdialog.focused ui|toolbarbutton {
 right: 2px;
 top: 2px;
 }
 #endregion
 ui|fielddata ui|datainputselector input,
-ui|fielddata ui|datainputdialog input,
-ui|fielddata ui|datainputbutton input,
-ui|fielddata ui|imageinputdialog input {
+ui|fielddata ui|datainputdialog input {
 width: 189px;
-}
-ui|fielddata ui|datainputselector.imagesizenormal input{
-background: transparent none no-repeat 4px 4px;
-padding-left: 24px;
 }
 ui|field.fieldhelp ui|fielddata {
 position: relative;
 top: -1px; /* why? */
 }
 ui|field.fieldhelp ui|fielddata ui|datainputselector input,
-ui|field.fieldhelp ui|fielddata ui|datainputdialog input ,
-ui|field.fieldhelp ui|fielddata ui|datainputbutton input ,
-ui|field.fieldhelp ui|fielddata ui|imageinputdialog input {
+ui|field.fieldhelp ui|fielddata ui|datainputdialog input {
 width: 159px;
 }
 
@@ -1892,8 +1831,6 @@ ui|fields ui|simpleselector.focused,
 ui|fields ui|datainput.focused,
 ui|fields ui|datainputselector.focused,
 ui|fields ui|datainputdialog.focused,
-ui|fields ui|datainputbutton.focused,
-ui|fields ui|imageinputdialog.focused,
 ui|fields ui|datadialog.focused,
 ui|fields ui|postbackdialog.focused,
 ui|fields ui|htmldatadialog.focused,
@@ -1963,9 +1900,6 @@ ui|checkboxgroup ui|labelbox.invalid ui|labeltext,
 ui|selector.invalid ui|clickbutton ui|labeltext {
 font-weight: bold;
 color: #A40000;
-}
-ui|selector.infobox ui|clickbutton ui|labeltext {
-font-style:italic;
 }
 ui|checkbox {
 display: block;
@@ -2089,13 +2023,14 @@ width: 100%;
 margin: 0 !important;
 border-collapse: collapse;
 }
-div.calendar td {
+div.calendar table td {
 padding-top: 3px;
 padding-bottom: 3px;
 -vendor-user-select: none;
+}
+div.calendar td {
 text-align: center;
 vertical-align: top;
-width: 14.2%;
 }
 div.calendar td.active {
 cursor: pointer;	
@@ -2104,21 +2039,14 @@ div.calendar td.active:hover {
 background-color: $(color:highlight);
 color: $(color:highlighttext);
 }
-div.calendar td.othermonth {
-color: #bbb;	
-}
-div.calendar td.selectedday {
-background-color: #ccc;
-margin: 0;
-}
 div.calendar tr.month td {
 border-bottom: 1px solid $(color:threedshadow);	
 }
-div.calendar .monthbrowse {
+div.calendar td.monthbrowse {
 font-family: "Courier New", monospace;
 cursor: pointer;	
 }
-div.calendar .monthbrowse:hover {
+div.calendar td.monthbrowse:hover {
 color: $(color:highlight);	
 }
 
@@ -2147,8 +2075,6 @@ ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
-ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labeltext,
-ui|fields ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
 width: 162px;
 overflow: hidden;
@@ -2158,8 +2084,6 @@ ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|l
 ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
-ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labeltext,
-ui|fields ui|field.fieldhelp ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
 width: 132px;
 }
@@ -2170,8 +2094,6 @@ ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
-ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbody,
-ui|fields ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
 width: 180px;
 overflow: hidden;
@@ -2180,8 +2102,6 @@ ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflo
 ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-ui|fields ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
 width: 142px;
 overflow: hidden;
@@ -2190,8 +2110,6 @@ ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|l
 ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
-ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbody,
-ui|fields ui|field.fieldhelp ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
 width: 150px;
 }
@@ -2199,8 +2117,6 @@ ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|l
 ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-ui|fields ui|field.fieldhelp ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
 width: 112px;
 }
@@ -2208,8 +2124,6 @@ ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflo
 ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-ui|fields ui|imageinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after {
 content: "...";
 }
