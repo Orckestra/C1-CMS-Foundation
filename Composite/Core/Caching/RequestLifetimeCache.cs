@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Runtime.Remoting.Messaging;
+using Composite.Core.Threading;
 
 
 namespace Composite.Core.Caching
@@ -22,8 +23,6 @@ namespace Composite.Core.Caching
         public static void Add(object key, object value)
         {
             Verify.ArgumentNotNull(key, "key");
-            Verify.ArgumentNotNullOrEmpty(key.ToKeyString(), "key");
-            Verify.ArgumentNotNull(value,"value");
 
             var httpContext = HttpContext.Current;
 
@@ -33,7 +32,7 @@ namespace Composite.Core.Caching
             }
             else
             {
-                CallContext.SetData(key.ToKeyString(), value);
+                FallbackCache.Add(key, value);
             }
         }
 
@@ -47,7 +46,6 @@ namespace Composite.Core.Caching
         public static bool HasKey(object key)
         {
             Verify.ArgumentNotNull(key, "key");
-            Verify.ArgumentNotNullOrEmpty(key.ToKeyString(), "key");
 
             var httpContext = HttpContext.Current;
 
@@ -56,7 +54,7 @@ namespace Composite.Core.Caching
                 return httpContext.Items.Contains(key);
             }
 
-            return null != CallContext.GetData(key.ToKeyString());
+            return FallbackCache.ContainsKey(key);
         }
 
 
@@ -69,7 +67,6 @@ namespace Composite.Core.Caching
         public static object TryGet(object key)
         {
             Verify.ArgumentNotNull(key, "key");
-            Verify.ArgumentNotNullOrEmpty(key.ToKeyString(), "key");
 
             var context = HttpContext.Current;
 
@@ -78,7 +75,7 @@ namespace Composite.Core.Caching
                 return context.Items[key];
             }
 
-            return CallContext.GetData(key.ToKeyString());
+            return (FallbackCache.ContainsKey(key) ? FallbackCache[key] : null);
         }
 
 
@@ -92,7 +89,6 @@ namespace Composite.Core.Caching
         public static T TryGet<T>(object key)
         {
             Verify.ArgumentNotNull(key, "key");
-            Verify.ArgumentNotNullOrEmpty(key.ToKeyString(), "key");
 
             object result = TryGet(key);
 
@@ -116,7 +112,6 @@ namespace Composite.Core.Caching
         internal static T GetCachedOrNew<T>(object key) where T : new()
         {
             Verify.ArgumentNotNull(key, "key");
-            Verify.ArgumentNotNullOrEmpty(key.ToKeyString(), "key");
 
             T result = TryGet<T>(key);
 
@@ -137,7 +132,6 @@ namespace Composite.Core.Caching
         public static void Remove(object key)
         {
             Verify.ArgumentNotNull(key, "key");
-            Verify.ArgumentNotNullOrEmpty(key.ToKeyString(), "key");
 
             var context = HttpContext.Current;
 
@@ -147,19 +141,26 @@ namespace Composite.Core.Caching
             }
             else
             {
-                CallContext.FreeNamedDataSlot(key.ToKeyString());
+                FallbackCache.Remove(key);
             }
         }
 
 
-
-        private static string ToKeyString(this object key)
+        private static Dictionary<object, object> FallbackCache
         {
-            if (key is string)
+            get
             {
-                return (string)key;
+                Dictionary<object, object> fallback = CallContext.GetData("RequestLifetimeCache:Fallback") as Dictionary<object, object>;
+
+                if (fallback==null)
+                {
+                    fallback = new Dictionary<object, object>();
+                    CallContext.SetData("RequestLifetimeCache:Fallback", fallback);
+                }
+
+                return fallback;
             }
-            return key.GetHashCode().ToString();
         }
+
     }
 }
