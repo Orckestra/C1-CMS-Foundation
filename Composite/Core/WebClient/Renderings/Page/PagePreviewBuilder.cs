@@ -38,8 +38,11 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             if (HttpRuntime.UsingIntegratedPipeline)
             {
-                ctx.Server.TransferRequest("~/Renderers/Page.aspx?"+ query, false, "GET", null);
-
+                // The header trick here is to work around (what seems to be) a bug in .net 4.5, where preserveForm=false is ignored
+                // asp.net 4.5 request validation will see the 'page edit http post' data and start bitching. It really should not.
+                var headers = new System.Collections.Specialized.NameValueCollection();
+                headers.Add("Content-Length", "0");
+                ctx.Server.TransferRequest("~/Renderers/Page.aspx?" + query, false, "GET", headers);
             }
             else
             {
