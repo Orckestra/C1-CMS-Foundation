@@ -103,15 +103,20 @@ namespace Composite.Services
 
                 foreach (var functionImageElement in functionImages)
                 {
-                    if (functionImageElement.NextNode != null && functionImageElement.NextNode.NextNode != null)
-                        if (functionImageElement.NextNode is XText && functionImageElement.NextNode.NextNode is XElement)
-                            if (string.IsNullOrWhiteSpace((functionImageElement.NextNode as XText).Value.Replace("&#160;", "")))
-                                if (functionImages.Contains(functionImageElement.NextNode.NextNode as XElement))
-                                    functionImageElement.NextNode.Remove();
-                }
+                    var nextNode = functionImageElement.NextNode;
 
-                foreach (var functionImageElement in functionImages)
-                {
+                    // Removing "&#160;" symbols that may appear between function call images
+                    if (nextNode != null
+                        && nextNode.NextNode != null
+                        && nextNode is XText
+                        && nextNode.NextNode is XElement
+                        && string.IsNullOrWhiteSpace((nextNode as XText).Value.Replace("&#160;", ""))
+                        && functionImages.Contains(nextNode.NextNode as XElement))
+                    {
+                        nextNode.Remove();
+                    }
+
+                    // Replacing function call images with function markup
                     try
                     {
                         string functionMarkup = HttpUtility.UrlDecode(functionImageElement.Attribute("alt").Value);
