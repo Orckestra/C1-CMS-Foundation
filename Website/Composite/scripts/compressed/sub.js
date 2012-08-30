@@ -332,6 +332,9 @@ var _5a=new String("");
 if(_59!=null){
 var _5b="";
 Array.forEach(_59.elements,function(_5c){
+if(_5c.name==null||_5c.name==""){
+return;
+}
 var _5d=_5c.name;
 var _5e=encodeURIComponent(_5c.value);
 switch(_5c.type){
