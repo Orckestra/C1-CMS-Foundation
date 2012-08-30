@@ -17,6 +17,7 @@ var config = {
 	convert_newlines_to_brs : false,
 	force_p_newlines : true,
 	force_br_newlines: false,
+	forced_root_block: '',
 	visual : true,
 	object_resizing : false,
 	auto_reset_designmode : true,
@@ -135,6 +136,9 @@ function onInstanceInitialize ( inst ) {
 		tinyInstance.getBody().spellcheck = true;
 		tinyInstance.getBody().lang = Localization.currentLang();
 	}
+
+	tinyEngine.html.Schema.blockElementsMap['IMG'] = {};
+	tinyEngine.html.Schema.blockElementsMap['img'] = {};
 
 	/*
 	 * Hacking!!! See notes below...
