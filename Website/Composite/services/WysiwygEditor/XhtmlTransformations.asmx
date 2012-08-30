@@ -93,8 +93,22 @@ namespace Composite.Services
 
 
 
-                List<XElement> functionImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeFunctionWysiwygRepresentation")).ToList();
-                functionImages.AddRange(structuredResult.Descendants("img").Where(f => f.Attribute("alt") != null));
+                List<XElement> functionImages =
+                    structuredResult
+                    .Descendants()
+                    .Where(e => e.Name.LocalName == "img"
+                            && e.Attribute("alt") != null
+                           && e.Attribute("class") != null
+                           && e.Attribute("class").Value.Contains("compositeFunctionWysiwygRepresentation")).ToList();
+
+                foreach (var functionImageElement in functionImages)
+                {
+                    if (functionImageElement.NextNode != null && functionImageElement.NextNode.NextNode != null)
+                        if (functionImageElement.NextNode is XText && functionImageElement.NextNode.NextNode is XElement)
+                            if (string.IsNullOrWhiteSpace((functionImageElement.NextNode as XText).Value.Replace("&#160;", "")))
+                                if (functionImages.Contains(functionImageElement.NextNode.NextNode as XElement))
+                                    functionImageElement.NextNode.Remove();
+                }
 
                 foreach (var functionImageElement in functionImages)
                 {
