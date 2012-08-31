@@ -1518,7 +1518,7 @@ ui|datainput ui|box,
 ui|datainputselector ui|box,
 ui|datainputdialog ui|box,
 ui|datainputbutton ui|box,
-ui|linkableinputdialog ui|box,
+ui|urlinputdialog ui|box,
 ui|textbox ui|box,
 ui|editortextbox ui|box,
 ui|multiselector ui|box {
@@ -1533,10 +1533,10 @@ ui|datainputselector.disabled ui|box,
 ui|datainputselector.readonly ui|box,
 ui|datainputdialog.disabled ui|box,
 ui|datainputbutton.disabled ui|box,
-ui|linkableinputdialog.disabled ui|box,
+ui|urlinputdialog.disabled ui|box,
 ui|datainputdialog.readonly ui|box,
 ui|datainputbutton.readonly ui|box,
-ui|linkableinputdialog.readonly ui|box,
+ui|urlinputdialog.readonly ui|box,
 ui|textbox.disabled ui|box,
 ui|textbox.readonly ui|box {
 border-color: $(color:threedshadow);
@@ -1551,7 +1551,7 @@ ui|editortextbox ui|box {
 ui|datainputselector.invalid ui|box,
 ui|datainputdialog.invalid ui|box,
 ui|datainputbutton.invalid ui|box,
-ui|linkableinputdialog.invalid ui|box,
+ui|urlinputdialog.invalid ui|box,
 ui|datainput.invalid ui|box,
 ui|textbox.invalid ui|box,
 ui|editortextbox.invalid ui|box {
@@ -1560,7 +1560,7 @@ border-color: #A40000;
 ui|datainputselector input,
 ui|datainputdialog input,
 ui|datainputbutton input,
-ui|linkableinputdialog input,
+ui|urlinputdialog input,
 ui|datainput input,
 ui|textbox input,
 ui|editortextbox input {
@@ -1569,7 +1569,7 @@ border: none;
 ui|datainputselector.readonly input,
 ui|datainputdialog.readonly input,
 ui|datainputbutton.readonly input,
-ui|linkableinputdialog.readonly input,
+ui|urlinputdialog.readonly input,
 ui|datainput.readonly input,
 ui|textbox.readonly textarea,
 ui|editortextbox.readonly textarea {
@@ -1580,7 +1580,7 @@ background-color: $(color:threedface);
 ui|datainputselector.isdisabled input,
 ui|datainputdialog.isdisabled input,
 ui|datainputbutton.isdisabled input,
-ui|linkableinputdialog.isdisabled input,
+ui|urlinputdialog.isdisabled input,
 ui|datainput.isdisabled input,
 ui|textbox.isdisabled textarea,
 ui|editortextbox.isdisabled textarea {
@@ -1593,7 +1593,7 @@ background-color: $(color:threedface);
 ui|datainputselector.isdisabled ui|box,
 ui|datainputdialog.isdisabled ui|box,
 ui|datainputbutton.isdisabled ui|box,
-ui|linkableinputdialog.isdisabled ui|box,
+ui|urlinputdialog.isdisabled ui|box,
 ui|datainput.isdisabled ui|box,
 ui|textbox.isdisabled ui|box,
 ui|editortextbox.isdisabled ui|box,
@@ -1617,7 +1617,7 @@ ui|datainput,
 ui|datainputselector,
 ui|datainputdialog,
 ui|datainputbutton,
-ui|linkableinputdialog,
+ui|urlinputdialog,
 ui|textbox,
 ui|selector,
 ui|simpleselector,
@@ -1753,14 +1753,14 @@ display: none;
 ui|datainputselector,
 ui|datainputdialog,
 ui|datainputbutton,
-ui|linkableinputdialog {
+ui|urlinputdialog {
 display: block;
 position: relative;
 }
 ui|datainputselector ui|toolbarbutton,
 ui|datainputdialog ui|toolbarbutton,
 ui|datainputbutton ui|toolbarbutton,
-ui|linkableinputdialog ui|toolbarbutton {
+ui|urlinputdialog ui|toolbarbutton {
 margin-right: 0;
 position: absolute;
 right: 3px;
@@ -1770,7 +1770,7 @@ top: 3px;
 ui|datainputselector.focused ui|toolbarbutton,
 ui|datainputdialog.focused ui|toolbarbutton,
 ui|datainputbutton.focused ui|toolbarbutton,
-ui|linkableinputdialog.focused ui|toolbarbutton {
+ui|urlinputdialog.focused ui|toolbarbutton {
 right: 2px;
 top: 2px;
 }
@@ -1778,7 +1778,7 @@ top: 2px;
 ui|fielddata ui|datainputselector input,
 ui|fielddata ui|datainputdialog input,
 ui|fielddata ui|datainputbutton input,
-ui|fielddata ui|linkableinputdialog input {
+ui|fielddata ui|urlinputdialog input {
 width: 189px;
 }
 ui|fielddata ui|datainputselector.imagesizenormal input{
@@ -1792,7 +1792,7 @@ top: -1px; /* why? */
 ui|field.fieldhelp ui|fielddata ui|datainputselector input,
 ui|field.fieldhelp ui|fielddata ui|datainputdialog input ,
 ui|field.fieldhelp ui|fielddata ui|datainputbutton input ,
-ui|field.fieldhelp ui|fielddata ui|linkableinputdialog input {
+ui|field.fieldhelp ui|fielddata ui|urlinputdialog input {
 width: 159px;
 }
 
@@ -1894,7 +1894,7 @@ ui|fields ui|datainput.focused,
 ui|fields ui|datainputselector.focused,
 ui|fields ui|datainputdialog.focused,
 ui|fields ui|datainputbutton.focused,
-ui|fields ui|linkableinputdialog.focused,
+ui|fields ui|urlinputdialog.focused,
 ui|fields ui|datadialog.focused,
 ui|fields ui|postbackdialog.focused,
 ui|fields ui|htmldatadialog.focused,
@@ -2149,7 +2149,7 @@ ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labeltext,
-ui|fields ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
+ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
 width: 162px;
 overflow: hidden;
@@ -2160,7 +2160,7 @@ ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c 
 ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labeltext,
-ui|fields ui|field.fieldhelp ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
+ui|fields ui|field.fieldhelp ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
 width: 132px;
 }
@@ -2172,7 +2172,7 @@ ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbody,
-ui|fields ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
+ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
 width: 180px;
 overflow: hidden;
@@ -2182,7 +2182,7 @@ ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textove
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-ui|fields ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
 width: 142px;
 overflow: hidden;
@@ -2192,7 +2192,7 @@ ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c 
 ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbody,
-ui|fields ui|field.fieldhelp ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
+ui|fields ui|field.fieldhelp ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
 width: 150px;
 }
@@ -2201,7 +2201,7 @@ ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c 
 ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-ui|fields ui|field.fieldhelp ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
+ui|fields ui|field.fieldhelp ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
 width: 112px;
 }
@@ -2210,7 +2210,7 @@ ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textove
 ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
 ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
 ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-ui|fields ui|linkableinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
+ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
 ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after {
 content: "...";
 }
