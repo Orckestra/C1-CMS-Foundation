@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using Composite.AspNet.Security;
@@ -196,31 +195,11 @@ public partial class C1Function : Composite.AspNet.UserControlFunction
             int codeReferenceOffset = markupTemplate.IndexOf(codeFileReference, StringComparison.OrdinalIgnoreCase);
             Verify.That(codeReferenceOffset > 0, "Failed to find codebehind file reference '{0}'".FormatWith(codeFileReference));
 
-            markupTemplate = ReplaceString(markupTemplate, 
-                                           codeFileReference, 
-                                           quote + Marker_CodeFile + quote, 
-                                           StringComparison.OrdinalIgnoreCase);
+            markupTemplate = markupTemplate.Replace(codeFileReference, 
+                                                    quote + Marker_CodeFile + quote, 
+                                                    StringComparison.OrdinalIgnoreCase);
         }
 
-        static string ReplaceString(string str, string oldValue, string newValue, StringComparison comparison)
-        {
-            var sb = new StringBuilder();
-
-            int previousIndex = 0;
-            int index = str.IndexOf(oldValue, comparison);
-            while (index != -1)
-            {
-                sb.Append(str.Substring(previousIndex, index - previousIndex));
-                sb.Append(newValue);
-                index += oldValue.Length;
-
-                previousIndex = index;
-                index = str.IndexOf(oldValue, index, comparison);
-            }
-            sb.Append(str.Substring(previousIndex));
-
-            return sb.ToString();
-        }
 
         private static string GetText(string key)
         {

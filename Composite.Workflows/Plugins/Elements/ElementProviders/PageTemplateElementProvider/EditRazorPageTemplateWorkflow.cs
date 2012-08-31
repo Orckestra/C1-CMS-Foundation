@@ -11,6 +11,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
 using Composite.Plugins.PageTemplates.Razor;
 using RazorPageTemplate = Composite.AspNet.Razor.RazorPageTemplate;
@@ -52,13 +53,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             WebsiteFile websiteFile = new WebsiteFile(filePath);
 
             string content = this.GetBinding<string>("FileContent");
+            string fixedSource = PageTemplateHelper.FixHtmlEscapeSequences(content);
 
             EntityToken newEntityToken;
-            bool isValid = ValidateMarkup(virtualPath, content, out newEntityToken);
+            bool isValid = ValidateMarkup(virtualPath, fixedSource, out newEntityToken);
 
             if (isValid)
             {
-                websiteFile.WriteAllText(content);
+                websiteFile.WriteAllText(fixedSource);
 
                 PageTemplateProviderRegistry.FlushTemplates();
 
@@ -74,6 +76,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             else
             {
                 SetSaveStatus(isValid);
+            }
+
+            if(isValid && fixedSource != content)
+            {
+                UpdateBinding("FileContent", fixedSource);
+                RerenderView();
             }
         }
 

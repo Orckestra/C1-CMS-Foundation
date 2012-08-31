@@ -63,7 +63,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             {
                 var websiteFile = new WebsiteFile(files[i]);
 
-                string bindingPrefix = "File" + (i + 1);
+                string bindingPrefix = GetBindingPrefix(i);
 
                 this.Bindings.Add(bindingPrefix + "Content", websiteFile.ReadAllText());
                 this.Bindings.Add(bindingPrefix + "Name", websiteFile.FileName);
@@ -87,10 +87,14 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
 
             for (int i = 0; i < files.Length; i++)
             {
-                string bindingPrefix = "File" + (i + 1);
+                string bindingPrefix = GetBindingPrefix(i);
 
                 fileContent.Add(this.GetBinding<string>(bindingPrefix + "Content"));
             }
+
+            string fixedMarkup = PageTemplateHelper.FixHtmlEscapeSequences(fileContent[0]);
+            bool viewShouldBeUpdated = fixedMarkup != fileContent[0];
+            fileContent[0] = fixedMarkup;
 
             if (!CompileAndValidate(files, fileContent))
             {
@@ -110,6 +114,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
 
             SetSaveStatus(true);
+
+            if(viewShouldBeUpdated)
+            {
+                UpdateBinding(GetBindingPrefix(0) + "Content", fileContent[0]);
+                RerenderView();
+            }
+        }
+
+        private static string GetBindingPrefix(int zeroBasedFileNumber)
+        {
+            return "File" + (zeroBasedFileNumber + 1);
         }
 
         private bool CompileAndValidate(string[] files, IList<string> fileContent)

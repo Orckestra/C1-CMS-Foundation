@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Workflow;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
@@ -169,7 +169,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             Verify.That(codebehind.IndexOf(templateId.ToString(), StringComparison.OrdinalIgnoreCase) > 0, 
                 "Failed to replace existing templateId '{0}'", templateId);
 
-            codebehind = ReplaceString(codebehind, templateId.ToString(), Marker_TemplateId, StringComparison.OrdinalIgnoreCase);
+            codebehind = codebehind.Replace(templateId.ToString(), Marker_TemplateId, StringComparison.OrdinalIgnoreCase);
 
             // Replacing title, considering 2 types of encoding
             codebehind = codebehind.Replace("@" + quote + masterTemplate.Title.Replace(quote, quote + quote) + quote,
@@ -216,26 +216,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             e.Result = true;
         }
 
-
-        static string ReplaceString(string str, string oldValue, string newValue, StringComparison comparison)
-        {
-            var sb = new StringBuilder();
-
-            int previousIndex = 0;
-            int index = str.IndexOf(oldValue, comparison);
-            while (index != -1)
-            {
-                sb.Append(str.Substring(previousIndex, index - previousIndex));
-                sb.Append(newValue);
-                index += oldValue.Length;
-
-                previousIndex = index;
-                index = str.IndexOf(oldValue, index, comparison);
-            }
-            sb.Append(str.Substring(previousIndex));
-
-            return sb.ToString();
-        }
 
         private bool TemplateIsClonable(MasterPagePageTemplateDescriptor templateDescriptor)
         {

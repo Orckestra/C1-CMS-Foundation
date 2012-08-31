@@ -67,15 +67,16 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             string file = GetFile(function);
 
             string fileContent = this.GetBinding<string>("FileContent");
+            string fixedFileContent = PageTemplateHelper.FixHtmlEscapeSequences(fileContent);
 
-            if (!CompileAndValidate(file, fileContent))
+            if (!CompileAndValidate(file, fixedFileContent))
             {
                 SetSaveStatus(false);
                 return;
             }
 
             var websiteFile = new WebsiteFile(file);
-            websiteFile.WriteAllText(fileContent);
+            websiteFile.WriteAllText(fixedFileContent);
 
 
             provider.ReloadFunctions();
@@ -83,6 +84,12 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
             this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
 
             SetSaveStatus(true);
+
+            if(fixedFileContent != fileContent)
+            {
+                UpdateBinding("FileContent", fixedFileContent);
+                RerenderView();
+            }
         }
 
         private bool CompileAndValidate(string file, string fileContent)

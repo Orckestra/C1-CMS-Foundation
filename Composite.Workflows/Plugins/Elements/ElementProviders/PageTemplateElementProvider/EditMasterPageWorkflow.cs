@@ -13,6 +13,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.ResourceSystem;
+using Composite.Plugins.Elements.ElementProviders.Common;
 using Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider;
 using Composite.Plugins.PageTemplates.MasterPages;
 
@@ -115,7 +116,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             {
                 var websiteFile = new WebsiteFile(files[i]);
 
-                string bindingPrefix = "File" + (i + 1);
+                string bindingPrefix = GetBindingPrefix(i);
 
                 this.Bindings.Add(bindingPrefix + "Content", websiteFile.ReadAllText());
                 this.Bindings.Add(bindingPrefix + "Name", websiteFile.FileName);
@@ -135,14 +136,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
             for (int i = 0; i < files.Length; i++)
             {
-                string bindingPrefix = "File" + (i + 1);
+                string bindingPrefix = GetBindingPrefix(i);
 
                 fileContent.Add(this.GetBinding<string>(bindingPrefix + "Content"));
             }
 
+            // Fixing html specific escape sequences in .master file
+            string fixedMaster = PageTemplateHelper.FixHtmlEscapeSequences(fileContent[0]);
+            bool viewNeedsUpdating = fileContent[0] != fixedMaster;
+            fileContent[0] = fixedMaster;
+
+
             EntityToken newEntityToken;
             if (!CompileAndValidate(files, fileContent, out newEntityToken))
             {
+                SetSaveStatus(false);
                 return;
             }
 
@@ -166,7 +174,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 SetSaveStatus(true);
             }
 
+            if(viewNeedsUpdating)
+            {
+                UpdateBinding(GetBindingPrefix(0) + "Content", fixedMaster);
+                RerenderView();
+            }
+
             this.CreateParentTreeRefresher().PostRefreshMesseges(this.EntityToken);
+        }
+
+        private static string GetBindingPrefix(int zeroBasedFileNumber)
+        {
+            return "File" + (zeroBasedFileNumber + 1);
         }
 
         private bool CompileAndValidate(string[] files, IList<string> fileContent, out EntityToken newEntityToken)

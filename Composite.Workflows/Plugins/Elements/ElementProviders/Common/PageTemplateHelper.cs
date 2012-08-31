@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Types;
@@ -12,6 +13,18 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
         {
             return C1File.ReadAllText(PathUtil.Resolve("~/Composite/templates/PageTemplates/" + fileName))
                   .Replace("    ", "\t");
+        }
+
+        /// <summary>
+        /// Replaces html escape sequences with their XML alternative.
+        /// Fixes casing in DOCTYPE declaration
+        /// </summary>
+        public static string FixHtmlEscapeSequences(string xhtml)
+        {
+            return xhtml
+                .Replace("&copy;", "&#169;", StringComparison.OrdinalIgnoreCase)
+                .Replace("&nbsp;", "&#160;", StringComparison.OrdinalIgnoreCase)
+                .Replace("<!doctype", "<!DOCTYPE", StringComparison.OrdinalIgnoreCase);
         }
 
         public static Guid GetTheMostUsedTemplate(IEnumerable<Guid> templateIds)
