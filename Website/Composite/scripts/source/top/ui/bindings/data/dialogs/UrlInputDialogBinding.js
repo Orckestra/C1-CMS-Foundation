@@ -1,19 +1,19 @@
-﻿LinkableInputDialogBinding.prototype = new DataInputDialogBinding;
-LinkableInputDialogBinding.prototype.constructor = LinkableInputDialogBinding;
-LinkableInputDialogBinding.superclass = DataInputDialogBinding.prototype;
+﻿UrlInputDialogBinding.prototype = new DataInputDialogBinding;
+UrlInputDialogBinding.prototype.constructor = UrlInputDialogBinding;
+UrlInputDialogBinding.superclass = DataInputDialogBinding.prototype;
 
-LinkableInputDialogBinding.LINK_SELECTED = "input link selected";
+UrlInputDialogBinding.URL_SELECTED = "input link selected";
 
 /**
 * @class
 * @implements {IData}
 */
-function LinkableInputDialogBinding() {
+function UrlInputDialogBinding() {
 
 	/**
 	* @type {SystemLogger}
 	*/
-	this.logger = SystemLogger.getLogger("LinkableInputDialogBinding");
+	this.logger = SystemLogger.getLogger("UrlInputDialogBinding");
 
 	/**
 	* @type {ToolBarButtonBinding}
@@ -31,17 +31,17 @@ function LinkableInputDialogBinding() {
 /**
 * Identifies binding.
 */
-LinkableInputDialogBinding.prototype.toString = function () {
+UrlInputDialogBinding.prototype.toString = function () {
 
-	return "[LinkableInputDialogBinding]";
+	return "[UrlInputDialogBinding]";
 }
 
 /**
 * @overloads {Binding#onBindingRegister}
 */
-LinkableInputDialogBinding.prototype.onBindingRegister = function () {
+UrlInputDialogBinding.prototype.onBindingRegister = function () {
 
-	LinkableInputDialogBinding.superclass.onBindingRegister.call(this);
+	UrlInputDialogBinding.superclass.onBindingRegister.call(this);
 	this.addActionListener(PageBinding.ACTION_DOPOSTBACK);
 };
 
@@ -49,9 +49,9 @@ LinkableInputDialogBinding.prototype.onBindingRegister = function () {
 * Build button, build popup and populate by selection elements.
 * @overloads {DataInputBinding#_buildDOMContent}
 */
-LinkableInputDialogBinding.prototype._buildDOMContent = function () {
+UrlInputDialogBinding.prototype._buildDOMContent = function () {
 
-	LinkableInputDialogBinding.superclass._buildDOMContent.call(this);
+	UrlInputDialogBinding.superclass._buildDOMContent.call(this);
 }
 
 
@@ -59,7 +59,7 @@ LinkableInputDialogBinding.prototype._buildDOMContent = function () {
 /**
 * Build button.
 */
-LinkableInputDialogBinding.prototype.buildButtonAndLabel = function () {
+UrlInputDialogBinding.prototype.buildButtonAndLabel = function () {
 
 	/*
 	* Build the label.
@@ -110,9 +110,9 @@ LinkableInputDialogBinding.prototype.buildButtonAndLabel = function () {
 * OnBlur event
 * @overloads {DataInputBinding#onblur}
 */
-LinkableInputDialogBinding.prototype.onblur = function () {
+UrlInputDialogBinding.prototype.onblur = function () {
 
-	LinkableInputDialogBinding.superclass.onblur.call(this);
+	UrlInputDialogBinding.superclass.onblur.call(this);
 	this.setValue(this.getValue());
 }
 
@@ -121,9 +121,9 @@ LinkableInputDialogBinding.prototype.onblur = function () {
 * @param {String} value
 * @overloads {DataInputBinding#setValue}
 */
-LinkableInputDialogBinding.prototype.setValue = function (value) {
+UrlInputDialogBinding.prototype.setValue = function (value) {
 
-	LinkableInputDialogBinding.superclass.setValue.call(this, value);
+	UrlInputDialogBinding.superclass.setValue.call(this, value);
 
 	if (this.shadowTree.labelText == null) {
 		this.buildButtonAndLabel();
@@ -133,16 +133,13 @@ LinkableInputDialogBinding.prototype.setValue = function (value) {
 
 	if (this.compositeUrl.isMedia || this.compositeUrl.isPage) {
 		var label = TreeService.GetCompositeUrlLabel(value);
-		if (label == value) {
-			this.setLabel(StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.BrokenReference"));
-		}
-		else {
-			this.setLabel(TreeService.GetCompositeUrlLabel(value));
+		if (label != value) {
+			this.setLabel(label);
 		}
 	} else {
 		this.clearLabel();
 	}
-	this.dispatchAction(LinkableInputDialogBinding.LINK_SELECTED);
+	this.dispatchAction(UrlInputDialogBinding.URL_SELECTED);
 }
 
 
@@ -151,7 +148,7 @@ LinkableInputDialogBinding.prototype.setValue = function (value) {
 * @param {String} value
 * @overloads {DataInputBinding#setValue}
 */
-LinkableInputDialogBinding.prototype.setLabel = function (label) {
+UrlInputDialogBinding.prototype.setLabel = function (label) {
 	this.setReadOnly(true);
 	this.editButtonBinding.show();
 	this.shadowTree.input.style.display = "none";
@@ -163,7 +160,7 @@ LinkableInputDialogBinding.prototype.setLabel = function (label) {
 * Unset Label for input
 * @overloads {DataInputBinding#setValue}
 */
-LinkableInputDialogBinding.prototype.clearLabel = function () {
+UrlInputDialogBinding.prototype.clearLabel = function () {
 	this.setReadOnly(false);
 	this.editButtonBinding.hide();
 	this.shadowTree.input.style.display = "block";

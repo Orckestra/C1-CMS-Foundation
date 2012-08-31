@@ -196,7 +196,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/SelectorBindingSelection.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/selectors/DataInputSelectorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/DataInputDialogBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/LinkableInputDialogBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/UrlInputDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/DataInputButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/DataDialogBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/dialogs/PostBackDataDialogBinding.js"/>

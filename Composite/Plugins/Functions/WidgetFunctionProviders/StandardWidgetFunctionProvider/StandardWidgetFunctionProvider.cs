@@ -89,6 +89,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             _widgetStaticTypeFunctions.Add(new String.SelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new DataIdMultiSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new String.VisualXhtmlEditorFuntion(_entityTokenFactory));
+            _widgetStaticTypeFunctions.Add(new String.UrlComboBoxWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new XhtmlDocument.VisualXhtmlEditorFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new DateSelectorWidgetFunction(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new DateTimeSelectorWidgetFunction(_entityTokenFactory));

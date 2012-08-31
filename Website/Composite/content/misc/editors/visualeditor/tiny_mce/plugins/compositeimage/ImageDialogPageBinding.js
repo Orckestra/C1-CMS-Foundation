@@ -45,7 +45,7 @@ ImageDialogPageBinding.prototype.onBeforePageInitialize = function () {
 
 	ImageDialogPageBinding.superclass.onBeforePageInitialize.call(this);
 
-	this.addActionListener(LinkableInputDialogBinding.LINK_SELECTED);
+	this.addActionListener(UrlInputDialogBinding.URL_SELECTED);
 
 	this._populateClassNameSelector("img");
 	if (this._tinyAction == "update") {
@@ -118,7 +118,7 @@ ImageDialogPageBinding.prototype.handleAction = function (action) {
 	ImageDialogPageBinding.superclass.handleAction.call(this, action);
 
 	switch (action.type) {
-		case LinkableInputDialogBinding.LINK_SELECTED:
+		case UrlnputDialogBinding.URL_SELECTED:
 			this._configureFields();
 			break;
 	}

@@ -105,7 +105,7 @@ var UserInterface = new function () {
 		"ui:multiselector"				: MultiSelectorBinding,
 		"ui:datainputselector"			: DataInputSelectorBinding,
 		"ui:datainputdialog"			: DataInputDialogBinding,
-		"ui:linkableinputdialog"		: LinkableInputDialogBinding,
+		"ui:urlinputdialog"				: UrlInputDialogBinding,
 		"ui:datainputbutton"			: DataInputButtonBinding,
 		"ui:textbox"					: TextBoxBinding,
 		"ui:editortextbox"				: editortextboximpl,

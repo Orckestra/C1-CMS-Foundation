@@ -640,6 +640,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProviderAssembler.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProviderData.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\UrlComboBoxWidgetFunction.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CurrentFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />

@@ -31,7 +31,7 @@
 									<ui:field>
 										<ui:fielddesc label="${string:Composite.Web.VisualEditor:Link.LinkDestination}"/>
 										<ui:fielddata>
-											<ui:linkableinputdialog type="url" handle="Composite.Management.LinkableSelectorDialog" name="href" required="true"/>
+											<ui:urlinputdialog type="url" handle="Composite.Management.LinkableSelectorDialog" name="href" required="true"/>
 										</ui:fielddata>
 									</ui:field>
 									<ui:field>

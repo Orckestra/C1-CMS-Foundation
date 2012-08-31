@@ -445,7 +445,7 @@
     <Compile Include="Composite\schemas\FormsControls\GenerateDynamicSchemas.aspx.designer.cs">
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
-    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\LinkableSelector.ascx" />
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.cs.txt" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.txt" />
@@ -1058,7 +1058,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataInputButtonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\DataInputDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\HTMLDataDialogBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\LinkableInputDialogBinding.js" />
+    <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\UrlInputDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\MultiSelectorDataDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\NullPostBackDataDialogBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\data\dialogs\NullPostBackDataDialogSelectorBinding.js" />
