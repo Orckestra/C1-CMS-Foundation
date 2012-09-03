@@ -898,11 +898,17 @@ SelectorBinding.prototype._applySearchSelection = function () {
 
 			}
 
-			this._fitMenuToSelector();
-
+			if (this._bodyBinding instanceof MenuBodyBinding) {
+				this._bodyBinding.refreshMenuGroups();
+			}
 			if (Client.isExplorer) {
 				this._popupBinding._bodyBinding.setDimension(this._popupBinding.getDimension());
 			}
+
+			/**
+			* Enable keyboard navigation.
+			*/
+			this._popupBinding._enableTab(true);
 
 			/*
 			* Position the shadow.
