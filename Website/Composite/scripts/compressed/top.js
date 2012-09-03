@@ -12663,10 +12663,13 @@ this._restoreSelection();
 this.detachClassName(DataBinding.CLASSNAME_INFOBOX);
 this.detachClassName(DataBinding.CLASSNAME_INVALID);
 }
-this._fitMenuToSelector();
+if(this._bodyBinding instanceof MenuBodyBinding){
+this._bodyBinding.refreshMenuGroups();
+}
 if(Client.isExplorer){
 this._popupBinding._bodyBinding.setDimension(this._popupBinding.getDimension());
 }
+this._popupBinding._enableTab(true);
 this._popupBinding.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
 this._popupBinding.dispatchAction(Binding.ACTION_POSITIONCHANGED);
 this._popupBinding.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
