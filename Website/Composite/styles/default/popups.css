@@ -47,7 +47,7 @@ ui|popupbody { /* NOT USED ON COMMON POPUPS! */
 /* OVERFLOW ................................................ */
 
 ui|popup.overflow {
-	overflow-y: auto;
+	overflow-y: scroll;
 	height: 211px; /* move this to script when separators are supported */
 	border-right: none;
 }
