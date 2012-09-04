@@ -118,7 +118,7 @@ ImageDialogPageBinding.prototype.handleAction = function (action) {
 	ImageDialogPageBinding.superclass.handleAction.call(this, action);
 
 	switch (action.type) {
-		case UrlnputDialogBinding.URL_SELECTED:
+		case UrlInputDialogBinding.URL_SELECTED:
 			this._configureFields();
 			break;
 	}
