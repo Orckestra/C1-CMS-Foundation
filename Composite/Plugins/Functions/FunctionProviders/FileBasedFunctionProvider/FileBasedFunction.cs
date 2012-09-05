@@ -30,10 +30,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			{
 				if (Parameters != null)
 				{
-                    BaseValueProvider defaultValueProvider = new NoValueValueProvider();
-
 					foreach (var param in Parameters.Values)
 					{
+                        BaseValueProvider defaultValueProvider = new NoValueValueProvider();
 						WidgetFunctionProvider widgetProvider = null;
 						string label = param.Name;
 						bool isRequired = true;
