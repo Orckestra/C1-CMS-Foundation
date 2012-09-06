@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using Composite.C1Console.Elements;
 using Composite.Core.Linq;
 
 
@@ -38,6 +40,25 @@ namespace Composite.C1Console.Security
             IEnumerable<PermissionType> permissions = PermissionTypeFacade.GetCurrentPermissionTypes(userToken, entityToken, userPermissionDefinitions, userGroupPermissionDefinitions).Evaluate();
 
             return permissions;
+        }
+
+
+
+        /// <summary>
+        /// This method returns true if the given username <paramref name="username"/> has admin rights on the root element.
+        /// This is normal way of creating a administrator in C1.
+        /// </summary>
+        /// <param name="username">Username to test</param>
+        /// <returns>True if the given username has admin rights on the root element.</returns>
+        public static bool IsAdministrator(string username)
+        {
+            UserToken userToken = new UserToken(username);
+
+            EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().First().ElementHandle.EntityToken;
+
+            IEnumerable<PermissionType> permissions = GetPermissions(userToken, rootEntityToken);
+
+            return permissions.Contains(PermissionType.Administrate);
         }
     }
 }
