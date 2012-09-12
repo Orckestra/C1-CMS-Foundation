@@ -45,8 +45,6 @@ namespace Composite.Core.PackageSystem
             StringConversionServices.SerializeKeyValuePair(sb, "PackageInstallDirectory", processToSerialize._packageInstallDirectory);
             StringConversionServices.SerializeKeyValuePair(sb, "HasBeenValidated", processToSerialize._validationResult != null);
             
-            // TODO: Add validation results
-
             return sb.ToString();
         }
 
