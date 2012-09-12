@@ -6,6 +6,10 @@ using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Serialization;
+using System.ComponentModel;
+using System.Text;
+using System.Xml.Linq;
+using Composite.Core.Application;
 
 
 namespace Composite.Core.PackageSystem
@@ -13,19 +17,81 @@ namespace Composite.Core.PackageSystem
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [SerializerHandler(typeof(PackageManagerInstallProcessSerializerHandler))]
-    public sealed class PackageManagerInstallProcess
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [SerializerHandler(typeof(PackageManagerInstallProcess))]
+    public sealed class PackageManagerInstallProcess : ISerializerHandler
     {
         private IPackageInstaller _packageInstaller = null;
-        private SystemLockingType _systemLockingType;
-        private string _zipFilename = null;
-        private string _packageInstallDirectory = null;
-        private string _packageName = null;
-        private Guid _packageId;
+        private readonly SystemLockingType _systemLockingType;
+        private readonly string _zipFilename = null;
+        private readonly string _packageInstallDirectory = null;
+        private readonly string _packageName = null;
+        private readonly Guid _packageId;
         private List<PackageFragmentValidationResult> _preInstallValidationResult = null;
         private List<PackageFragmentValidationResult> _validationResult = null;
         private List<PackageFragmentValidationResult> _installationResult = null;
+
+
+
+
+
+        public string Serialize(object objectToSerialize)
+        {
+            PackageManagerInstallProcess processToSerialize = objectToSerialize as PackageManagerInstallProcess;
+
+            StringBuilder sb = new StringBuilder();
+
+            StringConversionServices.SerializeKeyValuePair(sb, "ZipFileName", processToSerialize._zipFilename);
+            StringConversionServices.SerializeKeyValuePair(sb, "PackageInstallDirectory", processToSerialize._packageInstallDirectory);
+            StringConversionServices.SerializeKeyValuePair(sb, "HasBeenValidated", processToSerialize._validationResult != null);
+            
+            // TODO: Add validation results
+
+            return sb.ToString();
+        }
+
+
+
+        public object Deserialize(string serializedObject)
+        {
+            Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedObject);
+
+            string zipFilename = StringConversionServices.DeserializeValueString(dic["ZipFileName"]);
+            string packageInstallDirectory = StringConversionServices.DeserializeValueString(dic["PackageInstallDirectory"]);
+            bool hasBeenValidated = StringConversionServices.DeserializeValueBool(dic["HasBeenValidated"]);
+
+            if (C1File.Exists(zipFilename))
+            {
+                XElement installContent;
+                XmlHelper.LoadInstallXml(zipFilename, out installContent);
+
+                PackageInformation packageInformation;
+                PackageManager.ValidatePackageInformation(installContent, out packageInformation);
+
+                string packageZipFilename = Path.Combine(packageInstallDirectory, Path.GetFileName(zipFilename));
+                C1File.Copy(zipFilename, packageZipFilename, true);
+
+                IPackageInstaller packageInstaller = new PackageInstaller(new PackageInstallerUninstallerFactory(), packageZipFilename, packageInstallDirectory, TempDirectoryFacade.CreateTempDirectory(), packageInformation);
+
+                PackageManagerInstallProcess packageManagerInstallProcess = new PackageManagerInstallProcess(packageInstaller, packageInformation.SystemLockingType, zipFilename, packageInstallDirectory, packageInformation.Name, packageInformation.Id);
+                if (hasBeenValidated)
+                    packageManagerInstallProcess.Validate();
+
+                return packageManagerInstallProcess;
+            }
+            else
+            {
+                return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult>(), null);;
+            }
+        }
+
+
+
+        public PackageManagerInstallProcess()
+        {
+            
+        }
+
 
 
         internal PackageManagerInstallProcess(List<PackageFragmentValidationResult> preInstallValidationResult, string zipFilename)

@@ -28,7 +28,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Locales").Count() > 1)
             {
-                validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
                 return validationResults;
             }
 
@@ -51,14 +51,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if ((_oldDefaultCultureInfo == null) && (LocalizationFacade.IsDefaultLocale(locale) == true))
                     {
                         // Locale is default -> not possible to unintall
-                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
                         continue;
                     }
 
                     if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(locale) == true)
                     {
                         // only active for the a user
-                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
                         continue;
                     }
 

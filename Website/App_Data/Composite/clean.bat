@@ -67,6 +67,7 @@ del ..\..\Bin\Composite.Community.Blog.dll
 del ..\..\Bin\CookComputing.XmlRpcV2.dll
 del ..\..\BlogMetaWeblog.ashx
 del ..\..\App_GlobalResources\Composite\Community\Blog.resx
+del ..\..\App_GlobalResources\Composite\Community\Blog.ru-ru.resx
 del TreeDefinitions\Composite.Community.Blog.xml
 del TreeDefinitions\Composite.Community.Blog.Settings.xml
 del TreeDefinitions\Composite.Community.Blog.Entries.xml

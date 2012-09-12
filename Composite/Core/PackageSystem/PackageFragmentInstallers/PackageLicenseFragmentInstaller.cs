@@ -34,7 +34,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             XElement publicKeyElement = this.Configuration.Where(f => f.Name == "RSAKeyValue").SingleOrDefault();
             if (publicKeyElement == null)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageLicenseFragmentInstaller.MissingPublicKeyElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageLicenseFragmentInstaller.MissingPublicKeyElement")));
                 return validationResult;
             }
 

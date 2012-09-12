@@ -29,14 +29,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Types").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.OnlyOneElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.OnlyOneElement")));
                 return validationResult;
             }
 
             XElement typesElement = this.Configuration.Where(f => f.Name == "Types").SingleOrDefault();
             if (typesElement == null)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.MissingElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.MissingElement")));
                 return validationResult;
             }
 
@@ -47,22 +47,22 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 XAttribute nameAttribute = typeElement.Attribute("name");
                 if (nameAttribute == null)
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.MissingAttribute"), "name"), typeElement));
+                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.MissingAttribute"), "name"), typeElement));
                     continue;
                 }
 
                 Type type = TypeManager.TryGetType(nameAttribute.Value);
                 if (type == null)
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.TypeNotConfigured"), nameAttribute.Value)));
+                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.TypeNotConfigured"), nameAttribute.Value)));
                 }
                 else if (typeof(IData).IsAssignableFrom(type) == false)
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.TypeNotInheriting"), type, typeof(IData))));
+                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.TypeNotInheriting"), type, typeof(IData))));
                 }
                 else if (DataFacade.GetAllKnownInterfaces().Contains(type) == true)
                 {
-                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.TypeExists"), type)));
+                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.TypeExists"), type)));
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     catch
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.InterfaceCodeError"), type)));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentInstaller.InterfaceCodeError"), type)));
                     }
 
                     if (dataTypeDescriptor != null)

@@ -30,7 +30,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "PackageVersions").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.OnlyOneElement"), this.ConfigurationParent));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.OnlyOneElement"), this.ConfigurationParent));
                 return validationResult;
             }            
 
@@ -45,19 +45,19 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute packageIdAttribute = packageVersionElement.Attribute("packageId");
                     XAttribute newVersionAttribute = packageVersionElement.Attribute("newVersion");
 
-                    if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
-                    if (newVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
+                    if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
+                    if (newVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
 
                     Guid packageId;
                     if (packageIdAttribute.TryGetGuidValue(out packageId) == false)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"), packageIdAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"), packageIdAttribute));
                         continue;
                     }
 
                     if (_packagesToBumb.ContainsKey(packageId) == true)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), packageIdAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), packageIdAttribute));
                         continue;
                     }
 
@@ -68,7 +68,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     catch
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"), newVersionAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"), newVersionAttribute));
                         continue;
                     }
 

@@ -25,7 +25,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Areas").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
                 return validationResult;
             }
 
@@ -41,7 +41,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (elementProviderNameAttribute == null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"), "elementProviderName"), areaElement));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"), "elementProviderName"), areaElement));
                     }
                     else
                     {

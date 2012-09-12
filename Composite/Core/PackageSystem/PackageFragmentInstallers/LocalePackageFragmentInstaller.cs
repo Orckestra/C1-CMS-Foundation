@@ -28,7 +28,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Locales").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement")));
                 return validationResult;
             }
 
@@ -47,7 +47,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (nameAttribute == null)
                     {
                         // Missing attribute
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), localeElement));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), localeElement));
                         continue;
                     }
 
@@ -59,7 +59,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     catch
                     {
                         // Name error
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
                         continue;
                     }
 
@@ -71,7 +71,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (_localesToInstall.Where(f => f.Item1.Equals(cultureInfo)).Any() == true)
                     {
                         // Already installed or going to be installed
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), nameAttribute));
                         continue;
                     }
 
@@ -84,7 +84,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if ((LocalizationFacade.IsUrlMappingNameInUse(urlMappingName) == true) || (_localesToInstall.Where(f => f.Item2 == urlMappingName).Any() == true))
                     {
                         // Url mapping name alread used or going to be used
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), urlMappingNameAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), urlMappingNameAttribute));
                         continue;
                     }
 
@@ -94,7 +94,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         if (defaultAttribute.TryGetBoolValue(out isDefault) == false)
                         {
                             // Wrong attribute value
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
                             continue;
                         }
                     }
@@ -102,7 +102,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if ((isDefault == true) && (_localesToInstall.Where(f => f.Item3 == true).Any() == true))
                     {
                         // More than one is specified as default
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), defaultAttribute));
                         continue;
                     }
 

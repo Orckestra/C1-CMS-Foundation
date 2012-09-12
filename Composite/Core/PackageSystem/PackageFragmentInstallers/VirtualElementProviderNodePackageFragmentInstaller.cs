@@ -29,7 +29,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Areas").Count() > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement")));
+                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement")));
                 return validationResult;
             }
 
@@ -50,9 +50,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if ((orderAttribute == null) || (elementProviderTypeAttribute == null) || (labelAttribute == null))
                     {
-                        if (orderAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), areaElement));
-                        if (elementProviderTypeAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "elementProviderType"), areaElement));
-                        if (labelAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "label"), areaElement));
+                        if (orderAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), areaElement));
+                        if (elementProviderTypeAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "elementProviderType"), areaElement));
+                        if (labelAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "label"), areaElement));
                     }
                     else
                     {
@@ -63,7 +63,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         }
                         catch (Exception)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingType"), elementProviderTypeAttribute.Value), areaElement));
+                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingType"), elementProviderTypeAttribute.Value), areaElement));
                             continue;
                         }
 
@@ -78,7 +78,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             if ((closeFolderIconNameAttribute.Value != "") && (IconResourceSystemFacade.GetResourceHandle(closeFolderIconNameAttribute.Value) == null))
                             {
-                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), closeFolderIconNameAttribute.Value), areaElement));
+                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), closeFolderIconNameAttribute.Value), areaElement));
                                 continue;
                             }
                             else
@@ -91,7 +91,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             if ((openFolderIconNameAttribute.Value != "") && (IconResourceSystemFacade.GetResourceHandle(openFolderIconNameAttribute.Value) == null))
                             {
-                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), openFolderIconNameAttribute.Value), areaElement));
+                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), openFolderIconNameAttribute.Value), areaElement));
                                 continue;
                             }
                             else

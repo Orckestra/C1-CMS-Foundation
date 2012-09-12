@@ -30,7 +30,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Types").Count() > 1)
             {
-                _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.OnlyOneElement")));
+                _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.OnlyOneElement")));
                 return _validationResult;
             }
 
@@ -45,14 +45,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute typeIdAttribute = typeElement.Attribute("typeId");
                     if (typeIdAttribute == null)
                     {
-                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.MissingAttribute"), "typeId")));
+                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.MissingAttribute"), "typeId")));
                         continue;
                     }
 
                     Guid typeId;
                     if (typeIdAttribute.TryGetGuidValue(out typeId) == false)
                     {
-                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.WrongAttributeFormat"), typeIdAttribute));
+                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.WrongAttributeFormat"), typeIdAttribute));
                         continue;
                     }
 

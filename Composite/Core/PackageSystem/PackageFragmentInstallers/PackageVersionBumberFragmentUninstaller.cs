@@ -40,19 +40,19 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute packageIdAttribute = packageVersionElement.Attribute("packageId");
                     XAttribute oldVersionAttribute = packageVersionElement.Attribute("oldVersion");
 
-                    if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
-                    if (oldVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
+                    if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
+                    if (oldVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
 
                     Guid packageId;
                     if (packageIdAttribute.TryGetGuidValue(out packageId) == false)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat"), packageIdAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat"), packageIdAttribute));
                         continue;
                     }
 
                     if (_packageToRestore.ContainsKey(packageId) == true)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), packageIdAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), packageIdAttribute));
                         continue;
                     }
 
@@ -63,7 +63,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     catch
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"), oldVersionAttribute));
+                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"), oldVersionAttribute));
                         continue;
                     }
 

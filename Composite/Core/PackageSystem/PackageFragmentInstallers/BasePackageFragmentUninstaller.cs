@@ -48,7 +48,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         internal static string GetResourceString(string key)
         {
-            return StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
+            return StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", key);
         }
     }
 }
