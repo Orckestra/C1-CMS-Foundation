@@ -497,7 +497,7 @@ EditorPageBinding.prototype._saveEditorPage = function () {
 	if ( Application.isDeveloperMode ) {
 		// alert ( "SAVING " + this.bindingDocument.title );
 	}
-	if ( this.validateAllDataBindings ()) {
+	if ( this.validateAllDataBindings ( true )) {
 		this.bindingWindow.DataManager.isDirty = false;
 		var postback = this.bindingWindow.bindingMap.__REQUEST;
 		if ( postback != null ) {

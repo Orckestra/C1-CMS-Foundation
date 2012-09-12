@@ -711,22 +711,31 @@ PageBinding.prototype.doPostBack = function ( binding ) {
  * as soon as the first invalid binding is encountered.
  * @return {boolean}
  */
-PageBinding.prototype.validateAllDataBindings = function () {
+PageBinding.prototype.validateAllDataBindings = function (activateTabWidthError) {
 
 	var isValid = true;
-	var dataBindings = this.bindingWindow.DataManager.getAllDataBindings ();
-	
-	while ( dataBindings.hasNext () && isValid ) {
-		var dataBinding = dataBindings.getNext ();
-		if ( dataBinding.isAttached ) { // could be nested in lazy binding
-			var isBindingValid = dataBinding.validate ();
-			if ( isValid && !isBindingValid ) {
+	var dataBindings = this.bindingWindow.DataManager.getAllDataBindings();
+
+	while (dataBindings.hasNext() && isValid) {
+		var dataBinding = dataBindings.getNext();
+		if (dataBinding.isAttached) { // could be nested in lazy binding
+			var isBindingValid = dataBinding.validate();
+			if (isValid && !isBindingValid) {
 				isValid = false;
-				this.logger.debug ( "Invalid DataBinding: " + dataBinding.toString () + " (" + dataBinding.getName () + ")" );
+				this.logger.debug("Invalid DataBinding: " + dataBinding.toString() + " (" + dataBinding.getName() + ")");
+				if (activateTabWidthError) {
+					var tabPanelBinding = dataBinding.getAncestorBindingByType(TabPanelBinding);
+					if (tabPanelBinding != null && !tabPanelBinding.isVisible) {
+						var tabBoxBinding = tabPanelBinding.getAncestorBindingByType(TabBoxBinding);
+						var tabBinding = tabBoxBinding.getTabBinding(tabPanelBinding);
+						tabBoxBinding.select(tabBinding);
+					}
+				}
+
 				break;
 			}
 		}
-		
+
 	}
 	return isValid;
 };
