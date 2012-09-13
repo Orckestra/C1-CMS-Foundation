@@ -523,6 +523,7 @@ CodeMirrorEditorBinding.prototype.getContent = function () {
 				result = result
 					.replace("&nbsp;", "&#160;")
 					.replace("&copy;", "&#169;")
+					.replace("<!doctype". "<!DOCTYPE")
 					;
 
 				break;
