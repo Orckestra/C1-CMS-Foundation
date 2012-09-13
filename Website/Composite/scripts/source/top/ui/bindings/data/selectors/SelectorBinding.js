@@ -690,7 +690,7 @@ SelectorBinding.prototype.handleAction = function (action) {
 					self._grabKeyboard();
 				}
 			}, 0);
-			this._clearSearchSelection();
+			if(this._clearSearchSelection) this._clearSearchSelection();
 			action.consume();
 			break;
 	}
