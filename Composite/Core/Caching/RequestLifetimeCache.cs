@@ -162,5 +162,9 @@ namespace Composite.Core.Caching
             }
         }
 
+        [Obsolete("Should no longer be used", true)]
+        public static void ClearAll()
+        {
+        }
     }
 }
