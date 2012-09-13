@@ -515,11 +515,19 @@ CodeMirrorEditorBinding.prototype.getContent = function () {
 
 	var result = this.getContentWindow().bindingMap.editorpage.getContent();
 
-	/*
-	if ( result != null ) {
-	result = result.replace ( /\u200B/g, "" ); // Firefox 4 beta bug hack.
+	if (result != null) {
+		switch (this.syntax) {
+			case CodeMirrorEditorBinding.syntax.XML:
+			case CodeMirrorEditorBinding.syntax.XSL:
+			case CodeMirrorEditorBinding.syntax.HTML:
+				result = result
+					.replace("&nbsp;", "&#160;")
+					.replace("&copy;", "&#169;")
+					;
+
+				break;
+		}
 	}
-	*/
 
 	return result ? result : "";
 }
