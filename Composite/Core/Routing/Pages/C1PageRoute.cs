@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Web;
 using System.Web.Routing;
 using Composite.Core.WebClient;
@@ -45,7 +46,9 @@ namespace Composite.Core.Routing.Pages
             return urlData != null ? urlData.PathInfo : null;
         }
 
-        /// <exclude />
+        /// <summary>
+        /// This method has to be called to notify the system that PathInfo was used, and the request will not be redirected to "Page not found" page
+        /// </summary>
         public static void RegisterPathInfoUsage()
         {
             var httpContext = HttpContext.Current;
@@ -56,16 +59,30 @@ namespace Composite.Core.Routing.Pages
             }
         }
 
-        /// <summary>
-        /// This method has to be called to notify the system that PathInfo was used, and the request will not be redirected to "Page not found" page
-        /// </summary>
-        /// <returns>The PathInfo url part.</returns>
+        /// <exclude/>
+        [Obsolete("User PathInfoUsed property instead")]
         public static bool PathInfoHasBeenUsed()
         {
-            var httpContext = HttpContext.Current;
-
-            return httpContext != null && httpContext.Items.Contains(HttpContextItem_PathInfoHandled);
+            return PathInfoUsed;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether path info part of C1 page url has been used.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if path info has been used; otherwise, <c>false</c>.
+        /// </value>
+        public static bool PathInfoUsed
+        {
+            get
+            {
+                var httpContext = HttpContext.Current;
+
+                return httpContext != null && httpContext.Items.Contains(HttpContextItem_PathInfoHandled);
+            }
+        }
+
+
 
         /// <exclude />
         public override RouteData GetRouteData(HttpContextBase context)

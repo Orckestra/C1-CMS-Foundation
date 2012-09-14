@@ -137,7 +137,7 @@ namespace Composite.Core.WebClient.Renderings
 
         private static void CheckThatPathInfoHasBeenUsed(HttpContext httpContext, System.Web.UI.Page page)
         {
-            if (C1PageRoute.PathInfoHasBeenUsed())
+            if (C1PageRoute.PathInfoUsed)
             {
                 return;
             }

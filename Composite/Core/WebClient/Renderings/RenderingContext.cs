@@ -258,7 +258,7 @@ namespace Composite.Core.WebClient.Renderings
             var httpContext = HttpContext.Current;
 
             if (!C1PageRoute.GetPathInfo().IsNullOrEmpty()
-                && !C1PageRoute.PathInfoHasBeenUsed())
+                && !C1PageRoute.PathInfoUsed)
             {
                 // Redirecting to PageNotFoundUrl or setting 404 response code if PathInfo url part hasn't been used
                 if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
