@@ -137,9 +137,6 @@ function onInstanceInitialize ( inst ) {
 		tinyInstance.getBody().lang = Localization.currentLang();
 	}
 
-	tinyEngine.html.Schema.blockElementsMap['IMG'] = {};
-	tinyEngine.html.Schema.blockElementsMap['img'] = {};
-
 	/*
 	 * Hacking!!! See notes below...
 	 */
