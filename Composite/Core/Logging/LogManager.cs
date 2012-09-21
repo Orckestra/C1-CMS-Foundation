@@ -8,9 +8,9 @@ namespace Composite.Core.Logging
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-	public static class LogManager
-	{
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static class LogManager
+    {
         private static readonly string VerboseSeverity = "Verbose";
 
         /// <exclude />
@@ -44,7 +44,8 @@ namespace Composite.Core.Logging
                     {
                         if (_logFiles == null || _logFiles.Length == 0)
                         {
-                            _logFiles = FileLogger.GetLogFiles();
+
+                            _logFiles = (FileLogger != null ? FileLogger.GetLogFiles() : new LogFileReader[0]);
                         }
                         result = _logFiles;
                     }
@@ -62,12 +63,12 @@ namespace Composite.Core.Logging
             var filesToDelete = FileLogger.GetLogFiles().Where(file => file.Date.Date == date).ToArray();
 
             bool updated = false;
-            foreach(var file in filesToDelete)
+            foreach (var file in filesToDelete)
             {
                 updated |= file.Delete();
             }
 
-            if(updated)
+            if (updated)
             {
                 lock (_syncRoot)
                 {
@@ -166,5 +167,5 @@ namespace Composite.Core.Logging
 
             return result.OrderBy(entry => entry.TimeStamp).Take(maximumAmount).ToArray();
         }
-	}
+    }
 }
