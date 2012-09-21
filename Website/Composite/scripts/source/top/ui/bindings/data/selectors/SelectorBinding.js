@@ -876,7 +876,7 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			}
 			else {
 
-				this.clear();
+				this._popupBinding.clear();
 
 				this._buttonBinding.setLabel(this._selectionLabel);
 
