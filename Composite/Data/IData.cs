@@ -3,14 +3,15 @@ using Composite.Core.Serialization;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Base interface for data types in Composite C1.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SerializerHandler(typeof(DataSerializerHandler))]
     public interface IData
     {
-        /// <exclude />
+        /// <summary>
+        /// Uniquely identify this data element, its type and what provider it came from.
+        /// </summary>
         DataSourceId DataSourceId { get; }
     }
 }

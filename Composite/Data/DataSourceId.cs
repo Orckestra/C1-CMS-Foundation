@@ -9,9 +9,8 @@ using Composite.Data.Foundation;
 namespace Composite.Data
 {
     /// <summary>    
+    /// Uniquely identify a data element (table record in sql speak), its type and what provider it came from.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataSourceId
     {
         private IDataId _dataId;
@@ -75,7 +74,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Object which the data provider can use to uniquely identify the 'table record' in its own store matching a data element. 
+        /// </summary>
         public IDataId DataId
         {
             get 
@@ -92,7 +93,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Name of the data provider responsible for the data element.
+        /// </summary>
         public string ProviderName
         {
             get { return _providerName; }
@@ -101,7 +104,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The interface used for the data element. This is expected to be inpmelenting IData.
+        /// </summary>
         public Type InterfaceType
         {
             get { return _interfaceType; }
@@ -110,7 +115,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data scope (language and published/unpublished) from which the data element originate.
+        /// </summary>
         public DataScopeIdentifier DataScopeIdentifier
         {
             get { return _dataScopeIdentifier; }
@@ -119,7 +126,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The publication scope (published or unpublished) from which the data element originate.
+        /// </summary>
         public PublicationScope PublicationScope
         {
             get { return _dataScopeIdentifier.Name == DataScopeIdentifier.PublicName ? Data.PublicationScope.Published : Data.PublicationScope.Unpublished; }
@@ -127,7 +136,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The language from which the data element originate.
+        /// </summary>
         public CultureInfo LocaleScope
         {
             get { return _localeScope;  }
@@ -136,7 +147,9 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when the data element represents a physically stored element
+        /// </summary>
         public bool ExistsInStore
         {
             get;
@@ -145,7 +158,10 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Serialize to string
+        /// </summary>
+        /// <returns>Serialized as string</returns>
         public string Serialize()
         {
             IDataId dataId = EnsureDataIdType(_dataId);
@@ -175,7 +191,11 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Recreate a DataSourceId based on a serialized string representation of it.
+        /// </summary>
+        /// <param name="serializedDataSourceId">A serialized DataSourceId</param>
+        /// <returns>The DataSourceId deserialized</returns>
         public static DataSourceId Deserialize(string serializedDataSourceId)
         {
             DataSourceId dataSourceId;
@@ -187,7 +207,12 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Tries to deserialize a string as a DataSourceId.
+        /// </summary>
+        /// <param name="serializedDataSourceId">A serialized DataSourceId</param>
+        /// <param name="dataSourceId">DataSourceId reference to set, if deserialization succeeded</param>
+        /// <returns>True if the deserialization succeeded, otherwise false</returns>
         public static bool TryDeserialize(string serializedDataSourceId, out DataSourceId dataSourceId)
         {
             return Deserialize(serializedDataSourceId, out dataSourceId, false);
