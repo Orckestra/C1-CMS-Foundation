@@ -1,6 +1,9 @@
 ﻿namespace Composite.C1Console.Security
 {
-    internal enum LoginResult
+    /// <summary>
+    /// Describing the result of a login validation
+    /// </summary>
+    public enum LoginResult
     {
         Success = 0,
         IncorrectPassword = 1,
