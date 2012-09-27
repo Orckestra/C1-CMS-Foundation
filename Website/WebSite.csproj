@@ -149,6 +149,7 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin_src.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeimageresize\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositespellcheck\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\example_dependency\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\example_dependency\editor_plugin_src.js" />
