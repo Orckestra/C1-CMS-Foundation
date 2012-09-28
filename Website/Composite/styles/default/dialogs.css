@@ -18,6 +18,8 @@ ui|dialog {
 	position: absolute;
 	z-index: 6; /* above shadow - adjusted by script */
 	margin-top: -10000px;
+	padding: 0px; /* override chrome user agent stylesheet 1em */
+	border: none; /* override chrome user agent stylesheet */
 }
 ui|dialog.minimized {
 	border: 5px solid pink;
