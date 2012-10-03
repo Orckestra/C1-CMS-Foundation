@@ -78,33 +78,28 @@ new function () {
 			}
 
 			function endResize() {
-				function setSizeProp(name, value) {
-					if (value) {
-						// Resize by using style or attribute
-						if (selectedElm.style[name] || !editor.schema.isValid(selectedElm.nodeName.toLowerCase(), name)) {
-							editor.dom.setStyle(selectedElm, name, value);
-						} else {
-							editor.dom.setAttrib(selectedElm, name, value);
-						}
-					}
-				}
-
-				// Set width/height properties
-				setSizeProp('width', width);
-				setSizeProp('height', height);
 
 				editor.dom.unbind(editor.getDoc(), 'mousemove', resizeElement);
 				editor.dom.unbind(editor.getDoc(), 'mouseup', endResize);
 
-				// Remove ghost and update resize handle positions
-				editor.dom.remove(selectedElmGhost);
-				showResizeRect(selectedElm);
-				hideToolTip();
+				var compositeUrl = new CompositeUrl(selectedElm.src)
+				if (compositeUrl.isMedia) {
+					compositeUrl.setParam("mw", width);
+					compositeUrl.setParam("mh", height);
+					selectedElm.onload = function () {
+						// Remove ghost and update resize handle positions
+						editor.dom.remove(selectedElmGhost);
+						showResizeRect(selectedElm);
+						hideToolTip();
+					}
+					selectedElm.src = compositeUrl.toString();
 
+					
+				}
 			}
 
-			function showResizeRect(targetElm) {
-				var position, targetWidth, targetHeight;
+			function showResizeRect(targetElm, targetWidth, targetHeight) {
+				var position;
 
 				hideResizeRect();
 
@@ -112,8 +107,8 @@ new function () {
 				position = editor.dom.getPos(targetElm);
 				selectedElmX = position.x;
 				selectedElmY = position.y;
-				targetWidth = targetElm.offsetWidth;
-				targetHeight = targetElm.offsetHeight;
+				targetWidth = targetWidth == undefined ? targetElm.offsetWidth : targetWidth;
+				targetHeight = targetHeight == undefined ? targetElm.offsetHeight : targetHeight;
 
 				// Reset width/height if user selects a new image/table
 				if (selectedElm != targetElm) {
@@ -197,7 +192,7 @@ new function () {
 				// Position element
 				editor.dom.setStyles(handleElm, {
 					left: position.x + selectedElmGhost.offsetWidth * selectedHandle[0],
-					top: position.y + selectedElmGhost.offsetHeight * selectedHandle[1] - 14 +  14 * selectedHandle[1]
+					top: position.y + selectedElmGhost.offsetHeight * selectedHandle[1] - 14 + 14 * selectedHandle[1]
 				});
 			}
 
@@ -244,9 +239,15 @@ new function () {
 
 			function updateResizeRect() {
 				var controlElm = editor.dom.getParent(editor.selection.getNode(), 'img');
-
-				if (controlElm && VisualEditorBinding.isImageElement(controlElm)) {
-					showResizeRect(controlElm);
+				if (controlElm)
+				{
+					var compositeUrl = new CompositeUrl(controlElm.src);
+					if (compositeUrl.isMedia) {
+						showResizeRect(controlElm);
+					}
+					else {
+						hideResizeRect();
+					}
 				} else {
 					hideResizeRect();
 				}
