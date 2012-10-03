@@ -29,11 +29,6 @@ new function () {
 
 			// Details about each resize handle how to scale etc
 			resizeHandles = {
-				// Name: x multiplier, y multiplier, delta size x, delta size y
-				//                        n: [.5, 0, 0, -1],
-				//                        e: [1, .5, 1, 0],
-				//                        s: [.5, 1, 0, 1],
-				//                        w: [0, .5, -1, 0],
 				nw: [0, 0, -1, -1],
 				ne: [1, 0, 1, -1],
 				se: [1, 1, 1, 1],
@@ -54,6 +49,9 @@ new function () {
 				// Never scale down lower than 5 pixels
 				width = width < 5 ? 5 : width;
 				height = height < 5 ? 5 : height;
+
+				// Grid 5px
+				height = Math.round(height / 5) * 5;
 
 				// Constrain proportions when modifier key is pressed or if the nw, ne, sw, se corners are moved on an image
 				if (tinymce.VK.modifierPressed(e) || (selectedElm.nodeName == "IMG" && selectedHandle[2] * selectedHandle[3] !== 0)) {
@@ -76,6 +74,7 @@ new function () {
 				if (selectedHandle[3] < 0 && selectedElmGhost.clientHeight <= height) {
 					editor.dom.setStyle(selectedElmGhost, 'top', selectedElmY + (startH - height));
 				}
+				showToolTip(e, width, height);
 			}
 
 			function endResize() {
@@ -100,6 +99,8 @@ new function () {
 				// Remove ghost and update resize handle positions
 				editor.dom.remove(selectedElmGhost);
 				showResizeRect(selectedElm);
+				hideToolTip();
+
 			}
 
 			function showResizeRect(targetElm) {
@@ -135,8 +136,6 @@ new function () {
 						editor.dom.bind(handleElm, 'mousedown', function (e) {
 							e.preventDefault();
 
-							//endResize();
-
 							startX = e.screenX;
 							startY = e.screenY;
 							startW = selectedElm.clientWidth;
@@ -171,6 +170,37 @@ new function () {
 				});
 			}
 
+			function hideToolTip() {
+				editor.dom.hide('mceResizeHandleToolTip');
+			}
+
+
+			function showToolTip(e, width, height) {
+				handleElm = editor.dom.get('mceResizeHandleToolTip');
+				if (!handleElm) {
+					handleElm = editor.dom.add(editor.getDoc().documentElement, 'div', {
+						id: 'mceResizeHandleToolTip',
+						'class': 'mceResizeToolTip'
+					});
+				} else {
+					editor.dom.show(handleElm)
+				}
+
+				handleElm.innerHTML = '<span>[' + width + 'x' + height + ']</span>';
+				editor.dom.setStyles(handleElm, {
+					width: handleElm.firstChild.offsetWidth
+				});
+
+				// Get position and size of ghost
+				position = editor.dom.getPos(selectedElmGhost);
+
+				// Position element
+				editor.dom.setStyles(handleElm, {
+					left: position.x + selectedElmGhost.offsetWidth * selectedHandle[0],
+					top: position.y + selectedElmGhost.offsetHeight * selectedHandle[1] - 14 +  14 * selectedHandle[1]
+				});
+			}
+
 			function hideResizeRect() {
 				if (selectedElm) {
 					selectedElm.removeAttribute('data-mce-selected');
@@ -183,24 +213,34 @@ new function () {
 
 			// Add CSS for resize handles, cloned element and selected
 			editor.contentStyles.push(
-                        '.mceResizeHandle {' +
-                                'position: absolute;' +
-                                'border: 1px solid black;' +
-                                'background: #FFF;' +
-                                'width: 5px;' +
-                                'height: 5px;' +
-                                'z-index: 10000' +
-                        '}' +
-                        '.mceResizeHandle:hover {' +
-                                'background: #000' +
-                        '}' +
-                        'img.mceClonedResizable, table.mceClonedResizable {' +
-                                'position: absolute;' +
-                                'outline: 1px dashed black;' +
-                                'opacity: .5;' +
-                                'z-index: 10000' +
-                        '}'
-                );
+						'.mceResizeHandle {' +
+								'position: absolute;' +
+								'border: 1px solid black;' +
+								'background: #FFF;' +
+								'width: 5px;' +
+								'height: 5px;' +
+								'z-index: 10000' +
+						'}' +
+						'.mceResizeToolTip {' +
+								'position: absolute;' +
+								'border: 1px solid black;' +
+								'background: #888;' +
+								'height: 14px;' +
+								'width: 50px;' +
+								'font-size: 10px;' +
+								'color: #EEE;' +
+								'z-index: 10000' +
+						'}' +
+						'.mceResizeHandle:hover {' +
+								'background: #000' +
+						'}' +
+						'img.mceClonedResizable, table.mceClonedResizable {' +
+								'position: absolute;' +
+								'outline: 1px dashed black;' +
+								'opacity: .5;' +
+								'z-index: 10000' +
+						'}'
+				);
 
 			function updateResizeRect() {
 				var controlElm = editor.dom.getParent(editor.selection.getNode(), 'img');
@@ -221,6 +261,5 @@ new function () {
 
 	// Register plugin
 	tinymce.PluginManager.add("compositeimageresize", tinymce.plugins.CompositeImageResizePlugin);
-
 
 };
