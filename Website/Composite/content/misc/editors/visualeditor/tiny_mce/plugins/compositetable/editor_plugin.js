@@ -1274,15 +1274,9 @@ new function () {
 				"table"
 			);
 			if (table != null) {
-				if (result.get("classname")) {
-					dom.setAttrib(table, "class", result.get("classname"));
-				}
-				if (result.get("id")) {
-					dom.setAttrib(table, "id", result.get("id"));
-				}
-				if (result.get("summary")) {
-					dom.setAttrib(table, "summary", result.get("summary"));
-				}
+				dom.setAttrib(table, "class", result.get("classname"));
+				dom.setAttrib(table, "id", result.get("id"));
+				dom.setAttrib(table, "summary", result.get("summary"));
 			}
 
 			this.editor.addVisual();
