@@ -493,10 +493,7 @@ EditorPageBinding.prototype.doSave = function () {
  * Performs the final save transaction.
  */
 EditorPageBinding.prototype._saveEditorPage = function () {
-	
-	if ( Application.isDeveloperMode ) {
-		// alert ( "SAVING " + this.bindingDocument.title );
-	}
+
 	if ( this.validateAllDataBindings ( true )) {
 		this.bindingWindow.DataManager.isDirty = false;
 		var postback = this.bindingWindow.bindingMap.__REQUEST;
@@ -514,13 +511,13 @@ EditorPageBinding.prototype._saveEditorPage = function () {
 EditorPageBinding.prototype._saveAndPublishEditorPage = function () {
 
 
-	if (this.validateAllDataBindings()) {
+	if (this.validateAllDataBindings( true )) {
 		this.bindingWindow.DataManager.isDirty = false;
 		var postback = this.bindingWindow.bindingMap.__REQUEST;
 		if (postback != null) {
 			postback.postback(EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH);
 		} else {
-			this.logger.error("Save aborted: Could not locate RequestBinding");
+			this.logger.error("Save and publish aborted: Could not locate RequestBinding");
 		}
 	}
 };
@@ -543,38 +540,35 @@ EditorPageBinding.prototype._refresh = function () {
  * @param {String} message
  * @param {List<Binding>} list
  */
-EditorPageBinding.prototype.postMessage = function ( message ) {
-	
+EditorPageBinding.prototype.postMessage = function (message) {
+
 	this._message = null;
-	
-	switch ( message ) {
-		
-		case EditorPageBinding.MESSAGE_SAVE :
-			this._postMessageToDescendants ( message, this._messengers );
-			if ( !this._messengers.hasEntries ()) {
-				this._saveEditorPage ();
+
+	switch (message) {
+
+		case EditorPageBinding.MESSAGE_SAVE:
+		case EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH:
+			this._postMessageToDescendants(message, this._messengers);
+			if (!this._messengers.hasEntries()) {
+				if (message == EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH) {
+					this._saveAndPublishEditorPage();
+				}
+				else {
+					this._saveEditorPage();
+				}
 			} else {
 				this._message = message;
 			}
 			break;
 
-		case EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH:
-			this._postMessageToDescendants(message, this._messengers);
-			if (!this._messengers.hasEntries()) {
-				this._saveAndPublishEditorPage();
-			} else {
-				this._message = message;
-			}
-			break;
-			
-		case EditorPageBinding.MESSAGE_PERSIST :
+		case EditorPageBinding.MESSAGE_PERSIST:
 			this._message = message;
-			EditorPageBinding.superclass.postMessage.call ( this, message, this._messengers );
+			EditorPageBinding.superclass.postMessage.call(this, message, this._messengers);
 			break;
-			
-		case EditorPageBinding.MESSAGE_REFRESH :
-			EditorPageBinding.superclass.postMessage.call ( this, message, this._messengers );
-			break;	
+
+		case EditorPageBinding.MESSAGE_REFRESH:
+			EditorPageBinding.superclass.postMessage.call(this, message, this._messengers);
+			break;
 	}
 };
 
