@@ -28,6 +28,8 @@ function _Client () {
 	this.hasFlash = ( version && version >= 9 );
 	this.hasTransitions = hasTransitions;
 
+	this.hasSpellcheck = this.isFirefox || this.isExplorer && document.documentElement.spellcheck;
+
 	return this;
 }
 /*

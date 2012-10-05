@@ -292,7 +292,7 @@ DataInputBinding.prototype._buildDOMContent = function () {
 		this.shadowTree.box
 	);
 
-	if (this.spellcheck && Client.isFirefox) {
+	if (this.spellcheck && Client.hasSpellcheck) {
 		var currentLang = Localization.currentLang();
 		if (currentLang != null) {
 			this.shadowTree.input.setAttribute("spellcheck", "true");

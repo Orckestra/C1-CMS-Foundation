@@ -132,7 +132,7 @@ function onInstanceInitialize ( inst ) {
 
 
 	//Enable SpellCheck
-	if (Client.isFirefox) {
+	if (Client.hasSpellcheck) {
 		tinyInstance.getBody().spellcheck = true;
 		tinyInstance.getBody().lang = Localization.currentLang();
 	}
