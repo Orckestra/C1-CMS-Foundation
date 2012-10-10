@@ -533,6 +533,7 @@ this.isVista=this.isWindows&&_6b.indexOf("windows nt 6")>-1;
 var _71=this._getFlashVersion();
 this.hasFlash=(_71&&_71>=9);
 this.hasTransitions=_70;
+this.hasSpellcheck=this.isFirefox||this.isExplorer&&document.documentElement.spellcheck;
 return this;
 }
 _Client.prototype={isExplorer:false,isMozilla:false,isPrism:false,hasFlash:false,isWindows:false,isVista:false,hasTransitions:false,_getFlashVersion:function(){
@@ -11508,7 +11509,7 @@ this._isAutoSelect=true;
 }
 this.shadowTree.box.appendChild(this.shadowTree.input);
 this.bindingElement.appendChild(this.shadowTree.box);
-if(this.spellcheck&&Client.isFirefox){
+if(this.spellcheck&&Client.hasSpellcheck){
 var _812=Localization.currentLang();
 if(_812!=null){
 this.shadowTree.input.setAttribute("spellcheck","true");
@@ -22227,8 +22228,6 @@ _d89.fireCommand();
 }
 };
 EditorPageBinding.prototype._saveEditorPage=function(){
-if(Application.isDeveloperMode){
-}
 if(this.validateAllDataBindings(true)){
 this.bindingWindow.DataManager.isDirty=false;
 var _d8a=this.bindingWindow.bindingMap.__REQUEST;
@@ -22240,13 +22239,13 @@ this.logger.error("Save aborted: Could not locate RequestBinding");
 }
 };
 EditorPageBinding.prototype._saveAndPublishEditorPage=function(){
-if(this.validateAllDataBindings()){
+if(this.validateAllDataBindings(true)){
 this.bindingWindow.DataManager.isDirty=false;
 var _d8b=this.bindingWindow.bindingMap.__REQUEST;
 if(_d8b!=null){
 _d8b.postback(EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH);
 }else{
-this.logger.error("Save aborted: Could not locate RequestBinding");
+this.logger.error("Save and publish aborted: Could not locate RequestBinding");
 }
 }
 };
@@ -22259,17 +22258,14 @@ EditorPageBinding.prototype.postMessage=function(_d8c){
 this._message=null;
 switch(_d8c){
 case EditorPageBinding.MESSAGE_SAVE:
-this._postMessageToDescendants(_d8c,this._messengers);
-if(!this._messengers.hasEntries()){
-this._saveEditorPage();
-}else{
-this._message=_d8c;
-}
-break;
 case EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH:
 this._postMessageToDescendants(_d8c,this._messengers);
 if(!this._messengers.hasEntries()){
+if(_d8c==EditorPageBinding.MESSAGE_SAVE_AND_PUBLISH){
 this._saveAndPublishEditorPage();
+}else{
+this._saveEditorPage();
+}
 }else{
 this._message=_d8c;
 }
