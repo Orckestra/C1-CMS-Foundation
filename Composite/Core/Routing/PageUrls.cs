@@ -1,5 +1,6 @@
 ﻿using Composite.Core.Routing.Foundation.PluginFacades;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
+using Composite.Data.Types;
 
 namespace Composite.Core.Routing
 {
@@ -48,6 +49,14 @@ namespace Composite.Core.Routing
         public static string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace) 
         {
             return UrlProvider.BuildUrl(pageUrlData, urlKind, urlSpace);
+        }
+
+        /// <exclude />
+        public static string BuildUrl(IPage page, UrlKind urlKind = UrlKind.Public, UrlSpace urlSpace = null)
+        {
+            Verify.ArgumentNotNull(page, "page");
+
+            return BuildUrl(new PageUrlData(page), urlKind, urlSpace ?? new UrlSpace());
         }
     }
 }
