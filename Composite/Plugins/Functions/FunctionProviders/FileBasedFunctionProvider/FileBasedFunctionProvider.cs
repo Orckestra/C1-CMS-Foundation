@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Composite.Core;
 using Composite.Core.IO;
 using Composite.Core.Threading;
@@ -16,8 +18,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         private static readonly string LogTitle = "FileBasedFunctionProvider";
 		private static readonly object _lock = new object();
 
+        private const int FunctionReloadDelayMilliseconds = 200;
+
         private readonly C1FileSystemWatcher _watcher;
-		private DateTime _lastUpdateTime;
+		private DateTime? _lastFunctionReloadTime = DateTime.Now;
         private readonly string _name;
 
 		protected abstract string FileExtension { get; }
@@ -142,31 +146,40 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
         public void ReloadFunctions()
         {
-            lock (_lock)
-            {
-                using (ThreadDataManager.EnsureInitialize())
-                {
-                    FunctionNotifier.FunctionsUpdated();
-                }
+            Thread.Sleep(FunctionReloadDelayMilliseconds);
 
-                _lastUpdateTime = DateTime.Now;
+            try
+            {
+                 FunctionNotifier.FunctionsUpdated();
             }
-   
+            catch(Exception ex)
+            {
+                Log.LogError(LogTitle, "Failed to reload functions");
+                Log.LogError(LogTitle, ex);
+            }
         }
 
 		private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
 		{
+            // Reloading functions only after a certain delay as otherwise edited in VS function won't be loaded if files are accessed through a network drive
 			if (FunctionNotifier != null && HandleChange(e.FullPath))
 			{
+                var timeSpan = DateTime.Now - _lastFunctionReloadTime.Value;
+                if (timeSpan.TotalMilliseconds < FunctionReloadDelayMilliseconds) {
+                    return;
+                }
+
                 lock (_lock)
                 {
-                    var timeSpan = DateTime.Now - _lastUpdateTime;
-                    if (timeSpan.TotalMilliseconds < 100)
-                    {
+                    var now = DateTime.Now;
+                    timeSpan = now - _lastFunctionReloadTime.Value;
+                    if (timeSpan.TotalMilliseconds < FunctionReloadDelayMilliseconds) {
                         return;
                     }
 
-                    ReloadFunctions();
+                    _lastFunctionReloadTime = now;
+
+                    new Thread(ReloadFunctions).Start();
                 }
 			}
 		}
