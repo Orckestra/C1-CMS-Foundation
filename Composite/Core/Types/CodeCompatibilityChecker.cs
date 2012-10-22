@@ -121,7 +121,7 @@ namespace Composite.Core.Types
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(referencedAssemblies.Select(f => f.Location).ToArray());
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(CodeGenerationManager.CompiledAssemblies.Select(f => f.Location).ToArray());
             compilerParameters.AddAssemblyLocationsFromBin();
-            compilerParameters.AddLoadedAssemblies();
+            compilerParameters.AddLoadedAssemblies(false);
             compilerParameters.AddCommonAssemblies();
             compilerParameters.RemoveGeneratedAssemblies();
 

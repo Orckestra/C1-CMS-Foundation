@@ -38,17 +38,20 @@ namespace Composite.Core.Types
         /// <summary>
         /// Add assemblies that are loaded in the app domain.
         /// </summary>
-        /// <param name="compilerParameters"></param>
-        /// <returns></returns>
-        public static void AddLoadedAssemblies(this CompilerParameters compilerParameters)
+        /// <param name="compilerParameters">The compiler parameters.</param>
+        /// <param name="includeAppCode">if set to <c>true</c> reference to App_Code will be included to results.</param>
+        public static void AddLoadedAssemblies(this CompilerParameters compilerParameters, bool includeAppCode)
         {
             Dictionary<string, string> foundAssemblyLocations = new Dictionary<string, string>();
 
-            IEnumerable<string> locations =
-                from a in AppDomain.CurrentDomain.GetAssemblies()
-                where AssemblyHasLocation(a)
-                select a.Location;
-
+            IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(AssemblyHasLocation);
+                
+            if(!includeAppCode)
+            {
+                assemblies = assemblies.Where(asm => !asm.GetName().Name.StartsWith("App_Code"));
+            }
+                
+            IEnumerable<string> locations = assemblies.Select(a => a.Location);
 
             foreach (string location in locations)
             {
