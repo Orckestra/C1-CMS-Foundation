@@ -72,16 +72,6 @@ namespace Composite.Core.Parallelization
         {
             Verify.ArgumentNotNull(source, "source");
 
-            //if (source is IndexEnumerator)
-            //{
-            //    int elementsCount = (source as IndexEnumerator).Count;
-            //    if (elementsCount == 0) return;
-            //    if (elementsCount == 1)
-            //    {
-            //        body(default(TSource)); // that will be 0, since IndexEnumerator is IEnumerable<int>
-            //        return;
-            //    }
-            //} else 
             if (source is TSource[])
             {
                 int elementsCount = (source as TSource[]).Length;
@@ -194,11 +184,15 @@ namespace Composite.Core.Parallelization
                 {
                     try
                     {
+                        DataScopeManager.EnterThreadLocal();
+
                         if (DataScopeManager.CurrentDataScope != _parentThreadDataScope)
                         {
                             DataScopeManager.PushDataScope(_parentThreadDataScope);
                             dataScopePushed = true;
                         }
+
+                        LocalizationScopeManager.EnterThreadLocal();
 
                         if (LocalizationScopeManager.CurrentLocalizationScope != _parentThreadLocale)
                         {
@@ -244,6 +238,9 @@ namespace Composite.Core.Parallelization
                         {
                             LocalizationScopeManager.PopLocalizationScope();
                         }
+
+                        DataScopeManager.ExitThreadLocal();
+                        LocalizationScopeManager.ExitThreadLocal();
                     }
                 }
             }
