@@ -3,7 +3,7 @@ RootBinding.prototype.constructor = RootBinding;
 RootBinding.superclass = Binding.prototype;
 
 /*
- * These actions get dispatched simultaniously on document 
+ * These actions get dispatched simultaneously on document 
  * initialization. They have been split into three so that hosted  
  * bindings get hook into different "phases" for fine-tuning. 
  * They all get consumed by first ancestor {@link ViewBinding}. 

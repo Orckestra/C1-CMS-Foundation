@@ -80,7 +80,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Move the stack handling scope to a thread local store, enabling simultanious threads to mutate (their own) scope. This will be in effect untill the thread has completed.
+        /// Move the stack handling scope to a thread local store, enabling simultaneous threads to mutate (their own) scope. This will be in effect untill the thread has completed.
         /// </summary>
         public static void EnterThreadLocal()
         {

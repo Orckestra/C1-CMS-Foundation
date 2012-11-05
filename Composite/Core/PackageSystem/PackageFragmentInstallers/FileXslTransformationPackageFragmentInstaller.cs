@@ -78,7 +78,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (outputXMLAttribute != null && uninstallXSLAttribute != null)
                     {
                         validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            "Xsl installer does not suppurt simultanious usage of attributes '{0}' and '{1}'".FormatWith(OutputXmlAttributeName, UninstallXslAttributeName),
+                            "Xsl installer does not suppurt simultaneous usage of attributes '{0}' and '{1}'".FormatWith(OutputXmlAttributeName, UninstallXslAttributeName),
                             fileElement));
                         continue;
                     }

@@ -8,7 +8,7 @@ FlexBoxBinding.TIMEOUT = 250;
 
 /**
  * In case the reflex chain should invoke a new call to reflex, a clever timeout 
- * system has been established to prevent multiple simultanious flex iterators. 
+ * system has been established to prevent multiple simultaneous flex iterators. 
  * It works by switching the isFlexSuspended property on bindings. The timeout can 
  * be supressed by passing a boolean value of true to the method. This can be desired, 
  * but should be avoided since it adds a computational overhead that threatens Explorer. 
