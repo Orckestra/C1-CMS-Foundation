@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using Composite.C1Console.Events;
@@ -9,8 +10,7 @@ using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Microsoft.Practices.EnterpriseLibrary.Logging.Configuration;
-using Composite.Core.Caching;
-
+ 
 
 namespace Composite.Core.Logging
 {
@@ -31,7 +31,7 @@ namespace Composite.Core.Logging
             Audit = 0x2,
         }
 
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
+        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
         private static readonly string BeginOfInnerExceptionMarker;
         private static readonly string EndOfInnerExceptionMarker;
 
@@ -293,21 +293,6 @@ namespace Composite.Core.Logging
         }
 
 
-
-        private static void PushNoLogging()
-        {
-            LoggingScopeCounter.Counter++;
-        }
-
-
-
-        private static void PopNoLogging()
-        {
-            LoggingScopeCounter.Counter--;
-        }
-
-
-
         private static int GetNoLoggingCounter()
         {
             return LoggingScopeCounter.Counter;
@@ -441,34 +426,47 @@ namespace Composite.Core.Logging
         {
             public NoLoggingDisposable()
             {
-                LoggingService.PushNoLogging();
+                LoggingScopeCounter = new CounterContainer(LoggingScopeCounter.Counter + 1);
             }
 
             public void Dispose()
             {
-                LoggingService.PopNoLogging();
+                LoggingScopeCounter = new CounterContainer(LoggingScopeCounter.Counter - 1);
             }
         }
 
 
 
-        private sealed class CounterContainer
+        private sealed class CounterContainer : ILogicalThreadAffinative
         {
-            public CounterContainer()
+            public CounterContainer(int counter = 0) 
             {
-                this.Counter = 0;
+                this.Counter = counter;
             }
 
-            public int Counter { get; set; }
+            public int Counter { get; private set; }
         }
 
 
+        private const string LocalStorageKey = "LoggingService:LoggingScopeCounter";
 
         private static CounterContainer LoggingScopeCounter
         {
             get
             {
-                return RequestLifetimeCache.GetCachedOrNew<CounterContainer>("LoggingService:LoggingScopeCounter");
+                return CallContext.GetData(LocalStorageKey) as CounterContainer ?? new CounterContainer();
+            }
+            set
+            {
+                if(value.Counter == 0)
+                {
+                    CallContext.FreeNamedDataSlot(LocalStorageKey);
+                    return;
+                }
+
+                Verify.That(value.Counter > 0, "Opened NoLogging scopes stack underflow");
+
+                CallContext.SetData(LocalStorageKey, value);
             }
         }
     }
