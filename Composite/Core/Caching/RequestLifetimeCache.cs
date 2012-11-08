@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Runtime.Remoting.Messaging;
-using Composite.Core.Threading;
 
 
 namespace Composite.Core.Caching
@@ -113,15 +112,39 @@ namespace Composite.Core.Caching
         {
             Verify.ArgumentNotNull(key, "key");
 
-            T result = TryGet<T>(key);
+            var httpContext = HttpContext.Current;
 
-            if (result == null)
+            if (httpContext != null) {
+
+                if (!httpContext.Items.Contains(key))
+                {
+                    lock (httpContext.Items)
+                    {
+                        if (!httpContext.Items.Contains(key))
+                        {
+                            T result = new T();
+
+                            httpContext.Items.Add(key, result);
+                            return result;
+                        }
+                    }
+                }
+
+                return (T)httpContext.Items[key];
+            } 
+
+
+            // FallbackCache is thread specific so no need to have a critical section
+            var fallbackCache = FallbackCache;
+            if (!fallbackCache.ContainsKey(key))
             {
-                result = new T();
-                Add(key, result);
+                T result = new T();
+                fallbackCache.Add(key, result);
+
+                return result;
             }
 
-            return result;
+            return (T)fallbackCache[key];
         }
 
 
@@ -162,6 +185,7 @@ namespace Composite.Core.Caching
             }
         }
 
+        /// <exclude />
         [Obsolete("Should no longer be used", true)]
         public static void ClearAll()
         {

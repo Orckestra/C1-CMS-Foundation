@@ -227,7 +227,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just after a new data item is create. 
+        /// This event is fired just after a new data item is created.
         /// See <see cref="Composite.Data.DataConnection.New&lt;TData&gt;()"/>
         /// </summary>
         /// <example>
