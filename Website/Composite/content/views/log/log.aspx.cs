@@ -71,78 +71,92 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
     {
         XElement table = new XElement("table");
 
-            XElement tableHeader = new XElement("tr");
-            tableHeader.Add(
-                    new XElement("th", " "),
-                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.DateLabel")),
-                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.MessageLabel")),
-                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.TitleLabel")),
-                    new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.EventTypeLabel"))
-                    //new XElement("th", "URL"),
-                    //new XElement("th", "Referer")
-                );
+        XElement tableHeader = new XElement("tr");
+        tableHeader.Add(
+                new XElement("th", " "),
+                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.DateLabel")),
+                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.MessageLabel")),
+                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.TitleLabel")),
+                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.EventTypeLabel"))
+            );
 
-            table.Add(tableHeader);
+        table.Add(tableHeader);
 
-            foreach (LogEntry logEntry in entries.Reverse())
+        foreach (LogEntry logEntry in entries.Reverse())
+        {
+            TraceEventType eventType;
+
+            try
             {
-                TraceEventType eventType;
-
-                try
-                {
-                    eventType = (TraceEventType)Enum.Parse(typeof(TraceEventType), logEntry.Severity);
-                }
-                catch (Exception)
-                {
-                    eventType = TraceEventType.Information;
-                }
-
-                XAttribute color = null;
-
-                switch (eventType)
-                {
-                    case TraceEventType.Information:
-                        color = new XAttribute("bgcolor", "lime");
-                        break;
-
-                    case TraceEventType.Verbose:
-                        color = new XAttribute("bgcolor", "white");
-                        break;
-
-                    case TraceEventType.Warning:
-                        color = new XAttribute("bgcolor", "yellow");
-                        break;
-
-                    case TraceEventType.Error:
-                        color = new XAttribute("bgcolor", "orange");
-                        break;
-
-                    case TraceEventType.Critical:
-                        color = new XAttribute("bgcolor", "red");
-                        break;
-
-                    default:
-                        color = new XAttribute("bgcolor", "pink");
-                        break;
-                }
-
-                XElement row = new XElement("tr");
-                row.Add(
-                    new XElement("td", " ", color),
-                    new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
-                    new XElement("td", new XElement("pre", logEntry.Message.Replace("\n", ""))),
-                    new XElement("td", logEntry.Title),
-                    new XElement("td", logEntry.Severity)
-                    //new XElement("td", logEntry.HttpRequestUrl ?? "" + " "),
-                    //new XElement("td", logEntry.HttpReferingUrl ?? "" + " ")
-                );
-
-                table.Add(row);
+                eventType = (TraceEventType)Enum.Parse(typeof(TraceEventType), logEntry.Severity);
+            }
+            catch (Exception)
+            {
+                eventType = TraceEventType.Information;
             }
 
-            LogHolder.Controls.Add(new LiteralControl(table.ToString()));
+            XAttribute color = null;
+
+            switch (eventType)
+            {
+                case TraceEventType.Information:
+                    color = new XAttribute("bgcolor", "lime");
+                    break;
+
+                case TraceEventType.Verbose:
+                    color = new XAttribute("bgcolor", "white");
+                    break;
+
+                case TraceEventType.Warning:
+                    color = new XAttribute("bgcolor", "yellow");
+                    break;
+
+                case TraceEventType.Error:
+                    color = new XAttribute("bgcolor", "orange");
+                    break;
+
+                case TraceEventType.Critical:
+                    color = new XAttribute("bgcolor", "red");
+                    break;
+
+                default:
+                    color = new XAttribute("bgcolor", "pink");
+                    break;
+            }
+
+
+            XElement row = new XElement("tr");
+            row.Add(
+                new XElement("td", " ", color),
+                new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
+                new XElement("td", new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))),
+                new XElement("td", EncodeXml10InvalidCharacters(logEntry.Title)),
+                new XElement("td", logEntry.Severity)
+            );
+
+            table.Add(row);
+        }
+
+        LogHolder.Controls.Add(new LiteralControl(table.ToString()));
     }
 
+
+    private string EncodeXml10InvalidCharacters(string text)
+    {
+        // We double encoding charaters 00h -> 1Fh except spaces so the encoded version will be shown.
+        for (int i = 0; i < 32; i++) {
+            if(i == 8 || i == 10 || i == 13) continue;
+
+            char ch = (char) i;
+
+            if(text.Contains(ch))
+            {
+                text = text.Replace(new string(ch, 1), "&#" + (i/16) + "0123456789ABCDEF"[i % 16] + ";");
+            }
+        }
+
+        return text;
+    }
 
     protected void LogContentChanged(Object sender, EventArgs e)
     {

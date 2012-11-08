@@ -1,16 +1,9 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Services.Licensing" %>
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Xml.Linq;
-using Composite;
-using Composite.Core.Threading;
 using Composite.Core.Types;
 
 namespace Composite.Services

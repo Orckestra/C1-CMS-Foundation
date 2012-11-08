@@ -134,7 +134,7 @@
         <div id="backdrop"></div>
 
         <div id="splashcontent">
-            <form id="form_login" type="sumbit" method="post"> <!-- action="Login.aspx"  -->
+            <form id="form_login" method="post"> <!-- action="Login.aspx"  -->
                 
             <div class="splashtext">
                 The entered url is protected, please enter C1 Console credentials
