@@ -103,8 +103,8 @@ SOAPRequest._parseResponse = function ( request ) {
 		 */
 		if ( !Application.isOffLine && !Application.isLoggedOut ) {
 			var text = request.responseText;
-			if ( text.indexOf ( "id=\"offline\"" ) >-1 ) {
-				isOffLine = true;
+			if (request.status == 503 || text.indexOf("id=\"offline\"") > -1) {
+			    isOffLine = true;
 			} else {
 				var cry = "Invalid SOAP response: \n\n" + request.responseText;
 				SystemLogger.getLogger ( "SOAPRequest._parseResponse (static)" ).error ( cry );
