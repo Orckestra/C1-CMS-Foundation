@@ -20,15 +20,9 @@ namespace Composite.C1Console.Security
 
         static UserGroupFacade()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IUser>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUser>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IUser>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IUserGroup>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserGroup>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IUserGroup>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IUserUserGroupRelation>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserUserGroupRelation>(OnDataChanged, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IUserUserGroupRelation>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUser>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUserGroup>(OnDataChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUserUserGroupRelation>(OnDataChanged, true);
         }
 
 
@@ -61,7 +55,7 @@ namespace Composite.C1Console.Security
 
 
 
-        private static void OnDataChanged(object sender, DataEventArgs dataEventArgs)
+        private static void OnDataChanged(object sender, StoreEventArgs storeEventArgs)
         {
             lock (_lock)
             {

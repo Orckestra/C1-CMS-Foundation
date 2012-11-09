@@ -26,8 +26,21 @@ namespace Composite.C1Console.Users
             DataEventSystemFacade.SubscribeToDataAfterAdd<IUserSettings>(OnUserSettingsChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserSettings>(OnUserSettingsChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IUserSettings>(OnUserSettingsChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUserSettings>(OnUserStoreChanged, true);
         }
 
+
+
+        private static void OnUserStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                lock (_lock)
+                {
+                    _userSettingsCache.Clear();
+                }
+            }
+        }
 
         private static void OnUserSettingsChanged(object sender, DataEventArgs dataEventArgs)
         {

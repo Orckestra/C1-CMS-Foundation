@@ -37,10 +37,11 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserPermissionDefinition>(OnUserPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<IUserPermissionDefinition>(OnUserPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IUserPermissionDefinition>(OnUserPermissionChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUserPermissionDefinition>(OnUserPermissionStoreChanged, true);
         }
 
         
-
+        
         public IEnumerable<UserPermissionDefinition> AllUserPermissionDefinitions
         {
             get
@@ -201,6 +202,14 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
         }
 
 
+
+        private static void OnUserPermissionStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                _permissionCache.Clear();
+            }
+        }
 
         private static void OnUserPermissionChanged(object sender, DataEventArgs args)
         {

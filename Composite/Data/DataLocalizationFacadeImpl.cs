@@ -34,7 +34,28 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataAfterUpdate<ISystemActiveLocale>(OnSystemActiveLocaleChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<ISystemActiveLocale>(OnSystemActiveLocaleChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<ISystemActiveLocale>(OnSystemActiveLocaleChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<ISystemActiveLocale>(OnSystemActiveLocaleStoreChanged, true);
         }
+
+
+        private static void OnSystemActiveLocaleStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                _urlMappingCache.Clear();
+                _cultureUrlCache.Clear();
+
+                lock (_syncRoot)
+                {
+                    _urlMappings = null;
+                    _activeCultureNames = null;
+                    _defaultUrlMappingCulture = null;
+                    _defaultCulture = null;
+                }
+            }
+        }
+
+
 
         private static void OnSystemActiveLocaleChanged(object sender, DataEventArgs dataEventArgs)
         {

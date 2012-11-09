@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using Composite.Core.Linq;
+using Composite.Data;
 using Composite.Data.DynamicTypes;
+using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -31,10 +34,22 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             DataTypeDescriptor =  dataTypeDescriptor;
             DataProviderHelperType = dataProviderHelperType;
             DataIdClassType = dataIdClassType;
+            IsGeneretedDataType = isGeneretedDataType;
 
             _xmlDateTypeStoreDataScopes = xmlDateTypeStoreDataScopes.Evaluate();
 
-            IsGeneretedDataType = isGeneretedDataType;
+            foreach (XmlDataTypeStoreDataScope xmlDataTypeStoreDataScope in _xmlDateTypeStoreDataScopes)
+            {
+                DataScopeIdentifier dataScopeIdentifier = DataScopeIdentifier.Deserialize(xmlDataTypeStoreDataScope.DataScopeName);
+                CultureInfo culture = CultureInfo.CreateSpecificCulture(xmlDataTypeStoreDataScope.CultureName);
+                Type dataType = dataTypeDescriptor.GetInterfaceType();
+
+                Action cacheFlush = () => DataEventSystemFacade.FireExternalStoreChangedEvent(dataType, dataScopeIdentifier.ToPublicationScope(), culture);
+
+                XmlDataProviderDocumentCache.RegisterExternalFileChangeAction(xmlDataTypeStoreDataScope.Filename, cacheFlush);
+
+
+            }
         }
 
 

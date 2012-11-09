@@ -19,6 +19,7 @@ namespace Composite.C1Console.Security
 
             DataEventSystemFacade.SubscribeToDataAfterAdd<T>(OnDataAddedOrDeleted, false);
             DataEventSystemFacade.SubscribeToDataDeleted<T>(OnDataAddedOrDeleted, false);
+            DataEventSystemFacade.SubscribeToStoreChanged<T>(OnStoreChanged, false);
 
             this.ParentEntityToken = parentEntityToken;
         }
@@ -54,6 +55,15 @@ namespace Composite.C1Console.Security
         }
 
 
+        private void OnStoreChanged(object sender, StoreEventArgs dataEventArgs)
+        {
+            if (!dataEventArgs.DataEventsFired)
+            {
+                HookingFacade.RemoveHook(this.CurrentEntityTokenHook);
+                UpdateCurrentEntityTokenHook();
+                HookingFacade.AddHook(this.CurrentEntityTokenHook);
+            }
+        }      
 
         private void OnDataAddedOrDeleted(object sender, DataEventArgs dataEventArgs)
         {

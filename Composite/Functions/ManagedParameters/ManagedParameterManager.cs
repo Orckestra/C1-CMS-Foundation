@@ -173,9 +173,7 @@ namespace Composite.Functions.ManagedParameters
 
             static ManagedParameterProfiles()
             {
-                DataEventSystemFacade.SubscribeToDataAfterAdd<IParameter>((a, b) => ClearParametersCache(), true);
-                DataEventSystemFacade.SubscribeToDataAfterUpdate<IParameter>((a, b) => ClearParametersCache(), true);
-                DataEventSystemFacade.SubscribeToDataDeleted<IParameter>((a, b) => ClearParametersCache(), true);
+                DataEventSystemFacade.SubscribeToStoreChanged<IParameter>((a, b) => ClearParametersCache(), true);
             }
 
             public ManagedParameterProfiles(Guid ownerId)

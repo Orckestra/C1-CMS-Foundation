@@ -54,20 +54,11 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         static PageStructureInfo()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IPage>(OnPagesChanged, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IPage>(OnPagesChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IPage>(OnPagesChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IPageStructure>(OnPageStructureChanged, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IPageStructure>(OnPageStructureChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageStructure>(OnPageStructureChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterAdd<ISystemActiveLocale>(OnLocaleChanged, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<ISystemActiveLocale>(OnLocaleChanged, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<ISystemActiveLocale>(OnLocaleChanged, true);
-
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IHostnameBinding>((a, b) => ClearCachedData(), true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IHostnameBinding>((a, b) => ClearCachedData(), true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IHostnameBinding>((a, b) => ClearCachedData(), true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IUrlConfiguration>((a, b) => ClearCachedData(), true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPage>(OnPagesChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPageStructure>(OnPageStructureChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<ISystemActiveLocale>((a, b) => ClearCachedData(), true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IHostnameBinding>((a, b) => ClearCachedData(), true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUrlConfiguration>((a, b) => ClearCachedData(), true);
         }
 
 
@@ -666,12 +657,12 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
 
-        private static void OnPagesChanged(object sender, DataEventArgs args)
+        private static void OnPagesChanged(object sender, StoreEventArgs args)
         {
-            IncrementVersion(args.Data.DataSourceId.DataScopeIdentifier);
+            IncrementVersion(DataScopeIdentifier.FromPublicationScope(args.PublicationScope));
         }
 
-        private static void OnPageStructureChanged(object sender, DataEventArgs args)
+        private static void OnPageStructureChanged(object sender, StoreEventArgs args)
         {
             IncrementVersion(DataScopeIdentifier.Public);
             IncrementVersion(DataScopeIdentifier.Administrated);
@@ -682,20 +673,6 @@ namespace Composite.Core.WebClient.Renderings.Page
             var publicationScope = dataScopeIdentifier.ToPublicationScope();
 
             ClearCachedData(key => key.Item1 == publicationScope);
-        }
-
-        private static void OnLocaleChanged(object sender, DataEventArgs args)
-        {
-            var localeInfo = args.Data as ISystemActiveLocale;
-
-            if (localeInfo == null)
-            {
-                return;
-            }
-
-            CultureInfo cultureInfo = new CultureInfo(localeInfo.CultureName);
-
-            ClearCachedData(key => key.Item2 == cultureInfo.Name);
         }
 
          private static void ClearCachedData()

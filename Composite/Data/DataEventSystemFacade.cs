@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Web;
+using System.Globalization;
 using Composite.C1Console.Events;
+using Composite.Core.Caching;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Subscription = Composite.Core.Types.Pair<System.Delegate, bool>;
 using Subscriptions = Composite.Core.Collections.Generic.Hashtable<System.Type, System.Collections.Generic.List<Composite.Core.Types.Pair<System.Delegate, bool>>>;
-using Composite.Core.Caching;
 
 
 namespace Composite.Data
@@ -40,12 +40,6 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataEventSystemFacade
     {        
-      //  public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
-        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
-        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
-        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
-        //public delegate void StorageEventHandler(DataEventArgs dataEventArgs);
-
         /// <exclude />
         public delegate void DataAfterMoveDelegate(object sender, DataMoveEventArgs dataMoveEventArgs);
 
@@ -56,6 +50,7 @@ namespace Composite.Data
         private static readonly Subscriptions _dataDeletedEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataAfterBuildNewEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataAfterMoveEventDictionary = new Subscriptions();
+        private static readonly Subscriptions _storeChangedEventDictionary = new Subscriptions();
 
         private static readonly object _collectionAccesslock = new object();
 
@@ -241,12 +236,40 @@ namespace Composite.Data
 
 
         /// <exclude />
+        public static void SubscribeToStoreChanged(Type dataType, StoreEventHandler storeChangeDelegate, bool flushPersistent)
+        {
+            Verify.ArgumentNotNull(dataType, "dataType");
+            Verify.ArgumentNotNull(storeChangeDelegate, "storeChangeDelegate");
+
+            _storeChangedEventDictionary.Add(dataType, storeChangeDelegate, flushPersistent);
+        }
+
+
+        /// <exclude />
+        public static void SubscribeToStoreChanged<T>(StoreEventHandler storeChangeDelegate, bool flushPersistent)
+        {
+            SubscribeToStoreChanged(typeof(T), storeChangeDelegate, flushPersistent);
+        }
+
+
+
+        /// <exclude />
         public static void UnsubscribeToDataAfterAdd(Type dataType, DataEventHandler dataAfterAddDelegate)
         {
             if (dataType == null) throw new ArgumentNullException("dataType");
             if (dataAfterAddDelegate == null) throw new ArgumentNullException("dataAfterAddDelegate");
 
             _dataAfterAddEventDictionary.Remove(dataType, dataAfterAddDelegate);
+        }
+
+
+        /// <exclude />
+        public static void UnsubscribeToStoreChanged(Type dataType, StoreEventHandler storeChangeDelegate)
+        {
+            Verify.ArgumentNotNull(dataType, "dataType");
+            Verify.ArgumentNotNull(storeChangeDelegate, "storeChangeDelegate");
+
+            _storeChangedEventDictionary.Remove(dataType, storeChangeDelegate);
         }
 
 
@@ -452,6 +475,44 @@ namespace Composite.Data
             var args = new DataEventArgs(dataType, data);
 
             _dataAfterAddEventDictionary.Fire<DataEventHandler>(dataType, callback => callback(null, args));
+
+            FireStoreChangedEvent(dataType, data);
+        }
+
+
+        /// <summary>
+        /// Fire this when an external store has changed outside the process to notify subscribers to the StoreChangeEvent.  
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <param name="publicationScope"></param>
+        /// <param name="locale"></param>
+        internal static void FireExternalStoreChangedEvent(Type dataType, PublicationScope publicationScope, CultureInfo locale)
+        {
+            FireStoreChangedEvent(dataType, publicationScope, locale, false);
+        }
+
+
+        /// <summary>
+        /// Follow up event for intally fired events
+        /// </summary>
+        private static void FireStoreChangedEvent(Type dataType, IData data)
+        {
+            FireStoreChangedEvent(dataType, data.DataSourceId.DataScopeIdentifier.ToPublicationScope(), data.DataSourceId.LocaleScope, true);
+        }
+
+
+        /// <summary>
+        /// Call this indirectly. Use FireStoreChangedEvent or FireExternalStoreChangedEvent above.
+        /// </summary>
+        private static void FireStoreChangedEvent(Type dataType, PublicationScope publicationScope, CultureInfo locale, bool dataEventsFired)
+        {
+            var args = new StoreEventArgs(dataType, publicationScope, locale, dataEventsFired);
+
+            // switch to the scope where event is happening
+            using (DataConnection connection = new DataConnection(publicationScope, locale))
+            {
+                _storeChangedEventDictionary.Fire<StoreEventHandler>(dataType, callback => callback(null, args));
+            }
         }
 
 
@@ -486,6 +547,9 @@ namespace Composite.Data
             var args = new DataEventArgs(dataType, data);
 
             _dataAfterUpdateEventDictionary.Fire<DataEventHandler>(dataType, callback => callback(null, args));
+
+            FireStoreChangedEvent(dataType, data);
+
         }
 
 
@@ -502,6 +566,8 @@ namespace Composite.Data
         {
             var args = new DataEventArgs(dataType, data);
             _dataDeletedEventDictionary.Fire<DataEventHandler>(dataType, callback => callback(null, args));
+
+            FireStoreChangedEvent(dataType, data);
         }
 
 
@@ -533,6 +599,9 @@ namespace Composite.Data
         {
             var args = new DataMoveEventArgs(dataType, data, targetDataScopeIdentifier);
             _dataAfterMoveEventDictionary.Fire<DataAfterMoveDelegate>(dataType, callback => callback(null, args));
+
+            FireStoreChangedEvent(dataType, data);
+            FireStoreChangedEvent(dataType, targetDataScopeIdentifier.ToPublicationScope(), data.DataSourceId.LocaleScope, false);
         }
 
 
@@ -572,7 +641,8 @@ namespace Composite.Data
                                       _dataAfterUpdateEventDictionary,
                                       _dataDeletedEventDictionary,
                                       _dataAfterBuildNewEventDictionary,
-                                      _dataAfterMoveEventDictionary
+                                      _dataAfterMoveEventDictionary,
+                                      _storeChangedEventDictionary
                                   };
 
             foreach (var dictionary in dictionaries)

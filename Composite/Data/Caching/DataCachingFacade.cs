@@ -15,7 +15,10 @@ using Composite.Core.Types;
 
 namespace Composite.Data.Caching
 {
-    internal static class DataCachingFacade
+    /// <summary>
+    /// Provide information about data caching and means to flush data from the active cache.
+    /// </summary>
+    public static class DataCachingFacade
     {
         private static readonly string CacheName = "DataAccess";
         private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
@@ -32,6 +35,9 @@ namespace Composite.Data.Caching
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
+        /// <summary>
+        /// Gets a value indicating if data caching is enabled
+        /// </summary>
         public static bool Enabled
         {
             get
@@ -41,6 +47,11 @@ namespace Composite.Data.Caching
         }
 
 
+        /// <summary>
+        /// Gets a value indicating if data caching is possible for a specific data type
+        /// </summary>
+        /// <param name="interfaceType">The data type to check</param>
+        /// <returns>True if caching is possible</returns>
         public static bool IsTypeCacheble(Type interfaceType)
         {
             DataTypeDescriptor dataTypeDescriptor;
@@ -52,13 +63,21 @@ namespace Composite.Data.Caching
                     && dataTypeDescriptor.Cachable));
         }
 
+
+        /// <summary>
+        /// Gets a value indicating if data caching is enabled for a specific data type
+        /// </summary>
+        /// <param name="interfaceType">The data type to check</param>
+        /// <returns>True if caching is enabled</returns>
         public static bool IsDataAccessCacheEnabled(Type interfaceType)
         {
             return IsTypeCacheble(interfaceType) && !_disabledTypes.ContainsKey(interfaceType);
         }
 
 
-        public static IQueryable<T> GetDataFromCache<T>()
+
+        /// <exclude />
+        internal static IQueryable<T> GetDataFromCache<T>()
             where T : class, IData
         {
             Verify.That(_isEnabled, "The cache is disabled.");
@@ -148,6 +167,8 @@ namespace Composite.Data.Caching
             return new CachingQueryable<T>(typedData, originalQueryGetter);
         }
 
+
+        
         private static bool DataProvidersSupportDataWrapping(Type T)
         {
             var providerNames = DataProviderRegistry.GetDataProviderNamesByInterfaceType(T);
@@ -162,8 +183,10 @@ namespace Composite.Data.Caching
         }
 
 
+
+        /// <exclude />
         [Obsolete("This method isn't used any more.")]
-        public static T GetDataFromCache<T>(DataSourceId dataSourceId)
+        internal static T GetDataFromCache<T>(DataSourceId dataSourceId)
             where T : class, IData
         {
             List<T> datas =
@@ -185,12 +208,22 @@ namespace Composite.Data.Caching
         }
 
 
+        /// <summary>
+        /// Flush cached data for a data type in the current data scope.
+        /// </summary>
+        /// <param name="interfaceType">The type of data to flush from the cache</param>
         public static void ClearCache(Type interfaceType)
         {
             ClearCache(interfaceType, null);
         }
 
 
+
+        /// <summary>
+        /// Flush cached data for a data type in the specified data scope.
+        /// </summary>
+        /// <param name="interfaceType">The type of data to flush from the cache</param>
+        /// <param name="dataScopeIdentifier">The data scope to flush</param>
         public static void ClearCache(Type interfaceType, DataScopeIdentifier dataScopeIdentifier)
         {
             using (_resourceLocker.Locker)
@@ -214,6 +247,7 @@ namespace Composite.Data.Caching
                 }
             }
         }
+
 
 
         /// <summary>

@@ -50,16 +50,11 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             _storeTitle = storeTitle;
             _storeDescription = storeDescription;
 
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IMediaFileData>(ClearQueryCache, false);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IMediaFileData>(ClearQueryCache, false);
-            DataEventSystemFacade.SubscribeToDataDeleted<IMediaFileData>(ClearQueryCache, false);
-
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IMediaFolderData>(ClearQueryCache, false);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IMediaFolderData>(ClearQueryCache, false);
-            DataEventSystemFacade.SubscribeToDataDeleted<IMediaFolderData>(ClearQueryCache, false);
+            DataEventSystemFacade.SubscribeToStoreChanged<IMediaFileData>(ClearQueryCache, false);
+            DataEventSystemFacade.SubscribeToStoreChanged<IMediaFolderData>(ClearQueryCache, false);
         }
 
-        private void ClearQueryCache(object sender, DataEventArgs dataeventargs)
+        private void ClearQueryCache(object sender, StoreEventArgs storeEventArgs)
         {
             lock (_syncRoot)
             {

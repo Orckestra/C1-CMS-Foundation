@@ -26,6 +26,8 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IUserGroupPermissionDefinition>(OnUserGroupPermissionChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IUserGroupPermissionDefinition>(OnUserGroupPermissionStoreChanged, true);
+            
         }
 
 
@@ -135,6 +137,15 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
             }
         }
 
+
+
+        private static void OnUserGroupPermissionStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                _permissionCache.Clear();
+            }
+        }
 
 
         private static void OnUserGroupPermissionChanged(object sender, DataEventArgs args)

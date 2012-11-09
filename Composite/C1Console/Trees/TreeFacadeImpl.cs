@@ -55,6 +55,7 @@ namespace Composite.C1Console.Trees
                 {
                     DataEventSystemFacade.SubscribeToDataAfterAdd<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
                     DataEventSystemFacade.SubscribeToDataDeleted<IDataItemTreeAttachmentPoint>(OnUpdateTreeAttachmentPoints, true);
+                    DataEventSystemFacade.SubscribeToStoreChanged<IDataItemTreeAttachmentPoint>(OnTreeAttachmentPointsStoreChange, true);
 
                     GeneratedTypesFacade.SubscribeToUpdateTypeEvent(OnDataTypeChanged);
 
@@ -412,6 +413,14 @@ namespace Composite.C1Console.Trees
             return tree;
         }
 
+
+        private void OnTreeAttachmentPointsStoreChange(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                InitializeTreeAttachmentPoints();
+            }
+        }
 
 
         private void OnUpdateTreeAttachmentPoints(object sender, DataEventArgs dataEventArgs)

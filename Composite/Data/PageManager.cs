@@ -206,6 +206,14 @@ namespace Composite.Data
             return id + dataScope + localizationInfo;
         }
 
+        private static void OnPageStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                _pageCache.Clear();
+            }
+        }
+
         private static void OnPageChanged(object sender, DataEventArgs args)
         {
             IPage page = args.Data as IPage;
@@ -217,6 +225,15 @@ namespace Composite.Data
             _pageCache.Remove(GetCacheKey(page.Id, page.DataSourceId));
         }
 
+
+        private static void OnPagePlaceholderStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                _placeholderCache.Clear();
+            }
+        }
+
         private static void OnPagePlaceholderChanged(object sender, DataEventArgs args)
         {
             var placeHolder = args.Data as IPagePlaceholderContent;
@@ -226,6 +243,16 @@ namespace Composite.Data
             }
 
             _placeholderCache.Remove(GetCacheKey(placeHolder.PageId, placeHolder.DataSourceId));
+        }
+
+
+        private static void OnPageStructureStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                _pageStructureCache.Clear();
+                _childrenCache.Clear();
+            }
         }
 
         private static void OnPageStructureChanged(object sender, DataEventArgs args)
@@ -250,14 +277,18 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataDeleted<IPagePlaceholderContent>(OnPagePlaceholderChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IPagePlaceholderContent>(OnPagePlaceholderChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<IPagePlaceholderContent>(OnPagePlaceholderChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPagePlaceholderContent>(OnPagePlaceholderStoreChanged, true);
 
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IPage>(OnPageChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterAdd<IPage>(OnPageChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IPage>(OnPageChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPage>(OnPageStoreChanged, true);
 
             DataEventSystemFacade.SubscribeToDataAfterAdd<IPageStructure>(OnPageStructureChanged, true);
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageStructure>(OnPageStructureChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IPageStructure>(OnPageStructureChanged, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPageStructure>(OnPageStructureStoreChanged, true);
+            
         }
 
         #endregion Private

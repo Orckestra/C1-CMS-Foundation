@@ -105,6 +105,24 @@ namespace Composite.Core.Implementation
         /// Implementation pending
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        public virtual event StoreEventHandler OnStoreChanged
+        {
+            add
+            {
+                DataEventSystemFacade.SubscribeToStoreChanged<TData>(value, true);
+            }
+            remove
+            {
+                DataEventSystemFacade.UnsubscribeToStoreChanged(typeof(TData), value);
+            }
+        }
+
+
+
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         public virtual event DataEventHandler OnNew
         {
             add

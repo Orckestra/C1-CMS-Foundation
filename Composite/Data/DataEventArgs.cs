@@ -5,7 +5,7 @@ using Composite.Core.Extensions;
 namespace Composite.Data
 {
     /// <summary>
-    /// This class contains information for several data events.
+    /// This class contains information for data events. See also <see cref="Composite.Data.StoreEventsArgs"/>.
     /// </summary>
     public class DataEventArgs : EventArgs
     {

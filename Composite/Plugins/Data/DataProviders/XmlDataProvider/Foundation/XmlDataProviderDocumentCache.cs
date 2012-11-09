@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
@@ -12,7 +14,6 @@ using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
-using Composite.Core;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
@@ -60,8 +61,35 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static HashSet<string> _watchedFiles = new HashSet<string>();
         private static readonly object _cacheSyncRoot = new object();
         private static readonly object _documentEditingSyncRoot = new object();
+        private static readonly List<KeyValuePair<string, Action>> _externalFileChangeActions = new List<KeyValuePair<string, Action>>();
 
         private static readonly TimeSpan AcceptableNotificationDelay = TimeSpan.FromSeconds(1.0);
+
+        static XmlDataProviderDocumentCache()
+        {
+            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+        }
+
+        /// <summary>
+        /// Register an action that will be invoked on external file changes (new file copied in or file edited by external process).
+        /// On Flush system event registrations are cleared and you should reregister.
+        /// </summary>
+        /// <param name="filename">File path</param>
+        /// <param name="action">Action to execute on external changes</param>
+        internal static void RegisterExternalFileChangeAction(string filename, Action action)
+        {
+            string key = filename.ToLowerInvariant();
+
+            _externalFileChangeActions.Add(new KeyValuePair<string,Action>( key, action));
+        }
+
+
+        private static void OnFlushEvent(FlushEventArgs args)
+        {
+            _externalFileChangeActions.Clear();
+        }
+
+
 
 
         private static void EnsureFileChangesSubscription(string filename)
@@ -85,7 +113,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 FileChangeNotificator.Subscribe(filename, OnFileExternallyChanged);
             }
         }
-
+        
         private static void OnFileExternallyChanged(string filePath, FileChangeType changeType)
         {
             filePath = filePath.ToLowerInvariant();
@@ -117,6 +145,20 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
 
                     _cache.Remove(filePath);
+
+                    Log.LogVerbose(LogTitle, "File '{0}' changed by another process. Flushing cache.", filePath);
+
+                    if (_externalFileChangeActions.Any(f => f.Key == filePath))
+                    {
+                        foreach (var action in _externalFileChangeActions.Where(f => f.Key == filePath).Select(f=>f.Value))
+                        {
+                            action.Invoke();
+                        }
+                    }
+                    else
+                    {
+                        Log.LogWarning(LogTitle, "File '{0}' has not been related to a scope - unable to raise store change event", filePath);
+                    }
                 }
             }
         }

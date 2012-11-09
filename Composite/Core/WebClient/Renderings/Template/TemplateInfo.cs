@@ -26,8 +26,17 @@ namespace Composite.Core.WebClient.Renderings.Template
         static TemplateInfo() {
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IXmlPageTemplate>(PageTemplate_Changed, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IXmlPageTemplate>(PageTemplate_Changed, true);
-	    }
+            DataEventSystemFacade.SubscribeToStoreChanged<IXmlPageTemplate>(PageTemplate_StoreChanged, true);
+        }
 
+
+        private static void PageTemplate_StoreChanged(object sender, StoreEventArgs storeEventArgs)
+	    {
+            if (!storeEventArgs.DataEventsFired)
+            {
+                PageTemplateCache.Clear();
+            }
+	    }
 
         private static void PageTemplate_Changed(object sender, DataEventArgs dataEventArgs)
 	    {

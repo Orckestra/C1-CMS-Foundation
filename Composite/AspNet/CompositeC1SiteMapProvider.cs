@@ -343,19 +343,11 @@ namespace Composite.AspNet
         /// <exclude />
         public override void Initialize(string name, NameValueCollection attributes)
         {
-            DataEventHandler handler = (sender, e) => SiteMapContainer.ClearCache();
+            StoreEventHandler handler = (sender, e) => SiteMapContainer.ClearCache();
 
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IPage>(handler, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IPage>(handler, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IPage>(handler, true);
-
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IPageStructure>(handler, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageStructure>(handler, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<IPageStructure>(handler, true);
-
-            DataEventSystemFacade.SubscribeToDataAfterAdd<ISystemActiveLocale>(handler, true);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<ISystemActiveLocale>(handler, true);
-            DataEventSystemFacade.SubscribeToDataDeleted<ISystemActiveLocale>(handler, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPage>(handler, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<IPageStructure>(handler, true);
+            DataEventSystemFacade.SubscribeToStoreChanged<ISystemActiveLocale>(handler, true);
 
             if (attributes != null)
             {

@@ -3,7 +3,7 @@
 namespace Composite.Data
 {
     /// <summary>    
-    /// The event handle type for several storage events.
+    /// The event handle type for detailed data change events which fire in-process. See also 
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="dataEventArgs"></param>    

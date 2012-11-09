@@ -46,10 +46,9 @@ namespace Composite.Data.Caching
             return type.FullName + " " + dataScopeIdentifier.Name + " " + cultureInfo.Name;
         }
 
-        private static void IncreaseTableVersion(Type type, IData data)
+        private static void IncreaseTableVersion(Type type, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale)
         {
-            var dataSourceId = data.DataSourceId;
-            string key =  GetKey(type, dataSourceId.DataScopeIdentifier, dataSourceId.LocaleScope);
+            string key =  GetKey(type, dataScopeIdentifier, locale);
 
             lock (_versionNumbers)
             {
@@ -74,9 +73,7 @@ namespace Composite.Data.Caching
                     {
                         _subscribedTo.Add(type);
 
-                        DataEventSystemFacade.SubscribeToDataAfterAdd(type, (sender, dataEventArgs) => IncreaseTableVersion(type, dataEventArgs.Data), false);
-                        DataEventSystemFacade.SubscribeToDataAfterUpdate(type, (sender, dataEventArgs) => IncreaseTableVersion(type, dataEventArgs.Data), false);
-                        DataEventSystemFacade.SubscribeToDataDeleted(type, (sender, dataEventArgs) => IncreaseTableVersion(type, dataEventArgs.Data), false);
+                        DataEventSystemFacade.SubscribeToStoreChanged(type, (sender, storeEventArgs) => IncreaseTableVersion(type, DataScopeIdentifier.FromPublicationScope(storeEventArgs.PublicationScope), storeEventArgs.Locale), false);
                     }
                 }
             }

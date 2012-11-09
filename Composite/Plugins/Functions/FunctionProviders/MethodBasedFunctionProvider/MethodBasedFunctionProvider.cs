@@ -80,7 +80,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
+        private void OnDataChanged(object sender, EventArgs eventArgs)
         {
             // Checking for null since it is possible that event will be raised before the provider is fully initialized
             if (_functionNotifier != null)
@@ -103,7 +103,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         private sealed class ChangeEventsSingleton
         {
             public readonly object SyncRoot = new object();
-            public event DataEventHandler DataChangedEvent;
+            public event EventHandler DataChangedEvent;
             public event FileSystemEventHandler FileChangedEvent;
 
             private readonly C1FileSystemWatcher _codeDirectoryFileSystemWatcher;
@@ -112,10 +112,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             private ChangeEventsSingleton()
             {
-                DataEventSystemFacade.SubscribeToDataAfterAdd<IMethodBasedFunctionInfo>(OnDataChanged, true);
-                DataEventSystemFacade.SubscribeToDataDeleted<IMethodBasedFunctionInfo>(OnDataChanged, true);
-                DataEventSystemFacade.SubscribeToDataAfterUpdate<IMethodBasedFunctionInfo>(OnDataChanged, true);
+                DataEventSystemFacade.SubscribeToStoreChanged<IMethodBasedFunctionInfo>(OnDataChanged, true);
                 DataEventSystemFacade.SubscribeToDataDeleted<IInlineFunction>(OnDataChanged, true);
+                DataEventSystemFacade.SubscribeToStoreChanged<IInlineFunction>(OnStoreChanged, true);
 
                 string folderToWatch = PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory);
 
@@ -156,12 +155,26 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 }
             }
 
-            private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
+
+            private void OnStoreChanged(object sender, StoreEventArgs storeEventArgs)
             {
-                DataEventHandler hander = DataChangedEvent;
+                if (!storeEventArgs.DataEventsFired)
+                {
+                    EventHandler hander = DataChangedEvent;
+                    if (hander != null)
+                    {
+                        hander(sender, storeEventArgs);
+                    }
+                }
+            }
+
+
+            private void OnDataChanged(object sender, EventArgs eventArgs)
+            {
+                EventHandler hander = DataChangedEvent;
                 if (hander != null)
                 {
-                    hander(sender, dataEventArgs);
+                    hander(sender, eventArgs);
                 }
             }
 

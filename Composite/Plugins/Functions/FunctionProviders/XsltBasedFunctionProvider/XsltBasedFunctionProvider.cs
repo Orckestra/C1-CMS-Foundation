@@ -54,9 +54,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
         /// <exclude />
         public XsltBasedFunctionProvider()
         {
-            DataEventSystemFacade.SubscribeToDataAfterAdd<IXsltFunction>(OnDataChanged, false);
-            DataEventSystemFacade.SubscribeToDataDeleted<IXsltFunction>(OnDataChanged, false);
-            DataEventSystemFacade.SubscribeToDataAfterUpdate<IXsltFunction>(OnDataChanged, false);
+            DataEventSystemFacade.SubscribeToStoreChanged<IXsltFunction>(OnDataChanged, false);
         }
 
 
@@ -93,7 +91,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
 
 
-        private void OnDataChanged(object sender, DataEventArgs dataEventArgs)
+        private void OnDataChanged(object sender, StoreEventArgs storeEventArgs)
         {
             _functionNotifier.FunctionsUpdated();
         }

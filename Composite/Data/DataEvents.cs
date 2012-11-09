@@ -4,9 +4,50 @@
 namespace Composite.Data
 {
     /// <summary>
-    /// This class contains all the event fired by C1 when changes are made 
-    /// to data items. 
+    /// This class contains all the event fired by Composite C1 when changes are made to data items. 
+    /// 
+    /// Use <see cref="Composite.Data.DataEvents&lt;TData&gt;.OnStoreChanged"/> to catch any data change event, including events originating from other servers in a load balance setup
+    /// or changes made directly to a store (which Composite C1 can detect). This event do not contain details about the specific data item changed and is raised after the fact.
+    /// 
+    /// Use the more detailed operations to catch data events that happen in the current website process. The 'OnBefore' events enable you to manipulate data before they are stored. 
+    /// The 'OnAfter' events let you react to data changes in detail, for instance updating a cache.
+    /// 
+    /// A combination of <see cref="Composite.Data.DataEvents&lt;TData&gt;.OnStoreChanged"/> and the detailed data events can be used to create a highly optimized cache.
     /// </summary>
+    /// <example>
+    /// <code>
+    /// void MyMethod()
+    /// {
+    ///    DataEvents&lt;IMyDataType&gt;.OnBeforeAdd += new DataEventHandler(DataEvents_OnBeforeAdd);
+    ///    DataEvents&lt;IMyDataType&gt;.OnStoreChanged += new StoreEventHandler(DataEvents_OnStoreChanged);
+    ///    
+    ///    using (DataConnection connection = new DataConnection())
+    ///    {
+    ///       IMyDataType myDataType = DataConnection.New&lt;IMyDataType&gt;();
+    ///       myDataType.Name = "Foo";
+    ///       
+    ///       connection.Add&lt;IMyDataType&gt;(myDataType); // This will fire both of the the events in the local process!
+    ///       // if other servers share data store with this site they will see OnStoreChanged fire.
+    ///    }
+    /// }
+    /// 
+    /// 
+    /// void DataEvents_OnBeforeAdd(object sender, DataEventArgs dataEventArgs)
+    /// {        
+    ///     // here a minor update to the cache could be done (like adding info about the new element only).
+    /// }
+    /// 
+    /// 
+    /// void DataEvents_OnStoreChanged(object sender, StoreEventArgs storeEventArgs)
+    /// {        
+    ///     if (!storeEventArgs.DataEventsFired)
+    ///     {
+    ///         // an external update event happened - DataEvents_OnBeforeAdd not fired
+    ///         // here a complete cache flush could be done
+    ///     }
+    /// }
+    /// </code>
+    /// </example>
     /// <typeparam name="TData">Data type to attach events to</typeparam>
     public static class DataEvents<TData>
         where TData : class, IData
@@ -221,6 +262,22 @@ namespace Composite.Data
             remove
             {
                 ImplementationFactory.CurrentFactory.CreateStatelessDataEvents<TData>().OnDeleted -= value;
+            }
+        }
+
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
+        public static event StoreEventHandler OnStoreChanged
+        {
+            add
+            {
+                ImplementationFactory.CurrentFactory.CreateStatelessDataEvents<TData>().OnStoreChanged += value;
+            }
+            remove
+            {
+                ImplementationFactory.CurrentFactory.CreateStatelessDataEvents<TData>().OnStoreChanged -= value;
             }
         }
 
