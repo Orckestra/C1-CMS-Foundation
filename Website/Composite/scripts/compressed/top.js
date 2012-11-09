@@ -29333,7 +29333,7 @@ break;
 }else{
 if(!Application.isOffLine&&!Application.isLoggedOut){
 var text=_11b9.responseText;
-if(text.indexOf("id=\"offline\"")>-1){
+if(_11b9.status==503||text.indexOf("id=\"offline\"")>-1){
 _11bb=true;
 }else{
 var cry="Invalid SOAP response: \n\n"+_11b9.responseText;
