@@ -53,7 +53,7 @@ namespace Composite.Data
         where TData : class, IData
     {
         /// <summary>
-        /// This event is fired just before a data item is added to the C1 store.
+        /// This event is fired just before a data item is added to the Composite C1 data store.
         /// See <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -94,7 +94,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just after a data item has been added to the C1 store.
+        /// This event is fired just after a data item has been added to the Composite C1 data store.
         /// See <see cref="Composite.Data.DataConnection.Add&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -135,7 +135,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just before a data item is updated in the C1 store.
+        /// This event is fired just before a data item is updated in the Composite C1 data store.
         /// See <see cref="Composite.Data.DataConnection.Update&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -180,7 +180,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just after a data item has been added in the C1 store.
+        /// This event is fired just after a data item has been updated in the Composite C1 data store.
         /// See <see cref="Composite.Data.DataConnection.Update&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -225,7 +225,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// This event is fired just before a data item is deleted from the C1 store.
+        /// This event is fired after a data item has been deleted from the Composite C1 data store.
         /// See <see cref="Composite.Data.DataConnection.Delete&lt;TData&gt;(TData)"/>
         /// </summary>
         /// <example>
@@ -267,6 +267,40 @@ namespace Composite.Data
 
 
 
+        /// <summary>
+        /// This event is fired after changes has happened to the Composite C1 data store. This may be atomic actions or a larger change to the underlying
+        /// data store. The <see cref="Composite.Data.StoreEventArgs"/> class describe the change in broad terms, including a flag indicating is detailed data
+        /// event have been raised or not. 
+        /// 
+        /// You can use this event as a simple way to react to data changes (like clearing a cache) or you can mix this with atomic data events (add, delete, update)
+        /// to make a build a more advanced cache.
+        /// 
+        /// You should listen to this event in order to support scale out across multiple servers, since this event is meant to be signaled when changes happen
+        /// on another server. In such situations detailed data events will not fire on other machines.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// void MyMethod()
+        /// {
+        ///    DataEvents&lt;IMyDataType&gt;.OnStoreChanged+= new StoreEventHandler(DataEvents_OnStoreChanged);
+        ///    
+        ///    using (DataConnection connection = new DataConnection())
+        ///    {
+        ///       IMyDataType myDataType = 
+        ///          (from item in connection.get&lt;IMyDataType&gt;()
+        ///           where item.Id == 1
+        ///           select item).First();
+        ///           
+        ///       connection.Delete&lt;IMyDataType&gt;(myDataType); // This will fire the event!
+        ///    }
+        /// }
+        /// 
+        /// 
+        /// void DataEvents_OnStoreChanged(object sender, StoreEventArgs storeEventArgs)
+        /// {        
+        /// }
+        /// </code>
+        /// </example>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1009:DeclareEventHandlersCorrectly", Justification = "We had to be backwards compatible")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1000:DoNotDeclareStaticMembersOnGenericTypes", Justification = "We had to be backwards compatible")]
         public static event StoreEventHandler OnStoreChanged
