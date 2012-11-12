@@ -17,11 +17,20 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             if (filter == null)
             {
                 _fileSystemWatcher = new FileSystemWatcher(path);
+                _fileSystemWatcher.InternalBufferSize = 32768;
             }
             else
             {
                 _fileSystemWatcher = new FileSystemWatcher(path, filter);
             }
+            var buf = _fileSystemWatcher.InternalBufferSize;
+
+            _fileSystemWatcher.Error += new ErrorEventHandler(_fileSystemWatcher_Error);
+        }
+
+        void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
+        {
+            Composite.Core.Log.LogWarning("LocalC1FileSystemWatcher", e.GetException());
         }
 
 
