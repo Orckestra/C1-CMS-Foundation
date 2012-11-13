@@ -913,7 +913,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             bool hasChildren = PageServices.GetChildrenCount(page.Id) > 0 || _pageAccociatedHelper.HasChildren(page);
 
             visualizedElement.HasChildren = hasChildren;
-            visualizedElement.Label = page.Title;
+            visualizedElement.Label = (string.IsNullOrWhiteSpace(page.MenuTitle) ? page.Title : page.MenuTitle);
             visualizedElement.ToolTip = page.Description;
 
             if (pageLocaleState == PageLocaleState.Own)
