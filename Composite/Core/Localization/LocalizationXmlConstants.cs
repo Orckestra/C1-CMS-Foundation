@@ -1,4 +1,6 @@
-﻿namespace Composite.Core.Localization
+﻿using Composite.Core.Xml;
+
+namespace Composite.Core.Localization
 {
     /// <summary>    
     /// </summary>
@@ -7,6 +9,6 @@
     public static class LocalizationXmlConstants
     {
         /// <exclude />
-        public static string XmlNamespace { get { return "http://www.composite.net/ns/localization/1.0"; } }
+        public static string XmlNamespace { get { return Namespaces.Localization10.ToString(); } }
     }
 }

@@ -173,7 +173,7 @@ namespace Composite.Services
             }
         }
 
-		private static List<XName> paragraphList = new List<XName>(){
+        private static List<XName> paragraphList = new List<XName>(){
 				Namespaces.Xhtml + "p",
 				Namespaces.Xhtml + "h1",
 				Namespaces.Xhtml + "h2",
@@ -181,24 +181,24 @@ namespace Composite.Services
 				Namespaces.Xhtml + "h4",
 				Namespaces.Xhtml + "h5",
 				Namespaces.Xhtml + "h6"};
-		
-		private static bool IsFunctionAloneInParagraph(XElement element)
-		{
-			if(element.ElementsBeforeSelf().Where(d=> d.Name != Namespaces.Xhtml + "br").Any())
-				return false;
-			if(element.ElementsAfterSelf().Where(d=> d.Name != Namespaces.Xhtml + "br").Any())
-				return false;
-			if(!paragraphList.Contains(element.Parent.Name))
-				return false;
-			if(element.Parent.Value.Replace("&#160;", "").Trim() != string.Empty)
-				return false;
-			return true;
 
-		}
+        private static bool IsFunctionAloneInParagraph(XElement element)
+        {
+            if (element.ElementsBeforeSelf().Where(d => d.Name != Namespaces.Xhtml + "br").Any())
+                return false;
+            if (element.ElementsAfterSelf().Where(d => d.Name != Namespaces.Xhtml + "br").Any())
+                return false;
+            if (!paragraphList.Contains(element.Parent.Name))
+                return false;
+            if (element.Parent.Value.Replace("&#160;", "").Trim() != string.Empty)
+                return false;
+            return true;
+
+        }
 
         private static string FixXhtmlFragment(string xhtmlFragment)
         {
-            xhtmlFragment = Regex.Replace(xhtmlFragment, @"(\s)\r\n</script>", "$1</script>", RegexOptions.Multiline); 
+            xhtmlFragment = Regex.Replace(xhtmlFragment, @"(\s)\r\n</script>", "$1</script>", RegexOptions.Multiline);
             return xhtmlFragment.Replace("\xA0", "&#160;").Replace("&nbsp;", "&#160;");
         }
 
@@ -236,7 +236,7 @@ namespace Composite.Services
                 IEnumerable<XElement> functionRoots = xml
                     .Descendants(Namespaces.Function10 + "function")
                     .Where(f => f.Ancestors(Namespaces.Function10 + "function").Any() == false);
-                
+
                 foreach (var functionElement in functionRoots.ToList())
                 {
                     functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement));
@@ -265,6 +265,13 @@ namespace Composite.Services
                 {
                     unHandledHtmlElement.ReplaceWith(GetImageTagForHtmlElement(unHandledHtmlElement));
                 }
+
+                IEnumerable<XElement> langElements = xml.Descendants().Where(f => f.Name.Namespace == Namespaces.Localization10);
+                foreach (var langElement in langElements.ToList())
+                {
+                    langElement.ReplaceWith(GetImageTagForLangElement(langElement));
+                }
+
 
                 Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
                 xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
@@ -360,6 +367,77 @@ namespace Composite.Services
                 );
         }
 
+        /*
+                <lang:switch xmlns:lang="http://www.composite.net/ns/localization/1.0">
+                    <lang:when culture="da-DK">DK<img src="/dk-logo.png" title="Dansk logo" /></lang:when>
+                    <lang:when culture="en-US">EN<img src="/us-logo.png" title="American logo" /></lang:when>
+                    <lang:default>No logo available</lang:default>
+                </lang:switch>
+
+        */
+        private XElement GetImageTagForLangElement(XElement element)
+        {
+            XName switchName = Namespaces.Localization10 + "switch";
+            XName stringName = Namespaces.Localization10 + "string";
+
+            string title = "Language specific block";
+            StringBuilder description = new StringBuilder();
+
+            try
+            {
+
+                if (element.Name == stringName)
+                {
+                    description.AppendLine(element.Attribute("key").Value);
+                }
+
+                if (element.Name == switchName)
+                {
+                    foreach (var option in element.Elements().Where(e => e.Name.Namespace == Namespaces.Localization10))
+                    {
+                        int toGrab = Math.Min(35, option.Value.Length);
+                        string elipsis = (option.Value.Length > 35 ? "..." : "");
+                        string descriptionContent = string.Format("{0}{1}",
+                                option.Value.Substring(0, toGrab),
+                                elipsis);
+
+                        if (String.IsNullOrWhiteSpace(option.Value) && option.Nodes().Any())
+                        {
+                            description.Append("(html code)");
+                        }
+
+                        switch (option.Name.LocalName)
+                        {
+                            case "when":
+                                description.AppendFormat("{0}: {1}",
+                                    option.Attribute("culture").Value,
+                                    descriptionContent);
+                                break;
+                            case "default":
+                                description.AppendLine();
+                                description.AppendFormat("Default: {0}",
+                                    descriptionContent);
+                                break;
+                            default:
+                                break;
+                        }
+                        description.AppendLine("\n\n\n\n\n\n"); /* wtf - do I need this? */
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                description.AppendLine("[ ERROR PARSING MARKUP ]");
+            }
+
+            string imageUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description.ToString()));
+
+            return new XElement(Namespaces.Xhtml + "img",
+                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+                new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
+                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
+                );
+        }
 
 
 
@@ -471,7 +549,7 @@ namespace Composite.Services
                         }
                     }
                 }
-                if(setParams.Count > 10)
+                if (setParams.Count > 10)
                 {
                     description += string.Format("\n....");
                 }

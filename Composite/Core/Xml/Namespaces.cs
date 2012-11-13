@@ -15,6 +15,7 @@ namespace Composite.Core.Xml
             Namespaces.BindingFormsStdFuncLib10 = "http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0";
             Namespaces.Function10 = "http://www.composite.net/ns/function/1.0";
             Namespaces.Rendering10 = "http://www.composite.net/ns/rendering/1.0";
+            Namespaces.Localization10 = "http://www.composite.net/ns/localization/1.0";
             Namespaces.DynamicData10 = "http://www.composite.net/ns/dynamicdata/1.0";
 
             Namespaces.AspNetControls = "http://www.composite.net/ns/asp.net/controls";
@@ -45,6 +46,9 @@ namespace Composite.Core.Xml
 
         /// <exclude />
         public static XNamespace Rendering10 { get; private set; }
+
+        /// <exclude />
+        public static XNamespace Localization10 { get; private set; }
 
         /// <exclude />
         public static XNamespace AspNetControls { get; private set; }
