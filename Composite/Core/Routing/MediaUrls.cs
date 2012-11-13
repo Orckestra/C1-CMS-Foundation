@@ -8,6 +8,8 @@ using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Core.IO;
+using System.IO;
 
 namespace Composite.Core.Routing
 {
@@ -245,7 +247,12 @@ namespace Composite.Core.Routing
         private static string RemoveForbiddenCharactersAndNormalize(string path)
         {
             // Replacing dots with underscores, so IIS will not intercept requests in some scenarios
-            path = path.Replace(".", "_");
+            
+            string extension = Path.GetExtension(path);
+            if (!MimeTypeInfo.IsIisServable(extension))
+            {
+                path = path.Replace(".", "_");
+            }
 
             foreach (var ch in ForbiddenUrlCharacters)
             {

@@ -25,6 +25,8 @@ namespace Composite.Core.IO
         private static readonly IDictionary<string, string> _toCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _extensionToCanonical = new Dictionary<string, string>();
         private static readonly IDictionary<string, string> _mimeTypeToResourceName = new Dictionary<string, string>();
+        private static readonly IDictionary<string, bool> _iisServableExtensions = new Dictionary<string, bool>();
+
 
         private static readonly MethodInfo _getMimeMappingMethodInfo;
 
@@ -32,6 +34,13 @@ namespace Composite.Core.IO
             new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
                                MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, 
                                MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml };
+
+        // file types we don't expect IIS to block
+        private static List<string> _iisServableTypes =
+            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
+                               MimeTypeInfo.Asf, MimeTypeInfo.Avi, MimeTypeInfo.Bmp, MimeTypeInfo.Director, MimeTypeInfo.Flash,
+                               MimeTypeInfo.Flv, MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.QuickTime, 
+                               MimeTypeInfo.Tiff, MimeTypeInfo.Wmv };
 
         private static ResourceHandle GetIconHandle(string name)
         {
@@ -357,6 +366,10 @@ namespace Composite.Core.IO
                 {
                     Log.LogWarning(typeof(MimeTypeInfo).Name, "MimeType for extension '{0}' has already been defined", extension);
                 }
+                else
+	            {
+                    _iisServableTypes.Add(mimeType);
+	            }
             }
 	    }
 
@@ -468,5 +481,40 @@ namespace Composite.Core.IO
 
             return canonicalMimeType.StartsWith("text") || _textMimeTypes.Contains(canonicalMimeType);
         }
-	}
+
+
+        /// <summary>
+        /// Indicates whether a file of a specific extension is expected to be allowed by IIS
+        /// </summary>
+        /// <param name="mimeType"></param>
+        /// <returns></returns>
+        internal static bool IsIisServable(string extension)
+        {
+            extension = extension.ToLowerInvariant();
+
+            if (extension.StartsWith("."))
+            {
+                extension = extension.Substring(1);
+            }
+
+            if (_iisServableExtensions.ContainsKey(extension))
+            {
+                return _iisServableExtensions[extension];
+            }
+            else
+            {
+                lock (_iisServableExtensions)
+                {
+                    string mimeType = GetCanonicalFromExtension(extension);
+                    bool servable = _iisServableTypes.Contains(mimeType);
+                    if (!_iisServableExtensions.ContainsKey(extension))
+                    {
+                        _iisServableExtensions.Add(extension, servable);
+                    }
+                    return servable;
+                }
+            }
+
+        }
+    }
 }
