@@ -21,8 +21,8 @@
 					<ui:toolbarbody>
 						<ui:toolbargroup>
 							<aspui:Selector runat="server" ID="Pager" AutoPostBack="true" OnSelectedIndexChanged="LogContentChanged" />
-							<aspui:ToolBarButton ID="DeleteOlderButton" AutoPostBack="true" Text="${string:ServerLog.LabelButtonDeleteOld}" ImageUrl="${icon:package-installer-uninstall}" runat="server" OnClick="DeleteOldButton_Click" />
-							<aspui:ToolBarButton AutoPostBack="true" Text="${string:ServerLog.LabelButtonRefresh}" ImageUrl="${icon:refresh}" runat="server" OnClick="LogContentChanged" />
+							<aspui:ToolbarButton ID="DeleteOlderButton" AutoPostBack="true" Text="${string:ServerLog.LabelButtonDeleteOld}" ImageUrl="${icon:package-installer-uninstall}" runat="server" OnClick="DeleteOldButton_Click" />
+							<aspui:ToolbarButton AutoPostBack="true" Text="${string:ServerLog.LabelButtonRefresh}" ImageUrl="${icon:refresh}" runat="server" OnClick="LogContentChanged" />
 						</ui:toolbargroup>
 					</ui:toolbarbody>
 					<!-- 
