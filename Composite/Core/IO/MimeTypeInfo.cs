@@ -36,11 +36,7 @@ namespace Composite.Core.IO
                                MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml };
 
         // file types we don't expect IIS to block
-        private static List<string> _iisServableTypes =
-            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
-                               MimeTypeInfo.Asf, MimeTypeInfo.Avi, MimeTypeInfo.Bmp, MimeTypeInfo.Director, MimeTypeInfo.Flash,
-                               MimeTypeInfo.Flv, MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.QuickTime, 
-                               MimeTypeInfo.Tiff, MimeTypeInfo.Wmv };
+        private static List<string> _iisServableTypes = new List<string>();
 
         private static ResourceHandle GetIconHandle(string name)
         {
@@ -207,64 +203,64 @@ namespace Composite.Core.IO
             _toCanonical.Add("image/pjpg", Jpeg);
             _toCanonical.Add("image/pjpeg", Jpeg);
             _toCanonical.Add("image/jpg", Jpeg);
-            RegisterMimeType(MimeTypeInfo.Jpeg, new [] {"jpg", "jpe", "jpeg"}, "mimetype-jpeg");
+            RegisterMimeType(MimeTypeInfo.Jpeg, new [] {"jpg", "jpe", "jpeg"}, "mimetype-jpeg", true);
 
-            RegisterMimeType(MimeTypeInfo.Gif, "gif", "mimetype-gif");
-            RegisterMimeType(MimeTypeInfo.Bmp, "bmp", "mimetype-bmp");
+            RegisterMimeType(MimeTypeInfo.Gif, "gif", "mimetype-gif", true);
+            RegisterMimeType(MimeTypeInfo.Bmp, "bmp", "mimetype-bmp", true);
 
             _toCanonical.Add("image/x-png", Png);
-            RegisterMimeType(MimeTypeInfo.Png, "png", "mimetype-png");
+            RegisterMimeType(MimeTypeInfo.Png, "png", "mimetype-png", true);
 
             _toCanonical.Add("image/tif", MimeTypeInfo.Tiff);
-            RegisterMimeType(MimeTypeInfo.Tiff, "tif", "mimetype-tiff");
+            RegisterMimeType(MimeTypeInfo.Tiff, "tif", "mimetype-tiff", true);
 
             // Web
-            RegisterMimeType(MimeTypeInfo.Css, new [] {"css", "less"}, "mimetype-css");
+            RegisterMimeType(MimeTypeInfo.Css, new[] { "css", "less" }, "mimetype-css", true);
             RegisterMimeType(MimeTypeInfo.Resx, "resx", "mimetype-resx");
 
             _toCanonical.Add("application/x-javascript", MimeTypeInfo.Js);
-            RegisterMimeType(MimeTypeInfo.Js, "js", "mimetype-js");
+            RegisterMimeType(MimeTypeInfo.Js, "js", "mimetype-js", true);
 
-            RegisterMimeType("text/html", new[] { "htm", "html", "xhtml" }, "mimetype-html");
+            RegisterMimeType("text/html", new[] { "htm", "html", "xhtml" }, "mimetype-html", true);
 
             // Audio/Video
-            RegisterMimeType("audio/x-wav", "wav", null /* "mimetype-vaw" */);
-            RegisterMimeType("audio/x-pn-realaudio", new[] { "ram", "rm" }, "mimetype-ram");
-            RegisterMimeType("audio/mpeg", "mp3", "mimetype-mp3");
-            RegisterMimeType("video/mpeg", new[] { "mpeg", "mpg" }, "mimetype-mpeg");
-            RegisterMimeType(MimeTypeInfo.Flv, "flv");
-            RegisterMimeType(MimeTypeInfo.Asf, "asf", "mimetype-asf");
-            RegisterMimeType(MimeTypeInfo.Avi, "avi", "mimetype-movie");
-            RegisterMimeType(MimeTypeInfo.Wmv, "wmv", "mimetype-wmv");
+            RegisterMimeType("audio/x-wav", "wav", null, true);
+            RegisterMimeType("audio/x-pn-realaudio", new[] { "ram", "rm" }, "mimetype-ram", true);
+            RegisterMimeType("audio/mpeg", "mp3", "mimetype-mp3", true);
+            RegisterMimeType("video/mpeg", new[] { "mpeg", "mpg" }, "mimetype-mpeg", true);
+            RegisterMimeType(MimeTypeInfo.Flv, "flv", null, true);
+            RegisterMimeType(MimeTypeInfo.Asf, "asf", "mimetype-asf", true);
+            RegisterMimeType(MimeTypeInfo.Avi, "avi", "mimetype-movie", true);
+            RegisterMimeType(MimeTypeInfo.Wmv, "wmv", "mimetype-wmv", true);
 
             // Applications
-            RegisterMimeType("application/postscript", "eps", "mimetype-pps");
-            RegisterMimeType("application/msaccess", "mdb", "mimetype-mdb");
-            RegisterMimeType("application/pdf", "pdf", "mimetype-pdf");
-            RegisterMimeType("application/vnd.ms-powerpoint", "ppt", "mimetype-ppt");
-            RegisterMimeType("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx", "mimetype-ppt");
-            RegisterMimeType("application/msword", "doc", "mimetype-doc");
-            RegisterMimeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx", "mimetype-doc");
-            RegisterMimeType("application/rtf", "rtf", "mimetype-rtf");
-            RegisterMimeType("application/vnd.visio", "vsd", "mimetype-vsd");
+            RegisterMimeType("application/postscript", "eps", "mimetype-pps", true);
+            RegisterMimeType("application/msaccess", "mdb", "mimetype-mdb", true);
+            RegisterMimeType("application/pdf", "pdf", "mimetype-pdf", true);
+            RegisterMimeType("application/vnd.ms-powerpoint", "ppt", "mimetype-ppt", true);
+            RegisterMimeType("application/vnd.openxmlformats-officedocument.presentationml.presentation", "pptx", "mimetype-ppt", true);
+            RegisterMimeType("application/msword", "doc", "mimetype-doc", true);
+            RegisterMimeType("application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx", "mimetype-doc", true);
+            RegisterMimeType("application/rtf", "rtf", "mimetype-rtf", true);
+            RegisterMimeType("application/vnd.visio", "vsd", "mimetype-vsd", true);
             RegisterMimeType("application/x-font-woff", "woff");
-            RegisterMimeType("application/vnd.ms-excel", "xls", "mimetype-xls");
-            RegisterMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx", "mimetype-xls");
+            RegisterMimeType("application/vnd.ms-excel", "xls", "mimetype-xls", true);
+            RegisterMimeType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "xlsx", "mimetype-xls", true);
 
-            RegisterMimeType(MimeTypeInfo.QuickTime, "mov", "mimetype-mov");
-            RegisterMimeType(MimeTypeInfo.Flash, "swf", "mimetype-swf");
+            RegisterMimeType(MimeTypeInfo.QuickTime, "mov", "mimetype-mov", true);
+            RegisterMimeType(MimeTypeInfo.Flash, "swf", "mimetype-swf", true);
             RegisterMimeType(MimeTypeInfo.Director, new[] { "dcr", "dir" }, "mimetype-dir");
 
             RegisterMimeType("text/xml", new[] { "xml", "config", "xsl", "xslt" }, "mimetype-xml");
 
             const string mimeTypeZip = "application/zip";
             _toCanonical.Add("application/x-zip-compressed", mimeTypeZip);
-            RegisterMimeType(mimeTypeZip, "zip", "mimetype-zip");
+            RegisterMimeType(mimeTypeZip, "zip", "mimetype-zip", true);
 
             
             _toCanonical.Add("text/txt", "text/plain");
             _toCanonical.Add("text/text", "text/plain");
-            RegisterMimeType("text/plain", "txt", "mimetype-txt");
+            RegisterMimeType("text/plain", "txt", "mimetype-txt", true);
 
 
             // .Cs and asp.net files
@@ -294,12 +290,12 @@ namespace Composite.Core.IO
                                         ?? mimeMappingType.GetMethod("GetMimeMapping", BindingFlags.Static | BindingFlags.NonPublic);
         }
 
-        private static void RegisterMimeType(string canonicalMimeTypeName, string extension, string resourceName = null)
+        private static void RegisterMimeType(string canonicalMimeTypeName, string extension, string resourceName = null, bool iisServable = false)
         {
-            RegisterMimeType(canonicalMimeTypeName, new [] { extension }, resourceName);
+            RegisterMimeType(canonicalMimeTypeName, new [] { extension }, resourceName, iisServable);
         }
 
-        private static void RegisterMimeType(string canonicalMimeTypeName, string[] extensions, string resourceName)
+        private static void RegisterMimeType(string canonicalMimeTypeName, string[] extensions, string resourceName, bool iisServable = false)
         {
             _toCanonical.Add(canonicalMimeTypeName, canonicalMimeTypeName);
 
@@ -311,6 +307,11 @@ namespace Composite.Core.IO
             if(resourceName != null)
             {
                 _mimeTypeToResourceName.Add(canonicalMimeTypeName, resourceName);
+            }
+
+            if (iisServable)
+            {
+                _iisServableTypes.Add(canonicalMimeTypeName);
             }
         }
 
