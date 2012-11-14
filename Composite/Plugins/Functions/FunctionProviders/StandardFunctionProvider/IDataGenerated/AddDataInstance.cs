@@ -38,7 +38,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     foreach (DataFieldDescriptor dataFieldDescriptor in dataTypeDescriptor.Fields)
                     {
                         string helpText = dataFieldDescriptor.Name;
-                        if ((dataFieldDescriptor.FormRenderingProfile != null) && (dataFieldDescriptor.FormRenderingProfile.HelpText != null))
+                        if (dataFieldDescriptor.FormRenderingProfile != null && !string.IsNullOrWhiteSpace(dataFieldDescriptor.FormRenderingProfile.HelpText))
                         {
                             helpText = dataFieldDescriptor.FormRenderingProfile.HelpText;
                         }

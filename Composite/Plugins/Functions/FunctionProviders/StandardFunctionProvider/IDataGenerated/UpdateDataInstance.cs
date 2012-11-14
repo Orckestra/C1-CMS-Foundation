@@ -42,7 +42,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                         if (dataTypeDescriptor.KeyPropertyNames.Contains(dataFieldDescriptor.Name)) continue;
 
                         string helpText = dataFieldDescriptor.Name;
-                        if ((dataFieldDescriptor.FormRenderingProfile != null) && (dataFieldDescriptor.FormRenderingProfile.HelpText != null))
+                        if (dataFieldDescriptor.FormRenderingProfile != null && !string.IsNullOrWhiteSpace(dataFieldDescriptor.FormRenderingProfile.HelpText))
                         {
                             helpText = dataFieldDescriptor.FormRenderingProfile.HelpText;
                         }
