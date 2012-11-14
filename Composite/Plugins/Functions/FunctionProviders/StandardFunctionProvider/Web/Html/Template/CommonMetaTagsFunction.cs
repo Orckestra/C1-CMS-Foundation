@@ -62,10 +62,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                     new XAttribute("content", contentType)));
             }
 
-            metaTags.Add(new XElement(Namespaces.Xhtml + "meta",
-                new XAttribute("http-equiv", "Content-Language"),
-                new XAttribute("content", Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName)));
-
             if (!string.IsNullOrWhiteSpace(designer))
             {
                 metaTags.Add(new XElement(Namespaces.Xhtml + "meta",
