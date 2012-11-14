@@ -354,6 +354,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
     {
         switch (file.MimeType)
         {
+            case "application/x-shockwave-flash":
             case "image/png":
             case "image/gif":
             case "image/jpeg":
