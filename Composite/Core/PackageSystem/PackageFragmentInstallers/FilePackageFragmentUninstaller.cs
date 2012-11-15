@@ -78,8 +78,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
                 else
                 {
+                    int shortestPathLength = absoluteReferences.Min(path => path.Length);
+
                     int commonStartLength = 0;
-                    for (; commonStartLength < firstPath.Length; commonStartLength++)
+                    for (; commonStartLength < shortestPathLength; commonStartLength++)
                     {
                         bool match = true;
                         char symbol = firstPath[commonStartLength];

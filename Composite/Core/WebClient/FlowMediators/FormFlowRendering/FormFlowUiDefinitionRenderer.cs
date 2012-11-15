@@ -164,6 +164,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                     }
                     catch (Exception ex)
                     {
+                        Log.LogError("FormFlowUiDefinitionRenderer", ex);
                         formServicesContainer.GetService<IManagementConsoleMessageService>().ShowLogEntry(typeof(FormFlowUiDefinitionRenderer), ex);
                         throw ex;
                     }
