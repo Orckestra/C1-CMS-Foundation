@@ -27,18 +27,22 @@ function ReplaceUpdate ( id, element ) {
  * Replace current element with new element.
  */
 ReplaceUpdate.prototype.update = function () {
-	
-	var target, container, update = UpdateAssistant.toHTMLElement ( this.element );
-	
-	if (( target = document.getElementById ( this.id )) != null ) {
-		if (( container = target.parentNode ) != null ) {
-			if ( this._beforeUpdate ( target )) {
-				container.replaceChild ( update, target );	
-				this._afterUpdate ( update );
+
+	var target, container, update = UpdateAssistant.toHTMLElement(this.element);
+
+	if ((target = document.getElementById(this.id)) != null) {
+		if ((container = target.parentNode) != null) {
+			var targetbinding = UserInterface.getBinding(target);
+			if (targetbinding != null) {
+				update.__isAttached = targetbinding.isAttached;
+			}
+			if (this._beforeUpdate(target)) {
+				container.replaceChild(update, target);
+				this._afterUpdate(update);
 			}
 		}
 	} else {
-		UpdateManager.error ( "Element null point: " + this.id );
+		UpdateManager.error("Element null point: " + this.id);
 	}
 };
 

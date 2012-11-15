@@ -251,8 +251,8 @@ _DocumentUpdatePlugin.prototype = {
 			switch ( target.__updateType ) {
 				case Update.TYPE_REPLACE :
 				case Update.TYPE_INSERT :
-					// DocumentManager.attachBindings ( target );
-					this._elementsbuffer.add ( target );
+					if( target.__isAttached !== false)
+						this._elementsbuffer.add ( target );
 					break;
 				case Update.TYPE_ATTRIBUTES :
 					this._backupattributes ( target, true );
