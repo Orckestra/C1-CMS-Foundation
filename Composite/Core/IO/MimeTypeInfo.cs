@@ -443,7 +443,7 @@ namespace Composite.Core.IO
             string mimeTypeFromExtension = MimeTypeInfo.GetCanonicalFromExtension(System.IO.Path.GetExtension(fileName));
             if (mimeTypeFromExtension != MimeTypeInfo.Default)
             {
-                Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extention: '{1}'"
+                Log.LogInformation(LogTitle, "Uploading file '{0}'. MIME type from extension: '{1}'"
                                                 .FormatWith(fileName, mimeTypeFromExtension));
 
                 return mimeTypeFromExtension;

@@ -262,10 +262,14 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum RelationshipGraphSearchOption
     {
-        /// <exclude />
+        /// <summary>
+        /// Parent items get from <see cref="ISecurityAncestorProvider"/>
+        /// </summary>
         Native = 0,
 
-        /// <exclude />
+        /// <summary>
+        /// Parent items get from <see cref="IAuxiliarySecurityAncestorProvider"/> and <see cref="HookingFacade"/>
+        /// </summary>
         Hooked = 1,
 
         /// <exclude />

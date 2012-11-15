@@ -69,7 +69,7 @@ namespace Composite.C1Console.Trees
             {
                 if (_parentEntityToken == null)
                 {
-                    _parentEntityToken = EntityTokenSerializer.Deserialize(this.Type);
+                    _parentEntityToken = EntityTokenSerializer.Deserialize(_serializedParentEntityToken);
                 }
 
                 return _parentEntityToken;

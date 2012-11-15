@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
-using Composite.Core.Logging;
+using Composite.Core;
 using Composite.Data;
 
 
@@ -44,8 +44,8 @@ namespace Composite.C1Console.Trees
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
-                        LoggingService.LogError("TreeFacade", ex);
+                        Log.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
+                        Log.LogError("TreeFacade", ex);
                     }
                 }
                 else if ((entityToken is TreeFunctionElementGeneratorEntityToken) == true)
@@ -69,8 +69,8 @@ namespace Composite.C1Console.Trees
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
-                        LoggingService.LogError("TreeFacade", ex);
+                        Log.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
+                        Log.LogError("TreeFacade", ex);
                     }
                 }
                 else if ((entityToken is TreeDataFieldGroupingElementEntityToken) == true)
@@ -93,8 +93,8 @@ namespace Composite.C1Console.Trees
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
-                        LoggingService.LogError("TreeFacade", ex);
+                        Log.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
+                        Log.LogError("TreeFacade", ex);
                     }
                 }
                 else if ((entityToken is DataEntityToken) == true)
@@ -126,8 +126,8 @@ namespace Composite.C1Console.Trees
                             }
                             catch (Exception ex)
                             {
-                                LoggingService.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeNode.Tree.TreeId));
-                                LoggingService.LogError("TreeFacade", ex);
+                                Log.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeNode.Tree.TreeId));
+                                Log.LogError("TreeFacade", ex);
                             }
                         }
 

@@ -23,46 +23,46 @@ namespace Composite.C1Console.Trees
 
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
+            EntityToken possibleCurrentEntityToken;
+
             TreeSimpleElementEntityToken treeSimpleElementEntityToken = childEntityToken as TreeSimpleElementEntityToken;
-            if (treeSimpleElementEntityToken != null)
+            if (treeSimpleElementEntityToken != null) {
+                possibleCurrentEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
+            }
+            else
             {
-                childEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
+                possibleCurrentEntityToken = childEntityToken;
             }
 
-            foreach (EntityToken entityToken in this.ParentNode.GetEntityTokens(childEntityToken, dynamicContext))
+            foreach (EntityToken entityToken in this.ParentNode.GetEntityTokens(possibleCurrentEntityToken, dynamicContext))
             {
-                if ((this.ParentNode is SimpleElementTreeNode) == false)
-                {
-                    yield return new TreeSimpleElementEntityToken(this.Id, this.Tree.TreeId, EntityTokenSerializer.Serialize(entityToken));
-                }
-                else
-                {
-                    TreeSimpleElementEntityToken castedEntityToken = entityToken as TreeSimpleElementEntityToken;
-                    yield return new TreeSimpleElementEntityToken(this.Id, this.Tree.TreeId, castedEntityToken.SerializedParentEntityToken);
-                }
+                yield return new TreeSimpleElementEntityToken(this.Id, this.Tree.TreeId, EntityTokenSerializer.Serialize(entityToken));
             }
         }
 
 
-         internal override IEnumerable<EntityToken> FilterParentGeneretedEntityTokens(EntityToken selfEntityToken, IEnumerable<EntityToken> parentGeneretedEntityTokens, TreeNodeDynamicContext dynamicContext)
+        internal override IEnumerable<EntityToken> FilterParentGeneretedEntityTokens(EntityToken selfEntityToken, IEnumerable<EntityToken> parentGeneretedEntityTokens, TreeNodeDynamicContext dynamicContext)
         {
-            TreeSimpleElementEntityToken treeSimpleElementEntityToken = (TreeSimpleElementEntityToken)selfEntityToken;
+            // Check below ensures that the parent EntityToken actually present in a tree and not been filtered out
+
+            TreeSimpleElementEntityToken treeSimpleElementEntityToken = (TreeSimpleElementEntityToken) selfEntityToken;
             EntityToken parentEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
             foreach (EntityToken entityToken in parentGeneretedEntityTokens)
             {
                 if (parentEntityToken.Equals(entityToken) == true)
                 {
-                    yield return entityToken;
+                    return new[] { parentEntityToken };
                 }
-                else
+
+                TreeSimpleElementEntityToken castedEntityToken = entityToken as TreeSimpleElementEntityToken;
+                if ((castedEntityToken != null) &&
+                    (parentEntityToken.Equals(castedEntityToken.ParentEntityToken) == true))
                 {
-                    TreeSimpleElementEntityToken castedEntityToken = entityToken as TreeSimpleElementEntityToken;
-                    if ((castedEntityToken != null) && (parentEntityToken.Equals(castedEntityToken.ParentEntityToken) == true))
-                    {
-                        yield return entityToken;
-                    }
+                    return new [] { parentEntityToken };
                 }
-            }            
+            }
+
+            return new EntityToken[0];
         }
 
 
@@ -76,15 +76,8 @@ namespace Composite.C1Console.Trees
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
             TreeSimpleElementEntityToken entityToken;
-            if ((this.ParentNode is SimpleElementTreeNode) == false || parentEntityToken is TreePerspectiveEntityToken)
-            {
-                entityToken = new TreeSimpleElementEntityToken(this.Id.ToString(), this.Tree.TreeId, EntityTokenSerializer.Serialize(parentEntityToken));                
-            }
-            else
-            {
-                TreeSimpleElementEntityToken treeSimpleElementEntityToken = (TreeSimpleElementEntityToken)parentEntityToken;
-                entityToken = new TreeSimpleElementEntityToken(this.Id.ToString(), this.Tree.TreeId, treeSimpleElementEntityToken.SerializedParentEntityToken);
-            }
+
+            entityToken = new TreeSimpleElementEntityToken(this.Id.ToString(), this.Tree.TreeId, EntityTokenSerializer.Serialize(parentEntityToken));                
 
             Element element = new Element(new ElementHandle(
                 dynamicContext.ElementProviderName,
