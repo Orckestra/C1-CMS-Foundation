@@ -1226,12 +1226,12 @@ namespace Composite.C1Console.Workflow
                 foreach (string filename in C1Directory.GetFiles(SerializedWorkflowsDirectory, "*.xml"))
                 {
                     string guidString = Path.GetFileNameWithoutExtension(filename);
-                    Guid id = new Guid(guidString);
-
-                    XDocument doc = XDocumentUtils.Load(filename);
+                    Guid id = Guid.Empty;
 
                     try
                     {
+                        id = new Guid(guidString);
+                        XDocument doc = XDocumentUtils.Load(filename);
                         FormData formData = FormData.Deserialize(doc.Root);
 
                         if (_resourceLocker.Resources.FormDatas.ContainsKey(id) == false)
@@ -1248,9 +1248,11 @@ namespace Composite.C1Console.Workflow
                     }
                     catch (Exception)
                     {
-                        //LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
-
-                        //AbortWorkflow(id);                        
+                        if (id!=Guid.Empty)
+                        {
+                            LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
+                            AbortWorkflow(id);
+                        }
                     }
                 }
             }
