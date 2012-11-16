@@ -219,7 +219,7 @@ namespace Composite.AspNet.Razor
 #warning consider adding caching to IncludeFile() so we do not hit disk every time.
 
         /// <summary>
-        /// Includes the content a file.
+        /// Includes the content of a file.
         /// </summary>
         /// <param name="path">The file to include.</param>
         /// <returns></returns>
