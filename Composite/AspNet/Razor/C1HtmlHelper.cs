@@ -8,6 +8,8 @@ using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data.Types;
+using System.IO;
+using Composite.Core.IO;
 
 namespace Composite.AspNet.Razor
 {
@@ -160,7 +162,7 @@ namespace Composite.AspNet.Razor
         /// <param name="querystring">The querystring.</param>
         /// <returns></returns>
         public IHtmlString MediaUrl(string keyPath, object querystring = null)
-		{
+		{   
 			var dict = Functions.ObjectToDictionary(querystring);
 
 			return MediaUrl(keyPath, dict);
@@ -197,17 +199,6 @@ namespace Composite.AspNet.Razor
 
 
         /// <summary>
-        /// Renders specified xhtml document.
-        /// </summary>
-        /// <param name="xhtmlDocument">The XHTML document.</param>
-        /// <returns></returns>
-        [Obsolete("Use Markup() instead")]
-        public IHtmlString Document(XhtmlDocument xhtmlDocument)
-        {
-            return Markup(xhtmlDocument);
-        }
-
-        /// <summary>
         /// Renders the specified XNode.
         /// </summary>
         /// <param name="xNode">The <see cref="XNode">XNode</see>.</param>
@@ -222,6 +213,38 @@ namespace Composite.AspNet.Razor
             // TODO: optimize so XNode doesn't get serialized/deserialized
 
             return _helper.Raw(xNode.ToString());
+        }
+
+
+#warning consider adding caching to IncludeFile() so we do not hit disk every time.
+
+        /// <summary>
+        /// Includes the content a file.
+        /// </summary>
+        /// <param name="path">The file to include.</param>
+        /// <returns></returns>
+        public IHtmlString IncludeFile(string path)
+        {
+            if (!path.StartsWith("~"))
+            {
+                path = "~" + path;
+            }
+
+            path = PathUtil.Resolve(path);
+
+            string fileExtension = Path.GetExtension(path).ToLowerInvariant();
+
+            switch (fileExtension)
+            {
+                case "xml":
+                case "xhtml":
+                    XElement documentRoot = XDocument.Load(path).Root;
+                    return _helper.Raw(documentRoot.ToString());
+                    break;
+                default:
+                    return _helper.Raw(File.ReadAllText(path));
+                    break;
+            }
         }
 
         /// <summary>
