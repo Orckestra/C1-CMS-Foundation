@@ -43,7 +43,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
             }
 
             var userControlFunction = userControl as UserControlFunction;
-            var parameters = FunctionBasedFunctionProviderHelper.GetParameters(userControlFunction, typeof (UserControlFunction));
+            var parameters = FunctionBasedFunctionProviderHelper.GetParameters(userControlFunction, typeof(UserControlFunction), virtualPath);
 
             return new UserControlBasedFunction(@namespace, name, userControlFunction.FunctionDescription, parameters, typeof(UserControl), virtualPath, this);
         }

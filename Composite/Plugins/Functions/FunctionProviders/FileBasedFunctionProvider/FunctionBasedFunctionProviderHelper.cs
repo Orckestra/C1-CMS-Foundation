@@ -41,7 +41,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <param name="functionObject">The object that represents a function.</param>
         /// <param name="baseFunctionType">Type of the base function.</param>
         /// <returns></returns>
-        public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType)
+        public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string location)
         {
             var dict = new Dictionary<string, FunctionParameter>();
 
@@ -49,33 +49,47 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             while (type != baseFunctionType && type != null)
             {
                 var properties = type.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty | BindingFlags.DeclaredOnly);
-                foreach (var prop in properties)
+                foreach (var property in properties)
                 {
                     // Skipping overriden base properties
-                    if (prop.GetAccessors()[0].GetBaseDefinition().DeclaringType == baseFunctionType) continue;
+                    if (property.GetAccessors()[0].GetBaseDefinition().DeclaringType == baseFunctionType) continue;
 
-                    var propType = prop.PropertyType;
-                    var name = prop.Name;
-                    var att = prop.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().FirstOrDefault();
+                    var propType = property.PropertyType;
+                    var name = property.Name;
+
+                    FunctionParameterAttribute attr = null;
+                    var attributes = property.GetCustomAttributes(typeof(FunctionParameterAttribute), false).Cast<FunctionParameterAttribute>().ToList();
+
+
+                    if(attributes.Count > 1)
+                    {
+                        Log.LogWarning(LogTitle, "More than one '{0}' attribute defined on property '{1}'. Location: '{2}'"
+                                                 .FormatWith(typeof(FunctionParameterAttribute).Name, name, location));
+                    }
+                    else
+                    {
+                        attr = attributes.FirstOrDefault();
+                    }
+
                     WidgetFunctionProvider widgetProvider = null;
 
-                    if (att != null && att.HasWidgetMarkup)
+                    if (attr != null && attr.HasWidgetMarkup)
                     {
                         try
                         {
-                            widgetProvider = att.GetWidgetFunctionProvider(type, prop);
+                            widgetProvider = attr.GetWidgetFunctionProvider(type, property);
                         }
                         catch (Exception ex)
                         {
-                            Log.LogWarning(LogTitle, "Failed to get widget function provider for parameter property {0}"
-                                                     .FormatWith(prop.Name));
+                            Log.LogWarning(LogTitle, "Failed to get widget function provider for parameter property {0}. Location: '{1}'"
+                                                     .FormatWith(property.Name, location));
                             Log.LogWarning(LogTitle, ex);
                         }
                     }
 
                     if (!dict.ContainsKey(name))
                     {
-                        dict.Add(name, new FunctionParameter(name, propType, att, widgetProvider));
+                        dict.Add(name, new FunctionParameter(name, propType, attr, widgetProvider));
                     }
                 }
 

@@ -34,7 +34,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
 		    RazorFunction razorFunction = razorPage as RazorFunction;
 
-		    var functionParameters = FunctionBasedFunctionProviderHelper.GetParameters(razorFunction, typeof(RazorFunction));
+		    var functionParameters = FunctionBasedFunctionProviderHelper.GetParameters(razorFunction, typeof(RazorFunction), virtualPath);
 
             return new RazorBasedFunction(@namespace, name, razorFunction.FunctionDescription, functionParameters, razorFunction.FunctionReturnType, virtualPath, this);
 		}
