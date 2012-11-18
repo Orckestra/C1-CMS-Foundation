@@ -56,46 +56,34 @@
 
     private string ValidationParams()
     {
-        if (this.ClientValidationRules == null)
-        {
-            return "";
-        }
-        bool required = false;
+        bool required = this.Required;
         int maxLength = Int32.MaxValue;
         int minLength = 0;
         bool hasLengthRule = false;
-        string regexValidationRule = null;
 
-        required = this.Required;
-        
-        foreach (var rule in this.ClientValidationRules)
+        if (this.ClientValidationRules != null)
         {
-            if (rule is NotNullClientValidationRule) required = true;
-
-            if (rule is StringLengthClientValidationRule)
+            foreach (var rule in this.ClientValidationRules)
             {
-                hasLengthRule = true;
-                var lengthRule = (StringLengthClientValidationRule)rule;
-                minLength = Math.Max(minLength, lengthRule.LowerBound);
-                maxLength = Math.Min(maxLength, lengthRule.UpperBound);
+                if (rule is NotNullClientValidationRule) required = true;
 
-                if (minLength > 0) required = true;
-            }
+                if (rule is StringLengthClientValidationRule)
+                {
+                    hasLengthRule = true;
+                    var lengthRule = (StringLengthClientValidationRule)rule;
+                    minLength = Math.Max(minLength, lengthRule.LowerBound);
+                    maxLength = Math.Min(maxLength, lengthRule.UpperBound);
 
-            if (rule is RegexClientValidationRule)
-            {
-                var regexRule = (RegexClientValidationRule)rule;
-
-                regexValidationRule = regexRule.Expression;
+                    if (minLength > 0) required = true;
+                }
             }
         }
 
-        
         StringBuilder paramsBuilder = new StringBuilder();
 
         if (required == true) paramsBuilder.Append(@" required=""true""");
         if (hasLengthRule == true) paramsBuilder.AppendFormat(@" minlength=""{0}"" maxlength=""{1}""", minLength, maxLength);
-
+        
         return paramsBuilder.ToString();
     }
 
