@@ -67,6 +67,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
                 return;
             }
 
+            if (!C1Directory.Exists(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory)))
+            {
+                try
+                {
+                    C1Directory.CreateDirectory(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory));
+                }
+                catch (Exception)
+                {
+                    e.Result = false;
+                    this.ShowFieldMessage("Name", string.Format("Can not create directory '{0}'", GlobalSettingsFacade.PageTemplateFeaturesDirectory));
+                }
+            }
+
             string xmlFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), name + ".xml");
             string xhtmlFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), name + ".xhtml");
 
