@@ -20,6 +20,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _packageDirectory = "~/Packages";
         private string _autoPackageInstallDirectory = "~/AutoInstallPackages";
         private string _treeDefinitionsDirectory = "~/TreeDefinitions";
+        private string _pageTemplateFeaturesDirectory = "~/PageTemplateFeaturesDirectory";
         private string _dataMetaDataDirectory = "~/DataMetaData";
         private string _inlineCSharpFunctionDirectory = "~/InlineCSharpFunctions";
         private string _packageLicenseDirectory = "~/PackageLicenses";
@@ -135,6 +136,16 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
             get
             {
                 return _treeDefinitionsDirectory;
+            }
+        }
+
+
+
+        public string PageTemplateFeaturesDirectory
+        {
+            get
+            {
+                return _pageTemplateFeaturesDirectory;
             }
         }
 

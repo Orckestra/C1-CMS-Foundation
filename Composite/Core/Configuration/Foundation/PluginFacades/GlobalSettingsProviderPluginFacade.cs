@@ -162,6 +162,16 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
 
 
+        public static string PageTemplateFeaturesDirectory
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.PageTemplateFeaturesDirectory);
+            }
+        }
+
+
+
         public static string DataMetaDataDirectory
         {
             get

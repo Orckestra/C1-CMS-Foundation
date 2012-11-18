@@ -21,6 +21,7 @@ namespace Composite.Core.Configuration
         string PackageDirectory { get; }
         string AutoPackageInstallDirectory { get; }
         string TreeDefinitionsDirectory { get; }
+        string PageTemplateFeaturesDirectory { get; }
         string DataMetaDataDirectory { get; }
         string InlineCSharpFunctionDirectory { get; }
         string PackageLicenseDirectory { get; }

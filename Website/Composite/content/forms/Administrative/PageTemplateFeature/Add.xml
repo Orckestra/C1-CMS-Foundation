@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cms:formdefinition xmlns="http://www.composite.net/ns/management/bindingforms/std.ui.controls.lib/1.0" xmlns:f="http://www.composite.net/ns/management/bindingforms/std.function.lib/1.0" xmlns:cms="http://www.composite.net/ns/management/bindingforms/1.0">
+  <cms:bindings>
+    <cms:binding name="Name" type="System.String" />
+    <cms:binding name="EditorType" type="System.String" />
+    <cms:binding name="EditorTypeOptions" type="System.Collections.IEnumerable" />
+  </cms:bindings>
+  <cms:layout label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelDialog}" iconhandle="page-template-feature-add">
+    <FieldGroup Label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelFieldGroup}">
+
+      <TextBox Label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelTemplateFeatureName}" Help="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelTemplateFeatureNameHelp}" Required="true" SpellCheck="false">
+        <cms:bind source="Name" />
+      </TextBox>
+
+      <KeySelector OptionsKeyField="Key" OptionsLabelField="Value"
+									 Label="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelTemplateFeatureEditorType}"
+									 Help="${Composite.Plugins.PageTemplateFeatureElementProvider, AddWorkflow.LabelTemplateFeatureEditorTypeHelp}">
+        <KeySelector.Options>
+          <cms:read source="EditorTypeOptions"/>
+        </KeySelector.Options>
+        <KeySelector.Selected>
+          <cms:bind source="EditorType" />
+        </KeySelector.Selected>
+      </KeySelector>
+
+    </FieldGroup>
+  </cms:layout>
+</cms:formdefinition>

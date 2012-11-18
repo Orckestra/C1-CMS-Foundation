@@ -495,6 +495,12 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditSharedCodeFileWorkflow.designer.cs">
       <DependentUpon>EditSharedCodeFileWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\TogglePageTemplateFeatureEditorWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\TogglePageTemplateFeatureEditorWorkflow.designer.cs">
+      <DependentUpon>TogglePageTemplateFeatureEditorWorkflow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -740,6 +746,24 @@
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\WebsiteFileElementProvider\UploadWebsiteFileWorkflow.designer.cs">
       <DependentUpon>UploadWebsiteFileWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\AddPageTemplateFeatureWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\AddPageTemplateFeatureWorkflow.designer.cs">
+      <DependentUpon>AddPageTemplateFeatureWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\DeletePageTemplateFeatureWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\DeletePageTemplateFeatureWorkflow.designer.cs">
+      <DependentUpon>DeletePageTemplateFeatureWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\EditPageTemplateFeatureWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\EditPageTemplateFeatureWorkflow.designer.cs">
+      <DependentUpon>EditPageTemplateFeatureWorkflow.cs</DependentUpon>
     </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.cs">
       <SubType>Component</SubType>
@@ -1126,6 +1150,15 @@
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\EditSharedCodeFileWorkflow.layout">
       <DependentUpon>EditSharedCodeFileWorkflow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\AddPageTemplateFeatureWorkflow.layout">
+      <DependentUpon>AddPageTemplateFeatureWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\DeletePageTemplateFeatureWorkflow.layout">
+      <DependentUpon>DeletePageTemplateFeatureWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\TogglePageTemplateFeatureEditorWorkflow.layout">
+      <DependentUpon>TogglePageTemplateFeatureEditorWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTypeElementProvider\AddNewPageTypeWorkflow.layout">
       <DependentUpon>AddNewPageTypeWorkflow.cs</DependentUpon>
     </EmbeddedResource>
@@ -1275,6 +1308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\GeneratedDataTypesElementProvider\LocalizeDataWorkflow.layout">
       <DependentUpon>LocalizeDataWorkflow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\EditTreeDefinitionWorkflow.layout">
+      <DependentUpon>EditPageTemplateFeatureWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\XsltBasedFunctionProviderElementProvider\AddNewXsltFunctionWorkflow.layout">
       <DependentUpon>AddNewXsltFunctionWorkflow.cs</DependentUpon>

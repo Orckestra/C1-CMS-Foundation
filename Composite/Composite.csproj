@@ -160,6 +160,8 @@
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\PageTemplateFeatureElementProvider.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\PageTemplateFeatureEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFileEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFolderEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionElementProvider\RazorFunctionElementProvider.cs" />

@@ -399,59 +399,114 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         #endregion
 
         private StateInitializationActivity initializeInitializationActivity;
+
         private StateActivity finalStateActivity;
+
         private SetStateActivity setStateActivity3;
+
         private StateInitializationActivity finalizeInitializationActivity;
+
         private StateActivity finalizeStateActivity;
+
         private CodeActivity caCheckChildren;
+
         private CodeActivity codeActivity2;
+
         private SetStateActivity setStateActivity4;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity1;
+
         private EventDrivenActivity eventDrivenActivity_GlobalCancel;
+
         private SetStateActivity setStateActivity2;
+
         private EventDrivenActivity step2EventDrivenActivity_Finish;
+
         private StateInitializationActivity step2StateInitializationActivity;
+
         private StateActivity confirmationStateActivity;
-        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity2;
+
+        private C1Console.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity2;
+
         private SetStateActivity setStateActivity8;
+
         private IfElseBranchActivity branchNoSubpages;
+
         private IfElseBranchActivity branchHasSubpages;
+
         private IfElseActivity testHasSubpages;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
-        private Composite.C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.CloseCurrentViewActivity closeCurrentViewActivity1;
+
         private SetStateActivity setStateActivity11;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity3;
+
         private EventDrivenActivity step2EventDrivenActivity_Cancel;
+
         private SetStateActivity setStateActivity6;
+
         private CodeActivity initializeCodeActivity_ShowError_InstanceCompositions;
+
         private IfElseBranchActivity branchNoCompositions;
+
         private IfElseBranchActivity branchHasCompositions;
+
         private IfElseActivity ifElse_HasInstanceCompositions;
+
         private StateActivity confDeletingReferencedDataStateActivity;
+
         private IfElseBranchActivity branchRelatedDataDoesntExist;
+
         private IfElseBranchActivity branchRelatedDataExist;
+
         private IfElseActivity conditionCheckRelatedData;
+
         private StateInitializationActivity stateInitializationActivity1;
+
         private SetStateActivity setStateActivity5;
+
         private CodeActivity codeActivity1;
+
         private SetStateActivity setStateActivity13;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity2;
+
         private EventDrivenActivity eventDrivenActivity_Cancel;
+
         private SetStateActivity setStateActivity12;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity1;
+
         private EventDrivenActivity eventDrivenActivity_Finish;
-        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
+
+        private C1Console.Workflow.Activities.ConfirmDialogFormActivity confirmDialogFormActivity1;
+
         private SetStateActivity setStateActivity7;
+
         private SetStateActivity setStateActivity9;
-        private Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity4;
+
+        private C1Console.Workflow.Activities.CancelHandleExternalEventActivity cancelHandleExternalEventActivity4;
+
         private SetStateActivity setStateActivity1;
-        private Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity3;
-        private Composite.C1Console.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity1;
+
+        private C1Console.Workflow.Activities.FinishHandleExternalEventActivity finishHandleExternalEventActivity3;
+
+        private C1Console.Workflow.Activities.ConfirmDialogFormActivity wizzardFormActivity1;
+
         private EventDrivenActivity step1EventDrivenActivity_Cancel;
+
         private EventDrivenActivity step1EventDrivenActivity_Finish;
+
         private StateInitializationActivity step1InitializationActivity;
+
         private StateActivity confirmDeletingChildrenStateActivity;
+
         private StateActivity initializeStateActivity;
+
+
 
 
 

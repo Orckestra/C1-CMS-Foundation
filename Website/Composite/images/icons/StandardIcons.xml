@@ -369,7 +369,33 @@
 		<IconFile size="large" path="harmony\composite\layoutdel_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\composite\layoutdel_32.png" /> -->
 	</Icon>
-	<!-- end design icons -->
+
+  <Icon name="page-template-feature-root-closed">
+    <IconFile size="normal" path="harmony\composite\folder_16.png" />
+    <IconFile size="large" path="harmony\composite\folder_24.png" />
+  </Icon>
+  <Icon name="page-template-feature-root-open">
+    <IconFile size="normal" path="harmony\composite\folderopen_16.png" />
+    <IconFile size="large" path="harmony\composite\folderopen_16.png" />
+  </Icon>
+  <Icon name="page-template-feature-template">
+    <IconFile size="normal" path="harmony\composite\templatefeature_16.png" />
+    <IconFile size="large" path="harmony\composite\templatefeature_24.png" />
+  </Icon>
+  <Icon name="page-template-feature-add">
+    <IconFile size="normal" path="harmony\composite\templatefeatureadd_16.png" />
+    <IconFile size="large" path="harmony\composite\templatefeatureadd_24.png" />
+  </Icon>
+  <Icon name="page-template-feature-edit">
+    <IconFile size="normal" path="harmony\composite\templatefeatureedit_16.png" />
+    <IconFile size="large" path="harmony\composite\templatefeatureedit_24.png" />
+  </Icon>
+  <Icon name="page-template-feature-delete">
+    <IconFile size="normal" path="harmony\composite\templatefeaturedel_16.png" />
+    <IconFile size="large" path="harmony\composite\templatefeaturedel_24.png" />
+  </Icon>
+
+  <!-- end design icons -->
 
 	<!-- Base Function Provider -->
 	<Icon name="base-function-function">

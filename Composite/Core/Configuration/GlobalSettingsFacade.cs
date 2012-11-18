@@ -224,6 +224,17 @@ namespace Composite.Core.Configuration
 
 
         /// <exclude />
+        public static string PageTemplateFeaturesDirectory
+        {
+            get
+            {
+                return _globalSettingsFacade.PageTemplateFeaturesDirectory;
+            }
+        }
+
+
+
+        /// <exclude />
         public static string DataMetaDataDirectory
         {
             get

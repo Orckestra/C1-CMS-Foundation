@@ -131,3 +131,5 @@ Changes in 3.2
 Changes in 4.0
 - Added section for page template providers Composite.Core.PageTemplates.Plugins.PageTemplateProviderConfiguration
 - ResourceProviderConfiguration section changed - usage of multiple XmlStringResourceProvider-s replaced with single definition of an XmlLocalizationProvider
+- Added PageTemplateFeatureElementProvider and associated virtual element
+- Added pageTemplateFeaturesDirectory="~/App_Data/PageTemplateFeatures" to global configuration  

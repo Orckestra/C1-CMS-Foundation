@@ -187,7 +187,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
         private bool ExistInOtherLocale(List<CultureInfo> cultures, IPage page)
-        {            
+        {
             foreach (CultureInfo localeCultureInfo in cultures)
             {
                 using (new DataScope(localeCultureInfo))

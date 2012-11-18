@@ -157,6 +157,15 @@ namespace Composite.Core.Configuration
         }
 
 
+        public string PageTemplateFeaturesDirectory
+        {
+            get 
+            {
+                return GlobalSettingsProviderPluginFacade.PageTemplateFeaturesDirectory;
+            }
+        }
+
+
 
         public string DataMetaDataDirectory
         {
@@ -312,5 +321,7 @@ namespace Composite.Core.Configuration
         }
 
         #endregion
+
+
     }
 }

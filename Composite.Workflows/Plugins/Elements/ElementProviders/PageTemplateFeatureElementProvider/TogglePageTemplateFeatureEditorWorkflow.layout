@@ -1,0 +1,55 @@
+﻿<StateMachineWorkflowDesigner xmlns:ns0="clr-namespace:System.Drawing;Assembly=System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Size="1234, 649" AutoSizeMargin="16, 24" AutoSize="False" Location="30, 30" Name="DeletePageTemplateFeatureWorkflow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/workflow">
+	<StateMachineWorkflowDesigner.DesignerConnectors>
+		<StateDesignerConnector TargetActivity="finalStateActivity" TargetConnectionEdge="Top" SetStateName="setStateActivity1" SourceActivity="TogglePageTemplateFeatureEditorWorkflow" TargetConnectionIndex="0" SourceStateName="DeletePageTemplateFeatureWorkflow" SourceConnectionEdge="Right" EventHandlerName="eventDrivenActivity_GlobalCancel" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="256" Y="74" />
+				<ns0:Point X="1045" Y="74" />
+				<ns0:Point X="1045" Y="136" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalStateActivity" TargetConnectionEdge="Top" SetStateName="setStateActivity4" SourceActivity="finalizeStateActivity" TargetConnectionIndex="0" SourceStateName="finalizeStateActivity" SourceConnectionEdge="Right" EventHandlerName="finalizeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finalStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="526" Y="285" />
+				<ns0:Point X="542" Y="285" />
+				<ns0:Point X="542" Y="128" />
+				<ns0:Point X="1045" Y="128" />
+				<ns0:Point X="1045" Y="136" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+		<StateDesignerConnector TargetActivity="finalizeStateActivity" TargetConnectionEdge="Top" SetStateName="setStateActivity2" SourceActivity="initializeStateActivity" TargetConnectionIndex="0" SourceStateName="initializeStateActivity" SourceConnectionEdge="Right" EventHandlerName="initializeStateInitializationActivity" SourceConnectionIndex="0" TargetStateName="finalizeStateActivity">
+			<StateDesignerConnector.Segments>
+				<ns0:Point X="286" Y="150" />
+				<ns0:Point X="420" Y="150" />
+				<ns0:Point X="420" Y="241" />
+			</StateDesignerConnector.Segments>
+		</StateDesignerConnector>
+	</StateMachineWorkflowDesigner.DesignerConnectors>
+	<StateMachineWorkflowDesigner.Designers>
+		<EventDrivenDesigner Name="eventDrivenActivity_GlobalCancel" Size="150, 209" Location="38, 63">
+			<EventDrivenDesigner.Designers>
+				<HandleExternalEventActivityDesigner Name="cancelHandleExternalEventActivity1" Size="130, 44" Location="48, 128" />
+				<SetStateDesigner Name="setStateActivity1" Size="130, 62" Location="48, 191" />
+			</EventDrivenDesigner.Designers>
+		</EventDrivenDesigner>
+		<StateDesigner Size="227, 80" AutoSizeMargin="16, 24" Location="63, 106" Name="initializeStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="initializeStateInitializationActivity" Size="150, 146" Location="71, 139">
+					<StateInitializationDesigner.Designers>
+						<SetStateDesigner Name="setStateActivity2" Size="130, 62" Location="81, 204" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+		<StateDesigner Size="160, 80" AutoSizeMargin="16, 24" Location="965, 136" Name="finalStateActivity" />
+		<StateDesigner Size="220, 80" AutoSizeMargin="16, 24" AutoSize="False" Location="310, 241" Name="finalizeStateActivity">
+			<StateDesigner.Designers>
+				<StateInitializationDesigner Name="finalizeStateInitializationActivity" Size="150, 209" Location="572, 154">
+					<StateInitializationDesigner.Designers>
+						<CodeDesigner Name="finalizeCodeActivity_Finalize" Size="130, 44" Location="582, 219" />
+						<SetStateDesigner Name="setStateActivity4" Size="130, 62" Location="582, 282" />
+					</StateInitializationDesigner.Designers>
+				</StateInitializationDesigner>
+			</StateDesigner.Designers>
+		</StateDesigner>
+	</StateMachineWorkflowDesigner.Designers>
+</StateMachineWorkflowDesigner>

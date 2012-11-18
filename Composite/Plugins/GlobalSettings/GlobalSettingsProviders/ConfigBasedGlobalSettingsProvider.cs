@@ -123,6 +123,13 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
 
 
+        public string PageTemplateFeaturesDirectory
+        {
+            get { return _configurationData.PageTemplateFeaturesDirectory; }
+        }
+
+        
+
         public string DataMetaDataDirectory
         {
             get { return _configurationData.DataMetaDataDirectory; }
@@ -426,6 +433,16 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (string)base[_treeDefinitionsDirectoryPropertyName]; }
             set { base[_treeDefinitionsDirectoryPropertyName] = value; }
+        }
+
+
+
+        private const string _pageTemplateFeaturesDirectoryPropertyName = "pageTemplateFeaturesDirectory";
+        [ConfigurationProperty(_pageTemplateFeaturesDirectoryPropertyName, DefaultValue = "~")]
+        public string PageTemplateFeaturesDirectory
+        {
+            get { return (string)base[_pageTemplateFeaturesDirectoryPropertyName]; }
+            set { base[_pageTemplateFeaturesDirectoryPropertyName] = value; }
         }
 
 

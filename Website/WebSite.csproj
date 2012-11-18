@@ -130,6 +130,14 @@
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.css" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.html" />
     <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplateFeature\Add.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\content\forms\Administrative\PageTemplateFeature\EditMarkup.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplateFeature\EditVisual.xml" />
+    <Content Include="Composite\content\forms\Administrative\PageTemplateFeature\Delete.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewRazorPageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewMasterPagePageTemplate.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewUserControlFunction.xml" />
@@ -447,6 +455,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\localization\Composite.Plugins.PageTemplateFeatureElementProvider.en-us.xml" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.cs.txt" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.txt" />

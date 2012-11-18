@@ -36,6 +36,8 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         string TreeDefinitionsDirectory { get; }
 
+        string PageTemplateFeaturesDirectory { get; }
+
         string DataMetaDataDirectory { get; }
 
         string InlineCSharpFunctionDirectory { get; }
