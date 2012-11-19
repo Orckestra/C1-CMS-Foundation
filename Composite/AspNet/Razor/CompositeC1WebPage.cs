@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Web;
 using System.Web.WebPages;
+using System.Xml.Linq;
 using Composite.Data;
 
 namespace Composite.AspNet.Razor
@@ -28,6 +30,7 @@ namespace Composite.AspNet.Razor
 			get { return Data.SitemapNavigator; }
 		}
 
+
         /// <summary>
         /// Gets the home page node.
         /// </summary>
@@ -36,6 +39,7 @@ namespace Composite.AspNet.Razor
 			get { return Sitemap.CurrentHomePageNode; }
 		}
 
+
         /// <summary>
         /// Gets the current page node.
         /// </summary>
@@ -43,6 +47,30 @@ namespace Composite.AspNet.Razor
 		{
 			get { return Sitemap.CurrentPageNode; }
 		}
+
+
+        /// <summary>
+        /// Includes a named Page Template Feature. Page Template Feature are managed in '~/App_Data/PageTemplateFeatures' 
+        /// or via the C1 Console's Layout perspective. They contain html and functional snippets.
+        /// </summary>
+        /// <param name="featureName">Name of the Page Template Feature to include. Names do not include an extension.</param>
+        /// <returns></returns>
+        public IHtmlString PageTemplateFeature(string featureName)
+        {
+            return Html.C1().GetPageTemplateFeature(featureName);
+        }
+
+
+        /// <summary>
+        /// Renders the specified XNode.
+        /// </summary>
+        /// <param name="xNode">The <see cref="XNode">XNode</see>.</param>
+        /// <returns></returns>
+        public IHtmlString Markup(XNode xNode)
+        {
+            return Html.C1().Markup(xNode);
+        }
+
 
         /// <exclude />
 		public void Dispose()
