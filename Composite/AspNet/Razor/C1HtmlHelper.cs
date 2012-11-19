@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
 using System.Web.WebPages.Html;
 using System.Xml.Linq;
-using Composite.Core.Configuration;
-using Composite.Core.IO;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 using Composite.Data.Types;
 
@@ -217,7 +215,6 @@ namespace Composite.AspNet.Razor
         }
 
 
-#warning super fast prototype code below - facades, caching, grace follow later! right?
         /// <summary>
         /// Includes a named Page Template Feature. Page Template Feature are managed in '~/App_Data/PageTemplateFeatures' 
         /// or via the C1 Console's Layout perspective. They contain html and functional snippets.
@@ -226,19 +223,8 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
         public IHtmlString GetPageTemplateFeature(string featureName)
         {
-            string featurePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), featureName + ".xml");
+            XElement documentRoot = PageTemplateFeatureFacade.GetPageTemplateFeature(featureName).Root;
 
-            if (!C1File.Exists(featurePath))
-            {
-                featurePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), featureName + ".xhtml");
-            }
-
-            if (!C1File.Exists(featurePath))
-            {
-                throw new InvalidOperationException("Unknown feature '" + featureName + "'");
-            }
-
-            XElement documentRoot = XDocumentUtils.Load(featurePath).Root;
             return _helper.Raw(documentRoot.ToString());
         }
 

@@ -2,30 +2,18 @@
 using System.Web.UI;
 using Composite.Core.PageTemplates;
 using Composite.Data;
-
+using Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
     /// <summary>
-    /// Base master page
+    /// Base class for ASP.NET MasterPage classes in Composite C1. Inheriting from this bring common features like easy data and sitemap access. 
+    /// This class is intended for use in shared MasterPages, to create a MasterPage based page template for Composite C1 use <see cref="Composite.Plugins.PageTemplates.MasterPages.MasterPagePageTemplate"/>.
     /// </summary>
-    public abstract class MasterPagePageTemplate : MasterPageBase, IPageTemplate
+    public abstract class MasterPageBase : MasterPage
     {
         private DataConnection _dataConnection;
 
-        /// <summary>
-        /// Gets the template id.
-        /// </summary>
-        public abstract Guid TemplateId { get; }
-
-        /// <summary>
-        /// Gets the template title.
-        /// </summary>
-        public virtual string TemplateTitle
-        {
-            get { return null; }
-        }
-        
         /// <summary>
         /// Gets or sets the data connection.
         /// </summary>
@@ -52,10 +40,23 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             get { return Data.SitemapNavigator; }
         }
 
+        /// <summary>
+        /// Gets a Page Template Feature based on name.
+        /// </summary>
+        /// <param name="featureName">Name of the Page Template Feature to return.</param>
+        /// <returns>The Page Template Feature as an ASP.NET Control</returns>
+        public Control GetPageTemplateFeature(string featureName)
+        {
+            var feature = new PageTemplateFeature();
+            feature.Name = featureName;
+            return feature;
+        }
+
+
         /// <exclude />
         public override void Dispose()
         {
-            if(_dataConnection != null)
+            if (_dataConnection != null)
             {
                 _dataConnection.Dispose();
                 _dataConnection = null;

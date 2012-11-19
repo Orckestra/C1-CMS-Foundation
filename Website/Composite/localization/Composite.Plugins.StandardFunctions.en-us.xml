@@ -274,7 +274,12 @@
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.label" value="Show generator" />
 	<string key="Composite.Web.Html.Template.CommonMetaTags.param.ShowGenerator.help" value="Show the world you support Composite C1 - free open source!" />
 	<string key="Composite.Web.Html.Template.LangAttribute.description" value="Appends a lang='(language code)' attribute the the parent element, reflecting the language of the current page. You can put this just below the &lt;html /&gt; tag." />
-	<string key="Composite.Web.Request.CookieValue.description" value="Gets a value from the current users cookie collection." />
+  <string key="Composite.Web.Html.Template.PageTemplateFeature.description" value="Includes a named Page Template Feature at this location. Page Template Features can contain html and functional snippets and are managed on the Layout perspective." />
+  <string key="Composite.Web.Html.Template.PageTemplateFeature.param.FeatureName.label" value="Feature name" />
+  <string key="Composite.Web.Html.Template.PageTemplateFeature.param.FeatureName.help" value="Name of the Page Template Feature you wish to include." />
+
+
+  <string key="Composite.Web.Request.CookieValue.description" value="Gets a value from the current users cookie collection." />
 	<string key="Composite.Web.Request.CookieValue.param.CookieName.help" value="" />
 	<string key="Composite.Web.Request.CookieValue.param.CookieName.label" value="Cookie name" />
 	<string key="Composite.Web.Request.CookieValue.param.FallbackValue.help" value="If the user does not have this cookie, use this field to specify what value to default to." />

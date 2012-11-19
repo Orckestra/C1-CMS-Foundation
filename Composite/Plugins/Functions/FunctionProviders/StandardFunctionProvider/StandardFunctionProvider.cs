@@ -98,6 +98,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             _standardStaticTypeFunctions.Add(new Web.Client.IsMobileDeviceFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Html.Template.CommonMetaTagsFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Html.Template.LangAttributeFunction(_entityTokenFactory));
+            _standardStaticTypeFunctions.Add(new Web.Html.Template.PageTemplateFeatureFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.CookieValueFunction(_entityTokenFactory));
             _standardStaticTypeFunctions.Add(new Web.Request.SessionVariableFunction(_entityTokenFactory));
 

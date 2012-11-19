@@ -6,6 +6,7 @@ using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
+using Composite.Core.WebClient.Renderings.Template;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider
@@ -39,7 +40,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             string name = this.GetBinding<string>("Name");
             string editorType = this.GetBinding<string>("EditorType");
 
-            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), name + "." + editorType);
+            string filename = PageTemplateFeatureFacade.GetNewPageTemplateFeaturePath(name, editorType);
 
             XhtmlDocument template = new XhtmlDocument();
             template.Head.Add("");

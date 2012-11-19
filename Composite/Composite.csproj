@@ -158,6 +158,7 @@
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
+    <Compile Include="Core\WebClient\Renderings\Template\PageTemplateFeatureFacade.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\PageTemplateFeatureElementProvider.cs" />
@@ -636,6 +637,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\NotLoadedMethodBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Dictionary\EnumerableToDictionary.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Dictionary\XElementsToDictionaryFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Html\Template\PageTemplateFeatureFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoGuidFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\PathInfoIntFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Request\RegisterPathInfoUsageFunction.cs" />
@@ -653,6 +655,10 @@
     <Compile Include="Plugins\PageTemplates\MasterPages\CompilationHelper.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\DescriptionMetaTag.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Functions\LazyParameterRuntimeTreeNode.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\PageTemplateFeature.cs" />
+    <Compile Include="Plugins\PageTemplates\MasterPages\MasterPageBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Plugins\PageTemplates\MasterPages\MasterPagePageTemplate.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

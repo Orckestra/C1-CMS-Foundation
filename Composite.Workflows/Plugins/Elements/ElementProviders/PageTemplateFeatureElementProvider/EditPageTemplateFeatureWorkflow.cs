@@ -1,13 +1,9 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using Composite.C1Console.Events;
 using Composite.C1Console.Workflow;
-using Composite.Core.Configuration;
 using Composite.Core.IO;
-using Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider;
+using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
 
 
@@ -78,25 +74,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             }
         }
 
+
         private string FilePath
         {
             get
             {
                 PageTemplateFeatureEntityToken castedEntityToken = (PageTemplateFeatureEntityToken)this.EntityToken;
-
-                string extensionlessPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), castedEntityToken.FeatureName);
-
-                if (C1File.Exists(extensionlessPath + ".xhtml"))
-                {
-                    return extensionlessPath + ".xhtml";
-                }
-                else
-                {
-                    return extensionlessPath + ".xml";
-                }
+                return PageTemplateFeatureFacade.GetPageTemplateFeaturePath(castedEntityToken.FeatureName);
             }
         }
-
 
 
         private void IsMarkupValid(object sender, System.Workflow.Activities.ConditionalEventArgs e)

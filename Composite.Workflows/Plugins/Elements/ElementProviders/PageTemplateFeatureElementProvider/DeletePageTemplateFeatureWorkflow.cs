@@ -1,9 +1,7 @@
 using System;
 using Composite.C1Console.Workflow;
 using Composite.Core.IO;
-using Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider;
-using System.IO;
-using Composite.Core.Configuration;
+using Composite.Core.WebClient.Renderings.Template;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider
@@ -31,17 +29,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             get
             {
                 PageTemplateFeatureEntityToken castedEntityToken = (PageTemplateFeatureEntityToken)this.EntityToken;
-
-                string extensionlessPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), castedEntityToken.FeatureName);
-
-                if (C1File.Exists(extensionlessPath + ".xhtml"))
-                {
-                    return extensionlessPath + ".xhtml";
-                }
-                else
-                {
-                    return extensionlessPath + ".xml";
-                }
+                return PageTemplateFeatureFacade.GetPageTemplateFeaturePath(castedEntityToken.FeatureName);
             }
         }
 
