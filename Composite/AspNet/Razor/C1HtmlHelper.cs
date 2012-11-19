@@ -218,12 +218,11 @@ namespace Composite.AspNet.Razor
 
 
 #warning super fast prototype code below - facades, caching, grace follow later! right?
-#warning also comments suck
-
         /// <summary>
-        /// Includes the content of a file.
+        /// Includes a named Page Template Feature. Page Template Feature are managed in '~/App_Data/PageTemplateFeatures' 
+        /// or via the C1 Console's Layout perspective. They contain html and functional snippets.
         /// </summary>
-        /// <param name="path">The file to include.</param>
+        /// <param name="featureName">Name of the Page Template Feature to include. Names do not include an extension.</param>
         /// <returns></returns>
         public IHtmlString GetPageTemplateFeature(string featureName)
         {
@@ -239,7 +238,7 @@ namespace Composite.AspNet.Razor
                 throw new InvalidOperationException("Unknown feature '" + featureName + "'");
             }
 
-            XElement documentRoot = XDocument.Load(featurePath).Root;
+            XElement documentRoot = XDocumentUtils.Load(featurePath).Root;
             return _helper.Raw(documentRoot.ToString());
         }
 
