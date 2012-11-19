@@ -7,6 +7,7 @@ using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
+using System.Xml.Linq;
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
@@ -38,6 +39,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             _xmlDateTypeStoreDataScopes = xmlDateTypeStoreDataScopes.Evaluate();
 
+            var ordering = new List<Func<XElement, IComparable>>();
+            foreach (var key in dataTypeDescriptor.KeyPropertyNames)
+            {
+                string localKey = key;
+                ordering.Add(f => (f.Attribute(localKey)!=null ? f.Attribute(localKey).Value : ""));
+            }
+            Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>> orderer = f => ordering.Skip(1).Aggregate(f.OrderBy(ordering.First()), Enumerable.ThenBy); 
+
             foreach (XmlDataTypeStoreDataScope xmlDataTypeStoreDataScope in _xmlDateTypeStoreDataScopes)
             {
                 DataScopeIdentifier dataScopeIdentifier = DataScopeIdentifier.Deserialize(xmlDataTypeStoreDataScope.DataScopeName);
@@ -45,10 +54,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 Type dataType = dataTypeDescriptor.GetInterfaceType();
 
                 Action cacheFlush = () => DataEventSystemFacade.FireExternalStoreChangedEvent(dataType, dataScopeIdentifier.ToPublicationScope(), culture);
-
                 XmlDataProviderDocumentCache.RegisterExternalFileChangeAction(xmlDataTypeStoreDataScope.Filename, cacheFlush);
 
-
+                XmlDataProviderDocumentCache.RegisterFileOrderer(xmlDataTypeStoreDataScope.Filename, orderer);
             }
         }
 

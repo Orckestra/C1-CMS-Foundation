@@ -62,6 +62,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static readonly object _cacheSyncRoot = new object();
         private static readonly object _documentEditingSyncRoot = new object();
         private static readonly List<KeyValuePair<string, Action>> _externalFileChangeActions = new List<KeyValuePair<string, Action>>();
+        private static readonly Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>> _fileOrderers = new Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>>();
 
         private static readonly TimeSpan AcceptableNotificationDelay = TimeSpan.FromSeconds(1.0);
 
@@ -81,6 +82,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             string key = filename.ToLowerInvariant();
 
             _externalFileChangeActions.Add(new KeyValuePair<string,Action>( key, action));
+        }
+
+
+        internal static void RegisterFileOrderer(string filename, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>> orderer)
+        {
+            string key = filename.ToLowerInvariant();
+
+            _fileOrderers.Add(key, orderer);
         }
 
 
@@ -309,6 +318,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
                 if (!dirtyRecords.Any()) return;
 
+
+
                 foreach (FileRecord record in dirtyRecords)
                 {
                     SaveChanges(record);
@@ -332,7 +343,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             var recordSet = fileRecord.RecordSet;
             List<XElement> elements = new List<XElement>(recordSet.Index.GetValues());
 
-            elements.ForEach(root.Add);
+            if (_fileOrderers.ContainsKey(fileRecord.FileName.ToLowerInvariant()))
+            {
+                var orderer = _fileOrderers[fileRecord.FileName.ToLowerInvariant()];
+                var orderedElements = orderer(elements);
+                orderedElements.ForEach(root.Add);
+            }
+            else
+            {
+                elements.ForEach(root.Add);
+            }
 
             Exception thrownException = null;
 
@@ -493,5 +513,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 }
             }
         }
+
     }
 }
