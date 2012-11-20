@@ -89,6 +89,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string key = filename.ToLowerInvariant();
 
+            if (_fileOrderers.ContainsKey(key))
+            {
+                _fileOrderers.Remove(key);
+            }
+
             _fileOrderers.Add(key, orderer);
         }
 
