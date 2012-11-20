@@ -27924,7 +27924,7 @@ this._codemirrorEditor.setOption("mode","text/css");
 break;
 case CodeMirrorEditorBinding.syntax.CSHARP:
 case CodeMirrorEditorBinding.syntax.CSHTML:
-this._codemirrorEditor.setOption("mode","text/x-csharp");
+this._codemirrorEditor.setOption("mode","application/x-cshtml");
 break;
 case CodeMirrorEditorBinding.syntax.JAVASCRIPT:
 this._codemirrorEditor.setOption("mode","text/javascript");
