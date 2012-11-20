@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.WebPages;
 using System.Xml.Linq;
 using Composite.Data;
+using System.Threading;
 
 namespace Composite.AspNet.Razor
 {
@@ -69,6 +70,18 @@ namespace Composite.AspNet.Razor
         public IHtmlString Markup(XNode xNode)
         {
             return Html.C1().Markup(xNode);
+        }
+
+
+        /// <summary>
+        /// Gets to letter ISO Language Name representing the pages language - use this like &lt;html lang="@Lang" /&gt;
+        /// </summary>
+        public string Lang
+        {
+            get
+            {
+                return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
+            }
         }
 
 
