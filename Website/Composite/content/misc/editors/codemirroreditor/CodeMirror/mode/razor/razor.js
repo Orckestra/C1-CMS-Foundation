@@ -1,0 +1,70 @@
+﻿CodeMirror.defineMode("razor", function (config, parserConfig) {
+
+	var scriptStartRegex = /^@/i,
+      scriptEndRegex = /^<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|dir|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|hgroup|hr|html|i|iframe|img|input|ins|keygen|kbd|label|legend|li|link|map|mark|menu|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strike|strong|style|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)( |>)/i;
+
+	//inner modes
+	var scriptingMode, htmlMixedMode;
+
+	//tokenizer when in html mode
+	function htmlDispatch(stream, state) {
+		if (stream.match(scriptStartRegex, false)) {
+			state.token = scriptingDispatch;
+			return scriptingMode.token(stream, state.scriptState);
+		}
+		else
+			return htmlMixedMode.token(stream, state.htmlState);
+	}
+
+	//tokenizer when in scripting mode
+	function scriptingDispatch(stream, state) {
+		if (stream.match(scriptEndRegex, false)) {
+			state.token = htmlDispatch;
+			return htmlMixedMode.token(stream, state.htmlState);
+		}
+		else
+			return scriptingMode.token(stream, state.scriptState);
+	}
+
+
+	return {
+		startState: function () {
+			scriptingMode = scriptingMode || CodeMirror.getMode(config, "text/x-csharp");
+			htmlMixedMode = htmlMixedMode || CodeMirror.getMode(config, "htmlmixed");
+			return {
+				token: htmlDispatch,
+				htmlState: htmlMixedMode.startState(),
+				scriptState: scriptingMode.startState()
+			};
+		},
+
+		token: function (stream, state) {
+			return state.token(stream, state);
+		},
+
+		indent: function (state, textAfter) {
+			if (state.token == htmlDispatch)
+				return htmlMixedMode.indent(state.htmlState, textAfter);
+			else
+				return scriptingMode.indent(state.scriptState, textAfter);
+		},
+
+		copyState: function (state) {
+			return {
+				token: state.token,
+				htmlState: CodeMirror.copyState(htmlMixedMode, state.htmlState),
+				scriptState: CodeMirror.copyState(scriptingMode, state.scriptState)
+			};
+		},
+
+		electricChars: "/{}:",
+
+		innerMode: function (state) {
+			if (state.token == scriptingDispatch) return { state: state.scriptState, mode: scriptingMode };
+			else return { state: state.htmlState, mode: htmlMixedMode };
+		}
+	};
+}, "htmlmixed");
+
+CodeMirror.defineMIME("application/x-cshtml", "razor");
+CodeMirror.defineMIME("application/x-master-page", "razor");
