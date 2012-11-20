@@ -48,6 +48,7 @@ del TreeDefinitions\PageType.xml.backup
 :: Basic cleanup
 rd ..\..\Frontend\Composite  /S /Q
 rd ..\..\App_Data\UserControls /S /Q
+rd ..\..\App_Data\PageTemplateFeatures /S /Q
 
 :: Razor cleanup
 copy ..\..\App_Data\Razor\web.config ..\..\App_Data\Razor.web.config
