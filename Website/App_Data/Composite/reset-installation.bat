@@ -25,8 +25,6 @@ rd ..\..\App_Code /S /Q
 md ..\..\App_Code
 rd ..\Media /S /Q
 md ..\Media
-rd ..\PageTemplates /S /Q
-md ..\PageTemplates
 rd ApplicationState\SerializedConsoleMessages /S /Q
 md ApplicationState\SerializedConsoleMessages
 rd ApplicationState\SerializedWorkflows /S /Q
@@ -49,6 +47,23 @@ del TreeDefinitions\PageType.xml.backup
 
 :: Basic cleanup
 rd ..\..\Frontend\Composite  /S /Q
+rd ..\..\App_Data\UserControls /S /Q
+
+:: Razor cleanup
+copy ..\..\App_Data\Razor\web.config ..\..\App_Data\Razor.web.config
+rd ..\..\App_Data\Razor /S /Q
+md ..\..\App_Data\Razor
+copy ..\..\App_Data\Razor.web.config ..\..\App_Data\Razor\web.config
+del ..\..\App_Data\Razor.web.config /f
+
+
+:: PageTemplates cleanup
+copy ..\..\App_Data\PageTemplates\web.config ..\..\App_Data\PageTemplates.web.config
+rd ..\..\App_Data\PageTemplates /S /Q
+md ..\..\App_Data\PageTemplates
+copy ..\..\App_Data\PageTemplates.web.config ..\..\App_Data\PageTemplates\web.config
+del ..\..\App_Data\PageTemplates.web.config /f
+
 
 :: Starter site cleanup 
 del ..\..\Frontend\Styles\1140.css
