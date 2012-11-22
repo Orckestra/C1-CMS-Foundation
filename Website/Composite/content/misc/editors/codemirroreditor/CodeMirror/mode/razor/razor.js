@@ -2,33 +2,28 @@
 
 	var scriptEndRegex = /^<\/?(a|abbr|acronym|address|applet|area|article|aside|audio|b|base|basefont|bdi|bdo|big|blockquote|body|br|button|canvas|caption|cite|code|col|colgroup|command|datalist|dd|del|details|dfn|dir|div|dl|dt|em|embed|fieldset|figcaption|figure|font|footer|form|frame|frameset|h1|h2|h3|h4|h5|h6|head|header|hgroup|hr|html|i|iframe|img|input|ins|keygen|kbd|label|legend|li|link|map|mark|menu|meta|meter|nav|noframes|noscript|object|ol|optgroup|option|output|p|param|pre|progress|q|rp|rt|ruby|s|samp|script|section|select|small|source|span|strike|strong|style|sub|summary|sup|table|tbody|td|textarea|tfoot|th|thead|time|title|tr|track|tt|u|ul|var|video|wbr)( |>)/i;
 
-	//inner modes
 	var scriptingMode, htmlMixedMode;
 
-
-
-	//tokenizer when in html mode
-	function htmlDispatch(stream, state) {
+	function htmlToken(stream, state) {
 		if (stream.match(/^@\*/i, false)) {
 			return razorComment(stream, state);
 		}
 		else if (stream.match(/^@/i, false)) {
-			state.token = scriptingDispatch;
+			state.token = scriptToken;
 			return razor(stream, state);
 		}
 		else
 			return htmlMixedMode.token(stream, state.htmlState);
 	}
 
-	//tokenizer when in scripting mode
-	function scriptingDispatch(stream, state) {
+	function scriptToken(stream, state) {
 		if (stream.match(scriptEndRegex, false)) {
-			state.token = htmlDispatch;
+			state.token = htmlToken;
 			var style = htmlMixedMode.token(stream, state.htmlState);
 			return style;
 		}
 		else if (stream.match(/^@/i, false)) {
-			state.token = scriptingDispatch;
+			state.token = scriptToken;
 			return razor(stream, state);
 		}
 		else {
@@ -63,7 +58,7 @@
 			scriptingMode = scriptingMode || CodeMirror.getMode(config, "text/x-csharp");
 			htmlMixedMode = htmlMixedMode || CodeMirror.getMode(config, "htmlmixed");
 			return {
-				token: htmlDispatch,
+				token: htmlToken,
 				htmlState: htmlMixedMode.startState(),
 				scriptState: scriptingMode.startState()
 			};
@@ -74,7 +69,7 @@
 		},
 
 		indent: function (state, textAfter) {
-			if (state.token == htmlDispatch)
+			if (state.token == htmlToken)
 				return htmlMixedMode.indent(state.htmlState, textAfter);
 			else
 				return scriptingMode.indent(state.scriptState, textAfter);
@@ -91,7 +86,7 @@
 		electricChars: "/{}:",
 
 		innerMode: function (state) {
-			if (state.token == scriptingDispatch) return { state: state.scriptState, mode: scriptingMode };
+			if (state.token == scriptToken) return { state: state.scriptState, mode: scriptingMode };
 			else return { state: state.htmlState, mode: htmlMixedMode };
 		}
 	};
