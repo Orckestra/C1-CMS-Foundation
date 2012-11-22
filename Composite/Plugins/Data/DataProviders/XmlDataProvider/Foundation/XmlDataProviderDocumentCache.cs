@@ -25,11 +25,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         internal class FileRecord
         {
+            internal FileRecord()
+            {
+                _random = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            }
+
+            private string _random;
+
             public string FileName;
             public string ElementName;
-
             public RecordSet RecordSet;
-
             public IEnumerable<XElement> ReadOnlyElementsList;
             public DateTime LastModified;
             public DateTime FileModificationDate;
@@ -39,15 +44,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 get
                 {
-                    return FileName + ".tmp";
-                }
-            }
-
-            public string InUseFileName
-            {
-                get
-                {
-                    return FileName + ".used";
+                    return string.Format("{0}.{1}.tmp", FileName, _random);
                 }
             }
         }
@@ -81,7 +78,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string key = filename.ToLowerInvariant();
 
-            _externalFileChangeActions.Add(new KeyValuePair<string,Action>( key, action));
+            _externalFileChangeActions.Add(new KeyValuePair<string, Action>(key, action));
         }
 
 
@@ -98,84 +95,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         }
 
 
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            _externalFileChangeActions.Clear();
-        }
-
-
-
-
-        private static void EnsureFileChangesSubscription(string filename)
-        {
-            filename = filename.ToLowerInvariant();
-
-            if (_watchedFiles.Contains(filename))
-            {
-                return;
-            }
-
-            lock (_cacheSyncRoot)
-            {
-                if (_watchedFiles.Contains(filename))
-                {
-                    return;
-                }
-
-                _watchedFiles.Add(filename);
-
-                FileChangeNotificator.Subscribe(filename, OnFileExternallyChanged);
-            }
-        }
-        
-        private static void OnFileExternallyChanged(string filePath, FileChangeType changeType)
-        {
-            filePath = filePath.ToLowerInvariant();
-
-            var fileRecord = _cache[filePath];
-
-            // Ignoring this notification since it's probably caused by XmlDataProvider itself
-            if (fileRecord == null
-                || DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay)
-            {
-                return;
-            }
-
-            lock (_documentEditingSyncRoot)
-            {
-                lock (_cacheSyncRoot)
-                {
-                    fileRecord = _cache[filePath];
-
-                    if (fileRecord == null) return;
-
-                    // Ignoring this notification since it's probably caused by XmlDataProvider itself
-                    if (DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay) return;
-
-                    // Checking if the date has changed
-                    if (C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
-                    {
-                        return;
-                    }
-
-                    _cache.Remove(filePath);
-
-                    Log.LogVerbose(LogTitle, "File '{0}' changed by another process. Flushing cache.", filePath);
-
-                    if (_externalFileChangeActions.Any(f => f.Key == filePath))
-                    {
-                        foreach (var action in _externalFileChangeActions.Where(f => f.Key == filePath).Select(f=>f.Value))
-                        {
-                            action.Invoke();
-                        }
-                    }
-                    else
-                    {
-                        Log.LogWarning(LogTitle, "File '{0}' has not been related to a scope - unable to raise store change event", filePath);
-                    }
-                }
-            }
-        }
 
         public static object SyncRoot
         {
@@ -198,100 +117,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (cachedData == null)
                     {
-                        if (!File.Exists(filename))
-                        {
-                            bool failed = true;
-                            bool fileNotFound = false;
-                            Exception lastException = null;
-                            Log.LogWarning(LogTitle, "Did not find file '{0}' as expected, will look for .tmp. This can happen is a critical system failure killed the last save".FormatWith(filename));
-
-                            for (int i = 0; i < NumberOfRetries; i++)
-                            {
-                                try
-                                {
-                                    // Restore broken save
-                                    if (File.Exists(filename + ".tmp"))
-                                    {
-                                        File.Move(filename + ".tmp", filename);
-                                        Log.LogInformation(LogTitle,"Was able to restore '{0}' from .tmp file.".FormatWith(filename));
-                                        failed = false;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        fileNotFound = true;
-                                        break;
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    lastException = ex;
-                                    Thread.Sleep(10 * (i + 1));
-                                }
-                            }
-
-                            if (fileNotFound)
-                            {
-                                throw new InvalidOperationException("File '{0}' not found".FormatWith(filename));
-                            }
-
-                            if (failed)
-                            {
-                                Log.LogCritical("XmlDataProvider",
-                                                           "Failed moving file " + filename + " to file " + filename +
-                                                           ".tmp");
-                                if (lastException != null)
-                                {
-                                    Log.LogCritical(LogTitle, lastException);
-                                    throw lastException;
-                                }
-                            }
-                        }
-
-                        XDocument xDoc;
-                        try
-                        {
-                            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-                            xmlReaderSettings.CheckCharacters = false;
-
-                            using (XmlReader xmlReader = XmlReaderUtils.Create(filename, xmlReaderSettings))
-                            {
-                                xDoc = XDocument.Load(xmlReader);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.LogCritical(LogTitle, "Failed to load data from the file: " + filename);
-                            Log.LogCritical(LogTitle, ex);
-
-                            throw;
-                        }
-
-                        List<XElement> elements = ExtractElements(xDoc);
-
-                        var index = new Hashtable<IDataId, XElement>();
-                        foreach (var element in elements)
-                        {
-                            IDataId id = keyGetter(element);
-                            if (!index.ContainsKey(id))
-                            {
-                                index.Add(id, element);
-                            }
-                            else
-                            {
-                                // TODO: handle the dublicated id behaviour
-                            }
-                        }
-
-                        cachedData = new FileRecord
-                                         {
-                                             FileName = filename,
-                                             ElementName = elementName,
-                                             RecordSet = new RecordSet {/* Elements = elements,*/ Index = index },
-                                             ReadOnlyElementsList = new List<XElement>(elements),
-                                             LastModified = DateTime.Now,
-                                             FileModificationDate = C1File.GetLastWriteTime(filename)
-                                         };
+                        cachedData = LoadFileRecordFromDisk(filename, elementName, keyGetter);
 
                         EnsureFileChangesSubscription(filename);
 
@@ -315,7 +141,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-
         public static void SaveChanges()
         {
             lock (_cacheSyncRoot)
@@ -334,6 +159,47 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
+        public static void UndoUncommitedChanges()
+        {
+            lock (_cacheSyncRoot)
+            {
+                foreach (string filename in _cache.GetKeys())
+                {
+                    if (_cache[filename].Dirty)
+                    {
+                        _cache.Remove(filename);
+                    }
+                }
+            }
+        }
+
+
+
+        public static void ClearCache()
+        {
+            _cache.Clear();
+        }
+
+
+
+        public static IDisposable CreateEditingContext()
+        {
+            return new EditingContext();
+        }
+
+
+
+        private static List<XElement> ExtractElements(XDocument xDocument)
+        {
+            var result = new List<XElement>(xDocument.Root.Elements());
+
+            result.ForEach(element => element.Remove());
+
+            return result;
+        }
+
+        
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, to handle broken saves")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotCallXmlWriterCreateWithPath:DoNotCallXmlWriterCreateWithPath", Justification = "This is what we want, to handle broken saves")]
         private static void SaveChanges(FileRecord fileRecord)
@@ -374,16 +240,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
 
-                    // fix for Antares (running on multiple services of one VHD)
-                    while (File.Exists(fileRecord.InUseFileName)
-                        && (DateTime.Now - File.GetLastWriteTime(fileRecord.InUseFileName)).TotalSeconds < 10)
-                    { 
-                        /*wait */
-                        Thread.Sleep(100);
-                    }
-
-                    File.WriteAllText(fileRecord.InUseFileName, "lock");
-                    
                     using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
@@ -430,10 +286,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         // Ignore exception here. The tmp file might have been "recovered" by the load method
                     }
-                    finally
-                    {
-                        File.Delete(fileRecord.InUseFileName);
-                    }
                 }
                 catch (Exception exception)
                 {
@@ -458,15 +310,107 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void UndoUncommitedChanges()
+        /// <summary>
+        /// Fetches a list of files that contain data - both the stable file and tmp files.
+        /// List is ordered with newest files first.
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        private static IList<C1FileInfo> GetCandidateFiles(string filename)
         {
+            List<C1FileInfo> files = new List<C1FileInfo>();
+            if (C1File.Exists(filename))
+            {
+                files.Add(new C1FileInfo(filename));
+            }
+
+            var tmpFilenames = C1Directory.GetFiles(Path.GetDirectoryName(filename), string.Format("{0}.*.tmp", Path.GetFileName(filename)));
+
+            foreach (string tmpFilename in tmpFilenames)
+            {
+                files.Add(new C1FileInfo(tmpFilename));
+            }
+
+            return files.OrderByDescending(f => f.LastWriteTime).ToList();
+        }
+
+
+
+        private static void OnFlushEvent(FlushEventArgs args)
+        {
+            _externalFileChangeActions.Clear();
+        }
+
+
+
+        private static void EnsureFileChangesSubscription(string filename)
+        {
+            filename = filename.ToLowerInvariant();
+
+            if (_watchedFiles.Contains(filename))
+            {
+                return;
+            }
+
             lock (_cacheSyncRoot)
             {
-                foreach (string filename in _cache.GetKeys())
+                if (_watchedFiles.Contains(filename))
                 {
-                    if (_cache[filename].Dirty)
+                    return;
+                }
+
+                _watchedFiles.Add(filename);
+
+                FileChangeNotificator.Subscribe(filename, OnFileExternallyChanged);
+            }
+        }
+
+
+
+        private static void OnFileExternallyChanged(string filePath, FileChangeType changeType)
+        {
+            filePath = filePath.ToLowerInvariant();
+
+            var fileRecord = _cache[filePath];
+
+            // Ignoring this notification since it's probably caused by XmlDataProvider itself
+            if (fileRecord == null
+                || DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay)
+            {
+                return;
+            }
+
+            lock (_documentEditingSyncRoot)
+            {
+                lock (_cacheSyncRoot)
+                {
+                    fileRecord = _cache[filePath];
+
+                    if (fileRecord == null) return;
+
+                    // Ignoring this notification since it's probably caused by XmlDataProvider itself
+                    if (DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay) return;
+
+                    // Checking if the date has changed
+                    if (C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
                     {
-                        _cache.Remove(filename);
+                        return;
+                    }
+
+                    _cache.Remove(filePath);
+
+                    Log.LogVerbose(LogTitle, "File '{0}' changed by another process. Flushing cache.", filePath);
+
+                    if (_externalFileChangeActions.Any(f => f.Key == filePath))
+                    {
+                        foreach (var action in _externalFileChangeActions.Where(f => f.Key == filePath).Select(f => f.Value))
+                        {
+                            action.Invoke();
+                        }
+                    }
+                    else
+                    {
+                        Log.LogWarning(LogTitle, "File '{0}' has not been related to a scope - unable to raise store change event", filePath);
                     }
                 }
             }
@@ -474,27 +418,121 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void ClearCache()
+        /// <summary>
+        /// Will pull up most recent from disk - if no good file is found an empty store will be constructed anyway
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="elementName"></param>
+        /// <param name="keyGetter"></param>
+        /// <param name="cachedData"></param>
+        /// <returns></returns>
+        private static FileRecord LoadFileRecordFromDisk(string filename, string elementName, Func<XElement, IDataId> keyGetter)
         {
-            _cache.Clear();
+            XDocument dataDocument = null;
+            C1FileInfo usedFile = null;
+
+            IList<C1FileInfo> candidateFiles = GetCandidateFiles(filename);
+
+            foreach (C1FileInfo candidateFile in candidateFiles)
+            {
+                bool tryLoad = true;
+
+                while (tryLoad && dataDocument == null)
+                {
+                    dataDocument = TryLoad(candidateFile);
+
+                    if (dataDocument == null)
+                    {
+                        if ((DateTime.Now - candidateFile.LastWriteTime).TotalSeconds > 30)
+                        {
+                            tryLoad = false;
+                        }
+                        else
+                        {
+                            Thread.Sleep(250); // other processes/servers may be writing to this file at the moment. Patience young padawan!
+                        }
+                    }
+                }
+
+                if (dataDocument != null)
+                {
+                    usedFile = candidateFile;
+                    break;
+                }
+            }
+
+            if (dataDocument == null)
+            {
+                dataDocument = new XDocument(new XElement("fallback"));
+                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store.", filename);
+            }
+
+            List<XElement> elements = ExtractElements(dataDocument);
+
+            var index = new Hashtable<IDataId, XElement>();
+            foreach (var element in elements)
+            {
+                IDataId id = keyGetter(element);
+                if (!index.ContainsKey(id))
+                {
+                    index.Add(id, element);
+                }
+                else
+                {
+                    Log.LogWarning(LogTitle, "Found multiple elements in '{0}' sharing same key - duplicates ignored.", filename);
+                }
+            }
+
+            if (usedFile != null)
+            {
+                // clean up old and unused files
+                foreach (C1FileInfo file in candidateFiles.Where(f => f.LastWriteTime < usedFile.LastWriteTime))
+                {
+                    try
+                    {
+                        C1File.Move(file.FullName, file.FullName + ".ghost");
+                    }
+                    catch (Exception)
+                    {
+                        Log.LogWarning(LogTitle, "Failed to clean up ghost file '{0}'.", filename);
+                    }
+                }
+            }
+
+            DateTime lastModifiedFileDate = usedFile != null ? usedFile.LastWriteTime : DateTime.Now;
+
+            return new FileRecord
+            {
+                FileName = filename,
+                ElementName = elementName,
+                RecordSet = new RecordSet { Index = index },
+                ReadOnlyElementsList = new List<XElement>(elements),
+                LastModified = DateTime.Now,
+                FileModificationDate = lastModifiedFileDate
+            };
         }
 
 
 
-        private static List<XElement> ExtractElements(XDocument xDocument)
+        private static XDocument TryLoad(C1FileInfo candidateFile)
         {
-            var result = new List<XElement>(xDocument.Root.Elements());
+            XDocument dataDocument = null;
+            try
+            {
+                XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+                xmlReaderSettings.CheckCharacters = false;
 
-            result.ForEach(element => element.Remove());
+                using (XmlReader xmlReader = XmlReaderUtils.Create(candidateFile.FullName, xmlReaderSettings))
+                {
+                    dataDocument = XDocument.Load(xmlReader);
+                }
+            }
+            catch (Exception ex)
+            {
+                // broken file - should not stop us...
+            }
 
-            return result;
-        }
-
-
-
-        public static IDisposable CreateEditingContext()
-        {
-            return new EditingContext();
+            return dataDocument;
         }
 
 
