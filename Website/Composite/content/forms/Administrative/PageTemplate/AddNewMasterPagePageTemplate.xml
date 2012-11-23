@@ -7,7 +7,7 @@
   </cms:bindings>
   <cms:layout iconhandle="generic-add" label="${Composite.Plugins.MasterPagePageTemplate, AddNewMasterPagePageTemplate.LabelDialog}">
     <FieldGroup Label="${Composite.Plugins.MasterPagePageTemplate, AddNewMasterPagePageTemplate.LabelFieldGroup}">
-      <TextBox Label="${Composite.Plugins.MasterPagePageTemplate, AddNewMasterPagePageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.MasterPagePageTemplate, AddNewMasterPagePageTemplate.LabelTemplateTitleHelp}">
+      <TextBox Label="${Composite.Plugins.MasterPagePageTemplate, AddNewMasterPagePageTemplate.LabelTemplateTitle}" Help="${Composite.Plugins.MasterPagePageTemplate, AddNewMasterPagePageTemplate.LabelTemplateTitleHelp}" Required="true">
         <TextBox.Text>
           <cms:bind source="Title" />
         </TextBox.Text>

@@ -11,30 +11,26 @@ namespace Composite.AspNet.Razor
     public abstract class RazorPageTemplate : CompositeC1WebPage, IPageTemplate
     {
         /// <summary>
-        /// Defines page template id.
+        /// Override this method and set <see cref="RazorPageTemplate.TemplateId"/> and <see cref="RazorPageTemplate.TemplateTitle"/>.
         /// </summary>
-        public abstract Guid TemplateId
+        public abstract void Configure();
+
+        /// <summary>
+        /// Gets or sets the page template id. You should set this in your Configure() method override.
+        /// </summary>
+        public Guid TemplateId
         {
             get;
+            protected set;
         }
 
         /// <summary>
-        /// Defines page template title.
+        /// Gets or sets the page template title. You should set this in your Configure() method override.
         /// </summary>
-        public abstract string TemplateTitle
+        public string TemplateTitle
         {
             get;
-        }
-
-        /// <summary>
-        /// Renders the content of specific placeholderPlaceholders the specified placeholder content.
-        /// </summary>
-        /// <param name="content">Content of the placeholder.</param>
-        /// <returns></returns>
-        [Obsolete("Use Markup() method instead")]
-        public IHtmlString Placeholder(XhtmlDocument content)
-        {
-            return Markup(content);
+            protected set;
         }
     }
 }

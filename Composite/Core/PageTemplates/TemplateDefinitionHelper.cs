@@ -33,6 +33,11 @@ namespace Composite.Core.PageTemplates
             DescriptorType pageTemplate = descriptorConstructor();
             Verify.ArgumentCondition(pageTemplate != null, "descriptorConstructor", "Not null object expected");
 
+            if (templateDefinition.TemplateId == null || templateDefinition.TemplateId == Guid.Empty)
+            {
+                throw new InvalidOperationException("TemplateId has not been correctly defined");
+            }
+
             pageTemplate.Id = templateDefinition.TemplateId;
             pageTemplate.Title = templateDefinition.TemplateTitle;
 

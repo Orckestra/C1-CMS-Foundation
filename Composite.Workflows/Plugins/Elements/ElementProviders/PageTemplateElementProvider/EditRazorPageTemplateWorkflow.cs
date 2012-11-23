@@ -148,6 +148,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 string templateTitle, templateDescription;
 
                 var pageTemplate = webPageBase as RazorPageTemplate;
+                pageTemplate.Configure();
 
                 try
                 {

@@ -7,7 +7,7 @@ namespace Composite.Plugins.PageTemplates.Common
 {
     internal static class TemplateParsingHelper
     {
-        public static bool TryExtractTemplateIdFromCSharpCode(string filePath, out Guid templateId)
+        public static bool TryExtractTemplateIdFromCSharpCode(string filePath, out Guid templateId, string idTokenBegin, string idTokenEnd)
         {
             templateId = Guid.Empty;
 
@@ -17,8 +17,8 @@ namespace Composite.Plugins.PageTemplates.Common
 
             allText = RemoveWhiteSpaces(allText);
 
-            string beginning = RemoveWhiteSpaces("Guid TemplateId { get { return new Guid(\"");
-            string ending = RemoveWhiteSpaces("\"); } }");
+            string beginning = RemoveWhiteSpaces(idTokenBegin);
+            string ending = RemoveWhiteSpaces(idTokenEnd);
 
             int firstIndex = allText.IndexOf(beginning, StringComparison.Ordinal);
             if (firstIndex < 0) return false;

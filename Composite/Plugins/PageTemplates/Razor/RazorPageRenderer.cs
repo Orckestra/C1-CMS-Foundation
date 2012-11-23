@@ -56,8 +56,9 @@ namespace Composite.Plugins.PageTemplates.Razor
             var webPage = WebPageBase.CreateInstanceFromVirtualPath(renderingInfo.ControlVirtualPath) as AspNet.Razor.RazorPageTemplate;
             Verify.IsNotNull(webPage, "Razor compilation failed or base type does not inherit '{0}'", typeof(AspNet.Razor.RazorPageTemplate).FullName);
 
-            var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
+            webPage.Configure();
 
+            var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
             
             using (Profiler.Measure("Evaluating placeholders"))
             {

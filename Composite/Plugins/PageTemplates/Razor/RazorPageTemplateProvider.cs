@@ -15,6 +15,7 @@ using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
 using Composite.Plugins.PageTemplates.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+using Composite.AspNet.Razor;
 
 namespace Composite.Plugins.PageTemplates.Razor
 {
@@ -130,19 +131,22 @@ namespace Composite.Plugins.PageTemplates.Razor
                     continue;
                 }
 
-                if(webPage == null || !(webPage is AspNet.Razor.RazorPageTemplate))
+                if (webPage == null || !(webPage is RazorPageTemplate))
                 {
                     sharedFiles.Add(new SharedRazorFile(virtualPath));
                     // Add shared code file here
                     continue;
                 }
-                
+
+                RazorPageTemplate razorPageTemplate = webPage as RazorPageTemplate;
+                razorPageTemplate.Configure();
+
                 PageTemplateDescriptor parsedTemplate;
                 IDictionary<string, PropertyInfo> placeholderProperties;
 
                 try
                 {
-                    ParseTemplate(virtualPath, fileInfo.FullName, webPage as AspNet.Razor.RazorPageTemplate, out parsedTemplate, out placeholderProperties);
+                    ParseTemplate(virtualPath, fileInfo.FullName, razorPageTemplate, out parsedTemplate, out placeholderProperties);
                 }
                 catch(Exception ex)
                 {
@@ -175,7 +179,10 @@ namespace Composite.Plugins.PageTemplates.Razor
         {
             Guid templateId;
 
-            if (!TemplateParsingHelper.TryExtractTemplateIdFromCSharpCode(PathUtil.Resolve(virtualPath), out templateId))
+            string idTokenBegin = "TemplateId = new Guid(\"";
+            string idTokenEnd = "\");";
+
+            if (!TemplateParsingHelper.TryExtractTemplateIdFromCSharpCode(PathUtil.Resolve(virtualPath), out templateId, idTokenBegin, idTokenEnd))
             {
                 templateId = GetMD5Hash(virtualPath.ToLowerInvariant());
             }

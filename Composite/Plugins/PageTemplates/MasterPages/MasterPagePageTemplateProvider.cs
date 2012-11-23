@@ -206,7 +206,10 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             
             Guid templateId;
             
-            if(!TemplateParsingHelper.TryExtractTemplateIdFromCSharpCode(codeBehindFile, out templateId))
+            string idTokenBegin = "Guid TemplateId { get { return new Guid(\"";
+            string idTokenEnd = "\"); } }";
+
+            if(!TemplateParsingHelper.TryExtractTemplateIdFromCSharpCode(codeBehindFile, out templateId, idTokenBegin, idTokenEnd))
             {
                 templateId = GetMD5Hash(filePath.ToLowerInvariant());
             }
