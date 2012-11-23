@@ -5,7 +5,7 @@
     {
         TemplateId = new Guid("%TemplateId%");
         TemplateTitle = "%TemplateTitle%";
-        // Layout = "SharedCode/MasterLayout.cshtml";
+        // Layout = "MasterLayout.cshtml";
     }
 
     [Placeholder(Id="content", Title="Content", IsDefault=true)]
