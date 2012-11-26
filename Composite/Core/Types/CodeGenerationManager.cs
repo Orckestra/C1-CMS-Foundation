@@ -197,6 +197,8 @@ namespace Composite.Core.Types
 
 
             StringBuilder sb = new StringBuilder();
+            failedAssemblyLoads.ForEach(asm => sb.AppendLine("Failed to load dll: " + asm));
+
             sb.AppendLine("Failed building: " + codeGenerationBuilder.DebugLabel);
             foreach (CompilerError compilerError in compileResult.Errors)
             {

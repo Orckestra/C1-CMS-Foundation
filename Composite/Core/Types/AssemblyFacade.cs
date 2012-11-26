@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.IO;
@@ -11,13 +14,15 @@ namespace Composite.Core.Types
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [EditorBrowsable(EditorBrowsableState.Never)] 
 	public static class AssemblyFacade
 	{
-        private static readonly Type RuntimeModuleType = typeof(System.Reflection.Module).Assembly.GetType("System.Reflection.RuntimeModule");
+        private static readonly Type RuntimeModuleType = typeof(Module).Assembly.GetType("System.Reflection.RuntimeModule");
+        private static ReadOnlyCollection<string> AssembliesFromBin;
+
 
         /// <exclude />
-        public static IEnumerable<Assembly> GetAssembliesFromBin()
+        public static IEnumerable<Assembly> GetLoadedAssembliesFromBin()
         {
             string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLowerInvariant().Replace('\\', '/');
 
@@ -44,6 +49,42 @@ namespace Composite.Core.Types
             return assemblies;
         }
 
+
+        /// <exclude />
+        public static IEnumerable<string> GetAssembliesFromBin()
+        {
+            if (AssembliesFromBin == null) {
+                var assembliesFromBin = new List<string>();
+
+                foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll")) {
+                    string assemblyFileName = Path.GetFileName(binFilePath);
+
+                    if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
+
+                    if (IsDotNetAssembly(binFilePath)) {
+                        assembliesFromBin.Add(binFilePath);
+                    }
+                }
+
+                AssembliesFromBin = new ReadOnlyCollection<string>(assembliesFromBin);
+            }
+
+            return AssembliesFromBin;
+        }
+
+        private static bool IsDotNetAssembly(string dllFilePath)
+        {
+            try {
+                AssemblyName.GetAssemblyName(dllFilePath);
+            }
+            catch (BadImageFormatException) {
+                return false;
+            }
+            catch (Exception) {
+            }
+
+            return true;
+        }
 
 
         /// <exclude />
@@ -79,7 +120,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static IEnumerable<Assembly> GetAllAssemblies()
         {
-            List<Assembly> assemblies = GetAssembliesFromBin() as List<Assembly>;
+            List<Assembly> assemblies = GetLoadedAssembliesFromBin() as List<Assembly>;
 
             Assembly appCodeAssembly = GetAppCodeAssembly();
 

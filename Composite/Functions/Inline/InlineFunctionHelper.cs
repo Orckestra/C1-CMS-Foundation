@@ -261,7 +261,7 @@ namespace Composite.Functions.Inline
                 yield return file;
             }
 
-            foreach (string file in Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
+            foreach (string file in AssemblyFacade.GetAssembliesFromBin())
             {
                 yield return file;
             }            

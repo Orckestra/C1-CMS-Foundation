@@ -82,10 +82,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             List<AssemblyInfo> cachedTypesInfo = GetCachedAssemblyInfo();
             bool cacheHasBeenUpdated = false;
 
-            // Getting list of assemblies from "/bin" folder
-            string[] dllsFromBin = GetDllFilesFromBin();
-
-            foreach(string filePath in dllsFromBin)
+            
+            foreach(string filePath in AssemblyFacade.GetAssembliesFromBin())
             {
                 Type[] types = null;
                 try
@@ -148,12 +146,6 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
 
             return true;
-        }
-
-        private static string[] GetDllFilesFromBin()
-        {
-            string binDirectory = PathUtil.Resolve(GlobalSettingsFacade.BinDirectory).ToLowerInvariant().Replace('/', '\\');
-            return C1Directory.GetFiles(binDirectory, "*.dll");
         }
 
 

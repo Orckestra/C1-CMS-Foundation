@@ -1,12 +1,14 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 
 
@@ -22,17 +24,8 @@ namespace Composite.Core.Types
         /// <param name="compilerParameters"></param>
         public static void AddAssemblyLocationsFromBin(this CompilerParameters compilerParameters)
         {
-            foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
-            {
-                string assemblyFileName = Path.GetFileName(binFilePath);
-
-                if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
-
-
-                compilerParameters.ReferencedAssemblies.AddIfNotContained(binFilePath);
-            }
+            AssemblyFacade.GetAssembliesFromBin().ForEach(compilerParameters.ReferencedAssemblies.AddIfNotContained);
         }
-
 
 
         /// <summary>

@@ -177,7 +177,7 @@ namespace Composite.Data
             if (allowDataTypeCreation == false) return null;
 
 
-            foreach (Assembly assembly in AssemblyFacade.GetAssembliesFromBin())
+            foreach (Assembly assembly in AssemblyFacade.GetLoadedAssembliesFromBin())
             {
                 Type[] types;
                 try
