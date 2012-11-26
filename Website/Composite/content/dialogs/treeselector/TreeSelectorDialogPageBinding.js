@@ -108,7 +108,8 @@ TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
 	this._key = arg.key;
 	this._selectionProperty = arg.selectionProperty;
 	this._selectionValue = arg.selectionValue;
-	this._selectionResult = arg.selectionResult
+	this._selectionResult = arg.selectionResult;
+	this._selectedResult = arg.selectedResult;
 	this._nodes = arg.nodes;
 	this._parents = new List();
 	if (arg.width) {
@@ -260,6 +261,19 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 
 
 	}
+
+	var self = this;
+	setTimeout(function () {
+		if (self._selectedResult) {
+			var compositeUrl = new CompositeUrl(self._selectedResult);
+			if (compositeUrl.isMedia || compositeUrl.isPage) {
+				var token = TreeService.GetCompositeEntityToken(self._selectedResult);
+				if (token != null) {
+					self._treeBinding._focusTreeNodeByEntityToken(token);
+				}
+			}
+		}
+	}, 0);
 }
 
 /**

@@ -317,7 +317,7 @@ namespace Composite.Services
 					var mediaId = mediaUrlData.MediaId;
 					var store = mediaUrlData.MediaStore;
 
-					var matchingMedia = DataFacade.GetData<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+					var matchingMedia = connection.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
 
 					if (matchingMedia != null)
 					{
@@ -340,6 +340,42 @@ namespace Composite.Services
 			}
 			
 			return path;
+		}
+
+		[WebMethod]
+		public string GetCompositeEntityToken(string path)
+		{
+			var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
+			var mediaUrlData = MediaUrls.ParseUrl(relativePath);
+
+			using (var connection = new DataConnection())
+			{
+				if (mediaUrlData != null)
+				{
+					var mediaId = mediaUrlData.MediaId;
+					var store = mediaUrlData.MediaStore;
+
+					var matchingMedia = connection.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+
+					if (matchingMedia != null)
+					{
+						return EntityTokenSerializer.Serialize(matchingMedia.GetDataEntityToken(), true);
+					}
+				}
+
+				var pageUrlData = PageUrls.ParseUrl(relativePath);
+				if (pageUrlData != null)
+				{
+					var page = PageManager.GetPageById(pageUrlData.PageId);
+
+					if (page != null)
+					{
+						return EntityTokenSerializer.Serialize(page.GetDataEntityToken(), true);
+					}
+				}
+			}
+
+			return null;
 		}
 	}
 }
