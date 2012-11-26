@@ -27,12 +27,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             internal FileRecord()
             {
-                _random = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+                _randomTempFileKey = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
             }
 
-            private string _random;
+            private readonly string _randomTempFileKey;
 
-            public string FileName;
+            public string FilePath;
             public string ElementName;
             public RecordSet RecordSet;
             public IEnumerable<XElement> ReadOnlyElementsList;
@@ -40,11 +40,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             public DateTime FileModificationDate;
             public bool Dirty = false; // Determines whether the inner XElement list is dirty
 
-            public string TempFileName
+            public string TempFilePath
             {
                 get
                 {
-                    return string.Format("{0}.{1}.tmp", FileName, _random);
+                    return string.Format("{0}.{1}.tmp", FilePath, _randomTempFileKey);
                 }
             }
         }
@@ -103,9 +103,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, handle broken saves")]
-        public static FileRecord GetFileRecord(string filename, string elementName, Func<XElement, IDataId> keyGetter)
+        public static FileRecord GetFileRecord(string filePath, string elementName, Func<XElement, IDataId> keyGetter)
         {
-            string cacheKey = filename.ToLowerInvariant();
+            string cacheKey = filePath.ToLowerInvariant();
 
             FileRecord cachedData = _cache[cacheKey];
 
@@ -117,9 +117,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (cachedData == null)
                     {
-                        cachedData = LoadFileRecordFromDisk(filename, elementName, keyGetter);
+                        cachedData = LoadFileRecordFromDisk(filePath, elementName, keyGetter);
 
-                        EnsureFileChangesSubscription(filename);
+                        EnsureFileChangesSubscription(filePath);
 
                         _cache.Add(cacheKey, cachedData);
                     }
@@ -131,12 +131,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static IEnumerable<XElement> GetElements(string filename, string elementName, IXmlDataProviderHelper helper)
+        public static IEnumerable<XElement> GetElements(string filePath, string elementName, IXmlDataProviderHelper helper)
         {
-            Verify.ArgumentNotNullOrEmpty(filename, "filename");
+            Verify.ArgumentNotNullOrEmpty(filePath, "filename");
             Verify.ArgumentNotNullOrEmpty(elementName, "elementName");
 
-            return GetFileRecord(filename, elementName, helper.CreateDataId).ReadOnlyElementsList;
+            return GetFileRecord(filePath, elementName, helper.CreateDataId).ReadOnlyElementsList;
         }
 
 
@@ -147,8 +147,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 var dirtyRecords = _cache.GetValues().Where(f => f.Dirty);
                 if (!dirtyRecords.Any()) return;
-
-
 
                 foreach (FileRecord record in dirtyRecords)
                 {
@@ -163,11 +161,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             lock (_cacheSyncRoot)
             {
-                foreach (string filename in _cache.GetKeys())
+                foreach (string filePath in _cache.GetKeys())
                 {
-                    if (_cache[filename].Dirty)
+                    if (_cache[filePath].Dirty)
                     {
-                        _cache.Remove(filename);
+                        _cache.Remove(filePath);
                     }
                 }
             }
@@ -198,7 +196,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             return result;
         }
 
-        
+        private static string GetRootElementName(string elementName)
+        {
+            return elementName + "Elements";
+        }
+
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, to handle broken saves")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotCallXmlWriterCreateWithPath:DoNotCallXmlWriterCreateWithPath", Justification = "This is what we want, to handle broken saves")]
@@ -206,18 +208,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             XDocument xDocument = new XDocument();
 
-            // TODO: Move logic to some else place
-            string rootNodeName = fileRecord.ElementName + "s";
-            XElement root = new XElement(rootNodeName);
+            XElement root = new XElement(GetRootElementName(fileRecord.ElementName));
             xDocument.Add(root);
 
             var recordSet = fileRecord.RecordSet;
             List<XElement> elements = new List<XElement>(recordSet.Index.GetValues());
 
-            if (_fileOrderers.ContainsKey(fileRecord.FileName.ToLowerInvariant()))
+            string key = fileRecord.FilePath.ToLowerInvariant();
+
+            if (_fileOrderers.ContainsKey(key))
             {
-                var orderer = _fileOrderers[fileRecord.FileName.ToLowerInvariant()];
+                var orderer = _fileOrderers[key];
                 var orderedElements = orderer(elements);
+
                 orderedElements.ForEach(root.Add);
             }
             else
@@ -227,7 +230,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             Exception thrownException = null;
 
-            // Writing the file in the "catch" block in order to prevent chance of corrupting the file by expiriencing ThreadAbortException.
+            // Writing the file in the "catch" block in order to prevent chance of corrupting the file by experiencing ThreadAbortException.
             try
             {
             }
@@ -240,13 +243,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     xmlWriterSettings.CheckCharacters = false;
                     xmlWriterSettings.Indent = true;
 
-                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFileName, xmlWriterSettings))
+                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFilePath, xmlWriterSettings))
                     {
                         xDocument.Save(xmlWriter);
                     }
 
 
-                    if (File.Exists(fileRecord.FileName))
+                    if (File.Exists(fileRecord.FilePath))
                     {
                         bool failed = true;
                         Exception lastException = null;
@@ -254,9 +257,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         {
                             try
                             {
-                                if (File.Exists(fileRecord.FileName))
+                                if (File.Exists(fileRecord.FilePath))
                                 {
-                                    File.Delete(fileRecord.FileName);
+                                    File.Delete(fileRecord.FilePath);
                                 }
                                 failed = false;
                                 break;
@@ -270,7 +273,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                         if (failed)
                         {
-                            Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FileName);
+                            Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FilePath);
                             if (lastException != null) throw lastException;
 
                             throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
@@ -279,8 +282,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     try
                     {
-                        File.Move(fileRecord.TempFileName, fileRecord.FileName);
-                        C1File.Touch(fileRecord.FileName);
+                        File.Move(fileRecord.TempFilePath, fileRecord.FilePath);
+                        C1File.Touch(fileRecord.FilePath);
                     }
                     catch (Exception)
                     {
@@ -289,7 +292,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 }
                 catch (Exception exception)
                 {
-                    Log.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FileName);
+                    Log.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FilePath);
                     Log.LogCritical(LogTitle, exception);
                     thrownException = exception;
                 }
@@ -297,11 +300,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             // ThreadAbortException should have a higher prioriry, and therefore we're doing rethrow in a separate block
             if (thrownException != null) throw thrownException;
 
-
+            // Detaching elements from the document
             elements.ForEach(element => element.Remove());
 
             fileRecord.LastModified = DateTime.Now;
-            fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FileName);
+            fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FilePath);
 
             // Atomic operation
             fileRecord.ReadOnlyElementsList = new List<XElement>(elements);
@@ -314,21 +317,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         /// Fetches a list of files that contain data - both the stable file and tmp files.
         /// List is ordered with newest files first.
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="filePath"></param>
         /// <returns></returns>
-        private static IList<C1FileInfo> GetCandidateFiles(string filename)
+        private static IList<C1FileInfo> GetCandidateFiles(string filePath)
         {
             List<C1FileInfo> files = new List<C1FileInfo>();
-            if (C1File.Exists(filename))
+            if (C1File.Exists(filePath))
             {
-                files.Add(new C1FileInfo(filename));
+                files.Add(new C1FileInfo(filePath));
             }
 
-            var tmpFilenames = C1Directory.GetFiles(Path.GetDirectoryName(filename), string.Format("{0}.*.tmp", Path.GetFileName(filename)));
+            var tmpFilePaths = C1Directory.GetFiles(Path.GetDirectoryName(filePath), string.Format("{0}.*.tmp", Path.GetFileName(filePath)));
 
-            foreach (string tmpFilename in tmpFilenames)
+            foreach (string tmpFilePath in tmpFilePaths)
             {
-                files.Add(new C1FileInfo(tmpFilename));
+                files.Add(new C1FileInfo(tmpFilePath));
             }
 
             return files.OrderByDescending(f => f.LastWriteTime).ToList();
@@ -343,25 +346,25 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        private static void EnsureFileChangesSubscription(string filename)
+        private static void EnsureFileChangesSubscription(string filePath)
         {
-            filename = filename.ToLowerInvariant();
+            filePath = filePath.ToLowerInvariant();
 
-            if (_watchedFiles.Contains(filename))
+            if (_watchedFiles.Contains(filePath))
             {
                 return;
             }
 
             lock (_cacheSyncRoot)
             {
-                if (_watchedFiles.Contains(filename))
+                if (_watchedFiles.Contains(filePath))
                 {
                     return;
                 }
 
-                _watchedFiles.Add(filename);
+                _watchedFiles.Add(filePath);
 
-                FileChangeNotificator.Subscribe(filename, OnFileExternallyChanged);
+                FileChangeNotificator.Subscribe(filePath, OnFileExternallyChanged);
             }
         }
 
@@ -421,17 +424,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         /// <summary>
         /// Will pull up most recent from disk - if no good file is found an empty store will be constructed anyway
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="filePath"></param>
         /// <param name="elementName"></param>
         /// <param name="keyGetter"></param>
-        /// <param name="cachedData"></param>
         /// <returns></returns>
-        private static FileRecord LoadFileRecordFromDisk(string filename, string elementName, Func<XElement, IDataId> keyGetter)
+        private static FileRecord LoadFileRecordFromDisk(string filePath, string elementName, Func<XElement, IDataId> keyGetter)
         {
             XDocument dataDocument = null;
             C1FileInfo usedFile = null;
 
-            IList<C1FileInfo> candidateFiles = GetCandidateFiles(filename);
+            IList<C1FileInfo> candidateFiles = GetCandidateFiles(filePath);
 
             foreach (C1FileInfo candidateFile in candidateFiles)
             {
@@ -464,7 +466,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             if (dataDocument == null)
             {
                 dataDocument = new XDocument(new XElement("fallback"));
-                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store.", filename);
+                Log.LogWarning(LogTitle, "Did not find a healthy XML document for '{0}' - creating an empty store.", filePath);
             }
 
             List<XElement> elements = ExtractElements(dataDocument);
@@ -479,7 +481,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 }
                 else
                 {
-                    Log.LogWarning(LogTitle, "Found multiple elements in '{0}' sharing same key - duplicates ignored.", filename);
+                    Log.LogWarning(LogTitle, "Found multiple elements in '{0}' sharing same key - duplicates ignored.", filePath);
                 }
             }
 
@@ -494,7 +496,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
                     catch (Exception)
                     {
-                        Log.LogWarning(LogTitle, "Failed to clean up ghost file '{0}'.", filename);
+                        Log.LogWarning(LogTitle, "Failed to clean up ghost file '{0}'.", filePath);
                     }
                 }
             }
@@ -503,7 +505,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             return new FileRecord
             {
-                FileName = filename,
+                FilePath = filePath,
                 ElementName = elementName,
                 RecordSet = new RecordSet { Index = index },
                 ReadOnlyElementsList = new List<XElement>(elements),

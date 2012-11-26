@@ -43,7 +43,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             foreach (var key in dataTypeDescriptor.KeyPropertyNames)
             {
                 string localKey = key;
-                ordering.Add(f => (f.Attribute(localKey)!=null ? f.Attribute(localKey).Value : ""));
+                ordering.Add(f =>
+                                 {
+                                     var attr = f.Attribute(localKey);
+                                     return attr != null ? attr.Value : "";
+                                 });
             }
             Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>> orderer = f => ordering.Skip(1).Aggregate(f.OrderBy(ordering.First()), Enumerable.ThenBy); 
 
