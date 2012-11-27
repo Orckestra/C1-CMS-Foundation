@@ -614,62 +614,6 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
-
-        /// <exclude />
-        [Obsolete]
-        public PropertyInfo GetAssociationForiegnKeyPropertyInfo()
-        {
-            if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
-
-            DataTypeAssociationDescriptor dataTypeAssociationDescriptor = _oldDataTypeDescriptor.DataAssociations.FirstOrDefault();
-
-            if (dataTypeAssociationDescriptor == null) throw new InvalidOperationException("The type has no associations");
-
-            return _oldType.GetProperty(dataTypeAssociationDescriptor.ForeignKeyPropertyName);
-        }
-
-
-
-        /// <exclude />
-        [Obsolete]
-        public PropertyInfo GetCompositionDescriptionForiegnKeyPropertyInfo()
-        {
-            if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
-
-            string compositionRuleTypeName = TypeManager.SerializeType(typeof(ICompositionDescription));
-
-            DataFieldDescriptor dataFieldDescriptor =
-                (from dfd in _oldDataTypeDescriptor.Fields
-                 where dfd.Name == CompositionDescriptionFieldName
-                 select dfd).SingleOrDefault();
-
-            if (dataFieldDescriptor == null) throw new InvalidOperationException("The type has no composition rule foreign keys");
-
-            return _oldType.GetProperty(dataFieldDescriptor.Name);
-        }
-
-
-
-        /// <exclude />
-        [Obsolete]
-        public PropertyInfo GetAggregationDescriptionForiegnKeyPropertyInfo()
-        {
-            if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
-
-            string aggregationDescriptionTypeName = TypeManager.SerializeType(typeof(IAggregationDescription));
-
-            DataFieldDescriptor dataFieldDescriptor =
-                (from dfd in _oldDataTypeDescriptor.Fields
-                 where dfd.ForeignKeyReferenceTypeName == aggregationDescriptionTypeName
-                 select dfd).SingleOrDefault();
-
-            if (dataFieldDescriptor == null) throw new InvalidOperationException("The type has no composition rule foreign keys");
-
-            return _oldType.GetProperty(dataFieldDescriptor.Name);
-        }
-
-
-
         /// <exclude />
         public static void SetNewIdFieldValue(IData data)
         {

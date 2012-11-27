@@ -68,9 +68,6 @@ namespace Composite.Data.Foundation
                     typeof(IUserSettings),
                     typeof(IUserUserGroupRelation),
                     typeof(IVisualFunction),
-#pragma warning disable 0618
-                    typeof(IWhiteListedLocale), // TODO: to be removed
-#pragma warning restore 0618
                     typeof(IXsltFunction)
                 };        
 

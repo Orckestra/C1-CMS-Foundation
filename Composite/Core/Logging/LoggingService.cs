@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using Composite.C1Console.Events;
@@ -53,13 +52,8 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogEntry(string title, string message, Category category, System.Diagnostics.TraceEventType severity, int priority, int eventid)
         {
-            if (GetNoLoggingCounter() > 0)
-            {
-                return;
-            }
-
             var entry = new Microsoft.Practices.EnterpriseLibrary.Logging.LogEntry();
-            //entry.Title = title;
+            
             // TODO: refactor this code
             entry.Title = string.Format("({0} - {1}) {2}", AppDomain.CurrentDomain.Id, Thread.CurrentThread.ManagedThreadId, title);
             entry.Message = message;
@@ -269,18 +263,6 @@ namespace Composite.Core.Logging
         }
 
 
-        /// <exclude />
-        [Obsolete("Has effect only for DataLogTraceListener, which isn't used any more.")]
-        public static IDisposable NoLogging
-        {
-            get
-            {
-                return new NoLoggingDisposable();
-            }
-        }
-
-
-
         private static void Flush()
         {
             _resourceLocker.ResetInitialization();
@@ -290,12 +272,6 @@ namespace Composite.Core.Logging
         private static void OnFlush(FlushEventArgs args)
         {
             Flush();
-        }
-
-
-        private static int GetNoLoggingCounter()
-        {
-            return LoggingScopeCounter.Counter;
         }
 
         private static string ExcludeInnerExceptionInformation(string serializedException, Exception innerException)
@@ -416,57 +392,6 @@ namespace Composite.Core.Logging
                     resources.Factory = new LogWriterFactory(new FileConfigurationSource(path));
                     resources.Writer = resources.Factory.Create();
                 }
-            }
-        }
-
-
-
-
-        private sealed class NoLoggingDisposable : IDisposable
-        {
-            public NoLoggingDisposable()
-            {
-                LoggingScopeCounter = new CounterContainer(LoggingScopeCounter.Counter + 1);
-            }
-
-            public void Dispose()
-            {
-                LoggingScopeCounter = new CounterContainer(LoggingScopeCounter.Counter - 1);
-            }
-        }
-
-
-
-        private sealed class CounterContainer : ILogicalThreadAffinative
-        {
-            public CounterContainer(int counter = 0) 
-            {
-                this.Counter = counter;
-            }
-
-            public int Counter { get; private set; }
-        }
-
-
-        private const string LocalStorageKey = "LoggingService:LoggingScopeCounter";
-
-        private static CounterContainer LoggingScopeCounter
-        {
-            get
-            {
-                return CallContext.GetData(LocalStorageKey) as CounterContainer ?? new CounterContainer();
-            }
-            set
-            {
-                if(value.Counter == 0)
-                {
-                    CallContext.FreeNamedDataSlot(LocalStorageKey);
-                    return;
-                }
-
-                Verify.That(value.Counter > 0, "Opened NoLogging scopes stack underflow");
-
-                CallContext.SetData(LocalStorageKey, value);
             }
         }
     }

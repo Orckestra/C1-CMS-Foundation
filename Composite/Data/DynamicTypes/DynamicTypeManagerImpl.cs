@@ -102,8 +102,8 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void DropStore(string providerName, DataTypeDescriptor typeDescriptor, bool makeAFlush)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
-            if (typeDescriptor == null) throw new ArgumentNullException("typeDescriptor");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
+            Verify.ArgumentNotNull(typeDescriptor, "typeDescriptor");
 
             typeDescriptor.Validate();
 
@@ -114,7 +114,7 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            if (makeAFlush == true)
+            if (makeAFlush)
             {
                 GlobalEventSystemFacade.FlushTheSystem();
             }

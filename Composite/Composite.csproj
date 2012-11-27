@@ -961,7 +961,6 @@
     <Compile Include="Data\LocalizationScopeManager.cs" />
     <Compile Include="Data\Plugins\DataProvider\ILocalizedDataProvider.cs" />
     <Compile Include="Data\ProcessControlled\ILocalizedControlled.cs" />
-    <Compile Include="Data\Types\IWhiteListedLocale.cs" />
     <Compile Include="Data\Types\IFlowInformation.cs" />
     <Compile Include="Data\Types\ISystemActiveLocale.cs" />
     <Compile Include="Data\Types\IPageStructure.cs" />
@@ -1446,12 +1445,8 @@
     <Compile Include="Data\DynamicTypes\DataAssociationDescriptor.cs" />
     <Compile Include="Data\PageMetaDataDescription.cs" />
     <Compile Include="Data\Foundation\DataStoreExistenceVerifier.cs" />
-    <Compile Include="Data\Types\Foundation\IAssociationVisability.cs" />
-    <Compile Include="Data\Types\IAggregationDescription.cs" />
     <Compile Include="Data\Types\IDynamicTypeFormDefinitionFile.cs" />
     <Compile Include="Data\Types\ILockingInformation.cs" />
-    <Compile Include="Data\Types\Foundation\IAssociationDescription.cs" />
-    <Compile Include="Data\Types\IPageAssociationVisability.cs" />
     <Compile Include="Data\Types\IPageHostNameBinding.cs" />
     <Compile Include="Data\Types\Foundation\PagePublishControlledAuxiliary.cs" />
     <Compile Include="Data\Types\IPagePlaceholderContent.cs" />
@@ -1466,7 +1461,6 @@
     <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializer\RandomIntPropertyInitializer.cs" />
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileFolderExtensions.cs" />
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileExtensions.cs" />
-    <Compile Include="Data\Types\ICompositionDescription.cs" />
     <Compile Include="Data\Types\ICompositionContainer.cs" />
     <Compile Include="Data\Types\IDataTypeAssociationDescriptor.cs" />
     <Compile Include="Data\Types\ILogEntry.cs" />
@@ -1609,7 +1603,6 @@
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\DataReference\DataReferenceSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Date\DateTimeSelectorWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\VisualXhtmlEditorWidgetFuntion.cs" />
-    <Compile Include="Plugins\Logging\LogTraceListeners\DataLogTraceListener\DataLogTraceListener.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\DataBasedFormLoginProvider.cs" />
     <Compile Include="Plugins\Security\UserPermissionDefinitionProvider\ConfigBasedUserPermissionDefinitionProvider\ConfigBasedUserPermissionDefinitionProvider.cs" />
     <Compile Include="Plugins\Security\UserPermissionDefinitionProvider\DataBaseUserPermissionDefinitionProvider\DataBaseUserPermissionDefinitionProvider.cs" />

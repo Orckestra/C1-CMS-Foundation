@@ -44,6 +44,8 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
+            // TODO: has to be cached in order to fix bug #4043
+
             if (typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType))
             {
                 foreach (CultureInfo cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
