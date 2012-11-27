@@ -254,6 +254,8 @@ namespace Composite.Core.Routing
                 path = path.Replace(".", "_");
             }
 
+            path = path.Replace("+", " ");
+
             foreach (var ch in ForbiddenUrlCharacters)
             {
                 path = path.Replace(ch, '#');
