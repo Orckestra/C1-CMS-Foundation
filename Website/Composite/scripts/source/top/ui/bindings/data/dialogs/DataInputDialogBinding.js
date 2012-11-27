@@ -54,49 +54,50 @@ DataInputDialogBinding.prototype._buildDOMContent = function () {
  */
 DataInputDialogBinding.prototype.buildButton = function () {
 
-	var button = ToolBarButtonBinding.newInstance ( this.bindingDocument );
-	button.setImage ( "${icon:popup}" );
-	this.addFirst ( button );
-	button.attach ();
+	var button = ToolBarButtonBinding.newInstance(this.bindingDocument);
+	button.setImage("${icon:popup}");
+	this.addFirst(button);
+	button.attach();
 
 	var self = this;
-	
+
 	button.oncommand = function () {
-		
+
 		self._isButtonClicked = true;
-		setTimeout ( function () {
+		setTimeout(function () {
 			self._isButtonClicked = false;
-		}, 1000 );
-	
-		var handle = self.getProperty ( "handle" );
-		var definition = ViewDefinitions [ handle ];
-		
-		if ( definition instanceof DialogViewDefinition ) {
-		
+		}, 1000);
+
+		var handle = self.getProperty("handle");
+		var definition = ViewDefinitions[handle];
+
+		if (definition instanceof DialogViewDefinition) {
+
 			definition.handler = {
-				handleDialogResponse : function ( response, result ) {
+				handleDialogResponse: function (response, result) {
 					self._isButtonClicked = false;
-					if ( response == Dialog.RESPONSE_ACCEPT ) {
-						
-						self.logger.debug ( "Usecase scenario was hardcoded into DataInputDialogBinding#buildButton" );
-						var value = result.getFirst ();
-						self.setValue ( value ); // SETUP SPECIFIC - THIS MAY NOT BE SO!!!!
+					definition.argument.selectedResult = null;
+					if (response == Dialog.RESPONSE_ACCEPT) {
+
+						self.logger.debug("Usecase scenario was hardcoded into DataInputDialogBinding#buildButton");
+						var value = result.getFirst();
+						self.setValue(value); // SETUP SPECIFIC - THIS MAY NOT BE SO!!!!
 						self.validate(true);
 						self.checkDirty();
 					}
-					self.focus ();
+					self.focus();
 				}
 			}
-			definition.argument.selectedResult = self.getValue (); // TODO!
-			StageBinding.presentViewDefinition ( definition );
-			
+			definition.argument.selectedResult = self.getValue(); // TODO!
+			StageBinding.presentViewDefinition(definition);
+
 		} else {
 			throw "Definition was either undefine or of a non-dialog type.";
 		}
 	}
-	 
-	DOMEvents.addEventListener ( button.getBindingElement (), DOMEvents.MOUSEDOWN, { 
-		handleEvent : function ( e ) {
+
+	DOMEvents.addEventListener(button.getBindingElement(), DOMEvents.MOUSEDOWN, {
+		handleEvent: function (e) {
 			self._isButtonClicked = true;
 		}
 	});
