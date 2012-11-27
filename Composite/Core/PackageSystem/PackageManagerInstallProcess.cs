@@ -33,8 +33,7 @@ namespace Composite.Core.PackageSystem
 
 
 
-
-
+        /// <exclude />
         public string Serialize(object objectToSerialize)
         {
             PackageManagerInstallProcess processToSerialize = objectToSerialize as PackageManagerInstallProcess;
@@ -49,7 +48,7 @@ namespace Composite.Core.PackageSystem
         }
 
 
-
+        /// <exclude />
         public object Deserialize(string serializedObject)
         {
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedObject);
@@ -84,10 +83,9 @@ namespace Composite.Core.PackageSystem
         }
 
 
-
+        /// <exclude />
         public PackageManagerInstallProcess()
         {
-            
         }
 
 

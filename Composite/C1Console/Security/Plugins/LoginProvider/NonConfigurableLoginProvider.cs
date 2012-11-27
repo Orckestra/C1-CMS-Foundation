@@ -19,6 +19,7 @@ namespace Composite.C1Console.Security.Plugins.LoginProvider
     /// </summary>
     public sealed class NonConfigurableLoginProviderAssembler : IAssembler<ILoginProvider, LoginProviderData>
     {
+        /// <exclude />
         public ILoginProvider Assemble(Microsoft.Practices.ObjectBuilder.IBuilderContext context, LoginProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
             if (null == objectConfiguration) throw new ArgumentNullException("objectConfiguration");

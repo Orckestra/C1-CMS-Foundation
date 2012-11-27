@@ -9,8 +9,10 @@ namespace Composite.C1Console.Security.Plugins.LoginProvider
     /// </summary>
     public class LoginProviderData : NameTypeConfigurationElement
     {
+        /// <exclude />
         public LoginProviderData() : base("Unnamed", typeof(ILoginProvider)) { }
 
+        /// <exclude />
         public LoginProviderData(string name, Type type) : base(name, type) { }
     }
 }

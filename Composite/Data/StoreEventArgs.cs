@@ -1,5 +1,4 @@
 ﻿using System;
-using Composite.Core.Extensions;
 using System.Globalization;
 
 
@@ -45,11 +44,16 @@ namespace Composite.Data
         private readonly bool _dataEventsFired;
 
 
-        /// <summary>        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StoreEventArgs"/> class.
         /// </summary>
-        /// <param name="dataType"></param>
-        /// <param name="data"></param>
-        /// <exclude />
+        /// <param name="dataType">Type of the data.</param>
+        /// <param name="publicationScope">The publication scope.</param>
+        /// <param name="locale">The locale.</param>
+        /// <param name="dataEventsFired">Value indicating whether detailed data events have been fired for this change event. 
+        /// When <c>false</c> the change happened outside the current process 
+        /// (in the physical store, perhaps done by another running instance). </param>
+        /// <exclude/>
         internal StoreEventArgs(Type dataType, PublicationScope publicationScope, CultureInfo locale, bool dataEventsFired)
         {
             Verify.ArgumentNotNull(dataType, "dataType");

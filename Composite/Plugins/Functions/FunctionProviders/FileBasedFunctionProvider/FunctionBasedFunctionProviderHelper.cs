@@ -40,8 +40,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// </summary>
         /// <param name="functionObject">The object that represents a function.</param>
         /// <param name="baseFunctionType">Type of the base function.</param>
+        /// <param name="filePath">Physical file location of the file behind the function, used for logging.</param>
         /// <returns></returns>
-        public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string location)
+        public static IDictionary<string, FunctionParameter> GetParameters(object functionObject, Type baseFunctionType, string filePath)
         {
             var dict = new Dictionary<string, FunctionParameter>();
 
@@ -64,7 +65,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     if(attributes.Count > 1)
                     {
                         Log.LogWarning(LogTitle, "More than one '{0}' attribute defined on property '{1}'. Location: '{2}'"
-                                                 .FormatWith(typeof(FunctionParameterAttribute).Name, name, location));
+                                                 .FormatWith(typeof(FunctionParameterAttribute).Name, name, filePath));
                     }
                     else
                     {
@@ -82,7 +83,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         catch (Exception ex)
                         {
                             Log.LogWarning(LogTitle, "Failed to get widget function provider for parameter property {0}. Location: '{1}'"
-                                                     .FormatWith(property.Name, location));
+                                                     .FormatWith(property.Name, filePath));
                             Log.LogWarning(LogTitle, ex);
                         }
                     }

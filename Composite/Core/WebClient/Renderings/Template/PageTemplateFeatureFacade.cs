@@ -57,6 +57,9 @@ namespace Composite.Core.WebClient.Renderings.Template
         }
 
 
+        /// <summary>
+        /// Gets the feature names.
+        /// </summary>
         public static IEnumerable<string> FeatureNames
         {
             get
