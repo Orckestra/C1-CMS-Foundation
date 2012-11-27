@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml.Linq;
 using Composite.Core.ResourceSystem;
 
@@ -15,9 +14,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public void Initialize(PackageInstallerContext packageInstallerContext, IEnumerable<XElement> configuration, XElement configurationParent)
         {
-            if (packageInstallerContext == null) throw new ArgumentNullException("packageInstallerContext");
-            if (configuration == null) throw new ArgumentNullException("configuration");
-            if (configurationParent == null) throw new ArgumentNullException("configurationParent");
+            Verify.ArgumentNotNull(packageInstallerContext, "packageInstallerContext");
+            Verify.ArgumentNotNull(configuration, "configuration");
+            Verify.ArgumentNotNull(configurationParent, "configurationParent");
 
             this.InstallerContext = packageInstallerContext;
             this.Configuration = configuration;
@@ -30,14 +29,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         /// <exclude />
         public abstract IEnumerable<XElement> Install();
-
-
-        /// <exclude />
-        [Obsolete("Use InstallerContext")]
-        protected PackageInstallerContext InstallerContex 
-        {
-            get { return InstallerContext; }
-        }
 
         /// <exclude />
         protected PackageInstallerContext InstallerContext { get; private set; }

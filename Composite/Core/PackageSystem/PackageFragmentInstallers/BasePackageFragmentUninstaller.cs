@@ -15,13 +15,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContext)
         {
-            if (configuration == null) throw new ArgumentNullException("configuration");
-            if (packageUninstallerContext == null) throw new ArgumentNullException("packageUninstallerContext");
+            Verify.ArgumentNotNull(configuration, "configuration");
+            Verify.ArgumentNotNull(packageUninstallerContext, "packageUninstallerContext");
 
             this.Configuration = configuration;
-#pragma warning disable 618
-            this.AddOnUninstallerContex = packageUninstallerContext;
-#pragma warning restore 618
             this.UninstallerContext = packageUninstallerContext;
         }
 
@@ -34,14 +31,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         /// <exclude />
         protected IEnumerable<XElement> Configuration { get; set; }
-
-        /// <exclude />
-        [Obsolete("Use PackageInformation")]        
-        protected PackageUninstallerContext AddOnUninstallerContex { get; private set; }
-
-        /// <exclude />
-        [Obsolete("Use UninstallerContext")]
-        protected PackageUninstallerContext UninstallerContex { get { return UninstallerContext; }  }
 
         /// <exclude />
         protected PackageUninstallerContext UninstallerContext { get; private set; }

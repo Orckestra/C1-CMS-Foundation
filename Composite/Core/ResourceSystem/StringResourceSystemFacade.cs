@@ -154,7 +154,7 @@ namespace Composite.Core.ResourceSystem
         /// application users will get, if they select the specified culture.
         /// </summary>
         /// <returns>A list of (culture name, region/language label) </returns>
-        [Obsolete("Go call GetSupportedCulturesList()")]
+        [Obsolete("Go call GetSupportedCulturesList()", true)]
         public static List<KeyValuePair> GetApplicationRegionAndLanguageList()
         {
             throw new NotImplementedException();

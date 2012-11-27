@@ -28,10 +28,6 @@ namespace Composite.Core.PackageSystem
 
             this.ZipFileSystem = zipFileSystem;
             this.TempDirectory = tempDirectory;
-
-#pragma warning disable 618
-            this.AddOnInformation = packageInformation;
-#pragma warning restore 618
             this.PackageInformation = packageInformation;
         }
 
@@ -42,10 +38,6 @@ namespace Composite.Core.PackageSystem
 
         /// <exclude />
         public string TempDirectory { get; private set; }
-
-        /// <exclude />
-        [Obsolete("Use PackageInformation")]
-        public PackageInformation AddOnInformation { get; private set; }
 
         /// <exclude />
         public PackageInformation PackageInformation { get; private set; }

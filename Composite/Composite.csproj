@@ -1247,7 +1247,6 @@
     <Compile Include="Core\WebClient\ConsoleInfo.cs" />
     <Compile Include="Core\WebClient\ControlCompilerService.cs" />
     <Compile Include="Core\WebClient\CookieHandler.cs" />
-    <Compile Include="Core\WebClient\ElementInformation.cs" />
     <Compile Include="Core\WebClient\ErrorServices.cs" />
     <Compile Include="Core\WebClient\FlowMediators\ActionExecutionMediator.cs" />
     <Compile Include="Core\WebClient\FlowMediators\ActionExecutionService.cs" />
