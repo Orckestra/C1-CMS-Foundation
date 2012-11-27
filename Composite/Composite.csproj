@@ -425,7 +425,6 @@
     <Compile Include="Data\PageMetaDataFacade.cs" />
     <Compile Include="Data\PageNode.cs" />
     <Compile Include="Data\Plugins\DataProvider\ISupportCaching.cs" />
-    <Compile Include="Data\Foundation\DeprecatedDateMetaDataFacade.cs" />
     <Compile Include="Data\Plugins\DataProvider\Streams\FileChangeNotificator.cs" />
     <Compile Include="Data\DataInterceptor.cs" />
     <Compile Include="Data\NewInstanceDefaultFieldValueAttribute.cs" />
@@ -1647,8 +1646,6 @@
     <Compile Include="Data\IDataIdExtensions.cs" />
     <Compile Include="Data\LabelPropertyNameAttribute.cs" />
     <Compile Include="Data\RelevantUserGroupAttribute.cs" />
-    <Compile Include="Data\Types\IDataFieldDescriptor_ValidatorFunctionMarkup.cs" />
-    <Compile Include="Data\Types\IDataTypeDescriptor_SuperInterface.cs" />
     <Compile Include="Data\UserTypeEnum.cs" />
     <Compile Include="Data\DataMetaDataFacade.cs" />
     <Compile Include="Data\GeneratedTypes\GeneratedTypesFacade.cs" />
@@ -1667,12 +1664,6 @@
     <Compile Include="Data\ProcessControlled\IPublishProcessController.cs" />
     <Compile Include="Data\ProcessControlled\ProcessControllerFacade.cs" />
     <Compile Include="Data\StoreSortOrderAttribute.cs" />
-    <Compile Include="Data\Types\IDataFieldDescriptor.cs" />
-    <Compile Include="Data\Types\IDataFieldDescriptor_FormRenderingProfile.cs" />
-    <Compile Include="Data\Types\IDataTypeDescriptor_DataScope.cs" />
-    <Compile Include="Data\Types\IDataTypeDescriptor_StoreSortOrderFieldName.cs" />
-    <Compile Include="Data\Types\IDataTypeDescriptor_KeyFieldName.cs" />
-    <Compile Include="Data\Types\IDataTypeDescriptor.cs" />
     <Compile Include="Data\Types\IImageFile.cs" />
     <Compile Include="Data\Types\StoreIdFilter\Foundation\IStoreIdFilterQueryable.cs" />
     <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableCache.cs" />
