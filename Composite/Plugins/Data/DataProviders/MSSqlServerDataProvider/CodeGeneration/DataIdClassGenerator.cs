@@ -1,10 +1,8 @@
 using System;
 using System.CodeDom;
-using System.Collections.Generic;
 using System.Reflection;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Plugins.DataProvider.CodeGeneration;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration

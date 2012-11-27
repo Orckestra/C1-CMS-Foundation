@@ -1457,7 +1457,6 @@
     <Compile Include="Data\Types\IPagePublishSchedule.cs" />
     <Compile Include="Data\Types\IUserPermissionDefinition.cs" />
     <Compile Include="Data\NotReferenceable.cs" />
-    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializer\RandomIntPropertyInitializer.cs" />
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileFolderExtensions.cs" />
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileExtensions.cs" />
     <Compile Include="Data\Types\ICompositionContainer.cs" />
@@ -2030,11 +2029,6 @@
     <Compile Include="Data\Foundation\DataFacadeQueryable.cs" />
     <Compile Include="Data\StoreFieldTypeAttribute.cs" />
     <Compile Include="Data\PhysicalStoreFieldType.cs" />
-    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\IPropertyInitializer.cs" />
-    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\Property.cs" />
-    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializerDictionaryArgumentValidator.cs" />
-    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyInitializer\RandomGuidPropertyInitializer.cs" />
-    <Compile Include="Data\Plugins\DataProvider\CodeGeneration\PropertyList.cs" />
     <Compile Include="Data\Plugins\DataProvider\DataInterfaceValidator.cs" />
     <Compile Include="Data\Plugins\DataProvider\DataProviderConfigurationServices.cs" />
     <Compile Include="Data\Plugins\DataProvider\DataProviderContext.cs" />

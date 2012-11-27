@@ -11,7 +11,6 @@ using Composite.Core.Serialization.CodeGeneration;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Plugins.DataProvider.CodeGeneration.PropertyInitializer;
 using Composite.Data.ProcessControlled;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 
@@ -113,7 +112,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             _codeGenerationBuilder.AddReference(typeof(DataSourceId).Assembly);
             _codeGenerationBuilder.AddReference(typeof(IProcessControlled).Assembly);
             _codeGenerationBuilder.AddReference(typeof(SqlDataProvider).Assembly);
-            _codeGenerationBuilder.AddReference(typeof(RandomGuidPropertyInitializer).Assembly);
         }
     }
 }

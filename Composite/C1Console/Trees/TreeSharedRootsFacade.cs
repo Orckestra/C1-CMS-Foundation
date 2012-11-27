@@ -117,7 +117,7 @@ namespace Composite.C1Console.Trees
                         PiggybagDataFinder = new PiggybagDataFinder(new Dictionary<string, string>(), namedAttachmentPoint.AttachingPoint.EntityToken)
                     };
 
-#warning MRJ: Collection actions
+                    // MRJ: Collection actions
                     Element element = new Element(new ElementHandle(elementAttachingProviderName, perspectiveEntityToken))
                     {
                         VisualData = new ElementVisualizedData

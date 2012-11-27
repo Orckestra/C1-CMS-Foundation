@@ -130,8 +130,9 @@ namespace Composite.Core.WebClient.Renderings.Template
         /// Gets the path of a named feature
         /// </summary>
         /// <param name="featureName">Name of the Page Template Feature to get path for.</param>
+        /// <param name="extension">The extension.</param>
         /// <returns></returns>
-        /// <exclude />
+        /// <exclude/>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static string GetNewPageTemplateFeaturePath(string featureName, string extension)
         {

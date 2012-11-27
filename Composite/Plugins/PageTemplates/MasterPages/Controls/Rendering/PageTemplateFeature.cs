@@ -17,6 +17,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
         /// </summary>
         public string Name { get; set; }
 
+        /// <exclude />
         protected override void OnInit(System.EventArgs e)
         {
             XhtmlDocument feature = PageTemplateFeatureFacade.GetPageTemplateFeature(this.Name);

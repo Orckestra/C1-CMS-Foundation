@@ -487,8 +487,10 @@ namespace Composite.Core.IO
         /// <summary>
         /// Indicates whether a file of a specific extension is expected to be allowed by IIS
         /// </summary>
-        /// <param name="mimeType"></param>
-        /// <returns></returns>
+        /// <param name="extension">The extension.</param>
+        /// <returns>
+        ///   <c>true</c> if the extension is 'IIS servable'; otherwise, <c>false</c>.
+        /// </returns>
         internal static bool IsIisServable(string extension)
         {
             extension = extension.ToLowerInvariant();

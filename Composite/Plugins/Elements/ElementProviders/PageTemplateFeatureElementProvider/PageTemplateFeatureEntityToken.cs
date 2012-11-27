@@ -31,6 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
         {                        
         }
 
+        /// <exclude />
         public static PageTemplateFeatureEntityToken BuildFeatureEntityToken(string featureName)
         {
             return new PageTemplateFeatureEntityToken(FeatureId, featureName);

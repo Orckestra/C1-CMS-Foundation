@@ -529,7 +529,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     dataDocument = XDocument.Load(xmlReader);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // broken file - should not stop us...
             }
