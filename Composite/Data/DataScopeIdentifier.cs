@@ -104,11 +104,21 @@ namespace Composite.Data
         /// <exclude />
         public bool Equals(DataScopeIdentifier dataScope)
         {
-            if (dataScope == null) return false;
-
-            return this.Name == dataScope.Name;
+            return !ReferenceEquals(dataScope, null) && this.Name == dataScope.Name;
         }
 
+        /// <exclude />
+        public static bool operator==(DataScopeIdentifier a, DataScopeIdentifier b)
+        {
+            return (object)a == null ? (object)b == null : a.Equals(b);
+        }
+
+        /// <exclude />
+        public static bool operator!=(DataScopeIdentifier a, DataScopeIdentifier b)
+        {
+            return !(a == b);
+        }
+        
 
         /// <exclude />
         public override int GetHashCode()

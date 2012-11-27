@@ -365,10 +365,9 @@ namespace Composite.Core.WebClient
                 siteMap = PageStructureInfo.GetSiteMap();
             }
 
-            // TODO: Optimize
             XAttribute matchingAttributeNode = siteMap.DescendantsAndSelf()
-                        .Attributes("FriendlyUrl")
-                        .Where(f => f.Value.ToLower() == loweredRelativeUrl).FirstOrDefault();
+                .Attributes("FriendlyUrl")
+                .FirstOrDefault(f => string.Equals(f.Value, loweredRelativeUrl, StringComparison.OrdinalIgnoreCase));
             
             if(matchingAttributeNode == null)
             {
@@ -484,6 +483,12 @@ namespace Composite.Core.WebClient
                     {
                         resolvedUrls.Add(internalPageUrl, null); 
                         continue;
+                    }
+
+                    // While viewing pages in "unpublished" scope, all the links should also be in the same scope
+                    if(DataScopeManager.CurrentDataScope == DataScopeIdentifier.Administrated)
+                    {
+                        pageUrlData.PublicationScope = PublicationScope.Unpublished;
                     }
 
                     publicPageUrl = PageUrls.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
