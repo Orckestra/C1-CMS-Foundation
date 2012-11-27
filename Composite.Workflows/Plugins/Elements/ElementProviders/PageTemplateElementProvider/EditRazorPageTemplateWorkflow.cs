@@ -145,7 +145,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
                 }
 
                 Guid templateId;
-                string templateTitle, templateDescription;
 
                 var pageTemplate = webPageBase as RazorPageTemplate;
                 pageTemplate.Configure();
@@ -162,7 +161,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
                 try
                 {
-                    templateTitle = pageTemplate.TemplateTitle;
+                    string templateTitle = pageTemplate.TemplateTitle;
                 }
                 catch (Exception ex)
                 {
