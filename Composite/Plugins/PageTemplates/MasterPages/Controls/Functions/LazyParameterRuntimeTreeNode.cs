@@ -27,12 +27,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             return _result;
         }
 
-        [Obsolete]
-        public override object GetCachedValue(FunctionContextContainer contextContainer)
-        {
-            throw new NotSupportedException();
-        }
-
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             throw new NotSupportedException();

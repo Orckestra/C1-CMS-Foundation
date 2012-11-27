@@ -7,7 +7,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    [Obsolete("The MethodBasedFunction attribute is no longer required and will be removed. Please remove this attribute from your class.")]
+    [Obsolete("The MethodBasedFunction attribute is no longer required and will be removed. Please remove this attribute from your class.", true)]
     public sealed class MethodBasedFunctionAttribute : Attribute
 	{
 	}

@@ -13,7 +13,7 @@ namespace Composite.Data.Types
     [KeyPropertyName("HostName")]
     [DataScope(DataScopeIdentifier.PublicName)]
     [CachingAttribute(CachingType.Full)]
-    [Obsolete]
+    [Obsolete("No longer used, replaced by Composite.Data.Types.IHostnameBinding")]
     public interface IPageHostNameBinding : IData
     {
         /// <exclude />

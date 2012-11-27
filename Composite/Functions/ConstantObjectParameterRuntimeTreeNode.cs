@@ -36,16 +36,6 @@ namespace Composite.Functions
 
 
         /// <exclude />
-        [Obsolete("This method is not used")]
-        public override object GetCachedValue(FunctionContextContainer contextContainer)
-        {
-            Verify.ArgumentNotNull(contextContainer, "contextContainer");
-
-            return _constantValue;
-        }
-
-
-        /// <exclude />
         public override IEnumerable<string> GetAllSubFunctionNames()
         {
             return new string[] { };

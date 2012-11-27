@@ -106,7 +106,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         /// </summary>
         /// <param name="folderReference"></param>
         /// <returns></returns>
-        [Obsolete("Was used only in old image widget's markup.")]
+        [Obsolete("Was used only in old image widget's markup.", true)]
         public static IEnumerable<DataReferenceLabelPair<IImageFile>> GenerateSelectorOptions(DataReference<IMediaFileFolder> folderReference)
         {
             IMediaFileFolder folder = null;

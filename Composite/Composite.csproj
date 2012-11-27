@@ -461,7 +461,6 @@
     <Compile Include="Data\Types\IUserGroupPermissionDefinition.cs" />
     <Compile Include="Data\Types\IUserGroupPermissionDefinitionPermissionType.cs" />
     <Compile Include="Data\Types\IUserUserGroupRelation.cs" />
-    <Compile Include="Data\TypeVersionAttribute.cs" />
     <Compile Include="C1Console\Elements\AttachingPoint.cs" />
     <Compile Include="C1Console\Elements\ElementAttachingPointFacade.cs" />
     <Compile Include="C1Console\Elements\ElementInformationService.cs" />
@@ -1460,7 +1459,6 @@
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileFolderExtensions.cs" />
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileExtensions.cs" />
     <Compile Include="Data\Types\ICompositionContainer.cs" />
-    <Compile Include="Data\Types\IDataTypeAssociationDescriptor.cs" />
     <Compile Include="Data\Types\IUser.cs" />
     <Compile Include="Data\Types\IPageTemplateFile.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\Foundation\RenderingFunctionNames.cs" />
@@ -1650,7 +1648,6 @@
     <Compile Include="Data\IDataExtensions.cs" />
     <Compile Include="Data\IDataReference.cs" />
     <Compile Include="Data\DataReference.cs" />
-    <Compile Include="Data\ProcessControlled\IVersionControlled.cs" />
     <Compile Include="Data\ProcessControlled\IVersionControlledWritable.cs" />
     <Compile Include="Data\Plugins\DataProvider\IGeneratedTypesDataProvider.cs" />
     <Compile Include="Data\Plugins\DataProvider\Streams\TransactionFileSystemFileStreamManager.cs" />
@@ -2110,7 +2107,6 @@
     </Compile>
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\WebDebugUiControlFactory.cs" />
     <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\WebEmbeddedFormUiControlFactory.cs" />
-    <Compile Include="HashCodeGenerator.cs" />
     <Compile Include="Data\Hierarchy\DataAncestorFacade.cs" />
     <Compile Include="Data\Hierarchy\DataAncestorProviderAttribute.cs" />
     <Compile Include="Data\Hierarchy\DataAncestorProviders\PropertyDataAncestorProvider.cs" />

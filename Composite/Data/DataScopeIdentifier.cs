@@ -18,20 +18,10 @@ namespace Composite.Data
         public const string AdministratedName = "administrated";
 
         /// <exclude />
-        [Obsolete("To be removed", false)]
-        public const string VersionedName = "versioned";
-
-
-        /// <exclude />
         public static DataScopeIdentifier Public { get { return new DataScopeIdentifier(PublicName); } }
 
         /// <exclude />
         public static DataScopeIdentifier Administrated { get { return new DataScopeIdentifier(AdministratedName); } }
-
-        /// <exclude />
-        [Obsolete("To be removed", false)]
-        public static DataScopeIdentifier Versioned { get { return new DataScopeIdentifier(VersionedName); } }
-
 
         /// <exclude />
         public static DataScopeIdentifier GetDefault()

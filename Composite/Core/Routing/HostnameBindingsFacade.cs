@@ -75,10 +75,10 @@ namespace Composite.Core.Routing
             {
                 return;
             }
-#pragma warning disable 0612
+#pragma warning disable 0612, 0618
             foreach (var legacyBinding in DataFacade.GetData<IPageHostNameBinding>().ToList())
-#pragma warning restore 0612
-            {
+#pragma warning restore 0612, 0618
+ {
                 string hostname = legacyBinding.HostName;
 
                 if(!DataFacade.GetData<IHostnameBinding>(b => b.Hostname == hostname).Any())

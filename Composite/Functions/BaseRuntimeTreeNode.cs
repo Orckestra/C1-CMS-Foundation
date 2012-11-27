@@ -59,11 +59,6 @@ namespace Composite.Functions
             return GetValue(internalContextContainer);
         }
 
-
-        /// <exclude />
-        [Obsolete("This method is not used")]
-        public abstract object GetCachedValue(FunctionContextContainer contextContainer);
-
         /// <exclude />
         public abstract IEnumerable<string> GetAllSubFunctionNames();
 

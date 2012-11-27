@@ -15,10 +15,6 @@ namespace Composite.Functions
     {
         private FunctionRuntimeTreeNode _functionNode;
 
-        private bool _cachedValueCalculated = false;
-        private object _cachedValue;
-
-
         /// <exclude />
         public FunctionParameterRuntimeTreeNode(string name, FunctionRuntimeTreeNode functionNode)
             : base(name)
@@ -49,25 +45,9 @@ namespace Composite.Functions
         /// <exclude />
         public override object GetValue(FunctionContextContainer contextContainer)
         {
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
-
-            object result = _functionNode.GetValue(contextContainer);
-
-            _cachedValue = result;
-            Thread.MemoryBarrier();
-            _cachedValueCalculated = true;
-
-            return result;
-        }
-
-
-        /// <exclude />
-        [Obsolete("This method is not used")]
-        public override object GetCachedValue(FunctionContextContainer contextContainer)
-        {
             Verify.ArgumentNotNull(contextContainer, "contextContainer");
 
-            return _cachedValueCalculated ? _cachedValue : GetValue(contextContainer);
+            return _functionNode.GetValue(contextContainer);
         }
 
 

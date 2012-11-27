@@ -85,7 +85,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use GetParentId(..)")]
+        [Obsolete("Use GetParentId(..)", true)]
         public static Guid GetParentID(Guid pageId)
         {
             return GetParentId(pageId);

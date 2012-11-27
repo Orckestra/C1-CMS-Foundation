@@ -19,10 +19,6 @@ namespace Composite.Functions
     {
         private IFunction _function;
 
-        private bool _cachedValueCalculated = false;
-        private object _cachedValue;
-
-
         /// <exclude />
         protected override IMetaFunction HostedFunction
         {
@@ -117,10 +113,6 @@ namespace Composite.Functions
                         }
                     }
 
-                    _cachedValue = result;
-                    Thread.MemoryBarrier();
-                    _cachedValueCalculated = true;
-
                     return result;
                 }
                 catch(ThreadAbortException)
@@ -132,17 +124,6 @@ namespace Composite.Functions
                     throw new InvalidOperationException("Failed to get value for function '{0}'".FormatWith(_function.CompositeName()), ex);
                 }
             }
-        }
-
-
-
-        /// <exclude />
-        [Obsolete("This method is not used")]
-        public override object GetCachedValue(FunctionContextContainer contextContainer)
-        {
-            Verify.ArgumentNotNull(contextContainer, "contextContainer");
-
-            return _cachedValueCalculated ? _cachedValue : GetValue(contextContainer);
         }
 
 

@@ -17,7 +17,7 @@ namespace Composite.Data
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    [Obsolete("Use Composite.Core.Routing namespace for working with page urls")]
+    [Obsolete("Use Composite.Core.Routing.PageUrls", true)]
     public enum PageUrlType
     {
         /// <exclude />

@@ -361,7 +361,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
 
         /// <exclude />
-        [Obsolete("Use Composite.Core.Types.AsseblyFacade.IsAppCodeDll(assembly)")]
+        [Obsolete("Use Composite.Core.Types.AsseblyFacade.IsAppCodeDll(assembly)", true)]
         public static bool IsAppCodeDll(Assembly assembly)
         {
             return AssemblyFacade.IsAppCodeDll(assembly);

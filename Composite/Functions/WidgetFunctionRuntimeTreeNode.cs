@@ -17,10 +17,6 @@ namespace Composite.Functions
         private IWidgetFunction _widgetFunction;
 
 
-        private bool _cachedValueCalculated = false;
-        private object _cachedValue;
-
-
         /// <exclude />
         public WidgetFunctionRuntimeTreeNode(IWidgetFunction widgetFunction)
             : this(widgetFunction, "", new HelpDefinition(""), "", new List<BaseParameterRuntimeTreeNode>())
@@ -103,24 +99,7 @@ namespace Composite.Functions
                 }
             }
 
-
-            object result = _widgetFunction.GetWidgetMarkup(parameters, this.Label, this.HelpDefinition, this.BindingSourceName);
-
-            _cachedValue = result;
-            Thread.MemoryBarrier();
-            _cachedValueCalculated = true;
-
-            return result;
-        }
-
-
-        /// <exclude />
-        [Obsolete("This method is not used")]
-        public override object GetCachedValue(FunctionContextContainer contextContainer)
-        {
-            Verify.ArgumentNotNull(contextContainer, "contextContainer");
-
-            return _cachedValueCalculated ? _cachedValue : GetValue(contextContainer);
+            return _widgetFunction.GetWidgetMarkup(parameters, this.Label, this.HelpDefinition, this.BindingSourceName);
         }
 
 
