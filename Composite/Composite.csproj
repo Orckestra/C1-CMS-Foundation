@@ -371,7 +371,6 @@
     <Compile Include="Data\GeneratedTypes\InterfaceCodeGenerator.cs" />
     <Compile Include="Data\GeneratedTypes\InterfaceCodeManager.cs" />
     <Compile Include="Data\GeneratedTypes\InterfaceCodeProvider.cs" />
-    <Compile Include="Data\IXhtmlEditorElementClassConfiguration .cs" />
     <Compile Include="Data\DataTypeTypesManager.cs" />
     <Compile Include="Data\Foundation\EmptyDataClassTypeManager.cs" />
     <Compile Include="Data\Plugins\DataProvider\IFileSystemDataProvider.cs" />
@@ -1648,7 +1647,6 @@
     <Compile Include="Data\IDataExtensions.cs" />
     <Compile Include="Data\IDataReference.cs" />
     <Compile Include="Data\DataReference.cs" />
-    <Compile Include="Data\ProcessControlled\IVersionControlledWritable.cs" />
     <Compile Include="Data\Plugins\DataProvider\IGeneratedTypesDataProvider.cs" />
     <Compile Include="Data\Plugins\DataProvider\Streams\TransactionFileSystemFileStreamManager.cs" />
     <Compile Include="Data\ProcessControlled\IProcessControlled.cs">

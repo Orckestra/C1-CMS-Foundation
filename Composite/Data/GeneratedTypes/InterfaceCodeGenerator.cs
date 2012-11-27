@@ -94,7 +94,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        [Obsolete("Use InterfaceCodeManager")]
+        [Obsolete("Use InterfaceCodeManager", true)]
         public static Type CreateType(DataTypeDescriptor dataTypeDescriptor)
         {
             throw new NotSupportedException("This method is no longer supported. See the InterfaceCodeManager class for alternative");

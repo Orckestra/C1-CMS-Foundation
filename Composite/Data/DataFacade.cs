@@ -1424,48 +1424,6 @@ namespace Composite.Data
         #endregion
 
 
-
-        #region Move methods
-
-        // Overload
-        /// <exclude />
-        [Obsolete("This method isn't used any more")]
-        public static DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier)
-            where T : class, IData
-        {
-            if (data == null) throw new ArgumentNullException("data");
-            if (targetDataScopeIdentifier == null) throw new ArgumentNullException("targetDataScopeIdentifier");
-
-            return Move<T>(data, targetDataScopeIdentifier, true);
-        }
-
-
-
-        // Overload
-        /// <exclude />
-        public static DataMoveResult Move(IData data, DataScopeIdentifier targetDataScopeIdentifier)
-        {
-            MethodInfo methodInfo = GetMoveMethodInfo(data.DataSourceId.InterfaceType);
-
-            DataMoveResult dataMoveResult = (DataMoveResult)methodInfo.Invoke(null, new object[] { data, targetDataScopeIdentifier, true });
-
-            return dataMoveResult;
-        }
-
-
-
-        private static DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier, bool allowCascadeMove)
-            where T : class, IData
-        {
-            if (data == null) throw new ArgumentNullException("data");
-            if (targetDataScopeIdentifier == null) throw new ArgumentNullException("targetDataScopeIdentifier");
-
-            return _dataFacade.Move<T>(data, targetDataScopeIdentifier, allowCascadeMove);
-        }
-
-        #endregion
-
-
         #region ValidatePath methods
 
         // Overload

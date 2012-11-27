@@ -49,7 +49,6 @@ namespace Composite.Data
         private static readonly Subscriptions _dataAfterUpdateEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataDeletedEventDictionary = new Subscriptions();
         private static readonly Subscriptions _dataAfterBuildNewEventDictionary = new Subscriptions();
-        private static readonly Subscriptions _dataAfterMoveEventDictionary = new Subscriptions();
         private static readonly Subscriptions _storeChangedEventDictionary = new Subscriptions();
 
         private static readonly object _collectionAccesslock = new object();
@@ -428,32 +427,6 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
-        [Obsolete("This event isn't used any more")]
-        public static void SubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
-        {
-            _dataAfterMoveEventDictionary.Add(dataType, dataAfterMoveDelegate, false);
-        }
-
-
-        /// <exclude />
-        [Obsolete("This event isn't used any more")]
-        public static void SubscribeToDataAfterMove<T>(DataAfterMoveDelegate dataAfterMoveDelegate)
-            where T : IData
-        {
-            SubscribeToDataAfterMove(typeof(T), dataAfterMoveDelegate);
-        }
-
-
-        /// <exclude />
-        [Obsolete("This event isn't used any more")]
-        public static void UnsubscribeToDataAfterMove(Type dataType, DataAfterMoveDelegate dataAfterMoveDelegate)
-        {
-            _dataAfterMoveEventDictionary.Remove(dataType, dataAfterMoveDelegate);
-        }
-
-
-
         internal static void FireDataBeforeAddEvent(Type dataType, IData data)
         {
             var args = new DataEventArgs(dataType, data);
@@ -587,25 +560,6 @@ namespace Composite.Data
         }
 
 
-
-        internal static void FireDataAfterMoveEvent<T>(IData data, DataScopeIdentifier targetDataScopeIdentifier)
-            where T : IData
-        {
-            FireDataAfterMoveEvent(typeof(T), data, targetDataScopeIdentifier);
-        }
-
-
-        internal static void FireDataAfterMoveEvent(Type dataType, IData data, DataScopeIdentifier targetDataScopeIdentifier)
-        {
-            var args = new DataMoveEventArgs(dataType, data, targetDataScopeIdentifier);
-            _dataAfterMoveEventDictionary.Fire<DataAfterMoveDelegate>(dataType, callback => callback(null, args));
-
-            FireStoreChangedEvent(dataType, data);
-            FireStoreChangedEvent(dataType, targetDataScopeIdentifier.ToPublicationScope(), data.DataSourceId.LocaleScope, false);
-        }
-
-
-
         internal static void FireDataAfterBuildNewEvent<T>(IData data)
             where T : IData
         {
@@ -641,7 +595,6 @@ namespace Composite.Data
                                       _dataAfterUpdateEventDictionary,
                                       _dataDeletedEventDictionary,
                                       _dataAfterBuildNewEventDictionary,
-                                      _dataAfterMoveEventDictionary,
                                       _storeChangedEventDictionary
                                   };
 

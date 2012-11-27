@@ -184,30 +184,6 @@ namespace Composite.Data.Caching
 
 
 
-        /// <exclude />
-        [Obsolete("This method isn't used any more.")]
-        internal static T GetDataFromCache<T>(DataSourceId dataSourceId)
-            where T : class, IData
-        {
-            List<T> datas =
-                (from d in GetDataFromCache<T>()
-                 where d.DataSourceId.DataId.CompareTo(dataSourceId.DataId) == true &&
-                        d.DataSourceId.ProviderName == dataSourceId.ProviderName 
-                 select d).ToList();
-
-            if (datas.Count == 0)
-            {
-                return null;
-            }
-            else if (datas.Count == 1)
-            {
-                return datas[0];
-            }
-
-            throw new InvalidOperationException("More than one data item matched the given data id");
-        }
-
-
         /// <summary>
         /// Flush cached data for a data type in the current data scope.
         /// </summary>

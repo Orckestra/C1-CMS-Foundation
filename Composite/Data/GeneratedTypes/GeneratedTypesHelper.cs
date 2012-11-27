@@ -96,7 +96,7 @@ namespace Composite.Data.GeneratedTypes
 
 
         /// <exclude />
-        [Obsolete("Use EditableOwnDataFieldDesciptors which does not return inherited fields")]
+        [Obsolete("Use EditableOwnDataFieldDesciptors which does not return inherited fields", true)]
         public IEnumerable<DataFieldDescriptor> EditableDataFieldDescriptors
         {
             get

@@ -41,8 +41,6 @@ namespace Composite.Data
         T BuildNew<T>(bool suppressEventing) where T : class, IData;
         IData BuildNew(Type interfaceType, bool suppressEventling);
 
-        DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier, bool allowCascadeMove) where T : class, IData;
-
         bool ExistsInAnyLocale<T>(IEnumerable<CultureInfo> excludedCultureInfoes) where T : class, IData;
 
 

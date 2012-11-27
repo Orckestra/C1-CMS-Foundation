@@ -6,7 +6,6 @@ using System.Reflection;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
-using Composite.Core.Logging;
 using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Data.Caching;
@@ -23,6 +22,8 @@ namespace Composite.Data
 {
     internal class DataFacadeImpl : IDataFacade
     {
+        private static readonly string LogTitle = "DataFacade";
+
         static readonly Cache<string, IData> _dataBySourceIdCache = new Cache<string, IData>("Data by sourceId", 2000);
 
         static DataFacadeImpl()
@@ -33,7 +34,6 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataBeforeAdd<IData>(SetChangeHistoryInformation, true);
             DataEventSystemFacade.SubscribeToDataBeforeUpdate<IData>(SetChangeHistoryInformation, true);
         }
-
 
 
 
@@ -87,8 +87,8 @@ namespace Composite.Data
                 }
                 catch (Exception ex)
                 {
-                    LoggingService.LogError("DataFacade", "Calling data interceptor failed with the following exception");
-                    LoggingService.LogError("DataFacade", ex);
+                    Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
+                    Log.LogError(LogTitle, ex);
                 }
             }
 
@@ -142,8 +142,8 @@ namespace Composite.Data
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("DataFacade", "Calling data interceptor failed with the following exception");
-                        LoggingService.LogError("DataFacade", ex);
+                        Log.LogError(LogTitle, "Calling data interceptor failed with the following exception");
+                        Log.LogError(LogTitle, ex);
                     }
                 }
 
@@ -159,7 +159,7 @@ namespace Composite.Data
 
             this.DataInterceptors.Add(typeof(T), dataInterceptor);
 
-            LoggingService.LogVerbose("DataFacade", string.Format("Data interception added to the data type '{0}' with interceptor type '{1}'", typeof(T), dataInterceptor.GetType()));
+            Log.LogVerbose(LogTitle, string.Format("Data interception added to the data type '{0}' with interceptor type '{1}'", typeof(T), dataInterceptor.GetType()));
         }
 
 
@@ -177,7 +177,7 @@ namespace Composite.Data
             {
                 this.DataInterceptors.Remove(typeof(T));
 
-                LoggingService.LogVerbose("DataFacade", string.Format("Data interception cleared for the data type '{0}'", typeof(T)));
+                Log.LogVerbose(LogTitle, string.Format("Data interception cleared for the data type '{0}'", typeof(T)));
             }
         }
 
@@ -292,11 +292,11 @@ namespace Composite.Data
                 if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(typeof(T)))
                 {
                     string message = string.Format("The data interface '{0}' is not located in an assembly in the website Bin folder. Please move it to that location", typeof(T));
-                    LoggingService.LogError("DataFacade", message);
+                    Log.LogError(LogTitle, message);
                     throw new InvalidOperationException(message);
                 }
 
-                LoggingService.LogVerbose("DataFacade", string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers adding it to the default dynamic type data provider", typeof(T)));
+                Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers adding it to the default dynamic type data provider", typeof(T)));
 
                 List<T> result;
                 DynamicTypeManager.EnsureCreateStore(typeof(T));
@@ -328,7 +328,7 @@ namespace Composite.Data
             List<string> writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
             if (writeableProviders.Contains(providerName) == false)
             {
-                LoggingService.LogVerbose("DataFacade", string.Format("Type data interface '{0}' is marked auto updateble and is not supported by the provider '{1}', adding it", typeof(T), providerName));
+                Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by the provider '{1}', adding it", typeof(T), providerName));
 
                 DynamicTypeManager.EnsureCreateStore(typeof(T), providerName);
             }
@@ -516,7 +516,7 @@ namespace Composite.Data
 
             if(!DataTypeValidationRegistry.Validate(interfaceType, null, out errorMessage))
             {
-                Log.LogCritical("DataFacade", errorMessage);
+                Log.LogCritical(LogTitle, errorMessage);
                 throw new InvalidOperationException(errorMessage);
             }
         }
@@ -535,7 +535,7 @@ namespace Composite.Data
                     if (attribute == null || attribute.HasValue == false) continue;
                     if (propertyInfo.CanWrite == false)
                     {
-                        LoggingService.LogError("DataFacade", string.Format("The property '{0}' on the interface '{1}' has defined a standard value, but no setter", propertyInfo.Name, interfaceType));
+                        Log.LogError(LogTitle, string.Format("The property '{0}' on the interface '{1}' has defined a standard value, but no setter", propertyInfo.Name, interfaceType));
                         continue;
                     }
 
@@ -547,79 +547,11 @@ namespace Composite.Data
                 }
                 catch (Exception ex)
                 {
-                    LoggingService.LogError("DataFacade", string.Format("Failed to set the standard value on the property '{0}' on the interface '{1}'", propertyInfo.Name, interfaceType));
-                    LoggingService.LogError("DataFacade", ex);
+                    Log.LogError(LogTitle, string.Format("Failed to set the standard value on the property '{0}' on the interface '{1}'", propertyInfo.Name, interfaceType));
+                    Log.LogError(LogTitle, ex);
                 }
             }
         }
-
-
-
-        public DataMoveResult Move<T>(T data, DataScopeIdentifier targetDataScopeIdentifier, bool allowCascadeMove)
-            where T : class, IData
-        {
-            if (data == null) throw new ArgumentNullException("data");
-            if (targetDataScopeIdentifier == null) throw new ArgumentNullException("targetDataScopeIdentifier");
-
-            T addedData;
-            List<IData> addedReferees = new List<IData>();
-
-            if (allowCascadeMove == true)
-            {
-                IEnumerable<IData> referees = data.GetRefereesRecursively();
-
-                using (DataScope dataScope = new DataScope(targetDataScopeIdentifier))
-                {
-                    addedData = DataFacade.AddNew<T>(data, true, false);
-
-                    foreach (IData referee in referees)
-                    {
-                        addedReferees.Add(DataFacade.AddNew(referee, false));
-                    }
-                }
-
-                using (DataScope dataScope = new DataScope(data.DataSourceId.DataScopeIdentifier))
-                {
-                    DataFacade.Delete(data, true, CascadeDeleteType.Disable);
-                }
-
-                foreach (IData referee in referees)
-                {
-                    using (DataScope dataScope = new DataScope(referee.DataSourceId.DataScopeIdentifier))
-                    {
-                        DataFacade.Delete(referee, true, CascadeDeleteType.Disable);
-                    }
-                }
-
-
-                DataEventSystemFacade.FireDataAfterMoveEvent<T>(data, targetDataScopeIdentifier);
-
-                foreach (IData referee in referees)
-                {
-                    DataEventSystemFacade.FireDataAfterMoveEvent<T>(referee, targetDataScopeIdentifier);
-                }
-            }
-            else
-            {
-                using (DataScope dataScope = new DataScope(targetDataScopeIdentifier))
-                {
-                    addedData = DataFacade.AddNew<T>(data, true, true);
-                }
-
-                using (DataScope dataScope = new DataScope(data.DataSourceId.DataScopeIdentifier))
-                {
-                    DataFacade.Delete(data, true, CascadeDeleteType.Disallow);
-                }
-
-                DataEventSystemFacade.FireDataAfterMoveEvent<T>(data, targetDataScopeIdentifier);
-            }
-
-
-            DataMoveResult dataMoveResult = new DataMoveResult(addedData, addedReferees);
-
-            return dataMoveResult;
-        }
-
 
 
         public bool ExistsInAnyLocale<T>(IEnumerable<CultureInfo> excludedCultureInfoes)

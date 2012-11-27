@@ -55,21 +55,4 @@ namespace Composite.Data
         {
         }
     }
-
-
-
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [Obsolete("To be removed")]
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
-    public sealed class VersionProcessControllerTypeAttribute : ProcessControllerTypeAttribute
-    {
-        /// <exclude />
-        public VersionProcessControllerTypeAttribute(Type processControllerType)
-            : base(processControllerType)
-        {
-        }
-    }
 }
