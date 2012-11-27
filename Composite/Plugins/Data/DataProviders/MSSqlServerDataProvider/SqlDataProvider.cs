@@ -158,43 +158,26 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        public List<T> AddNew<T>(IEnumerable<T> datas)
+        public List<T> AddNew<T>(IEnumerable<T> dataset)
             where T : class, IData
         {
+            Verify.ArgumentNotNull(dataset, "dataset");
+
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (datas == null) throw new ArgumentNullException("datas");
-
                 string errorMessage;
                 if (!DataTypeValidationRegistry.IsValidateForProvider(typeof(T), _dataProviderContext.ProviderName, out errorMessage))
                 {
                     throw new InvalidOperationException(errorMessage);
                 }
 
-                RequireTransactionScope scope = null;
-                try
+                using (var scope = new RequireTransactionScope())
                 {
-                    // To be removed
-                    if (typeof(T).FullName != "Composite.Data.Types.ILogEntry")
-                    {
-                        scope = new RequireTransactionScope();
-                    }
+                    var result = _sqlDataTypeStoresContainer.AddNew<T>(dataset, _dataProviderContext);
 
-                    var result = _sqlDataTypeStoresContainer.AddNew<T>(datas, _dataProviderContext);
-
-                    if (scope != null)
-                    {
-                        scope.Complete();
-                    }
+                    scope.Complete();
 
                     return result;
-                }
-                finally
-                {
-                    if (scope != null)
-                    {
-                        scope.Dispose();
-                    }
                 }
             }
         }
@@ -203,9 +186,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         public void Delete(IEnumerable<DataSourceId> dataSourceIds)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            Verify.ArgumentNotNull(dataSourceIds, "dataSourceIds");
+
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (dataSourceIds == null) throw new ArgumentNullException("dataSourceIds");
+                
 
                 Type interfaceType = null;
                 foreach (DataSourceId dataSourceId in dataSourceIds)

@@ -1462,7 +1462,6 @@
     <Compile Include="Data\Types\ExtensionMethods\IMediaFileExtensions.cs" />
     <Compile Include="Data\Types\ICompositionContainer.cs" />
     <Compile Include="Data\Types\IDataTypeAssociationDescriptor.cs" />
-    <Compile Include="Data\Types\ILogEntry.cs" />
     <Compile Include="Data\Types\IUser.cs" />
     <Compile Include="Data\Types\IPageTemplateFile.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\Foundation\RenderingFunctionNames.cs" />
