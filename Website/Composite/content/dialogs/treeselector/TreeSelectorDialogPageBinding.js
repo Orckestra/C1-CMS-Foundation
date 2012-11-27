@@ -264,15 +264,7 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 
 	var self = this;
 	setTimeout(function () {
-		if (self._selectedResult) {
-			var compositeUrl = new CompositeUrl(self._selectedResult);
-			if (compositeUrl.isMedia || compositeUrl.isPage) {
-				var token = TreeService.GetCompositeEntityToken(self._selectedResult);
-				if (token != null) {
-					self._treeBinding._focusTreeNodeByEntityToken(token);
-				}
-			}
-		}
+		
 	}, 0);
 }
 
@@ -280,11 +272,23 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
  * Executed when the page is shown.
  */
 TreeSelectorDialogPageBinding.prototype.onAfterPageInitialize = function () {
-	
-	TreeSelectorDialogPageBinding.superclass.onAfterPageInitialize.call ( this );
-	
-	this._treeBinding.focus ();
-	this._treeBinding.selectDefault ();
+
+	TreeSelectorDialogPageBinding.superclass.onAfterPageInitialize.call(this);
+
+	this._treeBinding.focus();
+
+	var token = null;
+	if (this._selectedResult) {
+		var compositeUrl = new CompositeUrl(this._selectedResult);
+		if (compositeUrl.isMedia || compositeUrl.isPage) {
+			token = TreeService.GetCompositeEntityToken(this._selectedResult);
+			
+		}
+	}
+	if (token)
+		this._treeBinding._focusTreeNodeByEntityToken(token);
+	else
+		this._treeBinding.selectDefault();
 }
 
 /**
