@@ -288,7 +288,7 @@ namespace Composite.AspNet.Razor
         }
 
         /// <summary>
-        /// Executes a C1 function.
+        /// Executes a C1 Function.
         /// </summary>
         /// <param name="name">Function name.</param>
         /// <returns></returns>
@@ -298,7 +298,7 @@ namespace Composite.AspNet.Razor
         }
 
         /// <summary>
-        /// Executes a C1 function.
+        /// Executes a C1 Function.
         /// </summary>
         /// <param name="name">Function name.</param>
         /// <param name="parameters">The parameters.</param>
@@ -309,7 +309,7 @@ namespace Composite.AspNet.Razor
         }
 
         /// <summary>
-        /// Executes a C1 function.
+        /// Executes a C1 Function.
         /// </summary>
         /// <param name="name">Function name.</param>
         /// <param name="parameters">The parameters.</param>

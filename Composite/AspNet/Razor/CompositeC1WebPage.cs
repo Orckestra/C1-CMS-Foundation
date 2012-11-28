@@ -4,6 +4,7 @@ using System.Web.WebPages;
 using System.Xml.Linq;
 using Composite.Data;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Composite.AspNet.Razor
 {
@@ -83,6 +84,40 @@ namespace Composite.AspNet.Razor
                 return Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName;
             }
         }
+
+
+
+		/// <summary>
+		/// Executes a C1 Function.
+		/// </summary>
+		/// <param name="name">Function name.</param>
+		/// <returns></returns>
+		public IHtmlString Function(string name)
+		{
+			return Html.C1().Function(name);
+		}
+
+		/// <summary>
+		/// Executes a C1 Function.
+		/// </summary>
+		/// <param name="name">Function name.</param>
+		/// <param name="parameters">The parameters.</param>
+		/// <returns></returns>
+		public IHtmlString Function(string name, object parameters)
+		{
+			return Html.C1().Function(name, parameters);
+		}
+
+		/// <summary>
+		/// Executes a C1 Function.
+		/// </summary>
+		/// <param name="name">Function name.</param>
+		/// <param name="parameters">The parameters.</param>
+		/// <returns></returns>
+		public IHtmlString Function(string name, IDictionary<string, object> parameters)
+		{
+			return Html.C1().Function(name, parameters);
+		}
 
 
         /// <exclude />
