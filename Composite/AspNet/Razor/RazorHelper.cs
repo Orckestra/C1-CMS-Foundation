@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.WebPages;
 using System.Xml;
+using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 
@@ -98,7 +99,15 @@ namespace Composite.AspNet.Razor
 			{
 				try
 				{
-					return XhtmlDocument.Parse(output);
+                    var xElement = XElement.Parse(output);
+
+                    if (xElement.Name.LocalName == "html") return new XhtmlDocument(xElement);
+
+                    var document = new XhtmlDocument();
+                    document.Body.Add(xElement);
+
+                    return document;
+
 				}
 				catch (ArgumentException)
 				{
