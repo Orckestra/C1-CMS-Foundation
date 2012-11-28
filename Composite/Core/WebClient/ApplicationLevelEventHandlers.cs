@@ -104,16 +104,15 @@ namespace Composite.Core.WebClient
                     
                     TempDirectoryFacade.OnApplicationEnd();
 
-                    LoggingService.LogVerbose("Global.asax",
-                                                string.Format("--- Web Application End, {0} Id = {1}---",
-                                                            DateTime.Now.ToLongTimeString(),
-                                                            AppDomain.CurrentDomain.Id));
+                    Log.LogVerbose("Global.asax", string.Format("--- Web Application End, {0} Id = {1}---",
+                                                  DateTime.Now.ToLongTimeString(),
+                                                  AppDomain.CurrentDomain.Id));
                 }
                 catch (Exception ex)
                 {
                     if (RuntimeInformation.IsDebugBuild)
                     {
-                        LoggingService.LogCritical("Global.asax", ex);
+                        Log.LogCritical("Global.asax", ex);
                     }
 
                     throw;
@@ -144,7 +143,7 @@ namespace Composite.Core.WebClient
                 {
                     int startTimer = (int)HttpContext.Current.Items["Global.asax timer"];
                     string requesrPath = HttpContext.Current.Request.Path;
-                    LoggingService.LogVerbose("End request", string.Format("{0} - took {1} ms", requesrPath, (Environment.TickCount - startTimer)));
+                    Log.LogVerbose("End request", string.Format("{0} - took {1} ms", requesrPath, (Environment.TickCount - startTimer)));
                 }
             }
             finally
@@ -290,7 +289,7 @@ namespace Composite.Core.WebClient
 
             if (runtime == null)
             {
-                LoggingService.LogWarning("ASP.NET Shut Down", "Unable to determine cause of shut down");
+                Log.LogWarning("ASP.NET Shut Down", "Unable to determine cause of shut down");
                 return;
             }
 
@@ -306,7 +305,7 @@ namespace Composite.Core.WebClient
                                                                        System.Reflection.BindingFlags.GetField,
                                                                        null, runtime, null);
 
-            LoggingService.LogVerbose("RGB(250,50,50)ASP.NET Shut Down", String.Format("_shutDownMessage=\n{0}\n\n_shutDownStack=\n{1}",
+            Log.LogVerbose("RGB(250,50,50)ASP.NET Shut Down", String.Format("_shutDownMessage=\n{0}\n\n_shutDownStack=\n{1}",
                                          shutDownMessage.Replace("\n", "   \n"),
                                          shutDownStack));
 

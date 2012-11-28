@@ -36,7 +36,10 @@ namespace Composite.Core.Types
         private static readonly List<Assembly> _compiledAssemblies = new List<Assembly>();
         private static readonly List<Type> _compiledTypes = new List<Type>();
 
-
+        /// <summary>
+        /// If set to <c>true</c>, /Bin/Composite.Generated.dll won't be overwritten on shutdown
+        /// </summary>
+        public static bool SuppressGeneration { get; set; }
 
         static CodeGenerationManager()
         {
@@ -59,6 +62,8 @@ namespace Composite.Core.Types
         /// <param name="time"></param>
         internal static void ValidateCompositeGenerate(DateTime time)
         {
+            if (SuppressGeneration) return;
+
             string filePath = Path.Combine(PathUtil.BaseDirectory, "Bin", "Composite.Generated.dll");
 
             if (!C1File.Exists(filePath)) return;
@@ -79,6 +84,8 @@ namespace Composite.Core.Types
         /// <param name="forceGeneration"></param>
         public static void GenerateCompositeGeneratedAssembly(bool forceGeneration = false)
         {
+            if (SuppressGeneration) return;
+
             if (forceGeneration || !_compositeGeneratedCompiled)
             {
                 lock (_lock)
