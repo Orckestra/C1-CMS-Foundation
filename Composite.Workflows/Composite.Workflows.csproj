@@ -639,30 +639,6 @@
     <Compile Include="Plugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.designer.cs">
       <DependentUpon>EditUserWorkflow.cs</DependentUpon>
     </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.designer.cs">
-      <DependentUpon>AddVisualFunctionWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.designer.cs">
-      <DependentUpon>DeleteVisualFunctionWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.designer.cs">
-      <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.designer.cs">
-      <DependentUpon>SelectVisualFunctionWorkflow.cs</DependentUpon>
-    </Compile>
     <Compile Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1221,18 +1197,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserElementProvider\EditUserWorkflow.layout">
       <DependentUpon>EditUserWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\AddVisualFunctionWorkflow.layout">
-      <DependentUpon>AddVisualFunctionWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\DeleteVisualFunctionWorkflow.layout">
-      <DependentUpon>DeleteVisualFunctionWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\EditVisualFunctionWorkflow.layout">
-      <DependentUpon>EditVisualFunctionWorkflow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C1Console\Elements\ElementProviderHelpers\VisualFunctionElementProviderHelper\SelectVisualFunctionWorkflow.layout">
-      <DependentUpon>SelectVisualFunctionWorkflow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Plugins\Elements\ElementProviders\UserGroupElementProvider\AddNewUserGroupWorkflow.layout">
       <DependentUpon>AddNewUserGroupWorkflow.cs</DependentUpon>

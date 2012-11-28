@@ -56,6 +56,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             Verify.ArgumentCondition((functionContextContainer.XEmbedableMapper as XEmbeddedControlMapper) != null,
                 "functionContextContainer", "Unknown or missing XEmbedable mapper on context container. Use GetPageRenderFunctionContextContainer().");
 
+            CurrentPage = page;
+
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
                 string url;
@@ -149,8 +151,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static Control Render(this IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
-            CurrentPage = page;
-
             return page.Render(placeholderContents, GetPageRenderFunctionContextContainer());
         }
 

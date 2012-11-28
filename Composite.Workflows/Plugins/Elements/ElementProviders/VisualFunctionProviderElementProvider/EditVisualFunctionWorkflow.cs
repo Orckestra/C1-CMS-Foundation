@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
@@ -13,7 +12,6 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Core.WebClient.Renderings.Page;
-using Composite.Core.WebClient.Renderings.Template;
 using Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
@@ -188,6 +186,8 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 IPage previewPage = DataFacade.BuildNew<IPage>();
                 previewPage.Id = GetRootPageId();
                 previewPage.Title = function.Name;
+                previewPage.DataSourceId.DataScopeIdentifier = DataScopeIdentifier.Administrated;
+                previewPage.DataSourceId.LocaleScope = LocalizationScopeManager.CurrentLocalizationScope;
 
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
                 previewPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
@@ -197,18 +197,17 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 placeHolderContent.Content = string.Concat((result.Body.Elements().Select(b => b.ToString())).ToArray());
                 placeHolderContent.PlaceHolderId = pageTemplate.DefaultPlaceholderId;
 
-                Control renderedPage = previewPage.Render(new List<IPagePlaceholderContent> { placeHolderContent }, fcc);
-                PageRenderer.DisableAspNetPostback(renderedPage);
+                string output = PagePreviewBuilder.RenderPreview(previewPage, new List<IPagePlaceholderContent> { placeHolderContent });
 
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
                 var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
-                webRenderService.SetNewPageOutput(renderedPage);
+                webRenderService.SetNewPageOutput(new LiteralControl(output));
             }
             catch (Exception ex)
             {
                 FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                Control errOutput = new LiteralControl("<pre>" + ex.ToString() + "</pre>");
+                Control errOutput = new LiteralControl("<pre>" + ex + "</pre>");
                 var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
                 webRenderService.SetNewPageOutput(errOutput);
             }

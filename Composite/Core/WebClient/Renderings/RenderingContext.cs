@@ -50,8 +50,7 @@ namespace Composite.Core.WebClient.Renderings
 
         private string _previewKey;
         private IDisposable _pagePerfMeasuring;
-        private PageUrlData _pageUrl;
-        private string _cacheUrl;
+        private string _cachedUrl;
         private IDisposable _dataScope;
 
         private RenderingContext()
@@ -143,7 +142,7 @@ namespace Composite.Core.WebClient.Renderings
             }
             catch
             {
-                Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cacheUrl ?? String.Empty));
+                Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cachedUrl ?? String.Empty));
             }
 
             return xhtml;
@@ -197,14 +196,13 @@ namespace Composite.Core.WebClient.Renderings
             if (PreviewMode)
             {
                 Page = (IPage)HttpRuntime.Cache.Get(_previewKey + "_SelectedPage");
-                _pageUrl = new PageUrlData(Page);
             }
             else
             {
-                _pageUrl = C1PageRoute.PageUrlData ??  PageUrls.UrlProvider.ParseInternalUrl(request.Url.OriginalString);
-                Page = _pageUrl.GetPage();
+                PageUrlData pageUrl = C1PageRoute.PageUrlData ??  PageUrls.UrlProvider.ParseInternalUrl(request.Url.OriginalString);
+                Page = pageUrl.GetPage();
 
-                _cacheUrl = request.Url.PathAndQuery;
+                _cachedUrl = request.Url.PathAndQuery;
             }
 
             ValidateViewUnpublishedRequest(httpContext);
@@ -214,7 +212,7 @@ namespace Composite.Core.WebClient.Renderings
                 throw new HttpException(404, "Page not found - either this page has not been published yet or it has been deleted.");
             }
 
-            if (_pageUrl.PublicationScope != PublicationScope.Published || request.IsSecureConnection)
+            if (Page.DataSourceId.PublicationScope != PublicationScope.Published || request.IsSecureConnection)
             {
                 response.Cache.SetCacheability(HttpCacheability.NoCache);
                 CachingDisabled = true;
@@ -222,7 +220,7 @@ namespace Composite.Core.WebClient.Renderings
 
             PageRenderer.CurrentPage = Page;
 
-            _dataScope = new DataScope(_pageUrl.PublicationScope, _pageUrl.LocalizationScope);
+            _dataScope = new DataScope(Page.DataSourceId.PublicationScope, Page.DataSourceId.LocaleScope);
 
             var pagePlaceholderContents = GetPagePlaceholderContents();
             var pageRenderingJob = new PageContentToRender(Page, pagePlaceholderContents, PreviewMode);
@@ -238,7 +236,7 @@ namespace Composite.Core.WebClient.Renderings
         private void ValidateViewUnpublishedRequest(HttpContext httpContext)
         {
             bool isPreviewingUrl = httpContext.Request.Url.OriginalString.Contains(PageUrlBuilder.UrlMarker_RelativeUrl);
-            bool isUnpublishedPage = _pageUrl != null && _pageUrl.PublicationScope != PublicationScope.Published;
+            bool isUnpublishedPage = Page != null && Page.DataSourceId.PublicationScope != PublicationScope.Published;
 
             if ((isUnpublishedPage || isPreviewingUrl)
                 && !UserValidationFacade.IsLoggedIn())
