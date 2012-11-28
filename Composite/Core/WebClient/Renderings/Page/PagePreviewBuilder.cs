@@ -54,6 +54,10 @@ namespace Composite.Core.WebClient.Renderings.Page
                 AllowChildRequestSessionAccess(ctx);
                 HttpRuntime.ProcessRequest(wr);
 
+                // Preview <iframe /> has source "~/Composite/content/flow/FlowUi.aspx" and page is rendered from "~/Renderers/Page.aspx"
+                // The following line fixes style references processed by ASP.NET-s Control.ResolveClientUrl()
+                sb = sb.Replace("href=\"../", "href=\"../../../");
+
                 return sb.ToString();
             }
 
