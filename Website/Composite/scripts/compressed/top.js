@@ -13361,6 +13361,7 @@ var _90c=ViewDefinitions[_90b];
 if(_90c instanceof DialogViewDefinition){
 _90c.handler={handleDialogResponse:function(_90d,_90e){
 self._isButtonClicked=false;
+_90c.argument.selectedResult=null;
 if(_90d==Dialog.RESPONSE_ACCEPT){
 self.logger.debug("Usecase scenario was hardcoded into DataInputDialogBinding#buildButton");
 var _90f=_90e.getFirst();
