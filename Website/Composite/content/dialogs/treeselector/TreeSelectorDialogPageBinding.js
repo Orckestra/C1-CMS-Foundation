@@ -109,7 +109,15 @@ TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
 	this._selectionProperty = arg.selectionProperty;
 	this._selectionValue = arg.selectionValue;
 	this._selectionResult = arg.selectionResult;
-	this._selectedResult = arg.selectedResult;
+	if (arg.selectedToken) {
+		this._selectedToken = arg.selectedToken;
+	}
+	else if (arg.selectedResult) {
+		var compositeUrl = new CompositeUrl(arg.selectedResult);
+		if (compositeUrl.isMedia || compositeUrl.isPage) {
+			this._selectedToken = TreeService.GetCompositeEntityToken(arg.selectedResult);
+		}
+	}
 	this._nodes = arg.nodes;
 	this._parents = new List();
 	if (arg.width) {
@@ -257,9 +265,6 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 				}, 0);
 			}
 		});
-
-
-
 	}
 
 	var self = this;
@@ -277,16 +282,8 @@ TreeSelectorDialogPageBinding.prototype.onAfterPageInitialize = function () {
 
 	this._treeBinding.focus();
 
-	var token = null;
-	if (this._selectedResult) {
-		var compositeUrl = new CompositeUrl(this._selectedResult);
-		if (compositeUrl.isMedia || compositeUrl.isPage) {
-			token = TreeService.GetCompositeEntityToken(this._selectedResult);
-			
-		}
-	}
-	if (token)
-		this._treeBinding._focusTreeNodeByEntityToken(token);
+	if (this._selectedToken)
+		this._treeBinding._focusTreeNodeByEntityToken(this._selectedToken);
 	else
 		this._treeBinding.selectDefault();
 }

@@ -98,6 +98,7 @@
                 try
                 {
                     label = reference.Data.GetLabel(true);
+					ctlSelectorDialog.Attributes["selectedtoken"] = Composite.C1Console.Security.EntityTokenSerializer.Serialize(reference.Data.GetDataEntityToken(), true);
                 }
                 catch (Exception)
                 {

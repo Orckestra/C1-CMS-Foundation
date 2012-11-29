@@ -32,60 +32,71 @@ ViewDefinitionPostBackDataDialogBinding.prototype.toString = function () {
  * @overloads {DataDialogBinding#fireCommand}
  */
 ViewDefinitionPostBackDataDialogBinding.prototype.fireCommand = function () {
-	
-	var label = this.getProperty ( "dialoglabel" );
-	var search = this.getProperty ( "providersearch" );
-	var key = this.getProperty ( "providerkey" );
-	var handle = this.getProperty ( "handle" )
-	
-	if ( handle != null ) {
-	
-		var def = ViewDefinition.clone ( 
+
+	var label = this.getProperty("dialoglabel");
+	var search = this.getProperty("providersearch");
+	var key = this.getProperty("providerkey");
+	var handle = this.getProperty("handle");
+	var selectedToken = this.getProperty("selectedtoken");
+
+	if (handle != null) {
+
+		var def = ViewDefinition.clone(
 			handle,
-			"Generated.ViewDefinition.Handle." + KeyMaster.getUniqueKey ()
+			"Generated.ViewDefinition.Handle." + KeyMaster.getUniqueKey()
 		);
-		
+
 		/*
-		 * Label
-		 */
-		if ( label != null ) {
-			if ( def.argument == null ) {
+		* Label
+		*/
+		if (label != null) {
+			if (def.argument == null) {
 				def.argument = {};
 			}
 			def.argument.label = label;
 		}
-		
+
 		/*
-		 * Search
-		 */
-		if ( search != null ) {
-			if ( def.argument == null ) {
+		* Search
+		*/
+		if (search != null) {
+			if (def.argument == null) {
 				def.argument = {};
 			}
-			if ( def.argument.nodes == null ) {
+			if (def.argument.nodes == null) {
 				def.argument.nodes = [];
 			}
-			def.argument.nodes [ 0 ].search = search;
+			def.argument.nodes[0].search = search;
 		}
-		
+
 		/*
-		 * Key
-		 */
-		if ( key != null ) {
-			if ( def.argument == null ) {
+		* Key
+		*/
+		if (key != null) {
+			if (def.argument == null) {
 				def.argument = {};
 			}
-			if ( def.argument.nodes == null ) {
+			if (def.argument.nodes == null) {
 				def.argument.nodes = [];
 			}
-			def.argument.nodes [ 0 ].key = key;
+			def.argument.nodes[0].key = key;
 		}
-		
+
 		/*
-		 * Super
-		 */
-		ViewDefinitionPostBackDataDialogBinding.superclass.fireCommand.call ( this, def );
-		
+		* Token
+		*/
+		if (selectedToken != null) {
+			if (def.argument == null) {
+				def.argument = {};
+			}
+			def.argument.selectedToken = selectedToken;
+		}
+
+		/*
+		* Super
+		*/
+		ViewDefinitionPostBackDataDialogBinding.superclass.fireCommand.call(this, def);
+
 	} else {
 		throw "Attribute \"handle\" required.";
 	}

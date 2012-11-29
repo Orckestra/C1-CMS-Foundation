@@ -69,14 +69,17 @@ DataInputDialogBinding.prototype.buildButton = function () {
 		}, 1000);
 
 		var handle = self.getProperty("handle");
-		var definition = ViewDefinitions[handle];
+
+		var definition = ViewDefinition.clone(
+			handle,
+			"Generated.ViewDefinition.Handle." + KeyMaster.getUniqueKey()
+		);
 
 		if (definition instanceof DialogViewDefinition) {
 
 			definition.handler = {
 				handleDialogResponse: function (response, result) {
 					self._isButtonClicked = false;
-					definition.argument.selectedResult = null;
 					if (response == Dialog.RESPONSE_ACCEPT) {
 
 						self.logger.debug("Usecase scenario was hardcoded into DataInputDialogBinding#buildButton");
@@ -88,7 +91,8 @@ DataInputDialogBinding.prototype.buildButton = function () {
 					self.focus();
 				}
 			}
-			definition.argument.selectedResult = self.getValue(); // TODO!
+
+			definition.argument.selectedResult = self.getValue();
 			StageBinding.presentViewDefinition(definition);
 
 		} else {
