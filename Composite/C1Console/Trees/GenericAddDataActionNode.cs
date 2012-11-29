@@ -42,6 +42,8 @@ namespace Composite.C1Console.Trees
             if (this.ParentIdEntrys.Count > 0)
             {
                 List<EntityToken> entityTokens = dynamicContext.Piggybag.GetParentEntityTokens().ToList();
+                entityTokens.Reverse(); // Reversing the order so the latest partent will go first
+
                 entityTokens.Add(dynamicContext.CurrentEntityToken);
                 entityTokens.Add(entityToken);
 
