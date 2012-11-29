@@ -538,7 +538,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
             {
                 DataEntityToken token = (DataEntityToken)entityToken;
 
-                IPublishControlled publishControlled = (IPublishControlled)token.Data;
+                IPublishControlled publishControlled = (IPublishControlled)DataFacade.GetDataFromDataSourceId(token.DataSourceId);
 
                 ValidationResults validationResults = ValidationFacade.Validate((IData)publishControlled);
 
