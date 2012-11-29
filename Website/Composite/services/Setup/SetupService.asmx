@@ -100,7 +100,7 @@ namespace Composite.Core.WebClient.Setup
             XElement languagesXml = SetupServiceFacade.GetLanguages();
 
 
-            string clientPreferredCultureName = (this.Context.Request.UserLanguages.FirstOrDefault() ?? "").ToLowerInvariant();
+            string clientPreferredCultureName = ((this.Context.Request.UserLanguages ?? new string[0]).FirstOrDefault() ?? "").ToLowerInvariant();
 
             List<LanguageDef> languages = new List<LanguageDef>();
             bool selectionDone = false;
