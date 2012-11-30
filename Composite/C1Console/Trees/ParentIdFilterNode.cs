@@ -134,7 +134,7 @@ namespace Composite.C1Console.Trees
 
             AncestorResult ancestorResult = treeNode.GetParentEntityToken(entityToken, this.ParentFilterType, dynamicContext);
 
-            if ((this.OwnerNode.Id == ancestorResult.TreeNode.Id) || (this.OwnerNode.IsChild(ancestorResult.TreeNode) == true)) // Search upwards
+            if ((this.OwnerNode.Id == ancestorResult.TreeNode.Id) || (this.OwnerNode.IsDescendant(ancestorResult.TreeNode) == true)) // Search upwards
             {
                 return FindOwnEntityToken(ancestorResult.TreeNode, ancestorResult.EntityToken, dynamicContext);
             }

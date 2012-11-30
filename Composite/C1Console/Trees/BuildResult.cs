@@ -10,7 +10,7 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class BuildResult
 	{
-        private readonly List<ValidationError> _validationError = new List<ValidationError>();
+        private readonly List<ValidationError> _validationErrors = new List<ValidationError>();
 
 
         /// <exclude />
@@ -18,21 +18,14 @@ namespace Composite.C1Console.Trees
         {
             Verify.IsNotNull(validationError, "validationError");
 
-            _validationError.Add(validationError);
+            _validationErrors.Add(validationError);
         }
-
 
 
         /// <exclude />
         public IEnumerable<ValidationError> ValidationErrors 
         {
-            get
-            {
-                foreach (ValidationError validationError in _validationError)
-                {
-                    yield return validationError;
-                }
-            }
+            get { return _validationErrors; }
         }
 	}
 }

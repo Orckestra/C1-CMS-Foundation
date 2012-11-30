@@ -1,22 +1,30 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Trees
 {
     /// <summary>    
+    /// Defines the way an element is shown depending on presense of the child elements
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum LeafDisplayMode
     {
-        /// <exclude />
+        /// <summary>
+        /// Only shows the elements that has child elements; hides all the elements without child elements.
+        /// </summary>
         Compact = 0,
 
-        /// <exclude />
+        /// <summary>
+        /// Element is always shown, as well as the the "+" sign even when element doesn't have any child items. Default value, has the best performance
+        /// </summary>
         Lazy = 1,
 
-        /// <exclude />
+        /// <summary>
+        /// Element is always shown, the "+" sign is shown only if there're child elements.
+        /// </summary>
         Auto = 2
     }
 
@@ -31,30 +39,19 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public static LeafDisplayMode ParseDisplayMode(XAttribute attribute, Tree tree)
         {
-            LeafDisplayMode displayMode = LeafDisplayMode.Lazy;
             if (attribute != null)
             {
-                switch (attribute.Value)
+                LeafDisplayMode parsedValue;
+
+                if (Enum.TryParse(attribute.Value, out parsedValue))
                 {
-                    case "Compact":
-                        displayMode = LeafDisplayMode.Compact;
-                        break;
-
-                    case "Lazy":
-                        displayMode = LeafDisplayMode.Lazy;
-                        break;
-
-                    case "Auto":
-                        displayMode = LeafDisplayMode.Auto;
-                        break;
-
-                    default:
-                        tree.AddValidationError(attribute.GetXPath(), "TreeValidationError.Common.WrongAttributeValue", attribute.Value);
-                        break;
+                    return parsedValue;
                 }
+
+                tree.AddValidationError(attribute.GetXPath(), "TreeValidationError.Common.WrongAttributeValue", attribute.Value);
             }
 
-            return displayMode;
+            return LeafDisplayMode.Lazy;
         }
     }
 }

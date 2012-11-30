@@ -111,7 +111,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             Serialize(sb);
             return sb.ToString();
         }
@@ -152,8 +152,7 @@ namespace Composite.C1Console.Trees
             Tree tree = TreeFacade.GetTree(treeId);
             if (tree == null) return null;
 
-            ActionNode actionNode = tree.GetActionNode(actionNodeId);
-            return actionNode;
+            return tree.GetActionNode(actionNodeId);
         }
 
 
@@ -161,7 +160,6 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected void AddValidationError(ValidationError validationError)
         {
-            
             this.OwnerNode.Tree.BuildResult.AddValidationError(validationError);
         }
 

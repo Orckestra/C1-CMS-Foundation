@@ -38,13 +38,7 @@ namespace Composite.C1Console.Trees
 
         public IEnumerable<Type> InterfaceTypes
         {
-            get
-            {
-                foreach (DataFieldValueHelperEntry entry in _entries)
-                {
-                    yield return entry.InterfaceType;
-                }
-            }
+            get { return _entries.Select(e => e.InterfaceType);}
         }
 
 
@@ -61,7 +55,11 @@ namespace Composite.C1Console.Trees
                 if (entry.IsReference == false)
                 {
                     value = entry.PropertyInfo.GetValue(data, null);
-                    if (value == null) value = "(NULL)";
+
+                    if (value == null)
+                    {
+                        value = "(NULL)";
+                    }
                     else if (entry.PropertyInfo.PropertyType == typeof(DateTime))
                     {
                         value = ((DateTime)value).ToString("yyyy MM dd");
@@ -181,9 +179,7 @@ namespace Composite.C1Console.Trees
 
             public bool Equals(DataFieldValueHelperEntry entry)
             {
-                if (entry == null) return false;
-
-                return object.Equals(this.Match, entry.Match);
+                return entry != null && object.Equals(this.Match, entry.Match);
             }
 
 

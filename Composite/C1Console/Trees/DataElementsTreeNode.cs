@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Composite.Data;
-using Composite.Data.ProcessControlled;
 using Composite.C1Console.Elements;
-using Composite.Core.Linq;
-using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
-using Composite.C1Console.Trees.Foundation;
-using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
-using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
+using Composite.Data;
+using Composite.Data.ProcessControlled;
 
 
 namespace Composite.C1Console.Trees
@@ -69,7 +68,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<IData> datas = GetDatas(dynamicContext).Item1;
+            IEnumerable<IData> datas = GetDataset(dynamicContext).Item1;
 
             return datas.Select(f => (EntityToken)f.GetDataEntityToken()).Evaluate();
         }
@@ -96,7 +95,7 @@ namespace Composite.C1Console.Trees
             DataEntityToken dataEntityToken = (DataEntityToken)ownEntityToken;
             IData data = dataEntityToken.Data;
 
-            if (data == null) throw new ArgumentException("ownEntityToken.Data is null");
+            Verify.ArgumentCondition(data != null, "ownEntityToken", "Failed to get data");
 
             object parentFieldValue = helper.ParentReferencedPropertyInfo.GetValue(data, null);
 
@@ -138,53 +137,40 @@ namespace Composite.C1Console.Trees
             IEnumerable<object> keys;
             List<object> itemKeys = new List<object>();
 
-            Tuple<IEnumerable<IData>, IEnumerable<object>> datas = GetDatas(dynamicContext);
+            Tuple<IEnumerable<IData>, IEnumerable<object>> dataset = GetDataset(dynamicContext);
 
-            bool localizationEndabled = (this.ShowForeignItems == true) && (UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo) == false);
+            bool localizationEndabled = this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
 
-            keys = datas.Item2;
+            keys = dataset.Item2;
             if (localizationEndabled && UserSettings.ForeignLocaleCultureInfo != null)
             {
-                Tuple<IEnumerable<IData>, IEnumerable<object>> foreignDatas;
+                Tuple<IEnumerable<IData>, IEnumerable<object>> foreignDataset;
                 using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
-                    foreignDatas = GetDatas(dynamicContext);
+                    foreignDataset = GetDataset(dynamicContext);
                 }
 
                 ParameterExpression parameterExpression = Expression.Parameter(this.InterfaceType, "data");
 
-                IEnumerable combinedData = datas.Item1.Concat(foreignDatas.Item1).ToCastedDataEnumerable(this.InterfaceType);
+                IEnumerable combinedData = dataset.Item1.Concat(foreignDataset.Item1).ToCastedDataEnumerable(this.InterfaceType);
 
                 Expression orderByExpression = this.CreateAccumulatedOrderByExpression(combinedData.AsQueryable().Expression, parameterExpression);
 
                 dataItems = combinedData.AsQueryable().Provider.CreateQuery<IData>(orderByExpression);
 
-                foreach (IData data in datas.Item1)
+                foreach (IData data in dataset.Item1)
                 {
-                    if (data == null)
-                    {
-                        throw new InvalidOperationException(string.Format("Fetching data for data interface '{0}' with expression '{1}' yielded an null element", this.InterfaceType, orderByExpression));
-                    }
+                    Verify.IsNotNull(data, "Fetching data for data interface '{0}' with expression '{1}' yielded an null element".FormatWith(this.InterfaceType, orderByExpression));
 
                     object keyValue = this.KeyPropertyInfo.GetValue(data, null);
                     itemKeys.Add(keyValue);
                 }
 
-                if (keys != null) 
-                {
-                    if (foreignDatas.Item2 != null)
-                    {
-                        keys = keys.Concat(foreignDatas.Item2);
-                    }
-                }
-                else
-                {
-                    keys = foreignDatas.Item2;
-                }
+                keys = keys.ConcatOrDefault(foreignDataset.Item2);
             }
             else
             {
-                dataItems = datas.Item1;
+                dataItems = dataset.Item1;
                 itemKeys = new List<object>();
             }
 
@@ -199,18 +185,16 @@ namespace Composite.C1Console.Trees
 
             foreach (IData data in dataItems)
             {
-                replaceContext.CurrentDataItem = data;
+                Verify.IsNotNull(data, "Fetching data for data interface '{0}' yielded an null element".FormatWith(this.InterfaceType));
 
-                if (data == null)
-                {
-                    throw new InvalidOperationException(string.Format("Fetching data for data interface '{0}' yielded an null element", this.InterfaceType));
-                }
+                replaceContext.CurrentDataItem = data;
+                
 
                 object keyValue = this.KeyPropertyInfo.GetValue(data, null);
 
-                bool itemLocalizationEnabledAndForeign = (localizationEndabled == true) && (data.DataSourceId.LocaleScope.Equals(UserSettings.ActiveLocaleCultureInfo) == false);
+                bool itemLocalizationEnabledAndForeign = localizationEndabled && !data.DataSourceId.LocaleScope.Equals(UserSettings.ActiveLocaleCultureInfo);
 
-                if ((localizationEndabled == true) && (data.DataSourceId.LocaleScope.Equals(UserSettings.ActiveLocaleCultureInfo) == false) && (itemKeys.Contains(keyValue) == true)) continue;
+                if (itemLocalizationEnabledAndForeign && itemKeys.Contains(keyValue)) continue;
 
                 Element element = new Element(new ElementHandle
                 (
@@ -224,7 +208,7 @@ namespace Composite.C1Console.Trees
                 bool isDisabled = false;
                 ResourceHandle icon;
                 ResourceHandle openedIcon;
-                if (itemLocalizationEnabledAndForeign == true)
+                if (itemLocalizationEnabledAndForeign)
                 {
                     hasChildren = false;                    
                     isDisabled = data.IsLocaleDisabled();
@@ -244,7 +228,7 @@ namespace Composite.C1Console.Trees
                 {
                     if (this.Display != LeafDisplayMode.Auto)
                     {
-                        hasChildren = ChildNodes.Count() > 0;
+                        hasChildren = ChildNodes.Any();
                     }
                     else if (keys != null)
                     {
@@ -267,31 +251,19 @@ namespace Composite.C1Console.Trees
                     }                    
                 }
 
-                string label;
-                if (string.IsNullOrEmpty(this.Label) == true)
-                {
-                    label = data.GetLabel();
-                }
-                else
-                {
-                    label = this.LabelDynamicValuesHelper.ReplaceValues(replaceContext);
-                }                
+                string label = this.Label.IsNullOrEmpty() 
+                                ? data.GetLabel() 
+                                : this.LabelDynamicValuesHelper.ReplaceValues(replaceContext);                
 
-                string toolTip;
-                if (string.IsNullOrEmpty(this.ToolTip) == true)
-                {
-                    toolTip = label;
-                }
-                else
-                {
-                    toolTip = this.ToolTipDynamicValuesHelper.ReplaceValues(replaceContext);
-                }
+                string toolTip = this.ToolTip.IsNullOrEmpty() 
+                                ? label 
+                                : this.ToolTipDynamicValuesHelper.ReplaceValues(replaceContext);
 
-                if (itemLocalizationEnabledAndForeign == true)
+                if (itemLocalizationEnabledAndForeign)
                 {
                     label = string.Format("{0} ({1})", label, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
-                    if (data.IsLocaleDisabled() == true)
+                    if (data.IsLocaleDisabled())
                     {
                         toolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.DisabledData");
                     }
@@ -349,13 +321,13 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnInitialize()
         {
-            if (typeof(IData).IsAssignableFrom(this.InterfaceType) == false)
+            if (!typeof(IData).IsAssignableFrom(this.InterfaceType))
             {
                 AddValidationError("TreeValidationError.Common.NotImplementingIData", this.InterfaceType, typeof(IData));
                 return;
             }
 
-            IEnumerable<Type> siblingInterfaceTypes = this.ParentNode.ChildNodes.Where(f => f.GetType() == typeof(DataElementsTreeNode)).Select(f => ((DataElementsTreeNode)f).InterfaceType);
+            IEnumerable<Type> siblingInterfaceTypes = this.ParentNode.ChildNodes.Where(f => f.GetType() == typeof(DataElementsTreeNode)).Select(f => ((DataElementsTreeNode)f).InterfaceType).ToList();
             if (siblingInterfaceTypes.Count() != siblingInterfaceTypes.Distinct().Count())
             {
                 AddValidationError("TreeValidationError.DataElementsTreeNode.SameInterfaceUsedTwice", this.InterfaceType);
@@ -379,7 +351,7 @@ namespace Composite.C1Console.Trees
                 ParentFilterHelper helper = new ParentFilterHelper();
 
                 helper.ParentIdFilterNode = parentIdFilterNode;
-                helper.ParentReferencedPropertyInfo = this.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == parentIdFilterNode.ReferenceFieldName).Single();
+                helper.ParentReferencedPropertyInfo = this.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == parentIdFilterNode.ReferenceFieldName);
                 helper.ParentRefereePropertyName = parentIdFilterNode.ParentFilterType.GetKeyPropertyInfoes()[0].Name;
 
                 this.ParentFilteringHelpers.Add(parentIdFilterNode.ParentFilterType, helper);
@@ -394,9 +366,8 @@ namespace Composite.C1Console.Trees
                 DataElementsTreeNode dataElementTreeNode = decendantTreeNode as DataElementsTreeNode;
                 if (dataElementTreeNode == null) continue;
 
-                ParentIdFilterNode parentIdFilterNode = dataElementTreeNode.FilterNodes.OfType<ParentIdFilterNode>().
-                    Where(f => f.ParentFilterType == this.InterfaceType).
-                    FirstOrDefault();
+                ParentIdFilterNode parentIdFilterNode = dataElementTreeNode.FilterNodes.OfType<ParentIdFilterNode>()
+                                                        .FirstOrDefault(f => f.ParentFilterType == this.InterfaceType);
 
                 if (parentIdFilterNode != null)
                 {
@@ -404,7 +375,7 @@ namespace Composite.C1Console.Trees
                     {
                         this.JoinParentIdFilterNode = parentIdFilterNode;
                         this.JoinDataElementsTreeNode = dataElementTreeNode;
-                        this.JoinInnerKeyReferencePropertyInfo = this.JoinDataElementsTreeNode.CurrentDataInterfaceType.GetAllProperties().Where(f => f.Name == this.JoinParentIdFilterNode.ReferenceFieldName).Single();
+                        this.JoinInnerKeyReferencePropertyInfo = this.JoinDataElementsTreeNode.CurrentDataInterfaceType.GetAllProperties().Single(f => f.Name == this.JoinParentIdFilterNode.ReferenceFieldName);
                     }
                     else if (this.Display != LeafDisplayMode.Lazy)
                     {
@@ -426,7 +397,7 @@ namespace Composite.C1Console.Trees
                 this.ToolTipDynamicValuesHelper.Initialize(this);
             }
 
-            if (typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType) == false)
+            if (!typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType))
             {
                 this.ShowForeignItems = false;
             }
@@ -441,7 +412,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private Tuple<IEnumerable<IData>, IEnumerable<object>> GetDatas(TreeNodeDynamicContext dynamicContext)
+        private Tuple<IEnumerable<IData>, IEnumerable<object>> GetDataset(TreeNodeDynamicContext dynamicContext)
         {
             List<object> innerKeys = null;
 
@@ -502,7 +473,7 @@ namespace Composite.C1Console.Trees
 
         private Expression CreateJoinExpression(TreeNodeDynamicContext dynamicContext)
         {
-            //MRJ: Multible Parent Filter: Here we have to make either multible calls or create a multible inner join, kinda hard
+            //MRJ: Multible Parent Filter: Here we have to make either multiple calls or create a multiple inner join, kinda hard
             // Create inner expression tree
             Expression innerDistinctExpression = CreateInnerExpression(dynamicContext, this.JoinParentIdFilterNode, this.JoinDataElementsTreeNode);
 
@@ -515,11 +486,11 @@ namespace Composite.C1Console.Trees
             Expression outerWhereExpression = ExpressionHelper.CreateWhereExpression(DataFacade.GetData(this.InterfaceType).Expression, outerParameterExpression, outerFilterExpression);
 
             Expression outerResultExpression = outerWhereExpression;
-            bool _isFirst = true;
+            bool isFirst = true;
             foreach (OrderByNode orderByNode in this.OrderByNodes)
             {
-                outerResultExpression = orderByNode.CreateOrderByExpression(outerResultExpression, outerParameterExpression, _isFirst);
-                _isFirst = false;
+                outerResultExpression = orderByNode.CreateOrderByExpression(outerResultExpression, outerParameterExpression, isFirst);
+                isFirst = false;
             }
 
 
@@ -563,7 +534,7 @@ namespace Composite.C1Console.Trees
 
             if ((includeJoin == true) && (dataElementsTreeNode.JoinDataElementsTreeNode != null))
             {
-                //MRJ: Multible Parent Filter: Recursive call, so we would have to make multible recursive calls
+                //MRJ: Multiple Parent Filter: Recursive call, so we would have to make multiple recursive calls
                 Expression innerInnerExpression = CreateInnerExpression(dynamicContext, dataElementsTreeNode.JoinParentIdFilterNode, dataElementsTreeNode.JoinDataElementsTreeNode);
 
                 // Create join lambda expressions

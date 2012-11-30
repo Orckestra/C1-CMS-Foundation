@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using Composite.Data;
-using Composite.Data.ProcessControlled;
 using Composite.C1Console.Elements;
-using Composite.Core.Linq;
-using Composite.Core.ResourceSystem;
-using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
-using Composite.C1Console.Trees.Foundation;
-using Composite.Core.Types;
 
 
 namespace Composite.C1Console.Trees
 {
     /// <summary>    
+    /// Information about the ancestor node withing the same tree
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -31,17 +23,16 @@ namespace Composite.C1Console.Trees
 
 
         /// <exclude />
-        public TreeNode TreeNode { get; set; }
+        public TreeNode TreeNode { get; private set; }
 
         /// <exclude />
-        public EntityToken EntityToken { get; set; }
+        public EntityToken EntityToken { get; private set; }
     }
 
 
 
-
-
     /// <summary>    
+    /// Represents a node in tree definition
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -115,7 +106,7 @@ namespace Composite.C1Console.Trees
 
         /// <summary>
         /// This is called to, in the end, find a parent data entity token, so that the data item behind it can be used 
-        /// by the start caller (ParentIdFilterNode) to get its own data item for creating a upward filter.
+        /// by the start caller (ParentIdFilterNode) to get its own data item for creating an upward filter.
         /// 
         /// If more than one parent exists, the first one is enough
         /// 
@@ -150,7 +141,7 @@ namespace Composite.C1Console.Trees
             {
                 foreach (ActionNode actionNode in this.ActionNodes)
                 {
-                    actionNode.AddAction(f => element.AddAction(f), element.ElementHandle.EntityToken, dynamicContext);
+                    actionNode.AddAction(element.AddAction, element.ElementHandle.EntityToken, dynamicContext);
                 }
 
                 yield return element;
@@ -230,13 +221,13 @@ namespace Composite.C1Console.Trees
 
         internal bool IsAncestor(TreeNode treeNode)
         {
-            TreeNode parentTreeNode = this.ParentNode;
+            TreeNode ancestorNode = this.ParentNode;
 
-            while (parentTreeNode != null)
+            while (ancestorNode != null)
             {
-                if (parentTreeNode.Id == treeNode.Id) return true;
+                if (ancestorNode.Id == treeNode.Id) return true;
 
-                parentTreeNode = parentTreeNode.ParentNode;
+                ancestorNode = ancestorNode.ParentNode;
             }
 
             return false;
@@ -244,17 +235,9 @@ namespace Composite.C1Console.Trees
 
 
 
-        internal bool IsChild(TreeNode treeNode)
+        internal bool IsDescendant(TreeNode treeNode)
         {
-            foreach (TreeNode childTreeNode in this.ChildNodes)
-            {
-                if (childTreeNode.Id == treeNode.Id) return true;
-
-                bool result = childTreeNode.IsChild(treeNode);
-                if (result == true) return true;
-            }
-
-            return false;
+            return this.ChildNodes.Any(childNode => childNode.Id == treeNode.Id || childNode.IsDescendant(treeNode));
         }
 
 
@@ -262,14 +245,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected string ParentString()
         {
-            if (this.ParentNode == null)
-            {
-                return "ParentId = -1";
-            }
-            else
-            {
-                return "ParentId = " + this.ParentNode.Id;
-            }
+            return "ParentId = " + ((ParentNode != null) ? ParentNode.Id : "-1");
         }
     }    
 }

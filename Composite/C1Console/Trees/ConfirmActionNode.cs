@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Xml.Linq;
 using Composite.C1Console.Elements;
-using Composite.Functions;
-using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
+using Composite.Functions;
 
 
 namespace Composite.C1Console.Trees
@@ -43,8 +41,6 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnAddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext, DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext)
         {
-            
-
             WorkflowActionToken actionToken = new WorkflowActionToken(
                 WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.ConfirmActionWorkflow"),
                 this.PermissionTypes)
@@ -65,11 +61,9 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override void OnInitialize()
         {
-            BaseRuntimeTreeNode baseRuntimeTreeNode = null;
-
             try
             {
-                baseRuntimeTreeNode = FunctionTreeBuilder.Build(this.FunctionMarkup);
+                FunctionTreeBuilder.Build(this.FunctionMarkup);
             }
             catch
             {
