@@ -3,13 +3,14 @@
 
 namespace Composite.C1Console.Trees
 {
-    /// <summary>    
+    /// <summary>  
+    /// Contains information about tree validation errors
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class BuildResult
 	{
-        private List<ValidationError> _validationError = new List<ValidationError>();
+        private readonly List<ValidationError> _validationError = new List<ValidationError>();
 
 
         /// <exclude />

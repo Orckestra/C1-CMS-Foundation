@@ -72,7 +72,7 @@ namespace Composite.C1Console.Trees
                     InitializeTreeAttachmentPoints();
                     TreeSharedRootsFacade.Clear();
 
-                    _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml");
+                    _resourceLocker.Resources.FileSystemWatcher = new C1FileSystemWatcher(TreeDefinitionsFolder, "*.xml");
                     _resourceLocker.Resources.FileSystemWatcher.Created += OnReloadTrees;
                     _resourceLocker.Resources.FileSystemWatcher.Deleted += OnReloadTrees;
                     _resourceLocker.Resources.FileSystemWatcher.Changed += OnReloadTrees;
@@ -117,7 +117,7 @@ namespace Composite.C1Console.Trees
         {
             using (_resourceLocker.ReadLocker)
             {
-                return _resourceLocker.Resources.Trees.Where(f => f.Value.HasAttachmentPoints(parentEntityToken) == true).Any();
+                return _resourceLocker.Resources.Trees.Any(f => f.Value.HasAttachmentPoints(parentEntityToken));
             }
         }
 
@@ -127,7 +127,7 @@ namespace Composite.C1Console.Trees
         {
             using (_resourceLocker.ReadLocker)
             {
-                return _resourceLocker.Resources.Trees.Where(f => f.Value.HasPossibleAttachmentPoints(parentEntityToken) == true).Any();
+                return _resourceLocker.Resources.Trees.Any(f => f.Value.HasPossibleAttachmentPoints(parentEntityToken));
             }
         }
 
@@ -137,13 +137,7 @@ namespace Composite.C1Console.Trees
         {
             using (_resourceLocker.ReadLocker)
             {
-                foreach (Tree tree in _resourceLocker.Resources.Trees.Values)
-                {
-                    if (tree.HasAttachmentPoints(parentEntityToken) == true)
-                    {
-                        yield return tree;
-                    }
-                }
+                return _resourceLocker.Resources.Trees.Values.Where(tree => tree.HasAttachmentPoints(parentEntityToken));
             }
         }
 
@@ -168,7 +162,7 @@ namespace Composite.C1Console.Trees
 
         public Tree LoadTreeFromDom(string treeId, XDocument document)
         {
-            string xslFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), XslFilename);
+            string xslFilename = Path.Combine(TreeDefinitionsFolder, XslFilename);
 
             var fileInfo = new C1FileInfo(xslFilename);
 
@@ -249,9 +243,9 @@ namespace Composite.C1Console.Trees
             {
                 _resourceLocker.Resources.Trees = new Dictionary<string, Tree>();
 
-                LoggingService.LogVerbose("TreeFacade", string.Format("Loading all tree definitions from {0}", PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory)));
+                Log.LogVerbose("TreeFacade", string.Format("Loading all tree definitions from {0}", TreeDefinitionsFolder));
 
-                foreach (string filename in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), "*.xml"))
+                foreach (string filename in C1Directory.GetFiles(TreeDefinitionsFolder, "*.xml"))
                 {
                     string treeId = Path.GetFileName(filename);
 
@@ -266,11 +260,11 @@ namespace Composite.C1Console.Trees
                         if (tree.BuildResult.ValidationErrors.Count() > 0)
                         {
                             StringBuilder sb = new StringBuilder();
-                            LoggingService.LogError("TreeFacade", string.Format("Tree {0} was not loaded due to the following validation errors", treeId));
+                            Log.LogError("TreeFacade", string.Format("Tree {0} was not loaded due to the following validation errors", treeId));
                             foreach (ValidationError validationError in tree.BuildResult.ValidationErrors)
                             {
                                 sb.AppendLine(string.Format("{0} at {1}", validationError.Message, validationError.XPath));
-                                LoggingService.LogError("TreeFacade", string.Format("{0} at {1} in {2}", validationError.Message, validationError.XPath, filename));
+                                Log.LogError("TreeFacade", string.Format("{0} at {1} in {2}", validationError.Message, validationError.XPath, filename));
                             }
 
                             //Tree errorTree = CreateErrorTree(treeId, sb.ToString());
@@ -286,12 +280,12 @@ namespace Composite.C1Console.Trees
 
                         int t2 = Environment.TickCount;
 
-                        LoggingService.LogVerbose("TreeFacade", "Time spend on loading the tree: " + (t2 - t1) + "ms, file: " + filename);
+                        Log.LogVerbose("TreeFacade", "Time spend on loading the tree: " + (t2 - t1) + "ms, file: " + filename);
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("TreeFacade", string.Format("Failed to load the tree {0}", treeId));
-                        LoggingService.LogError("TreeFacade", ex);
+                        Log.LogError("TreeFacade", string.Format("Failed to load the tree {0}", treeId));
+                        Log.LogError("TreeFacade", ex);
 
                         //Tree errorTree = CreateErrorTree(treeId, ex.Message);
                         //if (_resourceLocker.Resources.Trees.ContainsKey(errorTree.TreeId) == false)
@@ -357,7 +351,7 @@ namespace Composite.C1Console.Trees
 
         private Tree LoadTreeFromFile(string treeId)
         {
-            string filename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), treeId);
+            string filename = Path.Combine(TreeDefinitionsFolder, treeId);
 
             for (int i = 0; i < 10; i++)
             {
@@ -546,7 +540,7 @@ namespace Composite.C1Console.Trees
                 Tree tree = GetTree(attachmentPoint.TreeId);
                 if (tree == null)
                 {
-                    string treePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory), attachmentPoint.TreeId);
+                    string treePath = Path.Combine(TreeDefinitionsFolder, attachmentPoint.TreeId);
                     if (C1File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
                     {
                         if (DataFacade.WillDeleteSucceed(attachmentPoint) == true)
@@ -620,6 +614,11 @@ namespace Composite.C1Console.Trees
                 select d;
 
             DataFacade.Delete<IDataItemTreeAttachmentPoint>(attachmentPoints);
+        }
+
+        private static string TreeDefinitionsFolder
+        {
+            get { return PathUtil.Resolve(GlobalSettingsFacade.TreeDefinitionsDirectory); }
         }
 
         #endregion

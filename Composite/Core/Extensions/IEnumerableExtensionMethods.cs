@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Composite.Core.Extensions
@@ -20,8 +21,6 @@ namespace Composite.Core.Extensions
             return targetList;
         }
 
-
-
         public static void ForEach<TSource>(this IEnumerable<TSource> source, Action<TSource> action)
         {
             foreach (TSource element in source)
@@ -29,5 +28,13 @@ namespace Composite.Core.Extensions
                 action(element);
             }
         }
+
+	    public static IEnumerable<T> ConcatOrDefault<T>(this IEnumerable<T> enumerable, IEnumerable<T> enumerableToAppend)
+	    {
+	        if (enumerable == null) return enumerableToAppend;
+	        if (enumerableToAppend == null) return enumerable;
+
+	        return enumerable.Concat(enumerableToAppend);
+	    }
 	}
 }

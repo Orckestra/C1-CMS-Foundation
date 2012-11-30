@@ -1,21 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Trees
 {
     /// <summary>    
+    /// Result of parsing tree definition xml file
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [DebuggerDisplay("{TreeId}")]
     public sealed class Tree
     {
+        private static readonly string LogTitle = "TreeFacade";
+
         /// <exclude />
         public string TreeId { get; private set; }
 
@@ -28,7 +31,13 @@ namespace Composite.C1Console.Trees
 
         internal BuildProcessContext BuildProcessContext { get; set; }
 
-        /// <exclude />
+        /// <summary>
+        /// Gets or sets information about validation erros.
+        /// </summary>
+        /// <value>
+        /// The build result.
+        /// </value>
+        /// <exclude/>
         public BuildResult BuildResult { get; set; }
 
 
@@ -52,13 +61,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public TreeNode GetTreeNode(string id)
         {
-            TreeNode resultTreeNode = FindTreeNode(id, this.RootTreeNode);
-            if (resultTreeNode != null)
-            {
-                return resultTreeNode;
-            }
-
-            return null;
+            return FindTreeNode(id, this.RootTreeNode);
         }
 
 
@@ -66,13 +69,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public ActionNode GetActionNode(int id)
         {
-            ActionNode resultActionNode = FindActionNode(id, this.RootTreeNode);
-            if (resultActionNode != null)
-            {
-                return resultActionNode;
-            }
-
-            return null;
+            return FindActionNode(id, this.RootTreeNode);
         }
 
 
@@ -80,7 +77,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public bool HasAttachmentPoints(EntityToken parentEntityToken)
         {
-            return this.AttachmentPoints.Where(f => f.IsAttachmentPoint(parentEntityToken) == true).Any();
+            return this.AttachmentPoints.Any(f => f.IsAttachmentPoint(parentEntityToken));
         }
 
 
@@ -88,7 +85,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public bool HasPossibleAttachmentPoints(EntityToken parentEntityToken)
         {
-            return this.PossibleAttachmentPoints.Where(f => f.IsPossibleAttachmentPoint(parentEntityToken) == true).Any();
+            return this.PossibleAttachmentPoints.Any(f => f.IsPossibleAttachmentPoint(parentEntityToken));
         }
 
 
@@ -136,7 +133,7 @@ namespace Composite.C1Console.Trees
 
         private ActionNode FindActionNode(int id, TreeNode treeNode)
         {
-            ActionNode actionNode = treeNode.ActionNodes.Where(f => f.Id == id).SingleOrDefault();
+            ActionNode actionNode = treeNode.ActionNodes.SingleOrDefault(f => f.Id == id);
             if (actionNode != null) return actionNode;
 
 
@@ -157,21 +154,15 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public void LogTree()
         {
-            LoggingService.LogVerbose("TreeFacade", string.Format("{0} - Tree informations:", this.TreeId));
+            Log.LogVerbose(LogTitle, string.Format("{0} - Tree informations:", this.TreeId));
 
-            LoggingService.LogVerbose("TreeFacade", "Attachment points:");
-            foreach (IAttachmentPoint attachmentPoint in this.AttachmentPoints)
-            {
-                attachmentPoint.Log("TreeFacade", "  ");
-            }
+            Log.LogVerbose(LogTitle, "Attachment points:");
+            AttachmentPoints.ForEach(a => a.Log(LogTitle, indention: "  "));
 
-            LoggingService.LogVerbose("TreeFacade", "Possible attachment points:");
-            foreach (IPossibleAttachmentPoint possibleAttachmentPoint in this.PossibleAttachmentPoints)
-            {
-                possibleAttachmentPoint.Log("TreeFacade", "  ");
-            }
+            Log.LogVerbose(LogTitle, "Possible attachment points:");
+            PossibleAttachmentPoints.ForEach(a => a.Log(LogTitle, indention: "  "));
 
-            LoggingService.LogVerbose("TreeFacade", "Tree nodes:");
+            Log.LogVerbose(LogTitle, "Tree nodes:");
             this.RootTreeNode.LogTree(1);
         }
     }

@@ -567,7 +567,6 @@
     <Compile Include="Core\Instrumentation\Plugin\Runtime\PerformanceCounterProviderSettings.cs" />
     <Compile Include="Core\Linq\ExpressionExtensionMethods.cs" />
     <Compile Include="Core\Linq\ExpressionVisitors\CacheKeyBuilderExpressionVisitor.cs" />
-    <Compile Include="Core\Linq\IEnumerableExtensionMethod.cs" />
     <Compile Include="Core\Localization\LocalizationFacade.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />

@@ -125,7 +125,9 @@ namespace Composite.C1Console.Trees
         }
 
 
-
+        /// <summary>
+        /// Loads a tree from an <see cref="XDocument"/>
+        /// </summary>>
         /// <exclude />
         public static Tree LoadTreeFromDom(string treeId, XDocument document)
         {

@@ -16,7 +16,7 @@ namespace Composite.C1Console.Trees
         Down, // Creating elements
 
         /// <exclude />
-        Up // Creating entity tokens
+        Up // Getting ancestor entity tokens
     }
 
 

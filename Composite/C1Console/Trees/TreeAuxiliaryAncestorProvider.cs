@@ -4,6 +4,7 @@ using System.Linq;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Data;
 
 
@@ -23,41 +24,29 @@ namespace Composite.C1Console.Trees
                 };
 
 
-                if ((entityToken is TreeSimpleElementEntityToken) == true)
+                if (entityToken is TreeSimpleElementEntityToken
+                    || entityToken is TreeFunctionElementGeneratorEntityToken)
                 {
-                    TreeSimpleElementEntityToken treeSimpleElementEntityToken = entityToken as TreeSimpleElementEntityToken;
-                    string treeId = treeSimpleElementEntityToken.Source;
+                    string treeId = entityToken.Source;
 
                     try
                     {
                         Tree tree = TreeFacade.GetTree(treeId);
 
-                        string treeNodeId = treeSimpleElementEntityToken.TreeNodeId;
-
-                        TreeNode treeNode = tree.GetTreeNode(treeNodeId);
-                        dynamicContext.CurrentTreeNode = treeNode;
-
-                        IEnumerable<EntityToken> resultEntityTokens = treeNode.ParentNode.GetEntityTokens(entityToken, dynamicContext);
-                        resultEntityTokens = treeNode.FilterParentGeneretedEntityTokens(entityToken, resultEntityTokens, dynamicContext);
-
-                        result.Add(entityToken, resultEntityTokens);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.LogError("TreeFacade", string.Format("The tree '{0}' failed to return parent entity tokens and are ignored", treeId));
-                        Log.LogError("TreeFacade", ex);
-                    }
-                }
-                else if ((entityToken is TreeFunctionElementGeneratorEntityToken) == true)
-                {
-                    TreeFunctionElementGeneratorEntityToken treeFunctionElementGeneratorEntityToken = entityToken as TreeFunctionElementGeneratorEntityToken;
-                    string treeId = treeFunctionElementGeneratorEntityToken.Source;
-
-                    try
-                    {
-                        Tree tree = TreeFacade.GetTree(treeId);
-
-                        string treeNodeId = treeFunctionElementGeneratorEntityToken.TreeNodeId;
+                        string treeNodeId;
+                        
+                        if(entityToken is TreeSimpleElementEntityToken)
+                        {
+                            treeNodeId = (entityToken as TreeSimpleElementEntityToken).TreeNodeId;
+                        }
+                        else if(entityToken is TreeFunctionElementGeneratorEntityToken)
+                        {
+                            treeNodeId = (entityToken as TreeFunctionElementGeneratorEntityToken).TreeNodeId;
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("This code should not be reachable.");
+                        }
 
                         TreeNode treeNode = tree.GetTreeNode(treeNodeId);
                         dynamicContext.CurrentTreeNode = treeNode;
@@ -76,7 +65,7 @@ namespace Composite.C1Console.Trees
                 else if ((entityToken is TreeDataFieldGroupingElementEntityToken) == true)
                 {
                     TreeDataFieldGroupingElementEntityToken treeDataFieldGroupingElementEntityToken = entityToken as TreeDataFieldGroupingElementEntityToken;
-                    string treeId = treeDataFieldGroupingElementEntityToken.Source;
+                    string treeId = entityToken.Source;
 
                     try
                     {
@@ -106,7 +95,7 @@ namespace Composite.C1Console.Trees
                     foreach (Tree tree in TreeFacade.AllTrees)
                     {
                         List<TreeNode> treeNodes;
-                        if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false) continue;
+                        if (!tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes)) continue;
                         
                         IEnumerable<EntityToken> concatList = null;                        
 
@@ -115,14 +104,8 @@ namespace Composite.C1Console.Trees
                             try
                             {                              
                                 dynamicContext.CurrentTreeNode = treeNode;
-                                if (concatList == null)
-                                {
-                                    concatList = treeNode.ParentNode.GetEntityTokens(entityToken, dynamicContext);
-                                }
-                                else
-                                {
-                                    concatList = concatList.Concat(treeNode.ParentNode.GetEntityTokens(entityToken, dynamicContext));
-                                }
+
+                                concatList = concatList.ConcatOrDefault(treeNode.ParentNode.GetEntityTokens(entityToken, dynamicContext));
                             }
                             catch (Exception ex)
                             {

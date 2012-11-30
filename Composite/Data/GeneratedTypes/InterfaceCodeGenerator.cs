@@ -19,11 +19,7 @@ namespace Composite.Data.GeneratedTypes
 {
     internal static class InterfaceCodeGenerator
     {
-        private const string CompileUnitId = "Composite.Data.GeneratedInterfaces";
-
-
         private static readonly ResourceLocker<Resources> ResourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
-
 
 
         static InterfaceCodeGenerator()
@@ -91,15 +87,6 @@ namespace Composite.Data.GeneratedTypes
                 throw new InvalidOperationException(string.Format("Failed to generate interface for type '{0}'", dataTypeDescriptor.TypeManagerTypeName), ex);
             }
         }
-
-
-
-        [Obsolete("Use InterfaceCodeManager", true)]
-        public static Type CreateType(DataTypeDescriptor dataTypeDescriptor)
-        {
-            throw new NotSupportedException("This method is no longer supported. See the InterfaceCodeManager class for alternative");
-        }
-
 
 
         private static void AddInterfaceAttributes(CodeTypeDeclaration codeTypeDeclaration, DataTypeDescriptor dataTypeDescriptor)
