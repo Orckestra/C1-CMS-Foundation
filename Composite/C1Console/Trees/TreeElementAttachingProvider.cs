@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Plugins.ElementAttachingProvider;

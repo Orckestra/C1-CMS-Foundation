@@ -167,7 +167,7 @@ namespace Composite.C1Console.Trees
 
 
 
-        private object FindParentKeyValue(TreeNodeDynamicContext dynamicContext)
+        internal object FindParentKeyValue(TreeNodeDynamicContext dynamicContext)
         {
             if ((dynamicContext.CurrentEntityToken is DataEntityToken) == true)
             {
@@ -218,15 +218,8 @@ namespace Composite.C1Console.Trees
             }
 
             bool dataItemAttachmentPointExists =
-                    (this.OwnerNode.Tree.AttachmentPoints.
-                     OfType<IDataItemAttachmentPoint>().
-                     Where(f => f.InterfaceType == this.ParentFilterType).
-                     Any())
-                    ||
-                    (this.OwnerNode.Tree.PossibleAttachmentPoints.
-                     OfType<IDataItemAttachmentPoint>().
-                     Where(f => f.InterfaceType == this.ParentFilterType).
-                     Any());
+                this.OwnerNode.Tree.AttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == this.ParentFilterType)
+                || this.OwnerNode.Tree.PossibleAttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == this.ParentFilterType);
 
             if ((this.ParentFilterTypeTreeNode != null) || (dataItemAttachmentPointExists == true))
             {
@@ -251,10 +244,8 @@ namespace Composite.C1Console.Trees
             {
                 return string.Format("ParentIdFilterNode, ParentFilterType = {0}, ReferenceFieldName = {1}, ParentFilterTreeNodeId = {2}", this.ParentFilterType, this.ReferenceFieldName, this.ParentFilterTypeTreeNode.Id);
             }
-            else
-            {
-                return string.Format("ParentIdFilterNode, ParentFilterType = {0}, ReferenceFieldName = {1}", this.ParentFilterType, this.ReferenceFieldName);
-            }
+            
+            return string.Format("ParentIdFilterNode, ParentFilterType = {0}, ReferenceFieldName = {1}", this.ParentFilterType, this.ReferenceFieldName);
         }
 
 

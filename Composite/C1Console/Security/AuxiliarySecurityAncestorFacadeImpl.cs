@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 
 

@@ -36,7 +36,7 @@ namespace Composite.Core.Linq
         {
             Type interfaceType = parameterExpression.Type;
 
-            if (interfaceType.GetProperties().Where(f => f.Name == fieldName).Any())
+            if (interfaceType.GetProperties().Any(f => f.Name == fieldName))
             {
                 return Expression.Property(parameterExpression, fieldName);
             }
@@ -44,7 +44,7 @@ namespace Composite.Core.Linq
 
             foreach (Type superInterfaceType in interfaceType.GetInterfaces())
             {
-                if (superInterfaceType.GetProperties().Where(f => f.Name == fieldName).Any())
+                if (superInterfaceType.GetProperties().Any(f => f.Name == fieldName))
                 {
                     return Expression.Property(Expression.Convert(parameterExpression, superInterfaceType), fieldName);
                 }

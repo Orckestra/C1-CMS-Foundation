@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using Composite.Data;
-using Composite.Core.Logging;
 using Composite.C1Console.Security;
 using Composite.Data.ProcessControlled;
 
@@ -14,7 +14,8 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
     /// Used as a dual with Composite.Data.Types.IDataItemTreeAttachmentPoint
     /// </summary>    
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [DebuggerDisplay("DynamicDataItemAttachmentPoint. Type = '{InterfaceType}', Key = '{KeyValue}'")]
     public sealed class DynamicDataItemAttachmentPoint : BaseAttachmentPoint, IDataItemAttachmentPoint
     {
         /// <exclude />
@@ -44,8 +45,6 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            // TODO: has to be cached in order to fix bug #4043
-
             if (typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType))
             {
                 foreach (CultureInfo cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
@@ -71,16 +70,14 @@ namespace Composite.C1Console.Trees.Foundation.AttachmentPoints
         private EntityToken GetEntityTokensImpl()
         {
             IData data = DataFacade.TryGetDataByUniqueKey(this.InterfaceType, KeyValue);
-            if (data == null) return null;
-
-            return data.GetDataEntityToken();
+            return data == null ? null : data.GetDataEntityToken();
         }
 
 
         /// <exclude />
         public override void Log(string title, string indention = "")
         {
-            LoggingService.LogVerbose(title, string.Format("{0}DynamicDataType: Position = {1}, Type = {2}, KeyValue = {3}", indention, this.Position, this.InterfaceType, this.KeyValue));
+            Core.Log.LogVerbose(title, string.Format("{0}DynamicDataType: Position = {1}, Type = {2}, KeyValue = {3}", indention, this.Position, this.InterfaceType, this.KeyValue));
         }
     }
 }

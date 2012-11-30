@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.C1Console.Elements;
@@ -24,9 +25,9 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class DataFolderElementsTreeNode : DataFilteringTreeNode
     {
-        private readonly MethodInfo StringStartsWithMethodInfo = typeof(String).GetMethods().Where(f => f.Name == "StartsWith").First();
-        private readonly MethodInfo StringSubstringMethodInfo = typeof(String).GetMethods().Where(f => f.Name == "Substring").Skip(1).First();
-        private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().Where(f => f.Name == "ToUpper").First();
+        private readonly MethodInfo StringStartsWithMethodInfo = typeof(string).GetMethods().First(f => f.Name == "StartsWith");
+        private readonly MethodInfo StringSubstringMethodInfo = typeof(string).GetMethods().Where(f => f.Name == "Substring").Skip(1).First();
+        private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().First(f => f.Name == "ToUpper");
 
         /// <exclude />
         public Type InterfaceType { get; internal set; }            // Requried
@@ -273,7 +274,7 @@ namespace Composite.C1Console.Trees
             Func<object, string> labelFunc;
             if (this.PropertyInfo.PropertyType != typeof(DateTime))
             {
-                labelFunc = f => f != null ? f.ToString() : "(NULL)";
+                labelFunc = f => (f ?? "(NULL)").ToString();
             }
             else
             {
@@ -283,15 +284,6 @@ namespace Composite.C1Console.Trees
 
             foreach (object obj in objects)
             {
-                if (this.LocalizationEndabled == true)
-                {
-                    if (objects.Contains(obj) == false)
-                    {
-
-                        continue;
-                    }
-                }
-
                 string label = labelFunc(obj);
 
                 Element element = CreateElement(
@@ -325,7 +317,7 @@ namespace Composite.C1Console.Trees
                 else
                 {
                     List<int> orgObjects = GetObjects<int>(dynamicContext);
-                    using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                    using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                     {
                         List<int> foriegnObjects = GetObjects<int>(dynamicContext);
                         orgObjects.AddRange(foriegnObjects);
@@ -826,34 +818,25 @@ namespace Composite.C1Console.Trees
 
         private static object ConvertFieldValue(DataFolderElementsTreeNode dataFolderElementsTreeNode, object fieldValue)
         {
-            if (dataFolderElementsTreeNode.FirstLetterOnly == true)
+            if (dataFolderElementsTreeNode.FirstLetterOnly)
             {
                 string stringFieldValue = (string)fieldValue;
-                if (string.IsNullOrEmpty(stringFieldValue) == false)
-                {
-                    return ((string)fieldValue).Substring(0, 1);
-                }
-                else
-                {
-                    return "";
-                }
+
+                return stringFieldValue.IsNullOrEmpty() ? "" : stringFieldValue.Substring(0, 1);
             }
-            else if (dataFolderElementsTreeNode.DateFormat != null)
+
+            if (dataFolderElementsTreeNode.DateFormat != null)
             {
-                if (fieldValue.GetType() == typeof(DateTime))
+                if (fieldValue is DateTime)
                 {
                     return dataFolderElementsTreeNode.DateTimeFormater.SerializeDateTime((DateTime)fieldValue);
                 }
-                else
-                {
-                    dataFolderElementsTreeNode.DateTimeFormater.GetDateTime(fieldValue);
-                    return dataFolderElementsTreeNode.DateTimeFormater.Serialize(fieldValue);
-                }
+                
+                dataFolderElementsTreeNode.DateTimeFormater.GetDateTime(fieldValue);
+                return dataFolderElementsTreeNode.DateTimeFormater.Serialize(fieldValue);
             }
-            else
-            {
-                return fieldValue;
-            }
+
+            return fieldValue;
         }
 
 

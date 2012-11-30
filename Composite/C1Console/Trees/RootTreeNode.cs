@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
@@ -18,6 +19,12 @@ namespace Composite.C1Console.Trees
             this.Id = StringConstants.RootNodeId;
         }
 
+        private class AncestorMatch
+        {
+            public Type InterfaceType;
+            public object KeyValue;
+        }
+
 
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
@@ -28,8 +35,27 @@ namespace Composite.C1Console.Trees
             }
             else
             {
+                AncestorMatch ancestorFromFilter = GetAncestorFromParentFilter(dynamicContext);
+
                 foreach (IAttachmentPoint attachmentPoint in this.Tree.AttachmentPoints)
                 {
+                    if(attachmentPoint is DynamicDataItemAttachmentPoint 
+                        && ancestorFromFilter != null)
+                    {
+                        var dynamicAttachmentPoint = attachmentPoint as DynamicDataItemAttachmentPoint;
+
+                        if (ancestorFromFilter.InterfaceType == dynamicAttachmentPoint.InterfaceType)
+                        {
+                            if (dynamicAttachmentPoint.KeyValue.Equals(ancestorFromFilter.KeyValue))
+                            {
+                                foreach (var e in dynamicAttachmentPoint.GetEntityTokens(null, null)) {
+                                    yield return e;
+                                }
+                            }
+                            continue;
+                        }
+                    }
+
                     foreach (EntityToken entityToken in attachmentPoint.GetEntityTokens(childEntityToken, dynamicContext))
                     {
                         yield return entityToken;
@@ -38,6 +64,20 @@ namespace Composite.C1Console.Trees
             }
         }
 
+
+        private AncestorMatch GetAncestorFromParentFilter(TreeNodeDynamicContext dynamicContext)
+        {
+            var dataNode = dynamicContext.CurrentTreeNode as DataElementsTreeNode;
+            if(dataNode == null) return null;
+            
+            var parentIdFilter = dynamicContext.CurrentTreeNode.FilterNodes.OfType<ParentIdFilterNode>().FirstOrDefault();
+            if (parentIdFilter == null) return null;
+
+            Type ancestorType = parentIdFilter.ParentFilterType;
+            object key = parentIdFilter.FindParentKeyValue(dynamicContext);
+
+            return key == null ? null : new AncestorMatch { InterfaceType = ancestorType, KeyValue = key};
+        }
 
 
         public override AncestorResult GetParentEntityToken(EntityToken childEntityToken, Type parentInterfaceOfInterest, TreeNodeDynamicContext dynamicContext)
