@@ -434,7 +434,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private Type GetInstanceTypeForReference( Type referencedType )
         {
-            List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyPropertyInfoes(referencedType);
+            List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
 
             if (keyProperties.Count == 1)
             {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -622,7 +622,7 @@ namespace CompositeTypeFieldDesigner
 
         private Type GetInstanceTypeForReference(Type referencedType)
         {
-            List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyPropertyInfoes(referencedType);
+            List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
 
             if (keyProperties.Count == 1)
             {
@@ -821,7 +821,7 @@ namespace CompositeTypeFieldDesigner
                         return StoreFieldType.Guid;
                     case "Reference":
                         Type referencedType = TypeManager.GetType(this.CurrentForeignKeyReferenceTypeName);
-                        List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyPropertyInfoes(referencedType);
+                        List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
 
                         if (keyProperties.Count == 1)
                         {
