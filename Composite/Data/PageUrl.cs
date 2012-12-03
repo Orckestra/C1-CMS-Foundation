@@ -56,7 +56,7 @@ namespace Composite.Data
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [Obsolete("Use Composite.Core.Routing.PageUrls", true)]
+    [Obsolete("Use Composite.Core.Routing.PageUrls")]
     public sealed class PageUrl
     {
         /// <exclude />
