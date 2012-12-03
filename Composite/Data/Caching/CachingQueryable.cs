@@ -3,16 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
+using Composite.Core.Collections.Generic;
+using Composite.Core.Types;
 using Composite.Data.Caching.Foundation;
 using System.Reflection;
 using Composite.Core.Linq;
+using Composite.Data.Foundation;
 
 
 namespace Composite.Data.Caching
 {
     internal sealed class CachingEnumerable<T> : IEnumerable<T>
     {
-        private IEnumerable<T> _enumerable;
+        private readonly IEnumerable<T> _enumerable;
 
         public CachingEnumerable(IEnumerable<T> enumerable)
         {
@@ -37,24 +41,47 @@ namespace Composite.Data.Caching
         IQueryable GetOriginalQuery();
     }
 
-    internal sealed class CachingQueryable<T> : ICachedQuery, IOrderedQueryable<T>, IQueryProvider, ICachingQueryable
+    /// <summary>
+    /// Used for optimizing execution of GetDataByUniqueKey method
+    /// </summary>
+    internal interface CachingQueryable_CachedByKey
+    {
+        IData GetCachedValueByKey(object key);
+    }
+
+
+    internal sealed class CachingQueryable<T> : ICachedQuery, IOrderedQueryable<T>, IQueryProvider, ICachingQueryable, CachingQueryable_CachedByKey
     {
         private readonly IQueryable _source;
         private readonly Expression _currentExpression;
         private readonly CachingEnumerable<T> _wrappedEnumerable;
         private readonly Func<IQueryable> _getQueryFunc;
 
+        private DataCachingFacade.CachedTable _cachedTable;
+        private static readonly MethodInfo _wrappingMethodInfo;
+
         private IEnumerable<T> _innerEnumerable;
 
-        public CachingQueryable(IQueryable source, Func<IQueryable> originalQueryGetter)
+        static CachingQueryable()
         {
-            _source = source;
+            if (typeof(IData).IsAssignableFrom(typeof(T)))
+            {
+                _wrappingMethodInfo = StaticReflection.GetGenericMethodInfo(a => DataWrappingFacade.Wrap((IData) a))
+                                                      .MakeGenericMethod(new[] {typeof (T)});
+            }
+        } 
+
+        public CachingQueryable(DataCachingFacade.CachedTable cachedTable, Func<IQueryable> originalQueryGetter)
+        {
+            _cachedTable = cachedTable;
+
+            _source = cachedTable.Queryable;
             _currentExpression = Expression.Constant(this);
             _getQueryFunc = originalQueryGetter;
 
-            if(source is IEnumerable<T>)
+            if (_source is IEnumerable<T>)
             {
-                _innerEnumerable = source as IEnumerable<T>;
+                _innerEnumerable = _source as IEnumerable<T>;
                 if(_innerEnumerable is CachingEnumerable<T>)
                 {
                     _wrappedEnumerable = _innerEnumerable as CachingEnumerable<T>;
@@ -72,40 +99,23 @@ namespace Composite.Data.Caching
 
 
 
-        #region Non generic methods
+        #region Generic methods
 
         public IQueryable<S> CreateQuery<S>(Expression expression)
         {
             return new CachingQueryable<S>(_source, expression, _getQueryFunc);
         }
 
-
-
         public IEnumerator<T> GetEnumerator()
         {
-            if (_innerEnumerable == null)
-            {
-                lock(this)
-                {
-                    if (_innerEnumerable == null)
-                    {
-                        var visitor = new ChangeSourceExpressionVisitor();
-
-                        Expression newExpression = visitor.Visit(_currentExpression);
-
-                        _innerEnumerable = (IQueryable<T>)_source.Provider.CreateQuery(newExpression);
-
-                        Verify.IsNotNull(_innerEnumerable, "Failed to create an enumerator");
-                    }
-                }
-            }
+            var enumerable = BuildEnumerable();
 
             if (_wrappedEnumerable != null)
             {
                 return _wrappedEnumerable.GetEnumerator();
             }
 
-            var enumerator = _innerEnumerable.GetEnumerator();
+            var enumerator = enumerable.GetEnumerator();
 
             if (_source.ElementType == typeof(T))
             {
@@ -114,6 +124,28 @@ namespace Composite.Data.Caching
             return enumerator;
         }
 
+
+        private IEnumerable<T> BuildEnumerable()
+        {
+            if (_innerEnumerable == null) {
+                lock (this) {
+                    if (_innerEnumerable == null) {
+                        var visitor = new ChangeSourceExpressionVisitor();
+
+                        Expression newExpression = visitor.Visit(_currentExpression);
+
+                        var result = (IQueryable<T>)_source.Provider.CreateQuery(newExpression);
+
+                        Verify.IsNotNull(result, "Failed to create an enumerator");
+
+                        Thread.MemoryBarrier();
+                        _innerEnumerable = result;
+                    }
+                }
+            }
+
+            return _innerEnumerable;
+        }
 
         public S Execute<S>(Expression expression)
         {
@@ -137,8 +169,6 @@ namespace Composite.Data.Caching
         }
 
         #endregion
-
-
 
         #region Non generic methods
 
@@ -175,6 +205,40 @@ namespace Composite.Data.Caching
 
         #endregion
 
+
+        public IData GetCachedValueByKey(object key)
+        {
+            if (_cachedTable.RowByKey == null)
+            {
+                lock(_cachedTable)
+                {
+                    if (_cachedTable.RowByKey == null)
+                    {
+                        var table = new Hashtable<object, object>();
+
+                        PropertyInfo keyPropertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(typeof(T)).Single();
+
+                        IEnumerable<T> enumerable = BuildEnumerable();
+
+                        var emptyIndexCollection = new object[0];
+
+                        foreach(T row in enumerable)
+                        {
+                            object rowKey = keyPropertyInfo.GetValue(row, emptyIndexCollection);
+
+                            table.Add(rowKey, row);
+                        }
+
+                        _cachedTable.RowByKey = table;
+                    }
+                }
+            }
+
+            object cachedRow = _cachedTable.RowByKey[key];
+            if (cachedRow == null) return null;
+
+            return _wrappingMethodInfo.Invoke(null, new object[] { cachedRow }) as IData;
+        }
 
 
         public Expression Expression

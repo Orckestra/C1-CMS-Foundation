@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading;
 using System.Transactions;
 using Composite.Core.Collections.Generic;
+using Composite.Data.Caching;
 using Composite.Data.Foundation;
 using Composite.C1Console.Events;
 using Composite.Data.Transactions;
@@ -557,7 +558,17 @@ namespace Composite.Data
         /// <exclude />
         public static IData TryGetDataByUniqueKey(Type interfaceType, object dataKeyValue)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+
+            if(DataCachingFacade.IsDataAccessCacheEnabled(interfaceType))
+            {
+                var cachedByKey = DataFacade.GetData(interfaceType) as CachingQueryable_CachedByKey;
+                if(cachedByKey != null)
+                {
+                    return cachedByKey.GetCachedValueByKey(dataKeyValue);
+                }
+            }
+           
 
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(interfaceType).Single();
 
@@ -592,7 +603,7 @@ namespace Composite.Data
         /// <exclude />
         public static IData GetDataByUniqueKey(Type interfaceType, object dataKeyValue)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(interfaceType).Single();
 
@@ -601,7 +612,7 @@ namespace Composite.Data
 
             IData data = TryGetDataByUniqueKey(interfaceType, dataKeyPropertyCollection);
 
-            if (data == null) throw new InvalidOperationException("No data exist given the data key values");
+            Verify.IsNotNull(data, "No data exist given the data key values");
 
             return data;
         }

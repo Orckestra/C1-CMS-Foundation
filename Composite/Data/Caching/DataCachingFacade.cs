@@ -10,7 +10,6 @@ using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
-using Composite.Core.Types;
 
 
 namespace Composite.Data.Caching
@@ -35,6 +34,32 @@ namespace Composite.Data.Caching
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
         }
 
+
+        /// <summary>
+        /// Cached table
+        /// </summary>
+        public class CachedTable
+        {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="CachedTable"/> class.
+            /// </summary>
+            /// <param name="queryable">The queryable.</param>
+            public CachedTable(IQueryable queryable)
+            {
+                Queryable = queryable;
+            }
+
+            /// <summary>
+            /// The queryable data
+            /// </summary>
+            public IQueryable Queryable;
+
+            /// <summary>
+            /// Row by key table
+            /// </summary>
+            public Hashtable<object, object> RowByKey;
+        }
+
         /// <summary>
         /// Gets a value indicating if data caching is enabled
         /// </summary>
@@ -54,11 +79,12 @@ namespace Composite.Data.Caching
         /// <returns>True if caching is possible</returns>
         public static bool IsTypeCacheble(Type interfaceType)
         {
+            Guid dataTypeId;
             DataTypeDescriptor dataTypeDescriptor;
 
             return _isEnabled
                    && (DataAttributeFacade.GetCachingType(interfaceType) == CachingType.Full
-                  || (interfaceType.GetCustomInterfaceAttributes<ImmutableTypeIdAttribute>().Any()
+                   || (interfaceType.TryGetImmutableTypeId(out dataTypeId)
                     && DynamicTypeManager.TryGetDataTypeDescriptor(interfaceType, out dataTypeDescriptor)
                     && dataTypeDescriptor.Cachable));
         }
@@ -87,35 +113,35 @@ namespace Composite.Data.Caching
 
             var cachedDataset = _resourceLocker.Resources.CachedData;
 
-            Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, IQueryable>> dataScopeData;
+            Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>> dataScopeData;
             if (!cachedDataset.TryGetValue(typeof(T), out dataScopeData))
             {
                 using (_resourceLocker.Locker)
                 {
                     if (cachedDataset.TryGetValue(typeof(T), out dataScopeData) == false)
                     {
-                        dataScopeData = new Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, IQueryable>>();
+                        dataScopeData = new Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>();
 
                         cachedDataset.Add(typeof(T), dataScopeData);
                     }
                 }
             }
 
-            Hashtable<CultureInfo, IQueryable> localizationScopeData;
+            Hashtable<CultureInfo, CachedTable> localizationScopeData;
             if (dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData) == false)
             {
                 using (_resourceLocker.Locker)
                 {
                     if (dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData) == false)
                     {
-                        localizationScopeData = new Hashtable<CultureInfo, IQueryable>();
+                        localizationScopeData = new Hashtable<CultureInfo, CachedTable>();
                         dataScopeData.Add(dataScopeIdentifier, localizationScopeData);
                     }
                 }
             }
 
-            IQueryable cachedData;
-            if (localizationScopeData.TryGetValue(localizationScope, out cachedData) == false)
+            CachedTable cachedTable;
+            if (localizationScopeData.TryGetValue(localizationScope, out cachedTable) == false)
             {
                 IQueryable wholeTable = DataFacade.GetData<T>(false, null);
 
@@ -134,25 +160,25 @@ namespace Composite.Data.Caching
                         DisableCachingForType(typeof (T));
 
                         return Verify.ResultNotNull(wholeTable as IQueryable<T>);
-                    } 
-                    cachedData = cuttedTable.Cast<T>().AsQueryable();
+                    }
+                    cachedTable = new CachedTable(cuttedTable.Cast<T>().AsQueryable());
 
                 }
                 else
                 {
-                    cachedData = wholeTable.ToDataList().Cast<T>().AsQueryable();
+                    cachedTable = new CachedTable(wholeTable.ToDataList().Cast<T>().AsQueryable());
                 }
 
                 using (_resourceLocker.Locker)
                 {
                     if (localizationScopeData.ContainsKey(localizationScope) == false)
                     {
-                        localizationScopeData.Add(localizationScope, cachedData);
+                        localizationScopeData.Add(localizationScope, cachedTable);
                     }
                 }
             }
 
-            var typedData = cachedData as IQueryable<T>;
+            var typedData = cachedTable.Queryable as IQueryable<T>;
             Verify.IsNotNull(typedData, "Cached value is invalid.");
 
             // Leaving a posibility to extract original query
@@ -164,7 +190,7 @@ namespace Composite.Data.Caching
                 }
             };
 
-            return new CachingQueryable<T>(typedData, originalQueryGetter);
+            return new CachingQueryable<T>(cachedTable, originalQueryGetter);
         }
 
 
@@ -286,11 +312,11 @@ namespace Composite.Data.Caching
 
         private sealed class Resources
         {
-            public Hashtable<Type, Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, IQueryable>>> CachedData { get; set; }
+            public Hashtable<Type, Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>> CachedData { get; private set; }
 
             public static void Initialize(Resources resources)
             {
-                resources.CachedData = new Hashtable<Type, Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, IQueryable>>>();
+                resources.CachedData = new Hashtable<Type, Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>>();
             }
         }
     }

@@ -127,7 +127,7 @@ namespace Composite.Data
 
 			var attributes = interfaceType.GetCustomInterfaceAttributes<ImmutableTypeIdAttribute>().ToList();
 
-			if (attributes == null || attributes.Count == 0)
+			if (attributes.Count == 0)
 			{
 				immutableTypeId = Guid.Empty;
 
@@ -334,22 +334,20 @@ namespace Composite.Data
         {
             CachingType cachingType;
 
-            using (_resourceLocker.Locker)
+            var res = _resourceLocker;
+
+            if (!res.Resources.InterfaceTypeToCachingTypeCache.TryGetValue(interfaceType, out cachingType))
             {
-                if (_resourceLocker.Resources.InterfaceTypeToCachingTypeCache.TryGetValue(interfaceType, out cachingType) == false)
+                using (res.Locker)
                 {
-                    List<CachingAttribute> list = interfaceType.GetCustomInterfaceAttributes<CachingAttribute>().ToList();
-
-                    if (list.Count == 0)
+                    if (!res.Resources.InterfaceTypeToCachingTypeCache.TryGetValue(interfaceType, out cachingType))
                     {
-                        cachingType = CachingType.None;
-                    }
-                    else
-                    {
-                        cachingType = list[0].CachingType;
-                    }
+                        List<CachingAttribute> list = interfaceType.GetCustomInterfaceAttributes<CachingAttribute>().ToList();
 
-                    _resourceLocker.Resources.InterfaceTypeToCachingTypeCache.Add(interfaceType, cachingType);
+                        cachingType = (list.Count == 0) ? CachingType.None : list[0].CachingType;
+
+                        res.Resources.InterfaceTypeToCachingTypeCache.Add(interfaceType, cachingType);
+                    }
                 }
             }
 
@@ -565,7 +563,7 @@ namespace Composite.Data
             public Hashtable<Type, Guid> InterfaceToImmutableTypeIdCache { get; set; }
             public Dictionary<Type, bool> InterfaceToNotReferenceableCache { get; set; }
             public Dictionary<Type, KeyValuePair<MethodInfo, string>> InterfaceTypeToLabelMethodInfoCache { get; set; }
-            public Dictionary<Type, CachingType> InterfaceTypeToCachingTypeCache { get; set; }
+            public Hashtable<Type, CachingType> InterfaceTypeToCachingTypeCache { get; set; }
             public Dictionary<Type, List<ForeignPropertyInfo>> InterfaceTypeToDataReferencePropertyInfoes { get; set; }
             public Dictionary<Type, List<PropertyInfo>> InterfaceTypeToKeyProeprtyInfoes { get; set; }
             public Dictionary<Type, string> InterfaceTypeToTypeTitle { get; set; }
@@ -579,7 +577,7 @@ namespace Composite.Data
                 resources.InterfaceToImmutableTypeIdCache = new Hashtable<Type, Guid>();
                 resources.InterfaceToNotReferenceableCache = new Dictionary<Type, bool>();
                 resources.InterfaceTypeToLabelMethodInfoCache = new Dictionary<Type, KeyValuePair<MethodInfo, string>>();
-                resources.InterfaceTypeToCachingTypeCache = new Dictionary<Type, CachingType>();
+                resources.InterfaceTypeToCachingTypeCache = new Hashtable<Type, CachingType>();
                 resources.InterfaceTypeToDataReferencePropertyInfoes = new Dictionary<Type, List<ForeignPropertyInfo>>();
                 resources.InterfaceTypeToKeyProeprtyInfoes = new Dictionary<Type, List<PropertyInfo>>();
                 resources.InterfaceTypeToTypeTitle = new Dictionary<Type, string>();
