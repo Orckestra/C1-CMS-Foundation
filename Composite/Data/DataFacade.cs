@@ -413,7 +413,7 @@ namespace Composite.Data
         {
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            List<PropertyInfo> keyPropertyInfos = DataAttributeFacade.GetKeyPropertyInfoes(typeof(T));
+            List<PropertyInfo> keyPropertyInfos = DataAttributeFacade.GetKeyProperties(typeof(T));
 
             ParameterExpression parameterExpression = Expression.Parameter(typeof(T), "data");
 
@@ -431,7 +431,7 @@ namespace Composite.Data
         public static Expression<Func<T, bool>> GetPredicateExpressionByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(typeof(T)).Single();
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
@@ -447,7 +447,7 @@ namespace Composite.Data
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            List<PropertyInfo> keyPropertyInfos = DataAttributeFacade.GetKeyPropertyInfoes(interfaceType);
+            List<PropertyInfo> keyPropertyInfos = DataAttributeFacade.GetKeyProperties(interfaceType);
 
             ParameterExpression parameterExpression = Expression.Parameter(interfaceType, "data");
 
@@ -468,7 +468,7 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(interfaceType).Single();
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
@@ -518,7 +518,7 @@ namespace Composite.Data
         public static T TryGetDataByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(typeof(T)).Single();
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
@@ -570,7 +570,7 @@ namespace Composite.Data
             }
            
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(interfaceType).Single();
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);
@@ -605,7 +605,7 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(interfaceType).Single();
+            PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(interfaceType).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
             dataKeyPropertyCollection.AddKeyProperty(propertyInfo, dataKeyValue);

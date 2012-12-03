@@ -335,7 +335,7 @@ namespace Composite.C1Console.Trees
             }
 
 
-            this.KeyPropertyInfo = this.CurrentDataInterfaceType.GetKeyPropertyInfoes()[0];
+            this.KeyPropertyInfo = this.CurrentDataInterfaceType.GetKeyProperties()[0];
 
 
             foreach (ParentIdFilterNode parentIdFilterNode in this.FilterNodes.OfType<ParentIdFilterNode>())
@@ -352,7 +352,7 @@ namespace Composite.C1Console.Trees
 
                 helper.ParentIdFilterNode = parentIdFilterNode;
                 helper.ParentReferencedPropertyInfo = this.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == parentIdFilterNode.ReferenceFieldName);
-                helper.ParentRefereePropertyName = parentIdFilterNode.ParentFilterType.GetKeyPropertyInfoes()[0].Name;
+                helper.ParentRefereePropertyName = parentIdFilterNode.ParentFilterType.GetKeyProperties()[0].Name;
 
                 this.ParentFilteringHelpers.Add(parentIdFilterNode.ParentFilterType, helper);
             }

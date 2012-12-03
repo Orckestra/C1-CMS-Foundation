@@ -12,7 +12,7 @@ namespace Composite.Data
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
-            foreach (PropertyInfo propertyInfo in data.GetKeyPropertyInfoes())
+            foreach (PropertyInfo propertyInfo in data.GetKeyProperties())
             {
                 object value = propertyInfo.GetValue(data, null);
 

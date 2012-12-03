@@ -58,7 +58,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 if (__propertyInfos == null)
                 {
-                    __propertyInfos = typeof(T).GetKeyPropertyInfoes();
+                    __propertyInfos = typeof(T).GetKeyProperties();
 
                     PropertyInfo labelPropertyInfo = typeof(T).GetLabelPropertyInfo();
 
@@ -747,7 +747,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             Type destinationType = keyInfo.TargetType;
 
             PropertyInfo sourceKeyPropertyInfo = sourceType.GetDataPropertyRecursivly(foreignKeyPropertyName);
-            PropertyInfo destinationKeyPropertyInfo = destinationType.GetKeyPropertyInfoes().Single();
+            PropertyInfo destinationKeyPropertyInfo = destinationType.GetKeyProperties().Single();
             Type keyFieldType = destinationKeyPropertyInfo.PropertyType;
 
             Type[] genericArgs = new Type[] { typeof(SOURCE), destinationType, keyFieldType };

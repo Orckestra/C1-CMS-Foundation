@@ -25,7 +25,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             get
             {
-                var keyPropertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(typeof(T)).Single();
+                var keyPropertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
                 WidgetFunctionProvider referenceSelector = StandardWidgetFunctions.GetNullableDataReferenceWidget<T>();
 

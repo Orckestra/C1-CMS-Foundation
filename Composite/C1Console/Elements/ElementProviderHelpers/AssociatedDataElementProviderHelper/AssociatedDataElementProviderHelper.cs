@@ -249,7 +249,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             List<Element> children = new List<Element>();
 
-            PropertyInfo idPropertyInfo = typeof(T).GetKeyPropertyInfoes()[0];
+            PropertyInfo idPropertyInfo = typeof(T).GetKeyProperties()[0];
 
             foreach (Type type in PageFolderFacade.GetDefinedFolderTypes((IPage)data).OrderBy(t => t.Name))
             {

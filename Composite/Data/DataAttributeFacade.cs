@@ -446,19 +446,32 @@ namespace Composite.Data
         }
 
 
-
         /// <exclude />
+        [Obsolete("Use GetKeyProperties() instead")]
         public static List<PropertyInfo> GetKeyPropertyInfoes(this IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
-
-            return GetKeyPropertyInfoes(data.DataSourceId.InterfaceType);
+            return GetKeyProperties(data);
         }
 
 
+        /// <exclude />
+        public static List<PropertyInfo> GetKeyProperties(this IData data)
+        {
+            if (data == null) throw new ArgumentNullException("data");
+
+            return GetKeyProperties(data.DataSourceId.InterfaceType);
+        }
+
 
         /// <exclude />
+        [Obsolete("Use GetKeyProperties() instead")]
         public static List<PropertyInfo> GetKeyPropertyInfoes(this Type interfaceType)
+        {
+            return GetKeyProperties(interfaceType);
+        }
+
+        /// <exclude />
+        public static List<PropertyInfo> GetKeyProperties(this Type interfaceType)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));

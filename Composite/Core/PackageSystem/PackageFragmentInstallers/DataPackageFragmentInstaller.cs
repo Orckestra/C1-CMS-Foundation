@@ -168,7 +168,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 XElement keysElement = new XElement("Keys");
 
-                foreach (PropertyInfo propertyInfo in data.GetKeyPropertyInfoes())
+                foreach (PropertyInfo propertyInfo in data.GetKeyProperties())
                 {
                     string keyName = propertyInfo.Name;
                     object keyValue = propertyInfo.GetValue(data, null);

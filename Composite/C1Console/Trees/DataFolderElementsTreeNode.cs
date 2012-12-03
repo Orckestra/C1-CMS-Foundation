@@ -1000,7 +1000,7 @@ namespace Composite.C1Console.Trees
                 AddValidationError("TreeValidationError.DataFolderElements.TooManyParentIdFilters", treeNode.FieldName);
             }
 
-            this.KeyPropertyInfo = this.InterfaceType.GetKeyPropertyInfoes()[0];
+            this.KeyPropertyInfo = this.InterfaceType.GetKeyProperties()[0];
 
             if (typeof(ILocalizedControlled).IsAssignableFrom(this.InterfaceType) == false)
             {

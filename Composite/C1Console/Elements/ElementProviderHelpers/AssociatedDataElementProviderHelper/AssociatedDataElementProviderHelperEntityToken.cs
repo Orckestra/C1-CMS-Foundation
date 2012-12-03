@@ -77,7 +77,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         {
             Type type = TypeManager.GetType(this.Type);
 
-            object id = ValueTypeConverter.Convert(this.Id, type.GetKeyPropertyInfoes()[0].PropertyType);
+            object id = ValueTypeConverter.Convert(this.Id, type.GetKeyProperties()[0].PropertyType);
 
             IData data = DataFacade.TryGetDataByUniqueKey(type, id);
 

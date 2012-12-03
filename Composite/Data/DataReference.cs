@@ -63,7 +63,7 @@ namespace Composite.Data
         {
             if (keyValue != null)
             {
-                Type realKeyType = typeof(T).GetKeyPropertyInfoes().Single().PropertyType;
+                Type realKeyType = typeof(T).GetKeyProperties().Single().PropertyType;
                 if (keyValue.GetType().Equals(realKeyType) == false)
                 {
                     _keyValue = Composite.Core.Types.ValueTypeConverter.Convert(keyValue, realKeyType);

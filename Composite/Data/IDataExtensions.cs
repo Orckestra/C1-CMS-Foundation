@@ -134,7 +134,7 @@ namespace Composite.Data
 
             if (leftData.DataSourceId.InterfaceType != rightData.DataSourceId.InterfaceType) return false;
 
-            foreach (PropertyInfo propertyInfo in DataAttributeFacade.GetKeyPropertyInfoes(leftData.DataSourceId.InterfaceType))
+            foreach (PropertyInfo propertyInfo in DataAttributeFacade.GetKeyProperties(leftData.DataSourceId.InterfaceType))
             {
                 object leftValue = propertyInfo.GetValue(leftData, null);
                 object rightValue = propertyInfo.GetValue(rightData, null);
@@ -181,7 +181,7 @@ namespace Composite.Data
         {
             if (data == null) throw new ArgumentNullException("data");
 
-            return DataAttributeFacade.GetKeyPropertyInfoes(data.DataSourceId.InterfaceType).Single().GetValue(data, null);
+            return DataAttributeFacade.GetKeyProperties(data.DataSourceId.InterfaceType).Single().GetValue(data, null);
         }
 
 

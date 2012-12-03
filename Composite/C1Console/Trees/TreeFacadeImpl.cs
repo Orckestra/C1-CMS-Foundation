@@ -554,7 +554,7 @@ namespace Composite.C1Console.Trees
                 }
 
                 Type interfaceType = TypeManager.GetType(attachmentPoint.InterfaceType);
-                object keyValue = ValueTypeConverter.Convert(attachmentPoint.KeyValue, interfaceType.GetKeyPropertyInfoes()[0].PropertyType);
+                object keyValue = ValueTypeConverter.Convert(attachmentPoint.KeyValue, interfaceType.GetKeyProperties()[0].PropertyType);
 
                 ElementAttachingProviderPosition position = (ElementAttachingProviderPosition)Enum.Parse(typeof(ElementAttachingProviderPosition), attachmentPoint.Position);
 
@@ -603,7 +603,7 @@ namespace Composite.C1Console.Trees
                 return; // Data exists in other locales, so do not remove this attachment point
             }
 
-            PropertyInfo propertyInfo = interfaceType.GetKeyPropertyInfoes()[0];
+            PropertyInfo propertyInfo = interfaceType.GetKeyProperties()[0];
             string keyValue = ValueTypeConverter.Convert<string>(propertyInfo.GetValue(dataEventArgs.Data, null));
 
             IEnumerable<IDataItemTreeAttachmentPoint> attachmentPoints =

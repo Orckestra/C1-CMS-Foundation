@@ -95,7 +95,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private static void AssignMissingGuidKeyValues(ParameterList parameters, T data)
         {
-            foreach (PropertyInfo keyPropertyInfo in typeof(T).GetKeyPropertyInfoes())
+            foreach (PropertyInfo keyPropertyInfo in typeof(T).GetKeyProperties())
             {
                 if (keyPropertyInfo.PropertyType != typeof(Guid)) continue;
 

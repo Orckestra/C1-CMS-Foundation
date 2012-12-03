@@ -223,7 +223,7 @@ namespace Composite.C1Console.Trees
 
             if ((this.ParentFilterTypeTreeNode != null) || (dataItemAttachmentPointExists == true))
             {
-                this.KeyPropertyInfo = this.ParentFilterType.GetKeyPropertyInfoes()[0];
+                this.KeyPropertyInfo = this.ParentFilterType.GetKeyProperties()[0];
             }
 
             if (this.KeyPropertyInfo == null)

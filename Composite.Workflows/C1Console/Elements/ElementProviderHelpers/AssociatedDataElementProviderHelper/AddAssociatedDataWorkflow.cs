@@ -114,7 +114,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
 
             Type parentInterfaceType = dataEntityToken.Data.DataSourceId.InterfaceType;
-            object id = parentInterfaceType.GetKeyPropertyInfoes()[0].GetValue(dataEntityToken.Data, null);
+            object id = parentInterfaceType.GetKeyProperties()[0].GetValue(dataEntityToken.Data, null);
             string idString = ValueTypeConverter.Convert<string>(id);
 
             AssociatedDataElementProviderHelperEntityToken entityToken = new AssociatedDataElementProviderHelperEntityToken(

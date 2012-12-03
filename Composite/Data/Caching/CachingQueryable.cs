@@ -216,7 +216,7 @@ namespace Composite.Data.Caching
                     {
                         var table = new Hashtable<object, object>();
 
-                        PropertyInfo keyPropertyInfo = DataAttributeFacade.GetKeyPropertyInfoes(typeof(T)).Single();
+                        PropertyInfo keyPropertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
                         IEnumerable<T> enumerable = BuildEnumerable();
 
