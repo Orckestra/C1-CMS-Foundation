@@ -50,7 +50,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                 const string queryString =
                 @"SELECT tableName = obj.name,
                        columnName = col.name,
-                       isPrimaryKey = CASE WHEN tc.constraint_type = 'PRIMARY KEY' THEN 1 ELSE 0 END,
+                       isPrimaryKey = CASE WHEN tc.CONSTRAINT_TYPE = 'PRIMARY KEY' THEN 1 ELSE 0 END,
                        isIdentity = CASE WHEN col.status & 0x80 = 0 THEN 0 ELSE 1 END,
                        isComputed = col.iscomputed,
                        isNullable = col.isnullable
@@ -59,11 +59,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                        SysColumns col
                   ON obj.id = col.id
                   LEFT OUTER JOIN
-                       (information_schema.key_column_usage kcu
+                       (INFORMATION_SCHEMA.KEY_COLUMN_USAGE kcu
 	                   INNER JOIN
-                            information_schema.table_constraints tc
-  	                 ON tc.table_name = kcu.table_name AND tc.constraint_name = kcu.constraint_name AND tc.constraint_type = 'PRIMARY KEY')
-                  ON obj.name = kcu.table_name AND col.name = kcu.column_name
+                            INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
+  	                 ON tc.TABLE_NAME = kcu.TABLE_NAME AND tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME AND tc.CONSTRAINT_TYPE = 'PRIMARY KEY')
+                  ON obj.name = kcu.TABLE_NAME AND col.name = kcu.COLUMN_NAME
                   where obj.xtype = 'U'
                   ORDER BY col.colorder";
 
