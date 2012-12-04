@@ -71,7 +71,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     _selectablePageTypes =
                         DataFacade.GetData<IPageType>().
-                        Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
+                        Where(f => f.Available  && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
                         OrderBy(f => f.Name).
                         ToList();
                 }
@@ -94,11 +94,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 IPage parentPage = this.GetDataItemFromEntityToken<IPage>();
 
-                IPageType parentPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == parentPage.PageTypeId).FirstOrDefault();
+                IPageType parentPageType = DataFacade.GetData<IPageType>().FirstOrDefault(f => f.Id == parentPage.PageTypeId);
 
                 if (parentPageType != null && parentPageType.DefaultChildPageType != Guid.Empty)
                 {
-                    if (selectablePageTypes.Where(f => f.Id == parentPageType.DefaultChildPageType).Any())
+                    if (selectablePageTypes.Any(f => f.Id == parentPageType.DefaultChildPageType))
                     {
                         return parentPageType.DefaultChildPageType;
                     }
@@ -186,15 +186,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 e.Result =
                     DataFacade.GetData<IPageType>().
-                    Where(f => f.Available == true && f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString()).
-                    Any();
+                    Any(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString());
             }
             else
             {
                 e.Result =
                     DataFacade.GetData<IPageType>().
-                    Where(f => f.Available == true && f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()).
-                    Any();
+                    Any(f => f.Available && f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString());
             }
         }
 
@@ -220,11 +218,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private bool ThereAreOtherPages()
         {
-            foreach(var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
+            foreach (var cultureInfo in DataLocalizationFacade.ActiveLocalizationCultures)
             {
-                using(new DataScope(PublicationScope.Unpublished, cultureInfo))
+                using (new DataScope(PublicationScope.Unpublished, cultureInfo))
                 {
-                    if(DataFacade.GetData<IPageStructure>().Any())
+                    if (DataFacade.GetData<IPageStructure>().Any())
                     {
                         return true;
                     }
@@ -330,22 +328,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void CanSkipStep2(object sender, ConditionalEventArgs e)
         {
-            if (this.GetBinding<string>("SelectedSortOrder") == "Relative")
-            {
-                e.Result = false;
-            }
-            else
-            {
-                if (UrlTitleIsUniqueAmongSiblings() == false)
-                {
-                    e.Result = false;
-                }
-                else
-                {
-                    e.Result = true;
-                }
-            }
+            IPage newPage = this.GetBinding<IPage>("NewPage");
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
 
+            e.Result = this.GetBinding<string>("SelectedSortOrder") != "Relative"
+                       && UrlTitleIsUniqueAmongSiblings()
+                       && newPage.UrlTitle.Length <= dataTypeDescriptor.Fields["UrlTitle"].StoreType.MaximumLength
+                       && newPage.MenuTitle.Length <= dataTypeDescriptor.Fields["MenuTitle"].StoreType.MaximumLength;
         }
 
 
@@ -358,42 +347,47 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 SetDefaultValues(newPage);
             }
 
-            if (UrlTitleIsUniqueAmongSiblings() == false)
+            e.Result = true;
+
+            if (!UrlTitleIsUniqueAmongSiblings())
             {
                 string fieldName = "NewPage.UrlTitle";
+
                 if (this.CurrentStateName == "step1State")
                 {
                     fieldName = "NewPage.Title";
                 }
 
-                this.ShowFieldMessage(fieldName, "${Composite.Plugins.PageElementProvider, UrlTitleNotUniqueError}");
+                this.ShowFieldMessage(fieldName, GetText("UrlTitleNotUniqueError"));
                 e.Result = false;
             }
             else
             {
                 ValidationResults validationResults = ValidationFacade.Validate<IPage>(newPage);
 
-                if (validationResults.IsValid == false && validationResults.Any(f => f.Key == "UrlTitle"))
+                if (!validationResults.IsValid && validationResults.Any(f => f.Key == "UrlTitle"))
                 {
                     this.ShowFieldMessage("NewPage.Title", "${Composite.Plugins.PageElementProvider, UrlTitleNotValidError}");
                     e.Result = false;
                 }
-                else
-                {
-                    e.Result = true;
-                }
             }
 
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
-            if ((newPage.UrlTitle.Length > dataTypeDescriptor.Fields["UrlTitle"].StoreType.MaximumLength) ||
-                (newPage.MenuTitle.Length > dataTypeDescriptor.Fields["MenuTitle"].StoreType.MaximumLength))
-            {
-                newPage.UrlTitle = "";
-                newPage.MenuTitle = "";
 
-                this.ShowFieldMessage("NewPage.Title", "${Composite.Plugins.PageElementProvider, UrlTitleTooLong}");
+            if (newPage.UrlTitle.Length > dataTypeDescriptor.Fields["UrlTitle"].StoreType.MaximumLength)
+            {
+                this.ShowFieldMessage("NewPage.UrlTitle", GetText("UrlTitleTooLong"));
                 e.Result = false;
+                return;
             }
+
+            if (newPage.MenuTitle.Length > dataTypeDescriptor.Fields["MenuTitle"].StoreType.MaximumLength)
+            {
+                this.ShowFieldMessage("NewPage.MenuTitle", GetText("AddNewPageStep1.MenuTitleTooLong"));
+                e.Result = false;
+                return;
+            }
+
         }
 
 
@@ -416,15 +410,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            foreach (string siblingUrlTitle in siblingPageUrlTitles)
-            {
-                if (siblingUrlTitle.Equals(newPage.UrlTitle, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !siblingPageUrlTitles.Any(urlTitle => urlTitle.Equals(newPage.UrlTitle, StringComparison.InvariantCultureIgnoreCase));
         }
 
 
@@ -437,35 +423,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (this.GetBinding<string>("SelectedSortOrder") == "Relative")
             {
-                var existingPages = new Dictionary<Guid, string>();
+                Dictionary<Guid, string> existingPages = PageServices.GetChildren(GetParentId()).ToDictionary(page => page.Id, page => page.Title);
 
-                foreach (IPage page in PageServices.GetChildren(GetParentId()))
-	            {
-		            existingPages.Add(page.Id, page.Title);
-            	}
-
-                if (this.BindingExist("ExistingPages") == false)
-                {
-                    this.Bindings.Add("ExistingPages", existingPages);
-                }
-                else
-                {
-                    this.Bindings["ExistingPages"] = existingPages;
-                }
-
-                if (this.BindingExist("RelativeSelectedPageId") == false)
-                {
-                    this.Bindings.Add("RelativeSelectedPageId", existingPages.First().Key);
-                }
-                else
-                {
-                    this.Bindings["RelativeSelectedPageId"] = existingPages.First().Key;
-                }
+                this.Bindings["ExistingPages"] = existingPages;
+                this.Bindings["RelativeSelectedPageId"] = existingPages.First().Key;
             }
             else
             {
-                if (this.Bindings.Keys.Contains("ExistingPages")) this.Bindings.Remove("ExistingPages");
-                if (this.Bindings.Keys.Contains("RelativeSelectedPageId")) this.Bindings.Remove("RelativeSelectedPageId");
+                this.Bindings.Remove("ExistingPages");
+                this.Bindings.Remove("RelativeSelectedPageId");
             }
         }
 
@@ -481,7 +447,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             newPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
             newPage.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
-            IPageType selectedPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == newPage.PageTypeId).Single();
+            IPageType selectedPageType = DataFacade.GetData<IPageType>().Single(f => f.Id == newPage.PageTypeId);
 
             IQueryable<IPageTypePageTemplateRestriction> templateRestrictions =
                 DataFacade.GetData<IPageTypePageTemplateRestriction>().
@@ -501,21 +467,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             bool addToAlphabetic = this.GetBinding<string>("SelectedSortOrder") == "Alphabetic";
             bool addToRelative = this.GetBinding<string>("SelectedSortOrder") == "Relative";
 
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
-                if (addToTop == true)
+                if (addToTop)
                 {
                     newPage = newPage.AddPageAtTop(parentId);
                 }
-                else if (addToBottom == true)
+                else if (addToBottom)
                 {
                     newPage = newPage.AddPageAtBottom(parentId);
                 }
-                else if (addToAlphabetic == true)
+                else if (addToAlphabetic)
                 {
                     newPage = newPage.AddPageAlphabetic(parentId);
                 }
-                else if (addToRelative == true)
+                else if (addToRelative)
                 {
                     Guid relativeSelectedPageId = this.GetBinding<Guid>("RelativeSelectedPageId");
 
@@ -590,7 +556,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             foreach (char c in title)
             {
                 string matchString = new string(c, 1);
-                if (regex.IsMatch(matchString) == true)
+                if (regex.IsMatch(matchString))
                 {
                     generated.Append(c);
                 }
@@ -615,7 +581,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private void SetDefaultValues(IPage page)
         {
             IPage newPage = this.GetBinding<IPage>("NewPage");
-            IPageType selectedPageType = DataFacade.GetData<IPageType>().Where(f => f.Id == newPage.PageTypeId).Single();
+            IPageType selectedPageType = DataFacade.GetData<IPageType>().Single(f => f.Id == newPage.PageTypeId);
 
             if ((selectedPageType.PresetMenuTitle == true) && (page.MenuTitle.IsNullOrEmpty() == true))
             {
@@ -634,6 +600,22 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
 
             }
+        }
+
+        private void ValidateFirstPage(object sender, ConditionalEventArgs e)
+        {
+            IPage newPage = this.GetBinding<IPage>("NewPage");
+
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPage));
+
+            if (newPage.Title.Length > dataTypeDescriptor.Fields["Title"].StoreType.MaximumLength)
+            {
+                this.ShowFieldMessage("NewPage.Title", GetText("AddNewPageStep1.TitleTooLong"));
+                e.Result = false;
+                return;
+            }
+
+            e.Result = true;
         }
     }
 }

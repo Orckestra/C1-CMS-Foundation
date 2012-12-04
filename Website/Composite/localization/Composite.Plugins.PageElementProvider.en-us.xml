@@ -24,6 +24,8 @@
   <string key="AddNewPageStep2.LabelPositionSelectorPanel" value="Select detailed page position" />
   <string key="AddNewPageStep2.LabelPositionSelector" value="Position below" />
   <string key="AddNewPageStep2.HelpPositionSelector" value="" />
+  <string key="AddNewPageStep1.TitleTooLong" value="The specified title is too long. Make it shorter and try again" />
+  <string key="AddNewPageStep1.MenuTitleTooLong" value="The specified menu title is too long. Make it shorter and try again" />
   <string key="EditPage.LabelPaneSettings" value="Settings" />
   <string key="EditPage.LabelPublicationState" value="Status" />
   <string key="EditPage.HelpPublicationState" value="Send the page to another status" />

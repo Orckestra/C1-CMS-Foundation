@@ -35,6 +35,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             System.Workflow.Activities.CodeCondition codecondition6 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition7 = new System.Workflow.Activities.CodeCondition();
             System.Workflow.Activities.CodeCondition codecondition8 = new System.Workflow.Activities.CodeCondition();
+            System.Workflow.Activities.CodeCondition codecondition9 = new System.Workflow.Activities.CodeCondition();
+            System.Workflow.Activities.CodeCondition codecondition10 = new System.Workflow.Activities.CodeCondition();
             this.setStateActivity10 = new System.Workflow.Activities.SetStateActivity();
             this.RuleDontAllowPageAddCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.setStateActivity4 = new System.Workflow.Activities.SetStateActivity();
@@ -49,37 +51,45 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.setStateActivity6 = new System.Workflow.Activities.SetStateActivity();
             this.MissingActiveLanguageCodeActivity = new System.Workflow.Activities.CodeActivity();
             this.ifElse_CheckPageTypesExists = new System.Workflow.Activities.IfElseActivity();
+            this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
+            this.setStateActivity_GoToFinalize = new System.Workflow.Activities.SetStateActivity();
+            this.PresetCalculatedFields = new System.Workflow.Activities.CodeActivity();
             this.ifElseBranchActivity6 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity5 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity10 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity9 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity20 = new System.Workflow.Activities.SetStateActivity();
             this.MissingTemplateAlertActivity = new System.Workflow.Activities.CodeActivity();
             this.ifElse_CheckActiveLanguagesExists = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity_GoToStep2 = new System.Workflow.Activities.SetStateActivity();
-            this.setStateActivity_GoToFinalize = new System.Workflow.Activities.SetStateActivity();
-            this.PresetCalculatedFields = new System.Workflow.Activities.CodeActivity();
+            this.ifElseActivity4_ValidateUrlTitle = new System.Workflow.Activities.IfElseActivity();
             this.ifElseBranchActivity8 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity7 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity4 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity3 = new System.Workflow.Activities.IfElseBranchActivity();
             this.setStateActivity11 = new System.Workflow.Activities.SetStateActivity();
             this.ifElse_CheckTemplatesExists = new System.Workflow.Activities.IfElseActivity();
-            this.setStateActivity7 = new System.Workflow.Activities.SetStateActivity();
+            this.setStateActivity14 = new System.Workflow.Activities.SetStateActivity();
             this.ifElseActivity_CanSkipStep2 = new System.Workflow.Activities.IfElseActivity();
+            this.setStateActivity13 = new System.Workflow.Activities.SetStateActivity();
+            this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
             this.setStateActivity_redoStep2 = new System.Workflow.Activities.SetStateActivity();
             this.setStateActivity12 = new System.Workflow.Activities.SetStateActivity();
             this.ifElseBranchActivity16 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseCheckPageTypesExist = new System.Workflow.Activities.IfElseBranchActivity();
-            this.ifElseBranchActivity10 = new System.Workflow.Activities.IfElseBranchActivity();
-            this.ifElseBranchActivity9 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity19 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity18 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity17 = new System.Workflow.Activities.IfElseBranchActivity();
+            this.ifElseBranchActivity15 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity2 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseBranchActivity1 = new System.Workflow.Activities.IfElseBranchActivity();
             this.ifElseActivity1 = new System.Workflow.Activities.IfElseActivity();
             this.setStateActivity2 = new System.Workflow.Activities.SetStateActivity();
             this.cancelHandleExternalEventActivity2 = new Composite.C1Console.Workflow.Activities.CancelHandleExternalEventActivity();
-            this.ifElseActivity4_ValidateUrlTitle = new System.Workflow.Activities.IfElseActivity();
+            this.ifElse_FirstPageValid = new System.Workflow.Activities.IfElseActivity();
             this.finishHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.FinishHandleExternalEventActivity();
-            this.setStateActivity3 = new System.Workflow.Activities.SetStateActivity();
-            this.handleExternalEventActivity1 = new System.Workflow.Activities.HandleExternalEventActivity();
+            this.ifFirstPageValid = new System.Workflow.Activities.IfElseActivity();
+            this.nextHandleExternalEventActivity1 = new Composite.C1Console.Workflow.Activities.NextHandleExternalEventActivity();
             this.step1WizzardFormActivity = new Composite.C1Console.Workflow.Activities.WizardFormActivity();
             this.setStateActivity1 = new System.Workflow.Activities.SetStateActivity();
             this.stepFinalize_codeActivity = new System.Workflow.Activities.CodeActivity();
@@ -190,6 +200,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.ifElse_CheckPageTypesExists.Activities.Add(this.ifElseBranchActivity12);
             this.ifElse_CheckPageTypesExists.Name = "ifElse_CheckPageTypesExists";
             // 
+            // setStateActivity7
+            // 
+            this.setStateActivity7.Name = "setStateActivity7";
+            this.setStateActivity7.TargetStateName = "step1State";
+            // 
+            // setStateActivity_GoToFinalize
+            // 
+            this.setStateActivity_GoToFinalize.Name = "setStateActivity_GoToFinalize";
+            this.setStateActivity_GoToFinalize.TargetStateName = "finalizeActivity";
+            // 
+            // PresetCalculatedFields
+            // 
+            this.PresetCalculatedFields.Name = "PresetCalculatedFields";
+            this.PresetCalculatedFields.ExecuteCode += new System.EventHandler(this.PresetCalculatedFields_ExecuteCode);
+            // 
             // ifElseBranchActivity6
             // 
             this.ifElseBranchActivity6.Activities.Add(this.MissingActiveLanguageCodeActivity);
@@ -202,6 +227,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             codecondition3.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CheckActiveLanguagesExists);
             this.ifElseBranchActivity5.Condition = codecondition3;
             this.ifElseBranchActivity5.Name = "ifElseBranchActivity5";
+            // 
+            // ifElseBranchActivity10
+            // 
+            this.ifElseBranchActivity10.Activities.Add(this.setStateActivity7);
+            this.ifElseBranchActivity10.Name = "ifElseBranchActivity10";
+            // 
+            // ifElseBranchActivity9
+            // 
+            this.ifElseBranchActivity9.Activities.Add(this.PresetCalculatedFields);
+            this.ifElseBranchActivity9.Activities.Add(this.setStateActivity_GoToFinalize);
+            codecondition4.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateUrlTitle);
+            this.ifElseBranchActivity9.Condition = codecondition4;
+            this.ifElseBranchActivity9.Name = "ifElseBranchActivity9";
             // 
             // setStateActivity20
             // 
@@ -224,15 +262,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.setStateActivity_GoToStep2.Name = "setStateActivity_GoToStep2";
             this.setStateActivity_GoToStep2.TargetStateName = "step2State";
             // 
-            // setStateActivity_GoToFinalize
+            // ifElseActivity4_ValidateUrlTitle
             // 
-            this.setStateActivity_GoToFinalize.Name = "setStateActivity_GoToFinalize";
-            this.setStateActivity_GoToFinalize.TargetStateName = "finalizeActivity";
-            // 
-            // PresetCalculatedFields
-            // 
-            this.PresetCalculatedFields.Name = "PresetCalculatedFields";
-            this.PresetCalculatedFields.ExecuteCode += new System.EventHandler(this.PresetCalculatedFields_ExecuteCode);
+            this.ifElseActivity4_ValidateUrlTitle.Activities.Add(this.ifElseBranchActivity9);
+            this.ifElseActivity4_ValidateUrlTitle.Activities.Add(this.ifElseBranchActivity10);
+            this.ifElseActivity4_ValidateUrlTitle.Description = "ValidateUrlTitle";
+            this.ifElseActivity4_ValidateUrlTitle.Name = "ifElseActivity4_ValidateUrlTitle";
             // 
             // ifElseBranchActivity8
             // 
@@ -243,8 +278,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // ifElseBranchActivity7
             // 
             this.ifElseBranchActivity7.Activities.Add(this.ifElse_CheckActiveLanguagesExists);
-            codecondition4.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CheckTemplatesExists);
-            this.ifElseBranchActivity7.Condition = codecondition4;
+            codecondition5.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CheckTemplatesExists);
+            this.ifElseBranchActivity7.Condition = codecondition5;
             this.ifElseBranchActivity7.Name = "ifElseBranchActivity7";
             // 
             // ifElseBranchActivity4
@@ -254,10 +289,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // 
             // ifElseBranchActivity3
             // 
-            this.ifElseBranchActivity3.Activities.Add(this.PresetCalculatedFields);
-            this.ifElseBranchActivity3.Activities.Add(this.setStateActivity_GoToFinalize);
-            codecondition5.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CanSkipStep2);
-            this.ifElseBranchActivity3.Condition = codecondition5;
+            this.ifElseBranchActivity3.Activities.Add(this.ifElseActivity4_ValidateUrlTitle);
+            codecondition6.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CanSkipStep2);
+            this.ifElseBranchActivity3.Condition = codecondition6;
             this.ifElseBranchActivity3.Name = "ifElseBranchActivity3";
             // 
             // setStateActivity11
@@ -271,16 +305,26 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.ifElse_CheckTemplatesExists.Activities.Add(this.ifElseBranchActivity8);
             this.ifElse_CheckTemplatesExists.Name = "ifElse_CheckTemplatesExists";
             // 
-            // setStateActivity7
+            // setStateActivity14
             // 
-            this.setStateActivity7.Name = "setStateActivity7";
-            this.setStateActivity7.TargetStateName = "step1State";
+            this.setStateActivity14.Name = "setStateActivity14";
+            this.setStateActivity14.TargetStateName = "step1State";
             // 
             // ifElseActivity_CanSkipStep2
             // 
             this.ifElseActivity_CanSkipStep2.Activities.Add(this.ifElseBranchActivity3);
             this.ifElseActivity_CanSkipStep2.Activities.Add(this.ifElseBranchActivity4);
             this.ifElseActivity_CanSkipStep2.Name = "ifElseActivity_CanSkipStep2";
+            // 
+            // setStateActivity13
+            // 
+            this.setStateActivity13.Name = "setStateActivity13";
+            this.setStateActivity13.TargetStateName = "step1State";
+            // 
+            // setStateActivity3
+            // 
+            this.setStateActivity3.Name = "setStateActivity3";
+            this.setStateActivity3.TargetStateName = "step2State";
             // 
             // setStateActivity_redoStep2
             // 
@@ -300,21 +344,33 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // ifElseCheckPageTypesExist
             // 
             this.ifElseCheckPageTypesExist.Activities.Add(this.ifElse_CheckTemplatesExists);
-            codecondition6.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CheckPageTypesExist);
-            this.ifElseCheckPageTypesExist.Condition = codecondition6;
+            codecondition7.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.CheckPageTypesExist);
+            this.ifElseCheckPageTypesExist.Condition = codecondition7;
             this.ifElseCheckPageTypesExist.Name = "ifElseCheckPageTypesExist";
             // 
-            // ifElseBranchActivity10
+            // ifElseBranchActivity19
             // 
-            this.ifElseBranchActivity10.Activities.Add(this.setStateActivity7);
-            this.ifElseBranchActivity10.Name = "ifElseBranchActivity10";
+            this.ifElseBranchActivity19.Activities.Add(this.setStateActivity14);
+            this.ifElseBranchActivity19.Name = "ifElseBranchActivity19";
             // 
-            // ifElseBranchActivity9
+            // ifElseBranchActivity18
             // 
-            this.ifElseBranchActivity9.Activities.Add(this.ifElseActivity_CanSkipStep2);
-            codecondition7.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateUrlTitle);
-            this.ifElseBranchActivity9.Condition = codecondition7;
-            this.ifElseBranchActivity9.Name = "ifElseBranchActivity9";
+            this.ifElseBranchActivity18.Activities.Add(this.ifElseActivity_CanSkipStep2);
+            codecondition8.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateFirstPage);
+            this.ifElseBranchActivity18.Condition = codecondition8;
+            this.ifElseBranchActivity18.Name = "ifElseBranchActivity18";
+            // 
+            // ifElseBranchActivity17
+            // 
+            this.ifElseBranchActivity17.Activities.Add(this.setStateActivity13);
+            this.ifElseBranchActivity17.Name = "ifElseBranchActivity17";
+            // 
+            // ifElseBranchActivity15
+            // 
+            this.ifElseBranchActivity15.Activities.Add(this.setStateActivity3);
+            codecondition9.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateFirstPage);
+            this.ifElseBranchActivity15.Condition = codecondition9;
+            this.ifElseBranchActivity15.Name = "ifElseBranchActivity15";
             // 
             // ifElseBranchActivity2
             // 
@@ -324,8 +380,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // ifElseBranchActivity1
             // 
             this.ifElseBranchActivity1.Activities.Add(this.setStateActivity12);
-            codecondition8.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateUrlTitle);
-            this.ifElseBranchActivity1.Condition = codecondition8;
+            codecondition10.Condition += new System.EventHandler<System.Workflow.Activities.ConditionalEventArgs>(this.ValidateUrlTitle);
+            this.ifElseBranchActivity1.Condition = codecondition10;
             this.ifElseBranchActivity1.Name = "ifElseBranchActivity1";
             // 
             // ifElseActivity1
@@ -345,12 +401,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.cancelHandleExternalEventActivity2.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.cancelHandleExternalEventActivity2.Name = "cancelHandleExternalEventActivity2";
             // 
-            // ifElseActivity4_ValidateUrlTitle
+            // ifElse_FirstPageValid
             // 
-            this.ifElseActivity4_ValidateUrlTitle.Activities.Add(this.ifElseBranchActivity9);
-            this.ifElseActivity4_ValidateUrlTitle.Activities.Add(this.ifElseBranchActivity10);
-            this.ifElseActivity4_ValidateUrlTitle.Description = "ValidateUrlTitle";
-            this.ifElseActivity4_ValidateUrlTitle.Name = "ifElseActivity4_ValidateUrlTitle";
+            this.ifElse_FirstPageValid.Activities.Add(this.ifElseBranchActivity18);
+            this.ifElse_FirstPageValid.Activities.Add(this.ifElseBranchActivity19);
+            this.ifElse_FirstPageValid.Name = "ifElse_FirstPageValid";
             // 
             // finishHandleExternalEventActivity1
             // 
@@ -358,16 +413,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             this.finishHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
             this.finishHandleExternalEventActivity1.Name = "finishHandleExternalEventActivity1";
             // 
-            // setStateActivity3
+            // ifFirstPageValid
             // 
-            this.setStateActivity3.Name = "setStateActivity3";
-            this.setStateActivity3.TargetStateName = "step2State";
+            this.ifFirstPageValid.Activities.Add(this.ifElseBranchActivity15);
+            this.ifFirstPageValid.Activities.Add(this.ifElseBranchActivity17);
+            this.ifFirstPageValid.Name = "ifFirstPageValid";
             // 
-            // handleExternalEventActivity1
+            // nextHandleExternalEventActivity1
             // 
-            this.handleExternalEventActivity1.EventName = "Next";
-            this.handleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
-            this.handleExternalEventActivity1.Name = "handleExternalEventActivity1";
+            this.nextHandleExternalEventActivity1.EventName = "Next";
+            this.nextHandleExternalEventActivity1.InterfaceType = typeof(Composite.C1Console.Workflow.IFormsWorkflowEventService);
+            this.nextHandleExternalEventActivity1.Name = "nextHandleExternalEventActivity1";
             // 
             // step1WizzardFormActivity
             // 
@@ -459,13 +515,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             // step1_eventDrivenActivity_Finish
             // 
             this.step1_eventDrivenActivity_Finish.Activities.Add(this.finishHandleExternalEventActivity1);
-            this.step1_eventDrivenActivity_Finish.Activities.Add(this.ifElseActivity4_ValidateUrlTitle);
+            this.step1_eventDrivenActivity_Finish.Activities.Add(this.ifElse_FirstPageValid);
             this.step1_eventDrivenActivity_Finish.Name = "step1_eventDrivenActivity_Finish";
             // 
             // step1_eventDrivenActivity_Next
             // 
-            this.step1_eventDrivenActivity_Next.Activities.Add(this.handleExternalEventActivity1);
-            this.step1_eventDrivenActivity_Next.Activities.Add(this.setStateActivity3);
+            this.step1_eventDrivenActivity_Next.Activities.Add(this.nextHandleExternalEventActivity1);
+            this.step1_eventDrivenActivity_Next.Activities.Add(this.ifFirstPageValid);
             this.step1_eventDrivenActivity_Next.Name = "step1_eventDrivenActivity_Next";
             // 
             // step1StateInitializationActivity
@@ -559,8 +615,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         #endregion
 
         private StateInitializationActivity step1StateInitializationActivity;
-
-        private HandleExternalEventActivity handleExternalEventActivity1;
 
         private EventDrivenActivity step1_eventDrivenActivity_Next;
 
@@ -706,7 +760,32 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private IfElseActivity ifElseActivity1;
 
+        private SetStateActivity setStateActivity13;
+
+        private IfElseBranchActivity ifElseBranchActivity17;
+
+        private IfElseBranchActivity ifElseBranchActivity15;
+
+        private IfElseActivity ifFirstPageValid;
+
+        private C1Console.Workflow.Activities.NextHandleExternalEventActivity nextHandleExternalEventActivity1;
+
+        private SetStateActivity setStateActivity14;
+
+        private IfElseBranchActivity ifElseBranchActivity19;
+
+        private IfElseBranchActivity ifElseBranchActivity18;
+
+        private IfElseActivity ifElse_FirstPageValid;
+
         private StateActivity step1State;
+
+
+
+
+
+
+
 
 
 
