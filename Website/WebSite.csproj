@@ -1667,11 +1667,11 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\localization\Composite.NameValidation.en-us.xml" />
-    <Content Include="Composite\localization\Composite.PackageSystem.PackageFragmentInstallers.en-us.xml">
+    <Content Include="Composite\localization\Composite.Core.PackageSystem.PackageFragmentInstallers.en-us.xml">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Composite\localization\Composite.Permissions.en-us.xml" />
-    <Content Include="Composite\localization\Composite.SecurityViolation.en-us.xml" />
+    <Content Include="Composite\localization\Composite.C1Console.SecurityViolation.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.AllFunctionsElementProvider.en-us.xml" />
     <Content Include="Composite\localization\Composite.Plugins.GeneratedDataTypesElementProvider.en-us.xml">
       <SubType>Designer</SubType>
