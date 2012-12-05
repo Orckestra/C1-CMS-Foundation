@@ -4,8 +4,8 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Events;
+using Composite.Core.Extensions;
 using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
-using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -23,13 +23,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Areas").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Areas") > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"));
                 return validationResult;
             }
 
-            XElement areasElement = this.Configuration.Where(f => f.Name == "Areas").SingleOrDefault();
+            XElement areasElement = this.Configuration.SingleOrDefault(f => f.Name == "Areas");
 
             _areasToUninstall = new List<string>();
 
@@ -41,7 +41,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (elementProviderNameAttribute == null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"), "elementProviderName"), areaElement));
+                        validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute").FormatWith("elementProviderName"), areaElement);
                     }
                     else
                     {
@@ -71,16 +71,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 bool deleted = ElementProviderConfigurationServices.DeleteElementProviderConfiguration(elementProviderName);
                 bool removed = VirtualElementProviderConfigurationManipulator.RemoveArea(elementProviderName);
 
-                if ((deleted == true) || (removed == true))
+                if (deleted || removed)
                 {
                     makeAFlush = true;
                 }
             }
 
-            if (makeAFlush == true)
+            if (makeAFlush)
             {
                 GlobalEventSystemFacade.FlushTheSystem(true);
             }
+        }
+
+        private static string GetText(string stringId)
+        {
+            return GetResourceString(stringId);
         }
     }
 }

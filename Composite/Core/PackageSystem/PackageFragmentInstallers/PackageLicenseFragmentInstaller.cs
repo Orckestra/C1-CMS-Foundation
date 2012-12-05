@@ -4,7 +4,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.PackageSystem.WebServiceClient;
-using Composite.Core.ResourceSystem;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -31,10 +30,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return validationResult;
             }
 
-            XElement publicKeyElement = this.Configuration.Where(f => f.Name == "RSAKeyValue").SingleOrDefault();
+            XElement publicKeyElement = this.Configuration.SingleOrDefault(f => f.Name == "RSAKeyValue");
             if (publicKeyElement == null)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageLicenseFragmentInstaller.MissingPublicKeyElement")));
+                validationResult.AddFatal(GetResourceString("PackageLicenseFragmentInstaller.MissingPublicKeyElement"));
                 return validationResult;
             }
 

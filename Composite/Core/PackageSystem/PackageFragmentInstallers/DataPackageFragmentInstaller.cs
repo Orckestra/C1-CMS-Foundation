@@ -31,7 +31,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             _validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Any(f => f.Name == "Types"))
+            if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
                 _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.OnlyOneElement"));
                 return _validationResult;

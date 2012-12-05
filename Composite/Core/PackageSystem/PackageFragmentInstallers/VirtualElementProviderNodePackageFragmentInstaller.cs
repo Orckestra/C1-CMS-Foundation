@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
-using Composite.Core.Logging;
 using Composite.C1Console.Events;
 using Composite.Core.ResourceSystem;
 
@@ -27,13 +26,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Areas").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Areas") > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement")));
+                validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement"));
                 return validationResult;
             }
 
-            XElement areasElement = this.Configuration.Where(f => f.Name == "Areas").SingleOrDefault();
+            XElement areasElement = this.Configuration.SingleOrDefault(f => f.Name == "Areas");
 
             _areasToInstall = new List<Area>();
 
@@ -50,9 +49,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if ((orderAttribute == null) || (elementProviderTypeAttribute == null) || (labelAttribute == null))
                     {
-                        if (orderAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "order"), areaElement));
-                        if (elementProviderTypeAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "elementProviderType"), areaElement));
-                        if (labelAttribute == null) validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "FilePackageFragmentInstaller.MissingAttribute"), "label"), areaElement));
+                        if (orderAttribute == null) validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), areaElement);
+                        if (elementProviderTypeAttribute == null) validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("elementProviderType"), areaElement);
+                        if (labelAttribute == null) validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("label"), areaElement);
                     }
                     else
                     {
@@ -63,7 +62,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         }
                         catch (Exception)
                         {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingType"), elementProviderTypeAttribute.Value), areaElement));
+                            validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentInstaller.MissingType").FormatWith(elementProviderTypeAttribute.Value), areaElement);
                             continue;
                         }
 
@@ -78,7 +77,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             if ((closeFolderIconNameAttribute.Value != "") && (IconResourceSystemFacade.GetResourceHandle(closeFolderIconNameAttribute.Value) == null))
                             {
-                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), closeFolderIconNameAttribute.Value), areaElement));
+                                validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentInstaller.MissingIcon").FormatWith(closeFolderIconNameAttribute.Value), areaElement);
                                 continue;
                             }
                             else
@@ -91,7 +90,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             if ((openFolderIconNameAttribute.Value != "") && (IconResourceSystemFacade.GetResourceHandle(openFolderIconNameAttribute.Value) == null))
                             {
-                                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), openFolderIconNameAttribute.Value), areaElement));
+                                validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentInstaller.MissingIcon").FormatWith(openFolderIconNameAttribute.Value), areaElement);
                                 continue;
                             }
                             else
@@ -125,7 +124,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 string name = string.Format("{0}{1}", area.ElementProviderType.Name, Guid.NewGuid());
 
-                LoggingService.LogVerbose("VirtualElementProviderNodePackageFragmentInstaller", string.Format("Installing the element provider '{0}'", name));
+                Log.LogVerbose("VirtualElementProviderNodePackageFragmentInstaller", string.Format("Installing the element provider '{0}'", name));
 
                 if (area.ElementProviderType == null)
                 {
@@ -148,6 +147,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             yield return new XElement("Areas", areaElements);
         }
 
+
+        private static string GetText(string stringId)
+        {
+            return GetResourceString(stringId);
+        }
 
 
         private sealed class Area

@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
-using Composite.Core.ResourceSystem;
 using System.Globalization;
 using Composite.Core.Localization;
-using Composite.Core.Logging;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -26,13 +23,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             List<PackageFragmentValidationResult> validationResults = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Locales").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Locales") > 1)
             {
-                validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                validationResults.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"));
                 return validationResults;
             }
 
-            XElement localesElement = this.Configuration.Where(f => f.Name == "Locales").SingleOrDefault();
+            XElement localesElement = this.Configuration.SingleOrDefault(f => f.Name == "Locales");
 
             _culturesToUninstall = new List<CultureInfo>();
 
@@ -51,14 +48,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if ((_oldDefaultCultureInfo == null) && (LocalizationFacade.IsDefaultLocale(locale) == true))
                     {
                         // Locale is default -> not possible to unintall
-                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                        validationResults.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"));
                         continue;
                     }
 
                     if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(locale) == true)
                     {
                         // only active for the a user
-                        validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement")));
+                        validationResults.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"));
                         continue;
                     }
 
@@ -86,7 +83,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             if (_oldDefaultCultureInfo != null)
             {
-                LoggingService.LogVerbose("LocalePackageFragmentUninstaller", string.Format("Restoring default locale to '{0}'", _oldDefaultCultureInfo));
+                Log.LogVerbose("LocalePackageFragmentUninstaller", string.Format("Restoring default locale to '{0}'", _oldDefaultCultureInfo));
 
                 LocalizationFacade.SetDefaultLocale(_oldDefaultCultureInfo);
             }
@@ -94,10 +91,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (CultureInfo locale in _culturesToUninstall.Reverse<CultureInfo>())
             {
-                LoggingService.LogVerbose("LocalePackageFragmentUninstaller", string.Format("Removing the locale '{0}'", locale));
+                Log.LogVerbose("LocalePackageFragmentUninstaller", string.Format("Removing the locale '{0}'", locale));
 
                 LocalizationFacade.RemoveLocale(locale, false);
             }
+        }
+
+        private static string GetText(string stringId)
+        {
+            return GetResourceString(stringId);
         }
     }
 }

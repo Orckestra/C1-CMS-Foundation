@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PackageSystem.Foundation;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 
 
@@ -23,13 +23,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "PackageVersions").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "PackageVersions") > 1)
             {
                 validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("PackageVersionBumberFragmentUninstaller.OnlyOneElement")));
                 return validationResult;
             }
 
-            XElement packageVersionsElement = this.Configuration.Where(f => f.Name == "PackageVersions").SingleOrDefault();
+            XElement packageVersionsElement = this.Configuration.SingleOrDefault(f => f.Name == "PackageVersions");
 
             _packageToRestore = new Dictionary<Guid, string>();
 
@@ -40,19 +40,27 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute packageIdAttribute = packageVersionElement.Attribute("packageId");
                     XAttribute oldVersionAttribute = packageVersionElement.Attribute("oldVersion");
 
-                    if (packageIdAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.MissingAttribute"), "packageId"), packageVersionElement)); continue; }
-                    if (oldVersionAttribute == null) { validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.MissingAttribute"), "newVersion"), packageVersionElement)); continue; }
+                    if (packageIdAttribute == null)
+                    {
+                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentUninstaller.MissingAttribute").FormatWith("packageId"), packageVersionElement); 
+                        continue;
+                    }
+                    if (oldVersionAttribute == null)
+                    {
+                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentUninstaller.MissingAttribute").FormatWith("newVersion"), packageVersionElement); 
+                        continue;
+                    }
 
                     Guid packageId;
                     if (packageIdAttribute.TryGetGuidValue(out packageId) == false)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat"), packageIdAttribute));
+                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat"), packageIdAttribute);
                         continue;
                     }
 
                     if (_packageToRestore.ContainsKey(packageId) == true)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), packageIdAttribute));
+                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), packageIdAttribute);
                         continue;
                     }
 
@@ -63,7 +71,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     catch
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"), oldVersionAttribute));
+                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"), oldVersionAttribute);
                         continue;
                     }
 
@@ -142,6 +150,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 return _installedPackages;
             }
+        }
+
+        private static string GetText(string stringId)
+        {
+            return GetResourceString(stringId);
         }
     }
 }

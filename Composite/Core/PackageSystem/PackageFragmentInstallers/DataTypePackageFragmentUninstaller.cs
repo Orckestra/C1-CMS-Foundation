@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
+using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
@@ -30,7 +31,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Where(f => f.Name == "Types").Count() > 1)
             {
-                _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.OnlyOneElement")));
+                _validationResult.AddFatal(GetText("DataTypePackageFragmentUninstaller.OnlyOneElement"));
                 return _validationResult;
             }
 
@@ -45,14 +46,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute typeIdAttribute = typeElement.Attribute("typeId");
                     if (typeIdAttribute == null)
                     {
-                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.MissingAttribute"), "typeId")));
+                        _validationResult.AddFatal(GetText("DataTypePackageFragmentUninstaller.MissingAttribute").FormatWith("typeId"));
                         continue;
                     }
 
                     Guid typeId;
                     if (typeIdAttribute.TryGetGuidValue(out typeId) == false)
                     {
-                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, StringResourceSystemFacade.GetString("Composite.PackageSystem.PackageFragmentInstallers", "DataTypePackageFragmentUninstaller.WrongAttributeFormat"), typeIdAttribute));
+                        _validationResult.AddFatal(GetText("DataTypePackageFragmentUninstaller.WrongAttributeFormat"), typeIdAttribute);
                         continue;
                     }
 
@@ -64,7 +65,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         var foreignRefereeTypes = DataReferenceFacade.GetRefereeTypes(dataTypeDescriptor.GetInterfaceType()).Where(f => _dataTypeDescriptorsToDelete.Any(g => g.GetInterfaceType().Equals(f)) == false);
                         foreach (Type foreignRefereeType in foreignRefereeTypes)
                         {
-                            _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Data type '{0}' has references to type '{1}' about to be uninstalled. References must be removed before the package can be uninstalled.", foreignRefereeType, dataTypeDescriptor.TypeManagerTypeName), typeIdAttribute));
+                            _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
+                                string.Format("Data type '{0}' has references to type '{1}' about to be uninstalled. References must be removed before the package can be uninstalled.", 
+                                foreignRefereeType, dataTypeDescriptor.TypeManagerTypeName), typeIdAttribute));
                         }
                     }
                 }
@@ -98,6 +101,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 GlobalEventSystemFacade.FlushTheSystem(true);
             }
+        }
+
+        private static string GetText(string stringId)
+        {
+            return GetResourceString(stringId);
         }
     }
 }

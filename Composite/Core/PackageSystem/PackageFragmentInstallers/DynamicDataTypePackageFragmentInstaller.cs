@@ -28,7 +28,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             var foreignKeyReferences = new List<string>();
 
-            if (this.Configuration.Any(f => f.Name == "Types"))
+            if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
                 validationResult.AddFatal(GetText("DynamicDataTypePackageFragmentInstaller.OnlyOneElement"));
                 return validationResult;
