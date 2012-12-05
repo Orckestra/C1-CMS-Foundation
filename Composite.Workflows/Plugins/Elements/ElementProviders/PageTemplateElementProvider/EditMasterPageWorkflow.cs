@@ -356,7 +356,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             string fileName = Path.GetFileName(filePath);
             string folderPath = Path.GetDirectoryName(filePath);
 
-            return Path.Combine(folderPath, "_temp_" + fileName);
+            return Path.Combine(folderPath, MasterPagePageTemplateProvider.TempFilePrefix  + fileName);
         }
     }
 }

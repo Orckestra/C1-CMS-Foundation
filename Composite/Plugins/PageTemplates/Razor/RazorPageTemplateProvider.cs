@@ -24,6 +24,7 @@ namespace Composite.Plugins.PageTemplates.Razor
     {
         private static readonly string LayoutFileMask = "*.cshtml";
         private static readonly string LogTitle = typeof (RazorPageTemplateProvider).Name;
+        internal static readonly string TempFilePrefix = "_temp_";
 
         private readonly string _providerName;
         private readonly string _templateDirectory;
@@ -99,7 +100,7 @@ namespace Composite.Plugins.PageTemplates.Razor
         {
             var files = new C1DirectoryInfo(_templateDirectory)
                            .GetFiles(LayoutFileMask, SearchOption.AllDirectories)
-                           .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
+                           .Where(f => !f.Name.StartsWith(TempFilePrefix, StringComparison.Ordinal));
 
 
             var templates = new List<PageTemplateDescriptor>();
@@ -146,7 +147,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
                 try
                 {
-                    ParseTemplate(virtualPath, fileInfo.FullName, razorPageTemplate, out parsedTemplate, out placeholderProperties);
+                    ParseTemplate(virtualPath, razorPageTemplate, out parsedTemplate, out placeholderProperties);
                 }
                 catch(Exception ex)
                 {
@@ -210,7 +211,6 @@ namespace Composite.Plugins.PageTemplates.Razor
         }
 
         private void ParseTemplate(string virtualPath,
-                                   string filePath,
                                    AspNet.Razor.RazorPageTemplate webPage, 
                                    out PageTemplateDescriptor templateDescriptor, 
                                    out IDictionary<string, PropertyInfo> placeholderProperties)
@@ -224,7 +224,7 @@ namespace Composite.Plugins.PageTemplates.Razor
         private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
         {
             // Ignoring system and temporary files
-            if(e.Name.StartsWith("_"))
+            if (e.Name.StartsWith(TempFilePrefix))
             {
                 return;
             }

@@ -93,7 +93,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
             string filePath = PathUtil.Resolve(virtualPath);
             string fileName = Path.GetFileName(filePath);
 
-            string tempFileName = "_tmp_" + fileName;
+            string tempFileName = RazorPageTemplateProvider.TempFilePrefix + fileName;
             string tempFileVirtualPath = virtualPath.Substring(0, virtualPath.Length - fileName.Length) + tempFileName;
             string tempFile = Path.Combine(Path.GetDirectoryName(filePath), tempFileName);
 

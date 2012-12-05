@@ -25,6 +25,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
     {
         private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
 
+        internal static readonly string TempFilePrefix = "_temp_";
         private static readonly string MasterPageFileMask = "*.master";
         private static readonly string FileWatcherMask = "*.master*";
         private static readonly string FileWatcher_Regex = @"\.cs|\.master";
@@ -108,7 +109,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         {
             var files = new C1DirectoryInfo(_templatesDirectory)
                            .GetFiles(MasterPageFileMask, SearchOption.AllDirectories)
-                           .Where(f => !f.Name.StartsWith("_", StringComparison.Ordinal));
+                           .Where(f => !f.Name.StartsWith(TempFilePrefix, StringComparison.Ordinal));
 
 
             var templates = new List<PageTemplateDescriptor>();
@@ -260,7 +261,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
         {
             // Ignoring changes to files, not related to master pages, and temporary files
-            if (e.Name.StartsWith("_")
+            if (e.Name.StartsWith(TempFilePrefix)
                 || !Regex.IsMatch(e.Name, FileWatcher_Regex, RegexOptions.IgnoreCase))
             {
                 return;
