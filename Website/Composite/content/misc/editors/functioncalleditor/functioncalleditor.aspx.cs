@@ -723,8 +723,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         object newValue = bindings[parameterProfile.Name];
 
-        bool newValueNotEmpty = newValue != null && newValue.ToString().Length > 0 &&
-                                (!(newValue is IList) || ((IList)newValue).Count > 0);
+        bool newValueNotEmpty = newValue != null && (!(newValue is IList) || ((IList)newValue).Count > 0);
 
         parameterNode.Remove();
 
