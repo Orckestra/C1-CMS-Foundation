@@ -1,6 +1,5 @@
 ﻿using System;
 using Composite.C1Console.Actions;
-using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 
 
@@ -12,23 +11,48 @@ namespace Composite.C1Console.Tasks
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TaskManagerFacade
     {
-        private static ITaskManagerFacade _implementation = new TaskManagerFacadeImpl();
+        private static ITaskManagerFacade _implementation;
+        private static readonly object _syncRoot = new object();
 
-        internal static ITaskManagerFacade Implementation { get { return _implementation; } set { _implementation = value; } }       
+        internal static ITaskManagerFacade Implementation
+        {
+            get
+            {
+                // Avoiding initialization in a static constructor so sql timeouts won't cause the type initialization exception
+                var implementation = _implementation;
+                if(implementation == null)
+                {
+                    lock(_syncRoot)
+                    {
+                        implementation = _implementation;
+                        if(implementation == null)
+                        {
+                            _implementation = implementation = new TaskManagerFacadeImpl();
+                        }
+                    }
+                }
+
+                return implementation;
+            } 
+            set
+            {
+                _implementation = value;
+            }
+        }       
 
 
 
         /// <exclude />
         public static void AttachTaskCreator(Func<EntityToken, ActionToken, Task> taskCreator)
         {
-            _implementation.AttachTaskCreator(taskCreator);
+            Implementation.AttachTaskCreator(taskCreator);
         }
 
 
 
         internal static TaskContainer CreateNewTasks(EntityToken entityToken, ActionToken actionToken, TaskManagerEvent taskManagerEvent)
         {
-            return _implementation.CreateNewTasks(entityToken, actionToken, taskManagerEvent);
+            return Implementation.CreateNewTasks(entityToken, actionToken, taskManagerEvent);
         }
 
 
@@ -36,14 +60,14 @@ namespace Composite.C1Console.Tasks
         /// <exclude />
         public static TaskContainer RuntTasks(FlowToken flowToken, TaskManagerEvent taskManagerEvent)
         {
-            return _implementation.RuntTasks(flowToken, taskManagerEvent);
+            return Implementation.RuntTasks(flowToken, taskManagerEvent);
         }
 
 
 
         internal static void CompleteTasks(FlowToken flowToken)
         {
-            _implementation.CompleteTasks(flowToken);
+            Implementation.CompleteTasks(flowToken);
         }
     }
 }
