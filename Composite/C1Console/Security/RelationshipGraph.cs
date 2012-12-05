@@ -467,19 +467,7 @@ namespace Composite.C1Console.Security
                         IEnumerable<EntityToken> auxiliaryParentEntityTokens = AuxiliarySecurityAncestorFacade.GetParents(node.EntityToken);
                         IEnumerable<EntityToken> hookingParentEntityTokens = HookingFacade.GetHookies(node.EntityToken);
 
-                        if (auxiliaryParentEntityTokens == null)
-                        {
-                            parentEntityTokens = hookingParentEntityTokens;
-                        }
-                        else
-                        {
-                            parentEntityTokens = auxiliaryParentEntityTokens;
-
-                            if (hookingParentEntityTokens != null)
-                            {
-                                parentEntityTokens = parentEntityTokens.Concat(hookingParentEntityTokens);
-                            }
-                        }
+                        parentEntityTokens = auxiliaryParentEntityTokens.ConcatOrDefault(hookingParentEntityTokens);
 
                         EntityTokenCacheFacade.AddHookingCache(node.EntityToken, parentEntityTokens);
                     }
