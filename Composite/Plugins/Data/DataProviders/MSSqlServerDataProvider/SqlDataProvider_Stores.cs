@@ -331,13 +331,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
         /// <summary>
+        /// Checks that tables related to specified data type included in current DataContext class, if not - compiles a new version of DataContext that contains them
         /// </summary>
-        /// <param name="dataTypeDescriptor"></param>
-        /// <param name="sqlDataTypeStoreDataScopes"></param>
-        /// <param name="allSqlDataTypeStoreDataScopes"></param>
-        /// <param name="dataContextClassType"></param>
-        /// <param name="sqlDataStoreTableTypes"></param>
-        /// <param name="forceCompile"></param>
         private void EnsureNeededTypes(DataTypeDescriptor dataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, out Type dataContextClassType, out Dictionary<SqlDataTypeStoreTableKey, Tuple<FieldInfo, Type>> sqlDataStoreTableTypes, bool forceCompile = false)
         {
             lock (_lock)
@@ -362,11 +357,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance)
                                                .SingleOrDefault(f => f.Name == dataContextFieldName);
-
-                        if(dataContextFieldInfo == null)
-                        {
-                            Log.LogWarning(LogTitle, "DataContext class is missing field '{0}'", dataContextFieldName);
-                        }
                     }
 
                     string sqlDataProviderHelperClassFullName = NamesCreator.MakeSqlDataProviderHelperClassFullName(dataTypeDescriptor, storeDataScope.DataScopeName, storeDataScope.CultureName, _dataProviderContext.ProviderName);
@@ -375,8 +365,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     sqlDataStoreTableTypes.Add(new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName), new Tuple<FieldInfo, Type>(dataContextFieldInfo, sqlDataProviderHelperClassType));
 
                     bool isRecompileNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { sqlDataProviderHelperClassType });
-                    if (isRecompileNeeded || forceCompile) storeDataScopesToCompile.Add(storeDataScope);
-                    else storeDataScopesAlreadyCompiled.Add(storeDataScope);
+                    if (isRecompileNeeded || forceCompile)
+                    {
+                        storeDataScopesToCompile.Add(storeDataScope);
+                    }
+                    else
+                    {
+                        storeDataScopesAlreadyCompiled.Add(storeDataScope);
+                    }
                 }
 
 
@@ -399,15 +395,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                     IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false);
 
-                    dataContextClassType = types.Where(f => f.FullName == dataContextClassFullName).Single();
+                    dataContextClassType = types.Single(f => f.FullName == dataContextClassFullName);
 
                     foreach (SqlDataTypeStoreDataScope storeDataScope in storeDataScopesToCompile)
                     {
                         string dataContextFieldNames = NamesCreator.MakeDataContextFieldName(storeDataScope.TableName);
-                        FieldInfo dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.Name == dataContextFieldNames).Single();
+                        FieldInfo dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).Single(f => f.Name == dataContextFieldNames);
 
                         string sqlDataProviderHelperClassFullName = NamesCreator.MakeSqlDataProviderHelperClassFullName(dataTypeDescriptor, storeDataScope.DataScopeName, storeDataScope.CultureName, _dataProviderContext.ProviderName);
-                        Type sqlDataProviderHelperClassType = types.Where(f => f.FullName == sqlDataProviderHelperClassFullName).Single();
+                        Type sqlDataProviderHelperClassType = types.Single(f => f.FullName == sqlDataProviderHelperClassFullName);
 
                         SqlDataTypeStoreTableKey storeTableKey = new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName);
                         sqlDataStoreTableTypes[storeTableKey] = new Tuple<FieldInfo, Type>(dataContextFieldInfo, sqlDataProviderHelperClassType);
@@ -416,7 +412,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     foreach (SqlDataTypeStoreDataScope storeDataScope in storeDataScopesAlreadyCompiled)
                     {
                         string dataContextFieldNames = NamesCreator.MakeDataContextFieldName(storeDataScope.TableName);
-                        FieldInfo dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.Name == dataContextFieldNames).Single();
+                        FieldInfo dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).Single(f => f.Name == dataContextFieldNames);
 
                         string sqlDataProviderHelperClassFullName = NamesCreator.MakeSqlDataProviderHelperClassFullName(dataTypeDescriptor, storeDataScope.DataScopeName, storeDataScope.CultureName, _dataProviderContext.ProviderName);
                         Type sqlDataProviderHelperClassType = TypeManager.TryGetType(sqlDataProviderHelperClassFullName);
@@ -432,11 +428,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
         /// <summary>
-        /// This method updates the DataContectFieldInfo on all existing store tables.
+        /// This method updates the DataContextQueryableFieldInfo property on all existing store tables.
+        /// </summary>
+        /// <remarks>
         /// This is needed due to the fact that all data stores share the same
         /// DataContext class and the DataContext class is code generated everytime
         /// a new store is code generated.
-        /// </summary>
+        /// </remarks>
         /// <param name="newDataContextClassType"></param>
         private void UpdateCreatedSqlDataTypeStoreTables(Type newDataContextClassType)
         {
@@ -444,15 +442,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 string fieldName = dataTypeStoreTable.DataContextQueryableFieldInfo.Name;
 
-                FieldInfo newFieldInfo = newDataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.Name == fieldName).SingleOrDefault();
+                FieldInfo newFieldInfo = newDataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance).SingleOrDefault(f => f.Name == fieldName);
 
-                if (newFieldInfo == null)
+                if (newFieldInfo != null)
                 {
-
+                    dataTypeStoreTable.DataContextQueryableFieldInfo = newFieldInfo;
                 }
                 else
                 {
-                    dataTypeStoreTable.DataContextQueryableFieldInfo = newFieldInfo;
+                    Log.LogWarning(LogTitle, "DataContext missing field newly created field '{0}'", fieldName);
                 }
             }
         }
