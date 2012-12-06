@@ -169,7 +169,7 @@ namespace Composite.Core.WebClient.Media
                 }
 
                 // If the target dimensions are bigger or the same size as of the image - no resizing is done
-                if(newWidth == width || newHeight == height)
+                if(newWidth == width && newHeight == height)
                 {
                     return false;
                 }
