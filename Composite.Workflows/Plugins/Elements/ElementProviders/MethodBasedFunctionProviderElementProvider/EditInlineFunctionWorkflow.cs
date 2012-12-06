@@ -307,8 +307,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                 using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeName), cultureInfo))
                 {
-                    Thread.CurrentThread.CurrentCulture = cultureInfo;
-                    Thread.CurrentThread.CurrentUICulture = cultureInfo;
+                    Thread.CurrentThread.CurrentCulture = Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
                     IPage page = DataFacade.GetData<IPage>(f => f.Id == pageId).FirstOrDefault();
                     if (page != null)
@@ -318,32 +317,37 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                     object result = methodInfo.Invoke(null, parameterValues.ToArray());
 
-                    Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(PrettyPrinter.Print(result)) + "</pre>");
-                    formFlowWebRenderingService.SetNewPageOutput(output);
+                    string resultString; 
+                    
+                    try
+                    {
+                        resultString = PrettyPrinter.Print(result);
+                    }
+                    catch(Exception ex)
+                    {
+                        throw new TargetInvocationException(ex);
+                    }
 
-                    Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
-                    Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;
+                    SetOutput(formFlowWebRenderingService, resultString);
                 }
             }
             catch (TargetInvocationException ex)
             {
-                Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(ex.InnerException.ToString()) + "</pre>");
-                formFlowWebRenderingService.SetNewPageOutput(output);
+                SetOutput(formFlowWebRenderingService, ex.InnerException.ToString());
             }
             finally
             {
                 Thread.CurrentThread.CurrentCulture = oldCurrentCulture;
                 Thread.CurrentThread.CurrentUICulture = oldCurrentUICulture;
             }
-        }      
+        }
+
+        private void SetOutput(IFormFlowWebRenderingService formFlowWebRenderingService, string text)
+        {
+            Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(text) + "</pre>");
+            formFlowWebRenderingService.SetNewPageOutput(output);
+        }
     }
-
-
-
-
-
-
-
 
 
     [Serializable]
