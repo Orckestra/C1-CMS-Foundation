@@ -31,6 +31,7 @@ namespace Composite.C1Console.Events
 
 
     /// <summary>    
+    /// Refreshed children of the elements with the specified entity token
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

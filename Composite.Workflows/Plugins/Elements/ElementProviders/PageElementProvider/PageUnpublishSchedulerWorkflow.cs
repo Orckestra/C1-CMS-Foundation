@@ -5,15 +5,17 @@ using System.Globalization;
 using System.Linq;
 using System.Transactions;
 using System.Workflow.Activities;
+using Composite.C1Console.Events;
+using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
+using Composite.Core;
+using Composite.Core.Linq;
+using Composite.Core.Threading;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Types;
-using Composite.Core.Logging;
 using Composite.Data.Transactions;
-using Composite.C1Console.Workflow;
-using Composite.Core.Threading;
-using Composite.Core.Linq;
+using Composite.Data.Types;
 
 
 
@@ -22,6 +24,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
     public sealed partial class PageUnpublishSchedulerWorkflow : StateMachineWorkflowActivity
     {
+        private static readonly string LogTitle = typeof(PagePublishSchedulerWorkflow).Name;
+
         private DateTime _unpublishDate;
         private Guid _pageId;
         private string _localeName;
@@ -66,18 +70,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             DelayActivity delayActivity = (DelayActivity)this.GetActivityByName("waitDelayActivity");
 
             DateTime now = DateTime.Now;
-            LoggingService.LogVerbose("PageUnpublishSchedulerWorkflow", string.Format("Current time: {0}, Publish time: {1}", this.UnpublishDate, now));
+            Log.LogVerbose(LogTitle, string.Format("Current time: {0}, Publish time: {1}", this.UnpublishDate, now));
 
             if (this.UnpublishDate > now)
             {
-                delayActivity.TimeoutDuration = this.UnpublishDate - DateTime.Now;
+                delayActivity.TimeoutDuration = this.UnpublishDate - now;
             }
             else
             {
                 delayActivity.TimeoutDuration = new TimeSpan(0);
             }
 
-            LoggingService.LogVerbose("PageUnpublishSchedulerWorkflow", string.Format("Timeout in: {0}", delayActivity.TimeoutDuration));
+            Log.LogVerbose(LogTitle, "Timeout in: " + delayActivity.TimeoutDuration);
         }
 
 
@@ -86,68 +90,77 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             using (ThreadDataManager.Initialize())
             {
+                IPage page;
+
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+                using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
                 {
-                    using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
+                    IPageUnpublishSchedule pageUnpublishSchedule =
+                        (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
+                            where ps.PageId == this.PageId &&
+                                ps.LocaleCultureName == this.LocaleName
+                            select ps).Single();
+
+                    DataFacade.Delete<IPageUnpublishSchedule>(pageUnpublishSchedule);
+
+
+                    bool deletePublished = false;
+
+
+                    page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
+
+                    IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
+
+                    if (transitions.Contains(GenericPublishProcessController.Draft) == true)
                     {
-                        IPageUnpublishSchedule pageUnpublishSchedule =
-                            (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
-                             where ps.PageId == this.PageId &&
-                                   ps.LocaleCultureName == this.LocaleName
-                             select ps).Single();
+                        page.PublicationStatus = GenericPublishProcessController.Draft;
 
-                        DataFacade.Delete<IPageUnpublishSchedule>(pageUnpublishSchedule);
+                        DataFacade.Update(page);
+
+                        deletePublished = true;
+                    }
+                    else
+                    {
+                        Log.LogWarning(LogTitle, string.Format("Scheduled unpublishing of page with title '{0}' could not be done because the page is not in a unpublisheble state", page.Title));
+                    }
 
 
-                        bool deletePublished = false;
-
-
-                        IPage page =
-                            (from p in DataFacade.GetData<IPage>()
-                             where p.Id == this.PageId
-                             select p).FirstOrDefault();
-
-                        IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
-
-                        if (transitions.Contains(GenericPublishProcessController.Draft) == true)
+                    if (deletePublished)
+                    {
+                        using (new DataScope(DataScopeIdentifier.Public))
                         {
-                            page.PublicationStatus = GenericPublishProcessController.Draft;
+                            IPage deletePage = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
 
-                            DataFacade.Update(page);
-
-                            deletePublished = true;
-                        }
-                        else
-                        {
-                            LoggingService.LogWarning("PageUnpublishSchedulerWorkflow", string.Format("Scheduled unpublishing of page with title '{0}' could not be done because the page is not in a unpublisheble state", page.Title));
-                        }
-
-
-                        if (deletePublished == true)
-                        {
-                            using (new DataScope(DataScopeIdentifier.Public))
+                            if (deletePage != null)
                             {
-                                IPage deletePage =
-                                    (from p in DataFacade.GetData<IPage>()
-                                     where p.Id == this.PageId
-                                     select p).FirstOrDefault();
+                                IEnumerable<IData> metaDataSet = deletePage.GetMetaData(DataScopeIdentifier.Public).Evaluate();
 
-                                if (deletePage != null)
-                                {
-                                    IEnumerable<IData> metaDatas = deletePage.GetMetaData(DataScopeIdentifier.Public).Evaluate();
+                                DataFacade.Delete(deletePage, CascadeDeleteType.Disable);
+                                DataFacade.Delete(metaDataSet, CascadeDeleteType.Disable);
 
-                                    DataFacade.Delete(deletePage, CascadeDeleteType.Disable);
-                                    DataFacade.Delete(metaDatas, CascadeDeleteType.Disable);
-
-                                    LoggingService.LogVerbose("PageUnpublishSchedulerWorkflow", string.Format("Scheduled unpublishing of page with title '{0}' is complete", deletePage.Title));
-                                }
+                                Log.LogVerbose(LogTitle, string.Format("Scheduled unpublishing of page with title '{0}' is complete", deletePage.Title));
                             }
                         }
                     }
+                    
 
                     transactionScope.Complete();
                 }
+
+                ReloadPageElementInConsole(page);
             }
+        }
+
+        private void ReloadPageElementInConsole(IPage page)
+        {
+            Guid parentPageId = PageManager.GetParentId(page.Id);
+            IPage parentPage = parentPageId != Guid.Empty ? PageManager.GetPageById(parentPageId) : null;
+
+            EntityToken parentEntityToken = (parentPage != null)
+                                        ? parentPage.GetDataEntityToken()
+                                        : (EntityToken)new PageElementProviderEntityToken("PageElementProvider");
+
+            ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
         }
     }
 }
