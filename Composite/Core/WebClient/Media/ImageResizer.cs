@@ -333,8 +333,8 @@ namespace Composite.Core.WebClient.Media
             DrawWithoutBlending(graphic, bitmap,
                 (int)Math.Floor(x + delta),
                 (int)Math.Floor(y + delta),
-                (int)Math.Floor(width + delta),
-                (int)Math.Floor(height + delta));
+                (int)Math.Ceiling(width - delta),
+                (int)Math.Ceiling(height - delta));
         }
 
 
