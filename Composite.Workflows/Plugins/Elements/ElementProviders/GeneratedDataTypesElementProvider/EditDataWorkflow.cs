@@ -11,7 +11,7 @@ using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessC
 using Composite.C1Console.Workflow.Foundation;
 using System.Collections.Generic;
 using System.Workflow.Runtime;
-
+using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
@@ -124,7 +124,18 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
             }
 
-            if (isValid == true)
+            var fieldsWithBrokenReferences = new List<string>();
+            if(!data.TryValidateForeignKeyIntegrity(fieldsWithBrokenReferences))
+            {
+                isValid = false;
+
+                foreach(string fieldName in fieldsWithBrokenReferences)
+                {
+                    ShowFieldMessage(fieldName, SR.GetString("Composite.Management", "Validation.BrokenReference"));
+                }
+            }
+
+            if (isValid)
             {
                 DataFacade.Update(data);
                 SetSaveStatus(true);
