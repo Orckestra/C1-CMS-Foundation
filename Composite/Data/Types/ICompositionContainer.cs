@@ -4,6 +4,8 @@
 namespace Composite.Data.Types
 {
     /// <summary>    
+    /// Allows assigning meta data fields to different tabs in UI. 
+    /// There's always one default instance with label "Metadata".
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

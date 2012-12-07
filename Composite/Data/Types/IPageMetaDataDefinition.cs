@@ -4,10 +4,14 @@ using System.Collections.Generic;
 
 namespace Composite.Data.Types
 {
-    /// Using the same name for a metadata definition is allowed iff metadata type and label are the same
-    /// on all instances.
+    
     /// <summary>    
+    /// Page meta data definition. 
     /// </summary>
+    /// <remarks>
+    /// Using the same name for a metadata definition is allowed if metadata type and label are the same
+    /// on all instances.
+    /// </remarks>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]

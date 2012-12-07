@@ -58,12 +58,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             //this.UpdateBinding("CompositionDescriptionName", compositionDescription.Name);
             this.UpdateBinding("CompositionDescriptionLabel", pageMetaDataDefinition.Label);
 
-            ICompositionContainer metaDataContainer = PageMetaDataFacade.GetMetaDataContainerByDefinitionName(pageTypeMetaDataTypeLink.Name);
-
             List<KeyValuePair<Guid, string>> metaDataContainerOptions = PageMetaDataFacade.GetAllMetaDataContainers();
 
             this.Bindings.Add("MetaDataContainerOptions", metaDataContainerOptions);
-            this.Bindings.Add("CompositionContainerId", metaDataContainer.Id);
+            this.Bindings.Add("CompositionContainerId", pageMetaDataDefinition.MetaDataContainerId);
         }
 
 

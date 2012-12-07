@@ -110,13 +110,15 @@ namespace Composite.Data
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
+        [Obsolete()]
         public static ICompositionContainer GetMetaDataContainerByDefinitionName(string name)
         {
-            return  DataFacade.GetData<IPageMetaDataDefinition>().
-                    Join(DataFacade.GetData<ICompositionContainer>(), o => o.MetaDataContainerId, i => i.Id, (def, con) => new { def, con }).
-                    Where(f => f.def.Name == name).
-                    Select(f => f.con).
-                    SingleOrDefaultOrException("Multiple metadata containers with the same name '{0}'", name);
+            return  DataFacade.GetData<IPageMetaDataDefinition>()
+                    .Join(DataFacade.GetData<ICompositionContainer>(), o => o.MetaDataContainerId, i => i.Id, (def, con) => new { def, con })
+                    .Where(f => f.def.Name == name)
+                    .Select(f => f.con)
+                    .Distinct()
+                    .SingleOrDefaultOrException("Multiple metadata containers with the same name '{0}'", name);
         }
 
 
