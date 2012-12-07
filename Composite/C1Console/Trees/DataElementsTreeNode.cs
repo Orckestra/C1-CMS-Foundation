@@ -68,9 +68,9 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<IData> datas = GetDataset(dynamicContext).Item1;
+            IEnumerable<IData> dataset = GetDataset(dynamicContext, false).DataItems;
 
-            return datas.Select(f => (EntityToken)f.GetDataEntityToken()).Evaluate();
+            return dataset.Select(f => (EntityToken)f.GetDataEntityToken()).Evaluate();
         }
 
 
@@ -137,14 +137,14 @@ namespace Composite.C1Console.Trees
             IEnumerable<object> keys;
             List<object> itemKeys = new List<object>();
 
-            Tuple<IEnumerable<IData>, IEnumerable<object>> dataset = GetDataset(dynamicContext);
+            NodeDataSet dataset = GetDataset(dynamicContext);
 
             bool localizationEndabled = this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
 
-            keys = dataset.Item2;
+            keys = dataset.JoinedKeys;
             if (localizationEndabled && UserSettings.ForeignLocaleCultureInfo != null)
             {
-                Tuple<IEnumerable<IData>, IEnumerable<object>> foreignDataset;
+                NodeDataSet foreignDataset;
                 using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
                     foreignDataset = GetDataset(dynamicContext);
@@ -152,13 +152,13 @@ namespace Composite.C1Console.Trees
 
                 ParameterExpression parameterExpression = Expression.Parameter(this.InterfaceType, "data");
 
-                IEnumerable combinedData = dataset.Item1.Concat(foreignDataset.Item1).ToCastedDataEnumerable(this.InterfaceType);
+                IEnumerable combinedData = dataset.DataItems.Concat(foreignDataset.DataItems).ToCastedDataEnumerable(this.InterfaceType);
 
                 Expression orderByExpression = this.CreateAccumulatedOrderByExpression(combinedData.AsQueryable().Expression, parameterExpression);
 
                 dataItems = combinedData.AsQueryable().Provider.CreateQuery<IData>(orderByExpression);
 
-                foreach (IData data in dataset.Item1)
+                foreach (IData data in dataset.DataItems)
                 {
                     Verify.IsNotNull(data, "Fetching data for data interface '{0}' with expression '{1}' yielded an null element".FormatWith(this.InterfaceType, orderByExpression));
 
@@ -166,11 +166,11 @@ namespace Composite.C1Console.Trees
                     itemKeys.Add(keyValue);
                 }
 
-                keys = keys.ConcatOrDefault(foreignDataset.Item2);
+                keys = keys.ConcatOrDefault(foreignDataset.JoinedKeys);
             }
             else
             {
-                dataItems = dataset.Item1;
+                dataItems = dataset.DataItems;
                 itemKeys = new List<object>();
             }
 
@@ -230,13 +230,10 @@ namespace Composite.C1Console.Trees
                     {
                         hasChildren = ChildNodes.Any();
                     }
-                    else if (keys != null)
-                    {
-                        hasChildren = keys.Contains(keyValue);
-                    }
                     else
                     {
-                        hasChildren = false;
+                        hasChildren = ChildNodes.Any(childNode => childNode is SimpleElementTreeNode)
+                                      || (keys != null && keys.Contains(keyValue));
                     }
 
                     if (this.Icon != null)
@@ -411,8 +408,17 @@ namespace Composite.C1Console.Trees
         }
 
 
+        /// <summary>
+        /// Data related to a tree node
+        /// </summary>
+        private class NodeDataSet
+        {
+            public IEnumerable<IData> DataItems;
+            public IEnumerable<object> JoinedKeys;
+        }
 
-        private Tuple<IEnumerable<IData>, IEnumerable<object>> GetDataset(TreeNodeDynamicContext dynamicContext)
+
+        private NodeDataSet GetDataset(TreeNodeDynamicContext dynamicContext, bool returnJoinedTableKeys = true)
         {
             List<object> innerKeys = null;
 
@@ -426,14 +432,21 @@ namespace Composite.C1Console.Trees
             {
                 expression = CreateSimpleExpression(dynamicContext);
 
-                //MRJ: Multible Parent Filter: Not a real problem here as we just make a request for every filter
-                Expression innerExpression = CreateInnerExpression(dynamicContext, this.JoinParentIdFilterNode, this.JoinDataElementsTreeNode, false);
+                if (returnJoinedTableKeys)
+                {
+                    //MRJ: Multible Parent Filter: Not a real problem here as we just make a request for every filter
+                    Expression innerExpression = CreateInnerExpression(dynamicContext, this.JoinParentIdFilterNode, this.JoinDataElementsTreeNode, false);
 
-                if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down) innerExpression.DebugLogExpression("DataElementTreeNode", label:"Parent ids with children expression:");
+                    if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
+                    {
+                        innerExpression.DebugLogExpression("DataElementTreeNode", label: "Parent ids with children expression:");
+                    }
 
-                innerKeys = DataFacade.GetData(this.JoinDataElementsTreeNode.CurrentDataInterfaceType).Provider.CreateQuery(innerExpression).
-                    ToEnumerableOfObjects().
-                    ToList();
+                    innerKeys = DataFacade.GetData(this.JoinDataElementsTreeNode.CurrentDataInterfaceType).Provider
+                        .CreateQuery(innerExpression)
+                        .ToEnumerableOfObjects()
+                        .ToList();
+                }
             }
             else
             {
@@ -442,10 +455,11 @@ namespace Composite.C1Console.Trees
 
             if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down) expression.DebugLogExpression("DataElementTreeNode");
 
-            return new Tuple<IEnumerable<IData>, IEnumerable<object>>(
-                ExpressionHelper.GetCastedObjects<IData>(this.InterfaceType, expression),
-                innerKeys
-            );
+            return new NodeDataSet
+                       {
+                           DataItems = ExpressionHelper.GetCastedObjects<IData>(this.InterfaceType, expression),
+                           JoinedKeys = innerKeys
+                       };
         }
 
 
