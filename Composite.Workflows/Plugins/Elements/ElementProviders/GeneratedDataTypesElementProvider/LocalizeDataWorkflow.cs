@@ -1,24 +1,22 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Transactions;
 using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.C1Console.Workflow;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Core.Types;
 using Composite.Data;
-using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Core.ResourceSystem;
 using Composite.Data.Transactions;
-using Composite.Core.Types;
-using Composite.C1Console.Users;
-using Composite.Core.Linq;
-using Composite.C1Console.Workflow;
-using System.Reflection;
-using Composite.C1Console.Security;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
@@ -39,7 +37,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(data).Evaluate();
 
-            if (referenceFailingPropertyInfos.Where(f => f.OptionalReferenceWithValue == false).Any() == true)
+            if (referenceFailingPropertyInfos.Any(f => f.OptionalReferenceWithValue == false))
             {
                 List<string> row = new List<string>();
 
@@ -117,7 +115,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     localizedControlled.CultureName = targetCultureInfo.Name;
                     localizedControlled.SourceCultureName = targetCultureInfo.Name;
 
-                    if ((newData is IPublishControlled) == true)
+                    if (newData is IPublishControlled)
                     {
                         IPublishControlled publishControlled = newData as IPublishControlled;
                         publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
@@ -125,7 +123,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                     foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos)
                     {
-                        PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == referenceFailingPropertyInfo.DataFieldDescriptor.Name).Single();
+                        PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == referenceFailingPropertyInfo.DataFieldDescriptor.Name);
                         if ((propertyInfo.PropertyType.IsGenericType == true) &&
                             (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                         {
@@ -141,7 +139,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         }
                     }
 
-                    newData = DataFacade.AddNew(newData);
+                    newData = DataFacade.AddNew(newData, false, false, true);
                 }
 
                 EntityTokenCacheFacade.ClearCache(data.GetDataEntityToken());
@@ -167,23 +165,17 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Type dataType = data.DataSourceId.InterfaceType;
 
-            MethodInfo getDataFromOtherScopeMethodInfo = typeof(DataFacade).GetMethod("GetDataFromOtherLocale", BindingFlags.Public | BindingFlags.Static);
+            MethodInfo method = StaticReflection.GetGenericMethodInfo(a => DataFacade.GetDataFromOtherLocale((IData)null, null))
+                                                .MakeGenericMethod(new[] { dataType });
 
-            MethodInfo genericMethod = getDataFromOtherScopeMethodInfo.MakeGenericMethod(new[] { dataType });
-
-            object result = genericMethod.Invoke(null, new object[] { data, locale });
+            object result = method.Invoke(null, new object[] { data, locale });
 
             if (result == null) return false;
 
-            var enumerable = result as IEnumerable;
+            var enumerable = result as IEnumerable<object>;
             Verify.IsNotNull(enumerable, "Enumeration expected");
 
-            foreach (object o in enumerable)
-            {
-                return true;
-            }
-
-            return false;
+            return enumerable.Any();
         }
     }
 }

@@ -13,7 +13,6 @@ using Composite.Data.Foundation;
 using Composite.C1Console.Events;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
-using Composite.Core.Logging;
 using Composite.Data.Types;
 
 
@@ -330,7 +329,7 @@ namespace Composite.Data
         public static IQueryable<T> GetDataFromOtherScope<T>(T data, DataScopeIdentifier dataScopeIdentifier)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (dataScopeIdentifier == null) throw new ArgumentNullException("dataScopeIdentifier");
 
             if (GetSupportedDataScopes(data.DataSourceId.InterfaceType).Contains(dataScopeIdentifier) == false) throw new ArgumentException(string.Format("The data type '{0}' does not support the data scope '{1}'", data.DataSourceId.InterfaceType, dataScopeIdentifier));
@@ -345,7 +344,7 @@ namespace Composite.Data
         public static IQueryable<T> GetDataFromOtherLocale<T>(T data, CultureInfo cultureInfo)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
 
             using (new DataScope(cultureInfo))
@@ -363,7 +362,7 @@ namespace Composite.Data
         /// <exclude />
         public static IEnumerable<IData> GetDataFromOtherScope(IData data, DataScopeIdentifier dataScopeIdentifier, bool useCaching)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (dataScopeIdentifier == null) throw new ArgumentNullException("dataScopeIdentifier");
 
             if (GetSupportedDataScopes(data.DataSourceId.InterfaceType).Contains(dataScopeIdentifier) == false) throw new ArgumentException(string.Format("The data type '{0}' does not support the data scope '{1}'", data.DataSourceId.InterfaceType, dataScopeIdentifier));
@@ -725,7 +724,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool WillUpdateSucceed(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return data.TryValidateForeignKeyIntegrity();
         }
@@ -853,7 +852,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool WillAddNewSucceed(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return data.TryValidateForeignKeyIntegrity();
         }
@@ -863,7 +862,7 @@ namespace Composite.Data
         public static bool WillAddNewSucceed<T>(T data)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return data.TryValidateForeignKeyIntegrity();
         }
@@ -896,7 +895,7 @@ namespace Composite.Data
         public static T AddNew<T>(T data)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             List<T> result = AddNew<T>(new T[] { data }, true, false, true, true, null);
 
@@ -910,7 +909,7 @@ namespace Composite.Data
         public static T AddNew<T>(T data, string providerName)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
 
             List<T> result = AddNew<T>(new T[] { data }, true, false, true, true, new List<string> { providerName });
@@ -956,7 +955,7 @@ namespace Composite.Data
         public static T AddNew<T>(T data, bool performForeignKeyIntegrityCheck)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             List<T> result = AddNew<T>(new T[] { data }, true, false, performForeignKeyIntegrityCheck, true, null);
 
@@ -977,7 +976,7 @@ namespace Composite.Data
         public static T AddNew<T>(T data, bool suppressEventing, bool performForeignKeyIntegrityCheck)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             List<T> result = AddNew<T>(new T[] { data }, true, suppressEventing, performForeignKeyIntegrityCheck, true, null);
 
@@ -999,7 +998,7 @@ namespace Composite.Data
         public static T AddNew<T>(T data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             List<T> result = AddNew<T>(new T[] { data }, true, suppressEventing, performForeignKeyIntegrityCheck, performeValidation, null);
 
@@ -1012,7 +1011,7 @@ namespace Composite.Data
         /// <exclude />
         public static IData AddNew(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(data.DataSourceId.InterfaceType);
 
@@ -1033,7 +1032,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static IData AddNew(IData data, bool suppressEventing, bool performForeignKeyIntegrityCheck, string providerName)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(data.DataSourceId.InterfaceType);
 
@@ -1055,7 +1054,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static IData AddNew(IData data, Type interfaceType, bool suppressEventing, bool performForeignKeyIntegrityCheck, string providerName)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(interfaceType);
 
@@ -1076,7 +1075,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static IData AddNew(IData data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(data.DataSourceId.InterfaceType);
 
@@ -1099,7 +1098,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static IData AddNew(IData data, Type interfaceType, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(interfaceType);
 
@@ -1121,7 +1120,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static IData AddNew(IData data, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation, string providerName)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(data.DataSourceId.InterfaceType);
 
@@ -1142,7 +1141,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static IData AddNew(IData data, bool performForeignKeyIntegrityCheck)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             MethodInfo methodInfo = GetAddNewMethodInfo(data.DataSourceId.InterfaceType);
 
@@ -1153,10 +1152,10 @@ namespace Composite.Data
 
 
 
-        private static T AddNew<T>(T collection, bool allowStoreCreation, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation, List<string> writeableProviders)
+        private static T AddNew<T>(T data, bool allowStoreCreation, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation, List<string> writeableProviders)
             where T : class, IData
         {
-            List<T> result = _dataFacade.AddNew<T>(new T[] { collection }, allowStoreCreation, suppressEventing, performForeignKeyIntegrityCheck, performeValidation, writeableProviders);
+            List<T> result = _dataFacade.AddNew<T>(new T[] { data }, allowStoreCreation, suppressEventing, performForeignKeyIntegrityCheck, performeValidation, writeableProviders);
 
             return result[0];
         }
@@ -1179,7 +1178,7 @@ namespace Composite.Data
         public static bool WillDeleteSucceed<T>(T data)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return data.TryValidateDeleteSucces();
         }
@@ -1199,7 +1198,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool WillDeleteSucceed(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return data.TryValidateDeleteSucces();
         }
@@ -1236,7 +1235,7 @@ namespace Composite.Data
         public static void Delete<T>(T data)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             Delete<T>(new T[] { data }, false, CascadeDeleteType.Allow, true);
         }
@@ -1256,7 +1255,7 @@ namespace Composite.Data
         public static void Delete<T>(T data, bool referencesFromAllScopes)
             where T : class, IData
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             Delete<T>(new T[] { data }, false, CascadeDeleteType.Allow, referencesFromAllScopes);
         }
@@ -1368,7 +1367,7 @@ namespace Composite.Data
         /// <param name="cascadeDeleteType"></param>
         public static void Delete(IData data, CascadeDeleteType cascadeDeleteType)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             Delete<IData>(new IData[] { data }, false, cascadeDeleteType, true);
         }
@@ -1532,7 +1531,7 @@ namespace Composite.Data
         /// <exclude />
         public static void SetDataTag(IData data, string id, object value)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
 
             SetDataTag(data.DataSourceId, id, value);
@@ -1555,7 +1554,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool TryGetDataTag<T>(IData data, string id, out T tag)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
 
             return TryGetDataTag<T>(data.DataSourceId, id, out tag);
@@ -1590,7 +1589,7 @@ namespace Composite.Data
         /// <exclude />
         public static T GetDataTag<T>(IData data, string id)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
 
             return GetDataTag<T>(data.DataSourceId, id);
@@ -1619,7 +1618,7 @@ namespace Composite.Data
         /// <exclude />
         public static void RemoveDataTag(IData data, string id)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
             if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
 
             RemoveDataTag(data.DataSourceId, id);
@@ -1944,21 +1943,17 @@ namespace Composite.Data
         /// <exclude />
         public static MethodInfo GetAddNewMethodInfo(Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException("The provided type must implement IData", "interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(interfaceType), "interfaceType", "The provided type must implement IData");
 
             MethodInfo methodInfo;
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.GenericAddNewFromTypeMethodInfo.TryGetValue(interfaceType, out methodInfo) == false)
+                if (!_resourceLocker.Resources.GenericAddNewFromTypeMethodInfo.TryGetValue(interfaceType, out methodInfo))
                 {
-                    methodInfo =
-                        (from method in typeof(DataFacade).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-                         where method.Name == "AddNew" &&
-                               typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType) == false
-                         select method).First();
+                    MethodInfo genericMethodInfo = StaticReflection.GetGenericMethodInfo(data => AddNew((IData) null, true, true, true, true, null));
 
-                    methodInfo = methodInfo.MakeGenericMethod(new Type[] { interfaceType });
+                    methodInfo = genericMethodInfo.MakeGenericMethod(new [] { interfaceType });
 
                     _resourceLocker.Resources.GenericAddNewFromTypeMethodInfo.Add(interfaceType, methodInfo);
                 }

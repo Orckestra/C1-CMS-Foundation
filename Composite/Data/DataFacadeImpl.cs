@@ -205,7 +205,7 @@ namespace Composite.Data
 
 
 
-        public void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
+        public void Update(IEnumerable<IData> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
         {
             Verify.ArgumentNotNull(dataset, "dataset");
 
@@ -222,7 +222,7 @@ namespace Composite.Data
 
             foreach (IData data in dataset)
             {
-                if (performeValidation)
+                if (performValidation)
                 {
                     CheckValidationResult(ValidationFacade.Validate(data), data.DataSourceId.InterfaceType);
                 }
@@ -273,7 +273,7 @@ namespace Composite.Data
 
 
 
-        public List<T> AddNew<T>(IEnumerable<T> datas, bool allowStoreCreation, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation, List<string> writeableProviders)
+        public List<T> AddNew<T>(IEnumerable<T> datas, bool allowStoreCreation, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation, List<string> writeableProviders)
             where T : class, IData
         {
             if (writeableProviders == null)
@@ -301,13 +301,13 @@ namespace Composite.Data
                 List<T> result;
                 DynamicTypeManager.EnsureCreateStore(typeof(T));
 
-                result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performeValidation, null);
+                result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
                 return result;
             }
 
             if (writeableProviders.Count == 1)
             {
-                return AddNew_AddingMethod<T>(writeableProviders[0], datas, suppressEventing, performForeignKeyIntegrityCheck, performeValidation);
+                return AddNew_AddingMethod<T>(writeableProviders[0], datas, suppressEventing, performForeignKeyIntegrityCheck, performValidation);
             }
 
             throw new InvalidOperationException(string.Format("{0} writeable data providers exists for data '{1}'.", writeableProviders.Count, typeof(T)));
@@ -316,7 +316,7 @@ namespace Composite.Data
 
 
 
-        private static List<T> AddNew_AddingMethod<T>(string providerName, IEnumerable<T> datas, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performeValidation)
+        private static List<T> AddNew_AddingMethod<T>(string providerName, IEnumerable<T> datas, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
              where T : class, IData
         {
             if (true == string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
@@ -342,7 +342,7 @@ namespace Composite.Data
 
             foreach (T data in datas)
             {
-                if (performeValidation == true)
+                if (performValidation == true)
                 {
                     CheckValidationResult(ValidationFacade.Validate<T>(data), typeof (T));
                 }
