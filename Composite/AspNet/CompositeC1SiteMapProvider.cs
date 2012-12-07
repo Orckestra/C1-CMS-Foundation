@@ -312,7 +312,7 @@ namespace Composite.AspNet
                 }
             }
 
-            return node ?? FindSiteMapNode(rawUrl);
+            return node;
         }
 
         internal static bool IsDefaultDocumentUrl(string url)
