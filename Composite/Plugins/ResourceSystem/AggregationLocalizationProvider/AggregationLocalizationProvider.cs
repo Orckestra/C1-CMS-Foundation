@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -42,7 +43,7 @@ namespace Composite.Plugins.ResourceSystem.AggregationLocalizationProvider
             return stringResourceProvider.GetStringValue(stringId, cultureInfo);
         }
 
-        public IDictionary<string, string> GetAllStrings(string section, CultureInfo cultureInfo)
+        public ReadOnlyDictionary<string, string> GetAllStrings(string section, CultureInfo cultureInfo)
         {
             IStringResourceProvider stringResourceProvider;
 
@@ -51,7 +52,9 @@ namespace Composite.Plugins.ResourceSystem.AggregationLocalizationProvider
                 return null;
             }
 
-            return stringResourceProvider.GetAllStrings(cultureInfo);
+            IDictionary<string, string> dictionary = stringResourceProvider.GetAllStrings(cultureInfo);
+
+            return new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(dictionary));
         }
 
         public IEnumerable<CultureInfo> GetSupportedCultures()

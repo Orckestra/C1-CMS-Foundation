@@ -112,13 +112,24 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
 
             var currentCulture = Thread.CurrentThread.CurrentUICulture;
 
+            IDictionary<string, string> result = null;
+
             foreach (var localizationProvider in GetLocalizationProviders())
             {
-                var result = localizationProvider.GetAllStrings(section, currentCulture);
-                if (result != null) return result;
+                var strings = localizationProvider.GetAllStrings(section, currentCulture);
+                if (strings == null) continue;
+
+                result = result ?? new Dictionary<string, string>();
+                foreach(var kvp in strings)
+                {
+                    if(!result.ContainsKey(kvp.Key))
+                    {
+                        result.Add(kvp.Key, kvp.Value);
+                    }
+                }
             }
 
-            return null;
+            return result;
         }
         #endregion
 

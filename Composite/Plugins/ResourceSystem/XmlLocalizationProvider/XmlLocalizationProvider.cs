@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core;
+using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
@@ -91,7 +92,7 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
             return null;
         }
 
-        public IDictionary<string, string> GetAllStrings(string section, CultureInfo cultureInfo)
+        public ReadOnlyDictionary<string, string> GetAllStrings(string section, CultureInfo cultureInfo)
         {
             var state = GetState();
 
@@ -102,7 +103,18 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
 
             var filesByCulture = state.Sections[section];
 
-            return filesByCulture.ContainsKey(cultureInfo) ? filesByCulture[cultureInfo].GetStrings() : null;
+            if(filesByCulture.ContainsKey(cultureInfo))
+            {
+                return filesByCulture[cultureInfo].GetStrings();
+            }
+            
+            // If not found - searching in default culture
+            if(!cultureInfo.Equals(_defaultCulture) && filesByCulture.ContainsKey(_defaultCulture))
+            {
+                return filesByCulture[_defaultCulture].GetStrings();
+            }
+
+            return null;
         }
 
         public IEnumerable<CultureInfo> GetSupportedCultures()
@@ -202,7 +214,7 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
             return state;
         }
 
-        private static IDictionary<string, string> LoadStrings(string fileName)
+        private static ReadOnlyDictionary<string, string> LoadStrings(string fileName)
         {
             XElement strings = XElementUtils.Load(fileName);
 
@@ -230,7 +242,7 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
                 }
             }
 
-            return stringDictionary;
+            return new ReadOnlyDictionary<string, string>(stringDictionary);
         }
 
         private class State
@@ -241,14 +253,14 @@ namespace Composite.Plugins.ResourceSystem.XmlLocalizationProvider
         private class LocalizationFile
         {
             private readonly string _filePath;
-            private volatile IDictionary<string, string> _strings;
+            private volatile ReadOnlyDictionary<string, string> _strings;
 
             public LocalizationFile(string filePath)
             {
                 _filePath = filePath;
             }
 
-            public IDictionary<string, string> GetStrings()
+            public ReadOnlyDictionary<string, string> GetStrings()
             {
                 if(_strings == null)
                 {

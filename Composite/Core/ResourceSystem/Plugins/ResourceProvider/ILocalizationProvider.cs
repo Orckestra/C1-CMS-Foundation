@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.Collections.Generic;
 
 
 namespace Composite.Core.ResourceSystem.Plugins.ResourceProvider
@@ -14,7 +15,7 @@ namespace Composite.Core.ResourceSystem.Plugins.ResourceProvider
         /// A dictionary of stringId -> stringValue
         /// </summary>
         /// <returns></returns>
-        IDictionary<string, string> GetAllStrings(string section, CultureInfo cultureInfo);
+        ReadOnlyDictionary<string, string> GetAllStrings(string section, CultureInfo cultureInfo);
 
         IEnumerable<CultureInfo> GetSupportedCultures();
 	}
