@@ -400,7 +400,8 @@ var ViewDefinitions = {
 	 * Linkable element selector (selecting pages and media files).
 	 */
 	"Composite.Management.LinkableSelectorDialog" : new DialogViewDefinition ({
-		handle 		: "Composite.Management.LinkableSelectorDialog",
+	    handle: "Composite.Management.LinkableSelectorDialog",
+	    isMutable   : true,
 		position 	: Dialog.MODAL,
 		url			: Dialog.URL_TREEACTIONSELECTOR,
 		argument : {
