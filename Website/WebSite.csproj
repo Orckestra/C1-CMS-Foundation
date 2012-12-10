@@ -6266,6 +6266,7 @@
     </Content>
     <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="App_Data\Razor\web.config" />
+    <Content Include="App_Data\UserControls\web.config" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbarsimple.inc" />
     <None Include="Composite\extensions\compositec1\chrome.manifest" />
@@ -6422,7 +6423,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
-    <Folder Include="App_Data\UserControls\" />
     <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
