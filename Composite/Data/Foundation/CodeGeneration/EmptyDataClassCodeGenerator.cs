@@ -74,7 +74,7 @@ namespace Composite.Data.Foundation.CodeGeneration
             {
                 declaration.BaseTypes.Add(baseClass);
             }
-            declaration.BaseTypes.Add(interfaceType);
+            declaration.BaseTypes.Add(new CodeTypeReference(interfaceType, CodeTypeReferenceOptions.GlobalReference));
 
 
             if (codeAttributeDeclaration != null)
@@ -159,7 +159,7 @@ namespace Composite.Data.Foundation.CodeGeneration
             codeMemberProperty.HasGet = true;
             codeMemberProperty.GetStatements.Add(
                     new CodeMethodReturnStatement(
-                        new CodeTypeOfExpression(interfaceTypeFullName)
+                        new CodeTypeOfExpression(new CodeTypeReference(interfaceTypeFullName, CodeTypeReferenceOptions.GlobalReference))
                     )
                 );
 
