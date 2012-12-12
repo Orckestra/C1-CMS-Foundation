@@ -64,6 +64,11 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         }
 
 
+        public static IEnumerable<string> GetLocalizationSectionNames()
+        {
+            return GetLocalizationProviders().SelectMany(p => p.GetSections()).Distinct().ToList();
+        } 
+
         
         public static string GetStringValue(string section, string stringId)
         {

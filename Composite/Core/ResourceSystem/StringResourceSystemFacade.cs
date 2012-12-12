@@ -6,9 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Composite.Core.Extensions;
-using Composite.Core.ResourceSystem.Plugins.ResourceProvider;
 using Composite.Data.Caching;
-using Composite.Core.ResourceSystem.Foundation;
 using Composite.Core.ResourceSystem.Foundation.PluginFacades;
 using Composite.Core.Types;
 
@@ -92,7 +90,14 @@ namespace Composite.Core.ResourceSystem
             return Error_StringNotDefined;
         }
 
-
+        /// <summary>
+        /// Returns a list of all defined localization sections
+        /// </summary>
+        /// <exclude />
+        public static IEnumerable<string> GetLocalizationSectionNames()
+        {
+            return ResourceProviderPluginFacade.GetLocalizationSectionNames();
+        }
 
         /// <exclude />
         public static bool TryGetString(string providerName, string stringName, out string resultString)
