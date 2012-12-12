@@ -1,41 +1,11 @@
-using System;
-using System.Configuration;
-
+﻿using System.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
-    [Obsolete("Was replaced by VirtualElementConfigurationElement")]
-    internal class BaseElementConfigurationElement : NameTypeConfigurationElement
+    [ConfigurationElementType(typeof(SimpleVirtualElement))]
+    internal class SimpleVirtualElement : VirtualElementConfigurationElement
     {
-        private const string _idProperty = "id";
-        [ConfigurationProperty(_idProperty, IsRequired = true, IsKey = true)]
-        public string Id
-        {
-            get { return (string)base[_idProperty]; }
-            set { base[_idProperty] = value; }
-        }
-
-
-        private const string _orderProperty = "order";
-        [ConfigurationProperty(_orderProperty, IsRequired = true, IsKey = true)]
-        public int Order
-        {
-            get { return (int)base[_orderProperty]; }
-            set { base[_orderProperty] = value; }
-        }
-
-
-        private const string _parentIdProperty = "parentId";
-        [ConfigurationProperty(_parentIdProperty)]
-        public string ParentId
-        {
-            get { return (string)base[_parentIdProperty]; }
-            set { base[_parentIdProperty] = value; }
-        }
-
-
         private const string _labelProperty = "label";
         [ConfigurationProperty(_labelProperty, IsRequired = true)]
         public string Label
@@ -44,7 +14,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             set { base[_labelProperty] = value; }
         }
 
-
+        /// <summary>
+        /// Used by the client js to filter perspective related elements
+        /// </summary>
         private const string _tagProperty = "tag";
         [ConfigurationProperty(_tagProperty, DefaultValue = null)]
         public string Tag
@@ -55,7 +27,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
 
         private const string _closeFolderIconNameProperty = "closeFolderIconName";
-        [ConfigurationProperty(_closeFolderIconNameProperty)]
+        [ConfigurationProperty(_closeFolderIconNameProperty, DefaultValue = null)]
         public string CloseFolderIconName
         {
             get { return (string)base[_closeFolderIconNameProperty]; }
@@ -70,6 +42,16 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         {
             get { return (string)base[_openFolderIconNameProperty]; }
             set { base[_openFolderIconNameProperty] = value; }
+        }
+
+        private const string _elementsProperty = "Elements";
+        [ConfigurationProperty(_elementsProperty, IsRequired = true)]
+        public NameTypeConfigurationElementCollection<VirtualElementConfigurationElement, VirtualElementConfigurationElement> Elements
+        {
+            get
+            {
+                return (NameTypeConfigurationElementCollection<VirtualElementConfigurationElement, VirtualElementConfigurationElement>)base[_elementsProperty];
+            }
         }
     }
 }

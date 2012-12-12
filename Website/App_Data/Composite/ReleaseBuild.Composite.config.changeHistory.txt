@@ -133,3 +133,4 @@ Changes in 4.0
 - ResourceProviderConfiguration section changed - usage of multiple XmlStringResourceProvider-s replaced with single definition of an XmlLocalizationProvider
 - Added PageTemplateFeatureElementProvider and associated virtual element
 - Added pageTemplateFeaturesDirectory="~/App_Data/PageTemplateFeatures" to global configuration  
+- Changed VirtualElementProvider configuration

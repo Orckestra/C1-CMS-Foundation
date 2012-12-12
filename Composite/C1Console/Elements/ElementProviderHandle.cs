@@ -18,7 +18,7 @@ namespace Composite.C1Console.Elements
         /// <exclude />
         public ElementProviderHandle(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
 
             this.ProviderName = providerName;
         }

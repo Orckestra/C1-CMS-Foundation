@@ -167,6 +167,9 @@
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFolderEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\RazorFunctionElementProvider\RazorFunctionElementProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\UserControlFunctionElementProvider\UserControlFunctionElementProvider.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\AttachProviderVirtualElement.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\SimpleVirtualElement.cs" />
+    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementConfigurationElement.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionBasedFunctionProviderHelper.cs" />

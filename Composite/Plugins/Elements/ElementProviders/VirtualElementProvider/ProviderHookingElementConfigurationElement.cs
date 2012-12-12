@@ -1,3 +1,4 @@
+using System;
 using System.Configuration;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -5,8 +6,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
-
-
+    [Obsolete()]
     [ConfigurationElementType(typeof(ProviderHookingElementConfigurationElement))]
     internal sealed class ProviderHookingElementConfigurationElement : BaseElementConfigurationElement
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Composite.C1Console.Elements.Plugins.ElementProvider;
+﻿using Composite.C1Console.Elements.Plugins.ElementProvider;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
@@ -13,19 +9,21 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         {
             VirtualElementProviderData data = (VirtualElementProviderData)ElementProviderConfigurationServices.GetElementProviderConfiguration("VirtualElementProvider");
 
-            ProviderHookingElementConfigurationElement configurationElement = new ProviderHookingElementConfigurationElement();
+            var perspectiveElement = new SimpleVirtualElement();
+            perspectiveElement.Name = providerName;
+            perspectiveElement.Label = label;
+            perspectiveElement.CloseFolderIconName = closeFolderIconName ?? "";
+            perspectiveElement.OpenFolderIconName = openFolderIconName ?? "";
+            perspectiveElement.Type = typeof(SimpleVirtualElement);
 
-            configurationElement.Id = providerName;
-            configurationElement.ParentId = "ID01";
-            configurationElement.Order = 1000;
-            configurationElement.Label = label;
-            configurationElement.Name = providerName;
-            configurationElement.ProviderName = providerName;
-            configurationElement.CloseFolderIconName = closeFolderIconName ?? "";
-            configurationElement.OpenFolderIconName = openFolderIconName ?? "";
-            configurationElement.Type = typeof(ProviderHookingElementConfigurationElement);
+            data.Perspectives.Add(perspectiveElement);
 
-            data.VirtualElements.Add(configurationElement);
+            var providerElement = new AttachProviderVirtualElement();
+            providerElement.Name = providerName;
+            providerElement.ProviderName = providerName;
+            providerElement.Type = typeof (AttachProviderVirtualElement);
+
+            perspectiveElement.Elements.Add(providerElement);
 
             ElementProviderConfigurationServices.SaveElementProviderConfiguration(data);
         }
@@ -33,11 +31,11 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
         public static bool RemoveArea(string providerName)
         {
-            VirtualElementProviderData data = (VirtualElementProviderData)ElementProviderConfigurationServices.GetElementProviderConfiguration("VirtualElementProvider");
+            var data = (VirtualElementProviderData)ElementProviderConfigurationServices.GetElementProviderConfiguration("VirtualElementProvider");
 
-            if (data.VirtualElements.Contains(providerName) == true)
+            if (data.Perspectives.Contains(providerName))
             {
-                data.VirtualElements.Remove(providerName);
+                data.Perspectives.Remove(providerName);
 
                 ElementProviderConfigurationServices.SaveElementProviderConfiguration(data);
 

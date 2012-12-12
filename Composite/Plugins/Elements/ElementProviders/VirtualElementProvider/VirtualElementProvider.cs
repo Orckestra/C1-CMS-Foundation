@@ -1,22 +1,20 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Hosting;
 using Composite.C1Console.Actions;
-using Composite.Core.Application;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.C1Console.Security;
-using Composite.Core.Types;
 using Composite.Core.WebClient;
 using Composite.C1Console.Workflow;
-using Composite.Data;
-using Composite.Data.DynamicTypes;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -30,11 +28,11 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     internal sealed class VirtualElementProvider : IElementProvider, IDataExchangingElementProvider, ILocaleAwareElementProvider
 #pragma warning restore 612
     {
+        private static readonly string RootElementId = "ID01";
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
 
         private ElementProviderContext _context;
-        private BaseElementNode _rootNode;
 
         private List<EntityTokenHook> _currentEntityTokenHooks;
 
@@ -46,8 +44,12 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ResourceHandle ManageSecurityIcon { get { return GetIconHandle("security-manage-permissions"); } }
         public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon { get { return GetIconHandle("localization-changelocale"); } }
 
-        public VirtualElementProvider()
+        private readonly VirtualElementProviderData _configuration;
+
+        public VirtualElementProvider(VirtualElementProviderData configuration)
         {
+            _configuration = configuration;
+
             HookingFacade.SubscribeToNewElementProviderRootEntitiesEvent(OnNewElementProviderRootEntitiesEvent);
         }
 
@@ -64,18 +66,8 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         {
             get
             {
-                foreach (ProviderHookingElementNode node in GetProviderHookingElementNodes(_rootNode))
-                {
-                    foreach (string providerName in node.ProviderNames)
-                    {
-                        if (ElementFacade.ContainsLocalizedData(new ElementProviderHandle(providerName)) == true)
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
+                return GetAttachedElementProviderNames(_configuration.Perspectives)
+                       .Any(providerName => ElementFacade.ContainsLocalizedData(new ElementProviderHandle(providerName)));
             }
         }
 
@@ -83,14 +75,23 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
         public IEnumerable<Element> GetRoots(SearchToken seachToken)
         {
-            List<Element> roots = new List<Element>();
-            roots.Add(CreateElement(_rootNode));
-            roots[0].ElementExternalActionAdding = ElementExternalActionAddingExtensions.Remove(roots[0].ElementExternalActionAdding, ElementExternalActionAdding.AllowGlobal);
-            roots[0].TagValue = "Root";
+            EntityToken entityToken = new VirtualElementProviderEntityToken(_context.ProviderName, RootElementId);
 
-            AddRootActions(roots[0]);
+            Element root = new Element(_context.CreateElementHandle(entityToken));
 
-            return roots;
+            root.ElementExternalActionAdding = root.ElementExternalActionAdding.Remove(ElementExternalActionAdding.AllowGlobal);
+            root.TagValue = "Root";
+            root.VisualData = new ElementVisualizedData
+                                  {
+                                      Label = "${Composite.Management, VirtualElementProviderElementProvider.ID01}",
+                                      Icon = CommonElementIcons.Folder,
+                                      OpenedIcon = CommonElementIcons.FolderOpen,
+                                      ToolTip = ""
+                                  };
+            
+            AddRootActions(root);
+
+            return new [] { root };
         }
 
 
@@ -276,54 +277,60 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
         private IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken seachToken, bool useForeign)
         {
-            BaseElementNode node = FindElementNode(entityToken.Id, _rootNode);
+            IEnumerable<VirtualElementConfigurationElement> elementNodes;
 
-            if (node == null) throw new InvalidOperationException(string.Format("No corresponding node was found with the id '{0}'", entityToken.Id));
-
-            if (node is FolderElementNode)
+            if(entityToken.Id == RootElementId)
             {
-                FolderElementNode folderNode = (FolderElementNode)node;
-
-                List<Element> elements = new List<Element>();
-
-                foreach (BaseElementNode childNode in node.Children)
-                {
-                    elements.Add(CreateElement(childNode));
-                }
-
-                return elements;
-            }
-            else if (node is ProviderHookingElementNode)
-            {
-                ProviderHookingElementNode providerNode = (ProviderHookingElementNode)node;
-
-                List<Element> elements = new List<Element>();
-                foreach (string providerName in providerNode.ProviderNames)
-                {
-                    List<Element> elms;
-                    if ((useForeign == true) && (ElementFacade.IsLocaleAwareElementProvider(new ElementProviderHandle(providerName)) == true))
-                    {
-                        elms = ElementFacade.GetForeignRoots(new ElementProviderHandle(providerName), seachToken).ToList();
-                    }
-                    else
-                    {
-                        elms = ElementFacade.GetRoots(new ElementProviderHandle(providerName), seachToken).ToList();
-                    }
-
-                    foreach (Element element in elms)
-                    {
-                        element.ElementExternalActionAdding = ElementExternalActionAddingExtensions.Remove(element.ElementExternalActionAdding, ElementExternalActionAdding.AllowGlobal);
-                    }
-
-                    elements.AddRange(elms);
-                }
-
-                return elements;
+                elementNodes = _configuration.Perspectives;
             }
             else
             {
-                throw new NotImplementedException();
+                SimpleVirtualElement node = FindElementNode(entityToken.Id, _configuration.Perspectives);
+
+                Verify.IsNotNull(node, "No corresponding node was found with the id '{0}'", entityToken.Id);
+
+                elementNodes = node.Elements;
             }
+
+            var result = new List<Element>();
+
+            foreach (var elementNode in elementNodes)
+            {
+                if (elementNode is SimpleVirtualElement)
+                {
+                    result.Add(CreateElement(elementNode as SimpleVirtualElement));
+                    continue;
+                }
+
+                if (elementNode is AttachProviderVirtualElement)
+                {
+                    string providerName = (elementNode as AttachProviderVirtualElement).ProviderName;
+
+                    var providerHandle = new ElementProviderHandle(providerName);
+
+                    List<Element> elementsFromProvider;
+                    if (useForeign && ElementFacade.IsLocaleAwareElementProvider(providerHandle))
+                    {
+                        elementsFromProvider = ElementFacade.GetForeignRoots(providerHandle, seachToken).ToList();
+                    }
+                    else
+                    {
+                        elementsFromProvider = ElementFacade.GetRoots(providerHandle, seachToken).ToList();
+                    }
+
+                    foreach (Element element in elementsFromProvider)
+                    {
+                        element.ElementExternalActionAdding = element.ElementExternalActionAdding.Remove(ElementExternalActionAdding.AllowGlobal);
+                    }
+
+                    result.AddRange(elementsFromProvider);
+                    continue;
+                }
+
+                throw new NotSupportedException();
+            }
+
+            return result;
         }
 
 
@@ -335,91 +342,16 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
 
 
-        public object GetData(string name)
+        public object GetData(string elementId)
         {
-            BaseElementNode node = FindElementNodeParent(name, _rootNode);
+            string parentNodeId = GetParentNodeId(elementId, RootElementId, _configuration.Perspectives);
 
-            if (node != null)
-            {
-                return new VirtualElementProviderEntityToken(_context.ProviderName, node.Id);
-            }
-            else
+            if (parentNodeId == null)
             {
                 return null;
             }
-        }
 
-
-
-        internal void AddFolder(FolderElementConfigurationElement folderElementConfigurationElement)
-        {
-            FolderElementNode folderElementNode = new FolderElementNode
-                {
-                    Id = folderElementConfigurationElement.Id,
-                    Label = folderElementConfigurationElement.Label,
-                    Tag = folderElementConfigurationElement.Tag,
-                    CloseFolderIconName = folderElementConfigurationElement.CloseFolderIconName,
-                    OpenFolderIconName = folderElementConfigurationElement.OpenFolderIconName,
-                };
-
-
-            AddElementNode(folderElementNode, folderElementConfigurationElement.ParentId);
-        }
-
-
-
-        internal void AddProviderHook(ProviderHookingElementConfigurationElement providerHookingElementConfigurationElement)
-        {
-            ProviderHookingElementNode providerHookingElementNode = this.FindElementNode(providerHookingElementConfigurationElement.Id, _rootNode) as ProviderHookingElementNode;
-
-            if (providerHookingElementNode == null)
-            {
-                providerHookingElementNode = new ProviderHookingElementNode
-                    {
-                        Id = providerHookingElementConfigurationElement.Id,
-                        Label = providerHookingElementConfigurationElement.Label,
-                        Tag = providerHookingElementConfigurationElement.Tag,
-                        ProviderNames = new List<string> { providerHookingElementConfigurationElement.ProviderName },
-                        OpenFolderIconName = providerHookingElementConfigurationElement.OpenFolderIconName,
-                        CloseFolderIconName = providerHookingElementConfigurationElement.CloseFolderIconName,
-                    };
-            }
-            else
-            {
-                providerHookingElementNode.ProviderNames.Add(providerHookingElementConfigurationElement.ProviderName);
-            }
-
-
-            AddElementNode(providerHookingElementNode, providerHookingElementConfigurationElement.ParentId);
-        }
-
-
-
-        private void AddElementNode(BaseElementNode baseElementNode, string parentId)
-        {
-            if (string.IsNullOrEmpty(parentId) == true)
-            {
-                if (_rootNode != null)
-                {
-                    throw new ConfigurationErrorsException(string.Format("Only one root node is allowed. Current root node id is '{0}' and the extra root node id is '{1}'", _rootNode.Id, parentId));
-                }
-
-                _rootNode = baseElementNode;
-            }
-            else
-            {
-                BaseElementNode parentNode = FindElementNode(parentId, _rootNode);
-                if (parentNode == null)
-                {
-                    throw new ConfigurationErrorsException(string.Format("The parent node with id '{0}' should be added before any of its children", parentId));
-                }
-
-                // This is a nasty hack for letting nodes (folderElements/hookingElemetns) with the same id exist as one single element
-                if (parentNode.Children.Contains(baseElementNode) == false)
-                {
-                    parentNode.Children.Add(baseElementNode);
-                }
-            }
+            return new VirtualElementProviderEntityToken(_context.ProviderName, parentNodeId);
         }
 
 
@@ -429,8 +361,10 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             {
                 if (_currentEntityTokenHooks == null)
                 {
-                    _currentEntityTokenHooks = new List<EntityTokenHook>();
-                    CreateHooks(_rootNode, _currentEntityTokenHooks);
+                    var result = new List<EntityTokenHook>();
+                    CreateHooks(result);
+
+                    _currentEntityTokenHooks = result;
                 }
 
                 return _currentEntityTokenHooks;
@@ -439,123 +373,138 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
 
 
-        private IEnumerable<ProviderHookingElementNode> GetProviderHookingElementNodes(BaseElementNode baseElementNode)
+        private IEnumerable<string> GetAttachedElementProviderNames(IEnumerable<VirtualElementConfigurationElement> elements)
         {
-            if (baseElementNode is ProviderHookingElementNode) yield return baseElementNode as ProviderHookingElementNode;
-
-            foreach (BaseElementNode childNode in baseElementNode.Children)
+            foreach (var virtualElement in elements)
             {
-                foreach (ProviderHookingElementNode node in GetProviderHookingElementNodes(childNode))
+                if(virtualElement is AttachProviderVirtualElement)
                 {
-                    yield return node;
+                    yield return (virtualElement as AttachProviderVirtualElement).ProviderName;
+                    continue;
                 }
-            }
-        }
 
-
-
-        private BaseElementNode FindElementNode(string id, BaseElementNode parentNode)
-        {
-            if (parentNode.Id == id) return parentNode;
-
-            foreach (BaseElementNode node in parentNode.Children)
-            {
-                BaseElementNode foundNode = FindElementNode(id, node);
-
-                if (foundNode != null) return foundNode;
-            }
-
-            return null;
-        }
-
-
-
-        private BaseElementNode FindElementNodeParent(string id, BaseElementNode parentNode)
-        {
-            foreach (BaseElementNode node in parentNode.Children)
-            {
-                if (node.Id == id) return parentNode;
-
-                BaseElementNode foundNode = FindElementNodeParent(id, node);
-
-                if (foundNode != null) return foundNode;
-            }
-
-            return null;
-        }
-
-
-
-        private void CreateHooks(BaseElementNode node, List<EntityTokenHook> foundHooks)
-        {
-            ProviderHookingElementNode providerHookingNode = node as ProviderHookingElementNode;
-
-            if (providerHookingNode != null)
-            {
-                EntityToken hookerEntityToken = new VirtualElementProviderEntityToken(_context.ProviderName, providerHookingNode.Id);
-
-                EntityTokenHook hook = new EntityTokenHook(hookerEntityToken);
-
-                foreach (string providerName in providerHookingNode.ProviderNames)
+                if (virtualElement is SimpleVirtualElement)
                 {
-                    List<Element> childElements = ElementFacade.GetRootsWithNoSecurity(new ElementProviderHandle(providerName), null).ToList();
-
-                    foreach (Element childElement in childElements)
+                    foreach (var providerName in GetAttachedElementProviderNames((virtualElement as SimpleVirtualElement).Elements))
                     {
-                        hook.AddHookie(childElement.ElementHandle.EntityToken);
+                        yield return providerName;
                     }
+                    continue;
                 }
 
-                foundHooks.Add(hook);
-            }
-
-            foreach (BaseElementNode childNode in node.Children)
-            {
-                CreateHooks(childNode, foundHooks);
+                throw new NotSupportedException("Not supported VirtualElementConfigurationElement type");
             }
         }
 
 
 
-        private Element CreateElement(BaseElementNode baseElementNode)
+        private SimpleVirtualElement FindElementNode(string name, IEnumerable<VirtualElementConfigurationElement> elements)
         {
-            EntityToken entityToken = new VirtualElementProviderEntityToken(_context.ProviderName, baseElementNode.Id);
+            foreach (var element in elements.OfType<SimpleVirtualElement>())
+            {
+                if (element.Name == name) return element;
+
+                SimpleVirtualElement foundNode = FindElementNode(name, element.Elements);
+
+                if (foundNode != null) return foundNode;
+            }
+
+            return null;
+        }
+
+
+
+        private string GetParentNodeId(string name, string currentId, IEnumerable<VirtualElementConfigurationElement> elements)
+        {
+            foreach (var element in elements.OfType<SimpleVirtualElement>())
+            {
+                if (element.Name == name) return currentId;
+
+                string foundNode = GetParentNodeId(name, element.Name, element.Elements);
+
+                if (foundNode != null) return foundNode;
+            }
+
+            return null;
+        }
+
+
+        private void CreateHooks(List<EntityTokenHook> foundHooks)
+        {
+            CreateHooks(RootElementId, _configuration.Perspectives, foundHooks);
+        }
+
+
+        private void CreateHooks(string parentId, IEnumerable<VirtualElementConfigurationElement> elements, List<EntityTokenHook> foundHooks)
+        {
+            var entityToken = new VirtualElementProviderEntityToken(_context.ProviderName, parentId);
+            var entityTokenHook = new EntityTokenHook(entityToken);
+
+            foreach (var attachProviderElement in elements.OfType<AttachProviderVirtualElement>())
+            {
+                string providerName = attachProviderElement.ProviderName;
+                var childElements = ElementFacade.GetRootsWithNoSecurity(new ElementProviderHandle(providerName), null).ToList();
+
+                foreach (Element childElement in childElements)
+                {
+                    entityTokenHook.AddHookie(childElement.ElementHandle.EntityToken);
+                }
+            }
+
+            foundHooks.Add(entityTokenHook);
+
+            foreach (var simpleElement in elements.OfType<SimpleVirtualElement>())
+            {
+                CreateHooks(simpleElement.Name, simpleElement.Elements, foundHooks);
+            }
+        }
+
+
+
+        private Element CreateElement(SimpleVirtualElement simpleElementNode)
+        {
+            EntityToken entityToken = new VirtualElementProviderEntityToken(_context.ProviderName, simpleElementNode.Name);
 
             Element element = new Element(_context.CreateElementHandle(entityToken));
-            element.TagValue = baseElementNode.Tag;
+            element.TagValue = simpleElementNode.Tag;
 
             element.VisualData = new ElementVisualizedData
                 {
-                    Label = StringResourceSystemFacade.ParseString(baseElementNode.Label),
+                    Label = StringResourceSystemFacade.ParseString(simpleElementNode.Label),
                     HasChildren = true // fixing refresh problem easy way... was: HasChildren(baseElementNode) 
                 };
 
-            if ((baseElementNode is ProviderHookingElementNode) == true)
+
+            Action<IEnumerable> collectProviders = null;
+
+            // Recursively searching for attached providers
+            var attachedProviders = new List<AttachProviderVirtualElement>();
+            collectProviders = currentElements =>
             {
-                ProviderHookingElementNode providerHookingElementNode = baseElementNode as ProviderHookingElementNode;
-                foreach (string name in providerHookingElementNode.ProviderNames)
+                attachedProviders.AddRange(currentElements.OfType<AttachProviderVirtualElement>());
+                currentElements.OfType<SimpleVirtualElement>().ForEach(e => collectProviders(e.Elements));
+            };
+            collectProviders(simpleElementNode.Elements);
+
+
+            foreach (var attachedProvider in attachedProviders)
+            {
+                if (ElementFacade.ContainsLocalizedData(new ElementProviderHandle(attachedProvider.ProviderName)))
                 {
-                    if (ElementFacade.ContainsLocalizedData(new ElementProviderHandle(name)) == true)
-                    {
-                        element.IsLocaleAware = true;
-                    }
+                    element.IsLocaleAware = true;
                 }
             }
 
-            if (element.VisualData.HasChildren == true)
-            {
-                ResourceHandle openHandle = IconResourceSystemFacade.GetResourceHandle(baseElementNode.OpenFolderIconName);
-                ResourceHandle closeHandle = IconResourceSystemFacade.GetResourceHandle(baseElementNode.CloseFolderIconName);
 
-                if (openHandle != null && closeHandle == null)
-                {
-                    closeHandle = openHandle;
-                }
-                if (closeHandle != null && openHandle == null)
-                {
-                    openHandle = closeHandle;
-                }
-                if (openHandle == null && closeHandle == null)
+            if (element.VisualData.HasChildren)
+            {
+                ResourceHandle openHandle = IconResourceSystemFacade.GetResourceHandle(simpleElementNode.OpenFolderIconName);
+                ResourceHandle closeHandle = IconResourceSystemFacade.GetResourceHandle(simpleElementNode.CloseFolderIconName);
+
+                closeHandle = closeHandle ?? openHandle;
+                openHandle = openHandle ?? closeHandle;
+
+                if (openHandle == null)
                 {
                     openHandle = CommonElementIcons.Folder;
                     closeHandle = CommonElementIcons.FolderOpen;
@@ -581,7 +530,8 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             {
                 return baseElementNode.Children.Count != 0;
             }
-            else if (baseElementNode is ProviderHookingElementNode)
+
+            if (baseElementNode is ProviderHookingElementNode)
             {
                 return true;
 
@@ -592,20 +542,23 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
                 //return children.Count != 0;
             }
-            else
-            {
-                throw new NotImplementedException(string.Format("The element node type '{0}' is not supported", baseElementNode.GetType()));
-            }
+            
+            throw new NotSupportedException(string.Format("The element node type '{0}' is not supported", baseElementNode.GetType()));
         }
 
 
 
         private void OnNewElementProviderRootEntitiesEvent(HookingFacadeEventArgs hookingFacadeEventArgs)
         {
-            HookingFacade.RemoveHooks(this.CurrentEntityTokenHooks);
+            if (_currentEntityTokenHooks != null)
+            {
+                HookingFacade.RemoveHooks(this.CurrentEntityTokenHooks);
+            }
 
-            _currentEntityTokenHooks = new List<EntityTokenHook>();
-            CreateHooks(_rootNode, _currentEntityTokenHooks);
+            var newHooks = new List<EntityTokenHook>();
+            CreateHooks(newHooks);
+
+            _currentEntityTokenHooks = newHooks;
 
             HookingFacade.AddHooks(this.CurrentEntityTokenHooks);
         }
@@ -627,52 +580,10 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public IElementProvider Assemble(IBuilderContext context, ElementProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
 #pragma warning restore 612
         {
+            var configuration = (VirtualElementProviderData)objectConfiguration;
 
-            VirtualElementProvider provider = new VirtualElementProvider();
-
-            VirtualElementProviderData data = (VirtualElementProviderData)objectConfiguration;
-
-            List<string> ids =
-                (from elm in data.VirtualElements
-                 select elm.Id).ToList();
-
-            foreach (BaseElementConfigurationElement element in data.VirtualElements)
-            {
-                if ((element.ParentId != "") &&
-                    (ids.Contains(element.ParentId) == false))
-                {
-                    throw new ConfigurationErrorsException(string.Format("The node with id '{0}' has a non existing parent node with id '{1}'", element.Id, element.ParentId));
-                }
-            }
-
-            AddRecursively(provider, data, "");
-
-            return provider;
+            return new VirtualElementProvider(configuration);
         }
-
-
-
-        private void AddRecursively(VirtualElementProvider provider, VirtualElementProviderData data, string parentId)
-        {
-            foreach (BaseElementConfigurationElement element in data.VirtualElements.Where(elm => elm.ParentId == parentId).OrderBy(elm => elm.Order))
-            {
-                if ((element is FolderElementConfigurationElement) == true)
-                {
-                    provider.AddFolder((FolderElementConfigurationElement)element);
-                }
-                else if ((element is ProviderHookingElementConfigurationElement) == true)
-                {
-                    provider.AddProviderHook((ProviderHookingElementConfigurationElement)element);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
-
-                AddRecursively(provider, data, element.Id);
-            }
-        }
-
     }
 
 
@@ -683,13 +594,13 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
     internal sealed class VirtualElementProviderData : ElementProviderData
 #pragma warning restore 612
     {
-        private const string _virtualElementsProperty = "VirtualElements";
-        [ConfigurationProperty(_virtualElementsProperty, IsRequired = true)]
-        public NameTypeConfigurationElementCollection<BaseElementConfigurationElement, BaseElementConfigurationElement> VirtualElements
+        private const string _perspectivesProperty = "Perspectives";
+        [ConfigurationProperty(_perspectivesProperty, IsRequired = true)]
+        public NameTypeConfigurationElementCollection<VirtualElementConfigurationElement, VirtualElementConfigurationElement> Perspectives
         {
             get
             {
-                return (NameTypeConfigurationElementCollection<BaseElementConfigurationElement, BaseElementConfigurationElement>)base[_virtualElementsProperty];
+                return (NameTypeConfigurationElementCollection<VirtualElementConfigurationElement, VirtualElementConfigurationElement>)base[_perspectivesProperty];
             }
         }
     }
