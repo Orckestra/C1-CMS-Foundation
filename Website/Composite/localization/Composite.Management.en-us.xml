@@ -252,6 +252,7 @@
 	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorLabel" value="Select datatype" />
 	<string key="Website.Forms.Administrative.RemoveAssociatedTypeSelectType.TypeSelectorHelp" value="Select one of the existing types" />
 	<string key="VirtualElementProviderElementProvider.ID01" value="Virtual root" />
+  <string key="VirtualElementProviderElementProvider.PermissionsPerspective" value="Users and Permissions" />
 	<string key="VirtualElementProviderElementProvider.UserPerspective" value="Users" />
 	<string key="VirtualElementProviderElementProvider.DeveloperApplicationPerspective" value="Developer Apps" />
 	<string key="VirtualElementProviderElementProvider.UserGroupPerspective" value="User Groups" />
