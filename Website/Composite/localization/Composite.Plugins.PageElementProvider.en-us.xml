@@ -48,7 +48,7 @@
   <string key="EditPage.LabelContent" value="Content" />
   <string key="EditPage.LabelPreview" value="Preview" />
   <string key="EditPage.PageTypeSelectorLabel" value="Page type" />
-  <string key="EditPage.PageTypeSelectorHelp" value="The page type selection defines the role of the page, like 'a normal page' or 'a blog'. The options available depends on what features have been installed." />
+  <string key="EditPage.PageTypeSelectorHelp" value="The page type selection defines the role of the page, like 'a normal page' or 'a blog'. The options available depend on features installed." />
   <string key="EditPage.MaxLength" value="{0} characters maximum" />
   <string key="DeletePage.LabelFieldGroup" value="Delete page?" />
   <string key="DeletePageStep1.Title" value="Delete page and all subpages" />

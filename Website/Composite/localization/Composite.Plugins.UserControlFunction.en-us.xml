@@ -6,9 +6,9 @@
   <string key="AddNewUserControlFunction.Label" value="Add User Control Function" />
   <string key="AddNewUserControlFunction.ToolTip" value="Add a new User Control function" />
   <string key="EditUserControlFunction.Label" value="Edit" />
-  <string key="EditUserControlFunction.ToolTip" value="Edit User Control Function" />
+  <string key="EditUserControlFunction.ToolTip" value="Edit the User Control Function" />
   <string key="DeleteUserControlFunction.Label" value="Delete" />
-  <string key="DeleteUserControlFunction.ToolTip" value="Delete User Control function" />
+  <string key="DeleteUserControlFunction.ToolTip" value="Delete the User Control function" />
   
   <string key="AddNewUserControlFunction.LabelDialog" value="Add User Control Function" />
   <string key="AddNewUserControlFunction.LabelFieldGroup" value="New User Control function" />
@@ -17,7 +17,7 @@
   <string key="AddNewUserControlFunction.LabelNamespace" value="Namespace" />
   <string key="AddNewUserControlFunction.HelpNamespace" value="" />
   <string key="AddNewUserControlFunction.LabelCopyFrom" value="Copy from" />
-  <string key="AddNewUserControlFunction.LabelCopyFromHelp" value="You can copy the code from another UserControl function by selecting it in this list." />
+  <string key="AddNewUserControlFunction.LabelCopyFromHelp" value="You can copy the code from another User Control function by selecting it in this list." />
   <string key="AddNewUserControlFunction.LabelCopyFromEmptyOption" value="(New User Control function)" />
 
   <string key="AddNewUserControlFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
@@ -28,7 +28,7 @@
 
   <string key="EditUserControlFunctionWorkflow.Validation.DialogTitle" value="Validation Error" />
   <string key="EditUserControlFunctionWorkflow.Validation.CompilationFailed" value="Compilation failed: {0}" />
-  <string key="EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass" value="User Control function should inherit '{0}'" />
+  <string key="EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass" value="The User Control function should inherit '{0}'" />
 
   <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle" value="Delete User Control Function?" />
   <string key="DeleteUserControlFunctionWorkflow.ConfirmDeleteMessage" value="Delete the selected User Control?" />

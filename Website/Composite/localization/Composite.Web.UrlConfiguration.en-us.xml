@@ -10,9 +10,9 @@
 	<string key="Tree.AddHostnameLabel" value="Add Hostname" />
   <string key="Tree.AddHostnameToolTip" value="Add a new hostname mapping" />
   <string key="Tree.EditHostnameLabel" value="Edit Hostname" />
-  <string key="Tree.EditHostnameToolTip" value="Edit hostname mapping" />
+  <string key="Tree.EditHostnameToolTip" value="Edit this hostname mapping" />
   <string key="Tree.DeleteHostnameLabel" value="Delete Hostname" />
-  <string key="Tree.DeleteHostnameToolTip" value="Delete hostname mapping" />
+  <string key="Tree.DeleteHostnameToolTip" value="Delete this hostname mapping" />
 
 
   <string key="Tree.UrlConfigurationLabel" value="UrlConfiguration" />

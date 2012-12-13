@@ -4,7 +4,7 @@
   <string key="EditRazorFileAction.ToolTip" value="Edit the cshtml file" />
 
   <string key="EditRazorTemplateAction.Label" value="Edit Razor Template" />
-  <string key="EditRazorTemplateAction.ToolTip" value="Edit the cshtml file behind template" />
+  <string key="EditRazorTemplateAction.ToolTip" value="Edit the cshtml file behind the template" />
 
   <string key="DeleteRazorPageTemplateAction.Label" value="Delete" />
   <string key="DeleteRazorPageTemplateAction.ToolTip" value="Delete page template" />
@@ -17,7 +17,7 @@
   <string key="AddNewRazorPageTemplate.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
   <string key="AddNewRazorPageTemplate.LabelCopyFromEmptyOption" value="(New template)" />
   <string key="AddNewRazorPageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
-  <string key="AddNewRazorPageTemplateWorkflow.TitleTooLong" value="Title is too long (used as part of the .cshtml filename)." />
+  <string key="AddNewRazorPageTemplateWorkflow.TitleTooLong" value="The title is too long (used as part of the .cshtml filename)." />
 
   <string key="EditTemplate.Validation.DialogTitle" value="Validation error" />
   <string key="EditTemplate.Validation.CompilationFailed" value="Compilation failed: {0}" />

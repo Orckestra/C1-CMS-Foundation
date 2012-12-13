@@ -8,7 +8,7 @@
   <string key="EditRazorFunction.Label" value="Edit" />
   <string key="EditRazorFunction.ToolTip" value="Edit Razor Function" />
   <string key="DeleteRazorFunction.Label" value="Delete" />
-  <string key="DeleteRazorFunction.ToolTip" value="Delete Razor function" />
+  <string key="DeleteRazorFunction.ToolTip" value="Delete this Razor function" />
 
   <string key="AddNewRazorFunction.LabelDialog" value="Add Razor Function" />
   <string key="AddNewRazorFunction.LabelFieldGroup" value="New Razor function" />
@@ -17,14 +17,14 @@
   <string key="AddNewRazorFunction.LabelNamespace" value="Namespace" />
   <string key="AddNewRazorFunction.HelpNamespace" value="" />
   <string key="AddNewRazorFunction.LabelCopyFrom" value="Copy from" />
-  <string key="AddNewRazorFunction.LabelCopyFromHelp" value="You can copy the code from another razor function by selecting it in this list." />
-  <string key="AddNewRazorFunction.LabelCopyFromEmptyOption" value="(New razor function)" />
+  <string key="AddNewRazorFunction.LabelCopyFromHelp" value="You can copy the code from another Razor function by selecting it in this list." />
+  <string key="AddNewRazorFunction.LabelCopyFromEmptyOption" value="(New Razor function)" />
 
 
   <string key="AddNewRazorFunctionWorkflow.DuplicateName" value="A C1 function with the same name already exists." />
-  <string key="AddNewRazorFunctionWorkflow.EmptyName" value="Function name is empty" />
-  <string key="AddNewRazorFunctionWorkflow.NamespaceEmpty" value="Function namespace is empty" />
-  <string key="AddNewRazorFunctionWorkflow.InvalidNamespace" value="Namespace must be like A.B.C - not start and end with ." />
+  <string key="AddNewRazorFunctionWorkflow.EmptyName" value="The function name is empty" />
+  <string key="AddNewRazorFunctionWorkflow.NamespaceEmpty" value="The function namespace is empty" />
+  <string key="AddNewRazorFunctionWorkflow.InvalidNamespace" value="The namespace must be like A.B.C - not starting or ending with a period (.)" />
   <string key="AddNewRazorFunctionWorkflow.TotalNameTooLang" value="The total length of the name and the namespace is too long (used to name the .cshtml file)." />
 
   <string key="EditRazorFunctionWorkflow.Validation.DialogTitle" value="Validation Error" />

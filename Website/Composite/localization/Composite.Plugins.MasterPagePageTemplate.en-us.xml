@@ -11,8 +11,8 @@
   <string key="EditTemplate.Validation.DialogTitle" value="Validation error" />
   <string key="EditTemplate.Validation.CompilationFailed" value="Compilation failed: {0}" />
   <string key="EditTemplate.Validation.IncorrectBaseClass" value="Page template class does not inherit '{0}'" />
-  <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Excepton: {1}" />
-  <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change template id through current workflow. Original template id is '{0}'" />
+  <string key="EditTemplate.Validation.PropertyError" value="Failed to evaluate page template property '{0}'. Exception: {1}" />
+  <string key="EditTemplate.Validation.TemplateIdChanged" value="It is not allowed to change the template ID through the current workflow. The original template ID is '{0}'" />
 
 
   <string key="AddNewMasterPagePageTemplate.LabelDialog" value="Add New Master Page Template" />
@@ -23,5 +23,5 @@
   <string key="AddNewMasterPagePageTemplate.LabelCopyFromHelp" value="You can copy the markup from another Layout Template by selecting it in this list." />
   <string key="AddNewMasterPagePageTemplate.LabelCopyFromEmptyOption" value="(New template)" />
   <string key="AddNewMasterPagePageTemplateWorkflow.TitleInUseTitle" value="Title already used" />
-  <string key="AddNewMasterPagePageTemplateWorkflow.TitleTooLong" value="Title is too long (used as part of the a filename)." />
+  <string key="AddNewMasterPagePageTemplateWorkflow.TitleTooLong" value="The title is too long (used as part of a filename)." />
 </strings>

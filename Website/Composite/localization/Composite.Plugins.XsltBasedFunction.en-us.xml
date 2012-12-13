@@ -41,7 +41,7 @@
   <string key="AddNewXsltFunctionStep1.HelpNamespace" value="" />
   <string key="AddNewXsltFunctionStep1.LabelOutputType" value="Output type" />
   <string key="AddNewXsltFunctionStep1.LabelCopyFrom" value="Copy from" />
-  <string key="AddNewXsltFunctionStep1.LabelCopyFromEmptyOption" value="(New Xslt function)" />
+  <string key="AddNewXsltFunctionStep1.LabelCopyFromEmptyOption" value="(New XSLT function)" />
 
 
   <string key="EditXsltFunction.LabelSettings" value="Settings" />
