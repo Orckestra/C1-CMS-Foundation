@@ -316,14 +316,13 @@ namespace Composite.Data
 
 
 
-        private static List<T> AddNew_AddingMethod<T>(string providerName, IEnumerable<T> datas, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
+        private static List<T> AddNew_AddingMethod<T>(string providerName, IEnumerable<T> dataset, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation)
              where T : class, IData
         {
-            if (true == string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
-            if (null == datas) throw new ArgumentNullException("datas");
-            if (datas.Contains(null) == true) throw new ArgumentException("The enumerations 'datas' may not contain null's");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
+            Verify.ArgumentNotNull(dataset, "dataset");
+            Verify.ArgumentCondition(!dataset.Contains(null), "dataset", "The enumeration may not contain null values");
 
-            List<T> addedDatas;
 
             List<string> writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
             if (writeableProviders.Contains(providerName) == false)
@@ -340,14 +339,14 @@ namespace Composite.Data
             }
 
 
-            foreach (T data in datas)
+            foreach (T data in dataset)
             {
-                if (performValidation == true)
+                if (performValidation)
                 {
                     CheckValidationResult(ValidationFacade.Validate<T>(data), typeof (T));
                 }
 
-                if (performForeignKeyIntegrityCheck == true)
+                if (performForeignKeyIntegrityCheck)
                 {
                     data.ValidateForeignKeyIntegrity();
                 }
@@ -356,13 +355,13 @@ namespace Composite.Data
 
             if (suppressEventing == false)
             {
-                foreach (T data in datas)
+                foreach (T data in dataset)
                 {
                     DataEventSystemFacade.FireDataBeforeAddEvent<T>(data);
                 }
             }
 
-            addedDatas = DataProviderPluginFacade.AddNew<T>(providerName, datas);
+            List<T> addedDataset = DataProviderPluginFacade.AddNew<T>(providerName, dataset);
 
             if (DataCachingFacade.IsTypeCacheble(typeof(T)) == true)
             {
@@ -371,14 +370,14 @@ namespace Composite.Data
 
             if (suppressEventing == false)
             {
-                foreach (T data in addedDatas)
+                foreach (T data in addedDataset)
                 {
                     DataEventSystemFacade.FireDataAfterAddEvent<T>(data);
                 }
             }
 
 
-            return addedDatas;
+            return addedDataset;
         }
 
 

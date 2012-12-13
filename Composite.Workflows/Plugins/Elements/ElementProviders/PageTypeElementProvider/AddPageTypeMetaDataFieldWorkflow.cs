@@ -43,12 +43,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             pageTypeMetaDataTypeLink.PageTypeId = parentPageType.Id;
 
             this.Bindings.Add("CompositionDescriptionName", "");
-            this.Bindings.Add("CompositionDescriptionLabel", "");            
+            this.Bindings.Add("CompositionDescriptionLabel", "");
 
             this.Bindings.Add("NewMetaDataTypeLink", pageTypeMetaDataTypeLink);
 
             List<KeyValuePair<Guid, string>> metaDataTypeOptions =
-                PageMetaDataFacade.GetAllMetaDataTypes().                
+                PageMetaDataFacade.GetAllMetaDataTypes().
                 ToList(f => new KeyValuePair<Guid, string>(f.GetImmutableTypeId(), f.GetTypeTitle()));
 
             this.Bindings.Add("MetaDataTypeOptions", metaDataTypeOptions);
@@ -123,13 +123,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
         private void finalizeCodeActivity_Finalize_ExecuteCode(object sender, EventArgs e)
         {
             IPageTypeMetaDataTypeLink pageTypeMetaDataTypeLink = this.GetBinding<IPageTypeMetaDataTypeLink>("NewMetaDataTypeLink");
-            IData newDataTemplate = null;
-            if (this.BindingExist("NewDataTemplate") == true)
-            {
-                newDataTemplate = this.GetBinding<IData>("NewDataTemplate");
-            }
-
-            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId);
+            IData newDataTemplate;
+            this.TryGetBinding("NewDataTemplate", out newDataTemplate);
 
             string metaDataDefinitionName = this.GetBinding<string>("CompositionDescriptionName");
             pageTypeMetaDataTypeLink.Name = metaDataDefinitionName;
@@ -149,18 +144,33 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
                 if (newDataTemplate != null)
                 {
-                    DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
-                    helper.BindingsToObject(this.Bindings, newDataTemplate);
+                    IPageType pageType = DataFacade.GetData<IPageType>().Single(f => f.Id == pageTypeMetaDataTypeLink.PageTypeId);
 
-                    IPageType pageType = DataFacade.GetData<IPageType>().Where(f => f.Id == pageTypeMetaDataTypeLink.PageTypeId).Single();
-
-                    PageMetaDataFacade.AddNewMetaDataToExistingPages(pageType, metaDataDefinitionName, newDataTemplate);                                                                          
+                    PageMetaDataFacade.AddNewMetaDataToExistingPages(pageType, metaDataDefinitionName, newDataTemplate);
                 }
 
                 transactionScope.Complete();
             }
 
             this.RefreshCurrentEntityToken();
+        }
+
+        private void DefaultValuesAreValid(object sender, ConditionalEventArgs e)
+        {
+            IData newDataTemplate;
+
+            if (!this.TryGetBinding("NewDataTemplate", out newDataTemplate))
+            {
+                e.Result = true;
+                return;
+            }
+            
+            IPageTypeMetaDataTypeLink pageTypeMetaDataTypeLink = this.GetBinding<IPageTypeMetaDataTypeLink>("NewMetaDataTypeLink");
+
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId);
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
+
+            e.Result = BindAndValidate(helper, newDataTemplate);
         }
     }
 }

@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
-using Composite.Data;
-using Composite.C1Console.Events;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.Core.Logging;
 
 
 namespace Composite.Data.Validation
@@ -14,7 +12,6 @@ namespace Composite.Data.Validation
     internal class ValidationFacadeImpl : IValidationFacade
     {
         private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
-
 
 
         public ValidationResults Validate<T>(T data)
@@ -47,7 +44,7 @@ namespace Composite.Data.Validation
                 }
             }
 
-            ValidationResults validationResults = null;
+            ValidationResults validationResults;
 
             try
             {
@@ -55,8 +52,8 @@ namespace Composite.Data.Validation
             }
             catch (TargetInvocationException ex)
             {
-                Core.Logging.LoggingService.LogError("ValidationFacade", ex.ToString());
-                validationResults = new ValidationResults { };
+                Log.LogError("ValidationFacade", ex);
+                validationResults = new ValidationResults();
                 validationResults.AddResult(new ValidationResult("Exception thrown while validating. Please check field values.", data, "", "", null));
             }
 
