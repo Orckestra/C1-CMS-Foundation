@@ -27,10 +27,12 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
         protected static ResourceHandle DeleteFunctionIcon { get { return GetIconHandle("razor-function-delete"); } }
 
         private readonly string _functionProviderName;
+        private readonly string _rootLabel;
 
-        public RazorFunctionElementProvider(string functionProvider)
+        public RazorFunctionElementProvider(string functionProvider, string rootLabel)
         {
             _functionProviderName = functionProvider;
+            _rootLabel = rootLabel;
         }
 
         protected override IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken)
@@ -174,7 +176,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
             {
                 var data = (RazorFunctionProviderElementProviderData)objectConfiguration;
 
-                return new RazorFunctionElementProvider(data.RazorFunctionProviderName);
+                return new RazorFunctionElementProvider(data.RazorFunctionProviderName, data.Label);
             }
         }
 
@@ -188,13 +190,23 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
                 get { return (string)base[_razorFunctionProviderNameProperty]; }
                 set { base[_razorFunctionProviderNameProperty] = value; }
             }
+
+            private const string _labelProperty = "label";
+            [ConfigurationProperty(_labelProperty, DefaultValue = null)]
+            public string Label
+            {
+                get { return (string)base[_labelProperty]; }
+                set { base[_labelProperty] = value; }
+            }
         }
 
         #endregion Configuration
 
         protected override string RootFolderLabel
         {
-            get { return GetText("RootElement.Label"); }
+            get { return !string.IsNullOrEmpty(_rootLabel) 
+                        ? StringResourceSystemFacade.ParseString(_rootLabel) 
+                        : GetText("RootElement.Label"); }
         }
 
         protected override string RootFolderToolTip
