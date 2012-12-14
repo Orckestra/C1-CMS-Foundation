@@ -7,6 +7,7 @@ using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using Composite.Core.WebClient.Renderings.Template;
+using System.Xml.Linq;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider
@@ -44,7 +45,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
 
             XhtmlDocument template = new XhtmlDocument();
             template.Head.Add("");
-            template.Body.Add("");
+            template.Body.Add(new XElement(Namespaces.Xhtml + "p", ""));
 
             C1File.WriteAllText(filename, template.ToString());
 
