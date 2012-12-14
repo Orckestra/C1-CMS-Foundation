@@ -74,7 +74,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     XDocument document = TemplateInfo.GetTemplateDocument(page.TemplateId);
 
-                    ResolvePlaceholders(document, page, placeholderContents);
+                    ResolvePlaceholders(document, placeholderContents);
 
                     Control c = Render(document, functionContextContainer, mapper, page);
 
@@ -103,7 +103,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             return XhtmlDocument.Parse("<html xmlns='{0}'><head/><body>{1}</body></html>".FormatWith(Namespaces.Xhtml, placeholderContent.Content));
         }
 
-        private static void ResolvePlaceholders(XDocument document, IPage page, IEnumerable<IPagePlaceholderContent> placeholderContents)
+        private static void ResolvePlaceholders(XDocument document, IEnumerable<IPagePlaceholderContent> placeholderContents)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {

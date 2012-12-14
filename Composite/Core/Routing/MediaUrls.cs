@@ -237,7 +237,7 @@ namespace Composite.Core.Routing
             var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + mediaUrlData.MediaId);
 
             url.PathInfo = file.LastWriteTime != null
-                               ? "/" + Math.Abs(file.LastWriteTime.Value.ToUniversalTime().ToString(CultureInfo.InvariantCulture).GetHashCode())
+                               ? "/" + file.LastWriteTime.Value.ToUniversalTime().ToString(CultureInfo.InvariantCulture).GetHashCode()
                                : string.Empty;
 
             if (pathToFile.Length > 0)
