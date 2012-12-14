@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -235,9 +236,13 @@ namespace Composite.Core.Routing
 
             var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + mediaUrlData.MediaId);
 
+            url.PathInfo = file.LastWriteTime != null
+                               ? "/" + Math.Abs(file.LastWriteTime.Value.ToUniversalTime().ToString(CultureInfo.InvariantCulture).GetHashCode())
+                               : string.Empty;
+
             if (pathToFile.Length > 0)
             {
-                url.PathInfo = pathToFile;
+                url.PathInfo += pathToFile;
             }
             url.AddQueryParameters(queryParams);
 

@@ -23,6 +23,7 @@ using Composite.Core.WebClient.Renderings;
 public class ShowMedia : IHttpHandler, IReadOnlySessionState
 {
     private const int CopyBufferSize = 8192;
+    private static readonly string MediaUrl_PublicPrefix = UrlUtils.PublicRootPath + "/media/";
     
     private class Range
     {
@@ -125,8 +126,14 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
 
         bool clientCaching = false;
-        
-        if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn() == false)
+
+
+        if (UrlContainsTimestamp(context))
+        {
+            context.Response.Cache.SetExpires(DateTime.Now.AddDays(30));
+            context.Response.Cache.SetCacheability(HttpCacheability.Public);
+        } 
+        else if (!Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(60));
             context.Response.Cache.SetCacheability(HttpCacheability.Private);
@@ -237,6 +244,22 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 inputStream.Dispose();
             }
         }
+    }
+    
+    private static bool UrlContainsTimestamp(HttpContext context)
+    {
+        string url = context.Request.RawUrl;
+
+        if (!url.StartsWith(MediaUrl_PublicPrefix, StringComparison.OrdinalIgnoreCase)) return false;
+
+        string[] urlParts = url.Substring(MediaUrl_PublicPrefix.Length).Split('/');
+
+        Guid tempGuid;
+        int tempInt;
+        
+        return urlParts.Length >= 2 
+            && Guid.TryParse(urlParts[0], out tempGuid)
+            && int.TryParse(urlParts[1], out tempInt);
     }
 
     private static void OutputToResponse(HttpContext context, Stream inputStream)
