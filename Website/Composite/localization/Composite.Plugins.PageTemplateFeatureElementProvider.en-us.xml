@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <strings>
-  <string key="ElementProvider.RootLabel" value="Page Template Features" />
-  <string key="ElementProvider.RootToolTip" value="Here you can find features - snippets of HTML and functionality - included in the website templates." />
-  <string key="ElementProvider.AddTemplateFeature" value="Add Template Feature" />
-  <string key="ElementProvider.AddTemplateFeatureToolTip" value="Add a new page template feature" />
-  <string key="ElementProvider.DeleteTemplateFeature" value="Delete Template Feature" />
-	<string key="ElementProvider.DeleteTemplateFeatureToolTip" value="Delete this template feature" />
-  <string key="ElementProvider.EditTemplateFeature" value="Edit Template Feature" />
-  <string key="ElementProvider.EditTemplateFeatureToolTip" value="Edit the selected template feature" />
-  <string key="ElementProvider.EditVisually" value="Use Visual Editor" />
-  <string key="ElementProvider.EditVisuallyToolTip" value="When enabled the visual editor will be used to manage this feature" />
+    <string key="ElementProvider.RootLabel" value="Page Template Features" />
+    <string key="ElementProvider.RootToolTip" value="Here you can find features - snippets of HTML and functionality - included in the website templates." />
+    <string key="ElementProvider.AddTemplateFeature" value="Add Template Feature" />
+    <string key="ElementProvider.AddTemplateFeatureToolTip" value="Add a new page template feature" />
+    <string key="ElementProvider.DeleteTemplateFeature" value="Delete Template Feature" />
+    <string key="ElementProvider.DeleteTemplateFeatureToolTip" value="Delete this template feature" />
+    <string key="ElementProvider.EditTemplateFeature" value="Edit Template Feature" />
+    <string key="ElementProvider.EditTemplateFeatureToolTip" value="Edit the selected template feature" />
+    <string key="ElementProvider.EditVisually" value="Use Visual Editor" />
+    <string key="ElementProvider.EditVisuallyToolTip" value="When enabled the visual editor will be used to manage this feature" />
 
-  <string key="AddWorkflow.LabelDialog" value="Add New Page Template Feature" />
-  <string key="AddWorkflow.LabelFieldGroup" value="Page Template Feature" />
-  <string key="AddWorkflow.LabelTemplateFeatureName" value="Feature name" />
-  <string key="AddWorkflow.LabelTemplateFeatureNameHelp" value="The name is used to identify this feature when included in templates" />
-  <string key="AddWorkflow.LabelTemplateFeatureEditorType" value="Editor type" />
-  <string key="AddWorkflow.LabelTemplateFeatureEditorTypeHelp" value="Choose which type of editor to use when maintaining this feature. You can always switch the editor type in the tree later." />
-  <string key="AddWorkflow.LabelTemplateFeatureEditorType.xhtml" value="Visual Editor" />
-  <string key="AddWorkflow.LabelTemplateFeatureEditorType.xml" value="Markup Editor" />
-  <string key="AddWorkflow.NameInUse" value="The name is already used by another feature" />
-  <string key="AddWorkflow.NameTooLong" value="The title is too long (max 50 characters)" />
-  <string key="AddWorkflow.NameNotValidInFilename" value="The name must be usable in a file name - you have invalid characters you need to remove" />
+    <string key="AddWorkflow.LabelDialog" value="Add New Page Template Feature" />
+    <string key="AddWorkflow.LabelFieldGroup" value="Page Template Feature" />
+    <string key="AddWorkflow.LabelTemplateFeatureName" value="Feature name" />
+    <string key="AddWorkflow.LabelTemplateFeatureNameHelp" value="The name is used to identify this feature when included in templates" />
+    <string key="AddWorkflow.LabelTemplateFeatureEditorType" value="Editor type" />
+    <string key="AddWorkflow.LabelTemplateFeatureEditorTypeHelp" value="Choose which type of editor to use when maintaining this feature. You can always switch the editor type in the tree later." />
+    <string key="AddWorkflow.LabelTemplateFeatureEditorType.html" value="Visual Editor" />
+    <string key="AddWorkflow.LabelTemplateFeatureEditorType.xml" value="Markup Editor" />
+    <string key="AddWorkflow.NameInUse" value="The name is already used by another feature" />
+    <string key="AddWorkflow.NameTooLong" value="The title is too long (max 50 characters)" />
+    <string key="AddWorkflow.NameNotValidInFilename" value="The name must be usable in a file name - you have invalid characters you need to remove" />
 
-  <string key="DeleteWorkflow.Title" value="Delete This Page Template Feature?" />
-	<string key="DeleteWorkflow.Text" value="If this feature is in use by page templates, this action could lead to errors." />
+    <string key="DeleteWorkflow.Title" value="Delete This Page Template Feature?" />
+    <string key="DeleteWorkflow.Text" value="If this feature is in use by page templates, this action could lead to errors." />
 </strings>

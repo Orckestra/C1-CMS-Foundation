@@ -79,7 +79,7 @@ namespace Composite.Core.WebClient.Renderings.Template
                             string featureDirectoryPath = PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory);
                             C1DirectoryInfo featureDirectory = new C1DirectoryInfo(featureDirectoryPath);
 
-                            var files = featureDirectory.GetFiles("*.xml").Concat(featureDirectory.GetFiles("*.xhtml"));
+                            var files = featureDirectory.GetFiles("*.xml").Concat(featureDirectory.GetFiles("*.html"));
 
                             featureNames = new List<string>();
 
@@ -110,9 +110,9 @@ namespace Composite.Core.WebClient.Renderings.Template
         {
             string extensionlessPath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), featureName);
 
-            if (C1File.Exists(extensionlessPath + ".xhtml"))
+            if (C1File.Exists(extensionlessPath + ".html"))
             {
-                return extensionlessPath + ".xhtml";
+                return extensionlessPath + ".html";
             }
             else if (C1File.Exists(extensionlessPath + ".xml"))
             {
@@ -141,9 +141,9 @@ namespace Composite.Core.WebClient.Renderings.Template
                 extension = "." + extension;
             }
 
-            if (extension != ".xml" && extension != ".xhtml")
+            if (extension != ".xml" && extension != ".html")
             {
-                throw new ArgumentException("Expecting '.xml' or '.xhtml'", "extension");
+                throw new ArgumentException("Expecting '.xml' or '.html'", "extension");
             }
 
             return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), featureName + extension);
@@ -161,7 +161,7 @@ namespace Composite.Core.WebClient.Renderings.Template
 
             if (!C1File.Exists(featurePath))
             {
-                featurePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), featureName + ".xhtml");
+                featurePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), featureName + ".html");
             }
 
             if (!C1File.Exists(featurePath))

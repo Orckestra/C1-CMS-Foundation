@@ -94,7 +94,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
                     string filename = Path.GetFileName(pageTemplateFeratureFilename);
                     string featureName = Path.GetFileNameWithoutExtension(filename);
 
-                    bool isXhtml = Path.GetExtension(filename) == ".xhtml";
+                    bool isHtml = Path.GetExtension(filename) == ".html";
 
                     Element featureElement = new Element(_context.CreateElementHandle(
                         PageTemplateFeatureEntityToken.BuildFeatureEntityToken(featureName)))
@@ -139,7 +139,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
                             ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "ElementProvider.EditVisuallyToolTip"),
                             Icon = PageTemplateFeatureIconEdit,
                             Disabled = false,
-                            ActionCheckedStatus = isXhtml ? ActionCheckedStatus.Checked : ActionCheckedStatus.Unchecked,
+                            ActionCheckedStatus = isHtml ? ActionCheckedStatus.Checked : ActionCheckedStatus.Unchecked,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Other,
@@ -192,10 +192,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
 
                 if (C1Directory.Exists(featureDir))
                 {
-                    var xhtmlFiles = C1Directory.GetFiles(featureDir, "*.xhtml");
+                    var htmlFiles = C1Directory.GetFiles(featureDir, "*.html");
                     var xmlFiles = C1Directory.GetFiles(featureDir, "*.xml");
 
-                    foreach (var fileName in xhtmlFiles.Concat(xmlFiles).OrderBy(f => f))
+                    foreach (var fileName in htmlFiles.Concat(xmlFiles).OrderBy(f => f))
                     {
                         yield return fileName;
                     }

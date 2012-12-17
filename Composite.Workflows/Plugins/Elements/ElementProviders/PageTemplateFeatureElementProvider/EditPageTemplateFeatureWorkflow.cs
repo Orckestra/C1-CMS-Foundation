@@ -41,7 +41,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             this.Bindings.Add("FeatureName", this.FeatureName);
             this.Bindings.Add("Markup", markup);
 
-            if (Path.GetExtension(this.FilePath)==".xhtml")
+            if (Path.GetExtension(this.FilePath)==".html")
             {
                 this.documentFormActivity1.FormDefinitionFileName = @"\Administrative\PageTemplateFeature\EditVisual.xml";
             }

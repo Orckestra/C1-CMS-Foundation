@@ -25,13 +25,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             {
                 string newPath = Path.Combine(Path.GetDirectoryName(oldPath), Path.GetFileNameWithoutExtension(oldPath));
 
-                if (Path.GetExtension(oldPath) == ".xhtml")
+                if (Path.GetExtension(oldPath) == ".html")
                 {
                     newPath += ".xml";
                 }
                 else
                 {
-                    newPath += ".xhtml";
+                    newPath += ".html";
                 }
 
                 C1File.Move(oldPath, newPath);

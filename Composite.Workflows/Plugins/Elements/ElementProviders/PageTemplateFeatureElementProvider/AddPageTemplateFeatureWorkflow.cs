@@ -25,10 +25,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
         private void initializeCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
             this.Bindings.Add("Name", "");
-            this.Bindings.Add("EditorType", "xhtml");
+            this.Bindings.Add("EditorType", "html");
 
             Dictionary<string, string> editorOptions = new Dictionary<string, string>();
-            editorOptions.Add("xhtml", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "AddWorkflow.LabelTemplateFeatureEditorType.xhtml"));
+            editorOptions.Add("html", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "AddWorkflow.LabelTemplateFeatureEditorType.html"));
             editorOptions.Add("xml", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "AddWorkflow.LabelTemplateFeatureEditorType.xml"));
 
             this.Bindings.Add("EditorTypeOptions", editorOptions);
@@ -83,9 +83,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             }
 
             string xmlFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), name + ".xml");
-            string xhtmlFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), name + ".xhtml");
+            string htmlFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PageTemplateFeaturesDirectory), name + ".html");
 
-            e.Result = !C1File.Exists(xmlFilename) && !C1File.Exists(xhtmlFilename);
+            e.Result = !C1File.Exists(xmlFilename) && !C1File.Exists(htmlFilename);
 
             if (e.Result == false)
             {
