@@ -33,7 +33,7 @@ namespace Composite.C1Console.Trees
 
             foreach (Tree tree in TreeFacade.GetTreesByEntityToken(parentEntityToken))
             {
-                if (tree.RootTreeNode.ChildNodes.Count() > 0) return true;
+                if (tree.RootTreeNode.ChildNodes.Any()) return true;
             }
 
             return false;

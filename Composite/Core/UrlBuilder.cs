@@ -299,7 +299,8 @@ namespace Composite.Core
                 int index2 = _filePath.IndexOf('/', index1 + 3);
                 if (index2 < 0)
                 {
-                    return string.Empty;
+                    // Urls like "http://ww.composite.net"
+                    return _filePath;
                 }
 
                 return _filePath.Substring(0, index2 + 1);

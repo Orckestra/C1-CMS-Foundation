@@ -16,7 +16,10 @@ using System.Threading.Tasks;
 
 namespace Composite.Core.Parallelization
 {
-	internal static class ParallelFacade
+    /// <summary>
+    /// Allows running tasks in parallel while passing C1 data context to created tasks
+    /// </summary>
+	public static class ParallelFacade
 	{
         private static readonly FieldInfo HttpContext_ItemsFieldInfo = typeof(HttpContext).GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance);
 
@@ -25,12 +28,18 @@ namespace Composite.Core.Parallelization
             return !ParallelizationProviderRegistry.DisabledParallelizationPoints.Any(name => name == parallelizationPointName);
         }
 
+        /// <summary>
+        /// Executes a for (For in Visual Basic) loop in which iterations may run in parallel.
+        /// </summary>
+        /// <param name="fromInclusive">The start index, inclusive.</param>
+        /// <param name="toExclusive">The end index, exclusive.</param>
+        /// <param name="body">The delegate that is invoked once per iteration.</param>
         public static void For(int fromInclusive, int toExclusive, Action<int> body)
         {
             For(null, fromInclusive, toExclusive, body);
         }
 
-        public static void For(string parallelizationPointName, int fromInclusive, int toExclusive, Action<int> body)
+        internal static void For(string parallelizationPointName, int fromInclusive, int toExclusive, Action<int> body)
         {
             int count = toExclusive - fromInclusive;
 
@@ -68,7 +77,7 @@ namespace Composite.Core.Parallelization
             }
         }
 
-        public static void ForEach<TSource>(string parallelizationPointName, IEnumerable<TSource> source, Action<TSource> body)
+        internal static void ForEach<TSource>(string parallelizationPointName, IEnumerable<TSource> source, Action<TSource> body)
         {
             Verify.ArgumentNotNull(source, "source");
 
@@ -137,6 +146,12 @@ namespace Composite.Core.Parallelization
             }
         }
 
+        /// <summary>
+        /// Executes a foreach (For Each in Visual Basic) operation on an IEnumerable in which iterations may run in parallel.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the data in the source.</typeparam>
+        /// <param name="source">An enumerable data source.</param>
+        /// <param name="body">The delegate that is invoked once per iteration.</param>
         public static void ForEach<TSource>(IEnumerable<TSource> source, Action<TSource> body)
         {
             ForEach(null, source, body);
@@ -144,14 +159,14 @@ namespace Composite.Core.Parallelization
 
         private sealed class ThreadWrapper<TSource>
         {
-            private Action<TSource> _body;
-            private ThreadDataManagerData _parentData;
-            private CultureInfo _parentThreadLocale;
-            private DataScopeIdentifier _parentThreadDataScope;
-            private HttpContext _parentThreadHttpContext;
+            private readonly Action<TSource> _body;
+            private readonly ThreadDataManagerData _parentData;
+            private readonly CultureInfo _parentThreadLocale;
+            private readonly DataScopeIdentifier _parentThreadDataScope;
+            private readonly HttpContext _parentThreadHttpContext;
 
-            private CultureInfo _parentThreadCulture;
-            private CultureInfo _parentThreadUiCulture;
+            private readonly CultureInfo _parentThreadCulture;
+            private readonly CultureInfo _parentThreadUiCulture;
 
             public ThreadWrapper(Action<TSource> body, ThreadDataManagerData parentData)
             {

@@ -163,7 +163,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             {
                 if (_threadDataManagerData != null)
                 {
-                    Core.Logging.LoggingService.LogCritical(LogTitle, "ThreadData has already been initialized in the current thread. It's been reset to NULL value, resource leaks are possible.");
+                    Log.LogCritical(LogTitle, "ThreadData has already been initialized in the current thread. It's been reset to NULL value, resource leaks are possible.");
                     _threadDataManagerData = null;
                 }
 
@@ -171,7 +171,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
                 httpContext.Items[c_HttpContextItemsId] = threadData;
             }
 
-            if (forceUserValidation == true)
+            if (forceUserValidation)
             {
                 string username = LoginSessionStorePluginFacade.StoredUsername;
             }
@@ -189,7 +189,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
             if(_threadDataManagerData != null)
             {
                 _threadDataManagerData = null;
-                Core.Logging.LoggingService.LogError(LogTitle, "Thread data hasn't been disposed after request execution. Resource leaks are possible.");
+                Log.LogError(LogTitle, "Thread data hasn't been disposed after request execution. Resource leaks are possible.");
             }
 
 
@@ -206,7 +206,7 @@ using(Composite.Core.Threading.ThreadDataManager.EnsureInitialize())
                 }
                 catch(Exception e)
                 {
-                    Core.Logging.LoggingService.LogError(LogTitle, e);
+                    Log.LogError(LogTitle, e);
                 }
             }
         }
