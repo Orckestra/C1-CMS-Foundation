@@ -19,8 +19,7 @@
 						<h1>Composite C1<br/><span>was updated</span></h1>
 					</div>
 				</div>
-				<p>Your Composite C1 installation have successfully been updated.</p>
-				<p>Enjoy!</p>
+				<p>Your Composite C1 installation have successfully been updated. Enjoy!</p>
 				<div id="start">
 					<a id="continuelink" href="top.aspx">
 						<span><img alt="" src="images/blank.png"/> Continue</span>
