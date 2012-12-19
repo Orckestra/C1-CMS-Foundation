@@ -1,21 +1,19 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
-using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.Core.Types;
-using Composite.Data.Types;
-using Composite.Data.ProcessControlled;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
 namespace Composite.Data.Foundation
 {
     internal static class ProcessControllerRegistry
     {
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
-
+        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
 
         static ProcessControllerRegistry()
@@ -24,33 +22,25 @@ namespace Composite.Data.Foundation
         }
 
 
-
         public static IEnumerable<Type> ProcessControllerTypes
         {
             get
             {
                 using (_resourceLocker.ReadLocker)
                 {
-                    foreach (Type processControllerType in _resourceLocker.Resources.ProcessControllerTypes)
-                    {
-                        yield return processControllerType;
-                    }
+                    return _resourceLocker.Resources.ProcessControllerTypes.ToList();
                 }
             }
         }
-
 
 
         public static IEnumerable<Type> DataTypesWithProcessControllers
         {
             get
             {
-                using (_resourceLocker.ReadLocker)
+                using (_resourceLocker.Locker)
                 {
-                    foreach (Type interfaceType in _resourceLocker.Resources.TypeToProcessControllerTypes.Keys)
-                    {
-                        yield return interfaceType;
-                    }
+                    return _resourceLocker.Resources.TypeToProcessControllerTypes.GetKeys().ToList();
                 }
             }
         }
@@ -59,26 +49,25 @@ namespace Composite.Data.Foundation
 
         public static Dictionary<Type, Type> GetProcessControllerTypes(Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            using (_resourceLocker.ReadLocker)
+            var resourceLocker = _resourceLocker;
+            var resources = _resourceLocker.Resources;
+
+            Dictionary<Type, Type> processControllerTypes;
+
+            if (!resources.TypeToProcessControllerTypes.TryGetValue(interfaceType, out processControllerTypes))
             {
-               
-
-                Dictionary<Type, Type> processControllerTypes;
-
-                if (_resourceLocker.Resources.TypeToProcessControllerTypes.TryGetValue(interfaceType, out processControllerTypes) == false)
+                using (resourceLocker.Locker)
                 {
-                    using (_resourceLocker.Locker)
+                    if (!resources.TypeToProcessControllerTypes.TryGetValue(interfaceType, out processControllerTypes))
                     {
-                        processControllerTypes = Resources.ProcessInterfaceType(_resourceLocker.Resources, interfaceType);
+                        processControllerTypes = resources.ProcessInterfaceType(_resourceLocker.Resources, interfaceType);
                     }
-
-                    //return new Dictionary<Type, Type>();
                 }
-
-                return processControllerTypes;
             }
+
+            return processControllerTypes;
         }
 
 
@@ -104,30 +93,40 @@ namespace Composite.Data.Foundation
             public List<Type> ProcessedInterfaceTypes { get; set; }
 
             // interfaceType -> IProcessController subinterface -> process controller type            
-            public Dictionary<Type, Dictionary<Type, Type>> TypeToProcessControllerTypes { get; set; }
+            public Hashtable<Type, Dictionary<Type, Type>> TypeToProcessControllerTypes { get; set; }
 
-
+            private ProcessControllerSettings _settings;
 
             public static void Initialize(Resources resources)
             {
+                var configurationSource = GetConfiguration();
+                ProcessControllerSettings settings = configurationSource.GetSection(ProcessControllerSettings.SectionName) as ProcessControllerSettings;
+                if (settings == null)
+                {
+                    throw new ConfigurationErrorsException(string.Format("Failed to load the configuration section '{0}' from the configuration", ProcessControllerSettings.SectionName));
+                }
+
+                resources._settings = settings;
                 resources.ProcessControllerTypes = new List<Type>();
                 resources.ProcessedInterfaceTypes = new List<Type>();
-                resources.TypeToProcessControllerTypes = new Dictionary<Type, Dictionary<Type, Type>>();
+                resources.TypeToProcessControllerTypes = new Hashtable<Type, Dictionary<Type, Type>>();
 
                 foreach (Type interfaceType in DataFacade.GetAllInterfaces())
                 {
-                    ProcessInterfaceType(resources, interfaceType);
+                    resources.ProcessInterfaceType(resources, interfaceType);
                 }
             }
 
 
 
-            internal static Dictionary<Type, Type> ProcessInterfaceType(Resources resources, Type interfaceType)
+            internal Dictionary<Type, Type> ProcessInterfaceType(Resources resources, Type interfaceType)
             {
                 Dictionary<Type, Type> processControllerTypes = new Dictionary<Type, Type>();
 
-                AddProcessController<PublishProcessControllerTypeAttribute>(resources, interfaceType, typeof(IPublishProcessController), processControllerTypes);
-                AddProcessController<LocalizeProcessControllerTypeAttribute>(resources, interfaceType, typeof(ILocalizeProcessController), processControllerTypes);
+                foreach (var controllerData in _settings.ProcessControllers)
+                {
+                    AddProcessController(resources, interfaceType, controllerData.InterfaceType, controllerData.AttributeType, processControllerTypes);
+                }
 
                 resources.TypeToProcessControllerTypes.Add(interfaceType, processControllerTypes);
 
@@ -135,30 +134,36 @@ namespace Composite.Data.Foundation
             }
 
 
-
-            private static void AddProcessController<T>(Resources resources, Type interfaceType, Type superProcessControllerInterfaceType, Dictionary<Type, Type> processControllerTypes)
-                where T : ProcessControllerTypeAttribute
+            private static IConfigurationSource GetConfiguration()
             {
-               // if (resources.ProcessedInterfaceTypes.Contains(interfaceType)) return;
-              //  resources.ProcessedInterfaceTypes.Add(interfaceType);
-                    
-                List<T> publishAttributes = interfaceType.GetCustomAttributesRecursively<T>().ToList();
+                IConfigurationSource source = ConfigurationServices.ConfigurationSource;
+
+                if (null == source)
+                {
+                    throw new ConfigurationErrorsException(string.Format("No configuration source specified"));
+
+                }
+                return source;
+            }
+
+            private static void AddProcessController(Resources resources, Type interfaceType, Type superProcessControllerInterfaceType, Type attributeType, Dictionary<Type, Type> processControllerTypes)
+            {
+                var publishAttributes = interfaceType.GetCustomAttributesRecursively(attributeType).Cast<ProcessControllerTypeAttribute>().ToList();
 
                 if (publishAttributes.Count == 0) return;
 
                 Type processControllerType = publishAttributes[0].ProcessControllerType;
 
-                foreach (T attribute in publishAttributes.Skip(1))
+                foreach (ProcessControllerTypeAttribute attribute in publishAttributes.Skip(1))
                 {
-                    if (attribute.ProcessControllerType != processControllerType)
-                    {
-                        throw new InvalidOperationException(string.Format("Only one '{0}' is allowed on the data type '{1}' or all attributes should have same process controller type", typeof(PublishProcessControllerTypeAttribute), interfaceType));
-                    }
+                    Verify.That(attribute.ProcessControllerType != processControllerType,
+                        "Only one '{0}' is allowed on the data type '{1}' or all attributes should have same process controller type", 
+                        processControllerType, interfaceType);
                 }
 
                 processControllerTypes.Add(superProcessControllerInterfaceType, processControllerType);
 
-                if (resources.ProcessControllerTypes.Contains(processControllerType) == false)
+                if (!resources.ProcessControllerTypes.Contains(processControllerType))
                 {
                     resources.ProcessControllerTypes.Add(processControllerType);
                 }

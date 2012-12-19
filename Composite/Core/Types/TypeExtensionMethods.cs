@@ -208,11 +208,11 @@ namespace Composite.Core.Types
         public static IEnumerable<T> GetCustomAttributesRecursively<T>(this Type type)
             where T : Attribute
         {
-            List<Attribute> attributeList = null;
+            List<Attribute> attributeList;
 
             lock (_lock)
             {
-                if (_typeAttributeCache.TryGetValue(type, out attributeList) == false)
+                if (!_typeAttributeCache.TryGetValue(type, out attributeList))
                 {
                     attributeList = new List<Attribute>();
                     GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), false);
@@ -222,6 +222,25 @@ namespace Composite.Core.Types
             }
 
             return attributeList.OfType<T>();
+        }
+
+        /// <exclude />
+        public static IEnumerable<Attribute> GetCustomAttributesRecursively(this Type type, Type attributeType)
+        {
+            List<Attribute> attributeList;
+
+            lock (_lock)
+            {
+                if (!_typeAttributeCache.TryGetValue(type, out attributeList))
+                {
+                    attributeList = new List<Attribute>();
+                    GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), false);
+
+                    _typeAttributeCache.Add(type, attributeList);
+                }
+            }
+
+            return attributeList.Where(t => t.GetType().Equals(attributeType));
         }
 
 
