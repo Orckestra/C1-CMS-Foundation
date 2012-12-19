@@ -31,6 +31,9 @@ namespace Composite.C1Console.Security
 
 
         /// <exclude />
+        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteEntityTokenType = (token, helper) => helper.AddFullRow(new [] { "<b>EntityToken Type</b>", token.GetType().FullName });
+
+        /// <exclude />
         public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteType = (token, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", token.Type });
 
         /// <exclude />
@@ -62,6 +65,8 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static Action<IAuxiliarySecurityAncestorProvider, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteAuxiliarySecurityAncestorProvider = (provider, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", provider.GetType().FullName });
 
+        /// <exclude />
+        public Action<EntityToken, EntityTokenHtmlPrettyfierHelper> OnWriteEntityTokenType = DefaultOnWriteEntityTokenType;
 
         /// <exclude />
         public Action<EntityToken, EntityTokenHtmlPrettyfierHelper> OnWriteType = DefaultOnWriteType;
@@ -106,6 +111,7 @@ namespace Composite.C1Console.Security
 
             helper.StartTable();
             helper.AddHeading("<b>Basic Information</b>");
+            OnWriteEntityTokenType(this.EntityToken, helper);
             OnWriteType(this.EntityToken, helper);
             OnWriteSource(this.EntityToken, helper);
             OnWriteId(this.EntityToken, helper);
