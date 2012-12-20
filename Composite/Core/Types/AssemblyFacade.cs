@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -18,8 +17,6 @@ namespace Composite.Core.Types
 	public static class AssemblyFacade
 	{
         private static readonly Type RuntimeModuleType = typeof(Module).Assembly.GetType("System.Reflection.RuntimeModule");
-        private static ReadOnlyCollection<string> AssembliesFromBin;
-
 
         /// <exclude />
         public static IEnumerable<Assembly> GetLoadedAssembliesFromBin()
@@ -29,13 +26,13 @@ namespace Composite.Core.Types
             List<Assembly> assemblies = new List<Assembly>();
             foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                if (assembly.IsDynamic == true) continue;
+                if (assembly.IsDynamic) continue;
 
                 try
                 {
                     string codebase = assembly.CodeBase.ToLowerInvariant();
 
-                    if (codebase.Contains(binDirectory) == true)
+                    if (codebase.Contains(binDirectory))
                     {
                         assemblies.Add(assembly);
                     }
@@ -53,23 +50,19 @@ namespace Composite.Core.Types
         /// <exclude />
         public static IEnumerable<string> GetAssembliesFromBin()
         {
-            if (AssembliesFromBin == null) {
-                var assembliesFromBin = new List<string>();
+            var assembliesFromBin = new List<string>();
 
-                foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll")) {
-                    string assemblyFileName = Path.GetFileName(binFilePath);
+            foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll")) {
+                string assemblyFileName = Path.GetFileName(binFilePath);
 
-                    if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
 
-                    if (IsDotNetAssembly(binFilePath)) {
-                        assembliesFromBin.Add(binFilePath);
-                    }
+                if (IsDotNetAssembly(binFilePath)) {
+                    assembliesFromBin.Add(binFilePath);
                 }
-
-                AssembliesFromBin = new ReadOnlyCollection<string>(assembliesFromBin);
             }
 
-            return AssembliesFromBin;
+            return assembliesFromBin;
         }
 
         private static bool IsDotNetAssembly(string dllFilePath)
@@ -120,7 +113,7 @@ namespace Composite.Core.Types
         /// <returns></returns>
         public static IEnumerable<Assembly> GetAllAssemblies()
         {
-            List<Assembly> assemblies = GetLoadedAssembliesFromBin() as List<Assembly>;
+            List<Assembly> assemblies = GetLoadedAssembliesFromBin().ToList();
 
             Assembly appCodeAssembly = GetAppCodeAssembly();
 
