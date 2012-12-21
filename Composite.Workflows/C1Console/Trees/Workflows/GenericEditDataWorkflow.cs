@@ -40,7 +40,7 @@ namespace Composite.C1Console.Trees.Workflows
                 {
                     if (String.IsNullOrEmpty(this.Payload))
                     {
-                        throw new InvalidOperationException("The interface type should be a part of the workflows payload");
+                        throw new InvalidOperationException("Action token's 'Payload' property is null or empty");
                     }
 
                     Dictionary<string, string> serializedValues = StringConversionServices.ParseKeyValueCollection(this.Payload);

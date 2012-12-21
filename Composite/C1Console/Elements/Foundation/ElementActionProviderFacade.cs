@@ -277,8 +277,6 @@ namespace Composite.C1Console.Elements.Foundation
     {
         private static readonly ActionGroup AppendedActionGroup = new ActionGroup("Common tasks", ActionGroupPriority.GeneralAppendMedium);
 
-        private static PermissionType[] _manageUsersPermissionTypes = new PermissionType[] { PermissionType.Administrate };
-
         private static ResourceHandle ManageSecurityIcon { get { return GetIconHandle("security-manage-permissions"); } }
 
         private static ResourceHandle GetIconHandle(string name)
@@ -317,16 +315,16 @@ namespace Composite.C1Console.Elements.Foundation
 
                     foreach (string elementActionProviderName in ElementActionProviderRegistry.ElementActionProviderNames)
                     {
-                        IEnumerable<ElementAction> actions = ElementActionProviderPluginFacade.GetActions(elementActionProviderName, element.ElementHandle.EntityToken);
-
                         try
                         {
+                            IEnumerable<ElementAction> actions = ElementActionProviderPluginFacade.GetActions(elementActionProviderName, element.ElementHandle.EntityToken);
+
                             element.AddAction(actions);
                         }
                         catch (Exception ex)
                         {
-                            LoggingService.LogCritical("ElementActionProviderFacade", string.Format("Failed to add actions from the element action provider named '{0}'", elementActionProviderName));
-                            LoggingService.LogCritical("ElementActionProviderFacade", ex);
+                            Log.LogCritical("ElementActionProviderFacade", string.Format("Failed to add actions from the element action provider named '{0}'", elementActionProviderName));
+                            Log.LogCritical("ElementActionProviderFacade", ex);
                         }
                     }
                 }

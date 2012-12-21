@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Reflection;
 using Composite.Core.Collections.Generic;
 using Composite.C1Console.Elements.Plugins.ElementActionProvider;
 using Composite.C1Console.Elements.Plugins.ElementActionProvider.Runtime;
@@ -28,9 +29,7 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
 
             IElementActionProvider elementActionProvider = GetElementActionProvider(providerName);
 
-            IEnumerable<ElementAction> result = elementActionProvider.GetActions(entityToken);
-
-            return result;
+            return elementActionProvider.GetActions(entityToken);
         }
 
 
@@ -58,6 +57,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
                     HandleConfigurationError(ex);
                 }
                 catch (ConfigurationErrorsException ex)
+                {
+                    HandleConfigurationError(ex);
+                }
+                catch (TargetInvocationException ex)
                 {
                     HandleConfigurationError(ex);
                 }
@@ -107,6 +110,10 @@ namespace Composite.C1Console.Elements.Foundation.PluginFacades
                     HandleConfigurationError(ex);
                 }
                 catch (ConfigurationErrorsException ex)
+                {
+                    HandleConfigurationError(ex);
+                }
+                catch (TargetInvocationException ex)
                 {
                     HandleConfigurationError(ex);
                 }
