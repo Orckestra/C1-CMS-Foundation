@@ -974,9 +974,12 @@ SystemTreeBinding.prototype._performPaste = function ( treenode ) {
  * Focus the first treenode. This should only be called once.
  */
 SystemTreeBinding.prototype.selectDefault = function () {
-	
-	if ( this._defaultTreeNode ) {
-		this._defaultTreeNode.focus ();
+	var defaultEntityToken = System.getDefaultEntityToken(this.perspectiveNode.getEntityToken());
+	if (defaultEntityToken != null) {
+		this._focusTreeNodeByEntityToken(defaultEntityToken);
+	}
+	else if (this._defaultTreeNode) {
+		this._defaultTreeNode.focus();
 		this._defaultTreeNode = null;
 	}
 }

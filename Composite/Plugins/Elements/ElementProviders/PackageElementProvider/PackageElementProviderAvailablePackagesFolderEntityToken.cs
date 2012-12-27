@@ -16,9 +16,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     }
 
 
-
+	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(PackageElementProviderAvailablePackagesFolderEntityTokenAncestorProvider))]
-    internal sealed class PackageElementProviderAvailablePackagesFolderEntityToken : EntityToken
+    public sealed class PackageElementProviderAvailablePackagesFolderEntityToken : EntityToken
 	{        
         public override string Type
         {

@@ -265,8 +265,6 @@ namespace Composite.Services
             return tokens;
         }
 
-
-
         [WebMethod]
         public bool ExecuteInlineElementAction(string serializedScriptAction, string consoleId)
         {
@@ -287,6 +285,33 @@ namespace Composite.Services
             }
         }
 
+		[WebMethod]
+		public List<KeyValuePair> GetDefaultEntityTokens(string dummy)
+		{
+			List<KeyValuePair> tokens = new List<KeyValuePair>();
+			using (var connection = new DataConnection())
+			{
+				var homepage = PageServices.GetChildren(Guid.Empty).FirstOrDefault();
+				if (homepage != null)
+				{
+					tokens.Add(
+						new KeyValuePair(
+							EntityTokenSerializer.Serialize(AttachingPoint.ContentPerspective.EntityToken, true),
+							EntityTokenSerializer.Serialize(homepage.GetDataEntityToken(), true)
+							)
+						);
+				}
+				tokens.Add(
+					new KeyValuePair(
+						EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken, true),
+						EntityTokenSerializer.Serialize(new Composite.Plugins.Elements.ElementProviders.PackageElementProvider.PackageElementProviderAvailablePackagesFolderEntityToken(), true)
+						)
+					);
+					
+				
+			}
+			return tokens;
+		}
 
 		[WebMethod]
 		public List<string> GetAllParents(string serializedEntityToken)
