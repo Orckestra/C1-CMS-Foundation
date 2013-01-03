@@ -12,6 +12,7 @@ using System.Xml.Xsl;
 using Composite;
 using Composite.C1Console.Events;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
@@ -29,9 +30,10 @@ using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 /// </summary>
 public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 {
-    private static TimeSpan SessionExprirationPeriod = TimeSpan.FromDays(4.0);
+    private static readonly TimeSpan SessionExprirationPeriod = TimeSpan.FromDays(4.0);
 
     private static readonly string XsltExtensionObjectNamespace = "functioncalleditor";
+    private const string LogTitle = "FunctionCallEditor";
 
     private static readonly XName ParameterNodeXName = Namespaces.Function10 + "param";
     private static readonly XName FunctionNodeXName = Namespaces.Function10 + "function";
@@ -1052,7 +1054,16 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             var valueAttr = parameterNode.Attribute("value");
             if (valueAttr != null)
             {
-                parameterValue = ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
+                try
+                {
+                    parameterValue = ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+
+                    parameterValue = GetDefaultValue(parameterProfile);
+                }
             }
             else
             {
