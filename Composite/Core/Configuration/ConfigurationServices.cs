@@ -236,11 +236,11 @@ namespace Composite.Core.Configuration
 
                 DeleteTempConfigurationFile(tempValidationFilePath);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 DeleteTempConfigurationFile(tempValidationFilePath);
 
-                throw ex;
+                throw;
             }
         }
 

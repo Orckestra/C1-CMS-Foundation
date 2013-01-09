@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -331,6 +330,16 @@ namespace Composite.Services
 
         private XElement GetImageTagForDynamicDataFieldReference(XElement fieldReferenceElement)
         {
+            string typeName = fieldReferenceElement.Attribute("typemanagername").Value;
+
+            Type type = TypeManager.GetType(typeName);
+            if (!typeof(IData).IsAssignableFrom(type))
+            {
+                string fieldName = fieldReferenceElement.Attribute("fieldname").Value;
+
+                return GetImageTagForDynamicDataFieldReference(fieldName, type.FullName, type.FullName);
+            }
+
             DataTypeDescriptor typeDescriptor;
             DataFieldDescriptor fieldDescriptor;
 
@@ -342,7 +351,6 @@ namespace Composite.Services
             {
                 return null;
             }
-
         }
 
 
@@ -450,12 +458,19 @@ namespace Composite.Services
                 fieldLabel = StringResourceSystemFacade.ParseString(dataField.FormRenderingProfile.Label);
             }
 
-            string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}", HttpUtility.UrlEncodeUnicode(fieldLabel), HttpUtility.UrlEncodeUnicode(dataTypeDescriptor.Name));
+            return GetImageTagForDynamicDataFieldReference(fieldLabel, dataTypeDescriptor.Name, dataTypeDescriptor.TypeManagerTypeName);
+        }
+
+        private XElement GetImageTagForDynamicDataFieldReference(string fieldLabel, string typeName, string uiFriendlyTypeName)
+        {
+            string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}",
+                HttpUtility.UrlEncodeUnicode(fieldLabel),
+                HttpUtility.UrlEncodeUnicode(typeName));
 
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(string.Format("{0}\\{1}", dataTypeDescriptor.TypeManagerTypeName, dataField.Name)))
+                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldLabel)))
                 );
         }
 
