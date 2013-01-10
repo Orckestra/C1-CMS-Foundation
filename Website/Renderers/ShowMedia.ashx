@@ -12,9 +12,9 @@ using System.Web.SessionState;
 using Composite;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Core;
 using Composite.Core.IO;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Media;
 using Composite.Core.WebClient.Renderings;
@@ -437,17 +437,17 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             imgType = ImageFormat.Jpeg;
         }
 
-        string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, imgType);
-
         try
         {
+            string resizedImageFilePath = ImageResizer.GetResizedImage(context.Server, file, resizingOptions, imgType);
+            
             return resizedImageFilePath != null 
                 ? new C1FileStream(resizedImageFilePath, FileMode.OpenOrCreate, FileAccess.Read)
                 : file.GetReadStream();
         }
         catch (Exception ex)
         {
-            LoggingService.LogVerbose("Composite.Media.ImageResize", ex.Message);
+            Log.LogVerbose("Composite.Media.ImageResize", ex.Message);
         }
         return file.GetReadStream();
     }
