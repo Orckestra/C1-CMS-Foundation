@@ -337,7 +337,7 @@ namespace Composite.Services
             {
                 string fieldName = fieldReferenceElement.Attribute("fieldname").Value;
 
-                return GetImageTagForDynamicDataFieldReference(fieldName, type.FullName, type.FullName);
+                return GetImageTagForDynamicDataFieldReference(fieldName, type.AssemblyQualifiedName, type.AssemblyQualifiedName);                
             }
 
             DataTypeDescriptor typeDescriptor;
