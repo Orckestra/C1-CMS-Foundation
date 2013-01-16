@@ -87,12 +87,27 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
 	    public static IEnumerable<FieldReferenceDefinition> GetFieldReferenceDefinitions(XContainer container, string typeManagerName)
         {
-            var typeReferenceElements = container.Descendants(_fieldReferenceElementName).Where(f=>f.Attribute(_fieldReferenceTypeAttributeName).Value==typeManagerName);
+            Type type = null;
 
-            foreach (var referenceElement in typeReferenceElements)
+            foreach (XElement referenceElement in container.Descendants(_fieldReferenceElementName))
             {
-                yield return
-                    new FieldReferenceDefinition { FieldName = referenceElement.Attribute(_fieldReferenceFieldAttributeName).Value, FieldReferenceElement = referenceElement };
+                string referencedTypeName = referenceElement.Attribute(_fieldReferenceTypeAttributeName).Value;
+
+                if(referencedTypeName != typeManagerName)
+                {
+                    type = type ?? TypeManager.TryGetType(typeManagerName);
+                    if(type == null) continue;
+
+                    Type referencedType = TypeManager.TryGetType(referencedTypeName);
+                    if(referencedType == null || !referencedType.Equals(type))
+                    {
+                        continue;
+                    }
+                }
+
+                string fieldName = referenceElement.Attribute(_fieldReferenceFieldAttributeName).Value;
+
+                yield return new FieldReferenceDefinition { FieldName = fieldName, FieldReferenceElement = referenceElement };
             }
         }
 
