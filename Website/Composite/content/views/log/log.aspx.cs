@@ -23,10 +23,16 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         }
     }
 
-    private bool _allLogsHaveBeenDeleted = false;
+    private bool _allLogsHaveBeenDeleted;
 
     protected void Page_PreRender(object sender, EventArgs e)
     {
+        bool includeVerbose = chkVerbose.Checked;
+        bool includeInformation = chkInformation.Checked;
+        bool includeWarning = chkWarning.Checked;
+        bool includeError = chkError.Checked;
+        bool includeCritical = chkCritical.Checked;
+
         var dates = LogManager.GetLoggingDates().OrderByDescending(date => date).ToArray();
 
         this.Pager.Items.Clear();
@@ -50,7 +56,14 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         }
 
         selectedDate = selectedDate.Date;
-        LogEntry[] logEntries = LogManager.GetLogEntries(selectedDate, selectedDate.AddDays(1.0), false, 0);
+        LogEntry[] logEntries = LogManager.GetLogEntries(selectedDate, selectedDate.AddDays(1.0), includeVerbose, 0);
+
+
+        logEntries = logEntries.Where(entry => (includeVerbose && entry.Severity == "Verbose")
+                                              || (includeInformation && entry.Severity == "Information")
+                                              || (includeWarning && entry.Severity == "Warning")
+                                              || (includeError && entry.Severity == "Error")
+                                              || (includeCritical && entry.Severity == "Critical")).ToArray();
 
         if (logEntries.Length > 0)
         {
@@ -95,39 +108,24 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
                 eventType = TraceEventType.Information;
             }
 
-            XAttribute color = null;
+            
+            var colors = new []
+                               {
+                                   new Tuple<TraceEventType, string>(TraceEventType.Information, "lime"),
+                                   new Tuple<TraceEventType, string>(TraceEventType.Verbose, "white"),
+                                   new Tuple<TraceEventType, string>(TraceEventType.Warning, "yellow"),
+                                   new Tuple<TraceEventType, string>(TraceEventType.Error, "orange"),
+                                   new Tuple<TraceEventType, string>(TraceEventType.Critical, "red")
+                               };
 
-            switch (eventType)
-            {
-                case TraceEventType.Information:
-                    color = new XAttribute("bgcolor", "lime");
-                    break;
+            string colorName = colors.Where(c => c.Item1 == eventType).Select(c => c.Item2).FirstOrDefault() ?? "orange";
 
-                case TraceEventType.Verbose:
-                    color = new XAttribute("bgcolor", "white");
-                    break;
-
-                case TraceEventType.Warning:
-                    color = new XAttribute("bgcolor", "yellow");
-                    break;
-
-                case TraceEventType.Error:
-                    color = new XAttribute("bgcolor", "orange");
-                    break;
-
-                case TraceEventType.Critical:
-                    color = new XAttribute("bgcolor", "red");
-                    break;
-
-                default:
-                    color = new XAttribute("bgcolor", "pink");
-                    break;
-            }
+            XAttribute color = new XAttribute("bgcolor", colorName);
 
 
             XElement row = new XElement("tr");
             row.Add(
-                new XElement("td", " ", color),
+                new XElement("td", color, " "),
                 new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
                 new XElement("td", new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))),
                 new XElement("td", EncodeXml10InvalidCharacters(logEntry.Title)),

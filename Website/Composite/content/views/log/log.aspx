@@ -11,7 +11,7 @@
 		<control:scriptloader type="sub" runat="server" />
 		<link rel="stylesheet" type="text/css" href="log.css.aspx" />
 		<script type="text/javascript">
-		DocumentManager.isDocumentSelectable = true;
+		    DocumentManager.isDocumentSelectable = true;
 		</script>
 	</head>
 	<body>
@@ -24,13 +24,26 @@
 							<aspui:ToolbarButton ID="DeleteOlderButton" AutoPostBack="true" Text="${string:ServerLog.LabelButtonDeleteOld}" ImageUrl="${icon:package-installer-uninstall}" runat="server" OnClick="DeleteOldButton_Click" />
 							<aspui:ToolbarButton AutoPostBack="true" Text="${string:ServerLog.LabelButtonRefresh}" ImageUrl="${icon:refresh}" runat="server" OnClick="LogContentChanged" />
 						</ui:toolbargroup>
-					</ui:toolbarbody>
-					<!-- 
-					<ui:toolbarbody align="right">
-						<ui:toolbargroup>				
+						<ui:toolbargroup>
+						    
+                            <div class="left ">
+                                <aspui:CheckBox runat="server" ItemLabel="Critical" ID="chkCritical" Checked="True" />
+                            </div>
+                            <div class="left">
+                                <aspui:CheckBox runat="server" ItemLabel="Error" ID="chkError" Checked="True" />
+                            </div>
+                            <div class="left">
+                                <aspui:CheckBox runat="server" ItemLabel="Warning" ID="chkWarning" Checked="True" />
+                            </div>
+                            <div class="left">
+                                <aspui:CheckBox runat="server" ItemLabel="Information" ID="chkInformation" Checked="True" />
+                            </div>
+                            <div class="left">
+                                <aspui:CheckBox runat="server" ItemLabel="Verbose" ID="chkVerbose" Checked="False" />
+                            </div>
+                            
 						</ui:toolbargroup>
 					</ui:toolbarbody>
-					-->
 				</ui:toolbar>
 				<ui:scrollbox id="scrollbox">
 					<asp:PlaceHolder ID="LogHolder" runat="server" />
