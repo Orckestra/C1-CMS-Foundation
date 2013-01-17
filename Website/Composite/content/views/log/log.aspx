@@ -26,20 +26,20 @@
 						</ui:toolbargroup>
 						<ui:toolbargroup>
 						    
-                            <div class="left ">
-                                <aspui:CheckBox runat="server" ItemLabel="Critical" ID="chkCritical" Checked="True" />
+                            <div class="left">
+                                <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Critical}" ID="chkCritical" Checked="True" />
                             </div>
                             <div class="left">
-                                <aspui:CheckBox runat="server" ItemLabel="Error" ID="chkError" Checked="True" />
+                                <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Error}" ID="chkError" Checked="True" />
                             </div>
                             <div class="left">
-                                <aspui:CheckBox runat="server" ItemLabel="Warning" ID="chkWarning" Checked="True" />
+                                <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Warning}" ID="chkWarning" Checked="True" />
                             </div>
                             <div class="left">
-                                <aspui:CheckBox runat="server" ItemLabel="Information" ID="chkInformation" Checked="True" />
+                                <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Information}" ID="chkInformation" Checked="True" />
                             </div>
                             <div class="left">
-                                <aspui:CheckBox runat="server" ItemLabel="Verbose" ID="chkVerbose" Checked="False" />
+                                <aspui:CheckBox runat="server" ItemLabel="${string:ServerLog.Severity.Verbose}" ID="chkVerbose" Checked="False" />
                             </div>
                             
 						</ui:toolbargroup>

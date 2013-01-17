@@ -435,6 +435,11 @@
 	<string key="ServerLog.LogEntry.MessageLabel" value="Message" />
 	<string key="ServerLog.LogEntry.TitleLabel" value="Title" />
 	<string key="ServerLog.LogEntry.EventTypeLabel" value="EventType" />
+  <string key="ServerLog.Severity.Verbose" value="Verbose" />
+  <string key="ServerLog.Severity.Information" value="Information" />
+  <string key="ServerLog.Severity.Warning" value="Warning" />
+  <string key="ServerLog.Severity.Error" value="Error" />
+  <string key="ServerLog.Severity.Critical" value="Critical" />
 	<string key="FunctionDocumentation.LabelButtonRefresh" value="Refresh" />
 	<string key="FunctionDocumentation.LabelButtonPrint" value="Print" />
 	<string key="Website.FlowUICompleted.ExecutionEndedTitle" value="Execution Ended" />
