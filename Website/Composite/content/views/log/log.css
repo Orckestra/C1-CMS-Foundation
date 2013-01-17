@@ -41,6 +41,14 @@ div#emptylabel {
     width: auto;
     margin-right: 15px;
 }
+
+#toolbar checkbutton {
+    margin-top: 1px;
+}
+
+#toolbar .left:first-child checkbutton {
+    margin-left: 8px;
+}
             
 div.left {
     float: left;

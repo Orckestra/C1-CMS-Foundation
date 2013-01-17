@@ -88,8 +88,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 SqlStoreManipulator.DropStoresForType(_dataProviderContext.ProviderName, dataTypeDescriptor);
 
                 InterfaceConfigurationManipulator.Remove(_dataProviderContext.ProviderName, dataTypeDescriptor);
-                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.Where(f => f.DataTypeId == dataTypeDescriptor.DataTypeId).Single();
-                _interfaceConfigurationElements.Remove(oldElement);
+                InterfaceConfigurationElement oldElement = _interfaceConfigurationElements.FirstOrDefault(f => f.DataTypeId == dataTypeDescriptor.DataTypeId);
+                if (oldElement != null)
+                {
+                    _interfaceConfigurationElements.Remove(oldElement);
+                }
             }
         }
 
