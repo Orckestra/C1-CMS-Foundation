@@ -39,6 +39,51 @@ public partial class Composite_content_views_log_log {
     protected global::Composite.Core.WebClient.UiControlLib.ToolbarButton DeleteOlderButton;
     
     /// <summary>
+    /// chkCritical control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkCritical;
+    
+    /// <summary>
+    /// chkError control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkError;
+    
+    /// <summary>
+    /// chkWarning control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkWarning;
+    
+    /// <summary>
+    /// chkInformation control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkInformation;
+    
+    /// <summary>
+    /// chkVerbose control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Composite.Core.WebClient.UiControlLib.CheckBox chkVerbose;
+    
+    /// <summary>
     /// LogHolder control.
     /// </summary>
     /// <remarks>
