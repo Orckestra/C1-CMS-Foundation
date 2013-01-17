@@ -12,6 +12,8 @@ namespace Composite.Core.Logging
     public static class LogManager
     {
         private static readonly string VerboseSeverity = "Verbose";
+        private static readonly TimeSpan LockedFileAwaitingPeriod = TimeSpan.FromSeconds(15);
+        private static readonly DateTime _startTime = DateTime.Now;
 
         /// <exclude />
         public static int LogLinesRequestLimit = 5000;
@@ -138,6 +140,13 @@ namespace Composite.Core.Logging
                     {
                         if (!logFile.Open())
                         {
+                            if (DateTime.Now - _startTime > LockedFileAwaitingPeriod)
+                            {
+                                // Waiting for some time until all log files are released
+                                // This ensures that LogViewer will get all the logs from previous, currently being shutdown AppDomain(s)
+                                return new LogEntry[0];
+                            }
+
                             continue;
                         }
 
