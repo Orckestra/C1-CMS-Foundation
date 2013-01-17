@@ -183,6 +183,7 @@ div#offlinesplash {
 div#offlineimage {
 	width: 100%;
 	height: 100%;
+	margin-bottom: 10px;
 	#alphaimage: url("images/loading.png");
 }
 div#offlinetext {
