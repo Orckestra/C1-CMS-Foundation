@@ -418,6 +418,11 @@ namespace Composite.Data
         }
 
 
+        /// <exclude />
+        public static DataReference<T> BuildDataReference<T>(object keyValue) where T : class, IData
+        {
+            return new DataReference<T>(keyValue);
+        }
 
         /// <exclude />
         public static IDataReference BuildDataReference(Type referencedType, object keyValue)
