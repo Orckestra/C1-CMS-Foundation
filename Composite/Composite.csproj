@@ -158,6 +158,7 @@
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
+    <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\Renderings\Template\PageTemplateFeatureFacade.cs" />
     <Compile Include="Data\Foundation\ProcessControllerSettings.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />

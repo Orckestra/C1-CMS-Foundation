@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Management;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Hosting;
@@ -10,21 +9,21 @@ using Composite.Core.IO;
 
 namespace Composite.Core.WebClient.Captcha
 {
-	internal static class Encryption
-	{
+    internal static class Encryption
+    {
         private static readonly byte[] _encryptionKey;
         private static readonly byte[] RijndaelIV = { 1, 84, 22, 19, 154, 221, 4, 30, 56, 4, 114, 59, 90, 2, 5, 10 };
 
         static Encryption()
-	    {
+        {
             var md5 = MD5.Create();
 
-            string key = Environment.MachineName + GetCpuId() + HostingEnvironment.ApplicationPhysicalPath;
+            string key = Environment.MachineName + CaptchaConfiguration.Password + HostingEnvironment.ApplicationPhysicalPath;
 
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
             _encryptionKey = md5.ComputeHash(keyBytes);
-	    }
+        }
 
         public static string Encrypt(string value)
         {
@@ -133,17 +132,5 @@ namespace Composite.Core.WebClient.Captcha
             }
             return recreatedByteArray;
         }
-
-        private static string GetCpuId()
-        {
-            var managementClass = new ManagementClass("Win32_Processor");
-            ManagementObjectCollection managementObjCol = managementClass.GetInstances();
-
-            foreach (ManagementObject managementObj in managementObjCol)
-            {
-                return managementObj.Properties["ProcessorId"].Value.ToString();
-            }
-            return string.Empty;
-        }
-	}
+    }
 }

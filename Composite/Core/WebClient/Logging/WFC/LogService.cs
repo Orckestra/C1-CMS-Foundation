@@ -20,7 +20,7 @@ namespace Composite.Core.WebClient.Logging.WCF
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     internal class LogService : ILogService
     {
-        private static readonly string LoggerConfigurationFilePath = @"Composite\services\LogService\Logger.config";
+        private static readonly string LoggerConfigurationFilePath = @"App_Data\Composite\Configuration\Logger.xml";
         private static readonly object _syncRoot = new object();
 
         private static string _loggerPassword;
@@ -97,7 +97,7 @@ namespace Composite.Core.WebClient.Logging.WCF
             string password;
 
             int separatorOffset = loginAndPassword.IndexOf("|");
-            if(separatorOffset > 0 && separatorOffset < loginAndPassword.Length - 1)
+            if (separatorOffset > 0 && separatorOffset < loginAndPassword.Length - 1)
             {
                 login = loginAndPassword.Substring(0, separatorOffset);
                 password = loginAndPassword.Substring(separatorOffset + 1);
@@ -114,8 +114,8 @@ namespace Composite.Core.WebClient.Logging.WCF
             using (ThreadDataManager.Initialize())
             {
                 userIsValid = LoginProviderPluginFacade.FormValidateUser(login, password) == LoginResult.Success;
-                
-                if(userIsValid)
+
+                if (userIsValid)
                 {
                     string userName = login.ToLowerInvariant();
                     var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(userName).ToList();
