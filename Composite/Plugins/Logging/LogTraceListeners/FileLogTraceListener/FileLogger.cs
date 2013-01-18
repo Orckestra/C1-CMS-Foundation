@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
-using System.Web.Hosting;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Logging;
@@ -27,8 +26,6 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
         internal LogFileInfo _fileConnection;
         internal readonly object _syncRoot = new object();
-        private DateTime _lastLogFileTouch = DateTime.MinValue;
-
 
         public FileLogger(string logDirectoryPath, bool flushImmediately)
         {
@@ -84,7 +81,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                     ResetInitialization();
                 }
 
-                // Writing the file in the "catch" block in order to prevent chance of corrupting the file by expiriencing ThreadAbortException.
+                // Writing the file in the "catch" block in order to prevent chance of corrupting the file by experiencing ThreadAbortException.
                 Exception thrownException = null;
                 try
                 {
@@ -141,7 +138,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
                 // Skipping file to which we're currently using
                 if (currentlyOpenedFileName != null
-                    && string.Compare(fileName, currentlyOpenedFileName, true) == 0)
+                    && string.Compare(fileName, currentlyOpenedFileName, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     continue;
                 }
@@ -205,11 +202,21 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             try
             {
-                // TODO: It should open file only once, not twice
-                content = File.ReadAllLines(filePath);
-
                 stream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
-                stream.Seek(stream.Length, SeekOrigin.Begin);
+
+                // Not disposing StreamReader so the stream is not closed afterwards
+                var reader = new StreamReader(stream, Encoding.UTF8, true);
+                
+                var lines = new List<string>();
+
+                string line;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+
+                content = lines.ToArray();
             }
             catch (Exception e)
             {
@@ -231,8 +238,6 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             RemoveOldLockFiles();            
 
-            TouchLogFiles();
-
             if (_fileConnection != null) return;
 
             lock (_syncRoot)
@@ -243,7 +248,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
                 string fileNamePrefix = creationDate.ToString("yyyyMMdd");
                 string fileName;
-                FileStream stream = null;
+                FileStream stream;
                 Exception ex;
 
                 for (int i = 0; i < 10; i++)
@@ -304,41 +309,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
 
 
-        /// <summary>
-        /// Due to the nature of this logger. Keeping files open all the time. It works very badly with Azure blob syncronization.
-        /// So this class dont uses the C1 IO classes. But logfiles are nice to have synced to the blob, so old logfiles are touched.
-        /// </summary>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass", Justification = "This is what we want, touch is used later on")]
-        private void TouchLogFiles()
-        {
-            if (DateTime.Now - _lastLogFileTouch > TimeSpan.FromHours(12))
-            {
-                lock (_syncRoot)
-                {
-                    _lastLogFileTouch = DateTime.Now;
-
-                    DateTime creationDate = DateTime.Now;
-                    string fileNamePrefix = creationDate.ToString("yyyyMMdd");
-
-                    foreach (string filepath in Directory.GetFiles(_logDirectoryPath))
-                    {
-                        if (!Path.GetFileName(filepath).StartsWith(fileNamePrefix))
-                        {
-                            C1File.Touch(filepath);
-                        }
-                    }
-
-                }
-            }
-        }
-
-
-
         [SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]        
         [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private void RemoveOldLockFiles()
         {
-            DateTime now = DateTime.Now;
             foreach (string filePath in Directory.GetFiles(_logDirectoryPath, "*.lock"))
             {
                 string appDomainIdString = Path.GetFileNameWithoutExtension(filePath);
@@ -349,7 +323,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 {
                     DateTime lastWrite = File.GetLastWriteTime(filePath);
 
-                    TimeSpan fileAge = now - lastWrite;
+                    TimeSpan fileAge = DateTime.Now - lastWrite;
 
                     if (fileAge.TotalSeconds >= 60)
                     {
