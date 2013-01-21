@@ -191,6 +191,15 @@ namespace CompositeTypeFieldDesigner {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::Composite.Core.WebClient.UiControlLib.Selector GroupByPriorityField;
+
+        /// <summary>
+        /// GroupByPriorityField control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::Composite.Core.WebClient.UiControlLib.Selector TreeOrderingField;
         
         /// <summary>
         /// btnDefaultValueFunctionMarkup control.

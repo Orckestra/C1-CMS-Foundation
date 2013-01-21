@@ -110,6 +110,12 @@ namespace Composite.Data.ExtendedDataType.Debug
                 Label = "MyStringField",
                 HelpText = "This is an auto-generated field.",
                 WidgetFunctionMarkup = @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""Composite.Widgets.String.TextBox"" label="""" bindingsourcename=""""><f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" /></f:widgetfunction>"
+            };
+
+            stringDataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
+            {
+                OrderPriority = 1,
+                OrderDescending = false,
             };            
 
             _dataFieldDescriptors.Add(stringDataFieldDescriptor);
@@ -128,6 +134,12 @@ namespace Composite.Data.ExtendedDataType.Debug
                 HelpText = "This is an auto-generated field.",
                 WidgetFunctionMarkup = @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""Composite.Widgets.String.TextBox"" label="""" bindingsourcename=""""><f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" /></f:widgetfunction>"
             };
+            intDataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
+            {
+                OrderPriority = 2,
+                OrderDescending = true,
+            };            
+
 
             _dataFieldDescriptors.Add(intDataFieldDescriptor);
 
@@ -146,6 +158,10 @@ namespace Composite.Data.ExtendedDataType.Debug
                 HelpText = "This is an auto-generated field.",
                 WidgetFunctionMarkup = @"<f:widgetfunction xmlns:f=""http://www.composite.net/ns/function/1.0"" name=""Composite.Widgets.Date.DateSelector"" label="""" bindingsourcename=""""><f:helpdefinition xmlns:f=""http://www.composite.net/ns/function/1.0"" helptext="""" /></f:widgetfunction>"
             };
+            intDataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
+            {
+                OrderPriority = null,
+            };            
 
             _dataFieldDescriptors.Add(dateTimeDataFieldDescriptor);
         }

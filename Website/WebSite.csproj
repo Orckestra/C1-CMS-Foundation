@@ -1446,7 +1446,9 @@
     <Content Include="Composite\content\forms\Administrative\EditAggregationTypeStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\EditCompositionTypeStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\EditDynamicTypeFormMarkup.xml" />
-    <Content Include="Composite\content\forms\Administrative\EditInterfaceTypeStep1.xml" />
+    <Content Include="Composite\content\forms\Administrative\EditInterfaceTypeStep1.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\forms\Administrative\EditMediaFile.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMediaFileTextContent.xml" />
     <Content Include="Composite\content\forms\Administrative\EditMediaFolder.xml" />

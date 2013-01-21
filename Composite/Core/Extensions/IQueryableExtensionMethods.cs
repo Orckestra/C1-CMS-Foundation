@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Foundation;
 
@@ -73,6 +75,130 @@ namespace Composite.Core.Extensions
             }
             return false;
         }
+
+
+        /// <exclude />
+        public static IOrderedQueryable OrderBy(this IQueryable source, Type dataType, string property)
+        {
+            return ApplyOrder(source, dataType, property, "OrderBy");
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable OrderBy(this IQueryable source, Type dataType, string property, bool descending)
+        {
+            if (descending)
+            {
+                return ApplyOrder(source, dataType, property, "OrderByDescending");
+            }
+            else
+            {
+                return ApplyOrder(source, dataType, property, "OrderBy");
+            }
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable OrderByDescending(this IQueryable source, Type dataType, string property)
+        {
+            return ApplyOrder(source, dataType, property, "OrderByDescending");
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable ThenBy(this IOrderedQueryable source, Type dataType, string property)
+        {
+            return ApplyOrder(source, dataType, property, "ThenBy");
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable ThenBy(this IOrderedQueryable source, Type dataType, string property, bool descending)
+        {
+            if (descending)
+            {
+                return ApplyOrder(source, dataType, property, "ThenByDescending");
+            }
+            else
+            {
+                return ApplyOrder(source, dataType, property, "ThenBy");
+            }
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable ThenByDescending(this IOrderedQueryable source, Type dataType, string property)
+        {
+            return ApplyOrder(source, dataType, property, "ThenByDescending");
+        }
+
+
+
+        /// <exclude />
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string property)
+        {
+            return ApplyOrder<T>(source, property, "OrderBy");
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string property)
+        {
+            return ApplyOrder<T>(source, property, "OrderByDescending");
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable<T> ThenBy<T>(this IOrderedQueryable<T> source, string property)
+        {
+            return ApplyOrder<T>(source, property, "ThenBy");
+        }
+
+
+        /// <exclude />
+        public static IOrderedQueryable<T> ThenByDescending<T>(this IOrderedQueryable<T> source, string property)
+        {
+            return ApplyOrder<T>(source, property, "ThenByDescending");
+        }
+
+
+        /// <exclude />
+        private static IOrderedQueryable<T> ApplyOrder<T>(IQueryable<T> source, string property, string methodName)
+        {
+            return (IOrderedQueryable<T>)ApplyOrder(source, typeof(T), property, methodName);
+        }
+
+
+        private static IOrderedQueryable ApplyOrder(IQueryable source, Type type, string property, string methodName)
+        {
+            Verify.IsNotNull(property, "property cannot be null");
+            Verify.IsNotNull(type, "type cannot be null");
+
+            string[] props = property.Split('.');
+            Type paramenetType = type;
+            ParameterExpression arg = Expression.Parameter(paramenetType, "x");
+            Expression expr = arg;
+            foreach (string prop in props)
+            {
+                // use reflection (not ComponentModel) to mirror LINQ
+                PropertyInfo pi = paramenetType.GetPropertiesRecursively(f=>f.Name == prop).FirstOrDefault();
+                Verify.IsNotNull(pi, "Could not find property '{0}' on type '{1}'", property, type);
+                expr = Expression.Property(expr, pi);
+                paramenetType = pi.PropertyType;
+            }
+            Type delegateType = typeof(Func<,>).MakeGenericType(type, paramenetType);
+            LambdaExpression lambda = Expression.Lambda(delegateType, expr, arg);
+
+            object result = typeof(Queryable).GetMethods().Single(
+                    method => method.Name == methodName
+                            && method.IsGenericMethodDefinition
+                            && method.GetGenericArguments().Length == 2
+                            && method.GetParameters().Length == 2)
+                    .MakeGenericMethod(type, paramenetType)
+                    .Invoke(null, new object[] { source, lambda });
+            return (IOrderedQueryable)result;
+        }
+
 
 
         #region Obsolete

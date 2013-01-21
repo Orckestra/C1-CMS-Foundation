@@ -189,12 +189,21 @@
 												</ui:field>
 	
 												<ui:field>
+													<ui:fielddesc><%= GetString("TreeOrdering")%></ui:fielddesc>
+													<ui:fieldhelp><%= GetString("TreeOrderingHelp")%></ui:fieldhelp>
+													<ui:fielddata>
+															<aspui:Selector ID="TreeOrderingField" runat="server" />
+													</ui:fielddata>
+												</ui:field>
+
+												<ui:field>
 													<ui:fielddesc><%= GetString("GroupByPriority") %></ui:fielddesc>
 													<ui:fieldhelp><%= GetString("GroupByPriorityHelp")%></ui:fieldhelp>
 													<ui:fielddata>
 															<aspui:Selector ID="GroupByPriorityField" runat="server" />
 													</ui:fielddata>
 												</ui:field>
+
 											</ui:fieldgroup>
 	
 											<ui:fieldgroup label="<%= GetString("DefaultValueGroupLabel") %>">

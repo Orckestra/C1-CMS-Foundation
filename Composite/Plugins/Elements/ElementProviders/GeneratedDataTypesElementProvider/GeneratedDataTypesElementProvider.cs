@@ -452,7 +452,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                     IEnumerable<Element> elements = _dataGroupingProviderHelper.GetRootGroupFolders(type, entityToken, showForeignChildren);
 
-                    return elements.OrderBy(f => f.VisualData.Label).ToList();
+                    return elements.ToList();
                 }
 
                 Log.LogWarning("GeneratedDataTypesElementProvider", "Can not get children for unknown type '{0}'".FormatWith(typeManagerName));
@@ -464,7 +464,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 List<Element> elements = _dataGroupingProviderHelper.GetGroupChildren(entityToken as DataGroupingProviderHelperEntityToken, showForeignChildren).ToList();
 
-                return elements.OrderBy(f => f.VisualData.Label);
+                return elements;
             }
 
             if (entityToken is DataEntityToken)

@@ -32,6 +32,7 @@ namespace Composite.Data.DynamicTypes
             this.StoreType = storeType;
             this.InstanceType = instanceType;            
             this.FormRenderingProfile = new DataFieldFormRenderingProfile();
+            this.TreeOrderingProfile = new DataFieldTreeOrderingProfile();
             this.IsReadOnly = false;
         }
 
@@ -45,6 +46,7 @@ namespace Composite.Data.DynamicTypes
             this.StoreType = storeType;
             this.InstanceType = instanceType;
             this.FormRenderingProfile = new DataFieldFormRenderingProfile();
+            this.TreeOrderingProfile = new DataFieldTreeOrderingProfile();
             this.Inherited = inherited;
             this.IsReadOnly = false;
         }
@@ -60,6 +62,10 @@ namespace Composite.Data.DynamicTypes
 
         /// <exclude />
         public DataFieldFormRenderingProfile FormRenderingProfile { get; set; }
+
+
+        /// <exclude />
+        public DataFieldTreeOrderingProfile TreeOrderingProfile { get; set; }
 
 
         /// <summary>
@@ -185,6 +191,7 @@ namespace Composite.Data.DynamicTypes
             }
             dataFieldDescriptor.ForeignKeyReferenceTypeName = this.ForeignKeyReferenceTypeName;
             dataFieldDescriptor.FormRenderingProfile = new DataFieldFormRenderingProfile { HelpText = this.FormRenderingProfile.HelpText, Label = this.FormRenderingProfile.Label, WidgetFunctionMarkup = this.FormRenderingProfile.WidgetFunctionMarkup };
+            dataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile { OrderPriority = this.TreeOrderingProfile.OrderPriority, OrderDescending = this.TreeOrderingProfile.OrderDescending };
             dataFieldDescriptor.GroupByPriority = this.GroupByPriority;
             dataFieldDescriptor.Inherited = this.Inherited;
             dataFieldDescriptor.IsNullable = this.IsNullable;
@@ -245,6 +252,14 @@ namespace Composite.Data.DynamicTypes
                 element.Add(formRenderingProfileElement);
             }
 
+            if (this.TreeOrderingProfile != null && this.TreeOrderingProfile.OrderPriority.HasValue)
+            {
+                XElement treeOrderingProfileElement = new XElement("TreeOrderingProfile");
+                treeOrderingProfileElement.Add(new XAttribute("orderPriority", this.TreeOrderingProfile.OrderPriority));
+                treeOrderingProfileElement.Add(new XAttribute("orderDescending", this.TreeOrderingProfile.OrderDescending));
+                element.Add(treeOrderingProfileElement);
+            }
+
             if (this.ValidationFunctionMarkup != null)
             {
                 XElement elementValidationFunctionMarkup = new XElement("ValidationFunctionMarkups");
@@ -290,6 +305,7 @@ namespace Composite.Data.DynamicTypes
             XAttribute defaultValueAttribute = element.Attribute("defaultValue");
             XAttribute foreignKeyReferenceTypeNameAttribute = element.Attribute("foreignKeyReferenceTypeName");
             XElement formRenderingProfileElement = element.Element("FormRenderingProfile");
+            XElement treeOrderingProfileElement = element.Element("TreeOrderingProfile");
             XElement validationFunctionMarkupsElement = element.Element("ValidationFunctionMarkups");
 
             Guid id = (Guid)idAttribute;
@@ -348,6 +364,16 @@ namespace Composite.Data.DynamicTypes
                 }
 
                 dataFieldDescriptor.FormRenderingProfile = dataFieldFormRenderingProfile;
+            }
+
+            if (treeOrderingProfileElement != null)
+            {
+                int? orderPriority = (int?)treeOrderingProfileElement.Attribute("orderPriority");
+                bool orderDescending = (bool)treeOrderingProfileElement.Attribute("orderDescending");
+
+                DataFieldTreeOrderingProfile dataFieldTreeOrderingProfile = new DataFieldTreeOrderingProfile { OrderPriority = orderPriority, OrderDescending = orderDescending };
+
+                dataFieldDescriptor.TreeOrderingProfile = dataFieldTreeOrderingProfile;
             }
 
             dataFieldDescriptor.ValidationFunctionMarkup = new List<string>();

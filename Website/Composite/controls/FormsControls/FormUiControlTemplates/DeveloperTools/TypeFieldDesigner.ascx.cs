@@ -113,6 +113,7 @@ namespace CompositeTypeFieldDesigner
             UpdateDetailsSplitPanel(true);
             UpdatePositionFieldOptions();
             UpdateGroupByPriorityFieldOptions();
+            UpdateTreeOrderingFieldOptions();
             UpdateFieldTypeDetailsSelector();
         }
 
@@ -173,6 +174,54 @@ namespace CompositeTypeFieldDesigner
         }
 
 
+        private void UpdateTreeOrderingFieldOptions()
+        {
+            var treeOrderingFieldOptions = new Dictionary<DataFieldTreeOrderingProfile, string>();
+
+            treeOrderingFieldOptions.Add(
+                new DataFieldTreeOrderingProfile { OrderPriority = null }
+                , GetString("TreeOrderingNone"));
+            treeOrderingFieldOptions.Add(
+                new DataFieldTreeOrderingProfile { OrderPriority = 1, OrderDescending = false }
+                , GetString("TreeOrderingFirstAscending"));
+            treeOrderingFieldOptions.Add(
+                new DataFieldTreeOrderingProfile { OrderPriority = 1, OrderDescending = true }
+                , GetString("TreeOrderingFirstDescending"));
+
+            int existingOrderedFieldCount = this.CurrentFields.Count(f => f.TreeOrderingProfile != null && f.TreeOrderingProfile.OrderPriority.HasValue);
+
+            if (existingOrderedFieldCount > 0)
+            {
+                for (int i = 2; i <= existingOrderedFieldCount; i++)
+                {
+                    treeOrderingFieldOptions.Add(
+                        new DataFieldTreeOrderingProfile { OrderPriority = i, OrderDescending = false }
+                        , string.Format(GetString("TreeOrderingNAscending"), i));
+
+                    treeOrderingFieldOptions.Add(
+                        new DataFieldTreeOrderingProfile { OrderPriority = i, OrderDescending = true }
+                        , string.Format(GetString("TreeOrderingNDescending"), i));
+                }
+
+                if (this.CurrentFields.Any(f => f.Id == this.CurrentlySelectedFieldId && f.TreeOrderingProfile.OrderPriority > 0) == false)
+                {
+                    treeOrderingFieldOptions.Add(
+                        new DataFieldTreeOrderingProfile { OrderPriority = existingOrderedFieldCount + 1, OrderDescending = true }
+                        , string.Format(GetString("TreeOrderingNAscending"), existingOrderedFieldCount + 1));
+
+                    treeOrderingFieldOptions.Add(
+                        new DataFieldTreeOrderingProfile { OrderPriority = existingOrderedFieldCount + 1, OrderDescending = false }
+                        , string.Format(GetString("TreeOrderingNDescending"), existingOrderedFieldCount + 1));
+                }
+            }
+
+            this.TreeOrderingField.DataSource = treeOrderingFieldOptions;
+            this.TreeOrderingField.DataTextField = "Value";
+            this.TreeOrderingField.DataValueField = "Key";
+            this.TreeOrderingField.DataBind();
+        }
+
+
 
         private void UpdateFieldTypeDetailsSelector()
         {
@@ -220,11 +269,8 @@ namespace CompositeTypeFieldDesigner
                     TypeDetailsSelector.DataSource = typeList;
                     TypeDetailsSelector.DataTextField = "Label";
                     TypeDetailsSelector.DataValueField = "TypeManagerName";
-                    try
-                    {
-                        TypeDetailsSelector.DataBind();
-                    }
-                    catch (Exception) { }
+                    TypeDetailsSelector.SelectedValue = null;
+                    TypeDetailsSelector.DataBind();
                     break;
                 case "System.Boolean":
                     TypeDetailsOptionalPlaceHolder.Visible = false;
@@ -417,10 +463,12 @@ namespace CompositeTypeFieldDesigner
             EnsureGroupByPrioritySequence();
 
             UpdatePositionFieldOptions();
+            UpdateTreeOrderingFieldOptions();
             UpdateGroupByPriorityFieldOptions();
 
             this.PositionField.SelectedValue = "-1";
             this.GroupByPriorityField.SelectedValue = "0";
+            this.TreeOrderingField.SelectedValue = null;
             this.NameField.Text = "";
 
             UpdateFieldsPanel();
@@ -536,7 +584,9 @@ namespace CompositeTypeFieldDesigner
             this.PositionField.SelectedValue = (selectedField.Position == this.CurrentFields.Count - 1 ? "-1" : selectedField.Position.ToString());
 
             UpdateGroupByPriorityFieldOptions();
+            UpdateTreeOrderingFieldOptions();
             this.GroupByPriorityField.SelectedValue = selectedField.GroupByPriority.ToString();
+            this.TreeOrderingField.SelectedValue = selectedField.TreeOrderingProfile.ToString();
         }
 
 
@@ -910,13 +960,23 @@ namespace CompositeTypeFieldDesigner
             this.LabelField.Text = "";
             this.HelpField.Text = "";
             this.PositionField.SelectedValue = "-1";
-            this.IsTitleFieldDateTimeSelector.Checked = (string.IsNullOrEmpty(this.CurrentLabelFieldName));
+
+            if (string.IsNullOrEmpty(this.CurrentLabelFieldName))
+        	{
+                this.IsTitleFieldDateTimeSelector.Checked = (string.IsNullOrEmpty(this.CurrentLabelFieldName));
+                if (!CurrentFields.Any(f=>f.TreeOrderingProfile.OrderPriority > 0))
+                {
+                    var ordering = new DataFieldTreeOrderingProfile{ OrderPriority = 1, OrderDescending = false };
+                    this.TreeOrderingField.SelectedValue = ordering.ToString();
+                }
+        	}
 
             ResetWidgetSelector();
 
             Field_Save();
 
             UpdatePositionFieldOptions();
+            UpdateTreeOrderingFieldOptions();
             UpdateGroupByPriorityFieldOptions();
             UpdateFieldsPanel();
             MakeClientDirty();
@@ -1136,8 +1196,21 @@ namespace CompositeTypeFieldDesigner
                 }
             }
             field.GroupByPriority = newGroupByPriority;
-
             EnsureGroupByPrioritySequence();
+
+            if (field.TreeOrderingProfile.ToString() != this.TreeOrderingField.SelectedValue)
+            {
+                field.TreeOrderingProfile = DataFieldTreeOrderingProfile.FromString(this.TreeOrderingField.SelectedValue);
+                int assignTreeOrderPriority = 1;
+                foreach (DataFieldDescriptor otherField in this.CurrentFields.Where(f => f.TreeOrderingProfile.OrderPriority > 0 && f.Id != field.Id).OrderBy(f => f.TreeOrderingProfile.OrderPriority))
+                {
+                    if (assignTreeOrderPriority == field.TreeOrderingProfile.OrderPriority) assignTreeOrderPriority++;
+                    otherField.TreeOrderingProfile.OrderPriority = assignTreeOrderPriority;
+                    assignTreeOrderPriority++;
+                }
+            }
+            EnsureTreeOrderPrioritySequence();
+
         }
 
 
@@ -1148,6 +1221,17 @@ namespace CompositeTypeFieldDesigner
             {
                 field.GroupByPriority = assignGroupByPriority;
                 assignGroupByPriority++;
+            }
+        }
+
+
+        private void EnsureTreeOrderPrioritySequence()
+        {
+            int assignTreeOrderPriority = 1;
+            foreach (DataFieldDescriptor field in this.CurrentFields.Where(f => f.TreeOrderingProfile.OrderPriority > 0).OrderBy(f => f.TreeOrderingProfile.OrderPriority))
+            {
+                field.TreeOrderingProfile.OrderPriority = assignTreeOrderPriority;
+                assignTreeOrderPriority++;
             }
         }
 

@@ -111,6 +111,7 @@ namespace Composite.Data.DynamicTypes.Foundation
             fieldDescriptor.IsNullable = DynamicTypeReflectionFacade.IsNullable(propertyInfo);
             fieldDescriptor.ForeignKeyReferenceTypeName = DynamicTypeReflectionFacade.ForeignKeyReferenceTypeName(propertyInfo);
             fieldDescriptor.GroupByPriority = DynamicTypeReflectionFacade.GetGroupByPriority(propertyInfo);
+            fieldDescriptor.TreeOrderingProfile = DynamicTypeReflectionFacade.GetTreeOrderingProfile(propertyInfo);
 
             // These auto added widget functions does not work on a empty system.
             // This code could have added widgets for data types that does not have any widgets attached to them

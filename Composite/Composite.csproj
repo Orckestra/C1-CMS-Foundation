@@ -160,6 +160,8 @@
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\Renderings\Template\PageTemplateFeatureFacade.cs" />
+    <Compile Include="Data\DynamicTypes\DataFieldTreeOrderingProfile.cs" />
+    <Compile Include="Data\TreeOrderingProfileAttribute.cs" />
     <Compile Include="Data\Foundation\ProcessControllerSettings.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />

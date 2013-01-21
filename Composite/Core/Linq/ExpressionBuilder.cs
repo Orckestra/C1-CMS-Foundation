@@ -80,14 +80,7 @@ namespace Composite.Core.Linq
 
 
 
-        public ExpressionBuilder OrderBy(PropertyInfo orderByPropertyInfo)
-        {
-            return OrderBy(orderByPropertyInfo, false);
-        }
-
-
-
-        public ExpressionBuilder OrderBy(PropertyInfo orderByPropertyInfo, bool useInnerDateTimeDate)
+        public ExpressionBuilder OrderBy(PropertyInfo orderByPropertyInfo, bool useInnerDateTimeDate, bool orderDescending)
         {
             ParameterExpression parameter = Expression.Parameter(_currentQueryableType, "o");
 
@@ -103,7 +96,7 @@ namespace Composite.Core.Linq
             MethodCallExpression methodCallExpression = Expression.Call
             (
                 typeof(Queryable),
-                "OrderBy",
+                (orderDescending ? "OrderByDescending" : "OrderBy"),
                 new Type[] { _currentQueryableType, orderByPropertyInfo.PropertyType },
                 _currentExpression,
                 Expression.Quote(lambdaExpression)

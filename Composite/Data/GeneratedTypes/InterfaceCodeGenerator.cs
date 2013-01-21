@@ -361,32 +361,6 @@ namespace Composite.Data.GeneratedTypes
                         );
 
                     codeMemberProperty.CustomAttributes.Add(codeAttributeDeclaration);
-
-                    /*
-                    IPropertyValidatorBuilder propertyValidatorBuilder = null;
-
-
-                    //MRJ: Data module refac: This is eager, make it lazy
-                    try
-                    {
-                        BaseRuntimeTreeNode node = FunctionFacade.BuildTree(XElement.Parse(functionMarkup));
-                        propertyValidatorBuilder = node.GetValue<IPropertyValidatorBuilder>();
-                    }
-                    catch (Exception ex)
-                    {
-                        string errMsg = string.Format("Validator function markup parse / execution failed with the following error: '{0}'. The validator attribute is dropped.", ex.Message);
-                        Core.Logging.LoggingService.LogError("InterfaceCodeGenerator", errMsg);
-                    }
-
-                    if (propertyValidatorBuilder != null)
-                    {
-                        CodeAttributeDeclaration codeAttributeDeclaration = propertyValidatorBuilder.GetCodeAttributeDeclaration();
-
-                        Assembly assembly = propertyValidatorBuilder.GetAttribute().GetType().Assembly;
-                        referencedAssemblies.Add(assembly);
-
-                        codeMemberProperty.CustomAttributes.Add(codeAttributeDeclaration);
-                    }*/
                 }
             }
 
@@ -420,7 +394,6 @@ namespace Composite.Data.GeneratedTypes
 
                 codeMemberProperty.CustomAttributes.Add(fieldPositionAttribute);
             }
-
 
 
             if (dataFieldDescriptor.StoreType.IsString == true && dataFieldDescriptor.StoreType.IsLargeString == false)
@@ -511,6 +484,38 @@ namespace Composite.Data.GeneratedTypes
                         codeAttributeArgument.ToArray()
                     ));
             }
+
+
+            if (dataFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
+            {
+                List<CodeAttributeArgument> args = new List<CodeAttributeArgument> {
+                                new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.TreeOrderingProfile.OrderPriority))
+                            };
+
+                if (dataFieldDescriptor.TreeOrderingProfile.OrderDescending)
+                {
+                    args.Add( new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.TreeOrderingProfile.OrderDescending)));
+                }
+
+                codeMemberProperty.CustomAttributes.Add(
+                        new CodeAttributeDeclaration(
+                            typeof(TreeOrderingAttribute).FullName, 
+                            args.ToArray()
+                        ));
+                
+            }
+
+
+            if (dataFieldDescriptor.GroupByPriority != 0)
+            {
+                codeMemberProperty.CustomAttributes.Add(
+                        new CodeAttributeDeclaration(
+                            typeof(GroupByPriorityAttribute).FullName,
+                                new CodeAttributeArgument( new CodePrimitiveExpression( dataFieldDescriptor.GroupByPriority ) )
+                        ));
+                
+            }
+
         }
 
 

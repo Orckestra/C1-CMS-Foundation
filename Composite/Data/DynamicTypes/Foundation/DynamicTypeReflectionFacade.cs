@@ -89,6 +89,23 @@ namespace Composite.Data.DynamicTypes.Foundation
 
 
 
+        public static DataFieldTreeOrderingProfile GetTreeOrderingProfile(PropertyInfo fieldInfo)
+        {
+            object[] treeOrderingProfileAttributes = fieldInfo.GetCustomAttributes(typeof(TreeOrderingAttribute), true);
+
+            if (treeOrderingProfileAttributes.Length == 1)
+            {
+                TreeOrderingAttribute attribute = treeOrderingProfileAttributes[0] as TreeOrderingAttribute;
+                return new DataFieldTreeOrderingProfile { OrderPriority = attribute.Priority, OrderDescending = attribute.Descending };
+            }
+            else
+            {
+                return new DataFieldTreeOrderingProfile { OrderPriority = null };
+            }
+        }
+
+
+
         public static string GetTitle(Type type)
         {
             List<TitleAttribute> titleAttributes = type.GetCustomInterfaceAttributes<TitleAttribute>().ToList();

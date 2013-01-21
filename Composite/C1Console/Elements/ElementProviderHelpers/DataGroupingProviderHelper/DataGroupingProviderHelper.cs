@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.C1Console.Security;
+using Composite.C1Console.Users;
+using Composite.Core.Extensions;
+using Composite.Core.Linq;
+using Composite.Core.ResourceSystem;
+using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Core.Linq;
-using Composite.Core.ResourceSystem;
-using Composite.Core.ResourceSystem.Icons;
-using Composite.C1Console.Security;
-using Composite.Core.Types;
-using Composite.C1Console.Users;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper
@@ -207,7 +208,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
             IQueryable resultQueryable = expressionBuilder.
-                OrderBy(propertyInfo, true).
+                OrderBy(propertyInfo, true, firstDataFieldDescriptor.TreeOrderingProfile.OrderDescending).
                 Select(propertyInfo, true).
                 Distinct().
                 CreateQuery();
@@ -222,23 +223,54 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             return queryable.Cast<T>();
         }
 
+
+        private IQueryable OrderData(IQueryable source, Type interfaceType)
+        {
+            DataTypeDescriptor typeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
+
+            List<DataFieldDescriptor> orderFields = typeDescriptor.Fields.Where(f => f.TreeOrderingProfile.OrderPriority.HasValue).OrderBy(f => f.TreeOrderingProfile.OrderPriority).ToList();
+
+            if (orderFields.Any())
+            {
+                IOrderedQueryable ordered = source.OrderBy(interfaceType, orderFields.First().Name, orderFields.First().TreeOrderingProfile.OrderDescending);
+
+                foreach (DataFieldDescriptor field in orderFields.Skip(1))
+                {
+                    ordered = ordered.ThenBy(interfaceType, field.Name, field.TreeOrderingProfile.OrderDescending);
+                }
+
+                return ordered;
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(typeDescriptor.LabelFieldName))
+                {
+                    return source.OrderBy(interfaceType, typeDescriptor.LabelFieldName);
+                }
+                else
+                {
+                    return source;
+                }
+            }
+        }
+
+
         private IEnumerable<Element> GetRootGroupFoldersFoldersLeafs(Type interfaceType, Func<IData, bool> filter, bool isForeign)
         {
-            Func<IData, Element> func = OnCreateLeafElement;
-            if (isForeign == true)
-            {
-                func = OnCreateGhostedLeafElement;
-            }
+            Func<IData, Element> func = (isForeign ? OnCreateGhostedLeafElement : OnCreateLeafElement);
 
-            List<IData> datas = DataFacade.GetData(interfaceType).ToDataList();
+            IQueryable source = DataFacade.GetData(interfaceType);
+
+            List<IData> data = OrderData(source, interfaceType).ToDataList();
+
             if (filter != null)
             {
-                datas = datas.Where(filter).ToList();
+                data = data.Where(filter).ToList();
             }
 
-            foreach (IData data in datas)
+            foreach (IData item in data)
             {
-                Element element = GetDataFromCorrectScope(data, func, OnCreateDisabledLeafElement, isForeign);
+                Element element = GetDataFromCorrectScope(item, func, OnCreateDisabledLeafElement, isForeign);
                 if (element != null)
                 {
                     yield return element;
@@ -334,7 +366,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             IQueryable resultQueryable = expressionBuilder.
                 Where(propertyInfoValueCollection, true).
-                OrderBy(selectPropertyInfo, true).
+                OrderBy(selectPropertyInfo, true, groupingDataFieldDescriptor.TreeOrderingProfile.OrderDescending).
                 Select(selectPropertyInfo, true).
                 Distinct().
                 CreateQuery();
@@ -350,6 +382,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         private IEnumerable<Element> GetGroupChildrenLeafs(Type interfaceType, Func<IData, bool> filter, PropertyInfoValueCollection propertyInfoValueCollection, bool isForeign)
         {
             IQueryable queryable = GetFilteredData(interfaceType, filter);
+            queryable = OrderData(queryable, interfaceType);
+
             ExpressionBuilder expressionBuilder = new ExpressionBuilder(interfaceType, queryable);
 
             IQueryable resultQueryable = expressionBuilder.

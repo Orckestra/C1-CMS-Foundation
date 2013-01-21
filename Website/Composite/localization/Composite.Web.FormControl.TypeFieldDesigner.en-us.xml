@@ -48,11 +48,18 @@
   <string key="Position" value="Position" />
   <string key="PositionLast" value="Last" />
   <string key="PositionHelp" value="The position of the field. This controls the order of the fields." />
-  <string key="GroupByPriority" value="Field grouping" />
-  <string key="GroupByPriorityNone" value="No grouping" />
+  <string key="GroupByPriority" value="Tree grouping" />
+  <string key="GroupByPriorityNone" value="(no grouping)..." />
   <string key="GroupByPriorityFirst" value="Group by this field" />
   <string key="GroupByPriorityN" value="Group as {0}. priority" />
   <string key="GroupByPriorityHelp" value="You can specify that a field should be used to group data - this can improve readability when viewing long lists. Use priority when multiple fields are used for grouping." />
+  <string key="TreeOrdering" value="Tree ordering" />
+  <string key="TreeOrderingNone" value="(no ordering)..." />
+  <string key="TreeOrderingFirstAscending" value="Order ascending (A-Z)" />
+  <string key="TreeOrderingFirstDescending" value="Order descending (Z-A)" />
+  <string key="TreeOrderingNAscending" value="Order {0}. ascending" />
+  <string key="TreeOrderingNDescending" value="Order {0}. descending" />
+  <string key="TreeOrderingHelp" value="You can specify that a field should be used to order data in the tree view - this can improve readability when a field is used to position elements on the website." />
   <string key="IsTitleField" value="Is title field" />
   <string key="IsTitleFieldHelp" value="Check this if you wish this field to be used as the title field. Title fields are used when listing data, like in the tree to the left." />
   <string key="IsTitleFieldLabel" value="Use this as title field in lists" />

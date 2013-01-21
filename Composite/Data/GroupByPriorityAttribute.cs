@@ -3,21 +3,26 @@
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Assign this to properties on your IData interfaces to control default page foldering of tree items.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public sealed class GroupByPriorityAttribute : Attribute
 	{
-        /// <exclude />
+        /// <summary>
+        /// Specify that this field should be used for default tree foldering.
+        /// Multiple fields on a data type may create foldering. In that case the priority has importance.
+        /// </summary>
+        /// <param name="priority">Priority controls which fields are used first when foldering. Low number win.</param>
         public GroupByPriorityAttribute(int priority)
         {
             this.Priority = priority;
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Priority for foldering.
+        /// </summary>
         public int Priority { get; set; }
 	}
 }
