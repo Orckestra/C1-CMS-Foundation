@@ -11,7 +11,7 @@
     <cms:binding name="HasLocalization" type="System.Boolean" />
     <cms:binding name="LabelFieldName" type="System.String" optional="true" />
   </cms:bindings>
-  <cms:layout>
+  <cms:layout iconhandle="generated-type-add">
     <TabPanels Label="${Composite.Plugins.GeneratedDataTypesElementProvider, AddNewInterfaceTypeStep1.DocumentTitle}">
       <PlaceHolder Label="${Composite.Plugins.GeneratedDataTypesElementProvider, EditorCommon.SettingsTab}">
         
