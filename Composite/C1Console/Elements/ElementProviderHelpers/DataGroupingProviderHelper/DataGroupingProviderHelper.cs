@@ -163,6 +163,13 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     List<Element> elements = GetRootGroupFoldersFoldersFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo).ToList();
 
+                    if (firstDataFieldDescriptor.ForeignKeyReferenceTypeName != null)
+                    {
+                        elements = (firstDataFieldDescriptor.TreeOrderingProfile.OrderDescending ?
+                            elements.OrderByDescending(f => f.VisualData.Label) :
+                            elements.OrderBy(f => f.VisualData.Label)).ToList();
+                    }
+
                     if (includeForeignFolders == true)
                     {
                         using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
@@ -183,6 +190,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     }
 
                     List<Element> elements = GetRootGroupFoldersFoldersLeafs(interfaceType, filter, false).ToList();
+
+                    var labelFieldDescriptor = dataTypeDescriptor.Fields.Where(f => f.Name == dataTypeDescriptor.LabelFieldName).FirstOrDefault();
+                    if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null && labelFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
+                    {
+                        elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
+                            elements.OrderByDescending(f => f.VisualData.Label) :
+                            elements.OrderBy(f => f.VisualData.Label)).ToList();
+                    }
 
                     if (includeForeignFolders == true)
                     {
@@ -326,6 +341,13 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     PropertyInfoValueCollection propertyInfoValueCol = propertyInfoValueCollection.Clone();
                     List<Element> elements = GetGroupChildrenFolders(groupEntityToken, interfaceType, filter, groupingDataFieldDescriptor, propertyInfoValueCol).ToList();
 
+                    if (groupingDataFieldDescriptor.ForeignKeyReferenceTypeName != null)
+                    {
+                        elements = (groupingDataFieldDescriptor.TreeOrderingProfile.OrderDescending ?
+                            elements.OrderByDescending(f => f.VisualData.Label) :
+                            elements.OrderBy(f => f.VisualData.Label)).ToList();
+                    }
+
                     if (includeForeignFolders == true)
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
@@ -341,6 +363,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 {
                     PropertyInfoValueCollection propertyInfoValueCol = propertyInfoValueCollection.Clone();
                     List<Element> elements = GetGroupChildrenLeafs(interfaceType, filter, propertyInfoValueCol, false).ToList();
+
+                    var labelFieldDescriptor = dataTypeDescriptor.Fields.Where(f => f.Name == dataTypeDescriptor.LabelFieldName).FirstOrDefault();
+                    if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null)
+                    {
+                        elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
+                            elements.OrderByDescending(f => f.VisualData.Label) :
+                            elements.OrderBy(f => f.VisualData.Label)).ToList();
+                    }
 
                     if (includeForeignFolders == true)
                     {
