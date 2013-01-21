@@ -545,7 +545,7 @@ namespace Composite.C1Console.Trees
                     {
                         if (DataFacade.WillDeleteSucceed(attachmentPoint) == true)
                         {
-                            LoggingService.LogWarning("TreeFacade", string.Format("A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId));
+                            Log.LogWarning("TreeFacade", string.Format("A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId));
                             DataFacade.Delete(attachmentPoint);
                         }
                     }
@@ -565,7 +565,7 @@ namespace Composite.C1Console.Trees
                     Position = position
                 };
 
-                LoggingService.LogVerbose("TreeFacade", string.Format("Tree with id '{0}' is dynamicly attached to the data type '{1}' with key value of '{2}'", attachmentPoint.TreeId, interfaceType, keyValue));
+                // Log.LogVerbose("TreeFacade", string.Format("Tree with id '{0}' is dynamicly attached to the data type '{1}' with key value of '{2}'", attachmentPoint.TreeId, interfaceType, keyValue));
 
                 tree.AttachmentPoints.Add(dataItemTreeAttachmentPoint);
 

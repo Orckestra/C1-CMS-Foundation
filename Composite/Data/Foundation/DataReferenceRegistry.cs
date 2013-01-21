@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
+using Composite.Core;
 
 
 
@@ -12,6 +12,8 @@ namespace Composite.Data.Foundation
 {
     internal static class DataReferenceRegistry
     {
+        private static readonly string LogTitle = "DataReferenceRegistry";
+
         private static Dictionary<Type, List<Type>> _referencedToReferees = new Dictionary<Type, List<Type>>();
         private static Dictionary<Type, List<ForeignPropertyInfo>> _foreignKeyProperyInfos = new Dictionary<Type, List<ForeignPropertyInfo>>();
 
@@ -131,13 +133,16 @@ namespace Composite.Data.Foundation
 
                 referees.Add(interfaceType);
 
-                if (DataProviderRegistry.AllInterfaces.Contains(foreignKeyProperyInfo.TargetType) == true)
+                if (DataProviderRegistry.AllInterfaces.Contains(foreignKeyProperyInfo.TargetType))
                 {
-                    LoggingService.LogVerbose("DataReferenceRegistry", string.Format("The data type '{0}' is referring the data type '{1}'", interfaceType, foreignKeyProperyInfo.TargetType));
+                    if (RuntimeInformation.IsDebugBuild)
+                    {
+                        Log.LogVerbose(LogTitle, string.Format("The data type '{0}' is referring the data type '{1}'",interfaceType, foreignKeyProperyInfo.TargetType));
+                    }
                 }
                 else
                 {
-                    LoggingService.LogCritical("DataReferenceRegistry", string.Format("The one type '{0}' is referring the non supported data type '{1}'", interfaceType, foreignKeyProperyInfo.TargetType));
+                    Log.LogCritical(LogTitle, string.Format("The one type '{0}' is referring the non supported data type '{1}'", interfaceType, foreignKeyProperyInfo.TargetType));
                 }
             }
         }

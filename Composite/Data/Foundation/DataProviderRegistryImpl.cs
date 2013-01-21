@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Runtime;
 using Composite.Core.Instrumentation;
-using Composite.Core.Logging;
 using Composite.Core.Types;
 
 
@@ -152,7 +152,7 @@ namespace Composite.Data.Foundation
 
         public void InitializeDataTypes()
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 _dataProviderNames = new List<string>();
                 _interfaceTypeToReadableProviderNamesDictionary = new Dictionary<Type, List<string>>();
@@ -167,7 +167,7 @@ namespace Composite.Data.Foundation
                 }
                 else if (RuntimeInformation.IsDebugBuild == true)
                 {
-                    LoggingService.LogError("DataProviderRegistry", string.Format("Failed to load the configuration section '{0}' from the configuration", DataProviderSettings.SectionName));
+                    Log.LogError("DataProviderRegistry", string.Format("Failed to load the configuration section '{0}' from the configuration", DataProviderSettings.SectionName));
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace Composite.Data.Foundation
 
         private void AddType(Type typeToAdd, string providerName, bool writeableProvider)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 if (false == typeToAdd.IsInterface)
                 {
@@ -213,7 +213,7 @@ namespace Composite.Data.Foundation
                     if (containsBadAttribute == false) continue;
 
 #pragma warning disable 0612
-                    LoggingService.LogWarning("DataProviderRegistry", string.Format("The property named '{0}' on the type '{1}' has an attribute of type '{2}' wich is not supported, use '{3}'", typeToAdd, propertyInfo.Name, typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.StringLengthValidatorAttribute), typeof(Composite.Data.Validation.Validators.StringLengthValidatorAttribute)));
+                    Log.LogWarning("DataProviderRegistry", string.Format("The property named '{0}' on the type '{1}' has an attribute of type '{2}' wich is not supported, use '{3}'", typeToAdd, propertyInfo.Name, typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.StringLengthValidatorAttribute), typeof(Composite.Data.Validation.Validators.StringLengthValidatorAttribute)));
 #pragma warning restore 0612
                 }
 
@@ -267,7 +267,7 @@ namespace Composite.Data.Foundation
 
         private void BuildDictionaries()
         {
-            using (TimerProfiler timerProfiler1 = TimerProfilerFacade.CreateTimerProfiler("Adding supported types"))
+            using (TimerProfilerFacade.CreateTimerProfiler("Adding supported types"))
             {
                 foreach (string providerName in _dataProviderNames)
                 {
@@ -299,7 +299,7 @@ namespace Composite.Data.Foundation
             }
 
 
-            using (TimerProfiler timerProfiler2 = TimerProfilerFacade.CreateTimerProfiler("Adding known interfaces"))
+            using (TimerProfilerFacade.CreateTimerProfiler("Adding known interfaces"))
             {
                 foreach (string providerName in _dataProviderNames)
                 {
@@ -319,7 +319,10 @@ namespace Composite.Data.Foundation
 
                                     _knownInterfaceTypeToDynamicProviderNamesDictionary.Add(knownType, providerNames);
 
-                                    LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding known IData interface: {0}", knownType));
+                                    if (RuntimeInformation.IsDebugBuild)
+                                    {
+                                        Log.LogVerbose("DataProviderRegistry", string.Format("Adding known IData interface: {0}", knownType));
+                                    }
                                 }
 
                                 providerNames.Add(providerName);
