@@ -162,7 +162,7 @@ _Templates.prototype = {
 		 * Debug output for developers.
 		 */
 		if ( isFresh && Application.isDeveloperMode ) {
-			this._logger.fine ( new String ( "Import \"" + name + "\":\n\n" + result ));
+			//this._logger.fine ( new String ( "Import \"" + name + "\":\n\n" + result ));
 		}
 		
 		return result;

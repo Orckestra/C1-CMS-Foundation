@@ -89,7 +89,7 @@ _DOMUtil.prototype = {
 	
 		var result = null;
 		if ( element.localName ) {
-			result = element.localName;
+			result = element.localName.replace("ui:","");
 		} else if ( element.baseName ) {
 			result = element.baseName;
 		} else {
@@ -299,7 +299,7 @@ _DOMUtil.prototype = {
 						Node.ELEMENT_NODE, nodeName, namespaceURI 
 					);
 				} else {
-					result = ownerDocument.createElement ( nodeName );
+					result = ownerDocument.createElement(nodeName.replace("ui:", ""));
 				}
 			}
 		}

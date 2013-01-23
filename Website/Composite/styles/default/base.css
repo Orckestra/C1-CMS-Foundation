@@ -73,9 +73,9 @@ a.buttonurl {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	#ie height: 40px; /* cannot handle 100% */
 	#ie background-color: pink;
-	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+	#ie opacity: 0;
+	
 }
 ui|binding,
 ui|feedbackset { /* ONLY MAW USES THIS FOR NOW! */
@@ -96,8 +96,7 @@ ui|cover {
 	background-color: $(color:threedface);
 }
 ui|cover.transparent {
-	#moz background-color: transparent;
-	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+	background-color: transparent;
 }
 ui|*.maxboxelement,
 ui|*.flexboxelement {
@@ -105,22 +104,23 @@ ui|*.flexboxelement {
 	height: 100%;
 	overflow: hidden;
 }
-#region ie
-	ui|*.clearfloatelement {
-		width: 100%;
-	}
-#endregion
-#region moz
-	ui|*.clearfloatelement:after {
-		content: "";
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		margin-bottom: -1px;
-		display: block;
-		clear: both;
-	}
-#endregion
+
+/* Fix for IE9-10 */
+ui|wizardpage ui|pagebody.flexboxelement,
+ui|dialogpage ui|pagebody.flexboxelement {
+	height: auto;
+}
+
+ui|*.clearfloatelement:after {
+	content: "";
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	margin-bottom: -1px;
+	display: block;
+	clear: both;
+}
+
 
 ui|persistance {
 	display: none;

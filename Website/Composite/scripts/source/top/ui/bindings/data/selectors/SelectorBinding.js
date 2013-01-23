@@ -746,11 +746,7 @@ SelectorBinding.prototype._fitMenuToSelector = function () {
 	var selectorWidth = this._buttonBinding.bindingElement.offsetWidth + "px";
 	var popupElement = this._popupBinding.bindingElement;
 	
-	if ( Client.isMozilla == true ) {
-		popupElement.style.minWidth = selectorWidth;
-	} else {
-		popupElement.style.width = selectorWidth;
-	}
+	popupElement.style.minWidth = selectorWidth;
 }
 
 /**

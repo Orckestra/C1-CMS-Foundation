@@ -12,12 +12,18 @@ var KickStart = new function () {
 	var DEVUSERNAME = "admin";
 	var DEVPASSWORD = "123456";
 	
+
+	if ( !isQualified ) {
+		document.location = "unsupported.aspx";
+		return;
+	}
+
 	/*
-	 * Fire on load!
-	 */
+		* Fire on load!
+		*/
 	this.fireOnLoad = function () {
 		
-		if ( isQualified ) {
+		
 			
 			Application.lock ( this );
 			fileEventBroadcasterSubscriptions ( true );
@@ -30,11 +36,9 @@ var KickStart = new function () {
 			
 			EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_KICKSTART );
 			
-		} else {
-			
-			document.location = "unsupported.aspx";
-		}
+		
 	};
+
 	
 	/**
 	 * @implements {IBroadcastListener}

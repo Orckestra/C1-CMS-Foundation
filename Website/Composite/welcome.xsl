@@ -28,6 +28,7 @@
 			<xsl:if test="position()=1">
 				<xsl:attribute name="ischecked">true</xsl:attribute>
 			</xsl:if>
+			<xsl:call-template name="uncollapse" />
 		</ui:radio>
 		<xsl:call-template name="continue"/>	
 	</xsl:template>
@@ -56,6 +57,11 @@
 				<xsl:call-template name="groups"/>
 			</div>
 		</xsl:if>
+	</xsl:template>
+
+	<!-- uncollapse hack -->
+	<xsl:template name="uncollapse">
+		<xsl:value-of select="./@NONEXISTINGATTRIBUTE" />
 	</xsl:template>
 	
 </xsl:stylesheet>

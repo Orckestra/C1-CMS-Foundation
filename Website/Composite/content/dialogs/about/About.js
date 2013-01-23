@@ -170,12 +170,7 @@ var About = new function () {
 				if ( isEnd ) {
 					CoverBinding.fadeOut ( cover );
 				} else {
-					if ( Client.isMozilla ) {
-						cover.bindingElement.style.MozOpacity = "0";
-					} else {
-						cover.bindingElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=100)";
-						cover.bindingElement.style.display = "none";
-					}
+					cover.bindingElement.style.opacity = "0";
 				}
 			}
 		

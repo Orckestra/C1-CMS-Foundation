@@ -13,16 +13,12 @@ CoverBinding.CLASSNAME_TRANSPARENT = "transparent";
 CoverBinding.fadeOut = function ( cover ) {
 	
 	function setOpacity ( opacity ) {
-		if ( Client.isMozilla ) {
-			cover.bindingElement.style.opacity = new String ( opacity );
-		} else {
-			cover.bindingElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=" + new String ( opacity * 100 ) + ")";
-		}
+		cover.bindingElement.style.opacity = new String ( opacity );
 	}
-	
-	if ( cover instanceof CoverBinding ) {
+
+	if (cover instanceof CoverBinding) {
 		new Animation ({
-			modifier : Client.isExplorer ? 30 : 18,
+			modifier : 18,
 			onstep : function ( iterator ) {
 				if ( Binding.exists ( cover )) {
 					setOpacity ( 
@@ -49,16 +45,12 @@ CoverBinding.fadeOut = function ( cover ) {
 CoverBinding.fadeIn = function ( cover ) {
 	
 	function setOpacity ( opacity ) {
-		if ( Client.isMozilla ) {
-			cover.bindingElement.style.MozOpacity = new String ( opacity );
-		} else {
-			cover.bindingElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=" + new String ( opacity * 100 ) + ")";
-		}
+		cover.bindingElement.style.MozOpacity = new String ( opacity );
 	}
-	
-	if ( cover instanceof CoverBinding ) {
+
+	if (cover instanceof CoverBinding) {
 		new Animation ({
-			modifier : Client.isExplorer ? 30 : 18,
+			modifier : 18,
 			onstart : function () {
 				if ( Binding.exists ( cover )) {
 					setOpacity ( 0 );

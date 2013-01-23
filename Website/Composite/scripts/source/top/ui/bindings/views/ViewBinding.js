@@ -313,13 +313,6 @@ ViewBinding.prototype.onBindingDispose = function () {
 ViewBinding.prototype.setType = function ( type ) {
 	
 	this._type = type;
-	//this.attachClassName ( type );
-	
-	if ( type == ViewBinding.TYPE_DIALOGVIEW ) {
-		this.windowBinding.isFlexible = true;
-	} else {
-		this.windowBinding.isFlexible = false;
-	}
 }
 
 /**

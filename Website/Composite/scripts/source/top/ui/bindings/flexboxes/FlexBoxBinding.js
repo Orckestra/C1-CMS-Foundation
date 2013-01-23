@@ -129,18 +129,11 @@ FlexBoxBinding.prototype.onBindingRegister = function () {
 	if ( this.getProperty ( "flex" ) == false ) {
 		this.isFlexible = false;
 	}
-	
-	/*
-	 * Attaching class names has a huge impact on Explorer, 
-	 * so there's no need to stress it right now. However, 
-	 * Mozilla renders the ExplorerBinding tree wrong unless 
-	 * we do it now. Luckily, classnames won't bother Mozilla. 
-	 */
-	if ( Client.isMozilla ) {
-		if ( this.isFlexible ) {
-			this.attachClassName ( FlexBoxBinding.CLASSNAME );
-		}
+
+	if ( this.isFlexible ) {
+		this.attachClassName ( FlexBoxBinding.CLASSNAME );
 	}
+
 }
 
 /**
@@ -155,16 +148,7 @@ FlexBoxBinding.prototype.onBindingAttach = function () {
 	 * to expand in order to show content without scrollbars.
 	 */
 	this.addActionListener ( Binding.ACTION_UPDATED );
-	
-	/*
-	 * This has been dealyed for performance reasons.
-	 * See note in method onBindingRegister...
-	 */
-	if ( Client.isExplorer ) {
-		if ( this.isFlexible ) {
-			this.attachClassName ( FlexBoxBinding.CLASSNAME );
-		}
-	}
+
 }
 
 /**

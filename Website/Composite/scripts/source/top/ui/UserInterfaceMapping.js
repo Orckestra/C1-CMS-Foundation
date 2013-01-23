@@ -12,7 +12,17 @@ function UserInterfaceMapping ( map ) {
 	/**
 	 * @type {HashMap<string><BindingImplementation>}
 	 */
-	this.map = map;
+	if (Client.isExplorer) {
+		this.map = {};
+		for (var m in map) {
+			this.map[m.replace("ui:", "")] = map[m];
+		}
+	}
+	else {
+		this.map = map;
+	}
+
+	
 }
 
 /**
@@ -34,17 +44,8 @@ UserInterfaceMapping.prototype.merge = function ( mapping ) {
 UserInterfaceMapping.prototype.getBindingImplementation = function ( element ) {
 	
 	var result = null;
-	var name = element.nodeName;
-	
-	if ( Client.isExplorer ) {
-		var small = name.toLowerCase ();
-		if ( name == small ) {
-			name = "ui:" + name;
-		} else {
-			name = small;
-		}
-	}
-	
+	var name = element.nodeName.toLowerCase();
+
 	if ( this.map [ name ]) {
 		result = this.map [ name ];
 	}

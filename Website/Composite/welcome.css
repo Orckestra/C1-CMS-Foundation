@@ -226,11 +226,8 @@ p#loginbad {
  	left: 0;
 }
 ui|clickbutton.isdisabled {
-	filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50) progid:DXImageTransform.Microsoft.BasicImage(grayScale=1);
-	#region moz
-		opacity: 0.5;
-		filter: url("${root}/templates/grayscalefilter.xml#grayscale");
-	#endregion
+	opacity: 0.5;
+	filter: url("${root}/templates/grayscalefilter.xml#grayscale");
 }
 ui|clickbutton.isdisabled ui|labeltext {
 	color: white;

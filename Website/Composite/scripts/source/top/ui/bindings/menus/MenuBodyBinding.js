@@ -453,15 +453,6 @@ MenuBodyBinding.prototype.invokeImageLayout = function () {
 }
 
 /**
- * Emulates basic CSS support in Explorer. Invoked by the containing {@link PopupBinding}.
- * @param {Dimension} dim
- */
-MenuBodyBinding.prototype.setDimension = function ( dim ) {
-	
-	this.getBindingElement ().style.width = new String ( dim.w ) + "px";
-}
-
-/**
  * MenuBodyBinding factory.
  * @param {DOMDocument} ownerDocument
  * @return {MenuBodyBinding}

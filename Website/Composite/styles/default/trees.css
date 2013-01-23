@@ -59,7 +59,6 @@ ui|treenode.closed ui|treecontent {
 }
 ui|treenode ui|labelbox { 
 	padding-bottom: 3px;
-	#ie padding-bottom: 0;
 }
 ui|treenode ui|labeltext {
 	padding: 2px 4px 3px 4px;

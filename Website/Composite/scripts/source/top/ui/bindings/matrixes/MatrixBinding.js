@@ -69,14 +69,14 @@ MatrixBinding.prototype.onBindingAttach = function () {
 	MatrixBinding.superclass.onBindingAttach.call ( this );
 	
 	if ( this.hasMatrix ) {
-		if ( this.bindingElement.hasChildNodes ()) {
-			throw new Error ( "MatrixBinding: No support for childnodes!" );
-		} else {
+		//if ( this.bindingElement.hasChildNodes ()) {
+		//	throw new Error ( "MatrixBinding: No support for childnodes!" );
+		//} else {
 			this.bindingElement.innerHTML = Templates.getTemplateElementText ( 
 				this.template 
 			);
 			this.shadowTree.table = this.bindingElement.firstChild;
-		}
+		//}
 	}
 }
 

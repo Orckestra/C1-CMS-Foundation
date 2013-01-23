@@ -383,11 +383,7 @@ DataInputSelectorBinding.prototype._fitMenuToSelector = function () {
 	var selectorWidth = this.bindingElement.offsetWidth + "px";
 	var popupElement = this._popupBinding.bindingElement;
 	
-	if ( Client.isMozilla ) {
-		popupElement.style.minWidth = selectorWidth;
-	} else {
-		popupElement.style.width = selectorWidth;
-	}
+	popupElement.style.minWidth = selectorWidth;
 }
 
 /**

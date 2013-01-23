@@ -946,7 +946,7 @@ Binding.prototype.serializeToString = function ( includeShadowTreeBindings ) {
 Binding.prototype.subTreeFromString = function ( markup ) {
 
 	this.detachRecursive ();
-	this.bindingElement.innerHTML = markup;
+	this.bindingElement.innerHTML = Client.fixUI(markup);
 	this.attachRecursive ();
 }
 

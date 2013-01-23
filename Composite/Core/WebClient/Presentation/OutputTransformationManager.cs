@@ -7,6 +7,7 @@ using System.Web.Caching;
 using System.Xml;
 using System.Xml.Xsl;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.Logging;
 
 
@@ -120,6 +121,13 @@ namespace Composite.Core.WebClient.Presentation
                     return buffer;
                 }
 
+                // Detection doctype
+                buffer.Seek(0, SeekOrigin.Begin);
+                var line = new C1StreamReader(buffer).ReadLine();
+                var doctype = line.Contains("<!DOCTYPE");
+                buffer.Seek(0, SeekOrigin.Begin);
+
+
                 MemoryStream inputStream;
                 MemoryStream outputStream = null;
 
@@ -175,10 +183,9 @@ namespace Composite.Core.WebClient.Presentation
                         argList.AddParam("platform", "", platform);
                     }
                     argList.AddParam("version", "", RuntimeInformation.ProductVersion.ToString());
+                    argList.AddParam("doctype", "", doctype.ToString());
 
-                    var xmlWriterSettings = new XmlWriterSettings {CheckCharacters = false};
-
-                    transformer.Transform(XmlReader.Create(inputStream, readerSettings), argList, XmlWriter.Create(outputStream, xmlWriterSettings));
+                    transformer.Transform(XmlReader.Create(inputStream, readerSettings), argList, XmlWriter.Create(outputStream, transformer.OutputSettings));
                 }
 
                 Verify.That(outputStream != null, "NullRef");

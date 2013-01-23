@@ -17,7 +17,6 @@ ui|explorertoolbarbutton table.matrix {
 	#endregion
 }
 
-
 ui|explorertoolbarbutton ui|labelbox {
 	padding-left: 1px;
 }
@@ -50,12 +49,6 @@ ui|explorertoolbarbutton.active ui|labeltext {
 	#endregion
 	#region vista
 		color: white;
-		/*
-		_filter:progid:DXImageTransform.Microsoft.dropshadow(color='#072785',offX='1',offY='1') progid:DXImageTransform.Microsoft.Glow(Color='#5483d0',Strength=1);
-		position: relative;
-		top: -2px;
-		left: -2px;
-		*/
 	#endregion
 }
 ui|explorerbar {

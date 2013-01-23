@@ -1,11 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html> 
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="Composite_Management_Top" CodeFile="Top.aspx.cs" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<control:appinitializer runat="server"/>
 	<control:httpheaders runat="server"/>
 	<head>
+	
+		<%--<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >--%>
+		<%--<meta http-equiv="X-UA-Compatible" content="IE=5">--%>
+
 		<title>C1: <%=Request.Url.Host%></title>
         <meta name="robots" content="noindex, nofollow" />
+		
 		<control:styleloader runat="server"/>
 		<link rel="stylesheet" type="text/css" href="top.css.aspx"/>
 		<link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico"/>

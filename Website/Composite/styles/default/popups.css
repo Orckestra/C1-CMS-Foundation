@@ -26,8 +26,7 @@ ui|popup,
 ui|menupopup {
 	position: absolute;
 	z-index: 6;  /* above the shadow */ 
-	#moz min-width: 160px;
-	#ie width: 160px;
+	min-width: 160px;
 	visibility: hidden;
 	-vendor-transition-property: opacity;
 	-vendor-transition-duration: 0.15s;

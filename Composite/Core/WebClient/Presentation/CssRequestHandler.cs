@@ -300,44 +300,15 @@ namespace Composite.Core.WebClient.Presentation
                         break;
                     case "#opacity:":
                         string value = getValuePart(line);
-                        if (user.isMozilla)
-                        {
-                            line = "opacity: " + value + ";";
-                        }
-                        else
-                        {
-                            if (user.isIE8)
-                            {
-                                line = "-ms-filter:\"progid:DXImageTransform.Microsoft.Alpha(opacity=" + value + ")\";";
-                                line += "filter: progid:DXImageTransform.Microsoft.Alpha(opacity=" + value + ");";
-                            }
-                            else
-                            {
-                                line = "filter: alpha(opacity=" + value + ");";
-                            }
-                        }
+                        line = "opacity: " + value + ";";
                         break;
                     case "#alphabackdrop:":
                         string url = getURLPart(line);
-                        if (user.isMozilla)
-                        {
-                            line = "background-image: url(\"" + url + "\");";
-                        }
-                        else
-                        {
-                            line = "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + url + "',sizingMethod='scale');";
-                        }
+                        line = "background-image: url(\"" + url + "\");";
                         break;
                     case "#alphaimage:":
                         string url2 = getURLPart(line);
-                        if (user.isMozilla)
-                        {
-                            line = "background-image: url(\"" + url2 + "\"); background-repeat: no-repeat;";
-                        }
-                        else
-                        {
-                            line = "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + url2 + "',sizingMethod='crop');";
-                        }
+                        line = "background-image: url(\"" + url2 + "\"); background-repeat: no-repeat;";
                         break;
 
                     default:
@@ -352,7 +323,7 @@ namespace Composite.Core.WebClient.Presentation
             {
                 if (!user.isMozilla)
                 {
-                    line = line.Replace("ui|", "ui\\:");
+                    line = line.Replace("ui|", string.Empty);
                 }
 
                 if(line.Contains("$"))

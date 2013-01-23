@@ -223,7 +223,7 @@ PopupBinding.prototype.buildDOMContent = function () {
 	} else if ( popupbody ) {
 		this._bodyBinding = UserInterface.getBinding ( popupbody );
 	} else {
-		if ( this.bindingElement.hasChildNodes ()) {
+		if (this.bindingElement.childElementCount > 0) {
 			throw new Error ( this + ": DOM structure invalid." );
 		} else {
 			this._bodyBinding = this.add ( 
@@ -497,10 +497,7 @@ PopupBinding.prototype.show = function () {
 		if ( this._bodyBinding instanceof MenuBodyBinding ) {
 			this._bodyBinding.refreshMenuGroups ();
 		}
-		if ( Client.isExplorer ) {
-			this._bodyBinding.setDimension ( this.getDimension ());
-		}
-		
+
 		/**
 		 * Enable keyboard navigation.
 		 */

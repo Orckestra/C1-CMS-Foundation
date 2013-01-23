@@ -201,7 +201,7 @@ ui|clickbutton.isdisabled table.matrix td.c {
 		background-image: none;
 	#endregion
 	*/
-	region default
+	#region default
 		#alphabackdrop: url("${skin}/buttons/clickbutton-default-c.png");
 	#endregion
 }
@@ -209,7 +209,6 @@ ui|clickbutton table.matrix td.n,
 ui|clickbutton.isdisabled table.matrix td.n {
 	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-n.png");
 	#region default
-		
 		#alphabackdrop: url("${skin}/buttons/clickbutton-default-n.png");
 	#endregion
 	

@@ -136,7 +136,7 @@ window.DOMFormatter = new function () {
 		
 		var STRIPPED_TYPE_RESULT = 1;
 		
-		if ( document.createTreeWalker ) {
+		if ( document.createTreeWalker && !Client.isExplorer) {
 			try {
 				strip ( oElement );
 				if ( iType != STRIPPED_TYPE_RESULT ) {

@@ -30,7 +30,6 @@ ui|splitter.horizontal {
 ui|toolbarbutton.isdisabled {
 	filter: url("${root}/templates/grayscalefilter.xml#grayscale");
 	opacity: 0.35;
-	#ie filter: progid:DXImageTransform.Microsoft.BasicImage(grayscale=1) progid:DXImageTransform.Microsoft.Alpha(opacity=35);
 }
 ui|toolbar#statusbar {
 	border-top: none;

@@ -28,6 +28,8 @@ function _Client () {
 	this.hasFlash = ( version && version >= 9 );
 	this.hasTransitions = hasTransitions;
 
+	this.canvas = !!document.createElement('canvas').getContext;
+
 	this.hasSpellcheck = this.isFirefox || this.isExplorer && document.documentElement.spellcheck;
 
 	return this;
@@ -36,101 +38,108 @@ function _Client () {
  * Public fields.
  */
 _Client.prototype = {
-	
+
 	/** 
-	 * Is Internet Explorer?
-	 * @type {boolean} 
-	 */
-	isExplorer : false,
-	
-	/**
-	 * Is Gecko derivate? 
-	 * @type {boolean} 
-	 */
-	isMozilla : false,
-	
-	/** 
-	 * True for Mozilla Prism.
-	 * @type {boolean} 
-	 */
-	isPrism : false,
-	
-	/**
-	 * Has Flash version 10 minimum? 
-	 * @type {boolean} 
-	 */
-	hasFlash : false,
-	
-	/**
-	 * Is Microsoft Windows? Macintosh and Linux 
-	 * distros uniformely treated as not-Windows.
-	 * @type {boolean}
-	 */
-	isWindows : false,
-	
-	/**
-	 * Is Vista or Windows 7? As opposed to Windows XP.
-	 * @type {boolean}
-	 */
-	isVista : false,
-	
-	/**
-	 * Supports CSS transitions?
-	 * @type {boolean}
-	 */
-	hasTransitions : false,
+	* Is Internet Explorer?
+	* @type {boolean} 
+	*/
+	isExplorer: false,
 
 	/**
-	 * Get Flash version.
-	 * @return {int}
-	 */
-	_getFlashVersion : function () {
-	
+	* Is Gecko derivate? 
+	* @type {boolean} 
+	*/
+	isMozilla: false,
+
+	/** 
+	* True for Mozilla Prism.
+	* @type {boolean} 
+	*/
+	isPrism: false,
+
+	/**
+	* Has Flash version 10 minimum? 
+	* @type {boolean} 
+	*/
+	hasFlash: false,
+
+	/**
+	* Is Microsoft Windows? Macintosh and Linux 
+	* distros uniformely treated as not-Windows.
+	* @type {boolean}
+	*/
+	isWindows: false,
+
+	/**
+	* Is Vista or Windows 7? As opposed to Windows XP.
+	* @type {boolean}
+	*/
+	isVista: false,
+
+	/**
+	* Supports CSS transitions?
+	* @type {boolean}
+	*/
+	hasTransitions: false,
+
+	/**
+	* Get Flash version.
+	* @return {int}
+	*/
+	_getFlashVersion: function () {
+
 		var result = null;
 		var maxversion = 10; // maximum version tested for
-		
+
 		// detect flash version
 		try {
-			if ( this.isMozilla == true ) {
-				if ( typeof navigator.plugins [ "Shockwave Flash" ] != "undefined" ) {
-					var plugin = navigator.plugins [ "Shockwave Flash" ];
-					if ( plugin ) {
+			if (this.isMozilla == true) {
+				if (typeof navigator.plugins["Shockwave Flash"] != "undefined") {
+					var plugin = navigator.plugins["Shockwave Flash"];
+					if (plugin) {
 						var desc = plugin.description;
-						if ( desc != null ) {
-							result = desc.charAt ( desc.indexOf ( "." ) - 1 );
+						if (desc != null) {
+							result = desc.charAt(desc.indexOf(".") - 1);
 						}
 					}
 				}
 			} else {
-			    for ( var i = 2; i <= maxversion; i++ ) {
-			        try {
-						new ActiveXObject ( "ShockwaveFlash.ShockwaveFlash." + i );
+				for (var i = 2; i <= maxversion; i++) {
+					try {
+						new ActiveXObject("ShockwaveFlash.ShockwaveFlash." + i);
 						result = i;
-					} catch ( exception ) {
+					} catch (exception) {
 						continue;
 					}
 				}
 			}
 		}
-		catch ( exception ) {};
+		catch (exception) { };
 		return result;
 	},
-	
+
 	/**
-	 * Client qualified for the awesome Composite C1 experience?
-	 * @return {boolean}
-	 */
-	qualifies : function () {
-		
+	* Client qualified for the awesome Composite C1 experience?
+	* @return {boolean}
+	*/
+	qualifies: function () {
+
 		var result = true;
 		var isOldFox = false;
-		if ( this.isMozilla && !this.isWebKit ) {
-			isOldFox = ( document.documentElement.mozMatchesSelector === undefined );
+		if (this.isMozilla && !this.isWebKit) {
+			isOldFox = (document.documentElement.mozMatchesSelector === undefined);
 		}
-		if ( window.opera != null || isOldFox || this.isExplorer6 ) { // this.isWebKit ||
+		if (window.opera != null || isOldFox || this.isExplorer && !this.canvas) {
 			result = false;
 		}
 		return result;
+	},
+
+	fixUI: function (html) {
+		if (Client.isExplorer)
+			html = html.replace(/<ui:/g, "<").replace(/<\/ui:/g, "</");
+			html = html.replace(/(<(\w+)[^>]*)\/>/g, "$1></$2>");
+		return html;
 	}
 }
 

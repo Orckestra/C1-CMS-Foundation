@@ -6,7 +6,7 @@ function _XMLParser () {}
 _XMLParser.prototype = {
 
 	_logger: SystemLogger.getLogger("XMLParser"),
-	_domParser: (window.DOMParser != null ? new DOMParser() : null),
+	_domParser: (window.DOMParser != null && window.XPathResult != null ? new DOMParser() : null),
 
 	/**
 	* @param {string} xml

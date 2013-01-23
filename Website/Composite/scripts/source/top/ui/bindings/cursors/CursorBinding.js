@@ -13,7 +13,7 @@ CursorBinding.fadeIn = function ( cursor ) {
 		cursor.show ();
 		new Animation (
 			{
-				modifier : Client.isExplorer ? 18 : 9,
+				modifier : 9,
 				onstep : function ( iterator ) {
 					cursor.setOpacity ( 
 						Math.sin ( iterator * Math.PI / 180 )
@@ -35,7 +35,7 @@ CursorBinding.fadeOut = function ( cursor ) {
 	
 	if ( cursor instanceof CursorBinding ) {
 		new Animation ({
-			modifier : Client.isExplorer ? 18 : 9,
+			modifier : 9,
 			onstep : function ( iterator ) {
 				cursor.setOpacity ( 
 					Math.cos ( 
@@ -213,12 +213,9 @@ CursorBinding.prototype.show = function () {
  * @param {number} opacity From zero to one!
  */
 CursorBinding.prototype.setOpacity = function ( opacity ) {
-	
-	if ( Client.isMozilla ) {
-		this.bindingElement.style.MozOpacity = new String ( opacity );
-	} else {
-		this.bindingElement.style.filter = "progid:DXImageTransform.Microsoft.Alpha(opacity=" + new String ( opacity * 100 ) + ")";
-	}
+
+	this.bindingElement.style.opacity = new String ( opacity );
+
 	this._opacity = opacity;
 }
 

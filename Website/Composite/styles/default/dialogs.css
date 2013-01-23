@@ -71,8 +71,6 @@ ui|dialogborder {
 	position: absolute;
 	overflow: hidden;
 	z-index: 4;
-	#ie background-color: $(color:threedface);
-	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
 }
 ui|dialogborder.n {
 	top: 0;
@@ -118,6 +116,5 @@ ui|dialogcover {
 	left: 0;
 	top: 0;
 	z-index: 2; /* adjusted by script */
-	#ie background-color: pink;
-	#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+	background-color: transparent;
 }

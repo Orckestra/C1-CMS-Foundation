@@ -5,8 +5,8 @@
 function _DOMSerializer () {}
 
 _DOMSerializer.prototype = {
-	
-	_serializer : ( Client.isMozilla ? new XMLSerializer () : null ),
+
+	_serializer: (window.XMLSerializer ? new XMLSerializer() : null),
 
 	/**
 	 * @param {DOMNode} node This should be an element or a document node.
@@ -21,14 +21,17 @@ _DOMSerializer.prototype = {
 		if ( node.nodeType == Node.DOCUMENT_NODE ) {
 			element = node.documentElement;
 		}
-		if ( Client.isMozilla == true ) {
+
+		if (element.xml != null)
+		{
+			return element.xml;
+		}
+		else if ( this._serializer != null) {
 			if ( isPrettyPrint == true ) {
 				element = element.cloneNode ( true );
 				element = DOMFormatter.format ( element, DOMFormatter.INDENTED_TYPE_RESULT );
 			}
 			result = this._serializer.serializeToString ( element );
-		} else {
-			result = element.xml;
 		}
 		return result;
 	}

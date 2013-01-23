@@ -31,7 +31,6 @@ ui|fieldgroup.first {
 	}
 #endregion
 table.fieldgroupmatrix td {
-	#ie overflow: hidden;
 	width: 4px;
 	height: 4px;
 	padding: 0;
