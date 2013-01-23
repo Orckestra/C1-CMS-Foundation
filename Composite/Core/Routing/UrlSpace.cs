@@ -4,9 +4,8 @@ using Composite.Plugins.Routing.Pages;
 namespace Composite.Core.Routing
 {
     /// <summary>    
+    /// Describes a set of page urls, generated specifictly. F.e. for a specific hostname or for previewing.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class UrlSpace
     {
         internal UrlSpace(string hostname)
@@ -20,7 +19,10 @@ namespace Composite.Core.Routing
             Initialize(hostname, relativeUrl);
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlSpace"/> class.
+        /// </summary>
         public UrlSpace()
         {
             var httpContext = System.Web.HttpContext.Current;
@@ -31,7 +33,11 @@ namespace Composite.Core.Routing
             }
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlSpace"/> class.
+        /// </summary>
+        /// <param name="httpContext">The HTTP context.</param>
         public UrlSpace(HttpContext httpContext)
         {
             Verify.ArgumentNotNull(httpContext, "httpContext");
@@ -39,7 +45,11 @@ namespace Composite.Core.Routing
             InitializeThroughHttpContext(httpContext);
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UrlSpace"/> class.
+        /// </summary>
+        /// <param name="httpContextBase">The HTTP context base.</param>
         public UrlSpace(HttpContextBase httpContextBase)
         {
             Verify.ArgumentNotNull(httpContextBase, "httpContextBase");
@@ -62,7 +72,13 @@ namespace Composite.Core.Routing
             }
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets or sets the hostname.
+        /// </summary>
+        /// <value>
+        /// The hostname.
+        /// </value>
         public string Hostname { get; set; }
 
         /// <summary>

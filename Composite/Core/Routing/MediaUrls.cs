@@ -17,8 +17,6 @@ namespace Composite.Core.Routing
     /// <summary>    
     /// Responsible for parsing and building media urls
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class MediaUrls
     {
         internal static readonly string DefaultMediaStore = "MediaArchive";
@@ -31,14 +29,25 @@ namespace Composite.Core.Routing
 
         private static readonly string ForbiddenUrlCharacters = @"<>*%&\?#";
 
-        /// <exclude />
+
+        /// <summary>
+        /// Parses the URL.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <returns></returns>
         public static MediaUrlData ParseUrl(string relativeUrl)
         {
             UrlKind urlKind;
             return ParseUrl(relativeUrl, out urlKind);
         }
 
-        /// <exclude/>
+
+        /// <summary>
+        /// Parses the URL.
+        /// </summary>
+        /// <param name="relativeUrl">The relative URL.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <returns></returns>
         public static MediaUrlData ParseUrl(string relativeUrl, out UrlKind urlKind)
         {
             if(relativeUrl.StartsWith(MediaUrl_RenderPrefix, StringComparison.OrdinalIgnoreCase)
@@ -168,7 +177,13 @@ namespace Composite.Core.Routing
                        };
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Builds the URL.
+        /// </summary>
+        /// <param name="mediaUrlData">The media URL data.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <returns></returns>
         public static string BuildUrl(MediaUrlData mediaUrlData, UrlKind urlKind)
         {
             Verify.ArgumentNotNull(mediaUrlData, "mediaUrlData");

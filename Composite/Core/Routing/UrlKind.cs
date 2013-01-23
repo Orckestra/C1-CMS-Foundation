@@ -3,8 +3,6 @@
     /// <summary>
     /// Url kind
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public enum UrlKind
     {
         /// <exclude />

@@ -6,10 +6,9 @@ using Composite.Data.Types;
 
 namespace Composite.Core.Routing
 {
-    /// <summary>    
+    /// <summary>
+    /// Information stored in a Composite C1 page url
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PageUrlData
     {
         /// <exclude />
@@ -17,7 +16,11 @@ namespace Composite.Core.Routing
         {
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageUrlData"/> class.
+        /// </summary>
+        /// <param name="page">The page.</param>
         public PageUrlData(IPage page)
         {
             Verify.ArgumentNotNull(page, "page");
@@ -27,7 +30,13 @@ namespace Composite.Core.Routing
             this.LocalizationScope = page.DataSourceId.LocaleScope;
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PageUrlData"/> class.
+        /// </summary>
+        /// <param name="pageId">The page id.</param>
+        /// <param name="publicationScope">The publication scope.</param>
+        /// <param name="localizationScope">The localization scope.</param>
         public PageUrlData(Guid pageId, PublicationScope publicationScope, CultureInfo localizationScope)
         {
             PageId = pageId;
@@ -35,19 +44,49 @@ namespace Composite.Core.Routing
             LocalizationScope = localizationScope;
         }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets or sets the page id.
+        /// </summary>
+        /// <value>
+        /// The page id.
+        /// </value>
         public Guid PageId { get; set; }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets or sets the publication scope.
+        /// </summary>
+        /// <value>
+        /// The publication scope.
+        /// </value>
         public PublicationScope PublicationScope { get; set; }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets or sets the localization scope.
+        /// </summary>
+        /// <value>
+        /// The localization scope.
+        /// </value>
         public CultureInfo LocalizationScope { get; set; }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets or sets the path info.
+        /// </summary>
+        /// <value>
+        /// The path info.
+        /// </value>
         public virtual string PathInfo { get; set; }
 
-        /// <exclude />
+
+        /// <summary>
+        /// Gets or sets the query parameters.
+        /// </summary>
+        /// <value>
+        /// The query parameters.
+        /// </value>
         public virtual NameValueCollection QueryParameters { get; set; }
     }
 }

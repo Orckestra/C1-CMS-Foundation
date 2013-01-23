@@ -4,10 +4,9 @@ using Composite.Data.Types;
 
 namespace Composite.Core.Routing
 {
-    /// <summary>    
+    /// <summary> 
+    /// Responsible for parsing and building page urls
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageUrls
     {
         private static IPageUrlProvider GetDefaultProvider()
@@ -16,19 +15,29 @@ namespace Composite.Core.Routing
         }
 
         /// <exclude />
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static IPageUrlProvider UrlProvider
         {
             get { return GetDefaultProvider(); }
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Parses the URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
         public static PageUrlData ParseUrl(string url)
         {
             UrlKind urlKind;
             return ParseUrl(url, out urlKind);
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Parses the URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <returns></returns>
         public static PageUrlData ParseUrl(string url, out UrlKind urlKind)
         {
             if (url.StartsWith("http") && url.Contains("://"))
@@ -39,19 +48,37 @@ namespace Composite.Core.Routing
             return UrlProvider.ParseUrl(url, new UrlSpace(), out urlKind);
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Parses the URL.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="urlSpace">The URL space.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <returns></returns>
         public static PageUrlData ParseUrl(string url, UrlSpace urlSpace, out UrlKind urlKind) 
         {
             return UrlProvider.ParseUrl(url, urlSpace, out urlKind);
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds the URL.
+        /// </summary>
+        /// <param name="pageUrlData">The page URL data.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <param name="urlSpace">The URL space.</param>
+        /// <returns></returns>
         public static string BuildUrl(PageUrlData pageUrlData, UrlKind urlKind, UrlSpace urlSpace) 
         {
             return UrlProvider.BuildUrl(pageUrlData, urlKind, urlSpace);
         }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds the URL.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <param name="urlSpace">The URL space.</param>
+        /// <returns></returns>
         public static string BuildUrl(IPage page, UrlKind urlKind = UrlKind.Public, UrlSpace urlSpace = null)
         {
             Verify.ArgumentNotNull(page, "page");
