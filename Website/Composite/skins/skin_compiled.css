@@ -350,7 +350,7 @@ background-image: none;
 background-image: none;
 #endregion
 */
-region default
+#region default
 #alphabackdrop: url("${skin}/buttons/clickbutton-default-c.png");
 #endregion
 }
@@ -358,7 +358,6 @@ ui|clickbutton table.matrix td.n,
 ui|clickbutton.isdisabled table.matrix td.n {
 #alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-n.png");
 #region default
-
 #alphabackdrop: url("${skin}/buttons/clickbutton-default-n.png");
 #endregion
 
@@ -770,6 +769,23 @@ ui|tabbox.tabsbelow ui|tab.hover table.matrix td.s,
 ui|tabbox.tabsbelow ui|tab.selected table.matrix td.s {
 #alphabackdrop: url("${skin}/tabboxes/tab-on-s.png");
 }
+
+ui|tabbox td.w,
+ui|tabbox td.e{
+background-repeat: repeat-y;
+}
+
+ui|tabbox td.n,
+ui|tabbox td.s {
+background-repeat: repeat-x;
+}
+
+ui|tabbox td.nw,
+ui|tabbox td.ne,
+ui|tabbox td.se,
+ui|tabbox td.sw{
+background-repeat: no-repeat;
+}
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 #region default
@@ -872,7 +888,6 @@ width: 100%;
 #endregion
 }
 
-
 ui|explorertoolbarbutton ui|labelbox {
 padding-left: 1px;
 }
@@ -905,12 +920,6 @@ color: $(color:highlighttext);
 #endregion
 #region vista
 color: white;
-/*
-_filter:progid:DXImageTransform.Microsoft.dropshadow(color='#072785',offX='1',offY='1') progid:DXImageTransform.Microsoft.Glow(Color='#5483d0',Strength=1);
-position: relative;
-top: -2px;
-left: -2px;
-*/
 #endregion
 }
 ui|explorerbar {

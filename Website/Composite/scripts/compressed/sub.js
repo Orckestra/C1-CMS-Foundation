@@ -423,7 +423,7 @@ _6e=this;
 }
 return _6e;
 }
-_UpdateAssistant.prototype={_serializer:window.XMLSerializer!=null?new XMLSerializer():null,_parser:window.DOMParser!=null?new DOMParser():null,_activeElement:null,_construct:function(){
+_UpdateAssistant.prototype={_serializer:window.XMLSerializer!=null?new XMLSerializer():null,_parser:(window.DOMParser!=null&&window.XPathResult!=null)?new DOMParser():null,_activeElement:null,_construct:function(){
 if(!window.Node){
 window.Node={ELEMENT_NODE:1,TEXT_NODE:3,DOCUMENT_NODE:9};
 }
@@ -591,26 +591,30 @@ _9f=this._activeElement;
 return _9f;
 },serialize:function(_a0){
 var _a1=null;
+if(_a0.xml!=null){
+_a1=_a0.xml;
+}else{
 if(this._serializer!=null){
 _a1=this._serializer.serializeToString(_a0);
-}else{
-_a1=_a0.xml;
+}
 }
 return _a1;
 },hasDifferences:function(_a2,_a3){
 var s1=null;
 var s2=null;
+if(_a2.xml!=null){
+s1=_a2.xml;
+s2=_a3.xml;
+}else{
 if(this._serializer!=null){
 s1=this._serializer.serializeToString(_a2);
 s2=this._serializer.serializeToString(_a3);
-}else{
-s1=_a2.xml;
-s2=_a3.xml;
+}
 }
 return s1!=s2;
 },parse:function(_a6){
 var _a7=null;
-if(this._parser!=null){
+if(this._parser!=null&&window.XPathResult!=null){
 _a7=this._parser.parseFromString(_a6,"text/xml");
 }else{
 _a7=new ActiveXObject("Msxml2.DOMDocument.3.0");

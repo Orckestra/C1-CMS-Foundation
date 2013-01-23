@@ -73,9 +73,9 @@ top: 0;
 left: 0;
 width: 100%;
 height: 100%;
-#ie height: 40px; /* cannot handle 100% */
 #ie background-color: pink;
-#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+#ie opacity: 0;
+
 }
 ui|binding,
 ui|feedbackset { /* ONLY MAW USES THIS FOR NOW! */
@@ -96,8 +96,7 @@ height: 100%;
 background-color: $(color:threedface);
 }
 ui|cover.transparent {
-#moz background-color: transparent;
-#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+background-color: transparent;
 }
 ui|*.maxboxelement,
 ui|*.flexboxelement {
@@ -105,12 +104,13 @@ display: block;
 height: 100%;
 overflow: hidden;
 }
-#region ie
-ui|*.clearfloatelement {
-width: 100%;
+
+/* Fix for IE9-10 */
+ui|wizardpage ui|pagebody.flexboxelement,
+ui|dialogpage ui|pagebody.flexboxelement {
+height: auto;
 }
-#endregion
-#region moz
+
 ui|*.clearfloatelement:after {
 content: "";
 width: 1px;
@@ -120,7 +120,7 @@ margin-bottom: -1px;
 display: block;
 clear: both;
 }
-#endregion
+
 
 ui|persistance {
 display: none;
@@ -340,8 +340,6 @@ ui|dialogborder {
 position: absolute;
 overflow: hidden;
 z-index: 4;
-#ie background-color: $(color:threedface);
-#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
 }
 ui|dialogborder.n {
 top: 0;
@@ -387,8 +385,7 @@ width: 100%; /* adjusted by script */
 left: 0;
 top: 0;
 z-index: 2; /* adjusted by script */
-#ie background-color: pink;
-#ie filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+background-color: transparent;
 }
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
@@ -486,8 +483,7 @@ ui|popup,
 ui|menupopup {
 position: absolute;
 z-index: 6;  /* above the shadow */ 
-#moz min-width: 160px;
-#ie width: 160px;
+min-width: 160px;
 visibility: hidden;
 -vendor-transition-property: opacity;
 -vendor-transition-duration: 0.15s;
@@ -1136,7 +1132,6 @@ display: none;
 }
 ui|treenode ui|labelbox { 
 padding-bottom: 3px;
-#ie padding-bottom: 0;
 }
 ui|treenode ui|labeltext {
 padding: 2px 4px 3px 4px;
@@ -1419,7 +1414,6 @@ border-bottom: 5px solid transparent; /* strange flex bug */
 }
 #endregion
 table.fieldgroupmatrix td {
-#ie overflow: hidden;
 width: 4px;
 height: 4px;
 padding: 0;
