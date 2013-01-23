@@ -24,7 +24,7 @@ namespace Composite.Core.Application
 {
     /// <summary>    
     /// Using this attribute on a class with the following two static methods,
-    /// will cause C1 to call those two methods in the initialization face of C1.
+    /// will cause C1 to call those two methods in the initialization phase of C1.
     /// This can be used to register event handlers ans such.
     /// The static class should have these two static methods:
     /// <code>

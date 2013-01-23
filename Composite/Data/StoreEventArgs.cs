@@ -15,7 +15,7 @@ namespace Composite.Data
     /// <code>
     /// void MyMethod()
     /// {
-    ///    DataEvents&lt;IMyDataType&gt;().OnStoreChange += new StoreEventHandler(DataEvents_OnBeforeAdd);
+    ///    DataEvents&lt;IMyDataType&gt;().OnStoreChange += new StoreEventHandler(DataEvents_StoreChanged);
     ///    
     ///    using (DataConnection connection = new DataConnection())
     ///    {
@@ -27,7 +27,7 @@ namespace Composite.Data
     /// }
     /// 
     /// 
-    /// void StoreEvents_OnChange(object sender, StoreEventArgs storeEventArgs)
+    /// void DataEvents_StoreChanged(object sender, StoreEventArgs storeEventArgs)
     /// {        
     ///    Type dataType = storeEventArgs.DataType; // This will be the type that changed
     ///    PublicationScope scope = storeEventArgs.PublicationScope; // The scope the event happened in - published vs. administrated
