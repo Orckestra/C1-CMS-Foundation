@@ -206,11 +206,11 @@ namespace CompositeTypeFieldDesigner
                 if (this.CurrentFields.Any(f => f.Id == this.CurrentlySelectedFieldId && f.TreeOrderingProfile.OrderPriority > 0) == false)
                 {
                     treeOrderingFieldOptions.Add(
-                        new DataFieldTreeOrderingProfile { OrderPriority = existingOrderedFieldCount + 1, OrderDescending = true }
+                        new DataFieldTreeOrderingProfile { OrderPriority = existingOrderedFieldCount + 1, OrderDescending = false }
                         , string.Format(GetString("TreeOrderingNAscending"), existingOrderedFieldCount + 1));
 
                     treeOrderingFieldOptions.Add(
-                        new DataFieldTreeOrderingProfile { OrderPriority = existingOrderedFieldCount + 1, OrderDescending = false }
+                        new DataFieldTreeOrderingProfile { OrderPriority = existingOrderedFieldCount + 1, OrderDescending = true }
                         , string.Format(GetString("TreeOrderingNDescending"), existingOrderedFieldCount + 1));
                 }
             }
@@ -961,15 +961,7 @@ namespace CompositeTypeFieldDesigner
             this.HelpField.Text = "";
             this.PositionField.SelectedValue = "-1";
 
-            if (string.IsNullOrEmpty(this.CurrentLabelFieldName))
-        	{
-                this.IsTitleFieldDateTimeSelector.Checked = (string.IsNullOrEmpty(this.CurrentLabelFieldName));
-                if (!CurrentFields.Any(f=>f.TreeOrderingProfile.OrderPriority > 0))
-                {
-                    var ordering = new DataFieldTreeOrderingProfile{ OrderPriority = 1, OrderDescending = false };
-                    this.TreeOrderingField.SelectedValue = ordering.ToString();
-                }
-        	}
+            this.IsTitleFieldDateTimeSelector.Checked = (string.IsNullOrEmpty(this.CurrentLabelFieldName));
 
             ResetWidgetSelector();
 
