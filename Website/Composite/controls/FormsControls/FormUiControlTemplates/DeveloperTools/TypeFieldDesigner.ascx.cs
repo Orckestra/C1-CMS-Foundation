@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-
+using Composite.Core.WebClient;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Extensions;
@@ -78,28 +78,29 @@ namespace CompositeTypeFieldDesigner
                     DetailsSplitPanelPlaceHolder.Visible = false;
                 }
 
+                // TODO: fix the type reference!
                 btnWidgetFunctionMarkup.Attributes["label"] = CurrentlySelectedWidgetText;
-                btnWidgetFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?functiontype=widget&type="
-                    + HttpUtility.UrlEncode(TypeManager.SerializeType(CurrentlySelectedWidgetReturnType))
-                    + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("WidgetDialogLabel")) + "&multimode=false&zipmarkup=";
+                btnWidgetFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?functiontype=widget&zip_type="
+                    + UrlUtils.ZipContent(TypeManager.SerializeType(CurrentlySelectedWidgetReturnType))
+                    + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("WidgetDialogLabel")) + "&multimode=false&functionmarkup=";
 
                 btnValidationRulesFunctionMarkup.Attributes["label"] =
                     GetString(btnValidationRulesFunctionMarkup.Value.IsNullOrEmpty()
                                   ? "ValidationRulesAdd"
                                   : "ValidationRulesEdit");
                 // TODO: some of the query parameters may not be used at the moment
-                btnValidationRulesFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?type="
-                     + HttpUtility.UrlEncode(TypeManager.SerializeType(this.CurrentlySelectedTypeValidatorType))
+                btnValidationRulesFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?zip_type="
+                     + UrlUtils.ZipContent(TypeManager.SerializeType(this.CurrentlySelectedTypeValidatorType))
                      + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("ValidationRulesDialogLabel"))
                      + "&multimode=true&addnewicon=Composite.Icons,validationrules-add&addnewicondisabled=Composite.Icons,validationrules-add-disabled"
-                     + "&functionicon=Composite.Icons,validationrule&containericon=Composite.Icons,validationrules&zipmarkup=";
+                     + "&functionicon=Composite.Icons,validationrule&containericon=Composite.Icons,validationrules&functionmarkup=";
 
                 btnDefaultValueFunctionMarkup.Attributes["label"] = CurrentlySelectedDefaultValueText;
                 btnDefaultValueFunctionMarkup.Attributes["url"] =
-                    "${root}/content/dialogs/functions/editFunctionCall.aspx?type="
-                    + HttpUtility.UrlEncode(TypeManager.SerializeType(this.CurrentlySelectedDefaultValueFunctionReturnType))
+                    "${root}/content/dialogs/functions/editFunctionCall.aspx?zip_type="
+                    + UrlUtils.ZipContent(TypeManager.SerializeType(this.CurrentlySelectedDefaultValueFunctionReturnType))
                     + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("DefaultValueDialogLabel"))
-                    + "&multimode=false&zipmarkup=";
+                    + "&multimode=false&functionmarkup=";
             }
 
             if (nameChanged)

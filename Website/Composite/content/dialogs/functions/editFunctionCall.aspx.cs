@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using Composite;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Functions;
@@ -32,7 +33,14 @@ namespace CompositeEditFunctionCall
             if(!IsPostBack)
             {
                 string typeName = Request.QueryString["type"];
-                Type resultType = typeName == null ? typeof(object) : TypeManager.GetType(typeName);
+
+                if(typeName.IsNullOrEmpty())
+                {
+                    typeName = UrlUtils.UnZipContent(Request.QueryString["zip_type"]);
+                }
+
+                Type resultType = typeName == null ? typeof (object) : TypeManager.GetType(typeName);
+                
 
                 IsWidgetSelection = Request.QueryString["functiontype"] == "widget";
 
@@ -65,16 +73,12 @@ namespace CompositeEditFunctionCall
 
         private IEnumerable<XElement> GetFunctionElementsFromQueryString()
         {
-            string functionMarkup;
+            string functionMarkup = this.Request.QueryString["functionMarkup"];
 
-            string zippedMarkup = Request.QueryString["zipmarkup"];
-            if (!zippedMarkup.IsNullOrEmpty() && zippedMarkup != "null")
+            const string ZipPrefix = "ZIP_";
+            if(functionMarkup.StartsWith("ZIP_"))
             {
-                functionMarkup = UrlUtils.UnZipContent(zippedMarkup);
-            }
-            else
-            {
-                functionMarkup = this.Request.QueryString["functionMarkup"];
+                functionMarkup = UrlUtils.UnZipContent(functionMarkup.Substring(ZipPrefix.Length));
             }
 
             if (string.IsNullOrEmpty(functionMarkup))
@@ -82,7 +86,7 @@ namespace CompositeEditFunctionCall
                 functionMarkup = HttpUtility.UrlDecode( this.Request.Form["functionMarkup"] );
             }
 
-            if (string.IsNullOrEmpty(functionMarkup) == false && functionMarkup != "null")
+            if (!string.IsNullOrEmpty(functionMarkup) && functionMarkup != "null")
             {
                 XElement functionElement = XElement.Parse(functionMarkup);
 
@@ -94,12 +98,12 @@ namespace CompositeEditFunctionCall
                 {
                     foreach (XElement multiFunctionElement in functionElement.Elements())
                     {
-                        if (multiFunctionElement.Name.Namespace != Namespaces.Function10 ) throw new InvalidOperationException("Nested function elements does not belong to expected namespace");
+                        Verify.That(multiFunctionElement.Name.Namespace == Namespaces.Function10, 
+                                    "Nested function elements does not belong to expected namespace");
 
                         yield return multiFunctionElement;
                     }
                 }
-
             }
         }
 

@@ -14,6 +14,8 @@ namespace Composite.Core.WebClient.UiControlLib
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class PostBackDialog : BaseControl
     {
+        private static readonly string ZipPrefix = "ZIP_";
+
         /// <exclude />
         protected const string DefaultSelectorTagName = "ui:postbackdialog";
 
@@ -45,8 +47,8 @@ namespace Composite.Core.WebClient.UiControlLib
             {
                 string postedValue = Page.Request.Form[formKey];
 
-                Value = EncodeValue && postedValue.StartsWith(UrlUtils.EncodedZipPrefix) 
-                    ? UrlUtils.UnZipContent(postedValue)
+                Value = EncodeValue && postedValue.StartsWith(ZipPrefix)
+                    ? UrlUtils.UnZipContent(postedValue.Substring(ZipPrefix.Length))
                     : HttpContext.Current.Server.UrlDecode(postedValue);
             }
         }
@@ -94,12 +96,12 @@ namespace Composite.Core.WebClient.UiControlLib
 
             if (Value != null)
             {
-                Attributes["value"] = EncodeValue ? UrlUtils.ZipContent(Value) : Value;
+                Attributes["value"] = EncodeValue ? (ZipPrefix + UrlUtils.ZipContent(Value)) : Value;
             }
 
             if (DefaultValue != null)
             {
-                Attributes["defaultValue"] = EncodeValue ? UrlUtils.ZipContent(DefaultValue) : DefaultValue;
+                Attributes["defaultValue"] = EncodeValue ? (ZipPrefix + UrlUtils.ZipContent(DefaultValue)) : DefaultValue;
             }
 
             base.RenderAttributes(writer);

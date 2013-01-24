@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Text;
 using System.Web.Hosting;
 using System.Collections.Generic;
 using Composite.Core.Extensions;
-using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Core.WebClient
@@ -19,9 +19,6 @@ namespace Composite.Core.WebClient
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
         private static readonly string[] UrlStartMarkers = new[] { "\"", "\'", "&#39;", "&#34;" };
-
-        internal static readonly string EncodedZipPrefix = "UEsDBC";
-
 
         static UrlUtils()
         {
@@ -226,21 +223,12 @@ namespace Composite.Core.WebClient
 
             byte[] newBytes;
 
-            // zip into new, zipped, byte array
-            using (MemoryStream memOutput = new MemoryStream())
-            using (var zipOutput = new ZipOutputStream(memOutput))
+            using (var compressStream = new MemoryStream())
+            using (var compressor = new DeflateStream(compressStream, CompressionMode.Compress))
             {
-                zipOutput.SetLevel(9);
-
-                ZipEntry entry = new ZipEntry("a");
-                entry.DateTime = DateTime.Now;
-                zipOutput.PutNextEntry(entry);
-                zipOutput.Write(bytes, 0, bytes.Length);
-                zipOutput.Finish();
-
-                newBytes = memOutput.ToArray(); 
-
-                zipOutput.Close();
+                compressor.Write(bytes, 0, bytes.Length);
+                compressor.Close();
+                newBytes = compressStream.ToArray();
             }
 
             string base64 = Convert.ToBase64String(newBytes);
@@ -258,19 +246,14 @@ namespace Composite.Core.WebClient
 
             byte[] bytes = Convert.FromBase64String(base64);
 
-            using (Stream memInput = new MemoryStream(bytes))
-            using (ZipInputStream input = new ZipInputStream(memInput))
+            using (var ms = new MemoryStream(bytes))
+            using (var result = new MemoryStream())
+            using (var deflateStream = new DeflateStream(ms, CompressionMode.Decompress))
             {
-                ZipEntry entry = input.GetNextEntry();
+                deflateStream.CopyTo(result);
+                deflateStream.Close();
 
-                byte[] newBytes = new byte[entry.Size];
-                int count = input.Read(newBytes, 0, newBytes.Length);
-                if (count != entry.Size)
-                {
-                    throw new Exception("Invalid read: " + count);
-                }
-
-                return Encoding.UTF8.GetString(newBytes);
+                return Encoding.UTF8.GetString(result.ToArray());                
             }
         }
     }
