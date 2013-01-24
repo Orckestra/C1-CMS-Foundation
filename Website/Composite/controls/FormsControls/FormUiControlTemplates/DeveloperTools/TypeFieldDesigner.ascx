@@ -162,7 +162,7 @@
 														<ui:fielddesc><%= GetString("Widget") %></ui:fielddesc>
 														<ui:fieldhelp><%= GetString("WidgetHelp") %></ui:fieldhelp>
 														<ui:fielddata>
-                                                            <aspui:PostBackDialog runat="server" ID="btnWidgetFunctionMarkup" />
+                                                            <aspui:PostBackDialog runat="server" ID="btnWidgetFunctionMarkup" EncodeValue="True" />
 														</ui:fielddata>
 													</ui:field>
 											</ui:fieldgroup>
@@ -172,7 +172,7 @@
 														<ui:fielddesc><%= GetString("ValidationRules") %></ui:fielddesc>
 														<ui:fieldhelp><%= GetString("ValidationRulesHelp")%></ui:fieldhelp>
 														<ui:fielddata>
-                                                            <aspui:PostBackDialog runat="server" ID="btnValidationRulesFunctionMarkup" />
+                                                            <aspui:PostBackDialog runat="server" ID="btnValidationRulesFunctionMarkup" EncodeValue="True" />
 														</ui:fielddata>
 													</ui:field>
 											</ui:fieldgroup>
@@ -212,7 +212,7 @@
 														<ui:fielddesc><%= GetString("DefaultValue")%></ui:fielddesc>
 														<ui:fieldhelp><%= GetString("DefaultValueHelp")%></ui:fieldhelp>
 														<ui:fielddata>
-                                                            <aspui:PostBackDialog runat="server" ID="btnDefaultValueFunctionMarkup" />
+                                                            <aspui:PostBackDialog runat="server" ID="btnDefaultValueFunctionMarkup" EncodeValue="True" />
 														</ui:fielddata>
 													</ui:field>
 											</ui:fieldgroup>

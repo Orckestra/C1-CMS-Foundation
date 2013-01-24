@@ -81,7 +81,7 @@ namespace CompositeTypeFieldDesigner
                 btnWidgetFunctionMarkup.Attributes["label"] = CurrentlySelectedWidgetText;
                 btnWidgetFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?functiontype=widget&type="
                     + HttpUtility.UrlEncode(TypeManager.SerializeType(CurrentlySelectedWidgetReturnType))
-                    + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("WidgetDialogLabel")) + "&multimode=false&functionmarkup=";
+                    + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("WidgetDialogLabel")) + "&multimode=false&zipmarkup=";
 
                 btnValidationRulesFunctionMarkup.Attributes["label"] =
                     GetString(btnValidationRulesFunctionMarkup.Value.IsNullOrEmpty()
@@ -91,15 +91,15 @@ namespace CompositeTypeFieldDesigner
                 btnValidationRulesFunctionMarkup.Attributes["url"] = "${root}/content/dialogs/functions/editFunctionCall.aspx?type="
                      + HttpUtility.UrlEncode(TypeManager.SerializeType(this.CurrentlySelectedTypeValidatorType))
                      + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("ValidationRulesDialogLabel"))
-                     + "&multimode=true&addnewicon=Composite.Icons,validationrules-add&addnewicondisabled=Composite.Icons,validationrules-add-disabled" 
-                     + "&functionicon=Composite.Icons,validationrule&containericon=Composite.Icons,validationrules&functionmarkup=";
+                     + "&multimode=true&addnewicon=Composite.Icons,validationrules-add&addnewicondisabled=Composite.Icons,validationrules-add-disabled"
+                     + "&functionicon=Composite.Icons,validationrule&containericon=Composite.Icons,validationrules&zipmarkup=";
 
                 btnDefaultValueFunctionMarkup.Attributes["label"] = CurrentlySelectedDefaultValueText;
                 btnDefaultValueFunctionMarkup.Attributes["url"] =
                     "${root}/content/dialogs/functions/editFunctionCall.aspx?type="
                     + HttpUtility.UrlEncode(TypeManager.SerializeType(this.CurrentlySelectedDefaultValueFunctionReturnType))
                     + "&dialoglabel=" + HttpUtility.UrlEncodeUnicode(GetString("DefaultValueDialogLabel"))
-                    + "&multimode=false&functionmarkup=";
+                    + "&multimode=false&zipmarkup=";
             }
 
             if (nameChanged)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
+using Composite.Core.WebClient;
 using Composite.Functions;
 using Composite.Core.Types;
 using Composite.Core.WebClient.FunctionCallEditor;
@@ -63,9 +65,19 @@ namespace CompositeEditFunctionCall
 
         private IEnumerable<XElement> GetFunctionElementsFromQueryString()
         {
-            string functionMarkup = this.Request.QueryString["functionMarkup"];
+            string functionMarkup;
 
-            if (string.IsNullOrEmpty(functionMarkup) == true)
+            string zippedMarkup = Request.QueryString["zipmarkup"];
+            if (!zippedMarkup.IsNullOrEmpty() && zippedMarkup != "null")
+            {
+                functionMarkup = UrlUtils.UnZipContent(zippedMarkup);
+            }
+            else
+            {
+                functionMarkup = this.Request.QueryString["functionMarkup"];
+            }
+
+            if (string.IsNullOrEmpty(functionMarkup))
             {
                 functionMarkup = HttpUtility.UrlDecode( this.Request.Form["functionMarkup"] );
             }

@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Web.Hosting;
 using System.Collections.Generic;
+using Composite.Core.Extensions;
+using ICSharpCode.SharpZipLib.Zip;
 
 
 namespace Composite.Core.WebClient
@@ -17,6 +19,8 @@ namespace Composite.Core.WebClient
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
         private static readonly string[] UrlStartMarkers = new[] { "\"", "\'", "&#39;", "&#34;" };
+
+        internal static readonly string EncodedZipPrefix = "UEsDBC";
 
 
         static UrlUtils()
@@ -210,6 +214,64 @@ namespace Composite.Core.WebClient
             }
 
             return html;
+        }
+
+
+        /// <exclude />
+        public static string ZipContent(string text)
+        {
+            if (text.IsNullOrEmpty()) return text;
+
+            byte[] bytes = UTF8Encoding.UTF8.GetBytes(text);
+
+            byte[] newBytes;
+
+            // zip into new, zipped, byte array
+            using (MemoryStream memOutput = new MemoryStream())
+            using (var zipOutput = new ZipOutputStream(memOutput))
+            {
+                zipOutput.SetLevel(9);
+
+                ZipEntry entry = new ZipEntry("a");
+                entry.DateTime = DateTime.Now;
+                zipOutput.PutNextEntry(entry);
+                zipOutput.Write(bytes, 0, bytes.Length);
+                zipOutput.Finish();
+
+                newBytes = memOutput.ToArray(); 
+
+                zipOutput.Close();
+            }
+
+            string base64 = Convert.ToBase64String(newBytes);
+
+            string urlFriendlyBase64 = base64.Replace("+", "_").Replace("/", ".").Replace("=", "-");
+            return urlFriendlyBase64;
+        }
+
+        /// <exclude />
+        public static string UnZipContent(string zippedContent)
+        {
+            if (zippedContent.IsNullOrEmpty()) return zippedContent;
+
+            string base64 = zippedContent.Replace("_", "+").Replace(".", "/").Replace("-", "=");
+
+            byte[] bytes = Convert.FromBase64String(base64);
+
+            using (Stream memInput = new MemoryStream(bytes))
+            using (ZipInputStream input = new ZipInputStream(memInput))
+            {
+                ZipEntry entry = input.GetNextEntry();
+
+                byte[] newBytes = new byte[entry.Size];
+                int count = input.Read(newBytes, 0, newBytes.Length);
+                if (count != entry.Size)
+                {
+                    throw new Exception("Invalid read: " + count);
+                }
+
+                return Encoding.UTF8.GetString(newBytes);
+            }
         }
     }
 }

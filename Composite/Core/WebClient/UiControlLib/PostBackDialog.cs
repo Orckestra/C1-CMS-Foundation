@@ -43,7 +43,11 @@ namespace Composite.Core.WebClient.UiControlLib
                 && Page.Request.Form["__EVENTTARGET"] == formKey
                 || !Page.Request.Form[formKey].IsNullOrEmpty())
             {
-                Value = HttpContext.Current.Server.UrlDecode ( Page.Request.Form[formKey]);
+                string postedValue = Page.Request.Form[formKey];
+
+                Value = EncodeValue && postedValue.StartsWith(UrlUtils.EncodedZipPrefix) 
+                    ? UrlUtils.UnZipContent(postedValue)
+                    : HttpContext.Current.Server.UrlDecode(postedValue);
             }
         }
 
@@ -66,6 +70,15 @@ namespace Composite.Core.WebClient.UiControlLib
         /// <exclude />
         public string Value { get; set; }
 
+        /// <exclude />
+        public string DefaultValue { get; set; }
+
+        
+        /// <summary>
+        /// When <value>true</value>, the values are encoded in a way it is safe to use them in url's query string
+        /// </summary>
+        public bool EncodeValue { get; set; }
+
 
         /// <exclude />
         protected override void RenderAttributes(System.Web.UI.HtmlTextWriter writer)
@@ -79,9 +92,14 @@ namespace Composite.Core.WebClient.UiControlLib
                 Attributes["name"] = ClientID;
             }
 
-            if(Value != null)
+            if (Value != null)
             {
-                Attributes["value"] = HttpContext.Current.Server.UrlEncode(Value).Replace("+", "%20");
+                Attributes["value"] = EncodeValue ? UrlUtils.ZipContent(Value) : Value;
+            }
+
+            if (DefaultValue != null)
+            {
+                Attributes["defaultValue"] = EncodeValue ? UrlUtils.ZipContent(DefaultValue) : DefaultValue;
             }
 
             base.RenderAttributes(writer);
