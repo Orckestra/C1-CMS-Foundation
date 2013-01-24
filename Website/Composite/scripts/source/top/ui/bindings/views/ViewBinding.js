@@ -410,7 +410,6 @@ ViewBinding.prototype.handleAction = function ( action ) {
 			break;
 	
 		case Binding.ACTION_DIMENSIONCHANGED :
-		//case Binding.ACTION_POSITIONCHANGED :
 			if ( this.isFreeFloating == true ) {
 				if ( binding == this._snapBinding ) {
 				 	if ( this.isVisible == true ) {
@@ -770,14 +769,12 @@ ViewBinding.prototype.snapToBinding = function ( binding ) {
 
 	// Listen for these events instead... 
 	binding.addActionListener ( Binding.ACTION_DIMENSIONCHANGED, this );
-	binding.addActionListener ( Binding.ACTION_POSITIONCHANGED, this );
 	binding.addActionListener ( Binding.ACTION_VISIBILITYCHANGED, this );
 	binding.addActionListener ( Binding.ACTION_DISPOSED, this );
 	
 	// Unregister any previous snap target.
 	if ( this._snapBinding ) {
 		this._snapBinding.removeActionListener ( Binding.ACTION_DIMENSIONCHANGED, this );
-		this._snapBinding.removeActionListener ( Binding.ACTION_POSITIONCHANGED, this );
 		this._snapBinding.removeActionListener ( Binding.ACTION_VISIBILITYCHANGED, this );
 		this._snapBinding.removeActionListener ( Binding.ACTION_DISPOSED, this );
 		this._snapBinding.viewBinding = null;

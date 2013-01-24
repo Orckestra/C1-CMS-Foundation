@@ -253,7 +253,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreeContentBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreePositionIndicatorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/trees/TreeCrawler.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/shadows/ShadowBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/docks/DockControlImageProfile.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/docks/DockTabsButtonBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/docks/DockBinding.js"/>

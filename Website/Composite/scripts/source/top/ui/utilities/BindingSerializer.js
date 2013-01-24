@@ -9,11 +9,6 @@ BindingSerializer.activeInstance = null;
 BindingSerializer.KEYPOINTER = "bindingserializerkeypointer";
 
 /**
- * @type {boolean}
- */
-BindingSerializer.includeShadowTreeBindings = false;
-
-/**
  * This filter function is intended for the {@link ElementIterator}.
  * It's not elegant. But at least we get to use the ElementIterator! 
  * TODO: REFACTOR now that extra arguments are provided to the filter!
@@ -71,9 +66,8 @@ function BindingSerializer () {
 	this._pointers = [];
 }
 
-BindingSerializer.prototype.serializeBinding = function ( binding, includeShadowTreeBindings ) {
+BindingSerializer.prototype.serializeBinding = function ( binding ) {
 
-	BindingSerializer.includeShadowTreeBindings = includeShadowTreeBindings ? true : false;
 	BindingSerializer.activeInstance = this;
 	binding.bindingWindow.ElementIterator.iterate ( 
 		binding.bindingElement, 

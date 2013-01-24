@@ -58,11 +58,6 @@ function DialogBinding () {
 	this._border = null;
 	
 	/**
-	 * @type {ShadowBinding}
-	 */
-	this.shadowBinding = null;
-	
-	/**
 	 * Relevant for dragging scenario.
 	 * @type {Point}
 	 */
@@ -174,10 +169,6 @@ DialogBinding.prototype.onBindingAttach = function () {
 	this.buildBorderBindings ();
 	this.attachRecursive ();
 	
-	if ( Client.isExplorer ) {
-		this.buildShadowBinding ();
-	}
-	
 	if ( this._isResizable ) {
 		this.attachClassName ( "resizable" );	
 	}
@@ -233,18 +224,6 @@ DialogBinding.prototype.buildBorderBindings = function () {
 		border.setType ( directions.getNext ());
 		this.add ( border );
 	}
-}
-
-/**
- * Build and configure a {@link ShadowBinding}
- * Mozilla uses CSS shadows to accomplish this. 
- */
-DialogBinding.prototype.buildShadowBinding = function () {
-
-	this.shadowBinding = ShadowBinding.newInstance ( this.bindingDocument );
-	this.shadowBinding.attachClassName ( "dialogshadow" );
-	this.shadowBinding.shadow ( this );
-	this.shadowBinding.attach ();
 }
 
 /**
@@ -501,10 +480,6 @@ DialogBinding.prototype.close = function () {
 			self.isVisible = false;
 			self.deleteProperty ( "open" );
 			
-			if ( self.shadowBinding != null ) {
-				self.dispatchAction ( Binding.ACTION_VISIBILITYCHANGED );
-			}
-			
 			self.bindingElement.style.marginTop = "-10000px";
 			self.dispatchAction ( DialogBinding.ACTION_CLOSE );
 		}
@@ -726,12 +701,7 @@ DialogBinding.prototype.setPosition = function ( p ) {
 	y = Math.round ( y );
 	this.bindingElement.style.top = y + "px";
 	this.geometry.y = y;
-	
-	if ( this.shadowBinding != null ) {
-		this.dispatchAction ( 
-			Binding.ACTION_POSITIONCHANGED 
-		);
-	}
+
 }
 
 /**
@@ -766,12 +736,7 @@ DialogBinding.prototype.setDimension = function ( dim ) {
 	h = Math.round ( h );
 	this.bindingElement.style.height = h + "px";
 	this.geometry.h = h;
-	
-	if ( this.shadowBinding != null ) {
-		this.dispatchAction ( 
-			Binding.ACTION_DIMENSIONCHANGED 
-		);
-	}
+
 }
 
 /**

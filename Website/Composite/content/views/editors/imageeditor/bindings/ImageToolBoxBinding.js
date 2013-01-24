@@ -16,11 +16,6 @@ function ImageToolBoxBinding () {
 	 * @type {Point}
 	 */
 	this._startPosition = null;
-	
-	/**
-	 * @type {ShadowBinding}
-	 */
-	this._shadowBinding = null;
 }
 
 /**
@@ -35,7 +30,6 @@ ImageToolBoxBinding.prototype.onBindingAttach = function () {
 	
 	ImageToolBoxBinding.superclass.onBindingAttach.call ( this );
 	EventBroadcaster.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST, this );
-	this.buildShadowBinding ();
 }
 
 /**
@@ -55,25 +49,6 @@ ImageToolBoxBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 			);
 			break;
 	}
-}
-
-
-/**
- * Build and configure the {@link ShadowBinding}
- */
-ImageToolBoxBinding.prototype.buildShadowBinding = function () {
-	
-	this._shadowBinding = ShadowBinding.newInstance ( this.bindingDocument );
-	this._shadowBinding.attachClassName ( "popupshadow" );
-	this._shadowBinding.offset = 3;
-	this._shadowBinding.expand = 6;
-	this._shadowBinding.shadow ( this );
-	this._shadowBinding.attach ();
-	
-	/*
-	 * Why is this needed now?
-	 */
-	this._shadowBinding.show ();
 }
 
 /**
@@ -132,7 +107,6 @@ ImageToolBoxBinding.prototype.setPosition = function ( point ) {
 	
 	this.bindingElement.style.left = point.x + "px";
 	this.bindingElement.style.top = point.y + "px";
-	this.dispatchAction ( Binding.ACTION_POSITIONCHANGED );
 }
 
 /**

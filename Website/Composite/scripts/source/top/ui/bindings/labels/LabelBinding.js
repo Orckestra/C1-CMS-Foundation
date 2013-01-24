@@ -316,7 +316,7 @@ LabelBinding.prototype._buildOverflowClassName = function () {
 /**
  * LabelBinding factory.
  * @param {DOMDocument} ownerDocument
- * @return {ShadowBinding}
+ * @return {LabelBinding}
  */
 LabelBinding.newInstance = function ( ownerDocument ) {
 

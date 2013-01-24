@@ -906,12 +906,6 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			*/
 			this._popupBinding._enableTab(true);
 
-			/*
-			* Position the shadow.
-			*/
-			this._popupBinding.dispatchAction(Binding.ACTION_VISIBILITYCHANGED);
-			this._popupBinding.dispatchAction(Binding.ACTION_POSITIONCHANGED);
-			this._popupBinding.dispatchAction(Binding.ACTION_DIMENSIONCHANGED);
 		}
 	}
 }

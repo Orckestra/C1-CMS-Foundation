@@ -1193,7 +1193,6 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\request\RequestBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\response\ResponseBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\roots\RootBinding.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\shadows\ShadowBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\splitboxes\SplitBoxBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\splitboxes\SplitPanelBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\splitboxes\SplitterBinding.js" />

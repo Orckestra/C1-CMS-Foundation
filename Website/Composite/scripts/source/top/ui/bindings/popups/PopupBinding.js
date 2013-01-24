@@ -95,12 +95,6 @@ function PopupBinding () {
 	this._bodyBinding = null;
 
 	/**
-	 * @type {ShadowBinding}
-	 * @private
-	 */
-	this._shadowBinding = null;
-
-	/**
 	 * @type {string}
 	 */
 	this.position = null;
@@ -190,13 +184,9 @@ PopupBinding.prototype.onBindingAttach = function () {
 	this.parseDOMProperties ();
 	this.assignDOMEvents ();
 	
-	if ( Client.isExplorer ) {
-		this.buildShadowBinding ();
-	}
 }
 
 /**
- * Dispose shadow when disposed.
  * @overloads {Binding#onBindingDispose}
  */
 PopupBinding.prototype.onBindingDispose = function () {
@@ -204,9 +194,6 @@ PopupBinding.prototype.onBindingDispose = function () {
 	PopupBinding.superclass.onBindingDispose.call ( this );
 	if ( PopupBinding.activeInstances.has ( this.key )) {
 		PopupBinding.activeInstances.del ( this.key );
-	}
-	if  ( this._shadowBinding != null ) {
-		this._shadowBinding.dispose ();
 	}
 }
 
@@ -249,22 +236,6 @@ PopupBinding.prototype.parseDOMProperties = function () {
 		var position = this.getProperty ( "position" );
 		this.position = position ? position : PopupBinding.POSITION_BOTTOM;
 	}
-}
-
-/**
- * Build and configure a {@link ShadowBinding}. 
- * Mozilla uses CSS shadows to accomplish this. 
- */
-PopupBinding.prototype.buildShadowBinding = function () {
-	
-	this._shadowBinding = ShadowBinding.newInstance ( this.bindingDocument );
-	this._shadowBinding.attachClassName ( "popupshadow" );
-	this._shadowBinding.offset = 3;
-	this._shadowBinding.expand = 6;
-	this._shadowBinding.shadow ( this );
-	this._shadowBinding.attach ();
-	
-	this.shadowTree.shadow = this._shadowBinding;
 }
 
 /**
@@ -502,13 +473,7 @@ PopupBinding.prototype.show = function () {
 		 * Enable keyboard navigation.
 		 */
 		this._enableTab ( true );
-		
-		/* 
-		 * Position the shadow.
-		 */
-		this.dispatchAction ( Binding.ACTION_VISIBILITYCHANGED );
-		this.dispatchAction ( Binding.ACTION_POSITIONCHANGED );
-		this.dispatchAction ( Binding.ACTION_DIMENSIONCHANGED );
+
 	}
 }
 

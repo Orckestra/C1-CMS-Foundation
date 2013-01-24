@@ -47,7 +47,6 @@ Binding.ACTION_REGISTERED = "bindingregistered";
 Binding.ACTION_MOVEDONTOP = "bindingmovedontop";
 Binding.ACTION_INITIALIZED = "bindinginitialized";
 Binding.ACTION_FORCE_REFLEX = "bindingforcereflex";
-Binding.ACTION_POSITIONCHANGED = "bindingpositionchanged";
 Binding.ACTION_DIMENSIONCHANGED = "bindingdimensionchanged";
 Binding.ACTION_VISIBILITYCHANGED = "bindingvisibilitychanged";
 
@@ -312,14 +311,6 @@ function Binding () {
 	 * @type {Dragger}
 	 */
 	this.dragger = null;
-	
-	/**
-	 * Determines whether or not the binding should be serialized. Please note that 
-	 * this property is automatically set by the {@link Binding#serialize} method.
-	 * Don't set this property! To make the binding unserializable, instead set 
-	 * the returnvalue to false in the {@link Binding#serialize} method.
-	 */
-	this.isShadowBinding = false;
 	
 	/**
 	 * This depends on...
@@ -899,39 +890,17 @@ Binding.prototype.serialize = function () {
 		result.binding = binding;
 	}
 	
-	/**
-	 * Check shadowBinding status.
-	 */
-	if ( !BindingSerializer.includeShadowTreeBindings ) {
-		var ancestorBinding = this.getAncestorBindingByLocalName ( "*" );
-		if ( ancestorBinding ) {
-			if ( ancestorBinding.isShadowBinding ) {
-				this.isShadowBinding = true;
-				result = false;
-			} else {
-				var tree = ancestorBinding.shadowTree;
-				for ( var key in tree ) {
-					var entry = tree [ key ];
-					if ( entry == this ) {
-						this.isShadowBinding = true;
-						result = false;
-					}
-				}
-			}
-		}
-	}
 	return result;
 }
 
 /**
- * @param {boolean} includeShadowTreeBindings
  * @return {string}
  */
-Binding.prototype.serializeToString = function ( includeShadowTreeBindings ) {
+Binding.prototype.serializeToString = function () {
 	
 	var result = null;
 	if ( this.isAttached ) {
-		result = new BindingSerializer ().serializeBinding ( this, includeShadowTreeBindings );
+		result = new BindingSerializer ().serializeBinding ( this );
 	} else {
 		throw "cannot serialize unattached binding";
 	}
