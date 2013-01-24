@@ -161,6 +161,13 @@ FormatSelectorBinding.prototype.handleAction = function (action) {
             var value = this.getValue();
             if (this._formats.has(value)) { // (exluding "Unknown" selection)
                 var format = this._formats.get(value);
+                if (Client.isExplorer) { // Hack for IE9-10
+                    var dom = this._tinyInstance.dom;
+                    var selection = this._tinyInstance.selection
+                    var rng = selection.getRng();
+                    var blockElm = dom.getParent(rng.startContainer, dom.isBlock);
+                    selection.select(blockElm);
+                }
                 this._tinyInstance.execCommand('FormatBlock', false, format.id);
                 action.consume();
             }
