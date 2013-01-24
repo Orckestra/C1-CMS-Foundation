@@ -136,9 +136,10 @@ _Client.prototype = {
 	},
 
 	fixUI: function (html) {
-		if (Client.isExplorer)
+		if (Client.isExplorer) {
 			html = html.replace(/<ui:/g, "<").replace(/<\/ui:/g, "</");
 			html = html.replace(/(<(\w+)[^>]*)\/>/g, "$1></$2>");
+		}
 		return html;
 	}
 }
