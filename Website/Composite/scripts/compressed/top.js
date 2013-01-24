@@ -567,8 +567,8 @@ return _76;
 },fixUI:function(_78){
 if(Client.isExplorer){
 _78=_78.replace(/<ui:/g,"<").replace(/<\/ui:/g,"</");
-}
 _78=_78.replace(/(<(\w+)[^>]*)\/>/g,"$1></$2>");
+}
 return _78;
 }};
 var Client=new _Client();
