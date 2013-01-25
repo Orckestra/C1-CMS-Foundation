@@ -76,7 +76,7 @@ namespace CompositeEditFunctionCall
             string functionMarkup = this.Request.QueryString["functionMarkup"];
 
             const string ZipPrefix = "ZIP_";
-            if(functionMarkup.StartsWith("ZIP_"))
+            if (functionMarkup != null && functionMarkup.StartsWith(ZipPrefix))
             {
                 functionMarkup = UrlUtils.UnZipContent(functionMarkup.Substring(ZipPrefix.Length));
             }
