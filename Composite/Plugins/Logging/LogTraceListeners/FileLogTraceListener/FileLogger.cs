@@ -194,6 +194,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         [DebuggerStepThrough]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "This is what we want, touch is used later on")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseStreamReaderClass:DotNotUseStreamReaderClass", Justification = "This is what we want, touch is used later on")]
         private static bool TryReadAndOpen(string filePath, out string[] content, out FileStream stream, out Exception exception)
         {
             content = null;
