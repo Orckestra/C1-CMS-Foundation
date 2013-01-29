@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Runtime;
+using Composite.Core;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Core.Logging;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.Core.Configuration;
@@ -41,6 +41,8 @@ namespace Composite.C1Console.Events
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ConsoleFacade
     {
+        private static readonly string LogTitle = "ConsoleFacade";
+
         /// <exclude />
         public delegate void ConsoleClosedEventDelegate(ConsoleClosedEventArgs args);
 
@@ -63,8 +65,10 @@ namespace Composite.C1Console.Events
                         workflowInstance.Start();
                         WorkflowFacade.RunWorkflow(workflowInstance);
 
-                        LoggingService.LogVerbose("ConsoleFacade", "Scavenger started");
-
+                        if (RuntimeInformation.IsDebugBuild)
+                        {
+                            Log.LogVerbose(LogTitle, "Scavenger started");
+                        }
                         _initialized = true;
                     }
                 }
@@ -123,7 +127,7 @@ namespace Composite.C1Console.Events
 
                 if (userConsoleInformation == null)
                 {
-                    LoggingService.LogVerbose("ConsoleFacade", string.Format("New console registred by '{0}' id = '{1}'", username, consoleId));
+                    Log.LogVerbose(LogTitle, string.Format("New console registred by '{0}' id = '{1}'", username, consoleId));
 
                     userConsoleInformation = DataFacade.BuildNew<IUserConsoleInformation>();
                     userConsoleInformation.Id = Guid.NewGuid();
@@ -153,9 +157,11 @@ namespace Composite.C1Console.Events
 
                 foreach (IUserConsoleInformation userConsoleInformation in userConsoleInformations)
                 {
-                    LoggingService.LogVerbose("ConsoleFacade", string.Format("Console unregistred by '{0}' id = '{1}'", userConsoleInformation.Username, userConsoleInformation.ConsoleId));
+                    Log.LogVerbose(LogTitle, "Console unregistred by '{0}' id = '{1}'", userConsoleInformation.Username, userConsoleInformation.ConsoleId);
 
                     DataFacade.Delete<IUserConsoleInformation>(userConsoleInformation);
+
+                    FireConsoleClosedEvent(userConsoleInformation.ConsoleId);
                 }
             }
         }
@@ -164,7 +170,10 @@ namespace Composite.C1Console.Events
         /// <exclude />
         public static void Scavenge()
         {
-            LoggingService.LogVerbose("ConsoleFacade", "Starting scavenger run");
+            if(RuntimeInformation.IsDebugBuild)
+            {
+                Log.LogVerbose(LogTitle, "Starting scavenger run");
+            }
 
             using(GlobalInitializerFacade.CoreIsInitializedScope) // Holding this lock in order to avoid deadlocks
             lock (_lock)
@@ -178,7 +187,7 @@ namespace Composite.C1Console.Events
                 {
                     if (now - userConsoleInformation.TimeStamp > Timeout)
                     {
-                        LoggingService.LogVerbose("ConsoleFacade", string.Format("The console '{0}' owned by the user '{1}' timed out, closing it", userConsoleInformation.ConsoleId, userConsoleInformation.Username));
+                        Log.LogVerbose(LogTitle, "The console '{0}' owned by the user '{1}' timed out, closing it", userConsoleInformation.ConsoleId, userConsoleInformation.Username);
                         DataFacade.Delete<IUserConsoleInformation>(userConsoleInformation);
                         FireConsoleClosedEvent(userConsoleInformation.ConsoleId);
                     }

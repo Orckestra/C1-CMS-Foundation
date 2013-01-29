@@ -878,12 +878,20 @@ namespace Composite.C1Console.Workflow
             {
                 List<Guid> workflowsToCancel =
                     (from kp in _resourceLocker.Resources.FlowControllerServicesContainers
-                     where ConsoleIdEquals(kp.Value, args.ConsoleId) == true
+                     where ConsoleIdEquals(kp.Value, args.ConsoleId)
                      select kp.Key).ToList();
 
                 foreach (Guid instanceId in workflowsToCancel)
                 {
-                    AbortWorkflow(instanceId);
+                    try
+                    {
+                        AbortWorkflow(instanceId);
+                    }
+                    catch(Exception ex)
+                    {
+                        Log.LogError(LogTitle, "Error aborting workflow " + instanceId);
+                        Log.LogError(LogTitle, ex);
+                    }
                 }
             }
         }
