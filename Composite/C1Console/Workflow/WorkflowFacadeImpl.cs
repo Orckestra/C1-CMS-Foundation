@@ -1256,9 +1256,9 @@ namespace Composite.C1Console.Workflow
                     }
                     catch (Exception)
                     {
-                        if (id!=Guid.Empty)
+                        if (id != Guid.Empty)
                         {
-                            LoggingService.LogCritical("WorkflowFacade", string.Format("Could not deserialize form data for the workflow {0}", id));
+                            Log.LogCritical("WorkflowFacade", "Could not deserialize form data for the workflow {0}", id);
                             AbortWorkflow(id);
                         }
                     }
@@ -1277,7 +1277,15 @@ namespace Composite.C1Console.Workflow
 
             foreach (Guid instanceId in workflowsToCancel)
             {
-                AbortWorkflow(instanceId);
+                try
+                {
+                    AbortWorkflow(instanceId);
+                }
+                catch(Exception ex)
+                {
+                    Log.LogError(LogTitle, "Failed to abort workflow");
+                    Log.LogError(LogTitle, ex);
+                }
             }
         }
 
@@ -1350,9 +1358,8 @@ namespace Composite.C1Console.Workflow
             var resources = _resourceLocker.Resources;
 
             bool shouldPersist =
-                resources.WorkflowPersistingTypeDictionary.
-                Where(f => f.Key == instanceId && f.Value != WorkflowPersistingType.Never).
-                Any();
+                resources.WorkflowPersistingTypeDictionary
+                         .Any(f => f.Key == instanceId && f.Value != WorkflowPersistingType.Never);
 
             if (!shouldPersist) return;
 
