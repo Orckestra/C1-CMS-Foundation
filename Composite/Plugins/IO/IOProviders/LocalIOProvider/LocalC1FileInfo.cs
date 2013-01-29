@@ -132,7 +132,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1FileStream Create()
         {
-            return new C1FileStream(_fileInfo.FullName, FileMode.Create, FileAccess.ReadWrite, FileShare.None, 0x1000, FileOptions.None);
+            return new C1FileStream(_fileInfo.FullName, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, 0x1000, FileOptions.None);
         }
 
 
@@ -156,7 +156,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1FileStream Open(FileMode mode)
         {
-            return Open(mode, FileAccess.ReadWrite, FileShare.None);
+            return Open(mode, FileAccess.ReadWrite, FileShare.Read);
         }
 
 
@@ -164,7 +164,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1FileStream Open(FileMode mode, FileAccess access)
         {
-            return Open(mode, access, FileShare.None);
+            return Open(mode, access, FileShare.Read);
         }
 
 
@@ -196,7 +196,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DotNotUseFileSystemInfoClass:DotNotUseFileSystemInfoClass")]
         public C1FileStream OpenWrite()
         {
-            return new C1FileStream(_fileInfo.FullName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            return new C1FileStream(_fileInfo.FullName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
         }
 
 

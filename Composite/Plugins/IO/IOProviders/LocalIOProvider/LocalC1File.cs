@@ -76,21 +76,21 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
         public C1FileStream Create(string path)
         {
-            return new C1FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+            return new C1FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.Read);
         }
 
 
 
         public C1FileStream Create(string path, int bufferSize)
         {
-            return new C1FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize);
+            return new C1FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, bufferSize);
         }
 
 
 
         public C1FileStream Create(string path, int bufferSize, FileOptions options)
         {
-            return new C1FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.None, bufferSize, options);
+            return new C1FileStream(path, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, bufferSize, options);
         }
 
 
@@ -178,7 +178,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
 
         public C1FileStream OpenWrite(string path)
         {
-            return new C1FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            return new C1FileStream(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
         }
 
 
