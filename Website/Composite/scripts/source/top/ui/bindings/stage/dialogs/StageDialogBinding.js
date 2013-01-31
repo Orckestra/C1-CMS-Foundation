@@ -379,16 +379,19 @@ StageDialogBinding.prototype._disableDialogAcceptButton = function ( isDisabled 
  * Handle DialogPage response.
  * @param {DialogPageBinding} binding
  */
-StageDialogBinding.prototype._handleDialogPageResponse = function ( binding ) {
-	
+StageDialogBinding.prototype._handleDialogPageResponse = function (binding) {
+
 	// TODO: rig this up so that we close the dialog before handling the response!
-	if ( this._dialogResponseHandler != null ) {
-		this._dialogResponseHandler.handleDialogResponse (
+	if (this._dialogResponseHandler != null) {
+		this._dialogResponseHandler.handleDialogResponse(
 			binding.response, binding.result != null ? binding.result : null
 		);
 	}
-	
-	this.close ();
+
+	var self = this;
+	setTimeout(function () {
+		self.close();
+	}, 0);
 } 
 
 /**
