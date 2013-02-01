@@ -12,8 +12,8 @@
 		<div id="splash">
 			<div id="backdrop"></div>
 			<div id="unsupported">
-				<h1>Unsupported browser</h1>
-				<p>We are terribly sorry, but your browser is not supported.</p>
+				<h1>Not supported</h1>
+				<p>We are terribly sorry, but your web browser is not supported.</p>
 				<p>Please use a recent version of Firefox, Google Chrome, Apple Safari or Microsoft Internet Explorer 9 or 10.</p>
 			</div>
 		</div>
