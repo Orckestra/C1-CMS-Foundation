@@ -24,7 +24,7 @@ div#unsupported {
 	position: absolute;
 	height: 150px;
 	left: 30px;
-	top: 40px;
+	top: 30px;
 	background-color: white;
 	padding-left: 28px;
 	padding-top: 20px;
@@ -40,13 +40,14 @@ div#vignette {
 	
 }
 h1 {
-	font-size: 200%;
-	line-height: 1.1em;
+	font-size: 135%;
+	line-height: 2.2em;
 	color: #1A171B;
 	font-weight: bold;
 	position: relative;
 	background: transparent url("${folder}/skins/system/dialogpages/error_32.png") no-repeat 0 0;
 	padding-left: 40px;
+	margin-left:-5px;
 }
 p {
 	color: #676767;

@@ -12,8 +12,9 @@
 		<div id="splash">
 			<div id="backdrop"></div>
 			<div id="unsupported">
-				<h1>Bad browser</h1>
-				<p>Your browser type or version is not currently supported in Composite C1. Please use a recent version of Firefox or Microsoft Internet Explorer.</p>
+				<h1>Unsupported browser</h1>
+				<p>We are terribly sorry, but your browser is not supported.</p>
+				<p>Please use a recent version of Firefox, Google Chrome, Apple Safari or Microsoft Internet Explorer 9 or 10.</p>
 			</div>
 		</div>
 	</body>
