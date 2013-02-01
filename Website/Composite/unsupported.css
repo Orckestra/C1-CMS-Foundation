@@ -24,10 +24,10 @@ div#unsupported {
 	position: absolute;
 	height: 150px;
 	left: 30px;
-	top: 25px;
+	top: 30px;
 	background-color: white;
 	padding-left: 28px;
-	padding-top: 20px;
+	padding-top: 15px;
 	font-weight: normal;
 	z-index: 2;
 }
