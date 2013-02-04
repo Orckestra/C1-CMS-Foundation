@@ -197,6 +197,11 @@ namespace Composite.Plugins.Routing.Pages
             Uri uri = new Uri(absoluteUrl);
 
             string hostname = uri.DnsSafeHost;
+            if(!IsKnownHostname(hostname))
+            {
+                urlKind = UrlKind.Undefined;
+                return null;
+            }
 
             string serverUrl = new UrlBuilder(absoluteUrl).ServerUrl;
             string relativeUrl = absoluteUrl.Substring(serverUrl.Length - 1);
@@ -204,6 +209,18 @@ namespace Composite.Plugins.Routing.Pages
             var urlSpace = new UrlSpace(hostname, relativeUrl);
 
             return ParseUrl(relativeUrl, urlSpace, out urlKind);
+        }
+
+        private bool IsKnownHostname(string hostname)
+        {
+            var context = HttpContext.Current;
+            if(context != null && context.Request.Url.DnsSafeHost == hostname)
+            {
+                return true;
+            }
+
+            // Can be optimized
+            return DataFacade.GetData<IHostnameBinding>().AsEnumerable().Any(b => b.Hostname == hostname);
         }
 
         public PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind)
