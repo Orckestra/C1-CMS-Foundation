@@ -21,7 +21,7 @@ var config = {
 	visual : true,
 	object_resizing : false,
 	auto_reset_designmode : true,
-	
+	list_outdent_on_enter: true,
 	init_instance_callback 	: onInstanceInitialize
 };
 
