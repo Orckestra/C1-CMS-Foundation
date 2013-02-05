@@ -4,9 +4,7 @@
 ui|titlebar {
 	display: block;
 	font-weight: bold;
-	#ie width: 100%;
-	#ie overflow: visible;
-	#moz overflow: hidden; /* why does this clear the float? */
+	overflow: hidden;
 }
 ui|titlebarbody {
 	display: block;
