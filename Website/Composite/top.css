@@ -125,7 +125,7 @@ ui|fields#loginfields ui|fielddata {
 	width: 130px;
 }
 ui|fields#loginfields ui|fielddata input {
-	width: 130px;
+	width: 124px;
 	padding-top: 4px;
 	#ie height: 21px;
 }
