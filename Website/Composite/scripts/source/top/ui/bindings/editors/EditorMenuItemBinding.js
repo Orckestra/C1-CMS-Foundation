@@ -53,7 +53,8 @@ EditorMenuItemBinding.prototype._buildDesignModeSanitizer = function () {
 	if ( Client.isExplorer ) {
 		var img = this.bindingDocument.createElement ( "img" );
 		img.className = "designmodesanitizer";
-		img.src = Resolver.resolve ( "${root}/images/blank.png" );
+		img.src = Resolver.resolve("${root}/images/blank.png");
+		img.ondragstart = function (e) { e.preventDefault(); }
 		this.shadowTree.designmodesanitizer = img;
 		this.bindingElement.appendChild ( img );
 	}
