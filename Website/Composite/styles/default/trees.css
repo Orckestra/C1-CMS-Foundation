@@ -20,7 +20,6 @@ ui|treecontent {
 	display: block;
 	float: none;
 	clear: both;
-	#ie width: 100%;
 	overflow: visible;
 }
 #region moz
