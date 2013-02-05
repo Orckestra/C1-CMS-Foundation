@@ -172,18 +172,14 @@ form.fields label {
 form.fields input,
 form.fields select {
 	width: 170px;
-	#region moz
-		padding: 5px;
-		border: 1px solid #B2B2B2;
-	#endregion
+	padding: 5px;
+	border: 1px solid #B2B2B2;
 }
 form.fields label.innerlabel {
 	float: none;
 	position: relative;
 	top: 4px;
-    #region moz
-        top: 0;
-    #endregion
+    top: 0;
 }
 form.fields input.newslettercheckbox {
     padding: 0;
