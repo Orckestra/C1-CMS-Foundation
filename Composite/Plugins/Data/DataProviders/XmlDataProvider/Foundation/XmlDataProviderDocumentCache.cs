@@ -201,7 +201,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             return elementName + "Elements";
         }
 
-        
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, to handle broken saves")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotCallXmlWriterCreateWithPath:DoNotCallXmlWriterCreateWithPath", Justification = "This is what we want, to handle broken saves")]
         private static void SaveChanges(FileRecord fileRecord)
@@ -248,41 +248,37 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         xDocument.Save(xmlWriter);
                     }
 
-
-                    if (File.Exists(fileRecord.FilePath))
+                    bool failed = true;
+                    Exception lastException = null;
+                    for (int i = 0; i < NumberOfRetries; i++)
                     {
-                        bool failed = true;
-                        Exception lastException = null;
-                        for (int i = 0; i < NumberOfRetries; i++)
+                        try
                         {
-                            try
-                            {
-                                if (File.Exists(fileRecord.FilePath))
-                                {
-                                    File.Delete(fileRecord.FilePath);
-                                }
-                                failed = false;
-                                break;
-                            }
-                            catch (Exception ex)
-                            {
-                                lastException = ex;
-                                Thread.Sleep(10 * (i + 1));
-                            }
+                            File.Copy(fileRecord.TempFilePath, fileRecord.FilePath, true);
+                            failed = false;
+                            break;
                         }
-
-                        if (failed)
+                        catch (Exception ex)
                         {
-                            Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FilePath);
-                            if (lastException != null) throw lastException;
-
-                            throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
+                            lastException = ex;
+                            Thread.Sleep(10 * (i + 1));
                         }
+                    }
+
+                    if (!failed)
+                    {
+                        File.Delete(fileRecord.TempFilePath);
+                    }
+                    else
+                    {
+                        Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FilePath);
+                        if (lastException != null) throw lastException;
+
+                        throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
                     }
 
                     try
                     {
-                        File.Move(fileRecord.TempFilePath, fileRecord.FilePath);
                         C1File.Touch(fileRecord.FilePath);
                     }
                     catch (Exception)
