@@ -720,9 +720,7 @@ visibility: hidden;
 ui|titlebar {
 display: block;
 font-weight: bold;
-#ie width: 100%;
-#ie overflow: visible;
-#moz overflow: hidden; /* why does this clear the float? */
+overflow: hidden;
 }
 ui|titlebarbody {
 display: block;
@@ -1086,14 +1084,12 @@ background-color: Window;
 color: $(color:windowtext);
 overflow: auto !important;	
 padding: 8px 6px 16px 6px;
-#ie width: 100%;
 }
 ui|treenode,
 ui|treecontent {
 display: block;
 float: none;
 clear: both;
-#ie width: 100%;
 overflow: visible;
 }
 #region moz
