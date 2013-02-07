@@ -13342,7 +13342,7 @@ if(this.shadowTree.labelInput==null){
 this.shadowTree.labelInput=DOMUtil.createElementNS(Constants.NS_XHTML,"input",this.bindingDocument);
 this.shadowTree.box.appendChild(this.shadowTree.labelInput);
 this.shadowTree.labelInput.style.display="none";
-this.shadowTree.labelInput.readonly=true;
+this.shadowTree.labelInput.readOnly=true;
 var self=this;
 DOMEvents.addEventListener(this.shadowTree.labelInput,DOMEvents.DOUBLECLICK,{handleEvent:function(e){
 self.clearLabel();
@@ -29453,7 +29453,7 @@ return _1201;
 };
 SOAPDecoder.prototype._getSimpleValue=function(_1208,type){
 var _120a=null;
-if(_1208.firstChild&&_1208.firstChild.nodeType==Node.TEXT_NODE){
+if(_1208!=null&&_1208.firstChild&&_1208.firstChild.nodeType==Node.TEXT_NODE){
 if(Client.isMozilla&&_1208.childNodes.length>1){
 _1208.normalize();
 }
