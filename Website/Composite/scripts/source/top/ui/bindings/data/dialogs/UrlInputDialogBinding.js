@@ -69,7 +69,7 @@ UrlInputDialogBinding.prototype.buildButtonAndLabel = function () {
 		this.shadowTree.labelInput = DOMUtil.createElementNS(Constants.NS_XHTML, "input", this.bindingDocument);
 		this.shadowTree.box.appendChild(this.shadowTree.labelInput);
 		this.shadowTree.labelInput.style.display = "none";
-		this.shadowTree.labelInput.readonly = true;
+		this.shadowTree.labelInput.readOnly = true;
 		
 
 		var self = this;
