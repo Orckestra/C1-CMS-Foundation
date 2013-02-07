@@ -98,21 +98,21 @@ _EventBroadcaster.prototype = {
 				i = 0;
 				while ( i < list.length ) {
 					var subscriber = list [ i ];
-					//try {
-						subscriber.handleBroadcast ( message, optional );
-//					}
-//					catch ( exception ) {
-//						exceptions.add ( subscriber );
-//						var cry = "Exception in " + new String ( subscriber ) + 
-//							" on broadcast '" + message + "':" +  
-//							new String ( exception );
-//						SystemLogger.getLogger ( "EventBroadcaster" ).error ( cry );
-//						SystemDebug.stack ( arguments );
-//						if ( Application.isDeveloperMode ) {
-//							alert ( cry );
-//							throw ( exception );
-//						}
-//					}
+                    if ( Application.isDeveloperMode ) {
+                        subscriber.handleBroadcast(message, optional); 
+                    } else {
+					    try {
+						    subscriber.handleBroadcast ( message, optional );
+					    }
+					    catch ( exception ) {
+						    exceptions.add ( subscriber );
+						    var cry = "Exception in " + new String ( subscriber ) + 
+							    " on broadcast '" + message + "':" +  
+							    new String ( exception );
+						    SystemLogger.getLogger ( "EventBroadcaster" ).error ( cry );
+						    SystemDebug.stack ( arguments );
+					    }
+                    }
 					i++;
 				}
 				if ( exceptions.hasEntries ()) { // brutally exclude subscribers that raised exceptions
