@@ -147,7 +147,7 @@ SOAPDecoder.prototype._getSimpleValue = function ( element, type ) {
 
 	var result = null;
 	
-	if ( element.firstChild && element.firstChild.nodeType == Node.TEXT_NODE ) {
+	if (element !=null && element.firstChild && element.firstChild.nodeType == Node.TEXT_NODE ) {
 		
 		/*
 		 * Mozilla will split a 4K+ texnode into multiple smaller 
