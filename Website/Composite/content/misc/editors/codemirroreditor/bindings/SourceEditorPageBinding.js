@@ -120,22 +120,23 @@ SourceEditorPageBinding.prototype.initializeSourceEditorComponent = function ( b
  */
 SourceEditorPageBinding.prototype.setContent = function (string) {
 
-	if (this.isPlainView == true) {
-		this._editorTextBox.setValue(string);
-		this._editorTextBox.clean();
-	} else {
+    if (this.isPlainView == true) {
+        this._editorTextBox.setValue(string);
+        this._editorTextBox.clean();
+    } else {
 
-		// Unixification.
-		string = string.replace(/\r\n/g, "\n");
+        // Unixification.
+        string = string.replace(/\r\n/g, "\n");
 
-		// Fixing the title char
-		// TODO: probably on server...
-		string = string.replace(/\"%7E/g, "\"~");
-		string = string.replace(/%28/g, "(");
-		string = string.replace(/%29/g, ")");
+        // Fixing the title char
+        // TODO: probably on server...
+        string = string.replace(/\"%7E/g, "\"~");
+        string = string.replace(/%28/g, "(");
+        string = string.replace(/%29/g, ")");
 
-		this._codemirrorEditor.setValue(string);
-	}
+        this._codemirrorEditor.setValue(string);
+        this._codemirrorEditor.clearHistory();
+    }
 }
 
 /**
