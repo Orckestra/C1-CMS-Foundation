@@ -385,17 +385,6 @@ FocusBinding.prototype._focusFirstFocusable = function () {
 	
 	if ( this._isFocusManager && this.isActivated ) {
 		
-		/*
-		 * For some strange reason, Explorer has lost 
-		 * the ability to focus inputs reliably unless 
-		 * focus was moved to something else first...
-		 */
-		try {
-			var win = this.bindingWindow; 
-			win.focus (); // this seems to fix it!
-		} catch ( exception ) {
-			// Explorer can always find an exception for the focus event...
-		}
 		var list = this._getFocusableList ();
 		
 		if ( list != null ) {

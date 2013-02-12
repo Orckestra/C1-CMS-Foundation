@@ -827,6 +827,17 @@ PageBinding.prototype.onActivate = function () {
 			this.isActivated = true;
 			if ( this._isFocusManager ) {
 				if ( UserInterface.isBindingVisible ( this )) {
+				    /*
+				    * For some strange reason, Explorer has lost 
+				    * the ability to focus inputs reliably unless 
+				    * focus was moved to something else first...
+				    */
+				    try {
+				        var win = this.bindingWindow;
+				        win.focus(); // this seems to fix it!
+				    } catch (exception) {
+				        // Explorer can always find an exception for the focus event...
+				    }
 					if ( this._cachedFocus != null ) {
 						/*
 						 * Timeout allows any mouse-targetted 
