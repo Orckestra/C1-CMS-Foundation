@@ -151,7 +151,6 @@ FormatSelectorBinding.prototype.initializeComponent = function (editor, engine, 
 FormatSelectorBinding.prototype.handleAction = function (action) {
 
     // Keeping selection on current block
-    this._tinyInstance.focus();
     this._editorBinding.createBookmark();
 
     FormatSelectorBinding.superclass.handleAction.call(this, action);

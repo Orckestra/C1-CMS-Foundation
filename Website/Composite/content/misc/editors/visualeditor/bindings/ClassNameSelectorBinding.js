@@ -95,7 +95,6 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
             var result = true;
 
             if (Client.isExplorer) {
-                this._tinyInstance.focus(); // make IE work
                 this._editorBinding.createBookmark();
             }
 
@@ -116,7 +115,6 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
             }
 
             if (Client.isExplorer) {
-                this._tinyInstance.focus(); // make IE work
                 this._editorBinding.createBookmark();
             }
 
