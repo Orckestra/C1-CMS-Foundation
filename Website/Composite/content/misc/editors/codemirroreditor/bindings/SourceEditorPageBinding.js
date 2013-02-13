@@ -135,7 +135,6 @@ SourceEditorPageBinding.prototype.setContent = function (string) {
         string = string.replace(/%29/g, ")");
 
         this._codemirrorEditor.setValue(string);
-        this._codemirrorEditor.clearHistory();
     }
 }
 
