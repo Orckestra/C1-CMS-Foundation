@@ -178,11 +178,6 @@ ClassNameSelectorBinding.prototype.canApplyDirect = function (formatName, elemen
 
 	var formatList = this._tinyInstance.formatter.get(formatName), x, selector;
 
-	if (!Client.isExplorer) {
-		// explorer works best with the element we pass. Others 
-		element = this._tinyInstance.selection.getStart();
-	}
-
 	for (x = formatList.length - 1; x >= 0; x--) {
 		selector = formatList[x].selector;
 		if (!selector || this._tinyInstance.dom.is(element, selector)) {
