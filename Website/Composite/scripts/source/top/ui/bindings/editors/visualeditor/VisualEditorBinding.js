@@ -719,8 +719,9 @@ VisualEditorBinding.prototype.deleteBookmark = function () {
  * Reset undo-redo history.
  */
 VisualEditorBinding.prototype.resetUndoRedo = function () {
-	
-	this._tinyInstance.undoManager.clear ();
+
+    this._tinyInstance.undoManager.clear();
+    this._tinyInstance.undoManager.add();
 	if ( this._pageBinding != null ) {
 		this._pageBinding.updateUndoBroadcasters ();
 	}

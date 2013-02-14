@@ -111,6 +111,7 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
             if (this.getValue() != null) {
                 this._isUpdating = true;
                 this._tinyInstance.formatter.apply(this.getValue());
+                this._tinyInstance.undoManager.add();
                 this._isUpdating = false;
             }
 
