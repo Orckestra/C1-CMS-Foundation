@@ -538,17 +538,7 @@ CodeMirrorEditorBinding.prototype.getContent = function () {
 */
 CodeMirrorEditorBinding.prototype.resetUndoRedo = function () {
 
-	/*
-	this.logger.warn ( "CodeMirrorEditorBinding.prototype.resetUndoRedo!!!" );
-	
-	/*
-	* TODO: Migrate to custom undomanager!
-	* UPDATE: Don't we have one of those now?
-	*
-	if ( this._codePressEngine ) {
-	this._codePressEngine.actions.pos = -1;
-	}
-	*/
+    this._codemirrorEditor.clearHistory();
 }
 
 /**
