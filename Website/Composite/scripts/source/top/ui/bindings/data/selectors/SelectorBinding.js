@@ -57,7 +57,7 @@ function SelectorBinding () {
 	/**
 	* @type {boolean}
 	*/
-	this.isSearchSelectionEnabled = false;
+	this.isSearchSelectionEnabled = true;
 
 	
 	/**
@@ -193,9 +193,7 @@ SelectorBinding.prototype.onBindingAttach = function () {
 	if (this.isDisabled || isDisabled) {
 		this.disable();
 	}
-	//Only for FF & Chrome. IE have problem with perfomance.
-	//if(Client.isMozilla)
-		this.isSearchSelectionEnabled = true;
+
 }
 
 /**

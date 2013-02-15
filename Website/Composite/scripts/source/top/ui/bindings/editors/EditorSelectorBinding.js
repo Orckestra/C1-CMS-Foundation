@@ -66,6 +66,11 @@ function EditorSelectorBinding () {
 	 * @type {boolean}
 	 */
 	this.isEditorControlBinding = true;
+
+	/**
+	* @type {boolean}
+	*/
+	this.isSearchSelectionEnabled = false;
 }
 
 /**
