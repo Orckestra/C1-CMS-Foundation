@@ -262,18 +262,29 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
             && int.TryParse(urlParts[1], out tempInt);
     }
 
-    private static void OutputToResponse(HttpContext context, Stream inputStream)
-    {
+    
+    private static void OutputToResponse(HttpContext context, Stream inputStream) {
         var response = context.Response;
 
         byte[] buffer = new byte[CopyBufferSize];
-        
+
+        int chunk = 0;
+
         int read;
         while (response.IsClientConnected && (read = inputStream.Read(buffer, 0, buffer.Length)) != 0)
         {
+            chunk++;
+
             response.OutputStream.Write(buffer, 0, read);
+
+            if (chunk % 20 == 0)
+            {
+                // Flushing to prevent unnecessary memory usage
+                response.Flush();
+            }
         }
     }
+    
     
     private static List<Range> ParseRanges(string rangesStr, long streamLength)
     {
