@@ -136,6 +136,17 @@ function onInstanceInitialize ( inst ) {
 		tinyInstance.getBody().lang = Localization.currentLang();
 	}
 
+	/* Hack for IE
+	 * TinyMCE already have hack for webkit 
+	 */
+	if (Client.isExplorer) {
+		inst.dom.bind(inst.getDoc(), 'mouseup', function (e) {
+			setTimeout(function () {
+				inst.selection.setRng(inst.selection.getRng());
+			}, 0);
+		});
+	}
+
 	/*
 	 * Hacking!!! See notes below...
 	 */
