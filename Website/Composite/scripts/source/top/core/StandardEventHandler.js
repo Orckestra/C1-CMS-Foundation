@@ -56,41 +56,27 @@ StandardEventHandler.prototype._addListeners = function () {
 	
 	var doc = this._contextDocument;
 	
-
-//	/* 
-//	 * Mousedown event consumed by Bespin unless we flip the capture flag. 
-//	 * TODO: This may also be the case for other mouse events...
-//	 */
-//	var isBespin = this._contextWindow.bespin != undefined;
-//	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEDOWN, this, isBespin );
-
 	DOMEvents.addEventListener( doc, DOMEvents.MOUSEDOWN, this);
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEUP, this );
 	DOMEvents.addEventListener ( doc, DOMEvents.MOUSEMOVE, this );
 
-	/* Rightclick is blocked In CodeMirror */
-	//	/*
-	//	 * Somewhat hacked, we disable the Mozilla SkyWriter contextmenu here. 
-	//	 * This may interfere with our own (future) contextmenu, so be aware!
-	//	 */
-//	if ( isBespin ) {
-//		DOMEvents.addEventListener ( doc, DOMEvents.CLICK, {
-//			handleEvent : function ( e ) {
-//				if ( DOMEvents.isRightButton ( e )) {
-//					DOMEvents.stopPropagation ( e );
-//					DOMEvents.preventDefault ( e );
-//				}
-//			}
-//		}, true );
-//	}
-	
+
 	/*
 	 * Disable F1 to launch OS help in IE.
 	 */
 	if ( Client.isExplorer ) {
-		function supress () { return false; }
-		this._contextDocument.onhelp = supress;
-		this._contextWindow.onhelp = supress;
+		DOMEvents.addEventListener(this._contextDocument, DOMEvents.HELP, {
+			handleEvent: function (e) {
+				DOMEvents.stopPropagation(e);
+				DOMEvents.preventDefault(e);
+			}
+		})
+		DOMEvents.addEventListener(this._contextWindow, DOMEvents.HELP, {
+			handleEvent: function (e) {
+				DOMEvents.stopPropagation(e);
+				DOMEvents.preventDefault(e);
+			}
+		})
 	}
 	
 	if ( !this._isMouseHandlerOnly ) {

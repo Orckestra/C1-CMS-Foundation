@@ -49,6 +49,7 @@ _DOMEvents.prototype = {
 	SELECTSTART: "selectstart",
 	FOCUSIN: "focusin",
 	FOCUSOUT: "focusout",
+	HELP:"help",
 
 	/*
 	* These are Explorer native, but can be emulated in Mozilla.
@@ -189,14 +190,6 @@ _DOMEvents.prototype = {
 	},
 
 	/**
-	* @param {IEventListener} handler
-	*/
-	cleanupEventListeners: function (handler) {
-
-		this._deleteWrappedHandler(handler);
-	},
-
-	/**
 	* Not recommended ( mozilla only).
 	* @param {Event} e
 	*/
@@ -245,35 +238,30 @@ _DOMEvents.prototype = {
 
 		if (Interfaces.isImplemented(IEventListener, handler, true)) {
 			if (typeof event != Types.UNDEFINED) {
-				if (Client.isExplorer == true) {
-					handler = this._getWrappedHandler(target, event, handler, caller);
-					target[this._getAction(isAdd)]("on" + event, handler);
-				} else {
-					switch (event) {
-						/*
-						* Note that the "mouseenter" and "mouseleave" events are 
-						* registered in Mozilla as "mouseover" and "mouseout"  
-						* event though the IE native behavior is emulated. This 
-						* implies that you have to listen for both "mouseover" 
-						* and "mouseenter" event event though only the latter was added!
-						*/ 
-						case DOMEvents.MOUSEENTER:
-						case DOMEvents.MOUSELEAVE:
-							event = event == DOMEvents.MOUSEENTER ? DOMEvents.MOUSEOVER : DOMEvents.MOUSEOUT;
-							target[this._getAction(isAdd)](event, {
-								handleEvent: function (e) {
-									var rel = e.relatedTarget;
-									if (e.currentTarget == rel || DOMEvents._isChildOf(e.currentTarget, rel)) { }
-									else {
-										handler.handleEvent(e);
-									}
+				switch (event) {
+					/*
+					* Note that the "mouseenter" and "mouseleave" events are 
+					* registered in Mozilla as "mouseover" and "mouseout"  
+					* event though the IE native behavior is emulated. This 
+					* implies that you have to listen for both "mouseover" 
+					* and "mouseenter" event event though only the latter was added!
+					*/ 
+					case DOMEvents.MOUSEENTER:
+					case DOMEvents.MOUSELEAVE:
+						event = event == DOMEvents.MOUSEENTER ? DOMEvents.MOUSEOVER : DOMEvents.MOUSEOUT;
+						target[this._getAction(isAdd)](event, {
+							handleEvent: function (e) {
+								var rel = e.relatedTarget;
+								if (e.currentTarget == rel || DOMEvents._isChildOf(e.currentTarget, rel)) { }
+								else {
+									handler.handleEvent(e);
 								}
-							}, isReverse ? true : false);
-							break;
-						default:
-							target[this._getAction(isAdd)](event, handler, isReverse ? true : false);
-							break;
-					}
+							}
+						}, isReverse ? true : false);
+						break;
+					default:
+						target[this._getAction(isAdd)](event, handler, isReverse ? true : false);
+						break;
 				}
 			} else {
 				throw "No such event allowed!";
@@ -291,89 +279,15 @@ _DOMEvents.prototype = {
 		var result = null;
 		switch (isAdd) {
 			case true:
-				result = Client.isMozilla == true ? "addEventListener" : "attachEvent";
+			    result = "addEventListener";
 				break;
 			case false:
-				result = Client.isMozilla == true ? "removeEventListener" : "detachEvent";
+			    result = "removeEventListener";
 				break;
 		}
 		return result;
 	},
 
-	// EXPLORER SPECIFIC ...............................................
-
-	/**
-	* Explorer expects functions, not objects, as event handlers. 
-	* This fellow will return a function which in turn invokes the 
-	* designated method <code>handleEvent</code> on the object. 
-	* The error handling is especially elaborate around here.
-	* @param {DOMElement} target
-	* @param {string} event
-	* @param {IEventListener} handler
-	* @param {function} caller
-	* @return {function}
-	*/
-	_getWrappedHandler: function (target, event, handler, caller) {
-
-		var result = null;
-		try {
-			if (!handler._domEventHandlers) {
-				handler._domEventHandlers = {};
-			}
-			if (!handler._domEventHandlers[target]) {
-				handler._domEventHandlers[target] = {};
-			}
-			if (!handler._domEventHandlers[target][event]) {
-				var win = target.nodeType ? DOMUtil.getParentWindow(target) : target;
-				if (win) {
-					handler._domEventHandlers[target][event] = function () {
-						if (win.event != null && handler != null) {
-							handler.handleEvent(win.event);
-						}
-					}
-				}
-			}
-			result = handler._domEventHandlers[target][event];
-		} catch (exception) {
-			this._report(target, event, handler, caller);
-		}
-
-		return result;
-	},
-
-	_deleteWrappedHandler: function (handler) {
-
-		for (var target in handler._domEventHandlers) {
-			if (target) {
-				for (var event in handler._domEventHandlers[target]) {
-					if (event) {
-						delete handler._domEventHandlers[target][event];
-					}
-				}
-			}
-			delete handler._domEventHandlers[target];
-		}
-	},
-
-	/**
-	* Patching Explorers miserable error repporting.
-	* @param {DOMElement} target
-	* @param {string} event
-	* @param {IEventListener} handler
-	* @param {function} caller
-	*/
-	_report: function (target, event, handler, caller) {
-
-		alert(
-			"DOMEvents.getWrappedHandler malfunction.\n\n" +
-			"\ttarget: " + (target ? target.nodeName : target) + "\n" +
-			"\tevent: " + event + "\n" +
-			"\thandler: " + handler + "\n\n" +
-			"Offending invoker: " + (
-				caller.callee ? caller.callee.toString() : caller.constructor
-			)
-		);
-	}
 }
 
 /**
