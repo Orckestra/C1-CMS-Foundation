@@ -12185,7 +12185,7 @@ this._menuBodyBinding=null;
 this._selectionValue=null;
 this._selectionLabel=null;
 this._searchString="";
-this.isSearchSelectionEnabled=false;
+this.isSearchSelectionEnabled=true;
 this.selections=null;
 this.isDisabled=false;
 this.label=null;
@@ -12222,7 +12222,6 @@ var _867=this.getProperty("isdisabled");
 if(this.isDisabled||_867){
 this.disable();
 }
-this.isSearchSelectionEnabled=true;
 };
 SelectorBinding.prototype.onBindingDispose=function(){
 SelectorBinding.superclass.onBindingDispose.call(this);
@@ -26766,6 +26765,7 @@ this.BUTTON_IMPLEMENTATION=EditorClickButtonBinding;
 this.MENUITEM_IMPLEMENTATION=EditorMenuItemBinding;
 this.isFocusable=false;
 this.isEditorControlBinding=true;
+this.isSearchSelectionEnabled=false;
 }
 EditorSelectorBinding.prototype.toString=function(){
 return "[EditorSelectorBinding]";
@@ -27117,6 +27117,7 @@ this._bookmark=null;
 };
 VisualEditorBinding.prototype.resetUndoRedo=function(){
 this._tinyInstance.undoManager.clear();
+this._tinyInstance.undoManager.add();
 if(this._pageBinding!=null){
 this._pageBinding.updateUndoBroadcasters();
 }
@@ -27922,6 +27923,7 @@ break;
 return _10ee?_10ee:"";
 };
 CodeMirrorEditorBinding.prototype.resetUndoRedo=function(){
+this._codemirrorEditor.clearHistory();
 };
 CodeMirrorEditorBinding.prototype.cover=function(_10ef){
 if(this._pageBinding!=null){
