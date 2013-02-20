@@ -71,9 +71,13 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
                 PageRenderer.AppendC1MetaTags(page, xhtmlDocument);
 
-                string xml = string.Join(string.Empty, xhtmlDocument.Head.Nodes().Select(node => node.ToString()));
 
-                aspnetPage.Header.Controls.Add(new Literal { Text = xml });
+                if (aspnetPage.Header != null)
+                {
+                    string xml = string.Join(string.Empty, xhtmlDocument.Head.Nodes().Select(node => node.ToString()));
+
+                    aspnetPage.Header.Controls.Add(new Literal {Text = xml});
+                }
             }
         }
 

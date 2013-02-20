@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
@@ -75,11 +76,30 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                 AddNodesAsControls(xhmlDocument.Body.Nodes(), this, controlMapper);
 
                 var headElement = xhmlDocument.Head;
-                if (headElement != null && Page.Header != null)
-                {
-                    AddNodesAsControls(headElement.Nodes(), Page.Header, controlMapper);
-                }
+                var headControl = Page.Header;
 
+                if (headElement != null && headControl != null)
+                {
+                    headElement.CopyAttributes(headControl);
+
+                    XName titleXName = Namespaces.Xhtml + "title";
+
+                    XElement titleElement = headElement.Elements(titleXName).LastOrDefault();
+                    if (titleElement != null)
+                    {
+                        HtmlTitle existingControl = headControl.Controls.OfType<HtmlTitle>().FirstOrDefault();
+
+                        if (existingControl != null)
+                        {
+                            headControl.Controls.Remove(existingControl);
+                        }
+                        
+                        headControl.Controls.Add(new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
+                    }
+
+                    var nodesExceptTitle = headElement.Nodes().Where(node => !(node is XElement) || ((node as XElement).Name != titleXName));
+                    AddNodesAsControls(nodesExceptTitle, headControl, controlMapper);
+                }
             }
 
             base.CreateChildControls();
