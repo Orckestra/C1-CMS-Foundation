@@ -10,6 +10,7 @@ using Composite.Core.Localization;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
 using Composite.Functions;
+using Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering;
 
 namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 {
@@ -80,29 +81,44 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 
                 if (headElement != null && headControl != null)
                 {
-                    headElement.CopyAttributes(headControl);
-
-                    XName titleXName = Namespaces.Xhtml + "title";
-
-                    XElement titleElement = headElement.Elements(titleXName).LastOrDefault();
-                    if (titleElement != null)
-                    {
-                        HtmlTitle existingControl = headControl.Controls.OfType<HtmlTitle>().FirstOrDefault();
-
-                        if (existingControl != null)
-                        {
-                            headControl.Controls.Remove(existingControl);
-                        }
-                        
-                        headControl.Controls.Add(new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
-                    }
-
-                    var nodesExceptTitle = headElement.Nodes().Where(node => !(node is XElement) || ((node as XElement).Name != titleXName));
-                    AddNodesAsControls(nodesExceptTitle, headControl, controlMapper);
+                    MergeHeadSection(headElement, headControl, controlMapper);
                 }
             }
 
             base.CreateChildControls();
+        }
+
+
+        private void MergeHeadSection(XElement headElement, HtmlHead headControl, IXElementToControlMapper controlMapper)
+        {
+            headElement.CopyAttributes(headControl);
+
+            XName titleXName = Namespaces.Xhtml + "title";
+
+            XElement titleElement = headElement.Elements(titleXName).LastOrDefault();
+            if (titleElement != null)
+            {
+                HtmlTitle existingControl = headControl.Controls.OfType<HtmlTitle>().FirstOrDefault();
+
+                if (existingControl != null)
+                {
+                    headControl.Controls.Remove(existingControl);
+                }
+
+                headControl.Controls.Add(new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
+            }
+
+            if (headElement.Elements(Namespaces.Xhtml + "meta").Any(x => (string)x.Attribute("name") == "description"))
+            {
+                var existingDescriptionMetaTag = headControl.Controls.OfType<DescriptionMetaTag>().FirstOrDefault();
+                if (existingDescriptionMetaTag != null)
+                {
+                    headControl.Controls.Remove(existingDescriptionMetaTag);
+                }
+            }
+
+            var nodesExceptTitle = headElement.Nodes().Where(node => !(node is XElement) || ((node as XElement).Name != titleXName));
+            AddNodesAsControls(nodesExceptTitle, headControl, controlMapper);
         }
 
         
