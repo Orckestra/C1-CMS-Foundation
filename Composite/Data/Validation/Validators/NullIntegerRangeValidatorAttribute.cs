@@ -5,14 +5,17 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
 namespace Composite.Data.Validation.Validators
 {
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    /// <summary>
+    /// Validator rule for data type properties.
+    /// Validate that an nullable integer - when not null - has a value than falls within a minimum and maximum value. 
+    /// </summary>    
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class NullIntegerRangeValidatorAttribute : ValueValidatorAttribute
     {
-        /// <exclude />
+        /// <summary>
+        /// Validator rule for data type properties.
+        /// Validate that an nullable integer - when not null - has a value than falls within a minimum and maximum value. 
+        /// </summary>    
         public NullIntegerRangeValidatorAttribute(int lowerBound, int upperBound)
         {
             this.LowerBound = lowerBound;

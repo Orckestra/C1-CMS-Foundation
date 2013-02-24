@@ -4,10 +4,22 @@ using System.Collections.Generic;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Assigns data scopes to a data type. By default data types will live in the public data scope (only) and you use this
+    /// attribute to specify aditional scopes.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    /// <example> This sample shows how to use the DataScope attribute along with related interfaces and attributes:
+    /// <code>
+    /// // (other IData attributes)
+    /// [DataScope(DataScopeIdentifier.PublicName)]
+    /// [DataScope(DataScopeIdentifier.AdministratedName)]
+    /// [PublishProcessControllerType(typeof(GenericPublishProcessController))]
+    /// interface IMyDataType : IData, IPublishControlled
+    /// {
+    ///     // data type properties
+    /// }
+    /// </code>
+    /// </example>    
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = true, Inherited = true)]
     public sealed class DataScopeAttribute : Attribute
     {

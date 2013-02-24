@@ -6,7 +6,6 @@ namespace Composite.Data
     /// <summary>
     /// Assign this to properties on your IData interfaces to control default page foldering of tree items.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public sealed class GroupByPriorityAttribute : Attribute
 	{
         /// <summary>

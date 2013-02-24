@@ -3,12 +3,13 @@
 namespace Composite.Data
 {
     /// <summary>    
+    /// Used by the <see cref="Composite.DataRelevantToUserTypeAttribute"/> attribute.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum UserType
     {
-        /// <exclude />
+        /// <summary>
+        /// Signals relevance to developers, making the data type visible when selecting data types in the C1 Console
+        /// </summary>
         Developer = 1//,
 //        BackEndDevelopers = 2,
 

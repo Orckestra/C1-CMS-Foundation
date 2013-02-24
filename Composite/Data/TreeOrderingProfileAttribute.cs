@@ -6,6 +6,21 @@ namespace Composite.Data
     /// <summary>
     /// Assign this to properties on your IData interfaces to control default ordering of tree items.
     /// </summary>
+    /// <example> This sample shows how to use the TreeOrdering attribute.
+    /// <code>
+    /// // data interface attributes ...
+    /// interface IMyDataType : IData
+    /// {
+    ///     [TreeOrdering(1)]
+    ///     [StoreFieldType(PhysicalStoreFieldType.String, 40)]
+    ///     [ImmutableFieldId("{D75EA67F-AD14-4BAB-8547-6D87002809F1}")]
+    ///     string ProductName { get; set; }
+    ///     
+    ///     // more data properties ...
+    ///     
+    /// }
+    /// </code>
+    /// </example>    
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public sealed class TreeOrderingAttribute : Attribute
 	{

@@ -7,12 +7,23 @@ namespace Composite.Data
     /// Assigns an immutable id to this type. The id must be unique and is used to identify the type even if 
     /// the type name, namespace or version should change. The Dynamic Type system uses this value to detect data schema changes.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [AttributeUsage(AttributeTargets.Interface, AllowMultiple=false,Inherited=true)]
+    /// <example> This sample shows how to use the ImmutableTypeId attribute:
+    /// <code>
+    /// [ImmutableTypeId("b3bada55-0e7e-4195-86e6-92770c381df3")]
+    /// // (other IData attributes)
+    /// interface IMyDataType : IData
+    /// {
+    ///     // data type properties
+    /// }
+    /// </code>
+    /// </example>    
+    [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = true)]
     public class ImmutableTypeIdAttribute : Attribute
     {
-        /// <exclude />
+        /// <summary>
+        /// Specify the immutable id of this data type. This value must be unique among types and should not change.
+        /// </summary>
+        /// <param name="immutableTypeId">Unique GUID string</param>
         public ImmutableTypeIdAttribute(string immutableTypeId)
         {
             this.ImmutableTypeId = new Guid(immutableTypeId);

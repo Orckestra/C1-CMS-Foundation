@@ -3,14 +3,17 @@
 
 namespace Composite.Data.Validation.Validators
 {
-    /// <summary>    
-    /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    /// <summary>
+    /// Validator rule for data type properties.
+    /// Validate that an integer has a value than falls within a minimum and maximum value. 
+    /// </summary>    
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class IntegerRangeValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
-        /// <exclude />
+        /// <summary>
+        /// Validator rule for data type properties.
+        /// Validate that an integer has a value than falls within a minimum and maximum value. 
+        /// </summary>    
         public IntegerRangeValidatorAttribute(int lowerBound, int upperBound)
         {
             this.LowerBound = lowerBound;

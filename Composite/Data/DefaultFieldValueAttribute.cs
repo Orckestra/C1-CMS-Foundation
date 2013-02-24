@@ -5,10 +5,8 @@ using Composite.Data.DynamicTypes;
 namespace Composite.Data
 {
     /// <summary>    
-    /// Is used by data providers when a new column is added to a table.
+    /// This abstract class is used by data providers when a new column is added to a table. Extend this class to create your own.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]     
     public abstract class DefaultFieldValueAttribute : Attribute
 	{
         internal DefaultFieldValueAttribute() { }
@@ -20,16 +18,17 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate a static default value to a string property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldStringValueAttribute : DefaultFieldValueAttribute
     {
         private string _defaultValue;
 
 
-        /// <exclude />
+        /// <summary>    
+        /// Associate a static default value to a string property on a data type.
+        /// </summary>
         public DefaultFieldStringValueAttribute(string defaultValue)
         {
             if (defaultValue == null) throw new ArgumentNullException("defaultValue");
@@ -47,16 +46,17 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate a static default value to a integer property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldIntValueAttribute : DefaultFieldValueAttribute
     {
         private int _defaultValue;
 
 
-        /// <exclude />
+        /// <summary>    
+        /// Associate a static default value to a integer property on a data type.
+        /// </summary>
         public DefaultFieldIntValueAttribute(int defaultValue)
         {
             _defaultValue = defaultValue;
@@ -73,9 +73,8 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate a static default value to a decimal property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldDecimalValueAttribute : DefaultFieldValueAttribute
     {
@@ -102,16 +101,17 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate a static default value to a boolean property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldBoolValueAttribute : DefaultFieldValueAttribute
     {
         private bool _defaultValue;
 
 
-        /// <exclude />
+        /// <summary>    
+        /// Associate a static default value to a boolean property on a data type.
+        /// </summary>
         public DefaultFieldBoolValueAttribute(bool defaultValue)
         {
             _defaultValue = defaultValue;
@@ -128,16 +128,17 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate a static default value to a GUID property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldGuidValueAttribute : DefaultFieldValueAttribute
     {
         private Guid _defaultValue;
 
 
-        /// <exclude />
+        /// <summary>    
+        /// Associate a static default value to a GUID property on a data type.
+        /// </summary>
         public DefaultFieldGuidValueAttribute(string guidString)
         {
             _defaultValue = new Guid(guidString);
@@ -154,13 +155,14 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate a random new GUID to a GUID property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNewGuidValueAttribute : DefaultFieldValueAttribute
     {
-        /// <exclude />
+        /// <summary>    
+        /// Associate a random new GUID to a GUID property on a data type.
+        /// </summary>
         public DefaultFieldNewGuidValueAttribute()
         {
         }
@@ -176,13 +178,14 @@ namespace Composite.Data
 
 
     /// <summary>    
+    /// Associate the current date and time to a DateTime property on a data type.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldNowDateTimeValueAttribute : DefaultFieldValueAttribute
     {
-        /// <exclude />
+        /// <summary>
+        /// Associate the current date and time to a DateTime property on a data type.
+        /// </summary>
         public DefaultFieldNowDateTimeValueAttribute()
         {
         }

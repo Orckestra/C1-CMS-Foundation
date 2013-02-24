@@ -4,10 +4,24 @@ using Composite.Data.DynamicTypes;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Specifies what physical store type should be used to store this property.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    /// <example> This sample shows how to use the StoreFieldType attribute. 
+    /// Here a string field with a maximum of 40 characters.
+    /// <code>
+    /// // data interface attributes ...
+    /// interface IMyDataType : IData
+    /// {
+    ///     [StoreFieldType(PhysicalStoreFieldType.String, 40)]
+    ///     [ImmutableFieldId("{D75EA67F-AD14-4BAB-8547-6D87002809F1}")]
+    ///     string ProductName { get; set; }
+    ///     
+    ///     // more data properties ...
+    ///     
+    /// }
+    /// </code>
+    /// </example>    
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class StoreFieldTypeAttribute : Attribute
     {
@@ -17,7 +31,12 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Specifies what physical store type should be used to store this property.
+        /// This overload is intended for int, long, large string, date time, guid and bool.
+        /// For decimal and string, use other overload where you can specify length values also.
+        /// </summary>
+        /// <param name="physicalStoreFieldType">PhysicalStoreFieldType to use</param>
         public StoreFieldTypeAttribute(PhysicalStoreFieldType physicalStoreFieldType)
             : this()
         {
@@ -47,7 +66,12 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Specifies what physical store type should be used to store this property.
+        /// This overload is intended for string.
+        /// </summary>
+        /// <param name="physicalStoreFieldType">PhysicalStoreFieldType to use - PhysicalStoreFieldType.String expected</param>
+        /// <param name="maxLength">Number of characters to reserve in physical store</param>
         public StoreFieldTypeAttribute(PhysicalStoreFieldType physicalStoreFieldType, int maxLength)
             : this()
         {
@@ -62,7 +86,13 @@ namespace Composite.Data
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Specifies what physical store type should be used to store this property.
+        /// This overload is intended for decimal.
+        /// </summary>
+        /// <param name="physicalStoreFieldType">PhysicalStoreFieldType to use - PhysicalStoreFieldType.Decimal expected</param>
+        /// <param name="numericPrecision">Numeric precision for decimal</param>
+        /// <param name="numericScale">Numeric scale for decimal</param>
         public StoreFieldTypeAttribute(PhysicalStoreFieldType physicalStoreFieldType, int numericPrecision, int numericScale)
             : this()
         {

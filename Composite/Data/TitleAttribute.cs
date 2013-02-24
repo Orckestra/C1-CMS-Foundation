@@ -3,14 +3,26 @@ using System;
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary>
+    /// Add this attribute to your data interface to give it a human readable title to be used in the C1 Console
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    /// <example> This sample shows how to use the Title attribute.
+    /// <code>
+    /// [Title("My Data Type")]
+    /// // (other IData attributes)
+    /// interface IMyDataType : IData
+    /// {
+    ///     // data type properties
+    /// }
+    /// </code>
+    /// </example>    
     [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false, Inherited = false)]
 	public sealed class TitleAttribute : Attribute
 	{
-        /// <exclude />
+        /// <summary>
+        /// Set the title
+        /// </summary>
+        /// <param name="title">The (human readable) title to give the data type</param>
         public TitleAttribute(string title)
         {
             this.Title = title;

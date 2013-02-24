@@ -8,8 +8,6 @@ namespace Composite.Data.Hierarchy
     /// See <see cref="Composite.Data.Hierarchy.IDataAncestorProvider"/> for more information on parent relations.
     /// In case that the data items do not have natural parents, use the default implementaion <see cref="Composite.Data.Hierarchy.DataAncestorProviders.NoAncestorDataAncestorProvider"/>
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsageAttribute(AttributeTargets.Interface, Inherited = true, AllowMultiple = false)]
     public sealed class DataAncestorProviderAttribute : Attribute
     {

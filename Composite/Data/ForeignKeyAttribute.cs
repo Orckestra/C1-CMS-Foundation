@@ -7,10 +7,23 @@ using Composite.Data.DynamicTypes;
 namespace Composite.Data
 {
     /// <summary>
-    /// The attribute will tell the system that this property is a reference to an nother IData
-    /// </summary>    
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    /// The attribute will tell the system that a data property is a reference (foreign key) to another IData.
+    /// </summary>
+    /// <example> This sample shows how to use the ForeignKey attribute. 
+    /// <code>
+    /// // data interface attributes ...
+    /// interface IMyDataType : IData
+    /// {
+    ///     [StoreFieldType(PhysicalStoreFieldType.Guid)]
+    ///     [ImmutableFieldId("{D75EA67F-AD14-4BAB-8547-6D87002809F2}")]
+    ///     [ForeignKey(typeof(IPage), "Id", AllowCascadeDeletes = true)]
+    ///     Guid PageId { get; set; }
+    ///     
+    ///     // more data properties ...
+    ///     
+    /// }
+    /// </code>
+    /// </example>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class ForeignKeyAttribute : Attribute
     {
@@ -26,7 +39,11 @@ namespace Composite.Data
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Tell the system that this data property is a reference (foreign key) to another IData.
+        /// </summary>
+        /// <param name="interfaceType">The type being referenced</param>
+        /// <param name="keyPropertyName">The field being referenced</param>
         public ForeignKeyAttribute(Type interfaceType, string keyPropertyName)
         {
             _interfaceType = interfaceType;
@@ -35,7 +52,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Only use this constructor for types that are registred with the DynamicTypeManager
+        /// Only use this constructor for types that are registred with the DynamicTypeManager. Primary key field is infered.
         /// </summary>
         /// <param name="interfaceTypeManagerName">A string that will yield a type from the TypeManager.</param>
         public ForeignKeyAttribute(string interfaceTypeManagerName)

@@ -6,14 +6,16 @@ using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 namespace Composite.Data.Validation.Validators
 {
     /// <summary>
+    /// Validator rule for data type properties.
     /// Represents a <see cref="RegexValidator"/>.
     /// </summary>    
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Parameter, AllowMultiple = true, Inherited = false)]
     public sealed class RegexValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
-        /// <exclude />
+        /// <summary>
+        /// Validator rule for data type properties.
+        /// Represents a <see cref="RegexValidator"/>.
+        /// </summary>    
         public RegexValidatorAttribute(string pattern)
         {
             this.Pattern = pattern;
