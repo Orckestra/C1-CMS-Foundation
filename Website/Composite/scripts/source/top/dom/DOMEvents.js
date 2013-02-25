@@ -238,30 +238,34 @@ _DOMEvents.prototype = {
 
 		if (Interfaces.isImplemented(IEventListener, handler, true)) {
 			if (typeof event != Types.UNDEFINED) {
-				switch (event) {
-					/*
-					* Note that the "mouseenter" and "mouseleave" events are 
-					* registered in Mozilla as "mouseover" and "mouseout"  
-					* event though the IE native behavior is emulated. This 
-					* implies that you have to listen for both "mouseover" 
-					* and "mouseenter" event event though only the latter was added!
-					*/ 
-					case DOMEvents.MOUSEENTER:
-					case DOMEvents.MOUSELEAVE:
-						event = event == DOMEvents.MOUSEENTER ? DOMEvents.MOUSEOVER : DOMEvents.MOUSEOUT;
-						target[this._getAction(isAdd)](event, {
-							handleEvent: function (e) {
-								var rel = e.relatedTarget;
-								if (e.currentTarget == rel || DOMEvents._isChildOf(e.currentTarget, rel)) { }
-								else {
-									handler.handleEvent(e);
+				var actionMethod = target[this._getAction(isAdd)];
+				if(actionMethod)
+				{
+					switch (event) {
+						/*
+						* Note that the "mouseenter" and "mouseleave" events are 
+						* registered in Mozilla as "mouseover" and "mouseout"  
+						* event though the IE native behavior is emulated. This 
+						* implies that you have to listen for both "mouseover" 
+						* and "mouseenter" event event though only the latter was added!
+						*/ 
+						case DOMEvents.MOUSEENTER:
+						case DOMEvents.MOUSELEAVE:
+							event = event == DOMEvents.MOUSEENTER ? DOMEvents.MOUSEOVER : DOMEvents.MOUSEOUT;
+							actionMethod(event, {
+								handleEvent: function (e) {
+									var rel = e.relatedTarget;
+									if (e.currentTarget == rel || DOMEvents._isChildOf(e.currentTarget, rel)) { }
+									else {
+										handler.handleEvent(e);
+									}
 								}
-							}
-						}, isReverse ? true : false);
-						break;
-					default:
-						target[this._getAction(isAdd)](event, handler, isReverse ? true : false);
-						break;
+							}, isReverse ? true : false);
+							break;
+						default:
+							actionMethod(event, handler, isReverse ? true : false);
+							break;
+					}
 				}
 			} else {
 				throw "No such event allowed!";
