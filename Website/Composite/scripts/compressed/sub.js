@@ -523,13 +523,9 @@ _82.onreadystatechange=action;
 return _82;
 },dispatchEvent:function(_85,_86){
 var _87=true;
-if(_85.fireEvent!=null){
-_87=_85.fireEvent("on"+_86);
-}else{
 var _88=document.createEvent("UIEvents");
 _88.initEvent(_86,true,true);
 _87=_85.dispatchEvent(_88);
-}
 return _87;
 },getUpdateZones:function(dom){
 var _8a="//*[@id and contains(@class,'updatezone')]";

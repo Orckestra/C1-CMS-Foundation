@@ -2828,13 +2828,9 @@ _2c1.onreadystatechange=action;
 return _2c1;
 },dispatchEvent:function(_2c4,name){
 var _2c6=true;
-if(_2c4.fireEvent!=null){
-_2c6=_2c4.fireEvent("on"+name);
-}else{
 var _2c7=document.createEvent("UIEvents");
 _2c7.initEvent(name,true,true);
 _2c6=_2c4.dispatchEvent(_2c7);
-}
 return _2c6;
 },getUpdateZones:function(dom){
 var _2c9="//*[@id and contains(@class,'updatezone')]";
