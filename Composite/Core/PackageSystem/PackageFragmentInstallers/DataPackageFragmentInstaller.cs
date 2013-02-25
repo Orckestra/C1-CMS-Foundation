@@ -99,7 +99,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             }
                         }
                     }
-                    else if (dataType.AddToCurrentLoacle)
+                    else if (dataType.AddToCurrentLocale)
                     {
                         using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
                         {
@@ -304,7 +304,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         DataScopeIdentifier = dataScopeIdentifier,
                         Locale = locale,
                         AddToAllLocales = allLocales,
-                        AddToCurrentLoacle = currentLocale,
+                        AddToCurrentLocale = currentLocale,
                         IsDynamicAdded = isDynamicAdded,
                         Datas = doc.Root.Elements("Add")
                     };
@@ -336,7 +336,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (DataLocalizationFacade.IsLocalized(dataType.InterfaceType) == false)
             {
-                if ((dataType.Locale != null) || dataType.AddToAllLocales || dataType.AddToCurrentLoacle)
+                if ((dataType.Locale != null) || dataType.AddToAllLocales || dataType.AddToCurrentLocale)
                 {
                     _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType));
                     return;
@@ -344,7 +344,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
             else
             {
-                if ((dataType.Locale == null) && (dataType.AddToAllLocales == false) && (dataType.AddToCurrentLoacle == false))
+                if ((dataType.Locale == null) && (dataType.AddToAllLocales == false) && (dataType.AddToCurrentLocale == false))
                 {
                     _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType, typeof(IData)));
                     return;
@@ -432,7 +432,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     
                     if ((DataLocalizationFacade.IsLocalized(dataType.InterfaceType) == false) || 
-                        ((dataType.AddToAllLocales == false) && (dataType.AddToCurrentLoacle == false)) ||                          
+                        ((dataType.AddToAllLocales == false) && (dataType.AddToCurrentLocale == false)) ||                          
                         ((dataType.Locale != null) && (this.InstallerContext.IsLocalePending(dataType.Locale) == false)))
                     {
                         using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
@@ -463,7 +463,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(ILocalizedControlled)) == false)
             {
-                if ((dataType.Locale != null) || dataType.AddToAllLocales || dataType.AddToCurrentLoacle)
+                if ((dataType.Locale != null) || dataType.AddToAllLocales || dataType.AddToCurrentLocale)
                 {
                     _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType, typeof(IData)));
                     return;
@@ -471,7 +471,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
             else
             {
-                if ((dataType.Locale == null) && (dataType.AddToAllLocales == false) && (dataType.AddToCurrentLoacle == false))
+                if ((dataType.Locale == null) && (dataType.AddToAllLocales == false) && (dataType.AddToCurrentLocale == false))
                 {
                     _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType, typeof(IData)));
                     return;
@@ -513,7 +513,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public DataScopeIdentifier DataScopeIdentifier { get; set; }
             public CultureInfo Locale { get; set; }
             public bool AddToAllLocales { get; set; }
-            public bool AddToCurrentLoacle { get; set; }
+            public bool AddToCurrentLocale { get; set; }
             public bool IsDynamicAdded { get; set; }
             public IEnumerable<XElement> Datas { get; set; }
         }
