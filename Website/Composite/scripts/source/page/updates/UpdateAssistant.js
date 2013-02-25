@@ -203,13 +203,11 @@ _UpdateAssistant.prototype = {
 	dispatchEvent: function (element, name) {
 
 		var result = true;
-		if (element.fireEvent != null) {
-			result = element.fireEvent("on" + name);
-		} else {
-			var event = document.createEvent("UIEvents");
-			event.initEvent(name, true, true);
-			result = element.dispatchEvent(event);
-		}
+
+		var event = document.createEvent("UIEvents");
+		event.initEvent(name, true, true);
+		result = element.dispatchEvent(event);
+
 		return result;
 	},
 
