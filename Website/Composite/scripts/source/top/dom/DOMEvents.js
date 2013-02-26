@@ -238,8 +238,8 @@ _DOMEvents.prototype = {
 
 		if (Interfaces.isImplemented(IEventListener, handler, true)) {
 			if (typeof event != Types.UNDEFINED) {
-				var actionMethod = target[this._getAction(isAdd)];
-				if(actionMethod)
+				var action = this._getAction(isAdd);
+				if(target[action])
 				{
 					switch (event) {
 						/*
@@ -252,7 +252,7 @@ _DOMEvents.prototype = {
 						case DOMEvents.MOUSEENTER:
 						case DOMEvents.MOUSELEAVE:
 							event = event == DOMEvents.MOUSEENTER ? DOMEvents.MOUSEOVER : DOMEvents.MOUSEOUT;
-							actionMethod(event, {
+							target[action](event, {
 								handleEvent: function (e) {
 									var rel = e.relatedTarget;
 									if (e.currentTarget == rel || DOMEvents._isChildOf(e.currentTarget, rel)) { }
@@ -263,7 +263,7 @@ _DOMEvents.prototype = {
 							}, isReverse ? true : false);
 							break;
 						default:
-							actionMethod(event, handler, isReverse ? true : false);
+							target[action](event, handler, isReverse ? true : false);
 							break;
 					}
 				}
@@ -290,7 +290,7 @@ _DOMEvents.prototype = {
 				break;
 		}
 		return result;
-	},
+	}
 
 }
 
