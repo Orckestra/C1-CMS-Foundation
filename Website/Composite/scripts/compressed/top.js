@@ -1229,13 +1229,13 @@ return _128;
 },_eventListener:function(_129,_12a,_12b,_12c,_12d,_12e){
 if(Interfaces.isImplemented(IEventListener,_12c,true)){
 if(typeof _12b!=Types.UNDEFINED){
-var _12f=_12a[this._getAction(_129)];
-if(_12f){
+var _12f=this._getAction(_129);
+if(_12a[_12f]){
 switch(_12b){
 case DOMEvents.MOUSEENTER:
 case DOMEvents.MOUSELEAVE:
 _12b=_12b==DOMEvents.MOUSEENTER?DOMEvents.MOUSEOVER:DOMEvents.MOUSEOUT;
-_12f(_12b,{handleEvent:function(e){
+_12a[_12f](_12b,{handleEvent:function(e){
 var rel=e.relatedTarget;
 if(e.currentTarget==rel||DOMEvents._isChildOf(e.currentTarget,rel)){
 }else{
@@ -1244,7 +1244,7 @@ _12c.handleEvent(e);
 }},_12d?true:false);
 break;
 default:
-_12f(_12b,_12c,_12d?true:false);
+_12a[_12f](_12b,_12c,_12d?true:false);
 break;
 }
 }
@@ -1263,7 +1263,7 @@ _133="removeEventListener";
 break;
 }
 return _133;
-},};
+}};
 var DOMEvents=new _DOMEvents();
 function _DOMSerializer(){
 }
