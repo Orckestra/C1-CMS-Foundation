@@ -318,7 +318,7 @@ StandardEventHandler.prototype._handleKeyDown = function ( e, isTabHandled ) {
 	}
 
 	if ( e.keyCode == KeyEventCodes.VK_BACK ) {
-		if ( !StandardEventHandler.isBackAllowed ) {
+		if (!StandardEventHandler.isBackAllowed || UserInterface.hasBinding(e.target)) {
 			DOMEvents.preventDefault ( e );
 		}
 	}

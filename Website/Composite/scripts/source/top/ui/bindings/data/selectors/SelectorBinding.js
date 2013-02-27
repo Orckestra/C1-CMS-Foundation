@@ -895,9 +895,6 @@ SelectorBinding.prototype._applySearchSelection = function () {
 			if (this._bodyBinding instanceof MenuBodyBinding) {
 				this._bodyBinding.refreshMenuGroups();
 			}
-			if (Client.isExplorer) {
-				this._popupBinding._bodyBinding.setDimension(this._popupBinding.getDimension());
-			}
 
 			/**
 			* Enable keyboard navigation.
