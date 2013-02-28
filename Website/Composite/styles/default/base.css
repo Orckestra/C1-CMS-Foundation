@@ -106,8 +106,8 @@ ui|*.flexboxelement {
 }
 
 /* Fix for IE9-10 */
-ui|wizardpage ui|pagebody.flexboxelement,
-ui|dialogpage ui|pagebody.flexboxelement {
+ui|wizardpage > .flexboxelement,
+ui|dialogpage > .flexboxelement {
 	height: auto;
 }
 
