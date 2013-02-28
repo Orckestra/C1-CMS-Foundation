@@ -3981,7 +3981,7 @@ case KeyEventCodes.VK_PAGE_DOWN:
 }
 }
 if(e.keyCode==KeyEventCodes.VK_BACK){
-if(!StandardEventHandler.isBackAllowed){
+if(!StandardEventHandler.isBackAllowed||UserInterface.hasBinding(e.target)){
 DOMEvents.preventDefault(e);
 }
 }
@@ -12568,9 +12568,6 @@ this.detachClassName(DataBinding.CLASSNAME_INVALID);
 }
 if(this._bodyBinding instanceof MenuBodyBinding){
 this._bodyBinding.refreshMenuGroups();
-}
-if(Client.isExplorer){
-this._popupBinding._bodyBinding.setDimension(this._popupBinding.getDimension());
 }
 this._popupBinding._enableTab(true);
 }
