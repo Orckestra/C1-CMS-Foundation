@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Composite C1 4.0 Beta 2")]
+[assembly: AssemblyTitle("Composite C1 4.0 Beta 3 (in progress)")]
 #else
 [assembly: AssemblyTitle("Composite C1 4.0 Beta (Internal build)")]
 #endif
@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Composite A/S")]
 [assembly: AssemblyProduct("Composite C1")]
-[assembly: AssemblyCopyright("Copyright © Composite A/S 2012")]
+[assembly: AssemblyCopyright("Copyright © Composite A/S 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
