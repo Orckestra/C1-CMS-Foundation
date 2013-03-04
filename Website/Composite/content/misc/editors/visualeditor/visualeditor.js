@@ -140,7 +140,7 @@ function onInstanceInitialize ( inst ) {
 	 * TinyMCE already have hack for webkit 
 	 */
 	if (Client.isExplorer) {
-		inst.dom.bind(inst.getDoc(), 'mouseup', function (e) {
+		inst.dom.bind(inst.getDoc(), 'focusin', function (e) {
 			setTimeout(function () {
 				inst.selection.setRng(inst.selection.getRng());
 			}, 0);
