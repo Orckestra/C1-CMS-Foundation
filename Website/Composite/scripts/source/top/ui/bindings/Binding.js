@@ -138,6 +138,9 @@ Binding.destroy = function ( binding ) {
 		if ( binding.boxObject != null ) {
 			binding.boxObject.dispose ();
 		}
+		if (binding._domEventHandlers != null) {
+			DOMEvents.cleanupEventListeners(binding);
+		}
 		for ( var branch in binding.shadowTree ) {
 			var entry = binding.shadowTree [ branch ];
 			if ( entry instanceof Binding && Binding.exists ( entry )) {
