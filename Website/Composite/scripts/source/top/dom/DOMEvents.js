@@ -249,8 +249,19 @@ _DOMEvents.prototype = {
 				var action = this._getAction(isAdd);
 				if (target[action]) {
 					if (Client.isExplorer == true) {
-						handler = this._getWrappedHandler(target, event, handler, caller);
-						target[action](event, handler, false);
+						switch (event) {
+							case DOMEvents.MOUSEDOWN:
+							case DOMEvents.MOUSEUP:
+							case DOMEvents.MOUSEOVER:
+							case DOMEvents.MOUSEOUT:
+							case DOMEvents.MOUSEMOVE:
+								handler = this._getWrappedHandler(target, event, handler, caller);
+								target[action](event, handler, false);
+								break;
+							default:
+								target[action](event, handler, false);
+								break;
+						}
 					} else {
 						switch (event) {
 							/*
