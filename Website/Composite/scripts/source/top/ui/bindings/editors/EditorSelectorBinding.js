@@ -159,8 +159,6 @@ EditorSelectorBinding.prototype.handleAction = function ( action ) {
 			}
 			break;
 	}
-	
-	EditorSelectorBinding.superclass.handleAction.call ( this, action );
 }
 
 /**

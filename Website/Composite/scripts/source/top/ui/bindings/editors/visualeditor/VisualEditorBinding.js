@@ -816,7 +816,7 @@ VisualEditorBinding.prototype.focus = function () {
 	VisualEditorBinding.superclass.focus.call(this);
 
 	//Hack for IE
-	if (Client.isExplorer && this._tinyInstance.selection) {
+	if (Client.isExplorer && this._tinyInstance) {
 		this._tinyInstance.selection.setRng(this._tinyInstance.selection.getRng());
 	}
 }
