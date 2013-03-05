@@ -49,7 +49,7 @@ _DOMEvents.prototype = {
 	SELECTSTART: "selectstart",
 	FOCUSIN: "focusin",
 	FOCUSOUT: "focusout",
-	HELP:"help",
+	HELP: "help",
 
 	/*
 	* These are Explorer native, but can be emulated in Mozilla.
@@ -247,11 +247,10 @@ _DOMEvents.prototype = {
 		if (Interfaces.isImplemented(IEventListener, handler, true)) {
 			if (typeof event != Types.UNDEFINED) {
 				var action = this._getAction(isAdd);
-				if(target[action])
-				{
+				if (target[action]) {
 					if (Client.isExplorer == true) {
 						handler = this._getWrappedHandler(target, event, handler, caller);
-						target[action](event, handler);
+						target[action](event, handler, false);
 					} else {
 						switch (event) {
 							/*
@@ -296,10 +295,10 @@ _DOMEvents.prototype = {
 		var result = null;
 		switch (isAdd) {
 			case true:
-			    result = "addEventListener";
+				result = "addEventListener";
 				break;
 			case false:
-			    result = "removeEventListener";
+				result = "removeEventListener";
 				break;
 		}
 		return result;
@@ -331,9 +330,11 @@ _DOMEvents.prototype = {
 			if (!handler._domEventHandlers[target][event]) {
 				var win = target.nodeType ? DOMUtil.getParentWindow(target) : target;
 				if (win) {
-					handler._domEventHandlers[target][event] = function () {
+					handler._domEventHandlers[target][event] = function (e) {
 						if (win.event != null && handler != null) {
 							handler.handleEvent(win.event);
+						} else if (handler != null) {
+							handler.handleEvent(e);
 						}
 					}
 				}
