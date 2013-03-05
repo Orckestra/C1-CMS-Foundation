@@ -806,6 +806,21 @@ VisualEditorBinding.prototype.clean = function () {
 	}
 }
 
+
+/**
+* Focus
+* @overloads {EditorBinding#focus}
+*/
+VisualEditorBinding.prototype.focus = function () {
+
+	VisualEditorBinding.superclass.focus.call(this);
+
+	//Hack for IE
+	if (Client.isExplorer) {
+		this._tinyInstance.selection.setRng(this._tinyInstance.selection.getRng());
+	}
+}
+
 /**
  * Set result. This is intended for clientside processing.
  * @param {string} result

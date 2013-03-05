@@ -141,9 +141,7 @@ function onInstanceInitialize ( inst ) {
 	 */
 	if (Client.isExplorer) {
 		inst.dom.bind(inst.getDoc(), 'focusin', function (e) {
-			setTimeout(function () {
-				inst.selection.setRng(inst.selection.getRng());
-			}, 0);
+			inst.selection.setRng(inst.selection.getRng());
 		});
 	}
 
