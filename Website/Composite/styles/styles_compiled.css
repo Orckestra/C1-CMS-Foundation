@@ -362,7 +362,6 @@ height: 100%;
 ui|dialogborder.e {
 top: 0;
 right: 0;
-#ie right: -1px;
 width: 4px;
 height: 100%;
 }
