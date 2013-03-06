@@ -86,22 +86,25 @@ _DOMEvents.prototype = {
 		* Clearing eventlisteners on unload. This should 
 		* in theory minimize memory leaks (clearly not!).
 		*/
-		if (target && typeof target.nodeType != Types.UNDEFINED) {
-			if (target.nodeType == Node.ELEMENT_NODE) {
-				var win = DOMUtil.getParentWindow(target);
-				if (win) {
-					var unleaker = {
-						handleEvent: function () {
-							DOMEvents.removeEventListener(
-								target,
-								event,
-								handler,
-								isReverse
-							);
-							DOMEvents.removeEventListener(win, DOMEvents.UNLOAD, unleaker);
+		if (!Client.isExplorer)
+		{
+			if (target && typeof target.nodeType != Types.UNDEFINED) {
+				if (target.nodeType == Node.ELEMENT_NODE) {
+					var win = DOMUtil.getParentWindow(target);
+					if (win) {
+						var unleaker = {
+							handleEvent: function () {
+								DOMEvents.removeEventListener(
+									target,
+									event,
+									handler,
+									isReverse
+								);
+								DOMEvents.removeEventListener(win, DOMEvents.UNLOAD, unleaker);
+							}
 						}
+						DOMEvents.addEventListener(win, DOMEvents.UNLOAD, unleaker);
 					}
-					DOMEvents.addEventListener(win, DOMEvents.UNLOAD, unleaker);
 				}
 			}
 		}
