@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,6 +15,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Foundation;
+using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
@@ -24,7 +24,6 @@ using Composite.Core.WebClient.FunctionCallEditor;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.WebClient.State;
 using Composite.Data;
-using Composite.Data.DynamicTypes;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -75,8 +74,8 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             this.Bindings.Add("PageDataScopeName", DataScopeIdentifier.AdministratedName);
             this.Bindings.Add("PageDataScopeList", new Dictionary<string, string> 
             { 
-                { DataScopeIdentifier.AdministratedName, StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "EditInlineFunctionWorkflow.AdminitrativeScope.Label") }, 
-                { DataScopeIdentifier.PublicName, StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "EditInlineFunctionWorkflow.PublicScope.Label") } 
+                { DataScopeIdentifier.AdministratedName, GetText("EditInlineFunctionWorkflow.AdminitrativeScope.Label") }, 
+                { DataScopeIdentifier.PublicName, GetText("EditInlineFunctionWorkflow.PublicScope.Label") } 
             });
 
 
@@ -206,31 +205,30 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             {
                 StringBuilder sb = new StringBuilder();
 
-                if (string.IsNullOrWhiteSpace(handler.MissingContainerType) == false)
+                if (!string.IsNullOrWhiteSpace(handler.MissingContainerType))
                 {
-                    sb.AppendLine("<pre>" + handler.MissingContainerType + "</pre>");
+                    AddFormattedTextBlock(sb, handler.MissingContainerType);
                 }
 
-                if (string.IsNullOrWhiteSpace(handler.NamespaceMismatch) == false)
+                if (!string.IsNullOrWhiteSpace(handler.NamespaceMismatch))
                 {
-                    sb.AppendLine("<pre>" + handler.NamespaceMismatch + "</pre>");
+                    AddFormattedTextBlock(sb, handler.NamespaceMismatch);
                 }
 
-                if (string.IsNullOrWhiteSpace(handler.MissionMethod) == false)
+                if (!string.IsNullOrWhiteSpace(handler.MissionMethod))
                 {
-                    sb.AppendLine("<pre>" + handler.MissionMethod + "</pre>");
+                    AddFormattedTextBlock(sb, handler.MissionMethod);
                 }
 
                 foreach (Tuple<int, string, string> compileError in handler.CompileErrors)
                 {
-                    sb.AppendLine("<pre>" + string.Format("{0} : {1} : {2}", compileError.Item1, compileError.Item2, compileError.Item3 + "</pre>"));
+                    AddFormattedTextBlock(sb, "{0} : {1} : {2}".FormatWith(compileError.Item1, compileError.Item2, compileError.Item3));
                 }
 
                 formFlowWebRenderingService.SetNewPageOutput(new LiteralControl(sb.ToString()));
 
                 return;
             }
-
 
             List<ManagedParameterDefinition> parameters = this.GetBinding<List<ManagedParameterDefinition>>("Parameters");
 
@@ -239,20 +237,20 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             StringBuilder parameterErrorMessages = new StringBuilder();
             foreach (ParameterInfo parameterInfo in methodInfo.GetParameters())
             {
-                ManagedParameterDefinition parameter = parameters.Where(f => f.Name == parameterInfo.Name).FirstOrDefault();
+                ManagedParameterDefinition parameter = parameters.FirstOrDefault(f => f.Name == parameterInfo.Name);
                 if (parameter == null)
                 {
-                    string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.MissingParameterDefinition"), parameterInfo.Name);
+                    string message = string.Format(GetText("CSharpInlineFunction.MissingParameterDefinition"), parameterInfo.Name);
 
                     parameterErrors = true;
-                    parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
+                    AddFormattedTextBlock(parameterErrorMessages, message);
                 }
                 else if (parameter.Type != parameterInfo.ParameterType)
                 {
-                    string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.WrongParameterTestValueType"), parameterInfo.Name, parameterInfo.ParameterType, parameter.Type);
+                    string message = string.Format(GetText("CSharpInlineFunction.WrongParameterTestValueType"), parameterInfo.Name, parameterInfo.ParameterType, parameter.Type);
 
                     parameterErrors = true;
-                    parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
+                    AddFormattedTextBlock(parameterErrorMessages, message);
                 }
                 else
                 {
@@ -260,10 +258,10 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
                     if (string.IsNullOrEmpty(previewValueFunctionMarkup))
                     {
-                        string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.MissingParameterTestOrDefaultValue"), parameterInfo.Name, parameterInfo.ParameterType, parameter.Type);
+                        string message = string.Format(GetText("CSharpInlineFunction.MissingParameterTestOrDefaultValue"), parameterInfo.Name, parameterInfo.ParameterType, parameter.Type);
 
                         parameterErrors = true;
-                        parameterErrorMessages.AppendLine("<pre>" + message + "</pre>");
+                        AddFormattedTextBlock(parameterErrorMessages, message);
                     }
                     else
                     {
@@ -276,9 +274,9 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 }
             }
 
-            if (parameterErrors == true)
+            if (parameterErrors)
             {
-                formFlowWebRenderingService.SetNewPageOutput(new LiteralControl("<pre>" + parameterErrorMessages + "</pre>"));
+                formFlowWebRenderingService.SetNewPageOutput(new LiteralControl(parameterErrorMessages.ToString()));
                 return;
             }
 
@@ -291,7 +289,6 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                 if (this.GetBinding<object>("PageId") == null)
                 {
                     pageId = Guid.Empty;
-
                 }
                 else
                 {
@@ -342,10 +339,22 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
             }
         }
 
+        private void AddFormattedTextBlock(StringBuilder sb, string text) {
+            sb.Append("<pre>");
+            sb.Append(HttpUtility.HtmlEncode(text));
+            sb.AppendLine("</pre>");
+        }
+
+
         private void SetOutput(IFormFlowWebRenderingService formFlowWebRenderingService, string text)
         {
             Control output = new LiteralControl("<pre>" + HttpUtility.HtmlEncode(text) + "</pre>");
             formFlowWebRenderingService.SetNewPageOutput(output);
+        }
+
+        private string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", key);
         }
     }
 
