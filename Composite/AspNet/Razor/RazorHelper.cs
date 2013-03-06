@@ -98,7 +98,8 @@ namespace Composite.AspNet.Razor
 			if (resultType == typeof(XhtmlDocument))
 			{
 				try
-				{
+                {
+                    // TODO: change behaviour so function error is shown instead
                     var xElement = XElement.Parse(output);
 
                     if (xElement.Name.LocalName == "html") return new XhtmlDocument(xElement);
@@ -107,19 +108,24 @@ namespace Composite.AspNet.Razor
                     document.Body.Add(xElement);
 
                     return document;
+				}
+				catch (XmlException ex)
+				{
+				    string[] codeLines = output.Split('\n');
 
-				}
-				catch (ArgumentException)
-				{
-                    return GetXhtmlDocument(output);
-				}
-				catch (InvalidOperationException)
-				{
-                    return GetXhtmlDocument(output);
-				}
-				catch (XmlException)
-				{
-                    return GetXhtmlDocument(output);
+				    int firstLineToShow = Math.Max(0, ex.LineNumber - 3);
+                    int lastLineToShow = Math.Min(codeLines.Length - 1, ex.LineNumber + 1);
+
+                    var errorLines = new StringBuilder();
+
+                    for (int line = firstLineToShow; line <= lastLineToShow; line++)
+                    {
+                        errorLines.AppendLine((line + 1) + ": " + codeLines[line]);
+                    }
+
+                    ex.Data["errorSource"] = errorLines.ToString();
+
+				    throw ex;
 				}
 			}
 
