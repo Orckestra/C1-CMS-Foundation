@@ -14,6 +14,9 @@ div#inputs input {
 	overflow: hidden;
 	background-color: transparent;
 }
+div#inputs input::-ms-clear {
+	display: none;
+}
 ui|scrollbox#keywords {
 	background-color: white;
 	cursor: text;
