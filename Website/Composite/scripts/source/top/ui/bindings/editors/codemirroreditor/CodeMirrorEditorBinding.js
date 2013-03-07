@@ -236,9 +236,10 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 							break;
 						case CodeMirrorEditorBinding.syntax.CSS:
 							this._codemirrorEditor.setOption("mode", "text/css");
-
 							break;
-						case CodeMirrorEditorBinding.syntax.CSHARP:
+					    case CodeMirrorEditorBinding.syntax.CSHARP:
+					        this._codemirrorEditor.setOption("mode", "text/x-csharp");
+					        break;
 						case CodeMirrorEditorBinding.syntax.CSHTML:
 							this._codemirrorEditor.setOption("mode", "application/x-cshtml");
 							break;
@@ -248,8 +249,9 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 						case CodeMirrorEditorBinding.syntax.ASPX:
 							this._codemirrorEditor.setOption("mode", "application/x-aspx");
 							break;
-						case CodeMirrorEditorBinding.syntax.SQL:
-							this._codemirrorEditor.setOption("mode", "");
+					    case CodeMirrorEditorBinding.syntax.SQL:
+					        this._codemirrorEditor.setOption("mode", "");
+					        break;
 						case CodeMirrorEditorBinding.syntax.TEXT:
 							this._codemirrorEditor.setOption("mode", "");
 							break;
