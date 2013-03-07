@@ -15,6 +15,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             _errorMessage = errorMessage;
         }
 
+        public override string Description {
+            get {
+                return _errorMessage;
+            }
+        }
+
         object IFunction.Execute(ParameterList parameters, FunctionContextContainer context)
         {
             throw new InvalidOperationException(_errorMessage);

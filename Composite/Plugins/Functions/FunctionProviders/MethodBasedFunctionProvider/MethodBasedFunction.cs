@@ -103,9 +103,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
 
 
-        public string Description 
+        public virtual string Description 
         { 
-            get 
+            get
             {
                 if (string.IsNullOrEmpty(_functionDescription))
                 {

@@ -20,8 +20,8 @@ namespace Composite.Functions.Inline
 
         private InlineFunction(IInlineFunction info, MethodInfo methodInfo)
         {
-            if (info == null) throw new ArgumentNullException("info");
-            if (methodInfo == null) throw new ArgumentNullException("methodInfo");
+            Verify.ArgumentNotNull(info, "info");
+            Verify.ArgumentNotNull(methodInfo, "methodInfo");
 
             _function = info;
             _methodInfo = methodInfo;
@@ -31,9 +31,11 @@ namespace Composite.Functions.Inline
 
         public static IFunction Create(IInlineFunction info)
         {
-            MethodInfo methodInfo = InlineFunctionHelper.Create(info);
+            var errors = new StringInlineFunctionCreateMethodErrorHandler();
 
-            if (methodInfo == null) return new NotLoadedInlineFunction(info, "Function weren't loaded correctly, check log for details");
+            MethodInfo methodInfo = InlineFunctionHelper.Create(info, null, errors);
+
+            if (methodInfo == null) return new NotLoadedInlineFunction(info, errors);
 
             return new InlineFunction(info, methodInfo);
         }

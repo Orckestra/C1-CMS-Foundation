@@ -99,7 +99,6 @@ namespace Composite.AspNet.Razor
 			{
 				try
                 {
-                    // TODO: change behaviour so function error is shown instead
                     var xElement = XElement.Parse(output);
 
                     if (xElement.Name.LocalName == "html") return new XhtmlDocument(xElement);
@@ -113,17 +112,7 @@ namespace Composite.AspNet.Razor
 				{
 				    string[] codeLines = output.Split('\n');
 
-				    int firstLineToShow = Math.Max(0, ex.LineNumber - 3);
-                    int lastLineToShow = Math.Min(codeLines.Length - 1, ex.LineNumber + 1);
-
-                    var errorLines = new StringBuilder();
-
-                    for (int line = firstLineToShow; line <= lastLineToShow; line++)
-                    {
-                        errorLines.AppendLine((line + 1) + ": " + codeLines[line]);
-                    }
-
-                    ex.Data["errorSource"] = errorLines.ToString();
+				    XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, codeLines, ex.LineNumber);
 
 				    throw ex;
 				}

@@ -17,7 +17,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 		public string Namespace { get; private set; }
 		public string Name { get; private set; }
 		public Type ReturnType { get; private set; }
-		public string Description { get; private set; }
+		public virtual string Description { get; private set; }
 
 		public EntityToken EntityToken
 		{

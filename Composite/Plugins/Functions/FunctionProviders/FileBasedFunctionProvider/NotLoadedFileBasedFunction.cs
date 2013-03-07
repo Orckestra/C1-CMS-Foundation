@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web.Hosting;
 using Composite.Core.Extensions;
 using Composite.Functions;
 
@@ -8,7 +9,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
     internal class NotLoadedFileBasedFunction<T> : FileBasedFunction<T>, IFunctionInitializationInfo where T : FileBasedFunction<T>
     {
         private readonly string _virtualPath;
-        private Exception _exception;
+        private readonly Exception _exception;
 
         public NotLoadedFileBasedFunction(
             FileBasedFunctionProvider<T> provider,
@@ -20,6 +21,24 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         {
             _virtualPath = virtualPath;
             _exception = exception;
+        }
+
+        public override string Description {
+            get {
+                if (_exception != null)
+                {
+                    string errorMessage = _exception.Message;
+
+                    if (errorMessage.StartsWith(HostingEnvironment.ApplicationPhysicalPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        errorMessage = errorMessage.Substring(HostingEnvironment.ApplicationPhysicalPath.Length - 1);
+                    }
+
+                    return errorMessage;
+                }
+
+                return base.Description;
+            }
         }
 
         override public object Execute(ParameterList parameters, FunctionContextContainer context)

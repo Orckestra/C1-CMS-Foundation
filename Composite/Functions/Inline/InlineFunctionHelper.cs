@@ -85,7 +85,7 @@ namespace Composite.Functions.Inline
                     {
                         if(!HostingEnvironment.ApplicationHost.ShutdownInitiated())
                         {
-                            Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText));
+                            Log.LogWarning(LogTitle, "{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText);
                         }
                     }
                 }
@@ -94,7 +94,7 @@ namespace Composite.Functions.Inline
             }
 
 
-            Type type = results.CompiledAssembly.GetTypes().Where(f => f.Name == MethodClassContainerName).SingleOrDefault();
+            Type type = results.CompiledAssembly.GetTypes().SingleOrDefault(f => f.Name == MethodClassContainerName);
             if (type == null)
             {
                 string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.OnMissingContainerType"), MethodClassContainerName);
