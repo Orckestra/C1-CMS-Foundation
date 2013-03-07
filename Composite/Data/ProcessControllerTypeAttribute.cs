@@ -1,9 +1,11 @@
 ﻿using System;
+using Composite.Data.ProcessControlled;
 
 
 namespace Composite.Data
 {
-    /// <summary>    
+    /// <summary> 
+    /// Binds imlementations of <see cref="IProcessController"/> to data types
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

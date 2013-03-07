@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Composite.Core;
 using Composite.Core.IO;
-using Composite.Core.Threading;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
 
@@ -70,6 +68,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     try
                     {
                         function = InstantiateFunction(virtualPath, ns, name);
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        throw;
                     }
                     catch (Exception ex)
                     {

@@ -6,6 +6,7 @@ using Composite.C1Console.Elements;
 namespace Composite.Data.ProcessControlled
 {
     /// <summary>    
+    /// Providers element actions for data types that have attributes inherited from <see cref="Composite.Data.ProcessControllerTypeAttribute"/>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

@@ -108,7 +108,7 @@ namespace Composite.Functions
         public object GetParameter(string parameterName)
         {
             object value;
-            if (TryGetParameter(parameterName, out value) == false) throw new ArgumentException(string.Format("No paramter named '{0}' exists", parameterName));
+            if (TryGetParameter(parameterName, out value) == false) throw new ArgumentException(string.Format("No parameter named '{0}' exists", parameterName));
             return value;
         }
 
@@ -145,31 +145,29 @@ namespace Composite.Functions
         public bool TryGetParameter(string parameterName, out object value)
         {
             StoredParameterReturnValue storedParameterReturnValue;
-            bool paramFound = _parameters.TryGetValue(parameterName, out storedParameterReturnValue);
+            bool parameterFound = _parameters.TryGetValue(parameterName, out storedParameterReturnValue);
 
-            if (paramFound == true)
-            {
-                object storedValue = storedParameterReturnValue.ValueObject;
-
-                if ((storedValue != null) && (typeof(BaseRuntimeTreeNode).IsAssignableFrom(storedValue.GetType()) == true))
-                { 
-                    storedValue = ((BaseRuntimeTreeNode)storedValue).GetValue(_functionContextContainer);
-                }
-
-                if (storedValue != null && storedParameterReturnValue.ValueType.IsAssignableFrom(storedValue.GetType()) == false)
-                {
-                    storedValue = ValueTypeConverter.Convert(storedValue, storedParameterReturnValue.ValueType);
-                }
-
-                value = storedValue;
-
-                return true;
-            }
-            else
+            if (!parameterFound)
             {
                 value = null;
                 return false;
             }
+            
+            object storedValue = storedParameterReturnValue.ValueObject;
+
+            if ((storedValue != null) && (storedValue is BaseRuntimeTreeNode))
+            {
+                storedValue = ((BaseRuntimeTreeNode) storedValue).GetValue(_functionContextContainer);
+            }
+
+            if (storedValue != null && !storedParameterReturnValue.ValueType.IsInstanceOfType(storedValue))
+            {
+                storedValue = ValueTypeConverter.Convert(storedValue, storedParameterReturnValue.ValueType);
+            }
+
+            value = storedValue;
+
+            return true;
         }
 
 
