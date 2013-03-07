@@ -1163,6 +1163,7 @@ function _DOMEvents(){
 _DOMEvents.prototype={_logger:SystemLogger.getLogger("DOMEvents"),MOUSEDOWN:"mousedown",MOUSEUP:"mouseup",MOUSEOVER:"mouseover",MOUSEOUT:"mouseout",MOUSEMOVE:"mousemove",CLICK:"click",DOUBLECLICK:"dblclick",KEYPRESS:"keypress",KEYDOWN:"keydown",KEYUP:"keyup",CONTEXTMENU:"contextmenu",SCROLL:"scroll",LOAD:"load",BEFOREUNLOAD:"beforeunload",UNLOAD:"unload",RESIZE:"resize",FOCUS:"focus",BLUR:"blur",SUBMIT:"submit",CUT:"cut",COPY:"copy",PASTE:"paste",DOM:"DOMContentLoaded",DRAGOVER:"dragover",DROP:"drop",ACTIVATE:"activate",DEACTIVATE:"deactivate",MOUSEENTER:"mouseenter",MOUSELEAVE:"mouseleave",SELECTSTART:"selectstart",FOCUSIN:"focusin",FOCUSOUT:"focusout",HELP:"help",BEFOREUPDATE:"beforeupdate",AFTERUPDATE:"afterupdate",ERRORUPDATE:"errorupdate",_count:0,addEventListener:function(_116,_117,_118,_119){
 this._count++;
 this._eventListener(true,_116,_117,_118,_119);
+if(!Client.isExplorer){
 if(_116&&typeof _116.nodeType!=Types.UNDEFINED){
 if(_116.nodeType==Node.ELEMENT_NODE){
 var win=DOMUtil.getParentWindow(_116);
@@ -1172,6 +1173,7 @@ DOMEvents.removeEventListener(_116,_117,_118,_119);
 DOMEvents.removeEventListener(win,DOMEvents.UNLOAD,_11b);
 }};
 DOMEvents.addEventListener(win,DOMEvents.UNLOAD,_11b);
+}
 }
 }
 }
@@ -26821,7 +26823,6 @@ self._editorBinding.restoreBookmark();
 }
 break;
 }
-EditorSelectorBinding.superclass.handleAction.call(this,_1018);
 };
 EditorSelectorBinding.prototype._grabKeyboard=function(){
 };
@@ -27163,7 +27164,7 @@ this._pageBinding.clean();
 };
 VisualEditorBinding.prototype.focus=function(){
 VisualEditorBinding.superclass.focus.call(this);
-if(Client.isExplorer&&this._tinyInstance.selection){
+if(Client.isExplorer&&this._tinyInstance){
 this._tinyInstance.selection.setRng(this._tinyInstance.selection.getRng());
 }
 };
@@ -27823,6 +27824,8 @@ case CodeMirrorEditorBinding.syntax.CSS:
 this._codemirrorEditor.setOption("mode","text/css");
 break;
 case CodeMirrorEditorBinding.syntax.CSHARP:
+this._codemirrorEditor.setOption("mode","text/x-csharp");
+break;
 case CodeMirrorEditorBinding.syntax.CSHTML:
 this._codemirrorEditor.setOption("mode","application/x-cshtml");
 break;
@@ -27834,6 +27837,7 @@ this._codemirrorEditor.setOption("mode","application/x-aspx");
 break;
 case CodeMirrorEditorBinding.syntax.SQL:
 this._codemirrorEditor.setOption("mode","");
+break;
 case CodeMirrorEditorBinding.syntax.TEXT:
 this._codemirrorEditor.setOption("mode","");
 break;
