@@ -74,13 +74,35 @@ namespace Composite.Functions
             }
             else
             {
-                XElement element =
-                    new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
-                        new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name),
-                        new XAttribute(FunctionTreeConfigurationNames.ValueAttributeName, ValueTypeConverter.Convert<string>(_constantValue) ?? string.Empty)
-                    );
+                if (_constantValue is XNode)
+                {
+                    if (_constantValue is XDocument)
+                    {
+                        XElement element =
+                            new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
+                                new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name),
+                                ((XDocument)_constantValue).Root);
+                        return element;
+                    }
+                    else
+                    {
+                        XElement element =
+                            new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
+                                new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name),
+                                _constantValue);
+                        return element;
+                    }
+                }
+                else
+                {
+                    XElement element =
+                        new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
+                            new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name),
+                            new XAttribute(FunctionTreeConfigurationNames.ValueAttributeName, ValueTypeConverter.Convert<string>(_constantValue) ?? string.Empty)
+                        );
 
-                return element;
+                    return element;
+                }
             }
         }
     }

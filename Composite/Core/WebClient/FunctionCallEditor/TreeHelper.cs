@@ -68,17 +68,19 @@ namespace Composite.Core.WebClient.FunctionCallEditor
 
                 functionToPathMap.Add(rootFunctionElement, GetRootFunctionPath(functionCounter));
 
-                foreach (XElement element in rootFunctionElement.Descendants())
+                foreach (XElement element in rootFunctionElement.Descendants().Where(f=>f.Name == ParameterNodeName || f.Name == FunctionNodeName))
                 {
-                    string parentPathId = functionToPathMap[element.Parent];
-
-                    if (element.Name == ParameterNodeName)
+                    string parentPathId;
+                    if (functionToPathMap.TryGetValue(element.Parent, out parentPathId))
                     {
-                        functionToPathMap.Add(element, GetParameterPath(parentPathId, element.Attribute("name").Value));
-                    }
-                    else if (element.Name == FunctionNodeName)
-                    {
-                        functionToPathMap.Add(element, GetFunctionCallPath(parentPathId));
+                        if (element.Name == ParameterNodeName)
+                        {
+                            functionToPathMap.Add(element, GetParameterPath(parentPathId, element.Attribute("name").Value));
+                        }
+                        else if (element.Name == FunctionNodeName)
+                        {
+                            functionToPathMap.Add(element, GetFunctionCallPath(parentPathId));
+                        }
                     }
                 }
             }
@@ -129,7 +131,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
 
             List<XElement> functionNodes = functionMarkup
                 .Descendants()
-                .Where(node => node.Name == FunctionNodeName || node.Name == WidgetFunctionNodeName)
+                .Where(node => (node.Name == FunctionNodeName || node.Name == WidgetFunctionNodeName) && !node.Ancestors().Any(g=>g.Name.Namespace != Namespaces.Function10))
                 .ToList();
             foreach (XElement functionNode in functionNodes)
             {

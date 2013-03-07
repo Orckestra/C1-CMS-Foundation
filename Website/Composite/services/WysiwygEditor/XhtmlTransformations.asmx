@@ -230,7 +230,7 @@ namespace Composite.Services
 
                 string html = WrapInnerBody(htmlFragment);
 
-                XDocument xml = MarkupTransformationServices.TidyHtml(html).Output;
+                XDocument xml = XDocument.Parse(html); //MarkupTransformationServices.TidyHtml(html).Output;
 
                 IEnumerable<XElement> functionRoots = xml
                     .Descendants(Namespaces.Function10 + "function")

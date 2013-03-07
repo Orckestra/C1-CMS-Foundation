@@ -1065,6 +1065,17 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                     parameterValue = GetDefaultValue(parameterProfile);
                 }
             }
+            else if (parameterNode.Elements().Any())
+            {
+                if (parameterProfile.Type.IsSubclassOf(typeof(XContainer)))
+                {
+                    parameterValue = ValueTypeConverter.Convert(parameterNode.Elements().First(), parameterProfile.Type);
+                }
+                else
+                {
+                    throw new NotImplementedException("Not yet implemented");
+                }
+            }
             else
             {
                 parameterValue = GetDefaultValue(parameterProfile);
