@@ -322,7 +322,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         private object GetPropertyValue(object @object, string propertyName, ref Type lastOptionObjectType, ref PropertyInfo lastUsedPropertyInfo)
         {
-            if (this.OptionsLabelField == "." || this.OptionsLabelField == "")
+            if (propertyName == "." || propertyName == "")
             {
                 return @object;
             }
@@ -330,8 +330,12 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             if (@object.GetType() != lastOptionObjectType)
             {
                 lastOptionObjectType = @object.GetType();
+                lastUsedPropertyInfo = null;
+            }
 
-                lastUsedPropertyInfo = lastOptionObjectType.GetProperty(this.OptionsLabelField);
+            if (lastUsedPropertyInfo == null)
+            {
+                lastUsedPropertyInfo = lastOptionObjectType.GetProperty(propertyName);
                 Verify.IsNotNull(lastUsedPropertyInfo, "Malformed Selection configuration. The Selected binding type '{0}' does not have a property named '{1}", @object.GetType().FullName, propertyName);
             }
 
