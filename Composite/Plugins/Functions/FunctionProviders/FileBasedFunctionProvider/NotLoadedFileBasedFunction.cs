@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Hosting;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
+using Composite.Core.Xml;
 using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
@@ -10,6 +13,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
     {
         private readonly string _virtualPath;
         private readonly Exception _exception;
+
+        private string[] _sourceCode;
 
         public NotLoadedFileBasedFunction(
             FileBasedFunctionProvider<T> provider,
@@ -25,25 +30,48 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
         public override string Description {
             get {
-                if (_exception != null)
-                {
-                    string errorMessage = _exception.Message;
-
-                    if (errorMessage.StartsWith(HostingEnvironment.ApplicationPhysicalPath, StringComparison.OrdinalIgnoreCase))
-                    {
-                        errorMessage = errorMessage.Substring(HostingEnvironment.ApplicationPhysicalPath.Length - 1);
-                    }
-
-                    return errorMessage;
-                }
-
-                return base.Description;
+                return  (_exception != null) ? RemoveApplicationPath(_exception.Message) : base.Description;
             }
+        }
+
+        private static string RemoveApplicationPath(string compilationErrorMessage)
+        {
+            if (compilationErrorMessage.StartsWith(HostingEnvironment.ApplicationPhysicalPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return compilationErrorMessage.Substring(HostingEnvironment.ApplicationPhysicalPath.Length - 1);
+            }
+
+            return compilationErrorMessage;
         }
 
         override public object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            throw new InvalidOperationException("Function not loaded. Source '{0}'".FormatWith(_virtualPath), _exception);
+            if (!(_exception is HttpCompileException))
+            {
+                throw _exception;
+            }
+            
+            var compilationErrors = (_exception as HttpCompileException).Results.Errors;
+            if (compilationErrors.HasErrors)
+            {
+                var firstError = compilationErrors[0];
+
+                if (_sourceCode == null && string.Equals(firstError.FileName, PathUtil.Resolve(_virtualPath), StringComparison.OrdinalIgnoreCase))
+                {
+                    _sourceCode = C1File.ReadAllLines(firstError.FileName);
+                }
+                else
+                {
+                    _sourceCode = new string[0];
+                }
+
+                if (_sourceCode.Length > 0)
+                {
+                    XhtmlErrorFormatter.EmbedSouceCodeInformation(_exception, _sourceCode, firstError.Line);
+                }
+            }
+
+            throw _exception;
         }
 
         Type IMetaFunction.ReturnType
