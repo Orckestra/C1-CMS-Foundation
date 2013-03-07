@@ -15,8 +15,15 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         private const string _functionName = "Selector";
         public const string CompositeName = CompositeWidgetFunctionBase.CommonNamespace + "." + _functionName;
 
+        private const string Parameter_Options = "Options";
+        private const string Parameter_KeyFieldName = "KeyFieldName";
+        private const string Parameter_LabelFieldName = "LabelFieldName";
+        private const string Parameter_Required = "Required";
+
         public static IEnumerable GetOptions(string optionsDescriptorSerialized)
         {
+            // DDZ: This method seem not to be used any more
+
             XElement optionsDescriptor = XElement.Parse(optionsDescriptorSerialized);
 
             string keyFieldName = optionsDescriptor.Attribute("KeyFieldName").Value;
@@ -87,7 +94,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         private void SetParameterProfiles()
         {
             base.AddParameterProfile(
-                new ParameterProfile("Options",
+                new ParameterProfile(Parameter_Options,
                     typeof(IEnumerable),
                     true,
                     new NoValueValueProvider(),
@@ -96,7 +103,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     "Options", new HelpDefinition("A list of elements to use as options. Expected types are IEnumerable (simple lists) and Dictionary.")));
 
             base.AddParameterProfile(
-                new ParameterProfile("KeyFieldName",
+                new ParameterProfile(Parameter_KeyFieldName,
                     typeof(string),
                     false,
                     new ConstantValueProvider(null),
@@ -105,7 +112,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
                     "Source key field name", new HelpDefinition("If your option source returns a list of objects or XElements, use this field to specify the name of the field (property) to use for key values. Leave this empty to use the source option value as a string.")));
 
             base.AddParameterProfile(
-                new ParameterProfile("LabelFieldName",
+                new ParameterProfile(Parameter_LabelFieldName,
                     typeof(string),
                     false,
                     new ConstantValueProvider(null),
@@ -126,47 +133,58 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition helpDefinition, string bindingSourceName)
         {
-            BaseRuntimeTreeNode runtimeTreeNode = null;
+            BaseRuntimeTreeNode runtimeTreeNode;
 
-            if (parameters.TryGetParameterRuntimeTreeNode("Options", out runtimeTreeNode))
-            {
-                const string selectorName = "KeySelector";
-
-                bool required = parameters.GetParameter<bool>("Required");
-
-
-                IEnumerable options = runtimeTreeNode.GetValue<IEnumerable>();
-                IDictionary dictionaryOptions = options as IDictionary;
-
-                XElement treeNodeElement = runtimeTreeNode.Serialize().Elements().First();
-
-                XElement functionMarkup = treeNodeElement;
-               
-
-                XElement selector = StandardWidgetFunctions.BuildBasicFormsMarkup(
-                    Namespaces.BindingFormsStdUiControls10,
-                    selectorName,
-                    "Selected",
-                    label,
-                    helpDefinition,
-                    bindingSourceName);
-
-                if (dictionaryOptions != null)
-                {
-                    selector.Add(new XAttribute("OptionsKeyField", "Key"));
-                    selector.Add(new XAttribute("OptionsLabelField", "Value"));
-                }
-                
-                selector.Add(new XAttribute("Required", required));
-
-                selector.Add(new XElement(selector.Name.Namespace + (selectorName + ".Options"), functionMarkup));
-
-                return selector;
-            }
-            else
+            if (!parameters.TryGetParameterRuntimeTreeNode(Parameter_Options, out runtimeTreeNode))
             {
                 throw new InvalidOperationException("Could not get BaseRuntimeTreeNode for parameter 'Options'.");
             }
+            
+            const string selectorName = "KeySelector";
+
+            IEnumerable options = runtimeTreeNode.GetValue<IEnumerable>();
+            IDictionary dictionaryOptions = options as IDictionary;
+
+            XElement treeNodeElement = runtimeTreeNode.Serialize().Elements().First();
+
+            XElement functionMarkup = treeNodeElement;
+
+
+            XElement selector = StandardWidgetFunctions.BuildBasicFormsMarkup(
+                Namespaces.BindingFormsStdUiControls10,
+                selectorName,
+                "Selected",
+                label,
+                helpDefinition,
+                bindingSourceName);
+
+            if (dictionaryOptions != null)
+            {
+                selector.Add(new XAttribute("OptionsKeyField", "Key"));
+                selector.Add(new XAttribute("OptionsLabelField", "Value"));
+            }
+            else
+            {
+                string keyFieldName = parameters.GetParameter<string>(Parameter_KeyFieldName);
+                if (keyFieldName != null)
+                {
+                    selector.Add(new XAttribute("OptionsKeyField", keyFieldName));
+                }
+
+                string labelFieldName = parameters.GetParameter<string>(Parameter_LabelFieldName);
+                if (labelFieldName != null)
+                {
+                    selector.Add(new XAttribute("OptionsLabelField", labelFieldName));
+                }
+            }
+
+            bool required = parameters.GetParameter<bool>(Parameter_Required);
+            selector.Add(new XAttribute("Required", required));
+
+            selector.Add(new XElement(selector.Name.Namespace + (selectorName + ".Options"), functionMarkup));
+
+            return selector;
+            
         }
     }
 }

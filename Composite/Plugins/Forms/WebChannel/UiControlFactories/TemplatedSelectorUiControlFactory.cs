@@ -15,10 +15,6 @@ using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using Composite.C1Console.Forms.Foundation;
-using Composite.Core;
-using Composite.Data;
-using Composite.Functions;
 using System.Xml.Linq;
 
 
@@ -119,62 +115,61 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         internal void SetSelectedObjectsFromStringList(IEnumerable<string> selectedAsStrings)
         {
+            Verify.IsFalse(selectedAsStrings.Any(s => s == null), "One of the selected keys is null");
+
             InitializeSelectorElements();
 
-            foreach (string selectedAsString in selectedAsStrings)
-            {
-                if (selectedAsString == null)
-                {
-                    throw new InvalidOperationException("Selected key is null");
-                }
-            }
 
             this.SelectedObjects = new List<object>();
 
-            switch (this.BindingType)
+
+            bool bindToObject = (this.BindingType == SelectorBindingType.BindToObject)
+                                || (this.BindingType == SelectorBindingType.BindToKeyFieldValue 
+                                    && (this.OptionsKeyField == "." || this.OptionsKeyField == ""));
+
+            if (bindToObject)
             {
-                case SelectorBindingType.BindToObject:
-                    foreach (string selectedAsString in selectedAsStrings)
-                    {
-                        if (selectedAsString != _noneSelectionKey && _selectorObjects.ContainsKey(selectedAsString) == true)
-                        {
-                            this.SelectedObjects.Add(_selectorObjects[selectedAsString]);
-                        }
-                    }
-                    break;
-                case SelectorBindingType.BindToKeyFieldValue:
-                    if (this.OptionsKeyField == "." || this.OptionsKeyField == "")
-                    {
-                        foreach (string selectedAsString in selectedAsStrings)
-                        {
-                            if (selectedAsString != _noneSelectionKey && _selectorObjects.ContainsKey(selectedAsString) == true)
-                            {
-                                this.SelectedObjects.Add(_selectorObjects[selectedAsString]);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (string selectedAsString in selectedAsStrings)
-                        {
-                            if (selectedAsString != _noneSelectionKey)
-                            {
-                                if (_selectorObjects.ContainsKey(selectedAsString) == true)
-                                {
-                                    PropertyInfo keyPropertyInfo = _selectorObjects[selectedAsString].GetType().GetProperty(this.OptionsKeyField);
-                                    this.SelectedObjects.Add(keyPropertyInfo.GetValue(_selectorObjects[selectedAsString], null));
-                                }
-                            }
-                        }
-                    }
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown binding type");
+                foreach (string selectedAsString in selectedAsStrings.Where(_selectorObjects.ContainsKey))
+                {
+                    this.SelectedObjects.Add(_selectorObjects[selectedAsString]);
+                }
+                return;
             }
+
+            if (this.BindingType == SelectorBindingType.BindToKeyFieldValue)
+            {
+                foreach (string selectedAsString in selectedAsStrings)
+                {
+                    if (selectedAsString != _noneSelectionKey)
+                    {
+                        if (_selectorObjects.ContainsKey(selectedAsString))
+                        {
+                            object key;
+
+                            var @object = _selectorObjects[selectedAsString];
+
+                            if (@object is XElement)
+                            {
+                                key = (@object as XElement).Attribute(this.OptionsKeyField).Value;
+                            }
+                            else
+                            {
+                                PropertyInfo keyPropertyInfo = @object.GetType().GetProperty(this.OptionsKeyField);
+                                key = keyPropertyInfo.GetValue(@object, null);
+                            }
+
+                            this.SelectedObjects.Add(key);
+                        }
+                    }
+                }
+
+                return;
+            }
+
+            throw new InvalidOperationException("Unknown binding type");
         }
 
-
-
+        
         internal void InitializeWebViewState()
         {
             this.InitializeViewState();
@@ -266,80 +261,82 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
         private void InitializeSelectorElements()
         {
-            if (_selectorObjects == null)
+            if (_selectorObjects != null) return;
+
+            if (Options is IEnumerable<XElement>)
             {
-                _selectorObjects = new Dictionary<string, object>();
-                _keyLabelPairList = new List<KeyLabelPair>();
+                Verify.That(OptionsKeyField != "" && OptionsKeyField != ".", "Key attribute name is not defined");
+                Verify.That(OptionsLabelField != "" && OptionsLabelField != ".", "Label attribute name is not defined");
+            }
 
-                IEnumerator optionsEnumerator = Options.GetEnumerator();
+            _selectorObjects = new Dictionary<string, object>();
+            _keyLabelPairList = new List<KeyLabelPair>();
 
-                PropertyInfo labelPropertyInfo = null;
-                PropertyInfo keyPropertyInfo = null;
+            if (!Required && !MultiSelector)
+            {
+                _keyLabelPairList.Add(new KeyLabelPair(_noneSelectionKey, "<NONE>"));
+            }
 
-                Type lastOptionObjectType = null;
+            PropertyInfo keyPropertyInfo = null;
+            PropertyInfo labelPropertyInfo = null;
 
-                if (this.Required == false && this.MultiSelector == false)
+            Type lastOptionObjectType = null;
+
+            IEnumerator optionsEnumerator = Options.GetEnumerator();
+            while (optionsEnumerator.MoveNext())
+            {
+                object optionObject = optionsEnumerator.Current;
+
+                string label, uniqueKey;
+
+                if (Options is IEnumerable<XElement>)
                 {
-                    _keyLabelPairList.Add(new KeyLabelPair(_noneSelectionKey, "<NONE>"));
+                    XElement element = (XElement) optionObject;
+
+                    var keyAttr = element.Attribute(this.OptionsKeyField);
+                    var labelAttr = element.Attribute(this.OptionsLabelField);
+
+                    Verify.IsNotNull(keyAttr, "XElement missing attribute '{0}'", this.OptionsKeyField);
+                    Verify.IsNotNull(labelAttr, "XElement missing attribute '{0}'", this.OptionsLabelField);
+
+                    uniqueKey = keyAttr.Value;
+                    label = labelAttr.Value;
+                }
+                else
+                {
+                    object keyObject = GetPropertyValue(optionObject, this.OptionsKeyField, ref lastOptionObjectType, ref keyPropertyInfo);
+                    object labelObject = GetPropertyValue(optionObject, this.OptionsLabelField, ref lastOptionObjectType, ref labelPropertyInfo);
+                    
+                    // TODO: ValueTypeConverter.Convert<string>(keyObject) should be used
+                    uniqueKey = (keyObject is Type) ? TypeManager.SerializeType((Type)keyObject) : keyObject.ToString();
+                    label = labelObject.ToString();
                 }
 
-                while (optionsEnumerator.MoveNext())
-                {
-                    object optionObject = optionsEnumerator.Current;
+                _keyLabelPairList.Add(new KeyLabelPair(uniqueKey, label));
 
-                    string label = "";
-                    string uniqueKey = "";
+                Verify.IsFalse(_selectorObjects.ContainsKey(uniqueKey), "Key '{0}' appears more than one time".FormatWith(uniqueKey ?? string.Empty));
 
-                    if (this.OptionsLabelField == "." || this.OptionsLabelField == "")
-                    {
-                        label = optionObject.ToString();
-                    }
-                    else
-                    {
-                        if (optionObject.GetType() != lastOptionObjectType)
-                        {
-                            labelPropertyInfo = optionObject.GetType().GetProperty(this.OptionsLabelField);
-                            if (labelPropertyInfo == null) throw new InvalidOperationException("Malformed Selection configuration. The Selected binding type " + optionObject.GetType().FullName + " does not have a property named " + this.OptionsLabelField);
-                        }
-
-                        label = labelPropertyInfo.GetValue(optionObject, null).ToString();
-                    }
-
-                    if (this.OptionsKeyField == "." || this.OptionsKeyField == "")
-                    {
-                        uniqueKey = optionObject.ToString();
-                    }
-                    else
-                    {
-                        if (optionObject.GetType() != lastOptionObjectType)
-                        {
-                            keyPropertyInfo = optionObject.GetType().GetProperty(this.OptionsKeyField);
-                            if (keyPropertyInfo == null) throw new InvalidOperationException("Malformed Selection configuration. The Selected binding type " + optionObject.GetType().FullName + " does not have a property named " + this.OptionsKeyField);
-                        }
-
-                        object keyObject = keyPropertyInfo.GetValue(optionObject, null);
-
-                        // TODO: ValueTypeConverter.Convert<string>(keyObject) should be used
-                        if (keyObject is Type)
-                        {
-                            uniqueKey = TypeManager.SerializeType((Type)keyObject);
-                        }
-                        else
-                        {
-                            uniqueKey = keyObject.ToString();
-                        }
-                    }
-
-                    Verify.IsFalse(_selectorObjects.ContainsKey(uniqueKey), "Key '{0}' appears more than one time".FormatWith(uniqueKey ?? string.Empty));
-
-                    _selectorObjects.Add(uniqueKey, optionObject);
-                    _keyLabelPairList.Add(new KeyLabelPair(uniqueKey, label));
-
-                    lastOptionObjectType = optionObject.GetType();
-                }
+                _selectorObjects.Add(uniqueKey, optionObject);
             }
         }
 
+        private object GetPropertyValue(object @object, string propertyName, ref Type lastOptionObjectType, ref PropertyInfo lastUsedPropertyInfo)
+        {
+            if (this.OptionsLabelField == "." || this.OptionsLabelField == "")
+            {
+                return @object;
+            }
+
+            if (@object.GetType() != lastOptionObjectType)
+            {
+                lastOptionObjectType = @object.GetType();
+
+                lastUsedPropertyInfo = lastOptionObjectType.GetProperty(this.OptionsLabelField);
+                Verify.IsNotNull(lastUsedPropertyInfo, "Malformed Selection configuration. The Selected binding type '{0}' does not have a property named '{1}", @object.GetType().FullName, propertyName);
+            }
+
+            return lastUsedPropertyInfo.GetValue(@object, null).ToString();
+        }
 
         /// <exclude />
         public class KeyLabelPair
@@ -362,7 +359,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
     internal sealed class TemplatedSelectorUiControl : SelectorUiControl, IWebUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private SelectorTemplateUserControlBase _userControl;
 
 
