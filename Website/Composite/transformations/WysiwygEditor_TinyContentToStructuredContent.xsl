@@ -328,6 +328,9 @@
   <!-- remove weird BR tags inserted into stuff (bad tiny habit) -->
   <xsl:template match="x:*/x:br[not(following-sibling::node())]"/>
 
+  <!-- remove bogus br -->
+  <xsl:template match="x:br[@mce_bogus='1']"/>
+  
   <!-- remove weird br tags inserted into li -->
   <xsl:template match="x:br[@data-mce-bogus='1']"/>
 
