@@ -411,7 +411,7 @@ namespace Composite.Data
                 {
                     Verify.ArgumentCondition(element != null, "dataset", "datas may not contain nulls");
 
-                    if (element.IsDataReferfed() == true)
+                    if (element.IsDataReferred())
                     {
                         Verify.IsTrue(cascadeDeleteType != CascadeDeleteType.Disallow, "One of the given datas is referenced by one or more datas");
 
@@ -429,7 +429,7 @@ namespace Composite.Data
                         {
                             if (referee.CascadeDeleteAllowed(element.DataSourceId.InterfaceType) == false)
                             {
-                                throw new InvalidOperationException(string.Format("One of the given datas is referenced by one or more datas that does not allow cascade delete"));
+                                throw new InvalidOperationException("One of the given datas is referenced by one or more datas that does not allow cascade delete");
                             }
                         }
 

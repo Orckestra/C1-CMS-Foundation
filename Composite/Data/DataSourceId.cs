@@ -299,18 +299,6 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public bool EqualsModuloDataScope(DataSourceId dataSourceId)
-        {            
-            return 
-                Compare.PropertyCompare(this.DataId, dataSourceId.DataId) &&
-                this.ExistsInStore == dataSourceId.ExistsInStore &&
-                this.InterfaceType == dataSourceId.InterfaceType &&
-                this.ProviderName == dataSourceId.ProviderName;
-        }
-
-
-
-        /// <exclude />
         public override bool Equals(object obj)
         {
             if (obj == null) return false;

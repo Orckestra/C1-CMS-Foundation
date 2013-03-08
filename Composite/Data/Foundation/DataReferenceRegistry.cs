@@ -28,15 +28,18 @@ namespace Composite.Data.Foundation
 
         public static List<Type> GetRefereeTypes(Type referencedType)
         {
-            if (referencedType == null) throw new ArgumentNullException("referencedType");
+            Verify.ArgumentNotNull(referencedType, "referencedType");
 
-            List<Type> refereeTypes;
+            List<Type> refereeTypes = new List<Type>();
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                if (_referencedToReferees.TryGetValue(referencedType, out refereeTypes) == false)
+                foreach (var key in _referencedToReferees.Keys)
                 {
-                    return new List<Type>();
+                    if (referencedType.IsAssignableFrom(key))
+                    {
+                        _referencedToReferees[key].ForEach(refereeTypes.Add);
+                    }
                 }
             }
 
@@ -51,7 +54,7 @@ namespace Composite.Data.Foundation
 
         public static List<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType)
         {
-            if (refereeType == null) throw new ArgumentNullException("refereeType");
+            Verify.ArgumentNotNull(refereeType, "refereeType");
 
             List<ForeignPropertyInfo> foreignKeyProperyInfos;
 
@@ -70,7 +73,7 @@ namespace Composite.Data.Foundation
 
         internal static void Initialize_PostDataTypes()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }

@@ -427,9 +427,9 @@ namespace Composite.Data
         /// <exclude />
         public static IDataReference BuildDataReference(Type referencedType, object keyValue)
         {
-            if (keyValue == null) throw new ArgumentNullException("keyValue");
-            if (referencedType == null) throw new ArgumentNullException("referencedType");
-            if (typeof(IData).IsAssignableFrom(referencedType) == false) throw new ArgumentException("The referenced type must implement IData", "referencedType");
+            Verify.ArgumentNotNull(keyValue, "keyValue");
+            Verify.ArgumentNotNull(referencedType, "referencedType");
+            Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(referencedType), "referencedType", "The referenced type must implement IData");
 
             Type genericReferenceType = typeof(DataReference<>).MakeGenericType(new Type[] { referencedType });
 
@@ -449,12 +449,13 @@ namespace Composite.Data
 
         internal static IEnumerable<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType, Type referencedType)
         {
-            if (refereeType == null) throw new ArgumentNullException("refereeType");
-            if (referencedType == null) throw new ArgumentNullException("referencedType");
+            Verify.ArgumentNotNull(refereeType, "refereeType");
+            Verify.ArgumentNotNull(referencedType, "referencedType");
 
             return
                 from fk in DataReferenceRegistry.GetForeignKeyProperties(refereeType)
                 where fk.TargetType == referencedType
+                      || referencedType.IsAssignableFrom(fk.TargetType)
                 select fk;
         }
 
@@ -462,7 +463,7 @@ namespace Composite.Data
 
         internal static ForeignPropertyInfo GetForeignKeyPropertyInfo(Type refereeType, string refereePropertyName)
         {
-            if (refereeType == null) throw new ArgumentNullException("refereeType");
+            Verify.ArgumentNotNull(refereeType, "refereeType");
 
             return DataReferenceRegistry.GetForeignKeyProperties(refereeType).Single(fk => fk.SourcePropertyName == refereePropertyName);
         }
@@ -471,8 +472,8 @@ namespace Composite.Data
 
         internal static IEnumerable<string> GetForeignKeyPropertyNames(Type refereeType, Type referencedType)
         {
-            if (refereeType == null) throw new ArgumentNullException("refereeType");
-            if (referencedType == null) throw new ArgumentNullException("referencedType");
+            Verify.ArgumentNotNull(refereeType, "refereeType");
+            Verify.ArgumentNotNull(referencedType, "referencedType");
 
             return
                 from fk in DataReferenceRegistry.GetForeignKeyProperties(refereeType)
@@ -484,7 +485,7 @@ namespace Composite.Data
 
         internal static bool CascadeDeleteAllowed(this IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             ForeignPropertyInfo foreignPropertyInfo =
                 (from pi in DataReferenceRegistry.GetForeignKeyProperties(data.DataSourceId.InterfaceType)
@@ -498,8 +499,8 @@ namespace Composite.Data
 
         internal static bool CascadeDeleteAllowed(this IData data, Type referencedType)
         {
-            if (data == null) throw new ArgumentNullException("data");
-            if (referencedType == null) throw new ArgumentNullException("referencedType");
+            Verify.ArgumentNotNull(data, "data");
+            Verify.ArgumentNotNull(referencedType, "referencedType");
 
             ForeignPropertyInfo foreignPropertyInfo =
                 (from pi in GetForeignKeyProperties(data.DataSourceId.InterfaceType, referencedType)
@@ -524,20 +525,20 @@ namespace Composite.Data
 
 
 
-        internal static bool IsDataReferfed(this IData referencedData)
+        internal static bool IsDataReferred(this IData referencedData)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             return GetReferees(referencedData, true, null, null, true).Any();
         }
 
 
 
-        internal static bool IsDataReferfed(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyPropertys, bool allScopes)
+        internal static bool IsDataReferred(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyProperties, bool allScopes)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
-            return GetReferees(referencedData, true, refereeType, null, allScopes).Any();
+            return GetReferees(referencedData, true, refereeType, foreignKeyProperties, allScopes).Any();
         }
 
 
@@ -546,7 +547,7 @@ namespace Composite.Data
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             return GetReferees(referencedData, false, null, null, true);
         }
@@ -557,7 +558,7 @@ namespace Composite.Data
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData, Type refereeType)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             return GetReferees(referencedData, false, refereeType, null, true);
         }
@@ -568,7 +569,7 @@ namespace Composite.Data
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static List<IData> GetReferees(this IData referencedData, bool allScopes)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             return GetReferees(referencedData, false, null, null, allScopes);
         }
@@ -579,7 +580,7 @@ namespace Composite.Data
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static List<IData> GetReferees(this IData referencedData, Type refereeType, IEnumerable<PropertyInfo> foreignKeyPropertys, bool allScopes)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             return GetReferees(referencedData, false, refereeType, foreignKeyPropertys, allScopes);
         }
@@ -588,7 +589,7 @@ namespace Composite.Data
 
         internal static IEnumerable<IData> GetRefereesRecursively(this IData referencedData)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             Dictionary<DataSourceId, IData> foundDatas = new Dictionary<DataSourceId, IData>();
 
@@ -601,7 +602,7 @@ namespace Composite.Data
 
         internal static IEnumerable<IData> GetRefereesRecursively(this IData referencedData, bool allScopes)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             Dictionary<DataSourceId, IData> foundDatas = new Dictionary<DataSourceId, IData>();
 
@@ -645,20 +646,20 @@ namespace Composite.Data
         
 
 
-        private static void GetRefereesRecursively(IData referencedData, bool allScopes, Dictionary<DataSourceId, IData> foundDatas)
+        private static void GetRefereesRecursively(IData referencedData, bool allScopes, Dictionary<DataSourceId, IData> foundDataset)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
-            if (foundDatas == null) throw new ArgumentNullException("foundDatas");
+            Verify.ArgumentNotNull(referencedData, "foundDataset");
+            Verify.ArgumentNotNull(foundDataset, "referencedData");
 
             List<IData> referees = referencedData.GetReferees(allScopes);
 
             foreach (IData data in referees)
             {
-                if (foundDatas.ContainsKey(data.DataSourceId) == false)
+                if (foundDataset.ContainsKey(data.DataSourceId) == false)
                 {
-                    foundDatas.Add(data.DataSourceId, data);
+                    foundDataset.Add(data.DataSourceId, data);
 
-                    GetRefereesRecursively(data, allScopes, foundDatas);
+                    GetRefereesRecursively(data, allScopes, foundDataset);
                 }
             }
         }
@@ -671,7 +672,7 @@ namespace Composite.Data
 
             foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperyInfos)
             {
-                if (foreignKeyProperyInfo.TargetType != referencedData.DataSourceId.InterfaceType)
+                if (!referencedData.DataSourceId.InterfaceType.IsAssignableFrom(foreignKeyProperyInfo.TargetType))
                 {
                     continue;
                 }
@@ -690,7 +691,7 @@ namespace Composite.Data
 
         private static List<IData> GetReferees(IData referencedData, bool returnOnFirstFound, Type refereeType, IEnumerable<PropertyInfo> propertiesToSearchBy, bool allScopes)
         {
-            if (referencedData == null) throw new ArgumentNullException("referencedData");
+            Verify.ArgumentNotNull(referencedData, "referencedData");
 
             IEnumerable<Type> refereeTypes;
             if (refereeType == null)
