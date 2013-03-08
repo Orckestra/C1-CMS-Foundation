@@ -3,7 +3,7 @@
 namespace Composite.Data
 {
     /// <summary>    
-    /// Used by the <see cref="Composite.Data.RelevantUserGroupAttribute"/> attribute.
+    /// Used by the <see cref="Composite.Data.RelevantToUserTypeAttribute"/> attribute.
     /// </summary>
     public enum UserType
     {

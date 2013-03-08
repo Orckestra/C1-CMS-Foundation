@@ -41,7 +41,6 @@ namespace Composite.C1Console.Elements
             if (IsAttachingPoint(entityToken, AttachingPoint.FunctionPerspective) == true) return AttachingPoint.FunctionPerspective;
             if (IsAttachingPoint(entityToken, AttachingPoint.MediaPerspective) == true) return AttachingPoint.MediaPerspective;
             if (IsAttachingPoint(entityToken, AttachingPoint.SystemPerspective) == true) return AttachingPoint.SystemPerspective;
-            if (IsAttachingPoint(entityToken, AttachingPoint.UserPerspective) == true) return AttachingPoint.UserPerspective;
 
             return null;
         }

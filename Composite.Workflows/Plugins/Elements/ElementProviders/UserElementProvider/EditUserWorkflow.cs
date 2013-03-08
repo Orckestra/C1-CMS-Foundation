@@ -72,7 +72,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             this.Bindings.Add("C1ConsoleUiCultures", regionLanguageList);
             this.Bindings.Add("C1ConsoleUiLanguageName", c1ConsoleUiLanguage.Name);
 
-            if ((UserSettings.GetActiveLocaleCultureInfos(user.Username).Count() > 0) && (user.Username != UserSettings.Username))
+            if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Any() && (user.Username != UserSettings.Username))
             {
                 this.Bindings.Add("ActiveLocaleName", UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Name);
                 this.Bindings.Add("ActiveLocaleList", DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle));
@@ -120,9 +120,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             List<string> serializedEntityToken = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username).ToList();
 
             ActivePerspectiveFormsHelper helper = new ActivePerspectiveFormsHelper(
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp")
+                    GetText("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel"),
+                    GetText("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel"),
+                    GetText("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp")
                 );
 
             bindingsElement.Add(helper.GetBindingsMarkup());
@@ -133,32 +133,32 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
 
 
-        private void UpdateFormDefinitionWithGlobalPermissions(IUser user, XElement bindingsElement, XElement placeHolderElement)
-        {
-            GlobalPermissionsFormsHelper helper = new GlobalPermissionsFormsHelper(
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp")
-                );
+        //private void UpdateFormDefinitionWithGlobalPermissions(IUser user, XElement bindingsElement, XElement placeHolderElement)
+        //{
+        //    GlobalPermissionsFormsHelper helper = new GlobalPermissionsFormsHelper(
+        //            GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel"),
+        //            GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel"),
+        //            GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp")
+        //        );
 
-            bindingsElement.Add(helper.GetBindingsMarkup());
-            placeHolderElement.Add(helper.GetFormMarkup());
+        //    bindingsElement.Add(helper.GetBindingsMarkup());
+        //    placeHolderElement.Add(helper.GetFormMarkup());
 
-            EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();
-            UserToken userToken = new UserToken(user.Username);
-            IEnumerable<PermissionType> permissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(userToken, rootEntityToken);
+        //    EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();
+        //    UserToken userToken = new UserToken(user.Username);
+        //    IEnumerable<PermissionType> permissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(userToken, rootEntityToken);
 
-            helper.UpdateWithNewBindings(this.Bindings, permissionTypes);
-        }
+        //    helper.UpdateWithNewBindings(this.Bindings, permissionTypes);
+        //}
 
 
 
         private void UpdateFormDefinitionWithActiveLocales(IUser user, XElement bindingsElement, XElement placeHolderElement)
         {
             ActiveLocalesFormsHelper helper = new ActiveLocalesFormsHelper(
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp")
+                    GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel"),
+                    GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel"),
+                    GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp")
                 );
 
             bindingsElement.Add(helper.GetBindingsMarkup());
@@ -172,8 +172,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         private void UpdateFormDefinitionWithUserGroups(IUser user, XElement bindingsElement, XElement placeHolderElement)
         {
             UserGroupsFormsHelper helper = new UserGroupsFormsHelper(
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp")
+                    GetText("Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel"),
+                    GetText("Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp")
                 );
 
             bindingsElement.Add(helper.GetBindingsMarkup());
@@ -221,11 +221,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     {
                         if (user.Username != UserSettings.Username)
                         {
-                            this.ShowFieldMessage("ActiveLocaleName", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.ActiveLocaleNotChecked"));
+                            this.ShowFieldMessage("ActiveLocaleName", GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocaleNotChecked"));
                         }
                         else
                         {
-                            this.ShowFieldMessage("ActiveLocalesFormsHelper_Selected", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected"));
+                            this.ShowFieldMessage("ActiveLocalesFormsHelper_Selected", GetText("Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected"));
                         }
                         userValidated = false;
                     }
@@ -233,28 +233,27 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
             else
             {
-                this.ShowFieldMessage("ActiveLocalesFormsHelper_Selected", StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected"));
+                this.ShowFieldMessage("ActiveLocalesFormsHelper_Selected", GetText("Website.Forms.Administrative.EditUserStep1.NoActiveLocaleSelected"));
                 userValidated = false;
             }
 
 
-            string usersPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.UserPerspective.EntityToken);
+            string systemPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken);
 
             List<Guid> newUserGroupIds = UserGroupsFormsHelper.GetSelectedUserGroupIds(this.Bindings);
             List<string> newSerializedEnitityTokens = ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings).ToList();
 
-            // Current user shouldn't be able to remove its own access to "Users" perspective
+            // Current user shouldn't be able to remove its own access to "System" perspective
             if(string.Compare(user.Username, UserSettings.Username, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
+                HashSet<Guid> groupsWithAccessToSystemPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(systemPerspectiveEntityToken));
 
-                HashSet<Guid> groupsWithAccessToUsersPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(usersPerspectiveEntityToken));
-
-               if(!newSerializedEnitityTokens.Contains(usersPerspectiveEntityToken)
-                   && !newUserGroupIds.Any(groupsWithAccessToUsersPerspective.Contains))
+               if(!newSerializedEnitityTokens.Contains(systemPerspectiveEntityToken)
+                   && !newUserGroupIds.Any(groupsWithAccessToSystemPerspective.Contains))
                {
                    this.ShowMessage(DialogType.Message,
-                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditErrorTitle"),
-                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditOwnAccessToUsersPerspective"));
+                            GetText("EditUserWorkflow.EditErrorTitle"),
+                            GetText("EditUserWorkflow.EditOwnAccessToSystemPerspective"));
 
                    userValidated = false;
                }
@@ -273,7 +272,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                 {
                     using(var connection = new DataConnection())
                     {
-                        string currentPwdFromDataProvider = connection.Get<IUser>().Where(f => f.Id == user.Id).First().EncryptedPassword;
+                        string currentPwdFromDataProvider = connection.Get<IUser>().First(f => f.Id == user.Id).EncryptedPassword;
                         user.EncryptedPassword = currentPwdFromDataProvider;
                     }
                 }
@@ -317,7 +316,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                         (newPermissionTypes.Contains(PermissionType.Administrate) == false))
                     {
                         newPermissionTypes = newPermissionTypes.Concat(new PermissionType[] { PermissionType.Administrate });
-                        this.ShowFieldMessage(GlobalPermissionsFormsHelper.GetFieldBindingPath(), StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval"));
+                        this.ShowFieldMessage(GlobalPermissionsFormsHelper.GetFieldBindingPath(), GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval"));
                     }
 
                     UserPermissionDefinition userPermissionDefinition =
@@ -453,8 +452,13 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             managementConsoleMessageService.ShowMessage(
                 DialogType.Message,
-                StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.MissingActiveLanguageTitle"),
-                StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.MissingActiveLanguageMessage"));
+                GetText("UserElementProvider.MissingActiveLanguageTitle"),
+                GetText("UserElementProvider.MissingActiveLanguageMessage"));
+        }
+
+        private string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Management", key);
         }
     }
 }

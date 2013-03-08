@@ -198,10 +198,6 @@ namespace Composite.C1Console.Trees.Foundation
                         attachingPoint = AttachingPoint.SystemPerspective;
                         break;
 
-                    case "User":
-                        attachingPoint = AttachingPoint.UserPerspective;
-                        break;
-
                     default:
                         tree.AddValidationError(nameAttribute.GetXPath(), "TreeValidationError.AutoAttachments.UnknownAttachmentPoint", nameAttribute.Value);
                         attachingPoint = null;

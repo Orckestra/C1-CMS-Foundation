@@ -1646,7 +1646,7 @@
     <Compile Include="Data\Foundation\ProcessControllerRegistry.cs" />
     <Compile Include="Data\IDataIdExtensions.cs" />
     <Compile Include="Data\LabelPropertyNameAttribute.cs" />
-    <Compile Include="Data\RelevantUserGroupAttribute.cs" />
+    <Compile Include="Data\RelevantToUserTypeAttribute.cs" />
     <Compile Include="Data\UserTypeEnum.cs" />
     <Compile Include="Data\DataMetaDataFacade.cs" />
     <Compile Include="Data\GeneratedTypes\GeneratedTypesFacade.cs" />

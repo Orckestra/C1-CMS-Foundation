@@ -19,7 +19,6 @@ namespace Composite.C1Console.Elements
         private static AttachingPoint _dataPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "DatasPerspective", Source = "VirtualElementProvider" };
         private static AttachingPoint _designPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "DesignPerspective", Source = "VirtualElementProvider" };
         private static AttachingPoint _functionPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "FunctionsPerspective", Source = "VirtualElementProvider" };
-        private static AttachingPoint _userPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "UserPerspective", Source = "VirtualElementProvider" };
         private static AttachingPoint _systemPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "SystemPerspective", Source = "VirtualElementProvider" };
 
 
@@ -41,8 +40,6 @@ namespace Composite.C1Console.Elements
         public static AttachingPoint LayoutPerspective { get { return _designPerspectiveAttachingPoint; } }
         /// <exclude />
         public static AttachingPoint FunctionPerspective { get { return _functionPerspectiveAttachingPoint; } }
-        /// <exclude />
-        public static AttachingPoint UserPerspective { get { return _userPerspectiveAttachingPoint; } }
         /// <exclude />
         public static AttachingPoint SystemPerspective { get { return _systemPerspectiveAttachingPoint; } }
 

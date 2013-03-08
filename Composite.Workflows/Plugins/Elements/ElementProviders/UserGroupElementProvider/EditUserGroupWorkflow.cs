@@ -13,7 +13,6 @@ using Composite.C1Console.Elements;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
-using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.Plugins.Elements.ElementProviders.UserElementProvider;
 using Composite.Data.Validation;
@@ -21,6 +20,7 @@ using Composite.Data.Validation.ClientValidationRules;
 using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
+using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
@@ -101,7 +101,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
         {
             this.ShowFieldMessage(
                 "UserGroup.Name",
-                StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.UserGroupNameAlreadyExists"));
+                SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.UserGroupNameAlreadyExists"));
         }
 
 
@@ -147,23 +147,23 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
         private bool ValidateUserPreservsAdminRights(IUserGroup userGroup, List<string> newUserGroupEntityTokens)
         {
-            string usersPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.UserPerspective.EntityToken);
+            string systemPerspectiveEntityToken = EntityTokenSerializer.Serialize(AttachingPoint.SystemPerspective.EntityToken);
 
             Guid groupId = userGroup.Id;
             string userName = UserSettings.Username;
 
             List<Guid> userGroupIds = UserGroupFacade.GetUserGroupIds(userName);
 
-            HashSet<Guid> groupsWithAccessToUsersPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(usersPerspectiveEntityToken));
+            HashSet<Guid> groupsWithAccessToSystemPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(systemPerspectiveEntityToken));
 
-            if (groupsWithAccessToUsersPerspective.Contains(groupId)
-                && !newUserGroupEntityTokens.Contains(usersPerspectiveEntityToken)
-                && !UserPerspectiveFacade.GetSerializedEntityTokens(userName).Contains(usersPerspectiveEntityToken)
-                && !userGroupIds.Any(anotherGroupId => anotherGroupId != groupId && groupsWithAccessToUsersPerspective.Contains(anotherGroupId)))
+            if (groupsWithAccessToSystemPerspective.Contains(groupId)
+                && !newUserGroupEntityTokens.Contains(systemPerspectiveEntityToken)
+                && !UserPerspectiveFacade.GetSerializedEntityTokens(userName).Contains(systemPerspectiveEntityToken)
+                && !userGroupIds.Any(anotherGroupId => anotherGroupId != groupId && groupsWithAccessToSystemPerspective.Contains(anotherGroupId)))
             {
                 this.ShowMessage(DialogType.Message,
-                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditErrorTitle"),
-                            StringResourceSystemFacade.GetString("Composite.Management", "EditUserWorkflow.EditOwnAccessToUsersPerspective"));
+                            SR.GetString("Composite.Management", "EditUserWorkflow.EditErrorTitle"),
+                            SR.GetString("Composite.Management", "EditUserWorkflow.EditOwnAccessToSystemPerspective"));
 
                 return false;
             }
@@ -181,9 +181,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
         private void UpdateFormDefinitionWithGlobalPermissions(IUserGroup userGroup, XElement bindingsElement, XElement placeHolderElement)
         {
             GlobalPermissionsFormsHelper helper = new GlobalPermissionsFormsHelper(
-                    StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp")
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel"),
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel"),
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp")
                 );
 
             bindingsElement.Add(helper.GetBindingsMarkup());
@@ -202,9 +202,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             List<string> serializedEntityToken = UserGroupPerspectiveFacade.GetSerializedEntityTokens(userGroup.Id).ToList();
 
             ActivePerspectiveFormsHelper helper = new ActivePerspectiveFormsHelper(
-                    StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveFieldLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectLabel"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp")
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveFieldLabel"),
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectLabel"),
+                    SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp")
                 );
 
             bindingsElement.Add(helper.GetBindingsMarkup());
