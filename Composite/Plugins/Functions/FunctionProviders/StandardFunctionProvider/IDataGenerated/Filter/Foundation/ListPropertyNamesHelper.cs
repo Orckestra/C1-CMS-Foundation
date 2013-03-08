@@ -14,7 +14,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         public static IEnumerable GetOptionsWithReferences(string typeManagerName)
         {
             Type t = TypeManager.GetType(typeManagerName);
-            IEnumerable<ForeignPropertyInfo> foreignKeyProperties = DataReferenceFacade.GetForeignKeyPropertyInfos(t);
+            IEnumerable<ForeignPropertyInfo> foreignKeyProperties = DataReferenceFacade.GetForeignKeyProperties(t);
             List<PropertyInfo> properties = t.GetPropertiesRecursively(f=>f.DeclaringType!=typeof(IData));
 
             List<string> result = new List<string>();

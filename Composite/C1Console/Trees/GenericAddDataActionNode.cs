@@ -104,7 +104,7 @@ namespace Composite.C1Console.Trees
                 {
                     Type interfaceType = parentIdFilterNode.ParentFilterType;
 
-                    IEnumerable<ForeignPropertyInfo> foreignPropertyInfos = DataReferenceFacade.GetForeignKeyPropertyInfos(this.InterfaceType, interfaceType);
+                    IEnumerable<ForeignPropertyInfo> foreignPropertyInfos = DataReferenceFacade.GetForeignKeyProperties(this.InterfaceType, interfaceType);
 
                     foreach (ForeignPropertyInfo foreignPropertyInfo in foreignPropertyInfos)
                     {

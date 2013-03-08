@@ -43,9 +43,13 @@ namespace Composite.Data.Foundation
             return refereeTypes;
         }
 
-
-
+        [Obsolete("Use 'GetForeignKeyProperties' instead")]
         public static List<ForeignPropertyInfo> GetForeignKeyPropertyInfos(Type refereeType)
+        {
+            return GetForeignKeyProperties(refereeType);
+        }
+
+        public static List<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType)
         {
             if (refereeType == null) throw new ArgumentNullException("refereeType");
 
@@ -94,12 +98,12 @@ namespace Composite.Data.Foundation
 
                 PropertyInfo propertyInfo = foreignKeyProperyInfo.TargetType.GetDataPropertyRecursivly(foreignKeyProperyInfo.TargetKeyPropertyName);
 
-                if (propertyInfo == null) throw new InvalidOperationException(string.Format("The data type '{0}' does not contain a property named '{1}' as specified by the '{2}' attribute on the data type '{3}'", foreignKeyProperyInfo.TargetType, foreignKeyProperyInfo.TargetKeyPropertyName, typeof(ForeignKeyAttribute), foreignKeyProperyInfo.SourcePropertyInfo.DeclaringType));
-                if (propertyInfo.CanRead == false) throw new InvalidOperationException(string.Format("The property '{0}' shoud have a getter", propertyInfo));
-                if ((foreignKeyProperyInfo.IsNullableString == true) && (propertyInfo.PropertyType != typeof(string))) throw new InvalidOperationException(string.Format("NullableString can only be used when the foriegn key is of type string"));
+                Verify.IsNotNull(propertyInfo, "The data type '{0}' does not contain a property named '{1}' as specified by the '{2}' attribute on the data type '{3}'", foreignKeyProperyInfo.TargetType, foreignKeyProperyInfo.TargetKeyPropertyName, typeof(ForeignKeyAttribute), foreignKeyProperyInfo.SourcePropertyInfo.DeclaringType);
+                Verify.That(propertyInfo.CanRead, "The property '{0}' shoud have a getter", propertyInfo);
+                if (foreignKeyProperyInfo.IsNullableString && (propertyInfo.PropertyType != typeof(string))) throw new InvalidOperationException("NullableString can only be used when the foreign key is of type string");
 
                 Type sourcePropertyType = foreignKeyProperyInfo.SourcePropertyInfo.PropertyType;
-                if ((sourcePropertyType.IsGenericType == true) &&
+                if (sourcePropertyType.IsGenericType &&
                     (sourcePropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                 {
                     // Handling og Nullable<>

@@ -106,7 +106,7 @@ namespace Composite.Data
         /// <exclude />
         public bool IsOptionalReference
         {
-            get { return SourcePropertyInfo.PropertyType == typeof (Guid?); }
+            get { return IsNullableString || SourcePropertyInfo.PropertyType == typeof (Guid?); }
         }
 
 

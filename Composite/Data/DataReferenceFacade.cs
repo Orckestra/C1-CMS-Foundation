@@ -118,7 +118,7 @@ namespace Composite.Data
 
             bool totalValidity = true;
 
-            foreach (ForeignPropertyInfo foreignPropertyInfo in DataReferenceRegistry.GetForeignKeyPropertyInfos(refereeData.DataSourceId.InterfaceType))
+            foreach (ForeignPropertyInfo foreignPropertyInfo in DataReferenceRegistry.GetForeignKeyProperties(refereeData.DataSourceId.InterfaceType))
             {
                 // If Nullable references are allowed, a check for SourcePropertyInfo.PropertyType.GetGenericDef == typeof(Nullable<?>) 
                 // If it is a nullable and has no value, then all is ok and contine 
@@ -136,8 +136,8 @@ namespace Composite.Data
                     }
                 }
 
-                // Hanlding null of type string where the reference should be handled as a non-reference
-                if ((refereeForeignKeyValue == null) && (foreignPropertyInfo.IsNullableString == true))
+                // Handling null of type string where the reference should be handled as a non-reference
+                if ((refereeForeignKeyValue == null) && foreignPropertyInfo.IsNullableString)
                 {
                     continue;
                 }
@@ -340,7 +340,7 @@ namespace Composite.Data
             foreach (var referencedType in referencedTypes)
             {
 
-                foreach (var foregnKeyProperty in GetForeignKeyPropertyInfos(referencedType, dataType))
+                foreach (var foregnKeyProperty in GetForeignKeyProperties(referencedType, dataType))
                 {
                     if (foregnKeyProperty.IsOptionalReference)
                     {
@@ -374,7 +374,7 @@ namespace Composite.Data
             foreach (var referencedType in referencedTypes)
             {
 
-                foreach (var foregnKeyProperty in GetForeignKeyPropertyInfos(referencedType, dataType))
+                foreach (var foregnKeyProperty in GetForeignKeyProperties(referencedType, dataType))
                 {
                     if(!foregnKeyProperty.IsOptionalReference)
                     {
@@ -385,7 +385,7 @@ namespace Composite.Data
 
                     foreach (var refenecedData in references)
                     {
-                        foregnKeyProperty.SourcePropertyInfo.SetValue(refenecedData, new Guid?(), null);
+                        foregnKeyProperty.SourcePropertyInfo.SetValue(refenecedData, null, null);
                         DataFacade.Update(refenecedData, false, true, false);
                     }
                 }
@@ -397,7 +397,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool TryGetReferenceType(this PropertyInfo propertyInfo, out Type typeBeingReferenced)
         {
-            if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
+            Verify.ArgumentNotNull(propertyInfo, "propertyInfo");
 
             typeBeingReferenced = null;
 
@@ -405,7 +405,7 @@ namespace Composite.Data
             {
                 if (_propertyReferenceTargetTypeLookup.TryGetValue(propertyInfo, out typeBeingReferenced) == false)
                 {
-                    IEnumerable<ForeignPropertyInfo> foreignKeysOnType = DataReferenceRegistry.GetForeignKeyPropertyInfos(propertyInfo.DeclaringType);
+                    IEnumerable<ForeignPropertyInfo> foreignKeysOnType = DataReferenceRegistry.GetForeignKeyProperties(propertyInfo.DeclaringType);
                     ForeignPropertyInfo match = foreignKeysOnType.FirstOrDefault(f => f.SourcePropertyName == propertyInfo.Name);
 
                     typeBeingReferenced = (match != null ? match.TargetType : null);
@@ -438,24 +438,22 @@ namespace Composite.Data
 
 
 
-        internal static IEnumerable<ForeignPropertyInfo> GetForeignKeyPropertyInfos(Type refereeType)
+        internal static IEnumerable<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType)
         {
-            if (refereeType == null) throw new ArgumentNullException("refereeType");
+            Verify.ArgumentNotNull(refereeType, "refereeType");
 
-            return
-                from fk in DataReferenceRegistry.GetForeignKeyPropertyInfos(refereeType)
-                select fk;
+            return DataReferenceRegistry.GetForeignKeyProperties(refereeType);
         }
 
 
 
-        internal static IEnumerable<ForeignPropertyInfo> GetForeignKeyPropertyInfos(Type refereeType, Type referencedType)
+        internal static IEnumerable<ForeignPropertyInfo> GetForeignKeyProperties(Type refereeType, Type referencedType)
         {
             if (refereeType == null) throw new ArgumentNullException("refereeType");
             if (referencedType == null) throw new ArgumentNullException("referencedType");
 
             return
-                from fk in DataReferenceRegistry.GetForeignKeyPropertyInfos(refereeType)
+                from fk in DataReferenceRegistry.GetForeignKeyProperties(refereeType)
                 where fk.TargetType == referencedType
                 select fk;
         }
@@ -466,7 +464,7 @@ namespace Composite.Data
         {
             if (refereeType == null) throw new ArgumentNullException("refereeType");
 
-            return DataReferenceRegistry.GetForeignKeyPropertyInfos(refereeType).Single(fk => fk.SourcePropertyName == refereePropertyName);
+            return DataReferenceRegistry.GetForeignKeyProperties(refereeType).Single(fk => fk.SourcePropertyName == refereePropertyName);
         }
 
 
@@ -477,7 +475,7 @@ namespace Composite.Data
             if (referencedType == null) throw new ArgumentNullException("referencedType");
 
             return
-                from fk in DataReferenceRegistry.GetForeignKeyPropertyInfos(refereeType)
+                from fk in DataReferenceRegistry.GetForeignKeyProperties(refereeType)
                 where fk.TargetType == referencedType
                 select fk.SourcePropertyName;
         }
@@ -489,7 +487,7 @@ namespace Composite.Data
             if (data == null) throw new ArgumentNullException("data");
 
             ForeignPropertyInfo foreignPropertyInfo =
-                (from pi in DataReferenceRegistry.GetForeignKeyPropertyInfos(data.DataSourceId.InterfaceType)
+                (from pi in DataReferenceRegistry.GetForeignKeyProperties(data.DataSourceId.InterfaceType)
                  where pi.AllowCascadeDeletes == false
                  select pi).FirstOrDefault();
 
@@ -504,7 +502,7 @@ namespace Composite.Data
             if (referencedType == null) throw new ArgumentNullException("referencedType");
 
             ForeignPropertyInfo foreignPropertyInfo =
-                (from pi in GetForeignKeyPropertyInfos(data.DataSourceId.InterfaceType, referencedType)
+                (from pi in GetForeignKeyProperties(data.DataSourceId.InterfaceType, referencedType)
                  where pi.AllowCascadeDeletes == false
                  select pi).FirstOrDefault();
 
@@ -621,7 +619,7 @@ namespace Composite.Data
             if (string.IsNullOrEmpty(foreignKeyProrptyName) == true) throw new ArgumentNullException("foreignKeyProrptyName");
 
             ForeignPropertyInfo foreignPropertyInfo =
-                (from fkpi in DataReferenceRegistry.GetForeignKeyPropertyInfos(refereeData.DataSourceId.InterfaceType)
+                (from fkpi in DataReferenceRegistry.GetForeignKeyProperties(refereeData.DataSourceId.InterfaceType)
                  where fkpi.SourcePropertyName == foreignKeyProrptyName
                  select fkpi).Single();
 
@@ -710,7 +708,7 @@ namespace Composite.Data
 
             foreach (Type refType in refereeTypes)
             {
-                List<ForeignPropertyInfo> foreignKeyProperyInfos = DataReferenceRegistry.GetForeignKeyPropertyInfos(refType);
+                List<ForeignPropertyInfo> foreignKeyProperyInfos = DataReferenceRegistry.GetForeignKeyProperties(refType);
 
                 if (propertiesToSearchBy != null)
                 {

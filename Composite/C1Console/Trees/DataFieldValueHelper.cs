@@ -135,7 +135,7 @@ namespace Composite.C1Console.Trees
                     return;
                 }
 
-                bool isReferencingProperty = DataReferenceFacade.GetForeignKeyPropertyInfos(interfaceType).Where(f => f.SourcePropertyInfo.Equals(propertyInfo)).Any();
+                bool isReferencingProperty = DataReferenceFacade.GetForeignKeyProperties(interfaceType).Where(f => f.SourcePropertyInfo.Equals(propertyInfo)).Any();
 
                 DataFieldValueHelperEntry entry = new DataFieldValueHelperEntry(
                     match.Value,
