@@ -7,7 +7,6 @@ using System.Web.WebPages.Html;
 using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.WebClient.Renderings.Template;
-using Composite.Core.Xml;
 using Composite.Data.Types;
 
 namespace Composite.AspNet.Razor
@@ -17,7 +16,7 @@ namespace Composite.AspNet.Razor
     /// </summary>
     public class C1HtmlHelper
     {
-        private HtmlHelper _helper;
+        private readonly HtmlHelper _helper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="C1HtmlHelper"/> class.
@@ -252,39 +251,6 @@ namespace Composite.AspNet.Razor
             }
 
             return _helper.Raw(sb.ToString());
-        }
-
-        /// <summary>
-        /// Renders the &lt;body /&gt; part of the specified xhtml document.
-        /// </summary>
-        /// <param name="xhtmlDocument">The XHTML document.</param>
-        /// <returns></returns>
-        public IHtmlString Body(string xhtmlDocument)
-        {
-            var doc = XhtmlDocument.Parse(xhtmlDocument);
-
-            return Body(doc);
-        }
-
-        /// <summary>
-        /// Renders the &lt;body /&gt; part of the specified xhtml document.
-        /// </summary>
-        /// <param name="xhtmlDocument">The XHTML document.</param>
-        /// <returns></returns>
-        public IHtmlString Body(XhtmlDocument xhtmlDocument)
-        {
-            var body = xhtmlDocument.Descendants().SingleOrDefault(el => el.Name.LocalName == "body");
-            if (body != null)
-            {
-                using (var reader = body.CreateReader())
-                {
-                    reader.MoveToContent();
-
-                    return _helper.Raw(reader.ReadInnerXml());
-                }
-            }
-
-            return Markup(xhtmlDocument);
         }
 
         /// <summary>
