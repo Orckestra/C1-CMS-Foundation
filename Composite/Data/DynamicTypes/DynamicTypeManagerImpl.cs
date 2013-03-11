@@ -88,7 +88,7 @@ namespace Composite.Data.DynamicTypes
             {
                 DataMetaDataFacade.PersistMetaData(dataTypeChangeDescriptor.AlteredType);
 
-                if (dataTypeChangeDescriptor.AlteredTypeHasChanges == true)
+                if (dataTypeChangeDescriptor.AlteredTypeHasChanges)
                 {
                     DataProviderPluginFacade.AlterStore(updateDataTypeDescriptor, forceCompile);
                 }                

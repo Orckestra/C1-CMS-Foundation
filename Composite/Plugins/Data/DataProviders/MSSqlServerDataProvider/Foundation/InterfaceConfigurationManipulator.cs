@@ -68,13 +68,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             lock (_syncRoot)
             {
-                if ((localeChanges == false) &&
-                    (changeDescriptor.AddedDataScopes.Count() == 0) &&
-                    (changeDescriptor.DeletedDataScopes.Count() == 0) &&
-                    (changeDescriptor.AddedKeyFields.Count() == 0) &&
-                    (changeDescriptor.DeletedKeyFields.Count() == 0)
-                    && (changeDescriptor.OriginalType.Namespace == changeDescriptor.AlteredType.Namespace)
-                    && (changeDescriptor.OriginalType.Name == changeDescriptor.AlteredType.Name))
+                if (!localeChanges &&
+                    !changeDescriptor.AddedDataScopes.Any() &&
+                    !changeDescriptor.DeletedDataScopes.Any() &&
+                    !changeDescriptor.AddedKeyFields.Any() &&
+                    !changeDescriptor.DeletedKeyFields.Any() &&
+                    (changeDescriptor.OriginalType.Namespace == changeDescriptor.AlteredType.Namespace) &&
+                    (changeDescriptor.OriginalType.Name == changeDescriptor.AlteredType.Name))
                 {
                     // No changes to the config is needed, lets not touch the file.
                     return null;

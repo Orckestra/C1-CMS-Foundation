@@ -294,7 +294,7 @@ namespace Composite.Data.DynamicTypes
         // Helper
         internal static bool EnsureUpdateStore(Type interfaceType, string providerName, bool makeAFlush)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler(interfaceType.ToString()))
+            using (TimerProfilerFacade.CreateTimerProfiler(interfaceType.ToString()))
             {
                 DataTypeDescriptor newDataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
                 DataTypeDescriptor oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);

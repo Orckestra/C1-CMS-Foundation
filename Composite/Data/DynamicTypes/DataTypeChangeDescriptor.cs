@@ -53,7 +53,7 @@ namespace Composite.Data.DynamicTypes
                 alteredTypeHasChanges |= this.DeletedFields.Any();
                 alteredTypeHasChanges |= this.AddedKeyFields.Any();
                 alteredTypeHasChanges |= this.DeletedKeyFields.Any();
-                alteredTypeHasChanges |= this.ExistingFields.Where(f => f.AlteredFieldHasChanges == true).Any();
+                alteredTypeHasChanges |= this.ExistingFields.Any(f => f.AlteredFieldHasChanges);
                 alteredTypeHasChanges |= this.AddedDataScopes.Any();
                 alteredTypeHasChanges |= this.DeletedDataScopes.Any();
                 return alteredTypeHasChanges;
@@ -175,7 +175,10 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return _original.Fields.Except(_altered.Fields, new DataFieldIdEqualityComparer()).Where(f => _original.KeyPropertyNames.Contains(f.Name));
+                var originalKeyFields = _original.Fields.Where(f => _original.KeyPropertyNames.Contains(f.Name));
+                var alteredKeyFields = _altered.Fields.Where(f => _altered.KeyPropertyNames.Contains(f.Name));
+
+                return originalKeyFields.Except(alteredKeyFields, new DataFieldIdEqualityComparer());
             }
         }
 
@@ -187,7 +190,10 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return _altered.Fields.Except(_original.Fields, new DataFieldIdEqualityComparer()).Where(f => _altered.KeyPropertyNames.Contains(f.Name));
+                var originalKeyFields = _original.Fields.Where(f => _original.KeyPropertyNames.Contains(f.Name));
+                var alteredKeyFields = _altered.Fields.Where(f => _altered.KeyPropertyNames.Contains(f.Name));
+
+                return alteredKeyFields.Except(originalKeyFields, new DataFieldIdEqualityComparer());
             }
         }
 

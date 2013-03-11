@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using Composite.Core;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
 using Composite.Core.Sql;
 using Composite.Core.Types;
 using Composite.Data;
@@ -404,7 +403,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                             originalTableName));
                 }
 
-                DropAllConstraintsExceptPrimaryKey(originalTableName);
+
+                bool primaryKeyChanged = changeDescriptor.AddedKeyFields.Any() || changeDescriptor.DeletedKeyFields.Any();
+
+                DropConstraints(originalTableName, primaryKeyChanged);
 
                 if (originalTableName != alteredTableName)
                 {
@@ -426,6 +428,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
 
                 AppendFields(alteredTableName, changeDescriptor.OriginalType.Fields, changeDescriptor.AddedFields, defaultValues);
+
+                if (primaryKeyChanged)
+                {
+                    ExecuteNonQuery(SetPrimaryKey(alteredTableName, changeDescriptor.AlteredType.KeyPropertyNames, !changeDescriptor.AlteredType.HasCustomPhysicalSortOrder));
+                }
             }
             catch (Exception ex)
             {
@@ -509,16 +516,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
             foreach (var deletedFieldDescriptor in fieldsToDrop)
             {
-                var column = fields.Where(f => f.Name.Equals(deletedFieldDescriptor.Name)).Any();
+                var columnExists = fields.Any(f => f.Name.Equals(deletedFieldDescriptor.Name));
 
-                if (column)
+                if (columnExists)
                 {
                     sql.AppendFormat("ALTER TABLE [{0}] DROP COLUMN [{1}];", tableName, deletedFieldDescriptor.Name);
                 }
                 else
                 {
-                    LoggingService.LogWarning(typeof(SqlDataProvider).FullName,
-                        "Column '{0}' on table '{1}' has already been dropped".FormatWith(deletedFieldDescriptor.Name, tableName));
+                    Log.LogWarning(typeof(SqlDataProvider).FullName, "Column '{0}' on table '{1}' has already been dropped", deletedFieldDescriptor.Name, tableName);
                 }
             }
 
@@ -531,7 +537,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             foreach (var addedFieldDescriptor in addedFieldDescriptions)
             {
-                var originalColumn = originalFieldDescriptions.Where(f => f.Name.Equals(addedFieldDescriptor.Name)).SingleOrDefault();
+                var originalColumn = originalFieldDescriptions.SingleOrDefault(f => f.Name.Equals(addedFieldDescriptor.Name));
                 if (originalColumn != null)
                 {
                     ConfigureColumn(tableName, originalColumn.Name, addedFieldDescriptor, originalColumn, true);
@@ -582,14 +588,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             return constraints;
         }
 
-        private void DropAllConstraintsExceptPrimaryKey(string tableName)
+        private void DropConstraints(string tableName, bool includingPrimaryKey)
         {
             var sql = new StringBuilder();
             var constraints = GetConstraints(tableName);
 
             foreach (var constraint in constraints)
             {
-                if (!IsPrimaryKeyContraint(constraint))
+                if (includingPrimaryKey || !IsPrimaryKeyContraint(constraint))
                 {
                     sql.AppendFormat("ALTER TABLE [{0}] DROP CONSTRAINT [{1}];", tableName, constraint);
                 }
