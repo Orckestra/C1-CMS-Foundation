@@ -10,7 +10,8 @@
 
 		<title>C1: <%=Request.Url.Host%></title>
         <meta name="robots" content="noindex, nofollow" />
-		
+        <meta name="google" value="notranslate" />		
+
 		<control:styleloader runat="server"/>
 		<link rel="stylesheet" type="text/css" href="top.css.aspx"/>
 		<link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico"/>
