@@ -24,7 +24,8 @@
 				<xs:element name="paramelement" type="ParametersValueElement" />
 			</xs:sequence>
       <xs:any namespace="##other" minOccurs="0"/>
-		</xs:choice>
+      <xs:any namespace="##local" minOccurs="0"/>
+    </xs:choice>
 
 		<xs:attribute name="name" type="xs:string" use="required"/>
 		<xs:attribute name="value" type="xs:string" use="optional"/>

@@ -44,7 +44,7 @@ namespace Composite.Core.WebClient
 
             Dictionary<string, List<ClientValidationRule>> bindingsValidationRules = new Dictionary<string, List<ClientValidationRule>>();
 
-            foreach (ParameterProfile parameterProfile in parameterProfiles)
+            foreach (ParameterProfile parameterProfile in parameterProfiles.Where(f=>f.WidgetFunction!=null))
             {
                 bindingsDeclaration.Add(
                     new XElement(Namespaces.BindingForms10 + "binding",
