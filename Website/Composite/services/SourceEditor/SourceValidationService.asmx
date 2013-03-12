@@ -71,7 +71,7 @@ namespace Composite.Services
                         XmlReaderSettings settings = new XmlReaderSettings();
                         settings.ValidationType = ValidationType.Schema;
                         settings.ValidationEventHandler += ReaderValidationEventHandler;
-                        var schema = GetSchema("~/Composite/schemas/Functions/XsltFunctionCalls.xsd");
+                        var schema = GetSchema("~/Composite/schemas/Functions/Function.xsd");
 
                         if (schema != null)
                         {
@@ -88,9 +88,9 @@ namespace Composite.Services
                         throw new ArgumentException(string.Format("Unknown validatorName '{0}' - have the editor been misconfigured?", validatorName), "validatorName");
                 }
             }
-            catch (Exception exception)
+            catch (XmlSchemaException e)
             {
-                result = exception.Message;
+                result = string.Format("{0}\n\nLine number {1}.", e.Message, e.LineNumber);
             }
             return result;
         }

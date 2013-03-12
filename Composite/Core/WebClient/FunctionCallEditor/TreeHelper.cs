@@ -131,7 +131,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
 
             List<XElement> functionNodes = functionMarkup
                 .Descendants()
-                .Where(node => (node.Name == FunctionNodeName || node.Name == WidgetFunctionNodeName) && !node.Ancestors().Any(g=>g.Name.Namespace != Namespaces.Function10))
+                .Where(node => (node.Name == FunctionNodeName || node.Name == WidgetFunctionNodeName) && !node.Ancestors().Where(f=>f.Parent!=null).Any(g=>g.Name.Namespace != Namespaces.Function10))
                 .ToList();
             foreach (XElement functionNode in functionNodes)
             {

@@ -13,7 +13,8 @@
 		</xs:sequence>
 
 		<xs:attribute name="name" type="xs:string" use="required"/>
-	</xs:complexType>
+    <xs:attribute name="localname" type="xs:string" use="optional"/>
+  </xs:complexType>
 
 	<xs:complexType name="ParamType">
 		<xs:choice>
@@ -22,6 +23,7 @@
 			<xs:sequence minOccurs="0" maxOccurs="unbounded">
 				<xs:element name="paramelement" type="ParametersValueElement" />
 			</xs:sequence>
+      <xs:any namespace="##other" minOccurs="0"/>
 		</xs:choice>
 
 		<xs:attribute name="name" type="xs:string" use="required"/>

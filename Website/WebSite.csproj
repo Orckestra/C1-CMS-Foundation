@@ -23,6 +23,10 @@
     </UpgradeBackupLocation>
     <TargetFrameworkProfile />
     <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -6347,9 +6351,6 @@
     <Content Include="Composite\services\WysiwygEditor\YellowBox.ashx" />
     <Content Include="Composite\services\Admin\DownloadFile.ashx" />
     <None Include="Composite\schemas\Functions\Function.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Composite\schemas\Functions\XsltFunctionCalls.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Composite\schemas\Trees\Tree.xsd">

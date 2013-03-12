@@ -22,7 +22,7 @@ namespace CompositeEditFunctionCall
         {
             SetDesignerParameters();
 
-            if(IsPostBack)
+            if (IsPostBack)
             {
                 Ok_Click(null, null);
             }
@@ -30,17 +30,17 @@ namespace CompositeEditFunctionCall
 
         private void SetDesignerParameters()
         {
-            if(!IsPostBack)
+            if (!IsPostBack)
             {
                 string typeName = Request.QueryString["type"];
 
-                if(typeName.IsNullOrEmpty())
+                if (typeName.IsNullOrEmpty())
                 {
                     typeName = UrlUtils.UnZipContent(Request.QueryString["zip_type"]);
                 }
 
-                Type resultType = typeName == null ? typeof (object) : TypeManager.GetType(typeName);
-                
+                Type resultType = typeName == null ? typeof(object) : TypeManager.GetType(typeName);
+
 
                 IsWidgetSelection = Request.QueryString["functiontype"] == "widget";
 
@@ -49,13 +49,13 @@ namespace CompositeEditFunctionCall
                 var state = new FunctionCallEditorStateSimple();
 
                 IEnumerable<XElement> functionCalls = GetFunctionElementsFromQueryString();
-                if(IsWidgetSelection)
+                if (IsWidgetSelection)
                 {
                     functionCalls = ConvertToFunctions(functionCalls);
                 }
                 state.FunctionCallsXml = new XElement("functions", functionCalls.ToArray()).ToString();
                 state.MaxFunctionAllowed = MultiMode ? 1000 : 1;
-                state.AllowedResultTypes = new [] { resultType };
+                state.AllowedResultTypes = new[] { resultType };
                 state.WidgetFunctionSelection = IsWidgetSelection;
                 state.ConsoleId = Request.QueryString["consoleid"] ?? string.Empty;
 
@@ -83,7 +83,7 @@ namespace CompositeEditFunctionCall
 
             if (string.IsNullOrEmpty(functionMarkup))
             {
-                functionMarkup = HttpUtility.UrlDecode( this.Request.Form["functionMarkup"] );
+                functionMarkup = HttpUtility.UrlDecode(this.Request.Form["functionMarkup"]);
             }
 
             if (!string.IsNullOrEmpty(functionMarkup) && functionMarkup != "null")
@@ -98,7 +98,7 @@ namespace CompositeEditFunctionCall
                 {
                     foreach (XElement multiFunctionElement in functionElement.Elements())
                     {
-                        Verify.That(multiFunctionElement.Name.Namespace == Namespaces.Function10, 
+                        Verify.That(multiFunctionElement.Name.Namespace == Namespaces.Function10,
                                     "Nested function elements does not belong to expected namespace");
 
                         yield return multiFunctionElement;
@@ -138,27 +138,24 @@ namespace CompositeEditFunctionCall
         protected void Ok_Click(object sender, EventArgs e)
         {
             IFunctionCallEditorState state;
-            if(!SessionStateManager.DefaultProvider.TryGetState<IFunctionCallEditorState>(SessionStateId, out state))
+            if (!SessionStateManager.DefaultProvider.TryGetState<IFunctionCallEditorState>(SessionStateId, out state))
             {
                 throw new InvalidOperationException("Failed to get session state");
             }
-
-            //var castedState = (state as FunctionCallEditorStateSimple);
 
             string functionMarkup = "";
 
             foreach (NamedFunctionCall functionCall in state.FunctionCalls)
             {
                 XElement serializedFunctionCall = functionCall.FunctionCall.Serialize();
-                if(IsWidgetSelection)
-                {
-                    ConvertToWidgetFunction(serializedFunctionCall);
-                }
 
-                //if (this.FunctionCallDesigner.DisplayFunctionLocalNames == true && string.IsNullOrEmpty(functionCall.Name) == false)
-                //{
-                //    serializedFunctionCall.Add(new XAttribute("localname", functionCall.Name));
-                //}
+                var nestedFunctions = serializedFunctionCall.Descendants(Namespaces.Function10 + "function").Where(
+                    f => f.Parent.Name.Namespace != Namespaces.Function10 && f.Attribute(XNamespace.Xmlns + "f") == null);
+
+                foreach (var nestedFunction in nestedFunctions)
+                {
+                    nestedFunction.Add(new XAttribute(XNamespace.Xmlns + "f", Namespaces.Function10));
+                }
 
                 functionMarkup += serializedFunctionCall.ToString();
 
@@ -172,28 +169,15 @@ namespace CompositeEditFunctionCall
 
             this.FunctionMarkup.Value = functionMarkup;
 
-             this.DialogDoAcceptPlaceHolder.Visible = true;
+            this.DialogDoAcceptPlaceHolder.Visible = true;
         }
 
         private IEnumerable<XElement> ConvertToFunctions(IEnumerable<XElement> functionCalls)
         {
-            foreach(XElement element in functionCalls)
+            foreach (XElement element in functionCalls)
             {
-                // element.Name = Namespaces.Function10 + "function";
-
-                //// Removing "helpdefinition" tag since editor isn't using it anyway
-                //var helpDefinition = element.Elements(Namespaces.Function10 + "helpdefinition").FirstOrDefault();
-                //if(helpDefinition != null)
-                //{
-                //    helpDefinition.Remove();
-                //}
                 yield return element;
             }
         }
-
-        private void ConvertToWidgetFunction(XElement element)
-        {
-            // element.Name = Namespaces.Function10 + "widgetfunction";
-        }
-   }
+    }
 }

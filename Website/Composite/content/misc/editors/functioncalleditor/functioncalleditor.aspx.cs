@@ -468,8 +468,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         Verify.IsNotNull(functionCalls, "Failed to get function calls");
 
-        XElement functionsNode = XElement.Parse("<f:functions xmlns:f=\"{0}\" />".FormatWith(Namespaces.Function10.NamespaceName));
-        // new XElement(Namespaces.Function10 + "functions");
+        XElement functionsNode = XElement.Parse("<functions />");
 
         foreach (var localNamedFunctionCall in functionCalls)
         {
@@ -1389,7 +1388,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     /// <param name="root"></param>
     private static void CollapseGetInputParamaterFunctionCalls(XElement root, HashSet<string> inputParameterNodeIDs)
     {
-        List<XElement> parameterNodes = root.Descendants(ParameterNodeXName).ToList();
+        Func<XElement, bool> isUnnestedFunction10 = f => f.Ancestors().All(g => g.Name.Namespace == Namespaces.Function10);
+        List<XElement> parameterNodes = root.Descendants(ParameterNodeXName).Where(isUnnestedFunction10).ToList();
 
         var toBeRemoved = new List<XElement>();
 
