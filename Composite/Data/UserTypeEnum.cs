@@ -10,9 +10,6 @@ namespace Composite.Data
         /// <summary>
         /// Signals relevance to developers, making the data type visible when selecting data types in the C1 Console
         /// </summary>
-        Developer = 1//,
-//        BackEndDevelopers = 2,
-
-//        AllAdministrativeUsers = 7
+        Developer = 1
     }
 }
