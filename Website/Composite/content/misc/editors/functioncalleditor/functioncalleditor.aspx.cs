@@ -140,6 +140,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 {
                     _functionMarkup = XDocument.Load(stream);
                 }
+
+                PrettifyXmlNamespacePrefixes(_functionMarkup);
             }
 
             return _functionMarkup;
@@ -148,6 +150,19 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         {
             _functionMarkup = value;
         }
+    }
+
+    private static void PrettifyXmlNamespacePrefixes(XContainer funcionTree)
+    {
+        var nestedFunctions = funcionTree.Descendants(Namespaces.Function10 + "function").Where(
+            f => f.Parent.Name.Namespace != Namespaces.Function10 && f.Attribute(XNamespace.Xmlns + "f") == null).ToList();
+
+        foreach (var nestedFunction in nestedFunctions)
+        {
+            nestedFunction.Add(new XAttribute(XNamespace.Xmlns + "f", Namespaces.Function10));
+        }
+
+        funcionTree.Descendants(Namespaces.Function10 + "function").Attributes("xmlns").Remove();
     }
 
     // Contains info that is used while building ID-s for treeview nodes
@@ -487,6 +502,9 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             functionsNode.Add(function);
         }
 
+        PrettifyXmlNamespacePrefixes(functionsNode);
+
+
         FunctionMarkup = new XDocument(functionsNode);
     }
 
@@ -627,6 +645,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 attr.Remove();
             }
         }
+
+        PrettifyXmlNamespacePrefixes(functionMarkup);
 
         var utf8 = System.Text.Encoding.UTF8;
         var xmlWriterSettings = new XmlWriterSettings();
