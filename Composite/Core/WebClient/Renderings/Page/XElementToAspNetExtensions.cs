@@ -30,7 +30,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static Control AsAspNetControl(this XhtmlDocument xhtmlDocument, IXElementToControlMapper controlMapper)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 HtmlGenericControl htmlControl = new HtmlGenericControl("html");
                 CopyAttributes(xhtmlDocument.Root, htmlControl);
@@ -98,9 +98,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             if (controlMapper.TryGetControlFromXElement(element, out control) == false)
             {
-                if (IsEncapsulationElement(element) == true)
+                if (IsEncapsulationElement(element))
                 {
                     control = new HtmlGenericControl(element.Name.LocalName);
+                    control.ClientIDMode = ClientIDMode.Static;
                     CopyAttributes(element, (HtmlControl)control);
                     ExportChildNodes(element.Nodes(), control, controlMapper);
                 }
