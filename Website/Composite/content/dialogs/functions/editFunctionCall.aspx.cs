@@ -150,7 +150,7 @@ namespace CompositeEditFunctionCall
                 XElement serializedFunctionCall = functionCall.FunctionCall.Serialize();
 
                 var nestedFunctions = serializedFunctionCall.Descendants(Namespaces.Function10 + "function").Where(
-                    f => f.Parent.Name.Namespace != Namespaces.Function10 && f.Attribute(XNamespace.Xmlns + "f") == null);
+                    f => f.Parent.Name.Namespace != Namespaces.Function10 && f.Attribute(XNamespace.Xmlns + "f") == null).ToList();
 
                 foreach (var nestedFunction in nestedFunctions)
                 {
