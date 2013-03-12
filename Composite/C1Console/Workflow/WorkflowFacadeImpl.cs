@@ -21,7 +21,6 @@ using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.Threading;
 using Composite.Core.Types;
 using Composite.Core.Xml;
@@ -37,20 +36,20 @@ namespace Composite.C1Console.Workflow
 
         private static readonly TimeSpan _oldFileExistensTimeout = TimeSpan.FromDays(30.0);
 
-        private Thread _initializeThread = null;
+        private Thread _initializeThread;
         private readonly object _initializeThreadLock = new object();
         private bool _isShutDown = false;
-        private WorkflowRuntime _workflowRuntime = null;
-        List<Action> _actionToRunWhenInitialized = new List<Action>();
+        private WorkflowRuntime _workflowRuntime;
+        private readonly List<Action> _actionToRunWhenInitialized = new List<Action>();
 
-        private ExternalDataExchangeService _externalDataExchangeService = null;
-        private FormsWorkflowEventService _formsWorkflowEventService = null;
-        private ManualWorkflowSchedulerService _manualWorkflowSchedulerService = null;
-        private FileWorkFlowPersisetenceService _fileWorkFlowPersisetenceService = null;
+        private ExternalDataExchangeService _externalDataExchangeService;
+        private FormsWorkflowEventService _formsWorkflowEventService;
+        private ManualWorkflowSchedulerService _manualWorkflowSchedulerService;
+        private FileWorkFlowPersisetenceService _fileWorkFlowPersistenceService;
 
-        private ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.InitializeResources);
+        private readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.InitializeResources);
 
-        private Dictionary<Type, bool> _hasEntityTokenLockAttributeCache = new Dictionary<Type, bool>();
+        private readonly Dictionary<Type, bool> _hasEntityTokenLockAttributeCache = new Dictionary<Type, bool>();
 
 
         public WorkflowFacadeImpl()
@@ -152,7 +151,7 @@ namespace Composite.C1Console.Workflow
                     errors.AppendLine(error.ToString());
                 }
                 Log.LogError("WorkflowFacade", errors.ToString());
-                throw exp;
+                throw;
             }
         }
 
@@ -191,7 +190,7 @@ namespace Composite.C1Console.Workflow
                     errors.AppendLine(error.ToString());
                 }
                 Log.LogError("WorkflowFacade", errors.ToString());
-                throw exp;
+                throw;
             }
         }
 
@@ -276,7 +275,6 @@ namespace Composite.C1Console.Workflow
         }
 
 
-
         public void AbortWorkflow(Guid instanceId)
         {
             DoInitialize(0);
@@ -288,10 +286,10 @@ namespace Composite.C1Console.Workflow
 
                 if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
                 {
-                    WorkflowRuntime.GetWorkflow(instanceId).Abort();
+                    var workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
 
-                    _manualWorkflowSchedulerService.RunWorkflow(instanceId);
-
+                    workflowInstance.Abort();
+                    
                     Exception exception;
                     if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception) == true)
                     {
@@ -307,21 +305,15 @@ namespace Composite.C1Console.Workflow
 
         private void SetWorkflowPersistingType(Type workflowType, Guid instanceId)
         {
+            List<AllowPersistingWorkflowAttribute> attributes = workflowType.GetCustomAttributesRecursively<AllowPersistingWorkflowAttribute>().ToList();
+
+            Verify.That(attributes.Count <= 1, "More than one attribute of type '0' found", typeof(AllowPersistingWorkflowAttribute).FullName);
+
+            var persistanceType = attributes.Count == 1 ? attributes[0].WorkflowPersistingType : WorkflowPersistingType.Never;
+
             using (_resourceLocker.Locker)
             {
-                List<AllowPersistingWorkflowAttribute> attributes = workflowType.GetCustomAttributesRecursively<AllowPersistingWorkflowAttribute>().ToList();
-                if (attributes.Count == 0)
-                {
-                    _resourceLocker.Resources.WorkflowPersistingTypeDictionary.Add(instanceId, WorkflowPersistingType.Never);
-                }
-                else if (attributes.Count == 1)
-                {
-                    _resourceLocker.Resources.WorkflowPersistingTypeDictionary.Add(instanceId, attributes[0].WorkflowPersistingType);
-                }
-                else
-                {
-                    throw new NotImplementedException();
-                }
+                _resourceLocker.Resources.WorkflowPersistingTypeDictionary.Add(instanceId, persistanceType);
             }
         }
 
@@ -364,10 +356,7 @@ namespace Composite.C1Console.Workflow
 
         public void AcquireLock(Guid isntanceId, EntityToken entityToken)
         {
-            if (ActionLockingFacade.IsLocked(entityToken) == true)
-            {
-                throw new InvalidOperationException("The entityToken is already locked");
-            }
+            Verify.That(!ActionLockingFacade.IsLocked(entityToken), "The entityToken is already locked");
 
             ActionLockingFacade.AcquireLock(entityToken, isntanceId);
         }
@@ -478,17 +467,15 @@ namespace Composite.C1Console.Workflow
                 {
                     return null;
                 }
-                else
+                
+                if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
                 {
-                    if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
-                    {
-                        _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId);
-                    }
-
-                    Semaphore semaphore = new Semaphore(0, 1);
-                    _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Add(instanceId, semaphore);
-                    return semaphore;
+                    _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId);
                 }
+
+                Semaphore semaphore = new Semaphore(0, 1);
+                _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Add(instanceId, semaphore);
+                return semaphore;
             }
         }
 
@@ -501,7 +488,7 @@ namespace Composite.C1Console.Workflow
                 switch (workflowInstanceStatus)
                 {
                     case WorkflowInstanceStatus.Idle:
-                        if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId) == true)
+                        if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
                         {
                             _resourceLocker.Resources.WorkflowIdleWaitSemaphoes[instanceId].Release();
                             _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); ;
@@ -527,10 +514,10 @@ namespace Composite.C1Console.Workflow
                         break;
 
                     case WorkflowInstanceStatus.Terminated:
-                        if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId) == true)
+                        if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
                         {
                             _resourceLocker.Resources.WorkflowIdleWaitSemaphoes[instanceId].Release();
-                            _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); ;
+                            _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); 
                         }
 
                         _resourceLocker.Resources.WorkflowStatusDictionary.Remove(instanceId);
@@ -768,7 +755,7 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
-                _resourceLocker.Resources.FormDatas.Add(instanceId, formData);
+                _resourceLocker.Resources.FormData.Add(instanceId, formData);
             }
         }
 
@@ -780,7 +767,7 @@ namespace Composite.C1Console.Workflow
             {
                 formData = null;
 
-                if (_resourceLocker.Resources.FormDatas.TryGetValue(instanceId, out formData) == true)
+                if (_resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData) == true)
                 {
                     return true;
                 }
@@ -811,9 +798,9 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.FormDatas.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.FormData.ContainsKey(instanceId) == true)
                 {
-                    _resourceLocker.Resources.FormDatas.Remove(instanceId);
+                    _resourceLocker.Resources.FormData.Remove(instanceId);
                 }
             }
         }
@@ -826,7 +813,7 @@ namespace Composite.C1Console.Workflow
             _workflowRuntime = null;
             _externalDataExchangeService = null;
             _manualWorkflowSchedulerService = null;
-            _fileWorkFlowPersisetenceService = null;
+            _fileWorkFlowPersistenceService = null;
             _formsWorkflowEventService = null;
 
             _resourceLocker.ResetInitialization();
@@ -851,13 +838,11 @@ namespace Composite.C1Console.Workflow
                 {
                     using (GlobalInitializerFacade.CoreIsInitializedScope)
                     {
-                        PersistFormDatas();
+                        PersistFormData();
 
-                        AbortWorkflows();
+                        UnloadWorkflowsSilent();
 
-                        PersistExistingWorkflows();
-
-                        RemoveAbortedPersistedWorkflow();
+                        RemoveNotPersistableWorkflowsState();
                     }
                 }
             }
@@ -957,8 +942,8 @@ namespace Composite.C1Console.Workflow
             _manualWorkflowSchedulerService = new ManualWorkflowSchedulerService(true);
             _workflowRuntime.AddService(_manualWorkflowSchedulerService);
 
-            _fileWorkFlowPersisetenceService = new FileWorkFlowPersisetenceService(SerializedWorkflowsDirectory);
-            _workflowRuntime.AddService(_fileWorkFlowPersisetenceService);
+            _fileWorkFlowPersistenceService = new FileWorkFlowPersisetenceService(SerializedWorkflowsDirectory);
+            _workflowRuntime.AddService(_fileWorkFlowPersistenceService);
 
             _externalDataExchangeService = new ExternalDataExchangeService();
             _workflowRuntime.AddService(_externalDataExchangeService);
@@ -1116,9 +1101,8 @@ namespace Composite.C1Console.Workflow
 
             _workflowRuntime.WorkflowCreated += delegate(object sender, WorkflowEventArgs args)
             {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow created, Activity = {1}, Id = {0}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+                Log.LogVerbose(LogTitle, "Workflow created, Activity = {1}, Id = {0}", 
+                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId);
             };
 
             //_workflowRuntime.WorkflowIdled += delegate(object sender, WorkflowEventArgs args)
@@ -1130,9 +1114,8 @@ namespace Composite.C1Console.Workflow
 
             _workflowRuntime.WorkflowLoaded += delegate(object sender, WorkflowEventArgs args)
             {
-                LoggingService.LogVerbose(
-                    "WorkflowFacade",
-                    string.Format("Workflow loaded, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
+                Log.LogVerbose(LogTitle, "Workflow loaded, Activity = {0}, Id = {1}", 
+                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId);
             };
 
 
@@ -1182,9 +1165,7 @@ namespace Composite.C1Console.Workflow
                 sb.AppendLine(args.Exception.Message);
                 sb.AppendLine(args.Exception.StackTrace);
 
-                LoggingService.LogCritical(
-                    "WorkflowFacade",
-                    sb.ToString());
+                Log.LogVerbose(LogTitle, sb.ToString());
             };
 
             _workflowRuntime.WorkflowUnloaded += delegate(object sender, WorkflowEventArgs args)
@@ -1199,7 +1180,7 @@ namespace Composite.C1Console.Workflow
 
         private void LoadPersistedWorkflows()
         {
-            foreach (Guid instanceId in _fileWorkFlowPersisetenceService.GetPersistedWorkflows())
+            foreach (Guid instanceId in _fileWorkFlowPersistenceService.GetPersistedWorkflows())
             {
                 if ((_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == false) ||
                     (_resourceLocker.Resources.WorkflowStatusDictionary[instanceId] != WorkflowInstanceStatus.Running))
@@ -1212,7 +1193,7 @@ namespace Composite.C1Console.Workflow
                     }
                     catch (InvalidOperationException)
                     {
-                        _fileWorkFlowPersisetenceService.RemovePersistedWorkflow(instanceId);
+                        _fileWorkFlowPersistenceService.RemovePersistedWorkflow(instanceId);
                     }
 
                     if (workflowInstance != null
@@ -1242,15 +1223,15 @@ namespace Composite.C1Console.Workflow
                         XDocument doc = XDocumentUtils.Load(filename);
                         FormData formData = FormData.Deserialize(doc.Root);
 
-                        if (_resourceLocker.Resources.FormDatas.ContainsKey(id) == false)
+                        if (_resourceLocker.Resources.FormData.ContainsKey(id) == false)
                         {
-                            _resourceLocker.Resources.FormDatas.Add(id, formData);
+                            _resourceLocker.Resources.FormData.Add(id, formData);
                             FormsWorkflowBindingCache.Bindings.Add(id, formData.Bindings);
                         }
                     }
                     catch (DataSerilizationException)
                     {
-                        //LoggingService.LogVerbose("WorkflowFacade", string.Format("The workflow {0} contained one or more bindings where data was deleted or data type changed, workflow can not be resumed", id));
+                        //Log.LogVerbose(LogTitle, string.Format("The workflow {0} contained one or more bindings where data was deleted or data type changed, workflow can not be resumed", id));
 
                         //AbortWorkflow(id);
                     }
@@ -1267,31 +1248,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-
-        private void AbortWorkflows()
-        {
-            List<Guid> workflowsToCancel =
-                (from kp in _resourceLocker.Resources.WorkflowPersistingTypeDictionary
-                 where kp.Value == WorkflowPersistingType.Never
-                 select kp.Key).ToList();
-
-            foreach (Guid instanceId in workflowsToCancel)
-            {
-                try
-                {
-                    AbortWorkflow(instanceId);
-                }
-                catch(Exception ex)
-                {
-                    Log.LogError(LogTitle, "Failed to abort workflow");
-                    Log.LogError(LogTitle, ex);
-                }
-            }
-        }
-
-
-
-        private void RemoveAbortedPersistedWorkflow()
+        private void RemoveNotPersistableWorkflowsState()
         {
             using (_resourceLocker.Locker)
             {
@@ -1302,18 +1259,18 @@ namespace Composite.C1Console.Workflow
 
                 foreach (Guid instanceId in instanceIds)
                 {
-                    _fileWorkFlowPersisetenceService.RemovePersistedWorkflow(instanceId);
+                    _fileWorkFlowPersistenceService.RemovePersistedWorkflow(instanceId);
                 }
             }
         }
 
 
 
-        private void PersistExistingWorkflows()
+        private void UnloadWorkflowsSilent()
         {
-            _fileWorkFlowPersisetenceService.PersistAll = true;
+            _fileWorkFlowPersistenceService.PersistAll = true;
 
-            IEnumerable<Guid> abortedWorkflows = _fileWorkFlowPersisetenceService.GetAbortedWorkflows();
+            HashSet<Guid> abortedWorkflows = new HashSet<Guid>(_fileWorkFlowPersistenceService.GetAbortedWorkflows());
 
             foreach (Guid instanceId in _resourceLocker.Resources.WorkflowStatusDictionary.Keys.ToList())
             {
@@ -1322,16 +1279,18 @@ namespace Composite.C1Console.Workflow
                     continue;
                 }
 
-                WorkflowPersistingType workflowPersistingType;
+                /*WorkflowPersistingType workflowPersistingType;
 
                 if (_resourceLocker.Resources.WorkflowPersistingTypeDictionary.TryGetValue(instanceId, out workflowPersistingType)
                     && workflowPersistingType != WorkflowPersistingType.Never)
                 {
                     UnloadSilent(instanceId);
-                }
+                }*/
+
+                UnloadSilent(instanceId);
             }
 
-            _fileWorkFlowPersisetenceService.PersistAll = false;
+            _fileWorkFlowPersistenceService.PersistAll = false;
         }
 
 
@@ -1364,7 +1323,7 @@ namespace Composite.C1Console.Workflow
             if (!shouldPersist) return;
 
 
-            FormData formData = resources.FormDatas.
+            FormData formData = resources.FormData.
                 Where(f => f.Key == instanceId).
                 Select(f => f.Value).
                 SingleOrDefault();
@@ -1380,20 +1339,20 @@ namespace Composite.C1Console.Workflow
                 XDocument doc = new XDocument(element);
                 doc.SaveToFile(filename);
 
-                LoggingService.LogVerbose("WorkflowFacade", string.Format("FormData persisted for workflow id = {0}", instanceId));
+                Log.LogVerbose(LogTitle, string.Format("FormData persisted for workflow id = {0}", instanceId));
             }
             catch (Exception ex)
             {
                 // Stop trying serializing this workflow
                 AbortWorkflow(instanceId);
 
-                LoggingService.LogCritical("WorkflowFacade", ex);
+                Log.LogCritical(LogTitle, ex);
             }
         }
 
 
 
-        private void PersistFormDatas()
+        private void PersistFormData()
         {
             var resources = _resourceLocker.Resources;
 
@@ -1403,7 +1362,7 @@ namespace Composite.C1Console.Workflow
                  select kvp.Key).ToList();
 
             // Copying collection since it may be modified why execution of forech-statement
-            var formDataSetToBePersisted = resources.FormDatas.Where(f => instanceIds.Contains(f.Key)).ToList();
+            var formDataSetToBePersisted = resources.FormData.Where(f => instanceIds.Contains(f.Key)).ToList();
 
             foreach (var kvp in formDataSetToBePersisted)
             {
@@ -1418,14 +1377,14 @@ namespace Composite.C1Console.Workflow
                     XDocument doc = new XDocument(element);
                     doc.SaveToFile(filename);
 
-                    LoggingService.LogVerbose("WorkflowFacade", string.Format("FormData persisted for workflow id = {0}", instanceid));
+                    Log.LogVerbose(LogTitle, "FormData persisted for workflow id = " + instanceid);
                 }
                 catch (Exception ex)
                 {
                     // Stop trying serializing this workflow
                     AbortWorkflow(instanceid);
 
-                    LoggingService.LogCritical("WorkflowFacade", ex);
+                    Log.LogCritical(LogTitle, ex);
                 }
             }
         }
@@ -1436,7 +1395,7 @@ namespace Composite.C1Console.Workflow
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                _fileWorkFlowPersisetenceService.RemovePersistedWorkflow(instanceId);
+                _fileWorkFlowPersistenceService.RemovePersistedWorkflow(instanceId);
             }
         }
 
@@ -1452,7 +1411,7 @@ namespace Composite.C1Console.Workflow
                 {
                     C1File.Delete(filename);
 
-                    LoggingService.LogVerbose("WorkflowFacade", string.Format("Persisted FormData deleted for workflow id = {0}", instanceId));
+                    Log.LogVerbose(LogTitle, string.Format("Persisted FormData deleted for workflow id = {0}", instanceId));
                 }
             }
         }
@@ -1485,7 +1444,7 @@ namespace Composite.C1Console.Workflow
 
                         C1File.Delete(filename);
 
-                        LoggingService.LogVerbose("WorkflowFacade", string.Format("Old workflow instance file deleted {0}", filename));
+                        Log.LogVerbose(LogTitle, string.Format("Old workflow instance file deleted {0}", filename));
                     }
                 }
             }
@@ -1537,14 +1496,14 @@ namespace Composite.C1Console.Workflow
             public Resources()
             {
                 this.WorkflowStatusDictionary = new Dictionary<Guid, WorkflowInstanceStatus>();
-                this.FormDatas = new Dictionary<Guid, FormData>();
+                this.FormData = new Dictionary<Guid, FormData>();
                 this.FlowControllerServicesContainers = new Dictionary<Guid, FlowControllerServicesContainer>();
                 this.WorkflowPersistingTypeDictionary = new Dictionary<Guid, WorkflowPersistingType>();
                 this.EventHandleFilters = new Dictionary<Type, IEventHandleFilter>();
             }
 
             public Dictionary<Guid, WorkflowInstanceStatus> WorkflowStatusDictionary { get; set; }
-            public Dictionary<Guid, FormData> FormDatas { get; set; }
+            public Dictionary<Guid, FormData> FormData { get; set; }
             public Dictionary<Guid, FlowControllerServicesContainer> FlowControllerServicesContainers { get; set; }
 
             public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; set; }
@@ -1568,9 +1527,9 @@ namespace Composite.C1Console.Workflow
                         resources.WorkflowStatusDictionary.Remove(instanceId);
                     }
 
-                    if (resources.FormDatas.ContainsKey(instanceId) == true)
+                    if (resources.FormData.ContainsKey(instanceId) == true)
                     {
-                        resources.FormDatas.Remove(instanceId);
+                        resources.FormData.Remove(instanceId);
                     }
 
                     if (resources.FlowControllerServicesContainers.ContainsKey(instanceId) == true)

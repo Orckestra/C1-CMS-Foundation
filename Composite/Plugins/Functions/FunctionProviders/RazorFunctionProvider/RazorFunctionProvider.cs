@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
+using Composite.Core.WebClient;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -26,7 +27,18 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
 		override protected IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
 		{
-		    WebPageBase razorPage = WebPage.CreateInstanceFromVirtualPath(virtualPath);
+		    WebPageBase razorPage;
+            try
+            {
+                BuildManagerHelper.DisableUrlMetadataCaching(true);
+
+                razorPage = WebPage.CreateInstanceFromVirtualPath(virtualPath);
+            }
+            finally
+            {
+                BuildManagerHelper.DisableUrlMetadataCaching(false);
+            }
+
             if(!(razorPage is RazorFunction))
             {
                 return null;
