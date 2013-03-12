@@ -98,7 +98,7 @@ public partial class Renderers_Page : System.Web.UI.Page
     }
 
 
-    private static void CheckForMultipleAspNetFormsException(HttpException ex)
+    private void CheckForMultipleAspNetFormsException(HttpException ex)
     {
         MethodInfo setStringMethod = typeof(HttpContext).Assembly /* System.Web */
                 .GetType("System.Web.SR")
@@ -109,7 +109,16 @@ public partial class Renderers_Page : System.Web.UI.Page
         bool multipleAspFormTagsExists = ex.Message == multipleFormNotAllowedMessage;
         if (multipleAspFormTagsExists)
         {
-            throw new HttpException("Multiple <asp:form /> elements exists on this page. ASP.NET only support one form. To fix this, insert a <asp:form> ... </asp:form> section in your template that spans all controls.");
+            string errorMessage = (this.MasterPageFile != null)
+                ? "Multiple <form runat=\"server\" /> elements exist on this page." +
+                  "ASP.NET supports only one visible <form runat=\"server\" /> control at a time.\n " +
+                  "To fix this, insert a <form runat=\"server\"> ... </form> tag in your master page template that spans all placeholders."
+                : "Multiple <asp:form /> elements exist on this page. " +
+                  "ASP.NET supports only one visible <form runat=\"server\" /> control at a time.\n " +
+                  "To fix this, insert a <asp:form> ... </asp:form> section in your template that spans all controls.";
+            
+            throw new HttpException(errorMessage);
+
         }
     }
 
