@@ -265,11 +265,20 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                     }
                     else
                     {
-                        BaseRuntimeTreeNode treeNode = FunctionFacade.BuildTree(XElement.Parse(previewValueFunctionMarkup));
+                        try
+                        {
+                            BaseRuntimeTreeNode treeNode = FunctionFacade.BuildTree(XElement.Parse(previewValueFunctionMarkup));
+                            object value = treeNode.GetValue();
+                            object typedValue = ValueTypeConverter.Convert(value, parameter.Type);
+                            parameterValues.Add(typedValue);
+                        }
+                        catch (Exception ex)
+                        {
+                            string message = string.Format("Error setting '{0}'. {1}", parameterInfo.Name, ex.Message);
 
-                        object value = treeNode.GetValue();
-
-                        parameterValues.Add(value);
+                            parameterErrors = true;
+                            AddFormattedTextBlock(parameterErrorMessages, message);
+                        }
                     }
                 }
             }
