@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Compilation;
 using System.Web.UI;
 using System.Web.Util;
+using Composite.Core.WebClient;
 
 namespace Composite.Plugins.PageTemplates.MasterPages
 {
@@ -20,14 +21,26 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             // Calling: return System.Web.Compilation.BuildManager.GetVPathBuildResultWithNoAssert(null, virtualPathObj, false, false, false)
 
-            IWebObjectFactory factory = typeof(BuildManager)
-                                            .GetMethod("GetVPathBuildResultWithNoAssert",
-                                                       BindingFlags.NonPublic | BindingFlags.Static,
-                                                       null,
-                                                       CallingConventions.Any,
-                                                       new Type[] { typeof(HttpContext), tVirtualType, typeof(bool), typeof(bool), typeof(bool) },
-                                                       null)
-                                            .Invoke(null, new object[] { null, virtualPathObj, false, false, false }) as IWebObjectFactory;
+
+            IWebObjectFactory factory;
+            try
+            {
+                BuildManagerHelper.DisableUrlMetadataCaching(true);
+
+                factory = typeof(BuildManager)
+                        .GetMethod("GetVPathBuildResultWithNoAssert",
+                                    BindingFlags.NonPublic | BindingFlags.Static,
+                                    null,
+                                    CallingConventions.Any,
+                                    new Type[] { typeof(HttpContext), tVirtualType, typeof(bool), typeof(bool), typeof(bool) },
+                                    null)
+                        .Invoke(null, new object[] { null, virtualPathObj, false, false, false }) as IWebObjectFactory;
+
+            }
+            finally
+            {
+                BuildManagerHelper.DisableUrlMetadataCaching(false);
+            }
 
             Verify.IsNotNull(factory, "Failed to compile master page file");
 

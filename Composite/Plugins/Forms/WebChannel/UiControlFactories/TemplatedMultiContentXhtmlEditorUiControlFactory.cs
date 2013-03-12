@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Web.Compilation;
 using System.Web.UI;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Plugins.UiControlFactory;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.WebClient;
 using Composite.Plugins.Forms.WebChannel.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -114,9 +114,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         {
             _data = data;
 
-            if (_data.CacheCompiledUserControlType == true)
+            if (_data.CacheCompiledUserControlType)
             {
-                _cachedUserControlType = System.Web.Compilation.BuildManager.GetCompiledType(_data.UserControlVirtualPath);
+                _cachedUserControlType = BuildManagerHelper.GetCompiledType(_data.UserControlVirtualPath);
             }
         }
 
@@ -126,7 +126,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             if (userControlType == null && System.Web.HttpContext.Current!=null)
             {
-                userControlType = BuildManager.GetCompiledType(_data.UserControlVirtualPath);
+                userControlType = BuildManagerHelper.GetCompiledType(_data.UserControlVirtualPath);
             }
 
             TemplatedMultiContentXhtmlEditorUiControl control = new TemplatedMultiContentXhtmlEditorUiControl(userControlType);

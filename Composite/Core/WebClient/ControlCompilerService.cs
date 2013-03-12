@@ -83,7 +83,7 @@ namespace Composite.Core.WebClient
             foreach (string path in paths)
             {
                 int t1 = Environment.TickCount;
-                Type type = System.Web.Compilation.BuildManager.GetCompiledType(path);
+                Type type = BuildManagerHelper.GetCompiledType(path);
                 int t2 = Environment.TickCount;
 
                 LoggingService.LogVerbose("RGB(180, 180, 255)ControlCompilerService", string.Format("{0} compiled in {1} ms", path, t2 - t1));

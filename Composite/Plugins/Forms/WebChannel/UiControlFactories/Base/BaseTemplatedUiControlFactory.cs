@@ -5,6 +5,7 @@ using System.Text;
 using Composite.C1Console.Forms.Plugins.UiControlFactory;
 using Composite.C1Console.Forms;
 using Composite.Core.Logging;
+using Composite.Core.WebClient;
 
 namespace Composite.Plugins.Forms.WebChannel.UiControlFactories.Base
 {
@@ -40,7 +41,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories.Base
                     {
                         using (DebugLoggingScope.CompletionTime(this.GetType(), string.Format("getting compiled '{0}'", _data.UserControlVirtualPath), TimeSpan.FromMilliseconds(25)))
                         {
-                            _cachedUserControlType = System.Web.Compilation.BuildManager.GetCompiledType(_data.UserControlVirtualPath);
+                            _cachedUserControlType = BuildManagerHelper.GetCompiledType(_data.UserControlVirtualPath);
                         }
                     }
 
