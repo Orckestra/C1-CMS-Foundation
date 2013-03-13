@@ -1350,11 +1350,7 @@
     <Compile Include="Core\WebClient\UrlString.cs" />
     <Compile Include="Core\WebClient\Logging\WFC\ILogService.cs" />
     <Compile Include="Core\WebClient\Logging\WFC\LogEntry.cs" />
-    <Compile Include="Core\WebClient\Logging\WFC\LoggerHostnameHandler.cs" />
-    <Compile Include="Core\WebClient\Logging\WFC\LoggerServiceHostingFactory.cs" />
     <Compile Include="Core\WebClient\Logging\WFC\LogService.cs" />
-    <Compile Include="Core\WebClient\WCF\MultipleHostnameHandler.cs" />
-    <Compile Include="Core\WebClient\WCF\ServiceHostFactoryHelper.cs" />
     <Compile Include="Core\WebClient\XhtmlPage.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -2347,7 +2343,6 @@
   <ItemGroup>
     <Folder Include="Core\Cloud\" />
     <Folder Include="Core\Logging\WCF\" />
-    <Folder Include="Core\WebClient\WCF\Logger\" />
     <Folder Include="Functions\ManagedParameters\Types\" />
     <Folder Include="Functions\Types\" />
     <Folder Include="Plugins\Elements\Design\" />
