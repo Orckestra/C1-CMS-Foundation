@@ -7,6 +7,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Foundation;
 using Composite.Core.IO;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Serialization;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -17,7 +18,7 @@ using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessC
 
 namespace Composite.C1Console.Trees.Workflows
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class GenericEditDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -153,36 +154,54 @@ namespace Composite.C1Console.Trees.Workflows
                 isValid = false;
             }
 
-            if (data is IPublishControlled)
+            var fieldsWithBrokenReferences = new List<string>();
+            if (!data.TryValidateForeignKeyIntegrity(fieldsWithBrokenReferences))
             {
-                IPublishControlled publishControlledData = (IPublishControlled)data;
-                if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
+                isValid = false;
+
+                foreach (string fieldName in fieldsWithBrokenReferences)
                 {
-                    publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
+                    ShowFieldMessage(fieldName, StringResourceSystemFacade.GetString("Composite.Management", "Validation.BrokenReference"));
                 }
             }
 
-            if (isValid == true)
+            if (isValid)
             {
+                if (data is IPublishControlled)
+                {
+                    IPublishControlled publishControlledData = (IPublishControlled)data;
+                    if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
+                    {
+                        publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
+                    }
+                }
+
                 DataFacade.Update(data);
 
-                PublishIfNeeded(data);
+                bool published = PublishIfNeeded(data);
 
-                updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                // Removing double refresh when doing a save'n'publish
+                if (!published)
+                {
+                    updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                }
             }
 
             SetSaveStatus(isValid);
         }
 
 
-        private void PublishIfNeeded(IData newData)
+        private bool PublishIfNeeded(IData newData)
         {
             if (newData is IPublishControlled && _doPublish)
             {
                 GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
                 FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                 ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
+                return true;
             }
+
+            return false;
         }
 
         private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)

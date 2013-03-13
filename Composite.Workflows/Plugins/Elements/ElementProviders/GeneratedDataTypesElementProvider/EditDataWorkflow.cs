@@ -114,16 +114,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 isValid = false;
             }
 
-            // published data stayed as published data - change to draft if status is published
-            if (data is IPublishControlled)
-            {
-                IPublishControlled publishControlledData = (IPublishControlled)data;
-                if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
-                {
-                    publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
-                }
-            }
-
             var fieldsWithBrokenReferences = new List<string>();
             if(!data.TryValidateForeignKeyIntegrity(fieldsWithBrokenReferences))
             {
@@ -137,19 +127,30 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (isValid)
             {
+                // published data stayed as published data - change to draft if status is published
+                if (data is IPublishControlled)
+                {
+                    IPublishControlled publishControlledData = (IPublishControlled)data;
+                    if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
+                    {
+                        publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
+                    }
+                }
+
                 DataFacade.Update(data);
-                SetSaveStatus(true);
 
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
                 bool published = PublishIfNeeded(data);
 
-                if (!published) updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                // Removing double refresh when doing a save'n'publish
+                if (!published)
+                {
+                    updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                }
             }
-            else
-            {
-                SetSaveStatus(false);
-            }
+            
+            SetSaveStatus(isValid);
         }
 
 
