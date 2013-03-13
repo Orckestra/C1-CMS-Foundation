@@ -15,7 +15,7 @@ namespace Composite.Data.Foundation
         private static readonly string LogTitle = "DataReferenceRegistry";
 
         private static Dictionary<Type, List<Type>> _referencedToReferees = new Dictionary<Type, List<Type>>();
-        private static Dictionary<Type, List<ForeignPropertyInfo>> _foreignKeyProperyInfos = new Dictionary<Type, List<ForeignPropertyInfo>>();
+        private static Dictionary<Type, List<ForeignPropertyInfo>> _foreignKeyProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
 
 
 
@@ -60,7 +60,7 @@ namespace Composite.Data.Foundation
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                if (_foreignKeyProperyInfos.TryGetValue(refereeType, out foreignKeyProperyInfos) == false)
+                if (_foreignKeyProperties.TryGetValue(refereeType, out foreignKeyProperyInfos) == false)
                 {
                     return new List<ForeignPropertyInfo>();
                 }
@@ -79,7 +79,7 @@ namespace Composite.Data.Foundation
             }
 
             _referencedToReferees = new Dictionary<Type, List<Type>>();
-            _foreignKeyProperyInfos = new Dictionary<Type, List<ForeignPropertyInfo>>();
+            _foreignKeyProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
 
             foreach (Type type in DataProviderRegistry.AllInterfaces)
             {
@@ -91,10 +91,9 @@ namespace Composite.Data.Foundation
 
         private static void AddNewType(Type interfaceType)
         {
-            List<ForeignPropertyInfo> foreignKeyProperyInfos = DataAttributeFacade.GetDataReferencePropertyInfoes(interfaceType);
-
-
-            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperyInfos)
+            List<ForeignPropertyInfo> foreignKeyProperties = DataAttributeFacade.GetDataReferenceProperties(interfaceType);
+            
+            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperties)
             {
                 if (foreignKeyProperyInfo.SourcePropertyInfo.CanRead == false) throw new InvalidOperationException(string.Format("The property '{0}' shoud have a getter", foreignKeyProperyInfo.SourcePropertyInfo));
                 if (foreignKeyProperyInfo.TargetType.IsNotReferenceable() == true) throw new InvalidOperationException(string.Format("The referenced type '{0}' is marked NotReferenceable and can not be referenced by the interfaceType '{1}'", foreignKeyProperyInfo.TargetType, interfaceType));
@@ -119,9 +118,9 @@ namespace Composite.Data.Foundation
             }
 
 
-            _foreignKeyProperyInfos.Add(interfaceType, foreignKeyProperyInfos);
+            _foreignKeyProperties.Add(interfaceType, foreignKeyProperties);
 
-            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperyInfos)
+            foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperties)
             {
                 List<Type> referees;
 
@@ -130,7 +129,8 @@ namespace Composite.Data.Foundation
                     referees = new List<Type>();
 
                     _referencedToReferees.Add(foreignKeyProperyInfo.TargetType, referees);
-                } else
+                } 
+                else
                 {
                     if(referees.Contains(interfaceType))
                     {
@@ -159,7 +159,7 @@ namespace Composite.Data.Foundation
         private static void Flush()
         {
             _referencedToReferees = new Dictionary<Type, List<Type>>();
-            _foreignKeyProperyInfos = new Dictionary<Type, List<ForeignPropertyInfo>>();
+            _foreignKeyProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
         }
 
 

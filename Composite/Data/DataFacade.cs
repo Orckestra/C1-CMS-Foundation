@@ -1180,7 +1180,7 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(data, "data");
 
-            return data.TryValidateDeleteSucces();
+            return data.TryValidateDeleteSuccess();
         }
 
 
@@ -1200,22 +1200,22 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(data, "data");
 
-            return data.TryValidateDeleteSucces();
+            return data.TryValidateDeleteSuccess();
         }
 
 
 
         /// <exclude />
-        public static bool WillDeleteSucceed<T>(IEnumerable<T> datas)
+        public static bool WillDeleteSucceed<T>(IEnumerable<T> dataset)
             where T : class, IData
         {
-            if (datas == null) throw new ArgumentNullException("datas");
+            Verify.ArgumentNotNull(dataset, "dataset");
 
-            foreach (T data in datas)
+            foreach (T data in dataset)
             {
-                if (data == null) throw new ArgumentException("The datas may not contain nulls");
+                Verify.ArgumentCondition(data != null, "dataset", "The dataset may not contain null values");
 
-                if (data.TryValidateDeleteSucces() == false)
+                if (!data.TryValidateDeleteSuccess())
                 {
                     return false;
                 }

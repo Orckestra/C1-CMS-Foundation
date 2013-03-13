@@ -354,10 +354,16 @@ namespace Composite.Data
             return cachingType;
         }
 
+        /// <exclude />
+        [Obsolete("Use GetDataReferenceProperties() instead ")]
+        public static List<ForeignPropertyInfo> GetDataReferencePropertyInfoes(Type interfaceType)
+        {
+            return GetDataReferenceProperties(interfaceType);
+        }
 
 
         /// <exclude />
-        public static List<ForeignPropertyInfo> GetDataReferencePropertyInfoes(Type interfaceType)
+        public static List<ForeignPropertyInfo> GetDataReferenceProperties(Type interfaceType)
         {
             List<ForeignPropertyInfo> foreignKeyProperyInfos;
 
@@ -476,13 +482,13 @@ namespace Composite.Data
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));
 
-            List<PropertyInfo> keyPropertyInfoes;
+            List<PropertyInfo> keyProperties;
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.InterfaceTypeToKeyProeprtyInfoes.TryGetValue(interfaceType, out keyPropertyInfoes) == false)
+                if (_resourceLocker.Resources.InterfaceTypeToKeyProeprtyInfoes.TryGetValue(interfaceType, out keyProperties) == false)
                 {
-                    keyPropertyInfoes = new List<PropertyInfo>();
+                    keyProperties = new List<PropertyInfo>();
 
                     List<PropertyInfo> pis = interfaceType.GetPropertiesRecursively();
 
@@ -495,14 +501,14 @@ namespace Composite.Data
 
                         if (propertyInfo == null) throw new InvalidOperationException(string.Format("Type '{0}' declare (or inherit) a '{1}' with a name '{2}' that was not found as a property on the type.", interfaceType, typeof(KeyPropertyNameAttribute), name));
 
-                        keyPropertyInfoes.Add(propertyInfo);
+                        keyProperties.Add(propertyInfo);
                     }
 
-                    _resourceLocker.Resources.InterfaceTypeToKeyProeprtyInfoes.Add(interfaceType, keyPropertyInfoes);
+                    _resourceLocker.Resources.InterfaceTypeToKeyProeprtyInfoes.Add(interfaceType, keyProperties);
                 }
             }
 
-            return new List<PropertyInfo>(keyPropertyInfoes);
+            return new List<PropertyInfo>(keyProperties);
         }
 
 

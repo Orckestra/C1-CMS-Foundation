@@ -21,10 +21,10 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class DataReferenceFacade
     {
-        private static Dictionary<PropertyInfo, Type> _propertyReferenceTargetTypeLookup = new Dictionary<PropertyInfo, Type>();
+        private static readonly Dictionary<PropertyInfo, Type> _propertyReferenceTargetTypeLookup = new Dictionary<PropertyInfo, Type>();
         private static MethodInfo _hasReferenceMethodInfo;
         private static MethodInfo _getReferencesMethodInfo;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
 
         /// <exclude />
@@ -37,13 +37,13 @@ namespace Composite.Data
 
 
 
-        internal static bool TryValidateDeleteSucces(this IData dataToDelete)
+        internal static bool TryValidateDeleteSuccess(this IData dataToDelete)
         {
-            List<IData> referees = dataToDelete.GetRefereesRecursively().ToList();
+            List<IData> referees = GetNotOptionalRefereesRecursively(dataToDelete).ToList();
 
             IData foundData =
                 (from referee in referees
-                 where referee.CascadeDeleteAllowed() == false
+                 where !referee.CascadeDeleteAllowed()
                  select referee).FirstOrDefault();
 
             return foundData == null;
@@ -326,9 +326,15 @@ namespace Composite.Data
         }
 
 
-
         /// <exclude />
         public static List<IData> GetNotOptionalReferences<T>(T data) where T : IData
+        {
+            return GetNotOptionalReferences(data, false);
+        }
+
+
+        /// <exclude />
+        public static List<IData> GetNotOptionalReferences<T>(T data, bool allScopes) where T : IData
         {
             Verify.ArgumentNotNull(data, "data");
 
@@ -347,7 +353,7 @@ namespace Composite.Data
                         continue;
                     }
 
-                    IEnumerable<IData> references = data.GetReferees(referencedType, new[] {foregnKeyProperty.SourcePropertyInfo}, false);
+                    IEnumerable<IData> references = data.GetReferees(referencedType, new[] { foregnKeyProperty.SourcePropertyInfo }, allScopes);
 
                     result.AddRange(references);
                 }
@@ -587,26 +593,26 @@ namespace Composite.Data
 
 
 
-        internal static IEnumerable<IData> GetRefereesRecursively(this IData referencedData)
+        internal static IEnumerable<IData> GetNotOptionalRefereesRecursively(this IData referencedData)
         {
             Verify.ArgumentNotNull(referencedData, "referencedData");
 
             Dictionary<DataSourceId, IData> foundDatas = new Dictionary<DataSourceId, IData>();
 
-            GetRefereesRecursively(referencedData, true, foundDatas);
+            GetNotOptionalRefereesRecursively(referencedData, true, foundDatas);
 
             return foundDatas.Values;
         }
 
 
 
-        internal static IEnumerable<IData> GetRefereesRecursively(this IData referencedData, bool allScopes)
+        internal static IEnumerable<IData> GetNotOptionalRefereesRecursively(this IData referencedData, bool allScopes)
         {
             Verify.ArgumentNotNull(referencedData, "referencedData");
 
             Dictionary<DataSourceId, IData> foundDatas = new Dictionary<DataSourceId, IData>();
 
-            GetRefereesRecursively(referencedData, allScopes, foundDatas);
+            GetNotOptionalRefereesRecursively(referencedData, allScopes, foundDatas);
 
             return foundDatas.Values;
         }
@@ -643,15 +649,15 @@ namespace Composite.Data
             }
             return null;
         }
-        
 
 
-        private static void GetRefereesRecursively(IData referencedData, bool allScopes, Dictionary<DataSourceId, IData> foundDataset)
+
+        private static void GetNotOptionalRefereesRecursively(IData referencedData, bool allScopes, Dictionary<DataSourceId, IData> foundDataset)
         {
             Verify.ArgumentNotNull(referencedData, "foundDataset");
             Verify.ArgumentNotNull(foundDataset, "referencedData");
 
-            List<IData> referees = referencedData.GetReferees(allScopes);
+            List<IData> referees = GetNotOptionalReferences(referencedData);
 
             foreach (IData data in referees)
             {
@@ -659,7 +665,7 @@ namespace Composite.Data
                 {
                     foundDataset.Add(data.DataSourceId, data);
 
-                    GetRefereesRecursively(data, allScopes, foundDataset);
+                    GetNotOptionalRefereesRecursively(data, allScopes, foundDataset);
                 }
             }
         }
