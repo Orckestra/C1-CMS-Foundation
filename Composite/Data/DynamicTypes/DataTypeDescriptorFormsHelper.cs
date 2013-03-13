@@ -424,45 +424,49 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public Dictionary<string, string> BindingsToObject(Dictionary<string, object> bindings, IData dataObject)
         {
-            Dictionary<string, string> errorMessages = new Dictionary<string, string>();
+            var errorMessages = new Dictionary<string, string>();
 
             foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
-                if (_readOnlyFields.Contains(fieldDescriptor.Name) == true)
+                if (_readOnlyFields.Contains(fieldDescriptor.Name))
                 {
                     continue;
                 }
 
                 string bindingName = GetBindingName(fieldDescriptor);
 
-                if (bindings.ContainsKey(bindingName) == true)
+                if (!bindings.ContainsKey(bindingName))
                 {
-                    PropertyInfo propertyInfo = dataObject.GetType().GetProperty(fieldDescriptor.Name);
-
-                    if (propertyInfo.CanWrite == true)
-                    {
-                        object newValue = bindings[bindingName];
-
-                        try
-                        {
-                            newValue = ValueTypeConverter.Convert(newValue, propertyInfo.PropertyType);
-
-                            propertyInfo.GetSetMethod().Invoke(dataObject, new object[] { newValue });
-                        }
-                        catch (Exception ex)
-                        {
-                            errorMessages.Add(bindingName, ex.Message);
-                        }
-                    }
+                    Verify.That(fieldDescriptor.IsNullable, "Missing value for field '{0}'", fieldDescriptor.Name);
+                    continue;
                 }
-                else if (fieldDescriptor.IsNullable == false)
+                
+                PropertyInfo propertyInfo = dataObject.GetType().GetProperty(fieldDescriptor.Name);
+
+                if (propertyInfo.CanWrite)
                 {
-                    throw new NotImplementedException();
+                    object newValue = bindings[bindingName];
+
+                    if (newValue is string && (newValue as string) == "" && IsNullableStringReference(propertyInfo))
+                    {
+                        newValue = null;
+                    }
+
+                    try
+                    {
+                        newValue = ValueTypeConverter.Convert(newValue, propertyInfo.PropertyType);
+
+                        propertyInfo.GetSetMethod().Invoke(dataObject, new object[] {newValue});
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessages.Add(bindingName, ex.Message);
+                    }
                 }
             }
 
-            if ((_showPublicationStatusSelector == true) &&
-                (_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true))
+            if (_showPublicationStatusSelector &&
+                _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
                 IPublishControlled publishControlled = dataObject as IPublishControlled;
 
@@ -473,12 +477,17 @@ namespace Composite.Data.DynamicTypes
             {
                 return errorMessages;
             }
-            else
-            {
-                return null;
-            }
+            
+            return null;
         }
 
+
+        private static bool IsNullableStringReference(PropertyInfo propertyInfo)
+        {
+            Type dataType = propertyInfo.DeclaringType;
+            return DataAttributeFacade.GetDataReferenceProperties(dataType)
+                                      .Any(foreignKey => foreignKey.SourcePropertyName == propertyInfo.Name && foreignKey.IsNullableString);
+        }
 
 
         /// <exclude />
