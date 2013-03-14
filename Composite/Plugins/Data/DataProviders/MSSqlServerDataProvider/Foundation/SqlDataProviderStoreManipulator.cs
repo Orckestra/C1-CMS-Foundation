@@ -404,7 +404,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 }
 
 
-                bool primaryKeyChanged = changeDescriptor.AddedKeyFields.Any() || changeDescriptor.DeletedKeyFields.Any();
+                bool primaryKeyChanged = changeDescriptor.AddedKeyFields.Any() || changeDescriptor.DeletedKeyFields.Any() || changeDescriptor.KeyFieldsOrderChanged;
 
                 DropConstraints(originalTableName, primaryKeyChanged);
 

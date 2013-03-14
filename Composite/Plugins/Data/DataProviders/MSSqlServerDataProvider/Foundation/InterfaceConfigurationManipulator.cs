@@ -73,6 +73,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     !changeDescriptor.DeletedDataScopes.Any() &&
                     !changeDescriptor.AddedKeyFields.Any() &&
                     !changeDescriptor.DeletedKeyFields.Any() &&
+                    !changeDescriptor.KeyFieldsOrderChanged &&
                     (changeDescriptor.OriginalType.Namespace == changeDescriptor.AlteredType.Namespace) &&
                     (changeDescriptor.OriginalType.Name == changeDescriptor.AlteredType.Name))
                 {

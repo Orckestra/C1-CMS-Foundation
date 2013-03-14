@@ -224,13 +224,32 @@ namespace Composite.Data.DynamicTypes
                     DataFieldDescriptor dataFieldDescriptor = ReflectionBasedDescriptorBuilder.BuildFieldDescriptor(propertyInfo, true);
 
                     this.Fields.Add(dataFieldDescriptor);
-
-                    if ((DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true) && (!KeyPropertyNames.Contains(propertyInfo.Name)))
-                    {
-                        this.KeyPropertyNames.Add(propertyInfo.Name);
-                    }
                 }
 
+
+                foreach (string propertyName in interfaceType.GetKeyPropertyNames())
+                {
+                    if (KeyPropertyNames.Contains(propertyName)) continue;
+
+                    PropertyInfo property = interfaceType.GetProperty(propertyName);
+                    if (property == null)
+                    {
+                        List<Type> superInterfaces = interfaceType.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
+
+                        foreach (Type superInterface in superInterfaces)
+                        {
+                            property = superInterface.GetProperty(propertyName);
+                            if (property != null) break;
+                        }
+                    }
+
+                    Verify.IsNotNull(property, "Missing property '{0}' on type '{1}' or one of its interfaces".FormatWith(propertyName, interfaceType));
+
+                    if (DynamicTypeReflectionFacade.IsKeyField(property))
+                    {
+                        this.KeyPropertyNames.Add(propertyName, false);
+                    }
+                }
 
                 foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
                 {

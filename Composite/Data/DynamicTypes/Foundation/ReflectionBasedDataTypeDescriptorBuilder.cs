@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Functions;
 using Composite.Core.Types;
 
@@ -17,8 +18,8 @@ namespace Composite.Data.DynamicTypes.Foundation
         /// <exclude />
         public static DataTypeDescriptor Build(Type type)
         {
-            if (type == null) throw new ArgumentNullException("type");
-            if (typeof(IData).IsAssignableFrom(type) == false) throw new ArgumentException(string.Format("{0} does not implement {1}", type.FullName, typeof(IData).FullName));
+            Verify.ArgumentNotNull(type, "type");
+            Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(type), "type", "{0} does not implement {1}".FormatWith(type.FullName, typeof(IData).FullName));
 
             Guid dataTypeId = DynamicTypeReflectionFacade.GetImmutableTypeId(type);
 
@@ -26,9 +27,9 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             DataTypeDescriptor typeDescriptor = new DataTypeDescriptor(dataTypeId, type.Namespace, type.Name, TypeManager.SerializeType(type), isCodeGenerated);
 
-            List<Type> superInterfacesTypes = type.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
+            List<Type> superInterfaces = type.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
 
-            typeDescriptor.SetSuperInterfaces(superInterfacesTypes);
+            typeDescriptor.SetSuperInterfaces(superInterfaces);
             typeDescriptor.Title = DynamicTypeReflectionFacade.GetTitle(type);
             typeDescriptor.LabelFieldName = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
             typeDescriptor.DataAssociations = DynamicTypeReflectionFacade.GetDataTypeAssociationDescriptors(type);
@@ -42,27 +43,19 @@ namespace Composite.Data.DynamicTypes.Foundation
                 DataFieldDescriptor fieldDescriptor = BuildFieldDescriptor(propertyInfo, false);
 
                 typeDescriptor.Fields.Add(fieldDescriptor);
-
-                if (DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true)
-                {
-                    typeDescriptor.KeyPropertyNames.Add(fieldDescriptor.Name);
-                }
             }
 
-            foreach (Type superInterfaceType in superInterfacesTypes)
+            foreach (Type superInterfaceType in superInterfaces)
             {
                 foreach (PropertyInfo propertyInfo in superInterfaceType.GetProperties())
                 {
                     DataFieldDescriptor fieldDescriptor = BuildFieldDescriptor(propertyInfo, true);
 
                     typeDescriptor.Fields.Add(fieldDescriptor);
-
-                    if (DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true)
-                    {
-                        typeDescriptor.KeyPropertyNames.Add(fieldDescriptor.Name);
-                    }
                 }
             }
+
+            ValidateAndAddKeyProperties(typeDescriptor.KeyPropertyNames, type, superInterfaces);
 
             string[] storeSortOrder = DynamicTypeReflectionFacade.GetSortOrder(type);
             if (storeSortOrder != null)
@@ -94,6 +87,28 @@ namespace Composite.Data.DynamicTypes.Foundation
             return typeDescriptor;
         }
 
+        static void ValidateAndAddKeyProperties(DataFieldNameCollection keyProperties, Type interfaceType, IList<Type> superInterfacesType)
+        {
+            foreach (string propertyName in DataAttributeFacade.GetKeyPropertyNames(interfaceType))
+            {
+                PropertyInfo property = interfaceType.GetProperty(propertyName);
+                if (property == null)
+                {
+                    foreach (Type superInterface in superInterfacesType)
+                    {
+                        property = superInterface.GetProperty(propertyName);
+                        if(property != null) break;
+                    }
+                }
+
+                Verify.IsNotNull(property, "Missing property '{0}' on type '{1}' or one of its interfaces".FormatWith(propertyName, interfaceType));
+
+                if (DynamicTypeReflectionFacade.IsKeyField(property))
+                {
+                    keyProperties.Add(propertyName, false);
+                }
+            }
+        }
 
 
         internal static DataFieldDescriptor BuildFieldDescriptor(PropertyInfo propertyInfo, bool inherited)
@@ -145,33 +160,30 @@ namespace Composite.Data.DynamicTypes.Foundation
 
 
 
-        private static WidgetFunctionProvider GetWidgetFunctionMarkup(Type propertyType)
-        {
-            if (propertyType == typeof(string))
-            {
-                return StandardWidgetFunctions.TextBoxWidget;
-            }
-            else if (propertyType == typeof(Guid))
-            {
-                return StandardWidgetFunctions.GuidTextBoxWidget;
-            }
-            else if (propertyType == typeof(int))
-            {
-                return StandardWidgetFunctions.IntegerTextBoxWidget;
-            }
-            else if (propertyType == typeof(DateTime))
-            {
-                return StandardWidgetFunctions.DateTimeSelectorWidget;
-            }
-            else if (propertyType == typeof(decimal))
-            {
-                return StandardWidgetFunctions.DecimalTextBoxWidget;
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //private static WidgetFunctionProvider GetWidgetFunctionMarkup(Type propertyType)
+        //{
+        //    if (propertyType == typeof(string))
+        //    {
+        //        return StandardWidgetFunctions.TextBoxWidget;
+        //    }
+        //    if (propertyType == typeof(Guid))
+        //    {
+        //        return StandardWidgetFunctions.GuidTextBoxWidget;
+        //    }
+        //    if (propertyType == typeof(int))
+        //    {
+        //        return StandardWidgetFunctions.IntegerTextBoxWidget;
+        //    }
+        //    if (propertyType == typeof(DateTime))
+        //    {
+        //        return StandardWidgetFunctions.DateTimeSelectorWidget;
+        //    }
+        //    if (propertyType == typeof(decimal))
+        //    {
+        //        return StandardWidgetFunctions.DecimalTextBoxWidget;
+        //    }
+        //    return null;
+        //}
 
 
 

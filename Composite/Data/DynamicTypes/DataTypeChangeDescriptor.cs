@@ -53,6 +53,7 @@ namespace Composite.Data.DynamicTypes
                 alteredTypeHasChanges |= this.DeletedFields.Any();
                 alteredTypeHasChanges |= this.AddedKeyFields.Any();
                 alteredTypeHasChanges |= this.DeletedKeyFields.Any();
+                alteredTypeHasChanges |= this.KeyFieldsOrderChanged;
                 alteredTypeHasChanges |= this.ExistingFields.Any(f => f.AlteredFieldHasChanges);
                 alteredTypeHasChanges |= this.AddedDataScopes.Any();
                 alteredTypeHasChanges |= this.DeletedDataScopes.Any();
@@ -167,6 +168,16 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        IEnumerable<DataFieldDescriptor> GetKeyProperties_Orininal()
+        {
+            return _original.KeyPropertyNames.Select(name => _original.Fields.First(fld => fld.Name == name)).ToList();
+        }
+
+        IEnumerable<DataFieldDescriptor> GetKeyProperties_Altered()
+        {
+            return _altered.KeyPropertyNames.Select(name => _altered.Fields.First(fld => fld.Name == name)).ToList();
+        }
+
 
         /// <summary>
         /// Returns original key fields that are not part of the altered types key. Fields may have been deleted or demoted to normal fields.
@@ -175,10 +186,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                var originalKeyFields = _original.Fields.Where(f => _original.KeyPropertyNames.Contains(f.Name));
-                var alteredKeyFields = _altered.Fields.Where(f => _altered.KeyPropertyNames.Contains(f.Name));
-
-                return originalKeyFields.Except(alteredKeyFields, new DataFieldIdEqualityComparer());
+                return GetKeyProperties_Orininal().Except(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
             }
         }
 
@@ -190,13 +198,20 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                var originalKeyFields = _original.Fields.Where(f => _original.KeyPropertyNames.Contains(f.Name));
-                var alteredKeyFields = _altered.Fields.Where(f => _altered.KeyPropertyNames.Contains(f.Name));
-
-                return alteredKeyFields.Except(originalKeyFields, new DataFieldIdEqualityComparer());
+                return GetKeyProperties_Altered().Except(GetKeyProperties_Orininal(), new DataFieldIdEqualityComparer());
             }
         }
 
+        /// <summary>
+        /// Returns true if order of key properties have been changed
+        /// </summary>
+        public bool KeyFieldsOrderChanged
+        {
+            get
+            {
+                return !GetKeyProperties_Orininal().SequenceEqual(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
+            }
+        }
 
         /// <summary>
         /// Returns key fields that exists in both the original and altered type. Fields may have changed name or type.

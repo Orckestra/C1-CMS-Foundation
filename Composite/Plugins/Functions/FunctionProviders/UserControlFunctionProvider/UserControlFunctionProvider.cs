@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.UI;
 using Composite.AspNet;
+using Composite.Core.WebClient;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -30,7 +31,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
         public static UserControl CompileFile(string virtualPath)
         { 
             var page = new Page();
-            return page.LoadControl(virtualPath) as UserControl;
+
+            using(BuildManagerHelper.DisableUrlMetadataCachingScope())
+            {
+                return page.LoadControl(virtualPath) as UserControl;
+            }
         }
 
         protected override IFunction InstantiateFunction(string virtualPath, string @namespace, string name)

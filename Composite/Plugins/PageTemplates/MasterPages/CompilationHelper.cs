@@ -23,10 +23,9 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
 
             IWebObjectFactory factory;
-            try
-            {
-                BuildManagerHelper.DisableUrlMetadataCaching(true);
 
+            using(BuildManagerHelper.DisableUrlMetadataCachingScope())
+            {
                 factory = typeof(BuildManager)
                         .GetMethod("GetVPathBuildResultWithNoAssert",
                                     BindingFlags.NonPublic | BindingFlags.Static,
@@ -36,10 +35,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                                     null)
                         .Invoke(null, new object[] { null, virtualPathObj, false, false, false }) as IWebObjectFactory;
 
-            }
-            finally
-            {
-                BuildManagerHelper.DisableUrlMetadataCaching(false);
             }
 
             Verify.IsNotNull(factory, "Failed to compile master page file");

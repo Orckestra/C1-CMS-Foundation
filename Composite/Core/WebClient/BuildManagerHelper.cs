@@ -12,15 +12,9 @@ namespace Composite.Core.WebClient
         /// <returns></returns>
         public static Type GetCompiledType(string virtualPath)
         {
-            try
+            using(BuildManagerHelper.DisableUrlMetadataCachingScope())
             {
-                DisableUrlMetadataCaching(true);
-
                 return System.Web.Compilation.BuildManager.GetCompiledType(virtualPath);
-            }
-            finally
-            {
-                DisableUrlMetadataCaching(false);
             }
         }
 
@@ -43,6 +37,28 @@ namespace Composite.Core.WebClient
             if (field == null) return;
 
             field.SetValue(null, disableCaching);
+        }
+
+        /// <summary>
+        /// Disabling the "url metadata caching" prevents <see cref="System.Web.HttpException" /> in debugger 
+        /// </summary>
+        /// <param name="disableCaching"></param>
+        public static IDisposable DisableUrlMetadataCachingScope()
+        {
+            return new DisableUrlMedataScope();
+        }
+
+        public class DisableUrlMedataScope : IDisposable
+        {
+            public DisableUrlMedataScope()
+            {
+                DisableUrlMetadataCaching(true);
+            }
+
+            public void Dispose()
+            {
+                DisableUrlMetadataCaching(false);
+            }
         }
     }
 }

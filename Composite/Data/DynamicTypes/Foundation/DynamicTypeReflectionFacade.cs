@@ -192,9 +192,9 @@ namespace Composite.Data.DynamicTypes.Foundation
         {
             List<KeyPropertyNameAttribute> typeKeys = fieldInfo.DeclaringType.GetCustomInterfaceAttributes<KeyPropertyNameAttribute>().ToList();
 
-            int thisPropertyMatchCount = typeKeys.Where(f => f.KeyPropertyName == fieldInfo.Name).Count();
+            int thisPropertyMatchCount = typeKeys.Count(f => f.KeyPropertyName == fieldInfo.Name);
 
-            if (thisPropertyMatchCount > 1) throw new InvalidOperationException(string.Format("{0} contains multiple {1} declarations with the property name '{2}'", fieldInfo.MemberType, typeof(KeyPropertyNameAttribute), fieldInfo.Name));
+            Verify.That(thisPropertyMatchCount < 2, "{0} contains multiple {1} declarations with the property name '{2}'", fieldInfo.MemberType, typeof(KeyPropertyNameAttribute), fieldInfo.Name);
 
             return thisPropertyMatchCount == 1;
         }

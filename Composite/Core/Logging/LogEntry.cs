@@ -87,8 +87,17 @@ namespace Composite.Core.Logging
             {
                 string date = parts[0] + parts[1];
 
-                result.TimeStamp = DateTime.ParseExact(date, "yyyyMMddHH:mm:ss.ffff",
-                                                       CultureInfo.InvariantCulture.DateTimeFormat);
+                DateTime timeStamp;
+
+                if (!DateTime.TryParseExact(date, "yyyyMMddHH:mm:ss.ffff", 
+                                            CultureInfo.InvariantCulture.DateTimeFormat, DateTimeStyles.None, 
+                                            out timeStamp))
+                {
+                    return null;
+                }
+
+                result.TimeStamp = timeStamp;
+
                 result.ApplicationDomainId = int.Parse(parts[2]);
                 result.ThreadId = int.Parse(parts[3]);
                 result.Severity = parts[4];

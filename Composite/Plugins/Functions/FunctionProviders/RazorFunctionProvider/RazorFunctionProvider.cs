@@ -28,15 +28,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 		override protected IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
 		{
 		    WebPageBase razorPage;
-            try
+            using(BuildManagerHelper.DisableUrlMetadataCachingScope())
             {
-                BuildManagerHelper.DisableUrlMetadataCaching(true);
-
                 razorPage = WebPage.CreateInstanceFromVirtualPath(virtualPath);
-            }
-            finally
-            {
-                BuildManagerHelper.DisableUrlMetadataCaching(false);
             }
 
             if(!(razorPage is RazorFunction))

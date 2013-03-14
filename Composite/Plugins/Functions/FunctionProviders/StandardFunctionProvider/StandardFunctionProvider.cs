@@ -273,10 +273,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             _standardDynamicTypeFunctions.AddRange(
                 from t in dataInterfaces
+                where DataAttributeFacade.GetKeyPropertyNames(t).Count == 1
                 select (IFunction)Activator.CreateInstance(typeof(GetDataReference<>).MakeGenericType(t), args));
 
             _standardDynamicTypeFunctions.AddRange(
                 from t in dataInterfaces
+                where DataAttributeFacade.GetKeyPropertyNames(t).Count == 1
                 select (IFunction)Activator.CreateInstance(typeof(GetNullableDataReference<>).MakeGenericType(t), args));
 
             _standardDynamicTypeFunctions.AddRange(

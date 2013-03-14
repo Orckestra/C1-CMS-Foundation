@@ -22,25 +22,25 @@ namespace Composite.Core.Serialization
 
             Type genericType = objectToSerializeType.GetGenericTypeDefinition();
 
-            string methodName;
+            MethodInfo methodInfo;
+
             if (genericType == typeof(List<>))
             {
-                methodName = "SerializeList";
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => SerializeList<object>(null, null));
             }
             else if (genericType == typeof(Dictionary<,>))
             {
-                methodName = "SerializeDictionary";
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => SerializeDictionary<object, object>(null, null));
             }
             else if (genericType == typeof(KeyValuePair<,>))
             {
-                methodName = "SerializeKeyValuePair";
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => SerializeKeyValuePair(new KeyValuePair<object, object>(), null));
             }
             else
             {
                 return false;
             }
 
-            MethodInfo methodInfo = typeof(SystemCollectionValueXmlSerializer).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
             methodInfo = methodInfo.MakeGenericMethod(objectToSerializeType.GetGenericArguments());
 
             XElement result = methodInfo.Invoke(null, new object[] { objectToSerialize, xmlSerializer }) as XElement;
@@ -68,25 +68,26 @@ namespace Composite.Core.Serialization
             if (type.IsGenericType == false) return false;
             Type genericType = type.GetGenericTypeDefinition();
 
-            string methodName;
+
+            MethodInfo methodInfo;
+
             if (genericType == typeof(List<>))
             {
-                methodName = "DeserializeList";
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => DeserializeList<object>(null, null));
             }
             else if (genericType == typeof(Dictionary<,>))
             {
-                methodName = "DeserializeDictionary";
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => DeserializeDictionary<object, object>(null, null));
             }
             else if (genericType == typeof(KeyValuePair<,>))
             {
-                methodName = "DeserializeKeyValuePair";
+                methodInfo = StaticReflection.GetGenericMethodInfo(o => DeserializeKeyValuePair<object, object>(null, null));
             }
             else
             {
                 return false;
             }
 
-            MethodInfo methodInfo = typeof(SystemCollectionValueXmlSerializer).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
             methodInfo = methodInfo.MakeGenericMethod(type.GetGenericArguments());
 
             try
@@ -97,21 +98,17 @@ namespace Composite.Core.Serialization
                     deserializedObject = result;
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                
+                return false;
             }
             catch (TargetInvocationException exception)
             {
-                if ((exception.InnerException != null) && (exception.InnerException.GetType() == typeof(DataSerilizationException)))
+                if (exception.InnerException is DataSerilizationException)
                 {
                     throw exception.InnerException;
                 }
-                else
-                {
-                    return false;
-                }
+                
+                return false;
             }
             catch (Exception)
             {
