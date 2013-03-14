@@ -232,7 +232,7 @@ namespace Composite.C1Console.Trees
                 else
                 {
                     List<object> orgObjects = GetObjects(dynamicContext);
-                    using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                    using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                     {
                         List<object> foriegnObjects = GetObjects(dynamicContext);
                         orgObjects.AddRange(foriegnObjects);
@@ -254,7 +254,7 @@ namespace Composite.C1Console.Trees
                 else
                 {
                     List<object> orgObjects = GetObjects(dynamicContext);
-                    using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                    using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                     {
                         List<object> foriegnObjects = GetObjects(dynamicContext);
                         orgObjects.AddRange(foriegnObjects);
@@ -270,17 +270,8 @@ namespace Composite.C1Console.Trees
 
 
         private IEnumerable<Element> CreateSimpleElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
-        {           
-            Func<object, string> labelFunc;
-            if (this.PropertyInfo.PropertyType != typeof(DateTime))
-            {
-                labelFunc = f => (f ?? "(NULL)").ToString();
-            }
-            else
-            {
-                labelFunc = f => this.DateTimeFormater.FormatLabel(f);
-            }
-
+        {
+            Func<object, string> labelFunc = GetLabelFunction();
 
             foreach (object obj in objects)
             {
@@ -299,7 +290,29 @@ namespace Composite.C1Console.Trees
             }
         }
 
+        private Func<object, string> GetLabelFunction()
+        {
+            if (this.PropertyInfo.PropertyType == typeof(DateTime))
+            {
+                return f => this.DateTimeFormater.FormatLabel(f);
+            }
+            
+            var referenceProperties = DataAttributeFacade.GetDataReferenceProperties(PropertyInfo.DeclaringType);
+            var referenceInfo = referenceProperties.FirstOrDefault(p => p.SourcePropertyName == this.PropertyInfo.Name);
 
+            if (referenceInfo == null)
+            {
+                return f => (f ?? "(NULL)").ToString();
+            }
+            
+            return key =>
+            {
+                if (key == null) return "(NULL)";
+
+                IData reference = DataFacade.TryGetDataByUniqueKey(referenceInfo.TargetType, key);
+                return reference != null ? reference.GetLabel() : key.ToString();
+            };
+        }
 
         private IEnumerable<Element> CreateFolderRangeElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext)
         {
