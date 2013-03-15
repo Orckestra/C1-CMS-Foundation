@@ -57,7 +57,6 @@ _BroadcastMessages.prototype = {
 	LOADED_MAINSTAGE					: "mainstage loaded",
 	LOCALSTORE_INITIALIZED				: "localstore initialized",
 	PERSISTANCE_INITIALIZED				: "persistance initialized",
-	AUDIO_INITIALIZED					: "audio initialized",
 	STAGE_INITIALIZED					: "stage initialized",
 	
 	/*

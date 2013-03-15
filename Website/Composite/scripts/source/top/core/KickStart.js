@@ -4,7 +4,6 @@
 var KickStart = new function () {
 	
 	var isLocalStoreReady = false;
-	var isAudioReady = false;
 	var isLoggedIn = null;
 	var isFirstTime = false;
 	var isQualified = Client.qualifies ();
@@ -33,9 +32,12 @@ var KickStart = new function () {
 			ReadyService = WebServiceProxy.createProxy ( Constants.URL_WSDL_READYSERVICE );
 			LoginService =  WebServiceProxy.createProxy ( Constants.URL_WSDL_LOGINSERVICE );
 			InstallationService = WebServiceProxy.createProxy ( Constants.URL_WSDL_INSTALLSERVICE );
-			
-			EventBroadcaster.broadcast ( BroadcastMessages.APPLICATION_KICKSTART );
-			
+
+			EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
+
+			setTimeout(function () {
+				Persistance.initialize(); // NOTE: We are not using this stuff!
+			}, 0);
 		
 	};
 
@@ -48,7 +50,6 @@ var KickStart = new function () {
 		
 		switch ( broadcast ) {
 		
-			case BroadcastMessages.AUDIO_INITIALIZED :
 			case BroadcastMessages.PERSISTANCE_INITIALIZED :
 				kickStart ( broadcast );
 				break;
@@ -87,7 +88,6 @@ var KickStart = new function () {
 		
 		new List ([
 		
-			BroadcastMessages.AUDIO_INITIALIZED,
 			BroadcastMessages.PERSISTANCE_INITIALIZED,
 			BroadcastMessages.APPLICATION_STARTUP,
 			BroadcastMessages.APPLICATION_LOGIN,
@@ -105,25 +105,19 @@ var KickStart = new function () {
 	}
 	
 	/**
-	 * Freeze storyboard until Audio and Localstore initialize.
+	 * Freeze storyboard until Localstore initialize.
 	 * If not registered, show registration. Otherwise show login.
 	 * @param {string} broadcast
 	 */
 	function kickStart ( broadcast ) {
 		
 		switch ( broadcast ) {
-			case BroadcastMessages.AUDIO_INITIALIZED :
-				isAudioReady = true;
-				setTimeout ( function () {
-					Persistance.initialize (); // NOTE: We are not using this stuff!
-				}, 0 );
-				break;
 			case BroadcastMessages.PERSISTANCE_INITIALIZED :
 				isLocalStoreReady = true;
 				break;
 		}
 		
-		if ( isLocalStoreReady && isAudioReady ) {
+		if ( isLocalStoreReady ) {
 			if ( bindingMap.decks != null && LoginService.IsLoggedIn ( true )) {
 				accessGranted ();
 			} else {

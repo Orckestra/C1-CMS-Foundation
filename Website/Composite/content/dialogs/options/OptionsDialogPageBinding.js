@@ -27,12 +27,6 @@ OptionsDialogPageBinding.prototype.toString = function () {
  */
 OptionsDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	
-	bindingMap.audio.setCheckedButtonBinding ( 
-		Preferences.getPref ( Preferences.AUDIO ) ? 
-			bindingMap.audiotrue : 
-			bindingMap.audiofalse
-	);
-	
 	bindingMap.login.setCheckedButtonBinding ( 
 		Preferences.getPref ( Preferences.LOGIN ) ? 
 			bindingMap.logintrue : 
@@ -49,7 +43,6 @@ OptionsDialogPageBinding.prototype.onBeforePageInitialize = function () {
 OptionsDialogPageBinding.prototype.onDialogAccept = function () {
 	
 	Preferences.setPref ( Preferences.LOGIN, bindingMap.logintrue.isChecked );
-	Preferences.setPref ( Preferences.AUDIO, bindingMap.audiotrue.isChecked );
 
 	OptionsDialogPageBinding.superclass.onDialogAccept.call ( this );
 }

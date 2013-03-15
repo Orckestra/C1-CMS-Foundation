@@ -9,14 +9,12 @@ window.Preferences = new function () {
 	/*
 	 * Preferrably using defined constants to avoid spelling mistakes.
 	 */
-	this.AUDIO = "audio";
 	this.LOGIN = "login";
 	
 	/* 
 	 * Default preferences.
 	 */
 	var preferences = {
-		"audio" : true,
 		"login" : true
 	};
 	

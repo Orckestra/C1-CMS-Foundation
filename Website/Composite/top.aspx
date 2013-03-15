@@ -60,8 +60,7 @@
 		</ui:theatre>
 		
 		<ui:persistance id="persistance"/>
-		<ui:window id="audioloader" binding="AudioWindowBinding"/>
-		
+
 		<ui:page id="toppage" strongfocusmanager="false" flex="false">
 		
 			<!-- show intro splash or normal splash? -->

@@ -60,9 +60,5 @@ WebServiceErrorDialogPageBinding.prototype.onBeforePageInitialize = function () 
 	var textarea = this.bindingDocument.getElementById ( "faultstring" );
 	textarea.value = this._soapFault.getFaultString ();
 	
-	/*
-	Audio.play ( Audio.FATAL );
-	*/
-	
 	WebServiceErrorDialogPageBinding.superclass.onBeforePageInitialize.call ( this );
 }

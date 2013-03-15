@@ -1,21 +1,6 @@
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-ui|window#audioloader {
-	position: absolute;
- 	height: 215px;
-	width: 138px;
-	top: -215px;
-	left: -138px;
-	background-color: red;
-}
-ui|window#audioloader iframe { /* sized to fit any flash plugin message (not handled though) */
-	position: absolute;
- 	height: 215px;
-	width: 138px;
-	top: -215px;
-	left: -138px;
-}
 ui|splash { /* IMPORTANT: synchronize this with updated.css! */
 	color: #B2B2B2;
 	display: block;

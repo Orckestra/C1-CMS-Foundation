@@ -898,8 +898,6 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Content Include="Composite\default.js" />
-    <Content Include="Composite\flash\CompositeManagementAudio.swf" />
-    <Content Include="Composite\flash\CompositeManagementLocalstore.swf" />
     <Content Include="Composite\images\htmlbox.png" />
     <Content Include="Composite\images\icons\harmony\basic\home-add_16.png" />
     <Content Include="Composite\images\icons\harmony\basic\home-add_24.png" />
@@ -941,7 +939,6 @@
     <Content Include="Composite\scripts\source\page\window\WindowAssistant.js" />
     <Content Include="Composite\scripts\source\page\window\WindowManager.js" />
     <Content Include="Composite\scripts\source\top\core\Application.js" />
-    <Content Include="Composite\scripts\source\top\core\Audio.js" />
     <Content Include="Composite\scripts\source\top\core\BroadcastMessages.js" />
     <Content Include="Composite\scripts\source\top\core\Client.js" />
     <Content Include="Composite\scripts\source\top\core\Commands.js" />
@@ -1055,7 +1052,6 @@
     <Content Include="Composite\scripts\source\top\system\System.js" />
     <Content Include="Composite\scripts\source\top\system\SystemAction.js" />
     <Content Include="Composite\scripts\source\top\system\SystemNode.js" />
-    <Content Include="Composite\scripts\source\top\ui\bindings\audio\AudioWindowBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\balloons\BalloonBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\balloons\BalloonSetBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\Binding.js" />
@@ -1526,8 +1522,6 @@
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderDeleteFolder.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderEditTextContentFile.xml" />
     <Content Include="Composite\content\forms\Administrative\WebsiteFileElementProviderUploadNewWebsiteFile.xml" />
-    <Content Include="Composite\content\misc\audioloader\audio.aspx" />
-    <Content Include="Composite\content\misc\audioloader\audio.js" />
     <Content Include="Composite\content\misc\defaultstart\defaultstart.aspx" />
     <Content Include="Composite\content\misc\defaultstart\defaultstart.css" />
     <Content Include="Composite\content\misc\defaultstart\DefaultStart.js" />
@@ -6280,8 +6274,6 @@
     <None Include="Composite\extensions\compositec1\chrome\content\compositec1.xul" />
     <None Include="Composite\extensions\compositec1\compositec1.xpi" />
     <None Include="Composite\extensions\compositec1\install.rdf" />
-    <None Include="Composite\flash\sourcecode\CompositeManagementAudio.as" />
-    <None Include="Composite\flash\sourcecode\CompositeManagementLocalstore.as" />
     <None Include="Composite\images\icons\republic\COMPOSITE %27S%27\IconCompositeS.eps" />
     <None Include="Composite\images\icons\republic\COMPOSITE %27S%27\Thumbs.db" />
     <None Include="Composite\images\icons\republic\Free copies\IconGuide.pdf" />
@@ -6427,7 +6419,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
-    <Folder Include="Composite\audio\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />

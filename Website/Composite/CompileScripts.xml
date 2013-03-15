@@ -100,7 +100,6 @@
 			<Script filename="${root}/scripts/source/top/core/Application.js"/>
 			<Script filename="${root}/scripts/source/top/core/Installation.js"/>
 			<Script filename="${root}/scripts/source/top/core/Keyboard.js"/>
-			<Script filename="${root}/scripts/source/top/core/Audio.js"/>
 			<Script filename="${root}/scripts/source/top/core/Preferences.js"/>
 			<Script filename="${root}/scripts/source/top/core/Persistance.js"/>
 			<Script filename="${root}/scripts/source/top/core/LocalStore.js"/>
@@ -314,7 +313,6 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/visualeditor/multieditor/VisualMultiTemplateEditorBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/CodeMirrorEditor/CodeMirrorEditorPopupBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/editors/CodeMirrorEditor/CodeMirrorEditorBinding.js"/>
-			<Script filename="${root}/scripts/source/top/ui/bindings/audio/AudioWindowBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/throbber/ThrobberBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/progressbar/ProgressBarBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/start/StartMenuItemBinding.js"/>

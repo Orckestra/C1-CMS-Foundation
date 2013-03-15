@@ -35,17 +35,6 @@
 									</ui:fielddata>
 								</ui:field>
 							</ui:fieldgroup>
-							<ui:fieldgroup label="${string:Website.Dialogs.Options.LabelAudioPreferences}">
-								<ui:field>
-									<ui:fielddesc label="${string:Website.Dialogs.Options.SoundEffects}"/>
-									<ui:fielddata>
-										<ui:radiodatagroup id="audio">
-											<ui:radio id="audiotrue" name="audiotrue" label="${string:Website.Dialogs.Options.LabelSoundOn}" value="true"/>
-											<ui:radio id="audiofalse" name="audiotrue" label="${string:Website.Dialogs.Options.LabelSoundOff}" value="false"/>
-										</ui:radiodatagroup>
-									</ui:fielddata>
-								</ui:field>
-							</ui:fieldgroup>
 						</ui:fields>
 					</ui:tabpanel>
 					<ui:tabpanel>

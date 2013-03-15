@@ -10,7 +10,6 @@
 			<Directory path="\Develop" />
 			<Directory path="\Bin\da" />
 			<Directory path="\Properties" />
-			<Directory path="\Composite\audio" />
 			<Directory path="\Composite\content\dialogs\querytreeeditor" />
 			<Directory path="\Composite\content\dialogs\tests" />
 			<Directory path="\Composite\content\views\dev\developer\tests" />

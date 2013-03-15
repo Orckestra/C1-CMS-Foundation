@@ -365,16 +365,12 @@
 	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelPixels" value="Pixels" />
 	<string key="Website.Dialogs.ImageEditor.ScaleImage.LabelPercent" value="Percent" />
 	<string key="Website.Dialogs.Options.LoginScreen" value="Login screen" />
-	<string key="Website.Dialogs.Options.SoundEffects" value="Sound effects" />
 	<string key="Website.Dialogs.Options.LabelOptions" value="Options" />
 	<string key="Website.Dialogs.Options.LabelGeneral" value="General" />
 	<string key="Website.Dialogs.Options.LabelAdvanced" value="Advanced" />
 	<string key="Website.Dialogs.Options.LabelLoginPreferences" value="Login Preferences" />
 	<string key="Website.Dialogs.Options.LabelFakeLoginScreen" value="Fake login screen" />
 	<string key="Website.Dialogs.Options.LabelNoLoginScreen" value="No login screen" />
-	<string key="Website.Dialogs.Options.LabelAudioPreferences" value="Audio Preferences" />
-	<string key="Website.Dialogs.Options.LabelSoundOn" value="Annoying sound effects" />
-	<string key="Website.Dialogs.Options.LabelSoundOff" value="No sound effects" />
 	<string key="Website.Dialogs.WebServices.Error" value="Error in web service method " />
 	<string key="Website.Dialogs.WebServices.LabelWebServiceError" value="Web Service Error" />
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.Title" value="Insert Where?" />
