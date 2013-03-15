@@ -133,6 +133,16 @@ namespace Composite.Functions
 
 
         /// <exclude />
+        public static WidgetFunctionProvider UrlComboBoxWidget
+        {
+            get
+            {
+                return new WidgetFunctionProvider(UrlComboBoxWidgetFunction.CompositeName);
+            }
+        }
+
+
+        /// <exclude />
         public static WidgetFunctionProvider VisualXhtmlDocumentEditorWidget
         {
             get

@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Functions.Foundation.PluginFacades;
 using Composite.Functions.Plugins.FunctionProvider.Runtime;
-using Composite.Core.Logging;
 
 
 namespace Composite.Functions.Foundation
@@ -19,80 +20,53 @@ namespace Composite.Functions.Foundation
 
         protected override IEnumerable<string> OnGetProviderNames()
         {
-            if ((ConfigurationServices.ConfigurationSource != null) &&
-                (ConfigurationServices.ConfigurationSource.GetSection(FunctionProviderSettings.SectionName) != null))
+            if ((ConfigurationServices.ConfigurationSource == null) ||
+                (ConfigurationServices.ConfigurationSource.GetSection(FunctionProviderSettings.SectionName) == null))
             {
-                FunctionProviderSettings functionProviderSettings = ConfigurationServices.ConfigurationSource.GetSection(FunctionProviderSettings.SectionName) as FunctionProviderSettings;
-
-                return functionProviderSettings.FunctionProviderPlugins.Select(plugin => plugin.Name);
-            }
-            else
-            {
-                LoggingService.LogError("FunctionProviderRegistry", string.Format("Failed to load the configuration section '{0}' from the configuration", FunctionProviderSettings.SectionName));
+                Log.LogError("FunctionProviderRegistry", "Failed to load the configuration section '{0}' from the configuration", FunctionProviderSettings.SectionName);
 
                 return new List<string>();
             }
+
+            var functionProviderSettings = ConfigurationServices.ConfigurationSource.GetSection(FunctionProviderSettings.SectionName) as FunctionProviderSettings;
+
+            return functionProviderSettings.FunctionProviderPlugins.Select(plugin => plugin.Name);
         }
 
 
 
         protected override IEnumerable<IMetaFunction> OnGetFunctionsFromProvider(string providerName, FunctionTypesToReturn functionTypesToReturn)
         {
-            IEnumerable<IMetaFunction> functions = new List<IMetaFunction>();
-
-            switch (functionTypesToReturn)
+            try
             {
-                case FunctionTypesToReturn.StaticDependentFunctions:
-                    try
-                    {
-                        functions = FunctionProviderPluginFacade.Functions(providerName).Cast<IMetaFunction>();
-                    }
-                    catch (Exception ex)
-                    {
-                        LoggingService.LogCritical("FunctionProviderRegistry", ex);
-                    }
-                    break;
-                case FunctionTypesToReturn.DynamicDependentOnlyFunctions:
-                    try
-                    {
-                        functions = FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName).Cast<IMetaFunction>();
-                    }
-                    catch (Exception ex)
-                    {
-                        LoggingService.LogCritical("FunctionProviderRegistry", ex);
-                    }
-                    break;
-                case FunctionTypesToReturn.AllFunctions:
-                    try
-                    {
-                        functions = FunctionProviderPluginFacade.Functions(providerName).Cast<IMetaFunction>();
-                    }
-                    catch (Exception ex)
-                    {
-                        LoggingService.LogCritical("FunctionProviderRegistry", ex);
-                    }
-
-                    try
-                    {
-                        functions = functions.Concat(FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName).Cast<IMetaFunction>());
-                    }
-                    catch (Exception ex)
-                    {
-                        LoggingService.LogCritical("FunctionProviderRegistry", ex);
-                    }
-                    break;
-                default:
-                    throw new NotImplementedException();
+                switch (functionTypesToReturn)
+                {
+                    case FunctionTypesToReturn.StaticDependentFunctions:
+                        return FunctionProviderPluginFacade.Functions(providerName);
+                    
+                    case FunctionTypesToReturn.DynamicDependentOnlyFunctions:
+                        return FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName);
+                    
+                    case FunctionTypesToReturn.AllFunctions:
+                        IEnumerable<IMetaFunction> functions = FunctionProviderPluginFacade.Functions(providerName);
+                        return functions.Concat(FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName));
+                }
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.LogCritical("FunctionProviderRegistry", ex);
             }
 
-            return functions;
+            throw new NotImplementedException("Unexpected FunctionTypesToReturn enumeration value");
         }
-
-
 
         protected override void OnFunctionsAdded(List<string> functionNames, bool fireEvents)
         {
-            if (fireEvents == true)
+            if (fireEvents)
             {
                 FunctionEventSystemFacade.FireFunctionAddedEvent(new FunctionsAddedEventArgs(functionNames));
             }

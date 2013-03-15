@@ -152,7 +152,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
             try
             {
-                 FunctionNotifier.FunctionsUpdated();
+                FunctionNotifier.FunctionsUpdated();
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
             }
             catch(Exception ex)
             {
