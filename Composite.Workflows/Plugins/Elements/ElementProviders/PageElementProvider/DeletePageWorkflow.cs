@@ -16,7 +16,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class DeletePageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -30,14 +30,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             e.Result = false; // Ignore this test, we delete all defined folders ande metadat fields when last page (with respect to locales) are deleted            
         }
-
-
-
-        private void DeleteSubpagesCheckboxChecked(object sender, ConditionalEventArgs e)
-        {
-            e.Result = this.GetBinding<bool>("DeleteAllSubPages");
-        }
-
 
 
         private void HasSubpages(object sender, ConditionalEventArgs e)
@@ -107,14 +99,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             bindings.Add("DeleteMessageText", string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageStep2.Text"), selectedPage.Title));
             this.Bindings = bindings;
         }
-
-
-
-        private void step1CodeActivity_ExecuteCode(object sender, EventArgs e)
-        {
-            this.ShowFieldMessage("DeleteAllSubPages", StringResourceSystemFacade.GetString("Composite.Plugins.PageElementProvider", "DeletePageWorkflow.MissingConfirmErrorMessage"));
-        }
-
 
 
         private void codeActivity2_ExecuteCode(object sender, EventArgs e)

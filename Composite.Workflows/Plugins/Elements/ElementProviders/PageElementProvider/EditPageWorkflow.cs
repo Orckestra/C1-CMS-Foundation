@@ -195,7 +195,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 Guid metaDatTypeId = pageMetaDataDefinition.MetaDataTypeId;
 
                 DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDatTypeId);
-                Verify.IsNotNull(dataTypeDescriptor, "Failed to get meta data type by id '{0}'", metaDatTypeId);
+                Verify.IsNotNull(dataTypeDescriptor, "Failed to get meta data type by id '{0}'. If data type was purposely removed, in order to fix this exception you should remove IPageMetaDataDefinition records that reference this data type.", metaDatTypeId);
 
                 Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 

@@ -8,7 +8,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using Composite.C1Console.Security;
 using Composite.Core;
-using Composite.Core.Logging;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -24,6 +23,7 @@ namespace Composite.C1Console.Actions
         private static readonly string LogTitle = typeof(ActionLockingFacade).Name;
         private static Dictionary<EntityToken, LockingInformation> _lockingInformations = null;
         private static readonly object _lock = new object();
+        private static readonly IFormatter _ownerIdFormatter = new BinaryFormatter();
 
 
 
@@ -151,14 +151,12 @@ namespace Composite.C1Console.Actions
                 EnsureInitialization();
 
                 LockingInformation lockingInformation;
-                if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == true)
-                {
-                    return lockingInformation.Username;
-                }
-                else
+                if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation))
                 {
                     return null;
                 }
+                
+                return lockingInformation.Username;
             }
         }
 
@@ -220,7 +218,7 @@ namespace Composite.C1Console.Actions
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                LoggingService.LogVerbose("RGB(194, 252, 131)ActionLockingFacade", "----------========== Initializing EntityToken Locks ==========----------");
+                Log.LogVerbose("RGB(194, 252, 131)ActionLockingFacade", "----------========== Initializing EntityToken Locks ==========----------");
                 int startTime = Environment.TickCount;
 
                 if (_lockingInformations == null)
@@ -231,28 +229,19 @@ namespace Composite.C1Console.Actions
                 }
 
                 int endTime = Environment.TickCount;
-                LoggingService.LogVerbose("RGB(194, 252, 131)ActionLockingFacade", string.Format("----------========== Done initializing EntityToken Locks ({0} ms ) ==========----------", endTime - startTime));
+                Log.LogVerbose("RGB(194, 252, 131)ActionLockingFacade", string.Format("----------========== Done initializing EntityToken Locks ({0} ms ) ==========----------", endTime - startTime));
             }
         }
 
 
-
         private static void LoadLockingInformation()
         {
-            IFormatter formatter = new BinaryFormatter();
-
             List<ILockingInformation> lockingInformations = DataFacade.GetData<ILockingInformation>().ToList();
             List<Guid> lockingInformationsToDelete = new List<Guid>();
 
             foreach (ILockingInformation lockingInformation in lockingInformations)
             {
-                object ownerId;
-
-                byte[] bytes = Convert.FromBase64String(lockingInformation.SerializedOwnerId);
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
-                    ownerId = formatter.Deserialize(ms);
-                }
+                object ownerId = DeserializeOwnerId(lockingInformation.SerializedOwnerId);
 
                 LockingInformation li = new LockingInformation
                 {
@@ -284,34 +273,34 @@ namespace Composite.C1Console.Actions
         private static void AddLockingInformation(EntityToken entityToken, object ownerId)
         {
             LockingInformation lockingInformation;
-            if (_lockingInformations.TryGetValue(entityToken, out lockingInformation) == false)
+            if (_lockingInformations.TryGetValue(entityToken, out lockingInformation))
             {
-                lockingInformation = new LockingInformation
+                if (object.Equals(lockingInformation.OwnerId, ownerId))
+                {
+                    // NO OP: The owner may acquire a lock multiple times
+                    return;
+                }
+
+                // This will only happen if an entity token subclass is not rightly implemented
+                throw new ActionLockingException("This item is used by another user, try again.");
+            }
+            
+            lockingInformation = new LockingInformation
                 {
                     Username = UserValidationFacade.GetUsername(),
                     OwnerId = ownerId
                 };
 
-                string serializedOwnerId = SerializeOwnerId(lockingInformation.OwnerId);
+            string serializedOwnerId = SerializeOwnerId(lockingInformation.OwnerId);
 
-                ILockingInformation li = DataFacade.BuildNew<ILockingInformation>();
-                li.Id = Guid.NewGuid();
-                li.SerializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
-                li.SerializedOwnerId = serializedOwnerId;
-                li.Username = lockingInformation.Username;
+            ILockingInformation li = DataFacade.BuildNew<ILockingInformation>();
+            li.Id = Guid.NewGuid();
+            li.SerializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
+            li.SerializedOwnerId = serializedOwnerId;
+            li.Username = lockingInformation.Username;
 
-                DataFacade.AddNew<ILockingInformation>(li);
-                _lockingInformations.Add(entityToken, lockingInformation);
-            }
-            else if (object.Equals(lockingInformation.OwnerId, ownerId) == true)
-            {
-                // NOOP: The owner me acqure a lock multiple times
-            }
-            else
-            {
-                // This will only happen if an entity token subclass not not rightly implemented
-                throw new ActionLockingException("This item is used by another user, try again.");
-            }
+            DataFacade.AddNew<ILockingInformation>(li);
+            _lockingInformations.Add(entityToken, lockingInformation);
         }
 
 
@@ -319,14 +308,13 @@ namespace Composite.C1Console.Actions
         private static void UpdateLockingInformation(EntityToken entityToken, object newOwnerId)
         {
             LockingInformation lockingInformation;
-            if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation)) throw new NotImplementedException();
+            if (!_lockingInformations.TryGetValue(entityToken, out lockingInformation)) throw new InvalidOperationException("LockingInformation record missing");
 
             string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
 
             ILockingInformation lockingInformationDataItem =
                 DataFacade.GetData<ILockingInformation>().
-                Where(f => f.SerializedEntityToken == serializedEntityToken).
-                Single();
+                Single(f => f.SerializedEntityToken == serializedEntityToken);
 
             lockingInformationDataItem.SerializedOwnerId = SerializeOwnerId(newOwnerId);
             DataFacade.Update(lockingInformationDataItem);
@@ -367,11 +355,9 @@ namespace Composite.C1Console.Actions
 
         private static string SerializeOwnerId(object ownerId)
         {
-            IFormatter formatter = new BinaryFormatter();
-
             using (MemoryStream ms = new MemoryStream())
             {
-                formatter.Serialize(ms, ownerId);
+                _ownerIdFormatter.Serialize(ms, ownerId);
 
                 byte[] bytes = ms.ToArray();
 
@@ -381,6 +367,15 @@ namespace Composite.C1Console.Actions
             }
         }
 
+
+        internal static object DeserializeOwnerId(string serializedOwnerId)
+        {
+            byte[] bytes = Convert.FromBase64String(serializedOwnerId);
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                return _ownerIdFormatter.Deserialize(ms);
+            }
+        }
 
 
         private sealed class LockingInformation

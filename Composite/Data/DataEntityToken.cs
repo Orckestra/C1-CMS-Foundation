@@ -31,6 +31,8 @@ namespace Composite.Data
             _dataInitialized = true;            
             _serializedDataSourceId = null;
             _dataSourceId = _data.DataSourceId;
+            Verify.ArgumentCondition(_dataSourceId != null, "data", "DataSourceId can not be null");
+
             _interfaceType = _dataSourceId.InterfaceType;
         }
 
