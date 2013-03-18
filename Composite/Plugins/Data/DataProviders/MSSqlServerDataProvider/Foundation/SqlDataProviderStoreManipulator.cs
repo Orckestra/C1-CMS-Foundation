@@ -427,7 +427,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     defaultValues.Add("PublicationStatus", GenericPublishProcessController.Draft);
                 }
 
-                AppendFields(alteredTableName, changeDescriptor.OriginalType.Fields, changeDescriptor.AddedFields, defaultValues);
+                AppendFields(alteredTableName, changeDescriptor.AddedFields, defaultValues);
 
                 if (primaryKeyChanged)
                 {
@@ -533,25 +533,17 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
 
 
-        private void AppendFields(string tableName, IEnumerable<DataFieldDescriptor> originalFieldDescriptions, IEnumerable<DataFieldDescriptor> addedFieldDescriptions, Dictionary<string, object> defaultValues = null)
+        private void AppendFields(string tableName, IEnumerable<DataFieldDescriptor> addedFieldDescriptions, Dictionary<string, object> defaultValues = null)
         {
             foreach (var addedFieldDescriptor in addedFieldDescriptions)
             {
-                var originalColumn = originalFieldDescriptions.SingleOrDefault(f => f.Name.Equals(addedFieldDescriptor.Name));
-                if (originalColumn != null)
+                object defaultValue = null;
+                if (defaultValues != null && defaultValues.ContainsKey(addedFieldDescriptor.Name))
                 {
-                    ConfigureColumn(tableName, originalColumn.Name, addedFieldDescriptor, originalColumn, true);
+                    defaultValue = defaultValues[addedFieldDescriptor.Name];
                 }
-                else
-                {
-                    object defaultValue = null;
-                    if (defaultValues != null && defaultValues.ContainsKey(addedFieldDescriptor.Name))
-                    {
-                        defaultValue = defaultValues[addedFieldDescriptor.Name];
-                    }
 
-                    CreateColumn(tableName, addedFieldDescriptor, defaultValue);
-                }
+                CreateColumn(tableName, addedFieldDescriptor, defaultValue);
             }
         }
 
