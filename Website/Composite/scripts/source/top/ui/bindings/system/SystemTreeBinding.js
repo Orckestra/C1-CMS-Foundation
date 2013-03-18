@@ -1076,27 +1076,28 @@ SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
  */
 SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 
-	var temp = {};
 	var result = new Map();
 
 	var focusedBindings = this.getFocusedTreeNodeBindings();
 
 	var actionProfile = focusedBindings.getFirst().node.getActionProfile();
 
-	var self = this;
-	actionProfile.each(
-		function (groupid, list) {
-			var newList = new List();
-			list.each(function (systemAction) {
-				if (systemAction.getActivePositions() & self._activePosition) {
-					newList.add(systemAction);
-				}
-			});
-			if (newList.hasEntries()) {
-				result.set(groupid, newList);
-			}
-		}
-	);
+	if (actionProfile != null) {
+	    var self = this;
+	    actionProfile.each(
+		    function (groupid, list) {
+			    var newList = new List();
+			    list.each(function (systemAction) {
+				    if (systemAction.getActivePositions() & self._activePosition) {
+					    newList.add(systemAction);
+				    }
+			    });
+			    if (newList.hasEntries()) {
+				    result.set(groupid, newList);
+			    }
+		    }
+	    );
+	}
 
 	result.activePosition = this._activePosition;
 
