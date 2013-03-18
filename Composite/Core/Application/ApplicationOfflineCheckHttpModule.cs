@@ -18,11 +18,13 @@ namespace Composite.Core.Application
 
         protected virtual void HttpApplication_BeginRequest(object sender, EventArgs e)
         {
-            if(!IsOffline) 
-                return;
+            var context = ((HttpApplication)sender).Context;
 
-            HttpApplication application = (HttpApplication)sender;
-            HttpContext context = application.Context;
+            if (!IsOffline ||
+                context.Request.FilePath.EndsWith("/Composite/services/LogService/LogService.svc", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
 
             context.Response.Clear();
             context.Response.Write(_responceHtml);

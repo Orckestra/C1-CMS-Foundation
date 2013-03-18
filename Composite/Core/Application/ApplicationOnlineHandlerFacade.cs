@@ -16,7 +16,7 @@ namespace Composite.Core.Application
 
 
         /// <summary>
-        /// 
+        /// Turns application offline
         /// </summary>
         /// <param name="softTurnOff">
         /// Setting softTurnOff to true will only make the application offline to the client, but 
