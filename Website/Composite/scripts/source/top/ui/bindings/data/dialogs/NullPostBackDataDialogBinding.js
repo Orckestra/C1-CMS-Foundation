@@ -226,7 +226,9 @@ NullPostBackDataDialogBinding.prototype.setValue = function ( value ) {
 }
 
 NullPostBackDataDialogBinding.prototype.action = function () {
-	
+    new List(["selectedtoken"]).each(function (prop) {
+        this._datathing.setProperty(prop, this.getProperty(prop));
+    }, this);
 	this._datathing.fireCommand ();
 }
 
