@@ -157,7 +157,7 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunction = function () {
 				if ( functionInfo.RequireConfiguration ) {
 					self._injectFunctionConfiguration ( functionInfo.FunctionMarkup );
 				} else {
-					self._inject ( functionInfo.FunctionMarkup );
+				    self._injectFunctionMarkup(functionInfo.FunctionMarkup);
 				}
 			}
 		}
@@ -178,7 +178,7 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = 
 	var handler = {
 		handleDialogResponse : function ( response, result ) {		
 			if ( response == Dialog.RESPONSE_ACCEPT ) {
-				self._inject ( result );
+			    self._injectFunctionMarkup(result);
 			}
 		}
 	}
@@ -194,23 +194,30 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = 
  * Inject result and trigger a syntaxhighlight.
  * @param {string} string
  */
+SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionMarkup = function (string) {
+
+    switch (this._editorBinding.syntax) {
+        case CodeMirrorEditorBinding.syntax.CSHTML:
+            string = string.replace(/(<f:function[^>]*) xmlns:f="[^"]*"/gi, '$1');
+            string = string.replace(/(<f:param[^>]*) xmlns:f="[^"]*"/gi, '$1');
+            break;
+        case CodeMirrorEditorBinding.syntax.ASPX:
+            string = string.replace(/(<f:function[^>]*) xmlns:f="[^"]*"/gi, '$1 runat="server"');
+            string = string.replace(/(<f:param[^>]*) xmlns:f="[^"]*"/gi, '$1');
+            break;
+        default:
+            break;
+    }
+
+    this._inject(string);
+}
+
+/**
+ * Inject result and trigger a syntaxhighlight.
+ * @param {string} string
+ */
 SourceEditorInsertToolbarButtonBinding.prototype._inject = function ( string ) {
 
 	this._codemirrorEditor.replaceSelection(string);
 	this._editorBinding.checkForDirty ();
-	
-	/*
-	var doc = this._codePressFrame.contentDocument;
-	doc.execCommand ( "inserthtml", false, string );
-	
-	var handler = this._editorBinding.getEditorWindow ().standardEventHandler;
-	var engine = this._codePressEngine;
-	var editor = this._editorBinding;
-	
-	setTimeout ( function () {
-		engine.syntaxHighlight ( "generic" );
-		handler.enableNativeKeys ( true ); // * is this needed? Or even desired?
-		editor.checkForDirty ();
-	}, 100 );
-	*/
 }
