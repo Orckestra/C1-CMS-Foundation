@@ -362,12 +362,12 @@ namespace Composite.Services
                                             descriptionLines[2], descriptionLines.Last());
             }
 
-            string imageUrl = string.Format("~/Renderers/FunctionBox?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
+            string imageUrl = GetFunctionBoxImageUrl("html", title, description);
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("src", UrlUtils.ResolvePublicUrl(imageUrl)),
+                new XAttribute("src", imageUrl),
                 new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
-                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
+                new XAttribute("alt", element.ToString())
                 );
         }
 
@@ -434,16 +434,26 @@ namespace Composite.Services
                 description.AppendLine("[ ERROR PARSING MARKUP ]");
             }
 
-            string imageUrl = string.Format("~/Renderers/FunctionBox?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description.ToString()));
+            string imageUrl = GetFunctionBoxImageUrl("html", title, description.ToString());
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("src", UrlUtils.ResolvePublicUrl(imageUrl)),
+                new XAttribute("src", imageUrl),
                 new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
-                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
+                new XAttribute("alt", element.ToString())
                 );
         }
 
 
+        private static string GetFunctionBoxImageUrl(string type, string title, string description)
+        {
+            string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}".FormatWith(
+                HttpUtility.UrlEncodeUnicode(type),
+                HttpUtility.UrlEncodeUnicode(title),
+                UrlUtils.ZipContent(description.Trim())); // ZIPping description as it may contain xml tags f.e. <iframe />
+
+            return UrlUtils.ResolvePublicUrl(imageUrl);
+        }
+        
 
         private XElement GetImageTagForDynamicDataFieldReference(DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
         {
@@ -518,12 +528,7 @@ namespace Composite.Services
                 error = true;
             }
 
-            string tmpUrl = "~/Renderers/FunctionBox2?type={0}&title={1}&description={2}"
-                .FormatWith(error ? "warning" : "function",
-                            HttpUtility.UrlEncodeUnicode(title),
-                            HttpUtility.UrlEncodeUnicode(description.ToString().Trim()));
-
-            string functionBoxUrl = UrlUtils.ResolvePublicUrl(tmpUrl);
+            string functionBoxUrl = GetFunctionBoxImageUrl(error ? "warning" : "function", title, description.ToString());
 
             XElement imagetag = new XElement("img"
                 , new XAttribute("alt", compactMarkup)

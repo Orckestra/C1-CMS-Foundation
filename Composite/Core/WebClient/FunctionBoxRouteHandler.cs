@@ -61,6 +61,8 @@ namespace Composite.Core.WebClient
                 List<string> lines = new List<string>();
                 if (!description.IsNullOrEmpty())
                 {
+                    description = UrlUtils.UnZipContent(description);
+
                     foreach (string naturalLine in description.Split('\n'))
                     {
                         if (naturalLine.Length == 0) lines.Add("");
