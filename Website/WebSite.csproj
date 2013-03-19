@@ -394,6 +394,13 @@
     <Compile Include="Composite\controls\FormsControls\FormUiControlTemplates\RichContent\MultiContentXhtmlEditor.ascx.designer.cs">
       <DependentUpon>MultiContentXhtmlEditor.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Composite\controls\FormsControls\Helpers\StyleLoaderControl.ascx.cs">
+      <DependentUpon>StyleLoaderControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Composite\controls\FormsControls\Helpers\StyleLoaderControl.ascx.designer.cs">
+      <DependentUpon>StyleLoaderControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Composite\controls\HttpHeadersControl.ascx.cs">
       <DependentUpon>HttpHeadersControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1783,6 +1790,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Text\InfoTable.css" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Text\Text.ascx" />
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\TypeSelectors\TypeSelector.ascx" />
+    <Content Include="Composite\controls\FormsControls\Helpers\StyleLoaderControl.ascx" />
     <Content Include="Composite\controls\HttpHeadersControl.ascx" />
     <Content Include="Composite\controls\IconRendererControl.ascx" />
     <Content Include="Composite\controls\IconRendererHarmonyControl.ascx" />
