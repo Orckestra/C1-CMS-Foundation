@@ -42,7 +42,6 @@ namespace Composite.Core.WebClient
         /// <summary>
         /// Disabling the "url metadata caching" prevents <see cref="System.Web.HttpException" /> in debugger 
         /// </summary>
-        /// <param name="disableCaching"></param>
         public static IDisposable DisableUrlMetadataCachingScope()
         {
             return new DisableUrlMedataScope();

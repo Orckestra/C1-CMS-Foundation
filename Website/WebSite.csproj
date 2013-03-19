@@ -479,6 +479,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\images\warningbox.png" />
     <Content Include="Composite\localization\Composite.Plugins.PageTemplateFeatureElementProvider.en-us.xml" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.cs.txt" />
@@ -6340,7 +6341,6 @@
     <Content Include="Composite\services\Icon\GetIcon.ashx" />
     <Content Include="Composite\services\Media\ImageManipulator.ashx" />
     <Content Include="Composite\services\WysiwygEditor\FieldImage.ashx" />
-    <Content Include="Composite\services\WysiwygEditor\YellowBox.ashx" />
     <Content Include="Composite\services\Admin\DownloadFile.ashx" />
     <None Include="Composite\schemas\Functions\Function.xsd">
       <SubType>Designer</SubType>

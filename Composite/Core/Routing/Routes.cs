@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web.Routing;
 using Composite.Core.Routing.Pages;
+using Composite.Core.WebClient;
 
 namespace Composite.Core.Routing
 {
@@ -27,6 +28,7 @@ namespace Composite.Core.Routing
             routes.Ignore("Composite/{*pathInfo}");
             routes.Ignore("{resource}.axd/{*pathInfo}");
 
+            AddFunctionBoxRoute(routes);
             AddSiteMapRoutes(routes);
 
             if (OnBeforePageRouteAdded != null)
@@ -61,6 +63,12 @@ namespace Composite.Core.Routing
             routes.Ignore("sitemap.xml");
             routes.Ignore("{language}/sitemap.xml");
             routes.Ignore("{language}/{urlTitle}/sitemap.xml");
+        }
+
+        private static void AddFunctionBoxRoute(RouteCollection routes)
+        {
+            routes.Add("c1 function image", new FunctionBoxRoute());
+            
         }
 
         /// <summary>

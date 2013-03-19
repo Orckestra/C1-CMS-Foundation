@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
 using Composite.Core.Logging;
@@ -172,7 +173,7 @@ namespace Composite.Services
             }
         }
 
-        private static List<XName> paragraphList = new List<XName>(){
+        private static readonly List<XName> paragraphList = new List<XName>(){
 				Namespaces.Xhtml + "p",
 				Namespaces.Xhtml + "h1",
 				Namespaces.Xhtml + "h2",
@@ -183,16 +184,13 @@ namespace Composite.Services
 
         private static bool IsFunctionAloneInParagraph(XElement element)
         {
-            if (element.ElementsBeforeSelf().Where(d => d.Name != Namespaces.Xhtml + "br").Any())
+            if (element.ElementsBeforeSelf().Any(d => d.Name != Namespaces.Xhtml + "br")
+                || element.ElementsAfterSelf().Any(d => d.Name != Namespaces.Xhtml + "br")
+                || !paragraphList.Contains(element.Parent.Name)
+                || element.Parent.Value.Replace("&#160;", "").Trim() != string.Empty)
                 return false;
-            if (element.ElementsAfterSelf().Where(d => d.Name != Namespaces.Xhtml + "br").Any())
-                return false;
-            if (!paragraphList.Contains(element.Parent.Name))
-                return false;
-            if (element.Parent.Value.Replace("&#160;", "").Trim() != string.Empty)
-                return false;
-            return true;
 
+            return true;
         }
 
         private static string FixXhtmlFragment(string xhtmlFragment)
@@ -321,7 +319,7 @@ namespace Composite.Services
             FunctionInfo functionInfo = new FunctionInfo();
 
             functionInfo.FunctionMarkup = functionRuntimeTreeNode.Serialize().ToString();
-            functionInfo.RequireConfiguration = (function.ParameterProfiles.Count() > 0);
+            functionInfo.RequireConfiguration = function.ParameterProfiles.Any();
 
             return functionInfo;
         }
@@ -343,14 +341,12 @@ namespace Composite.Services
             DataTypeDescriptor typeDescriptor;
             DataFieldDescriptor fieldDescriptor;
 
-            if (DynamicTypeMarkupServices.TryGetDescriptors(fieldReferenceElement, out typeDescriptor, out fieldDescriptor))
-            {
-                return GetImageTagForDynamicDataFieldReference(fieldDescriptor, typeDescriptor);
-            }
-            else
+            if (!DynamicTypeMarkupServices.TryGetDescriptors(fieldReferenceElement, out typeDescriptor, out fieldDescriptor))
             {
                 return null;
             }
+
+            return GetImageTagForDynamicDataFieldReference(fieldDescriptor, typeDescriptor);
         }
 
 
@@ -366,10 +362,10 @@ namespace Composite.Services
                                             descriptionLines[2], descriptionLines.Last());
             }
 
-            string imageUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
+            string imageUrl = string.Format("~/Renderers/FunctionBox?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+                new XAttribute("src", UrlUtils.ResolvePublicUrl(imageUrl)),
                 new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
                 new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
                 );
@@ -438,10 +434,10 @@ namespace Composite.Services
                 description.AppendLine("[ ERROR PARSING MARKUP ]");
             }
 
-            string imageUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description.ToString()));
+            string imageUrl = string.Format("~/Renderers/FunctionBox?type=html&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description.ToString()));
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+                new XAttribute("src", UrlUtils.ResolvePublicUrl(imageUrl)),
                 new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
                 new XAttribute("alt", HttpUtility.UrlEncodeUnicode(element.ToString()))
                 );
@@ -479,116 +475,127 @@ namespace Composite.Services
         private XElement GetImageTagForFunctionCall(XElement functionElement)
         {
             string title;
-            string description;
+            StringBuilder description = new StringBuilder();
             string compactMarkup = functionElement.ToString(SaveOptions.DisableFormatting);
+
+            bool error = false;
 
             try
             {
                 FunctionRuntimeTreeNode functionNode = (FunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
                 string functionName = functionNode.GetCompositeName();
                 title = MakeTitleFromName(functionName);
-                description = string.Format("[{0}]", functionName);
+                
+                // description.AppendLine("[{0}]".FormatWith(functionName));
+                
                 string functionDescription = functionNode.GetDescription();
-                if (string.IsNullOrEmpty(functionDescription) == false)
+                if (!functionDescription.IsNullOrEmpty())
                 {
                     functionDescription = StringResourceSystemFacade.ParseString(functionDescription);
-                    description = description + "\n\n" + functionDescription;
+                    description.AppendLine(functionDescription);
                 }
 
                 var setParams = functionNode.GetSetParameters().ToList();
-                if (setParams.Any() == true) description += "\n";
+                if (setParams.Any()) description.Append("\n");
 
                 IEnumerable<ParameterProfile> parameterProfiles = FunctionFacade.GetFunction(functionName).ParameterProfiles;
 
                 foreach (var setParam in setParams.Take(10))
                 {
-                    if (setParam.ContainsNestedFunctions == true || setParam is FunctionParameterRuntimeTreeNode)
-                    {
-
-                        description += string.Format("\n{0} = {1}", setParam.Name, "....");
-                    }
-                    else
-                    {
-                        try
-                        {
-                            string paramValue = setParam.GetValue().ToString();
-                            string paramLabel = setParam.Name;
-
-                            try
-                            {
-                                ParameterProfile parameterProfile = parameterProfiles.Where(f => f.Name == setParam.Name).FirstOrDefault();
-                                if (parameterProfile != null)
-                                {
-                                    paramLabel = parameterProfile.LabelLocalized;
-                                    if (typeof(IDataReference).IsAssignableFrom(parameterProfile.Type))
-                                    {
-                                        IDataReference dataReference = ValueTypeConverter.Convert(setParam.GetValue(), parameterProfile.Type) as IDataReference;
-                                        if (dataReference != null)
-                                        {
-                                            paramValue = dataReference.Data.GetLabel();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (parameterProfile.Type == typeof(XhtmlDocument))
-                                        {
-                                            XhtmlDocument xhtmlDoc = setParam.GetValue<XhtmlDocument>();
-                                            if (xhtmlDoc.Body.Nodes().Count() == 0 && xhtmlDoc.Head.Nodes().Count() == 0)
-                                            {
-                                                paramValue = "(Empty HTML)";
-                                            }
-                                            else
-                                            {
-                                                string bodyText = xhtmlDoc.Body.Value.Trim();
-                                                paramValue = (bodyText.Length > 0 ? string.Format("HTML: {0}", bodyText) : "(HTML)");
-                                            }
-                                        }
-                                    }
-                                }
-
-
-
-                            }
-                            catch (Exception)
-                            {
-                                // just fall back to listing param names and raw values...
-                            }
-
-                            if (string.IsNullOrEmpty(paramValue) == false && paramValue.Length > 50)
-                                paramValue = paramValue.Substring(0, 45) + "...";
-                            description += string.Format("\n{0} = {1}", paramLabel, paramValue);
-                        }
-                        catch (Exception)
-                        {
-                            description += string.Format("\n{0} = {1}", setParam.Name, "....");
-                        }
-                    }
+                    AddParameterInformation(description, setParam, parameterProfiles);
                 }
+                
                 if (setParams.Count > 10)
                 {
-                    description += string.Format("\n....");
+                    description.AppendLine("....");
                 }
             }
             catch (Exception ex)
             {
-                title = "[parse error]";
-                description = string.Format("Failed to parse the function markup.\n{0}", ex.Message);
+                // TODO: should be localized?
+                title = "Invalid function call";
+                description.AppendLine(ex.Message);
+                error = true;
             }
 
-            string tmpUrl = string.Format("services/WysiwygEditor/YellowBox.ashx?type=function&title={0}&description={1}", HttpUtility.UrlEncodeUnicode(title), HttpUtility.UrlEncodeUnicode(description));
+            string tmpUrl = "~/Renderers/FunctionBox2?type={0}&title={1}&description={2}"
+                .FormatWith(error ? "warning" : "function",
+                            HttpUtility.UrlEncodeUnicode(title),
+                            HttpUtility.UrlEncodeUnicode(description.ToString().Trim()));
 
-            string yellowBoxUrl = Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(tmpUrl);
+            string functionBoxUrl = UrlUtils.ResolvePublicUrl(tmpUrl);
 
             XElement imagetag = new XElement("img"
-                , new XAttribute("alt", HttpUtility.UrlEncodeUnicode(compactMarkup))
-                , new XAttribute("src", yellowBoxUrl)
+                , new XAttribute("alt", compactMarkup)
+                , new XAttribute("src", functionBoxUrl)
                 , new XAttribute("class", "compositeFunctionWysiwygRepresentation")
                 );
 
             return imagetag;
         }
 
+        private void AddParameterInformation(StringBuilder description, BaseParameterRuntimeTreeNode parameter, IEnumerable<ParameterProfile> parameterProfiles)
+        {
+            if (parameter.ContainsNestedFunctions || parameter is FunctionParameterRuntimeTreeNode)
+            {
+                description.AppendLine("{0} = ....".FormatWith(parameter.Name));
+                return;
+            }
 
+            try
+            {
+                string paramValue = parameter.GetValue().ToString();
+                string paramLabel = parameter.Name;
+
+                try
+                {
+                    ParameterProfile parameterProfile = parameterProfiles.FirstOrDefault(f => f.Name == parameter.Name);
+                    if (parameterProfile != null)
+                    {
+                        paramLabel = parameterProfile.LabelLocalized;
+                        if (typeof(IDataReference).IsAssignableFrom(parameterProfile.Type))
+                        {
+                            IDataReference dataReference = ValueTypeConverter.Convert(parameter.GetValue(), parameterProfile.Type) as IDataReference;
+                            if (dataReference != null)
+                            {
+                                paramValue = dataReference.Data.GetLabel();
+                            }
+                        }
+                        else
+                        {
+                            if (parameterProfile.Type == typeof(XhtmlDocument))
+                            {
+                                XhtmlDocument xhtmlDoc = parameter.GetValue<XhtmlDocument>();
+                                if (xhtmlDoc.Body.Nodes().Any() && xhtmlDoc.Head.Nodes().Any())
+                                {
+                                    paramValue = "(Empty HTML)";
+                                }
+                                else
+                                {
+                                    string bodyText = xhtmlDoc.Body.Value.Trim();
+                                    paramValue = (bodyText.Length > 0 ? string.Format("HTML: {0}", bodyText) : "(HTML)");
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // just fall back to listing param names and raw values...
+                }
+
+                if (!paramValue.IsNullOrEmpty() && paramValue.Length > 50)
+                {
+                    paramValue = paramValue.Substring(0, 45) + "...";
+                }
+                        
+                description.AppendLine("{0} = {1}".FormatWith(paramLabel, paramValue));
+            }
+            catch (Exception)
+            {
+                description.AppendLine("{0} = ....".FormatWith(parameter.Name));
+            }
+        }
 
         private string WrapInnerBody(string innerBodyMarkup)
         {
@@ -618,7 +625,7 @@ namespace Composite.Services
                 {
                     bool nextLetterIsLower = (i < titleBase.Length - 1) && (titleBase.Substring(i + 1, 1).ToLowerInvariant() == titleBase.Substring(i + 1, 1));
 
-                    if (lastWasUpper == false || nextLetterIsLower == true)
+                    if (!lastWasUpper || nextLetterIsLower)
                     {
                         sb.Append(" ");
                     }
