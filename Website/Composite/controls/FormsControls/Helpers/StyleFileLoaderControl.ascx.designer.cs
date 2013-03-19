@@ -10,5 +10,6 @@
 
 
 
-public partial class StyleLoaderControl {
+public partial class StyleFileLoaderControl
+{
 }

@@ -3,9 +3,9 @@ using System.Web.UI;
 
 namespace Composite.controls.helpers
 {
-    public partial class StyleLoaderControl : System.Web.UI.UserControl
+    public partial class StyleFileLoaderControl : System.Web.UI.UserControl
     {
-        public string adminRelativePath = "xxx";
+        public string adminRelativePath = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {

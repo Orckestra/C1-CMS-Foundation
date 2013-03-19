@@ -1,1 +1,0 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeFile="StyleLoaderControl.ascx.cs" Inherits="Composite.controls.helpers.StyleLoaderControl" %>

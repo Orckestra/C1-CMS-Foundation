@@ -2,7 +2,7 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Xml.Linq" %>
 <%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
-<%@ Register Src="../../Helpers/StyleLoaderControl.ascx" TagPrefix="control" TagName="StyleLoader" %>
+<%@ Register Src="../../Helpers/StyleFileLoaderControl.ascx" TagPrefix="control" TagName="StyleLoader" %>
 
 <control:StyleLoader adminRelativePath="controls/FormsControls/FormUiControlTemplates/Text/InfoTable.css" runat="server" />
 
