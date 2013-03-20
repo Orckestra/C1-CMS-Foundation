@@ -13906,7 +13906,7 @@ NullPostBackDataDialogSelectorBinding.prototype.toString=function(){
 return "[NullPostBackDataDialogSelectorBinding]";
 };
 NullPostBackDataDialogSelectorBinding.prototype.select=function(_955,_956){
-if(NullPostBackDataDialogSelectorBinding.superclass.select.call(this,_955,_956)){
+if(NullPostBackDataDialogSelectorBinding.superclass.select.call(this,_955,true)){
 this._buttonBinding.setImage(null);
 this._updateImageLayout();
 if(this._selectionValue==NullPostBackDataDialogBinding.VALUE_SELECTED){
@@ -13933,9 +13933,11 @@ setTimeout(function(){
 _95b.action();
 },0);
 }else{
-this.master.setValue("");
-}
+if(_95b.getValue()){
 _95b.dirty();
+}
+_95b.setValue("");
+}
 break;
 }
 };
