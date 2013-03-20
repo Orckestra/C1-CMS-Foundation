@@ -14,10 +14,10 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PiggybagDataFinder
     {
-        private List<EntityToken> _parentEntityTokens = null;
+        private List<EntityToken> _parentEntityTokens;
 
-        private Dictionary<string, string> _piggybag;
-        private EntityToken _currentEntityToken;
+        private readonly Dictionary<string, string> _piggybag;
+        private readonly EntityToken _currentEntityToken;
 
 
 
@@ -29,7 +29,7 @@ namespace Composite.C1Console.Trees
         }
 
 
-
+         
         /// <exclude />
         public Dictionary<string, string> Piggybag
         {

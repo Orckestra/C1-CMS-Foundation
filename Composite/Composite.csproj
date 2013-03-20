@@ -829,7 +829,7 @@
     <Compile Include="C1Console\Trees\FunctionFilterNode.cs" />
     <Compile Include="C1Console\Trees\MessageBoxActionNode.cs" />
     <Compile Include="C1Console\Trees\OrderByNode.cs" />
-    <Compile Include="C1Console\Trees\PiggybagInterfaceFinder.cs" />
+    <Compile Include="C1Console\Trees\PiggybagDataFinder.cs" />
     <Compile Include="C1Console\Trees\Foundation\AttachmentPoints\IAttachmentPoint.cs" />
     <Compile Include="C1Console\Trees\TreeElementActionProvider.cs" />
     <Compile Include="C1Console\Trees\TreeFacade.cs" />
