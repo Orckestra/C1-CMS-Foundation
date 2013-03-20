@@ -39,7 +39,7 @@ NullPostBackDataDialogSelectorBinding.prototype.toString = function () {
  */
 NullPostBackDataDialogSelectorBinding.prototype.select = function ( itemBinding, isActionBlocked ) {
 
-	if ( NullPostBackDataDialogSelectorBinding.superclass.select.call ( this, itemBinding, isActionBlocked )) {
+	if ( NullPostBackDataDialogSelectorBinding.superclass.select.call ( this, itemBinding, true )) {
 		this._buttonBinding.setImage ( null );
 		this._updateImageLayout ();
 		if ( this._selectionValue == NullPostBackDataDialogBinding.VALUE_SELECTED ) {
@@ -80,9 +80,11 @@ NullPostBackDataDialogSelectorBinding.prototype.handleAction = function ( action
 					master.action ();
 				}, 0 );
 			} else {
-				this.master.setValue ( "" );
+			    if (master.getValue()) {
+			        master.dirty();
+			    }
+			    master.setValue("");
 			}
-			master.dirty ();
 			break;
 	}
 }
