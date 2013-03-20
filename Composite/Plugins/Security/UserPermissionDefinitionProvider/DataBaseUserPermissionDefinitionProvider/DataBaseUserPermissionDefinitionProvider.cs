@@ -59,38 +59,43 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
             get { return true; }
         }
 
+        private EntityToken DeserializeSilent(string serializedEntityToken)
+        {
+            try
+            {
+                return EntityTokenSerializer.Deserialize(serializedEntityToken);
+            }
+            catch (Exception)
+            {
+                // Silent
+                return null;
+            }
+        }
 
 
         public void SetUserPermissionDefinition(UserPermissionDefinition userPermissionDefinition)
         {
             string username = userPermissionDefinition.Username;
-            string serializedEntityToken = userPermissionDefinition.SerializedEntityToken; 
+            string serializedEntityToken = userPermissionDefinition.SerializedEntityToken;
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                IUserPermissionDefinition definition =
-                        (from urd in DataFacade.GetData<IUserPermissionDefinition>()
-                         where urd.Username == username &&
-                               urd.SerializedEntityToken == serializedEntityToken
-                         select urd).FirstOrDefault();
+                IEnumerable<IUserPermissionDefinition> existingUserPermissionDefinitions = 
+                    DataFacade.GetData<IUserPermissionDefinition>()
+                              .Where(d => d.Username == username)
+                              .ToList()
+                              .Where(d => userPermissionDefinition.EntityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                              .ToList();
 
-                bool exists = definition != null;
+                DataFacade.Delete(existingUserPermissionDefinitions);
 
-                if (exists == false)
-                {
-                    definition = DataFacade.BuildNew<IUserPermissionDefinition>();
-                    definition.Id = Guid.NewGuid();
-                    definition.Username = userPermissionDefinition.Username;
-                    definition.SerializedEntityToken = serializedEntityToken;
+                IUserPermissionDefinition definition = DataFacade.BuildNew<IUserPermissionDefinition>();
+                definition.Id = Guid.NewGuid();
+                definition.Username = userPermissionDefinition.Username;
+                definition.SerializedEntityToken = serializedEntityToken;
 
-                    DataFacade.AddNew<IUserPermissionDefinition>(definition);
-                }                
-                else
-                {
-                    DataFacade.Update(definition);
+                DataFacade.AddNew(definition);
 
-                    DataFacade.Delete<IUserPermissionDefinitionPermissionType>(f => f.UserPermissionDefinitionId == definition.Id);
-                }
 
                 foreach (PermissionType permissionType in userPermissionDefinition.PermissionTypes)
                 {
@@ -99,7 +104,7 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
                     permission.PermissionTypeName = permissionType.ToString();
                     permission.UserPermissionDefinitionId = definition.Id;
 
-                    DataFacade.AddNew<IUserPermissionDefinitionPermissionType>(permission);
+                    DataFacade.AddNew(permission);
                 }
 
                 transactionScope.Complete();

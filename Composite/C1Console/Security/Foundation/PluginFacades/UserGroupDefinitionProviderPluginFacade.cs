@@ -5,6 +5,7 @@ using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security.Plugins.UserGroupPermissionDefinitionProvider;
 using Composite.C1Console.Security.Plugins.UserGroupPermissionDefinitionProvider.Runtime;
+using Composite.Core.Extensions;
 
 
 namespace Composite.C1Console.Security.Foundation.PluginFacades
@@ -51,11 +52,11 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         
         public static void SetUserGroupPermissionDefinition(UserGroupPermissionDefinition userGroupPermissionDefinition)
         {
-            if (userGroupPermissionDefinition == null) throw new ArgumentNullException("userGroupPermissionDefinition");
-            if (string.IsNullOrEmpty(userGroupPermissionDefinition.SerializedEntityToken) == true) throw new ArgumentNullException("userGroupPermissionDefinition");
-            if (userGroupPermissionDefinition.UserGroupId == Guid.Empty) throw new ArgumentNullException("userGroupPermissionDefinition");
+            Verify.ArgumentNotNull(userGroupPermissionDefinition, "userGroupPermissionDefinition");
+            Verify.ArgumentCondition(!userGroupPermissionDefinition.SerializedEntityToken.IsNullOrEmpty(), "userGroupPermissionDefinition", "SerializedEntityToken is empty");
+            Verify.ArgumentCondition(userGroupPermissionDefinition.UserGroupId != Guid.Empty, "userGroupPermissionDefinition", "Is Guid.Empty");
 
-                _resourceLocker.Resources.Plugin.SetUserGroupPermissionDefinition(userGroupPermissionDefinition);
+             _resourceLocker.Resources.Plugin.SetUserGroupPermissionDefinition(userGroupPermissionDefinition);
         }
 
 
@@ -65,7 +66,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
             if (userGroupID == Guid.Empty) throw new ArgumentNullException("userGroupID");
             if (string.IsNullOrEmpty(serializedEntityToken) == true) throw new ArgumentNullException("serializedEntityToken");
 
-                _resourceLocker.Resources.Plugin.RemoveUserGroupPermissionDefinition(userGroupID, serializedEntityToken);
+            _resourceLocker.Resources.Plugin.RemoveUserGroupPermissionDefinition(userGroupID, serializedEntityToken);
         }
 
 

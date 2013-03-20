@@ -18,23 +18,22 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<PermissionType> GetLocallyDefinedUserPermissionTypes(UserToken userToken, EntityToken entityToken)
         {
-            if (userToken == null) throw new ArgumentNullException("userToken");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNull(userToken, "userToken");
+            Verify.ArgumentNotNull(entityToken, "entityToken");
 
             IEnumerable<UserPermissionDefinition> userPermissionDefinitions = GetUserPermissionDefinitions(userToken.Username);
 
+            var result = new List<PermissionType>();
+
             foreach (UserPermissionDefinition userPermissionDefinition in userPermissionDefinitions)
             {
-                if (userPermissionDefinition.EntityToken.Equals(entityToken) == true)
+                if (userPermissionDefinition.EntityToken.Equals(entityToken))
                 {
-                    foreach (PermissionType permissionType in userPermissionDefinition.PermissionTypes)
-                    {
-                        yield return permissionType;
-                    }
+                    result.AddRange(userPermissionDefinition.PermissionTypes);
                 }
             }
 
-            yield break;
+            return result.Distinct();
         }
 
 
@@ -42,25 +41,23 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<PermissionType> GetLocallyDefinedUserGroupPermissionTypes(Guid userGroupId, EntityToken entityToken)
         {
-            if (userGroupId == Guid.Empty) throw new ArgumentNullException("userGroupId");
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            Verify.ArgumentNotNull(userGroupId, "userGroupId");
+            Verify.ArgumentNotNull(entityToken, "entityToken");
 
             IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions = GetUserGroupPermissionDefinitions(userGroupId);
 
+            var result = new List<PermissionType>();
+
             foreach (UserGroupPermissionDefinition userGroupPermissionDefinition in userGroupPermissionDefinitions)
             {
-                if (userGroupPermissionDefinition.EntityToken.Equals(entityToken) == true)
+                if (userGroupPermissionDefinition.EntityToken.Equals(entityToken))
                 {
-                    foreach (PermissionType permissionType in userGroupPermissionDefinition.PermissionTypes)
-                    {
-                        yield return permissionType;
-                    }
+                    result.AddRange(userGroupPermissionDefinition.PermissionTypes);
                 }
             }
 
-            yield break;
+            return result.Distinct();
         }
-
 
 
         /// <exclude />
@@ -444,17 +441,17 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static void SetUserGroupPermissionDefinition(UserGroupPermissionDefinition userGroupPermissionDefinition)
         {
-            if (userGroupPermissionDefinition == null) throw new ArgumentNullException("userGroupPermissionDefinition");
+            Verify.ArgumentNotNull(userGroupPermissionDefinition, "userGroupPermissionDefinition");
 
-            if ((userGroupPermissionDefinition.EntityToken is NoSecurityEntityToken) == true) return;
+            if (userGroupPermissionDefinition.EntityToken is NoSecurityEntityToken) return;
 
-            if ((userGroupPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions) == true) &&
+            if (userGroupPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions) &&
                 (userGroupPermissionDefinition.PermissionTypes.Count() > 1))
             {
                 throw new ArgumentException(string.Format("The permission type '{0}' may not be used with other permission types", PermissionType.ClearPermissions));
             }
 
-            if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions == false) throw new InvalidOperationException("The user permission definition provider does not support altering user permission defintions");
+            Verify.That(UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions, "The user permission definition provider does not support altering user permission defintions");
 
             EntityTokenCacheFacade.ClearCache();
 

@@ -70,6 +70,18 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
         }
 
 
+        private EntityToken DeserializeSilent(string serializedEntityToken)
+        {
+            try
+            {
+                return EntityTokenSerializer.Deserialize(serializedEntityToken);
+            }
+            catch (Exception)
+            {
+                // Silent
+                return null;
+            }
+        }
 
         public void SetUserGroupPermissionDefinition(UserGroupPermissionDefinition userGroupPermissionDefinition)
         {
@@ -78,29 +90,22 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                IUserGroupPermissionDefinition definition =
-                        (from urd in DataFacade.GetData<IUserGroupPermissionDefinition>()
-                         where urd.UserGroupId == userGroupId &&
-                               urd.SerializedEntityToken == serializedEntityToken
-                         select urd).FirstOrDefault();
+                IEnumerable<IUserGroupPermissionDefinition> existingPermissionDefinitions =
+                        DataFacade.GetData<IUserGroupPermissionDefinition>()
+                                  .Where(d => d.UserGroupId == userGroupId)
+                                  .ToList()
+                                  .Where(d => userGroupPermissionDefinition.EntityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                                  .ToList();
 
-                bool exists = definition != null;
+                DataFacade.Delete(existingPermissionDefinitions);
 
-                if (exists == false)
-                {
-                    definition = DataFacade.BuildNew<IUserGroupPermissionDefinition>();
-                    definition.Id = Guid.NewGuid();
-                    definition.UserGroupId = userGroupId;
-                    definition.SerializedEntityToken = serializedEntityToken;
+                IUserGroupPermissionDefinition definition = DataFacade.BuildNew<IUserGroupPermissionDefinition>();
+                definition.Id = Guid.NewGuid();
+                definition.UserGroupId = userGroupId;
+                definition.SerializedEntityToken = serializedEntityToken;
 
-                    DataFacade.AddNew<IUserGroupPermissionDefinition>(definition);
-                }
-                else
-                {
-                    DataFacade.Update(definition);
+                DataFacade.AddNew(definition);
 
-                    DataFacade.Delete<IUserGroupPermissionDefinitionPermissionType>(f => f.UserGroupPermissionDefinitionId == definition.Id);
-                }
 
                 foreach (PermissionType permissionType in userGroupPermissionDefinition.PermissionTypes)
                 {
@@ -109,7 +114,7 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
                     permission.PermissionTypeName = permissionType.ToString();
                     permission.UserGroupPermissionDefinitionId = definition.Id;
 
-                    DataFacade.AddNew<IUserGroupPermissionDefinitionPermissionType>(permission);
+                    DataFacade.AddNew(permission);
                 }
 
                 transactionScope.Complete();
