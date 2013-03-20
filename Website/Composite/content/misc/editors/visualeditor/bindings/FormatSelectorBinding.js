@@ -2,8 +2,11 @@ FormatSelectorBinding.prototype = new EditorSelectorBinding;
 FormatSelectorBinding.prototype.constructor = FormatSelectorBinding;
 FormatSelectorBinding.superclass = EditorSelectorBinding.prototype;
 
-FormatSelectorBinding.LABEL_UNKNOWN = "(Unknown)"
-FormatSelectorBinding.VALUE_UNKNOWN = "(Unknown)"
+FormatSelectorBinding.LABEL_UNKNOWN = "(Unknown)";
+FormatSelectorBinding.VALUE_UNKNOWN = "(Unknown)";
+FormatSelectorBinding.LABEL_TEXT = "(Text)";
+FormatSelectorBinding.LABEL_LIST = "(List)";
+
 
 /*
 <p>
@@ -51,6 +54,11 @@ function FormatSelectorBinding() {
 	* @type {HashMap<string><Format>}
 	*/
 	this._formats = new Map();
+
+    /**
+    * @type {MenuItemBinding}
+    */
+	this._unknownItemBinding = null;
 
 	/*
 	* Returnable.
@@ -184,7 +192,10 @@ FormatSelectorBinding.prototype.handleNodeChange = function (element) {
 
 	if (element != this._element) {
 
-		this._element = element;
+	    this._element = element;
+
+	    var isList = false;
+	    var isText = element.nodeName.toLowerCase() == "body";
 
 		var value = null;
 		while (value == null && element != null && element.nodeName.toLowerCase() != "body") {
@@ -194,11 +205,61 @@ FormatSelectorBinding.prototype.handleNodeChange = function (element) {
 				}
 				return value == null;
 			}, this);
+
+			if (element.nodeName.toLowerCase() == "li") { isList = true; }
+			if (element.parentNode.nodeName.toLowerCase() == "body"
+                && element.nodeName.toLowerCase() == "div") {
+			    isText = true;
+			}
 			element = element.parentNode;
 		}
 		if (value == null) {
-			value = FormatSelectorBinding.VALUE_UNKNOWN;
+		    value = FormatSelectorBinding.VALUE_UNKNOWN;
 		}
+		
 		this.selectByValue(value, true);
+
+		if (isList) {
+		    this.setUknownLabel(FormatSelectorBinding.LABEL_LIST);
+		} else if (isText) {
+		    this.setUknownLabel(FormatSelectorBinding.LABEL_TEXT);
+		} else {
+		    this.setUknownLabel(FormatSelectorBinding.LABEL_UNKNOWN);
+		}
 	}
+}
+
+/**
+ * Set label for FormatSelectorBinding.VALUE_UNKNOWN selection.
+ * @param {object} value
+ * @return {boolean} True if something (new) was selected
+ */
+FormatSelectorBinding.prototype.setUknownLabel = function (label) {
+
+    var isSuccess = false;
+
+    if (this._unknownItemBinding == null) {
+        var bodyBinding = this._menuBodyBinding;
+        var itemElementList = bodyBinding.getDescendantElementsByLocalName("menuitem");
+        while (itemElementList.hasNext()) {
+            var itemBinding = UserInterface.getBinding(
+                    itemElementList.getNext()
+            );
+            if (itemBinding.selectionValue == FormatSelectorBinding.VALUE_UNKNOWN) {
+                this._unknownItemBinding = itemBinding;
+                break;
+            }
+        }
+    }
+
+    if (this._unknownItemBinding != null) {
+        this._unknownItemBinding.setLabel(label)
+        if (this._unknownItemBinding == this._selectedItemBinding) {
+            this._selectionLabel = label;
+            this._buttonBinding.setLabel(label);
+        }
+        isSuccess = true;
+    }
+
+    return isSuccess;
 }
