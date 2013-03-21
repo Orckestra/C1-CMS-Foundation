@@ -71,6 +71,7 @@ namespace Composite.C1Console.Trees
             actionAdder(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.GenericAddDataWorkflow"), this.PermissionTypes)
             {
                 Payload = payload.ToString(),
+                DoIgnoreEntityTokenLocking = true,
                 ExtraPayload = PiggybagSerializer.Serialize(dynamicContext.Piggybag.PreparePiggybag(dynamicContext.CurrentTreeNode, dynamicContext.CurrentEntityToken))
             }))
             {
