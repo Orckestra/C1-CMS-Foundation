@@ -129,7 +129,7 @@ new function () {
 					 */
 					function ( ed, cm, e ) {
 						if ( e != null ) {
-							var node = !Client.isExplorer && e.getAttribute('data-mce-bogus') ? e.parentNode : e; 
+							var node = e.getAttribute('data-mce-bogus') ? e.parentNode : e; 
 							if ( nodeChangeHandlers.hasEntries ()) {
 								nodeChangeHandlers.each ( function ( handler ) {
 									handler.handleNodeChange ( node );

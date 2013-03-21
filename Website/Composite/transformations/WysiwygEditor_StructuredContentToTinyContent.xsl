@@ -31,7 +31,6 @@
 	<xsl:template match="x:td[not(node()|text())]">
 		<td>
 			<xsl:apply-templates select="@*"/>
-			<br mce_bogus="1"/>
 		</td>
 	</xsl:template>
 	

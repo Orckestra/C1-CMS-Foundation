@@ -56,6 +56,14 @@ new function () {
 					}
 				}
 			});
+
+
+			ed.onBeforeSetContent.add(function (ed, o) {
+			    if(!Client.isExplorer)
+			        o.content = o.content.replace(/<td><\/td>/g, '<td><br data-mce-bogus="1"/></td>');
+			});
+
+
 		},
 
 		/**
@@ -153,7 +161,7 @@ new function () {
 				var newTD = doc.createElement("td");
 
 				if (!tinymce.isIE)
-					newTD.innerHTML = '<br mce_bogus="1"/>';
+					newTD.innerHTML = '<br data-mce-bogus="1"/>';
 			}
 
 			function getColRowSpan(td) {
@@ -312,7 +320,7 @@ new function () {
 					var newTD = doc.createElement("td");
 
 					if (!tinymce.isIE)
-						newTD.innerHTML = '<br mce_bogus="1"/>';
+						newTD.innerHTML = '<br data-mce-bogus="1"/>';
 
 					if (tinymce.isIE)
 						trNext.insertBefore(newTD, trNext.cells(td_elm.cellIndex));
@@ -347,7 +355,7 @@ new function () {
 						newTD = doc.createElement("td");
 
 						if (!tinymce.isIE)
-							newTD.innerHTML = '<br mce_bogus="1"/>';
+							newTD.innerHTML = '<br data-mce-bogus="1"/>';
 					}
 
 					// Reset col/row span
@@ -686,7 +694,7 @@ new function () {
 											var newTD = doc.createElement("td");
 
 											if (!tinymce.isIE)
-												newTD.innerHTML = '<br mce_bogus="1"/>';
+												newTD.innerHTML = '<br data-mce-bogus="1"/>';
 
 											newTD.colSpan = tdElm.colSpan;
 
@@ -720,7 +728,7 @@ new function () {
 											var newTD = doc.createElement("td");
 
 											if (!tinymce.isIE)
-												newTD.innerHTML = '<br mce_bogus="1"/>';
+												newTD.innerHTML = '<br data-mce-bogus="1"/>';
 
 											newTD.colSpan = tdElm.colSpan;
 
@@ -815,7 +823,7 @@ new function () {
 											var newTD = doc.createElement(tdElm.nodeName);
 
 											if (!tinymce.isIE)
-												newTD.innerHTML = '<br mce_bogus="1"/>';
+												newTD.innerHTML = '<br data-mce-bogus="1"/>';
 
 											newTD.rowSpan = tdElm.rowSpan;
 
@@ -846,7 +854,7 @@ new function () {
 											var newTD = doc.createElement(tdElm.nodeName);
 
 											if (!tinymce.isIE)
-												newTD.innerHTML = '<br mce_bogus="1"/>';
+												newTD.innerHTML = '<br data-mce-bogus="1"/>';
 
 											newTD.rowSpan = tdElm.rowSpan;
 
@@ -915,7 +923,7 @@ new function () {
 										var newTD = doc.createElement("td");
 
 										if (!tinymce.isIE)
-											newTD.innerHTML = '<br mce_bogus="1"/>';
+											newTD.innerHTML = '<br data-mce-bogus="1"/>';
 
 										trElm.insertBefore(newTD, nextElm(tdElm, "TD,TH"));
 
@@ -1014,7 +1022,7 @@ new function () {
 
 											var td = getCell(grid, cpos.rowindex, cpos.cellindex);
 											each(ed.dom.select('br', td), function (e, i) {
-												if (i > 0 && ed.dom.getAttrib('mce_bogus'))
+												if (i > 0 && ed.dom.getAttrib('data-mce-bogus'))
 													ed.dom.remove(e);
 											});
 										}
@@ -1161,7 +1169,7 @@ new function () {
 										var html = rows[y][x].innerHTML;
 										var chk = html.replace(/[ \t\r\n]/g, "");
 
-										if (chk != "<br/>" && chk != "<br>" && chk != '<br mce_bogus="1"/>' && (x + y > 0))
+										if (chk != "<br/>" && chk != "<br>" && chk != '<br data-mce-bogus="1"/>' && (x + y > 0))
 											tdElm.innerHTML += html;
 
 										// Not current cell
@@ -1193,7 +1201,7 @@ new function () {
 
 								// Remove all but one bogus br
 								each(ed.dom.select('br', tdElm), function (e, i) {
-									if (i > 0 && ed.dom.getAttrib(e, 'mce_bogus'))
+									if (i > 0 && ed.dom.getAttrib(e, 'data-mce-bogus'))
 										ed.dom.remove(e);
 								});
 
@@ -1221,7 +1229,7 @@ new function () {
 				html += "<tr>";
 				for (var x = 0; x < result.get("cols"); x++) {
 					if (!tinymce.isIE)
-						html += '<td><br mce_bogus="1"/></td>';
+						html += '<td><br data-mce-bogus="1"/></td>';
 					else
 						html += '<td></td>';
 				}

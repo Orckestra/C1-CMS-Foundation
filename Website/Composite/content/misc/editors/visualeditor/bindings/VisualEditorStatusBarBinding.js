@@ -129,12 +129,11 @@ VisualEditorStatusBarBinding.prototype.initializeComponent = function ( editor, 
  */
 VisualEditorStatusBarBinding.prototype.handleNodeChange = function (element) {
 
-	var selectedElement = this._getSelectedNode();
-	if (selectedElement != this._element || selectedElement.className != this._classname) {
-		this._buildToolBar(selectedElement);
-		this._element = selectedElement;
-		this._classname = selectedElement.classname;
-	}
+    if (element != this._element || element.className != this._classname) {
+        this._buildToolBar(element);
+        this._element = element;
+        this._classname = element.classname;
+    }
 }
 
 /**
@@ -156,7 +155,6 @@ VisualEditorStatusBarBinding.prototype.handleAction = function (action) {
 
 			setTimeout(function () { // chrome needs a timeout
 				self._tinyInstance.execCommand("mceSelectNodeDepth", false, depth);
-				self._buildToolBar(self._getSelectedNode());
 			}, 0);
 
 			action.consume();
