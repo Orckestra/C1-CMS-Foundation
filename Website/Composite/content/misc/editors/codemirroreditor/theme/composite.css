@@ -17,5 +17,5 @@
 .cm-s-composite span.cm-bracket {color: #cc7;}
 .cm-s-composite span.cm-tag {color: #170;}
 .cm-s-composite span.cm-attribute {color: #00c;}
-.cm-s-composite span.cm-razor {background-color: yellow;}
+.cm-s-composite span.cm-razor {background-color: rgba(255, 255, 0, 0.3)}
 .cm-s-composite span.cm-razor-comment {color: #aaa;}
