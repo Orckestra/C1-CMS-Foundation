@@ -192,6 +192,9 @@ FormatSelectorBinding.prototype.handleNodeChange = function (element) {
 
 	if (element != this._element) {
 
+	    if (element != null && element.nodeName.toLowerCase() == "br") {
+	        element = element.parentNode;
+	    }
 	    this._element = element;
 
 	    var isList = false;

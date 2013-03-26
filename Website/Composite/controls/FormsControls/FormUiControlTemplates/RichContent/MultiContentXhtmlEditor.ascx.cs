@@ -79,7 +79,7 @@ namespace CompositeMultiContentXhtmlEditor
                         }
                         else
                         {
-                            contentTextBox.Text = "<br />";
+                            contentTextBox.Text = "";
                         }
                     }
                     ContentsPlaceHolder.Controls.Add(contentTextBox);
