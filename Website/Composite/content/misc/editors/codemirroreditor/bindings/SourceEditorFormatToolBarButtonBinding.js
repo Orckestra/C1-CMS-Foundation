@@ -89,7 +89,7 @@ SourceEditorFormatToolbarButtonBinding.prototype.oncommand = function () {
  */
 SourceEditorFormatToolbarButtonBinding.prototype._doIt = function () {
 
-	var markup = bindingMap.editorpage.getContent();
+    var markup = this._editorBinding.getContent();
 	var dom = XMLParser.parse(markup, true);
 
 	if (dom != null) {
