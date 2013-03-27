@@ -1,6 +1,6 @@
 /**
- * Composite table plugin.
- */
+* Composite table plugin.
+*/
 new function () {
 
 	var each = tinymce.each;
@@ -52,15 +52,15 @@ new function () {
 				var body = editor.getBody();
 				if (body.hasChildNodes()) {
 					if (body.lastChild.nodeName.toLowerCase() == "table") {
-						body.appendChild(body.ownerDocument.createElement("br"));
+						body.appendChild(body.ownerDocument.createElement("p"));
 					}
 				}
 			});
 
 
 			ed.onBeforeSetContent.add(function (ed, o) {
-			    if(!Client.isExplorer)
-			        o.content = o.content.replace(/<td><\/td>/g, '<td><br data-mce-bogus="1"/></td>');
+				if (!Client.isExplorer)
+					o.content = o.content.replace(/<td><\/td>/g, '<td><br data-mce-bogus="1"/></td>');
 			});
 
 
