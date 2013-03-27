@@ -265,7 +265,7 @@ SplitBoxBinding.prototype.invokeLayout = function ( isFlexing ) {
 			if ( panelBinding.isFixed ) {
 				span = panelBinding.getFix ();
 			} else {
-				span = Math.round ( unit * ratio );
+			    span = Math.floor (unit * ratio);
 				if ( isNaN ( span )) {
 					alert ( "isNaN ( span ) [" + this.getProperty ( "layout" ) + "]" );
 				}
