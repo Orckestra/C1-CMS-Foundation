@@ -26845,7 +26845,7 @@ VisualEditorBinding.FUNCTION_CLASSNAME="compositeFunctionWysiwygRepresentation";
 VisualEditorBinding.FIELD_CLASSNAME="compositeFieldReferenceWysiwygRepresentation";
 VisualEditorBinding.HTML_CLASSNAME="compositeHtmlWysiwygRepresentation";
 VisualEditorBinding.ACTION_INITIALIZED="visualeditor initialized";
-VisualEditorBinding.DEFAULT_CONTENT="<p><br/></p>";
+VisualEditorBinding.DEFAULT_CONTENT="<p></p>";
 VisualEditorBinding.URL_DIALOG_CONTENTERROR="${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
 VisualEditorBinding.XHTML="<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head>${head}</head>\n\t<body>\n${body}\n\t</body>\n</html>";
 VisualEditorBinding.getTinyLessClassName=function(_101b){
