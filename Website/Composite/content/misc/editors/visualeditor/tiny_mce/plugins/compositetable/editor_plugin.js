@@ -3,7 +3,7 @@
 */
 new function () {
 
-	var each = tinymce.each;
+    var each = tinymce.each, Event = tinymce.dom.Event;
 
 	var URL_TABLE = "${tiny}/plugins/compositetable/table.aspx";
 	var URL_ROW = "${tiny}/plugins/compositetable/row.aspx";
@@ -40,6 +40,49 @@ new function () {
 		* @param {string} url
 		*/
 		init: function (ed, url) {
+		    var TABLE_INSERT_P_BEFORE = 'INSERT_P_BEFORE';
+		    var TABLE_UNKNOWN = 'UNKNOWN';
+		    var state = TABLE_UNKNOWN;
+
+		    function isEnter(e) {
+		        return e.keyCode === tinymce.VK.ENTER;
+		    }
+
+		    function isEnterWithoutShift(e) {
+		        return isEnter(e) && !e.shiftKey;
+		    }
+
+		    function getListKeyState(e) {
+		        if (isEnterWithoutShift(e) && isRequiredParagraphBefore()) {
+		            return TABLE_INSERT_P_BEFORE;
+		        } else {
+		            return TABLE_UNKNOWN;
+		        }
+		    }
+
+		    function cancelDefaultEvents(ed, e) {
+		        if (state == TABLE_INSERT_P_BEFORE) {
+		            Event.cancel(e);
+		        }
+		    }
+
+		    function isRequiredParagraphBefore() {
+		        var focusElm = ed.selection.getStart();
+		        var tdElm = ed.dom.getParent(focusElm, "td,th");
+		        if (tdElm && !tdElm.previousElementSibling) {
+		            var trElm = ed.dom.getParent(tdElm, "tr");
+		            if (trElm && !trElm.previousElementSibling) {
+		                var range = ed.selection.getRng(true);
+		                if (range.startOffset == 0 && range.endOffset == 0) {
+		                    var tableElm = ed.dom.getParent(trElm, "table");
+		                    if (tableElm && (!tableElm.previousElementSibling || tableElm.previousElementSibling.nodeName.toLowerCase() != "p")) {
+		                        return true;
+		                    }
+		                }
+		            }
+		        }
+		        return false;
+		    }
 
 			this.editor = ed;
 			this.theme = this.editor.theme;
@@ -57,11 +100,30 @@ new function () {
 				}
 			});
 
-
+            //Add Bogus BR to empty TDs
 			ed.onBeforeSetContent.add(function (ed, o) {
 				if (!Client.isExplorer)
 					o.content = o.content.replace(/<td><\/td>/g, '<td><br data-mce-bogus="1"/></td>');
 			});
+
+            //Insert paragraph before table on Enter
+			ed.onKeyUp.add(function (ed, e) {
+			    if (state == TABLE_INSERT_P_BEFORE)
+			    {
+			        var focusElm = ed.selection.getStart();
+			        var tableElm = ed.dom.getParent(focusElm, "table");
+			        var body = ed.getBody();
+			        p = body.ownerDocument.createElement("p");
+			        if (!tinymce.isIE) {
+			            p.innerHTML = '<br data-mce-bogus="1">';
+			        }
+			        tableElm.parentNode.insertBefore(p, tableElm);
+			        ed.selection.setCursorLocation(p, 0);
+			    }
+			});
+
+			ed.onKeyDown.add(function (_, e) { state = getListKeyState(e); });
+			ed.onKeyDown.add(cancelDefaultEvents);
 
 
 		},
