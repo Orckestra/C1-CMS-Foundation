@@ -94,7 +94,7 @@ new function () {
 					}
 					selectedElm.src = compositeUrl.toString();
 
-					
+
 				}
 			}
 
@@ -196,6 +196,7 @@ new function () {
 				});
 			}
 
+
 			function hideResizeRect() {
 				if (selectedElm) {
 					selectedElm.removeAttribute('data-mce-selected');
@@ -239,8 +240,7 @@ new function () {
 
 			function updateResizeRect() {
 				var controlElm = editor.dom.getParent(editor.selection.getNode(), 'img');
-				if (controlElm)
-				{
+				if (controlElm) {
 					var compositeUrl = new CompositeUrl(controlElm.src);
 					if (compositeUrl.isMedia) {
 						showResizeRect(controlElm);
@@ -253,8 +253,48 @@ new function () {
 				}
 			}
 
-			// Show/hide resize rect when image is selected
-			editor.onNodeChange.add(updateResizeRect);
+			//IE Resizing
+
+			function endResize(e) {
+				var compositeUrl = new CompositeUrl(selectedElm.src);
+				var width = selectedElm.clientWidth;
+				var height = selectedElm.clientHeight;
+				if (compositeUrl.isMedia) {
+					compositeUrl.setParam("mw", width);
+					compositeUrl.setParam("mh", height);
+					selectedElm.src = compositeUrl.toString();
+					selectedElm.style.removeAttribute("width");
+					selectedElm.style.removeAttribute("height");
+					selectedElm.removeAttribute("width");
+					selectedElm.removeAttribute("height");
+
+				}
+			}
+
+			function removeResizeHandler() {
+
+			}
+			function setResizeHandler(controlElm) {
+				removeResizeHandler();
+				selectedElm = controlElm;
+				selectedElm.onresizeend = endResize;
+			}
+
+			function updateResizeHandler() {
+				var controlElm = editor.dom.getParent(editor.selection.getNode(), 'img');
+				if (controlElm) {
+					setResizeHandler(controlElm)
+				} else {
+					removeResizeHandler();
+				}
+			}
+
+			if (Client.isExplorer) {
+				editor.onNodeChange.add(updateResizeHandler);
+			} else {
+				// Show/hide resize rect when image is selected
+				editor.onNodeChange.add(updateResizeRect);
+			}
 
 		}
 
