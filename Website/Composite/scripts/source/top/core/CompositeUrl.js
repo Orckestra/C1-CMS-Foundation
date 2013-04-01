@@ -29,6 +29,11 @@ function CompositeUrl(url) {
 }
 
 
+CompositeUrl.isMedia = function(url)
+{
+    return new CompositeUrl(url).isMedia;
+}
+
 /**
 * Get media path without parameters
 * @return {string}
@@ -60,7 +65,11 @@ CompositeUrl.prototype.getParam = function (key) {
 * @param {object} key
 */
 CompositeUrl.prototype.setParam = function (key, value) {
-	this.queryString[key] = value;
+    if (value == undefined) {
+        delete this.queryString[key];
+    } else {
+        this.queryString[key] = value;
+    }
 }
 
 /**
