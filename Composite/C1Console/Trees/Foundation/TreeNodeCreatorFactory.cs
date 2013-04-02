@@ -17,217 +17,82 @@ namespace Composite.C1Console.Trees.Foundation
         private static readonly string DefaultOpenedFolderResourceName = "folder-open";
         private static readonly string DefaultDataGroupingFolderResourceName = "folder-disabled";
 
-
-
+        
         public static TreeNode CreateTreeNode(XElement element, Tree tree)
         {
             if (element.Name == TreeMarkupConstants.Namespace + "ElementRoot")
             {
-                XAttribute shareRootElementByIdAttribute = element.Attribute("ShareRootElementById");
-                if (shareRootElementByIdAttribute != null)
-                {
-                    tree.ShareRootElementById = (bool)shareRootElementByIdAttribute;
-
-                    if (tree.ShareRootElementById)
-                    {
-                        int count = tree.AttachmentPoints.OfType<NamedAttachmentPoint>().Count();
-                        if (count != 1 || tree.AttachmentPoints.Count - count > 0)
-                        {
-                            tree.AddValidationError(shareRootElementByIdAttribute.GetXPath(), "TreeValidationError.ElementRoot.ShareRootElementByIdNotAllowed");
-                        }
-                    }
-                }
-
-                return new RootTreeNode
-                {
-                    Tree = tree,
-                    Id = tree.BuildProcessContext.CreateNewNodeId()
-                };
+                return BuildRootTreeNode(element, tree);
             }
-            else if (element.Name == TreeMarkupConstants.Namespace + "Element")
+
+            if (element.Name == TreeMarkupConstants.Namespace + "Element")
             {
-                XAttribute idAttribute = element.Attribute("Id");
-                XAttribute labelAttribute = element.Attribute("Label");
-                XAttribute toolTipAttribute = element.Attribute("ToolTip");
-                XAttribute iconAttribute = element.Attribute("Icon");
-                XAttribute openedIconAttribute = element.Attribute("OpenedIcon");                
-
-                if (idAttribute == null)
-                {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Id");
-                    return null;
-                }
-                else if ((idAttribute.Value == "") || (idAttribute.Value == "RootTreeNode") || (idAttribute.Value.StartsWith("NodeAutoId_") == true))
-                {
-                    tree.AddValidationError(idAttribute.GetXPath(), "TreeValidationError.SimpleElement.WrongIdValue");
-                }
-                else if (tree.BuildProcessContext.AlreadyUsed(idAttribute.Value) == true)
-                {
-                    tree.AddValidationError(idAttribute.GetXPath(), "TreeValidationError.SimpleElement.AlreadyUsedId", idAttribute.Value);
-                }
-                else
-                {
-                    tree.BuildProcessContext.AddUsedId(idAttribute.Value);
-                }
-
-
-                if (labelAttribute == null)
-                {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Label");
-                    return null;
-                }
-
-                ResourceHandle icon = FactoryHelper.GetIcon(iconAttribute.GetValueOrDefault(DefaultFolderResourceName));
-                ResourceHandle openedIcon = FactoryHelper.GetIcon(openedIconAttribute.GetValueOrDefault(DefaultOpenedFolderResourceName));
-                if ((iconAttribute != null) && (openedIconAttribute == null))
-                {
-                    openedIcon = icon;
-                }
-
-                return new SimpleElementTreeNode
-                {
-                    Tree = tree,
-                    Id = idAttribute.Value,
-                    Label = labelAttribute.Value,
-                    ToolTip = toolTipAttribute.GetValueOrDefault(labelAttribute.Value),
-                    Icon = icon,
-                    OpenIcon = openedIcon
-                };
+                return BuildSimpleElementTreeNode(element, tree);
             }
-            else if (element.Name == TreeMarkupConstants.Namespace + "FunctionElementGenerator")
+
+            if (element.Name == TreeMarkupConstants.Namespace + "FunctionElementGenerator")
             {
-                XAttribute labelAttribute = element.Attribute("Label");
-                XAttribute toolTipAttribute = element.Attribute("ToolTip");
-                XAttribute iconAttribute = element.Attribute("Icon");
-
-                XElement functionMarkupContainerElement = element.Element(TreeMarkupConstants.Namespace + "FunctionMarkup");
-                if (functionMarkupContainerElement == null)
-                {
-                    //MRJ: DSLTree: FunctionElementGeneratorTreeNode: Validation error
-                }
-
-                XElement functionMarkupElement = functionMarkupContainerElement.Element((XNamespace)FunctionTreeConfigurationNames.NamespaceName + FunctionTreeConfigurationNames.FunctionTagName);
-                if (functionMarkupElement == null)
-                {
-                    //MRJ: DSLTree: FunctionElementGeneratorTreeNode: Validation error
-                }
-                
-
-                if (labelAttribute == null)
-                {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Label");
-                    return null;
-                }
-
-                return new FunctionElementGeneratorTreeNode
-                {
-                    Tree = tree,
-                    Id = tree.BuildProcessContext.CreateNewNodeId(),
-                    FunctionMarkup = functionMarkupElement,
-                    Label = labelAttribute.Value,
-                    ToolTip = toolTipAttribute.GetValueOrDefault(labelAttribute.Value),
-                    Icon = FactoryHelper.GetIcon(iconAttribute.GetValueOrDefault(DefaultFolderResourceName))
-                };
+                return BuildFunctionElementGeneratorTreeNode(element, tree);
             }
-            else if (element.Name == TreeMarkupConstants.Namespace + "DataElements")
+
+            if (element.Name == TreeMarkupConstants.Namespace + "DataElements")
             {
-                XAttribute typeAttribute = element.Attribute("Type");
-                XAttribute labelAttribute = element.Attribute("Label");
-                XAttribute toolTipAttribute = element.Attribute("ToolTip");
-                XAttribute iconAttribute = element.Attribute("Icon");
-                XAttribute openedIconAttribute = element.Attribute("OpenedIcon");
-                XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
-                XAttribute leafDisplayAttribute = element.Attribute("Display");
+                return BuildDataElementsTreeNode(element, tree);
+            }
 
-                if (typeAttribute == null)
-                {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Type");
-                    return null;
-                }
+            if (element.Name == TreeMarkupConstants.Namespace + "DataFolderElements")
+            {
+                return BuildDataFolderElementsTreeNode(element, tree);
+            }
+            
+            tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnknownElement", element.Name);
+            return null;
+        }
 
-                Type interfaceType = TypeManager.TryGetType(typeAttribute.Value);
+
+        private static TreeNode BuildDataFolderElementsTreeNode(XElement element, Tree tree)
+        {
+            XAttribute typeAttribute = element.Attribute("Type");
+            XAttribute fieldGroupingNameAttribute = element.Attribute("FieldGroupingName");
+            XAttribute dateFormatAttribute = element.Attribute("DateFormat");
+            XAttribute iconAttribute = element.Attribute("Icon");
+            XAttribute rangeAttribute = element.Attribute("Range");
+            XAttribute firstLetterOnlyAttribute = element.Attribute("FirstLetterOnly");
+            XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
+            XAttribute leafDisplayAttribute = element.Attribute("Display");
+
+
+            if (fieldGroupingNameAttribute == null)
+            {
+                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "FieldGroupingName");
+                return null;
+            }
+
+            Type interfaceType = null;
+            if (typeAttribute != null)
+            {
+                interfaceType = TypeManager.TryGetType(typeAttribute.Value);
                 if (interfaceType == null)
                 {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType", typeAttribute.Value);
+                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType",
+                                            typeAttribute.Value);
                     return null;
                 }
-
-
-                LeafDisplayMode leafDisplay = LeafDisplayModeHelper.ParseDisplayMode(leafDisplayAttribute, tree);
-
-
-                ResourceHandle icon = null;
-                if (iconAttribute != null) icon = FactoryHelper.GetIcon(iconAttribute.Value);
-
-                ResourceHandle openedIcon = null;
-                if ((icon != null) && (openedIconAttribute == null)) openedIcon = icon;
-                else if (openedIconAttribute != null) openedIcon = FactoryHelper.GetIcon(openedIconAttribute.Value);
-
-                DataElementsTreeNode dataElementsTreeNode = new DataElementsTreeNode
-                {
-                    Tree = tree,
-                    Id = tree.BuildProcessContext.CreateNewNodeId(),
-                    InterfaceType = interfaceType,
-                    Label = labelAttribute.GetValueOrDefault(null),
-                    ToolTip = toolTipAttribute.GetValueOrDefault(null),
-                    Icon = icon,
-                    OpenedIcon = openedIcon,
-                    ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
-                    Display = leafDisplay
-                };
-
-                List<TreeNode> treeNodes;
-                if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false)
-                {
-                    treeNodes = new List<TreeNode>();
-                    tree.BuildProcessContext.DataInteraceToTreeNodes.Add(interfaceType, treeNodes);
-                }
-
-                treeNodes.Add(dataElementsTreeNode);
-
-                return dataElementsTreeNode;
             }
-            else if (element.Name == TreeMarkupConstants.Namespace + "DataFolderElements")
+
+            bool firstLetterOnly = false;
+            if (firstLetterOnlyAttribute != null)
             {
-                XAttribute typeAttribute = element.Attribute("Type");
-                XAttribute fieldGroupingNameAttribute = element.Attribute("FieldGroupingName");
-                XAttribute dateFormatAttribute = element.Attribute("DateFormat");
-                XAttribute iconAttribute = element.Attribute("Icon");
-                XAttribute rangeAttribute = element.Attribute("Range");
-                XAttribute firstLetterOnlyAttribute = element.Attribute("FirstLetterOnly");
-                XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
-                XAttribute leafDisplayAttribute = element.Attribute("Display");
-
-
-                if (fieldGroupingNameAttribute == null)
+                if (firstLetterOnlyAttribute.TryGetBoolValue(out firstLetterOnly) == false)
                 {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "FieldGroupingName");
-                    return null;
+                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.WrongAttributeValue",
+                                            "FirstLetterOnly");
                 }
+            }
 
-                Type interfaceType = null;
-                if (typeAttribute != null)
-                {
-                    interfaceType = TypeManager.TryGetType(typeAttribute.Value);
-                    if (interfaceType == null)
-                    {
-                        tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType", typeAttribute.Value);
-                        return null;
-                    }
-                }
+            LeafDisplayMode leafDisplay = LeafDisplayModeHelper.ParseDisplayMode(leafDisplayAttribute, tree);
 
-                bool firstLetterOnly = false;
-                if (firstLetterOnlyAttribute != null)
-                {
-                    if (firstLetterOnlyAttribute.TryGetBoolValue(out firstLetterOnly) == false)
-                    {
-                        tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.WrongAttributeValue", "FirstLetterOnly");
-                    }
-                }
-
-                LeafDisplayMode leafDisplay = LeafDisplayModeHelper.ParseDisplayMode(leafDisplayAttribute, tree);
-
-                return new DataFolderElementsTreeNode
+            return new DataFolderElementsTreeNode
                 {
                     Tree = tree,
                     Id = tree.BuildProcessContext.CreateNewNodeId(),
@@ -240,13 +105,180 @@ namespace Composite.C1Console.Trees.Foundation
                     ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
                     Display = leafDisplay
                 };
+        }
+
+        private static TreeNode BuildDataElementsTreeNode(XElement element, Tree tree)
+        {
+            XAttribute typeAttribute = element.Attribute("Type");
+            XAttribute labelAttribute = element.Attribute("Label");
+            XAttribute toolTipAttribute = element.Attribute("ToolTip");
+            XAttribute iconAttribute = element.Attribute("Icon");
+            XAttribute openedIconAttribute = element.Attribute("OpenedIcon");
+            XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
+            XAttribute leafDisplayAttribute = element.Attribute("Display");
+
+            if (typeAttribute == null)
+            {
+                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Type");
+                return null;
+            }
+
+            Type interfaceType = TypeManager.TryGetType(typeAttribute.Value);
+            if (interfaceType == null)
+            {
+                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType",
+                                        typeAttribute.Value);
+                return null;
+            }
+
+
+            LeafDisplayMode leafDisplay = LeafDisplayModeHelper.ParseDisplayMode(leafDisplayAttribute, tree);
+
+
+            ResourceHandle icon = null;
+            if (iconAttribute != null) icon = FactoryHelper.GetIcon(iconAttribute.Value);
+
+            ResourceHandle openedIcon = null;
+            if ((icon != null) && (openedIconAttribute == null)) openedIcon = icon;
+            else if (openedIconAttribute != null) openedIcon = FactoryHelper.GetIcon(openedIconAttribute.Value);
+
+            DataElementsTreeNode dataElementsTreeNode = new DataElementsTreeNode
+                {
+                    Tree = tree,
+                    Id = tree.BuildProcessContext.CreateNewNodeId(),
+                    InterfaceType = interfaceType,
+                    Label = labelAttribute.GetValueOrDefault(null),
+                    ToolTip = toolTipAttribute.GetValueOrDefault(null),
+                    Icon = icon,
+                    OpenedIcon = openedIcon,
+                    ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
+                    Display = leafDisplay
+                };
+
+            List<TreeNode> treeNodes;
+            if (tree.BuildProcessContext.DataInteraceToTreeNodes.TryGetValue(interfaceType, out treeNodes) == false)
+            {
+                treeNodes = new List<TreeNode>();
+                tree.BuildProcessContext.DataInteraceToTreeNodes.Add(interfaceType, treeNodes);
+            }
+
+            treeNodes.Add(dataElementsTreeNode);
+
+            return dataElementsTreeNode;
+        }
+
+        private static TreeNode BuildFunctionElementGeneratorTreeNode(XElement element, Tree tree)
+        {
+            XAttribute labelAttribute = element.Attribute("Label");
+            XAttribute toolTipAttribute = element.Attribute("ToolTip");
+            XAttribute iconAttribute = element.Attribute("Icon");
+
+            XElement functionMarkupContainerElement = element.Element(TreeMarkupConstants.Namespace + "FunctionMarkup");
+            if (functionMarkupContainerElement == null)
+            {
+                //MRJ: DSLTree: FunctionElementGeneratorTreeNode: Validation error
+            }
+
+            XElement functionMarkupElement = functionMarkupContainerElement.Element((XNamespace) FunctionTreeConfigurationNames.NamespaceName +
+                                                       FunctionTreeConfigurationNames.FunctionTagName);
+            if (functionMarkupElement == null)
+            {
+                //MRJ: DSLTree: FunctionElementGeneratorTreeNode: Validation error
+            }
+
+
+            if (labelAttribute == null)
+            {
+                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Label");
+                return null;
+            }
+
+            return new FunctionElementGeneratorTreeNode
+                {
+                    Tree = tree,
+                    Id = tree.BuildProcessContext.CreateNewNodeId(),
+                    FunctionMarkup = functionMarkupElement,
+                    Label = labelAttribute.Value,
+                    ToolTip = toolTipAttribute.GetValueOrDefault(labelAttribute.Value),
+                    Icon = FactoryHelper.GetIcon(iconAttribute.GetValueOrDefault(DefaultFolderResourceName))
+                };
+        }
+
+        private static TreeNode BuildSimpleElementTreeNode(XElement element, Tree tree)
+        {
+            XAttribute idAttribute = element.Attribute("Id");
+            XAttribute labelAttribute = element.Attribute("Label");
+            XAttribute toolTipAttribute = element.Attribute("ToolTip");
+            XAttribute iconAttribute = element.Attribute("Icon");
+            XAttribute openedIconAttribute = element.Attribute("OpenedIcon");
+
+            if (idAttribute == null)
+            {
+                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Id");
+                return null;
+            }
+
+            if ((idAttribute.Value == "") || (idAttribute.Value == "RootTreeNode") || (idAttribute.Value.StartsWith("NodeAutoId_")))
+            {
+                tree.AddValidationError(idAttribute.GetXPath(), "TreeValidationError.SimpleElement.WrongIdValue");
+            }
+            else if (tree.BuildProcessContext.AlreadyUsed(idAttribute.Value))
+            {
+                tree.AddValidationError(idAttribute.GetXPath(), "TreeValidationError.SimpleElement.AlreadyUsedId", idAttribute.Value);
             }
             else
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnknownElement", element.Name);
+                tree.BuildProcessContext.AddUsedId(idAttribute.Value);
+            }
 
+
+            if (labelAttribute == null)
+            {
+                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Label");
                 return null;
             }
+
+            ResourceHandle icon = FactoryHelper.GetIcon(iconAttribute.GetValueOrDefault(DefaultFolderResourceName));
+            ResourceHandle openedIcon =
+                FactoryHelper.GetIcon(openedIconAttribute.GetValueOrDefault(DefaultOpenedFolderResourceName));
+            if ((iconAttribute != null) && (openedIconAttribute == null))
+            {
+                openedIcon = icon;
+            }
+
+            return new SimpleElementTreeNode
+                {
+                    Tree = tree,
+                    Id = idAttribute.Value,
+                    Label = labelAttribute.Value,
+                    ToolTip = toolTipAttribute.GetValueOrDefault(labelAttribute.Value),
+                    Icon = icon,
+                    OpenIcon = openedIcon
+                };
+        }
+
+        private static TreeNode BuildRootTreeNode(XElement element, Tree tree)
+        {
+            XAttribute shareRootElementByIdAttribute = element.Attribute("ShareRootElementById");
+            if (shareRootElementByIdAttribute != null)
+            {
+                tree.ShareRootElementById = (bool) shareRootElementByIdAttribute;
+
+                if (tree.ShareRootElementById)
+                {
+                    int count = tree.AttachmentPoints.OfType<NamedAttachmentPoint>().Count();
+                    if (count != 1 || tree.AttachmentPoints.Count > count)
+                    {
+                        tree.AddValidationError(shareRootElementByIdAttribute.GetXPath(), "TreeValidationError.ElementRoot.ShareRootElementByIdNotAllowed");
+                    }
+                }
+            }
+
+            return new RootTreeNode
+                {
+                    Tree = tree,
+                    Id = tree.BuildProcessContext.CreateNewNodeId()
+                };
         }
     }
 }
