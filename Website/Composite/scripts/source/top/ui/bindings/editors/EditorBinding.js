@@ -330,7 +330,6 @@ EditorBinding.prototype.onBindingDispose = function () {
  */
 EditorBinding.prototype._initialize = function () {
 
-	this.subscribe ( BroadcastMessages.APPLICATION_BLURRED );
 	this.subscribe ( BroadcastMessages.STAGEDIALOG_OPENED );
 	this.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEUP );
 	
@@ -552,16 +551,6 @@ EditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	
 	switch ( broadcast ) {
 		
-		/*
-		 * Global blur event should deactivate the editor.
-		 */
-		case BroadcastMessages.APPLICATION_BLURRED :
-			
-			if ( this._isActivated ) {
-				this._activateEditor ( false );
-			}
-			break;
-
 		case BroadcastMessages.STAGEDIALOG_OPENED:
 
 			if (this._isActivated) {
