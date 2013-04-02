@@ -116,18 +116,20 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
         public void RemoveUserPermissionDefinition(UserToken userToken, string serializedEntityToken)
         {
             string username = userToken.Username;
+            var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                IUserPermissionDefinition userPermissionDefinitionToDelete =
-                    (from urd in DataFacade.GetData<IUserPermissionDefinition>()
-                     where urd.Username == username &&
-                           urd.SerializedEntityToken == serializedEntityToken
-                     select urd).FirstOrDefault();
+                var userPermissionDefinitionsToDelete =
+                    DataFacade.GetData<IUserPermissionDefinition>()
+                        .Where(upd => upd.Username == username)
+                        .ToList()
+                        .Where(d => entityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                        .ToList();
 
-                if (userPermissionDefinitionToDelete != null)
+                if (userPermissionDefinitionsToDelete.Any())
                 {
-                    DataFacade.Delete<IUserPermissionDefinition>(userPermissionDefinitionToDelete);
+                    DataFacade.Delete<IUserPermissionDefinition>(userPermissionDefinitionsToDelete);
                 }
 
                 transactionScope.Complete();

@@ -125,17 +125,20 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
 
         public void RemoveUserGroupPermissionDefinition(Guid userGroupId, string serializedEntityToken)
         {
+            var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                IUserGroupPermissionDefinition userGroupPermissionDefinitionToDelete =
-                    (from urd in DataFacade.GetData<IUserGroupPermissionDefinition>()
-                     where urd.UserGroupId == userGroupId &&
-                           urd.SerializedEntityToken == serializedEntityToken
-                     select urd).FirstOrDefault();
+                var userGroupPermissionDefinitionsToDelete =
+                    DataFacade.GetData<IUserGroupPermissionDefinition>()
+                        .Where(ugpd => ugpd.UserGroupId == userGroupId)
+                        .ToList()
+                        .Where(d => entityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
+                        .ToList();
 
-                if (userGroupPermissionDefinitionToDelete != null)
+                if (userGroupPermissionDefinitionsToDelete.Any())
                 {
-                    DataFacade.Delete<IUserGroupPermissionDefinition>(userGroupPermissionDefinitionToDelete);
+                    DataFacade.Delete<IUserGroupPermissionDefinition>(userGroupPermissionDefinitionsToDelete);
                 }
 
                 transactionScope.Complete();
