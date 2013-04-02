@@ -43,7 +43,7 @@
        }
     }
 </script>
-<%= RenderFieldsTag ? "<ui:fields>" : string.Empty %>
+<%= RenderFieldsTag ? string.Format(@"<ui:fields id=""fields_{0}"">", this.ClientID) : string.Empty%>
 
     <ui:fieldgroup label="<%= Server.HtmlEncode(this.Label) %>">
         <asp:PlaceHolder ID="UiFields" runat="server" />
