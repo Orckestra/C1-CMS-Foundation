@@ -14,9 +14,9 @@ namespace Composite.Data.Foundation
 {
     internal sealed class DataFacadeQueryable<T> : IQueryable<T>, IOrderedQueryable<T>, IDataFacadeQueryable, IQueryProvider
     {
-        private List<IQueryable> _sources;
-        private Expression _currentExpression = null;
-        private Expression _initialExpression = null;
+        private readonly List<IQueryable> _sources;
+        private readonly Expression _currentExpression;
+        private readonly Expression _initialExpression;
 
 
 
@@ -48,8 +48,8 @@ namespace Composite.Data.Foundation
 
         public IQueryable<S> CreateQuery<S>(Expression expression)
         {
-            if (null == expression) throw new ArgumentNullException("expression");
-            if (false == typeof(IQueryable<S>).IsAssignableFrom(expression.Type)) throw new ArgumentException("expression");
+            Verify.ArgumentNotNull(expression, "expression");
+            Verify.ArgumentCondition(typeof(IQueryable<S>).IsAssignableFrom(expression.Type), "expression", "Incorrect expression type");
 
             return new DataFacadeQueryable<S>(_sources, expression);
         }
@@ -58,15 +58,7 @@ namespace Composite.Data.Foundation
 
         public S Execute<S>(Expression expression)
         {
-            DataFacadeQueryableGathererExpressionVisitor gathererVisitor = new DataFacadeQueryableGathererExpressionVisitor();
-            gathererVisitor.Visit(_currentExpression);
-
-            if (gathererVisitor.SourceCount == 0)
-            {
-                return default(S);
-            }
-
-            bool pullIntoMemory = ShouldBeHandledByProvider(gathererVisitor.MultibleSourceQueryables) == false;
+            bool pullIntoMemory = ShouldBePulledIntoMemory(expression);
 
             DataFacadeQueryableExpressionVisitor handleInProviderVisitor =
                 new DataFacadeQueryableExpressionVisitor(pullIntoMemory);
@@ -95,17 +87,7 @@ namespace Composite.Data.Foundation
                 }
             }
 
-            // Checking if result contains "multiple source" queryables
-            var gathererVisitor = new DataFacadeQueryableGathererExpressionVisitor();
-            gathererVisitor.Visit(_currentExpression);
-
-            if (gathererVisitor.SourceCount == 0)
-            {
-                return new List<T>().GetEnumerator();
-            }
-
-            bool pullIntoMemory = ShouldBeHandledByProvider(gathererVisitor.MultibleSourceQueryables) == false;
-
+            bool pullIntoMemory = ShouldBePulledIntoMemory(_currentExpression);
             var handleInProviderVisitor = new DataFacadeQueryableExpressionVisitor(pullIntoMemory);
 
             Expression newExpression = handleInProviderVisitor.Visit(_currentExpression);
@@ -116,8 +98,7 @@ namespace Composite.Data.Foundation
             analyzer.Visit(newExpression);
 
             if(analyzer.CachedSqlQueries > 1
-               || (analyzer.SqlQueries > 0 
-                && analyzer.CachedSqlQueries > 0))
+               || (analyzer.SqlQueries > 0 && analyzer.CachedSqlQueries > 0))
             {
                 newExpression = new CachedQueryExtractorVisitor().Visit(newExpression);
                 newExpression = handleInProviderVisitor.Visit(newExpression);
@@ -199,31 +180,14 @@ namespace Composite.Data.Foundation
         }
 
 
-
-        private bool ShouldBeHandledByProvider(List<IDataFacadeQueryable> multibleSourceQueryables)
+        private bool ShouldBePulledIntoMemory(Expression expression)
         {
-            return true;
-            
-            //IQueryable currentQueryable = null;
+            var analyzer = new QueryableAnalyzerVisitor();
+            analyzer.Visit(expression);
 
-            //foreach (IDataFacadeQueryable multibleSourceQueryable in multibleSourceQueryables)
-            //{
-            //    if (multibleSourceQueryable.Sources.Count() != 1) return false;
-
-            //    if (currentQueryable == null)
-            //    {
-            //        currentQueryable = multibleSourceQueryable.Sources.First();
-            //    }
-            //    else
-            //    {
-            //        IQueryable queryable = multibleSourceQueryable.Sources.First();
-
-            //        if (object.ReferenceEquals(currentQueryable, queryable) == false) return false;
-            //    }
-            //}
-
-            //return true;
+            return analyzer.MethodsNotSupportedBySql > 0;
         }
+
 
         public bool IsEnumerableQuery
         {
@@ -245,6 +209,7 @@ namespace Composite.Data.Foundation
             public int SqlQueries { get; private set; }
             public int CachedSqlQueries { get; private set; }
             public int InMemoryQueries { get; private set; }
+            public int MethodsNotSupportedBySql { get; private set; }
             public int Other { get; private set; }
 
             protected override Expression VisitConstant(ConstantExpression node)
@@ -271,6 +236,17 @@ namespace Composite.Data.Foundation
                 }
 
                 return base.VisitConstant(node);
+            }
+
+            protected override Expression VisitMethodCall(MethodCallExpression methodCallExpression)
+            {
+                // Checking for C# anonymous functions
+                if(methodCallExpression.Method.ReflectedType.FullName.Contains("+<>"))
+                {
+                    MethodsNotSupportedBySql++;
+                }
+
+                return base.VisitMethodCall(methodCallExpression);
             }
         }
 

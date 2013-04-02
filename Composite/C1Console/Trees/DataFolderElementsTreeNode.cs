@@ -316,16 +316,16 @@ namespace Composite.C1Console.Trees
 
         private IEnumerable<Element> CreateFolderRangeElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<int> indexies;
+            IEnumerable<int> indexes;
             if (this.Display == LeafDisplayMode.Lazy)
             {
-                indexies = new List<int>();
+                indexes = new List<int>();
             }
             else
             {
                 if (this.LocalizationEndabled == false)
                 {
-                    indexies = GetObjects<int>(dynamicContext);
+                    indexes = GetObjects<int>(dynamicContext);
                 }
                 else
                 {
@@ -335,7 +335,7 @@ namespace Composite.C1Console.Trees
                         List<int> foriegnObjects = GetObjects<int>(dynamicContext);
                         orgObjects.AddRange(foriegnObjects);
                         orgObjects.Sort();
-                        indexies = orgObjects.Distinct();
+                        indexes = orgObjects.Distinct();
                     }
                 }
             }
@@ -343,7 +343,7 @@ namespace Composite.C1Console.Trees
 
             foreach (IFolderRange folderRange in this.FolderRanges.Ranges)
             {
-                bool contained = indexies.Contains(folderRange.Index);
+                bool contained = indexes.Contains(folderRange.Index);
                 if ((this.Display == LeafDisplayMode.Compact) && (contained == false)) continue;
 
                 Element element = CreateElement(

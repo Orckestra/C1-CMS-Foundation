@@ -12,11 +12,11 @@ namespace Composite.Data.Foundation
 {
     internal sealed class DataFacadeQueryableExpressionVisitor : ExpressionVisitor
     {
-        private static readonly MethodInfo _dataFacadeGetDataMethodInfo = typeof(DataFacade).GetMethods().Where(x => x.Name == "GetData" && x.IsGenericMethod).First();
-        private static readonly MethodInfo _dataConnectionGetDataMethodInfo = typeof(DataConnection).GetMethods().Where(x => x.Name == "Get" && x.IsGenericMethod).First();
+        private static readonly MethodInfo _dataFacadeGetDataMethodInfo = typeof(DataFacade).GetMethods().First(x => x.Name == "GetData" && x.IsGenericMethod);
+        private static readonly MethodInfo _dataConnectionGetDataMethodInfo = typeof(DataConnection).GetMethods().First(x => x.Name == "Get" && x.IsGenericMethod);
 
-        private bool _pullAllToMemory;
-        private IQueryable _queryable = null;
+        private readonly bool _pullAllToMemory;
+        private IQueryable _queryable;
 
 
 
@@ -31,14 +31,12 @@ namespace Composite.Data.Foundation
         {
             if (c.Value is IDataFacadeQueryable)
             {
-                IQueryable queryable = HandleMultibleSourceQueryable(c.Value);
+                IQueryable queryable = HandleMultipleSourceQueryable(c.Value);
 
                 return queryable.Expression;
             }
-            else
-            {
-                return base.VisitConstant(c);
-            }
+            
+            return base.VisitConstant(c);
         }
 
 
@@ -63,7 +61,7 @@ namespace Composite.Data.Foundation
 
                         object value = fieldInfo.GetValue(constatntExpression.Value);
 
-                        IQueryable queryable = HandleMultibleSourceQueryable(value);
+                        IQueryable queryable = HandleMultipleSourceQueryable(value);
 
                         if (queryable != null)
                         {
@@ -88,7 +86,7 @@ namespace Composite.Data.Foundation
                 {
                     object result = m.Method.Invoke(null, null);
 
-                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultipleSourceQueryable(result) : result);
                 }
 
                 // Handling some of the overloads of GetData()
@@ -98,7 +96,7 @@ namespace Composite.Data.Foundation
 
                     object result = m.Method.Invoke(null, parameters);
 
-                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultipleSourceQueryable(result) : result);
                 }
             
                 throw new NotImplementedException("Supporing for DataFacade method '{0}' or one of it's overloads not yet implemented".FormatWith(m.Method.Name));
@@ -112,7 +110,7 @@ namespace Composite.Data.Foundation
                     var dataConnection = EvaluateExpression<DataConnection>(m.Object);
                     object result = m.Method.Invoke(dataConnection, null);
 
-                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultibleSourceQueryable(result) : result);
+                    return Expression.Constant(result is IDataFacadeQueryable ? HandleMultipleSourceQueryable(result) : result);
                 }
 
                 throw new NotImplementedException("Supporing for DataConnection method '{0}' or one of it's overloads not yet implemented".FormatWith(m.Method.Name));
@@ -162,21 +160,21 @@ namespace Composite.Data.Foundation
 
 
 
-        private IQueryable HandleMultibleSourceQueryable(object multibleSourceQueryableCandidate)
+        private IQueryable HandleMultipleSourceQueryable(object multipleSourceQueryableCandidate)
         {
-            IDataFacadeQueryable multibleSourceQueryable = multibleSourceQueryableCandidate as IDataFacadeQueryable;
+            IDataFacadeQueryable multipleSourceQueryable = multipleSourceQueryableCandidate as IDataFacadeQueryable;
 
-            if (multibleSourceQueryable == null) return null;
+            if (multipleSourceQueryable == null) return null;
 
             IQueryable queryable;
 
-            if (_pullAllToMemory == false && multibleSourceQueryable.Sources.Count() == 1)
+            if (!_pullAllToMemory && multipleSourceQueryable.Sources.Count() == 1)
             {
-                queryable = multibleSourceQueryable.Sources.First();
+                queryable = multipleSourceQueryable.Sources.First();
             }
             else
             {
-                IQueryable[] sources = multibleSourceQueryable.Sources.ToArray();
+                IQueryable[] sources = multipleSourceQueryable.Sources.ToArray();
 
                 // Choosing element type which is the "highest" in hierarhy. F.e. if we have IQueryable<IPage> and IQueryable<IData>, 
                 // the "highest" element type would be IData

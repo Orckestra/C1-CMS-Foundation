@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
+using Composite.Data;
 using Composite.Functions;
 using Composite.Core;
 using Composite.Core.ResourceSystem;
@@ -46,28 +47,44 @@ namespace Composite.C1Console.Trees
 
         public override Expression CreateUpwardsFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext)
         {
-            DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
+            DataEntityToken currentEntityToken = dynamicContext.CurrentEntityToken as DataEntityToken;
+            IData filteredDataItem = null;
+
+            Func<IData, bool> upwardsFilter = dataItem =>
             {
-                PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, dynamicContext.CurrentEntityToken)
+                var ansectorEntityToken = dataItem.GetDataEntityToken();
+
+                DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
+                {
+                    PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, ansectorEntityToken)
+                };
+
+                XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
+
+                BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
+                LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
+
+                if (expression.Parameters.Count != 1)
+                {
+                    throw new InvalidOperationException("Only 1 parameter lamdas supported when calling function: " + markup);
+                }
+
+                Delegate compiledExpression = expression.Compile();
+
+                if (filteredDataItem == null)
+                {
+                    filteredDataItem = currentEntityToken.Data;
+                }
+
+                return (bool)compiledExpression.DynamicInvoke(filteredDataItem);
             };
 
-            XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
+            
+            return upwardsFilter.Target != null 
+                ? Expression.Call(Expression.Constant(upwardsFilter.Target), upwardsFilter.Method, parameterExpression)
+                : Expression.Call(upwardsFilter.Method, parameterExpression);
 
-            BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
-            LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
-
-            if (expression.Parameters.Count != 1)
-            {
-                throw new InvalidOperationException("Only 1 parameter lamdas supported when calling function: " + markup);
-            }
-
-            ParameterChangerExpressionVisitor expressionVisitor = new ParameterChangerExpressionVisitor(expression.Parameters.Single(), parameterExpression);
-
-            Expression resultExpression = expressionVisitor.Visit(expression.Body);
-
-            return resultExpression;
         }
-
 
 
         internal override void Initialize()

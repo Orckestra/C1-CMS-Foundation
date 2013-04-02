@@ -14,18 +14,20 @@ namespace Composite.C1Console.Trees
     public abstract class DataFilteringTreeNode : TreeNode
     {
         internal abstract Type CurrentDataInterfaceType { get; }
-
-
-
+        
         internal virtual Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IEnumerable<int> filtersToSkip = null)
         {
             Expression expression = null;
 
-            foreach (FilterNode filterNode in FilterNodes)
-            {
-                if ((filtersToSkip != null) && (filtersToSkip.Contains(filterNode.Id)) == true) continue;
+            var filterNodes = dynamicContext.Direction == TreeNodeDynamicContextDirection.Down
+                                  ? this.FilterNodes
+                                  : dynamicContext.CurrentTreeNode.FilterNodes;
 
-                Expression filterExpression = null;
+            foreach (FilterNode filterNode in filterNodes)
+            {
+                if (filtersToSkip != null && filtersToSkip.Contains(filterNode.Id)) continue;
+
+                Expression filterExpression;
                 if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
                 {
                     filterExpression = filterNode.CreateDownwardsFilterExpression(parameterExpression, dynamicContext);
