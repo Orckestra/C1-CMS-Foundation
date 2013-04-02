@@ -157,45 +157,53 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_Error(object sender, EventArgs e)
         {
-            var httpContext = (sender as HttpApplication).Context;
-            Exception exception = httpContext.Server.GetLastError();
+            var httpApplication = (sender as HttpApplication);
+            Exception exception = httpApplication.Server.GetLastError();
 
-            bool is404 = (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404);
+            TraceEventType eventType = TraceEventType.Error;
 
-            if (is404)
+            var httpContext = httpApplication.Context;
+
+            if (httpContext != null)
             {
-                string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
+                bool is404 = (exception is HttpException && ((HttpException)exception).GetHttpCode() == 404);
 
-                if (!customPageNotFoundUrl.IsNullOrEmpty())
+                if (is404)
                 {
-                    string rawUrl = httpContext.Request.RawUrl;
+                    string customPageNotFoundUrl = HostnameBindingsFacade.GetCustomPageNotFoundUrl();
 
-                    if (rawUrl == customPageNotFoundUrl)
+                    if (!customPageNotFoundUrl.IsNullOrEmpty())
                     {
-                        throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
+                        string rawUrl = httpContext.Request.RawUrl;
+
+                        if (rawUrl == customPageNotFoundUrl)
+                        {
+                            throw new HttpException(500, "'Page not found' url isn't handled. Url: '{0}'".FormatWith(rawUrl));
+                        }
+
+                        httpContext.Server.ClearError();
+                        httpContext.Response.Clear();
+
+                        httpContext.Response.Redirect(customPageNotFoundUrl, true);
+
+                        return;
                     }
 
-                    httpContext.Server.ClearError();
-                    httpContext.Response.Clear();
+                    eventType = TraceEventType.Verbose;
+                }
 
-                    httpContext.Response.Redirect(customPageNotFoundUrl, true);
-
-                    return;
+                if (LogApplicationLevelErrors)
+                {
+                    var request = httpContext.Request;
+                    string origianalUrl = request.RawUrl;
+                    LoggingService.LogEntry("Application Error", 
+                                            "Failed to process '{0}' request to url '{1}'".FormatWith(request.RequestType, origianalUrl), 
+                                            LoggingService.Category.General, eventType);
                 }
             }
 
             if (LogApplicationLevelErrors)
             {
-                TraceEventType eventType = (is404 ? TraceEventType.Verbose : TraceEventType.Error);
-
-                var request = httpContext.Request;
-                if (request != null)
-                {
-                    string origianalUrl = request.RawUrl;
-                    LoggingService.LogEntry("Application Error", "Failed to process '{0}' request to url '{1}'".FormatWith(request.RequestType ?? string.Empty, origianalUrl ?? string.Empty), LoggingService.Category.General, eventType);
-                }
-
-
                 while (exception != null)
                 {
                     LoggingService.LogEntry("Application Error", exception.ToString(), LoggingService.Category.General, eventType);
