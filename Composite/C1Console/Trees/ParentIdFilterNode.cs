@@ -197,7 +197,7 @@ namespace Composite.C1Console.Trees
             // To do this we need the parent entity token or our own entity token
             object parentFieldValue = FindParentKeyValue(dynamicContext);
 
-            Expression expression = Expression.Equal(ExpressionHelper.CreatePropertyExpression(this.ReferenceFieldName, parameterExpression), Expression.Constant(parentFieldValue, this.ReferencePropertyInfo.PropertyType));
+            Expression expression = Expression.Equal(ExpressionHelper.CreatePropertyExpression(this.KeyPropertyInfo.Name, parameterExpression), Expression.Constant(parentFieldValue, this.ReferencePropertyInfo.PropertyType));
 
             return expression;
         }
