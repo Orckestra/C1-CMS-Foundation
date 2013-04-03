@@ -274,29 +274,43 @@ namespace Composite.C1Console.Trees
 
         private IEnumerable<Element> CreateSimpleElements(EntityToken parentEntityToken, Type referenceType, object referenceValue, TreeNodeDynamicContext dynamicContext, IEnumerable<object> objects)
         {
-            Func<object, string> labelFunc = GetLabelFunction();
+            bool shouldBeSortedByLabel;
+            Func<object, string> labelFunc = GetLabelFunction(out shouldBeSortedByLabel);
 
-            foreach (object obj in objects)
+            if (shouldBeSortedByLabel)
             {
-                string label = labelFunc(obj);
+                objects = objects.Evaluate();
+            }
 
+            var objectsAndLabels = objects.Select(o => new { Object = o, Label = labelFunc(o)});
+
+            if (shouldBeSortedByLabel)
+            {
+                objectsAndLabels = this.SortDirection == SortDirection.Ascending
+                    ? objectsAndLabels.OrderBy(a => a.Label)
+                    : objectsAndLabels.OrderByDescending(a => a.Label);
+            }
+
+            foreach (var pair in objectsAndLabels)
+            {
                 Element element = CreateElement(
                     parentEntityToken,
                     referenceType,
                     referenceValue,
                     dynamicContext,
-                    label,
-                    f => f.GroupingValues.Add(this.GroupingValuesFieldName, this.DateTimeFormater.Serialize(obj))
+                    pair.Label,
+                    f => f.GroupingValues.Add(this.GroupingValuesFieldName, this.DateTimeFormater.Serialize(pair.Object))
                 );
 
                 yield return element;
             }
         }
 
-        private Func<object, string> GetLabelFunction()
+        private Func<object, string> GetLabelFunction(out bool shouldBeSortedByLabel)
         {
             if (this.PropertyInfo.PropertyType == typeof(DateTime))
             {
+                shouldBeSortedByLabel = false;
                 return f => this.DateTimeFormater.FormatLabel(f);
             }
             
@@ -305,9 +319,12 @@ namespace Composite.C1Console.Trees
 
             if (referenceInfo == null)
             {
+                shouldBeSortedByLabel = false;
                 return f => (f ?? "(NULL)").ToString();
             }
-            
+
+            shouldBeSortedByLabel = true;
+
             return key =>
             {
                 if (key == null) return "(NULL)";
