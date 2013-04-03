@@ -80,11 +80,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             IList<object> arguments = new List<object>();
             foreach (ParameterProfile paramProfile in ParameterProfiles)
             {
-
                 arguments.Add(parameters.GetParameter(paramProfile.Name, paramProfile.Type));
             }
 
-            return this.MethodInfo.Invoke(this.Object, arguments.ToArray());
+            object @object = this.MethodInfo.IsStatic ? null : this.Object;
+            return this.MethodInfo.Invoke(@object, arguments.ToArray());
         }
 
 
