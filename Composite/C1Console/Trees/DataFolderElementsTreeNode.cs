@@ -48,6 +48,9 @@ namespace Composite.C1Console.Trees
         public bool FirstLetterOnly { get; internal set; }          // Optional
 
         /// <exclude />
+        public SortDirection SortDirection { get; internal set; }       // Optional
+
+        /// <exclude />
         public LeafDisplayMode Display { get; internal set; }       // Optional
 
         /// <exclude />
@@ -88,7 +91,7 @@ namespace Composite.C1Console.Trees
             else
             {
                 List<object> orgLabels = GetObjects(dynamicContext, true);
-                using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
                     List<object> foriegnLabels = GetObjects(dynamicContext, true);
                     orgLabels.AddRange(foriegnLabels);
@@ -332,8 +335,8 @@ namespace Composite.C1Console.Trees
                     List<int> orgObjects = GetObjects<int>(dynamicContext);
                     using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                     {
-                        List<int> foriegnObjects = GetObjects<int>(dynamicContext);
-                        orgObjects.AddRange(foriegnObjects);
+                        List<int> foreignObjects = GetObjects<int>(dynamicContext);
+                        orgObjects.AddRange(foreignObjects);
                         orgObjects.Sort();
                         indexes = orgObjects.Distinct();
                     }
@@ -426,27 +429,49 @@ namespace Composite.C1Console.Trees
 
 
 
-        private Expression CreateSelectBodyExpression(ParameterExpression parameterExpression, Expression fieldExpression)
+        private Expression CreateSelectBodyExpression(ParameterExpression parameterExpression, Expression fieldExpression, out List<LambdaExpression> orderByExpressions)
         {
+            orderByExpressions = null;
+
             if (this.FolderRanges != null)
             {
                 return this.FolderRanges.CreateContainsListSelectBodyExpression(fieldExpression, parameterExpression);
             }
-            else if (this.PropertyInfo.PropertyType == typeof(DateTime))
+            
+            if (this.PropertyInfo.PropertyType == typeof(DateTime))
             {
                 List<Expression> parameters = new List<Expression>();
-                if (this.DateTimeFormater.HasYear == true) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Year));
-                if (this.DateTimeFormater.HasMonth == true) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Month));
-                if (this.DateTimeFormater.HasDay == true) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Day));
-                if (this.DateTimeFormater.HasHour == true) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Hour));
-                if (this.DateTimeFormater.HasMinute == true) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Minute));
-                if (this.DateTimeFormater.HasSecond == true) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Second));
+                if (this.DateTimeFormater.HasYear) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Year));
+                if (this.DateTimeFormater.HasMonth) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Month));
+                if (this.DateTimeFormater.HasDay) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Day));
+                if (this.DateTimeFormater.HasHour) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Hour));
+                if (this.DateTimeFormater.HasMinute) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Minute));
+                if (this.DateTimeFormater.HasSecond) parameters.Add(Expression.Property(fieldExpression, DateTimeFormater.DateTime_Second));
 
-                Expression expression = Expression.New(this.DateTimeFormater.GetTupleConstructor(), parameters);
+                var members = this.DateTimeFormater.GetTupleMembers();
+                Expression expression = Expression.New(this.DateTimeFormater.GetTupleConstructor(), parameters, members);
 
+                if (parameters.Any())
+                {
+                    orderByExpressions = new List<LambdaExpression>();
+
+                    // Ordering my date parts. Needed for LINQ2SQL to produce a correct query
+                    for (int i = 0; i < parameters.Count; i++)
+                    {
+                        var newParameter = Expression.Parameter(expression.Type);
+
+                        var newTypeProperty = Expression.Property(newParameter, members[i]);
+
+                        var keySelector = Expression.Lambda(newTypeProperty, newParameter);
+
+                        orderByExpressions.Add(keySelector);
+                    }
+                }
+                
                 return expression;
             }
-            else if (this.FirstLetterOnly == true)
+            
+            if (this.FirstLetterOnly)
             {
                 Expression expression = Expression.Condition(
                     Expression.And(
@@ -474,10 +499,8 @@ namespace Composite.C1Console.Trees
 
                 return expression;
             }
-            else
-            {
-                return fieldExpression;
-            }
+            
+            return fieldExpression;
         }
 
 
@@ -492,25 +515,35 @@ namespace Composite.C1Console.Trees
 
             Expression fieldExpression = ExpressionHelper.CreatePropertyExpression(this.InterfaceType, this.PropertyInfo.DeclaringType, this.FieldName, parameterExpression);
 
-            Expression orderByExpression = ExpressionHelper.CreateOrderByExpression(whereExpression, Expression.Lambda(fieldExpression, parameterExpression));
+            var keySelector = Expression.Lambda(fieldExpression, parameterExpression);
+            Expression orderByExpression = this.SortDirection == SortDirection.Ascending
+                ? ExpressionHelper.CreateOrderByExpression(whereExpression, keySelector)
+                : ExpressionHelper.CreateOrderByDescendingExpression(whereExpression, keySelector);
 
             Expression selectBodyExpression;
-            if (includeAllGroupingFields == false)
+
+            List<LambdaExpression> orderByExpressions = null;
+
+            if (!includeAllGroupingFields)
             {
-                selectBodyExpression = CreateSelectBodyExpression(parameterExpression, fieldExpression);
+                selectBodyExpression = CreateSelectBodyExpression(parameterExpression, fieldExpression, out orderByExpressions);
             }
             else
             {
                 List<Expression> bodyExpressions = new List<Expression>();
                 foreach (DataFolderElementsTreeNode dataFolderElementsTreeNode in this.AllGroupingNodes)
                 {
+                    List<LambdaExpression> innerOrderByExpressions;
+
                     Expression groupFieldExpression = ExpressionHelper.CreatePropertyExpression(dataFolderElementsTreeNode.InterfaceType, dataFolderElementsTreeNode.PropertyInfo.DeclaringType, dataFolderElementsTreeNode.FieldName, parameterExpression);
-                    Expression bodyExpression = dataFolderElementsTreeNode.CreateSelectBodyExpression(parameterExpression, groupFieldExpression);
+                    Expression bodyExpression = dataFolderElementsTreeNode.CreateSelectBodyExpression(parameterExpression, groupFieldExpression, out innerOrderByExpressions);
 
                     bodyExpressions.Add(bodyExpression);
                 }
 
                 selectBodyExpression = Expression.New(this.AllGroupingsTupleConstructor, bodyExpressions);
+
+                // TODO: proper processing of innerOrderByExpressions
             }
 
             Expression selectExpression = ExpressionHelper.CreateSelectExpression(
@@ -520,10 +553,37 @@ namespace Composite.C1Console.Trees
 
             Expression distinctExpression = ExpressionHelper.CreateDistinctExpression(selectExpression);
 
+
+            // Sorting after calling "DISTINCT" to fix LINQ2SQL issue
+            if (orderByExpressions != null)
+            {
+                distinctExpression = ApplyOrder(distinctExpression, orderByExpressions);
+            }
+
             return distinctExpression;
         }
 
 
+        private Expression ApplyOrder(Expression expression, List<LambdaExpression> fieldSelectors)
+        {
+            for (int i = 0; i < fieldSelectors.Count; i++)
+            {
+                if (i == 0)
+                {
+                    expression = this.SortDirection == SortDirection.Ascending
+                        ? ExpressionHelper.CreateOrderByExpression(expression, fieldSelectors[i])
+                        : ExpressionHelper.CreateOrderByDescendingExpression(expression,fieldSelectors[i]);
+                }
+                else
+                {
+                    expression = this.SortDirection == SortDirection.Ascending
+                        ? ExpressionHelper.ThenByExpression(expression, fieldSelectors[i])
+                        : ExpressionHelper.ThenByDescendingExpression(expression, fieldSelectors[i]);
+                }
+            }
+
+            return expression;
+        }
 
         private List<object> GetObjects(TreeNodeDynamicContext dynamicContext, bool includeAllGroupingFields = false)
         {
@@ -885,7 +945,7 @@ namespace Composite.C1Console.Trees
             }
 
 
-            this.PropertyInfo = this.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == this.FieldName).SingleOrDefault();
+            this.PropertyInfo = this.InterfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == this.FieldName);
             if (this.PropertyInfo == null)
             {
                 AddValidationError("TreeValidationError.Common.MissingProperty", this.InterfaceType, this.FieldName);
@@ -906,7 +966,7 @@ namespace Composite.C1Console.Trees
             }
 
 
-            this.DateTimeFormater = new DateTimeFormater(this.FieldName, this.DateFormat);
+            this.DateTimeFormater = new DateTimeFormater(this.DateFormat);
 
 
             if ((string.IsNullOrEmpty(this.Range) == false) && (this.FirstLetterOnly == true))
@@ -924,7 +984,7 @@ namespace Composite.C1Console.Trees
                 this.FolderRanges = FolderRangesCreator.Create(this, this.Range, this.FieldName, this.PropertyInfo.PropertyType);
             }
 
-            if (this.ChildNodes.OfType<DataElementsTreeNode>().Where(f => f.InterfaceType != this.InterfaceType).Any() == true)
+            if (this.ChildNodes.OfType<DataElementsTreeNode>().Any(f => f.InterfaceType != this.InterfaceType))
             {
                 AddValidationError("TreeValidationError.DataFolderElements.WrongDateChildInterfaceType", this.InterfaceType);
             }
@@ -984,8 +1044,8 @@ namespace Composite.C1Console.Trees
 
 
             Type listType = typeof(List<>).MakeGenericType(this.InterfaceType);
-            this.FolderIndexListAddMethodInfo = listType.GetMethods().Where(f => f.Name == "Add").Single();
-            this.FolderIndexListClearMethodInfo = listType.GetMethods().Where(f => f.Name == "Clear").Single();
+            this.FolderIndexListAddMethodInfo = listType.GetMethods().Single(f => f.Name == "Add");
+            this.FolderIndexListClearMethodInfo = listType.GetMethods().Single(f => f.Name == "Clear");
 
             this.FolderIndexListObject = Activator.CreateInstance(listType);
             this.FolderIndexListQueryable = ((IEnumerable)this.FolderIndexListObject).AsQueryable();

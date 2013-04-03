@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -8,21 +9,68 @@ namespace Composite.C1Console.Trees.Foundation
 {
     internal sealed class DateTimeFormater
     {
-        private string _fieldName;
-        private string _format;
-        private int _fieldCount = 0;
+        private readonly string _format;
+        private int _fieldCount;
 
-        private string _yearFormat = null;
-        private string _monthFormat = null;
-        private string _dayFormat = null;
-        private string _hourFormat = null;
-        private string _minuteFormat = null;
-        private string _secondFormat = null;
+        private readonly string _yearFormat;
+        private readonly string _monthFormat;
+        private readonly string _dayFormat;
+        private readonly string _hourFormat;
+        private readonly string _minuteFormat;
+        private readonly string _secondFormat;
 
+        private static readonly IList<ConstructorInfo> Tuples_Constructors;
+        private static readonly IList<MethodInfo[]> Tuples_Members;
 
-        public DateTimeFormater(string fieldName, string format)
+        //private static readonly IList<ConstructorInfo> AnonymousTypes_Constructors;
+        //private static readonly IList<MethodInfo[]> AnonymousTypes_Members;
+
+        static DateTimeFormater()
         {
-            _fieldName = fieldName;
+            var objects = new object[]
+                {
+                    new {Item1 = 0},
+                    new {Item1 = 0, Item2 = 0},
+                    new {Item1 = 0, Item2 = 0, Item3 = 0},
+                    new {Item1 = 0, Item2 = 0, Item3 = 0, Item4 = 0},
+                    new {Item1 = 0, Item2 = 0, Item3 = 0, Item4 = 0, Item5 = 0},
+                    new {Item1 = 0, Item2 = 0, Item3 = 0, Item4 = 0, Item5 = 0, Item6 = 0}
+                };
+
+            //AnonymousTypes_Constructors = new List<ConstructorInfo>();
+            //AnonymousTypes_Members = new List<MethodInfo[]>();
+            //for (int i = 0; i < objects.Length; i++)
+            //{
+            //    var type = objects[i].GetType();
+
+            //    AnonymousTypes_Constructors.Add(type.GetConstructors()[0]);
+            //    AnonymousTypes_Members.Add(type.GetProperties().Select(p => p.GetGetMethod()).ToArray());
+            //}
+
+            var tupleTypes = new Type[]
+                {
+                    typeof (Tuple<int>),
+                    typeof (Tuple<int, int>),
+                    typeof (Tuple<int, int, int>),
+                    typeof (Tuple<int, int, int, int>),
+                    typeof (Tuple<int, int, int, int, int>),
+                    typeof (Tuple<int, int, int, int, int, int>)
+                };
+
+            Tuples_Constructors = new List<ConstructorInfo>();
+            Tuples_Members = new List<MethodInfo[]>();
+            for (int i = 0; i < tupleTypes.Length; i++)
+            {
+                var type = tupleTypes[i];
+
+                Tuples_Constructors.Add(type.GetConstructors().Single());
+                Tuples_Members.Add(type.GetProperties().Select(p => p.GetGetMethod()).ToArray());
+            }
+        }
+
+
+        public DateTimeFormater(string format)
+        {
             _format = format;
 
             if (_format != null)
@@ -81,42 +129,42 @@ namespace Composite.C1Console.Trees.Foundation
             TupleIndexer tupleIndexer = new TupleIndexer(value);
             int counter = 1;
 
-            if (this.HasYear == true)
+            if (this.HasYear)
             {
                 serializedValue += tupleIndexer[counter++];
             }
             serializedValue += ",";
 
 
-            if (this.HasMonth == true)
+            if (this.HasMonth)
             {
                 serializedValue += tupleIndexer[counter++];
             }
             serializedValue += ",";
 
 
-            if (this.HasDay == true)
+            if (this.HasDay)
             {
                 serializedValue += tupleIndexer[counter++];
             }
             serializedValue += ",";
 
 
-            if (this.HasHour == true)
+            if (this.HasHour)
             {
                 serializedValue += tupleIndexer[counter++];
             }
             serializedValue += ",";
 
 
-            if (this.HasMinute == true)
+            if (this.HasMinute)
             {
                 serializedValue += tupleIndexer[counter++];
             }
             serializedValue += ",";
 
 
-            if (this.HasSecond == true)
+            if (this.HasSecond)
             {
                 serializedValue += tupleIndexer[counter++];
             }            
@@ -126,27 +174,27 @@ namespace Composite.C1Console.Trees.Foundation
         }
 
 
-
+        
         public string SerializeDateTime(DateTime value)
         {
             string serializedValue = "·";
 
-            if (this.HasYear == true) serializedValue += value.Year.ToString();
+            if (this.HasYear) serializedValue += value.Year.ToString();
             serializedValue += ",";
 
-            if (this.HasMonth == true) serializedValue += value.Month.ToString();
+            if (this.HasMonth) serializedValue += value.Month.ToString();
             serializedValue += ",";
 
-            if (this.HasDay == true) serializedValue += value.Day.ToString();
+            if (this.HasDay) serializedValue += value.Day.ToString();
             serializedValue += ",";
 
-            if (this.HasHour == true) serializedValue += value.Hour.ToString();
+            if (this.HasHour) serializedValue += value.Hour.ToString();
             serializedValue += ",";
 
-            if (this.HasMinute == true) serializedValue += value.Millisecond.ToString();
+            if (this.HasMinute) serializedValue += value.Millisecond.ToString();
             serializedValue += ",";
 
-            if (this.HasSecond == true) serializedValue += value.Second.ToString();
+            if (this.HasSecond) serializedValue += value.Second.ToString();
 
             return serializedValue;
         }
@@ -155,7 +203,7 @@ namespace Composite.C1Console.Trees.Foundation
 
         public static DateTime Deserialize(string serializedValue, DateTime? currentTime = null)
         {
-            if (serializedValue.StartsWith("·") == true)
+            if (serializedValue.StartsWith("·"))
             {
                 serializedValue = serializedValue.Remove(1, 0);
             }
@@ -169,7 +217,7 @@ namespace Composite.C1Console.Trees.Foundation
             if (values.Length != 6) throw new InvalidOperationException("DateTimeFormat is of wrong format");
 
             int year = 2000, month = 1, day = 1, hour = 0, minute = 0, second = 0;
-            if (currentTime.HasValue == true)
+            if (currentTime.HasValue)
             {
                 year = currentTime.Value.Year;
                 month = currentTime.Value.Month;
@@ -204,12 +252,12 @@ namespace Composite.C1Console.Trees.Foundation
             TupleIndexer tupleIndexer = new TupleIndexer(value);
             int counter = 1;
 
-            if (this.HasYear == true) year = tupleIndexer[counter++];
-            if (this.HasMonth == true) month = tupleIndexer[counter++];
-            if (this.HasDay == true) day = tupleIndexer[counter++];
-            if (this.HasHour == true) hour = tupleIndexer[counter++];
-            if (this.HasMinute == true) minute = tupleIndexer[counter++];
-            if (this.HasSecond == true) second = tupleIndexer[counter++];
+            if (this.HasYear) year = tupleIndexer[counter++];
+            if (this.HasMonth) month = tupleIndexer[counter++];
+            if (this.HasDay) day = tupleIndexer[counter++];
+            if (this.HasHour) hour = tupleIndexer[counter++];
+            if (this.HasMinute) minute = tupleIndexer[counter++];
+            if (this.HasSecond) second = tupleIndexer[counter++];
 
             return new DateTime(year, month, day, hour, minute, second);
         }
@@ -218,32 +266,38 @@ namespace Composite.C1Console.Trees.Foundation
 
         public ConstructorInfo GetTupleConstructor()
         {
-            switch (_fieldCount)
-            {
-                case 1:
-                    return TupleConstructorInfo1;
+            ValidateFieldsCount();
 
-                case 2:
-                    return TupleConstructorInfo2;
+            return Tuples_Constructors[_fieldCount - 1];
+        }
 
-                case 3:
-                    return TupleConstructorInfo3;
+        public MethodInfo[] GetTupleMembers()
+        {
+            ValidateFieldsCount();
 
-                case 4:
-                    return TupleConstructorInfo4;
-
-                case 5:
-                    return TupleConstructorInfo5;
-
-                case 6:
-                    return TupleConstructorInfo6;
-
-                default:
-                    throw new NotImplementedException();
-            }
+            return Tuples_Members[_fieldCount - 1];
         }
 
 
+        //public ConstructorInfo GetAnonymousTypeConstructor()
+        //{
+        //    ValidateFieldsCount();
+
+        //    return AnonymousTypes_Constructors[_fieldCount - 1];
+        //}
+
+        //public MethodInfo[] GetAnonymousTypeMembers()
+        //{
+        //    ValidateFieldsCount();
+
+        //    return AnonymousTypes_Members[_fieldCount - 1];
+        //}
+
+        private void ValidateFieldsCount()
+        {
+            Verify.That(_fieldCount > 0, "Amount of fields should be positive");
+            Verify.That(_fieldCount < Tuples_Constructors.Count, "To many fields specified: {0}", _fieldCount);
+        }
 
         public bool IsFormated
         {
@@ -296,14 +350,12 @@ namespace Composite.C1Console.Trees.Foundation
 
         private void SetFormat(string pattern, ref string format)
         {
-            if ((this._format.Contains(pattern) == true) && (format == null))
+            if ((this._format.Contains(pattern)) && (format == null))
             {
                 format = pattern;
                 _fieldCount++;
             }
         }
-
-
 
         public static PropertyInfo DateTime_Year = typeof(DateTime).GetProperty("Year");
         public static PropertyInfo DateTime_Month = typeof(DateTime).GetProperty("Month");
@@ -311,13 +363,5 @@ namespace Composite.C1Console.Trees.Foundation
         public static PropertyInfo DateTime_Hour = typeof(DateTime).GetProperty("Hour");
         public static PropertyInfo DateTime_Minute = typeof(DateTime).GetProperty("Minute");
         public static PropertyInfo DateTime_Second = typeof(DateTime).GetProperty("Second");
-
-
-        private static ConstructorInfo TupleConstructorInfo1 = typeof(Tuple<int>).GetConstructors().Single();
-        private static ConstructorInfo TupleConstructorInfo2 = typeof(Tuple<int, int>).GetConstructors().Single();
-        private static ConstructorInfo TupleConstructorInfo3 = typeof(Tuple<int, int, int>).GetConstructors().Single();
-        private static ConstructorInfo TupleConstructorInfo4 = typeof(Tuple<int, int, int, int>).GetConstructors().Single();
-        private static ConstructorInfo TupleConstructorInfo5 = typeof(Tuple<int, int, int, int, int>).GetConstructors().Single();
-        private static ConstructorInfo TupleConstructorInfo6 = typeof(Tuple<int, int, int, int, int, int>).GetConstructors().Single();
     }
 }

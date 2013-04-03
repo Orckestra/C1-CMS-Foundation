@@ -11,41 +11,37 @@ namespace Composite.Core.Linq
         public static Type FindElementType(Expression expression)
         {
             Type elementType = expression.Type;
-            if (true == elementType.IsGenericType)
-            {
-                Type defintion = elementType.GetGenericTypeDefinition();
-
-                if ((typeof(IQueryable<>) == defintion) ||
-                    (typeof(IEnumerable<>) == defintion))
-                {
-                    return elementType.GetGenericArguments()[0];
-                }
-                else
-                {
-                    Type[] interfaces = elementType.GetInterfaces();
-
-                    foreach (Type interf in interfaces)
-                    {
-                        Type def = interf;
-                        if (true == interf.IsGenericType)
-                        {
-                            def = interf.GetGenericTypeDefinition();
-                        }
-
-                        if ((typeof(IQueryable<>) == def) ||
-                            (typeof(IEnumerable<>) == def))
-                        {
-                            return elementType.GetGenericArguments()[0];
-                        }
-                    }
-                   
-                    throw new NotImplementedException("Expression type could not be found");
-                }
-            }
-            else
+            if (!elementType.IsGenericType)
             {
                 return null;
             }
+            
+            Type defintion = elementType.GetGenericTypeDefinition();
+
+            if ((typeof (IQueryable<>) == defintion) ||
+                (typeof (IEnumerable<>) == defintion))
+            {
+                return elementType.GetGenericArguments()[0];
+            }
+            
+            Type[] interfaces = elementType.GetInterfaces();
+
+            foreach (Type interf in interfaces)
+            {
+                Type def = interf;
+                if (true == interf.IsGenericType)
+                {
+                    def = interf.GetGenericTypeDefinition();
+                }
+
+                if ((typeof (IQueryable<>) == def) ||
+                    (typeof (IEnumerable<>) == def))
+                {
+                    return elementType.GetGenericArguments()[0];
+                }
+            }
+
+            throw new NotImplementedException("Expression type could not be found");
         }
     }
 }

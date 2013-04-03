@@ -210,6 +210,26 @@
     </xs:attribute>
   </xs:attributeGroup>
 
+  
+  <xs:attributeGroup name="SortDirection">
+    <xs:attribute name="SortDirection" use="optional" default="Ascending">
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Ascending">
+            <xs:annotation>
+              <xs:documentation>Sort from smallest to largest. For example, A to Z.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Descending">
+            <xs:annotation>
+              <xs:documentation>Sort from largest to smallest. For example, Z to A.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+
 
   <xs:attributeGroup name="LocationGroup">
     <xs:attribute name="Location" use="optional" default="Other">
@@ -847,6 +867,8 @@
     <xs:attributeGroup ref="DataFolderElementCommonGroup" />
 
     <xs:attributeGroup ref="DisplayGroup" />
+
+    <xs:attributeGroup ref="SortDirection" />
   </xs:complexType>
 
 
@@ -865,6 +887,8 @@
     </xs:attribute>
     
     <xs:attributeGroup ref="DisplayGroup" />
+
+    <xs:attributeGroup ref="SortDirection" />
   </xs:complexType>
 
 

@@ -107,13 +107,30 @@ namespace Composite.Core.Linq
 
 
 
-        public static Expression CreateOrderByExpression(Expression sourceExpression, LambdaExpression predicate)
+        public static Expression CreateOrderByExpression(Expression sourceExpression, LambdaExpression keySelector)
         {
-            Expression orderByExpression = ExpressionCreator.OrderBy(sourceExpression, predicate);
+            Expression orderByExpression = ExpressionCreator.OrderBy(sourceExpression, keySelector);
 
             return orderByExpression;
         }
 
+
+        public static Expression CreateOrderByDescendingExpression(Expression sourceExpression, LambdaExpression keySelector)
+        {
+            return ExpressionCreator.OrderByDescending(sourceExpression, keySelector);
+        }
+
+
+        public static Expression ThenByExpression(Expression sourceExpression, LambdaExpression keySelector)
+        {
+            return ExpressionCreator.ThenBy(sourceExpression, keySelector);
+        }
+
+
+        public static Expression ThenByDescendingExpression(Expression sourceExpression, LambdaExpression keySelector)
+        {
+            return ExpressionCreator.ThenByDescending(sourceExpression, keySelector);
+        }
 
 
         public static Expression CreateJoinExpression(Expression outerSource, Expression innerSource, LambdaExpression outerKeySelector, LambdaExpression innerKeySelector, LambdaExpression resultSelector)

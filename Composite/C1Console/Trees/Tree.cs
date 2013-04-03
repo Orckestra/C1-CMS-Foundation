@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
 using Composite.Core;
+using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Trees
@@ -104,6 +106,11 @@ namespace Composite.C1Console.Trees
             this.AttachmentPoints = this.AttachmentPoints.Where(f => f.GetType() != typeof(T)).ToList();
         }
 
+
+        internal void AddValidationError(XObject @object, string stringName, params object[] args)
+        {
+            AddValidationError(@object.GetXPath(), stringName, args);
+        }
 
 
         internal void AddValidationError(string xPath, string stringName, params object[] args)

@@ -76,64 +76,64 @@ namespace Composite.Core.Linq
 
 
         /// <exclude />
-        public static Expression OrderBy(Expression source, LambdaExpression predicate)
+        public static Expression OrderBy(Expression source, LambdaExpression keySelector)
         {
             Type type = TypeHelpers.FindElementType(source);
 
             return Expression.Call(
                     typeof(Queryable),
                     "OrderBy",
-                    new Type[] { type, predicate.Body.Type },
+                    new Type[] { type, keySelector.Body.Type },
                     source,
-                    predicate
+                    keySelector
                 );
         }
 
 
 
         /// <exclude />
-        public static Expression OrderByDescending(Expression source, LambdaExpression predicate)
+        public static Expression OrderByDescending(Expression source, LambdaExpression keySelector)
         {
             Type type = TypeHelpers.FindElementType(source);            
 
             return Expression.Call(
                     typeof(Queryable),
                     "OrderByDescending",
-                    new Type[] { type, predicate.Body.Type },
+                    new Type[] { type, keySelector.Body.Type },
                     source,
-                    predicate
+                    keySelector
                 );
         }
 
 
 
         /// <exclude />
-        public static Expression ThenBy(Expression source, LambdaExpression predicate)
+        public static Expression ThenBy(Expression source, LambdaExpression keySelector)
         {
             Type type = TypeHelpers.FindElementType(source);
 
             return Expression.Call(
                     typeof(Queryable),
                     "ThenBy",
-                    new Type[] { type, predicate.Body.Type },
+                    new Type[] { type, keySelector.Body.Type },
                     source,
-                    predicate
+                    keySelector
                 );
         }
 
 
 
         /// <exclude />
-        public static Expression ThenByDescending(Expression source, LambdaExpression predicate)
+        public static Expression ThenByDescending(Expression source, LambdaExpression keySelector)
         {
             Type type = TypeHelpers.FindElementType(source);
 
             return Expression.Call(
                     typeof(Queryable),
                     "ThenByDescending",
-                    new Type[] { type, predicate.Body.Type },
+                    new Type[] { type, keySelector.Body.Type },
                     source,
-                    predicate
+                    keySelector
                 );
         }
 
@@ -160,12 +160,14 @@ namespace Composite.Core.Linq
             Type innerKeySelectorFullType = typeof(Func<,>).MakeGenericType(innerType, keyType);
             Type resultSelectorFullType = typeof(Func<,,>).MakeGenericType(outerType, innerType, resultType);
 
+#if DEBUG
+
             var b1 = outerFullType.IsAssignableFrom(outerSource.Type);
             var b2 = innerFullType.IsAssignableFrom(innerSource.Type);
             var b3 = outerKeySelector.Type == outerKeySelectorFullType;
             var b4 = innerKeySelector.Type == innerKeySelectorFullType;
             var b5 = resultSelector.Type == resultSelectorFullType;
-
+#endif
 
             return Expression.Call(
                     typeof(Queryable),

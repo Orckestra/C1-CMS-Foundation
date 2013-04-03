@@ -45,7 +45,7 @@ namespace Composite.C1Console.Trees.Foundation
                 return BuildDataFolderElementsTreeNode(element, tree);
             }
             
-            tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnknownElement", element.Name);
+            tree.AddValidationError(element, "TreeValidationError.Common.UnknownElement", element.Name);
             return null;
         }
 
@@ -60,11 +60,12 @@ namespace Composite.C1Console.Trees.Foundation
             XAttribute firstLetterOnlyAttribute = element.Attribute("FirstLetterOnly");
             XAttribute showForeignItemsAttribute = element.Attribute("ShowForeignItems");
             XAttribute leafDisplayAttribute = element.Attribute("Display");
+            XAttribute sortDirectionAttribute = element.Attribute("SortDirection");
 
 
             if (fieldGroupingNameAttribute == null)
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "FieldGroupingName");
+                tree.AddValidationError(element, "TreeValidationError.Common.MissingAttribute", "FieldGroupingName");
                 return null;
             }
 
@@ -74,8 +75,7 @@ namespace Composite.C1Console.Trees.Foundation
                 interfaceType = TypeManager.TryGetType(typeAttribute.Value);
                 if (interfaceType == null)
                 {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType",
-                                            typeAttribute.Value);
+                    tree.AddValidationError(element, "TreeValidationError.Common.UnkownInterfaceType", typeAttribute.Value);
                     return null;
                 }
             }
@@ -85,12 +85,12 @@ namespace Composite.C1Console.Trees.Foundation
             {
                 if (firstLetterOnlyAttribute.TryGetBoolValue(out firstLetterOnly) == false)
                 {
-                    tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.WrongAttributeValue",
-                                            "FirstLetterOnly");
+                    tree.AddValidationError(element, "TreeValidationError.Common.WrongAttributeValue", "FirstLetterOnly");
                 }
             }
 
             LeafDisplayMode leafDisplay = LeafDisplayModeHelper.ParseDisplayMode(leafDisplayAttribute, tree);
+            SortDirection sortDirection = ParseSortDirection(sortDirectionAttribute, tree);
 
             return new DataFolderElementsTreeNode
                 {
@@ -103,8 +103,26 @@ namespace Composite.C1Console.Trees.Foundation
                     Range = rangeAttribute.GetValueOrDefault(null),
                     FirstLetterOnly = firstLetterOnly,
                     ShowForeignItems = showForeignItemsAttribute.GetValueOrDefault("true").ToLowerInvariant() == "true",
-                    Display = leafDisplay
+                    Display = leafDisplay,
+                    SortDirection = sortDirection
                 };
+        }
+
+        public static SortDirection ParseSortDirection(XAttribute attribute, Tree tree)
+        {
+            if (attribute != null)
+            {
+                SortDirection parsedValue;
+
+                if (Enum.TryParse(attribute.Value, out parsedValue))
+                {
+                    return parsedValue;
+                }
+
+                tree.AddValidationError(attribute, "TreeValidationError.Common.WrongAttributeValue", attribute.Value);
+            }
+
+            return SortDirection.Ascending;
         }
 
         private static TreeNode BuildDataElementsTreeNode(XElement element, Tree tree)
@@ -119,14 +137,14 @@ namespace Composite.C1Console.Trees.Foundation
 
             if (typeAttribute == null)
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Type");
+                tree.AddValidationError(element, "TreeValidationError.Common.MissingAttribute", "Type");
                 return null;
             }
 
             Type interfaceType = TypeManager.TryGetType(typeAttribute.Value);
             if (interfaceType == null)
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.UnkownInterfaceType",
+                tree.AddValidationError(element, "TreeValidationError.Common.UnkownInterfaceType",
                                         typeAttribute.Value);
                 return null;
             }
@@ -189,7 +207,7 @@ namespace Composite.C1Console.Trees.Foundation
 
             if (labelAttribute == null)
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Label");
+                tree.AddValidationError(element, "TreeValidationError.Common.MissingAttribute", "Label");
                 return null;
             }
 
@@ -214,17 +232,17 @@ namespace Composite.C1Console.Trees.Foundation
 
             if (idAttribute == null)
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Id");
+                tree.AddValidationError(element, "TreeValidationError.Common.MissingAttribute", "Id");
                 return null;
             }
 
             if ((idAttribute.Value == "") || (idAttribute.Value == "RootTreeNode") || (idAttribute.Value.StartsWith("NodeAutoId_")))
             {
-                tree.AddValidationError(idAttribute.GetXPath(), "TreeValidationError.SimpleElement.WrongIdValue");
+                tree.AddValidationError(idAttribute, "TreeValidationError.SimpleElement.WrongIdValue");
             }
             else if (tree.BuildProcessContext.AlreadyUsed(idAttribute.Value))
             {
-                tree.AddValidationError(idAttribute.GetXPath(), "TreeValidationError.SimpleElement.AlreadyUsedId", idAttribute.Value);
+                tree.AddValidationError(idAttribute, "TreeValidationError.SimpleElement.AlreadyUsedId", idAttribute.Value);
             }
             else
             {
@@ -234,7 +252,7 @@ namespace Composite.C1Console.Trees.Foundation
 
             if (labelAttribute == null)
             {
-                tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Label");
+                tree.AddValidationError(element, "TreeValidationError.Common.MissingAttribute", "Label");
                 return null;
             }
 
@@ -269,7 +287,7 @@ namespace Composite.C1Console.Trees.Foundation
                     int count = tree.AttachmentPoints.OfType<NamedAttachmentPoint>().Count();
                     if (count != 1 || tree.AttachmentPoints.Count > count)
                     {
-                        tree.AddValidationError(shareRootElementByIdAttribute.GetXPath(), "TreeValidationError.ElementRoot.ShareRootElementByIdNotAllowed");
+                        tree.AddValidationError(shareRootElementByIdAttribute, "TreeValidationError.ElementRoot.ShareRootElementByIdNotAllowed");
                     }
                 }
             }

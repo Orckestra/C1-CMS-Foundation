@@ -154,6 +154,7 @@
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\PageTemplates\ISharedCodePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
