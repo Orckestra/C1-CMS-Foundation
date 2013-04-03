@@ -181,9 +181,9 @@ DataInputBinding.prototype.onBindingDispose = function () {
 	
 	DataInputBinding.superclass.onBindingDispose.call ( this );
 	
-	if ( Client.isExplorer && this.isFocused ) {
-		this.unsubscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN, this );
-	}
+	//if ( Client.isExplorer && this.isFocused ) {
+	//	this.unsubscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN, this );
+	//}
 	if ( this._dirtyinterval ) {
 		window.clearInterval ( this._dirtyinterval );
 	}
@@ -433,20 +433,20 @@ DataInputBinding.prototype._handleFocusAndBlur = function ( isFocus ) {
 	if ( isFocus ) {
 		this.focus ( true );
 		this.bindingWindow.standardEventHandler.enableNativeKeys ();
-		if ( Client.isExplorer == true ) {
-			var self = this;
-			setTimeout ( function () {
-				if ( Binding.exists ( self ) == true ) {
-					self.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN );
-				}
-			}, 0 );
-		}
+		//if ( Client.isExplorer == true ) {
+		//	var self = this;
+		//	setTimeout ( function () {
+		//		if ( Binding.exists ( self ) == true ) {
+		//			self.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN );
+		//		}
+		//	}, 0 );
+		//}
 	} else {
 		this.blur ( true );
 		this.bindingWindow.standardEventHandler.disableNativeKeys ();
-		if ( Client.isExplorer == true ) {
-			this.unsubscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN );
-		}
+		//if ( Client.isExplorer == true ) {
+		//	this.unsubscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN );
+		//}
 	}
 }
 
@@ -461,45 +461,45 @@ DataInputBinding.prototype._handleEnterKey = function ( e ) {
 	EventBroadcaster.broadcast ( BroadcastMessages.KEY_ENTER );
 }
 
-/**
- * Due to some cataclysmic malfunction in Explorer, the input element may still    
- * be registered as document.activeElement when the help popup is opened - even   
- * though the focus is obviously lost! This setup will force it to blur. Don't 
- * enable this in Mozilla - it will cause stuff to loose focus spontaniously.
- * @implements {IBroadcastListener}
- * @param {string} broadcast
- * @param {object} arg
- */
-DataInputBinding.prototype.handleBroadcast = function ( broadcast, arg ) { 
+///**
+// * Due to some cataclysmic malfunction in Explorer, the input element may still    
+// * be registered as document.activeElement when the help popup is opened - even   
+// * though the focus is obviously lost! This setup will force it to blur. Don't 
+// * enable this in Mozilla - it will cause stuff to loose focus spontaniously.
+// * @implements {IBroadcastListener}
+// * @param {string} broadcast
+// * @param {object} arg
+// */
+//DataInputBinding.prototype.handleBroadcast = function ( broadcast, arg ) { 
 	
-	DataInputBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
+//	DataInputBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
 	
-	var self = this;
+//	var self = this;
 	
-	switch ( broadcast ) {
+//	switch ( broadcast ) {
 		
-		/*
-		 * The timeout allows another databinding to claim the focus first.
-		 * Remember that the arg can be a Binding (untill we rafactor), so 
-		 * it actually doesn't make sanse that this operation doesn't fail.
-		 */
-		case BroadcastMessages.MOUSEEVENT_MOUSEDOWN :
+//		/*
+//		 * The timeout allows another databinding to claim the focus first.
+//		 * Remember that the arg can be a Binding (untill we rafactor), so 
+//		 * it actually doesn't make sanse that this operation doesn't fail.
+//		 */
+//		case BroadcastMessages.MOUSEEVENT_MOUSEDOWN :
 			
-			if ( Client.isExplorer == true ) {
-				var target = DOMEvents.getTarget ( arg );
-				if ( target != this.shadowTree.input ) {
-					setTimeout ( function () {
-						if ( Binding.exists ( self ) == true ) {  // what devilship could require this?
-							if ( self.isFocused == true ) {
-								self.blur ();
-							}
-						}
-					}, 100 );
-				}
-			}
-			break;
-	}
-}
+//			if ( Client.isExplorer == true ) {
+//				var target = DOMEvents.getTarget ( arg );
+//				if ( target != this.shadowTree.input ) {
+//					setTimeout ( function () {
+//						if ( Binding.exists ( self ) == true ) {  // what devilship could require this?
+//							if ( self.isFocused == true ) {
+//								self.blur ();
+//							}
+//						}
+//					}, 100 );
+//				}
+//			}
+//			break;
+//	}
+//}
 
 /**
  * Focus.
