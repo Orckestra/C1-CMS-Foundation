@@ -32,7 +32,17 @@
 		color: white;
 		position: relative;
 		top: 1px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+
 	}
+
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle,
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labelbody,
+	ui|dialog ui|titlebar ui|labelbox.dialogtitle ui|labeltext {
+		float: none;
+	}
+
 #endregion
 
 #region osx
