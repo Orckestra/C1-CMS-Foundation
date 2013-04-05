@@ -167,11 +167,27 @@ _UpdateAssistant.prototype = {
 			if (handler != null) {
 				function action() {
 					if (request.readyState == 4) {
-						var text = request.responseText;
-						UpdateManager.pendingResponse = text;
-						var dom = UpdateAssistant.parse(text);
-						if (dom != null) {
-							handler.handleResponse(dom);
+						var errorType = request.getResponseHeader("X-Error-Type");
+						// Handle error
+						if (errorType) {
+							var message = "";
+							for (var i = 0; i < 10; i++)
+							{
+								var indexStr = i ? i : "";
+								var errorType = request.getResponseHeader("X-Error-Type" + indexStr);
+								if (!errorType)
+									break;
+								var errorMessage = request.getResponseHeader("X-Error-Message" + indexStr);
+								message += errorType + "\n" + errorMessage + "\n";
+							}
+							Dialog.error("Error", message);
+						} else {
+							var text = request.responseText;
+							UpdateManager.pendingResponse = text;
+							var dom = UpdateAssistant.parse(text);
+							if (dom != null) {
+								handler.handleResponse(dom);
+							}
 						}
 					}
 				}

@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <%@ Page Language="C#" ValidateRequest="false" %>
+<script runat="server">
+	protected void Page_Load(object sender, EventArgs e)
+	{
+		// Header for handling redirect error page by javascript
+		for (int i = 0; i < 10; i++)
+		{
+			string indexStr = i == 0 ? string.Empty : i.ToString();
+			string type = Request.QueryString["type" + indexStr];
+			if (string.IsNullOrEmpty(type)) break;
+			string msg = Request.QueryString["msg" + indexStr];
+			Response.AddHeader("X-Error-Type" + indexStr, type);
+			Response.AddHeader("X-Error-Message" + indexStr, msg);
+		}
+	}
+</script>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
 	<control:httpheaders runat="server" />
 	<head runat="server">
