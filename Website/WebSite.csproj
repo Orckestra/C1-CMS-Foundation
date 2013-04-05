@@ -462,6 +462,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\images\warningbox.png" />
     <Content Include="Composite\localization\Composite.Plugins.PageTemplateFeatureElementProvider.en-us.xml" />
+    <Content Include="Composite\skins\system\toolbars\osx\backdrop.png" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.cs.txt" />
     <Content Include="Composite\templates\PageTemplates\MasterPage.txt" />

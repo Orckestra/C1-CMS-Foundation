@@ -24,9 +24,8 @@ ui|toolbar#toolbar {
 		border-bottom-color: $(color:threedshadow) !important;
 	#endregion
 	#region osx
-		background-color: $(color:toolbar);
-		border-top-color: $(color:threedface) !important;
-		border-bottom-color: $(color:threedshadow) !important;
+		background-image: url("${root}/skins/system/toolbars/osx/backdrop.png");
+		background-position: left center;
 	#endregion
 }
 ui|toolbar#statusbar {
