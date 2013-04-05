@@ -517,21 +517,6 @@ CodeMirrorEditorBinding.prototype.getContent = function () {
 
 	var result = this.getContentWindow().bindingMap.editorpage.getContent();
 
-	if (result != null) {
-		switch (this.syntax) {
-			case CodeMirrorEditorBinding.syntax.XML:
-			case CodeMirrorEditorBinding.syntax.XSL:
-			case CodeMirrorEditorBinding.syntax.HTML:
-				result = result
-					.replace("&nbsp;", "&#160;")
-					.replace("&copy;", "&#169;")
-					.replace("<!doctype", "<!DOCTYPE")
-					;
-
-				break;
-		}
-	}
-
 	return result ? result : "";
 }
 
@@ -612,6 +597,15 @@ CodeMirrorEditorBinding.prototype.validate = function () {
 			case CodeMirrorEditorBinding.syntax.XSL:
 			case CodeMirrorEditorBinding.syntax.HTML:
 
+				newSource = source
+					.replace("&nbsp;", "&#160;")
+					.replace("&copy;", "&#169;")
+					.replace("<!doctype", "<!DOCTYPE");
+				if (newSource != source)
+				{
+					source = newSource;
+					this.setContent(newSource);
+				}
 
 				result = XMLParser.isWellFormedDocument(source, true);
 
