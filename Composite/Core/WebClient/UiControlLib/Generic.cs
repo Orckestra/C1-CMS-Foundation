@@ -143,7 +143,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
                 if(methodInfo == null)
                 {
-                    Core.Logging.LoggingService.LogError(typeof(Generic).FullName, "Failed to find method '{0}'".FormatWith(methodName));
+                    Log.LogError(typeof(Generic).FullName, "Failed to find method '{0}'", methodName);
                     return;
                 }
 
@@ -158,8 +158,8 @@ namespace Composite.Core.WebClient.UiControlLib
                 {
                     control = control.Parent;
                 } while (control != null 
-                    && !typeof (UserControl).IsAssignableFrom(control.GetType())
-                    && !typeof (Page).IsAssignableFrom(control.GetType()));
+                    && !(control is UserControl)
+                    && !(control is Page));
 
                 return control;
             }

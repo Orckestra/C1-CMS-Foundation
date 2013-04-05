@@ -84,30 +84,6 @@ namespace Composite.C1Console.Workflow.Activities
         }
 
 
-
-        /// <exclude />
-        protected override void OnClosed(IServiceProvider provider)
-        {
-            // Ensure that "CloseCurrentView" has been called when we close (when available)
-            // If this WF is canceled FlowControllerServicesContainer is not available
-            FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            if (flowControllerServicesContainer != null)
-            {
-                IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-
-                if (managementConsoleMessageService != null
-                    && managementConsoleMessageService.HasView == true
-                    && managementConsoleMessageService.CloseCurrentViewRequested == false)
-                {
-                    managementConsoleMessageService.CloseCurrentView();
-                }
-            }
-
-            base.OnClosed(provider);
-        }
-
-
-
         /// <exclude />
         protected override void Uninitialize(IServiceProvider provider)
         {
