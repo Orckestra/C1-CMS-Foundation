@@ -78,19 +78,26 @@ SOAPEncoder.prototype._resolve = function ( element, definition, value ) {
 					this._resolve ( elm, def, val );
 				}
 			} else {
-				while ( defs.hasNext ()) {
-					try {
-						var def = defs.getNext ();
-						var elm = this._appendElement ( element, def.name );
-						var val = value [ def.name ];						
-						this._resolve ( elm, def, val );
-					} catch ( exception ) {
-						
-						// This can happen when opening dataitems in particular.
-						// Apparently, we recieve no OpenIcon but attempt to send it back...
-						this.logger.error ( "Mysterius malfunction in " + this._operation + ":\n\n" + def.name + ": " + value )
-					}
-				}
+
+			    if (typeof value === "undefined") {
+			        this.logger.error("SOAPEncoder: value is undefined");
+			    } else {
+			        while (defs.hasNext()) {
+
+			            try {
+			                var def = defs.getNext();
+			                var elm = this._appendElement(element, def.name);
+
+			                var val = value[def.name];
+			                this._resolve(elm, def, val);
+			            } catch(exception) {
+
+			                // This can happen when opening dataitems in particular.
+			                // Apparently, we recieve no OpenIcon but attempt to send it back...
+			                this.logger.error("Mysterius malfunction in " + this._operation + ":\n\n" + def.name + ": " + value);
+			            }
+			        }
+			    }
 			}
 		}
 	}
