@@ -109,40 +109,40 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken seachToken)
         {
-            if ((entityToken is PackageElementProviderRootEntityToken) == true)
+            if ((entityToken is PackageElementProviderRootEntityToken))
             {
                 return GetRootChildren(seachToken);
             }
-            else if ((entityToken is PackageElementProviderAvailablePackagesFolderEntityToken) == true)
+            if ((entityToken is PackageElementProviderAvailablePackagesFolderEntityToken))
             {
                 return GetAvailablePackagesFolderChildren(seachToken);
             }
-            else if ((entityToken is PackageElementProviderAvailablePackagesGroupFolderEntityToken) == true)
+            if ((entityToken is PackageElementProviderAvailablePackagesGroupFolderEntityToken))
             {
-                PackageElementProviderAvailablePackagesGroupFolderEntityToken castedToken = entityToken as PackageElementProviderAvailablePackagesGroupFolderEntityToken;
+                var castedToken = entityToken as PackageElementProviderAvailablePackagesGroupFolderEntityToken;
 
                 return GetAvailablePackageGroupFolderChildren(castedToken.GroupName, seachToken);
             }
-            else if ((entityToken is PackageElementProviderInstalledPackageFolderEntityToken) == true)
+            if ((entityToken is PackageElementProviderInstalledPackageFolderEntityToken))
             {
                 return GetInstalledPackageFolderChildren(seachToken);
             }
-            else if ((entityToken is PackageElementProviderPackageSourcesFolderEntityToken) == true)
+            if ((entityToken is PackageElementProviderPackageSourcesFolderEntityToken))
             {
                 return GetPackageSourcesFolderChildren(seachToken);
             }
-            else if ((entityToken is PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken) == true)
+            if ((entityToken is PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken))
             {
                 return GetInstalledLocalPackagesFolderChildren(seachToken);
             }
-            else if ((entityToken is PackageElementProviderInstalledPackageGroupFolderEntityToken) == true)
+            if ((entityToken is PackageElementProviderInstalledPackageGroupFolderEntityToken))
             {
-                PackageElementProviderInstalledPackageGroupFolderEntityToken castedToken = entityToken as PackageElementProviderInstalledPackageGroupFolderEntityToken;
+                var castedToken = entityToken as PackageElementProviderInstalledPackageGroupFolderEntityToken;
 
                 return GetInstalledPackageGroupFolderChildren(castedToken.GroupName, seachToken);
             }
 
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Unexpected entity token type: " + entityToken.GetType());
         }
 
 

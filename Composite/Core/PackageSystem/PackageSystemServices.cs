@@ -25,8 +25,7 @@ namespace Composite.Core.PackageSystem
 
             IEnumerable<PackageDescription> descriptions =
                  from description in PackageServerFacade.GetAllPackageDescriptions(InstallationInformationFacade.InstallationId, UserSettings.CultureInfo)
-                 where installedPackageInformation.Where(f => f.Id == description.Id).FirstOrDefault() == null ||
-                       new Version(installedPackageInformation.Where(f => f.Id == description.Id).First().Version) < new Version(description.PackageVersion)
+                 where installedPackageInformation.All(f => f.Id != description.Id)
                  select description;
 
             Dictionary<Guid, List<PackageDescription>> packageDescriptions = new Dictionary<Guid,List<PackageDescription>>();
@@ -36,7 +35,7 @@ namespace Composite.Core.PackageSystem
                     (new Version(packageDescription.MaxCompositeVersionSupported) >= RuntimeInformation.ProductVersion))
                 {
                     List<PackageDescription> decs;
-                    if (packageDescriptions.TryGetValue(packageDescription.Id, out decs) == false)
+                    if (!packageDescriptions.TryGetValue(packageDescription.Id, out decs))
                     {
                         decs = new List<PackageDescription>();
                         packageDescriptions.Add(packageDescription.Id, decs);
