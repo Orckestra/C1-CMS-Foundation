@@ -6,6 +6,7 @@
   <string key="FunctionLocalNameHelp" value="If you include a function multiple times this field can help you distinguish the individual results by their local name. " />
   <string key="ParameterValueLabel" value="Parameter Value" />
   <string key="AddNewFunctionDialogLabel" value="Select Function" />
+  <string key="SetNewFunctionDialogLabel" value="Select Function" />
   <string key="ComplexFunctionCallDialogLabel" value="Value for parameter '{0}'" />
   <string key="ParameterTypeLabel" value="Parameter Type" />
   <string key="ParameterNameLabel" value="Parameter Name" />
@@ -20,6 +21,7 @@
   <string key="ParameterTypeFunctionLabel" value="Function" />
   <string key="AddNewButtonLabel" value="Add New" />
   <string key="DeleteButtonLabel" value="Delete" />
+  <string key="SetNewButtonLabel" value="Set New" />
   <string key="ToolBar.LabelSource" value="Source" />
   <string key="ToolBar.LabelDesign" value="Design" />
 </strings>

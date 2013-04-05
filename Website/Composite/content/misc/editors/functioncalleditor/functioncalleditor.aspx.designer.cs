@@ -30,6 +30,15 @@ public partial class functioneditor {
     protected global::Composite.Core.WebClient.UiControlLib.Feedback ctlFeedback;
     
     /// <summary>
+    /// btnSetNewFunction control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::Composite.Core.WebClient.UiControlLib.Generic btnSetNewFunction;
+    
+    /// <summary>
     /// btnAddFunction control.
     /// </summary>
     /// <remarks>

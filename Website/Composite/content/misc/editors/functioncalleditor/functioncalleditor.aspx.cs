@@ -52,6 +52,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     // Localization
     protected string ReturnTypeLabel { get { return GetString("ReturnTypeLabel"); } }
     protected string AddNewFunctionDialogLabel { get { return GetString("AddNewFunctionDialogLabel"); } }
+    protected string SetNewFunctionDialogLabel { get { return GetString("SetNewFunctionDialogLabel"); } }
     protected string SelectFunctionDialogLabel { get { return GetString("ComplexFunctionCallDialogLabel"); } }
     protected string FunctionLocalNameGroupLabel { get { return GetString("FunctionLocalNameGroupLabel"); } }
     protected string FunctionLocalNameLabel { get { return GetString("FunctionLocalNameLabel"); } }
@@ -278,6 +279,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
             switch (eventTarget)
             {
+                case "btnSetNewFunction": BtnSetNewFunctionCallClicked();
+                    break;
                 case "btnAddFunction": BtnAddFunctionCallClicked();
                     break;
                 case "btnDeleteFunction": BtnDeleteFunctionClicked();
@@ -414,7 +417,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
                 string parameterName = parentNode.Attribute("name").Value;
 
                 IMetaFunction parentFunctionCall = TreeHelper.GetFunction(functionCall.Parent.Parent);
-                ParameterProfile parameterProfile = parentFunctionCall.ParameterProfiles.Where(pr => pr.Name == parameterName).FirstOrDefault();
+                ParameterProfile parameterProfile = parentFunctionCall.ParameterProfiles.FirstOrDefault(pr => pr.Name == parameterName);
 
                 Verify.IsNotNull(parameterProfile, "Failed to get profile for parameter '{1}' on '{0}' function.".FormatWith(parentFunctionCall.Name, parameterName));
 
@@ -609,7 +612,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     {
         //Select first parameter if not selected
         //TODO: refactor this
-        if (Request.UserAgent.IndexOf("MSIE ") == -1) // skip IE
+        if (Request.UserAgent.IndexOf("MSIE ", System.StringComparison.Ordinal) == -1) // skip IE
         {
             if (SelectedNode.IsNullOrEmpty() && TreePathToIdMapping.Count > 1)
             {
@@ -628,12 +631,21 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             UpdateEditingPanel(updatedTreeView, SelectedNode);
         }
 
-        Type[] allowedTypes = _state.AllowedResultTypes;
-        btnAddFunction.Attributes.Add("providersearch", AllFunctionsElementProviderSearchToken.Build(allowedTypes).Serialize());
-        btnAddFunction.Attributes.Add("selectwidget", _state.WidgetFunctionSelection ? "true" : "false");
-        btnAddFunction.Attributes["isdisabled"] = (_state.MaxFunctionAllowed > FunctionMarkup.Root.Elements().Count()) ? "false" : "true";
+        btnSetNewFunction.Attributes.Add("dialoglabel", SetNewFunctionDialogLabel);
         btnAddFunction.Attributes.Add("dialoglabel", AddNewFunctionDialogLabel);
+        btnAddFunction.Attributes["isdisabled"] = (_state.MaxFunctionAllowed > FunctionMarkup.Root.Elements().Count()) ? "false" : "true";
 
+
+        bool singleFunctionSelection = _state.MaxFunctionAllowed == 1;
+        btnSetNewFunction.Visible = singleFunctionSelection;
+        btnAddFunction.Visible = !singleFunctionSelection;
+
+        var visibleButton = singleFunctionSelection ? btnSetNewFunction : btnAddFunction;
+
+        Type[] allowedTypes = _state.AllowedResultTypes;
+
+        visibleButton.Attributes.Add("providersearch", AllFunctionsElementProviderSearchToken.Build(allowedTypes).Serialize());
+        visibleButton.Attributes.Add("selectwidget", _state.WidgetFunctionSelection ? "true" : "false");
 
         // Updating "source xml" field
         functionMarkup = Clone(FunctionMarkup);
@@ -719,7 +731,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         XElement functionNode = parameterNode.Parent;
         IMetaFunction function = TreeHelper.GetFunction(functionNode);
 
-        ParameterProfile parameterProfile = function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+        ParameterProfile parameterProfile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
 
         // Creating a widget instance
         object defaultParameterValue = GetDefaultValue(parameterProfile);
@@ -772,12 +784,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     {
         string nodePath = SelectedNode;
 
-        int parameterOffset = nodePath.LastIndexOf("@");
+        int parameterOffset = nodePath.LastIndexOf("@", System.StringComparison.Ordinal);
         string functionPath = nodePath.Substring(0, parameterOffset - 1);
         string parameterName = nodePath.Substring(parameterOffset + 1);
 
         XElement functionNode = TreeHelper.FindByPath(FunctionMarkup.Root, functionPath);
-        XElement parameterNode = functionNode.Elements(ParameterNodeXName).Where(element => element.Attribute("name").Value == parameterName).FirstOrDefault();
+        XElement parameterNode = functionNode.Elements(ParameterNodeXName).FirstOrDefault(element => element.Attribute("name").Value == parameterName);
 
         string nodeID = TreePathToIdMapping[nodePath];
 
@@ -817,7 +829,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     private void BtnConstantClicked(XElement functionNode, XElement parameterNode, string parameterName)
     {
         IMetaFunction function = TreeHelper.GetFunction(functionNode);
-        ParameterProfile parameterProfile = function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+        ParameterProfile parameterProfile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
         Verify.IsNotNull(parameterProfile, "Failed to get parameter profile");
 
         if (parameterNode != null)
@@ -833,33 +845,70 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         SaveChanges();
     }
 
+    private void BtnSetNewFunctionCallClicked()
+    {
+        string selectedFunctionName = this.Request.Form["btnSetNewFunction"];
+
+        FunctionMarkup.Root.RemoveAll();
+
+        IMetaFunction metaFunction;
+        AddFunctionCall(selectedFunctionName, out metaFunction);
+
+        // If function has no parameters, focusing on it, otherwise client will automatically focus on the first parameter
+        if (!metaFunction.ParameterProfiles.Any())
+        {
+            FocusTreeNode(FunctionMarkup.Root.Elements().Last());
+        }
+        else
+        {
+            SelectedNode = null;
+        }
+
+        SaveChanges();
+    }
+
     private void BtnAddFunctionCallClicked()
     {
         string selectedFunctionName = this.Request.Form["btnAddFunction"];
 
+        IMetaFunction metaFunction;
+        AddFunctionCall(selectedFunctionName, out metaFunction);
+
+        SaveChanges();
+    }
+
+    private void AddFunctionCall(string functionName, out IMetaFunction metaFunction)
+    {
         BaseFunctionRuntimeTreeNode functionRuntime;
+
         if (_state.WidgetFunctionSelection)
         {
-            functionRuntime = new WidgetFunctionRuntimeTreeNode(FunctionFacade.GetWidgetFunction(selectedFunctionName));
+            IWidgetFunction widgetFunction = FunctionFacade.GetWidgetFunction(functionName);
+            functionRuntime = new WidgetFunctionRuntimeTreeNode(widgetFunction);
+
+            metaFunction = widgetFunction;
         }
         else
         {
-            functionRuntime = new FunctionRuntimeTreeNode(FunctionFacade.GetFunction(selectedFunctionName));
+            IFunction functionInfo = FunctionFacade.GetFunction(functionName);
+            functionRuntime = new FunctionRuntimeTreeNode(functionInfo);
+
+            metaFunction = functionInfo;
         }
 
         XElement function = functionRuntime.Serialize();
 
         if (!_state.WidgetFunctionSelection && _state.AllowLocalFunctionNameEditing)
         {
-            string localName = selectedFunctionName;
-            int pointOffset = localName.LastIndexOf(".");
+            string localName = functionName;
+            int pointOffset = localName.LastIndexOf(".", StringComparison.Ordinal);
             if (pointOffset > 0 && pointOffset < localName.Length - 1)
             {
                 localName = localName.Substring(pointOffset + 1);
             }
             string uniqueLocalName = localName;
             int retry = 1;
-            while (FunctionMarkup.Descendants().Attributes("localname").Where(a => a.Value == uniqueLocalName).Any())
+            while (FunctionMarkup.Descendants().Attributes("localname").Any(a => a.Value == uniqueLocalName))
             {
                 uniqueLocalName = string.Format("{0}{1}", localName, ++retry);
             }
@@ -870,8 +919,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         function.Add(new XAttribute("handle", Guid.NewGuid()));
 
         FunctionMarkup.Root.Add(function);
-
-        SaveChanges();
     }
 
     private void BtnInputParameterClicked(XElement functionNode, XElement parameterNode, string parameterName)
@@ -887,7 +934,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
 
         IMetaFunction function = TreeHelper.GetFunction(functionNode);
-        ParameterProfile parameterProfile = function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+        ParameterProfile parameterProfile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
         var selectedParameter = _state.Parameters.First(ip => InputParameterCanBeAssigned(parameterProfile.Type, ip.Type));
         string selectedParameterName = selectedParameter != null ? selectedParameter.Name : string.Empty;
 
@@ -980,8 +1027,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         IMetaFunction function = TreeHelper.GetFunction(functionNode);
 
-        ParameterProfile parameterProfile =
-            function.ParameterProfiles.Where(p => p.Name == parameterName).FirstOrDefault();
+        ParameterProfile parameterProfile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
 
         // Configuring function selection dialog
         var searchToken = new AllFunctionsElementProviderSearchToken

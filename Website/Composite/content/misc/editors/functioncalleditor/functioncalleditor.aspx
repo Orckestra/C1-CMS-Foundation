@@ -36,6 +36,17 @@
 							<ui:toolbarbody>
 								<ui:toolbargroup id="toolbargroup">
 								
+                                    <aspui:Generic runat="server" 
+			                        	binding="ToolBarButtonDataBindingAddNew"
+			                            TagName="ui:toolbarbutton" 
+			                            id="btnSetNewFunction"
+			                            callbackid="btnSetNewFunction" 
+			                            label="${string:Composite.Web.FormControl.FunctionCallsDesigner:SetNewButtonLabel}" 
+			                            image="${icon:functioncall}" 
+			                            image-disabled="${icon:functioncall}" 
+			                            disabled="false" 
+			                            value="(not-empty!)"/>
+
 			                        <aspui:Generic runat="server" 
 			                        	binding="ToolBarButtonDataBindingAddNew"
 			                            TagName="ui:toolbarbutton" 
@@ -57,12 +68,12 @@
 			                            disabled="false"/>
 			                            
 								</ui:toolbargroup>
-								<ui:toolbargroup rel="developermode">
+								<%--<ui:toolbargroup rel="developermode">
 									<ui:toolbarbutton 
 										image="${icon:systemlog}" 
 										label="DEBUG" tootltip="Dump innerHTML to the System Log..." 
 										oncommand="this.logger.debug(document.body.innerHTML)" />
-								</ui:toolbargroup>
+								</ui:toolbargroup>--%>
 							</ui:toolbarbody>
 							
 							<ui:toolbarbody align="right">
