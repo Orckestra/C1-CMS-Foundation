@@ -33,16 +33,16 @@ namespace Composite.Core.WebClient.FlowMediators
                 FlowToken flowToken = flowHandle.FlowToken;
                 IFlowUiDefinition flowUiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken, flowServicesContainer);
 
-                if (typeof(FormFlowUiDefinition).IsAssignableFrom(flowUiDefinition.GetType()))
+                var formFlowUiDefinition = flowUiDefinition as FormFlowUiDefinition;
+                if (formFlowUiDefinition != null)
                 {
-                    FormFlowUiDefinition formFlowUiDefinition = (FormFlowUiDefinition)flowUiDefinition;
                     uiContainerName = formFlowUiDefinition.UiContainerType.ContainerName;
 
                     IUiControl uiForm = FormFlowUiDefinitionRenderer.Render(consoleId, elementProviderName, flowToken, formFlowUiDefinition, WebManagementChannel.Identifier, false, flowServicesContainer);
                     IWebUiControl webForm = (IWebUiControl)uiForm;
                     webControl = webForm.BuildWebControl();
 
-                    if (string.IsNullOrEmpty(webControl.ID) == true) webControl.ID = "FlowUI";
+                    if (string.IsNullOrEmpty(webControl.ID)) webControl.ID = "FlowUI";
                 }
 
                 return webControl;

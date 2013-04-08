@@ -49,7 +49,7 @@ namespace Composite.Data
                         GenericPublishProcessController.Draft, 
                         GenericPublishProcessController.AwaitingApproval,
                         GenericPublishProcessController.AwaitingPublication, 
-                        GenericPublishProcessController.Published, 
+                        GenericPublishProcessController.Published 
                     };
 
                     string allowedValues = string.Join(", ", allowedPublicationStatuses.Select(status => "'" + status + "'"));
@@ -91,7 +91,10 @@ namespace Composite.Data
             {
                 case GenericPublishProcessController.Draft:
                 case GenericPublishProcessController.AwaitingApproval:
-                    return DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Any();
+                    using (new DataScope(data.DataSourceId.LocaleScope))
+                    {
+                        return DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Any();
+                    }
 
                 case GenericPublishProcessController.AwaitingPublication:
                 case GenericPublishProcessController.Published:
@@ -120,8 +123,12 @@ namespace Composite.Data
                 return dataFromAdministratedScope;
             }
 
-            return (DataFacade.GetDataFromOtherScope(dataFromAdministratedScope as IData, DataScopeIdentifier.Public).FirstOrDefault() 
-                    ?? dataFromAdministratedScope) as T;
+            using (new DataScope(dataFromAdministratedScope.DataSourceId.LocaleScope))
+            {
+                return (DataFacade.GetDataFromOtherScope(dataFromAdministratedScope as IData, DataScopeIdentifier.Public)
+                                  .FirstOrDefault()
+                        ?? dataFromAdministratedScope) as T;
+            }
         }
 
         private static ResourceHandle GetIconHandle(string name)
