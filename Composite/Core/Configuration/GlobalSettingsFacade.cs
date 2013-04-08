@@ -412,6 +412,17 @@ namespace Composite.Core.Configuration
             }
         }
 
+        /// <summary>
+        /// When <value>true</value> only pages that are published or awaiting publication can be translated in console.
+        /// </summary>
+        public static bool OnlyTranslateWhenApproved
+        {
+            get
+            {
+                return _globalSettingsFacade.OnlyTranslateWhenApproved;
+            }
+        }
+
 
         /// <summary>
         /// The maximum number of characters the path to the application root (like 'C:\InetPub\MySite') can contain.
@@ -432,7 +443,7 @@ namespace Composite.Core.Configuration
         /// <exclude />
         public static CachingSettings GetNamedCaching(string name)
         {
-            ICacheSettings cacheSettings = Caching.Caches.Where(f => f.Name == name).FirstOrDefault();
+            ICacheSettings cacheSettings = Caching.Caches.FirstOrDefault(f => f.Name == name);
 
             bool enabled = Caching.Enabled;
             int size = CachingSettings.DefaultCacheSize;

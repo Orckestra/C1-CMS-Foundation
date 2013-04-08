@@ -36,6 +36,7 @@ namespace Composite.Core.Configuration
         string AutoCreatedAdministratorUserName { get; }
         TimeSpan WorkflowTimeout { get; }
         TimeSpan ConsoleTimeout { get; }
+        bool OnlyTranslateWhenApproved { get; }
         ICachingSettings Caching { get; }
     }
 }

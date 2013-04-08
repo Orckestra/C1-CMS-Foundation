@@ -8,6 +8,7 @@ using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementP
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Events;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
@@ -309,20 +310,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
             Dictionary<Guid, IPage> pages;
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 pages = GetChildrenPages(entityToken, searchToken).ToDictionary(f => f.Id);
             }
 
 
             Dictionary<Guid, IPage> foreignAdministratedPages;
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ForeignLocaleCultureInfo))
+            using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ForeignLocaleCultureInfo))
             {
                 foreignAdministratedPages = GetChildrenPages(entityToken, searchToken).ToDictionary(f => f.Id);
             }
 
             Dictionary<Guid, IPage> foreignPublicPages;
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public, UserSettings.ForeignLocaleCultureInfo))
+            using (new DataScope(DataScopeIdentifier.Public, UserSettings.ForeignLocaleCultureInfo))
             {
                 foreignPublicPages = GetChildrenPages(entityToken, searchToken).ToList().ToDictionary(f => f.Id);
             }
@@ -342,20 +343,22 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             foreach (Guid pageId in childPageIds)
             {
                 IPage page;
-                if (pages.TryGetValue(pageId, out page) == true)
+                if (pages.TryGetValue(pageId, out page))
                 {
                     resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, page));
                 }
-                else if ((foreignAdministratedPages.TryGetValue(pageId, out page) == true) &&
-                         ((page.PublicationStatus == GenericPublishProcessController.AwaitingPublication) || (page.PublicationStatus == GenericPublishProcessController.Published)))
+                else if (foreignAdministratedPages.TryGetValue(pageId, out page)
+                         && (!GlobalSettingsFacade.OnlyTranslateWhenApproved
+                             || page.PublicationStatus == GenericPublishProcessController.AwaitingPublication
+                             || page.PublicationStatus == GenericPublishProcessController.Published))
                 {
                     resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnActive, page));
                 }
-                else if (foreignPublicPages.TryGetValue(pageId, out page) == true)
+                else if (foreignPublicPages.TryGetValue(pageId, out page))
                 {
                     resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnActive, page));
                 }
-                else if (foreignAdministratedPages.TryGetValue(pageId, out page) == true)
+                else if (foreignAdministratedPages.TryGetValue(pageId, out page))
                 {
                     resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnDisabled, page));
                 }

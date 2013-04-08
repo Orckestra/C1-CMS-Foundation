@@ -257,8 +257,17 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
             {
                 return UseReaderLock(provider => provider.BroadcastConsoleElementChanges);
             }
-        }        
+        }
 
+
+        public static bool OnlyTranslateWhenApproved
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.OnlyTranslateWhenApproved);
+            }
+        } 
+        
 
 
         public static string WorkflowTimeout

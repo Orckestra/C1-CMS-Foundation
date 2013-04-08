@@ -187,6 +187,12 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
+        public bool OnlyTranslateWhenApproved
+        {
+            get { return _configurationData.OnlyTranslateWhenApproved; }
+        }
+
+
         public IEnumerable<CultureInfo> ApplicationCultures
         {
             get 
@@ -530,6 +536,13 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             set { base[_applicationCultureNames] = value; }
         }
 
+        private const string _onlyTranslateWhenApproved = "onlyTranslateWhenApproved";
+        [ConfigurationProperty(_onlyTranslateWhenApproved, IsRequired = false, DefaultValue = false)]
+        public bool OnlyTranslateWhenApproved
+        {
+            get { return (bool)base[_onlyTranslateWhenApproved]; }
+            set { base[_onlyTranslateWhenApproved] = value; }
+        }
 
 
         private const string _consoleMessageQueueItemSecondToLiveProperty = "consoleMessageQueueItemSecondToLive";

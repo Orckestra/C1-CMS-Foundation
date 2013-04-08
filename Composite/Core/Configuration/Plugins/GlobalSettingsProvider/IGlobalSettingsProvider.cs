@@ -69,6 +69,11 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         string ConsoleTimeout { get; }
 
+        /// <summary>
+        /// When <value>true</value> only pages that are published or awaiting publication can be translated in console.
+        /// </summary>
+        bool OnlyTranslateWhenApproved { get;  }
+
         ICachingSettings Caching { get; }
     }
 }

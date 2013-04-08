@@ -5,13 +5,13 @@ using System.Linq;
 using System.Transactions;
 using Composite.C1Console.Actions;
 using Composite.Core;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 using Composite.Core.Linq;
-using Composite.Core.Logging;
 using Composite.Data.Transactions;
 using Composite.C1Console.Users;
 using Composite.C1Console.Security;
@@ -38,32 +38,32 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 IPage sourcePage;
                 List<IPagePlaceholderContent> sourcePagePlaceholders;
-                List<IData> metaDatas;
+                List<IData> sourceMetaDataSet;
 
                 using (new DataScope(sourceCultureInfo))
                 {
                     Guid sourcePageId = ((IPage)castedEntityToken.Data).Id;
 
-                    DataScopeIdentifier sourceDataScopeIdentifier = DataScopeIdentifier.Administrated;
-
-                    using (new DataScope(sourceDataScopeIdentifier))
+                    using (new DataScope(DataScopeIdentifier.Administrated))
                     {
                         sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId).Single();
 
-                        if ((sourcePage.PublicationStatus == GenericPublishProcessController.Draft) || (sourcePage.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
+                        if (GlobalSettingsFacade.OnlyTranslateWhenApproved
+                            && (sourcePage.PublicationStatus != GenericPublishProcessController.Published
+                                && sourcePage.PublicationStatus != GenericPublishProcessController.AwaitingPublication))
                         {
-                            sourceDataScopeIdentifier = DataScopeIdentifier.Public;
-                            using (new DataScope(sourceDataScopeIdentifier))
+                            using (new DataScope(DataScopeIdentifier.Public))
                             {
-                                sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId).Single();
+                                sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId)
+                                             .FirstOrException("Failed to get published version of the page '{0}'", sourcePageId);
                                 sourcePagePlaceholders = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == sourcePageId).ToList();
-                                metaDatas = sourcePage.GetMetaData().ToList();
+                                sourceMetaDataSet = sourcePage.GetMetaData().ToList();
                             }
                         }
                         else
                         {
                             sourcePagePlaceholders = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == sourcePageId).ToList();
-                            metaDatas = sourcePage.GetMetaData().ToList();
+                            sourceMetaDataSet = sourcePage.GetMetaData().ToList();
                         }
                     }
                 }
@@ -92,7 +92,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         DataFacade.AddNew<IPagePlaceholderContent>(newPagePlaceholderContent);
                     }
 
-                    foreach (IData metaData in metaDatas)
+                    foreach (IData metaData in sourceMetaDataSet)
                     {
                         ILocalizedControlled localizedData = metaData as ILocalizedControlled;
 

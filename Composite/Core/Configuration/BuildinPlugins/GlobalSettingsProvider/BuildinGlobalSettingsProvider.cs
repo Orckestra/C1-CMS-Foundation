@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
-using System;
-using System.Threading;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
+using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
 
 
 namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
@@ -24,10 +24,10 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _dataMetaDataDirectory = "~/DataMetaData";
         private string _inlineCSharpFunctionDirectory = "~/InlineCSharpFunctions";
         private string _packageLicenseDirectory = "~/PackageLicenses";
-        private IResourceCacheSettings _resourceCacheSettings = new BuildinResourceCacheSettings();
-        private ICachingSettings _cachingSettings = new BuildinCachingSettings();
-        private List<string> _nonProbableAssemblyNames = new List<string>();
-        private int _consoleMessageQueueSecondToLive = TimeSpan.FromMinutes(10).Seconds;
+        private readonly IResourceCacheSettings _resourceCacheSettings = new BuildinResourceCacheSettings();
+        private readonly ICachingSettings _cachingSettings = new BuildinCachingSettings();
+        private readonly List<string> _nonProbableAssemblyNames = new List<string>();
+        private readonly int _consoleMessageQueueSecondToLive = TimeSpan.FromMinutes(10).Seconds;
         private bool _enableDataTypesAutoUpdate = false;
         private bool _broadcastConsoleElementChanges = true;
 
@@ -245,6 +245,9 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         {
             get { return "00:01:00"; }
         }
+
+        public bool OnlyTranslateWhenApproved { 
+            get { return false; } }
 
         public ICachingSettings Caching
         {

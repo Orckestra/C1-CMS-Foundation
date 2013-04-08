@@ -309,6 +309,14 @@ namespace Composite.Core.Configuration
             }
         }
 
+        public bool OnlyTranslateWhenApproved
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.OnlyTranslateWhenApproved;
+            }
+        }
+
         #region IGlobalSettingsFacade Members
 
 
