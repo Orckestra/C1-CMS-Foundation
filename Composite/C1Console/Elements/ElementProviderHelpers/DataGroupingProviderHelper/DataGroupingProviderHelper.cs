@@ -453,19 +453,15 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private static Element GetDataFromCorrectScope(IData data, Func<IData, Element> createElementFunc, Func<IData, Element> createDisabledElementFunc, bool isForeign)
         {
-            IPublishControlled publishControlled = data as IPublishControlled;
-
-            if (isForeign 
-                && publishControlled != null
-                && (publishControlled.PublicationStatus == GenericPublishProcessController.Draft 
-                    || publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
+            if (isForeign)
             {
-                IData publicData = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).SingleOrDefault();
-                if (publicData != null)
+                if (!data.IsTranslatable())
                 {
-                    return createElementFunc(publicData);
+                    return createDisabledElementFunc(data);
                 }
-                return createDisabledElementFunc(data);
+
+                IData translationSource = data.GetTranslationSource();
+                return createElementFunc(translationSource);
             }
             return createElementFunc(data);
         }

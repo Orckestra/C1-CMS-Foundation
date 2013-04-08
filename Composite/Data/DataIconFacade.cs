@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Data.ProcessControlled;
@@ -64,48 +63,66 @@ namespace Composite.Data
 
         public static ResourceHandle GetForeignIcon(this IData data)
         {
-            if (data.IsLocaleDisabled() == false)
-            {
-                return DataGhostedIcon;
-            }
-            else
-            {
-                return DataDisabledIcon;
-            }
+            return data.IsTranslatable() ? DataGhostedIcon : DataDisabledIcon;
         }
 
 
-
+        [Obsolete("Use !data.IsTranslatable() instead")]
         public static bool IsLocaleDisabled(this IData data)
+        {
+            return !IsTranslatable(data);
+        }
+
+        /// <summary>
+        /// Checks whether the specified data item can be translated.
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool IsTranslatable(this IData data)
         {
             IPublishControlled publishControlled = data as IPublishControlled;
 
-            if (publishControlled != null)
+            if (!GlobalSettingsFacade.OnlyTranslateWhenApproved || publishControlled == null)
             {
-                switch (publishControlled.PublicationStatus)
-                {
-                    case GenericPublishProcessController.Draft:
-                        return true;
-
-                    case GenericPublishProcessController.AwaitingApproval:
-                        return true;
-
-                    case GenericPublishProcessController.AwaitingPublication:
-                        return false;
-
-                    case GenericPublishProcessController.Published:
-                        return false;                    
-
-                    default:
-                        throw new NotImplementedException();
-                }
+                return true;
             }
-            else
+            
+            switch (publishControlled.PublicationStatus)
             {
-                return false;
+                case GenericPublishProcessController.Draft:
+                case GenericPublishProcessController.AwaitingApproval:
+                    return DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Any();
+
+                case GenericPublishProcessController.AwaitingPublication:
+                case GenericPublishProcessController.Published:
+                    return true;
+
+                default:
+                    throw new InvalidOperationException("Unexpected publication status: " + (publishControlled.PublicationStatus ?? "(null)"));
             }
+            
         }
 
+        /// <summary>
+        /// Returns the data item either from "Administrated" or from "Public" scope depending on, which has to be used as translation source.
+        /// If onlyTranslateWhenApproved="true" or publication status is not "awaiting publishion" - item from the public scope will be returned.
+        /// </summary>
+        /// <param name="dataFromAdministratedScope">The data item</param>
+        /// <returns></returns>
+        public static T GetTranslationSource<T>(this T dataFromAdministratedScope) where T: class, IData
+        {
+            IPublishControlled publishControlled = dataFromAdministratedScope as IPublishControlled;
+
+            if (!GlobalSettingsFacade.OnlyTranslateWhenApproved 
+                || publishControlled == null 
+                || publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingPublication)
+            {
+                return dataFromAdministratedScope;
+            }
+
+            return (DataFacade.GetDataFromOtherScope(dataFromAdministratedScope as IData, DataScopeIdentifier.Public).FirstOrDefault() 
+                    ?? dataFromAdministratedScope) as T;
+        }
 
         private static ResourceHandle GetIconHandle(string name)
         {

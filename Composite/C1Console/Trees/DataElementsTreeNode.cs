@@ -133,15 +133,14 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            IEnumerable<IData> dataItems;
-            IEnumerable<object> keys;
-            List<object> itemKeys = new List<object>();
-
+            bool localizationEndabled = this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
+            
             NodeDataSet dataset = GetDataset(dynamicContext);
 
-            bool localizationEndabled = this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
+            List<object> itemKeys = new List<object>();
+            IEnumerable<IData> dataItems;
+            IEnumerable<object> keys = dataset.JoinedKeys;
 
-            keys = dataset.JoinedKeys;
             if (localizationEndabled && UserSettings.ForeignLocaleCultureInfo != null)
             {
                 NodeDataSet foreignDataset;
@@ -210,8 +209,8 @@ namespace Composite.C1Console.Trees
                 ResourceHandle openedIcon;
                 if (itemLocalizationEnabledAndForeign)
                 {
-                    hasChildren = false;                    
-                    isDisabled = data.IsLocaleDisabled();
+                    hasChildren = false;
+                    isDisabled = !data.IsTranslatable();
 
                     if (this.Icon != null)
                     {
@@ -260,7 +259,7 @@ namespace Composite.C1Console.Trees
                 {
                     label = string.Format("{0} ({1})", label, DataLocalizationFacade.GetCultureTitle(UserSettings.ForeignLocaleCultureInfo));
 
-                    if (data.IsLocaleDisabled())
+                    if (!data.IsTranslatable())
                     {
                         toolTip = StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "LocalizeDataWorkflow.DisabledData");
                     }
@@ -281,7 +280,7 @@ namespace Composite.C1Console.Trees
                 };
 
 
-                if (itemLocalizationEnabledAndForeign == true)
+                if (itemLocalizationEnabledAndForeign)
                 {
                     WorkflowActionToken actionToken = new WorkflowActionToken(
                         WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.LocalizeDataWorkflow"),
@@ -303,14 +302,12 @@ namespace Composite.C1Console.Trees
                 elements.Add(element);
             }
 
-            if (this.OrderByNodes.Any() == false)
+            if (!this.OrderByNodes.Any())
             {
                 return elements.OrderBy(f => f.VisualData.Label);
             }
-            else
-            {
-                return elements;
-            }
+
+            return elements;
         }
 
 

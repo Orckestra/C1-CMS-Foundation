@@ -37,7 +37,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(data).Evaluate();
 
-            if (referenceFailingPropertyInfos.Where(f => f.OptionalReferenceWithValue == false).Any() == true)
+            if (referenceFailingPropertyInfos.Any(f => f.OptionalReferenceWithValue == false))
             {
                 List<string> row = new List<string>();
 
@@ -84,20 +84,11 @@ namespace Composite.C1Console.Trees.Workflows
 
             IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(data).Evaluate();
 
-            IData newData = null;
+            IData newData;
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if ((data is IPublishControlled) == true)
-                {
-                    IPublishControlled publishControlled = data as IPublishControlled;
-
-                    if ((publishControlled.PublicationStatus == GenericPublishProcessController.Draft) || (publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
-                    {
-                        data = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Single();
-                    }
-                }
-
+                data = data.GetTranslationSource();
 
                 using (new DataScope(targetCultureInfo))
                 {
@@ -109,7 +100,7 @@ namespace Composite.C1Console.Trees.Workflows
                     localizedControlled.CultureName = targetCultureInfo.Name;
                     localizedControlled.SourceCultureName = targetCultureInfo.Name;
 
-                    if ((newData is IPublishControlled) == true)
+                    if (newData is IPublishControlled)
                     {
                         IPublishControlled publishControlled = newData as IPublishControlled;
                         publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
@@ -117,9 +108,9 @@ namespace Composite.C1Console.Trees.Workflows
 
                     foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos)
                     {
-                        PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == referenceFailingPropertyInfo.DataFieldDescriptor.Name).Single();
-                        if ((propertyInfo.PropertyType.IsGenericType == true) &&
-                            (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                        PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == referenceFailingPropertyInfo.DataFieldDescriptor.Name);
+                        if (propertyInfo.PropertyType.IsGenericType &&
+                            propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                         {
                             propertyInfo.SetValue(newData, null, null);
                         }

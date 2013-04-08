@@ -90,20 +90,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(data).Evaluate();
 
-            IData newData = null;
+            IData newData;
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if ((data is IPublishControlled) == true)
-                {
-                    IPublishControlled publishControlled = data as IPublishControlled;
-
-                    if ((publishControlled.PublicationStatus == GenericPublishProcessController.Draft) || (publishControlled.PublicationStatus == GenericPublishProcessController.AwaitingApproval))
-                    {
-                        data = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Single();
-                    }
-                }
-
+                data = data.GetTranslationSource();
 
                 using (new DataScope(targetCultureInfo))
                 {
@@ -124,8 +115,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos)
                     {
                         PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == referenceFailingPropertyInfo.DataFieldDescriptor.Name);
-                        if ((propertyInfo.PropertyType.IsGenericType == true) &&
-                            (propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                        if (propertyInfo.PropertyType.IsGenericType &&
+                            propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                         {
                             propertyInfo.SetValue(newData, null, null);
                         }

@@ -339,7 +339,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                select ps.Id).ToList();
 
 
-            List<KeyValuePair<PageLocaleState, IPage>> resultPages = new List<KeyValuePair<PageLocaleState, IPage>>();
+            var resultPages = new List<KeyValuePair<PageLocaleState, IPage>>();
             foreach (Guid pageId in childPageIds)
             {
                 IPage page;
@@ -348,9 +348,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, page));
                 }
                 else if (foreignAdministratedPages.TryGetValue(pageId, out page)
-                         && (!GlobalSettingsFacade.OnlyTranslateWhenApproved
-                             || page.PublicationStatus == GenericPublishProcessController.AwaitingPublication
-                             || page.PublicationStatus == GenericPublishProcessController.Published))
+                         && page.IsTranslatable())
                 {
                     resultPages.Add(new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.ForiegnActive, page));
                 }

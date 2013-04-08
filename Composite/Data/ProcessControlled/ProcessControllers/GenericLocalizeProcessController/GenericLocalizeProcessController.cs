@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Users;
 using System.Globalization;
@@ -19,7 +17,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericLocalizePro
             {
                 CultureInfo cultureInfo = null;
 
-                if (UserValidationFacade.IsLoggedIn() == true)
+                if (UserValidationFacade.IsLoggedIn())
                 {
                     cultureInfo = UserSettings.ActiveLocaleCultureInfo;
                 }

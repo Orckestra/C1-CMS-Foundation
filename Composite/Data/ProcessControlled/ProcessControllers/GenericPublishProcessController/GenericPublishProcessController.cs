@@ -48,10 +48,10 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
         private static readonly string _awaitingPublicationDisabled = "awaitingPublicationDisabled";
         private static readonly string _publishedDisabled = "publishedDisabled";
 
-        private IDictionary<string, IList<string>> _transitions;
-        private IDictionary<string, IList<string>> _visualTransitions;
-        private IDictionary<string, string> _transitionNames = new Dictionary<string, string>();
-        private IDictionary<string, Func<ElementAction>> _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>();  // Using visual transition names as key
+        private readonly IDictionary<string, IList<string>> _transitions;
+        private readonly IDictionary<string, IList<string>> _visualTransitions;
+        private readonly IDictionary<string, string> _transitionNames = new Dictionary<string, string>();
+        private readonly IDictionary<string, Func<ElementAction>> _visualTransitionsActions = new Dictionary<string, Func<ElementAction>>();  // Using visual transition names as key
 
 
         /// <exclude />

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Transactions;
 using Composite.C1Console.Actions;
 using Composite.Core;
-using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
@@ -47,20 +46,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     using (new DataScope(DataScopeIdentifier.Administrated))
                     {
                         sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId).Single();
+                        sourcePage = sourcePage.GetTranslationSource();
 
-                        if (GlobalSettingsFacade.OnlyTranslateWhenApproved
-                            && (sourcePage.PublicationStatus != GenericPublishProcessController.Published
-                                && sourcePage.PublicationStatus != GenericPublishProcessController.AwaitingPublication))
-                        {
-                            using (new DataScope(DataScopeIdentifier.Public))
-                            {
-                                sourcePage = DataFacade.GetData<IPage>(f => f.Id == sourcePageId)
-                                             .FirstOrException("Failed to get published version of the page '{0}'", sourcePageId);
-                                sourcePagePlaceholders = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == sourcePageId).ToList();
-                                sourceMetaDataSet = sourcePage.GetMetaData().ToList();
-                            }
-                        }
-                        else
+                        using (new DataScope(sourcePage.DataSourceId.DataScopeIdentifier))
                         {
                             sourcePagePlaceholders = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == sourcePageId).ToList();
                             sourceMetaDataSet = sourcePage.GetMetaData().ToList();
