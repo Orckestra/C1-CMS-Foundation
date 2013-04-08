@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
 using Composite.Functions.Foundation;
@@ -219,6 +218,14 @@ namespace Composite.Functions
             return FunctionTreeBuilder.Build(element);
         }
 
+
+        /// <exclude />
+        public static T Execute<T>(IFunction function, IDictionary<string, object> parameters)
+        {
+            var functionContextContainer = new FunctionContextContainer();
+
+            return Execute<T>(function, parameters, functionContextContainer);
+        }
 
 
         /// <exclude />

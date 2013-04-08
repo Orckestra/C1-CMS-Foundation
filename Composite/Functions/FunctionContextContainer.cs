@@ -7,13 +7,14 @@ using System.Xml.Linq;
 namespace Composite.Functions
 {
     /// <summary>    
+    /// Used for passing parameters into nested function calls. Applicable in implementation of some of the xml template rendering logic.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FunctionContextContainer
     {
-        private ParameterList _parameterList = null;
-        private Dictionary<string, object> _parameterDictionary = null;
+        private readonly ParameterList _parameterList;
+        private readonly Dictionary<string, object> _parameterDictionary;
 
         #region constructors
         /// <exclude />
@@ -70,7 +71,7 @@ namespace Composite.Functions
 
                 object value = _parameterDictionary[parameterName];
 
-                if (value != null && targetType.IsAssignableFrom(value.GetType()) == false)
+                if (value != null && !targetType.IsInstanceOfType(value))
                 {
                     return ValueTypeConverter.Convert(value, targetType);
                 }
@@ -88,8 +89,8 @@ namespace Composite.Functions
         {
             if (this.XEmbedableMapper != null)
             {
-                XNode resultElement = null;
-                if (this.XEmbedableMapper.TryMakeXEmbedable(this, resultObject, out resultElement) == true)
+                XNode resultElement;
+                if (this.XEmbedableMapper.TryMakeXEmbedable(this, resultObject, out resultElement))
                 {
                     return resultElement;
                 }
