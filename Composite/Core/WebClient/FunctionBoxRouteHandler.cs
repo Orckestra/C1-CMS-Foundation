@@ -15,7 +15,8 @@ namespace Composite.Core.WebClient
 {
     internal class FunctionBoxRoute : Route
     {
-        public FunctionBoxRoute() : base("Renderers/FunctionBox", new FunctionBoxRouteHandler()) {}
+        // Adding "x" as a fictional paramter, so MVC wouldn't use this route for producing outbound links
+        public FunctionBoxRoute() : base("Renderers/FunctionBo{x}", new FunctionBoxRouteHandler()) { }
     }
 
     
