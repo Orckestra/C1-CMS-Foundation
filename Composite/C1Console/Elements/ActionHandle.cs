@@ -10,9 +10,8 @@ using Composite.Core.Serialization;
 namespace Composite.C1Console.Elements
 {
     /// <summary>    
+    /// A handle to an action - a unique and serializable way to identify actions.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ActionHandle
     {
         private ActionToken _actionToken;
@@ -20,7 +19,10 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
+        /// <param name="actionToken"></param>
         public ActionHandle(ActionToken actionToken)
         {
             _actionToken = actionToken;
@@ -28,7 +30,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// <see cref="ActionToken"/> represented by this handle.
+        /// </summary>
         public ActionToken ActionToken
         {
             get { return _actionToken; }

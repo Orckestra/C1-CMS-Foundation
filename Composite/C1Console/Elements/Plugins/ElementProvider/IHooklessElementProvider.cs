@@ -7,9 +7,8 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 namespace Composite.C1Console.Elements.Plugins.ElementProvider
 {
     /// <summary>    
+    /// This interface is implemented by element providers - plug-ins that can decorate the C1 Console tree structure with elements.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [CustomFactory(typeof(HooklessElementProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(HooklessElementProviderDefaultNameRetriever))]
     public interface IHooklessElementProvider
@@ -22,7 +21,7 @@ namespace Composite.C1Console.Elements.Plugins.ElementProvider
 
 
         /// <summary>
-        /// 
+        /// Return the providers root elements 
         /// </summary>
         /// <param name="seachToken">
         /// If this is null the provider should not do any filtering. If this is not null the provider
@@ -30,16 +29,21 @@ namespace Composite.C1Console.Elements.Plugins.ElementProvider
         /// If the provider does not want to be a part of a search and this variable is not null,
         /// the provider should return an empty list
         /// </param>
-        /// <returns></returns>
+        /// <returns>Root elements</returns>
         IEnumerable<Element> GetRoots(SearchToken seachToken);
 
 
         /// <summary>
-        /// 
+        /// Return the children of a given element
         /// </summary>
-        /// <param name="entityToken"></param>
-        /// <param name="seachToken">See GetRoots</param>
-        /// <returns></returns>
+        /// <param name="entityToken">The parent element of the elements to return</param>
+        /// <param name="seachToken">
+        /// If this is null the provider should not do any filtering. If this is not null the provider
+        /// should do the appropriate filtering on its elements. 
+        /// If the provider does not want to be a part of a search and this variable is not null,
+        /// the provider should return an empty list
+        /// </param>
+        /// <returns>Child elements</returns>
         IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken seachToken);        
     }
 }

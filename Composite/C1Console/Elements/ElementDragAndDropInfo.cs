@@ -5,14 +5,15 @@ using System.Collections.Generic;
 namespace Composite.C1Console.Elements
 {
     /// <summary>    
+    /// Details describing how this element may be dragged or accept dragged elements
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementDragAndDropInfo
     {
         private List<string> _dropHashTypeIdentifiers = null;
 
-
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
         internal ElementDragAndDropInfo()
         {
             this.DragType = null;
@@ -20,7 +21,11 @@ namespace Composite.C1Console.Elements
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
+        /// <param name="movabilityType">Declare what this element is in terms of drag and drop by declaring a <see cref="System.Type"/>. 
+        /// Element providers accepting drag and drop of this type will accept this.</param>
         public ElementDragAndDropInfo(Type movabilityType)
         {
             this.DragType = movabilityType;

@@ -5,16 +5,20 @@ using Composite.Core.Types;
 
 namespace Composite.C1Console.Elements
 {
-    /// <summary>    
+    /// <summary>
+    /// Class that describe a element provider search. Sub class this for more specific fields. As a minimum a Keyword is present.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class SearchToken
     {
-        /// <exclude />
+        /// <summary>
+        /// Keyword to search for
+        /// </summary>
         public string Keyword { get; set; }
 
-        /// <exclude />
+        /// <summary>
+        /// Serializes this instance
+        /// </summary>
+        /// <returns>String representation</returns>
         public string Serialize()
         {
             string serializedSearchToken = SerializationFacade.Serialize(this);
@@ -26,7 +30,11 @@ namespace Composite.C1Console.Elements
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Deserialize a search token
+        /// </summary>
+        /// <param name="serializedSearchToken">String representation of searchtoken</param>
+        /// <returns>Deserialized SearchToken</returns>
         public static SearchToken Deserialize( string serializedSearchToken )
         {
             if (string.IsNullOrEmpty(serializedSearchToken)) throw new ArgumentNullException();

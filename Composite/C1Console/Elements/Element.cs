@@ -42,10 +42,9 @@ namespace Composite.C1Console.Elements
 
 
 
-    /// <summary>    
+    /// <summary> 
+    /// Define a tree element to be displayed in the C1 Console tree structure
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [DebuggerDisplay("{VisualData.Label}")]
     public sealed class Element
     {
@@ -62,7 +61,10 @@ namespace Composite.C1Console.Elements
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new <see cref="Element"/> from the given <see cref=" ElementHandle"/>.
+        /// </summary>
+        /// <param name="elementHandle"></param>
         public Element(ElementHandle elementHandle)
             : this()
         {
@@ -73,7 +75,11 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new <see cref="Element"/> from the given <see cref=" ElementHandle"/> and <see cref="ElementVisualizedData"/>.
+        /// </summary>
+        /// <param name="elementHandle"></param>
+        /// <param name="visualData"></param>
         public Element(ElementHandle elementHandle, ElementVisualizedData visualData)
             : this()
         {
@@ -87,7 +93,11 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new <see cref="Element"/> from the given <see cref=" ElementHandle"/> and <see cref="ElementDragAndDropInfo"/>.
+        /// </summary>
+        /// <param name="elementHandle"></param>
+        /// <param name="movabilityInfo"></param>
         public Element(ElementHandle elementHandle, ElementDragAndDropInfo movabilityInfo)
             : this()
         {
@@ -100,7 +110,12 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new <see cref="Element"/> from the given <see cref=" ElementHandle"/>, <see cref="ElementVisualizedData"/> and <see cref="ElementDragAndDropInfo"/>.
+        /// </summary>
+        /// <param name="elementHandle"></param>
+        /// <param name="visualData"></param>
+        /// <param name="movabilityInfo"></param>
         public Element(ElementHandle elementHandle, ElementVisualizedData visualData, ElementDragAndDropInfo movabilityInfo)
             : this()
         {
@@ -116,7 +131,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The <see cref="ElementHandle"/> for this Element.
+        /// </summary>
         public ElementHandle ElementHandle
         {
             get { return _elementHandle; }
@@ -124,12 +141,16 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The <see cref="ElementVisualizedData"/> for this Element.
+        /// </summary>
         public ElementVisualizedData VisualData { get; set; }
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The <see cref="ElementDragAndDropInfo"/> for this Element.
+        /// </summary>
         public ElementDragAndDropInfo MovabilityInfo { get; private set; }
 
 
@@ -137,7 +158,9 @@ namespace Composite.C1Console.Elements
         public bool IsLocaleAware { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Custom properties to attach to this Element
+        /// </summary>
         public Dictionary<string, string> PropertyBag
         {
             get { return _propertyBag; }
@@ -182,7 +205,10 @@ namespace Composite.C1Console.Elements
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Add an action to the element
+        /// </summary>
+        /// <param name="elementAction">The action to add</param>
         public void AddAction(ElementAction elementAction)
         {
             Verify.ArgumentNotNull(elementAction, "elementAction");
@@ -199,7 +225,10 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Add one or more actions to the element
+        /// </summary>
+        /// <param name="elementActions">The actions to add</param>
         public void AddAction(IEnumerable<ElementAction> elementActions)
         {
             Verify.ArgumentNotNull(elementActions, "elementActions");
@@ -212,7 +241,10 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Remove an action from the element
+        /// </summary>
+        /// <param name="elementAction">The action to remove</param>
         public void RemoveAction(ElementAction elementAction)
         {
             if (elementAction == null) throw new ArgumentNullException("elementAction");
@@ -229,7 +261,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Actions declared on this element
+        /// </summary>
         public IEnumerable<ElementAction> Actions
         {
             get { return _elementActions; }

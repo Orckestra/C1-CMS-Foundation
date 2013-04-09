@@ -4,15 +4,17 @@ using System;
 namespace Composite.C1Console.Elements
 {
     /// <summary>    
+    /// Define an action you can attach to an <see cref="Element"/>.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementAction
     {
         private readonly ActionHandle _actionHandle;
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
+        /// <param name="actionHandle"></param>
         public ElementAction(ActionHandle actionHandle)
         {
             if (actionHandle == null) throw new ArgumentNullException("actionHandle");
@@ -22,7 +24,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The action handle
+        /// </summary>
         public ActionHandle ActionHandle
         {
             get { return _actionHandle; }
@@ -30,7 +34,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The visual representation (label, icon) of the action
+        /// </summary>
         public ActionVisualizedData VisualData { get; set; }
 
 

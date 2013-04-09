@@ -8,9 +8,8 @@ using Composite.Core.Serialization;
 namespace Composite.C1Console.Elements
 {
     /// <summary>    
+    /// A "identity token" which identifies a specific element from a specific provider. 
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class ElementHandle
     {
         private readonly string _providerName;
@@ -19,7 +18,11 @@ namespace Composite.C1Console.Elements
         Dictionary<string, string> _piggyback = null;
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new ElementHandle
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="entityToken"></param>
         public ElementHandle(string providerName, EntityToken entityToken)
             : this(providerName, entityToken, (string)null)
         {
@@ -27,7 +30,12 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new ElementHandle
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="entityToken"></param>
+        /// <param name="piggyback"></param>
         public ElementHandle(string providerName, EntityToken entityToken, Dictionary<string, string> piggyback)
         {
             Verify.ArgumentNotNull(piggyback, "piggyback");
@@ -39,7 +47,12 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new ElementHandle
+        /// </summary>
+        /// <param name="providerName"></param>
+        /// <param name="entityToken"></param>
+        /// <param name="piggyback"></param>
         public ElementHandle(string providerName, EntityToken entityToken, string piggyback)
         {
             if (piggyback == null)
@@ -55,7 +68,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Name of provider this ElementHandle originate from
+        /// </summary>
         public string ProviderName
         {
             get { return _providerName; }
@@ -63,7 +78,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The entity token of the element
+        /// </summary>
         public EntityToken EntityToken
         {
             get { return _entityToken; }
@@ -71,7 +88,9 @@ namespace Composite.C1Console.Elements
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Custom values appended to this ElementHandle
+        /// </summary>
         public Dictionary<string, string> Piggyback
         {
             get
