@@ -104,7 +104,7 @@ namespace Composite.Data
         {
             if (null == dataSourceId) throw new ArgumentNullException("dataSourceId");
 
-            useCaching = useCaching && DataCachingFacade.IsTypeCacheble(typeof(T));
+            useCaching = useCaching && DataCachingFacade.IsTypeCacheable(typeof(T));
 
             using (new DataScope(dataSourceId.DataScopeIdentifier, dataSourceId.LocaleScope))
             {
@@ -240,7 +240,7 @@ namespace Composite.Data
                 {
                     List<IData> dataToUpdate = interfaceTypePair.Value;
 
-                    if (DataCachingFacade.IsTypeCacheble(interfaceTypePair.Key) == true)
+                    if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
                         List<IData> newDataToUpdate = new List<IData>();
 
@@ -254,7 +254,7 @@ namespace Composite.Data
 
                     DataProviderPluginFacade.Update(providerPair.Key, dataToUpdate);
 
-                    if (DataCachingFacade.IsTypeCacheble(interfaceTypePair.Key) == true)
+                    if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
                         DataCachingFacade.ClearCache(interfaceTypePair.Key);
                     }
@@ -363,7 +363,7 @@ namespace Composite.Data
 
             List<T> addedDataset = DataProviderPluginFacade.AddNew<T>(providerName, dataset);
 
-            if (DataCachingFacade.IsTypeCacheble(typeof(T)) == true)
+            if (DataCachingFacade.IsTypeCacheable(typeof(T)))
             {
                 DataCachingFacade.ClearCache(typeof(T));
             }
@@ -447,7 +447,7 @@ namespace Composite.Data
                 {
                     DataProviderPluginFacade.Delete(providerPair.Key, interfaceTypePair.Value.Select(d => d.DataSourceId));
 
-                    if (DataCachingFacade.IsTypeCacheble(interfaceTypePair.Key) == true)
+                    if (DataCachingFacade.IsTypeCacheable(interfaceTypePair.Key))
                     {
                         DataCachingFacade.ClearCache(interfaceTypePair.Key, interfaceTypePair.Value.First().DataSourceId.DataScopeIdentifier);
                     }

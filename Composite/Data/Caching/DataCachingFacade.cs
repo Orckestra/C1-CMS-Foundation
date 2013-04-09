@@ -71,13 +71,13 @@ namespace Composite.Data.Caching
             }
         }
 
-
+        
         /// <summary>
         /// Gets a value indicating if data caching is possible for a specific data type
         /// </summary>
         /// <param name="interfaceType">The data type to check</param>
         /// <returns>True if caching is possible</returns>
-        public static bool IsTypeCacheble(Type interfaceType)
+        public static bool IsTypeCacheable(Type interfaceType)
         {
             Guid dataTypeId;
             DataTypeDescriptor dataTypeDescriptor;
@@ -97,7 +97,7 @@ namespace Composite.Data.Caching
         /// <returns>True if caching is enabled</returns>
         public static bool IsDataAccessCacheEnabled(Type interfaceType)
         {
-            return IsTypeCacheble(interfaceType) && !_disabledTypes.ContainsKey(interfaceType);
+            return IsTypeCacheable(interfaceType) && !_disabledTypes.ContainsKey(interfaceType);
         }
 
 
