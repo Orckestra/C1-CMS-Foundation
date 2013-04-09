@@ -9,6 +9,7 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.Foundation;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
@@ -43,6 +44,9 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
         public static ResourceHandle RestartApplicationIcon { get { return GetIconHandle("restart-application"); } }
         public static ResourceHandle ManageSecurityIcon { get { return GetIconHandle("security-manage-permissions"); } }
         public static ResourceHandle ChangeOwnActiveAndForeignLocaleIcon { get { return GetIconHandle("localization-changelocale"); } }
+
+        private static readonly string LogTitle = typeof (VirtualElementProvider).Name;
+        private static readonly HashSet<string> _notLoadedVirtualElements = new HashSet<string>(); 
 
         private readonly VirtualElementProviderData _configuration;
 
@@ -298,7 +302,11 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             {
                 if (elementNode is SimpleVirtualElement)
                 {
-                    result.Add(CreateElement(elementNode as SimpleVirtualElement));
+                    Element createdElement;
+                    if(TryBuildElement(elementNode as SimpleVirtualElement, out createdElement))
+                    {
+                        result.Add(createdElement);
+                    }
                     continue;
                 }
 
@@ -333,7 +341,35 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
             return result;
         }
 
+        private bool TryBuildElement(SimpleVirtualElement simpleVirtualElement, out Element result)
+        {
+            try
+            {
+                result = CreateElement(simpleVirtualElement);
+            }
+            catch (ConfigurationErrorsException exception)
+            {
+                string elementName = simpleVirtualElement.Name ?? "";
 
+                lock (_notLoadedVirtualElements)
+                {
+                    if (!_notLoadedVirtualElements.Contains(elementName))
+                    {
+                        Log.LogError(LogTitle, "Failed to initialize virtual element/perspective. Label: '{0}', name: '{1}'\n" +
+                                               "Remove the related configuration element from /App_Data/Composite/Composite.Config if it refers to a package that is no longer installed.",
+                                               simpleVirtualElement.Label ?? "", elementName);
+
+                        Log.LogError(LogTitle, exception);
+
+                        _notLoadedVirtualElements.Add(elementName);
+                    }
+                }
+                
+                result = null;
+            }
+
+            return result != null;
+        }
 
         public List<EntityTokenHook> GetHooks()
         {
@@ -442,6 +478,12 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
             foreach (var attachProviderElement in elements.OfType<AttachProviderVirtualElement>())
             {
+                lock (_notLoadedVirtualElements)
+                {
+                    if(_notLoadedVirtualElements.Contains(attachProviderElement.Name)) continue;
+                }
+                
+
                 string providerName = attachProviderElement.ProviderName;
                 var childElements = ElementFacade.GetRootsWithNoSecurity(new ElementProviderHandle(providerName), null).ToList();
 
