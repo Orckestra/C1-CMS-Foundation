@@ -331,6 +331,7 @@ DockTabBinding.prototype.setLabel = function ( label ) {
 			label = DockTabBinding.LABEL_TABDEFAULT;
 		}
 	}
+	label = this.isDirty ? "*" + label : label;
 	DockTabBinding.superclass.setLabel.call ( this, label );
 }
 

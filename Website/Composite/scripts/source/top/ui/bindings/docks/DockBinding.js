@@ -372,6 +372,18 @@ DockBinding.prototype._setupPageBindingListeners = function ( tabBinding ) {
 					tabBinding.onPageInitialize ( binding );
 					action.consume ();
 					break;
+
+				case PageBinding.ACTION_UPDATED:
+					/*
+					* Page label and image transferred to docktab. Notice the 
+					* Eventbroadcaster transmission! For dialogs, this gets
+					* broadcasted by this StageDialogBinding.
+					*/
+					var view = tabBinding.getAssociatedView();
+					if (binding.bindingWindow == view.getContentWindow()) {
+						tabBinding.updateDisplay(binding);
+					}
+					break;
 					
 				case DockTabBinding.ACTION_UPDATE_VISUAL :
 					tabBinding.updateDisplay ( binding );
@@ -434,6 +446,7 @@ DockBinding.prototype._setupPageBindingListeners = function ( tabBinding ) {
 	           DockTabBinding.ACTION_UPDATE_TOKEN,
 	           PageBinding.ACTION_ATTACHED,
 	           PageBinding.ACTION_INITIALIZED,
+	           PageBinding.ACTION_UPDATED,
 	           EditorPageBinding.ACTION_DIRTY,
 	           EditorPageBinding.ACTION_CLEAN,
 	           EditorPageBinding.ACTION_SAVE,

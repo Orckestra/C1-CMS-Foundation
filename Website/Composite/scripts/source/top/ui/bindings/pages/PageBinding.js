@@ -365,6 +365,7 @@ PageBinding.prototype.onBeforeUpdates = function () {
  */
 PageBinding.prototype.onAfterUpdates = function () {
 	
+	this.parseDOMProperties();
 	this._isUpdating = false;
 	this.dispatchAction ( PageBinding.ACTION_UPDATED );
 };
