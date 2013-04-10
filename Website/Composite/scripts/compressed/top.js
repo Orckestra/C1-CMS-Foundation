@@ -19985,6 +19985,12 @@ StatusBar.clear();
 _ca8.onPageInitialize(_cad);
 _cac.consume();
 break;
+case PageBinding.ACTION_UPDATED:
+var view=_ca8.getAssociatedView();
+if(_cad.bindingWindow==view.getContentWindow()){
+_ca8.updateDisplay(_cad);
+}
+break;
 case DockTabBinding.ACTION_UPDATE_VISUAL:
 _ca8.updateDisplay(_cad);
 _cac.consume();
@@ -20026,7 +20032,7 @@ alert("HWEJ");
 break;
 }
 }};
-new List([DockTabBinding.ACTION_UPDATE_VISUAL,DockTabBinding.ACTION_UPDATE_TOKEN,PageBinding.ACTION_ATTACHED,PageBinding.ACTION_INITIALIZED,EditorPageBinding.ACTION_DIRTY,EditorPageBinding.ACTION_CLEAN,EditorPageBinding.ACTION_SAVE,EditorPageBinding.ACTION_SAVE_AND_PUBLISH,ViewBinding.ACTION_ONCLOSE,ViewBinding.ACTION_ONCLOSE_FORCE,DockPanelBinding.ACTION_FORCE_SELECT,Binding.ACTION_FORCE_REFLEX,DockTabBinding.ACTION_FORCE_CLEAN,WindowBinding.ACTION_ONLOAD]).each(function(_caf){
+new List([DockTabBinding.ACTION_UPDATE_VISUAL,DockTabBinding.ACTION_UPDATE_TOKEN,PageBinding.ACTION_ATTACHED,PageBinding.ACTION_INITIALIZED,PageBinding.ACTION_UPDATED,EditorPageBinding.ACTION_DIRTY,EditorPageBinding.ACTION_CLEAN,EditorPageBinding.ACTION_SAVE,EditorPageBinding.ACTION_SAVE_AND_PUBLISH,ViewBinding.ACTION_ONCLOSE,ViewBinding.ACTION_ONCLOSE_FORCE,DockPanelBinding.ACTION_FORCE_SELECT,Binding.ACTION_FORCE_REFLEX,DockTabBinding.ACTION_FORCE_CLEAN,WindowBinding.ACTION_ONLOAD]).each(function(_caf){
 _ca9.addActionListener(_caf,_cab);
 });
 };
@@ -20483,6 +20489,7 @@ _cee=DockTabBinding.LABEL_TABDEFAULT;
 }
 }
 }
+_cee=this.isDirty?"*"+_cee:_cee;
 DockTabBinding.superclass.setLabel.call(this,_cee);
 };
 DockTabBinding.prototype.setImage=function(_cef){
@@ -21366,6 +21373,7 @@ this._isUpdating=true;
 this.dispatchAction(PageBinding.ACTION_UPDATING);
 };
 PageBinding.prototype.onAfterUpdates=function(){
+this.parseDOMProperties();
 this._isUpdating=false;
 this.dispatchAction(PageBinding.ACTION_UPDATED);
 };
