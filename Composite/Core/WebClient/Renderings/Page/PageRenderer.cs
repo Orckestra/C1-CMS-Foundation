@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
@@ -12,7 +13,6 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Localization;
-using Composite.Core.Logging;
 using Composite.Core.Parallelization;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Core.Xml;
@@ -410,12 +410,12 @@ namespace Composite.Core.WebClient.Renderings.Page
                     {
                         // Evaluating function calls in parameters
                         IEnumerable<XElement> parameters = functionCallDefinition.Elements();
-                        
+
                         foreach (XElement parameterNode in parameters)
                         {
                             ExecuteEmbeddedFunctions(parameterNode, contextContainer);
                         }
-                        
+
 
                         // Executing a function call
                         BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
@@ -441,11 +441,15 @@ namespace Composite.Core.WebClient.Renderings.Page
                             functionResult = null;
                         }
                     }
+                    catch (ThreadAbortException)
+                    {
+                        throw;
+                    }
                     catch (Exception ex)
                     {
                         using (Profiler.Measure("PageRenderer. Logging an exception"))
                         {
-                            LoggingService.LogError(LogTitle, ex);
+                            Log.LogError(LogTitle, ex);
 
                             XElement errorDescriptionElement = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex, functionName);
                             functionResult = errorDescriptionElement;
