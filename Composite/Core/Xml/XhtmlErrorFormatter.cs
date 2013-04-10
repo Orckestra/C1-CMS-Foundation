@@ -28,7 +28,7 @@ namespace Composite.Core.Xml
         public static void EmbedSouceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
         {
             int firstLineIndexToShow = Math.Max(0, errorLine - 3);
-            int lastLineIndexToShow = Math.Min(sourceCodeLines.Length, errorLine + 1);
+            int lastLineIndexToShow = Math.Min(sourceCodeLines.Length - 1, errorLine + 1);
 
             var errorLines = new StringBuilder();
 

@@ -97,6 +97,8 @@ namespace Composite.AspNet.Razor
 
 			if (resultType == typeof(XhtmlDocument))
 			{
+			    if (output == "") return new XhtmlDocument();
+
 				try
                 {
                     var xElement = XElement.Parse(output);
