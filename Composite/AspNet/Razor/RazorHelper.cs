@@ -36,7 +36,7 @@ namespace Composite.AspNet.Razor
 
 			if (HttpContext.Current == null)
 			{
-				httpContext = new NoHttpRazorContext();
+				httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
 			}
 			else
 			{
@@ -133,15 +133,7 @@ namespace Composite.AspNet.Razor
         {
             return (ResultType) ExecuteRazorPage(virtualPath, setParameters, typeof(ResultType));
         }
-
-        private static XhtmlDocument GetXhtmlDocument(string content)
-        {
-            var s = "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:f=\"http://www.composite.net/ns/function/1.0\" xmlns:lang=\"http://www.composite.net/ns/localization/1.0\">" +
-                    "<head />" +
-                    "<body>" + HttpUtility.HtmlEncode(content) + "</body>" +
-                    "</html>";
-
-            return XhtmlDocument.Parse(s);
-        }
     }
+
+    
 }
