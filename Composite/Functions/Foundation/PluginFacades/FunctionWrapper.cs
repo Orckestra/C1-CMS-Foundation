@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
 using Composite.C1Console.Security;
+using Composite.Core;
 using Composite.Core.Xml;
 
 
@@ -13,6 +15,7 @@ namespace Composite.Functions.Foundation.PluginFacades
     [DebuggerDisplay("Name = {Name}, Namespace = {Namespace}")]
     internal sealed class FunctionWrapper : IDowncastableFunction, ICompoundFunction, IFunctionInitializationInfo
     {
+        private static readonly string LogTitle = typeof (FunctionWrapper).Name;
         private readonly IFunction _functionToWrap;
 
 
@@ -90,16 +93,19 @@ namespace Composite.Functions.Foundation.PluginFacades
             {
                 return _functionToWrap.Execute(parameters, context);
             }
+            catch (ThreadAbortException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 if (_functionToWrap.ReturnType == typeof(XhtmlDocument))
                 {
+                    Log.LogError(LogTitle, ex);
                     return XhtmlErrorFormatter.GetErrorDescriptionXhtmlDocument(ex, _functionToWrap.CompositeName());
                 }
-                else
-                {
-                    throw;
-                }
+                
+                throw;
             }
         }
 
