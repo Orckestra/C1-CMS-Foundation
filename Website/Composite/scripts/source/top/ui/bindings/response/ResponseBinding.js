@@ -74,14 +74,8 @@ ResponseBinding.prototype._update = function () {
 	*/
 	var index = this.getProperty("messagequeueindex");
 	if (index != null) {
-		/*
-		this.logger.debug ( 
-		"Client MessageQueue index: " + MessageQueue.index + "\n" + 
-		"Server MessageQueue index: " + index 
-		);
-		*/
 		if (index > MessageQueue.index) {
-			MessageQueue.update();
+			MessageQueue.update(true);
 		}
 	}
 }

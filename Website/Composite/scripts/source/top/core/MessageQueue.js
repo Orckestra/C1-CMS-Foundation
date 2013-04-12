@@ -131,8 +131,9 @@ window.MessageQueue = new function () {
 
 	/**
 	* Fetch list of actions from server.
+	* @param {bool} syncRequest
 	*/
-	this.update = function () {
+	this.update = function (syncRequest) {
 
 		if (Application.isLoggedIn) { // otherwise no service...
 
@@ -141,16 +142,18 @@ window.MessageQueue = new function () {
 			*/
 			EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED, isAutoUpdate);
 
-			this._updateMessages();
+			this._updateMessages(syncRequest);
 		}
 	}
 
-	this._updateMessages = function () {
+	/**
+	* @param {bool} syncRequest
+	*/
+	this._updateMessages = function(syncRequest) {
 
 		if (isReceivingMessages) {
 			orderMessages = true;
-		}
-		else {
+		} else {
 			isReceivingMessages = true;
 			var self = this;
 			/*
@@ -159,7 +162,7 @@ window.MessageQueue = new function () {
 			* and a list of actions. The first property is needed because the server 
 			* will RESET the actionindex on restart.  
 			*/
-			service.GetMessages(Application.CONSOLE_ID, this.index, function (response) {
+			var handleResponce = function(response) {
 				if (response != null) {
 					if (Types.isDefined(response.CurrentSequenceNumber)) {
 						var newindex = response.CurrentSequenceNumber;
@@ -184,7 +187,13 @@ window.MessageQueue = new function () {
 					orderMessages = false;
 					self._updateMessages();
 				}
-			});
+			};
+
+			if (syncRequest) {
+				handleResponce(service.GetMessages(Application.CONSOLE_ID, this.index));
+			} else {
+				service.GetMessages(Application.CONSOLE_ID, this.index, handleResponce);
+			}
 		}
 	}
 
