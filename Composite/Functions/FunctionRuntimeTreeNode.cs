@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Xml.Linq;
@@ -14,10 +15,11 @@ namespace Composite.Functions
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [DebuggerDisplay("FunctionRuntimeTreeNode: {_function.Namespace + '.' + _function.Name}")]
     public sealed class FunctionRuntimeTreeNode : BaseFunctionRuntimeTreeNode
     {
-        private IFunction _function;
+        private readonly IFunction _function;
 
         /// <exclude />
         protected override IMetaFunction HostedFunction

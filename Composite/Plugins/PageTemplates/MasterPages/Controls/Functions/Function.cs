@@ -74,10 +74,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             }
             catch (Exception ex)
             {
-                Log.LogError(LogTitle, ex);
+                XElement errorBoxHtml;
+                if (!functionContextContainer.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
+                {
+                    throw;
+                }
 
-                result = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex, functionName ?? string.Empty);
-                returnType = typeof (XElement);
+                result = errorBoxHtml;
+                returnType = typeof(XElement);
             }
 
             if (result != null)

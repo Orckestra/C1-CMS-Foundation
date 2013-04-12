@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
 using Composite.Functions;
@@ -7,7 +8,8 @@ using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
 namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 {
-	internal class RazorBasedFunction : FileBasedFunction<RazorBasedFunction>
+    [DebuggerDisplay("Razor function: {Namespace + '.' + Name}")]
+    internal class RazorBasedFunction : FileBasedFunction<RazorBasedFunction>
 	{
 		public RazorBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameter> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<RazorBasedFunction> provider)
 			: base(ns, name, description, parameters, returnType, virtualPath, provider)

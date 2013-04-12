@@ -52,11 +52,11 @@ namespace Composite.C1Console.Trees
 
             Func<IData, bool> upwardsFilter = dataItem =>
             {
-                var ansectorEntityToken = dataItem.GetDataEntityToken();
+                var ancestorEntityToken = dataItem.GetDataEntityToken();
 
                 DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
                 {
-                    PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, ansectorEntityToken)
+                    PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, ancestorEntityToken)
                 };
 
                 XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);

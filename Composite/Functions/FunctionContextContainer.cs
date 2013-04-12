@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System;
+using System.Threading;
+using Composite.Core;
 using Composite.Core.Types;
 using System.Xml.Linq;
+using Composite.Core.Xml;
 
 
 namespace Composite.Functions
@@ -10,7 +13,7 @@ namespace Composite.Functions
     /// Used for passing parameters into nested function calls. Applicable in implementation of some of the xml template rendering logic.
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class FunctionContextContainer
     {
         private readonly ParameterList _parameterList;
@@ -45,6 +48,7 @@ namespace Composite.Functions
         {
             _parameterDictionary = parameterDictionary;
             this.XEmbedableMapper = inheritFromContainer.XEmbedableMapper;
+            this.SuppressXhtmlExceptions = inheritFromContainer.SuppressXhtmlExceptions;
         }
         #endregion
 
@@ -53,7 +57,11 @@ namespace Composite.Functions
         /// <exclude />
         public IFunctionResultToXEmbedableMapper XEmbedableMapper { get; set; }
 
-
+        /// <summary>
+        /// When set to <value>True</value>, exceptions from C1 functions which results are rendered into xhtml will 
+        /// be cougth, logged and the result xhtml  will contain an error description element.
+        /// </summary>
+        public bool SuppressXhtmlExceptions { get; set; }
 
         /// <exclude />
         public object GetParameterValue(string parameterName, Type targetType)
@@ -102,6 +110,35 @@ namespace Composite.Functions
             }
 
             return resultObject;
+        }
+
+        /// <summary>
+        /// Checks whether an exception has to be re-thrown, if not - writes it to the log 
+        /// and returns markup that should be inserted as function's result.
+        /// </summary>
+        /// <param name="functionName">The name of the function</param>
+        /// <param name="exception">The exception</param>
+        /// <param name="logTitle">The log entry title.</param>
+        /// <param name="errorBoxHtml">The markup that should be inserted instead of the function call</param>
+        /// <returns><value>True</value> if the exception has to be re-thrown, <value>False</value> otherwise.</returns>
+        public bool ProcessException(string functionName, Exception exception, string logTitle, out XElement errorBoxHtml)
+        {
+            if (!SuppressXhtmlExceptions
+                || exception is ThreadAbortException 
+                || exception is ThreadInterruptedException 
+                || exception is AppDomainUnloadedException
+                || exception is OutOfMemoryException)
+            {
+                errorBoxHtml = null;
+                return false;
+            }
+
+            Log.LogError(logTitle, "Failed to execute function: " + functionName);
+            Log.LogError(logTitle, exception);
+
+            errorBoxHtml = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(exception, functionName);
+
+            return true;
         }
     }
 }

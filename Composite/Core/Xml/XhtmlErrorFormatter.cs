@@ -11,20 +11,6 @@ namespace Composite.Core.Xml
     {
         private static readonly string ExceptionData_SourceCode = "C1.SourceCode";
 
-        /// <summary>
-        /// Create a XhtmlDocument documenting an exception. If the page being rendered is requested by an authenticated C1 Console user the 
-        /// exception information is more verbose.
-        /// </summary>
-        /// <param name="ex"></param>
-        /// <param name="functionName"></param>
-        /// <returns></returns>
-        internal static XhtmlDocument GetErrorDescriptionXhtmlDocument(Exception ex, string functionName)
-        {
-            XhtmlDocument errorInfoDocument = new XhtmlDocument();
-            errorInfoDocument.Body.Add(GetErrorDescriptionHtmlElement(ex, functionName));
-            return errorInfoDocument;
-        }
-
         public static void EmbedSouceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
         {
             int firstLineIndexToShow = Math.Max(0, errorLine - 3);

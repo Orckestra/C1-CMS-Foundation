@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Xml;
@@ -93,16 +94,17 @@ namespace Composite.Functions.Foundation.PluginFacades
             {
                 return _functionToWrap.Execute(parameters, context);
             }
-            catch (ThreadAbortException)
-            {
-                throw;
-            }
             catch (Exception ex)
             {
                 if (_functionToWrap.ReturnType == typeof(XhtmlDocument))
                 {
-                    Log.LogError(LogTitle, ex);
-                    return XhtmlErrorFormatter.GetErrorDescriptionXhtmlDocument(ex, _functionToWrap.CompositeName());
+                    XElement errorBoxHtml;
+                    if (context.ProcessException(_functionToWrap.CompositeName(), ex, LogTitle, out errorBoxHtml))
+                    {
+                        XhtmlDocument errorInfoDocument = new XhtmlDocument();
+                        errorInfoDocument.Body.Add(errorBoxHtml);
+                        return errorInfoDocument;
+                    }
                 }
                 
                 throw;

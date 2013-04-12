@@ -42,6 +42,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             FunctionContextContainer contextContainer = new FunctionContextContainer();
             contextContainer.XEmbedableMapper = mapper;
+            contextContainer.SuppressXhtmlExceptions = true;
 
             return contextContainer;
         }
@@ -441,18 +442,18 @@ namespace Composite.Core.WebClient.Renderings.Page
                             functionResult = null;
                         }
                     }
-                    catch (ThreadAbortException)
-                    {
-                        throw;
-                    }
                     catch (Exception ex)
                     {
-                        using (Profiler.Measure("PageRenderer. Logging an exception"))
+                        using (Profiler.Measure("PageRenderer. Loggin an exception"))
                         {
-                            Log.LogError(LogTitle, ex);
+                            XElement errorBoxHtml;
 
-                            XElement errorDescriptionElement = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(ex, functionName);
-                            functionResult = errorDescriptionElement;
+                            if (!contextContainer.ProcessException(functionName, ex, LogTitle, out errorBoxHtml))
+                            {
+                                throw;
+                            }
+
+                            functionResult = errorBoxHtml;
                         }
                     }
 

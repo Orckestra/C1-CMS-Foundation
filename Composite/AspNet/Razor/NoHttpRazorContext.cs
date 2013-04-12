@@ -132,7 +132,7 @@ namespace Composite.AspNet.Razor
         private static Assembly BuildAssembly(string code)
         {
             var provider = new CSharpCodeProvider();
-            ICodeCompiler compiler = provider.CreateCompiler();
+
             var compilerparams = new CompilerParameters();
             compilerparams.GenerateExecutable = false;
             compilerparams.GenerateInMemory = true;
@@ -140,7 +140,7 @@ namespace Composite.AspNet.Razor
             compilerparams.ReferencedAssemblies.Add(typeof (HttpContext).Assembly.Location);
             compilerparams.ReferencedAssemblies.Add(typeof (ScopeStorage).Assembly.Location);
 
-            CompilerResults results = compiler.CompileAssemblyFromSource(compilerparams, code);
+            CompilerResults results = provider.CompileAssemblyFromSource(compilerparams, code);
             if (results.Errors.HasErrors)
             {
                 var errors = new StringBuilder("Compiler Errors :\r\n");

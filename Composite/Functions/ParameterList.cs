@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Composite.Core.Types;
 
 
@@ -9,8 +10,10 @@ namespace Composite.Functions
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [DebuggerDisplay("Count = {_parameters.Count}")]
     public sealed class ParameterList
     {
+        [DebuggerDisplay("{ValueObject}")]
         private class StoredParameterReturnValue
         {
             public object ValueObject { get; set; }
@@ -19,8 +22,8 @@ namespace Composite.Functions
         }
 
 
-        private FunctionContextContainer _functionContextContainer;
-        private Dictionary<string, StoredParameterReturnValue> _parameters = new Dictionary<string, StoredParameterReturnValue>();
+        private readonly FunctionContextContainer _functionContextContainer;
+        private readonly Dictionary<string, StoredParameterReturnValue> _parameters = new Dictionary<string, StoredParameterReturnValue>();
 
 
         internal ParameterList(FunctionContextContainer functionContextContainer)
@@ -49,14 +52,12 @@ namespace Composite.Functions
         {
             object value = GetParameter(parameterName);
 
-            if (value == null || typeof(T).IsAssignableFrom(value.GetType()) == true)
+            if (value == null || value is T)
             {
                 return (T)value;
             }
-            else
-            {
-                return ValueTypeConverter.Convert<T>(value);
-            }
+            
+            return ValueTypeConverter.Convert<T>(value);
         }
 
 
@@ -67,24 +68,22 @@ namespace Composite.Functions
             object objectValue;
             bool found = TryGetParameter(parameterName, out objectValue);
 
-            if (found == true)
-            {
-                if (objectValue == null || typeof(T).IsAssignableFrom(objectValue.GetType()) == true)
-                {
-                    value = (T)objectValue;
-                }
-                else
-                {
-                    value = ValueTypeConverter.Convert<T>(objectValue);
-                }
-
-                return true;
-            }
-            else
+            if (!found)
             {
                 value = default(T);
                 return false;
             }
+
+            if (objectValue == null || objectValue is T)
+            {
+                value = (T)objectValue;
+            }
+            else
+            {
+                value = ValueTypeConverter.Convert<T>(objectValue);
+            }
+
+            return true;
         }
 
 
@@ -94,7 +93,7 @@ namespace Composite.Functions
         {
             object value = GetParameter(parameterName);
 
-            if (value != null && targetType.IsAssignableFrom(value.GetType()) == false)
+            if (value != null && !targetType.IsInstanceOfType(value))
             {
                 return ValueTypeConverter.Convert(value, targetType);
             }
@@ -125,18 +124,16 @@ namespace Composite.Functions
             StoredParameterReturnValue storedParameterReturnValue;
             bool paramFound = _parameters.TryGetValue(parameterName, out storedParameterReturnValue);
 
-            bool valueIsTreeNode = paramFound && typeof(BaseRuntimeTreeNode).IsAssignableFrom(storedParameterReturnValue.ValueObject.GetType());
+            bool valueIsTreeNode = paramFound && storedParameterReturnValue.ValueObject is BaseRuntimeTreeNode;
 
-            if (valueIsTreeNode)
-            {
-                runtimeTreeNode = (BaseRuntimeTreeNode)storedParameterReturnValue.ValueObject;
-                return true;
-            }
-            else
+            if (!valueIsTreeNode)
             {
                 runtimeTreeNode = null;
                 return false;
             }
+            
+            runtimeTreeNode = (BaseRuntimeTreeNode) storedParameterReturnValue.ValueObject;
+            return true;
         }
 
 
