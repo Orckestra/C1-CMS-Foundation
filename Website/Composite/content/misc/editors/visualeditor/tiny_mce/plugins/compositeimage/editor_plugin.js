@@ -97,7 +97,7 @@ new function () {
 								src = "../../../../.." + src.substring(1);
 							}
 
-							var mediaUrl = new CompositeUrl(src);
+							var mediaUrl = new Uri(src);
 
 							if (mediaUrl.isMedia) {
 								var maxwidth = 0;

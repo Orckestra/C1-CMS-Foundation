@@ -305,16 +305,11 @@ WindowBinding.prototype._onPageInitialize = function ( binding ) {
  */
 WindowBinding.prototype.buildDOMContent = function () {
 
-	/*
-	if ( this.shadowTree.iframe != null ) {
-		this.bindingElement.removeChild ( this.shadowTree.iframe );
-		this.shadowTree.iframe = null;
-	}
-	*/
-
 	this.shadowTree.iframe = DOMUtil.createElementNS ( Constants.NS_XHTML, "iframe", this.bindingDocument );
 	this.shadowTree.iframe.setAttribute ( "frameborder", "0" );
 	this.shadowTree.iframe.frameBorder = 0;
+	this.shadowTree.iframe.id = KeyMaster.getUniqueKey();
+	this.shadowTree.iframe.name = this.shadowTree.iframe.id;
 	this.bindingElement.appendChild ( this.shadowTree.iframe );
 	this._registerOnloadListener ( true );
 };
@@ -455,7 +450,49 @@ WindowBinding.prototype.setURL = function ( url ) {
 		/*
 		 * Load resolved URL.
 		 */
-		this.getFrameElement ().src = Resolver.resolve ( url );
+		if (url.length > 1900) {
+			var self = this;
+			var iframe = this.getFrameElement();
+			var actionUrl = new Uri(Resolver.resolve(url));
+			
+			var data = new Map();
+			actionUrl.getQueryString().each(function(name, value) {
+				if (value.length > 512) {
+					data.set(name, value);
+					actionUrl.setParam(name, null);
+				}
+			});
+
+			if(typeof this.shadowTree.form == 'undefined'){
+				
+				this.shadowTree.form = DOMUtil.createElementNS ( Constants.NS_XHTML, "form", this.bindingDocument );
+				this.shadowTree.form.style.display = "none";
+				this.shadowTree.form.enctype = "application/x-www-form-urlencoded";
+				this.shadowTree.form.method = "POST";
+				this.bindingElement.appendChild(this.shadowTree.form);
+			}
+			var form = this.shadowTree.form;
+
+			form.action = actionUrl.toString();
+			form.target = iframe.id;
+			form.setAttribute("target", iframe.id);
+			while(form.firstChild){
+				   form.removeChild(form.firstChild);
+			}
+
+			data.each(function (name, value) {
+				var input = self.bindingDocument.createElement("input");
+				input.name = name;
+				input.value = value;
+				input.type = "hidden";
+				form.appendChild(input);
+			});
+			
+			form.submit();
+
+		} else {
+			this.getFrameElement().src = Resolver.resolve(url);
+		}
 	}
 };
 

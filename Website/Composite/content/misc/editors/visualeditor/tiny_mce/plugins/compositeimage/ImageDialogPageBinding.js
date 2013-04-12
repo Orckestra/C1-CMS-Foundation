@@ -89,7 +89,7 @@ ImageDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 
 		src = src.replace(/%28/g, "(").replace(/%29/g, ")");
 
-		var mediaUrl = new CompositeUrl(src);
+		var mediaUrl = new Uri(src);
 		if (mediaUrl.isMedia) {
 			if (mediaUrl.hasParam("mw"))
 				manager.getDataBinding("maxwidth").setValue(mediaUrl.getParam("mw"));

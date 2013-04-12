@@ -113,7 +113,7 @@ TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
 		this._selectedToken = arg.selectedToken;
 	}
 	else if (arg.selectedResult) {
-		var compositeUrl = new CompositeUrl(arg.selectedResult);
+		var compositeUrl = new Uri(arg.selectedResult);
 		if (compositeUrl.isMedia || compositeUrl.isPage) {
 			this._selectedToken = TreeService.GetCompositeEntityToken(arg.selectedResult);
 		}

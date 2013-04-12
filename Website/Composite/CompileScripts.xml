@@ -132,7 +132,7 @@
 			<Script filename="${root}/scripts/source/top/core/Dialog.js"/>
 			<Script filename="${root}/scripts/source/top/core/Commands.js"/>
 			<Script filename="${root}/scripts/source/top/core/Prism.js"/>
-			<Script filename="${root}/scripts/source/top/core/CompositeUrl.js"/>
+			<Script filename="${root}/scripts/source/top/core/Uri.js"/>
 			<Script filename="${root}/scripts/source/top/ui/viewdefinitions/ViewDefinition.js"/>
 			<Script filename="${root}/scripts/source/top/ui/viewdefinitions/SystemViewDefinition.js"/>
 			<Script filename="${root}/scripts/source/top/ui/viewdefinitions/HostedViewDefinition.js"/>

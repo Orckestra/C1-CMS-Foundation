@@ -129,7 +129,7 @@ UrlInputDialogBinding.prototype.setValue = function (value) {
 		this.buildButtonAndLabel();
 	}
 
-	this.compositeUrl = new CompositeUrl(value);
+	this.compositeUrl = new Uri(value);
 
 	if (this.compositeUrl.isMedia || this.compositeUrl.isPage) {
 		var label = TreeService.GetCompositeUrlLabel(value);

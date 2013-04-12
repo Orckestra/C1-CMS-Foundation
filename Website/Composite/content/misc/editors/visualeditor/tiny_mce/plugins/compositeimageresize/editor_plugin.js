@@ -84,7 +84,7 @@ new function () {
                 editor.dom.unbind(editor.getDoc(), 'mousemove', resizeElement);
                 editor.dom.unbind(editor.getDoc(), 'mouseup', endResize);
 
-                var compositeUrl = new CompositeUrl(selectedElm.src)
+                var compositeUrl = new Uri(selectedElm.src)
                 if (compositeUrl.isMedia) {
                     compositeUrl.setParam("mw", width);
                     compositeUrl.setParam("mh", height);
@@ -243,7 +243,7 @@ new function () {
             function updateResizeRect() {
                 var controlElm = editor.dom.getParent(editor.selection.getNode(), 'img');
                 if (controlElm) {
-                    var compositeUrl = new CompositeUrl(controlElm.src);
+                    var compositeUrl = new Uri(controlElm.src);
                     if (compositeUrl.isMedia) {
                         showResizeRect(controlElm);
                     }
@@ -266,7 +266,7 @@ new function () {
 
             function resizeImageEnd(e) {
 
-                var compositeUrl = new CompositeUrl(selectedElm.src);
+                var compositeUrl = new Uri(selectedElm.src);
 
                 var width = selectedElm.clientWidth;
                 var height = selectedElm.clientHeight;
@@ -300,7 +300,7 @@ new function () {
             }
 
             function setResizeHandler(controlElm) {
-                if (CompositeUrl.isMedia(controlElm.src)) {
+                if (Uri.isMedia(controlElm.src)) {
                     removeResizeHandler();
                     selectedElm = controlElm;
                     selectedElm.onresizestart = resizeImageStart;

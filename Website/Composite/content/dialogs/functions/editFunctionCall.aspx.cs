@@ -75,15 +75,15 @@ namespace CompositeEditFunctionCall
         {
             string functionMarkup = this.Request.QueryString["functionMarkup"];
 
+            if (string.IsNullOrEmpty(functionMarkup))
+            {
+                functionMarkup = HttpUtility.UrlDecode(this.Request.Form["functionMarkup"]);
+            }
+
             const string ZipPrefix = "ZIP_";
             if (functionMarkup != null && functionMarkup.StartsWith(ZipPrefix))
             {
                 functionMarkup = UrlUtils.UnZipContent(functionMarkup.Substring(ZipPrefix.Length));
-            }
-
-            if (string.IsNullOrEmpty(functionMarkup))
-            {
-                functionMarkup = HttpUtility.UrlDecode(this.Request.Form["functionMarkup"]);
             }
 
             if (!string.IsNullOrEmpty(functionMarkup) && functionMarkup != "null")

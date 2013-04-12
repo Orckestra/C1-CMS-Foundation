@@ -1,81 +1,88 @@
 ﻿/**
 *@class
-* @param @url {string} media url.
+* @param @url {string} url.
 * @constructor
 */
 //TODO Add escaping
-function CompositeUrl(url) {
+function Uri(url) {
 
     var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
-	var result = mediaExpr.exec(url)
+	var result = mediaExpr.exec(url);
 
 	if (result) {
-		var queryString = {};
-		url.replace(/^[^\?]*/g, "").replace(
-			/([^?=&]+)(=([^&]*))?/g, 
-			function ($0, $1, $2, $3) { queryString[$1] = $3; }
-		);
-
-		this.queryString = queryString;
-
-		this.path = url.replace(/\?.*/g, "");
 		if (result[3] == "media") {
 			this.isMedia = true;
 		} else if (result[3] == "page") {
 			this.isPage = true;
 		}
 	}
+	var queryString = {};
+	url.replace(/^[^\?]*/g, "").replace(
+		/([^?=&]+)(=([^&]*))?/g,
+		function ($0, $1, $2, $3) { queryString[$1] = $3; }
+	);
+
+	this.queryString = queryString;
+
+	this.path = url.replace(/\?.*/g, "");
+
 	return this;
 }
 
 
-CompositeUrl.isMedia = function(url)
-{
-    return new CompositeUrl(url).isMedia;
-}
+Uri.isMedia = function(url) {
+	return new Uri(url).isMedia;
+};
 
 /**
 * Get media path without parameters
 * @return {string}
 */
-CompositeUrl.prototype.getPath = function () {
+Uri.prototype.getPath = function() {
 	return this.path;
-}
+};
+
+/**
+* Get media path without parameters
+* @return {string}
+*/
+Uri.prototype.getQueryString = function () {
+	return new Map(this.queryString);
+};
 
 /**
 * Has param in query string?
 * @param {object} key
 * @return {boolean}
 */
-CompositeUrl.prototype.hasParam = function (key) {
+Uri.prototype.hasParam = function(key) {
 	return this.queryString[key] != null;
-}
+};
 
 /**
 * Get param in query string
 * @param {object} key
 * @return {boolean}
 */
-CompositeUrl.prototype.getParam = function (key) {
+Uri.prototype.getParam = function(key) {
 	return this.queryString[key];
-}
-
+};
 /**
 * Set param in query string
 * @param {object} key
 */
-CompositeUrl.prototype.setParam = function (key, value) {
-    if (value == undefined) {
-        delete this.queryString[key];
-    } else {
-        this.queryString[key] = value;
-    }
-}
+Uri.prototype.setParam = function(key, value) {
+	if (value == undefined) {
+		delete this.queryString[key];
+	} else {
+		this.queryString[key] = value;
+	}
+};
 
 /**
 * @return {string}
 */
-CompositeUrl.prototype.toString = function () {
+Uri.prototype.toString = function () {
 	var url = this.path;
 
 	var querystring = [];

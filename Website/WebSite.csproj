@@ -935,7 +935,7 @@
     <Content Include="Composite\scripts\source\top\core\License.DEPRECATED.js" />
     <Content Include="Composite\scripts\source\top\core\Localization.js" />
     <Content Include="Composite\scripts\source\top\core\LocalStore.js" />
-    <Content Include="Composite\scripts\source\top\core\CompositeUrl.js" />
+    <Content Include="Composite\scripts\source\top\core\Uri.js" />
     <Content Include="Composite\scripts\source\top\core\MessageQueue.js" />
     <Content Include="Composite\scripts\source\top\core\MimeTypes.js" />
     <Content Include="Composite\scripts\source\top\core\Persistance.js" />
