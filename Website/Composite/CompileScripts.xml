@@ -55,6 +55,7 @@
 			<Script filename="${root}/scripts/source/top/interfaces/IWysiwygEditorNodeChangeHandler.js"/>
 			<Script filename="${root}/scripts/source/top/util/List.js"/>
 			<Script filename="${root}/scripts/source/top/util/Map.js"/>
+			<Script filename="${root}/scripts/source/top/util/SystemNodeList.js"/>
 			<Script filename="${root}/scripts/source/top/core/BroadcastMessages.js"/>
 			<Script filename="${root}/scripts/source/top/core/EventBroadcaster.js"/>
 			<Script filename="${root}/scripts/source/top/core/Constants.js"/>
@@ -67,7 +68,6 @@
 			<Script filename="${root}/scripts/source/top/core/MimeTypes.js"/>
 			<Script filename="${root}/scripts/source/top/core/SearchTokens.js"/>
 			<Script filename="${root}/scripts/source/top/core/StringBundle.js"/>
-			<Script filename="${root}/scripts/source/top/core/LastOpenedSystemNodes.js"/>
 			<Script filename="${root}/scripts/source/top/core/KeyMaster.js"/>
 			<Script filename="${root}/scripts/source/top/core/ImageProvider.js"/>
 			<Script filename="${root}/scripts/source/top/core/Resolver.js"/>

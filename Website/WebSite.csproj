@@ -931,7 +931,7 @@
     <Content Include="Composite\scripts\source\top\core\Keyboard.js" />
     <Content Include="Composite\scripts\source\top\core\KeyMaster.js" />
     <Content Include="Composite\scripts\source\top\core\KickStart.js" />
-    <Content Include="Composite\scripts\source\top\core\LastOpenedSystemNodes.js" />
+    <Content Include="Composite\scripts\source\top\util\SystemNodeList.js" />
     <Content Include="Composite\scripts\source\top\core\License.DEPRECATED.js" />
     <Content Include="Composite\scripts\source\top\core\Localization.js" />
     <Content Include="Composite\scripts\source\top\core\LocalStore.js" />

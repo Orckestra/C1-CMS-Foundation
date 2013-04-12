@@ -244,7 +244,7 @@ TreeSelectorDialogPageBinding.prototype._injectTreeNodes = function (list) {
 			// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
 			// Expand last opened nodes
 			count++;
-			if (!nodes.hasNext() && count == 1 || LastOpenedSystemNodes.isOpen(node)) {
+			if (!nodes.hasNext() && count == 1 || LocalStore.openedNodes.has(node)) {
 				expandNodes.add(node);
 			}
 
@@ -326,11 +326,11 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 * Save last opened system nodes Update selections display and store result.
 */
 TreeSelectorDialogPageBinding.prototype._saveOpenedSystemNodes = function () {
-	LastOpenedSystemNodes.clear();
+	LocalStore.openedNodes.clear();
 	var treenodes = this._treeBinding.getOpenSystemNodes();
 	treenodes.each(
 		function (treenode) {
-			LastOpenedSystemNodes.add(treenode)
+			LocalStore.openedNodes.add(treenode)
 		}
 	);
 }

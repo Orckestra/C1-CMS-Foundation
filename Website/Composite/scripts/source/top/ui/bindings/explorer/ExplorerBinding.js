@@ -28,10 +28,10 @@ ExplorerBinding.bindingInstance = null;
  * @return {List}
  */
 ExplorerBinding.getFocusedTreeNodeBindings = function () {
-	
-	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding ();
-	var selectedView = selectedDeck.getAssociatedView ();
-	var selectedTree = selectedView.getContentWindow ().bindingMap.tree;
+
+	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
+	var selectedView = selectedDeck.getAssociatedView();
+	var selectedTree = selectedView.getContentWindow().bindingMap.tree;
 	var focusedTreeNodeBinding = selectedTree.getFocusedTreeNodeBindings();
 
 	//TODO: Refactor this
@@ -40,8 +40,39 @@ ExplorerBinding.getFocusedTreeNodeBindings = function () {
 		focusedTreeNodeBinding = StageBinding.treeSelector.getFocusedTreeNodeBindings();
 
 	return focusedTreeNodeBinding;
-}
+};
 
+
+/**
+ * Save focused Nodes.
+ * @return {List}
+ */
+ExplorerBinding.saveFocusedNodes = function () {
+	var treeNodeBindings = this.getFocusedTreeNodeBindings();
+	LocalStore.focuseNodes.clear();
+	treeNodeBindings.each(function (treeNodeBinding) {
+		LocalStore.focuseNodes.add(treeNodeBinding.node);
+	});
+
+};
+
+
+/**
+ * Restore selected Nodes.
+ * @return {List}
+ */
+ExplorerBinding.restoreFocuseNodes = function () {
+	var entityTokens = LocalStore.focuseNodes.getEntityTokens();
+	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
+	var selectedView = selectedDeck.getAssociatedView();
+	var selectedTree = selectedView.getContentWindow().bindingMap.tree;
+	
+	entityTokens.each(function(entityToken) {
+		selectedTree._focusTreeNodeByEntityToken(entityToken);
+	});
+	
+	LocalStore.focuseNodes.clear();
+};
 
 /**
  * @class

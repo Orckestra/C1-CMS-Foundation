@@ -33,6 +33,7 @@ LocalizationSelectorBinding.prototype.onBindingAttach = function () {
 	
 	LocalizationSelectorBinding.superclass.onBindingAttach.call ( this );
 	this.subscribe ( BroadcastMessages.UPDATE_LANGUAGES );
+	this.subscribe ( BroadcastMessages.TOLANGUAGE_UPDATED );
 	this._populateFromLanguages ( Localization.languages );
 }
 
@@ -47,6 +48,9 @@ LocalizationSelectorBinding.prototype.handleBroadcast = function ( broadcast, ar
 	
 	switch ( broadcast ) {
 		
+		case BroadcastMessages.TOLANGUAGE_UPDATED:
+			ExplorerBinding.restoreFocuseNodes();
+			break;
 		case BroadcastMessages.UPDATE_LANGUAGES :
 			this._populateFromLanguages ( arg );
 			break;
@@ -104,7 +108,7 @@ LocalizationSelectorBinding.prototype.populateFromList = function ( list ) {
  * @overwrites {SelectorBinding#onValueChange}
  */
 LocalizationSelectorBinding.prototype.onValueChange = function () {
-	
+	ExplorerBinding.saveFocusedNodes();
 	var self = this;
 	Dialog.warning ( 
 		StringBundle.getString ( StringBundle.UI, "UserElementProvider.ChangeOtherActiveLocaleDialogTitle" ), 
@@ -141,5 +145,6 @@ LocalizationSelectorBinding.prototype._invokeAction = function () {
 		Label : "Generated Action: Change Locale",
 		ActionToken : token
 	});
+	
 	SystemAction.invoke ( action, root );
 }

@@ -381,7 +381,7 @@ SystemTreeNodeBinding.prototype._insertTreeNodesRegulated = function ( children 
 		// Auto expand tree folders in selection dialogs, when only one folder can be expanded.
 		// Expand last opened nodes
 		if (this.autoExpand) {
-			if (count == 1 && !children.hasEntries() || LastOpenedSystemNodes.isOpen(treenode)) {
+			if (count == 1 && !children.hasEntries() || LocalStore.openedNodes.has(treenode.node)) {
 				expandNodes.add(treenode);
 			}
 		}
