@@ -1,156 +1,67 @@
-using System.Xml;
-using System.Collections.Generic;
-
+using System.Linq;
+using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
-using System;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 
 
 namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 {
-    internal sealed class BuildFromXmlPhase
+    /// <summary>
+    /// Converts form markup xml into tree of <see cref="CompileTreeNode"/>. Translates properties
+    /// </summary>
+    internal static class BuildFromXmlPhase
     {
-        private XmlReader _reader;
-        private Stack<CompileTreeNode> _stack = null;
-
-
-        public BuildFromXmlPhase(XmlReader reader)
+        public static CompileTreeNode BuildTree(XDocument document)
         {
-            _reader = reader;
+            return BuildRec(document.Root);
         }
 
-
-
-        public CompileTreeNode BuildTree()
+        public static ElementCompileTreeNode BuildRec(XElement element)
         {
-            _stack = new Stack<CompileTreeNode>();
-            bool readDone = true;
+            int depth = element.Ancestors().Count();
 
-            while (false == _reader.EOF)
+            var debugInfo = new XmlSourceNodeInformation(depth, element.Name.LocalName, element.Name.LocalName, element.Name.NamespaceName);
+
+            var result = new ElementCompileTreeNode(debugInfo);
+            foreach (var attribute in element.Attributes())
             {
-                readDone = _reader.Read();
+                if (attribute.Name.LocalName == "xmlns") continue;
 
-                if (false == readDone && false == _reader.EOF) throw new InvalidOperationException("The XmlReader provided to the forms compiler is not readable");
+                bool isNamespaceDeclaration = attribute.Name.NamespaceName == Namespaces.BindingFormsStdUiControls10;
 
-                switch (_reader.NodeType)
-                {
-                    case XmlNodeType.Element:
-                        Push(new XmlElementCompileTreeNode(new XmlSourceNodeInformation(_reader.Depth, _reader.LocalName, _reader.Name, _reader.NamespaceURI)));
+                var property = new PropertyCompileTreeNode(attribute.Name.LocalName, debugInfo, isNamespaceDeclaration);
+                property.Value = StringResourceSystemFacade.ParseString(attribute.Value);
 
-                        for (int i = 0; i < _reader.AttributeCount; ++i)
-                        {
-                            _reader.MoveToAttribute(i);
-                            string loweredName = _reader.Name.ToLowerInvariant();
-                            if ("xmlns" != loweredName)
-                            {
-                                PropertyCompileTreeNode property = new PropertyCompileTreeNode(_reader.LocalName, new XmlSourceNodeInformation(_reader.Depth, _reader.LocalName, _reader.Name, ""), loweredName.StartsWith("xmlns:"));
-                                property.Value = StringResourceSystemFacade.ParseString(_reader.Value); 
-                                Push(property);
-                            }
-                        }
-
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        Push(new XmlEndElementCompileTreeNode(new XmlSourceNodeInformation(_reader.Depth, _reader.LocalName, _reader.Name, _reader.NamespaceURI)));
-                        break;
-
-                    case XmlNodeType.Text:
-                        PropertyCompileTreeNode textProperty = new PropertyCompileTreeNode(_reader.LocalName, new XmlSourceNodeInformation(_reader.Depth, CompilerGlobals.DefaultPropertyName, CompilerGlobals.DefaultPropertyName, ""));
-                        textProperty.Value = StringResourceSystemFacade.ParseString(_reader.Value);
-                        Push(textProperty);
-                        break;
-                }
+                result.AddNamedProperty(property);
             }
 
-            return _stack.Pop();
-        }
-
-
-
-        private void Push(CompileTreeNode stackNode)
-        {
-            _stack.Push(stackNode);
-
-            RestructureStack();
-        }
-
-
-
-        private void RestructureStack()
-        {
-            if (0 == _stack.Count) return;
-
-            CompileTreeNode node = _stack.Peek();
-
-            if (false == (node is XmlEndElementCompileTreeNode)) return;
-
-            Stack<CompileTreeNode> nodes = new Stack<CompileTreeNode>();
-
-            nodes.Push(_stack.Pop());
-
-            while (_stack.Count > 0)
+            foreach (var node in element.Nodes())
             {
-                CompileTreeNode n = _stack.Peek();
-
-                nodes.Push(_stack.Pop());
-
-                if ((n is XmlElementCompileTreeNode) && (n.XmlSourceNodeInformation.Depth == node.XmlSourceNodeInformation.Depth)) break;
-            }
-
-
-            if (nodes.Count == 0) return;
-            CompileTreeNode sn = nodes.Pop();
-
-            ElementCompileTreeNode element = new ElementCompileTreeNode(sn.XmlSourceNodeInformation);
-            ElementCompileTreeNode lastElement = element;
-
-            while (nodes.Count > 1)
-            {
-                sn = nodes.Pop();
-
-                if (sn is XmlElementCompileTreeNode)
+                if (node is XElement)
                 {
-                    ElementCompileTreeNode elm = new ElementCompileTreeNode(sn.XmlSourceNodeInformation);
-
-                    element.Children.Add(elm);
-
-                    lastElement = elm;
+                    result.Children.Add(BuildRec(node as XElement));
+                    continue;
                 }
-                else if (sn is ElementCompileTreeNode)
+
+                if (node is XText)
                 {
-                    element.Children.Add(sn as ElementCompileTreeNode);
-                }
-                else if (sn is PropertyCompileTreeNode)
-                {
-                    if (sn.XmlSourceNodeInformation.Name == CompilerGlobals.DefaultPropertyName)
+                    string text = (node as XText).Value;
+
+                    if (string.IsNullOrWhiteSpace(text))
                     {
-                        lastElement.DefaultProperties.Add(sn as PropertyCompileTreeNode);
+                        continue;
                     }
-                    else
-                    {
-                        lastElement.AddNamedProperty(sn as PropertyCompileTreeNode);
-                    }
+
+                    var textProperty = new PropertyCompileTreeNode(CompilerGlobals.DefaultPropertyName, debugInfo);
+                    textProperty.Value = StringResourceSystemFacade.ParseString(text);
+
+                    result.DefaultProperties.Add(textProperty);
+                    continue;
                 }
             }
 
-            _stack.Push(element);
-        }
-
-        private sealed class XmlElementCompileTreeNode : ElementCompileTreeNode
-        {
-            public XmlElementCompileTreeNode(XmlSourceNodeInformation sourceInformation)
-                : base(sourceInformation)
-            {
-            }
-        }
-
-        private sealed class XmlEndElementCompileTreeNode : ElementCompileTreeNode
-        {
-            public XmlEndElementCompileTreeNode(XmlSourceNodeInformation sourceInformation)
-                : base(sourceInformation)
-            {
-            }
+            return result;
         }
     }
 }

@@ -6,15 +6,18 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Forms.Flows.Foundation.PluginFacades;
+using Composite.C1Console.Forms.Foundation.FormTreeCompiler;
 using Composite.C1Console.Forms.WebChannel;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Xml;
 using Composite.Data.Validation.ClientValidationRules;
 
 
@@ -87,25 +90,25 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
                             List<bool> boolCounterList = new List<bool> { replacePageOutput, rerenderView };
 
-                            if (boolCounterList.Where(f => f == true).Count() > 1)
+                            if (boolCounterList.Count(f => f) > 1)
                             {
                                 StringBuilder sb = new StringBuilder("Flow returned conflicting directives for post handling:\n");
-                                if (replacePageOutput == true) sb.AppendLine(" - Replace page output with new web control.");
-                                if (rerenderView == true) sb.AppendLine(" - Rerender view.");
+                                if (replacePageOutput) sb.AppendLine(" - Replace page output with new web control.");
+                                if (rerenderView) sb.AppendLine(" - Rerender view.");
 
                                 throw new InvalidOperationException(sb.ToString());
                             }
 
-                            if (rerenderView == true)
+                            if (rerenderView)
                             {
                                 LoggingService.LogVerbose("FormFlowRendering", "Re-render requested");
                                 IFlowUiDefinition newFlowUiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken, servicesContainer);
-                                if (typeof(FlowUiDefinitionBase).IsAssignableFrom(newFlowUiDefinition.GetType()) == false)
+                                if (!(newFlowUiDefinition is FlowUiDefinitionBase))
                                     throw new NotImplementedException("Unable to handle transitions to ui definition of type " + newFlowUiDefinition.GetType());
                                 ViewTransitionHelper.HandleRerender(consoleId, elementProviderName, flowToken, formFlowUiCommand, (FlowUiDefinitionBase)newFlowUiDefinition, servicesContainer);
                             }
 
-                            if (replacePageOutput == true)
+                            if (replacePageOutput)
                             {
                                 LoggingService.LogVerbose("FormFlowRendering", "Replace pageoutput requested");
                                 IFormFlowWebRenderingService webRenderingService = formServicesContainer.GetService<IFormFlowWebRenderingService>();
@@ -118,7 +121,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
                                 Page currentPage = HttpContext.Current.Handler as Page;
 
-                                HtmlHead newHeadControl = GetNestedControls(newPageOutput).Where(f => f is HtmlHead).FirstOrDefault() as HtmlHead;
+                                HtmlHead newHeadControl = GetNestedControls(newPageOutput).FirstOrDefault(f => f is HtmlHead) as HtmlHead;
 
                                 HtmlHead oldHeadControl = currentPage.Header;
 
@@ -171,7 +174,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
                 containerEventHandlerStubs.Add(eventIdentifier.BindingName, handlerStub);
 
-                if (innerFormBindings.ContainsKey(eventIdentifier.BindingName) == true)
+                if (innerFormBindings.ContainsKey(eventIdentifier.BindingName))
                 {
                     innerFormBindings.Remove(eventIdentifier.BindingName);
                 }
@@ -179,10 +182,16 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                 innerFormBindings.Add(eventIdentifier.BindingName, handlerStub);
             }
 
+            XDocument document;
+
             using (XmlReader formMarkupReader = formMarkupProvider.GetReader())
             {
-                formCompiler.Compile(formMarkupReader, channel, innerFormBindings, debugMode, bindingsValidationRules);
+                document = XDocument.Load(formMarkupReader);
+                formMarkupReader.Close();
             }
+
+            formCompiler.Compile(document, channel, innerFormBindings, debugMode, "", bindingsValidationRules);
+
             IUiControl innerForm = formCompiler.UiControl;
 
             IUiControl customToolbarItems = null;
@@ -198,13 +207,30 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
             CurrentControlTreeRoot = (IWebUiControl)innerForm;
 
-            string containerLabel = formCompiler.Label ?? formFlowUiCommand.ContainerLabel;
+            string label = formCompiler.Label ?? formFlowUiCommand.ContainerLabel;
+            string labelField = GetFormLabelField(document);
             ResourceHandle containerIcon = formCompiler.Icon;
 
-            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, containerLabel, containerIcon);
+            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
         }
 
+        private static string GetFormLabelField(XDocument formMarkup)
+        {
+            var labelElement = formMarkup.Descendants(Namespaces.BindingForms10 + "layout.label").FirstOrDefault();
+            if (labelElement == null)
+            {
+                labelElement = formMarkup.Descendants().FirstOrDefault(e => e.Name.LocalName == "TabPanels.Label");
+            }
 
+            if (labelElement == null) return null;
+
+            
+
+            var readBinding = labelElement.Element(Namespaces.BindingForms10 + "read");
+            if(readBinding == null) return null;
+
+            return (string)readBinding.Attribute("source");
+        }
 
         private static IUiContainer GetRenderingContainer(IFormChannelIdentifier channel, IFlowUiContainerType containerIdentifier)
         {

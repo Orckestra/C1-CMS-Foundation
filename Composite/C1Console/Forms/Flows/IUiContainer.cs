@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Composite.Core.ResourceSystem;
 
 namespace Composite.C1Console.Forms.Flows
@@ -12,6 +11,7 @@ namespace Composite.C1Console.Forms.Flows
             IFormChannelIdentifier channel, 
             IDictionary<string, object> eventHandlerBindings, 
             string containerLabel,
+            string containerLabelField,
             ResourceHandle containerIcon);
     }
 }

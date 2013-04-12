@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Composite.Data.Validation.ClientValidationRules;
 using System.Collections.Generic;
 
@@ -7,7 +8,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [DebuggerDisplay("PropertyCompileTreeNode: {Name} = {Value}")]
     public sealed class PropertyCompileTreeNode : CompileTreeNode
     {
         private string _name = "";        

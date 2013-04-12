@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
 using Composite.C1Console.Forms.StandardProducerMediators.BuildinProducers;
 using Composite.Core.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
-using Composite.Functions.Foundation;
 using Composite.Functions.Forms;
 
 
@@ -135,12 +133,18 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                     ParameterInfo[] listAddParmInfo = listAddMethodInfo.GetParameters();
 
 
-                    if ((property.Value != null) && (typeof(IList).IsAssignableFrom(property.Value.GetType()) == true))
+                    if (property.Value is IList)
                     {
                         IList values = (IList)property.Value;
                         foreach (object value in values)
                         {
-                            if (false == listAddParmInfo[0].ParameterType.IsAssignableFrom(value.GetType())) throw new FormCompileException(string.Format("The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}", listAddParmInfo[0].ParameterType.ToString(), propertyName, property.Value.GetType().ToString()), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                            if (!listAddParmInfo[0].ParameterType.IsInstanceOfType(value))
+                            {
+                                throw new FormCompileException(string.Format(
+                                    "The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}", 
+                                    listAddParmInfo[0].ParameterType, propertyName, property.Value.GetType()), 
+                                    element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                            }
 
 
                             list.Add(value);
@@ -150,7 +154,13 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                     {
                         if (property.Value != null)
                         {
-                            if (false == listAddParmInfo[0].ParameterType.IsAssignableFrom(property.Value.GetType())) throw new FormCompileException(string.Format("The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}", listAddParmInfo[0].ParameterType.ToString(), propertyName, property.Value.GetType().ToString()), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                            if (!listAddParmInfo[0].ParameterType.IsInstanceOfType(property.Value))
+                            {
+                                throw new FormCompileException(string.Format(
+                                    "The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}", 
+                                    listAddParmInfo[0].ParameterType, propertyName, property.Value.GetType()), 
+                                    element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                            }
 
                             list.Add(property.Value);
                         }
@@ -186,7 +196,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                     }
 
 
-                    if ((null != property.Value) && (getMethodInfo.ReturnType.IsAssignableFrom(property.Value.GetType())))
+                    if ((null != property.Value) && (getMethodInfo.ReturnType.IsInstanceOfType(property.Value)))
                     {
                         if (typeof(IEnumerable).IsAssignableFrom(getMethodInfo.ReturnType) && getMethodInfo.ReturnType != typeof(string) && property.Value is string && ((string)property.Value).Length > 0)
                         {
@@ -197,7 +207,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
                         parm = property.Value;
                     }
-                    else if ((property.Value != null) && (property.Value is BaseRuntimeTreeNode))
+                    else if (property.Value is BaseRuntimeTreeNode)
                     {
                         if (!(element.Producer is IFunctionProducer))
                         {
@@ -218,7 +228,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                         parm = ValueTypeConverter.Convert(property.Value, getMethodInfo.ReturnType);
                     }
 
-                    if ((typeof(LayoutProducer) == element.Producer.GetType()) && (propertyName == "UiControl"))
+                    if ((element.Producer is LayoutProducer) && (propertyName == "UiControl"))
                     {
                         LayoutProducer layoutProducer = (LayoutProducer)element.Producer;
 
@@ -249,7 +259,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         private static void CheckForMultiblePropertyAdds(ElementCompileTreeNode element, string propertyName, PropertyCompileTreeNode property)
         {
-            if (true == element.AddedProperties.ContainsKey(element.CompilerId))
+            if (element.AddedProperties.ContainsKey(element.CompilerId))
             {
                 XmlSourceNodeInformation foundNode = null;
                 PropertyCompileTreeNode node = element.AddedProperties[element.CompilerId].Find(delegate(PropertyCompileTreeNode pctn)
@@ -289,7 +299,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                 EvalutePropertyBinding(element, property, compileContext, sourceGetMethodInfo, splittedSource[0], propertyPath, makeBinding);
             }
 
-            if (makeBinding == true && element.Producer is IUiControl)
+            if (makeBinding && element.Producer is IUiControl)
             {
                 if (((IUiControl)element.Producer).SourceBindingPaths == null)
                     ((IUiControl)element.Producer).SourceBindingPaths = new List<string>();
@@ -301,7 +311,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         private static void EvaluteObjectBinding(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, MethodInfo sourceGetMethodInfo, string bindSourceName, bool makeBinding)
         {
-            if (makeBinding == true)
+            if (makeBinding)
             {
                 if (compileContext.IsUniqueSourcePropertyBinding(bindSourceName) == true) throw new FormCompileException(string.Format("{0} binds to {1} which is already property bound. Object bindings to a source object which is property bound is not allowed.", element.XmlSourceNodeInformation.XPath, bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
 
@@ -324,7 +334,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                 if (bindType.IsAssignableFrom(bindingObjectType) == false) throw new FormCompileException(string.Format("The binding object named '{0}' from the input dictionary is not of expected type '{1}', but '{2}'", bindSourceName, bindType.FullName, bindingObjectType.FullName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
             }
 
-            if (makeBinding == true)
+            if (makeBinding)
             {
                 compileContext.Rebindings.Add(new CompileContext.ObjectRebinding(
                         element.Producer,

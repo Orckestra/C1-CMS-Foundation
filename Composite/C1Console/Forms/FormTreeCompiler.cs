@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
+using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
@@ -63,7 +64,18 @@ namespace Composite.C1Console.Forms
 
 
         /// <exclude />
-        public void Compile(XmlReader reader, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, bool withDebug, string customControlIdPrefix, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
+        public void Compile(XmlReader reader, IFormChannelIdentifier channel,
+                            Dictionary<string, object> bindingObjects, bool withDebug, string customControlIdPrefix,
+                            Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
+        {
+            XDocument doc = XDocument.Load(reader);
+            reader.Close();
+
+            Compile(doc, channel, bindingObjects, withDebug, customControlIdPrefix, bindingsValidationRules);
+        }
+
+        /// <exclude />
+        public void Compile(XDocument doc, IFormChannelIdentifier channel, Dictionary<string, object> bindingObjects, bool withDebug, string customControlIdPrefix, Dictionary<string, List<ClientValidationRule>> bindingsValidationRules)
         {
             _bindingObjects = bindingObjects;
 
@@ -73,15 +85,14 @@ namespace Composite.C1Console.Forms
             _context.CurrentChannel = channel;
             _context.CustomControlIdPrefix = customControlIdPrefix;
 
-            BuildFromXmlPhase buildPhase = new BuildFromXmlPhase(reader);
-            _rootCompilerNode = buildPhase.BuildTree();
+            _rootCompilerNode = BuildFromXmlPhase.BuildTree(doc);
 
             UpdateXmlInformationPhase updateInfo = new UpdateXmlInformationPhase();
             updateInfo.UpdateInformation(_rootCompilerNode);
 
             CreateProducersPhase createProducers = new CreateProducersPhase(_context);
-            createProducers.CreateProducers(_rootCompilerNode);            
-          
+            createProducers.CreateProducers(_rootCompilerNode);
+
             EvaluatePropertiesPhase evaluateProperties = new EvaluatePropertiesPhase(_context, withDebug);
             evaluateProperties.Evaluate(_rootCompilerNode);
 

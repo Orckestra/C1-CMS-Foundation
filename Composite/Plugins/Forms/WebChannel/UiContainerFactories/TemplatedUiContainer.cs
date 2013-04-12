@@ -25,7 +25,14 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
         }
 
 
-        public IUiControl Render(IUiControl innerForm, IUiControl customToolbarItems, IFormChannelIdentifier channel, IDictionary<string, object> eventHandlerBindings, string containerLabel, ResourceHandle containerIcon)
+        public IUiControl Render(
+            IUiControl innerForm, 
+            IUiControl customToolbarItems, 
+            IFormChannelIdentifier channel, 
+            IDictionary<string, object> eventHandlerBindings, 
+            string containerLabel, 
+            string containerLabelField, 
+            ResourceHandle containerIcon)
         {
             if (string.IsNullOrEmpty(_templateFormVirtualPath) == false)
             {
@@ -39,11 +46,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
                     document.Bindings.Add("CustomToolbarItems", customToolbarItems);
                 }
 
-                _webDocument = new TemplatedExecutionContainer(document, _templateUserControlType, containerLabel, containerIcon);
+                _webDocument = new TemplatedExecutionContainer(document, _templateUserControlType, containerLabel, containerLabelField, containerIcon);
             }
             else
             {
-                _webDocument = new TemplatedExecutionContainer((IWebUiControl)innerForm, _templateUserControlType, containerLabel, containerIcon);
+                _webDocument = new TemplatedExecutionContainer((IWebUiControl)innerForm, _templateUserControlType, containerLabel, containerLabelField, containerIcon);
             }
 
             return _webDocument;
@@ -62,19 +69,22 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
 
     internal class TemplatedExecutionContainer : UiControl, IWebUiControl
     {
-        IWebUiControl _form;
-        Control _messagePlaceHolder = null;
-        Type _templateUserControlType;
-        string _containerLabel;
-        ResourceHandle _containerIcon;
+        readonly IWebUiControl _form;
+        readonly Type _templateUserControlType;
+        readonly string _containerLabel;
+        readonly string _containerLabelField;
+        readonly ResourceHandle _containerIcon;
+
+        Control _messagePlaceHolder;
         TemplatedUiContainerBase _templateControl;
 
 
-        public TemplatedExecutionContainer(IWebUiControl form, Type templateUserControlType, string containerLabel, ResourceHandle containerIcon)
+        public TemplatedExecutionContainer(IWebUiControl form, Type templateUserControlType, string containerLabel, string containerLabelField, ResourceHandle containerIcon)
         {
             _form = form;
             _templateUserControlType = templateUserControlType;
             _containerLabel = containerLabel;
+            _containerLabelField = containerLabelField;
             _containerIcon = containerIcon;
         }
 
@@ -98,6 +108,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
             Control formPlaceHolder = _templateControl.GetFormPlaceHolder();
             _messagePlaceHolder = _templateControl.GetMessagePlaceHolder();
             _templateControl.SetContainerTitle(_containerLabel);
+            _templateControl.SetContainerTitleField(_containerLabelField);
             _templateControl.SetContainerIcon(_containerIcon);
             _templateControl.SetWebUiControlRef(_form);
 

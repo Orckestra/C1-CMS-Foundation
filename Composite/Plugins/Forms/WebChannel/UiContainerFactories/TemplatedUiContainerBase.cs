@@ -26,6 +26,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
         public abstract void SetContainerTitle(string title);
 
         /// <exclude />
+        public virtual void SetContainerTitleField(string titleField)
+        {
+        }
+
+        /// <exclude />
         public abstract void SetContainerIcon(ResourceHandle icon);
 
 

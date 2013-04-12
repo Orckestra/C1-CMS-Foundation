@@ -14,7 +14,8 @@
 		<form id="form1" runat="server" class="updateform updatezone">
 			<ui:editorpage id="formcontrolpage" 
             	image="<%= Server.HtmlEncode ( this.ContainerIconClientString ) %>"
-			    label="<%= Server.HtmlEncode ( this.ContainerLabel ) %>">
+			    label="<%= Server.HtmlEncode ( this.ContainerLabel ) %>"
+                labelfield="<%= Server.HtmlEncode ( this.ContainerLabelField ?? "") %>">
 			    
 				<ui:broadcasterset>
 					<ui:broadcaster id="broadcasterCanSave" isdisabled="true" />
