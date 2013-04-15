@@ -13,9 +13,7 @@ using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Forms.Flows.Foundation.PluginFacades;
-using Composite.C1Console.Forms.Foundation.FormTreeCompiler;
 using Composite.C1Console.Forms.WebChannel;
-using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using Composite.Data.Validation.ClientValidationRules;
@@ -63,107 +61,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
                 {
                     try
                     {
-                        FormTreeCompiler activeFormTreeCompiler = CurrentFormTreeCompiler;
-                        Dictionary<string, object> activeInnerFormBindings = CurrentInnerFormBindings;
-
-                        FormFlowEventHandler handler = eventHandlers[localScopeEventIdentifier];
-                        Dictionary<string, Exception> bindingErrors = activeFormTreeCompiler.SaveAndValidateControlProperties();
-
-                        formServicesContainer.AddService(new BindingValidationService(bindingErrors));
-
-                        handler.Invoke(flowToken, activeInnerFormBindings, formServicesContainer);
-
-                        if (formServicesContainer.GetService<IManagementConsoleMessageService>().CloseCurrentViewRequested == true)
-                        {
-                            ViewTransitionHelper.HandleCloseCurrentView(formFlowUiCommand.UiContainerType);
-                        }
-                        else
-                        {
-                            FormFlowRenderingService formFlowService = (FormFlowRenderingService)formServicesContainer.GetService<IFormFlowRenderingService>();
-                            bool replacePageOutput = (formServicesContainer.GetService<IFormFlowWebRenderingService>().NewPageOutput != null);
-
-                            bool rerenderView = (formFlowService.RerenderViewRequested == true);
-                            if (formFlowService.BindingPathedMessages != null)
-                            {
-                                ShowFieldMessages(CurrentControlTreeRoot, formFlowService.BindingPathedMessages, CurrentControlContainer, servicesContainer);
-                            }
-
-                            List<bool> boolCounterList = new List<bool> { replacePageOutput, rerenderView };
-
-                            if (boolCounterList.Count(f => f) > 1)
-                            {
-                                StringBuilder sb = new StringBuilder("Flow returned conflicting directives for post handling:\n");
-                                if (replacePageOutput) sb.AppendLine(" - Replace page output with new web control.");
-                                if (rerenderView) sb.AppendLine(" - Rerender view.");
-
-                                throw new InvalidOperationException(sb.ToString());
-                            }
-
-                            if (rerenderView)
-                            {
-                                LoggingService.LogVerbose("FormFlowRendering", "Re-render requested");
-                                IFlowUiDefinition newFlowUiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken, servicesContainer);
-                                if (!(newFlowUiDefinition is FlowUiDefinitionBase))
-                                    throw new NotImplementedException("Unable to handle transitions to ui definition of type " + newFlowUiDefinition.GetType());
-                                ViewTransitionHelper.HandleRerender(consoleId, elementProviderName, flowToken, formFlowUiCommand, (FlowUiDefinitionBase)newFlowUiDefinition, servicesContainer);
-                            }
-
-                            if (replacePageOutput)
-                            {
-                                LoggingService.LogVerbose("FormFlowRendering", "Replace pageoutput requested");
-                                IFormFlowWebRenderingService webRenderingService = formServicesContainer.GetService<IFormFlowWebRenderingService>();
-                                Control newPageOutput = webRenderingService.NewPageOutput;
-
-                                foreach (Control control in GetNestedControls(newPageOutput).Where(f => f is ScriptManager).ToList())
-                                {
-                                    control.Parent.Controls.Remove(control);
-                                }
-
-                                Page currentPage = HttpContext.Current.Handler as Page;
-
-                                HtmlHead newHeadControl = GetNestedControls(newPageOutput).FirstOrDefault(f => f is HtmlHead) as HtmlHead;
-
-                                HtmlHead oldHeadControl = currentPage.Header;
-
-                                ControlCollection headContainer = null;
-                                bool headersHasToBeSwitched = newHeadControl != null && oldHeadControl != null;
-                                if (headersHasToBeSwitched)
-                                {
-                                    headContainer = newHeadControl.Parent.Controls;
-                                    headContainer.Remove(newHeadControl);
-                                }
-
-                                currentPage.Controls.Clear();
-                                if (string.IsNullOrEmpty(webRenderingService.NewPageMimeType))
-                                {
-                                    currentPage.Response.ContentType = "text/html";
-                                }
-                                else
-                                {
-                                    currentPage.Response.ContentType = webRenderingService.NewPageMimeType;
-                                }
-                                currentPage.Controls.Add(newPageOutput);
-
-                                if (headersHasToBeSwitched)
-                                {
-                                    oldHeadControl.Controls.Clear();
-                                    oldHeadControl.InnerHtml = "";
-                                    oldHeadControl.InnerText = "";
-                                    if (newHeadControl.ID != null)
-                                    {
-                                        oldHeadControl.ID = newHeadControl.ID;
-                                    }
-                                    oldHeadControl.Title = newHeadControl.Title;
-
-                                    headContainer.AddAt(0, oldHeadControl);
-
-                                    foreach (Control c in newHeadControl.Controls.Cast<Control>().ToList())
-                                    {
-                                        oldHeadControl.Controls.Add(c);
-                                    }
-                                }
-                            }
-                        }
+                        BaseEventHandler(consoleId, elementProviderName, flowToken, formFlowUiCommand, servicesContainer, eventHandlers, localScopeEventIdentifier, formServicesContainer);
                     }
                     catch (Exception ex)
                     {
@@ -211,7 +109,134 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             string labelField = GetFormLabelField(document);
             ResourceHandle containerIcon = formCompiler.Icon;
 
-            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
+            //if (!labelField.IsNullOrEmpty())
+            //{
+            //    var resolvedMappings = new Dictionary<string, string>();
+            //    ResolveBindingPathToCliendIDMappings(formCompiler.UiControl as IWebUiControl, resolvedMappings);
+
+            //    Log.LogInformation("ddz test", resolvedMappings.Count.ToString());
+            //}
+
+            var result = renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
+
+            return result;
+        }
+
+        private static void BaseEventHandler(string consoleId, 
+                                             string elementProviderName, 
+                                             FlowToken flowToken,
+                                             FormFlowUiDefinition formFlowUiCommand,
+                                             FlowControllerServicesContainer servicesContainer, 
+                                             Dictionary<IFormEventIdentifier, FormFlowEventHandler> eventHandlers,
+                                             IFormEventIdentifier localScopeEventIdentifier,
+                                             FlowControllerServicesContainer formServicesContainer)
+        {
+            FormTreeCompiler activeFormTreeCompiler = CurrentFormTreeCompiler;
+            Dictionary<string, object> activeInnerFormBindings = CurrentInnerFormBindings;
+
+            FormFlowEventHandler handler = eventHandlers[localScopeEventIdentifier];
+            Dictionary<string, Exception> bindingErrors = activeFormTreeCompiler.SaveAndValidateControlProperties();
+
+            formServicesContainer.AddService(new BindingValidationService(bindingErrors));
+
+            handler.Invoke(flowToken, activeInnerFormBindings, formServicesContainer);
+
+            if (formServicesContainer.GetService<IManagementConsoleMessageService>().CloseCurrentViewRequested)
+            {
+                ViewTransitionHelper.HandleCloseCurrentView(formFlowUiCommand.UiContainerType);
+                return;
+            }
+            
+            var formFlowService = (FormFlowRenderingService) formServicesContainer.GetService<IFormFlowRenderingService>();
+            bool replacePageOutput = (formServicesContainer.GetService<IFormFlowWebRenderingService>().NewPageOutput != null);
+
+            bool rerenderView = formFlowService.RerenderViewRequested;
+            if (formFlowService.BindingPathedMessages != null)
+            {
+                ShowFieldMessages(CurrentControlTreeRoot, formFlowService.BindingPathedMessages, CurrentControlContainer,
+                                    servicesContainer);
+            }
+
+            List<bool> boolCounterList = new List<bool> {replacePageOutput, rerenderView};
+
+            if (boolCounterList.Count(f => f) > 1)
+            {
+                StringBuilder sb = new StringBuilder("Flow returned conflicting directives for post handling:\n");
+                if (replacePageOutput) sb.AppendLine(" - Replace page output with new web control.");
+                if (rerenderView) sb.AppendLine(" - Rerender view.");
+
+                throw new InvalidOperationException(sb.ToString());
+            }
+
+            if (rerenderView)
+            {
+                Log.LogVerbose("FormFlowRendering", "Re-render requested");
+                IFlowUiDefinition newFlowUiDefinition = FlowControllerFacade.GetCurrentUiDefinition(flowToken,
+                                                                                                    servicesContainer);
+                if (!(newFlowUiDefinition is FlowUiDefinitionBase))
+                    throw new NotImplementedException("Unable to handle transitions to ui definition of type " +
+                                                        newFlowUiDefinition.GetType());
+                ViewTransitionHelper.HandleRerender(consoleId, elementProviderName, flowToken, formFlowUiCommand,
+                                                    (FlowUiDefinitionBase) newFlowUiDefinition, servicesContainer);
+            }
+
+            if (replacePageOutput)
+            {
+                Log.LogVerbose("FormFlowRendering", "Replace pageoutput requested");
+                IFormFlowWebRenderingService webRenderingService =
+                    formServicesContainer.GetService<IFormFlowWebRenderingService>();
+                Control newPageOutput = webRenderingService.NewPageOutput;
+
+                foreach (Control control in GetNestedControls(newPageOutput).Where(f => f is ScriptManager).ToList())
+                {
+                    control.Parent.Controls.Remove(control);
+                }
+
+                Page currentPage = HttpContext.Current.Handler as Page;
+
+                HtmlHead newHeadControl = GetNestedControls(newPageOutput).FirstOrDefault(f => f is HtmlHead) as HtmlHead;
+
+                HtmlHead oldHeadControl = currentPage.Header;
+
+                ControlCollection headContainer = null;
+                bool headersHasToBeSwitched = newHeadControl != null && oldHeadControl != null;
+                if (headersHasToBeSwitched)
+                {
+                    headContainer = newHeadControl.Parent.Controls;
+                    headContainer.Remove(newHeadControl);
+                }
+
+                currentPage.Controls.Clear();
+                if (string.IsNullOrEmpty(webRenderingService.NewPageMimeType))
+                {
+                    currentPage.Response.ContentType = "text/html";
+                }
+                else
+                {
+                    currentPage.Response.ContentType = webRenderingService.NewPageMimeType;
+                }
+                currentPage.Controls.Add(newPageOutput);
+
+                if (headersHasToBeSwitched)
+                {
+                    oldHeadControl.Controls.Clear();
+                    oldHeadControl.InnerHtml = "";
+                    oldHeadControl.InnerText = "";
+                    if (newHeadControl.ID != null)
+                    {
+                        oldHeadControl.ID = newHeadControl.ID;
+                    }
+                    oldHeadControl.Title = newHeadControl.Title;
+
+                    headContainer.AddAt(0, oldHeadControl);
+
+                    foreach (Control c in newHeadControl.Controls.Cast<Control>().ToList())
+                    {
+                        oldHeadControl.Controls.Add(c);
+                    }
+                }
+            }
+            
         }
 
         private static string GetFormLabelField(XDocument formMarkup)
@@ -284,7 +309,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             {
                 string clientId = null;
 
-                if (pathToClientIDMappings.TryGetValue(msgElement.Key, out clientId) == true)
+                if (pathToClientIDMappings.TryGetValue(msgElement.Key, out clientId))
                 {
                     cliendIDPathedMessages.Add(clientId, msgElement.Value);
                 }
@@ -311,7 +336,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
         }
 
 
-        private static void ResolveBindingPathToCliendIDMappings(IWebUiControl webUiControl, Dictionary<string, string> resolvedMappings)
+        internal static void ResolveBindingPathToCliendIDMappings(IWebUiControl webUiControl, Dictionary<string, string> resolvedMappings)
         {
             if (webUiControl is ContainerUiControlBase)
             {

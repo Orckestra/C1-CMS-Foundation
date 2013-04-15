@@ -15,7 +15,7 @@
 			<ui:editorpage id="formcontrolpage" 
             	image="<%= Server.HtmlEncode ( this.ContainerIconClientString ) %>"
 			    label="<%= Server.HtmlEncode ( this.ContainerLabel ) %>"
-                labelfield="<%= Server.HtmlEncode ( this.ContainerLabelField ?? "") %>">
+                labelfield="<%= Server.HtmlEncode( GetTitleFieldControlId() ) %>">
 			    
 				<ui:broadcasterset>
 					<ui:broadcaster id="broadcasterCanSave" isdisabled="true" />

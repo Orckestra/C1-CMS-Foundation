@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Composite.C1Console.Forms.DataServices.UiControls;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 
 
@@ -15,6 +17,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
     public abstract class TemplatedUiContainerBase : UserControl
     {
         private IWebUiControl _webUiControl;
+        private string _titleField;
 
         /// <exclude />
         public abstract Control GetFormPlaceHolder();
@@ -26,8 +29,25 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
         public abstract void SetContainerTitle(string title);
 
         /// <exclude />
-        public virtual void SetContainerTitleField(string titleField)
+        public void SetContainerTitleField(string titleField)
         {
+            _titleField = titleField;
+        }
+
+        /// <exclude />
+        public string GetTitleFieldControlId()
+        {
+            IWebUiControl container = GetContainer();
+
+            if (_titleField.IsNullOrEmpty() || container == null) return string.Empty;
+
+            var mappings = new Dictionary<string, string>();
+
+            FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(container, mappings);
+
+            string cliendId = mappings.ContainsKey(_titleField) ? mappings[_titleField] : "";
+
+            return cliendId;
         }
 
         /// <exclude />
@@ -45,21 +65,26 @@ namespace Composite.Plugins.Forms.WebChannel.UiContainerFactories
         {
             base.OnInit(e);
 
-            if (this.IsPostBack == false)
+            if (!this.IsPostBack)
             {
                 _webUiControl.InitializeViewState();
+                return;
             }
-            else
+            
+            if (_webUiControl is EmbeddedFormUiControl)
             {
-                if (_webUiControl is EmbeddedFormUiControl)
+                var container = GetContainer();
+                if(container != null)
                 {
-                    var container = (_webUiControl as EmbeddedFormUiControl).CompiledUiControl as TemplatedContainerUiControl;
-                    if(container != null)
-                    {
-                        container.InitializeLazyBindedControls();
-                    }
+                    container.InitializeLazyBindedControls();
                 }
             }
+        }
+
+        private TemplatedContainerUiControl GetContainer()
+        {
+            var container = (_webUiControl as EmbeddedFormUiControl).CompiledUiControl as TemplatedContainerUiControl;
+            return container;
         }
 
         /// <exclude />

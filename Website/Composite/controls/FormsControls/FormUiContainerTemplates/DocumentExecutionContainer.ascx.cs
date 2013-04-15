@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient;
@@ -9,11 +8,10 @@ using Composite.Plugins.Forms.WebChannel.UiContainerFactories;
 
 public partial class Composite_Forms_DocumentExecutionContainer : TemplatedUiContainerBase
 {
-    private PlaceHolder formPlaceHolder2 = new PlaceHolder();
-    private PlaceHolder messagePlaceHolder2 = new PlaceHolder();
+    private readonly PlaceHolder formPlaceHolder2 = new PlaceHolder();
+    private readonly PlaceHolder messagePlaceHolder2 = new PlaceHolder();
 
     protected string ContainerLabel { get; private set; }
-    protected string ContainerLabelField { get; private set; }
     protected ResourceHandle ContainerIcon { get; private set; }
 
     protected string ContainerIconClientString
@@ -43,11 +41,6 @@ public partial class Composite_Forms_DocumentExecutionContainer : TemplatedUiCon
     public override void SetContainerTitle(string containerTitle)
     {
         this.ContainerLabel = containerTitle;
-    }
-
-    public override void SetContainerTitleField(string containerTitleField)
-    {
-        this.ContainerLabelField = containerTitleField;
     }
 
     public override void SetContainerIcon(ResourceHandle icon)
