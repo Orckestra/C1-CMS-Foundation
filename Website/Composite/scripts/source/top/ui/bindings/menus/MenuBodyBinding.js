@@ -133,6 +133,7 @@ MenuBodyBinding.prototype.onBindingAttach = function () {
 	this.addEventListener ( DOMEvents.MOUSEOVER );
 	this.addEventListener ( DOMEvents.MOUSEOUT );
 	this.addEventListener ( DOMEvents.MOUSEUP );
+	this.addEventListener ( DOMEvents.KEYDOWN );
 	
 	/*
 	 * Grab keyboard when left-right arrow key was 
@@ -205,6 +206,18 @@ MenuBodyBinding.prototype.handleEvent = function ( e ) {
 		case DOMEvents.MOUSEOUT :
 		case DOMEvents.MOUSEUP :
 			DOMEvents.stopPropagation ( e );
+			break;
+		case DOMEvents.KEYDOWN:
+			switch (e.keyCode) {
+				case KeyEventCodes.VK_DOWN:
+				case KeyEventCodes.VK_UP:
+				case KeyEventCodes.VK_LEFT:
+				case KeyEventCodes.VK_RIGHT:
+					DOMEvents.stopPropagation(e);
+					DOMEvents.preventDefault(e);
+					this.handleArrowKey(e.keyCode);
+					break;
+			}
 			break;
 	}
 }
