@@ -145,7 +145,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 datasElement.Add(new XAttribute("locale", cultureInfo.Name));
             }
 
-            foreach (XElement addElement in dataType.Datas)
+            foreach (XElement addElement in dataType.Dataset)
             {
                 IData data = DataFacade.BuildNew(dataType.InterfaceType);
 
@@ -306,7 +306,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         AddToAllLocales = allLocales,
                         AddToCurrentLocale = currentLocale,
                         IsDynamicAdded = isDynamicAdded,
-                        Datas = doc.Root.Elements("Add")
+                        Dataset = doc.Root.Elements("Add")
                     };
 
                     _dataTypes.Add(dataType);
@@ -352,9 +352,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
 
+            int itemsAlreadePresentInDatabase = 0;
 
-
-            foreach (XElement addElement in dataType.Datas)
+            foreach (XElement addElement in dataType.Dataset)
             {
                 DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
@@ -388,7 +388,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    if (dataType.InterfaceType.GetKeyPropertyNames().Contains(attribute.Name.LocalName) == true)
+                    if (dataType.InterfaceType.GetKeyPropertyNames().Contains(attribute.Name.LocalName))
                     {
                         object value = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
                         dataKeyPropertyCollection.AddKeyProperty(attribute.Name.LocalName, value);
@@ -402,17 +402,19 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(dataType.InterfaceType);
                     IEnumerable<string> requiredPropertyNames =
                         from dfd in dataTypeDescriptor.Fields
-                        where dfd.IsNullable == false
+                        where !dfd.IsNullable
                         select dfd.Name;
 
                     IEnumerable<string> nonRequiredPropertyNames =
                         from dfd in dataTypeDescriptor.Fields
-                        where dfd.IsNullable == true
+                        where dfd.IsNullable
                         select dfd.Name;
 
-                    if (requiredPropertyNames.Except(assignedPropertyNames.Except(nonRequiredPropertyNames)).Any())
+
+                    var notAssignedRequiredProperties = requiredPropertyNames.Except(assignedPropertyNames.Except(nonRequiredPropertyNames)).ToArray();
+                    if (notAssignedRequiredProperties.Any())
                     {
-                        foreach (string propertyName in requiredPropertyNames.Except(assignedPropertyNames.Except(nonRequiredPropertyNames)))
+                        foreach (string propertyName in notAssignedRequiredProperties)
                         {
                             PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == propertyName);
 
@@ -422,7 +424,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                 continue;
                             }
 
-                            if (propertyInfo.CanWrite == true)
+                            if (propertyInfo.CanWrite)
                             {
                                 _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingPropertyVaule").FormatWith(propertyName, dataType.InterfaceType));
                             }
@@ -431,9 +433,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
                     
-                    if ((DataLocalizationFacade.IsLocalized(dataType.InterfaceType) == false) || 
-                        ((dataType.AddToAllLocales == false) && (dataType.AddToCurrentLocale == false)) ||                          
-                        ((dataType.Locale != null) && (this.InstallerContext.IsLocalePending(dataType.Locale) == false)))
+                    if (!DataLocalizationFacade.IsLocalized(dataType.InterfaceType) 
+                        || (!dataType.AddToAllLocales && !dataType.AddToCurrentLocale) 
+                        || (dataType.Locale != null && !this.InstallerContext.IsLocalePending(dataType.Locale)))
                     {
                         using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
                         {
@@ -441,11 +443,17 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                             if (data != null)
                             {
-                                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists").FormatWith(dataType.InterfaceType));
+                                itemsAlreadePresentInDatabase++;
                             }
                         }
                     }
                 }
+            }
+
+            if(itemsAlreadePresentInDatabase > 0)
+            {
+                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists")
+                                           .FormatWith(dataType.InterfaceType, itemsAlreadePresentInDatabase));
             }
         }
 
@@ -479,7 +487,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
 
-            foreach (XElement addElement in dataType.Datas)
+            foreach (XElement addElement in dataType.Dataset)
             {
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
@@ -515,7 +523,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public bool AddToAllLocales { get; set; }
             public bool AddToCurrentLocale { get; set; }
             public bool IsDynamicAdded { get; set; }
-            public IEnumerable<XElement> Datas { get; set; }
+            public IEnumerable<XElement> Dataset { get; set; }
         }
     }
 }
