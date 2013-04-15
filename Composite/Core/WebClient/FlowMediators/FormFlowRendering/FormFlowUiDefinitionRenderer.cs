@@ -109,17 +109,7 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
             string labelField = GetFormLabelField(document);
             ResourceHandle containerIcon = formCompiler.Icon;
 
-            //if (!labelField.IsNullOrEmpty())
-            //{
-            //    var resolvedMappings = new Dictionary<string, string>();
-            //    ResolveBindingPathToCliendIDMappings(formCompiler.UiControl as IWebUiControl, resolvedMappings);
-
-            //    Log.LogInformation("ddz test", resolvedMappings.Count.ToString());
-            //}
-
-            var result = renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
-
-            return result;
+            return renderingContainer.Render(formCompiler.UiControl, customToolbarItems, channel, containerEventHandlerStubs, label, labelField, containerIcon);
         }
 
         private static void BaseEventHandler(string consoleId, 

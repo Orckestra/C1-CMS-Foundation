@@ -41,16 +41,21 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
         protected override IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
         {
             UserControl userControl = CompileFile(virtualPath);
-            
-            if(!(userControl is UserControlFunction))
+
+            if(!(userControl is UserControl))
             {
                 return null;
             }
 
-            var userControlFunction = userControl as UserControlFunction;
-            var parameters = FunctionBasedFunctionProviderHelper.GetParameters(userControlFunction, typeof(UserControlFunction), virtualPath);
+            Type baseControlType = userControl is UserControlFunction ? typeof(UserControlFunction) : typeof(UserControl);
 
-            return new UserControlBasedFunction(@namespace, name, userControlFunction.FunctionDescription, parameters, typeof(UserControl), virtualPath, this);
+            string description = userControl is UserControlFunction 
+                ? (userControl as UserControlFunction).FunctionDescription 
+                : "";
+
+            var parameters = FunctionBasedFunctionProviderHelper.GetParameters(userControl, baseControlType, virtualPath);
+
+            return new UserControlBasedFunction(@namespace, name, description, parameters, typeof(UserControl), virtualPath, this);
         }
     }
 }

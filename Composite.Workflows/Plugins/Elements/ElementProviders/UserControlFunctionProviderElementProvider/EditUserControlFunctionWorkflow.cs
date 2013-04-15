@@ -165,13 +165,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
 
                 string virtualPath = "~" + PathUtil.GetWebsitePath(tempMarkupFile);
 
-
-                UserControl userControl;
-
                 try
                 {
                     var page = new Page();
-                    userControl = (UserControl) page.LoadControl(virtualPath);
+                    Control control = page.LoadControl(virtualPath);
+
+                    if (!(control is UserControl))
+                    {
+                        ShowWarning(GetText("EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass")
+                                .FormatWith(typeof(UserControl).FullName));
+                        return false;
+                    }
                 }
                 catch(Exception ex)
                 {
@@ -195,7 +199,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
                     return false;
                 }
 
-                return Validate(userControl);
+                return true;
             }
             finally
             {
@@ -206,20 +210,6 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
                     File.Delete(tempCodeBehindFile);
                 }
             }
-        }
-
-        private bool Validate(UserControl userControl)
-        {
-            var userControlFunction = userControl as UserControlFunction;
-            if (userControlFunction == null)
-            {
-                ShowWarning(GetText("EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass")
-                            .FormatWith(typeof(UserControlFunction).FullName));
-                return false;
-            }
-
-
-            return true;
         }
 
 
