@@ -8938,6 +8938,7 @@ this.addEventListener(DOMEvents.MOUSEDOWN);
 this.addEventListener(DOMEvents.MOUSEOVER);
 this.addEventListener(DOMEvents.MOUSEOUT);
 this.addEventListener(DOMEvents.MOUSEUP);
+this.addEventListener(DOMEvents.KEYDOWN);
 var self=this;
 this.addActionListener(MenuBodyBinding.ACTION_UNHANDLED_LEFTRIGHTKEY,{handleAction:function(_6bf){
 switch(_6bf.target){
@@ -8977,6 +8978,18 @@ case DOMEvents.MOUSEOVER:
 case DOMEvents.MOUSEOUT:
 case DOMEvents.MOUSEUP:
 DOMEvents.stopPropagation(e);
+break;
+case DOMEvents.KEYDOWN:
+switch(e.keyCode){
+case KeyEventCodes.VK_DOWN:
+case KeyEventCodes.VK_UP:
+case KeyEventCodes.VK_LEFT:
+case KeyEventCodes.VK_RIGHT:
+DOMEvents.stopPropagation(e);
+DOMEvents.preventDefault(e);
+this.handleArrowKey(e.keyCode);
+break;
+}
 break;
 }
 };
