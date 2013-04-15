@@ -50,6 +50,8 @@ namespace Composite.Core.Routing
         /// <returns></returns>
         public static MediaUrlData ParseUrl(string relativeUrl, out UrlKind urlKind)
         {
+            relativeUrl = relativeUrl.Replace("%28", "(").Replace("%29", ")");
+
             if(relativeUrl.StartsWith(MediaUrl_RenderPrefix, StringComparison.OrdinalIgnoreCase)
                || relativeUrl.StartsWith(MediaUrl_UnprocessedRenderPrefix, StringComparison.OrdinalIgnoreCase))
             {
