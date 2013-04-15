@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Threading;
+using System.Web.UI;
 using Composite.Core;
 using Composite.Core.Types;
 using System.Xml.Linq;
@@ -10,7 +11,10 @@ using Composite.Core.Xml;
 namespace Composite.Functions
 {
     /// <summary>    
-    /// Used for passing parameters into nested function calls. Applicable in implementation of some of the xml template rendering logic.
+    /// Context for evaluating function calls. Functions:
+    /// 1) Container for embedded <see cref="Control"/>-s 
+    /// 2) Passing parameters into nested function calls. Applicable in xml template rendering logic.
+    /// 3) Suppressing exceptions from XHTML functions.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -54,7 +58,9 @@ namespace Composite.Functions
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Used for embeding ASP.NET controls into xhtml markup.
+        /// </summary>
         public IFunctionResultToXEmbedableMapper XEmbedableMapper { get; set; }
 
         /// <summary>

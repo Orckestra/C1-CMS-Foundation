@@ -28,7 +28,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 			        }
 		    };
 
-		    return RazorHelper.ExecuteRazorPage(VirtualPath, setParametersAction, ReturnType);
+		    return RazorHelper.ExecuteRazorPage(VirtualPath, setParametersAction, ReturnType, context);
 		}
 	}
 }

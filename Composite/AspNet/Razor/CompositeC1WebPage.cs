@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using Composite.Data;
 using System.Threading;
 using System.Collections.Generic;
+using Composite.Functions;
 
 namespace Composite.AspNet.Razor
 {
@@ -86,6 +87,14 @@ namespace Composite.AspNet.Razor
         }
 
 
+        /// <summary>
+        /// Gets the function context container.
+        /// </summary>
+        public FunctionContextContainer FunctionContextContainer
+        {
+            get { return GetFunctionContext(); }
+        }
+
 
 		/// <summary>
 		/// Executes a C1 Function.
@@ -94,7 +103,7 @@ namespace Composite.AspNet.Razor
 		/// <returns></returns>
 		public IHtmlString Function(string name)
 		{
-			return Html.C1().Function(name);
+			return Function(name, null);
 		}
 
 		/// <summary>
@@ -105,7 +114,7 @@ namespace Composite.AspNet.Razor
 		/// <returns></returns>
 		public IHtmlString Function(string name, object parameters)
 		{
-			return Html.C1().Function(name, parameters);
+            return Function(name, Functions.ObjectToDictionary(parameters));
 		}
 
 		/// <summary>
@@ -116,9 +125,19 @@ namespace Composite.AspNet.Razor
 		/// <returns></returns>
 		public IHtmlString Function(string name, IDictionary<string, object> parameters)
 		{
-			return Html.C1().Function(name, parameters);
+            return Html.C1().Function(name, parameters, GetFunctionContext());
 		}
 
+
+        private FunctionContextContainer GetFunctionContext()
+        {
+            if (!PageData.ContainsKey(RazorHelper.PageContext_FunctionContextContainer))
+            {
+                return null;
+            }
+
+            return PageData[RazorHelper.PageContext_FunctionContextContainer];
+        }
 
         /// <exclude />
 		public void Dispose()

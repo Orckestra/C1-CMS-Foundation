@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.Xml;
+using Composite.Functions;
 
 namespace Composite.AspNet.Razor
 {
@@ -16,6 +17,7 @@ namespace Composite.AspNet.Razor
     /// </summary>
     public static class RazorHelper
     {
+        internal static readonly string PageContext_FunctionContextContainer = "C1.FunctionContextContainer";
         private static readonly string ExecutionLock_ItemsKey = "__razor_execute_lock__";
         private static readonly object _lock = new object();
 
@@ -26,7 +28,11 @@ namespace Composite.AspNet.Razor
         /// <param name="setParameters">Delegate to set the parameters.</param>
         /// <param name="resultType">The type of the result.</param>
         /// <returns></returns>
-        public static object ExecuteRazorPage(string virtualPath, Action<WebPageBase> setParameters, Type resultType) 
+        public static object ExecuteRazorPage(
+            string virtualPath, 
+            Action<WebPageBase> setParameters, 
+            Type resultType, 
+            FunctionContextContainer functionContextContainer) 
         {
    			HttpContextBase httpContext;
 			object requestLock = null;
@@ -65,6 +71,10 @@ namespace Composite.AspNet.Razor
 			}
 
 			var pageContext = new WebPageContext(httpContext, webPage, startPage);
+            if (functionContextContainer != null)
+            {
+                pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
+            }
 
             if(setParameters != null)
             {
@@ -129,11 +139,14 @@ namespace Composite.AspNet.Razor
         /// <typeparam name="ResultType">The result type.</typeparam>
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="setParameters">Delegate to set the parameters.</param>
+        /// <param name="functionContextContainer">The function context container.</param>
         /// <returns></returns>
-        public static ResultType ExecuteRazorPage<ResultType>(string virtualPath, Action<WebPageBase> setParameters) 
-            where ResultType: class
+        public static ResultType ExecuteRazorPage<ResultType>(
+            string virtualPath, 
+            Action<WebPageBase> setParameters, 
+            FunctionContextContainer functionContextContainer = null) where ResultType: class
         {
-            return (ResultType) ExecuteRazorPage(virtualPath, setParameters, typeof(ResultType));
+            return (ResultType) ExecuteRazorPage(virtualPath, setParameters, typeof(ResultType), functionContextContainer);
         }
     }
 

@@ -39,14 +39,27 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
 		public static object ExecuteFunction(string name, IDictionary<string, object> parameters)
 		{
-			IFunction function;
-			if (!FunctionFacade.TryGetFunction(out function, name))
-			{
-				throw new InvalidOperationException("Failed to load function '{0}'".FormatWith(name));
-			}
-
-			return FunctionFacade.Execute<object>(function, parameters, new FunctionContextContainer());
+            return ExecuteFunction(name, parameters, new FunctionContextContainer());
 		}
+
+        /// <summary>
+        /// Executes the function.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        public static object ExecuteFunction(string name, IDictionary<string, object> parameters, FunctionContextContainer functionContextContainer)
+        {
+            IFunction function;
+            if (!FunctionFacade.TryGetFunction(out function, name))
+            {
+                throw new InvalidOperationException("Failed to load function '{0}'".FormatWith(name));
+            }
+
+            functionContextContainer = functionContextContainer ?? new FunctionContextContainer();
+
+            return FunctionFacade.Execute<object>(function, parameters, functionContextContainer);
+        }
 
         /// <summary>
         /// Builds a dictionary for object properties' values.

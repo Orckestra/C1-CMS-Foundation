@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using System.Web.UI;
 using System.Web.WebPages.Html;
 using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Data.Types;
+using Composite.Functions;
 
 namespace Composite.AspNet.Razor
 {
@@ -282,9 +284,48 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
         public IHtmlString Function(string name, IDictionary<string, object> parameters)
         {
-            object result = Functions.ExecuteFunction(name, parameters);
+            return Function(name, parameters, new FunctionContextContainer());
+        }
+
+        /// <summary>
+        /// Executes a C1 Function.
+        /// </summary>
+        /// <param name="name">Function name.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="functionContext">The function context container</param>
+        /// <returns></returns>
+        public IHtmlString Function(string name, IDictionary<string, object> parameters, FunctionContextContainer functionContext)
+        {
+            object result = Functions.ExecuteFunction(name, parameters, functionContext);
+            if (result is Control)
+            {
+                return EmbedControl(result, functionContext);
+            }
 
             return ConvertFunctionResult(result);
+        }
+
+        private static IHtmlString EmbedControl(object result, FunctionContextContainer functionContext)
+        {
+            if (functionContext == null)
+            {
+                throw new ArgumentNullException("functionContext",
+                                                "Failed to insert UserControl without FunctionContextContainer");
+            }
+
+            if (functionContext.XEmbedableMapper == null)
+            {
+                throw new ArgumentException("functionContext",
+                                            "Failed to insert UserControl. functionContextContainer.XEmbedableMapper is null");
+            }
+
+            XNode resultNode;
+            if (!functionContext.XEmbedableMapper.TryMakeXEmbedable(functionContext, result, out resultNode))
+            {
+                throw new InvalidOperationException("Failed to insert control. Type: " + result.GetType());
+            }
+
+            return new HtmlString(resultNode.ToString());
         }
 
         private static IHtmlString ConvertFunctionResult(object result)
