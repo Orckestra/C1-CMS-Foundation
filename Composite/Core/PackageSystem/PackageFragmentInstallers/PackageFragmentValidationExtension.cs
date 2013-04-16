@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
     internal static class PackageFragmentValidationExtension
     {
+        internal static void AddFatal(this IList<PackageFragmentValidationResult> validationResults, Exception exception)
+        {
+            validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception));
+        }
+
         internal static void AddFatal(this IList<PackageFragmentValidationResult> validationResults, string message)
         {
             validationResults.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, message));

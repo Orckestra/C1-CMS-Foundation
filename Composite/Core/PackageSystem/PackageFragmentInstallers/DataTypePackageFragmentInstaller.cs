@@ -74,7 +74,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     catch(Exception ex)
                     {
                         validationResult.AddFatal(GetText("DataTypePackageFragmentInstaller.InterfaceCodeError").FormatWith(type));
-                        validationResult.AddFatal(ex.Message);
+                        validationResult.AddFatal(ex);
 
                         Log.LogError(LogTitle, ex);
                     }
