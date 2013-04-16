@@ -43,7 +43,7 @@
   <string key="DataTypePackageFragmentInstaller.TypeNotConfigured" value="The data interface type '{0}' has not been configured in the system" />
   <string key="DataTypePackageFragmentInstaller.TypeNotInheriting" value="The data interface type '{0}' does not inherit the interface '{1}'" />
   <string key="DataTypePackageFragmentInstaller.TypeExists" value="The interface type '{0}' is already exists in the system" />
-  <string key="DataTypePackageFragmentInstaller.InterfaceCodeError" value="The interface type '{0}' is not coded correctly" />
+  <string key="DataTypePackageFragmentInstaller.InterfaceCodeError" value="Failed to build a data type descriptor for interface '{0}'" />
   <string key="DataTypePackageFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
   <string key="DataTypePackageFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="DataTypePackageFragmentUninstaller.WrongAttributeFormat" value="Wrong attribute format in the configuration" />

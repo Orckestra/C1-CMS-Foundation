@@ -18,7 +18,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     public sealed class DataTypePackageFragmentInstaller : BasePackageFragmentInstaller
 	{
         private List<DataTypeDescriptor> _typesToInstall = null;
-
+        private static readonly string LogTitle = typeof (DataTypePackageFragmentInstaller).FullName;
 
 
         /// <exclude />
@@ -55,11 +55,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 {
                     validationResult.AddFatal(GetText("DataTypePackageFragmentInstaller.TypeNotConfigured").FormatWith(nameAttribute.Value));
                 }
-                else if (typeof(IData).IsAssignableFrom(type) == false)
+                else if (!typeof(IData).IsAssignableFrom(type))
                 {
                     validationResult.AddFatal(GetText("DataTypePackageFragmentInstaller.TypeNotInheriting").FormatWith(type, typeof(IData)));
                 }
-                else if (DataFacade.GetAllKnownInterfaces().Contains(type) == true)
+                else if (DataFacade.GetAllKnownInterfaces().Contains(type))
                 {
                     validationResult.AddFatal(GetText("DataTypePackageFragmentInstaller.TypeExists").FormatWith(type));
                 }
@@ -71,9 +71,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
                         dataTypeDescriptor.Validate();
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         validationResult.AddFatal(GetText("DataTypePackageFragmentInstaller.InterfaceCodeError").FormatWith(type));
+                        validationResult.AddFatal(ex.Message);
+
+                        Log.LogError(LogTitle, ex);
                     }
 
                     if (dataTypeDescriptor != null)

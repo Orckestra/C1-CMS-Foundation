@@ -27,6 +27,7 @@ namespace Composite.AspNet.Razor
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="setParameters">Delegate to set the parameters.</param>
         /// <param name="resultType">The type of the result.</param>
+        /// <param name="functionContextContainer">The function context container</param>
         /// <returns></returns>
         public static object ExecuteRazorPage(
             string virtualPath, 

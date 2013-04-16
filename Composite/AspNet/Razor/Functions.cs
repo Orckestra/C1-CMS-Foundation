@@ -47,6 +47,7 @@ namespace Composite.AspNet.Razor
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="parameters">The parameters.</param>
+        /// <param name="functionContextContainer">The function context container</param>
         /// <returns></returns>
         public static object ExecuteFunction(string name, IDictionary<string, object> parameters, FunctionContextContainer functionContextContainer)
         {
