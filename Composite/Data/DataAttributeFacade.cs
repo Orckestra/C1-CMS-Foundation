@@ -369,7 +369,7 @@ namespace Composite.Data
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.InterfaceTypeToDataReferencePropertyInfoes.TryGetValue(interfaceType, out foreignKeyProperyInfos) == false)
+                if (_resourceLocker.Resources.InterfaceTypeToDataReferenceProperties.TryGetValue(interfaceType, out foreignKeyProperyInfos) == false)
                 {
                     foreignKeyProperyInfos = new List<ForeignPropertyInfo>();
 
@@ -416,7 +416,7 @@ namespace Composite.Data
                         }
                     }
 
-                    _resourceLocker.Resources.InterfaceTypeToDataReferencePropertyInfoes.Add(interfaceType, foreignKeyProperyInfos);
+                    _resourceLocker.Resources.InterfaceTypeToDataReferenceProperties.Add(interfaceType, foreignKeyProperyInfos);
                 }
             }
 
@@ -583,7 +583,7 @@ namespace Composite.Data
             public Dictionary<Type, bool> InterfaceToNotReferenceableCache { get; set; }
             public Dictionary<Type, KeyValuePair<MethodInfo, string>> InterfaceTypeToLabelMethodInfoCache { get; set; }
             public Hashtable<Type, CachingType> InterfaceTypeToCachingTypeCache { get; set; }
-            public Dictionary<Type, List<ForeignPropertyInfo>> InterfaceTypeToDataReferencePropertyInfoes { get; set; }
+            public Dictionary<Type, List<ForeignPropertyInfo>> InterfaceTypeToDataReferenceProperties { get; set; }
             public Dictionary<Type, List<PropertyInfo>> InterfaceTypeToKeyProeprtyInfoes { get; set; }
             public Dictionary<Type, string> InterfaceTypeToTypeTitle { get; set; }
 
@@ -597,7 +597,7 @@ namespace Composite.Data
                 resources.InterfaceToNotReferenceableCache = new Dictionary<Type, bool>();
                 resources.InterfaceTypeToLabelMethodInfoCache = new Dictionary<Type, KeyValuePair<MethodInfo, string>>();
                 resources.InterfaceTypeToCachingTypeCache = new Hashtable<Type, CachingType>();
-                resources.InterfaceTypeToDataReferencePropertyInfoes = new Dictionary<Type, List<ForeignPropertyInfo>>();
+                resources.InterfaceTypeToDataReferenceProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
                 resources.InterfaceTypeToKeyProeprtyInfoes = new Dictionary<Type, List<PropertyInfo>>();
                 resources.InterfaceTypeToTypeTitle = new Dictionary<Type, string>();
             }

@@ -33,6 +33,7 @@
   <string key="DataPackageFragmentInstaller.MissingTypeDescriptor" value="Missing data type descriptor for the type {0}" />
   <string key="DataPackageFragmentInstaller.TypeNonLocalizedWithLocale" value="The data type '{0}' is not localized but a locale is specified in the configuration" />
   <string key="DataPackageFragmentInstaller.TypeLocalizedWithoutLocale" value="The data type '{0}' is localized but no locale is specified in the configuration" />
+  <string key="DataPackageFragmentInstaller.ReferencedDataMissing" value="Referenced data missing. Type: {0}, {1}: '{2}'" />
   <string key="DataPackageFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
   <string key="DataPackageFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="DataPackageFragmentUninstaller.MissingKeyProperty" value="The data type '{0}' does not contain a key property named '{1}" />

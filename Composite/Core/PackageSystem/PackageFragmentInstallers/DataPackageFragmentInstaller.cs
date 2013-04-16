@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -22,14 +23,18 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataPackageFragmentInstaller : BasePackageFragmentInstaller
     {
-        private List<DataType> _dataTypes = null;
-        private List<PackageFragmentValidationResult> _validationResult = null;
+        private List<DataType> _dataTypes;
+        private List<PackageFragmentValidationResult> _validationResult;
 
+        private Dictionary<Type, TypeKeyInstallationData> _dataKeysToBeInstalled;
+        private Dictionary<Type, HashSet<KeyValuePair<string, object>>> _missingDataReferences;
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
             _validationResult = new List<PackageFragmentValidationResult>();
+            _dataKeysToBeInstalled = new Dictionary<Type, TypeKeyInstallationData>();
+            _missingDataReferences = new Dictionary<Type, HashSet<KeyValuePair<string, object>>>();
 
             if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
@@ -46,7 +51,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 dataType.InterfaceType = TypeManager.TryGetType(dataType.InterfaceTypeName);
 
 
-                if (dataType.IsDynamicAdded == false)
+                if (!dataType.IsDynamicAdded)
                 {
                     ValidateNonDynamicAddedType(dataType);
                 }
@@ -76,7 +81,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 Log.LogVerbose("DataPackageFragmentInstaller", string.Format("Installing data for the type '{0}'", dataType.InterfaceType));
 
-                if (dataType.IsDynamicAdded == true)
+                if (dataType.IsDynamicAdded)
                 {
                     dataType.InterfaceType = TypeManager.GetType(dataType.InterfaceTypeName);
                 }
@@ -109,7 +114,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     else if (dataType.Locale != null)
                     {
-                        if (DataLocalizationFacade.ActiveLocalizationCultures.Contains(dataType.Locale) == true)
+                        if (DataLocalizationFacade.ActiveLocalizationCultures.Contains(dataType.Locale))
                         {
                             using (new DataScope(dataType.Locale))
                             {
@@ -208,10 +213,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingAttribute").FormatWith("type"), typeElement);
                     continue;
                 }
-                else
-                {
-                    interfaceTypeName = typeAttribute.Value;
-                }
+                
+                interfaceTypeName = typeAttribute.Value;
 
                 foreach (XElement dataElement in typeElement.Elements("Data"))
                 {
@@ -328,122 +331,167 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
             
 
-            if (typeof(IData).IsAssignableFrom(dataType.InterfaceType) == false)
+            if (!typeof(IData).IsAssignableFrom(dataType.InterfaceType))
             {
                 _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNotInheriting").FormatWith(dataType.InterfaceType, typeof(IData)));
                 return;
             }
 
-            if (DataLocalizationFacade.IsLocalized(dataType.InterfaceType) == false)
+            bool dataTypeLocalized = DataLocalizationFacade.IsLocalized(dataType.InterfaceType);
+            if (!ValidateTargetLocaleInfo(dataType, dataTypeLocalized))
             {
-                if ((dataType.Locale != null) || dataType.AddToAllLocales || dataType.AddToCurrentLocale)
-                {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType));
-                    return;
-                }
-            }
-            else
-            {
-                if ((dataType.Locale == null) && (dataType.AddToAllLocales == false) && (dataType.AddToCurrentLocale == false))
-                {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType, typeof(IData)));
-                    return;
-
-                }
+                return;
             }
 
             int itemsAlreadePresentInDatabase = 0;
+
+
+            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(dataType.InterfaceType);
+
+            List<string> requiredPropertyNames =
+                (from dfd in dataTypeDescriptor.Fields
+                where !dfd.IsNullable
+                select dfd.Name).ToList();
+
+            List<string> nonRequiredPropertyNames =
+                (from dfd in dataTypeDescriptor.Fields
+                where dfd.IsNullable
+                select dfd.Name).ToList();
+
 
             foreach (XElement addElement in dataType.Dataset)
             {
                 DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
-                bool validated = true;
-                List<string> assignedPropertyNames = new List<string>();
+                bool propertyValidationPassed = true;
+                var assignedPropertyNames = new List<string>();
+                var fieldValues = new Dictionary<string, object>();
+
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
                     PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().FirstOrDefault(f => f.Name == attribute.Name);
                     if (propertyInfo == null)
                     {
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataType.InterfaceType, attribute.Name));
-                        validated = false;
+                        propertyValidationPassed = false;
                         continue;
                     }
 
                     if (propertyInfo.CanWrite == false)
                     {
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingWritableProperty").FormatWith(dataType.InterfaceType, attribute.Name));
-                        validated = false;
+                        propertyValidationPassed = false;
                         continue;
                     }
-                    
+
+                    object fieldValue;
                     try
                     {
-                        ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
+                        fieldValue = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
                     }
                     catch (Exception)
                     {
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.ConversionFailed").FormatWith(attribute.Value, propertyInfo.PropertyType));
-                        validated = false;
+                        propertyValidationPassed = false;
                         continue;
                     }
+                    string fieldName = attribute.Name.LocalName;
 
-                    if (dataType.InterfaceType.GetKeyPropertyNames().Contains(attribute.Name.LocalName))
+                    if (dataType.InterfaceType.GetKeyPropertyNames().Contains(fieldName))
                     {
-                        object value = ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType);
-                        dataKeyPropertyCollection.AddKeyProperty(attribute.Name.LocalName, value);
+                        dataKeyPropertyCollection.AddKeyProperty(fieldName, fieldValue);
                     }
 
                     assignedPropertyNames.Add(attribute.Name.LocalName);
+                    fieldValues.Add(fieldName, fieldValue);
                 }
 
-                if (validated)
+                if (!propertyValidationPassed)
                 {
-                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(dataType.InterfaceType);
-                    IEnumerable<string> requiredPropertyNames =
-                        from dfd in dataTypeDescriptor.Fields
-                        where !dfd.IsNullable
-                        select dfd.Name;
-
-                    IEnumerable<string> nonRequiredPropertyNames =
-                        from dfd in dataTypeDescriptor.Fields
-                        where dfd.IsNullable
-                        select dfd.Name;
+                    continue;
+                }
 
 
-                    var notAssignedRequiredProperties = requiredPropertyNames.Except(assignedPropertyNames.Except(nonRequiredPropertyNames)).ToArray();
-                    if (notAssignedRequiredProperties.Any())
+                var notAssignedRequiredProperties = requiredPropertyNames.Except(assignedPropertyNames.Except(nonRequiredPropertyNames)).ToArray();
+                if (notAssignedRequiredProperties.Any())
+                {
+                    foreach (string propertyName in notAssignedRequiredProperties)
                     {
-                        foreach (string propertyName in notAssignedRequiredProperties)
+                        PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == propertyName);
+
+                        // Made for backward compatibility
+                        if (propertyInfo.ReflectedType == typeof(IChangeHistory))
                         {
-                            PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == propertyName);
-
-                            // Made for backward compatibility
-                            if (propertyInfo.ReflectedType == typeof(IChangeHistory))
-                            {
-                                continue;
-                            }
-
-                            if (propertyInfo.CanWrite)
-                            {
-                                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingPropertyVaule").FormatWith(propertyName, dataType.InterfaceType));
-                            }
+                            continue;
                         }
+
+                        if (propertyInfo.CanWrite)
+                        {
+                            _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingPropertyVaule").FormatWith(propertyName, dataType.InterfaceType));
+                        }
+                    }
+                    continue;
+                }
+
+
+                // Validating keys already present    
+                if (!DataLocalizationFacade.IsLocalized(dataType.InterfaceType) 
+                    || (!dataType.AddToAllLocales && !dataType.AddToCurrentLocale) 
+                    || (dataType.Locale != null && !this.InstallerContext.IsLocalePending(dataType.Locale)))
+                {
+                    using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
+                    {
+                        IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
+
+                        if (data != null)
+                        {
+                            itemsAlreadePresentInDatabase++;
+                        }
+                    }
+                }
+
+                RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+
+                // Checking foreign key references
+                foreach (var foreignKeyProperty in DataAttributeFacade.GetDataReferenceProperties(dataType.InterfaceType))
+                {
+                    if(!fieldValues.ContainsKey(foreignKeyProperty.SourcePropertyName)) continue;
+
+                    object propertyValue = fieldValues[foreignKeyProperty.SourcePropertyName];
+                    
+                    if (propertyValue == null || propertyValue == foreignKeyProperty.NullReferenceValue)
+                    {
                         continue;
                     }
 
-                    
-                    if (!DataLocalizationFacade.IsLocalized(dataType.InterfaceType) 
-                        || (!dataType.AddToAllLocales && !dataType.AddToCurrentLocale) 
-                        || (dataType.Locale != null && !this.InstallerContext.IsLocalePending(dataType.Locale)))
-                    {
-                        using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
-                        {
-                            IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
+                    // Checking key in the keys to be installed
+                    var keyValuePair = new KeyValuePair<string, object>(foreignKeyProperty.TargetKeyPropertyName, propertyValue);
 
-                            if (data != null)
+                    if (!_missingDataReferences.ContainsKey(dataType.InterfaceType) 
+                        || !_missingDataReferences[dataType.InterfaceType].Contains(keyValuePair))
+                    {
+                        if (_dataKeysToBeInstalled.ContainsKey(foreignKeyProperty.TargetType))
+                        {
+                            if (_dataKeysToBeInstalled[foreignKeyProperty.TargetType].KeyRegistered(dataType, keyValuePair))
                             {
-                                itemsAlreadePresentInDatabase++;
+                                continue;
+                            }
+                        }
+
+                        using (GetDataScopeFromDataTypeElement(dataType))
+                        {
+                            if (DataFacade.TryGetDataByUniqueKey(foreignKeyProperty.TargetType, propertyValue) == null)
+                            {
+                                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.ReferencedDataMissing")
+                                    .FormatWith(foreignKeyProperty.TargetType.FullName, foreignKeyProperty.TargetKeyPropertyName, propertyValue));
+
+                                if (!_missingDataReferences.ContainsKey(dataType.InterfaceType))
+                                {
+                                    _missingDataReferences.Add(dataType.InterfaceType, new HashSet<KeyValuePair<string, object>>());
+                                }
+
+                                _missingDataReferences[dataType.InterfaceType].Add(keyValuePair);
+                                continue;
                             }
                         }
                     }
@@ -452,11 +500,30 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if(itemsAlreadePresentInDatabase > 0)
             {
-                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists")
-                                           .FormatWith(dataType.InterfaceType, itemsAlreadePresentInDatabase));
+                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists").FormatWith(dataType.InterfaceType, itemsAlreadePresentInDatabase));
             }
         }
 
+        private DataScope GetDataScopeFromDataTypeElement(DataType dataType)
+        {
+            CultureInfo locale = dataType.Locale ?? LocalizationScopeManager.CurrentLocalizationScope;
+            
+            return new DataScope(dataType.DataScopeIdentifier, locale);
+        }
+
+        private void RegisterKeyToBeAdded(DataType dataType, DataKeyPropertyCollection dataKeyPropertyCollection)
+        {
+            if (dataKeyPropertyCollection.Count != 1) return;
+
+            if (!_dataKeysToBeInstalled.ContainsKey(dataType.InterfaceType))
+            {
+                _dataKeysToBeInstalled.Add(dataType.InterfaceType, new TypeKeyInstallationData(dataType.InterfaceType));
+            }
+
+            var keyValuePair = dataKeyPropertyCollection.KeyProperties.First();
+
+            _dataKeysToBeInstalled[dataType.InterfaceType].RegisterKeyUsage(dataType, keyValuePair);
+        }
 
 
         private void ValidateDynamicAddedType(DataType dataType)
@@ -469,22 +536,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return;
             }
 
-            if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(ILocalizedControlled)) == false)
-            {
-                if ((dataType.Locale != null) || dataType.AddToAllLocales || dataType.AddToCurrentLocale)
-                {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType, typeof(IData)));
-                    return;
-                }
-            }
-            else
-            {
-                if ((dataType.Locale == null) && (dataType.AddToAllLocales == false) && (dataType.AddToCurrentLocale == false))
-                {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType, typeof(IData)));
-                    return;
+            bool dataTypeLocalized = dataTypeDescriptor.SuperInterfaces.Contains(typeof (ILocalizedControlled));
 
-                }
+            if (!ValidateTargetLocaleInfo(dataType, dataTypeLocalized))
+            {
+                return;
             }
 
             foreach (XElement addElement in dataType.Dataset)
@@ -512,7 +568,29 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
         }
 
+        private bool ValidateTargetLocaleInfo(DataType dataType, bool dataTypeLocalized)
+        {
+            bool localeInfoSpecified = dataType.Locale != null || dataType.AddToAllLocales || dataType.AddToCurrentLocale;
 
+            if (dataTypeLocalized)
+            {
+                if (!localeInfoSpecified)
+                {
+                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType));
+                    return false;
+                }
+            }
+            else
+            {
+                if (localeInfoSpecified)
+                {
+                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType));
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         private sealed class DataType
         {
@@ -524,6 +602,129 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public bool AddToCurrentLocale { get; set; }
             public bool IsDynamicAdded { get; set; }
             public IEnumerable<XElement> Dataset { get; set; }
+        }
+
+        /// <summary>
+        /// Information about data keys to be installed for a gived data type
+        /// </summary>
+        [DebuggerDisplay("TypeKeyInstallationData {_type.FullName} . DataScopes: {_dataScopes.Count}")]
+        private class TypeKeyInstallationData
+        {
+            private const string AllLocalesKey = "all";
+
+            private readonly bool _isLocalized;
+            private readonly bool _isPublishable;
+            private readonly Type _type;
+            private readonly Dictionary<string, HashSet<KeyValuePair<string, object>>> _dataScopes = new Dictionary<string, HashSet<KeyValuePair<string, object>>>();
+
+            public TypeKeyInstallationData(Type type)
+            {
+                _isLocalized = DataLocalizationFacade.IsLocalized(type);
+                _isPublishable = typeof(IPublishControlled).IsAssignableFrom(type);
+                _type = type;
+            }
+
+            public void RegisterKeyUsage(DataType dataType, KeyValuePair<string, object> keyValuePair)
+            {
+                var dataScopeIdentifier = dataType.DataScopeIdentifier;
+
+                if (!_isLocalized)
+                {
+                    RegisterKeyUsage("", dataScopeIdentifier, keyValuePair);
+                    return;
+                }
+
+                if (dataType.AddToCurrentLocale)
+                {
+                    RegisterKeyUsage(LocalizationScopeManager.CurrentLocalizationScope.Name, dataScopeIdentifier, keyValuePair);
+                    return;
+                }
+
+                if (dataType.Locale != null)
+                {
+                    RegisterKeyUsage(dataType.Locale.Name, dataScopeIdentifier, keyValuePair);
+                    return;
+                }
+
+                if (dataType.AddToAllLocales)
+                {
+                    RegisterKeyUsage(AllLocalesKey, dataScopeIdentifier, keyValuePair);
+                    return;
+                }
+
+                throw new InvalidOperationException("Type is localized but no localization info specified");
+            }
+
+            private void RegisterKeyUsage(string localeName, DataScopeIdentifier publicationScope, KeyValuePair<string, object> keyValuePair)
+            {
+                string dataScopeKey = GetDataScopeKey(publicationScope, localeName);
+
+                if (!_dataScopes.ContainsKey(dataScopeKey))
+                {
+                    _dataScopes.Add(dataScopeKey, new HashSet<KeyValuePair<string, object>>());
+                }
+
+                var hashset = _dataScopes[dataScopeKey];
+
+                Verify.That(!hashset.Contains(keyValuePair), "Item with the same key present twice. {0}, value {1}", keyValuePair.Key, keyValuePair.Value ?? "null");
+
+                hashset.Add(keyValuePair);
+            }
+
+            public bool KeyRegistered(DataType referencedDataType, KeyValuePair<string, object> keyValuePair)
+            {
+                var dataScopeIdentifier = referencedDataType.DataScopeIdentifier;
+
+                if (!_isLocalized)
+                {
+                    return KeyRegistered(dataScopeIdentifier, "", keyValuePair);
+                }
+
+                if (referencedDataType.Locale != null)
+                {
+                    return KeyRegistered(referencedDataType.DataScopeIdentifier, referencedDataType.Locale.Name, keyValuePair);
+                }
+
+                if (referencedDataType.AddToCurrentLocale)
+                {
+                    var currentLocale = LocalizationScopeManager.CurrentLocalizationScope;
+                    return KeyRegistered(referencedDataType.DataScopeIdentifier, currentLocale.Name, keyValuePair);
+                }
+
+                return KeyRegistered(referencedDataType.DataScopeIdentifier, AllLocalesKey, keyValuePair);
+            }
+
+            public bool KeyRegistered(DataScopeIdentifier publicationScope, string languageName, KeyValuePair<string, object> keyValuePair)
+            {
+                HashSet<KeyValuePair<string, object>> hashset;
+
+                if (languageName != AllLocalesKey && _isLocalized)
+                {
+                    hashset = GetDataset(publicationScope, languageName);
+                    if (hashset != null && hashset.Contains(keyValuePair))
+                    {
+                        return true;
+                    }
+                }
+
+                hashset = GetDataset(publicationScope, AllLocalesKey);
+                return hashset != null && hashset.Contains(keyValuePair);
+            }
+
+            private HashSet<KeyValuePair<string, object>> GetDataset(DataScopeIdentifier publicationScope, string localizationScope)
+            {
+                string key = GetDataScopeKey(publicationScope, localizationScope);
+
+                return _dataScopes.ContainsKey(key) ? _dataScopes[key] : null;
+            }
+
+            private string GetDataScopeKey(DataScopeIdentifier publicationScope, string languageName)
+            {
+                string publicationScopeKey = _isPublishable ? publicationScope.Name : string.Empty;
+                string languageScopeKey = _isLocalized ? languageName : string.Empty;
+
+                return publicationScopeKey + languageScopeKey;
+            }
         }
     }
 }

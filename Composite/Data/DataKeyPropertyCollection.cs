@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Reflection;
-using Composite.Core.Types;
+using System.Text;
 
 
 namespace Composite.Data
@@ -14,7 +12,7 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataKeyPropertyCollection
     {
-        private Dictionary<string, object> _keyProperties = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _keyProperties = new Dictionary<string, object>();
 
         /// <exclude />
         public DataKeyPropertyCollection()
