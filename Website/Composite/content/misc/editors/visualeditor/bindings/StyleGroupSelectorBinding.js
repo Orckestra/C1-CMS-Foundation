@@ -2,7 +2,6 @@
 StyleGroupSelectorBinding.prototype.constructor = StyleGroupSelectorBinding;
 StyleGroupSelectorBinding.superclass = EditorSelectorBinding.prototype;
 
-
 /**
 * Block format controller.
 * @implements {IWysiwygEditorComponent}
@@ -58,7 +57,17 @@ StyleGroupSelectorBinding.prototype.buildDOMContent = function() {
 		return f2.priority - f1.priority;
 	});
 	this.priorities = new List(array);
-	this.hide();
+
+	var list = new List();
+
+	this.priorities.each(function (format) {
+		var name = format.select.label;
+		var value = format.id;
+		var notes = format.notes;
+		list.add(new SelectorBindingSelection(name, value, null, null, notes));
+	}, this);
+
+	this.populateFromList(list);
 
 };
 

@@ -193,7 +193,8 @@ Format.prototype = {
 			inline		: Format.get ( "inline" ),
 			block 		: Format.get ( "block" ),
 			classes 	: Format.get ( "classes" ), 
-			selector 	: Format.get ( "selector" )
+			selector 	: Format.get ( "selector" ),
+			groupclasses: Format.get ( "groupclasses" )
 		};
 		
 		// primitive validation
