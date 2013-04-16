@@ -106,6 +106,19 @@
         <select />
       </format>
     </radiogroup>
+
+
+		<radiogroup>
+			<format id="well" label="Well" image="" notes="" groupclasses="well">
+				<select />
+			</format>
+			<format id="two-columns" label="2 columns" image="" notes="" groupclasses="two-columns">
+				<select />
+			</format>
+			<format id="three-columns" label="3 columns" image="" notes="" groupclasses="three-columns">
+				<select />
+			</format>
+		</radiogroup>
     
   </formats>
 </visualeditor>

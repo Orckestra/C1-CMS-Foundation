@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="bindings/VisualEditorStatusBarBinding.js"></script>
 		<script type="text/javascript" src="bindings/FormatSelectorBinding.js"></script>
 		<script type="text/javascript" src="bindings/ClassNameSelectorBinding.js"></script>
+		<script type="text/javascript" src="bindings/StyleGroupSelectorBinding.js"></script>
 		<script type="text/javascript" src="bindings/VisualEditorInsertToolbarButtonBinding.js"></script>
 		<script type="text/javascript" src="bindings/VisualEditorInsertPlusFieldsToolBarButtonBinding.js"></script>
 		<script type="text/javascript" src="bindings/VisualEditorPropertiesToolBarGroupBinding.js"></script>

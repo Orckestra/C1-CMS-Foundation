@@ -160,6 +160,7 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlembedded\htmlembedded.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\razor\razor.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
+    <Content Include="Composite\content\misc\editors\visualeditor\bindings\StyleGroupSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\autolink\editor_plugin_src.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tiny_mce\plugins\compositeimageresize\editor_plugin.js" />
