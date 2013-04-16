@@ -172,6 +172,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+
         private static void ExportChildNodes(IEnumerable<XNode> nodes, Control containerControl, IXElementToControlMapper controlMapper)
         {
             foreach (var childNode in nodes)
@@ -179,26 +180,31 @@ namespace Composite.Core.WebClient.Renderings.Page
                 if (childNode is XElement)
                 {
                     containerControl.Controls.Add(((XElement)childNode).AsAspNetControl(controlMapper));
+                    continue;
                 }
-                else
+
+                if (childNode is XCData)
                 {
-                    if (childNode is XText)
-                    {
-                        LiteralControl literal = new LiteralControl(childNode.ToString());
-                        containerControl.Controls.Add(literal);
-                    }
-                    else
-                    {
-                        if (childNode is XComment)
-                        {
-                            containerControl.Controls.Add(new LiteralControl(childNode.ToString() + "\n"));
-                        }
-                        else
-                        {
-                            throw new NotImplementedException(string.Format("Unhandled XNode type '{0}'", childNode.GetType()));
-                        }
-                    }
+                    XCData cdata = (XCData)childNode;
+                    LiteralControl literal = new LiteralControl(cdata.Value);
+                    containerControl.Controls.Add(literal);
+                    continue;
                 }
+
+                if (childNode is XText)
+                {
+                    LiteralControl literal = new LiteralControl(childNode.ToString());
+                    containerControl.Controls.Add(literal);
+                    continue;
+                }
+
+                if (childNode is XComment)
+                {
+                    containerControl.Controls.Add(new LiteralControl(childNode.ToString() + "\n"));
+                    continue;
+                }
+
+                throw new NotImplementedException(string.Format("Unhandled XNode type '{0}'", childNode.GetType()));
             }
         }
 
@@ -291,7 +297,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             // needed to make asp.net pick up on most recent page descripotion set on Page.Header.Description. Also moves it up below title which is sweet.
             var descriptionControl = headControl.Controls.OfType<HtmlMeta>().Where(f => f.Name == "description").FirstOrDefault();
-            if (descriptionControl!=null)
+            if (descriptionControl != null)
             {
                 headControl.Controls.Remove(descriptionControl);
                 int insertAt = Math.Min(headControl.Controls.Count, 1);
@@ -315,7 +321,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 bool remove = IsDuplicate(uniqueIdValues, c.ClientID);
 
-                if (c.Controls.Count==0)
+                if (c.Controls.Count == 0)
                 {
                     switch (c.TagName.ToLower())
                     {
