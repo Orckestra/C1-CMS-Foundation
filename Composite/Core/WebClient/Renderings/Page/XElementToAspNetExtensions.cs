@@ -1,14 +1,16 @@
-﻿using System.Web.UI.HtmlControls;
-using System.Xml.Linq;
-using System.Web.UI;
-using System.Linq;
-using System;
-using Composite.Core.Xml;
-using System.Web.UI.WebControls;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using Composite.Core.Instrumentation;
+using System.Linq;
+using System.Text;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Xml.Linq;
 
+using Composite.Core.Instrumentation;
+using Composite.Core.Xml;
 
 
 namespace Composite.Core.WebClient.Renderings.Page
@@ -16,7 +18,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class XElementToAspNetExtensions
     {
         /// <exclude />
@@ -165,7 +167,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     default:
                         return true;
                 }
-            } 
+            }
             return false;
         }
 
@@ -212,12 +214,12 @@ namespace Composite.Core.WebClient.Renderings.Page
                     target.ID = attribute.Value;
                     continue;
                 }
-                
+
                 if (attribute.Name.Namespace == Namespaces.XmlNs)
                 {
                     string namespaceName = attribute.Value;
 
-                    if (namespaceName != "http://www.w3.org/1999/xhtml" 
+                    if (namespaceName != "http://www.w3.org/1999/xhtml"
                         && !namespaceName.StartsWith("http://www.composite.net/ns"))
                     {
                         target.Attributes.Add(string.Format("xmlns:{0}", attribute.Name.LocalName), attribute.Value);
@@ -230,7 +232,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 if (localName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
                 {
                     string htmlAttributeName;
-                    
+
                     if (attribute.Name.Namespace != source.Name.Namespace
                         && attribute.Name.Namespace.NamespaceName != string.Empty)
                     {
@@ -249,22 +251,138 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-
-        private static HtmlHead BuildHtmlHeadControl(this XhtmlDocument xhtmlDocument, IXElementToControlMapper controlMapper)
+        internal static void MergeToHeadControl(this XhtmlDocument xhtmlDocument, HtmlHead headControl, IXElementToControlMapper controlMapper)
         {
             XElement headSource = xhtmlDocument.Head;
 
-            HtmlHead headControl = new HtmlHead();
+            if (headSource == null) return;
+
             CopyAttributes(headSource, headControl);
 
             XElement titleElement = headSource.Elements(Namespaces.Xhtml + "title").LastOrDefault();
             if (titleElement != null)
             {
+                HtmlTitle existingControl = headControl.Controls.OfType<HtmlTitle>().FirstOrDefault();
+
+                if (existingControl != null)
+                {
+                    headControl.Controls.Remove(existingControl);
+                }
+
                 // NOTE: we aren't using headControl.Title property since it adds "<title>" tag as the last one
-                headControl.Controls.Add(new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
+                headControl.Controls.AddAt(0, new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
             }
 
-            ExportChildNodes(headSource.Nodes().Where(f => ((f is XElement) == false || ((XElement)f).Name != Namespaces.Xhtml + "title")), headControl, controlMapper);
+            var metaTags = headSource.Elements().Where(f => f.Name == Namespaces.Xhtml + "meta");
+            int metaTagPosition = Math.Min(1, headControl.Controls.Count);
+            foreach (var metaTag in metaTags)
+            {
+                HtmlMeta metaControl = new HtmlMeta();
+                foreach (var attribute in metaTag.Attributes())
+                {
+                    metaControl.Attributes.Add(attribute.Name.LocalName, attribute.Value);
+                }
+                headControl.Controls.AddAt(metaTagPosition++, metaControl);
+            }
+
+            ExportChildNodes(headSource.Nodes().Where(f => ((f is XElement) == false || ((XElement)f).Name != Namespaces.Xhtml + "title" && ((XElement)f).Name != Namespaces.Xhtml + "meta")), headControl, controlMapper);
+
+            headControl.RemoveDuplicates();
+
+            // needed to make asp.net pick up on most recent page descripotion set on Page.Header.Description. Also moves it up below title which is sweet.
+            var descriptionControl = headControl.Controls.OfType<HtmlMeta>().Where(f => f.Name == "description").FirstOrDefault();
+            if (descriptionControl!=null)
+            {
+                headControl.Controls.Remove(descriptionControl);
+                int insertAt = Math.Min(headControl.Controls.Count, 1);
+                headControl.Controls.AddAt(insertAt, descriptionControl);
+            }
+        }
+
+
+
+        private static void RemoveDuplicates(this HtmlHead headControl)
+        {
+            HashSet<string> uniqueIdValues = new HashSet<string>();
+            HashSet<string> uniqueMetaNameValues = new HashSet<string>();
+            HashSet<string> uniqueMetaPropertyValues = new HashSet<string>();
+            HashSet<string> uniqueScriptAttributes = new HashSet<string>();
+            HashSet<string> uniqueLinkAttributes = new HashSet<string>();
+
+            var htmlControls = headControl.Controls.OfType<HtmlControl>().Reverse().ToList();
+
+            foreach (HtmlControl c in htmlControls)
+            {
+                bool remove = IsDuplicate(uniqueIdValues, c.ClientID);
+
+                if (c.Controls.Count==0)
+                {
+                    switch (c.TagName.ToLower())
+                    {
+                        case "meta":
+                            remove = remove || IsDuplicate(uniqueMetaNameValues, c.Attributes["name"]);
+                            remove = remove || IsDuplicate(uniqueMetaPropertyValues, c.Attributes["property"]);
+                            break;
+                        case "script":
+                            remove = remove || IsDuplicate(uniqueScriptAttributes, c.AttributesAsString());
+                            break;
+                        case "link":
+                            remove = remove || IsDuplicate(uniqueLinkAttributes, c.AttributesAsString());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                if (remove)
+                {
+                    headControl.Controls.Remove(c);
+                }
+            }
+        }
+
+
+        private static string AttributesAsString(this HtmlControl c)
+        {
+            List<string> keys = new List<string>();
+            IEnumerator keysEnum = c.Attributes.Keys.GetEnumerator();
+
+            while (keysEnum.MoveNext())
+                keys.Add((string)keysEnum.Current);
+
+            StringBuilder str = new StringBuilder(c.ClientID);
+
+            foreach (string key in keys.OrderBy(f => f))
+            {
+                str.Append(key);
+                str.Append("=\"");
+                str.Append(c.Attributes[key]);
+                str.Append("\" ");
+            }
+
+            return str.ToString();
+        }
+
+        private static bool IsDuplicate(HashSet<string> uniqueList, string uniqueString)
+        {
+            if (!string.IsNullOrEmpty(uniqueString))
+            {
+                if (uniqueList.Contains(uniqueString))
+                {
+                    return true;
+                }
+
+                uniqueList.Add(uniqueString);
+            }
+
+            return false;
+        }
+
+        private static HtmlHead BuildHtmlHeadControl(this XhtmlDocument xhtmlDocument, IXElementToControlMapper controlMapper)
+        {
+            HtmlHead headControl = new HtmlHead();
+
+            xhtmlDocument.MergeToHeadControl(headControl, controlMapper);
 
             return headControl;
         }

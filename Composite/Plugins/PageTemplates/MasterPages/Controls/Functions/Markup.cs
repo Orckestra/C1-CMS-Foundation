@@ -76,12 +76,9 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 
                 AddNodesAsControls(xhmlDocument.Body.Nodes(), this, controlMapper);
 
-                var headElement = xhmlDocument.Head;
-                var headControl = Page.Header;
-
-                if (headElement != null && headControl != null)
+                if (Page.Header != null)
                 {
-                    MergeHeadSection(headElement, headControl, controlMapper);
+                    MergeHeadSection(xhmlDocument, Page.Header, controlMapper);
                 }
             }
 
@@ -89,26 +86,12 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
         }
 
 
-        private void MergeHeadSection(XElement headElement, HtmlHead headControl, IXElementToControlMapper controlMapper)
+        private void MergeHeadSection(XhtmlDocument xhtmlDocument, HtmlHead headControl, IXElementToControlMapper controlMapper)
         {
-            headElement.CopyAttributes(headControl);
+            xhtmlDocument.MergeToHeadControl(headControl, controlMapper);
 
-            XName titleXName = Namespaces.Xhtml + "title";
-
-            XElement titleElement = headElement.Elements(titleXName).LastOrDefault();
-            if (titleElement != null)
-            {
-                HtmlTitle existingControl = headControl.Controls.OfType<HtmlTitle>().FirstOrDefault();
-
-                if (existingControl != null)
-                {
-                    headControl.Controls.Remove(existingControl);
-                }
-
-                headControl.Controls.Add(new HtmlTitle { Text = HttpUtility.HtmlEncode(titleElement.Value) });
-            }
-
-            if (headElement.Elements(Namespaces.Xhtml + "meta").Any(x => (string)x.Attribute("name") == "description"))
+            // handling custom master page head control locally - removing it if a generic meta description tag was in the document
+            if (headControl.Controls.OfType<HtmlMeta>().Any(f=>f.Name=="description"))
             {
                 var existingDescriptionMetaTag = headControl.Controls.OfType<DescriptionMetaTag>().FirstOrDefault();
                 if (existingDescriptionMetaTag != null)
@@ -116,9 +99,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                     headControl.Controls.Remove(existingDescriptionMetaTag);
                 }
             }
-
-            var nodesExceptTitle = headElement.Nodes().Where(node => !(node is XElement) || ((node as XElement).Name != titleXName));
-            AddNodesAsControls(nodesExceptTitle, headControl, controlMapper);
         }
 
         

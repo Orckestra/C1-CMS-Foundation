@@ -28,10 +28,6 @@ namespace Composite.Core.WebClient.Renderings.Page
     public static class PageRenderer
     {
         private static readonly string LogTitle = typeof (PageRenderer).Name;
-
-        // private static readonly XNamespace _aspNetControlReferenceNamespace = "#asp.net.control";
-        // private static readonly XName _aspNetControlReference = _aspNetControlReferenceNamespace + "control";
-
         private static readonly NameBasedAttributeComparer _nameBasedAttributeComparer = new NameBasedAttributeComparer();
 
 
@@ -375,7 +371,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 {
                     elem.ReplaceWith(
                         new XElement(Namespaces.Xhtml + "meta",
-                            new XAttribute("name", "Description"),
+                            new XAttribute("name", "description"),
                             new XAttribute("content", page.Description)));
                 }
                 else
@@ -503,50 +499,6 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
-        private class HeadNodeFilter
-        {
-            readonly HashSet<string> _alreadyUsed = new HashSet<string>();
-
-            public  IEnumerable<XNode> Filter(IEnumerable<XNode> headElements)
-            {
-                foreach (XNode node in headElements)
-                {
-                    var element = node as XElement;
-
-                    if (element != null)
-                    {
-                        // Skipping elements with already used "id" attributes
-                        var idAttr = element.Attribute("id");
-                        if (idAttr != null)
-                        {
-                            string id = idAttr.Value;
-
-                            if (_alreadyUsed.Contains(id))
-                            {
-                                continue;
-                            }
-
-                            _alreadyUsed.Add(id);
-                        }
-                        //else
-                        //{
-                        //    string localName = element.Name.LocalName;
-                        //    if (localName == "link" || (localName == "script" && element.Attribute("src") != null))
-                        //    {
-                        //        string text = element.ToString();
-                        //        if (_alreadyUsed.Contains(text))
-                        //        {
-                        //            continue;
-                        //        }
-
-                        //        _alreadyUsed.Add(text);
-                        //    }
-                        //}
-                    }
-                    yield return node;
-                }
-            }
-        }
 
 
         private class NameBasedAttributeComparer : IEqualityComparer<XAttribute>
@@ -565,13 +517,6 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <exclude />
         public static void NormalizeXhtmlDocument(XhtmlDocument rootDocument)
         {
-            var headNodeFilter = new HeadNodeFilter();
-
-            List<XNode> filteredHeadNodes = headNodeFilter.Filter(rootDocument.Head.Nodes()).ToList();
-            rootDocument.Head.Nodes().Remove();
-
-            filteredHeadNodes.ForEach(node => rootDocument.Head.Add(node));
-
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 XElement nestedDocument = rootDocument.Root.Descendants(Namespaces.Xhtml + "html").FirstOrDefault();
@@ -581,7 +526,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     XhtmlDocument nestedXhtml = new XhtmlDocument(nestedDocument);
 
                     rootDocument.Root.Add(nestedXhtml.Root.Attributes().Except(rootDocument.Root.Attributes(), _nameBasedAttributeComparer));
-                    rootDocument.Head.Add(headNodeFilter.Filter(nestedXhtml.Head.Nodes()));
+                    rootDocument.Head.Add(nestedXhtml.Head.Nodes());
                     rootDocument.Head.Add(nestedXhtml.Head.Attributes().Except(rootDocument.Head.Attributes(), _nameBasedAttributeComparer));
                     rootDocument.Body.Add(nestedXhtml.Body.Attributes().Except(rootDocument.Body.Attributes(), _nameBasedAttributeComparer));
 

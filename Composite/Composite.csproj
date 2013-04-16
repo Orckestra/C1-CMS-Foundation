@@ -642,6 +642,8 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Plugins\Functions\FunctionProviders\MethodBasedFunctionProvider\NotLoadedMethodBasedFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Html\Template\MetaDescriptionValueFunction.cs" />
+    <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Html\Template\HtmlTitleValueFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Dictionary\EnumerableToDictionary.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Utils\Dictionary\XElementsToDictionaryFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\StandardFunctionProvider\Web\Html\Template\PageTemplateFeatureFunction.cs" />

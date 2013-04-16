@@ -10,7 +10,9 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
         /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
-            writer.WriteEncodedText(PageRenderer.CurrentPage.Title);
+            string pageTitle = string.IsNullOrWhiteSpace(Page.Title) ? PageRenderer.CurrentPage.Title : Page.Title;
+            writer.WriteEncodedText(pageTitle);
+            this.Page.Title = pageTitle;
         }
     }
 }

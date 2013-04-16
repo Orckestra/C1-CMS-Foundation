@@ -11,8 +11,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Rendering
         /// <exclude />
         protected override void Render(HtmlTextWriter writer)
         {
-            string description = PageRenderer.CurrentPage.Description;
-            if(string.IsNullOrEmpty(description)) return;
+            string description = Page.Header.Description;
+
+            if (string.IsNullOrWhiteSpace(description))
+            {
+                description = PageRenderer.CurrentPage.Description;
+            }
+
+            if(string.IsNullOrWhiteSpace(description)) return;
 
             writer.AddAttribute("name", "description");
             writer.AddAttribute("content", description, true);
