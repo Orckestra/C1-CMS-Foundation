@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Web;
 using System.Web.UI;
 
 using Composite.Data;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Html.Template
@@ -23,15 +23,18 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 WidgetFunctionProvider textboxWidget = StandardWidgetFunctions.TextAreaWidget;
 
-                yield return new StandardFunctionParameterProfile("prefixToRemove", typeof(string), false, new ConstantValueProvider(""), textboxWidget);
-                yield return new StandardFunctionParameterProfile("postfixToRemove", typeof(string), false, new ConstantValueProvider(""), textboxWidget);
+                yield return new StandardFunctionParameterProfile("PrefixToRemove", typeof(string), false, new ConstantValueProvider(""), textboxWidget);
+                yield return new StandardFunctionParameterProfile("PostfixToRemove", typeof(string), false, new ConstantValueProvider(""), textboxWidget);
             }
         }
 
         
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            return new TitleControl { PrefixToRemove = parameters.GetParameter<string>("prefixToRemove"), PostfixToRemove = parameters.GetParameter<string>("postfixToRemove") };
+            return new TitleControl { 
+                PrefixToRemove = parameters.GetParameter<string>("PrefixToRemove"), 
+                PostfixToRemove = parameters.GetParameter<string>("PostfixToRemove") 
+            };
         }
 
         private class TitleControl : Control
@@ -43,6 +46,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 string pageTitle = this.Page.Title;
 
+                if (string.IsNullOrWhiteSpace(pageTitle) && SiteMap.CurrentNode != null)
+                {
+                    pageTitle = SiteMap.CurrentNode.Title;
+                }
+            
                 if (string.IsNullOrWhiteSpace(pageTitle))
                 {
                     using (DataConnection connection = new DataConnection())
@@ -64,7 +72,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 }
 
                 writer.Write(pageTitle);
-
             }
         }
     }

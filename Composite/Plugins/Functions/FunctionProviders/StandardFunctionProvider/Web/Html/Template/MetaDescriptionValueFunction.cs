@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Web;
 using System.Web.UI;
 
 using Composite.Data;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Foundation;
-
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider.Web.Html.Template
@@ -28,6 +27,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             protected override void Render(HtmlTextWriter writer)
             {
                 string description = Page.Header.Description;
+
+                if (string.IsNullOrWhiteSpace(description) && SiteMap.CurrentNode != null)
+                {
+                    description = SiteMap.CurrentNode.Title;
+                }
 
                 if (string.IsNullOrWhiteSpace(description))
                 {

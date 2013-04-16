@@ -277,6 +277,12 @@
   <string key="Composite.Web.Html.Template.PageTemplateFeature.description" value="Includes a named Page Template Feature at this location. Page Template Features can contain HTML and functional snippets and are managed on the Layout perspective." />
   <string key="Composite.Web.Html.Template.PageTemplateFeature.param.FeatureName.label" value="Feature name" />
   <string key="Composite.Web.Html.Template.PageTemplateFeature.param.FeatureName.help" value="The name of the Page Template Feature you wish to include." />
+	<string key="Composite.Web.Html.Template.HtmlTitleValue.description" value="Emits the 'definitive title' of the current page; the same value that ends up in the page title tag. This title may originate from the page being rendered or from a C1 Function/ASP.NET control which changed the title to match specific data being featured on the page." />
+	<string key="Composite.Web.Html.Template.HtmlTitleValue.param.PrefixToRemove.label" value="Prefix to be removed" />
+	<string key="Composite.Web.Html.Template.HtmlTitleValue.param.PrefixToRemove.help" value="If the HTML title has a prefix value you wish to get rid of, specify the prefix here. If the prefix is not found in the title, this value is ignored." />
+	<string key="Composite.Web.Html.Template.HtmlTitleValue.param.PostfixToRemove.label" value="Postfix to be removed" />
+	<string key="Composite.Web.Html.Template.HtmlTitleValue.param.PostfixToRemove.help" value="If the HTML title has a postfix value you wish to get rid of, specify the postfix here. If the postfix is not found in the title, this value is ignored." />
+	<string key="Composite.Web.Html.Template.MetaDescriptionValue.description" value="Emits the 'definitive description' of the current page; the same value that ends up in the page meta description tag. This value may originate from the page being rendered or from a C1 Function/ASP.NET control which changed the description to match specific data being featured on the page." />
 
 
   <string key="Composite.Web.Request.CookieValue.description" value="Gets a value from the current users cookie collection." />
