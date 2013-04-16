@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 using Composite.Data.DynamicTypes;
 using Composite.Core.IO.Zip;
 using System.Globalization;
@@ -14,17 +14,16 @@ namespace Composite.Core.PackageSystem
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PackageInstallerContext
     {
-        private Dictionary<string, DataTypeDescriptor> _pendingDataTypeDescriptors = new Dictionary<string, DataTypeDescriptor>();
-        private List<Type> _pendingDataTypes = new List<Type>();
-        private List<Assembly> _pendingAssemblies = new List<Assembly>();
-        private List<CultureInfo> _pendingLocales = new List<CultureInfo>();
+        private readonly Dictionary<string, DataTypeDescriptor> _pendingDataTypeDescriptors = new Dictionary<string, DataTypeDescriptor>();
+        private readonly List<Type> _pendingDataTypes = new List<Type>();
+        private readonly List<CultureInfo> _pendingLocales = new List<CultureInfo>();
 
 
         internal PackageInstallerContext(IZipFileSystem zipFileSystem, string tempDirectory, PackageInformation packageInformation)
         {
-            if (zipFileSystem == null) throw new ArgumentNullException("zipFileSystem");
-            if (string.IsNullOrEmpty(tempDirectory) == true) throw new ArgumentNullException("tempDirectory");
-            if (packageInformation == null) throw new ArgumentNullException("packageInformation");
+            Verify.ArgumentNotNull(zipFileSystem, "zipFileSystem");
+            Verify.ArgumentNotNullOrEmpty(tempDirectory, "tempDirectory");
+            Verify.ArgumentNotNull(packageInformation, "packageInformation");
 
             this.ZipFileSystem = zipFileSystem;
             this.TempDirectory = tempDirectory;
@@ -52,8 +51,8 @@ namespace Composite.Core.PackageSystem
         /// <param name="dataTypeDescriptor"></param>
         public void AddPendingDataTypeDescritpor(string interfaceName, DataTypeDescriptor dataTypeDescriptor)
         {
-            if (string.IsNullOrEmpty(interfaceName) == true) throw new ArgumentNullException("interfaceName");
-            if (dataTypeDescriptor == null) throw new ArgumentNullException("dataTypeDescriptor");
+            Verify.ArgumentNotNullOrEmpty(interfaceName, "interfaceName");
+            Verify.ArgumentNotNull(dataTypeDescriptor, "dataTypeDescriptor");
 
             _pendingDataTypeDescriptors.Add(interfaceName, dataTypeDescriptor);
         }
@@ -68,13 +67,20 @@ namespace Composite.Core.PackageSystem
         /// <returns></returns>
         public DataTypeDescriptor GetPendingDataTypeDescriptor(string interfaceName)
         {
-            if (string.IsNullOrEmpty(interfaceName) == true) throw new ArgumentNullException("interfaceName");
+            Verify.ArgumentNotNullOrEmpty(interfaceName, "interfaceName");
+            
 
             DataTypeDescriptor dataTypeDescriptor;
 
-            _pendingDataTypeDescriptors.TryGetValue(interfaceName, out dataTypeDescriptor);
+            if (_pendingDataTypeDescriptors.TryGetValue(interfaceName, out dataTypeDescriptor))
+            {
+                return dataTypeDescriptor;
+            }
 
-            return dataTypeDescriptor;
+            Type interfaceType = _pendingDataTypes.FirstOrDefault(type => type.FullName == interfaceName);
+            if (interfaceType == null) return null;
+
+            return DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
         }
 
 
@@ -82,7 +88,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public void AddPendingDataType(Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
             if (_pendingDataTypes.Contains(interfaceType) == false)
             {
@@ -95,9 +101,18 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public bool IsDataTypePending(Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
             return _pendingDataTypes.Contains(interfaceType);
+        }
+
+
+        /// <exclude />
+        public bool IsDataTypePending(string typeName)
+        {
+            Verify.ArgumentNotNull(typeName, "typeName");
+
+            return _pendingDataTypes.Any(type => type.FullName == typeName);
         }
 
 
@@ -105,7 +120,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public void AddPendingLocale(CultureInfo locale)
         {
-            if (locale == null) throw new ArgumentNullException("locale");
+            Verify.ArgumentNotNull(locale, "locale");
 
             _pendingLocales.Add(locale);
         }
@@ -115,7 +130,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public bool IsLocalePending(CultureInfo locale)
         {
-            if (locale == null) throw new ArgumentNullException("locale");
+            Verify.ArgumentNotNull(locale, "locale");
 
             return _pendingLocales.Contains(locale);
         }

@@ -51,13 +51,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 dataType.InterfaceType = TypeManager.TryGetType(dataType.InterfaceTypeName);
 
 
-                if (!dataType.IsDynamicAdded)
+                if (dataType.IsDynamicAdded || this.InstallerContext.IsDataTypePending(dataType.InterfaceTypeName))
                 {
-                    ValidateNonDynamicAddedType(dataType);
+                    ValidateDynamicAddedType(dataType);
                 }
                 else
                 {
-                    ValidateDynamicAddedType(dataType);
+                    ValidateNonDynamicAddedType(dataType);
                 }
             }
 
@@ -592,6 +592,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return true;
         }
 
+        [DebuggerDisplay("{InterfaceTypeName}")]
         private sealed class DataType
         {
             public string InterfaceTypeName { get; set; }
