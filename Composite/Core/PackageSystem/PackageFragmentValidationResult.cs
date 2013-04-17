@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Xml.Linq;
 using Composite.Core.Xml;
@@ -20,9 +18,9 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public PackageFragmentValidationResult(PackageFragmentValidationResultType validationResult, Exception exception)
         {
-            if (exception == null) throw new ArgumentNullException("exception");
+            Verify.ArgumentNotNull(exception, "exception");
 
-            if (exception.GetType() == typeof(TargetInvocationException))
+            if (exception is TargetInvocationException)
             {
                 exception = exception.InnerException;
             }
@@ -45,7 +43,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public PackageFragmentValidationResult(PackageFragmentValidationResultType validationResult, string message, XObject configurationObject)
         {
-            if (string.IsNullOrEmpty(message) == true) throw new ArgumentNullException("message");
+            Verify.ArgumentNotNullOrEmpty(message, "message");
 
             this.ValidationResult = validationResult;
             this.Message = message;

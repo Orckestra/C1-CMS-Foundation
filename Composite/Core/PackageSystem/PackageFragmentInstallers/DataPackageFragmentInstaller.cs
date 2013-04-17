@@ -74,16 +74,20 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            if (_dataTypes == null) throw new InvalidOperationException("DataPackageFragmentInstaller has not been validated");
+            Verify.IsNotNull(_dataTypes, "DataPackageFragmentInstaller has not been validated");
 
             List<XElement> typeElements = new List<XElement>();
             foreach (DataType dataType in _dataTypes)
             {
                 Log.LogVerbose("DataPackageFragmentInstaller", string.Format("Installing data for the type '{0}'", dataType.InterfaceType));
 
-                if (dataType.IsDynamicAdded)
+                if (dataType.IsDynamicAdded || dataType.InterfaceType == null)
                 {
-                    dataType.InterfaceType = TypeManager.GetType(dataType.InterfaceTypeName);
+                    dataType.InterfaceType = this.InstallerContext.IsDataTypePending(dataType.InterfaceTypeName)
+                        ? this.InstallerContext.GetPendingDataType(dataType.InterfaceTypeName)
+                        : TypeManager.GetType(dataType.InterfaceTypeName);
+
+                    Verify.IsNotNull(dataType.InterfaceType, "Failed to get interface type by name: '{0}'", dataType.InterfaceTypeName);
                 }
 
                 XElement typeElement = new XElement("Type",
@@ -140,6 +144,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         }
 
 
+        private static Type GetInstalledVersionOfPendingType(Type interfaceType, IData data)
+        {
+            return data.GetType().GetInterfaces().FirstOrDefault(i => i.FullName == interfaceType.FullName);
+        }
+
 
         private static XElement AddDatas(DataType dataType, CultureInfo cultureInfo)
         {
@@ -153,6 +162,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             foreach (XElement addElement in dataType.Dataset)
             {
                 IData data = DataFacade.BuildNew(dataType.InterfaceType);
+
+                if (!dataType.InterfaceType.IsInstanceOfType(data))
+                {
+                    dataType.InterfaceType = GetInstalledVersionOfPendingType(dataType.InterfaceType, data);
+                }
 
                 foreach (XAttribute attribute in addElement.Attributes())
                 {

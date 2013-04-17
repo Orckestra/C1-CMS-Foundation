@@ -116,6 +116,12 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        /// <exclude />
+        public Type GetPendingDataType(string typeName)
+        {
+            return _pendingDataTypes.FirstOrDefault(type => type.FullName == typeName);
+        }
+
 
         /// <exclude />
         public void AddPendingLocale(CultureInfo locale)
