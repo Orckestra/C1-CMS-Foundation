@@ -6,8 +6,9 @@ using Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvi
 
 namespace Composite.C1Console.Elements
 {
-    // This class is dependend on the values in the configuration
-    /// <exclude />
+    /// <summary>
+    /// Expose ElementTokens for common C1 Console perspectives and folders
+    /// </summary>
     public sealed class AttachingPoint
     {
         private static AttachingPoint _rootPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "ID01", Source = "VirtualElementProvider" };
@@ -22,25 +23,48 @@ namespace Composite.C1Console.Elements
         private static AttachingPoint _systemPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "SystemPerspective", Source = "VirtualElementProvider" };
 
 
-        /// <exclude />
+        /// <summary>
+        /// Attaching point for the C1 Console Root
+        /// </summary>
         public static AttachingPoint PerspectivesRoot { get { return _rootPerspectiveAttachingPoint; } }
 
-        /// <exclude />
+        /// <summary>
+        /// Attaching point for the C1 Console Content perspective
+        /// </summary>
         public static AttachingPoint ContentPerspective { get { return _contentPerspectiveAttachingPoint; } }
-        /// <exclude />
+
+        /// <summary>
+        /// Attaching point for the Website Items folder in the C1 Console Content perspective
+        /// </summary>
         public static AttachingPoint ContentPerspectiveWebsiteItems { get { return _contentPerspectiveWebsiteItemsAttachingPoint; } }
 
-        /// <exclude />
+        /// <summary>
+        /// Attaching point for the C1 Console Media perspective
+        /// </summary>
+        /// 
         public static AttachingPoint MediaPerspective { get { return _mediaPerspectiveAttachingPoint; } }
-        /// <exclude />
+
+        /// <summary>
+        /// Attaching point for the C1 Console Data perspective
+        /// </summary>
         public static AttachingPoint DataPerspective { get { return _dataPerspectiveAttachingPoint; } }
+
         /// <exclude />
         public static AttachingPoint DesignPerspective { get { return _designPerspectiveAttachingPoint; } }
-        /// <exclude />
+
+        /// <summary>
+        /// Attaching point for the C1 Console Layout perspective
+        /// </summary>
         public static AttachingPoint LayoutPerspective { get { return _designPerspectiveAttachingPoint; } }
-        /// <exclude />
+
+        /// <summary>
+        /// Attaching point for the C1 Console Function perspective
+        /// </summary>
         public static AttachingPoint FunctionPerspective { get { return _functionPerspectiveAttachingPoint; } }
-        /// <exclude />
+
+        /// <summary>
+        /// Attaching point for the C1 Console System perspective
+        /// </summary>
         public static AttachingPoint SystemPerspective { get { return _systemPerspectiveAttachingPoint; } }
 
 
@@ -66,7 +90,10 @@ namespace Composite.C1Console.Elements
         internal string Id { get; set; }
         internal string Source { get; set; }
 
-        /// <exclude />
+
+        /// <summary>
+        /// The <see cref="EntityToken"/> for this attachment point
+        /// </summary>
         public EntityToken EntityToken
         {
             get
