@@ -283,6 +283,8 @@
 	<string key="Composite.Web.Html.Template.HtmlTitleValue.param.PostfixToRemove.label" value="Postfix to be removed" />
 	<string key="Composite.Web.Html.Template.HtmlTitleValue.param.PostfixToRemove.help" value="If the HTML title has a postfix value you wish to get rid of, specify the postfix here. If the postfix is not found in the title, this value is ignored." />
 	<string key="Composite.Web.Html.Template.MetaDescriptionValue.description" value="Emits the 'definitive description' of the current page; the same value that ends up in the page meta description tag. This value may originate from the page being rendered or from a C1 Function/ASP.NET control which changed the description to match specific data being featured on the page." />
+	<string key="Composite.Web.Html.Template.MetaDescriptionValue.param.Element.label" value="Element to wrap description" />
+	<string key="Composite.Web.Html.Template.MetaDescriptionValue.param.Element.help" value="To have the description wrapped in an element (like &lt;p class=&quot;description&quot; /&gt;) specify it here. The element with only be emitted when a description text exist." />
 
 
   <string key="Composite.Web.Request.CookieValue.description" value="Gets a value from the current users cookie collection." />
