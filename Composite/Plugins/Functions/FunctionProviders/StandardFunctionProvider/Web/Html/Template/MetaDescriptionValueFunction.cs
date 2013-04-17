@@ -51,7 +51,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 if (string.IsNullOrWhiteSpace(description) && SiteMap.CurrentNode != null)
                 {
-                    description = SiteMap.CurrentNode.Title;
+                    description = SiteMap.CurrentNode.Description;
                 }
 
                 if (string.IsNullOrWhiteSpace(description))
