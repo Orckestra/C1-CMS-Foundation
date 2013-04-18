@@ -93,7 +93,7 @@ namespace Composite.Core.WebClient
             if(!compositePath.IsNullOrEmpty())
             {
                 // Parsing a friendly media url
-                int separatorIndex = compositePath.IndexOf(":");
+                int separatorIndex = compositePath.IndexOf(":", System.StringComparison.Ordinal);
                 if (separatorIndex < 0 || separatorIndex == compositePath.Length - 1) throw new InvalidOperationException();
 
                 storeId = compositePath.Substring(0, separatorIndex);
@@ -109,6 +109,8 @@ namespace Composite.Core.WebClient
                     }
                     else
                     {
+                        compositePath = compositePath.Replace("://", ":/");
+
                         result = GetFileByCompositePath(storeId, compositePath);
                     }
                 }
@@ -124,7 +126,7 @@ namespace Composite.Core.WebClient
 
                 if (storeId.IsNullOrEmpty() || idStr.IsNullOrEmpty())
                 {
-                    throw new ArgumentNullException("Missing id from query");
+                    throw new InvalidOperationException("Missing id from query");
                 }
 
                 Guid id = new Guid(idStr);
