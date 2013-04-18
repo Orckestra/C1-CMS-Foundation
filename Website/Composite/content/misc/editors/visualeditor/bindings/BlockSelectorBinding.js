@@ -116,15 +116,22 @@ BlockSelectorBinding.prototype.initializeComponent = function(editor, engine, in
 BlockSelectorBinding.prototype.handleAction = function(action) {
 
 	BlockSelectorBinding.superclass.handleAction.call(this, action);
-	
-	//this._editorBinding.createBookmark();
-	
+
 	switch (action.type) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED:
 
-			var value = this.getValue();
-			this._tinyInstance.formatter.apply(value);
+			this.selections.each(function (selection) {
+				var id = selection.value;
+				if (id != null) {
+					if (this._tinyInstance.formatter.match(id)) {
+						this._tinyInstance.formatter.remove(id);
+					}
+				}
+			}, this);
 
+			var value = this.getValue();
+			if (value != BlockSelectorBinding.VALUE_DEFAULT)
+				this._tinyInstance.formatter.apply(value);
 			this._tinyInstance.undoManager.add();
 
 			action.consume();
