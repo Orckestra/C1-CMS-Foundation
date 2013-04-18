@@ -23,7 +23,6 @@ _Resolver.prototype = {
 			// TODO: refactor these - introduce generalized prefix such as "shortcut:root" or something.
 			string = string.replace ( "${root}", Constants.APPROOT );
 			string = string.replace ( "${skin}", Constants.SKINROOT );
-			string = string.replace ( "${tinymce}", Constants.TINYMCEROOT );
 			string = string.replace ( "${tiny}", Constants.TINYROOT );
 			
 			// ${icon:Composite.Icons,fister-loeg-sovs(32)}

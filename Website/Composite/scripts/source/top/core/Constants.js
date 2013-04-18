@@ -25,8 +25,7 @@ _Constants.prototype = {
 	CONFIGROOT                  : temproot.substring(0, temproot.length - 9) + "Frontend/Config/VisualEditor/",
    	TEMPLATESROOT     			: temproot + "/templates",
 	SKINROOT     				: temproot + "/skins/system", // TODO: unhardcode this!
-	TINYMCEROOT					: temproot + "/content/misc/editors/wysiwygeditor/tiny_mce", // TODO: deprecate this!
-	TINYROOT					: temproot + "/content/misc/editors/visualeditor/tiny_mce",
+	TINYROOT					: temproot + "/content/misc/editors/visualeditor/tinymce",
 
 	/*
 	 * Web service desciptions.
