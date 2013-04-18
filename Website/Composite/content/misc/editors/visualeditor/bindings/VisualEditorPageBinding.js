@@ -115,7 +115,7 @@ VisualEditorPageBinding.prototype.onBindingDispose = function () {
 	 * http://wiki.moxiecode.com/index.php/TinyMCE:API/tinymce.Editor/destroy
 	 */
 	if ( this._tinyInstance != null ) {
-		this._tinyInstance.destroy ();
+		this._tinyInstance.destroy (true);
 	}
 }
 
@@ -137,11 +137,11 @@ VisualEditorPageBinding.prototype.initializeComponent = function ( editor, engin
 	 * Intercept undo-redo.
 	 */
 	var self = this;
-	instance.onUndo.add ( function () {
+	instance.on('Undo',  function () {
 		self.updateUndoBroadcasters ();
 		editor.checkForDirty ();
 	});
-	instance.onRedo.add ( function () {
+	instance.on('Redo',  function () {
 		self.updateUndoBroadcasters ();
 		editor.checkForDirty ();
 	});

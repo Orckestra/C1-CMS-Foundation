@@ -7,7 +7,7 @@
 		<script type="text/javascript">
 			top.Application.declareTopLocal ( window );
 		</script>
-		<script type="text/javascript" src="tiny_mce/tiny_mce.js"></script>
+		<script type="text/javascript" src="tinymce/tinymce.min.js"></script>
 		<script type="text/javascript" src="scripts/Format.js"></script>
 		<script type="text/javascript" src="visualeditor.js"></script>
 		<style type="text/css">
