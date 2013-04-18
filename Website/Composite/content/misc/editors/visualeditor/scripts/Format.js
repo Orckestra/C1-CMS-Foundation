@@ -194,7 +194,7 @@ Format.prototype = {
 			block 		: Format.get ( "block" ),
 			classes 	: Format.get ( "classes" ), 
 			selector 	: Format.get ( "selector" ),
-			groupclasses: Format.get ( "groupclasses" )
+			wrapper		: Format.get ( "wrapper" ),
 		};
 		
 		// primitive validation

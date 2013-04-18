@@ -97,7 +97,7 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 	groups.each(function (group) {
 		var groupBinding = ToolBarGroupBinding.newInstance(this.bindingDocument);
 		group.each(function (format) {
-			if (format.props.block != null && format.select != null) {
+			if (format.props.block != null && format.select != null && format.props.classes == null) {
 				this._formats.set(format.id, format);
 				var name = format.select.label;
 				var value = format.id;
@@ -111,7 +111,7 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 	var array = [];
 	groups.each(function (group) {
 		group.each(function (format) {
-			if (format.select != null && format.props.block != null) {
+			if (format.select != null && format.props.block != null && format.props.classes == null) {
 				array.push(format);
 			}
 		}, this);

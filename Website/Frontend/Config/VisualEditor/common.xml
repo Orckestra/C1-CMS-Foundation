@@ -109,15 +109,19 @@
 
 
 		<radiogroup>
-			<format id="well" label="Well" image="" notes="" groupclasses="well">
+			<format id="well" label="Well" image="" notes="" block="div" classes="well" wrapper="1">
 				<select />
 			</format>
-			<format id="two-columns" label="2 columns" image="" notes="" groupclasses="two-columns">
+			<format id="two-columns" label="2 columns" image="" notes="" block="div" classes="two-columns" wrapper="1">
 				<select />
 			</format>
-			<format id="three-columns" label="3 columns" image="" notes="" groupclasses="three-columns">
+			<format id="three-columns" label="3 columns" image="" notes="" block="div" classes="three-columns" wrapper="1">
 				<select />
 			</format>
+			<format id="blockquote" label="Quote" image="" notes="" block="blockquote" wrapper="1">
+				<select />
+			</format>
+			
 		</radiogroup>
     
   </formats>
