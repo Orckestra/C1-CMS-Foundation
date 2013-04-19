@@ -139,7 +139,7 @@ namespace Composite.C1Console.Trees
 
             List<object> itemKeys = new List<object>();
             IEnumerable<IData> dataItems;
-            IEnumerable<object> keys = dataset.JoinedKeys;
+            IEnumerable<object> keysJoinedByParentFilters = dataset.JoinedKeys;
 
             if (localizationEndabled && UserSettings.ForeignLocaleCultureInfo != null)
             {
@@ -165,7 +165,7 @@ namespace Composite.C1Console.Trees
                     itemKeys.Add(keyValue);
                 }
 
-                keys = keys.ConcatOrDefault(foreignDataset.JoinedKeys);
+                keysJoinedByParentFilters = keysJoinedByParentFilters.ConcatOrDefault(foreignDataset.JoinedKeys);
             }
             else
             {
@@ -195,10 +195,12 @@ namespace Composite.C1Console.Trees
 
                 if (itemLocalizationEnabledAndForeign && itemKeys.Contains(keyValue)) continue;
 
+                var currentEntityToken = data.GetDataEntityToken();
+
                 Element element = new Element(new ElementHandle
                 (
                     dynamicContext.ElementProviderName,
-                    data.GetDataEntityToken(),
+                    currentEntityToken,
                     dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken)
                 ));
 
@@ -231,8 +233,38 @@ namespace Composite.C1Console.Trees
                     }
                     else
                     {
-                        hasChildren = ChildNodes.Any(childNode => childNode is SimpleElementTreeNode)
-                                      || (keys != null && keys.Contains(keyValue));
+                        hasChildren = ChildNodes.OfType<SimpleElementTreeNode>().Any();
+
+                        if (!hasChildren)
+                        {
+                            if (keysJoinedByParentFilters != null)
+                            {
+                                keysJoinedByParentFilters = keysJoinedByParentFilters.Evaluate();
+
+                                hasChildren = keysJoinedByParentFilters.Contains(keyValue);
+                            }
+                        }
+
+                        // Checking children filtered by FunctionFilters
+                        if (!hasChildren)
+                        {
+                            foreach (var childNode in this.ChildNodes.OfType<DataElementsTreeNode>()
+                                .Where(n => n.FilterNodes.OfType<FunctionFilterNode>().Any()))
+                            {
+                                TreeNodeDynamicContext newDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down)
+                                {
+                                    ElementProviderName = dynamicContext.ElementProviderName,
+                                    Piggybag = dynamicContext.Piggybag.PreparePiggybag(this.ParentNode, parentEntityToken),
+                                    CurrentEntityToken = currentEntityToken
+                                };
+
+                                if (childNode.GetDataset(newDynamicContext, false).DataItems.Any())
+                                {
+                                    hasChildren = true;
+                                    break;
+                                }
+                            }
+                        }
                     }
 
                     if (this.Icon != null)
