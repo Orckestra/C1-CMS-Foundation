@@ -46,7 +46,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             Type addNewTemplateWorkflow = null;
 
-            if (data.AddNewTemplateWorkflow != null)
+            if (!string.IsNullOrEmpty(data.AddNewTemplateWorkflow))
             {
                 try
                 {

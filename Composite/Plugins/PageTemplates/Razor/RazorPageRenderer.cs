@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.WebPages;
 using System.Xml.Linq;
+using Composite.AspNet.Razor;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
@@ -69,6 +70,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             var httpContext = new HttpContextWrapper(HttpContext.Current);
             var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] { "cshtml" });
             var pageContext = new WebPageContext(httpContext, webPage, startPage);
+            pageContext.PageData.Add(RazorHelper.PageContext_FunctionContextContainer, functionContextContainer);
 
             var sb = new StringBuilder();
 			using (var writer = new StringWriter(sb))

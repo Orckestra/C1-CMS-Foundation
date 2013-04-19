@@ -20,7 +20,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
             Type addNewTemplateWorkflow = null;
 
-            if (data.AddNewTemplateWorkflow != null)
+            if (!string.IsNullOrEmpty(data.AddNewTemplateWorkflow))
             {
                 try
                 {
