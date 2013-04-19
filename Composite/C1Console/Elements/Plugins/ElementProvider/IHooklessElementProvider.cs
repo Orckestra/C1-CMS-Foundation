@@ -15,13 +15,13 @@ namespace Composite.C1Console.Elements.Plugins.ElementProvider
     {
         /// <summary>
         /// The system will supply an ElementProviderContext to the provider
-        /// to use for creating ElementHandles
+        /// to use for creating <see cref="ElementHandle"/>-s
         /// </summary>
         ElementProviderContext Context { set; }
 
 
         /// <summary>
-        /// Return the providers root elements 
+        /// Gets the provider's root elements 
         /// </summary>
         /// <param name="seachToken">
         /// If this is null the provider should not do any filtering. If this is not null the provider
@@ -34,11 +34,11 @@ namespace Composite.C1Console.Elements.Plugins.ElementProvider
 
 
         /// <summary>
-        /// Return the children of a given element
+        /// Gets the children of a given element
         /// </summary>
         /// <param name="entityToken">The parent element of the elements to return</param>
         /// <param name="seachToken">
-        /// If this is null the provider should not do any filtering. If this is not null the provider
+        /// If this is <value>null</value> the provider should not do any filtering. If this is not null the provider
         /// should do the appropriate filtering on its elements. 
         /// If the provider does not want to be a part of a search and this variable is not null,
         /// the provider should return an empty list

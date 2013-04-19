@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Composite.C1Console.Security;
-using Composite.Core.Serialization;
 
 
 namespace Composite.C1Console.Elements
 {
     /// <summary>    
-    /// A "identity token" which identifies a specific element from a specific provider. 
+    /// An "identity token" which identifies a specific element from a specific provider. 
     /// </summary>
     public sealed class ElementHandle
     {

@@ -1,4 +1,5 @@
 using System;
+using Composite.Core.Extensions;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 
@@ -31,14 +32,14 @@ namespace Composite.C1Console.Elements
 
 
         /// <summary>
-        /// Deserialize a search token
+        /// Deserializes a search token
         /// </summary>
         /// <param name="serializedSearchToken">String representation of searchtoken</param>
         /// <returns>Deserialized SearchToken</returns>
         public static SearchToken Deserialize( string serializedSearchToken )
         {
-            if (string.IsNullOrEmpty(serializedSearchToken)) throw new ArgumentNullException();
-            if (serializedSearchToken.IndexOf('|') == -1) throw new ArgumentException("Malformed serializedSearchToken - must be formated like '<class name>|<serialized values>'");
+            Verify.ArgumentNotNullOrEmpty("serializedSearchToken", serializedSearchToken);
+            Verify.ArgumentCondition(serializedSearchToken.IndexOf('|') > -1, "serializedSearchToken", "Malformed serializedSearchToken - must be formated like '<class name>|<serialized values>'");
 
             string[] parts = serializedSearchToken.Split('|');
 
@@ -58,16 +59,13 @@ namespace Composite.C1Console.Elements
     internal static class SeachTokenExtensionMethods
     {
         /// <summary>
-        /// This method return true if the searchToken is NOT null and the keyword is NOT null or empty
+        /// This method return <value>true</value> if the <paramref name="searchToken"/> is NOT null and the keyword is NOT null or empty
         /// </summary>
         /// <param name="searchToken"></param>
         /// <returns></returns>
         public static bool IsValidKeyword(this SearchToken searchToken)
         {
-            if (searchToken == null) return false;
-            if (string.IsNullOrEmpty(searchToken.Keyword) == true) return false;
-
-            return true;
+            return searchToken != null && !searchToken.Keyword.IsNullOrEmpty();
         }
     }
 }

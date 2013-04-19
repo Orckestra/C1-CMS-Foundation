@@ -5,7 +5,7 @@ using Composite.C1Console.Security;
 namespace Composite.C1Console.Elements.Plugins.ElementProvider
 {
     /// <summary>
-    /// You can implement this interface on your 
+    /// You can implement this interface on your element provider to handle the "drag and drop" event.
     /// </summary>
     public interface IDragAndDropElementProvider : IHooklessElementProvider
     {

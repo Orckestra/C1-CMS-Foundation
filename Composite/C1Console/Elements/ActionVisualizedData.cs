@@ -18,7 +18,7 @@ namespace Composite.C1Console.Elements
         }
 
         /// <summary>
-        /// Constructs a new instance, copying from an existing instance.
+        /// Constructs a new instance, cloning an existing instance.
         /// </summary>
         /// <param name="copy"></param>
         public ActionVisualizedData(ActionVisualizedData copy) 
@@ -49,23 +49,23 @@ namespace Composite.C1Console.Elements
         public bool Disabled { get; set; }
 
         /// <summary>
-        /// The actions icon
+        /// The action's icon
         /// </summary>
         public ResourceHandle Icon { get; set; }
 
         /// <summary>
-        /// The actions tool tip
+        /// The action's tool tip
         /// </summary>
         public string ToolTip { get; set; }
 
         /// <summary>
-        /// Where the action should show up, relative to toher actions.
+        /// Where the action should show up, relative to other actions.
         /// </summary>
         public ActionLocation ActionLocation { get; set; }
 
         /// <summary>
         /// Where the action should be shown - when elements are shown in a selection tree (as opposed to the normal navigation tree) some actions may be desired.
-        /// Default is NavigatorTree only.
+        /// Default is <value>ElementActionActivePosition.NavigatorTree</value> only.
         /// </summary>
         public ElementActionActivePosition ActivePositions { get; set; }
     }
