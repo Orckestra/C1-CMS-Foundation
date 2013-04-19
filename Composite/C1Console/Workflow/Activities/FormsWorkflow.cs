@@ -873,6 +873,26 @@ namespace Composite.C1Console.Workflow.Activities
                 }
             }
 
+            // Checking that required strings are not empty
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(data.DataSourceId.InterfaceType);
+            
+            foreach (var fieldName in dataTypeDescriptor.Fields
+                                                        .Where(f => !f.IsNullable && f.InstanceType == typeof (string))
+                                                        .Select(f => f.Name))
+            {
+                string bindingName = (helper.BindingNamesPrefix ?? "").Replace('.', '_') + fieldName;
+                if(validationResults.Any(r => r.Key == bindingName)) continue;
+
+                object fieldValue = this.Bindings[bindingName];
+                if (fieldValue is string && (fieldValue as string) == string.Empty)
+                {
+                    this.ShowFieldMessage(bindingName, StringResourceSystemFacade.GetString("Composite.Management", "Validation.RequiredField"));
+
+                    isValid = false;
+                }
+            }
+            
+
             if (errorMessages != null)
             {
                 isValid = false;
