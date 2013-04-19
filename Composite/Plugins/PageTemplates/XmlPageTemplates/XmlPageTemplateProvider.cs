@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.Core.PageTemplates;
-using Composite.Core.PageTemplates.Plugins;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Data;
 using Composite.Data.Types;
@@ -13,9 +12,25 @@ using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 namespace Composite.Plugins.PageTemplates.XmlPageTemplates
 {
-    [ConfigurationElementType(typeof(NonConfigurablePageTemplateProvider))]
+    [ConfigurationElementType(typeof(XmlPageTemplateProviderData))]
     internal class XmlPageTemplateProvider : IPageTemplateProvider
     {
+        public string AddNewTemplateLabel
+        {
+            get; private set;
+        }
+
+        public Type AddNewTemplateWorkflow
+        {
+            get; private set;
+        }
+
+        public XmlPageTemplateProvider(string providerName, string addNewTemplateLabel, Type addNewTemplateWorkflow)
+        {
+            AddNewTemplateLabel = addNewTemplateLabel;
+            AddNewTemplateWorkflow = addNewTemplateWorkflow;
+        }
+
         public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
         {
             using (var conn = new DataConnection(PublicationScope.Published))

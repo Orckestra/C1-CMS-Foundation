@@ -34,5 +34,15 @@ namespace Composite.Core.PageTemplates
         /// Forces provider to reload all the page templates next time they are requested.
         /// </summary>
         void FlushTemplates();
+
+        /// <summary>
+        /// Provider's label that is shown when adding a new page template
+        /// </summary>
+        string AddNewTemplateLabel { get;  }
+
+        /// <summary>
+        /// Workflow for adding a new page template
+        /// </summary>
+        Type AddNewTemplateWorkflow { get; }
     }
 }

@@ -43,12 +43,24 @@ namespace Composite.Plugins.PageTemplates.Razor
             public Hashtable<Guid, Exception> LoadingExceptions;
         }
 
+        public string AddNewTemplateLabel
+        {
+            get; private set;
+        }
 
-        public RazorPageTemplateProvider(string providerName, string templatesDirectoryVirtualPath)
+        public Type AddNewTemplateWorkflow
+        {
+            get; private set;
+        }
+
+        public RazorPageTemplateProvider(string providerName, string templatesDirectoryVirtualPath, string addNewTemplateLabel, Type addNewTemplateWorkflow)
         {
             _providerName = providerName;
             _templatesDirectoryVirtualPath = templatesDirectoryVirtualPath;
             _templateDirectory = PathUtil.Resolve(templatesDirectoryVirtualPath);
+
+            AddNewTemplateLabel = addNewTemplateLabel;
+            AddNewTemplateWorkflow = addNewTemplateWorkflow;
 
             _watcher = new C1FileSystemWatcher(_templateDirectory, LayoutFileMask)
             {

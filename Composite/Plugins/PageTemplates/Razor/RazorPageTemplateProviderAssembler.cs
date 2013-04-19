@@ -1,6 +1,8 @@
 ﻿using System;
+using Composite.Core;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Plugins;
+using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.Plugins.PageTemplates.Razor
@@ -16,7 +18,21 @@ namespace Composite.Plugins.PageTemplates.Razor
                                             "objectConfiguration");
             }
 
-            return new RazorPageTemplateProvider(data.Name, data.Directory);
+            Type addNewTemplateWorkflow = null;
+
+            if (data.AddNewTemplateWorkflow != null)
+            {
+                try
+                {
+                    addNewTemplateWorkflow = TypeManager.GetType(data.AddNewTemplateWorkflow);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(this.GetType().FullName, ex);
+                }
+            }
+
+            return new RazorPageTemplateProvider(data.Name, data.Directory, data.AddNewTemplateLabel, addNewTemplateWorkflow);
         }
     }
 }

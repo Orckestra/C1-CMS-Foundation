@@ -39,11 +39,24 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private readonly object _initializationLock = new object();
         private readonly C1FileSystemWatcher _watcher;
 
-        public MasterPagePageTemplateProvider(string name, string templatesDirectoryVirtualPath)
+        public string AddNewTemplateLabel
+        {
+            get; private set;
+        }
+
+        public Type AddNewTemplateWorkflow
+        {
+            get; private set;
+        }
+
+        public MasterPagePageTemplateProvider(string name, string templatesDirectoryVirtualPath, string addNewTemplateLabel, Type addNewTemplateWorkflow)
         {
             _providerName = name;
             _templatesDirectoryVirtualPath = templatesDirectoryVirtualPath;
             _templatesDirectory = PathUtil.Resolve(_templatesDirectoryVirtualPath);
+
+            AddNewTemplateLabel = addNewTemplateLabel;
+            AddNewTemplateWorkflow = addNewTemplateWorkflow;
 
             Verify.That(C1Directory.Exists(_templatesDirectory), "Folder '{0}' does not exist", _templatesDirectory);
 

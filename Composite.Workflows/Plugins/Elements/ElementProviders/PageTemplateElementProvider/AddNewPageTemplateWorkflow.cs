@@ -5,9 +5,6 @@ using Composite.C1Console.Workflow;
 using Composite.Core.Extensions;
 using Composite.Core.PageTemplates;
 using Composite.Core.ResourceSystem;
-using Composite.Plugins.PageTemplates.MasterPages;
-using Composite.Plugins.PageTemplates.Razor;
-using Composite.Plugins.PageTemplates.XmlPageTemplates;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider
@@ -17,9 +14,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
     {
         private static readonly string Binding_TemplateTypeOptions = "TemplateTypeOptions";
         private static readonly string Binding_TemplateTypeId = "TemplateTypeId";
-        private const string TemplateType_Razor = "razor";
-        private const string TemplateType_MasterPage = "masterpage";
-        private const string TemplateType_XML = "xml";
 
         public AddNewPageTemplateWorkflow()
         {
@@ -28,24 +22,22 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void codeActivity1_ExecuteCode(object sender, EventArgs e)
         {
-            var allTemplates = PageTemplateFacade.GetPageTemplates().ToList();
-
             var templateTypes = new List<Tuple<string, string, int>>();
 
-            templateTypes.Add(new Tuple<string, string, int>(
-                TemplateType_MasterPage,
-                GetText("AddNewPageTemplate.TemplateType.MasterPage"),
-                allTemplates.OfType<MasterPagePageTemplateDescriptor>().Count()));
-            
-            templateTypes.Add(new Tuple<string, string, int>(
-                TemplateType_Razor,
-                GetText("AddNewPageTemplate.TemplateType.Razor"),
-                allTemplates.OfType<RazorPageTemplateDescriptor>().Count()));
+            foreach (var providerInfo in PageTemplateFacade.GetProviders())
+            {
+                var provider = providerInfo.Value;
 
-            templateTypes.Add(new Tuple<string, string, int>(
-                TemplateType_XML,
-                GetText("AddNewPageTemplate.TemplateType.XML"),
-                allTemplates.OfType<XmlPageTemplateDescriptor>().Count()));
+                if (provider.AddNewTemplateWorkflow == null) continue;
+
+                templateTypes.Add(new Tuple<string, string, int>(
+                    providerInfo.Key, !provider.AddNewTemplateLabel.IsNullOrEmpty()
+                        ? StringResourceSystemFacade.ParseString(provider.AddNewTemplateLabel) 
+                        : providerInfo.Key,
+                    provider.GetPageTemplates().Count()));
+            }
+            
+            Verify.That(templateTypes.Any(), "No page templates supporting adding new templates defined in configuration");
 
             // Most used page template type will be first in the list and preselected
             string preseceltedTemplate = templateTypes.OrderByDescending(t => t.Item3).Select(t => t.Item1).First();
@@ -61,31 +53,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvide
 
         private void codeActivity2_ExecuteCode(object sender, EventArgs e)
         {
-            string templateType = this.GetBinding<string>(Binding_TemplateTypeId);
+            string providerName = this.GetBinding<string>(Binding_TemplateTypeId);
 
-            Type workflowType;
-
-            switch (templateType)
-            {
-                case TemplateType_Razor:
-                    workflowType = typeof(AddNewRazorPageTemplateWorkflow);
-                    break;
-                case TemplateType_MasterPage:
-                    workflowType = typeof(AddNewMasterPagePageTemplateWorkflow);
-                    break;
-                case TemplateType_XML:
-                    workflowType = typeof(AddNewXmlPageTemplateWorkflow);
-                    break;
-                default:
-                    throw new InvalidOperationException("Unexpected page template type '{0}'".FormatWith(templateType));
-            }
+            Type workflowType = PageTemplateFacade.GetProviders()
+                                                  .First(p => p.Key == providerName)
+                                                  .Value.AddNewTemplateWorkflow;
 
             this.ExecuteAction(new PageTemplateRootEntityToken(), new WorkflowActionToken(workflowType));
-        }
-
-        private static string GetText(string stringId)
-        {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateElementProvider", stringId);
         }
     }
 }

@@ -14,5 +14,19 @@ namespace Composite.Plugins.PageTemplates.Razor
             get { return (string)base["directory"]; }
             set { base["directory"] = value; }
         }
+
+        [ConfigurationProperty("addNewTemplateLabel", IsRequired = false, DefaultValue = null)]
+        public string AddNewTemplateLabel
+        {
+            get { return (string)base["addNewTemplateLabel"]; }
+            set { base["addNewTemplateLabel"] = value; }
+        }
+
+        [ConfigurationProperty("addNewTemplateWorkflow", IsRequired = false, DefaultValue = null)]
+        public string AddNewTemplateWorkflow
+        {
+            get { return (string)base["addNewTemplateWorkflow"]; }
+            set { base["addNewTemplateWorkflow"] = value; }
+        }
     }
 }

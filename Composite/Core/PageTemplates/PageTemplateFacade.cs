@@ -95,5 +95,19 @@ namespace Composite.Core.PageTemplates
                 return GetPageTemplates().Any(template => template.IsValid);
             }
         }
+
+        /// <summary>
+        /// Gets the providers.
+        /// </summary>
+        /// <returns></returns>
+        internal static IEnumerable<KeyValuePair<string, IPageTemplateProvider>> GetProviders()
+        {
+            foreach (string providerName in PageTemplateProviderRegistry.ProviderNames)
+            {
+                var provider = PageTemplateProviderPluginFacade.GetProvider(providerName);
+
+                yield return new KeyValuePair<string, IPageTemplateProvider>(providerName, provider);
+            }
+        }
     }
 }

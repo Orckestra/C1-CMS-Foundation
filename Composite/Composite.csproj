@@ -694,6 +694,7 @@
     <Compile Include="Plugins\PageTemplates\Razor\RazorPageTemplateProviderData.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\SharedRazorFile.cs" />
     <Compile Include="Plugins\PageTemplates\Razor\TemplateRenderingInfo.cs" />
+    <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProviderData.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageRenderer.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateDescriptor.cs" />
     <Compile Include="Plugins\PageTemplates\XmlPageTemplates\XmlPageTemplateProvider.cs" />
