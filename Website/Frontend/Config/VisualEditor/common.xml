@@ -121,7 +121,9 @@
 			<format id="blockquote" label="Quote" image="" notes="" block="blockquote" wrapper="1">
 				<select />
 			</format>
-			
+			<format id="fancy-note" label="Fancy note" image="" notes="" block="aside" classes="fancy" wrapper="1">
+				<select />
+			</format>
 		</radiogroup>
     
   </formats>
