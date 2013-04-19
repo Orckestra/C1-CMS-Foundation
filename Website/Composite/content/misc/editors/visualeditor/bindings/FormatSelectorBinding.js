@@ -95,9 +95,8 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 
 	// isolating BLOCK format instances
 	groups.each(function (group) {
-		var groupBinding = ToolBarGroupBinding.newInstance(this.bindingDocument);
 		group.each(function (format) {
-			if (format.props.block != null && format.select != null && format.props.classes == null) {
+			if (format.props.block != null && format.select != null && format.props.classes == null && !format.props.wrapper) {
 				this._formats.set(format.id, format);
 				var name = format.select.label;
 				var value = format.id;
@@ -111,7 +110,7 @@ FormatSelectorBinding.prototype.buildDOMContent = function () {
 	var array = [];
 	groups.each(function (group) {
 		group.each(function (format) {
-			if (format.select != null && format.props.block != null && format.props.classes == null) {
+			if (format.select != null && format.props.block != null && format.props.classes == null && !format.props.wrapper) {
 				array.push(format);
 			}
 		}, this);
@@ -158,9 +157,6 @@ FormatSelectorBinding.prototype.initializeComponent = function (editor, engine, 
 */
 FormatSelectorBinding.prototype.handleAction = function (action) {
 
-    // Keeping selection on current block
-    this._editorBinding.createBookmark();
-
     FormatSelectorBinding.superclass.handleAction.call(this, action);
 
     switch (action.type) {
@@ -168,14 +164,6 @@ FormatSelectorBinding.prototype.handleAction = function (action) {
             var value = this.getValue();
             if (this._formats.has(value)) { // (exluding "Unknown" selection)
                 var format = this._formats.get(value);
-                // Hack
-                {
-                    var dom = this._tinyInstance.dom;
-                    var selection = this._tinyInstance.selection;
-                    var rng = selection.getRng();
-                    var blockElm = dom.getParent(rng.startContainer, dom.isBlock);
-                    selection.select(blockElm);
-                }
                 this._tinyInstance.execCommand('FormatBlock', false, format.id);
                 action.consume();
             }

@@ -161,13 +161,9 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\razor\razor.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\BlockSelectorBinding.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\autolink\editor_plugin.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\autolink\editor_plugin_src.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\autolink\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositeimageresize\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositespellcheck\plugin.min.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\editor_plugin.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\editor_plugin_src.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\plugin.min.js" />
     <Content Include="Composite\content\misc\preview\error.aspx" />
@@ -600,13 +596,6 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositetext\text.aspx" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositetext\text.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositetext\TextDialogPageBinding.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\editor_plugin.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\editor_plugin_src.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\js\pastetext.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\js\pasteword.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\langs\en_dlg.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\pastetext.htm" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\pasteword.htm" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\themes\composite\theme.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\tinymce.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\visualeditor.aspx" />
