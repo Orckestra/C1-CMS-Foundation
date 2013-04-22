@@ -281,7 +281,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 if (emitMenuTitleMetaTag || emitUrlTitleMetaTag)
                 {
                     xhtmlDocument.Head.Add(
-                        new XComment("The following C1 head tags are only emitted when you are logged in"),
+                        new XComment("The C1.* meta tags are only emitted when you are logged in"),
                         new XElement(Namespaces.Xhtml + "link",
                             new XAttribute("rel", "schema.C1"),
                             new XAttribute("href", "http://www.composite.net/ns/c1/seoassistant")));
