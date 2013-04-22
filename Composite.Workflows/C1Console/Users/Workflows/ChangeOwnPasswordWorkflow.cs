@@ -81,7 +81,15 @@ namespace Composite.C1Console.Users.Workflows
                     }
                     else
                     {
-                        e.Result = true;
+                        if (newPassword.Length < 6)
+                        {
+                            this.ShowFieldMessage("NewPassword", "The new password must be at least 6 characters long.");
+                            e.Result = false;
+                        }
+                        else
+                        {
+                            e.Result = true;
+                        }
                     }
                 }
             }
