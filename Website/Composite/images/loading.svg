@@ -1,0 +1,16 @@
+﻿<svg width="128" height="128" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient">
+      <stop offset="0" stop-opacity="0.1" stop-color="#CF2B1F"/>
+      <stop offset="1" stop-opacity="0.9" stop-color="#CF2B1F"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <title>Animated throbber for Composite C1</title>
+    <path fill="url(#gradient)" d="m150,0a150,150 0 0 1106.06601,256.06601l-36.677,1.323l1.32199,-36.67801a-100,-100 0 0 0-70.711,-170.711l25,-21l-25,-29z">
+      <animateTransform attributeName="transform" attributeType="XML"
+             type="rotate" from="0 150 150" to="360 150 150"
+             begin="0s" dur="1.5s" fill="freeze" repeatCount="indefinite" />
+    </path>
+  </g>
+</svg>
