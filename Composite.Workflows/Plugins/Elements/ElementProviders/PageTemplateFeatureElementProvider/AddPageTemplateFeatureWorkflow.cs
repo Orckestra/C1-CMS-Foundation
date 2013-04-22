@@ -44,6 +44,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             string filename = PageTemplateFeatureFacade.GetNewPageTemplateFeaturePath(name, editorType);
 
             XhtmlDocument template = new XhtmlDocument();
+            template.Root.Add(new XAttribute(XNamespace.Xmlns + "f", Namespaces.Function10));
             template.Head.Add("");
             template.Body.Add(new XElement(Namespaces.Xhtml + "p", ""));
 

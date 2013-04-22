@@ -16,6 +16,7 @@ using Composite.Functions.Foundation.PluginFacades;
 using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider;
 using Composite.Plugins.Elements.ElementProviders.Common;
+using Composite.Core.Xml;
 
 namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderElementProvider
 {
@@ -40,7 +41,7 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
     public string Name { get; set; }
 }
 
-<html xmlns=""http://www.w3.org/1999/xhtml"">
+<html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:f=""" + Namespaces.Function10 + @""">
     <head>
     </head>
     <body>

@@ -15,15 +15,14 @@
     public XhtmlDocument Bottom { get; set; }    
 }
 <!DOCTYPE html>
-<html lang="@Lang" xmlns="http://www.w3.org/1999/xhtml" 
- xmlns:f="http://www.composite.net/ns/function/1.0" xmlns:lang="http://www.composite.net/ns/localization/1.0" xmlns:rendering="http://www.composite.net/ns/rendering/1.0"  xmlns:asp="http://www.composite.net/ns/asp.net/controls">
+<html lang="@Lang" xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://www.composite.net/ns/function/1.0" xmlns:lang="http://www.composite.net/ns/localization/1.0" xmlns:asp="http://www.composite.net/ns/asp.net/controls">
 	<head>
 		<title>@CurrentPageNode.Title</title>
 		@if (!string.IsNullOrEmpty(CurrentPageNode.Description)) {
 			<meta name="description" content="@CurrentPageNode.Description" />
 		}
-		<link rel="stylesheet" type="text/css" href="~/Frontend/Styles/VisualEditor.common.css" />
 		<f:function name="Composite.Web.Html.Template.CommonMetaTags" />
+		<link rel="stylesheet" type="text/css" href="~/Frontend/Styles/VisualEditor.common.css" />
 	</head>
 	<body>
 		<h1>@CurrentPageNode.Title</h1>
