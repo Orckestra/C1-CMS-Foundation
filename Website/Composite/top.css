@@ -169,7 +169,7 @@ div#offlineimage {
 	width: 100%;
 	height: 100%;
 	margin-bottom: 10px;
-	#alphaimage: url("images/loading.svg");
+	#alphaimage: url("images/loading.svg.ashx");
 }
 div#offlinetext {
 	color: rgb(255,255,255);

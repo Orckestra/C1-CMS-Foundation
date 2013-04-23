@@ -444,7 +444,9 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
-    <Content Include="Composite\images\loading.svg" />
+    <Content Include="Composite\images\loading.svg">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\images\warningbox.png" />
     <Content Include="Composite\localization\Composite.Plugins.PageTemplateFeatureElementProvider.en-us.xml" />
     <Content Include="Composite\skins\system\toolbars\osx\backdrop.png" />
@@ -1115,7 +1117,9 @@
     <Content Include="Composite\content\forms\Administrative\AddMetaDataNoTargetDataWarning.xml" />
     <Content Include="Composite\content\forms\Administrative\AddMetaDataSelectType.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewAggregationTypeStep1.xml" />
-    <Content Include="Composite\content\forms\Administrative\AddNewCompositionTypeStep1.xml" />
+    <Content Include="Composite\content\forms\Administrative\AddNewCompositionTypeStep1.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\content\forms\Administrative\AddNewInterfaceTypeStep1.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewMediaFolder.xml" />
     <Content Include="Composite\content\forms\Administrative\AddNewMethodBasedFunctionStep1.xml" />
@@ -6010,6 +6014,7 @@
     <None Include="Composite\images\icons\republic\republic_0523\Thumbs.db" />
     <None Include="Composite\images\icons\republic\republic_0524\Thumbs.db" />
     <None Include="Composite\images\icons\republic\Thumbs.db" />
+    <Content Include="Composite\images\loading.svg.ashx" />
     <None Include="Composite\images\logo.xcf" />
     <None Include="Composite\images\originals\about.xcf" />
     <None Include="Composite\images\originals\box.xcf" />
@@ -6067,7 +6072,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Composite\skins\system\docks\vista\Thumbs.db" />
-    <Content Include="Composite\web.config" />
+    <Content Include="Composite\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="ReleaseCleanupConfiguration.xml" />
     <Content Include="Composite\webauthorization.config" />
     <Content Include="ReleaseBuild.Web.config">

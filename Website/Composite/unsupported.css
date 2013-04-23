@@ -31,6 +31,7 @@ div#unsupported {
 	font-weight: normal;
 	z-index: 2;
 }
+
 div#vignette {
 	width: 32px;
 	height: 32px;
@@ -57,4 +58,9 @@ p {
 a {
 	top: 253px;
 	left: 29px;
+}
+
+#iecompat {
+    margin-top:2em;
+    position:absolute;
 }
