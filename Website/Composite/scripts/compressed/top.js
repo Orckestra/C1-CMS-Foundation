@@ -13616,6 +13616,9 @@ if(this.isAttached){
 this._buttonBinding.setLabel(_934+LabelBinding.DIALOG_INDECATOR_SUFFIX);
 }
 };
+DataDialogBinding.prototype.getLabel=function(){
+return this.getProperty("label");
+};
 DataDialogBinding.prototype.setImage=function(_935){
 this.setProperty("image",_935);
 if(this.imageProfile!=null){
