@@ -8,7 +8,7 @@ window.onload = function () {
 			mode: "text/html",
 			indentUnit: 4,
 			indentWithTabs: true,
-			tabMode: "classic",
+			extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"},
 			lineNumbers: true,
 			theme: "composite"
 		});
