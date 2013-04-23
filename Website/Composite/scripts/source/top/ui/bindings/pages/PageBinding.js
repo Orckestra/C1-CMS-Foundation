@@ -204,6 +204,7 @@ PageBinding.prototype.parseDOMProperties = function () {
 	 * for example in the setPageArgument method.
 	 */
 	this.label = this.getProperty ( "label" );
+	this.labelfield = this.getProperty ( "labelfield" );
 	this.image = this.getProperty ( "image" );
 	this.toolTip = this.getProperty ( "tooltip" );
 	
@@ -784,7 +785,15 @@ PageBinding.prototype.cleanAllDataBindings = function () {
  * @return {string}
  */
 PageBinding.prototype.getLabel = function () {
-	
+
+	if (this.labelfield) {
+		var binding = this.bindingWindow.DataManager.getDataBinding(this.labelfield);
+		if (binding != null && binding.getLabel) {
+			return binding.getLabel();
+		} else if (binding != null && binding.getValue) {
+			return binding.getValue();
+		} 
+	}
 	return this.label;
 };
 
