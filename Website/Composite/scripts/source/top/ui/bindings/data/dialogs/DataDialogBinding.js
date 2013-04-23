@@ -247,6 +247,15 @@ DataDialogBinding.prototype.setLabel = function ( label ) {
 }
 
 /**
+ * Get label 
+ * @return {string}
+ */
+DataDialogBinding.prototype.getLabel = function () {
+
+    return this.getProperty("label");
+}
+
+/**
  * Set image.
  * @param {string} image
  */
