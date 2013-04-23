@@ -174,11 +174,7 @@ namespace Composite.C1Console.Trees
             }
 
 
-            DynamicValuesHelperReplaceContext replaceContext = new DynamicValuesHelperReplaceContext
-            {
-                PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, parentEntityToken)
-            };
-
+            var replaceContext = new DynamicValuesHelperReplaceContext(parentEntityToken, dynamicContext.Piggybag);
 
             List<Element> elements = new List<Element>();
 

@@ -20,12 +20,9 @@ namespace Composite.C1Console.Trees
 
         public override Expression CreateDownwardsFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext)
         {
-            DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
-            {
-                PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, dynamicContext.CurrentEntityToken)
-            };
+            var replaceContext = new DynamicValuesHelperReplaceContext(dynamicContext.CurrentEntityToken, dynamicContext.Piggybag);
 
-            XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
+            XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(replaceContext);
 
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
             LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);
@@ -54,12 +51,14 @@ namespace Composite.C1Console.Trees
             {
                 var ancestorEntityToken = dataItem.GetDataEntityToken();
 
-                DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
+                var replaceContext = new DynamicValuesHelperReplaceContext
                 {
+                    CurrentDataItem = dataItem,
+                    CurrentEntityToken = ancestorEntityToken,
                     PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, ancestorEntityToken)
                 };
 
-                XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);
+                XElement markup = this.FunctionMarkupDynamicValuesHelper.ReplaceValues(replaceContext);
 
                 BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
                 LambdaExpression expression = GetLambdaExpression(baseRuntimeTreeNode);

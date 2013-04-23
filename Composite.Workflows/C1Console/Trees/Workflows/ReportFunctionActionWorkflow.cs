@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Composite.C1Console.Elements;
 using Composite.Functions;
-using Composite.Core.Serialization;
-using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
 using Composite.Core.ResourceSystem;
 using Composite.Core;
@@ -20,22 +18,16 @@ namespace Composite.C1Console.Trees.Workflows
             InitializeComponent();
         }
 
-
-
+        
         private void initializeCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(this.Payload);
-
             ReportFunctionActionNode reportFunctionActionNode = (ReportFunctionActionNode)ActionNode.Deserialize(this.Payload);
 
             Dictionary<string, string> piggybag = PiggybagSerializer.Deserialize(this.ExtraPayload);
 
-            DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
-            {
-                PiggybagDataFinder = new PiggybagDataFinder(piggybag, this.EntityToken)
-            };
+            var replaceContext = new DynamicValuesHelperReplaceContext(this.EntityToken, piggybag);
 
-            XElement markup = reportFunctionActionNode.FunctionMarkupDynamicValuesHelper.ReplaceValues(dynamicValuesHelperReplaceContext);                       
+            XElement markup = reportFunctionActionNode.FunctionMarkupDynamicValuesHelper.ReplaceValues(replaceContext);                       
 
             BaseRuntimeTreeNode baseRuntimeTreeNode = FunctionTreeBuilder.Build(markup);
             XDocument result = baseRuntimeTreeNode.GetValue() as XDocument;
@@ -48,8 +40,8 @@ namespace Composite.C1Console.Trees.Workflows
 
                 throw new InvalidOperationException(message);
             }
-            
-            this.Bindings.Add("Label", reportFunctionActionNode.DocumentLabelDynamicValueHelper.ReplaceValues(dynamicValuesHelperReplaceContext));
+
+            this.Bindings.Add("Label", reportFunctionActionNode.DocumentLabelDynamicValueHelper.ReplaceValues(replaceContext));
             this.Bindings.Add("Icon", reportFunctionActionNode.DocumentIcon.ResourceName);
             this.Bindings.Add("HtmlBlob", result.ToString());
         }

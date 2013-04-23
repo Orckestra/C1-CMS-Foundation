@@ -75,9 +75,10 @@ namespace Composite.C1Console.Trees
 
         protected override IEnumerable<Element> OnGetElements(EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            TreeSimpleElementEntityToken entityToken;
-
-            entityToken = new TreeSimpleElementEntityToken(this.Id.ToString(), this.Tree.TreeId, EntityTokenSerializer.Serialize(parentEntityToken));                
+            var entityToken = new TreeSimpleElementEntityToken(
+                this.Id, 
+                this.Tree.TreeId, 
+                EntityTokenSerializer.Serialize(parentEntityToken));                
 
             Element element = new Element(new ElementHandle(
                 dynamicContext.ElementProviderName,
@@ -91,16 +92,13 @@ namespace Composite.C1Console.Trees
                 element.ElementHandle.Piggyback[StringConstants.PiggybagTreeId] = Tree.TreeId;
             }
 
-            DynamicValuesHelperReplaceContext replaceContext = new DynamicValuesHelperReplaceContext
-            {
-                PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, parentEntityToken)
-            };
+            var replaceContext = new DynamicValuesHelperReplaceContext(parentEntityToken, dynamicContext.Piggybag);
 
             element.VisualData = new ElementVisualizedData
             {
                 Label = this.LabelDynamicValuesHelper.ReplaceValues(replaceContext),
                 ToolTip = this.ToolTipDynamicValuesHelper.ReplaceValues(replaceContext),
-                HasChildren = ChildNodes.Count() > 0,
+                HasChildren = ChildNodes.Any(),
                 Icon = this.Icon,
                 OpenedIcon = this.OpenIcon
             };

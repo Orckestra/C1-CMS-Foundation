@@ -72,12 +72,14 @@ namespace Composite.C1Console.Trees
                     value = referencedData.GetLabel();
                 }
 
+                string stringValue = value.ToString();
+
                 if (useUrlEncode)
                 {
-                    value = HttpUtility.UrlEncode(value.ToString());
+                    stringValue = HttpUtility.UrlEncode(stringValue);
                 }
 
-                result = result.Replace(entry.Match, value.ToString());
+                result = result.Replace(entry.Match, stringValue);
             }
 
             return result;
@@ -127,15 +129,17 @@ namespace Composite.C1Console.Trees
                     return;
                 }
 
-                bool possibleAttachmentPoints = ownerTreeNode.Tree.PossibleAttachmentPoints.OfType<IDataItemAttachmentPoint>().Where(f => f.InterfaceType == interfaceType).Any();
-                bool attachmentPoints = ownerTreeNode.Tree.AttachmentPoints.OfType<IDataItemAttachmentPoint>().Where(f => f.InterfaceType == interfaceType).Any();
-                if ((possibleAttachmentPoints == false) && (attachmentPoints == false) && (ownerTreeNode.SelfAndParentsHasInterface(interfaceType) == false))
+                bool possibleAttachmentPointsExist = ownerTreeNode.Tree.PossibleAttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == interfaceType);
+                bool attachmentPointsExist = ownerTreeNode.Tree.AttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == interfaceType);
+                if (!possibleAttachmentPointsExist 
+                    && !attachmentPointsExist 
+                    && !ownerTreeNode.SelfAndParentsHasInterface(interfaceType))
                 {
                     ownerTreeNode.AddValidationError("TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree", interfaceType);
                     return;
                 }
 
-                bool isReferencingProperty = DataReferenceFacade.GetForeignKeyProperties(interfaceType).Where(f => f.SourcePropertyInfo.Equals(propertyInfo)).Any();
+                bool isReferencingProperty = DataReferenceFacade.GetForeignKeyProperties(interfaceType).Any(f => f.SourcePropertyInfo.Equals(propertyInfo));
 
                 DataFieldValueHelperEntry entry = new DataFieldValueHelperEntry(
                     match.Value,

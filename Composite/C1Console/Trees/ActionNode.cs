@@ -91,19 +91,9 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public void AddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext)
         {
-            IData dataItem = null;
-            if ((entityToken is DataEntityToken) == true)
-            {
-                dataItem = (entityToken as DataEntityToken).Data;
-            }
+            var replaceContext = new DynamicValuesHelperReplaceContext(dynamicContext.CurrentEntityToken, dynamicContext.Piggybag);
 
-            DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext()
-            {
-                CurrentDataItem = dataItem,
-                PiggybagDataFinder = new PiggybagDataFinder(dynamicContext.Piggybag, dynamicContext.CurrentEntityToken)
-            };
-
-            OnAddAction(actionAdder, entityToken, dynamicContext, dynamicValuesHelperReplaceContext);
+            OnAddAction(actionAdder, entityToken, dynamicContext, replaceContext);
         }
 
 

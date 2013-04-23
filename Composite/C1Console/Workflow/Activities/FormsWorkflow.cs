@@ -785,19 +785,7 @@ namespace Composite.C1Console.Workflow.Activities
 
         internal DynamicValuesHelperReplaceContext CreateDynamicValuesHelperReplaceContext(Dictionary<string, string> piggybag)
         {
-            IData dataItem = null;
-            if ((this.EntityToken is DataEntityToken) == true)
-            {
-                dataItem = (this.EntityToken as DataEntityToken).Data;
-            }
-
-            DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
-            {
-                CurrentDataItem = dataItem,
-                PiggybagDataFinder = new PiggybagDataFinder(piggybag, this.EntityToken)
-            };
-
-            return dynamicValuesHelperReplaceContext;
+            return new DynamicValuesHelperReplaceContext(this.EntityToken, piggybag);
         }
 
 

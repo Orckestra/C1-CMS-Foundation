@@ -111,11 +111,9 @@ namespace Composite.C1Console.Trees
                 {
                     perspectiveEntityToken = new TreePerspectiveEntityToken(childTreeNode.Id);
 
-                    DynamicValuesHelperReplaceContext dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext
-                    {
-                        CurrentDataItem = null,
-                        PiggybagDataFinder = new PiggybagDataFinder(new Dictionary<string, string>(), namedAttachmentPoint.AttachingPoint.EntityToken)
-                    };
+                    var dynamicValuesHelperReplaceContext = new DynamicValuesHelperReplaceContext(
+                        namedAttachmentPoint.AttachingPoint.EntityToken, 
+                        null);
 
                     // MRJ: Collection actions
                     Element element = new Element(new ElementHandle(elementAttachingProviderName, perspectiveEntityToken))

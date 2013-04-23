@@ -1,4 +1,5 @@
-﻿using Composite.C1Console.Security;
+﻿using System.Diagnostics;
+using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
 
 
@@ -9,6 +10,7 @@ namespace Composite.C1Console.Trees
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(NoAncestorSecurityAncestorProvider))]
+    [DebuggerDisplay("Id = {Id}, TreeId = {Source}, ParentEntityToken = {Type}")]
     public sealed class TreeSimpleElementEntityToken : EntityToken, IEntityTokenContainingParentEntityToken
 	{
         private EntityToken _parentEntityToken;
