@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -112,26 +113,56 @@ namespace Composite.AspNet.Razor
 
 				try
                 {
-                    var xElement = XElement.Parse(output);
-
-                    if (xElement.Name.LocalName == "html") return new XhtmlDocument(xElement);
-
-                    var document = new XhtmlDocument();
-                    document.Body.Add(xElement);
-
-                    return document;
+                    return OutputToXhtmlDocument(output);
 				}
 				catch (XmlException ex)
 				{
-				    string[] codeLines = output.Split('\n');
+				    string[] codeLines = output.Split(new [] { Environment.NewLine, "\n" }, StringSplitOptions.None);
 
 				    XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, codeLines, ex.LineNumber);
 
-				    throw ex;
+				    throw;
 				}
 			}
 
 			return ValueTypeConverter.Convert(output, resultType);
+        }
+
+        private static XhtmlDocument OutputToXhtmlDocument(string output)
+        {
+            var nodes = new List<XNode>();
+
+            using (var stringReader = new StringReader(output))
+            {
+                // Default settings taken from XElement.Parse
+                var xmlReaderSettings = new XmlReaderSettings();
+                xmlReaderSettings.IgnoreWhitespace = true;
+                xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
+                xmlReaderSettings.MaxCharactersFromEntities = 0x989680L;
+                xmlReaderSettings.XmlResolver = null;
+                xmlReaderSettings.ConformanceLevel = ConformanceLevel.Fragment; // Allows multipe XNode-s
+
+                using (var xmlReader = XmlReader.Create(stringReader, xmlReaderSettings))
+                {
+                    xmlReader.MoveToContent();
+
+                    while (!xmlReader.EOF)
+                    {
+                        XNode node = XNode.ReadFrom(xmlReader);
+                        nodes.Add(node);
+                    }
+                }
+            }
+
+            if (nodes.Count == 1 && nodes[0] is XElement && (nodes[0] as XElement).Name.LocalName == "html")
+            {
+                return new XhtmlDocument(nodes[0] as XElement);
+            }
+
+            var document = new XhtmlDocument();
+            document.Body.Add(nodes);
+
+            return document;
         }
 
         /// <summary>
