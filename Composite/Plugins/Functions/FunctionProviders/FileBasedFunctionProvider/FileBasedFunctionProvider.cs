@@ -7,6 +7,7 @@ using Composite.Core;
 using Composite.Core.IO;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
+using Composite.Core.Application;
 
 namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
@@ -75,8 +76,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     }
                     catch (Exception ex)
                     {
-                        Log.LogError(LogTitle, "Error instantiating {0} function", name);
-                        Log.LogError(LogTitle, ex);
+                        // supressing error messages while in offline mode - we are installing stuff here.
+                        if (ApplicationOnlineHandlerFacade.IsApplicationOnline)
+                        {
+                            Log.LogError(LogTitle, "Error instantiating {0} function", name);
+                            Log.LogError(LogTitle, ex);
+                        }
 
                         returnList.Add(new NotLoadedFileBasedFunction<FunctionType>(this, ns, name, virtualPath, ex));
                         continue;
