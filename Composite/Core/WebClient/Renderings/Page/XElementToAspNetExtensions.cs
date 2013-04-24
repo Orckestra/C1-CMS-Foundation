@@ -100,7 +100,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             if (controlMapper.TryGetControlFromXElement(element, out control) == false)
             {
-                if (IsEncapsulationElement(element))
+                if (IsHtmlControlElement(element) || element.Attribute("id") != null)
                 {
                     control = new HtmlGenericControl(element.Name.LocalName);
                     control.ClientIDMode = ClientIDMode.Static;
@@ -147,8 +147,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-        private static bool IsEncapsulationElement(XElement element)
+        private static bool IsHtmlControlElement(XElement element)
         {
+            
             var name = element.Name;
             string xnamespace = element.Name.Namespace.NamespaceName;
             if (xnamespace == Namespaces.Xhtml.NamespaceName || xnamespace == string.Empty)
@@ -161,8 +162,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     case "img":
                     case "br":
                     case "hr":
-                    case "link":
-                    case "meta":
                         return false;
                     default:
                         return true;
