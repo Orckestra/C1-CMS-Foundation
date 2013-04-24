@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
-using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Composite.Core.WebClient.Renderings.Page;
@@ -107,7 +106,17 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                     {
                         if (node == null) continue;
 
-                        Controls.Add(new LiteralControl(node.ToString()));
+                        if (node is XElement)
+                        {
+                            var markup = new Markup(node as XElement, functionContextContainer);
+
+                            Controls.Add(markup);
+                        }
+                        else
+                        {
+                            Controls.Add(new LiteralControl(node.ToString()));
+                        }
+                        
                     }
                 }
                 else if (result is XAttribute)
