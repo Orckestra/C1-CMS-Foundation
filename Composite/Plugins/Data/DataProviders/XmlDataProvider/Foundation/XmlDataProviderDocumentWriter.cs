@@ -168,7 +168,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                             fileRecord.FileModificationDate = DateTime.MinValue;
                             File.Copy(fileRecord.TempFilePath, fileRecord.FilePath, true);
-                            fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FilePath);
                             failed = false;
                             break;
                         }
