@@ -60,7 +60,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 Action cacheFlush = () => DataEventSystemFacade.FireExternalStoreChangedEvent(dataType, dataScopeIdentifier.ToPublicationScope(), culture);
                 XmlDataProviderDocumentCache.RegisterExternalFileChangeAction(xmlDataTypeStoreDataScope.Filename, cacheFlush);
 
-                XmlDataProviderDocumentCache.RegisterFileOrderer(xmlDataTypeStoreDataScope.Filename, orderer);
+                XmlDataProviderDocumentWriter.RegisterFileOrderer(xmlDataTypeStoreDataScope.Filename, orderer);
             }
         }
 

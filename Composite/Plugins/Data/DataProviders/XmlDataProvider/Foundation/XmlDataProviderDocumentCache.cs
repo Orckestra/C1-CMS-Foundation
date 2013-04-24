@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
+
 using Composite.C1Console.Events;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -20,48 +20,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 {
     internal static class XmlDataProviderDocumentCache
     {
-        private const int NumberOfRetries = 30;
         private static readonly string LogTitle = "XmlDataProvider";
-
-        internal class FileRecord
-        {
-            internal FileRecord()
-            {
-                _randomTempFileKey = Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
-            }
-
-            private readonly string _randomTempFileKey;
-
-            public string FilePath;
-            public string ElementName;
-            public RecordSet RecordSet;
-            public IEnumerable<XElement> ReadOnlyElementsList;
-            public DateTime LastModified;
-            public DateTime FileModificationDate;
-            public bool Dirty = false; // Determines whether the inner XElement list is dirty
-
-            public string TempFilePath
-            {
-                get
-                {
-                    return string.Format("{0}.{1}.tmp", FilePath, _randomTempFileKey);
-                }
-            }
-        }
-
-        internal class RecordSet
-        {
-            public Hashtable<IDataId, XElement> Index;
-        }
 
         private static readonly Hashtable<string, FileRecord> _cache = new Hashtable<string, FileRecord>();
         private static HashSet<string> _watchedFiles = new HashSet<string>();
         private static readonly object _cacheSyncRoot = new object();
         private static readonly object _documentEditingSyncRoot = new object();
         private static readonly List<KeyValuePair<string, Action>> _externalFileChangeActions = new List<KeyValuePair<string, Action>>();
-        private static readonly Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>> _fileOrderers = new Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>>();
-
-        private static readonly TimeSpan AcceptableNotificationDelay = TimeSpan.FromSeconds(1.0);
 
         static XmlDataProviderDocumentCache()
         {
@@ -80,20 +45,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             _externalFileChangeActions.Add(new KeyValuePair<string, Action>(key, action));
         }
-
-
-        internal static void RegisterFileOrderer(string filename, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>> orderer)
-        {
-            string key = filename.ToLowerInvariant();
-
-            if (_fileOrderers.ContainsKey(key))
-            {
-                _fileOrderers.Remove(key);
-            }
-
-            _fileOrderers.Add(key, orderer);
-        }
-
 
 
         public static object SyncRoot
@@ -157,24 +108,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void UndoUncommitedChanges()
-        {
-            lock (_cacheSyncRoot)
-            {
-                foreach (string filePath in _cache.GetKeys())
-                {
-                    if (_cache[filePath].Dirty)
-                    {
-                        _cache.Remove(filePath);
-                    }
-                }
-            }
-        }
-
-
-
         public static void ClearCache()
         {
+            XmlDataProviderDocumentWriter.Flush();
             _cache.Clear();
         }
 
@@ -196,115 +132,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             return result;
         }
 
-        private static string GetRootElementName(string elementName)
-        {
-            return elementName + "Elements";
-        }
 
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, to handle broken saves")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotCallXmlWriterCreateWithPath:DoNotCallXmlWriterCreateWithPath", Justification = "This is what we want, to handle broken saves")]
         private static void SaveChanges(FileRecord fileRecord)
         {
-            XDocument xDocument = new XDocument();
-
-            XElement root = new XElement(GetRootElementName(fileRecord.ElementName));
-            xDocument.Add(root);
-
-            var recordSet = fileRecord.RecordSet;
-            List<XElement> elements = new List<XElement>(recordSet.Index.GetValues());
-
-            string key = fileRecord.FilePath.ToLowerInvariant();
-
-            if (_fileOrderers.ContainsKey(key))
-            {
-                var orderer = _fileOrderers[key];
-                var orderedElements = orderer(elements);
-
-                orderedElements.ForEach(root.Add);
-            }
-            else
-            {
-                elements.ForEach(root.Add);
-            }
-
-            Exception thrownException = null;
-
-            // Writing the file in the "catch" block in order to prevent chance of corrupting the file by experiencing ThreadAbortException.
-            try
-            {
-            }
-            finally
-            {
-                try
-                {
-                    // Saving to temp file and file move to prevent broken saves
-                    XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-                    xmlWriterSettings.CheckCharacters = false;
-                    xmlWriterSettings.Indent = true;
-
-                    using (XmlWriter xmlWriter = XmlWriter.Create(fileRecord.TempFilePath, xmlWriterSettings))
-                    {
-                        xDocument.Save(xmlWriter);
-                    }
-
-                    bool failed = true;
-                    Exception lastException = null;
-                    for (int i = 0; i < NumberOfRetries; i++)
-                    {
-                        try
-                        {
-                            File.Copy(fileRecord.TempFilePath, fileRecord.FilePath, true);
-                            failed = false;
-                            break;
-                        }
-                        catch (Exception ex)
-                        {
-                            lastException = ex;
-                            Thread.Sleep(10 * (i + 1));
-                        }
-                    }
-
-                    if (!failed)
-                    {
-                        File.Delete(fileRecord.TempFilePath);
-                    }
-                    else
-                    {
-                        Log.LogCritical(LogTitle, "Failed deleting the file: " + fileRecord.FilePath);
-                        if (lastException != null) throw lastException;
-
-                        throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
-                    }
-
-                    try
-                    {
-                        C1File.Touch(fileRecord.FilePath);
-                    }
-                    catch (Exception)
-                    {
-                        // Ignore exception here. The tmp file might have been "recovered" by the load method
-                    }
-                }
-                catch (Exception exception)
-                {
-                    Log.LogCritical(LogTitle, "Failed to save data to the file file:" + fileRecord.FilePath);
-                    Log.LogCritical(LogTitle, exception);
-                    thrownException = exception;
-                }
-            }
-            // ThreadAbortException should have a higher prioriry, and therefore we're doing rethrow in a separate block
-            if (thrownException != null) throw thrownException;
-
-            // Detaching elements from the document
-            elements.ForEach(element => element.Remove());
-
             fileRecord.LastModified = DateTime.Now;
-            fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FilePath);
-
-            // Atomic operation
+            List<XElement> elements = new List<XElement>(fileRecord.RecordSet.Index.GetValues());
             fileRecord.ReadOnlyElementsList = new List<XElement>(elements);
             fileRecord.Dirty = false;
+
+            XmlDataProviderDocumentWriter.Save(fileRecord);
         }
 
 
@@ -372,10 +209,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             var fileRecord = _cache[filePath];
 
-            // Ignoring this notification since it's probably caused by XmlDataProvider itself
             if (fileRecord == null
-                || DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay)
+                || fileRecord.FileModificationDate == DateTime.MinValue
+                || C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
             {
+                // Ignoring this notification since it's very very probably caused by XmlDataProvider itself
                 return;
             }
 
@@ -385,14 +223,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 {
                     fileRecord = _cache[filePath];
 
-                    if (fileRecord == null) return;
-
-                    // Ignoring this notification since it's probably caused by XmlDataProvider itself
-                    if (DateTime.Now - fileRecord.LastModified < AcceptableNotificationDelay) return;
-
-                    // Checking if the date has changed
-                    if (C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
+                    if (fileRecord == null
+                        || fileRecord.FileModificationDate == DateTime.MinValue
+                        || C1File.GetLastWriteTime(filePath) == fileRecord.FileModificationDate)
                     {
+                        // Ignoring this notification since it's very very probably caused by XmlDataProvider itself
                         return;
                     }
 
@@ -546,8 +381,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             public void Dispose()
             {
-                UndoUncommitedChanges();
-
                 if (_entered)
                 {
                     Monitor.Exit(SyncRoot);

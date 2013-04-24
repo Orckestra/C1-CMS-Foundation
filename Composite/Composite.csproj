@@ -169,6 +169,8 @@
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
+    <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\FileRecord.cs" />
+    <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\XmlDataProviderDocumentWriter.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\PageTemplateFeatureElementProvider.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\PageTemplateFeatureEntityToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateElementProvider\SharedCodeFileEntityToken.cs" />
@@ -615,7 +617,7 @@
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlProviderCodeGenerator.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\CodeGeneration\XmlDataProviderCodeBuilder.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\NamesCreator.cs" />
-    <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataProvider_GAUD.cs" />
+    <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataProvider_CRUD.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataProvider_Stores.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataTypeStore.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\XmlDataTypeStoreDataScope.cs" />

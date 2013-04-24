@@ -77,6 +77,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
+                var validatedFileRecords = new Dictionary<IDataId, FileRecord>();
+                var validatedElements = new Dictionary<IDataId, XElement>();
+
+                // verify phase
                 foreach (IData data in dataset)
                 {
                     Verify.ArgumentCondition(data != null, "dataset", "Collection contains a null element.");
@@ -110,11 +114,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     IXElementWrapper wrapper = data as IXElementWrapper;
                     Verify.ArgumentCondition(wrapper != null, "dataset", "The type of data was expected to be of type {0}".FormatWith(typeof(IXElementWrapper)));
 
-                    fileRecord.Dirty = true;
-
                     XElement updatedElement = CreateUpdatedXElement(wrapper, element);
 
-                    index[dataId] = updatedElement;
+                    validatedFileRecords.Add(dataId, fileRecord);
+                    validatedElements.Add(dataId, updatedElement);
+
+                }
+
+                foreach (var key in validatedElements.Keys)
+                {
+                    FileRecord fileRecord = validatedFileRecords[key];
+                    fileRecord.Dirty = true;
+                    fileRecord.RecordSet.Index[key] = validatedElements[key];
+
                 }
 
                 XmlDataProviderDocumentCache.SaveChanges();
@@ -135,35 +147,42 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
+                var validatedElements = new Dictionary<IDataId, XElement>();
+                var validatedData = new Dictionary<IDataId, T>();
+
+                XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
+
+                string currentDataScope = DataScopeManager.MapByType(typeof(T)).Name;
+                Verify.That(dataTypeStore.HasDataScopeName(currentDataScope), "The store named '{0}' is not supported for type '{1}'", currentDataScope, typeof(T));
+
+                string cultureName = LocalizationScopeManager.MapByType(typeof(T)).Name;
+                var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
+
+                var fileRecord = GetFileRecord(dataTypeStore, dataTypeStoreScope);
+
+                // validating phase
                 foreach (IData data in dataset)
                 {
                     Verify.ArgumentCondition(data != null, "dataset", "The enumeration datas may not contain nulls");
-
                     ValidationHelper.Validate(data);
 
-                    var dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
-
-                    string currentDataScope = DataScopeManager.MapByType(typeof(T)).Name;
-                    Verify.That(dataTypeStore.HasDataScopeName(currentDataScope), "The store named '{0}' is not supported for type '{1}'", currentDataScope, typeof(T));
-
-                    string cultureName = LocalizationScopeManager.MapByType(typeof(T)).Name;
-                    var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
-
                     XElement newElement;
+
                     T newData = dataTypeStore.Helper.CreateNewElement<T>(data, out newElement, dataTypeStoreScope.ElementName, _dataProviderContext.ProviderName);
-
-                    var fileRecord = GetFileRecord(dataTypeStore, dataTypeStoreScope);
-
                     IDataId dataId = dataTypeStore.Helper.CreateDataId(newElement);
+                    XElement violatingElement = fileRecord.RecordSet.Index[dataId];
 
-                    XElement element = fileRecord.RecordSet.Index[dataId];
+                    Verify.ArgumentCondition(violatingElement == null, "dataset", "Key violation error. An data element with the same dataId is already added");
 
-                    Verify.ArgumentCondition(element == null, "dataset", "Key violation error. An data element with the same dataId is already added");
-
-                    fileRecord.Dirty = true;
-                    fileRecord.RecordSet.Index.Add(dataId, newElement);
-
+                    validatedElements.Add(dataId, newElement);
                     resultList.Add(newData);
+                }
+
+                // commit validated elements 
+                foreach (var key in validatedElements.Keys)
+	            {
+                    fileRecord.RecordSet.Index.Add(key, validatedElements[key]);
+                    fileRecord.Dirty = true;
                 }
 
                 XmlDataProviderDocumentCache.SaveChanges();
@@ -184,6 +203,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
+                var validated = new Dictionary<IDataId, FileRecord>();
+
+                // verify phase
                 foreach (DataSourceId dataSourceId in dataSourceIds)
                 {
                     Verify.ArgumentCondition(dataSourceId != null, "dataSourceIds", "The enumeration may not contain null values");
@@ -207,8 +229,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     Verify.ArgumentCondition(index.ContainsKey(dataSourceId.DataId), "No data element corresponds to the given data id", "dataSourceIds");
 
+                    validated.Add(dataSourceId.DataId, fileRecord);
+                }
+
+                // commit phase
+                foreach (var dataId in validated.Keys)
+                {
+                    FileRecord fileRecord = validated[dataId];
+                    fileRecord.RecordSet.Index.Remove(dataId);
                     fileRecord.Dirty = true;
-                    index.Remove(dataSourceId.DataId);
                 }
 
                 XmlDataProviderDocumentCache.SaveChanges();
@@ -281,7 +310,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-        private static XmlDataProviderDocumentCache.FileRecord GetFileRecord(XmlDataTypeStore dataTypeStore, XmlDataTypeStoreDataScope dataTypeStoreDataScope)
+        private static FileRecord GetFileRecord(XmlDataTypeStore dataTypeStore, XmlDataTypeStoreDataScope dataTypeStoreDataScope)
         {
             return XmlDataProviderDocumentCache.GetFileRecord(dataTypeStoreDataScope.Filename, dataTypeStoreDataScope.ElementName, dataTypeStore.Helper.CreateDataId);
         }
