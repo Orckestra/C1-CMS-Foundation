@@ -27901,10 +27901,10 @@ break;
 }
 this.initializeEditorComponents(_10f0);
 var self=this;
-this._codemirrorEditor.setOption("onChange",function(e){
+this._codemirrorEditor.on("change",function(e){
 self.checkForDirty();
 });
-this._codemirrorEditor.setOption("onFocus",function(e){
+this._codemirrorEditor.on("focus",function(e){
 self._activateEditor(true);
 });
 if(this._pageBinding!=null){
@@ -27942,22 +27942,21 @@ _10f8.disable();
 }
 if(_10f6){
 this.focus();
-var _10f9=this._codemirrorEditor;
 }else{
 this.blur();
 }
 }
 };
 CodeMirrorEditorBinding.prototype.handleCommand=function(cmd,gui,val){
-var _10fd=CodeMirrorEditorBinding.superclass.handleCommand.call(this,cmd,val);
-return _10fd;
+var _10fc=CodeMirrorEditorBinding.superclass.handleCommand.call(this,cmd,val);
+return _10fc;
 };
 CodeMirrorEditorBinding.prototype._finalize=function(){
 this.setContent(this._startContent);
 CodeMirrorEditorBinding.superclass._finalize.call(this);
 };
-CodeMirrorEditorBinding.prototype.initializeEditorComponent=function(_10fe){
-_10fe.initializeSourceEditorComponent(this,this._codemirrorEditor);
+CodeMirrorEditorBinding.prototype.initializeEditorComponent=function(_10fd){
+_10fd.initializeSourceEditorComponent(this,this._codemirrorEditor);
 };
 CodeMirrorEditorBinding.prototype.clean=function(){
 CodeMirrorEditorBinding.superclass.clean.call(this);
@@ -27977,34 +27976,34 @@ return this._codemirrorWrapperElement.ownerDocument;
 }
 return null;
 };
-CodeMirrorEditorBinding.prototype.setContent=function(_1100){
+CodeMirrorEditorBinding.prototype.setContent=function(_10ff){
 if(!this._isFinalized){
-if(_1100!=this._startContent){
-this._startContent=_1100;
+if(_10ff!=this._startContent){
+this._startContent=_10ff;
 }
 }
 if(this.isInitialized&&this.getContentWindow().bindingMap!=null){
-this.getContentWindow().bindingMap.editorpage.setContent(_1100);
+this.getContentWindow().bindingMap.editorpage.setContent(_10ff);
 this.resetUndoRedo();
 this._checksum=this.getCheckSum();
 }
 return true;
 };
 CodeMirrorEditorBinding.prototype.getContent=function(){
-var _1101=this.getContentWindow().bindingMap.editorpage.getContent();
-return _1101?_1101:"";
+var _1100=this.getContentWindow().bindingMap.editorpage.getContent();
+return _1100?_1100:"";
 };
 CodeMirrorEditorBinding.prototype.resetUndoRedo=function(){
 this._codemirrorEditor.clearHistory();
 };
-CodeMirrorEditorBinding.prototype.cover=function(_1102){
+CodeMirrorEditorBinding.prototype.cover=function(_1101){
 if(this._pageBinding!=null){
-this._pageBinding.cover(_1102);
+this._pageBinding.cover(_1101);
 }
 };
-CodeMirrorEditorBinding.prototype.updateElement=function(_1103){
-if(_1103!=null&&this.shadowTree.dotnetinput!=null){
-var value=_1103.getAttribute("value");
+CodeMirrorEditorBinding.prototype.updateElement=function(_1102){
+if(_1102!=null&&this.shadowTree.dotnetinput!=null){
+var value=_1102.getAttribute("value");
 if(value!=null&&value!=this.shadowTree.dotnetinput.value){
 this.setValue(decodeURIComponent(value));
 }
@@ -28014,32 +28013,32 @@ return true;
 CodeMirrorEditorBinding.prototype.blurEditor=function(){
 };
 CodeMirrorEditorBinding.prototype.validate=function(){
-var _1105=true;
-var _1106=this.getContent();
+var _1104=true;
+var _1105=this.getContent();
 if(this._validator!=null){
-_1105=Validator.validateInformed(_1106,this._validator);
+_1104=Validator.validateInformed(_1105,this._validator);
 }else{
 switch(this.syntax){
 case CodeMirrorEditorBinding.syntax.XML:
 case CodeMirrorEditorBinding.syntax.XSL:
 case CodeMirrorEditorBinding.syntax.HTML:
-newSource=_1106.replace("&nbsp;","&#160;").replace("&copy;","&#169;").replace("<!doctype","<!DOCTYPE");
-if(newSource!=_1106){
-_1106=newSource;
-this.setContent(newSource);
+var _1106=_1105.replace("&nbsp;","&#160;").replace("&copy;","&#169;").replace("<!doctype","<!DOCTYPE");
+if(_1106!=_1105){
+_1105=_1106;
+this.setContent(_1106);
 }
-_1105=XMLParser.isWellFormedDocument(_1106,true);
-if(_1105==true&&this._hasStrictValidation){
+_1104=XMLParser.isWellFormedDocument(_1105,true);
+if(_1104==true&&this._hasStrictValidation){
 switch(this.syntax){
 case CodeMirrorEditorBinding.syntax.HTML:
-_1105=this._isValidHTML(_1106);
+_1104=this._isValidHTML(_1105);
 break;
 }
 }
 break;
 }
 }
-return _1105;
+return _1104;
 };
 CodeMirrorEditorBinding.prototype._isValidHTML=function(xml){
 var _1108=true;
