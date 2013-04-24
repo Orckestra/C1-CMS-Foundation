@@ -67,13 +67,14 @@ del ..\..\App_Data\PageTemplates.web.config /f
 
 
 :: Starter site cleanup 
-del ..\..\Frontend\Styles\1140.css
-del ..\..\Frontend\Styles\ie.css
-del ..\..\Frontend\Styles\layout.css
-del ..\..\Frontend\Styles\mobile.css
-del ..\..\Frontend\Styles\smallerscreen.css
-del ..\..\Frontend\Styles\typeimg.css
 del ..\..\favicon.ico
+del ..\..\Bin\dotless.Core.dll
+rd /s /q ..\..\Frontend\Scripts
+rd /s /q ..\..\Frontend\Styles
+rd /s /q ..\..\Frontend\Images
+rd /s /q ..\..\Frontend\Composite
+
+
 
 
 :: Blog cleanup
