@@ -134,13 +134,14 @@ namespace Composite.AspNet.Razor
 
             using (var stringReader = new StringReader(output))
             {
-                // Default settings taken from XElement.Parse
-                var xmlReaderSettings = new XmlReaderSettings();
-                xmlReaderSettings.IgnoreWhitespace = true;
-                xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
-                xmlReaderSettings.MaxCharactersFromEntities = 0x989680L;
-                xmlReaderSettings.XmlResolver = null;
-                xmlReaderSettings.ConformanceLevel = ConformanceLevel.Fragment; // Allows multipe XNode-s
+                var xmlReaderSettings = new XmlReaderSettings
+                {
+                    IgnoreWhitespace = true,
+                    DtdProcessing = DtdProcessing.Parse,
+                    MaxCharactersFromEntities = 10000000,
+                    XmlResolver = null,
+                    ConformanceLevel = ConformanceLevel.Fragment // Allows multipe XNode-s
+                };
 
                 using (var xmlReader = XmlReader.Create(stringReader, xmlReaderSettings))
                 {
