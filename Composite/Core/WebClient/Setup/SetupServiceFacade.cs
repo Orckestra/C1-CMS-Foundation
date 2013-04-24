@@ -397,7 +397,6 @@ namespace Composite.Core.WebClient.Setup
             foreach (PackageFragmentValidationResult packageFragmentValidationResult in packageFragmentValidationResults)
             {
                 throw new InvalidOperationException(packageFragmentValidationResult.Message);
-                //LoggingService.LogCritical("SetupServiceFacade", packageFragmentValidationResult.Message);
             }
         }
     }
