@@ -205,12 +205,6 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 
 		case BroadcastMessages.CODEMIRROR_LOADED:
 
-			/*
-			Application.unlock ( this );
-			this._isFinalized = true;
-			this.dispatchAction ( this.action_initialized );
-			*/
-
 			var windowBinding = this.getContentWindow().bindingMap.codemirrorwindow;
 
 			if (windowBinding != null) {
@@ -257,33 +251,23 @@ CodeMirrorEditorBinding.prototype.handleBroadcast = function (broadcast, arg) {
 							break;
 					}
 
-
 					// init components 
 					this.initializeEditorComponents(windowBinding);
-
-					
-
 
 					// dirtyfication
 					var self = this;
 
-					this._codemirrorEditor.setOption("onChange",
+					this._codemirrorEditor.on("change",
 						function (e) {
 							self.checkForDirty();
 						}
 					);
 
-					this._codemirrorEditor.setOption("onFocus",
+					this._codemirrorEditor.on("focus",
 						function (e) {
 							self._activateEditor(true);
 						}
 					);
-
-//					this._codemirrorEditor.setOption("onBlur",
-//						function (e) {
-//							self._activateEditor(false);
-//						}
-//					);
 
 					/*
 					* We have the editor but do we have the page? 
@@ -317,27 +301,6 @@ CodeMirrorEditorBinding.prototype._onPageInitialize = function (binding) {
 		this._initialize();
 	}
 }
-
-/**
-* Debug editor HTML content.
-* TODO: Move to super?
-*
-CodeMirrorEditorBinding.prototype.debug = function () {
-	
-var html = this.getEditorDocument ().body.innerHTML;
-if ( Client.isMozilla ) {
-html = html.replace(/<br>/g,"<br/>");
-html = html.replace(/\t/g,"....");
-var dom = XMLParser.parse ( html );
-if ( dom ) {
-html = DOMSerializer.serialize ( dom, true );
-}
-} else {
-html = "Debug not supported in IE.";
-}
-this.logger.debug ( html );
-}
-*/
 
 /**
 * Activate editor.
@@ -378,7 +341,6 @@ CodeMirrorEditorBinding.prototype._activateEditor = function (isActivate) {
 		*/
 		if (isActivate) {
 			this.focus();
-			var editor = this._codemirrorEditor;
 		} else {
 			this.blur();
 		}
@@ -597,7 +559,7 @@ CodeMirrorEditorBinding.prototype.validate = function () {
 			case CodeMirrorEditorBinding.syntax.XSL:
 			case CodeMirrorEditorBinding.syntax.HTML:
 
-				newSource = source
+				var newSource = source
 					.replace("&nbsp;", "&#160;")
 					.replace("&copy;", "&#169;")
 					.replace("<!doctype", "<!DOCTYPE");

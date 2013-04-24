@@ -1000,7 +1000,7 @@
     <Content Include="Composite\skins\system\wysiwygeditor\left.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\outdent.png" />
     <Content Include="Composite\skins\system\wysiwygeditor\right.png" />
-    <Content Include="Composite\templates\sourcecodeeditor\csharp.txt" />
+    <Content Include="Composite\templates\sourcecodeeditor\cs.txt" />
     <Content Include="Composite\templates\sourcecodeeditor\js.txt" />
     <Content Include="Composite\transformations\defaultfilters\finalizefilter.xsl" />
     <Content Include="Composite\transformations\defaultfilters\masterfilter.xsl" />
