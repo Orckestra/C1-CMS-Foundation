@@ -33,7 +33,7 @@ if (editorpath.indexOf("config=") > -1) {
     conf = editorpath.split("config=")[1];
 }
 var sitepath = editorpath.substring(0, editorpath.toLowerCase().indexOf("/composite/content/"));
-var relconfigpath = "/Frontend/Config/VisualEditor/" + conf + ".xml";
+var relconfigpath = "/Composite/services/WysiwygEditor/getconfig.ashx?name=" + conf;
 var url = sitepath + relconfigpath;
 
 var request = DOMUtil.getXMLHTTPRequest ();
