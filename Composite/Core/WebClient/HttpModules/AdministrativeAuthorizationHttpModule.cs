@@ -31,7 +31,7 @@ namespace Composite.Core.WebClient.HttpModules
 
         static AdministrativeAuthorizationHttpModule()
         {
-            if (C1Directory.Exists(UrlUtils.AdminRootPath))
+            if (C1Directory.Exists(HostingEnvironment.MapPath(UrlUtils.AdminRootPath)))
             {
                 LoadConfiguration();
             }
