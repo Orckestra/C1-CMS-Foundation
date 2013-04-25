@@ -39,7 +39,7 @@
   <xsl:template match="@id[.='__mce']"/>
 
   <!-- strip tinymce internals -->
-  <xsl:template match="@mce_serialized|@mce_keep|@mce_src|@mce_href|@mce_bogus|@mce_style|@data-mce-src|@data-mce-href|@mce_imageresize_id" />
+  <xsl:template match="@mce_serialized|@mce_keep|@mce_src|@mce_href|@mce_bogus|@mce_style|@data-mce-src|@data-mce-href|@mce_imageresize_id|@data-mce-selected" />
 
   <!-- more tinymce internals -->
   <xsl:template match="@class[contains(.,'mceVisualAid')]">
@@ -94,6 +94,24 @@
 			</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+
+	<!-- more tinymce internals -->
+	<xsl:template match="@class[contains(.,'mce-item-table')]">
+		<xsl:choose>
+			<xsl:when test=".='mce-item-table'" />
+			<xsl:when test="contains(.,' mce-item-table')">
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-before(.,' mce-item-table')" />
+					<xsl:value-of select="substring-after(.,' mce-item-table')" />
+				</xsl:attribute>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:attribute name="class">
+					<xsl:value-of select="substring-after(.,'mce-item-table ')" />
+				</xsl:attribute>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 	<!-- more tinymce internals -->
 	<xsl:template match="@class[contains(.,'mceItemAnchor')]">
