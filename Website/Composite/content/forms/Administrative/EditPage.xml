@@ -15,7 +15,17 @@
 	<cms:layout iconhandle="page-edit-page">
 		<TabPanels PreSelectedIndex="1">
 			<TabPanels.Label>
-				<cms:read source="SelectedPage.Title" />
+        <f:NullCheck>
+          <f:NullCheck.CheckValue>
+            <cms:read source="SelectedPage.MenuTitle" />
+          </f:NullCheck.CheckValue>
+          <f:NullCheck.WhenNull>
+            <cms:read source="SelectedPage.Title" />
+          </f:NullCheck.WhenNull>
+          <f:NullCheck.WhenNotNull>
+            <cms:read source="SelectedPage.MenuTitle" />
+          </f:NullCheck.WhenNotNull>
+        </f:NullCheck>
 			</TabPanels.Label>
 			<PlaceHolder Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPaneSettings}">
 				<FieldGroup Label="${Composite.Plugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
