@@ -18,9 +18,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
     {
         private static readonly ConcurrentQueue<FileRecord> _dirtyRecords = new ConcurrentQueue<FileRecord>();
         private static readonly Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>> _fileOrderers = new Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>>();
+        private static readonly object _flushLock = new object();
+        private static DateTime _activeFlushActivityStart = DateTime.MinValue;
         private static System.Timers.Timer _autoCommitTimer;
 
-        private static readonly TimeSpan _updateFrequency = TimeSpan.FromSeconds(1);
+        private static readonly TimeSpan _updateFrequency = TimeSpan.FromMilliseconds(1000);
         private const int NumberOfRetries = 30;
         private static readonly string LogTitle = "XmlDataProvider";
         private static bool forceImmediateWrite = false;
@@ -83,9 +85,18 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         }
 
 
-
         internal static void Flush()
         {
+            lock (_flushLock)
+            {
+                if (!forceImmediateWrite && (DateTime.Now - _activeFlushActivityStart).TotalSeconds < 30)
+                {
+                    return;
+                }
+
+                _activeFlushActivityStart = DateTime.Now;
+            }
+
             FileRecord dirtyFileRecord;
             List<FileRecord> fileRecords = new List<FileRecord>();
 
@@ -106,8 +117,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 catch (Exception ex)
                 {
                     Log.LogError(LogTitle, ex);
+                    _dirtyRecords.Enqueue(fileRecord);
                 }
             }
+
+            _activeFlushActivityStart = DateTime.MinValue;
         }
 
 
