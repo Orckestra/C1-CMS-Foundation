@@ -11,6 +11,7 @@ using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data;
 using System.Reflection;
+using System.Threading.Tasks;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -290,16 +291,20 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 Directory.Delete(directoryToDelete, true);
             }
 
-            List<XElement> fileElements = new List<XElement>();
-            foreach (FileToCopy fileToCopy in _filesToCopy)
-            {
-                LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
 
-                string targetDirectory = Path.GetDirectoryName(fileToCopy.TargetFilePath);
+            foreach (string targetDirectory in _filesToCopy.Select( f=> Path.GetDirectoryName(f.TargetFilePath)).Distinct())
+            {
                 if (Directory.Exists(targetDirectory) == false)
                 {
+                    LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Creating directory '{0}'", targetDirectory));
                     Directory.CreateDirectory(targetDirectory);
                 }
+            }
+
+            List<XElement> fileElements = new List<XElement>();
+            Parallel.ForEach(_filesToCopy, fileToCopy =>
+            {
+                LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
 
                 if ((C1File.Exists(fileToCopy.TargetFilePath) && ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0) && (fileToCopy.AllowOverwrite)))
                 {
@@ -318,7 +323,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 XElement fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
 
                 fileElements.Add(fileElement);
-            }
+            });
 
             yield return new XElement("Files", fileElements);
         }
