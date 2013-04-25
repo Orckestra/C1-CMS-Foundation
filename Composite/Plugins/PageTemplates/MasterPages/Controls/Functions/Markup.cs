@@ -18,7 +18,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
     [ParseChildren(false)]
     public class Markup : Control
     {
-        private FunctionContextContainer _functionContextContainer;
+        private readonly FunctionContextContainer _functionContextContainer;
 
         /// <exclude />
         protected XElement InnerContent { get; set; }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Web.Hosting;
 using System.Web.UI;
 using Composite.AspNet;
+using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
@@ -40,6 +42,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
 
         protected override IFunction InstantiateFunction(string virtualPath, string @namespace, string name)
         {
+            if (HostingEnvironment.ApplicationHost.ShutdownInitiated())
+            {
+                return null;
+            }
+
             UserControl userControl = CompileFile(virtualPath);
 
             if(!(userControl is UserControl))

@@ -230,6 +230,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 
                 interfaceTypeName = typeAttribute.Value;
 
+                const string LegasyTypeNamePrefix = "DynamicType:";
+                if (interfaceTypeName.StartsWith(LegasyTypeNamePrefix))
+                {
+                    interfaceTypeName = interfaceTypeName.Substring(LegasyTypeNamePrefix.Length);
+                }
+
                 foreach (XElement dataElement in typeElement.Elements("Data"))
                 {
                     DataScopeIdentifier dataScopeIdentifier = null;
