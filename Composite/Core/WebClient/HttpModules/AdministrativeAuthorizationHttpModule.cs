@@ -22,6 +22,7 @@ namespace Composite.Core.WebClient.HttpModules
         private static string _adminRootPath;
         private static string _loginPagePath;
         private static object _lock = new object();
+        private static bool _protect = true;
 
         private const string webauthorizationRelativeConfigPath = "~/Composite/webauthorization.config";
         private const string loginPagePathAttributeName = "loginPagePath";
@@ -30,11 +31,23 @@ namespace Composite.Core.WebClient.HttpModules
 
         static AdministrativeAuthorizationHttpModule()
         {
-            LoadConfiguration();
+            if (C1Directory.Exists(UrlUtils.AdminRootPath))
+            {
+                LoadConfiguration();
+            }
+            else
+            {
+                _protect = false;
+            }
         }
 
         private void context_AuthenticateRequest(object sender, EventArgs e)
         {
+            if (!_protect)
+            {
+                return;
+            }
+
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 
