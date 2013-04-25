@@ -336,15 +336,7 @@ namespace Composite.Data.DynamicTypes
 
             if (foreignKeyReferenceTypeNameAttribute != null)
             {
-                string typeName = foreignKeyReferenceTypeNameAttribute.Value;
-
-                const string legasyTypeNamePrefix = "DynamicType:";
-                if (typeName.StartsWith(legasyTypeNamePrefix))
-                {
-                    typeName = typeName.Substring(legasyTypeNamePrefix.Length);
-                }
-
-                dataFieldDescriptor.ForeignKeyReferenceTypeName = typeName;
+                dataFieldDescriptor.ForeignKeyReferenceTypeName = foreignKeyReferenceTypeNameAttribute.Value;
             }
 
             if (formRenderingProfileElement != null)

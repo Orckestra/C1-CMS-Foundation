@@ -180,6 +180,12 @@ namespace Composite.Core.Types
             {
                 Type compositeType = TryGetNonGenericType(fullName + ", Composite");
                 if (compositeType != null) return compositeType;
+
+                if (fullName.StartsWith("DynamicType:") == false)
+                {
+                    Type dynamicType = TryGetNonGenericType("DynamicType:" + fullName);
+                    if (dynamicType != null) return dynamicType;
+                }
             }
 
 
