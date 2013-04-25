@@ -6071,6 +6071,7 @@
     <None Include="Composite\schemas\Trees\Tree.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Composite\services\WysiwygEditor\getconfig.ashx" />
     <None Include="Composite\skins\system\docks\vista\Thumbs.db" />
     <Content Include="Composite\web.config">
       <SubType>Designer</SubType>
