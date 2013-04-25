@@ -32,10 +32,10 @@ function VisualMultiEditorBinding () {
 	this._textareas = null;
 	
 	/**
-	 * Index HEAD section of multiple documents.
+	 * Index HTML markup of multiple documents.
 	 * @type {Map<string><string>}
 	 */
-	this._heads = null;
+	this._xhtmls = null;
 	
 	/*
 	 * Returnable.
@@ -70,10 +70,10 @@ VisualMultiEditorBinding.prototype._setup = function () {
 	/*
 	 * Prepare for multiple head sections.
 	 */
-	this._heads = new Map ();
+	this._xhtmls = new Map();
 	
 	/*
-	 * Extract start content and determine key for storing HEAD section.
+	 * Extract start content and determine key for storing HTML Markup.
 	 */
 	var textareas = this.getDescendantElementsByLocalName ( "textarea" );
 	while ( textareas.hasNext ()) {
@@ -309,28 +309,29 @@ VisualMultiEditorBinding.prototype._placeHolderSelected = function ( textareanam
 }
 
 /**
- * Cache HEAD section.
- * @overloads {VisualEditorBinding#extractHead}
+ * Cache Html markup.
+ * @overloads {VisualEditorBinding#extractBody}
  * @param {string} html
  */
-VisualMultiEditorBinding.prototype.extractHead = function ( html ) {
-	
-	VisualMultiEditorBinding.superclass.extractHead.call ( this, html );
-	this._heads.set ( this._textareaname, this._head );
+VisualMultiEditorBinding.prototype.extractBody = function ( html ) {
+
+	var result = VisualMultiEditorBinding.superclass.extractBody.call(this, html);
+	this._xhtmls.set(this._textareaname, this._xhtml);
+	return result;
 }
 
 /**
- * Get cached HEAD section.
- * @overwrites {VisualEditorBinding#_getHeadSection}
+ * Get cached html markup.
+ * @overwrites {VisualEditorBinding#_getHtmlMarkup}
  * @return {string}
  */
-VisualMultiEditorBinding.prototype._getHeadSection = function () {
+VisualMultiEditorBinding.prototype._getHtmlMarkup = function () {
 	
-	var result = "";
-	if ( this._heads.has ( this._textareaname )) {
-		result = this._heads.get ( this._textareaname );
+	var result = VisualEditorBinding.XHTML;
+	if ( this._xhtmls.has ( this._textareaname )) {
+		result = this._xhtmls.get(this._textareaname);
 		if ( result == null ) {
-			result = new String ( "" );
+			result = VisualEditorBinding.XHTML;
 		}
 	}
 	return result;

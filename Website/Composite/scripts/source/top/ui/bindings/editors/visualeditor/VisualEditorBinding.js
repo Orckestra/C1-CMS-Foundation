@@ -9,7 +9,7 @@ VisualEditorBinding.HTML_CLASSNAME = "compositeHtmlWysiwygRepresentation";
 VisualEditorBinding.ACTION_INITIALIZED = "visualeditor initialized";
 VisualEditorBinding.DEFAULT_CONTENT = "<p></p>";
 VisualEditorBinding.URL_DIALOG_CONTENTERROR = "${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
-VisualEditorBinding.XHTML = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head>${head}</head>\n\t<body>\n${body}\n\t</body>\n</html>";
+VisualEditorBinding.XHTML = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head></head>\n\t<body>\n${body}\n\t</body>\n</html>";
 
 /*
  * It ain't pretty, but we had to put this somewhere.
@@ -101,81 +101,6 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 	return result;
 };
 
-/**
- * Extract stuff from HTML. This entire operation is carried out in elaborate DOM,  
- * not string parsing, in order to maintain proper namespaces on elements. Otherwise 
- * we would be in trouble eg. if user moved the Function namespace to other tags. 
- * @param {string} html
- * @param {int} index
- * @return {string}
- */
-VisualEditorBinding.extractByIndex = function ( html, index ) {
-	
-	/*
-	 * TODO: We crate two DOM documents, one for HEAD and BODY each, where 
-	 * only one is needed. This is expensive and should be rationalized...
-	 */
-	var result = null;
-	var doc = XMLParser.parse ( html );
-	
-	if ( doc != null ) {
-		
-		/* For some lame reason, IE cannot find elements in a DOM document based 
-		 * on their node name. This must be something new and absurd. Instead, we 
-		 * locate the element by ordinal index and forget about it. But this is 
-		 * seriously twisted, so consider looking into it...
-		 */
-		var children = new List ( doc.documentElement.childNodes );
-		var elements = new List ();
-		children.each ( function ( child ) {
-			if ( child.nodeType == Node.ELEMENT_NODE ) {
-				elements.add ( child );
-			}
-		})
-		
-		var target = elements.get ( index );
-		if ( target == null ) {
-			if ( Application.isDeveloperMode ) {
-				alert ( "VisualEditorBinding: Bad HTML!" + "\n\n" + html );
-			}
-		} else if ( target.hasChildNodes ()) {
-			
-			/*
-			 * Move target nodes to temporary document fragment.
-			 */
-			var frag = doc.createDocumentFragment ();
-			while ( target.hasChildNodes ()) {
-				frag.appendChild ( target.firstChild );
-			}
-			
-			/*
-			 * Empty the document and move target nodes back. We now have the  
-			 * target seaction elements isolated with proper namespaces declared.
-			 */
-			doc.removeChild ( doc.documentElement );
-			doc.appendChild ( DOMUtil.createElementNS ( Constants.NS_XHTML, "ROOT", doc ));
-			doc.documentElement.appendChild ( frag );
-			
-			/*
-			 * Finally we serialize the result. It may contain ugly   
-			 * whitespace, but this will be dealt with elsewhere.
-			 */
-			result = DOMSerializer.serialize ( doc.documentElement );
-			result = result.substring ( result.indexOf ( ">" ) + 1, result.length );
-			result = result.substring ( 0, result.lastIndexOf (  "<" ));
-		}
-	}
-	
-	/*
-	 * We don't want to return a null here.
-	 */
-	if ( result == null ) {
-		result = new String( "" );
-	}
-	return result;
-}
-
-
 
 /**
  * Is image?
@@ -184,8 +109,7 @@ VisualEditorBinding.extractByIndex = function ( html, index ) {
  */
 VisualEditorBinding.isImage = function (element) {
 
-	result = element && element.nodeName == "IMG";
-	return result;
+	return element && element.nodeName == "IMG";
 }
 
 /**
@@ -329,10 +253,10 @@ function VisualEditorBinding () {
 	*/
 	
 	/**
-	 * Stores the HEAD section markup.
+	 * Stores xhtml without body.
 	 * @type {string}
 	 */
-	this._head = null;
+	this._xhtml = null;
 	
 	/*
 	 * Returnable.
@@ -465,7 +389,6 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				* are upgraded to the new setup (with HEAD and BODY sections). 
 				*/
 				this._startContent = this.normalizeToDocument(this._startContent);
-				this.extractHead(this._startContent);
 				this._startContent = this.extractBody(this._startContent);
 
 				/*
@@ -534,16 +457,6 @@ VisualEditorBinding.prototype._maybeShowEditor = function () {
 };
 
 /**
- * Backup HEAD section from HTML document markup. 
- * This must be done whenever TinyMCE gets served. 
- * @param {string} html
- */
-VisualEditorBinding.prototype.extractHead = function ( html ) {
-	
-	this._head = VisualEditorBinding.extractByIndex ( html, 0 );
-}
-
-/**
  * Extract BODY section and return it. TinyMCE 
  * should alwasy be fed BODY content only.
  * @param {string} html
@@ -551,11 +464,54 @@ VisualEditorBinding.prototype.extractHead = function ( html ) {
  */
 VisualEditorBinding.prototype.extractBody = function ( html ) {
 	
-	return VisualEditorBinding.extractByIndex ( html, 1 );
+	var result = null;
+	var doc = XMLParser.parse(html);
+
+	if (doc != null) {
+
+		/* For some lame reason, IE cannot find elements in a DOM document based 
+		 * on their node name. This must be something new and absurd. Instead, we 
+		 * locate the element by ordinal index and forget about it. But this is 
+		 * seriously twisted, so consider looking into it...
+		 */
+		var children = new List(doc.documentElement.childNodes);
+		var elements = new List();
+		children.each(function(child) {
+			if (child.nodeType == Node.ELEMENT_NODE) {
+				elements.add(child);
+			}
+		});
+
+		//get body
+		var target = elements.get(1);
+
+		if (target == null) {
+			if (Application.isDeveloperMode) {
+				alert("VisualEditorBinding: Bad HTML!" + "\n\n" + html);
+			}
+		} else {
+			result = DOMSerializer.serialize(target);
+			result = result.substring(result.indexOf(">") + 1, result.length);
+			result = result.substring(0, result.lastIndexOf("<"));
+
+			//Clean document from body content
+			while (target.lastChild) target.removeChild(target.lastChild);
+			target.appendChild(doc.createTextNode("\n${body}\n\t"));
+			this._xhtml = DOMSerializer.serialize(doc);
+		}
+	}
+
+	/*
+	 * We don't want to return a null here.
+	 */
+	if (result == null) {
+		result = new String("");
+	}
+	return result;
 }
 
 /**
- * Restore HEAD section and convert HTML fragment to normalized HTML document.   
+ * Restore HTML markup and convert HTML fragment to normalized HTML document.   
  * This must be done whenever content is extracted from TinyMCE.
  * @param {string} body
  * @return {string}
@@ -564,9 +520,7 @@ VisualEditorBinding.prototype.normalizeToDocument = function ( markup ) {
 	
 	var result = markup;
 	if ( !this._isNormalizedDocument ( markup )) {
-		result = VisualEditorBinding.XHTML
-			.replace ( "${head}", this._getHeadSection ())
-			.replace ( "${body}", markup );
+		result = this._getHtmlMarkup().replace("${body}", markup);
 	}
 	return result;
 }
@@ -596,12 +550,12 @@ VisualEditorBinding.prototype._isNormalizedDocument = function ( markup ) {
 }
 
 /**
- * Get cached HEAD section. Method isolated so that subclasses may overwrite.
+ * Get cached HTML Markup. Method isolated so that subclasses may overwrite.
  * @return {string}
  */
-VisualEditorBinding.prototype._getHeadSection = function () {
+VisualEditorBinding.prototype._getHtmlMarkup = function () {
 	
-	return this._head != null ? this._head : new String ( "" );
+	return this._xhtml != null ? this._xhtml : VisualEditorBinding.XHTML;
 }
 
 /**

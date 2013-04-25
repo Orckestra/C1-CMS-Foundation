@@ -383,12 +383,6 @@ VisualEditorPageBinding.prototype.setContent = function ( content ) {
 	} else {
 		
 		/*
-		 * Extract HEAD section. This is backed up so that it can  
-		 * be reinserted when switching back to source editor.
-		 */
-		this._editorBinding.extractHead ( content );
-		
-		/*
 		 * Isolate the BODY section.
 		 */
 		content = this._editorBinding.extractBody ( content );
