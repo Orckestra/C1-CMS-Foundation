@@ -222,20 +222,26 @@ namespace Composite.AspNet
                 return LoadSiteMap(rootPage.DataSourceId.LocaleScope, rootPage.Id);
             }
 
+            var currentCulture = LocalizationScopeManager.CurrentLocalizationScope;
+            if (currentCulture.Name == CultureInfo.InvariantCulture.Name)
+            {
+                currentCulture = CultureInfo.CurrentCulture;
+            }
+
             Guid currentHomePage = SitemapNavigator.CurrentHomePageId;
             if (currentHomePage != Guid.Empty)
             {
-                return LoadSiteMap(CultureInfo.CurrentCulture, currentHomePage);
+                return LoadSiteMap(currentCulture, currentHomePage);
             }
 
             var context = HttpContext.Current;
 
-            using(var conn = new DataConnection())
+            using (var conn = new DataConnection(currentCulture))
             {
                 PageNode pageNode = new SitemapNavigator(conn).GetPageNodeByHostname(context.Request.Url.Host);
-                if(pageNode != null)
+                if (pageNode != null)
                 {
-                    return LoadSiteMap(conn.CurrentLocale, pageNode.Id);
+                    return LoadSiteMap(currentCulture, pageNode.Id);
                 }
             }
 
