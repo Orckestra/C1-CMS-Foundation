@@ -79,12 +79,22 @@ BlockSelectorBinding.prototype.buildDOMContent = function() {
 		var value = format.id;
 		var notes = format.notes;
 		list.add(new SelectorBindingSelection(name, value, null, null, notes));
+		
+		this._tinyInstance.formatter.register(value + '_special', {
+			block: format.props.block,
+			classes: format.props.classes,
+			wrapper: 0
+		});
 	}, this);
+
+
+
 
 
 	this.populateFromList(list);
 
-	this.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED);
+	if (!this.priorities.hasEntries())
+		this.hide()
 };
 
 /**
@@ -113,25 +123,43 @@ BlockSelectorBinding.prototype.initializeComponent = function(editor, engine, in
 * @overloads {SelectorBinding#handleAction}
 * @param {Action} action
 */
-BlockSelectorBinding.prototype.handleAction = function(action) {
+BlockSelectorBinding.prototype.handleAction = function (action) {
 
 	BlockSelectorBinding.superclass.handleAction.call(this, action);
 
 	switch (action.type) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED:
 
+			var start = this._tinyInstance.selection.getStart();
+			var end = this._tinyInstance.selection.getEnd();
+			while (start.parentNode != null && start.parentNode.nodeName.toLocaleLowerCase() != "body") {
+				start = start.parentNode;
+			}
+			while (end.parentNode != null && end.parentNode.nodeName.toLocaleLowerCase() != "body") {
+				end = end.parentNode;
+			}
+
+			var rng = this._tinyInstance.selection.getRng();
+			rng.setStartBefore(start);
+			rng.setEndAfter(end);
+			this._tinyInstance.selection.setRng(rng);
+
+			var value = this.getValue();
+			if (value != BlockSelectorBinding.VALUE_DEFAULT) {
+
+				this._tinyInstance.formatter.apply(value);
+			}
+
 			this.selections.each(function (selection) {
 				var id = selection.value;
-				if (id != null) {
-					if (this._tinyInstance.formatter.match(id)) {
-						this._tinyInstance.formatter.remove(id);
+				if (id != null && id !=value) {
+					if (this._tinyInstance.formatter.match(id + '_special')) {
+						
+						this._tinyInstance.formatter.remove(id + '_special');
 					}
 				}
 			}, this);
 
-			var value = this.getValue();
-			if (value != BlockSelectorBinding.VALUE_DEFAULT)
-				this._tinyInstance.formatter.apply(value);
 			this._tinyInstance.undoManager.add();
 
 			action.consume();
@@ -148,7 +176,6 @@ BlockSelectorBinding.prototype.handleNodeChange = function(element) {
 	if (element != this._element) {
 
 		this._element = element;
-
 
 		var value = null;
 		while (value == null && element != null && element.nodeName.toLowerCase() != "body") {

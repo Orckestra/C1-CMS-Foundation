@@ -1,7 +1,7 @@
 <ui:toolbarbody>
 	<ui:toolbargroup>
-		<ui:selector id="formatselector" binding="FormatSelectorBinding" observes="broadcasterIsActive" image="${icon:editor-formatselector}" image-disabled="${icon:editor-formatselector-disabled}" width="160"/>
 		<ui:selector id="stylegroupselector" binding="BlockSelectorBinding" observes="broadcasterIsActive" image="${icon:page-template-template}" width="160" />
+		<ui:selector id="formatselector" binding="FormatSelectorBinding" observes="broadcasterIsActive" image="${icon:editor-formatselector}" image-disabled="${icon:editor-formatselector-disabled}" width="160"/>
 		<ui:selector id="classnameselector" binding="ClassNameSelectorBinding" observes="broadcasterIsActive" image="${icon:editor-classselector}" image-disabled="${icon:editor-classselector-disabled}" label="${string:Composite.Web.VisualEditor:ClassSelector.LabelNone}" value="" width="160" />
 	</ui:toolbargroup>
 	<ui:toolbargroup>
