@@ -15,12 +15,12 @@ namespace Composite.Core.PackageSystem
     [SerializerHandler(typeof(PackageManagerUninstallProcessSerializerHandler))]
     public sealed class PackageManagerUninstallProcess
     {
-        private IPackageUninstaller _packageUninstaller = null;
-        private string _packageInstallDirectory = null;
-        private SystemLockingType _systemLockingType;
-        private List<PackageFragmentValidationResult> _preUninstallValidationResult = null;
-        private List<PackageFragmentValidationResult> _validationResult = null;
-        private List<PackageFragmentValidationResult> _uninstallationResult = null;
+        private readonly IPackageUninstaller _packageUninstaller;
+        private readonly string _packageInstallDirectory;
+        private readonly SystemLockingType _systemLockingType;
+        private readonly List<PackageFragmentValidationResult> _preUninstallValidationResult;
+        private List<PackageFragmentValidationResult> _validationResult;
+        private List<PackageFragmentValidationResult> _uninstallationResult;
 
 
         internal PackageManagerUninstallProcess(List<PackageFragmentValidationResult> preUninstallValidationResult)
@@ -105,15 +105,15 @@ namespace Composite.Core.PackageSystem
 
             PackageFragmentValidationResult result = _packageUninstaller.Uninstall(_systemLockingType);
 
+            _uninstallationResult = new List<PackageFragmentValidationResult>();
+
             if (result != null)
             {
-                _uninstallationResult = new List<PackageFragmentValidationResult> { result };
+                _uninstallationResult.Add( result );
             }
             else
             {
-                _uninstallationResult = new List<PackageFragmentValidationResult>();
-
-                _uninstallationResult.AddRange(FinalizeProcess());
+                _uninstallationResult.AddRange( FinalizeProcess() );
             }
 
             return _uninstallationResult;
@@ -121,18 +121,18 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private List<PackageFragmentValidationResult> FinalizeProcess()
+        private IEnumerable<PackageFragmentValidationResult> FinalizeProcess()
         {
             try
             {
-                if (((_preUninstallValidationResult == null) || (_preUninstallValidationResult.Count == 0)) &&
-                    ((_validationResult == null) || (_validationResult.Count == 0)) &&
-                    ((_uninstallationResult == null) || (_uninstallationResult.Count == 0)) &&
-                    (_packageInstallDirectory != null))
+                if (_packageInstallDirectory != null
+                    && (_preUninstallValidationResult == null || _preUninstallValidationResult.Count == 0) 
+                    && (_validationResult == null || _validationResult.Count == 0) 
+                    && (_uninstallationResult == null || _uninstallationResult.Count == 0))
                 {
-                    if (C1Directory.Exists(_packageInstallDirectory) == true)
+                    if (C1Directory.Exists(_packageInstallDirectory))
                     {
-                        DirectoryUtils.DeleteFilesRecursively(_packageInstallDirectory);
+                        C1Directory.Delete(_packageInstallDirectory, true);
                     }
                 }
 
