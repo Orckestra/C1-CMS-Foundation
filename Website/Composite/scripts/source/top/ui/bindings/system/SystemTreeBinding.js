@@ -572,14 +572,12 @@ SystemTreeBinding.prototype._handleDockTabSelect = function ( tab ) {
 	
 	/*
 	 * If the tab was launched by the server, there is a chance we might 
-	 * find a matching treenode. Otherwise, we blur any selected treenode.
+	 * find a matching treenode.
 	 */
 	if ( isVisible ) {
 		var self = this, token = tab.getEntityToken ();
 		setTimeout ( function () { // timeout to minimize freezing sensation
-			if ( token == null ) {
-				self.blurSelectedTreeNodes ();
-			} else {
+			if ( token != null ) {
 				self._focusTreeNodeByEntityToken ( token );
 			}
 		}, 250 ); // zero not always enough...
