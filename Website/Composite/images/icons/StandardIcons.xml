@@ -1337,7 +1337,17 @@
 		<IconFile size="large" path="harmony\database\x-sort_by_quantity_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\database\x-sort_by_quantity_32.png" /> -->
 	</Icon>
-	<Icon name="editor-formatsource">
+  <Icon name="editor-blockselector">
+    <IconFile size="normal" path="harmony\composite\pageblock_16.png" />
+    <!--<IconFile size="large" path="harmony\database\sort_by_quantity_24.png" />-->
+    <!-- <IconFile size="xlarge" path="harmony\database\sort_by_quantity_32.png" /> -->
+  </Icon>
+  <Icon name="editor-blockselector-disabled">
+    <IconFile size="normal" path="harmony\composite\pageblockdisabled_16.png" />
+    <!--<IconFile size="large" path="harmony\database\x-sort_by_quantity_24.png" />-->
+    <!-- <IconFile size="xlarge" path="harmony\database\x-sort_by_quantity_32.png" /> -->
+  </Icon>
+  <Icon name="editor-formatsource">
 		<IconFile size="normal" path="harmony\basic\notep_16.png" />
 		<IconFile size="large" path="harmony\basic\notep_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\basic\notep_32.png" /> -->
