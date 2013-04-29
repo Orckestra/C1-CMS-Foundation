@@ -22949,9 +22949,7 @@ _dfe=tab.perspectiveNode==this.perspectiveNode;
 if(_dfe){
 var self=this,_e00=tab.getEntityToken();
 setTimeout(function(){
-if(_e00==null){
-self.blurSelectedTreeNodes();
-}else{
+if(_e00!=null){
 self._focusTreeNodeByEntityToken(_e00);
 }
 },250);
