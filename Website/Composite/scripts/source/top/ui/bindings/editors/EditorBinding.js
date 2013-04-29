@@ -258,6 +258,16 @@ EditorBinding.prototype.onBindingRegister = function () {
 	this._coverBinding = this.add (
 		CoverBinding.newInstance ( this.bindingDocument )
 	);
+
+	/*
+	* Register as DataBinding so that we 
+	* may masquerade as a DataBinding.
+	*/
+	var name = this.getProperty("name");
+	if (name == null || name == "") {
+		name = "generated" + KeyMaster.getUniqueKey();
+	}
+	this._registerWithDataManager(name);
 }
 
 /**
@@ -283,20 +293,10 @@ EditorBinding.prototype.onBindingAttach = function () {
 }
 
 /**
- * Find start content and register as data binding.
+ * Find start content 
  */
 EditorBinding.prototype._setup = function () {
 
-	/*
-	 * Register as DataBinding so that we 
-	 * may masquerade as a DataBinding.
-	 */
-	var name = this.getProperty ( "name" );
-	if ( name == null || name == "" ) {
-		name = "generated" + KeyMaster.getUniqueKey ();
-	}
-	this._registerWithDataManager ( name );
-	
 	/*
 	 * Extract content from the textarea, unless 
 	 * already specified programatically.
