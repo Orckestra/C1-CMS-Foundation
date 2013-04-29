@@ -1,13 +1,7 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using System.Globalization;
 using System.Web;
 using Composite.C1Console.Security;
-using Composite.Core.Logging;
-using Composite.Data;
-using System.Globalization;
 
 namespace Composite.Core.WebClient.HttpModules
 {
@@ -15,7 +9,7 @@ namespace Composite.Core.WebClient.HttpModules
     {
         public void Init(HttpApplication context)
         {
-            context.AuthenticateRequest += new EventHandler(context_AuthenticateRequest);
+            context.AuthenticateRequest += context_AuthenticateRequest;
         }
 
 
@@ -24,11 +18,11 @@ namespace Composite.Core.WebClient.HttpModules
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 
-            bool adminRootRequest = context.Request.Path.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
+            bool adminRootRequest = UrlUtils.IsAdminConsoleRequest(context);
 
-            if (adminRootRequest == true)
+            if (adminRootRequest)
             {
-                if (UserValidationFacade.IsLoggedIn() == true)
+                if (UserValidationFacade.IsLoggedIn())
                 {
                     System.Threading.Thread.CurrentThread.CurrentCulture = C1Console.Users.UserSettings.CultureInfo;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = C1Console.Users.UserSettings.C1ConsoleUiLanguage;

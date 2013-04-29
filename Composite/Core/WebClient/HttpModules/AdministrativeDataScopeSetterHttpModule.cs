@@ -28,9 +28,9 @@ namespace Composite.Core.WebClient.HttpModules
                 HttpApplication application = (HttpApplication)sender;
                 HttpContext context = application.Context;
 
-                bool adminRootRequest = context.Request.Path.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
+                bool adminRootRequest = UrlUtils.IsAdminConsoleRequest(context);
 
-                if (adminRootRequest == true && UserValidationFacade.IsLoggedIn() == true)
+                if (adminRootRequest && UserValidationFacade.IsLoggedIn())
                 {
                     _dataScope = new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo);
                 }

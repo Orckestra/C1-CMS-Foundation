@@ -157,6 +157,11 @@ namespace Composite.Core.WebClient.Renderings
 
         static bool CheckForHostnameAliasRedirect(HttpContext httpContext)
         {
+            if (UrlUtils.IsAdminConsoleRequest(httpContext))
+            {
+                return false;
+            }
+
             string hostname = httpContext.Request.Url.Host.ToLowerInvariant();
 
             foreach (var hostnameBinding in DataFacade.GetData<IHostnameBinding>(true).AsEnumerable())

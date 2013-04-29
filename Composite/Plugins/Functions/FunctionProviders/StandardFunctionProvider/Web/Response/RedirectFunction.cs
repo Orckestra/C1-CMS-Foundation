@@ -33,16 +33,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             var httpContext = HttpContext.Current;
 
-            if (httpContext != null && httpContext.Request != null)
+            if (httpContext == null)
             {
-                string url = parameters.GetParameter<string>("Url");
+                return null;
+            }
+            
+            string url = parameters.GetParameter<string>("Url");
 
-                bool isAdminConsoleRequest = httpContext.Request.Url.PathAndQuery.StartsWith(UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase);
-
-                if (isAdminConsoleRequest == false)
-                {
-                    httpContext.Response.Redirect(url, false);
-                }
+            if (!UrlUtils.IsAdminConsoleRequest(httpContext))
+            {
+                httpContext.Response.Redirect(url, false);
             }
 
             return null;

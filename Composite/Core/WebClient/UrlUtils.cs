@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Web;
 using System.Web.Hosting;
 using System.Collections.Generic;
 using Composite.Core.Extensions;
@@ -98,6 +99,27 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+        /// <summary>
+        /// Determines whether currect request is administration console request. 
+        /// (Requests to [/virtual path]/Composite/*)
+        /// </summary>
+        internal static bool IsAdminConsoleRequest(HttpContext httpContext)
+        {
+            string relativeUrl = httpContext.Request.Path;
+
+            return IsAdminConsoleRequest(relativeUrl);
+        }
+
+        /// <summary>
+        /// Determines whether currect request is administration console request. 
+        /// (Requests to [/virtual path]/Composite/*)
+        /// </summary>
+        internal static bool IsAdminConsoleRequest(string requestPath)
+        {
+            return string.Compare(requestPath, UrlUtils.AdminRootPath, StringComparison.OrdinalIgnoreCase) == 0
+                   || requestPath.StartsWith(UrlUtils.AdminRootPath + "/", StringComparison.OrdinalIgnoreCase);
+        }
 
         /// <exclude />
         public static string RenderersRootPath

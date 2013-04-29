@@ -96,7 +96,7 @@ namespace Composite.Core.Routing.Pages
 
             var urlProvider = PageUrls.UrlProvider;
 
-            if (IsAdminPath(localPath) || IsRenderersPath(localPath))
+            if (UrlUtils.IsAdminConsoleRequest(localPath) || IsRenderersPath(localPath))
             {
                 return null;
             }
@@ -200,12 +200,6 @@ namespace Composite.Core.Routing.Pages
         /// <exclude />
         public void Dispose()
         {
-        }
-
-        private static bool IsAdminPath(string relativeUrl)
-        {
-            return string.Compare(relativeUrl, UrlUtils.AdminRootPath, true) == 0
-                   || relativeUrl.StartsWith(UrlUtils.AdminRootPath + "/", true);
         }
 
         private static bool IsRenderersPath(string relativeUrl)

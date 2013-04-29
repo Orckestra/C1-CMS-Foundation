@@ -27,7 +27,7 @@ namespace Composite.Core.WebClient.HttpModules
             var httpContext = HttpContext.Current;
 
             if (httpContext.Handler is Page
-                && httpContext.Request.Url.PathAndQuery.StartsWith(UrlUtils.AdminRootPath))
+                && UrlUtils.IsAdminConsoleRequest(httpContext))
             {
                 httpContext.Response.Filter = new ReplacementStream(httpContext.Response.Filter);
             }
