@@ -230,9 +230,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 
                 interfaceTypeName = typeAttribute.Value;
 
+                interfaceTypeName = TypeManager.FixLegasyTypeName(interfaceTypeName);
+
                 foreach (XElement dataElement in typeElement.Elements("Data"))
                 {
-                    DataScopeIdentifier dataScopeIdentifier = null;
                     XAttribute dataScopeIdentifierAttribute = dataElement.Attribute("dataScopeIdentifier");
                     if (dataScopeIdentifierAttribute == null)
                     {
@@ -240,6 +241,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
+                    DataScopeIdentifier dataScopeIdentifier;
                     try
                     {
                         dataScopeIdentifier = DataScopeIdentifier.Deserialize(dataScopeIdentifierAttribute.Value);

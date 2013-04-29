@@ -286,6 +286,9 @@ namespace Composite.Data
         }
 
 
+        /// <summary>
+        /// Used for processing xml/sql data providers configuration build by C1 vesrion older than 3.0
+        /// </summary>
         internal static Dictionary<string, Guid> GetTypeManagerTypeNameToTypeIdMap()
         {
             string metaDataFolderPath = PathUtil.Resolve(GlobalSettingsFacade.DataMetaDataDirectory);

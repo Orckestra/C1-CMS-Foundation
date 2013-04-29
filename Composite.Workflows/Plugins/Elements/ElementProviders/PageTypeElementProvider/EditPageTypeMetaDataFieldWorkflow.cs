@@ -30,7 +30,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             IPageTypeMetaDataTypeLink pageTypeMetaDataTypeLink = this.GetDataItemFromEntityToken<IPageTypeMetaDataTypeLink>();
 
             DataTypeDescriptor dataTypeDescriptor;
-            if (DynamicTypeManager.TryGetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId, out dataTypeDescriptor) == false)
+            if (!DynamicTypeManager.TryGetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId, out dataTypeDescriptor))
             {
                 e.Result = false;
 
@@ -40,8 +40,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
                 this.ShowMessage(
                     DialogType.Warning,
-                    StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Title"),
-                    StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", "PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Message"));
+                    GetText("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Title"),
+                    GetText("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Message"));
 
                 deleteTreeRefresher.PostRefreshMesseges();                
             }            
@@ -62,8 +62,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
             this.Bindings.Add("MetaDataContainerOptions", metaDataContainerOptions);
             this.Bindings.Add("CompositionContainerId", pageMetaDataDefinition.MetaDataContainerId);
-        }
 
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId);
+
+            this.Bindings.Add("MetaTypeName", dataTypeDescriptor.TypeManagerTypeName);
+        }
 
 
         private void ValidateBindings(object sender, ConditionalEventArgs e)
@@ -81,7 +84,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             {
                 if (PageMetaDataFacade.IsDefinitionAllowed(pageTypeMetaDataTypeLink.PageTypeId, pageMetaDataDefinition.Name, metaDataDescriptionLabel, pageMetaDataDefinition.MetaDataTypeId) == false)
                 {
-                    this.ShowFieldMessage("CompositionDescriptionLabel", "${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataFieldNameAlreadyUsed}");
+                    this.ShowFieldMessage("CompositionDescriptionLabel", GetText("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataFieldNameAlreadyUsed"));
                     SetSaveStatus(false);
                     e.Result = false;
                 }
@@ -91,7 +94,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             {
                 if (PageMetaDataFacade.IsNewContainerIdAllowed(pageTypeMetaDataTypeLink.PageTypeId, pageMetaDataDefinition.Name, containerId) == false)
                 {
-                    this.ShowFieldMessage("CompositionContainerId", "${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataContainerChangeNotAllowed}");
+                    this.ShowFieldMessage("CompositionContainerId", GetText("PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataContainerChangeNotAllowed"));
                     SetSaveStatus(false);
                     e.Result = false;
                 }
@@ -110,6 +113,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
 
             SetSaveStatus(true);
             this.RefreshCurrentEntityToken();
+        }
+
+        string GetText(string key)
+        {
+            return StringResourceSystemFacade.GetString("Composite.Plugins.PageTypeElementProvider", key);
         }
     }
 }

@@ -180,20 +180,9 @@ namespace Composite.Core.Types
             {
                 Type compositeType = TryGetNonGenericType(fullName + ", Composite");
                 if (compositeType != null) return compositeType;
-
-                if (fullName.StartsWith("DynamicType:") == false)
-                {
-                    Type dynamicType = TryGetNonGenericType("DynamicType:" + fullName);
-                    if (dynamicType != null) return dynamicType;
-                }
             }
 
-
-            if (fullName.StartsWith("DynamicType:"))
-            {
-                fullName = fullName.Remove(0, "DynamicType:".Length);
-            }
-
+            fullName = TypeManager.FixLegasyTypeName(fullName);
 
             List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
 
@@ -306,15 +295,14 @@ namespace Composite.Core.Types
         {
             public List<ProviderEntry> ProviderNameList;
             public ITypeManagerTypeHandler BuildinHandler;
-            public static List<Type> CompiledTypes = new List<Type>();
 
             public static void Initialize(Resources resources)
             {
                 resources.BuildinHandler = null;
 
-                if ((RuntimeInformation.IsDebugBuild == true) &&
-                            ((ConfigurationServices.ConfigurationSource == null) ||
-                            (ConfigurationServices.ConfigurationSource.GetSection(TypeManagerTypeHandlerSettings.SectionName) == null)))
+                if (RuntimeInformation.IsDebugBuild
+                    && (ConfigurationServices.ConfigurationSource == null ||
+                        ConfigurationServices.ConfigurationSource.GetSection(TypeManagerTypeHandlerSettings.SectionName) == null))
                 {
                     resources.BuildinHandler = new BuildinTypeManagerTypeHandler();
                 }

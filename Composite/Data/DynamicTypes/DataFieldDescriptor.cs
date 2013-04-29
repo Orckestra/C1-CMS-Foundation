@@ -336,7 +336,11 @@ namespace Composite.Data.DynamicTypes
 
             if (foreignKeyReferenceTypeNameAttribute != null)
             {
-                dataFieldDescriptor.ForeignKeyReferenceTypeName = foreignKeyReferenceTypeNameAttribute.Value;
+                string typeName = foreignKeyReferenceTypeNameAttribute.Value;
+
+                typeName = TypeManager.FixLegasyTypeName(typeName);
+
+                dataFieldDescriptor.ForeignKeyReferenceTypeName = typeName;
             }
 
             if (formRenderingProfileElement != null)

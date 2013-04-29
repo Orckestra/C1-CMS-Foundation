@@ -418,7 +418,17 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         {
             foreach (MethodInfo methodInfo in _onInitializedMethods)
             {
-                methodInfo.Invoke(null, null);
+                try
+                {
+                    methodInfo.Invoke(null, null);
+                }
+                catch (TargetInvocationException ex)
+                {
+                    Log.LogError(LogTitle, "Failed to execute startup handler. Type: '{0}', Assembly: '{1}'",
+                                           methodInfo.DeclaringType.FullName, methodInfo.DeclaringType.Assembly.FullName);
+
+                    Log.LogError(LogTitle, ex.InnerException);
+                }
             }
         }
 

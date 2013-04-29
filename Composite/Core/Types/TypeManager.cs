@@ -50,6 +50,19 @@ namespace Composite.Core.Types
             return fullName;
         }
 
+        /// <summary>
+        /// In C1 2.1 and older dynamic types had a "DynamicType:" prefix in references. 
+        /// This method removes this no longer used prefix.
+        /// </summary>
+        internal static string FixLegasyTypeName(string typeManagerTypeName)
+        {
+            if (typeManagerTypeName.StartsWith("DynamicType:", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return typeManagerTypeName.Remove(0, "DynamicType:".Length);
+            }
+
+            return typeManagerTypeName;
+        }
 
         /// <exclude />
         public static string SerializeType(Type type)

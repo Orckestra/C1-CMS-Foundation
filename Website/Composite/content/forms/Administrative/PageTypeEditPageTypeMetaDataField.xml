@@ -5,6 +5,7 @@
     <cms:binding name="CompositionDescriptionLabel" type="System.String"/>
     <cms:binding name="CompositionContainerId" type="System.Guid"/>
     <cms:binding name="MetaDataContainerOptions" type="System.Collections.IEnumerable"/>
+    <cms:binding name="MetaTypeName" type="System.String"/>
   </cms:bindings>
   <cms:layout iconhandle="pagetype-edit-metedatafield" label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.Layout.Label}">
     <FieldGroup Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.FieldGroup.Label}">
@@ -35,6 +36,14 @@
           <cms:bind source="CompositionContainerId" />
         </KeySelector.Selected>
       </KeySelector>
+
+      <TextBox Type="ReadOnly"
+               Label="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.MetaTypeName.Label}"
+               Help="${Composite.Plugins.PageTypeElementProvider, PageType.EditPageTypeMetaDataFieldWorkflow.MetaTypeName.Help}">
+        <TextBox.Text>
+          <cms:read source="MetaTypeName" />
+        </TextBox.Text>
+      </TextBox>
 
     </FieldGroup>
   </cms:layout>

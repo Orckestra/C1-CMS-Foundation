@@ -19,7 +19,7 @@ namespace Composite.Data.DynamicTypes
     /// </summary>
     /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)]
-    [DebuggerDisplay("Name = {Name}")]
+    [DebuggerDisplay("Type name = {Namespace + '.' + Name}")]
     public class DataTypeDescriptor
     {
         private string _name;
@@ -591,7 +591,10 @@ namespace Composite.Data.DynamicTypes
 
             if (titleAttribute != null) dataTypeDescriptor.Title = titleAttribute.Value;
             if (labelFieldNameAttribute != null) dataTypeDescriptor.LabelFieldName = labelFieldNameAttribute.Value;
-            if (typeManagerTypeNameAttribute != null) dataTypeDescriptor.TypeManagerTypeName = typeManagerTypeNameAttribute.Value;
+            if (typeManagerTypeNameAttribute != null)
+            {
+                dataTypeDescriptor.TypeManagerTypeName = TypeManager.FixLegasyTypeName(typeManagerTypeNameAttribute.Value);
+            }
             if (buildNewHandlerTypeNameAttribute != null) dataTypeDescriptor.BuildNewHandlerTypeName = buildNewHandlerTypeNameAttribute.Value;
 
 

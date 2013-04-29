@@ -104,6 +104,8 @@
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.LabelTextBox.Help" value="The label of the Metadata field. Used for UI" />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Label" value="Tab" />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.MetaDataContainerKeySelector.Help" value="Select the tab to put the Metadata when editing a page" />
+  <string key="PageType.EditPageTypeMetaDataFieldWorkflow.MetaTypeName.Label" value="Metatype" />
+  <string key="PageType.EditPageTypeMetaDataFieldWorkflow.MetaTypeName.Help" value="The name of the metatype." />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataFieldNameAlreadyUsed" value="The Metadata type is used another place with same name but different label" />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataContainerChangeNotAllowed" value="There exists one or more definitions with the same name, container change is not allowed" />
   <string key="PageType.EditPageTypeMetaDataFieldWorkflow.ValidationError.MetaDataTypeNotExisting.Title" value="Metadata type has been deleted" />
