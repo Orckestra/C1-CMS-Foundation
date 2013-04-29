@@ -91,7 +91,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public void AddAction(Action<ElementAction> actionAdder, EntityToken entityToken, TreeNodeDynamicContext dynamicContext)
         {
-            var replaceContext = new DynamicValuesHelperReplaceContext(dynamicContext.CurrentEntityToken, dynamicContext.Piggybag);
+            var replaceContext = new DynamicValuesHelperReplaceContext(entityToken, dynamicContext.Piggybag);
 
             OnAddAction(actionAdder, entityToken, dynamicContext, replaceContext);
         }
