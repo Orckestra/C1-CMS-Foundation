@@ -26227,6 +26227,11 @@ EditorBinding.prototype.onBindingRegister=function(){
 EditorBinding.superclass.onBindingRegister.call(this);
 this._url=this.url_default;
 this._coverBinding=this.add(CoverBinding.newInstance(this.bindingDocument));
+var name=this.getProperty("name");
+if(name==null||name==""){
+name="generated"+KeyMaster.getUniqueKey();
+}
+this._registerWithDataManager(name);
 };
 EditorBinding.prototype.onBindingAttach=function(){
 Application.lock(this);
@@ -26239,11 +26244,6 @@ this.addActionListener(Binding.ACTION_DIRTY);
 EditorBinding.superclass.onBindingAttach.call(this);
 };
 EditorBinding.prototype._setup=function(){
-var name=this.getProperty("name");
-if(name==null||name==""){
-name="generated"+KeyMaster.getUniqueKey();
-}
-this._registerWithDataManager(name);
 var _fd0=this.getProperty("value");
 if(_fd0!=null){
 _fd0=decodeURIComponent(_fd0);
