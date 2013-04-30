@@ -444,6 +444,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\images\loading.gif" />
     <Content Include="Composite\images\loading.svg">
       <SubType>Designer</SubType>
     </Content>
@@ -5437,7 +5438,6 @@
     <Content Include="Composite\images\icons\StandardIcons.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Composite\images\loading.png" />
     <Content Include="Composite\images\logo.png" />
     <Content Include="Composite\images\originals\harmonies\back_red_16.png" />
     <Content Include="Composite\images\originals\harmonies\back_red_24.png" />
