@@ -10187,7 +10187,9 @@ self.bindingElement.style.marginTop="-10000px";
 self.dispatchAction(DialogBinding.ACTION_CLOSE);
 }
 if(!this._hasTransitions){
+setTimeout(function(){
 doit();
+},0);
 }else{
 var _754=self.bindingElement;
 setTimeout(function(){
@@ -24476,7 +24478,6 @@ _eff.consume();
 break;
 case ViewBinding.ACTION_ONCLOSE:
 this.close();
-_f00.dispose();
 _eff.consume();
 break;
 case ViewBinding.ACTION_CLOSED:
