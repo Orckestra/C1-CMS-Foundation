@@ -26874,6 +26874,7 @@ var self=this;
 setTimeout(function(){
 if(!self._editorBinding.isDialogMode){
 self._editorBinding.restoreBookmark();
+self._tinyInstance.focus();
 }
 },0);
 }
@@ -27160,7 +27161,6 @@ VisualEditorBinding.prototype.getEditorPopupBinding=function(){
 return app.bindingMap.visualeditorpopup;
 };
 VisualEditorBinding.prototype.createBookmark=function(){
-this._bookmark=this._tinyInstance.selection.getBookmark(true);
 };
 VisualEditorBinding.prototype.restoreBookmark=function(){
 if(this.hasBookmark()){
@@ -27169,7 +27169,7 @@ this.deleteBookmark();
 }
 };
 VisualEditorBinding.prototype.hasBookmark=function(){
-return this._bookmark!=null;
+return true;
 };
 VisualEditorBinding.prototype.deleteBookmark=function(){
 this._bookmark=null;
