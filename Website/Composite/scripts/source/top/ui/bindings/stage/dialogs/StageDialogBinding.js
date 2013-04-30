@@ -165,7 +165,6 @@ StageDialogBinding.prototype.handleAction = function ( action ) {
 		
 		case ViewBinding.ACTION_ONCLOSE :
 			this.close (); 
-			binding.dispose (); // WAS REVERSED!
 			action.consume ();
 			break;
 			

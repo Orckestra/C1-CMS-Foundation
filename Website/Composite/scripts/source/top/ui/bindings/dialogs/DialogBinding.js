@@ -485,7 +485,7 @@ DialogBinding.prototype.close = function () {
 		}
 		
 		if ( !this._hasTransitions ) {
-			doit ();
+			setTimeout ( function () { doit (); }, 0);
 		} else {
 			var element = self.bindingElement;
 			setTimeout ( function () {
