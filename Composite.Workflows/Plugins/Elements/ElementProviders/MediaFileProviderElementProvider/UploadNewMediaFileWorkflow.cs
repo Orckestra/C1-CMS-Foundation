@@ -49,7 +49,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             if (uploadedFile.HasFile)
             {
                 string mimeType = MimeTypeInfo.GetMimeType(uploadedFile);
-                if (mimeType != mediaFile.MimeType)
+
+                // Image cannot be replaced with a file of not image mime type
+                string imageMimeTypePrefix = "image/";
+                if ((mediaFile.MimeType.StartsWith(imageMimeTypePrefix, StringComparison.OrdinalIgnoreCase)
+                     && !mimeType.StartsWith(imageMimeTypePrefix, StringComparison.OrdinalIgnoreCase)))
                 {
                     managementConsoleMessageService.CloseCurrentView();
                     string failure = StringResourceSystemFacade.GetString("Composite.Management", "UploadNewMediaFileWorkflow.UploadFailure");
@@ -65,7 +69,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         readStream.CopyTo(writeStream);
                     }
                 }
-                // TODO: Is it expected that Length property isn't updated here?
             }
 
             DataFacade.Update(mediaFile);
