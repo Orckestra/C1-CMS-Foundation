@@ -157,6 +157,11 @@
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\PageTemplates\ISharedCodePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
+    <Compile Include="Core\ResourceSystem\LocalizationFiles.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizationFiles.tt</DependentUpon>
+    </Compile>
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
@@ -2342,6 +2347,10 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Core\ResourceSystem\LocalizationFiles.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LocalizationFiles.cs</LastGenOutput>
+    </None>
     <None Include="Plugins\Functions\FunctionProviders\app.config" />
   </ItemGroup>
   <ItemGroup>

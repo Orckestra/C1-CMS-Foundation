@@ -11,18 +11,19 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
 using Composite.Core.Linq;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Transactions;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     public sealed partial class LocalizeDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
+
         public LocalizeDataWorkflow()
         {
             InitializeComponent();
@@ -41,11 +42,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 List<string> row = new List<string>();
 
-                row.Add(StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "LocalizeDataWorkflow.ShowError.Description"));
+                row.Add(Texts.LocalizeDataWorkflow_ShowError_Description);
 
                 foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos.Where(f => f.OptionalReferenceWithValue == false))
                 {
-                    row.Add(string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "LocalizeDataWorkflow.ShowError.FieldErrorFormat"), referenceFailingPropertyInfo.DataFieldDescriptor.Name, referenceFailingPropertyInfo.ReferencedType.GetTypeTitle(), referenceFailingPropertyInfo.OriginLocaleDataValue.GetLabel()));
+                    row.Add(string.Format(Texts.LocalizeDataWorkflow_ShowError_FieldErrorFormat, 
+                        referenceFailingPropertyInfo.DataFieldDescriptor.Name, 
+                        referenceFailingPropertyInfo.ReferencedType.GetTypeTitle(), 
+                        referenceFailingPropertyInfo.OriginLocaleDataValue.GetLabel()));
                 }
 
                 List<List<string>> rows = new List<List<string>> { row };
@@ -72,11 +76,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (ExistsInLocale(data, targetCultureInfo))
             {
-                string title = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider",
-                                                                    "LocalizeDataWorkflow.ShowError.LayoutLabel");
+                string title = Texts.LocalizeDataWorkflow_ShowError_LayoutLabel;
+                string description = Texts.LocalizeDataWorkflow_ShowError_AlreadyTranslated;
 
-                string description = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider",
-                                                                    "LocalizeDataWorkflow.ShowError.AlreadyTranslated");
                 var messageBox = new MessageBoxMessageQueueItem
                                      {
                                          DialogType = DialogType.Message,
