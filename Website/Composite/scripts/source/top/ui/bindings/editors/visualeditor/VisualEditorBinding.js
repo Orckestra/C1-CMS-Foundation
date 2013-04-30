@@ -638,14 +638,14 @@ VisualEditorBinding.prototype.getEditorPopupBinding = function () {
  */
 VisualEditorBinding.prototype.createBookmark = function () {
 	
-	this._bookmark = this._tinyInstance.selection.getBookmark ( true );
+	//this._bookmark = this._tinyInstance.selection.getBookmark ( true );
 };
 
 /**
  * Restore selection from bookmark. This will delete the bookmark!
  */
 VisualEditorBinding.prototype.restoreBookmark = function () {
-	
+
 	if ( this.hasBookmark ()) {
 		this._tinyInstance.selection.moveToBookmark ( this._bookmark );
 		this.deleteBookmark ();
@@ -658,7 +658,7 @@ VisualEditorBinding.prototype.restoreBookmark = function () {
  */
 VisualEditorBinding.prototype.hasBookmark = function () {
 	
-	return this._bookmark != null;
+	return true;
 };
 
 /**

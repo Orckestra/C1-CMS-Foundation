@@ -153,7 +153,8 @@ EditorSelectorBinding.prototype.handleAction = function ( action ) {
 				var self = this;
 				setTimeout ( function () {
 					if ( !self._editorBinding.isDialogMode ) {
-						self._editorBinding.restoreBookmark ();
+						self._editorBinding.restoreBookmark();
+						self._tinyInstance.focus();
 					}
 				}, 0 );
 			}

@@ -98,6 +98,8 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
                 this._editorBinding.createBookmark();
             }
 
+            this._isUpdating = true;
+            var value = this.getValue();
             this.selections.each(function (selection) {
                 var id = selection.value;
                 if (id != null) {
@@ -108,12 +110,14 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
                 }
                 return result;
             }, this);
-            if (this.getValue() != null) {
-                this._isUpdating = true;
+
+            if (value != null) {
+                
                 this._tinyInstance.formatter.apply(this.getValue());
                 this._tinyInstance.undoManager.add();
-                this._isUpdating = false;
             }
+
+            this._isUpdating = false;
 
             if (Client.isExplorer) {
                 this._editorBinding.createBookmark();
