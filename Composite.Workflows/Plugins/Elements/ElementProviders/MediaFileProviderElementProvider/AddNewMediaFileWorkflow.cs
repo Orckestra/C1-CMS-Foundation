@@ -5,8 +5,6 @@ using System.Workflow.Activities;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Workflow;
-using Composite.Core;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data;
 using Composite.Data.Types;
@@ -170,7 +168,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {            
             string filename = this.GetBinding<string>("Filename");
 
-            UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");            
             bool allowOverwrite = this.GetBinding<bool>("AllowOverwrite");
 
             IMediaFile existingFile = GetExistingFile(this.FolderPath, filename);
@@ -200,7 +197,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             UploadedFile uploadedFile = this.GetBinding<UploadedFile>("UploadedFile");
             string filename;
-            if (this.BindingExist("Filename") == true)
+            if (this.BindingExist("Filename"))
             {
                 filename = this.GetBinding<string>("Filename");
             }

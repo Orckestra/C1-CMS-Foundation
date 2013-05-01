@@ -15,23 +15,11 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         public Stream GetReadStream(IFile file)
         {
             Verify.ArgumentNotNull(file, "file");
+            Verify.ArgumentCondition(file is FileSystemFileBase, "file", "The type '{0}' does not inherit the class '{1}'".FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
-            FileSystemFileBase baseFile = file as FileSystemFileBase;
+            var baseFile = file as FileSystemFileBase;
 
-            Verify.ArgumentCondition(baseFile != null, "file", "The type '{0}' does not inherit the class '{1}'"
-                                                       .FormatWith(file.GetType(), typeof(FileSystemFileBase)));
-
-            if (baseFile.CurrentWriteStream == null)
-            {
-                return new C1FileStream(baseFile.SystemPath, FileMode.OpenOrCreate, FileAccess.Read);
-            }
-            
-            if (baseFile.CurrentWriteStream.Data == null)
-            {
-                throw new InvalidOperationException("Trying to read from a writable stream that is not closed");
-            }
-
-            return new MemoryStream(baseFile.CurrentWriteStream.Data);
+            return baseFile.GetReadStream();
         }
 
 
@@ -39,15 +27,11 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         public Stream GetNewWriteStream(IFile file)
         {
             Verify.ArgumentNotNull(file, "file");
+            Verify.ArgumentCondition(file is FileSystemFileBase, "file", "The type '{0}' does not inherit the class '{1}'".FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
-            FileSystemFileBase baseFile = file as FileSystemFileBase;
+            var baseFile = file as FileSystemFileBase;
 
-            Verify.ArgumentCondition(baseFile != null, "file", "The type '{0}' does not inherit the class '{1}'"
-                                                       .FormatWith(file.GetType(), typeof(FileSystemFileBase)));
-
-            baseFile.CurrentWriteStream = new CachedMemoryStream();
-
-            return baseFile.CurrentWriteStream;
+            return baseFile.GetNewWriteStream();
         }
 
 
@@ -97,18 +81,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
             {
                 LogNoTransaction();
 
-                if (baseFile.CurrentWriteStream != null)
-                {
-                    DirectoryUtils.EnsurePath(baseFile.SystemPath);
-
-                    using (Stream stream = file.GetReadStream())
-                    {
-                        using (Stream writeStream = new C1FileStream(baseFile.SystemPath, FileMode.Create, FileAccess.Write))
-                        {
-                            stream.CopyTo(writeStream);
-                        }
-                    }
-                }
+                baseFile.CommitChanges();
             }
             else
             {
@@ -147,18 +120,8 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             public void Commit(Enlistment enlistment)
             {
-                if (baseFile.CurrentWriteStream != null)
-                {
-                    DirectoryUtils.EnsurePath(baseFile.SystemPath);
+                baseFile.CommitChanges();
 
-                    using (Stream stream = file.GetReadStream())
-                    {
-                        using (Stream writeStream = new C1FileStream(baseFile.SystemPath, FileMode.Create, FileAccess.Write))
-                        {
-                            stream.CopyTo(writeStream);
-                        }
-                    }
-                }
                 enlistment.Done();
             }
 

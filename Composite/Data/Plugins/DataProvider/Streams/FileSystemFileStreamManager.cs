@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Data.Streams;
 using Composite.Data.Types;
@@ -11,45 +12,31 @@ namespace Composite.Data.Plugins.DataProvider.Streams
     {
         public Stream GetReadStream(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
+            Verify.ArgumentCondition(file is FileSystemFileBase, "file", "The type '{0}' does not inherit the class '{1}'".FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
-            FileSystemFileBase baseFile = file as FileSystemFileBase;
+            var baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
-
-            if (baseFile.CurrentWriteStream == null)
-            {
-                return new C1FileStream(baseFile.SystemPath, FileMode.Open, FileAccess.Read);
-            }
-            
-            if (baseFile.CurrentWriteStream.Data == null)
-            {
-                throw new InvalidOperationException("Trying to read from a writable stream that is not closed");
-            }
-
-            return new MemoryStream(baseFile.CurrentWriteStream.Data);
+            return baseFile.GetReadStream();
         }
 
 
 
         public Stream GetNewWriteStream(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
+            Verify.ArgumentCondition(file is FileSystemFileBase, "file", "The type '{0}' does not inherit the class '{1}'".FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
-            FileSystemFileBase baseFile = file as FileSystemFileBase;
+            var baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
-
-            baseFile.CurrentWriteStream = new CachedMemoryStream();
-
-            return baseFile.CurrentWriteStream;
+            return baseFile.GetNewWriteStream();
         }
 
 
 
         internal static void DeleteFile(string filename)
         {
-            if (string.IsNullOrEmpty(filename) == true) throw new ArgumentNullException("filename");
+            Verify.ArgumentNotNullOrEmpty(filename, "filename");
 
             DirectoryUtils.DeleteFile(filename, true);
         }
@@ -58,11 +45,10 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
         internal static void DeleteFile(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
+            Verify.ArgumentCondition(file is FileSystemFileBase, "file", "The type '{0}' does not inherit the class '{1}'".FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
-            FileSystemFileBase baseFile = file as FileSystemFileBase;
-
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));
+            var baseFile = file as FileSystemFileBase;
 
             DeleteFile(baseFile.SystemPath);
         }
@@ -71,24 +57,12 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
         internal static void WriteFileToDisk(IFile file)
         {
-            if (file == null) throw new ArgumentNullException("file");
+            Verify.ArgumentNotNull(file, "file");
+            Verify.ArgumentCondition(file is FileSystemFileBase, "file", "The type '{0}' does not inherit the class '{1}'".FormatWith(file.GetType(), typeof(FileSystemFileBase)));
 
-            FileSystemFileBase baseFile = file as FileSystemFileBase;
+            var baseFile = file as FileSystemFileBase;
 
-            if (baseFile == null) throw new ArgumentException(string.Format("The type '{0}' does not inherit the class '{1}'", file.GetType(), typeof(FileSystemFileBase)));            
-
-            if (baseFile.CurrentWriteStream != null)
-            {
-                DirectoryUtils.EnsurePath(baseFile.SystemPath);
-
-                using (Stream stream = file.GetReadStream())
-                {
-                    using (Stream writeStream = new C1FileStream(baseFile.SystemPath, FileMode.Create, FileAccess.Write))
-                    {
-                        stream.CopyTo(writeStream);
-                    }
-                }
-            }
+            baseFile.CommitChanges();
         }
 
         public void SubscribeOnFileChanged(IFile file, OnFileChangedDelegate handler)

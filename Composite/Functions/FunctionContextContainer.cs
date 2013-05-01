@@ -65,7 +65,7 @@ namespace Composite.Functions
 
         /// <summary>
         /// When set to <value>True</value>, exceptions from C1 functions which results are rendered into xhtml will 
-        /// be cougth, logged and the result xhtml  will contain an error description element.
+        /// be caught, logged and the result xhtml  will contain an error description element.
         /// </summary>
         public bool SuppressXhtmlExceptions { get; set; }
 
