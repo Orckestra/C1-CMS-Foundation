@@ -9,8 +9,6 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
     internal class LocalC1FileSystemWatcher : IC1FileSystemWatcher
     {
         private FileSystemWatcher _fileSystemWatcher;
-        private string _watchedPath;
-        private string _watchedFilter;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
         public LocalC1FileSystemWatcher(string path, string filter)
@@ -18,8 +16,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             if (filter == null)
             {
                 _fileSystemWatcher = new FileSystemWatcher(path);
-#warning testing change here
-//                _fileSystemWatcher.InternalBufferSize = 32768;
+                _fileSystemWatcher.InternalBufferSize = 32768;
             }
             else
             {
@@ -28,15 +25,12 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             var buf = _fileSystemWatcher.InternalBufferSize;
 
             _fileSystemWatcher.Error += new ErrorEventHandler(_fileSystemWatcher_Error);
-
-            _watchedPath = path;
-            _watchedFilter = filter;
         }
 
         void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
             Composite.Core.Log.LogWarning("LocalC1FileSystemWatcher", e.GetException());
-            Composite.Core.Log.LogWarning("LocalC1FileSystemWatcher", "The path was '{0}' using filter '{1}'", _watchedPath, _watchedFilter);
+            Composite.Core.Log.LogWarning("LocalC1FileSystemWatcher", "The path was '{0}' using filter '{1}'. EnableRaisingEvents is '{2}'.", _fileSystemWatcher.Path, _fileSystemWatcher.Filter, _fileSystemWatcher.EnableRaisingEvents);
         }
 
 
