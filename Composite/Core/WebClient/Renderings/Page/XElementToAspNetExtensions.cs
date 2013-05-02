@@ -314,9 +314,14 @@ namespace Composite.Core.WebClient.Renderings.Page
             HashSet<string> uniqueScriptAttributes = new HashSet<string>();
             HashSet<string> uniqueLinkAttributes = new HashSet<string>();
 
-            var htmlControls = headControl.Controls.OfType<HtmlControl>().Reverse().ToList();
+            IEnumerable<HtmlControl> controls = headControl.Controls.OfType<HtmlControl>();
 
-            foreach (HtmlControl c in htmlControls)
+            // Leaving last instances of each meta tag, and first instances of script/link tags
+            var priorityOrderedControls = new List<HtmlControl>();
+            priorityOrderedControls.AddRange(controls.Where(c => c.TagName.ToLowerInvariant() == "meta").Reverse());
+            priorityOrderedControls.AddRange(controls.Where(c => c.TagName.ToLowerInvariant() != "meta"));
+
+            foreach (HtmlControl c in priorityOrderedControls)
             {
                 bool remove = IsDuplicate(uniqueIdValues, c.ClientID);
 
@@ -333,8 +338,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                             break;
                         case "link":
                             remove = remove || IsDuplicate(uniqueLinkAttributes, c.AttributesAsString());
-                            break;
-                        default:
                             break;
                     }
                 }
