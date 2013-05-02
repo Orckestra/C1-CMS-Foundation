@@ -47,7 +47,9 @@ namespace Composite.Core.IO
             }
             set
             {
+                Log.LogInformation("C1FileSystemWatcher", "EnableRaisingEvents starting");
                 this.Implementation.EnableRaisingEvents = value;
+                Log.LogInformation("C1FileSystemWatcher", "EnableRaisingEvents ending");
             }
         }
 
@@ -211,7 +213,9 @@ namespace Composite.Core.IO
         /// </summary>
         public void BeginInit()
         {
+            Log.LogInformation("C1FileSystemWatcher", "BeginInit starting");
             this.Implementation.BeginInit();
+            Log.LogInformation("C1FileSystemWatcher", "BeginInit done");
         }
 
 
