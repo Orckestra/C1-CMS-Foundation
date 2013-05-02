@@ -18,7 +18,8 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             if (filter == null)
             {
                 _fileSystemWatcher = new FileSystemWatcher(path);
-                _fileSystemWatcher.InternalBufferSize = 32768;
+#warning testing change here
+//                _fileSystemWatcher.InternalBufferSize = 32768;
             }
             else
             {
