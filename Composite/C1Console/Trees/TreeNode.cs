@@ -81,8 +81,8 @@ namespace Composite.C1Console.Trees
         /// This is call when this nodes entity tokens are needed to climb up the tree.
         /// If this tree nodes elements dont have any children, then this method will not be called.
         /// </summary>
-        /// <param name="childEntityToken"></param>
-        /// <param name="dynamicContext"></param>
+        /// <param name="childEntityToken">The child entity token.</param>
+        /// <param name="dynamicContext">The dynamic context.</param>
         /// <returns></returns>
         public abstract IEnumerable<EntityToken> GetEntityTokens(EntityToken childEntityToken, TreeNodeDynamicContext dynamicContext);
 
@@ -93,9 +93,9 @@ namespace Composite.C1Console.Trees
         /// This is called when a node has genereted its own entity tokens (by a child) and the child
         /// needs to filter these entity token
         /// </summary>
-        /// <param name="selfEntityToken"></param>
-        /// <param name="parentGeneretedEntityTokens"></param>
-        /// <param name="dynamicContext"></param>
+        /// <param name="selfEntityToken">The self entity token.</param>
+        /// <param name="parentGeneretedEntityTokens">The parent genereted entity tokens.</param>
+        /// <param name="dynamicContext">The dynamic context.</param>
         /// <returns></returns>
         internal virtual IEnumerable<EntityToken> FilterParentGeneretedEntityTokens(EntityToken selfEntityToken, IEnumerable<EntityToken> parentGeneretedEntityTokens, TreeNodeDynamicContext dynamicContext)
         {

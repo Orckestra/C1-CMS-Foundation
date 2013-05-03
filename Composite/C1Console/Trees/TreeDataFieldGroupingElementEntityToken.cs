@@ -109,12 +109,12 @@ namespace Composite.C1Console.Trees
                     foreach (var kvp in _deserializeDictionary)
                     {
                         string propertyName = kvp.Key;
-                        if (propertyName.StartsWith("■") == true)
+                        if (propertyName.StartsWith("■"))
                         {
-                            propertyName = propertyName.Substring(1).Substring(0, propertyName.IndexOf("_") - 1);
+                            propertyName = propertyName.Substring(1).Substring(0, propertyName.IndexOf("_", System.StringComparison.Ordinal) - 1);
                         }
 
-                        PropertyInfo propertyInfo = propertyInfos.Where(f => f.Name == propertyName).SingleOrDefault();
+                        PropertyInfo propertyInfo = propertyInfos.SingleOrDefault(f => f.Name == propertyName);
                         if (propertyInfo == null) continue;
 
                         object value = null;
@@ -158,17 +158,17 @@ namespace Composite.C1Console.Trees
                 foreach (var kvp in this.GroupingValues)
                 {
                     string propertyName = kvp.Key;
-                    if (propertyName.StartsWith("■") == true)
+                    if (propertyName.StartsWith("■"))
                     {
-                        propertyName = propertyName.Substring(1).Substring(0, propertyName.IndexOf("_") - 1);
+                        propertyName = propertyName.Substring(1).Substring(0, propertyName.IndexOf("_", System.StringComparison.Ordinal) - 1);
                     }
 
                     object value = kvp.Value;
 
-                    PropertyInfo propertyInfo = propertyInfos.Where(f => f.Name == propertyName).SingleOrDefault();
+                    PropertyInfo propertyInfo = propertyInfos.SingleOrDefault(f => f.Name == propertyName);
                     if (propertyInfo.PropertyType == typeof(DateTime))
                     {
-                        if (result.ContainsKey(propertyName) == true)
+                        if (result.ContainsKey(propertyName))
                         {
                             value = DateTimeFormater.Deserialize((string)value, (DateTime)result[propertyName]);
                             result[propertyName] = value;
@@ -394,19 +394,17 @@ namespace Composite.C1Console.Trees
                     sb.Append("<b>" + kvp.Key + ":</b> " + kvp.Value.ToString() + "<br />");
                 }
 
-                helper.AddFullRow(new string[] { "<b>" + name + "</b>", sb.ToString() });
+                helper.AddFullRow(new [] { "<b>" + name + "</b>", sb.ToString() });
+            });
+
+            prettyfier.AddCustomProperty("ChildGeneratingDataElementsReferenceType", (name, value, helper) =>
+            {
+                helper.AddFullRow(new[] { "<b>" + name + "</b>", (value ?? "(null)").ToString() });
             });
 
             prettyfier.AddCustomProperty("ChildGeneratingDataElementsReferenceValue", (name, value, helper) =>
             {
-                if (value != null)
-                {
-                    helper.AddFullRow(new string[] { "<b>" + name + "</b>", value.ToString() });
-                }
-                else
-                {
-                    helper.AddFullRow(new string[] { "<b>" + name + "</b>", "(null)" });
-                }
+                helper.AddFullRow(new [] { "<b>" + name + "</b>", (value ?? "(null)").ToString() });
             });
         }
     }

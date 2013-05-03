@@ -17,13 +17,11 @@ namespace Composite.C1Console.Trees
 
 
         /// <summary>
-        /// 
+        /// Creates OrderBy expression.
         /// </summary>
-        /// <param name="sourceExpression"></param>
-        /// <param name="parameterExpression"></param>
-        /// <param name="first">
-        /// Implementations of this clase should use this parameter to distinguish between OrderBy and ThenBy
-        /// </param>
+        /// <param name="sourceExpression">The source expression.</param>
+        /// <param name="parameterExpression">The parameter expression.</param>
+        /// <param name="first">Implementations of this class should use this parameter to distinguish between OrderBy and ThenBy</param>
         /// <returns></returns>
         public abstract Expression CreateOrderByExpression(Expression sourceExpression, ParameterExpression parameterExpression, bool first);
 

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.Linq;
-using Composite.C1Console.Trees.Foundation;
 using Composite.Core.Types;
 
 
@@ -18,24 +17,22 @@ namespace Composite.C1Console.Trees
         public string Direction { get; internal set; } // Optional
 
 
-
-
         public override Expression CreateOrderByExpression(Expression sourceExpression, ParameterExpression parameterExpression, bool first)
         {
             Expression fieldExpression = ExpressionHelper.CreatePropertyExpression(this.OwnerNode.InterfaceType, this.PropertyInfo.DeclaringType, this.FieldName, parameterExpression);
 
             LambdaExpression lambdaExpression = Expression.Lambda(fieldExpression, parameterExpression);
 
-            if (first == true)
+            if (first)
             {
-                if (this.Direction == "ascending") return ExpressionCreator.OrderBy(sourceExpression, lambdaExpression);
-                else return ExpressionCreator.OrderByDescending(sourceExpression, lambdaExpression);                    
+                return this.Direction == "ascending"
+                    ? ExpressionCreator.OrderBy(sourceExpression, lambdaExpression)
+                    : ExpressionCreator.OrderByDescending(sourceExpression, lambdaExpression);
             }
-            else
-            {
-                if (this.Direction == "ascending") return ExpressionCreator.ThenBy(sourceExpression, lambdaExpression);
-                else return ExpressionCreator.ThenByDescending(sourceExpression, lambdaExpression);                    
-            }
+
+            return this.Direction == "ascending"
+                    ? ExpressionCreator.ThenBy(sourceExpression, lambdaExpression)
+                    : ExpressionCreator.ThenByDescending(sourceExpression, lambdaExpression);
         }
 
 
@@ -47,7 +44,7 @@ namespace Composite.C1Console.Trees
                 AddValidationError("TreeValidationError.FieldOrderBy.UnknownDirection", this.Direction);
             }
 
-            this.PropertyInfo = this.OwnerNode.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == this.FieldName).SingleOrDefault();
+            this.PropertyInfo = this.OwnerNode.InterfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == this.FieldName);
 
             if (this.PropertyInfo == null)
             {

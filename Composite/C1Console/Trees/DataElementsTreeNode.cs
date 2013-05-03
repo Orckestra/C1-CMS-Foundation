@@ -153,7 +153,7 @@ namespace Composite.C1Console.Trees
 
                 IEnumerable combinedData = dataset.DataItems.Concat(foreignDataset.DataItems).ToCastedDataEnumerable(this.InterfaceType);
 
-                Expression orderByExpression = this.CreateAccumulatedOrderByExpression(combinedData.AsQueryable().Expression, parameterExpression);
+                Expression orderByExpression = this.CreateOrderByExpression(combinedData.AsQueryable().Expression, parameterExpression);
 
                 dataItems = combinedData.AsQueryable().Provider.CreateQuery<IData>(orderByExpression);
 

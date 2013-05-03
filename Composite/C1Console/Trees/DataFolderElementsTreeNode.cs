@@ -630,10 +630,9 @@ namespace Composite.C1Console.Trees
 
 
 
-        internal override Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IEnumerable<int> filtersToSkip = null)
+        internal override Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IList<int> filtersToSkip = null)
         {
             DataEntityToken dataEntityToken = dynamicContext.CurrentEntityToken as DataEntityToken;
-            TreeDataFieldGroupingElementEntityToken treeDataFieldGroupingElementEntityToken = dynamicContext.CurrentEntityToken as TreeDataFieldGroupingElementEntityToken;
             TreeSimpleElementEntityToken treeSimpleElementEntityToken = dynamicContext.CurrentEntityToken as TreeSimpleElementEntityToken;
 
             Expression fieldExpression = ExpressionHelper.CreatePropertyExpression(this.InterfaceType, this.PropertyInfo.DeclaringType, this.FieldName, parameterExpression);
@@ -641,15 +640,10 @@ namespace Composite.C1Console.Trees
             object value;
 
             Func<Expression> resultFilterExpressionFactory = () =>
-            {
-                if ((this.UseChildGeneratingFilterExpression == true))
                 {
-                    return this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext);
-                }
-                else
-                {
-                    return null;
-                }
+                    return this.UseChildGeneratingFilterExpression
+                               ? this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext)
+                               : null;
             };
 
 
@@ -666,7 +660,8 @@ namespace Composite.C1Console.Trees
                         return resultFilterExpressionFactory();
                     }
                 }
-                else if ((treeSimpleElementEntityToken != null) && ((treeSimpleElementEntityToken.ParentEntityToken is DataEntityToken) == true))
+                else if (treeSimpleElementEntityToken != null 
+                         && treeSimpleElementEntityToken.ParentEntityToken is DataEntityToken)
                 {
                     DataEntityToken parentDataEntityToken = treeSimpleElementEntityToken.ParentEntityToken as DataEntityToken;
 
@@ -698,7 +693,7 @@ namespace Composite.C1Console.Trees
             }
             else
             {
-                if (dynamicContext.FieldFolderRangeValues.ContainsKey(this.FieldName) == true)
+                if (dynamicContext.FieldFolderRangeValues.ContainsKey(this.FieldName))
                 {
                     value = dynamicContext.FieldFolderRangeValues[this.FieldName];
                 }
@@ -739,8 +734,6 @@ namespace Composite.C1Console.Trees
                 }
             }
 
-
-
             Expression filterExpression;
             if (this.FolderRanges != null)
             {
@@ -757,7 +750,7 @@ namespace Composite.C1Console.Trees
                 filterExpression = CreateSimpleFilterExpression(value, fieldExpression);
             }
 
-            if ((this.UseChildGeneratingFilterExpression == true))
+            if (this.UseChildGeneratingFilterExpression)
             {
                 Expression childFilerExpression = this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext);
 
@@ -835,12 +828,12 @@ namespace Composite.C1Console.Trees
 
             Expression currentExpression = null;
 
-            if (this.DateTimeFormater.HasYear == true) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Year, dateTime.Year);
-            if (this.DateTimeFormater.HasMonth == true) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Month, dateTime.Month);
-            if (this.DateTimeFormater.HasDay == true) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Day, dateTime.Day);
-            if (this.DateTimeFormater.HasHour == true) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Hour, dateTime.Hour);
-            if (this.DateTimeFormater.HasMinute == true) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Minute, dateTime.Minute);
-            if (this.DateTimeFormater.HasSecond == true) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Second, dateTime.Second);
+            if (this.DateTimeFormater.HasYear) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Year, dateTime.Year);
+            if (this.DateTimeFormater.HasMonth) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Month, dateTime.Month);
+            if (this.DateTimeFormater.HasDay) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Day, dateTime.Day);
+            if (this.DateTimeFormater.HasHour) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Hour, dateTime.Hour);
+            if (this.DateTimeFormater.HasMinute) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Minute, dateTime.Minute);
+            if (this.DateTimeFormater.HasSecond) currentExpression = AddEqualsExpression(fieldExpression, currentExpression, DateTimeFormater.DateTime_Second, dateTime.Second);
 
             return currentExpression;
         }
@@ -986,12 +979,12 @@ namespace Composite.C1Console.Trees
             this.DateTimeFormater = new DateTimeFormater(this.DateFormat);
 
 
-            if ((string.IsNullOrEmpty(this.Range) == false) && (this.FirstLetterOnly == true))
+            if ((string.IsNullOrEmpty(this.Range) == false) && this.FirstLetterOnly)
             {
                 AddValidationError("TreeValidationError.DataFolderElements.RangesAndFirstLetterOnlyNotAllowed");
             }
 
-            if ((this.FirstLetterOnly == true) && (this.PropertyInfo.PropertyType != typeof(string)))
+            if (this.FirstLetterOnly && this.PropertyInfo.PropertyType != typeof(string))
             {
                 AddValidationError("TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType", this.FieldName, typeof(string), this.PropertyInfo.PropertyType);
             }
@@ -1030,10 +1023,8 @@ namespace Composite.C1Console.Trees
                         AddValidationError("TreeValidationError.DataFolderElements.SameFieldUsedTwice", treeNode.FieldName);
                         break;
                     }
-                    else
-                    {
-                        usedPropertyNames.Add(treeNode.FieldName);
-                    }
+                    
+                    usedPropertyNames.Add(treeNode.FieldName);
                 }
 
                 this.AllGroupingNodes.Add(treeNode);
@@ -1104,7 +1095,7 @@ namespace Composite.C1Console.Trees
         {
             get
             {
-                return (this.ShowForeignItems == true) && (UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo) == false);
+                return this.ShowForeignItems && !UserSettings.ActiveLocaleCultureInfo.Equals(UserSettings.ForeignLocaleCultureInfo);
             }
         }
 

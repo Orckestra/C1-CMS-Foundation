@@ -7,15 +7,24 @@ using System.Collections.Generic;
 
 namespace Composite.C1Console.Trees
 {
-    /// <summary>    
+    /// <summary> 
+    /// Tree node that shows filtered data items, or items generated from them (f.e. data grouping elements)   
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class DataFilteringTreeNode : TreeNode
     {
         internal abstract Type CurrentDataInterfaceType { get; }
-        
-        internal virtual Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IEnumerable<int> filtersToSkip = null)
+
+        /// <summary>
+        /// Depending on dy <param name="dynamicContext" />'s Direction creates either filter expression for finding child elements or
+        /// a filter expression to find current element based on children elements
+        /// </summary>
+        /// <param name="parameterExpression">The parameter expression.</param>
+        /// <param name="dynamicContext">The dynamic context.</param>
+        /// <param name="filtersToSkip">The filters to skip.</param>
+        /// <returns></returns>
+        internal virtual Expression CreateFilterExpression(ParameterExpression parameterExpression, TreeNodeDynamicContext dynamicContext, IList<int> filtersToSkip = null)
         {
             Expression expression = null;
 
@@ -47,7 +56,16 @@ namespace Composite.C1Console.Trees
 
 
 
-        internal Expression CreateAccumulatedFilterExpression(ParameterExpression parameterExpression, Type affectedInterfaceType, TreeNodeDynamicContext dynamicContext, IEnumerable<int> filtersToSkip = null)
+        /// <summary>
+        /// Creates the accumulated filter expression from current tree definition node, and all the nearest ancestor DataFolderElement-s that
+        /// are related to the same data type.
+        /// </summary>
+        /// <param name="parameterExpression">The parameter expression.</param>
+        /// <param name="affectedInterfaceType">Type of the affected interface.</param>
+        /// <param name="dynamicContext">The dynamic context.</param>
+        /// <param name="filtersToSkip">The filters to skip.</param>
+        /// <returns></returns>
+        internal Expression CreateAccumulatedFilterExpression(ParameterExpression parameterExpression, Type affectedInterfaceType, TreeNodeDynamicContext dynamicContext, IList<int> filtersToSkip = null)
         {
             TreeNode treeNode = this;            
 
@@ -57,9 +75,9 @@ namespace Composite.C1Console.Trees
             {
                 DataFilteringTreeNode dataFilteringTreeNode = treeNode as DataFilteringTreeNode;
 
-                if ((dataFilteringTreeNode != null) &&
-                    ((dataFilteringTreeNode == this) || ((dataFilteringTreeNode is DataFolderElementsTreeNode) == true)) &&
-                    (dataFilteringTreeNode.CurrentDataInterfaceType == affectedInterfaceType))
+                if (dataFilteringTreeNode != null 
+                    && (dataFilteringTreeNode == this || dataFilteringTreeNode is DataFolderElementsTreeNode) 
+                    && (dataFilteringTreeNode.CurrentDataInterfaceType == affectedInterfaceType))
                 {
                     Expression filterExpression = dataFilteringTreeNode.CreateFilterExpression(parameterExpression, dynamicContext, filtersToSkip);
 
@@ -83,10 +101,17 @@ namespace Composite.C1Console.Trees
 
 
 
+        /// <summary>
+        /// Creates the OrderBy expression.
+        /// </summary>
+        /// <param name="sourceExpression">The source expression.</param>
+        /// <param name="parameterExpression">The parameter expression.</param>
+        /// <returns></returns>
         /// <exclude />
-        protected Expression CreateAccumulatedOrderByExpression(Expression sourceExpression, ParameterExpression parameterExpression)
+        protected Expression CreateOrderByExpression(Expression sourceExpression, ParameterExpression parameterExpression)
         {
             Expression resultExpression = sourceExpression;
+
             bool isFirst = true;
             foreach (OrderByNode orderByNode in this.OrderByNodes)
             {
