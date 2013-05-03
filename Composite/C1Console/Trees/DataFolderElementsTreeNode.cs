@@ -73,6 +73,9 @@ namespace Composite.C1Console.Trees
         private IQueryable FolderIndexListQueryable { get; set; }
 
 
+        /// <summary>
+        /// <value>True</value> if parent element is not a <see cref="DataFolderElementsTreeNode"/>
+        /// </summary>
         private bool IsTopFolderParent { get; set; }
         private DataElementsTreeNode ChildGeneratingDataElementsTreeNode { get; set; }
         private ParentIdFilterNode ChildGeneratingParentIdFilterNode { get; set; }
@@ -84,7 +87,7 @@ namespace Composite.C1Console.Trees
         {
             IEnumerable<object> labels;
 
-            if (this.LocalizationEndabled == false)
+            if (!this.LocalizationEndabled)
             {
                 labels = GetObjects(dynamicContext, true);
             }
@@ -95,7 +98,6 @@ namespace Composite.C1Console.Trees
                 {
                     List<object> foriegnLabels = GetObjects(dynamicContext, true);
                     orgLabels.AddRange(foriegnLabels);
-                    orgLabels.Sort();
                     labels = orgLabels.Distinct();
                 }
             }
@@ -105,7 +107,7 @@ namespace Composite.C1Console.Trees
             object childGeneratingDataElementsReferenceValue = null;
 
             DataEntityToken dataEntityToken = childEntityToken as DataEntityToken;
-            TreeDataFieldGroupingElementEntityToken treeDataFieldGroupingElementEntityToken = childEntityToken as TreeDataFieldGroupingElementEntityToken;
+            var treeDataFieldGroupingElementEntityToken = childEntityToken as TreeDataFieldGroupingElementEntityToken;
             if (dataEntityToken != null)
             {
                 if (this.ChildGeneratingParentIdFilterNode != null)
@@ -123,7 +125,7 @@ namespace Composite.C1Console.Trees
 
             foreach (object label in labels)
             {
-                TreeDataFieldGroupingElementEntityToken entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id.ToString(), this.Tree.TreeId, TypeManager.SerializeType(this.InterfaceType));
+                var entityToken = new TreeDataFieldGroupingElementEntityToken(this.Id, this.Tree.TreeId, TypeManager.SerializeType(this.InterfaceType));
 
                 TupleIndexer tupleIndexer = new TupleIndexer(label);
 
@@ -164,7 +166,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public override AncestorResult GetParentEntityToken(EntityToken childEntityToken, Type parentInterfaceOfInterest, TreeNodeDynamicContext dynamicContext)
         {
-            if ((this.ParentNode is DataFolderElementsTreeNode) == true)
+            if (this.ParentNode is DataFolderElementsTreeNode)
             {
                 TreeDataFieldGroupingElementEntityToken childGroupingElementEntityToken = childEntityToken as TreeDataFieldGroupingElementEntityToken;
 
@@ -197,12 +199,11 @@ namespace Composite.C1Console.Trees
 
             if (this.ChildGeneratingParentIdFilterNode != null)
             {
-                if (this.IsTopFolderParent == true)
+                if (this.IsTopFolderParent)
                 {
-                    DataEntityToken dataEntityToken = (DataEntityToken)dynamicContext.Piggybag.
-                        GetParentEntityTokens(parentEntityToken).
-                        Where(f => f is DataEntityToken && ((DataEntityToken)f).InterfaceType == ChildGeneratingParentIdFilterNode.ParentFilterType).
-                        FirstOrDefault();
+                    DataEntityToken dataEntityToken = (DataEntityToken)dynamicContext.Piggybag
+                        .GetParentEntityTokens(parentEntityToken)
+                        .FirstOrDefault(f => f is DataEntityToken && ((DataEntityToken)f).InterfaceType == ChildGeneratingParentIdFilterNode.ParentFilterType);
                     
                     if (dataEntityToken != null)
                     {
@@ -212,7 +213,7 @@ namespace Composite.C1Console.Trees
                 }
                 else
                 {
-                    TreeDataFieldGroupingElementEntityToken treeDataFieldGroupingElementEntityToken = parentEntityToken as TreeDataFieldGroupingElementEntityToken;
+                    var treeDataFieldGroupingElementEntityToken = parentEntityToken as TreeDataFieldGroupingElementEntityToken;
 
                     referenceType = treeDataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceType;
                     referenceValue = treeDataFieldGroupingElementEntityToken.ChildGeneratingDataElementsReferenceValue;
@@ -224,50 +225,31 @@ namespace Composite.C1Console.Trees
             {
                 return CreateFolderRangeElements(parentEntityToken, referenceType, referenceValue, dynamicContext);
             }
-            else if (this.FirstLetterOnly == true)
+
+            IEnumerable<object> objects;
+
+            if (!this.LocalizationEndabled)
             {
-                IEnumerable<object> objects;
-
-                if (this.LocalizationEndabled == false)
-                {
-                    objects = GetObjects(dynamicContext);
-                }
-                else
-                {
-                    List<object> orgObjects = GetObjects(dynamicContext);
-                    using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
-                    {
-                        List<object> foriegnObjects = GetObjects(dynamicContext);
-                        orgObjects.AddRange(foriegnObjects);
-                        orgObjects.Sort();
-                        objects = orgObjects.Distinct();
-                    }
-                }
-
-                return CreateFirstLetterOnlyElements(parentEntityToken, referenceType, referenceValue, dynamicContext, objects);
+                objects = GetObjects(dynamicContext);
             }
             else
             {
-                IEnumerable<object> objects;               
-
-                if (this.LocalizationEndabled == false)
+                List<object> orgObjects = GetObjects(dynamicContext);
+                using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                 {
-                    objects = GetObjects(dynamicContext);
+                    List<object> foriegnObjects = GetObjects(dynamicContext);
+                    orgObjects.AddRange(foriegnObjects);
+                    orgObjects.Sort(); // TODO: Check if sorting here is necessary
+                    objects = orgObjects.Distinct();
                 }
-                else
-                {
-                    List<object> orgObjects = GetObjects(dynamicContext);
-                    using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
-                    {
-                        List<object> foriegnObjects = GetObjects(dynamicContext);
-                        orgObjects.AddRange(foriegnObjects);
-                        orgObjects.Sort();
-                        objects = orgObjects.Distinct();
-                    }                   
-                }
-
-                return CreateSimpleElements(parentEntityToken, referenceType, referenceValue, dynamicContext, objects);
             }
+
+            if (this.FirstLetterOnly)
+            {
+                return CreateFirstLetterOnlyElements(parentEntityToken, referenceType, referenceValue, dynamicContext, objects);
+            }
+
+            return CreateSimpleElements(parentEntityToken, referenceType, referenceValue, dynamicContext, objects);
         }
 
 
@@ -343,7 +325,7 @@ namespace Composite.C1Console.Trees
             }
             else
             {
-                if (this.LocalizationEndabled == false)
+                if (!this.LocalizationEndabled)
                 {
                     indexes = GetObjects<int>(dynamicContext);
                 }
@@ -571,8 +553,8 @@ namespace Composite.C1Console.Trees
             Expression distinctExpression = ExpressionHelper.CreateDistinctExpression(selectExpression);
 
 
-            // Sorting after calling "DISTINCT" to fix LINQ2SQL issue
-            if (orderByExpressions != null)
+            // Sorting after calling "DISTINCT" to fix LINQ2SQL issue. No need to sort while resolving security
+            if (orderByExpressions != null && dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
             {
                 distinctExpression = ApplyOrder(distinctExpression, orderByExpressions);
             }
@@ -624,7 +606,7 @@ namespace Composite.C1Console.Trees
         {
             get
             {
-                return (this.IsTopFolderParent == true) && (this.Display != LeafDisplayMode.Lazy);
+                return this.IsTopFolderParent && this.Display != LeafDisplayMode.Lazy;
             }
         }
 
@@ -704,7 +686,8 @@ namespace Composite.C1Console.Trees
                         return resultFilterExpressionFactory();
                     }
                 }
-                else if ((treeSimpleElementEntityToken != null) && ((treeSimpleElementEntityToken.ParentEntityToken is DataEntityToken) == true))
+                else if (treeSimpleElementEntityToken != null 
+                        && treeSimpleElementEntityToken.ParentEntityToken is DataEntityToken)
                 {
                     DataEntityToken parentDataEntityToken = treeSimpleElementEntityToken.ParentEntityToken as DataEntityToken;
 
@@ -741,7 +724,7 @@ namespace Composite.C1Console.Trees
 
                 filterExpression = CreateFolderRangeFilterExpression(folderRangeIndex, fieldExpression);
             }
-            else if (this.FirstLetterOnly == true)
+            else if (this.FirstLetterOnly)
             {
                 filterExpression = CreateFirstLetterOnlyFilterExpression(value, fieldExpression);
             }
@@ -750,13 +733,16 @@ namespace Composite.C1Console.Trees
                 filterExpression = CreateSimpleFilterExpression(value, fieldExpression);
             }
 
-            if (this.UseChildGeneratingFilterExpression)
+            if (dynamicContext.Direction == TreeNodeDynamicContextDirection.Down)
             {
-                Expression childFilerExpression = this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext);
+                if (this.UseChildGeneratingFilterExpression)
+                {
+                    Expression childFilerExpression = this.ChildGeneratingDataElementsTreeNode.CreateFilterExpression(parameterExpression, dynamicContext);
 
-                filterExpression = filterExpression.NestedAnd(childFilerExpression);
+                    filterExpression = filterExpression.NestedAnd(childFilerExpression);
+                }
             }
-
+            
             return filterExpression;
         }
 

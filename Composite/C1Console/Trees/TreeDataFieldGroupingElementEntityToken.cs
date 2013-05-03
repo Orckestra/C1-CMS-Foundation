@@ -399,7 +399,7 @@ namespace Composite.C1Console.Trees
 
             prettyfier.AddCustomProperty("ChildGeneratingDataElementsReferenceType", (name, value, helper) =>
             {
-                helper.AddFullRow(new[] { "<b>" + name + "</b>", (value ?? "(null)").ToString() });
+                helper.AddFullRow(new[] { "<b>" + name + "</b>", EntityTokenHtmlPrettyfier.GetTypeHtml((value ?? "(null)").ToString()) });
             });
 
             prettyfier.AddCustomProperty("ChildGeneratingDataElementsReferenceValue", (name, value, helper) =>

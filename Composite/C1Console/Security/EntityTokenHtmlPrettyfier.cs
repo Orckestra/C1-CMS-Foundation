@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Composite.Core.Types;
 using System.Reflection;
 
@@ -30,40 +31,70 @@ namespace Composite.C1Console.Security
         }
 
 
-        /// <exclude />
-        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteEntityTokenType = (token, helper) => helper.AddFullRow(new [] { "<b>EntityToken Type</b>", token.GetType().FullName });
-
-        /// <exclude />
-        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteType = (token, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", token.Type });
-
-        /// <exclude />
-        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteSource = (token, helper) => helper.AddFullRow(new string[] { "<b>Source</b>", token.Source });
-
-        /// <exclude />
-        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteId = (token, helper) => helper.AddFullRow(new string[] { "<b>Id</b>", token.Id });
-
-        /// <exclude />
-        public static Action<string, object, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteCustomProperty = (name, value, helper) => helper.AddFullRow(new string[] { "<b>" + name + "</b>", value.ToString() });
-
-        /// <exclude />
-        public static Action<string, string, EntityTokenHtmlPrettyfierHelper> DefaultOnPiggyBagEntry = (key, value, helper) =>
+        private static string Strong(string text)
         {
-            if (key.StartsWith("ParentEntityToken") == true)
+            return "<b>" + HttpUtility.HtmlEncode(text) + "</b>";
+        }
+
+        internal static string GetTypeHtml(Type type)
+        {
+            return GetTypeHtml(type.FullName); 
+        }
+
+        internal static string GetTypeHtml(string fullTypeName)
+        {
+            int dotIndex = fullTypeName.LastIndexOf(".", StringComparison.Ordinal);
+
+            if (dotIndex <= 0)
             {
-                EntityToken et = EntityTokenSerializer.Deserialize(value);
-                helper.AddFullRow(new string[] { "<b>" + key + "</b>", string.Format("Type = {0}", et.GetType()) });
+                return fullTypeName;
             }
-            else
-            {
-                helper.AddFullRow(new string[] { "<b>" + key + "</b>", value });
-            }
-        };
+            
+            return "<span style=\"color: #A0A0A0\">" + fullTypeName.Substring(0, dotIndex + 1) + "</span>" + fullTypeName.Substring(dotIndex + 1);
+        }
+
 
         /// <exclude />
-        public static Action<SecurityAncestorProviderAttribute, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteSecurityAncestorProvider = (attribute, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", attribute.GetType().FullName });
+        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteEntityTokenType = 
+            (token, helper) => helper.AddFullRow(new [] { Strong("EntityToken"), GetTypeHtml( token.GetType() ) });
 
         /// <exclude />
-        public static Action<IAuxiliarySecurityAncestorProvider, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteAuxiliarySecurityAncestorProvider = (provider, helper) => helper.AddFullRow(new string[] { "<b>Type</b>", provider.GetType().FullName });
+        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteType = 
+            (token, helper) => helper.AddFullRow(new [] { Strong("Type"), GetTypeHtml( token.Type )});
+
+        /// <exclude />
+        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteSource = 
+            (token, helper) => helper.AddFullRow(new [] { Strong("Source"), token.Source });
+
+        /// <exclude />
+        public static Action<EntityToken, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteId = 
+            (token, helper) => helper.AddFullRow(new [] { Strong("Id"), token.Id });
+
+        /// <exclude />
+        public static Action<string, object, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteCustomProperty = 
+            (name, value, helper) => helper.AddFullRow(new [] { Strong(name), value.ToString() });
+
+        /// <exclude />
+        public static Action<string, string, EntityTokenHtmlPrettyfierHelper> DefaultOnPiggyBagEntry = 
+            (key, value, helper) => {
+                string valueStr = value;
+
+                if (key.StartsWith("ParentEntityToken"))
+                {
+                    EntityToken et = EntityTokenSerializer.Deserialize(value);
+                    valueStr = string.Format("Type = {0}", GetTypeHtml( et.GetType() ));
+                }
+
+                helper.AddFullRow(new[] { "<b>" + key + "</b>", valueStr });
+            };
+
+        /// <exclude />
+        public static Action<SecurityAncestorProviderAttribute, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteSecurityAncestorProvider =
+            (attribute, helper) => helper.AddFullRow(new[] { "<b>Type</b>", GetTypeHtml(attribute.GetType()) });
+
+        /// <exclude />
+        public static Action<IAuxiliarySecurityAncestorProvider, EntityTokenHtmlPrettyfierHelper> DefaultOnWriteAuxiliarySecurityAncestorProvider =
+            (provider, helper) => helper.AddFullRow(new[] { "<b>Type</b>", GetTypeHtml(provider.GetType()) });
 
         /// <exclude />
         public Action<EntityToken, EntityTokenHtmlPrettyfierHelper> OnWriteEntityTokenType = DefaultOnWriteEntityTokenType;

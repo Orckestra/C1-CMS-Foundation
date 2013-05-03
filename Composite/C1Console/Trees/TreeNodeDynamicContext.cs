@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Composite.C1Console.Security;
 using System.Reflection;
 
@@ -24,7 +25,8 @@ namespace Composite.C1Console.Trees
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [DebuggerDisplay("TreeNodeDynamicContext. Direction: {Direction}")]
     public sealed class TreeNodeDynamicContext
     {
         private Dictionary<string, object> _fieldGroupingValues;
