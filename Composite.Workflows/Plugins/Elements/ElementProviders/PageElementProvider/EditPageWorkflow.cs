@@ -331,6 +331,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
             IPage originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
 
+            bool viewLabelUpdated = originalPage == null 
+                || selectedPage.MenuTitle != originalPage.MenuTitle
+                || selectedPage.Title != originalPage.Title;
 
             bool treeviewRequiresRefreshing = false;
 
@@ -493,6 +496,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
 
                 this.UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);
+
+                if (viewLabelUpdated)
+                {
+                    RerenderView();
+                }
             }
             catch (Exception ex)
             {

@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ExtendedDataType.Debug;
 using Composite.Data.GeneratedTypes;
-using Composite.Core.Logging;
-using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
@@ -47,7 +47,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.BindingsValidationRules.Add("NewTypeNamespace", new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add("NewTypeTitle", new List<ClientValidationRule> { new NotNullClientValidationRule() });
 
-            if ((RuntimeInformation.IsDebugBuild == true) && (DynamicTempTypeCreator.UseTempTypeCreator))
+            if (RuntimeInformation.IsDebugBuild && DynamicTempTypeCreator.UseTempTypeCreator)
             {
                 DynamicTempTypeCreator dynamicTempTypeCreator = new DynamicTempTypeCreator("GlobalTest");
 
@@ -111,7 +111,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            GetString("AddNewInterfaceTypeStep1.ErrorTitle"),
+                            Texts.AddNewInterfaceTypeStep1_ErrorTitle,
                             errorMessage
                         );
                     return;
@@ -124,7 +124,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     {
                         this.ShowMessage(
                             DialogType.Error,
-                            GetString("AddNewInterfaceTypeStep1.ErrorTitle"),
+                            Texts.AddNewInterfaceTypeStep1_ErrorTitle,
                             "It's not possible to change localization through the current tab"
                         );
                         return;             
@@ -132,7 +132,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
 
-                if (helper.IsEditProcessControlledAllowed == true)
+                if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
@@ -153,7 +153,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            GetString("AddNewInterfaceTypeStep1.ErrorTitle"),
+                            Texts.AddNewInterfaceTypeStep1_ErrorTitle,
                             errorMessage
                         );
                     return;
@@ -164,7 +164,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 string serializedTypeName = TypeManager.SerializeType(helper.InterfaceType);
 
-                EntityToken entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(serializedTypeName, this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
+                EntityToken entityToken = new GeneratedDataTypesElementProviderTypeEntityToken(
+                    serializedTypeName, 
+                    this.EntityToken.Source, 
+                    GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
 
                 if(originalTypeDataExists)
                 {
@@ -176,7 +179,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
                 
 
-                if (this.BindingExist("InterfaceType") == false)
+                if (!this.BindingExist("InterfaceType"))
                 {                    
                     this.AcquireLock(entityToken);
                 }
@@ -187,18 +190,16 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
                 parentTreeRefresher.PostRefreshMesseges(this.EntityToken, 2);
+
+                
+               
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("Add New Interface Failed", ex);
+                Log.LogCritical("Add New Interface Failed", ex);
 
                 this.ShowMessage(DialogType.Error, "Error", ex.Message);
             }
-        }
-
-        private static string GetString(string key)
-        {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);
         }
     }
 }
