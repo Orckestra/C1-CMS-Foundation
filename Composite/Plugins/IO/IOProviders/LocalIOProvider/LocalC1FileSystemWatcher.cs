@@ -2,6 +2,7 @@
 using Composite.Core.IO;
 using Composite.Core.IO.Plugins.IOProvider;
 using System;
+using System.Threading.Tasks;
 
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
@@ -45,17 +46,25 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             }
             set
             {
-                try
-                {
-                    _fileSystemWatcher.EnableRaisingEvents = value;
-                }
-                catch (Exception ex)
-                {
-                    Composite.Core.Log.LogWarning(LogTitle, ex);
-                }
+                // Systems with flaky disk IO this can block thread for a very long time
+                Task.Factory.StartNew( () =>
+                    DoEnableRaisingEvents(value)
+                );
             }
         }
 
+
+        private void DoEnableRaisingEvents(bool raiseEvents)
+        {
+            try
+            {
+                _fileSystemWatcher.EnableRaisingEvents = raiseEvents;
+            }
+            catch (Exception ex)
+            {
+                Composite.Core.Log.LogWarning(LogTitle, ex);
+            }
+        }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
