@@ -1,4 +1,5 @@
 ﻿using Composite.C1Console.Security;
+using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
 
 
 namespace Composite.C1Console.Elements
@@ -9,11 +10,10 @@ namespace Composite.C1Console.Elements
         /// <exclude />
         public static bool IsAttachingPoint(EntityToken entityToken, AttachingPoint attachingPoint)
         {
-            if (attachingPoint.EntityTokenType != entityToken.GetType()) return false;
-            if (attachingPoint.Id != entityToken.Id) return false;
-            if (attachingPoint.Source != entityToken.Source) return false;
+            return attachingPoint.Id == entityToken.Id
+                   && attachingPoint.Source == entityToken.Source
+                   && attachingPoint.EntityTokenType == entityToken.GetType();
 
-            return true;
         }
 
 
@@ -21,12 +21,10 @@ namespace Composite.C1Console.Elements
         /// <exclude />
         public static bool IsAttachingPoint(EntityToken leftEntityToken, EntityToken rightEntityToken)
         {
-            if (leftEntityToken.GetType() != rightEntityToken.GetType()) return false;
-            if (leftEntityToken.Id != rightEntityToken.Id) return false;
-            if (leftEntityToken.Type != rightEntityToken.Type) return false;
-            if (leftEntityToken.Source != rightEntityToken.Source) return false;
-
-            return true;
+            return leftEntityToken.GetType() == rightEntityToken.GetType()
+                   && leftEntityToken.Id == rightEntityToken.Id
+                   && leftEntityToken.Type == rightEntityToken.Type
+                   && leftEntityToken.Source == rightEntityToken.Source;
         }
 
 
@@ -34,13 +32,15 @@ namespace Composite.C1Console.Elements
         /// <exclude />
         public static AttachingPoint GetAttachingPoint(EntityToken entityToken)
         {
-            if (IsAttachingPoint(entityToken, AttachingPoint.PerspectivesRoot) == true) return AttachingPoint.PerspectivesRoot;
-            if (IsAttachingPoint(entityToken, AttachingPoint.ContentPerspective) == true) return AttachingPoint.ContentPerspective;
-            if (IsAttachingPoint(entityToken, AttachingPoint.DataPerspective) == true) return AttachingPoint.DataPerspective;
-            if (IsAttachingPoint(entityToken, AttachingPoint.DesignPerspective) == true) return AttachingPoint.DesignPerspective;
-            if (IsAttachingPoint(entityToken, AttachingPoint.FunctionPerspective) == true) return AttachingPoint.FunctionPerspective;
-            if (IsAttachingPoint(entityToken, AttachingPoint.MediaPerspective) == true) return AttachingPoint.MediaPerspective;
-            if (IsAttachingPoint(entityToken, AttachingPoint.SystemPerspective) == true) return AttachingPoint.SystemPerspective;
+            if (entityToken is VirtualElementProviderEntityToken)
+            {
+                return AttachingPoint.VirtualElementAttachingPoint(entityToken.Id, entityToken.Source);
+            }
+
+            if (IsAttachingPoint(entityToken, AttachingPoint.ContentPerspectiveWebsiteItems))
+            {
+                return AttachingPoint.ContentPerspectiveWebsiteItems;
+            }
 
             return null;
         }

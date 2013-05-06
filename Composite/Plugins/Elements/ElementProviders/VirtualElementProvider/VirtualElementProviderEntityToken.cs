@@ -5,16 +5,17 @@ using Composite.Core.Types;
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
-    /// <summary>    
+    /// <summary>
+    /// EntityTokon of elements created by <see cref="VirtualElementProvider"/>
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [SecurityAncestorProvider(typeof(VirtualElementProviderSecurityAncestorProvider))]
     public sealed class VirtualElementProviderEntityToken : EntityToken
     {
-        private string _source;
-        private string _id;
-        private string _type;
+        private readonly string _source;
+        private readonly string _id;
+        private readonly string _type;
 
 
         /// <exclude />

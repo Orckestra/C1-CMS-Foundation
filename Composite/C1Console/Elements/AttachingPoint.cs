@@ -11,16 +11,20 @@ namespace Composite.C1Console.Elements
     /// </summary>
     public sealed class AttachingPoint
     {
-        private static AttachingPoint _rootPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "ID01", Source = "VirtualElementProvider" };
+        private const string BuildInVirtualElementProviderName = "VirtualElementProvider";
 
-        private static AttachingPoint _contentPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "ContentPerspective", Source = "VirtualElementProvider" };
-        private static AttachingPoint _contentPerspectiveWebsiteItemsAttachingPoint = new AttachingPoint { EntityTokenType = typeof(GeneratedDataTypesElementProviderRootEntityToken), Id = "GlobalDataTypeFolder", Source = "GlobalDataOnlyGeneratedDataTypesElementProvider" };
+        private static readonly AttachingPoint _rootPerspectiveAttachingPoint = VirtualElementAttachingPoint("ID01");
 
-        private static AttachingPoint _mediaPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "MediaPerspective", Source = "VirtualElementProvider" };
-        private static AttachingPoint _dataPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "DatasPerspective", Source = "VirtualElementProvider" };
-        private static AttachingPoint _designPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "DesignPerspective", Source = "VirtualElementProvider" };
-        private static AttachingPoint _functionPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "FunctionsPerspective", Source = "VirtualElementProvider" };
-        private static AttachingPoint _systemPerspectiveAttachingPoint = new AttachingPoint { EntityTokenType = typeof(VirtualElementProviderEntityToken), Id = "SystemPerspective", Source = "VirtualElementProvider" };
+        private static readonly AttachingPoint _contentPerspectiveAttachingPoint = VirtualElementAttachingPoint("ContentPerspective");
+        private static readonly AttachingPoint _contentPerspectiveWebsiteItemsAttachingPoint = 
+            new AttachingPoint { EntityTokenType = typeof(GeneratedDataTypesElementProviderRootEntityToken), 
+                                 Id = "GlobalDataTypeFolder", 
+                                 Source = "GlobalDataOnlyGeneratedDataTypesElementProvider" };
+        private static readonly AttachingPoint _mediaPerspectiveAttachingPoint = VirtualElementAttachingPoint("MediaPerspective");
+        private static readonly AttachingPoint _dataPerspectiveAttachingPoint = VirtualElementAttachingPoint("DatasPerspective");
+        private static readonly AttachingPoint _designPerspectiveAttachingPoint = VirtualElementAttachingPoint("DesignPerspective");
+        private static readonly AttachingPoint _functionPerspectiveAttachingPoint = VirtualElementAttachingPoint("FunctionsPerspective");
+        private static readonly AttachingPoint _systemPerspectiveAttachingPoint = VirtualElementAttachingPoint("SystemPerspective");
 
 
         /// <summary>
@@ -67,8 +71,7 @@ namespace Composite.C1Console.Elements
         /// </summary>
         public static AttachingPoint SystemPerspective { get { return _systemPerspectiveAttachingPoint; } }
 
-
-        private EntityToken _entityToken = null;
+        private EntityToken _entityToken;
 
         internal AttachingPoint(EntityToken entityToken = null)
         {
@@ -102,7 +105,7 @@ namespace Composite.C1Console.Elements
                 {                    
                     if (this.EntityTokenType == typeof(VirtualElementProviderEntityToken))
                     {
-                        _entityToken = new VirtualElementProviderEntityToken("VirtualElementProvider", this.Id);
+                        _entityToken = new VirtualElementProviderEntityToken(BuildInVirtualElementProviderName, this.Id);
                     }
                     else if (this.EntityTokenType == typeof(GeneratedDataTypesElementProviderRootEntityToken))
                     {
@@ -110,13 +113,23 @@ namespace Composite.C1Console.Elements
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        Verify.IsNotNull(EntityTokenType, "EntityTokenType is null");
+                        throw new InvalidOperationException("Invalid entity token type: " + EntityTokenType.FullName);
                     }
                 }
 
                 return _entityToken;
             }
         }
-    }
 
+        internal static AttachingPoint VirtualElementAttachingPoint(string elementId, string source = BuildInVirtualElementProviderName)
+        {
+            return new AttachingPoint
+            {
+                EntityTokenType = typeof(VirtualElementProviderEntityToken),
+                Id = elementId,
+                Source = source
+            };
+        }
+    }
 }
