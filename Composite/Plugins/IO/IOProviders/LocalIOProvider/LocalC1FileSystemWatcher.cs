@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using Composite.Core.IO;
 using Composite.Core.IO.Plugins.IOProvider;
+using System;
 
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
@@ -8,6 +9,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
     // TODO: has to implement IDisposable as it may contain unmanaged resources
     internal class LocalC1FileSystemWatcher : IC1FileSystemWatcher
     {
+        private const string LogTitle = "LocalC1FileSystemWatcher";
         private FileSystemWatcher _fileSystemWatcher;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
@@ -16,23 +18,21 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             if (filter == null)
             {
                 _fileSystemWatcher = new FileSystemWatcher(path);
-                _fileSystemWatcher.InternalBufferSize = 32768;
+                _fileSystemWatcher.InternalBufferSize = 8192;
             }
             else
             {
                 _fileSystemWatcher = new FileSystemWatcher(path, filter);
             }
-            var buf = _fileSystemWatcher.InternalBufferSize;
-
             _fileSystemWatcher.Error += new ErrorEventHandler(_fileSystemWatcher_Error);
         }
 
+
+
         void _fileSystemWatcher_Error(object sender, ErrorEventArgs e)
         {
-            Composite.Core.Log.LogWarning("LocalC1FileSystemWatcher", e.GetException());
-            Composite.Core.Log.LogWarning("LocalC1FileSystemWatcher", "The path was '{0}' using filter '{1}'. EnableRaisingEvents is '{2}'.", _fileSystemWatcher.Path, _fileSystemWatcher.Filter, _fileSystemWatcher.EnableRaisingEvents);
+            Composite.Core.Log.LogWarning(LogTitle, e.GetException());
         }
-
 
 
 
@@ -45,7 +45,14 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             }
             set
             {
-                _fileSystemWatcher.EnableRaisingEvents = value;
+                try
+                {
+                    _fileSystemWatcher.EnableRaisingEvents = value;
+                }
+                catch (Exception ex)
+                {
+                    Composite.Core.Log.LogWarning(LogTitle, ex);
+                }
             }
         }
 
