@@ -5,7 +5,7 @@
 			<div class="buzzwords">
 				<div id="version"><ui:text label="${version}"/></div>
 				<div id="build"><ui:text label="Build ${build}"/></div>
-				<div><ui:text label="© 2011 Composite A/S"/></div>
+				<div><ui:text label="© 2012 Composite A/S"/></div>
 			</div>
 			<ui:fields id="loginfields">
 				<div id="loginerror" class="errortext">
