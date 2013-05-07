@@ -59,9 +59,10 @@ namespace Composite.Functions.Foundation
             catch (Exception ex)
             {
                 Log.LogCritical("FunctionProviderRegistry", ex);
+                throw;
             }
 
-            throw new NotImplementedException("Unexpected FunctionTypesToReturn enumeration value");
+            throw new NotImplementedException(string.Format("Unexpected FunctionTypesToReturn enumeration value '{0}' from provider '{1}'", functionTypesToReturn, providerName));
         }
 
         protected override void OnFunctionsAdded(List<string> functionNames, bool fireEvents)

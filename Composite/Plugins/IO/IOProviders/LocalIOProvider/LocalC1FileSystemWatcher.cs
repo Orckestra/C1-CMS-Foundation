@@ -3,6 +3,7 @@ using Composite.Core.IO;
 using Composite.Core.IO.Plugins.IOProvider;
 using System;
 using System.Threading.Tasks;
+using System.Threading;
 
 
 namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
@@ -47,9 +48,10 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             set
             {
                 // Systems with flaky disk IO this can block thread for a very long time
-                Task.Factory.StartNew( () =>
-                    DoEnableRaisingEvents(value)
-                );
+                Task.Factory.StartNew(() => {
+                    Thread.Sleep(1000);
+                    DoEnableRaisingEvents(value);
+                });
             }
         }
 
