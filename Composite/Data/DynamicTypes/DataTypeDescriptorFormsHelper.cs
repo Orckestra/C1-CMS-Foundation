@@ -612,9 +612,6 @@ namespace Composite.Data.DynamicTypes
 
         private void GenerateForm()
         {
-            XNamespace mainNamespace = DataTypeDescriptorFormsHelper.MainNamespace;
-            XNamespace cmsNamespace = DataTypeDescriptorFormsHelper.CmsNamespace;
-
             Dictionary<string, string> fieldNameToBindingNameMapper = new Dictionary<string, string>();
 
             _bindingsXml = new XElement(_cmsBindingsElementTemplate);
@@ -634,11 +631,11 @@ namespace Composite.Data.DynamicTypes
             else if (string.IsNullOrEmpty(_dataTypeDescriptor.LabelFieldName) == false)
             {
 
-                layout.Add((new XElement(cmsNamespace + "layout.label", new XElement(cmsNamespace + "read", new XAttribute("source", _dataTypeDescriptor.LabelFieldName)))));
+                layout.Add((new XElement(CmsNamespace + "layout.label", new XElement(CmsNamespace + "read", new XAttribute("source", _dataTypeDescriptor.LabelFieldName)))));
             }
 
 
-            _panelXml = new XElement(mainNamespace + "FieldGroup");
+            _panelXml = new XElement(MainNamespace + "FieldGroup");
             if (string.IsNullOrEmpty(this.FieldGroupLabel) == false)
             {
                 _panelXml.Add(new XAttribute("Label", this.FieldGroupLabel));
@@ -652,7 +649,7 @@ namespace Composite.Data.DynamicTypes
 
                 fieldNameToBindingNameMapper.Add(fieldDescriptor.Name, bindingName);
 
-                XElement binding = new XElement(cmsNamespace + FormKeyTagNames.Binding,
+                XElement binding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                     new XAttribute("name", bindingName),
                     new XAttribute("type", bindingType));
 
@@ -687,11 +684,11 @@ namespace Composite.Data.DynamicTypes
             if (_showPublicationStatusSelector &&
                 _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
-                XElement publicationStatusBinding = new XElement(cmsNamespace + FormKeyTagNames.Binding,
+                XElement publicationStatusBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                     new XAttribute("name", this.PublicationStatusBindingName),
                     new XAttribute("type", typeof(string)));
 
-                XElement publicationStatusOptionsBinding = new XElement(cmsNamespace + FormKeyTagNames.Binding,
+                XElement publicationStatusOptionsBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                     new XAttribute("name", this.PublicationStatusOptionsBindingName),
                     new XAttribute("type", typeof(object)));
 
@@ -700,17 +697,17 @@ namespace Composite.Data.DynamicTypes
 
 
                 XElement element =
-                    new XElement(mainNamespace + "KeySelector",
+                    new XElement(MainNamespace + "KeySelector",
                         new XAttribute("OptionsKeyField", "Key"),
                         new XAttribute("OptionsLabelField", "Value"),
                         new XAttribute("Label", "${Composite.Plugins.GeneratedDataTypesElementProvider, LabelPublicationState}"),
-                        new XElement(mainNamespace + "KeySelector.Selected",
-                            new XElement(cmsNamespace + "bind",
+                        new XElement(MainNamespace + "KeySelector.Selected",
+                            new XElement(CmsNamespace + "bind",
                                 new XAttribute("source", this.PublicationStatusBindingName)
                             )
                         ),
-                        new XElement(mainNamespace + "KeySelector.Options",
-                            new XElement(cmsNamespace + "read",
+                        new XElement(MainNamespace + "KeySelector.Options",
+                            new XElement(CmsNamespace + "read",
                                 new XAttribute("source", this.PublicationStatusOptionsBindingName)
                             )
                         )
@@ -735,9 +732,9 @@ namespace Composite.Data.DynamicTypes
                 XElement formDefinitionElement = XElement.Parse(this.AlternateFormDefinition);
 
                 var bindingNameAttributes =
-                    formDefinitionElement.Descendants(cmsNamespace + "binding").Attributes("name").Concat(
-                        formDefinitionElement.Descendants(cmsNamespace + "bind").Attributes("source").Concat(
-                            formDefinitionElement.Descendants(cmsNamespace + "read").Attributes("source")));
+                    formDefinitionElement.Descendants(CmsNamespace + "binding").Attributes("name").Concat(
+                        formDefinitionElement.Descendants(CmsNamespace + "bind").Attributes("source").Concat(
+                            formDefinitionElement.Descendants(CmsNamespace + "read").Attributes("source")));
 
                 foreach (XAttribute bindingNameAttribute in bindingNameAttributes)
                 {
@@ -750,7 +747,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (string.IsNullOrEmpty(this.FieldGroupLabel) == false)
                 {
-                    foreach (XElement fieldGroupElement in formDefinitionElement.Descendants(mainNamespace + "FieldGroup"))
+                    foreach (XElement fieldGroupElement in formDefinitionElement.Descendants(MainNamespace + "FieldGroup"))
                     {
                         if (fieldGroupElement.Attribute("Label") == null)
                         {
@@ -799,6 +796,21 @@ namespace Composite.Data.DynamicTypes
             {
                 return GetBindingName(_bindingNamesPrefix, _publicationStatusOptionsPostFixBindingName);
             }
+        }
+
+        internal bool BindingIsOptional(string bindingName)
+        {
+            string formDefinition = AlternateFormDefinition ?? _generatedForm;
+
+            Verify.IsNotNull(formDefinition, "Failed to get the form definintion");
+
+            XElement formDefinitionElement = XElement.Parse(formDefinition);
+
+            var binding = formDefinitionElement
+                .Descendants(CmsNamespace + "binding")
+                .FirstOrDefault(e => (string) e.Attribute("name") == bindingName);
+
+            return binding != null && (string) binding.Attribute("optional") == "true";
         }
     }
 }

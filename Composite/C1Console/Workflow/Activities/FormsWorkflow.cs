@@ -872,7 +872,9 @@ namespace Composite.C1Console.Workflow.Activities
                 if(validationResults.Any(r => r.Key == bindingName)) continue;
 
                 object fieldValue = this.Bindings[bindingName];
-                if (fieldValue is string && (fieldValue as string) == string.Empty)
+                if (fieldValue is string 
+                    && (fieldValue as string) == string.Empty
+                    && !helper.BindingIsOptional(bindingName))
                 {
                     this.ShowFieldMessage(bindingName, StringResourceSystemFacade.GetString("Composite.Management", "Validation.RequiredField"));
 
