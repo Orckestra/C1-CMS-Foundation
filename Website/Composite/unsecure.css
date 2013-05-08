@@ -82,9 +82,13 @@ div#start a {
    -moz-transition: opacity 2s ease-in-out;
    -webkit-transition: opacity 2s ease-in-out;
 }
-.fade:hover {
-   opacity: 1;
-}
 div#start.active {
    opacity: 1;
+}
+
+.fallback {
+    visibility: hidden;
+}
+.fallbackallowed .fallback {
+    visibility: visible;
 }

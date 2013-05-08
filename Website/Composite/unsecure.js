@@ -10,7 +10,8 @@ if (document.location.protocol.toString() == "https:") {
         xmlHttp.open("GET", mySecuredUrl, true);
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                if (xmlHttp.responseText.indexOf("ɯǝɥʇpuıqoʇsɯɔǝuo") > -1) {
+                var localWatermark = document.getElementById("watermark").getAttribute("content");
+                if (xmlHttp.responseText.indexOf(localWatermark) > -1) {
                     document.location = mySecuredUrl.replace("unsecure.aspx", "top.aspx");
                 }
             }
@@ -20,13 +21,17 @@ if (document.location.protocol.toString() == "https:") {
 }
 
 window.onload = function () {
-    setTimeout(function () {
-        var start = document.getElementById("start");
-        start.className += " active";
-        start.onclick = function () {
-            var adminPath = document.location.pathname.replace("unsecure.aspx", "");
-            document.cookie = "avoidc1consolehttps=true; path=" + adminPath;
-            document.location = document.location.toString().replace("unsecure.aspx", "top.aspx");
-        }
-    }, 2500);
+    if (location.search.indexOf("fallback=true") > -1) {
+        document.getElementById("splash").className += " fallbackallowed";
+
+        setTimeout(function () {
+            var start = document.getElementById("start");
+            start.className += " active";
+            start.onclick = function () {
+                var adminPath = document.location.pathname.replace("unsecure.aspx", "");
+                document.cookie = "avoidc1consolehttps=true; path=" + adminPath;
+                document.location = document.location.toString().replace("unsecure.aspx", "top.aspx");
+            }
+        }, 2500);
+    }
 }

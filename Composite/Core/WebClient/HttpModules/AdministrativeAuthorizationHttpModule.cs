@@ -86,6 +86,8 @@ namespace Composite.Core.WebClient.HttpModules
             {
                 if (!_allowC1ConsoleRequests)
                 {
+                    context.Response.StatusCode = 403;
+                    context.Response.Write("ACCESS DISABLED");
                     context.Response.End();
                     throw new System.Security.SecurityException("~/Composite requests not allowed on this site");
                 }
@@ -95,7 +97,7 @@ namespace Composite.Core.WebClient.HttpModules
                 {
                     if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
                     {
-                        context.Response.Redirect(unsecureRedirectRelativePath);     
+                        context.Response.Redirect(string.Format("{0}?fallback={1}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower()));
                     }
                 }
 
@@ -157,7 +159,7 @@ namespace Composite.Core.WebClient.HttpModules
                 try
                 {
                     XDocument accessDoc = XDocument.Load(c1ConsoleAccessConfigPath);
-                    _allowC1ConsoleRequests = (bool)accessDoc.Root.Attribute("enable");
+                    _allowC1ConsoleRequests = _allowC1ConsoleRequests && (bool)accessDoc.Root.Attribute("enabled");
 
                     XElement protocolElement = accessDoc.Root.Element("ClientProtocol");
                     _forceHttps = (bool)protocolElement.Attribute("forceHttps");
