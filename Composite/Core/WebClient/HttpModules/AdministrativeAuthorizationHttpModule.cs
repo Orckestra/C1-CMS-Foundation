@@ -8,13 +8,14 @@ using Composite.C1Console.Security;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.Xml;
+using System.IO;
 
 
 namespace Composite.Core.WebClient.HttpModules
 {
     /// <summary>
-    ///  Http Module that ensures that only authenticated users can access /Composite/* files 
-    ///  not explicitly allowed to everyone.
+    ///  Http Module that ensures that only authenticated users can access /Composite/* files not explicitly allowed to everyone.
+    ///  Also ensure that HTTPS rules are enforced.
     /// </summary>
     internal class AdministrativeAuthorizationHttpModule : IHttpModule
     {
@@ -22,9 +23,13 @@ namespace Composite.Core.WebClient.HttpModules
         private static string _adminRootPath;
         private static string _loginPagePath;
         private static object _lock = new object();
-        private static bool _protect = true;
+        private static bool _allowC1ConsoleRequests = true;
+        private static bool _forceHttps = true;
+        private static bool _allowFallbackToHttp = true;
 
         private const string webauthorizationRelativeConfigPath = "~/Composite/webauthorization.config";
+        private const string c1ConsoleAccessRelativeConfigPath = "~/App_Data/Composite/Configuration/C1ConsoleAccess.xml";
+        private const string unsecureRedirectRelativePath = "~/Composite/unsecure.aspx";
         private const string loginPagePathAttributeName = "loginPagePath";
         private const string allowElementName = "allow";
         private const string allow_pathAttributeName = "path";
@@ -37,24 +42,64 @@ namespace Composite.Core.WebClient.HttpModules
             }
             else
             {
-                _protect = false;
+                _allowC1ConsoleRequests = false;
             }
         }
 
+
+        
+        public void Dispose()
+        {
+        }
+
+
+
+        public void Init(HttpApplication context)
+        {
+            context.AuthenticateRequest += new EventHandler(context_AuthenticateRequest);
+        }
+
+
+
+        private bool AlwaysAllowUnsecured(string requestPath)
+        {
+            string fileName = Path.GetFileName(requestPath);
+            return fileName.StartsWith("unsecure") ||
+                fileName == "blank.png" ||
+                fileName == "box.png" ||
+                fileName == "button.png" ||
+                fileName == "startcomposite.png" ||
+                fileName == "default.css.aspx";
+
+        }
+
+
+
         private void context_AuthenticateRequest(object sender, EventArgs e)
         {
-            if (!_protect)
-            {
-                return;
-            }
-
             HttpApplication application = (HttpApplication)sender;
             HttpContext context = application.Context;
 
             string currentPath = context.Request.Path.ToLowerInvariant();
 
-            if (currentPath.StartsWith(_adminRootPath) == true && currentPath.Length > _adminRootPath.Length)
+            if (currentPath.StartsWith(_adminRootPath) == true)
             {
+                if (!_allowC1ConsoleRequests)
+                {
+                    context.Response.End();
+                    throw new System.Security.SecurityException("~/Composite requests not allowed on this site");
+                }
+
+                // https check
+                if (_forceHttps && context.Request.Url.Scheme != "https")
+                {
+                    if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
+                    {
+                        context.Response.Redirect(unsecureRedirectRelativePath);     
+                    }
+                }
+
+                // access check
                 if (UserValidationFacade.IsLoggedIn() == false)
                 {
                     if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
@@ -67,14 +112,20 @@ namespace Composite.Core.WebClient.HttpModules
             }
         }
 
-        public void Dispose()
+
+
+        private bool UserOptedOutOfHttps(HttpContext context)
         {
+            if (!_allowFallbackToHttp)
+            {
+                return false;
+            }
+
+            HttpCookie cookie = context.Request.Cookies["avoidc1consolehttps"];
+            return cookie != null && cookie.Value == "true";
         }
 
-        public void Init(HttpApplication context)
-        {
-            context.AuthenticateRequest += new EventHandler(context_AuthenticateRequest);
-        }
+
 
         private static void LoadConfiguration()
         {
@@ -85,28 +136,66 @@ namespace Composite.Core.WebClient.HttpModules
                 if (_adminRootPath.EndsWith("/") == false)
                     _adminRootPath = string.Format("{0}/", _adminRootPath);
 
-                _allAllowedPaths.Clear();
+                LoadAllowedPaths();
+                LoadC1ConsoleAccessConfig();
+            }
+        }
 
-                string webauthorizationConfigPath = HostingEnvironment.MapPath(webauthorizationRelativeConfigPath);
-
-                Verify.That(C1File.Exists(webauthorizationConfigPath), "Missing file '{0}'.", webauthorizationRelativeConfigPath);
 
 
-                XDocument webauthorizationConfigDocument = XDocumentUtils.Load(webauthorizationConfigPath);
+        private static void LoadC1ConsoleAccessConfig()
+        {
+            // defaults - keeping these if config file is missing or fucked up somehow
+            _allowC1ConsoleRequests = true;
+            _forceHttps = false;
+            _allowFallbackToHttp = true;
 
-                XAttribute loginPagePathAttribute = Verify.ResultNotNull<XAttribute>(webauthorizationConfigDocument.Root.Attribute("loginPagePath"), "Missing '{0}' attribute on '{1}' root element", loginPagePathAttributeName, webauthorizationRelativeConfigPath);
-                string relativeLoginPagePath = Verify.StringNotIsNullOrWhiteSpace(loginPagePathAttribute.Value, "Unexpected empty '{0}' attribute on '{1}' root element", loginPagePathAttributeName, webauthorizationRelativeConfigPath);
+            string c1ConsoleAccessConfigPath = HostingEnvironment.MapPath(c1ConsoleAccessRelativeConfigPath);
 
-                _loginPagePath = UrlUtils.ResolveAdminUrl(relativeLoginPagePath);
-
-                foreach (XElement allowElement in webauthorizationConfigDocument.Root.Elements(allowElementName))
+            if (File.Exists(c1ConsoleAccessConfigPath))
+            {
+                try
                 {
-                    XAttribute relativePathAttribute = Verify.ResultNotNull<XAttribute>(allowElement.Attribute(allow_pathAttributeName), "Missing '{0}' attribute on '{1}' element in '{2}'.", allow_pathAttributeName, allowElement, webauthorizationRelativeConfigPath);
-                    string relativePath = Verify.StringNotIsNullOrWhiteSpace(relativePathAttribute.Value, "Empty '{0}' attribute on '{1}' element in '{2}'.", allow_pathAttributeName, allowElement, webauthorizationRelativeConfigPath);
+                    XDocument accessDoc = XDocument.Load(c1ConsoleAccessConfigPath);
+                    _allowC1ConsoleRequests = (bool)accessDoc.Root.Attribute("enable");
 
-                    string fullPath = UrlUtils.ResolveAdminUrl(relativePath).ToLowerInvariant();
-                    _allAllowedPaths.Add(fullPath);
+                    XElement protocolElement = accessDoc.Root.Element("ClientProtocol");
+                    _forceHttps = (bool)protocolElement.Attribute("forceHttps");
+                    _allowFallbackToHttp = (bool)protocolElement.Attribute("allowFallbackToHttp");
                 }
+                catch (Exception ex)
+                {
+                    LoggingService.LogError("Authorization", string.Format("Problem parsing '{0}'. Will use defaults and allow normal access. Error was '{1}'", c1ConsoleAccessRelativeConfigPath, ex.Message));
+                }
+                
+            }
+        }
+
+
+
+        private static void LoadAllowedPaths()
+        {
+            _allAllowedPaths.Clear();
+
+            string webauthorizationConfigPath = HostingEnvironment.MapPath(webauthorizationRelativeConfigPath);
+
+            Verify.That(C1File.Exists(webauthorizationConfigPath), "Missing file '{0}'.", webauthorizationRelativeConfigPath);
+
+
+            XDocument webauthorizationConfigDocument = XDocumentUtils.Load(webauthorizationConfigPath);
+
+            XAttribute loginPagePathAttribute = Verify.ResultNotNull<XAttribute>(webauthorizationConfigDocument.Root.Attribute("loginPagePath"), "Missing '{0}' attribute on '{1}' root element", loginPagePathAttributeName, webauthorizationRelativeConfigPath);
+            string relativeLoginPagePath = Verify.StringNotIsNullOrWhiteSpace(loginPagePathAttribute.Value, "Unexpected empty '{0}' attribute on '{1}' root element", loginPagePathAttributeName, webauthorizationRelativeConfigPath);
+
+            _loginPagePath = UrlUtils.ResolveAdminUrl(relativeLoginPagePath);
+
+            foreach (XElement allowElement in webauthorizationConfigDocument.Root.Elements(allowElementName))
+            {
+                XAttribute relativePathAttribute = Verify.ResultNotNull<XAttribute>(allowElement.Attribute(allow_pathAttributeName), "Missing '{0}' attribute on '{1}' element in '{2}'.", allow_pathAttributeName, allowElement, webauthorizationRelativeConfigPath);
+                string relativePath = Verify.StringNotIsNullOrWhiteSpace(relativePathAttribute.Value, "Empty '{0}' attribute on '{1}' element in '{2}'.", allow_pathAttributeName, allowElement, webauthorizationRelativeConfigPath);
+
+                string fullPath = UrlUtils.ResolveAdminUrl(relativePath).ToLowerInvariant();
+                _allAllowedPaths.Add(fullPath);
             }
         }
     }

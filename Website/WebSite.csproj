@@ -129,6 +129,7 @@
     <Compile Include="Composite\controls\FormsControls\FormUiContainerTemplates\DocumentExecutionContainer.ascx.designer.cs">
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
+    <Content Include="App_Data\Composite\Configuration\C1ConsoleAccess.xml" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
     <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestrings.aspx" />
@@ -444,6 +445,9 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\unsecure.js" />
+    <Content Include="Composite\skins\system\dialogpages\unsecure_32.png" />
+    <Content Include="Composite\unsecure.css" />
     <Content Include="Composite\images\loading.gif" />
     <Content Include="Composite\images\loading.svg">
       <SubType>Designer</SubType>
@@ -1007,6 +1011,7 @@
     <Content Include="Composite\transformations\defaultfilters\masterfilter.xsl" />
     <Content Include="Composite\transformations\defaultfilters\structurefilter.xsl" />
     <Content Include="Composite\transformations\page_profiler.xslt" />
+    <Content Include="Composite\unsecure.aspx" />
     <Content Include="Composite\unknownbrowser.aspx" />
     <Content Include="Composite\unsupported.aspx" />
     <Content Include="Composite\unsupported.css" />
