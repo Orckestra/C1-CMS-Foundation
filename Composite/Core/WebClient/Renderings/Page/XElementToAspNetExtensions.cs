@@ -184,10 +184,13 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 if (childNode is XCData)
                 {
-                    XCData cdata = (XCData)childNode;
-                    LiteralControl literal = new LiteralControl(cdata.Value);
-                    containerControl.Controls.Add(literal);
-                    continue;
+                    if (!childNode.Ancestors().Any(f=>f.Name.LocalName == "script"))
+                    {
+                        XCData cdata = (XCData)childNode;
+                        LiteralControl literal = new LiteralControl(cdata.Value);
+                        containerControl.Controls.Add(literal);
+                        continue;
+                    }
                 }
 
                 if (childNode is XText)
