@@ -1,4 +1,12 @@
 @import url("default.css");
+
+body * {
+    visibility: hidden;
+}
+
+body.loaded * {
+    visibility: visible;
+}
 	
 div#splash {
 	display: none; /* adjusted by script */
@@ -40,9 +48,6 @@ div#vignette {
 	top: 12px;
 	left: -8px;
 	background-image: url("${folder}/skins/system/dialogpages/unsecure_32.png");
-	#region default
-		top: 11px;
-	#endregion
 }
 div#head {
 	position: relative;
@@ -65,12 +70,6 @@ p {
 	width: 200px;
 	line-height: 1.25em;
 }
-/*
-a {
-	top: 253px;
-	left: 29px;
-}
-*/
 div#start a {
 	top: 242px;
 	left: 29px;
@@ -85,7 +84,6 @@ div#start a {
 div#start.active {
    opacity: 1;
 }
-
 .fallback {
     visibility: hidden;
 }

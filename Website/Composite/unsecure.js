@@ -2,26 +2,20 @@
 if (document.location.protocol.toString() == "https:") {
     setTimeout(function () {
         document.location = document.location.toString().replace("unsecure.aspx", "top.aspx");
-    }, 250);
+    }, 100);
 } else {
     if (document.location.protocol.toString() == "http:") {
-        var mySecuredUrl = document.location.toString().replace("http:", "https:");
-        var xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", mySecuredUrl, true);
-        xmlHttp.onreadystatechange = function () {
-            if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                var localWatermark = document.getElementById("watermark").getAttribute("content");
-                if (xmlHttp.responseText.indexOf(localWatermark) > -1) {
-                    document.location = mySecuredUrl.replace("unsecure.aspx", "top.aspx");
-                }
-            }
-        };
-        xmlHttp.send(null);
+        var mySecureUrl = getMySecureUrl();
+        var localWatermark = document.getElementById("watermark").getAttribute("content");
+        document.write("<script type='text/javascript' src='" + mySecureUrl + "?jsprobe=true&watermark=" + encodeURIComponent(localWatermark) + "'></script>");
     }
 }
 
+
 window.onload = function () {
-    if (location.search.indexOf("fallback=true") > -1) {
+    document.body.className += " loaded";
+
+    if (getParameterByName("fallback") == "true") {
         document.getElementById("splash").className += " fallbackallowed";
 
         setTimeout(function () {
@@ -34,4 +28,32 @@ window.onload = function () {
             }
         }, 2500);
     }
+}
+
+
+function getMySecureUrl() {
+    var location = document.location;
+    var customPort = getParameterByName("httpsport");
+
+    var mySecureUrl = "https://" + location.hostname;
+
+    if (customPort.length > 0) {
+        mySecureUrl += ":" + parseInt(customPort, 10);
+    }
+
+    mySecureUrl += location.pathname;
+
+    return mySecureUrl;
+}
+
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + name + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.search);
+    if (results == null)
+        return "";
+    else
+        return decodeURIComponent(results[1].replace(/\+/g, " "));
 }

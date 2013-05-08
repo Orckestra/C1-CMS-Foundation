@@ -23,9 +23,10 @@ namespace Composite.Core.WebClient.HttpModules
         private static string _adminRootPath;
         private static string _loginPagePath;
         private static object _lock = new object();
-        private static bool _allowC1ConsoleRequests = true;
+        private static bool _allowC1ConsoleRequests = false;
         private static bool _forceHttps = true;
         private static bool _allowFallbackToHttp = true;
+        private static Nullable<int> _customHttpsPortNumber = null;
 
         private const string webauthorizationRelativeConfigPath = "~/Composite/webauthorization.config";
         private const string c1ConsoleAccessRelativeConfigPath = "~/App_Data/Composite/Configuration/C1ConsoleAccess.xml";
@@ -97,7 +98,7 @@ namespace Composite.Core.WebClient.HttpModules
                 {
                     if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
                     {
-                        context.Response.Redirect(string.Format("{0}?fallback={1}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower()));
+                        context.Response.Redirect(string.Format("{0}?fallback={1}&httpsport={2}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower(), _customHttpsPortNumber));
                     }
                 }
 
@@ -139,6 +140,7 @@ namespace Composite.Core.WebClient.HttpModules
                     _adminRootPath = string.Format("{0}/", _adminRootPath);
 
                 LoadAllowedPaths();
+                _allowC1ConsoleRequests = true;
                 LoadC1ConsoleAccessConfig();
             }
         }
@@ -148,9 +150,9 @@ namespace Composite.Core.WebClient.HttpModules
         private static void LoadC1ConsoleAccessConfig()
         {
             // defaults - keeping these if config file is missing or fucked up somehow
-            _allowC1ConsoleRequests = true;
             _forceHttps = false;
             _allowFallbackToHttp = true;
+            _customHttpsPortNumber = null;
 
             string c1ConsoleAccessConfigPath = HostingEnvironment.MapPath(c1ConsoleAccessRelativeConfigPath);
 
@@ -164,12 +166,16 @@ namespace Composite.Core.WebClient.HttpModules
                     XElement protocolElement = accessDoc.Root.Element("ClientProtocol");
                     _forceHttps = (bool)protocolElement.Attribute("forceHttps");
                     _allowFallbackToHttp = (bool)protocolElement.Attribute("allowFallbackToHttp");
+
+                    if (protocolElement.Attribute("customHttpsPortNumber")!=null)
+                    {
+                        _customHttpsPortNumber = (int)protocolElement.Attribute("customHttpsPortNumber");
+                    }
                 }
                 catch (Exception ex)
                 {
                     LoggingService.LogError("Authorization", string.Format("Problem parsing '{0}'. Will use defaults and allow normal access. Error was '{1}'", c1ConsoleAccessRelativeConfigPath, ex.Message));
                 }
-                
             }
         }
 

@@ -1,11 +1,21 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    
-<%@ Page Language="C#" %>
+﻿<%@ Page Language="C#" %>
+<%
+    Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+    string websiteWatermark = string.Format("ɯǝɥʇpuıqoʇsɯɔǝuo:{0}", Composite.Core.Configuration.InstallationInformationFacade.InstallationId.GetHashCode() % 10000);
+    string pageUrl = Request.Url.ToString();
 
+    // jsonp'ish: if this evaluates to true our http brother is checking if we are alive, identical and well - if we are, we go https by js redirecting.
+    if(Request.QueryString["jsprobe"]=="true" && pageUrl.IndexOf("/unsecure.aspx")>-1 && Request.QueryString["watermark"] == websiteWatermark) {
+        string safeStart = pageUrl.Replace((0, pageUrl.IndexOf("unsecure.aspx")) + "default.aspx";
+        Response.Write(string.Format("document.location='{0}'", safeStart));
+        Response.End();
+    }
+%>
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Unsecure Connection</title>
-        <meta name="https-check-watermark" content="ɯǝɥʇpuıqoʇsɯɔǝuo:<%= Composite.Core.Configuration.InstallationInformationFacade.InstallationId.GetHashCode() % 1000 %>" id="watermark" />
+        <meta name="https-check-watermark" content="<%= websiteWatermark %>" id="watermark" />
 		<link rel="stylesheet" type="text/css" href="unsecure.css.aspx"/>
 		<link rel="shortcut icon" type="image/x-icon" href="images/icons/branding/favicon16.ico"/>
 		<script type="text/javascript" src="unsecure.js.aspx"></script>
