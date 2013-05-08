@@ -30,17 +30,17 @@ namespace Composite.Core.PageTemplates
         /// <value>
         /// The placeholder descriptions.
         /// </value>
-        public IEnumerable<PlaceholderDescriptor> PlaceholderDescriptions { get; set; }
+        public virtual IEnumerable<PlaceholderDescriptor> PlaceholderDescriptions { get; set; }
 
         /// <summary>
         /// The default is the placeholder to focus/use when users edit a page or a layout is used in ad hoc renderings.
         /// </summary>
-        public string DefaultPlaceholderId { get; set; }
+        public virtual string DefaultPlaceholderId { get; set; }
 
         /// <summary>
         /// Gets or sets an exception that occured during loading the template.
         /// </summary>
-        public Exception LoadingException { get; set; }
+        public virtual Exception LoadingException { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether page template is loaded correctly.
@@ -49,7 +49,7 @@ namespace Composite.Core.PageTemplates
         /// <value>
         ///   <c>true</c> if template is loaded; otherwise, <c>false</c>.
         /// </value>
-        public bool IsValid
+        public virtual bool IsValid
         {
             get { return LoadingException == null; }
         }

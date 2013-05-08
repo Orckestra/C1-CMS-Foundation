@@ -487,13 +487,13 @@ namespace Composite.Data.DynamicTypes
             {
                 string bindingName = GetBindingName(fieldDescriptor);
 
-                if (bindings.ContainsKey(bindingName) == true)
+                if (bindings.ContainsKey(bindingName))
                 {
                     PropertyInfo propertyInfo = dataObject.GetType().GetProperty(fieldDescriptor.Name);
 
                     Verify.IsNotNull(propertyInfo, "Missing property type '{0}' does not contain property '{1}'", dataObject.GetType(), fieldDescriptor.Name);
 
-                    if (propertyInfo.CanRead == true)
+                    if (propertyInfo.CanRead)
                     {
                         object newValue = propertyInfo.GetValue(dataObject, null);
 
@@ -656,7 +656,7 @@ namespace Composite.Data.DynamicTypes
                 binding.Add(new XAttribute("optional", "true"));
                 // Line above is a (lame?) fix for bug 1173 - old code below. Prb: NULL user input gets stored in bindings. At next from rendering run, NULL user input clash with rules
 
-                //if (fieldDescriptor.IsNullable == true)
+                //if (fieldDescriptor.IsNullable)
                 //{
                 //    binding.Add(new XAttribute("optional", "true"));
                 //}
@@ -810,7 +810,7 @@ namespace Composite.Data.DynamicTypes
                 .Descendants(CmsNamespace + "binding")
                 .FirstOrDefault(e => (string) e.Attribute("name") == bindingName);
 
-            return binding != null && (string) binding.Attribute("optional") == "true";
+            return binding != null && string.Equals((string) binding.Attribute("optional"), "true", StringComparison.OrdinalIgnoreCase);
         }
     }
 }

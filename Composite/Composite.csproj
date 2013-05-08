@@ -667,6 +667,7 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
+    <Compile Include="Plugins\PageTemplates\Common\PageTemplateCache.cs" />
     <Compile Include="Plugins\PageTemplates\Common\TemplateParsingHelper.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\CompilationHelper.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\DescriptionMetaTag.cs" />

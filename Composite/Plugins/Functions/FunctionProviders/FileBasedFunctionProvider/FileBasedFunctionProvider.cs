@@ -4,8 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.Hosting;
 using Composite.Core;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
 using Composite.Functions;
@@ -72,22 +74,24 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
                     IFunction function;
 
-                    DateTime creationTimeUtc = file.CreationTimeUtc;
+                    DateTime lastWriteTimeUtc = file.LastWriteTimeUtc;
 
                     try
                     {
                         CachedFunctionInformation cachedFunctionInfo;
 
-                        if (!GetCachedFunctionInformation(@namespace, name, creationTimeUtc, out cachedFunctionInfo))
+                        if (!GetCachedFunctionInformation(@namespace, name, lastWriteTimeUtc, out cachedFunctionInfo))
                         {
                             function = InstantiateFunction(virtualPath, @namespace, name);
 
                             // Not caching functions that failed to load
                             var initializationInfo = function as IFunctionInitializationInfo;
+                            bool functionFailedToCompile = initializationInfo != null && !initializationInfo.FunctionInitializedCorrectly;
 
-                            if (initializationInfo == null || initializationInfo.FunctionInitializedCorrectly)
+                            if ((function == null && !HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                                || (function != null && !functionFailedToCompile))
                             {
-                                CacheFunctionInformation(@namespace, name, creationTimeUtc, function);
+                                CacheFunctionInformation(@namespace, name, lastWriteTimeUtc, function);
                             }
                         }
                         else
@@ -138,7 +142,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "function" + nameHash);
         }
 
-        private void CacheFunctionInformation(string @namespace, string name, DateTime creationTimeUtc, IFunction function)
+        private void CacheFunctionInformation(string @namespace, string name, DateTime lastWriteTimeUtc, IFunction function)
         {
             string cacheFileName = GetCacheFilePath(@namespace, name);
 
@@ -153,7 +157,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             try
             {
                 C1File.WriteAllLines(cacheFileName, lines);
-                C1File.SetCreationTimeUtc(cacheFileName, creationTimeUtc);
+                C1File.SetCreationTimeUtc(cacheFileName, lastWriteTimeUtc);
             }
             catch (Exception ex)
             {
@@ -162,13 +166,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             }
         }
 
-        private bool GetCachedFunctionInformation(string @namespace, string name, DateTime creationTimeUtc, out CachedFunctionInformation cachedFunctionInformation)
+        private bool GetCachedFunctionInformation(string @namespace, string name, DateTime lastWriteTimeUtc, out CachedFunctionInformation cachedFunctionInformation)
         {
             string cacheFileName = GetCacheFilePath(@namespace, name);
 
             try
             {
-                if (!C1File.Exists(cacheFileName) || C1File.GetCreationTimeUtc(cacheFileName) != creationTimeUtc)
+                if (!C1File.Exists(cacheFileName) || C1File.GetCreationTimeUtc(cacheFileName) != lastWriteTimeUtc)
                 {
                     cachedFunctionInformation = null;
                     return false;

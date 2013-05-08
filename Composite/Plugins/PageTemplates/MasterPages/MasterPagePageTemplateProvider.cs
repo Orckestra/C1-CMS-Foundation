@@ -10,7 +10,6 @@ using System.Web.UI;
 using Composite.C1Console.Elements;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
@@ -133,22 +132,46 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             // Loading and compiling layout controls
             foreach (var fileInfo in files)
             {
-                MasterPage masterPage;
+                string filePath = fileInfo.FullName;
+                string virtualPath = ConvertToVirtualPath(filePath);
+                string codeBehindFilePath = GetCodebehindFilePath(filePath);
 
-                string virtualPath = ConvertToVirtualPath(fileInfo.FullName);
-                try
+                DateTime lastModifiedUtc = GetLastModifiedUtc(filePath, codeBehindFilePath);
+
+                PageTemplateCache.TemplateInformation cachedTemplateInformation;
+
+                if (PageTemplateCache.GetFromCache(virtualPath, lastModifiedUtc, out cachedTemplateInformation))
                 {
-                    masterPage = CompilationHelper.CompileMasterPage(virtualPath);
+                    if (cachedTemplateInformation == null)
+                    {
+                        sharedSourceFiles.Add(new SharedMasterPage(virtualPath));
+                        continue;
+                    }
+
+                    Guid templateId = cachedTemplateInformation.TemplateId;
+
+                    templates.Add(new LazyInitializedMasterPagePageTemplateDescriptor(
+                        filePath, 
+                        codeBehindFilePath, 
+                        templateId,
+                        cachedTemplateInformation.Title,
+                        this));
+
+                    Verify.That(!templateRenderingData.ContainsKey(templateId), "Multiple master page templates defined with the same ID '{0}'", templateId);
+                
+                    templateRenderingData.Add(templateId, new LazyInitializedMasterPageRenderingInfo(filePath, virtualPath, this));
+                    continue;
                 }
-                catch (Exception ex)
+                
+                MasterPage masterPage;
+                MasterPagePageTemplateDescriptor parsedPageTemplateDescriptor;
+                MasterPageRenderingInfo renderingInfo;
+                Exception loadingException;
+
+                if (!LoadMasterPage(filePath, out masterPage, out parsedPageTemplateDescriptor, out renderingInfo, out loadingException))
                 {
-                    Log.LogError(LogTitle, "Failed to compile master page file '{0}'", virtualPath);
-                    Log.LogError(LogTitle, ex);
+                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(filePath, loadingException);
 
-                    Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
-
-                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, compilationException);
-                    
                     loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
                     templates.Add(brokenTemplate);
                     continue;
@@ -157,43 +180,25 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 if (masterPage == null)
                 {
                     continue;
-                } 
+                }
+
                 if (!(masterPage is MasterPagePageTemplate))
                 {
-                    sharedSourceFiles.Add(new SharedMasterPage(ConvertToVirtualPath(fileInfo.FullName)));
-                    continue;
-                }
+                    sharedSourceFiles.Add(new SharedMasterPage(virtualPath));
 
-                MasterPagePageTemplateDescriptor parsedPageTemplateDescriptor;
-                MasterPageRenderingInfo renderingInfo;
-
-                try
-                {
-                    ParseTemplate(virtualPath, 
-                                  fileInfo.FullName, 
-                                  masterPage as MasterPagePageTemplate, 
-                                  out parsedPageTemplateDescriptor, 
-                                  out renderingInfo);
-                }
-                catch(Exception ex)
-                {
-                    Log.LogError(LogTitle, "Failed to load master page template file '{0}'", virtualPath);
-                    Log.LogError(LogTitle, ex);
-
-                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(fileInfo.FullName, ex);
-                    
-                    loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
-                    templates.Add(brokenTemplate);
+                    PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, null);
                     continue;
                 }
 
                 templates.Add(parsedPageTemplateDescriptor);
 
-                if (templateRenderingData.ContainsKey(parsedPageTemplateDescriptor.Id))
-                {
-                    throw new InvalidOperationException("Multiple master page templates defined with the same ID '{0}'".FormatWith(parsedPageTemplateDescriptor.Id));
-                }
+                Verify.That(!templateRenderingData.ContainsKey(parsedPageTemplateDescriptor.Id), 
+                    "Multiple master page templates defined with the same ID '{0}'", parsedPageTemplateDescriptor.Id);
+                
                 templateRenderingData.Add(parsedPageTemplateDescriptor.Id, renderingInfo);
+
+
+                PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, parsedPageTemplateDescriptor);
             }
 
             return new State {
@@ -202,6 +207,86 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 LoadingExceptions = loadingExceptions,
                 SharedSourceFiles = sharedSourceFiles
             };
+        }
+
+        /// <summary>
+        /// Compiles masters page and builds a <see cref="PageTemplateDescriptor" />.
+        /// Returns <value>True</value> if there's no compilation errors
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <param name="masterPage">The master page.</param>
+        /// <param name="pageTemplateDescriptor">The page template descriptor.</param>
+        /// <param name="renderingInfo">The rendering info.</param>
+        /// <param name="loadingException">The loading exception.</param>
+        /// <returns></returns>
+        internal bool LoadMasterPage(
+            string filePath,
+            out MasterPage masterPage,
+            out MasterPagePageTemplateDescriptor pageTemplateDescriptor,
+            out MasterPageRenderingInfo renderingInfo,
+            out Exception loadingException)
+        {
+            string virtualPath = ConvertToVirtualPath(filePath);
+
+            try
+            {
+                masterPage = CompilationHelper.CompileMasterPage(virtualPath);
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(LogTitle, "Failed to compile master page file '{0}'", virtualPath);
+                Log.LogError(LogTitle, ex);
+
+                loadingException = ex is TargetInvocationException ? ex.InnerException : ex;
+                masterPage = null;
+                pageTemplateDescriptor = null;
+                renderingInfo = null;
+                return false;
+            }
+
+            if (masterPage == null || !(masterPage is MasterPagePageTemplate))
+            {
+                pageTemplateDescriptor = null;
+                renderingInfo = null;
+                loadingException = null;
+                return true;
+            }
+
+            try
+            {
+                ParseTemplate(virtualPath,
+                                filePath,
+                                masterPage as MasterPagePageTemplate,
+                                out pageTemplateDescriptor,
+                                out renderingInfo);
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(LogTitle, "Failed to load master page template file '{0}'", virtualPath);
+                Log.LogError(LogTitle, ex);
+
+                loadingException = ex;
+                pageTemplateDescriptor = null;
+                renderingInfo = null;
+                return false;
+            }
+
+            loadingException = null;
+            return true;
+        }
+
+        private DateTime GetLastModifiedUtc(string file1, string file2)
+        {
+            var file1ModificationDate = C1File.GetLastWriteTimeUtc(file1);
+
+            if (C1File.Exists(file2))
+            {
+                var file2ModificationDate = C1File.GetLastWriteTimeUtc(file2);
+
+                if (file2ModificationDate > file1ModificationDate) return file2ModificationDate;
+            }
+
+            return file1ModificationDate;
         }
 
         private static Guid GetMD5Hash(string text)
@@ -243,7 +328,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             return C1File.Exists(csFile) ? csFile : null;
         }
 
-        private void ParseTemplate(string virtualPath, 
+        internal static void ParseTemplate(string virtualPath, 
                                            string filePath, 
                                            MasterPagePageTemplate masterPage,
                                            out MasterPagePageTemplateDescriptor pageTemplateDescriptor,
