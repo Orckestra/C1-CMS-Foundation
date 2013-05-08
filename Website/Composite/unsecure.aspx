@@ -6,7 +6,7 @@
 
     // jsonp'ish: if this evaluates to true our http brother is checking if we are alive, identical and well - if we are, we go https by js redirecting.
     if(Request.QueryString["jsprobe"]=="true" && pageUrl.IndexOf("/unsecure.aspx")>-1 && Request.QueryString["watermark"] == websiteWatermark) {
-        string safeStart = pageUrl.Replace((0, pageUrl.IndexOf("unsecure.aspx")) + "default.aspx";
+        string safeStart = pageUrl.Substring(0, pageUrl.IndexOf("unsecure.aspx")) + "default.aspx";
         Response.Write(string.Format("document.location='{0}'", safeStart));
         Response.End();
     }

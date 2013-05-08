@@ -1,5 +1,5 @@
 ﻿<C1ConsoleAccess enabled="true">
-  <ClientProtocol forceHttps="false" allowFallbackToHttp="false" customHttpsPortNumber="" />
+  <ClientProtocol forceHttps="false" allowFallbackToHttp="true" customHttpsPortNumber="" />
   <!--
   	Changes to this file require a web app restart to take effect.
   
