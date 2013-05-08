@@ -10,7 +10,6 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
-using System.Xml.Linq;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvider
@@ -22,8 +21,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         private readonly IMethodBasedFunctionInfo _methodBasedFunctionInfo;
         private readonly Type _type;
         private readonly MethodInfo _methodInfo;
-        private IList<ParameterProfile> _parameterProfile;
-        private string _functionDescription = null;
+        private volatile IList<ParameterProfile> _parameterProfile;
+        private string _functionDescription;
         private object _object;
 
 
@@ -133,104 +132,116 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             {
                 if (_parameterProfile == null)
                 {
-                    ParameterInfo[] parameterInfos = this.MethodInfo.GetParameters();
-
-                    Dictionary<string, object> defaultValues = new Dictionary<string, object>();
-                    Dictionary<string, string> labels = new Dictionary<string, string>();
-                    Dictionary<string, string> helpTexts = new Dictionary<string, string>();
-                    Dictionary<string, WidgetFunctionProvider> widgetProviders = new Dictionary<string, WidgetFunctionProvider>();
-                    foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(MethodBasedDefaultValueAttribute), true))
+                    lock (this)
                     {
-                        MethodBasedDefaultValueAttribute attribute = (MethodBasedDefaultValueAttribute)obj;
-                        defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
-                    }
-
-                    // Run through obsolete FunctionParameterDescriptionAttribute
-#pragma warning disable 612,618
-                    foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(FunctionParameterDescriptionAttribute), true))
-                    {
-                        FunctionParameterDescriptionAttribute attribute = (FunctionParameterDescriptionAttribute)obj;
-                        if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.ParameterName))
-                            defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
-
-                        labels.Add(attribute.ParameterName, attribute.ParameterLabel);
-                        helpTexts.Add(attribute.ParameterName, attribute.ParameterHelpText);
-                    }
-#pragma warning restore 612,618
-
-                    // Run trhough new and improved FunctionParameterAttribute. Many may exist for one parameter.
-                    foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof(FunctionParameterAttribute), true))
-                    {
-                        FunctionParameterAttribute attribute = (FunctionParameterAttribute)obj;
-
-                        Verify.That(attribute.HasName, "All [FunctionParameter(...)] definitions on the method '{0}' must have 'Name' specified.", this.MethodInfo.Name);
-
-                        if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.Name))
-                            defaultValues.Add(attribute.Name, attribute.DefaultValue);
-
-                        if (attribute.HasLabel && !labels.ContainsKey(attribute.Name))
-                            labels.Add(attribute.Name, attribute.Label);
-
-                        if (attribute.HasHelp && !helpTexts.ContainsKey(attribute.Name))
-                            helpTexts.Add(attribute.Name, attribute.Help);
-
-                        if (attribute.HasWidgetMarkup && !widgetProviders.ContainsKey(attribute.Name))
+                        if (_parameterProfile == null)
                         {
-                            try
-                            {
-                                var widgetFunctionProvider = attribute.GetWidgetFunctionProvider(null, null);
-                                widgetProviders.Add(attribute.Name, widgetFunctionProvider);
-                            }
-                            catch (Exception ex)
-                            {
-                                string errText = "Failed to set Widget Markup for parameter '{0}' on method '{1}'. {2}"
-                                                 .FormatWith(attribute.Name, this.MethodInfo.Name, ex.Message);
-                                throw new InvalidOperationException(errText);
-                            }
+                            _parameterProfile = InitializeParamteres();
                         }
-                    }
-
-                    _parameterProfile = new List<ParameterProfile>();
-
-                    foreach (ParameterInfo parameterInfo in parameterInfos)
-                    {
-                        BaseValueProvider valueProvider;
-                        object defaultValue = null;
-                        if (defaultValues.TryGetValue(parameterInfo.Name, out defaultValue))
-                        {
-                            valueProvider = new ConstantValueProvider(defaultValue);
-                        }
-                        else
-                        {
-                            valueProvider = new NoValueValueProvider();
-                        }
-
-                        bool isRequired = true;
-                        if (defaultValues.ContainsKey(parameterInfo.Name))
-                        {
-                            isRequired = false;
-                        }
-
-                        string parameterLabel = parameterInfo.Name;
-                        if (labels.ContainsKey(parameterInfo.Name)) parameterLabel = labels[parameterInfo.Name];
-
-                        string parameterHelpText = "";
-                        if (helpTexts.ContainsKey(parameterInfo.Name)) parameterHelpText = helpTexts[parameterInfo.Name];
-
-                        WidgetFunctionProvider widgetFunctionProvider = 
-                            (widgetProviders.ContainsKey(parameterInfo.Name) ?
-                                widgetProviders[parameterInfo.Name] :
-                                StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType) );
-
-                        _parameterProfile.Add
-                        (
-                            new ParameterProfile(parameterInfo.Name, parameterInfo.ParameterType, isRequired,
-                                valueProvider, widgetFunctionProvider, parameterLabel, new HelpDefinition(parameterHelpText))
-                        );
                     }
                 }
                 return _parameterProfile;
             }
+        }
+
+        private IList<ParameterProfile> InitializeParamteres()
+        {
+            ParameterInfo[] parameterInfos = this.MethodInfo.GetParameters();
+
+            Dictionary<string, object> defaultValues = new Dictionary<string, object>();
+            Dictionary<string, string> labels = new Dictionary<string, string>();
+            Dictionary<string, string> helpTexts = new Dictionary<string, string>();
+            Dictionary<string, WidgetFunctionProvider> widgetProviders =
+                new Dictionary<string, WidgetFunctionProvider>();
+            foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof (MethodBasedDefaultValueAttribute), true))
+            {
+                MethodBasedDefaultValueAttribute attribute = (MethodBasedDefaultValueAttribute) obj;
+                defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
+            }
+
+            // Run through obsolete FunctionParameterDescriptionAttribute
+#pragma warning disable 612,618
+            foreach (
+                object obj in this.MethodInfo.GetCustomAttributes(typeof (FunctionParameterDescriptionAttribute), true))
+            {
+                FunctionParameterDescriptionAttribute attribute = (FunctionParameterDescriptionAttribute) obj;
+                if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.ParameterName))
+                    defaultValues.Add(attribute.ParameterName, attribute.DefaultValue);
+
+                labels.Add(attribute.ParameterName, attribute.ParameterLabel);
+                helpTexts.Add(attribute.ParameterName, attribute.ParameterHelpText);
+            }
+#pragma warning restore 612,618
+
+            // Run trhough new and improved FunctionParameterAttribute. Many may exist for one parameter.
+            foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof (FunctionParameterAttribute), true))
+            {
+                FunctionParameterAttribute attribute = (FunctionParameterAttribute) obj;
+
+                Verify.That(attribute.HasName,
+                            "All [FunctionParameter(...)] definitions on the method '{0}' must have 'Name' specified.",
+                            this.MethodInfo.Name);
+
+                if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.Name))
+                    defaultValues.Add(attribute.Name, attribute.DefaultValue);
+
+                if (attribute.HasLabel && !labels.ContainsKey(attribute.Name))
+                    labels.Add(attribute.Name, attribute.Label);
+
+                if (attribute.HasHelp && !helpTexts.ContainsKey(attribute.Name))
+                    helpTexts.Add(attribute.Name, attribute.Help);
+
+                if (attribute.HasWidgetMarkup && !widgetProviders.ContainsKey(attribute.Name))
+                {
+                    try
+                    {
+                        var widgetFunctionProvider = attribute.GetWidgetFunctionProvider(null, null);
+                        widgetProviders.Add(attribute.Name, widgetFunctionProvider);
+                    }
+                    catch (Exception ex)
+                    {
+                        string errText = "Failed to set Widget Markup for parameter '{0}' on method '{1}'. {2}"
+                            .FormatWith(attribute.Name, this.MethodInfo.Name, ex.Message);
+                        throw new InvalidOperationException(errText);
+                    }
+                }
+            }
+
+            var result = new List<ParameterProfile>();
+
+            foreach (ParameterInfo parameterInfo in parameterInfos)
+            {
+                BaseValueProvider valueProvider;
+                object defaultValue = null;
+                if (defaultValues.TryGetValue(parameterInfo.Name, out defaultValue))
+                {
+                    valueProvider = new ConstantValueProvider(defaultValue);
+                }
+                else
+                {
+                    valueProvider = new NoValueValueProvider();
+                }
+
+                bool isRequired = !defaultValues.ContainsKey(parameterInfo.Name);
+
+                string parameterLabel = parameterInfo.Name;
+                if (labels.ContainsKey(parameterInfo.Name)) parameterLabel = labels[parameterInfo.Name];
+
+                string parameterHelpText = "";
+                if (helpTexts.ContainsKey(parameterInfo.Name)) parameterHelpText = helpTexts[parameterInfo.Name];
+
+                WidgetFunctionProvider widgetFunctionProvider =
+                    (widgetProviders.ContainsKey(parameterInfo.Name)
+                         ? widgetProviders[parameterInfo.Name]
+                         : StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType));
+
+                result.Add(new ParameterProfile(parameterInfo.Name, parameterInfo.ParameterType, isRequired,
+                                             valueProvider, widgetFunctionProvider, parameterLabel,
+                                             new HelpDefinition(parameterHelpText)));
+
+            }
+
+            return result;
         }
 
 

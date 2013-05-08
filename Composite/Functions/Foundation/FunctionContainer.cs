@@ -37,29 +37,17 @@ namespace Composite.Functions.Foundation
 
         protected override IEnumerable<IMetaFunction> OnGetFunctionsFromProvider(string providerName, FunctionTypesToReturn functionTypesToReturn)
         {
-            try
+            switch (functionTypesToReturn)
             {
-                switch (functionTypesToReturn)
-                {
-                    case FunctionTypesToReturn.StaticDependentFunctions:
-                        return FunctionProviderPluginFacade.Functions(providerName);
+                case FunctionTypesToReturn.StaticDependentFunctions:
+                    return FunctionProviderPluginFacade.Functions(providerName);
                     
-                    case FunctionTypesToReturn.DynamicDependentOnlyFunctions:
-                        return FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName);
+                case FunctionTypesToReturn.DynamicDependentOnlyFunctions:
+                    return FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName);
                     
-                    case FunctionTypesToReturn.AllFunctions:
-                        IEnumerable<IMetaFunction> functions = FunctionProviderPluginFacade.Functions(providerName);
-                        return functions.Concat(FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName));
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Log.LogCritical("FunctionProviderRegistry", ex);
-                throw;
+                case FunctionTypesToReturn.AllFunctions:
+                    IEnumerable<IMetaFunction> functions = FunctionProviderPluginFacade.Functions(providerName);
+                    return functions.Concat(FunctionProviderPluginFacade.DynamicTypeDependentFunctions(providerName));
             }
 
             throw new NotImplementedException(string.Format("Unexpected FunctionTypesToReturn enumeration value '{0}' from provider '{1}'", functionTypesToReturn, providerName));

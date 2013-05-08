@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Xsl;
@@ -117,11 +118,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
         private sealed class XsltXmlFunction : IFunction
         {
-            private IXsltFunction _xsltFunction; // go through XsltFunction instead of this
+            private readonly IXsltFunction _xsltFunction; // go through XsltFunction instead of this
             private IEnumerable<ParameterProfile> _parameterProfiles;
-            private IEnumerable<NamedFunctionCall> _FunctionCalls = null;
-            private object _lock = new object();
-            private bool _subscribedToFileChanges = false;
+            private volatile IEnumerable<NamedFunctionCall> _FunctionCalls;
+            private readonly object _lock = new object();
+            private bool _subscribedToFileChanges;
             private readonly Hashtable<CultureInfo, XslCompiledTransform> _xslTransformations = new Hashtable<CultureInfo, XslCompiledTransform>();
 
 
@@ -308,11 +309,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             {
                 get
                 {
-                    lock (_lock)
+                    if (_parameterProfiles == null)
                     {
-                        if (_parameterProfiles == null)
+                        lock (_lock)
                         {
-                            _parameterProfiles = ManagedParameterManager.GetParameterProfiles(_xsltFunction.Id);
+                            if (_parameterProfiles == null)
+                            {
+                                _parameterProfiles = ManagedParameterManager.GetParameterProfiles(_xsltFunction.Id);
+                            }
                         }
                     }
                     return _parameterProfiles;

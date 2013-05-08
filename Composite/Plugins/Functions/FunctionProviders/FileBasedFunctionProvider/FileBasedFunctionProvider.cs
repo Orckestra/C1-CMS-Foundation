@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using Composite.Core;
+using Composite.Core.Configuration;
 using Composite.Core.IO;
+using Composite.Core.Types;
 using Composite.Functions;
 using Composite.Functions.Plugins.FunctionProvider;
 using Composite.Core.Application;
@@ -35,6 +38,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             get { return _name; }
         }
 
+        /// <summary>
+        /// </summary>
+        /// <exclude />
 		public IEnumerable<IFunction> Functions
 		{
 			get
@@ -52,23 +58,49 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 				foreach (var file in files)
 				{
-                    string ns = ExtractFunctionNamespace(file.FullName);
+                    string @namespace = ExtractFunctionNamespace(file.FullName);
                     string name = Path.GetFileNameWithoutExtension(file.Name);
 
                     var virtualPath = CombineVirtualPath(VirtualPath, 
-                                                         ns.Replace(".", "/"), 
+                                                         @namespace.Replace(".", "/"), 
                                                          name + "." + FileExtension);
 
-                    if(ns == string.Empty)
+                    if(@namespace == string.Empty)
                     {
-                        ns = DefaultFunctionNamespace;
+                        @namespace = DefaultFunctionNamespace;
                     }
 
                     IFunction function;
 
+                    DateTime creationTimeUtc = file.CreationTimeUtc;
+
                     try
                     {
-                        function = InstantiateFunction(virtualPath, ns, name);
+                        CachedFunctionInformation cachedFunctionInfo;
+
+                        if (!GetCachedFunctionInformation(@namespace, name, creationTimeUtc, out cachedFunctionInfo))
+                        {
+                            function = InstantiateFunction(virtualPath, @namespace, name);
+
+                            // Not caching functions that failed to load
+                            var initializationInfo = function as IFunctionInitializationInfo;
+
+                            if (initializationInfo == null || initializationInfo.FunctionInitializedCorrectly)
+                            {
+                                CacheFunctionInformation(@namespace, name, creationTimeUtc, function);
+                            }
+                        }
+                        else
+                        {
+                            if (cachedFunctionInfo == null)
+                            {
+                                continue;
+                            }
+
+                            function = InstantiateFunctionFromCache(virtualPath, @namespace, name,
+                                                                    cachedFunctionInfo.ReturnType,
+                                                                    cachedFunctionInfo.Description);
+                        }
                     }
                     catch (ThreadAbortException)
                     {
@@ -83,7 +115,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                             Log.LogError(LogTitle, ex);
                         }
 
-                        returnList.Add(new NotLoadedFileBasedFunction<FunctionType>(this, ns, name, virtualPath, ex));
+                        returnList.Add(new NotLoadedFileBasedFunction<FunctionType>(this, @namespace, name, virtualPath, ex));
                         continue;
                     }
 
@@ -98,6 +130,73 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 				return returnList;
 			}
 		}
+
+        private static string GetCacheFilePath(string @namespace, string name)
+        {
+            string nameHash = (@namespace + "." + name).GetHashCode().ToString(CultureInfo.InvariantCulture);
+
+            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "function" + nameHash);
+        }
+
+        private void CacheFunctionInformation(string @namespace, string name, DateTime creationTimeUtc, IFunction function)
+        {
+            string cacheFileName = GetCacheFilePath(@namespace, name);
+
+            var lines = new List<string>();
+
+            if (function != null)
+            {
+                lines.Add(TypeManager.SerializeType(function.ReturnType));
+                lines.AddRange(function.Description.Split(new [] { Environment.NewLine }, StringSplitOptions.None));
+            }
+
+            try
+            {
+                C1File.WriteAllLines(cacheFileName, lines);
+                C1File.SetCreationTimeUtc(cacheFileName, creationTimeUtc);
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning(LogTitle, "Failed to cache function info. Function: '{0}.{1}'", @namespace, name);
+                Log.LogWarning(LogTitle, ex);
+            }
+        }
+
+        private bool GetCachedFunctionInformation(string @namespace, string name, DateTime creationTimeUtc, out CachedFunctionInformation cachedFunctionInformation)
+        {
+            string cacheFileName = GetCacheFilePath(@namespace, name);
+
+            try
+            {
+                if (!C1File.Exists(cacheFileName) || C1File.GetCreationTimeUtc(cacheFileName) != creationTimeUtc)
+                {
+                    cachedFunctionInformation = null;
+                    return false;
+                }
+
+                var lines = C1File.ReadAllLines(cacheFileName);
+                if (lines == null || lines.Length == 0)
+                {
+                    cachedFunctionInformation = null;
+                }
+                else
+                {
+                    string dynamicTypeName = lines[0];
+                    string description = string.Join(Environment.NewLine, lines.Skip(1));
+
+                    cachedFunctionInformation = new CachedFunctionInformation { Description = description, ReturnType = dynamicTypeName };
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning(LogTitle, "Failed to load function info from cache. File: '{0}'", cacheFileName);
+                Log.LogWarning(LogTitle, ex);
+
+                cachedFunctionInformation = null;
+                return false;
+            }
+            return true;
+        }
 
         private static string CombineVirtualPath(params string[] parts)
         {
@@ -148,6 +247,25 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <returns></returns>
 		protected abstract IFunction InstantiateFunction(string virtualPath, string @namespace, string name);
 
+        /// <summary>
+        /// Instantiates the function from the file and additional cached information.
+        /// </summary>
+        /// <param name="virtualPath">The virtual path.</param>
+        /// <param name="namespace">The namespace.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="cachedReturnType">Cached value of return type.</param>
+        /// <param name="cachedDescription">Cached value of the description.</param>
+        /// <returns></returns>
+        protected virtual IFunction InstantiateFunctionFromCache(
+            string virtualPath,
+            string @namespace,
+            string name,
+            string cachedReturnType,
+            string cachedDescription)
+        {
+            return InstantiateFunction(virtualPath, @namespace, name);
+        }
+
 		protected abstract bool HandleChange(string path);
 
 
@@ -194,5 +312,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 }
 			}
 		}
+
+        private class CachedFunctionInformation
+        {
+            public string ReturnType { get; set; }
+            public string Description { get; set; }
+        }
 	}
 }

@@ -166,7 +166,7 @@ namespace Composite.Functions.ManagedParameters
         private class ManagedParameterProfiles : IEnumerable<ParameterProfile>
         {
             private readonly Guid _ownerId;
-            private List<ParameterProfile> _parameterProfiles = null;
+            private List<ParameterProfile> _parameterProfiles;
 
             private static readonly object _syncRoot = new object();
             private static List<IParameter> _parameterCache;
@@ -213,20 +213,32 @@ namespace Composite.Functions.ManagedParameters
             {
                 if (_parameterProfiles == null)
                 {
-                    _parameterProfiles = new List<ParameterProfile>();
-                    
-
-                    var parameters =
-                         from parameter in GetParametersCached()
-                         where parameter.OwnerId == _ownerId
-                         orderby parameter.Position
-                         select parameter;
-
-                    foreach (var parameter in parameters)
+                    lock (this)
                     {
-                        _parameterProfiles.Add(BuildParameterProfile(parameter));
+                        if (_parameterProfiles == null)
+                        {
+                            _parameterProfiles = GetParameters();
+                        }
                     }
                 }
+            }
+
+            private List<ParameterProfile> GetParameters()
+            {
+                var result =  new List<ParameterProfile>();
+
+                var parameters =
+                    from parameter in GetParametersCached()
+                    where parameter.OwnerId == _ownerId
+                    orderby parameter.Position
+                    select parameter;
+
+                foreach (var parameter in parameters)
+                {
+                    result.Add(BuildParameterProfile(parameter));
+                }
+
+                return result;
             }
 
             private static void ClearParametersCache()
@@ -263,7 +275,7 @@ namespace Composite.Functions.ManagedParameters
                 bool isRequired = false;
                 BaseValueProvider defaultValueProvider;
 
-                if (string.IsNullOrEmpty(parameter.DefaultValueFunctionMarkup) == true)
+                if (string.IsNullOrEmpty(parameter.DefaultValueFunctionMarkup))
                 {
                     defaultValueProvider = new NoValueValueProvider();
                     isRequired = true;
@@ -273,7 +285,7 @@ namespace Composite.Functions.ManagedParameters
                     defaultValueProvider = new FunctionValueProvider(XElement.Parse(parameter.DefaultValueFunctionMarkup));
                 }
 
-                WidgetFunctionProvider widgetFunctionProvider = null;
+                WidgetFunctionProvider widgetFunctionProvider;
                 if (string.IsNullOrEmpty(parameter.WidgetFunctionMarkup) == false)
                 {
                     widgetFunctionProvider = new WidgetFunctionProvider(XElement.Parse(parameter.WidgetFunctionMarkup));

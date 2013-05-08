@@ -10,13 +10,14 @@ namespace Composite.Functions.Foundation
 {
     internal abstract class MetaFunctionContainer
     {
-        private List<string> _excludedFunctionNames;
+        private static readonly string LogTitle = typeof (MetaFunctionContainer).Name;
+        private readonly List<string> _excludedFunctionNames;
 
-        private Dictionary<string, IMetaFunction> _functionByNameDictionary = new Dictionary<string, IMetaFunction>();
-        private Dictionary<Type, List<string>> _functionNamesByTypeDictionary = new Dictionary<Type, List<string>>();
-        private Dictionary<Type, List<string>> _downcastableFunctionNamesByTypeDictionary = new Dictionary<Type, List<string>>();
+        private readonly Dictionary<string, IMetaFunction> _functionByNameDictionary = new Dictionary<string, IMetaFunction>();
+        private readonly Dictionary<Type, List<string>> _functionNamesByTypeDictionary = new Dictionary<Type, List<string>>();
+        private readonly Dictionary<Type, List<string>> _downcastableFunctionNamesByTypeDictionary = new Dictionary<Type, List<string>>();
 
-        private Dictionary<string, List<string>> _functionNamesByProviderName = new Dictionary<string, List<string>>();
+        private readonly Dictionary<string, List<string>> _functionNamesByProviderName = new Dictionary<string, List<string>>();
 
 
         protected abstract IEnumerable<string> OnGetProviderNames();
@@ -155,41 +156,35 @@ namespace Composite.Functions.Foundation
             {
                 if (function.IsNamespaceCorrectFormat() == false)
                 {
-                    Log.LogWarning("FunctionProviderRegistry", string.Format("{0} named '{1}' has an invalid namespace '{2}'", this.FunctionType, function.Name, function.Namespace));
+                    Log.LogWarning(LogTitle, string.Format("{0} named '{1}' has an invalid namespace '{2}'", this.FunctionType, function.Name, function.Namespace));
                     continue;
                 }
 
                 string combinedName = StringExtensionMethods.CreateNamespace(function.Namespace, function.Name, '.');
-                if (_excludedFunctionNames.Contains(combinedName) == true)
+                if (_excludedFunctionNames.Contains(combinedName))
                 {
                     continue;
                 }
 
 
-                if (FunctionExists(combinedName) == true)
+                if (FunctionExists(combinedName))
                 {
                     RemoveFunction(combinedName);
                     _excludedFunctionNames.Add(combinedName);
 
-                    Log.LogWarning("FunctionProviderRegistry", string.Format("Function name clash: '{0}'", combinedName));
+                    Log.LogWarning(LogTitle, "Function name clash: '{0}'", combinedName);
                     continue;
                 }
 
                 try
                 {
-                    if (function.ValidateParameterProfiles() == false)
-                    {
-                        Log.LogWarning("FunctionProviderRegistry", string.Format("The parameter profiles for the {0} named '{1}' did not validate", this.FunctionType, combinedName));
-                    }
-                    else
-                    {
-                        AddFunction(providerName, function);
-                        loadedFunctionNames.Add(function.CompositeName());
-                    }
+                    AddFunction(providerName, function);
+                    loadedFunctionNames.Add(function.CompositeName());
                 }
                 catch (Exception ex)
                 {
-                    Log.LogError("metaFunctionContainer", string.Format("The parameter profiles for the {0} named '{1}' could not be retrieved.\nException details:\n{2}", this.FunctionType, combinedName, ex));
+                    Log.LogError(LogTitle, "Error adding  function '{0}'. Function type {0}", combinedName, this.FunctionType);
+                    Log.LogError(LogTitle, ex);
                 }
             }
 
@@ -269,7 +264,7 @@ namespace Composite.Functions.Foundation
                     functionNamesByType.Remove(functionName);
                 }
 
-                Log.LogVerbose("FunctionProviderRegistry", string.Format("{0} unloaded: '{1}'", this.FunctionType, functionName));
+                Log.LogVerbose(LogTitle, "{0} unloaded: '{1}'", this.FunctionType, functionName);
             }
 
             _functionNamesByProviderName.Remove(providerName);

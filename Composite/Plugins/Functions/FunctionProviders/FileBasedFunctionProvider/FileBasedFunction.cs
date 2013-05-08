@@ -12,7 +12,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 		private readonly FileBasedFunctionProvider<T> _provider;
 
 		internal string VirtualPath { get; private set; }
-		protected IDictionary<string, FunctionParameter> Parameters { get; private set; }
+		protected IDictionary<string, FunctionParameter> Parameters { get; set; }
 
 		public string Namespace { get; private set; }
 		public string Name { get; private set; }
@@ -24,63 +24,78 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			get { return new FileBasedFunctionEntityToken(_provider.Name, String.Join(".", Namespace, Name)); }
 		}
 
+        protected virtual void InitializeParameters()
+        {
+            Parameters = new Dictionary<string, FunctionParameter>();
+        }
+
 		public virtual IEnumerable<ParameterProfile> ParameterProfiles
 		{
 			get
 			{
-				if (Parameters != null)
-				{
-					foreach (var param in Parameters.Values)
-					{
-                        BaseValueProvider defaultValueProvider = new NoValueValueProvider();
-						WidgetFunctionProvider widgetProvider = null;
-						string label = param.Name;
-						bool isRequired = true;
-						string helpText = String.Empty;
+                if (Parameters == null)
+                {
+                    InitializeParameters();
+                    Verify.IsNotNull(Parameters, "Parameters collection is null");
+			    }
+			    
+			    foreach (var param in Parameters.Values)
+			    {
+			        BaseValueProvider defaultValueProvider = new NoValueValueProvider();
+			        WidgetFunctionProvider widgetProvider = null;
+			        string label = param.Name;
+			        bool isRequired = true;
+			        string helpText = String.Empty;
 
-						if (param.Attribute != null)
-						{
-                            if (!param.Attribute.Label.IsNullOrEmpty())
-                            {
-                                label = param.Attribute.Label;
-                            }
+			        if (param.Attribute != null)
+			        {
+			            if (!param.Attribute.Label.IsNullOrEmpty())
+			            {
+			                label = param.Attribute.Label;
+			            }
 
-                            if (!param.Attribute.Help.IsNullOrEmpty())
-                            {
-                                helpText = param.Attribute.Help;
-                            }
+			            if (!param.Attribute.Help.IsNullOrEmpty())
+			            {
+			                helpText = param.Attribute.Help;
+			            }
 
-						    isRequired = !param.Attribute.HasDefaultValue;
-							if (!isRequired)
-							{
-								defaultValueProvider = new ConstantValueProvider(param.Attribute.DefaultValue);
-							}
+			            isRequired = !param.Attribute.HasDefaultValue;
+			            if (!isRequired)
+			            {
+			                defaultValueProvider = new ConstantValueProvider(param.Attribute.DefaultValue);
+			            }
 
-							widgetProvider = param.WidgetProvider;
-						}
+			            widgetProvider = param.WidgetProvider;
+			        }
 
-						if (widgetProvider == null)
-						{
-							widgetProvider = StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(param.Type);
-						}
+			        if (widgetProvider == null)
+			        {
+			            widgetProvider = StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(param.Type);
+			        }
 
-						yield return new ParameterProfile(param.Name, param.Type, isRequired, defaultValueProvider, widgetProvider, label, new HelpDefinition(helpText));
-					}
-				}
+			        yield return new ParameterProfile(param.Name, param.Type, isRequired, defaultValueProvider, widgetProvider, label,
+                        new HelpDefinition(helpText));
+			        
+			    }
 			}
 		}
 
 		protected FileBasedFunction(string ns, string name, string description, IDictionary<string, FunctionParameter> parameters, Type returnType, string virtualPath, FileBasedFunctionProvider<T> provider)
+            :this(ns, name, description, returnType, virtualPath, provider)
 		{
-			_provider = provider;
-
-			Namespace = ns;
-			Name = name;
-			Description = description;
 			Parameters = parameters;
-			ReturnType = returnType;
-			VirtualPath = virtualPath;
 		}
+
+        protected FileBasedFunction(string ns, string name, string description, Type returnType, string virtualPath, FileBasedFunctionProvider<T> provider)
+        {
+            _provider = provider;
+
+            Namespace = ns;
+            Name = name;
+            Description = description;
+            ReturnType = returnType;
+            VirtualPath = virtualPath;
+        }
 
 		public abstract object Execute(ParameterList parameters, FunctionContextContainer context);
 	}

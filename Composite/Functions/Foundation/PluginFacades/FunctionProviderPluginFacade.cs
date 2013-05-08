@@ -29,8 +29,11 @@ namespace Composite.Functions.Foundation.PluginFacades
                 List<IFunction> functions = new List<IFunction>();
 
                 IFunctionProvider provider = GetFunctionProvider(providerName);
+                var functionsFromProvider = provider.Functions;
 
-                foreach (IFunction function in provider.Functions)
+                Verify.IsNotNull(functionsFromProvider, "Provider '{0}' has returned null function colleciton", providerName);
+
+                foreach (IFunction function in functionsFromProvider)
                 {
                     functions.Add(new FunctionWrapper(function));
                 }

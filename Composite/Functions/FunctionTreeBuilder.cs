@@ -97,9 +97,7 @@ namespace Composite.Functions
             {
                 foreach (BaseParameterRuntimeTreeNode parameter in parameters)
                 {
-                    int count = function.ParameterProfiles.Count(pp => pp.Name == parameter.Name);
-
-                    if (count == 0)
+                    if (function.ParameterProfiles.All(pp => pp.Name != parameter.Name))
                     {
                         throw new InvalidOperationException(string.Format("The parameter '{0}' is not defined in the function named '{1}' parameter profiles", parameter.Name, function.CompositeName()));
                     }
@@ -158,9 +156,7 @@ namespace Composite.Functions
 
             foreach (BaseParameterRuntimeTreeNode parameter in parameters)
             {
-                int count = widgetFunction.ParameterProfiles.Where(pp => pp.Name == parameter.Name).Count();
-
-                if (count == 0)
+                if (widgetFunction.ParameterProfiles.All(pp => pp.Name != parameter.Name))
                 {
                     throw new InvalidOperationException(string.Format("The parameter '{0}' is not defined in the function named '{1}' parameter profiles", parameter.Name, widgetFunction.CompositeName()));
                 }
@@ -185,9 +181,9 @@ namespace Composite.Functions
                 return new ConstantParameterRuntimeTreeNode(parameterName, valueAttribute.Value);
             }
 
-            if (element.Elements().Count() == 0)
+            if (!element.Elements().Any())
             {
-                if (string.IsNullOrEmpty(element.Value) || string.IsNullOrEmpty(element.Value.Trim()))
+                if (string.IsNullOrWhiteSpace(element.Value))
                 {
                     return new ConstantParameterRuntimeTreeNode(parameterName, (string)null);
                 }

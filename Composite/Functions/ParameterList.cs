@@ -152,7 +152,7 @@ namespace Composite.Functions
             
             object storedValue = storedParameterReturnValue.ValueObject;
 
-            if ((storedValue != null) && (storedValue is BaseRuntimeTreeNode))
+            if (storedValue is BaseRuntimeTreeNode)
             {
                 storedValue = ((BaseRuntimeTreeNode) storedValue).GetValue(_functionContextContainer);
             }
@@ -179,6 +179,8 @@ namespace Composite.Functions
 
         internal void AddConstantParameter(string parameterName, object value, Type parameterType, bool isDefaultValue = false)
         {
+            Verify.That(!_parameters.ContainsKey(parameterName), "Parameter '{0}' has already been assigned", parameterName);
+
             _parameters.Add(parameterName, new StoredParameterReturnValue { ValueObject = value, ValueType = parameterType, IsDefaultValue = isDefaultValue});
         }
 
@@ -186,6 +188,8 @@ namespace Composite.Functions
 
         internal void AddLazyParameter(string parameterName, BaseRuntimeTreeNode runtimeTreeNode, Type parameterType)
         {
+            Verify.That(!_parameters.ContainsKey(parameterName), "Parameter '{0}' has already been assigned", parameterName);
+
             _parameters.Add(parameterName, new StoredParameterReturnValue { ValueObject = runtimeTreeNode, ValueType = parameterType, IsDefaultValue = false });
         }
     }

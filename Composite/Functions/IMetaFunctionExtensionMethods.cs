@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 
@@ -33,8 +32,11 @@ namespace Composite.Functions
         {
             if (metaFunction.Namespace == "") return true;
 
-            if (metaFunction.Namespace.StartsWith(".") == true) return false;
-            if (metaFunction.Namespace.EndsWith(".") == true) return false;
+            if (metaFunction.Namespace.StartsWith(".")
+                || metaFunction.Namespace.EndsWith("."))
+            {
+                return false;
+            }
 
             string[] splits = metaFunction.Namespace.Split('.');
             foreach (string split in splits)
@@ -54,14 +56,11 @@ namespace Composite.Functions
 
             foreach (ParameterProfile parameterProfile in metaFunction.ParameterProfiles)
             {
-                if (names.Contains(parameterProfile.Name) == true)
+                if (names.Contains(parameterProfile.Name))
                 {
                     return false;
                 }
-                else
-                {
-                    names.Add(parameterProfile.Name);
-                }
+                names.Add(parameterProfile.Name);
             }
 
             return true;
@@ -76,10 +75,8 @@ namespace Composite.Functions
             {
                 return StringResourceSystemFacade.ParseString(function.Description);
             }
-            else
-            {
-                return function.Description;
-            }
+            
+            return function.Description;
         }
 
 	}

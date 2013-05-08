@@ -2,6 +2,7 @@
 using System.Web.Hosting;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
+using Composite.Core.Types;
 using Composite.Core.WebClient;
 using Composite.Core.Extensions;
 using Composite.Functions;
@@ -51,6 +52,17 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
             return new RazorBasedFunction(@namespace, name, razorFunction.FunctionDescription, functionParameters, razorFunction.FunctionReturnType, virtualPath, this);
 		}
+
+        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, string cachedReturnType, string cachedDescription)
+        {
+            var returnType = TypeManager.TryGetType(cachedReturnType);
+            if (returnType != null)
+            {
+                return new RazorBasedFunction(@namespace, name, cachedDescription, returnType, virtualPath, this);
+            }
+
+            return InstantiateFunction(virtualPath, @namespace, name);
+        }
 
 		protected override bool HandleChange(string path)
 		{
