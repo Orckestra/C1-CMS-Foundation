@@ -79,6 +79,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
             this.TemporaryFilePath = null;
         }
 
+        /// <exclude />
         ~FileSystemFileBase()
         {
             if (TemporaryFilePath != null)

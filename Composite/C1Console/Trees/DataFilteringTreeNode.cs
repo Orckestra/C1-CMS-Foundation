@@ -17,7 +17,7 @@ namespace Composite.C1Console.Trees
         internal abstract Type CurrentDataInterfaceType { get; }
 
         /// <summary>
-        /// Depending on dy <param name="dynamicContext" />'s Direction creates either filter expression for finding child elements or
+        /// Depending on dynamicContext's Direction creates either filter expression for finding child elements or
         /// a filter expression to find current element based on children elements
         /// </summary>
         /// <param name="parameterExpression">The parameter expression.</param>
