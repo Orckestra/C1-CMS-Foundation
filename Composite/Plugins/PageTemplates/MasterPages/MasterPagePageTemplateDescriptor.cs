@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Web.UI;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
-using Composite.Core;
 using Composite.Core.PageTemplates;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.Plugins.Elements.ElementProviders.PageTemplateElementProvider;
-using Composite.Plugins.PageTemplates.Common;
-using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
 
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_MasterPagePageTemplate;
 
@@ -106,7 +102,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
     internal class LazyInitializedMasterPagePageTemplateDescriptor: MasterPagePageTemplateDescriptor
     {
-        private readonly string LogTitle = typeof (LazyInitializedMasterPagePageTemplateDescriptor).Name;
         private readonly MasterPagePageTemplateProvider _provider;
 
         private bool _initialized;

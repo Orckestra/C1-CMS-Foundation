@@ -18,7 +18,7 @@ namespace Composite.Plugins.PageTemplates.Common
         {
             string nameHash = virtualPath.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
-            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "masterpage" + nameHash);
+            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "pagetemplate" + nameHash);
         }
 
         public static void AddToCache(string virtualPath, DateTime lastModifiedUtc, PageTemplateDescriptor pageTemplate)

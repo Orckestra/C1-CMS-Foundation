@@ -63,7 +63,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             
             using (Profiler.Measure("Evaluating placeholders"))
             {
-                TemplateDefinitionHelper.BindPlaceholders(webPage, _job, renderingInfo.Placeholders, functionContextContainer);
+                TemplateDefinitionHelper.BindPlaceholders(webPage, _job, renderingInfo.PlaceholderProperties, functionContextContainer);
             }
 
             // Executing razor code

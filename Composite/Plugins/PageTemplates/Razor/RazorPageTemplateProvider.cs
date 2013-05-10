@@ -26,8 +26,8 @@ namespace Composite.Plugins.PageTemplates.Razor
         private static readonly string LogTitle = typeof (RazorPageTemplateProvider).Name;
         internal static readonly string TempFilePrefix = "_temp_";
 
-        private readonly string _providerName;
-        private readonly string _templateDirectory;
+        private readonly string _providerName;  
+        private readonly string _templateDirectory; 
         private readonly string _templatesDirectoryVirtualPath;
         
         private readonly object _initializationLock = new object();
@@ -123,21 +123,43 @@ namespace Composite.Plugins.PageTemplates.Razor
             // Loading and compiling layout controls
             foreach (var fileInfo in files)
             {
-                WebPageBase webPage;
+                string filePath = fileInfo.FullName;
+                string virtualPath = ConvertToVirtualPath(filePath);
 
-                string virtualPath = ConvertToVirtualPath(fileInfo.FullName);
+                DateTime lastModifiedUtc = C1File.GetLastWriteTimeUtc(filePath);
 
-                try
+                PageTemplateCache.TemplateInformation cachedTemplateInformation;
+
+                if (PageTemplateCache.GetFromCache(virtualPath, lastModifiedUtc, out cachedTemplateInformation))
                 {
-                    webPage = WebPage.CreateInstanceFromVirtualPath(virtualPath);
+                    if (cachedTemplateInformation == null)
+                    {
+                        sharedFiles.Add(new SharedRazorFile(virtualPath));
+                        continue;
+                    }
+
+                    Guid templateId = cachedTemplateInformation.TemplateId;
+
+                    templates.Add(new LazyInitializedRazorPageTemplateDescriptor(
+                        virtualPath,
+                        templateId,
+                        cachedTemplateInformation.Title,
+                        this));
+
+                    Verify.That(!templateRenderingData.ContainsKey(templateId), "Multiple master page templates defined with the same ID '{0}'", templateId);
+
+                    templateRenderingData.Add(templateId, new LazyInitializedTemplateRenderingInfo(virtualPath, this));
+                    continue;
                 }
-                catch(Exception ex)
-                {
-                    Log.LogError(LogTitle, "Failed to compile razor file '{0}'", virtualPath);
-                    Log.LogError(LogTitle, ex);
 
-                    Exception compilationException = ex is TargetInvocationException ? ex.InnerException : ex;
-                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(virtualPath, compilationException);
+                WebPageBase webPage;
+                PageTemplateDescriptor parsedTemplate;
+                IDictionary<string, PropertyInfo> placeholderProperties;
+                Exception loadingException;
+
+                if (!LoadRazorTemplate(virtualPath, out webPage, out parsedTemplate, out placeholderProperties, out loadingException))
+                {
+                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(virtualPath, loadingException);
 
                     loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
                     templates.Add(brokenTemplate);
@@ -147,36 +169,15 @@ namespace Composite.Plugins.PageTemplates.Razor
                 if (webPage == null || !(webPage is RazorPageTemplate))
                 {
                     sharedFiles.Add(new SharedRazorFile(virtualPath));
-                    // Add shared code file here
+                    PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, null);
                     continue;
                 }
-
-                RazorPageTemplate razorPageTemplate = webPage as RazorPageTemplate;
-                razorPageTemplate.Configure();
-
-                PageTemplateDescriptor parsedTemplate;
-                IDictionary<string, PropertyInfo> placeholderProperties;
-
-                try
-                {
-                    ParseTemplate(virtualPath, razorPageTemplate, out parsedTemplate, out placeholderProperties);
-                }
-                catch(Exception ex)
-                {
-                    Log.LogError(LogTitle, "Failed to load razor page template '{0}'", virtualPath);
-                    Log.LogError(LogTitle, ex);
-
-                    var brokenTemplate = GetIncorrectlyLoadedPageTemplate(virtualPath, ex);
-
-                    loadingExceptions.Add(brokenTemplate.Id, brokenTemplate.LoadingException);
-                    templates.Add(brokenTemplate);
-                    continue;
-                }
-                
 
                 templates.Add(parsedTemplate);
 
                 templateRenderingData.Add(parsedTemplate.Id, new TemplateRenderingInfo(virtualPath, placeholderProperties));
+
+                PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, parsedTemplate);
             }
 
             return new State
@@ -186,6 +187,60 @@ namespace Composite.Plugins.PageTemplates.Razor
                            SharedFiles = sharedFiles,
                            LoadingExceptions = loadingExceptions
                        };
+        }
+
+        internal bool LoadRazorTemplate(
+            string virtualPath, 
+            out WebPageBase webPage, 
+            out PageTemplateDescriptor parsedTemplate,
+            out IDictionary<string, PropertyInfo> placeholderProperties,
+            out Exception loadingException)
+        {
+            try
+            {
+                webPage = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
+            }
+            catch(Exception ex)
+            {
+                Log.LogError(LogTitle, "Failed to compile razor file '{0}'", virtualPath);
+                Log.LogError(LogTitle, ex);
+
+                loadingException = ex is TargetInvocationException ? ex.InnerException : ex;
+                    
+                webPage = null;
+                parsedTemplate = null;
+                placeholderProperties = null;
+                return false;
+            }
+
+            if (webPage == null || !(webPage is RazorPageTemplate))
+            {
+                parsedTemplate = null;
+                placeholderProperties = null;
+                loadingException = null;
+                return true;
+            }
+
+            RazorPageTemplate razorPageTemplate = webPage as RazorPageTemplate;
+            razorPageTemplate.Configure();
+            
+            try
+            {
+                ParseTemplate(virtualPath, razorPageTemplate, out parsedTemplate, out placeholderProperties);
+            }
+            catch(Exception ex)
+            {
+                Log.LogError(LogTitle, "Failed to load razor page template '{0}'", virtualPath);
+                Log.LogError(LogTitle, ex);
+
+                loadingException = ex;
+                parsedTemplate = null;
+                placeholderProperties = null;
+                return false;
+            }
+
+            loadingException = null;
+            return true;
         }
 
         private PageTemplateDescriptor GetIncorrectlyLoadedPageTemplate(string virtualPath, Exception loadingException)
