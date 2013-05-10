@@ -38,7 +38,7 @@ namespace Composite.C1Console.Workflow
 
         private Thread _initializeThread;
         private readonly object _initializeThreadLock = new object();
-        private bool _isShutDown = false;
+        private bool _isShutDown;
         private WorkflowRuntime _workflowRuntime;
         private readonly List<Action> _actionToRunWhenInitialized = new List<Action>();
 
@@ -64,13 +64,15 @@ namespace Composite.C1Console.Workflow
 
         public void EnsureInitialization()
         {
-            if (_initializeThread == null)
+            if (_initializeThread != null) return;
+
+            lock (_initializeThreadLock)
             {
-                lock (_initializeThreadLock)
-                {
-                    if (_initializeThread == null)
+                if (_initializeThread != null) return;
+                
+                ThreadStart threadStart = () =>
                     {
-                        ParameterizedThreadStart parameterizedThreadStart = ThreadManager.CreateThreadStart(() =>
+                        using(ThreadDataManager.EnsureInitialize()) 
                         {
                             int startTime = Environment.TickCount;
                             while (_workflowRuntime == null && !_isShutDown && startTime + 30000 > Environment.TickCount)
@@ -96,17 +98,14 @@ namespace Composite.C1Console.Workflow
                             {
                                 DoInitialize(endTime - startTime);
                             }
-                        });
+                        }
+                    };
 
-                        _initializeThread = new Thread(parameterizedThreadStart);
-
-                        ThreadManager.StartThread(_initializeThread);
-                    }
-                }
+                _initializeThread = new Thread(threadStart);
+                _initializeThread.Start();
+                
             }
-
         }
-
 
 
         public WorkflowRuntime WorkflowRuntime
