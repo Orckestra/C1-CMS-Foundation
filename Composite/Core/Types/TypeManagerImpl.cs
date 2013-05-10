@@ -174,15 +174,14 @@ namespace Composite.Core.Types
                 }
             }
 
+            fullName = TypeManager.FixLegasyTypeName(fullName);
 
             // This should be the first thing tried, otherwise "old" types are found in Composite.Genereted.dll instead of a possible new compiled version of the type /MRJ
             if (fullName.Contains(",") == false)
             {
-                Type compositeType = TryGetNonGenericType(fullName + ", Composite");
+                Type compositeType = typeof (Composite.Data.IData).Assembly.GetType(fullName, false);
                 if (compositeType != null) return compositeType;
             }
-
-            fullName = TypeManager.FixLegasyTypeName(fullName);
 
             List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
 
