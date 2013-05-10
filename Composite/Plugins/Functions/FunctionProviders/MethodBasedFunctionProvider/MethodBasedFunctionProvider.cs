@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Composite.Core.Caching;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.Threading;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -19,6 +21,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
     [ConfigurationElementType(typeof(MethodBasedFunctionProviderData))]
     internal sealed class MethodBasedFunctionProvider : IFunctionProvider
     {
+        FileRelatedDataCache<Type> _inlineFunctionReturnTypeCache = new FileRelatedDataCache<Type>(
+            "inlineFuncReturnType",
+            (type, filePath) => C1File.WriteAllText(filePath, TypeManager.SerializeType(type)),
+            (filePath) => TypeManager.TryGetType(C1File.ReadAllText(filePath))); 
+
         private FunctionNotifier _functionNotifier;
 
         public MethodBasedFunctionProvider()
@@ -47,9 +54,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 IList<IFunction> result = new List<IFunction>();
 
 
-                IEnumerable<IMethodBasedFunctionInfo> methodBasedFunctionInfos =
-                    from item in DataFacade.GetData<IMethodBasedFunctionInfo>()
-                    select item;
+                var methodBasedFunctionInfos = DataFacade.GetData<IMethodBasedFunctionInfo>();
 
                 foreach (IMethodBasedFunctionInfo info in methodBasedFunctionInfos)
                 {
@@ -61,15 +66,28 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 }
 
 
-                IEnumerable<IInlineFunction> editableMethodBasedFunctionInfos =
-                    from item in DataFacade.GetData<IInlineFunction>()
-                    select item;
+                var editableMethodBasedFunctionInfos = DataFacade.GetData<IInlineFunction>();
+                    
 
                 foreach (IInlineFunction info in editableMethodBasedFunctionInfos)
                 {
-                    IFunction inlineFunction = InlineFunction.Create(info);
+                    Type cachedReturnType = GetCachedReturnType(info);
 
-                    if (inlineFunction == null) continue;
+                    IFunction inlineFunction;
+                    
+                    if (cachedReturnType != null)
+                    {
+                        inlineFunction = new LazyInitializedInlineFunction(info, cachedReturnType);
+                    }
+                    else
+                    {
+                        inlineFunction = InlineFunction.Create(info);
+
+                        if (!(inlineFunction is NotLoadedInlineFunction))
+                        {
+                            AddReturnTypeToCache(info, inlineFunction.ReturnType);
+                        }
+                    }
 
                     result.Add(inlineFunction);
                 }
@@ -79,6 +97,27 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         }
 
 
+        private void AddReturnTypeToCache(IInlineFunction info, Type type)
+        {
+            string functionName = info.Namespace + "." + info.Name;
+            string filePath = info.GetSourceFilePath();
+
+            _inlineFunctionReturnTypeCache.Add(functionName, filePath, type);
+        }
+
+        private Type GetCachedReturnType(IInlineFunction info)
+        {
+            string functionName = info.Namespace + "." + info.Name;
+            string filePath = info.GetSourceFilePath();
+
+            Type type;
+            if(!_inlineFunctionReturnTypeCache.Get(functionName, filePath, out type))
+            {
+                return null;
+            }
+
+            return type;
+        }
 
         private void OnDataChanged(object sender, EventArgs eventArgs)
         {

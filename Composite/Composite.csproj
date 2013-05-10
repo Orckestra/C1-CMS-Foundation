@@ -155,6 +155,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="C1Console\Trees\SortDirection.cs" />
+    <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
     <Compile Include="Core\PageTemplates\ISharedCodePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\ResourceSystem\LocalizationFiles.cs">
@@ -667,7 +668,7 @@
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileInfo.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\LogFileReader.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\PlainFileReader.cs" />
-    <Compile Include="Plugins\PageTemplates\Common\PageTemplateCache.cs" />
+    <Compile Include="Plugins\PageTemplates\Common\CachedTemplateInformation.cs" />
     <Compile Include="Plugins\PageTemplates\Common\TemplateParsingHelper.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\CompilationHelper.cs" />
     <Compile Include="Plugins\PageTemplates\MasterPages\Controls\Rendering\DescriptionMetaTag.cs" />

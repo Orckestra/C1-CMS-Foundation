@@ -6,10 +6,13 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Hosting;
 using System.Web.UI;
 using Composite.C1Console.Elements;
 using Composite.Core;
+using Composite.Core.Caching;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
@@ -23,6 +26,11 @@ namespace Composite.Plugins.PageTemplates.MasterPages
     internal class MasterPagePageTemplateProvider : IPageTemplateProvider, ISharedCodePageTemplateProvider
     {
         private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
+
+        private static readonly FileRelatedDataCache<CachedTemplateInformation> _templateCache =
+            new FileRelatedDataCache<CachedTemplateInformation>("masterPage",
+                                                                CachedTemplateInformation.SerializeToFile,
+                                                                CachedTemplateInformation.DeserializeFromFile); 
 
         internal static readonly string TempFilePrefix = "_temp_";
         private static readonly string MasterPageFileMask = "*.master";
@@ -136,11 +144,11 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 string virtualPath = ConvertToVirtualPath(filePath);
                 string codeBehindFilePath = GetCodebehindFilePath(filePath);
 
-                DateTime lastModifiedUtc = GetLastModifiedUtc(filePath, codeBehindFilePath);
+                string[] cacheRelatedFiles = new [] { filePath, codeBehindFilePath };
 
-                PageTemplateCache.TemplateInformation cachedTemplateInformation;
+                CachedTemplateInformation cachedTemplateInformation;
 
-                if (PageTemplateCache.GetFromCache(virtualPath, lastModifiedUtc, out cachedTemplateInformation))
+                if (_templateCache.Get(virtualPath, cacheRelatedFiles, out cachedTemplateInformation))
                 {
                     if (cachedTemplateInformation == null)
                     {
@@ -186,7 +194,11 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 {
                     sharedSourceFiles.Add(new SharedMasterPage(virtualPath));
 
-                    PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, null);
+                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                    {
+                        _templateCache.Add(virtualPath, cacheRelatedFiles, null);
+                    }
+                    
                     continue;
                 }
 
@@ -198,7 +210,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 templateRenderingData.Add(parsedPageTemplateDescriptor.Id, renderingInfo);
 
 
-                PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, parsedPageTemplateDescriptor);
+                _templateCache.Add(virtualPath, cacheRelatedFiles, new CachedTemplateInformation(parsedPageTemplateDescriptor));
             }
 
             return new State {
@@ -275,19 +287,6 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             return true;
         }
 
-        private DateTime GetLastModifiedUtc(string file1, string file2)
-        {
-            var file1ModificationDate = C1File.GetLastWriteTimeUtc(file1);
-
-            if (C1File.Exists(file2))
-            {
-                var file2ModificationDate = C1File.GetLastWriteTimeUtc(file2);
-
-                if (file2ModificationDate > file1ModificationDate) return file2ModificationDate;
-            }
-
-            return file1ModificationDate;
-        }
 
         private static Guid GetMD5Hash(string text)
         {

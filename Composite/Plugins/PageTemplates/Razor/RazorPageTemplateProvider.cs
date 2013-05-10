@@ -5,10 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.Hosting;
 using System.Web.WebPages;
 using Composite.C1Console.Elements;
 using Composite.Core;
+using Composite.Core.Caching;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
@@ -25,6 +28,11 @@ namespace Composite.Plugins.PageTemplates.Razor
         private static readonly string LayoutFileMask = "*.cshtml";
         private static readonly string LogTitle = typeof (RazorPageTemplateProvider).Name;
         internal static readonly string TempFilePrefix = "_temp_";
+
+        private static readonly FileRelatedDataCache<CachedTemplateInformation> _templateCache =
+            new FileRelatedDataCache<CachedTemplateInformation>("razorTemplate",
+                                                                CachedTemplateInformation.SerializeToFile,
+                                                                CachedTemplateInformation.DeserializeFromFile); 
 
         private readonly string _providerName;  
         private readonly string _templateDirectory; 
@@ -126,11 +134,9 @@ namespace Composite.Plugins.PageTemplates.Razor
                 string filePath = fileInfo.FullName;
                 string virtualPath = ConvertToVirtualPath(filePath);
 
-                DateTime lastModifiedUtc = C1File.GetLastWriteTimeUtc(filePath);
+                CachedTemplateInformation cachedTemplateInformation;
 
-                PageTemplateCache.TemplateInformation cachedTemplateInformation;
-
-                if (PageTemplateCache.GetFromCache(virtualPath, lastModifiedUtc, out cachedTemplateInformation))
+                if (_templateCache.Get(virtualPath, filePath, out cachedTemplateInformation))
                 {
                     if (cachedTemplateInformation == null)
                     {
@@ -169,7 +175,11 @@ namespace Composite.Plugins.PageTemplates.Razor
                 if (webPage == null || !(webPage is RazorPageTemplate))
                 {
                     sharedFiles.Add(new SharedRazorFile(virtualPath));
-                    PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, null);
+
+                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                    {
+                        _templateCache.Add(virtualPath, filePath, null);
+                    }
                     continue;
                 }
 
@@ -177,7 +187,7 @@ namespace Composite.Plugins.PageTemplates.Razor
 
                 templateRenderingData.Add(parsedTemplate.Id, new TemplateRenderingInfo(virtualPath, placeholderProperties));
 
-                PageTemplateCache.AddToCache(virtualPath, lastModifiedUtc, parsedTemplate);
+                _templateCache.Add(virtualPath, filePath, new CachedTemplateInformation(parsedTemplate));
             }
 
             return new State

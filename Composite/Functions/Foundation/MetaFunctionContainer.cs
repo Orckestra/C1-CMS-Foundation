@@ -94,7 +94,7 @@ namespace Composite.Functions.Foundation
             {
                 bool useableType = typeMappedFunctions.Key.IsAssignableFrom(supportedType);
 
-                if (useableType == true)
+                if (useableType)
                 {
                     functionNames.AddRange(typeMappedFunctions.Value.Where(f => functionNames.Contains(f)==false));
                 }
@@ -230,9 +230,9 @@ namespace Composite.Functions.Foundation
 
             functionNamesByType.Add(compositeName);
 
-            if (function is IDowncastableFunction && ((IDowncastableFunction)function).ReturnValueIsDowncastable==true)
+            if (function is IDowncastableFunction && ((IDowncastableFunction)function).ReturnValueIsDowncastable)
             {
-                var downcastableFunctionNamesByType = new List<string>();
+                List<string> downcastableFunctionNamesByType;
                 if (_downcastableFunctionNamesByTypeDictionary.TryGetValue(function.ReturnType, out downcastableFunctionNamesByType) == false)
                 {
                     downcastableFunctionNamesByType = new List<string>();

@@ -183,11 +183,16 @@ namespace Composite.Functions.Inline
         }
 
 
+        internal static string GetSourceFilePath(this IInlineFunction function)
+        {
+            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
+        }
+
 
         /// <exclude />
         public static string GetFunctionCode(this IInlineFunction function)
         {
-            string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
+            string filepath = GetSourceFilePath(function);
 
             return C1File.ReadAllText(filepath);
         }
@@ -197,12 +202,9 @@ namespace Composite.Functions.Inline
         /// <exclude />
         public static void DeleteFunctionCode(this IInlineFunction function)
         {
-            string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.InlineCSharpFunctionDirectory), function.CodePath);
+            string filepath = GetSourceFilePath(function);
 
-            if (C1File.Exists(filepath))
-            {
-                FileUtils.Delete(filepath);
-            }            
+            FileUtils.Delete(filepath);
         }
 
 

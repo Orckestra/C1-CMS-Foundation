@@ -11,20 +11,18 @@ using Composite.Functions.ManagedParameters;
 
 namespace Composite.Functions.Inline
 {
-    internal sealed class InlineFunction : IFunction
+    internal class InlineFunction : IFunction, IFunctionInitializationInfo
     {
-        private IInlineFunction _function;
-        private MethodInfo _methodInfo;
-        private IEnumerable<ParameterProfile> _parameterProfile = null;
+        protected readonly IInlineFunction _function;
+        private IEnumerable<ParameterProfile> _parameterProfile;
 
 
-        private InlineFunction(IInlineFunction info, MethodInfo methodInfo)
+        protected InlineFunction(IInlineFunction info, MethodInfo methodInfo)
         {
             Verify.ArgumentNotNull(info, "info");
-            Verify.ArgumentNotNull(methodInfo, "methodInfo");
 
-            _function = info;
-            _methodInfo = methodInfo;
+            _function = info; 
+            MethodInfo = methodInfo;
         }
 
 
@@ -42,7 +40,7 @@ namespace Composite.Functions.Inline
 
 
 
-        public object Execute(ParameterList parameters, FunctionContextContainer context)
+        public virtual object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             IList<object> arguments = new List<object>();
             foreach (ParameterProfile paramProfile in ParameterProfiles)
@@ -79,7 +77,7 @@ namespace Composite.Functions.Inline
 
 
 
-        public Type ReturnType
+        public virtual Type ReturnType
         {
             get { return MethodInfo.ReturnType; }
         }
@@ -102,12 +100,9 @@ namespace Composite.Functions.Inline
 
 
 
-        private MethodInfo MethodInfo
+        virtual protected  MethodInfo MethodInfo
         {
-            get
-            {
-                return _methodInfo;
-            }
+            get; set;
         }
 
 
@@ -119,5 +114,101 @@ namespace Composite.Functions.Inline
                 return _function.GetDataEntityToken();
             }
         }
-    }   
+    
+        bool IFunctionInitializationInfo.FunctionInitializedCorrectly
+        {
+	        get { return true; }
+        }
+}
+
+    internal class LazyInitializedInlineFunction : InlineFunction, IFunctionInitializationInfo
+    {
+        private readonly Type _cachedReturnType;
+
+        private bool _initialized;
+        private NotLoadedInlineFunction _notLoadedInlineFunction;
+        
+        public LazyInitializedInlineFunction(IInlineFunction inlineFunction)
+            : base(inlineFunction, null)
+        {
+        }
+
+        public LazyInitializedInlineFunction(IInlineFunction inlineFunction, Type cachedReturnType)
+            : base(inlineFunction, null)
+        {
+            this._cachedReturnType = cachedReturnType;
+        }
+
+        public override Type ReturnType
+        {
+            get
+            {
+                return _initialized ? base.ReturnType : _cachedReturnType;
+            }
+        }
+
+        private void EnsureInitialized()
+        {
+            if (!_initialized)
+                lock (this)
+                    if (!_initialized)
+                    {
+                        Initialize();
+
+                        _initialized = true;
+                    }
+        }
+
+        private void Initialize()
+        {
+            var errors = new StringInlineFunctionCreateMethodErrorHandler();
+
+            MethodInfo methodInfo = InlineFunctionHelper.Create(_function, null, errors);
+
+            if (methodInfo == null) 
+            {
+                _notLoadedInlineFunction = new NotLoadedInlineFunction(_function, errors);
+            }
+            else
+            {
+                MethodInfo = methodInfo;
+            }
+        }
+
+        protected override MethodInfo MethodInfo
+        {
+            get
+            {
+                EnsureInitialized();
+
+                if (_notLoadedInlineFunction != null)
+                {
+                    throw new InvalidOperationException("Function hasn't been initialized");
+                }
+
+                return base.MethodInfo;
+            }
+        }
+
+        public override object Execute(ParameterList parameters, FunctionContextContainer context)
+        {
+            if (_notLoadedInlineFunction != null)
+            {
+                return (_notLoadedInlineFunction as IFunction).Execute(parameters, context);
+            }
+
+            return base.Execute(parameters, context);
+        }
+
+        bool IFunctionInitializationInfo.FunctionInitializedCorrectly
+        {
+            get
+            {
+                EnsureInitialized();
+
+                return _notLoadedInlineFunction == null;
+            }
+        }
+
+    }
 }
