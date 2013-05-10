@@ -364,12 +364,15 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     PropertyInfoValueCollection propertyInfoValueCol = propertyInfoValueCollection.Clone();
                     List<Element> elements = GetGroupChildrenLeafs(interfaceType, filter, propertyInfoValueCol, false).ToList();
 
-                    var labelFieldDescriptor = dataTypeDescriptor.Fields.Where(f => f.Name == dataTypeDescriptor.LabelFieldName).FirstOrDefault();
-                    if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null)
+                    if (!dataTypeDescriptor.Fields.Where(f => f.TreeOrderingProfile.OrderPriority.HasValue && f.ForeignKeyReferenceTypeName == null).Any())
                     {
-                        elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
-                            elements.OrderByDescending(f => f.VisualData.Label) :
-                            elements.OrderBy(f => f.VisualData.Label)).ToList();
+                        var labelFieldDescriptor = dataTypeDescriptor.Fields.Where(f => f.Name == dataTypeDescriptor.LabelFieldName).FirstOrDefault();
+                        if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null)
+                        {
+                            elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
+                                elements.OrderByDescending(f => f.VisualData.Label) :
+                                elements.OrderBy(f => f.VisualData.Label)).ToList();
+                        }
                     }
 
                     if (includeForeignFolders == true)
