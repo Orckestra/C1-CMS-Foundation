@@ -102,10 +102,41 @@ namespace Composite.Core.ResourceSystem
                 string propertyName = key.Replace(".", "_").Replace("-", "_");
 				if (char.IsDigit(propertyName[0])) propertyName = "_" + propertyName;
 
-                output.Append(" /// <summary>%comment%</summary> \r\n public static string %property% { get { return T(\"%key%\"); } } \r\n"
-							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
-							   .Replace("%key%", key)
-							   .Replace("%property%", propertyName));
+				int parametersCount = 0;
+
+				while(value.Contains("{" + parametersCount + "}")) {
+					parametersCount++;
+				}
+
+
+				output.Append(" /// <summary>%comment%</summary> \r\n"
+							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///")));
+
+
+				if( parametersCount == 0 ) {
+					output.Append(" public static string %property% { get { return T(\"%key%\"); } } \r\n"
+								   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///"))
+								   .Replace("%key%", key)
+								   .Replace("%property%", propertyName));
+				}
+                else {
+					string[] parametersDefinitions = new string[parametersCount];
+					string[] parametersReferences = new string[parametersCount];
+
+					for(int i=0; i<parametersCount; i++) {
+						parametersDefinitions[i] = "string parameter" + i;
+						parametersReferences[i] = "parameter" + i;
+					}
+
+					string parametersDefinitionsStr = string.Join(",", parametersDefinitions);
+					string parametersReferencesStr = string.Join(",", parametersReferences);
+
+					output.Append(" public static string %property%(%parametersDef%) { return string.Format(T(\"%key%\"), %parametersRef%); } \r\n"
+								   .Replace("%key%", key)
+								   .Replace("%property%", propertyName)
+								   .Replace("%parametersDef%", parametersDefinitionsStr)
+								   .Replace("%parametersRef%", parametersReferencesStr));
+				}
             }
 
             output.Append(

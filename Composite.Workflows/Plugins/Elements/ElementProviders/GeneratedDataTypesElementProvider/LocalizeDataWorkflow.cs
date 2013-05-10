@@ -46,7 +46,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 foreach (ReferenceFailingPropertyInfo referenceFailingPropertyInfo in referenceFailingPropertyInfos.Where(f => f.OptionalReferenceWithValue == false))
                 {
-                    row.Add(string.Format(Texts.LocalizeDataWorkflow_ShowError_FieldErrorFormat, 
+                    row.Add(Texts.LocalizeDataWorkflow_ShowError_FieldErrorFormat( 
                         referenceFailingPropertyInfo.DataFieldDescriptor.Name, 
                         referenceFailingPropertyInfo.ReferencedType.GetTypeTitle(), 
                         referenceFailingPropertyInfo.OriginLocaleDataValue.GetLabel()));

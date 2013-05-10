@@ -9,13 +9,13 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Linq;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.Types;
 using Microsoft.CSharp;
 using Composite.Core;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_MethodBasedFunctionProviderElementProvider;
 
 namespace Composite.Functions.Inline
 {
@@ -97,7 +97,7 @@ namespace Composite.Functions.Inline
             Type type = results.CompiledAssembly.GetTypes().SingleOrDefault(f => f.Name == MethodClassContainerName);
             if (type == null)
             {
-                string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.OnMissingContainerType"), MethodClassContainerName);
+                string message = Texts.CSharpInlineFunction_OnMissingContainerType(MethodClassContainerName);
 
                 if (createMethodErrorHandler != null)
                 {
@@ -116,7 +116,7 @@ namespace Composite.Functions.Inline
 
             if (type.Namespace != function.Namespace)
             {
-                string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.OnNamespaceMismatch"), type.Namespace, function.Namespace);
+                string message = Texts.CSharpInlineFunction_OnNamespaceMismatch(type.Namespace, function.Namespace);
 
                 if (createMethodErrorHandler != null)
                 {
@@ -133,10 +133,10 @@ namespace Composite.Functions.Inline
                 return null;
             }
 
-            MethodInfo methodInfo = type.GetMethods(BindingFlags.Public | BindingFlags.Static).Where(f => f.Name == function.Name).SingleOrDefault();
+            MethodInfo methodInfo = type.GetMethods(BindingFlags.Public | BindingFlags.Static).SingleOrDefault(f => f.Name == function.Name);
             if (methodInfo == null)
             {
-                string message = string.Format(StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "CSharpInlineFunction.OnMissionMethod"), function.Name, MethodClassContainerName);
+                string message = Texts.CSharpInlineFunction_OnMissionMethod(function.Name, MethodClassContainerName);
 
                 if (createMethodErrorHandler != null)
                 {

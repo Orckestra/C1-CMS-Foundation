@@ -54,23 +54,23 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Error message</summary> 
  public static string KeyFacade_ErrorTreeNode_ShowMessage_Title { get { return T("KeyFacade.ErrorTreeNode.ShowMessage.Title"); } } 
  /// <summary>Unknown exception happened: &apos;{0}&apos;</summary> 
- public static string TreeValidationError_Common_UnknownException { get { return T("TreeValidationError.Common.UnknownException"); } } 
+ public static string TreeValidationError_Common_UnknownException(string parameter0) { return string.Format(T("TreeValidationError.Common.UnknownException"), parameter0); } 
  /// <summary>Unknown element &apos;{0}&apos;</summary> 
- public static string TreeValidationError_Common_UnknownElement { get { return T("TreeValidationError.Common.UnknownElement"); } } 
+ public static string TreeValidationError_Common_UnknownElement(string parameter0) { return string.Format(T("TreeValidationError.Common.UnknownElement"), parameter0); } 
  /// <summary>The required attribute &apos;{0}&apos; is missing</summary> 
- public static string TreeValidationError_Common_MissingAttribute { get { return T("TreeValidationError.Common.MissingAttribute"); } } 
+ public static string TreeValidationError_Common_MissingAttribute(string parameter0) { return string.Format(T("TreeValidationError.Common.MissingAttribute"), parameter0); } 
  /// <summary>The attribute &apos;{0}&apos; has a value that is not allowed</summary> 
- public static string TreeValidationError_Common_WrongAttributeValue { get { return T("TreeValidationError.Common.WrongAttributeValue"); } } 
+ public static string TreeValidationError_Common_WrongAttributeValue(string parameter0) { return string.Format(T("TreeValidationError.Common.WrongAttributeValue"), parameter0); } 
  /// <summary>The type &apos;{0}&apos; does not contain a property named &apos;{1}&apos;</summary> 
- public static string TreeValidationError_Common_MissingProperty { get { return T("TreeValidationError.Common.MissingProperty"); } } 
+ public static string TreeValidationError_Common_MissingProperty(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.Common.MissingProperty"), parameter0,parameter1); } 
  /// <summary>The type &apos;{0}&apos; could not be found</summary> 
- public static string TreeValidationError_Common_UnkownInterfaceType { get { return T("TreeValidationError.Common.UnkownInterfaceType"); } } 
+ public static string TreeValidationError_Common_UnkownInterfaceType(string parameter0) { return string.Format(T("TreeValidationError.Common.UnkownInterfaceType"), parameter0); } 
  /// <summary>The type &apos;{0}&apos; does not implement the interface &apos;{1}&apos;</summary> 
- public static string TreeValidationError_Common_NotImplementingIData { get { return T("TreeValidationError.Common.NotImplementingIData"); } } 
+ public static string TreeValidationError_Common_NotImplementingIData(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.Common.NotImplementingIData"), parameter0,parameter1); } 
  /// <summary>The value &apos;{0} is not allowed as a permission type value</summary> 
- public static string TreeValidationError_Common_WrongPermissinValue { get { return T("TreeValidationError.Common.WrongPermissinValue"); } } 
+ public static string TreeValidationError_Common_WrongPermissinValue(string parameter0) { return string.Format(T("TreeValidationError.Common.WrongPermissinValue"), parameter0); } 
  /// <summary>The value &apos;{0} is not allowed as a location value</summary> 
- public static string TreeValidationError_Common_WrongLocationValue { get { return T("TreeValidationError.Common.WrongLocationValue"); } } 
+ public static string TreeValidationError_Common_WrongLocationValue(string parameter0) { return string.Format(T("TreeValidationError.Common.WrongLocationValue"), parameter0); } 
  /// <summary>No function markup provided as a child element</summary> 
  public static string TreeValidationError_Common_MissingFunctionMarkup { get { return T("TreeValidationError.Common.MissingFunctionMarkup"); } } 
  /// <summary>The function could not be created for the provided function markup</summary> 
@@ -78,11 +78,11 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Missing root element in tree markup</summary> 
  public static string TreeValidationError_Markup_NoRootElement { get { return T("TreeValidationError.Markup.NoRootElement"); } } 
  /// <summary>Syntax error: {0} at line {1} position {2}</summary> 
- public static string TreeValidationError_Markup_SchemaError { get { return T("TreeValidationError.Markup.SchemaError"); } } 
+ public static string TreeValidationError_Markup_SchemaError(string parameter0,string parameter1,string parameter2) { return string.Format(T("TreeValidationError.Markup.SchemaError"), parameter0,parameter1,parameter2); } 
  /// <summary>The attachment point &apos;{0}&apos; is unknown</summary> 
- public static string TreeValidationError_AutoAttachments_UnknownAttachmentPoint { get { return T("TreeValidationError.AutoAttachments.UnknownAttachmentPoint"); } } 
+ public static string TreeValidationError_AutoAttachments_UnknownAttachmentPoint(string parameter0) { return string.Format(T("TreeValidationError.AutoAttachments.UnknownAttachmentPoint"), parameter0); } 
  /// <summary>The attachment position &apos;{0}&apos; is unknown</summary> 
- public static string TreeValidationError_AutoAttachments_UnknownAttachmentPosition { get { return T("TreeValidationError.AutoAttachments.UnknownAttachmentPosition"); } } 
+ public static string TreeValidationError_AutoAttachments_UnknownAttachmentPosition(string parameter0) { return string.Format(T("TreeValidationError.AutoAttachments.UnknownAttachmentPosition"), parameter0); } 
  /// <summary>No elements are allowed in trees that are used with data attached trees</summary> 
  public static string TreeValidationError_DataAttachments_NoElementsAllowed { get { return T("TreeValidationError.DataAttachments.NoElementsAllowed"); } } 
  /// <summary>ShareRootElementById is only allowed if the tree has a single named attachment point</summary> 
@@ -90,103 +90,103 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The value of the Id is not allowed. The Id should be non-empty, not start with NodeAutoId_ and not be RootTreeNode</summary> 
  public static string TreeValidationError_SimpleElement_WrongIdValue { get { return T("TreeValidationError.SimpleElement.WrongIdValue"); } } 
  /// <summary>The id value &apos;{0}&apos; has already been used in this tree</summary> 
- public static string TreeValidationError_SimpleElement_AlreadyUsedId { get { return T("TreeValidationError.SimpleElement.AlreadyUsedId"); } } 
+ public static string TreeValidationError_SimpleElement_AlreadyUsedId(string parameter0) { return string.Format(T("TreeValidationError.SimpleElement.AlreadyUsedId"), parameter0); } 
  /// <summary>The data interface &apos;{0}&apos; is used more than once as a child under the same parent element and this is not allowed</summary> 
- public static string TreeValidationError_DataElementsTreeNode_SameInterfaceUsedTwice { get { return T("TreeValidationError.DataElementsTreeNode.SameInterfaceUsedTwice"); } } 
+ public static string TreeValidationError_DataElementsTreeNode_SameInterfaceUsedTwice(string parameter0) { return string.Format(T("TreeValidationError.DataElementsTreeNode.SameInterfaceUsedTwice"), parameter0); } 
  /// <summary>The same interface &apos;{0}&apos; is used as parent type as parent filter and this is not allowed</summary> 
- public static string TreeValidationError_DataElementsTreeNode_SameParentFilterInterfaceUsedTwice { get { return T("TreeValidationError.DataElementsTreeNode.SameParentFilterInterfaceUsedTwice"); } } 
+ public static string TreeValidationError_DataElementsTreeNode_SameParentFilterInterfaceUsedTwice(string parameter0) { return string.Format(T("TreeValidationError.DataElementsTreeNode.SameParentFilterInterfaceUsedTwice"), parameter0); } 
  /// <summary>More than one parent filter is pointing to the interface &apos;{0}&apos;. Change the Display value to Lazy</summary> 
- public static string TreeValidationError_DataElementsTreeNode_MoreThanOnParentFilterIsPointingToMe { get { return T("TreeValidationError.DataElementsTreeNode.MoreThanOnParentFilterIsPointingToMe"); } } 
+ public static string TreeValidationError_DataElementsTreeNode_MoreThanOnParentFilterIsPointingToMe(string parameter0) { return string.Format(T("TreeValidationError.DataElementsTreeNode.MoreThanOnParentFilterIsPointingToMe"), parameter0); } 
  /// <summary>Type attribute is missing</summary> 
  public static string TreeValidationError_DataFolderElements_MissingInterfaceType { get { return T("TreeValidationError.DataFolderElements.MissingInterfaceType"); } } 
  /// <summary>The interface type &apos;{0}&apos; does not match the parent elements interface type &apos;{1}&apos;</summary> 
- public static string TreeValidationError_DataFolderElements_WrongInterfaceType { get { return T("TreeValidationError.DataFolderElements.WrongInterfaceType"); } } 
+ public static string TreeValidationError_DataFolderElements_WrongInterfaceType(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.DataFolderElements.WrongInterfaceType"), parameter0,parameter1); } 
  /// <summary>DateFormat attribute requires that the property &apos;{0}&apos; should be of type &apos;{1}&apos; but is type &apos;{2}&apos;</summary> 
- public static string TreeValidationError_DataFolderElements_DateFormetNotAllowed { get { return T("TreeValidationError.DataFolderElements.DateFormetNotAllowed"); } } 
+ public static string TreeValidationError_DataFolderElements_DateFormetNotAllowed(string parameter0,string parameter1,string parameter2) { return string.Format(T("TreeValidationError.DataFolderElements.DateFormetNotAllowed"), parameter0,parameter1,parameter2); } 
  /// <summary>The property &apos;{0}&apos; is of type Date and this requires the DateFormat attribute to be present</summary> 
- public static string TreeValidationError_DataFolderElements_DateFormetIsMissing { get { return T("TreeValidationError.DataFolderElements.DateFormetIsMissing"); } } 
+ public static string TreeValidationError_DataFolderElements_DateFormetIsMissing(string parameter0) { return string.Format(T("TreeValidationError.DataFolderElements.DateFormetIsMissing"), parameter0); } 
  /// <summary>Ranges and first-letter-only not allowed at the same time</summary> 
  public static string TreeValidationError_DataFolderElements_RangesAndFirstLetterOnlyNotAllowed { get { return T("TreeValidationError.DataFolderElements.RangesAndFirstLetterOnlyNotAllowed"); } } 
  /// <summary>First-letter-only requires that the property &apos;{0}&apos; should be of type &apos;{1}&apos; but is type &apos;{2}&apos;</summary> 
- public static string TreeValidationError_DataFolderElements_WrongFirstLetterOnlyPropertyType { get { return T("TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType"); } } 
+ public static string TreeValidationError_DataFolderElements_WrongFirstLetterOnlyPropertyType(string parameter0,string parameter1,string parameter2) { return string.Format(T("TreeValidationError.DataFolderElements.WrongFirstLetterOnlyPropertyType"), parameter0,parameter1,parameter2); } 
  /// <summary>Only data child elements with the same interface type as the folder grouping (&apos;{0}&apos;) are allowed</summary> 
- public static string TreeValidationError_DataFolderElements_WrongDateChildInterfaceType { get { return T("TreeValidationError.DataFolderElements.WrongDateChildInterfaceType"); } } 
+ public static string TreeValidationError_DataFolderElements_WrongDateChildInterfaceType(string parameter0) { return string.Format(T("TreeValidationError.DataFolderElements.WrongDateChildInterfaceType"), parameter0); } 
  /// <summary>Switching from the interface type &apos;{0}&apos; to a different interface type &apos;{1}&apos; is not allowed in the same folder grouping group</summary> 
- public static string TreeValidationError_DataFolderElements_InterfaceTypeSwitchNotAllowed { get { return T("TreeValidationError.DataFolderElements.InterfaceTypeSwitchNotAllowed"); } } 
+ public static string TreeValidationError_DataFolderElements_InterfaceTypeSwitchNotAllowed(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.DataFolderElements.InterfaceTypeSwitchNotAllowed"), parameter0,parameter1); } 
  /// <summary>Using the field name &apos;{0}&apos; twice in the same grouping tree is not allowed</summary> 
- public static string TreeValidationError_DataFolderElements_SameFieldUsedTwice { get { return T("TreeValidationError.DataFolderElements.SameFieldUsedTwice"); } } 
+ public static string TreeValidationError_DataFolderElements_SameFieldUsedTwice(string parameter0) { return string.Format(T("TreeValidationError.DataFolderElements.SameFieldUsedTwice"), parameter0); } 
  /// <summary>Maximum one parent id filter node can be used on data elements used in groupings</summary> 
  public static string TreeValidationError_DataFolderElements_TooManyParentIdFilters { get { return T("TreeValidationError.DataFolderElements.TooManyParentIdFilters"); } } 
  /// <summary>The type &apos;{0}&apos; is not in the parent tree of this node or specified as an attachment points type</summary> 
- public static string TreeValidationError_ParentIdFilterNode_TypeIsNotInParentTree { get { return T("TreeValidationError.ParentIdFilterNode.TypeIsNotInParentTree"); } } 
+ public static string TreeValidationError_ParentIdFilterNode_TypeIsNotInParentTree(string parameter0) { return string.Format(T("TreeValidationError.ParentIdFilterNode.TypeIsNotInParentTree"), parameter0); } 
  /// <summary>The operator &apos;{0}&apos; is unknown or not supported</summary> 
- public static string TreeValidationError_FieldFilter_UnknownOperatorName { get { return T("TreeValidationError.FieldFilter.UnknownOperatorName"); } } 
+ public static string TreeValidationError_FieldFilter_UnknownOperatorName(string parameter0) { return string.Format(T("TreeValidationError.FieldFilter.UnknownOperatorName"), parameter0); } 
  /// <summary>The string value &apos;{0}&apos; could not be converted to the type &apos;{1}&apos;</summary> 
- public static string TreeValidationError_FieldFilter_ValueCouldNotBeConverted { get { return T("TreeValidationError.FieldFilter.ValueCouldNotBeConverted"); } } 
+ public static string TreeValidationError_FieldFilter_ValueCouldNotBeConverted(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.FieldFilter.ValueCouldNotBeConverted"), parameter0,parameter1); } 
  /// <summary>The operator &apos;{0}&apos; is not supported for the type &apos;{1}&apos;</summary> 
- public static string TreeValidationError_FieldFilter_OperatorNotSupportedForType { get { return T("TreeValidationError.FieldFilter.OperatorNotSupportedForType"); } } 
+ public static string TreeValidationError_FieldFilter_OperatorNotSupportedForType(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.FieldFilter.OperatorNotSupportedForType"), parameter0,parameter1); } 
  /// <summary>Function markup is missing</summary> 
  public static string TreeValidationError_FunctionFilter_MissingFunctionMarkup { get { return T("TreeValidationError.FunctionFilter.MissingFunctionMarkup"); } } 
  /// <summary>The function could not be created for the provided function markup</summary> 
  public static string TreeValidationError_FunctionFilter_WrongFunctionMarkup { get { return T("TreeValidationError.FunctionFilter.WrongFunctionMarkup"); } } 
  /// <summary>The function does not return value of the type &apos;{0}&apos;</summary> 
- public static string TreeValidationError_FunctionFilter_WrongReturnValue { get { return T("TreeValidationError.FunctionFilter.WrongReturnValue"); } } 
+ public static string TreeValidationError_FunctionFilter_WrongReturnValue(string parameter0) { return string.Format(T("TreeValidationError.FunctionFilter.WrongReturnValue"), parameter0); } 
  /// <summary>The return type of the expression returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected</summary> 
- public static string TreeValidationError_FunctionFilter_WrongFunctionReturnType { get { return T("TreeValidationError.FunctionFilter.WrongFunctionReturnType"); } } 
+ public static string TreeValidationError_FunctionFilter_WrongFunctionReturnType(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionReturnType"), parameter0,parameter1); } 
  /// <summary>The parameter count of expression returned by the function is &apos;{0}&apos;, 1 was expected</summary> 
- public static string TreeValidationError_FunctionFilter_WrongFunctionParameterCount { get { return T("TreeValidationError.FunctionFilter.WrongFunctionParameterCount"); } } 
+ public static string TreeValidationError_FunctionFilter_WrongFunctionParameterCount(string parameter0) { return string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionParameterCount"), parameter0); } 
  /// <summary>The expressions parameter type returned by the function is &apos;{0}&apos;, &apos;{1}&apos; was expected</summary> 
- public static string TreeValidationError_FunctionFilter_WrongFunctionParameterType { get { return T("TreeValidationError.FunctionFilter.WrongFunctionParameterType"); } } 
+ public static string TreeValidationError_FunctionFilter_WrongFunctionParameterType(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.FunctionFilter.WrongFunctionParameterType"), parameter0,parameter1); } 
  /// <summary>The function does not return value of the type &apos;{0}&apos;</summary> 
- public static string TreeValidationError_ReportFunctionAction_WrongReturnValue { get { return T("TreeValidationError.ReportFunctionAction.WrongReturnValue"); } } 
+ public static string TreeValidationError_ReportFunctionAction_WrongReturnValue(string parameter0) { return string.Format(T("TreeValidationError.ReportFunctionAction.WrongReturnValue"), parameter0); } 
  /// <summary>The file &apos;{0}&apos; does not exist</summary> 
- public static string TreeValidationError_GenericAddDataAction_MissingMarkupFile { get { return T("TreeValidationError.GenericAddDataAction.MissingMarkupFile"); } } 
+ public static string TreeValidationError_GenericAddDataAction_MissingMarkupFile(string parameter0) { return string.Format(T("TreeValidationError.GenericAddDataAction.MissingMarkupFile"), parameter0); } 
  /// <summary>The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml</summary> 
- public static string TreeValidationError_GenericAddDataAction_BadMarkupPath { get { return T("TreeValidationError.GenericAddDataAction.BadMarkupPath"); } } 
+ public static string TreeValidationError_GenericAddDataAction_BadMarkupPath(string parameter0) { return string.Format(T("TreeValidationError.GenericAddDataAction.BadMarkupPath"), parameter0); } 
  /// <summary>The edit data action only applies to elements that produce data elements</summary> 
  public static string TreeValidationError_GenericEditDataAction_OwnerIsNotDataNode { get { return T("TreeValidationError.GenericEditDataAction.OwnerIsNotDataNode"); } } 
  /// <summary>The file &apos;{0}&apos; does not exist</summary> 
- public static string TreeValidationError_GenericEditDataAction_MissingMarkupFile { get { return T("TreeValidationError.GenericEditDataAction.MissingMarkupFile"); } } 
+ public static string TreeValidationError_GenericEditDataAction_MissingMarkupFile(string parameter0) { return string.Format(T("TreeValidationError.GenericEditDataAction.MissingMarkupFile"), parameter0); } 
  /// <summary>The custom markup path &apos;{0}&apos; is wrongly formatted. Use ~/Dir1/Dir2/File.xml</summary> 
- public static string TreeValidationError_GenericEditDataAction_BadMarkupPath { get { return T("TreeValidationError.GenericEditDataAction.BadMarkupPath"); } } 
+ public static string TreeValidationError_GenericEditDataAction_BadMarkupPath(string parameter0) { return string.Format(T("TreeValidationError.GenericEditDataAction.BadMarkupPath"), parameter0); } 
  /// <summary>The delete data action only applies to elements that produce data elements</summary> 
  public static string TreeValidationError_GenericDeleteDataAction_OwnerIsNotDataNode { get { return T("TreeValidationError.GenericDeleteDataAction.OwnerIsNotDataNode"); } } 
  /// <summary>The dialog type &apos;{0}&apos; is not supported</summary> 
- public static string TreeValidationError_MessageBoxAction_UnknownDialogType { get { return T("TreeValidationError.MessageBoxAction.UnknownDialogType"); } } 
+ public static string TreeValidationError_MessageBoxAction_UnknownDialogType(string parameter0) { return string.Format(T("TreeValidationError.MessageBoxAction.UnknownDialogType"), parameter0); } 
  /// <summary>Too many &apos;{0}&apos; elements, only one is allowed</summary> 
- public static string TreeValidationError_CustomUrlAction_TooManyPostParameterElements { get { return T("TreeValidationError.CustomUrlAction.TooManyPostParameterElements"); } } 
+ public static string TreeValidationError_CustomUrlAction_TooManyPostParameterElements(string parameter0) { return string.Format(T("TreeValidationError.CustomUrlAction.TooManyPostParameterElements"), parameter0); } 
  /// <summary>The view type &apos;{0}&apos; is not supported</summary> 
- public static string TreeValidationError_CustomUrlAction_UnknownViewType { get { return T("TreeValidationError.CustomUrlAction.UnknownViewType"); } } 
+ public static string TreeValidationError_CustomUrlAction_UnknownViewType(string parameter0) { return string.Format(T("TreeValidationError.CustomUrlAction.UnknownViewType"), parameter0); } 
  /// <summary>The direction value &apos;{0}&apos; is wrong, should be either &apos;ascending&apos; or &apos;descending&apos;</summary> 
- public static string TreeValidationError_FieldOrderBy_UnknownDirection { get { return T("TreeValidationError.FieldOrderBy.UnknownDirection"); } } 
+ public static string TreeValidationError_FieldOrderBy_UnknownDirection(string parameter0) { return string.Format(T("TreeValidationError.FieldOrderBy.UnknownDirection"), parameter0); } 
  /// <summary>The type &apos;{0}&apos; does not contain a field named &apos;{1}&apos;</summary> 
- public static string TreeValidationError_FieldOrderBy_UnknownField { get { return T("TreeValidationError.FieldOrderBy.UnknownField"); } } 
+ public static string TreeValidationError_FieldOrderBy_UnknownField(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.FieldOrderBy.UnknownField"), parameter0,parameter1); } 
  /// <summary>&apos;{0}&apos; is in wrong format, use the format: {1}</summary> 
- public static string TreeValidationError_DataFieldValueHelper_WrongFormat { get { return T("TreeValidationError.DataFieldValueHelper.WrongFormat"); } } 
+ public static string TreeValidationError_DataFieldValueHelper_WrongFormat(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.DataFieldValueHelper.WrongFormat"), parameter0,parameter1); } 
  /// <summary>The interface &apos;{0}&apos; is not contained in the current element or any of its parents</summary> 
- public static string TreeValidationError_DataFieldValueHelper_InterfaceNotInParentTree { get { return T("TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree"); } } 
+ public static string TreeValidationError_DataFieldValueHelper_InterfaceNotInParentTree(string parameter0) { return string.Format(T("TreeValidationError.DataFieldValueHelper.InterfaceNotInParentTree"), parameter0); } 
  /// <summary>The range value is wrongly formatted</summary> 
  public static string TreeValidationError_Range_WrongFormat { get { return T("TreeValidationError.Range.WrongFormat"); } } 
  /// <summary>The property &apos;{0}&apos; is of type &apos;{1}&apos; which does not support ranges</summary> 
- public static string TreeValidationError_Range_UnsupportedType { get { return T("TreeValidationError.Range.UnsupportedType"); } } 
+ public static string TreeValidationError_Range_UnsupportedType(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.Range.UnsupportedType"), parameter0,parameter1); } 
  /// <summary>The value first value ({0}) in a range should be lesser than second value ({1})</summary> 
- public static string TreeValidationError_Range_MinMaxError { get { return T("TreeValidationError.Range.MinMaxError"); } } 
+ public static string TreeValidationError_Range_MinMaxError(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.Range.MinMaxError"), parameter0,parameter1); } 
  /// <summary>The max value of a range should be less than the min value of the succeeding range</summary> 
  public static string TreeValidationError_Range_NextRangeError { get { return T("TreeValidationError.Range.NextRangeError"); } } 
  /// <summary>From {0} to {1}</summary> 
- public static string TreeRanges_IntRange_Closed { get { return T("TreeRanges.IntRange.Closed"); } } 
+ public static string TreeRanges_IntRange_Closed(string parameter0,string parameter1) { return string.Format(T("TreeRanges.IntRange.Closed"), parameter0,parameter1); } 
  /// <summary>{0} or less</summary> 
- public static string TreeRanges_IntRange_MinOpenEnded { get { return T("TreeRanges.IntRange.MinOpenEnded"); } } 
+ public static string TreeRanges_IntRange_MinOpenEnded(string parameter0) { return string.Format(T("TreeRanges.IntRange.MinOpenEnded"), parameter0); } 
  /// <summary>{0} or more</summary> 
- public static string TreeRanges_IntRange_MaxOpenEnded { get { return T("TreeRanges.IntRange.MaxOpenEnded"); } } 
+ public static string TreeRanges_IntRange_MaxOpenEnded(string parameter0) { return string.Format(T("TreeRanges.IntRange.MaxOpenEnded"), parameter0); } 
  /// <summary>Other</summary> 
  public static string TreeRanges_IntRange_Other { get { return T("TreeRanges.IntRange.Other"); } } 
  /// <summary>From {0} to {1}</summary> 
- public static string TreeRanges_StringRange_Closed { get { return T("TreeRanges.StringRange.Closed"); } } 
+ public static string TreeRanges_StringRange_Closed(string parameter0,string parameter1) { return string.Format(T("TreeRanges.StringRange.Closed"), parameter0,parameter1); } 
  /// <summary>{0} and before</summary> 
- public static string TreeRanges_StringRange_MinOpenEnded { get { return T("TreeRanges.StringRange.MinOpenEnded"); } } 
+ public static string TreeRanges_StringRange_MinOpenEnded(string parameter0) { return string.Format(T("TreeRanges.StringRange.MinOpenEnded"), parameter0); } 
  /// <summary>{0} and after</summary> 
- public static string TreeRanges_StringRange_MaxOpenEnded { get { return T("TreeRanges.StringRange.MaxOpenEnded"); } } 
+ public static string TreeRanges_StringRange_MaxOpenEnded(string parameter0) { return string.Format(T("TreeRanges.StringRange.MaxOpenEnded"), parameter0); } 
  /// <summary>Other</summary> 
  public static string TreeRanges_StringRange_Other { get { return T("TreeRanges.StringRange.Other"); } } 
  /// <summary>Add</summary> 
@@ -290,7 +290,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The following fields has a reference to a data type. You should translate these data items before you can translate this data item</summary> 
  public static string LocalizeData_ShowError_Description { get { return T("LocalizeData.ShowError.Description"); } } 
  /// <summary>The field &apos;{0}&apos; is referencing data of type &apos;{1}&apos; with the label &apos;{2}&apos;</summary> 
- public static string LocalizeData_ShowError_FieldErrorFormat { get { return T("LocalizeData.ShowError.FieldErrorFormat"); } } 
+ public static string LocalizeData_ShowError_FieldErrorFormat(string parameter0,string parameter1,string parameter2) { return string.Format(T("LocalizeData.ShowError.FieldErrorFormat"), parameter0,parameter1,parameter2); } 
  /// <summary>This data has already been translated. The translated version belongs to a different group.</summary> 
  public static string LocalizeData_ShowError_AlreadyTranslated { get { return T("LocalizeData.ShowError.AlreadyTranslated"); } } 
      private static string T(string key) 
@@ -380,91 +380,91 @@ namespace Composite.Core.ResourceSystem
  /// <summary>A newer version of the package is already installed</summary> 
  public static string PackageManager_NewerVersionInstalled { get { return T("PackageManager.NewerVersionInstalled"); } } 
  /// <summary>Could not locate the package directory path &apos;{0}&apos;</summary> 
- public static string PackageManager_MissingPackageDirectory { get { return T("PackageManager.MissingPackageDirectory"); } } 
+ public static string PackageManager_MissingPackageDirectory(string parameter0) { return string.Format(T("PackageManager.MissingPackageDirectory"), parameter0); } 
  /// <summary>The package is marked as non uninstallable</summary> 
  public static string PackageManager_Uninstallable { get { return T("PackageManager.Uninstallable"); } } 
  /// <summary>Could not locate the package zip file path &apos;{0}&apos;</summary> 
- public static string PackageManager_MissingZipFile { get { return T("PackageManager.MissingZipFile"); } } 
+ public static string PackageManager_MissingZipFile(string parameter0) { return string.Format(T("PackageManager.MissingZipFile"), parameter0); } 
  /// <summary>Could not locate the package uninstall file path &apos;{0}&apos;</summary> 
- public static string PackageManager_MissingUninstallFile { get { return T("PackageManager.MissingUninstallFile"); } } 
+ public static string PackageManager_MissingUninstallFile(string parameter0) { return string.Format(T("PackageManager.MissingUninstallFile"), parameter0); } 
  /// <summary>Missing &apos;{0}&apos; element.</summary> 
- public static string PackageManager_MissingElement { get { return T("PackageManager.MissingElement"); } } 
+ public static string PackageManager_MissingElement(string parameter0) { return string.Format(T("PackageManager.MissingElement"), parameter0); } 
  /// <summary>Missing &apos;{0}&apos; attribute.</summary> 
- public static string PackageManager_MissingAttribute { get { return T("PackageManager.MissingAttribute"); } } 
+ public static string PackageManager_MissingAttribute(string parameter0) { return string.Format(T("PackageManager.MissingAttribute"), parameter0); } 
  /// <summary>&apos;{0}&apos; attribute value is not a valid value.</summary> 
- public static string PackageManager_InvalidAttributeValue { get { return T("PackageManager.InvalidAttributeValue"); } } 
+ public static string PackageManager_InvalidAttributeValue(string parameter0) { return string.Format(T("PackageManager.InvalidAttributeValue"), parameter0); } 
  /// <summary>&apos;{0}&apos; element value is not a valid value</summary> 
- public static string PackageManager_InvalidElementValue { get { return T("PackageManager.InvalidElementValue"); } } 
+ public static string PackageManager_InvalidElementValue(string parameter0) { return string.Format(T("PackageManager.InvalidElementValue"), parameter0); } 
  /// <summary>Expected exactly two elements, &apos;{0}&apos; and &apos;{1}&apos;</summary> 
- public static string ConfigurationTransformationPackageFragmentInstaller_ExpectedExactlyTwoElements { get { return T("ConfigurationTransformationPackageFragmentInstaller.ExpectedExactlyTwoElements"); } } 
+ public static string ConfigurationTransformationPackageFragmentInstaller_ExpectedExactlyTwoElements(string parameter0,string parameter1) { return string.Format(T("ConfigurationTransformationPackageFragmentInstaller.ExpectedExactlyTwoElements"), parameter0,parameter1); } 
  /// <summary>Missing &apos;{0}&apos; element.</summary> 
- public static string ConfigurationTransformationPackageFragmentInstaller_MissingElement { get { return T("ConfigurationTransformationPackageFragmentInstaller.MissingElement"); } } 
+ public static string ConfigurationTransformationPackageFragmentInstaller_MissingElement(string parameter0) { return string.Format(T("ConfigurationTransformationPackageFragmentInstaller.MissingElement"), parameter0); } 
  /// <summary>Missing &apos;{0}&apos; attribute.</summary> 
- public static string ConfigurationTransformationPackageFragmentInstaller_MissingAttribute { get { return T("ConfigurationTransformationPackageFragmentInstaller.MissingAttribute"); } } 
+ public static string ConfigurationTransformationPackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("ConfigurationTransformationPackageFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>The path &apos;{0}&apos; does not exist in the ZIP.</summary> 
- public static string ConfigurationTransformationPackageFragmentInstaller_PathDoesNotExist { get { return T("ConfigurationTransformationPackageFragmentInstaller.PathDoesNotExist"); } } 
+ public static string ConfigurationTransformationPackageFragmentInstaller_PathDoesNotExist(string parameter0) { return string.Format(T("ConfigurationTransformationPackageFragmentInstaller.PathDoesNotExist"), parameter0); } 
  /// <summary>Unable to parse ZIP&apos;ed XSLT file &apos;{0}&apos;. {1}</summary> 
- public static string ConfigurationTransformationPackageFragmentInstaller_UnableToParsXslt { get { return T("ConfigurationTransformationPackageFragmentInstaller.UnableToParsXslt"); } } 
+ public static string ConfigurationTransformationPackageFragmentInstaller_UnableToParsXslt(string parameter0,string parameter1) { return string.Format(T("ConfigurationTransformationPackageFragmentInstaller.UnableToParsXslt"), parameter0,parameter1); } 
  /// <summary>The XSLT file &apos;{0}&apos; will generate an invalid Configuration file. {1}</summary> 
- public static string ConfigurationTransformationPackageFragmentInstaller_XsltWillGeneratedInvalid { get { return T("ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid"); } } 
+ public static string ConfigurationTransformationPackageFragmentInstaller_XsltWillGeneratedInvalid(string parameter0,string parameter1) { return string.Format(T("ConfigurationTransformationPackageFragmentInstaller.XsltWillGeneratedInvalid"), parameter0,parameter1); } 
  /// <summary>Only one &apos;Types&apos; element allowed</summary> 
  public static string DataPackageFragmentInstaller_OnlyOneElement { get { return T("DataPackageFragmentInstaller.OnlyOneElement"); } } 
  /// <summary>Missing &apos;Types&apos; element</summary> 
  public static string DataPackageFragmentInstaller_MissingElement { get { return T("DataPackageFragmentInstaller.MissingElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string DataPackageFragmentInstaller_MissingAttribute { get { return T("DataPackageFragmentInstaller.MissingAttribute"); } } 
+ public static string DataPackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>Wrong DataScopeIdentifier ({0}) name in the configuration</summary> 
- public static string DataPackageFragmentInstaller_WrongDataScopeIdentifier { get { return T("DataPackageFragmentInstaller.WrongDataScopeIdentifier"); } } 
+ public static string DataPackageFragmentInstaller_WrongDataScopeIdentifier(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.WrongDataScopeIdentifier"), parameter0); } 
  /// <summary>Wrong culture ({0}) name in the configuration</summary> 
- public static string DataPackageFragmentInstaller_WrongLocale { get { return T("DataPackageFragmentInstaller.WrongLocale"); } } 
+ public static string DataPackageFragmentInstaller_WrongLocale(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.WrongLocale"), parameter0); } 
  /// <summary>Missing file &apos;{0}&apos; in the package zip</summary> 
- public static string DataPackageFragmentInstaller_MissingFile { get { return T("DataPackageFragmentInstaller.MissingFile"); } } 
+ public static string DataPackageFragmentInstaller_MissingFile(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.MissingFile"), parameter0); } 
  /// <summary>The data interface type &apos;{0}&apos; has not been configured in the system</summary> 
- public static string DataPackageFragmentInstaller_TypeNotConfigured { get { return T("DataPackageFragmentInstaller.TypeNotConfigured"); } } 
+ public static string DataPackageFragmentInstaller_TypeNotConfigured(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.TypeNotConfigured"), parameter0); } 
  /// <summary>The data interface type &apos;{0}&apos; does not inherit the interface &apos;{1}&apos;</summary> 
- public static string DataPackageFragmentInstaller_TypeNotInheriting { get { return T("DataPackageFragmentInstaller.TypeNotInheriting"); } } 
+ public static string DataPackageFragmentInstaller_TypeNotInheriting(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentInstaller.TypeNotInheriting"), parameter0,parameter1); } 
  /// <summary>The data interface type &apos;{0}&apos; does not have a property named &apos;{1}&apos;</summary> 
- public static string DataPackageFragmentInstaller_MissingProperty { get { return T("DataPackageFragmentInstaller.MissingProperty"); } } 
+ public static string DataPackageFragmentInstaller_MissingProperty(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentInstaller.MissingProperty"), parameter0,parameter1); } 
  /// <summary>The data interface type &apos;{0}&apos; does not have a writable property named &apos;{1}&apos;</summary> 
- public static string DataPackageFragmentInstaller_MissingWritableProperty { get { return T("DataPackageFragmentInstaller.MissingWritableProperty"); } } 
+ public static string DataPackageFragmentInstaller_MissingWritableProperty(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentInstaller.MissingWritableProperty"), parameter0,parameter1); } 
  /// <summary>Could not convert the value &apos;{0}&apos; to the type &apos;{1}&apos;</summary> 
- public static string DataPackageFragmentInstaller_ConversionFailed { get { return T("DataPackageFragmentInstaller.ConversionFailed"); } } 
+ public static string DataPackageFragmentInstaller_ConversionFailed(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentInstaller.ConversionFailed"), parameter0,parameter1); } 
  /// <summary>The property &apos;{0}&apos; on the interface &apos;{1}&apos; is missing a value.</summary> 
- public static string DataPackageFragmentInstaller_MissingPropertyVaule { get { return T("DataPackageFragmentInstaller.MissingPropertyVaule"); } } 
+ public static string DataPackageFragmentInstaller_MissingPropertyVaule(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentInstaller.MissingPropertyVaule"), parameter0,parameter1); } 
  /// <summary>Data type &apos;{0}&apos;: {1} record(s) already installed</summary> 
- public static string DataPackageFragmentInstaller_DataExists { get { return T("DataPackageFragmentInstaller.DataExists"); } } 
+ public static string DataPackageFragmentInstaller_DataExists(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentInstaller.DataExists"), parameter0,parameter1); } 
  /// <summary>Missing data type descriptor for the type {0}</summary> 
- public static string DataPackageFragmentInstaller_MissingTypeDescriptor { get { return T("DataPackageFragmentInstaller.MissingTypeDescriptor"); } } 
+ public static string DataPackageFragmentInstaller_MissingTypeDescriptor(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.MissingTypeDescriptor"), parameter0); } 
  /// <summary>The data type &apos;{0}&apos; is not localized but a locale is specified in the configuration</summary> 
- public static string DataPackageFragmentInstaller_TypeNonLocalizedWithLocale { get { return T("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale"); } } 
+ public static string DataPackageFragmentInstaller_TypeNonLocalizedWithLocale(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale"), parameter0); } 
  /// <summary>The data type &apos;{0}&apos; is localized but no locale is specified in the configuration</summary> 
- public static string DataPackageFragmentInstaller_TypeLocalizedWithoutLocale { get { return T("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale"); } } 
+ public static string DataPackageFragmentInstaller_TypeLocalizedWithoutLocale(string parameter0) { return string.Format(T("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale"), parameter0); } 
  /// <summary>Referenced data missing. Type: {0}, {1}: &apos;{2}&apos;</summary> 
- public static string DataPackageFragmentInstaller_ReferencedDataMissing { get { return T("DataPackageFragmentInstaller.ReferencedDataMissing"); } } 
+ public static string DataPackageFragmentInstaller_ReferencedDataMissing(string parameter0,string parameter1,string parameter2) { return string.Format(T("DataPackageFragmentInstaller.ReferencedDataMissing"), parameter0,parameter1,parameter2); } 
  /// <summary>Only one &apos;Types&apos; element allowed</summary> 
  public static string DataPackageFragmentUninstaller_OnlyOneElement { get { return T("DataPackageFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string DataPackageFragmentUninstaller_MissingAttribute { get { return T("DataPackageFragmentUninstaller.MissingAttribute"); } } 
+ public static string DataPackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("DataPackageFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>The data type &apos;{0}&apos; does not contain a key property named &apos;{1}</summary> 
- public static string DataPackageFragmentUninstaller_MissingKeyProperty { get { return T("DataPackageFragmentUninstaller.MissingKeyProperty"); } } 
+ public static string DataPackageFragmentUninstaller_MissingKeyProperty(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentUninstaller.MissingKeyProperty"), parameter0,parameter1); } 
  /// <summary>Only one &apos;Types&apos; element allowed</summary> 
  public static string DataTypePackageFragmentInstaller_OnlyOneElement { get { return T("DataTypePackageFragmentInstaller.OnlyOneElement"); } } 
  /// <summary>Missing &apos;Types&apos; element</summary> 
  public static string DataTypePackageFragmentInstaller_MissingElement { get { return T("DataTypePackageFragmentInstaller.MissingElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string DataTypePackageFragmentInstaller_MissingAttribute { get { return T("DataTypePackageFragmentInstaller.MissingAttribute"); } } 
+ public static string DataTypePackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("DataTypePackageFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>The data interface type &apos;{0}&apos; has not been configured in the system</summary> 
- public static string DataTypePackageFragmentInstaller_TypeNotConfigured { get { return T("DataTypePackageFragmentInstaller.TypeNotConfigured"); } } 
+ public static string DataTypePackageFragmentInstaller_TypeNotConfigured(string parameter0) { return string.Format(T("DataTypePackageFragmentInstaller.TypeNotConfigured"), parameter0); } 
  /// <summary>The data interface type &apos;{0}&apos; does not inherit the interface &apos;{1}&apos;</summary> 
- public static string DataTypePackageFragmentInstaller_TypeNotInheriting { get { return T("DataTypePackageFragmentInstaller.TypeNotInheriting"); } } 
+ public static string DataTypePackageFragmentInstaller_TypeNotInheriting(string parameter0,string parameter1) { return string.Format(T("DataTypePackageFragmentInstaller.TypeNotInheriting"), parameter0,parameter1); } 
  /// <summary>The interface type &apos;{0}&apos; is already exists in the system</summary> 
- public static string DataTypePackageFragmentInstaller_TypeExists { get { return T("DataTypePackageFragmentInstaller.TypeExists"); } } 
+ public static string DataTypePackageFragmentInstaller_TypeExists(string parameter0) { return string.Format(T("DataTypePackageFragmentInstaller.TypeExists"), parameter0); } 
  /// <summary>Failed to build a data type descriptor for interface &apos;{0}&apos;</summary> 
- public static string DataTypePackageFragmentInstaller_InterfaceCodeError { get { return T("DataTypePackageFragmentInstaller.InterfaceCodeError"); } } 
+ public static string DataTypePackageFragmentInstaller_InterfaceCodeError(string parameter0) { return string.Format(T("DataTypePackageFragmentInstaller.InterfaceCodeError"), parameter0); } 
  /// <summary>Only one &apos;Types&apos; element allowed</summary> 
  public static string DataTypePackageFragmentUninstaller_OnlyOneElement { get { return T("DataTypePackageFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string DataTypePackageFragmentUninstaller_MissingAttribute { get { return T("DataTypePackageFragmentUninstaller.MissingAttribute"); } } 
+ public static string DataTypePackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("DataTypePackageFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>Wrong attribute format in the configuration</summary> 
  public static string DataTypePackageFragmentUninstaller_WrongAttributeFormat { get { return T("DataTypePackageFragmentUninstaller.WrongAttributeFormat"); } } 
  /// <summary>Only one &apos;Types&apos; element allowed</summary> 
@@ -474,15 +474,15 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Error xml parsing the dataTypeDescriptor attribute</summary> 
  public static string DynamicDataTypePackageFragmentInstaller_DataTypeDescriptorParseError { get { return T("DynamicDataTypePackageFragmentInstaller.DataTypeDescriptorParseError"); } } 
  /// <summary>Error while deserializing a DataType. Error text: {0}.</summary> 
- public static string DynamicDataTypePackageFragmentInstaller_DataTypeDescriptorDeserializeError { get { return T("DynamicDataTypePackageFragmentInstaller.DataTypeDescriptorDeserializeError"); } } 
+ public static string DynamicDataTypePackageFragmentInstaller_DataTypeDescriptorDeserializeError(string parameter0) { return string.Format(T("DynamicDataTypePackageFragmentInstaller.DataTypeDescriptorDeserializeError"), parameter0); } 
  /// <summary>Cannot find a referenced type &apos;{0}&apos;.</summary> 
- public static string DynamicDataTypePackageFragmentInstaller_MissingReferencedType { get { return T("DynamicDataTypePackageFragmentInstaller.MissingReferencedType"); } } 
+ public static string DynamicDataTypePackageFragmentInstaller_MissingReferencedType(string parameter0) { return string.Format(T("DynamicDataTypePackageFragmentInstaller.MissingReferencedType"), parameter0); } 
  /// <summary>The interface type &apos;{0}&apos; is already exists in the system</summary> 
- public static string DynamicDataTypePackageFragmentInstaller_TypeExists { get { return T("DynamicDataTypePackageFragmentInstaller.TypeExists"); } } 
+ public static string DynamicDataTypePackageFragmentInstaller_TypeExists(string parameter0) { return string.Format(T("DynamicDataTypePackageFragmentInstaller.TypeExists"), parameter0); } 
  /// <summary>Only one &apos;Types&apos; element allowed</summary> 
  public static string DynamicDataTypePackageFragmentUninstaller_OnlyOneElement { get { return T("DynamicDataTypePackageFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string DynamicDataTypePackageFragmentUninstaller_MissingAttribute { get { return T("DynamicDataTypePackageFragmentUninstaller.MissingAttribute"); } } 
+ public static string DynamicDataTypePackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("DynamicDataTypePackageFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>Wrong attribute format in the configuration</summary> 
  public static string DynamicDataTypePackageFragmentUninstaller_WrongAttributeFormat { get { return T("DynamicDataTypePackageFragmentUninstaller.WrongAttributeFormat"); } } 
  /// <summary>Only one &apos;Files&apos; element allowed</summary> 
@@ -490,17 +490,17 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Only one &apos;Directories&apos; element allowed</summary> 
  public static string FilePackageFragmentInstaller_OnlyOneDirectoriesElement { get { return T("FilePackageFragmentInstaller.OnlyOneDirectoriesElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string FilePackageFragmentInstaller_MissingAttribute { get { return T("FilePackageFragmentInstaller.MissingAttribute"); } } 
+ public static string FilePackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("FilePackageFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>The &apos;deleteTargetDirectory&apos; attribute can only be applied to directories, not files</summary> 
  public static string FilePackageFragmentInstaller_DeleteTargetDirectoryNotAllowed { get { return T("FilePackageFragmentInstaller.DeleteTargetDirectoryNotAllowed"); } } 
  /// <summary>Wrong attribute value format, bool value expected</summary> 
  public static string FilePackageFragmentInstaller_WrongAttributeBoolFormat { get { return T("FilePackageFragmentInstaller.WrongAttributeBoolFormat"); } } 
  /// <summary>The install zip-file does not contain the file &apos;{0}&apos;</summary> 
- public static string FilePackageFragmentInstaller_MissingFile { get { return T("FilePackageFragmentInstaller.MissingFile"); } } 
+ public static string FilePackageFragmentInstaller_MissingFile(string parameter0) { return string.Format(T("FilePackageFragmentInstaller.MissingFile"), parameter0); } 
  /// <summary>The file &apos;{0}&apos; already exists</summary> 
- public static string FilePackageFragmentInstaller_FileExists { get { return T("FilePackageFragmentInstaller.FileExists"); } } 
+ public static string FilePackageFragmentInstaller_FileExists(string parameter0) { return string.Format(T("FilePackageFragmentInstaller.FileExists"), parameter0); } 
  /// <summary>File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.</summary> 
- public static string FilePackageFragmentInstaller_FileReadOnly { get { return T("FilePackageFragmentInstaller.FileReadOnly"); } } 
+ public static string FilePackageFragmentInstaller_FileReadOnly(string parameter0) { return string.Format(T("FilePackageFragmentInstaller.FileReadOnly"), parameter0); } 
  /// <summary>The &apos;assemblyLoad&apos; attribute can only be applied to files, not directories</summary> 
  public static string FilePackageFragmentInstaller_AssemblyLoadNotAllowed { get { return T("FilePackageFragmentInstaller.AssemblyLoadNotAllowed"); } } 
  /// <summary>The &apos;onlyUpdate&apos; attribute can only be applied to files, not directories</summary> 
@@ -508,7 +508,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The &apos;onlyUpdate&apos; attribute is not allowed in combination with the &apos;loadAssembly&apos; attribute</summary> 
  public static string FilePackageFragmentInstaller_OnlyUpdateNotAllowedWithLoadAssemlby { get { return T("FilePackageFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby"); } } 
  /// <summary>The install zip-file does not contain the directory &apos;{0}&apos;</summary> 
- public static string FilePackageFragmentInstaller_MissingDirectory { get { return T("FilePackageFragmentInstaller.MissingDirectory"); } } 
+ public static string FilePackageFragmentInstaller_MissingDirectory(string parameter0) { return string.Format(T("FilePackageFragmentInstaller.MissingDirectory"), parameter0); } 
  /// <summary>Uninstall.xml contains file pathes, binded to the original website location, and therefore the package cannot be uninstalled safely.</summary> 
  public static string FilePackageFragmentInstaller_WrongBasePath { get { return T("FilePackageFragmentInstaller.WrongBasePath"); } } 
  /// <summary>Only one &apos;Files&apos; element allowed</summary> 
@@ -516,39 +516,39 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Only one &apos;Areas&apos; element allowed</summary> 
  public static string VirtualElementProviderNodePackageFragmentInstaller_OnlyOneElement { get { return T("VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement"); } } 
  /// <summary>Could not find the type &apos;{0}&apos;</summary> 
- public static string VirtualElementProviderNodePackageFragmentInstaller_MissingType { get { return T("VirtualElementProviderNodePackageFragmentInstaller.MissingType"); } } 
+ public static string VirtualElementProviderNodePackageFragmentInstaller_MissingType(string parameter0) { return string.Format(T("VirtualElementProviderNodePackageFragmentInstaller.MissingType"), parameter0); } 
  /// <summary>Could not find the icon &apos;{0}&apos;</summary> 
- public static string VirtualElementProviderNodePackageFragmentInstaller_MissingIcon { get { return T("VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"); } } 
+ public static string VirtualElementProviderNodePackageFragmentInstaller_MissingIcon(string parameter0) { return string.Format(T("VirtualElementProviderNodePackageFragmentInstaller.MissingIcon"), parameter0); } 
  /// <summary>Only one &apos;Areas&apos; element allowed</summary> 
  public static string VirtualElementProviderNodePackageFragmentUninstaller_OnlyOneElement { get { return T("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string VirtualElementProviderNodePackageFragmentUninstaller_MissingAttribute { get { return T("VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"); } } 
+ public static string VirtualElementProviderNodePackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string FileXslTransformationPackageFragmentInstaller_MissingAttribute { get { return T("FileXslTransformationPackageFragmentInstaller.MissingAttribute"); } } 
+ public static string FileXslTransformationPackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>File &apos;{0}&apos; not found</summary> 
- public static string FileXslTransformationPackageFragmentInstaller_FileNotFound { get { return T("FileXslTransformationPackageFragmentInstaller.FileNotFound"); } } 
+ public static string FileXslTransformationPackageFragmentInstaller_FileNotFound(string parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.FileNotFound"), parameter0); } 
  /// <summary>File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.</summary> 
- public static string FileXslTransformationPackageFragmentInstaller_FileReadOnly { get { return T("FileXslTransformationPackageFragmentInstaller.FileReadOnly"); } } 
+ public static string FileXslTransformationPackageFragmentInstaller_FileReadOnly(string parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.FileReadOnly"), parameter0); } 
  /// <summary>File &apos;{0}&apos; was marked as &apos;Read Only&apos;. This file attribute was explicitly removed and the file was updated normally.</summary> 
- public static string FileXslTransformationPackageFragmentInstaller_FileReadOnlyOverride { get { return T("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride"); } } 
+ public static string FileXslTransformationPackageFragmentInstaller_FileReadOnlyOverride(string parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride"), parameter0); } 
  /// <summary>Only one &apos;PackageVersions&apos; element allowed</summary> 
  public static string PackageVersionBumberFragmentInstaller_OnlyOneElement { get { return T("PackageVersionBumberFragmentInstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string PackageVersionBumberFragmentInstaller_MissingAttribute { get { return T("PackageVersionBumberFragmentInstaller.MissingAttribute"); } } 
+ public static string PackageVersionBumberFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("PackageVersionBumberFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>Wrong attribute value format, Guid value expected</summary> 
  public static string PackageVersionBumberFragmentInstaller_WrongAttributeGuidFormat { get { return T("PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"); } } 
  /// <summary>The package id duplicate: &apos;{0}&apos;</summary> 
- public static string PackageVersionBumberFragmentInstaller_PackageIdDuplicate { get { return T("PackageVersionBumberFragmentInstaller.PackageIdDuplicate"); } } 
+ public static string PackageVersionBumberFragmentInstaller_PackageIdDuplicate(string parameter0) { return string.Format(T("PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), parameter0); } 
  /// <summary>Wrong attribute value format, Version value expected (x.y.z)</summary> 
  public static string PackageVersionBumberFragmentInstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"); } } 
  /// <summary>Only one &apos;PackageVersions&apos; element allowed</summary> 
  public static string PackageVersionBumberFragmentUninstaller_OnlyOneElement { get { return T("PackageVersionBumberFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string PackageVersionBumberFragmentUninstaller_MissingAttribute { get { return T("PackageVersionBumberFragmentUninstaller.MissingAttribute"); } } 
+ public static string PackageVersionBumberFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("PackageVersionBumberFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>Wrong attribute value format, Guid value expected</summary> 
  public static string PackageVersionBumberFragmentUninstaller_WrongAttributeGuidFormat { get { return T("PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat"); } } 
  /// <summary>The package id duplicate: &apos;{0}&apos;</summary> 
- public static string PackageVersionBumberFragmentUninstaller_PackageIdDuplicate { get { return T("PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"); } } 
+ public static string PackageVersionBumberFragmentUninstaller_PackageIdDuplicate(string parameter0) { return string.Format(T("PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), parameter0); } 
  /// <summary>Wrong attribute value format, Version value expected (x.y.z)</summary> 
  public static string PackageVersionBumberFragmentUninstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"); } } 
  /// <summary>A public RSA key is missing in the package configuration</summary> 
@@ -562,9 +562,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The trial period of the package has expired. You need to obtain a valid license.</summary> 
  public static string License_ExpiredMessage { get { return T("License.ExpiredMessage"); } } 
  /// <summary>Failed to get license information. ProductId: {0}</summary> 
- public static string License_Failed { get { return T("License.Failed"); } } 
+ public static string License_Failed(string parameter0) { return string.Format(T("License.Failed"), parameter0); } 
  /// <summary>The Windows user under which this C1 instance is running does not have write permission to file or folder &apos;{0}&apos;.</summary> 
- public static string NotEnoughNtfsPermissions { get { return T("NotEnoughNtfsPermissions"); } } 
+ public static string NotEnoughNtfsPermissions(string parameter0) { return string.Format(T("NotEnoughNtfsPermissions"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
@@ -1033,17 +1033,17 @@ namespace Composite.Core.ResourceSystem
  /// <summary>One or more types are referencing this type. Renaming is not possible</summary> 
  public static string TypesAreReferencing { get { return T("TypesAreReferencing"); } } 
  /// <summary>The type name &apos;{0}&apos; appears in the namespace &apos;{1}&apos; - this is not allowed</summary> 
- public static string TypeNameInNamespace { get { return T("TypeNameInNamespace"); } } 
+ public static string TypeNameInNamespace(string parameter0,string parameter1) { return string.Format(T("TypeNameInNamespace"), parameter0,parameter1); } 
  /// <summary>A type with the same name already exists</summary> 
  public static string TypesNameClash { get { return T("TypesNameClash"); } } 
  /// <summary>No fields added</summary> 
  public static string MissingFields { get { return T("MissingFields"); } } 
  /// <summary>The type name &apos;{0}&apos; is not a valid identifier.</summary> 
- public static string TypeNameIsInvalidIdentifier { get { return T("TypeNameIsInvalidIdentifier"); } } 
+ public static string TypeNameIsInvalidIdentifier(string parameter0) { return string.Format(T("TypeNameIsInvalidIdentifier"), parameter0); } 
  /// <summary>The field name &apos;{0}&apos; can not be used</summary> 
- public static string FieldNameCannotBeUsed { get { return T("FieldNameCannotBeUsed"); } } 
+ public static string FieldNameCannotBeUsed(string parameter0) { return string.Format(T("FieldNameCannotBeUsed"), parameter0); } 
  /// <summary>The specified &apos;Type namespace&apos; is already in use as a &apos;Type name&apos; (namespace + name). Consider changing the name of &apos;{0}&apos; to &apos;{0}.Item&apos;.</summary> 
- public static string NameSpaceIsTypeTypeName { get { return T("NameSpaceIsTypeTypeName"); } } 
+ public static string NameSpaceIsTypeTypeName(string parameter0) { return string.Format(T("NameSpaceIsTypeTypeName"), parameter0); } 
  /// <summary>Type name belongs to a reserved namespace.</summary> 
  public static string NamespaceIsReserved { get { return T("NamespaceIsReserved"); } } 
  /// <summary>Cannot add a data type since it will cause some compilation errors.</summary> 
@@ -1051,7 +1051,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Cannot change a data type since it will cause some compilation errors.</summary> 
  public static string CompileErrorWhileChangingType { get { return T("CompileErrorWhileChangingType"); } } 
  /// <summary>Field &apos;{0}&apos; does not have a widget provider specified.</summary> 
- public static string FieldDoesNotHaveWidget { get { return T("FieldDoesNotHaveWidget"); } } 
+ public static string FieldDoesNotHaveWidget(string parameter0) { return string.Format(T("FieldDoesNotHaveWidget"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);
@@ -1616,7 +1616,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Login</summary> 
  public static string LoginWebRequestHandler_Login { get { return T("LoginWebRequestHandler.Login"); } } 
  /// <summary>Login to {0}</summary> 
- public static string LoginWebRequestHandler_Header { get { return T("LoginWebRequestHandler.Header"); } } 
+ public static string LoginWebRequestHandler_Header(string parameter0) { return string.Format(T("LoginWebRequestHandler.Header"), parameter0); } 
  /// <summary>Incorrect user name or password</summary> 
  public static string LoginWebRequestHandler_LoginFailed { get { return T("LoginWebRequestHandler.LoginFailed"); } } 
  /// <summary>Password</summary> 
@@ -1628,15 +1628,15 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Wrong username or password.</summary> 
  public static string LoginWebRequestHandler_WrongUserNameOrPassword { get { return T("LoginWebRequestHandler.WrongUserNameOrPassword"); } } 
  /// <summary>The supplied Windows login, {0}\{1} is not registered in the user database. You must use a different login.</summary> 
- public static string LoginWebRequestHandler_UserNameNotRegistered { get { return T("LoginWebRequestHandler.UserNameNotRegistered"); } } 
+ public static string LoginWebRequestHandler_UserNameNotRegistered(string parameter0,string parameter1) { return string.Format(T("LoginWebRequestHandler.UserNameNotRegistered"), parameter0,parameter1); } 
  /// <summary>The type {0} is not an interface.</summary> 
- public static string DataInterfaceValidator_TypeNotAnInterface { get { return T("DataInterfaceValidator.TypeNotAnInterface"); } } 
+ public static string DataInterfaceValidator_TypeNotAnInterface(string parameter0) { return string.Format(T("DataInterfaceValidator.TypeNotAnInterface"), parameter0); } 
  /// <summary>The interface type {0} does not implement the interface {1}.</summary> 
- public static string DataInterfaceValidator_TypeDoesNotImplementInterface { get { return T("DataInterfaceValidator.TypeDoesNotImplementInterface"); } } 
+ public static string DataInterfaceValidator_TypeDoesNotImplementInterface(string parameter0,string parameter1) { return string.Format(T("DataInterfaceValidator.TypeDoesNotImplementInterface"), parameter0,parameter1); } 
  /// <summary>The property {0} on the interface type {1} is not a accepted type.</summary> 
- public static string DataInterfaceValidator_NotAcceptedType { get { return T("DataInterfaceValidator.NotAcceptedType"); } } 
+ public static string DataInterfaceValidator_NotAcceptedType(string parameter0,string parameter1) { return string.Format(T("DataInterfaceValidator.NotAcceptedType"), parameter0,parameter1); } 
  /// <summary>The interface {0} is not a valid IData interface.</summary> 
- public static string DataInterfaceValidator_NotValidIDataInterface { get { return T("DataInterfaceValidator.NotValidIDataInterface"); } } 
+ public static string DataInterfaceValidator_NotValidIDataInterface(string parameter0) { return string.Format(T("DataInterfaceValidator.NotValidIDataInterface"), parameter0); } 
  /// <summary>Cascade delete error</summary> 
  public static string DeleteMediaFileWorkflow_CascadeDeleteErrorTitle { get { return T("DeleteMediaFileWorkflow.CascadeDeleteErrorTitle"); } } 
  /// <summary>The type is referenced by another type that does not allow cascade deletes. This operation is halted</summary> 
@@ -1698,7 +1698,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Error</summary> 
  public static string MediaFileProviderElementProvider_ErrorMessageTitle { get { return T("MediaFileProviderElementProvider.ErrorMessageTitle"); } } 
  /// <summary>File &apos;{0}&apos; already exists in folder &apos;{1}&apos;</summary> 
- public static string MediaFileProviderElementProvider_FileAlreadyExistsMessage { get { return T("MediaFileProviderElementProvider.FileAlreadyExistsMessage"); } } 
+ public static string MediaFileProviderElementProvider_FileAlreadyExistsMessage(string parameter0,string parameter1) { return string.Format(T("MediaFileProviderElementProvider.FileAlreadyExistsMessage"), parameter0,parameter1); } 
  /// <summary>Failure</summary> 
  public static string UploadNewMediaFileWorkflow_UploadFailure { get { return T("UploadNewMediaFileWorkflow.UploadFailure"); } } 
  /// <summary>The uploaded file must be of the same type as the original. The file you uploaded is of a different type.</summary> 
@@ -2118,11 +2118,11 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Close</summary> 
  public static string Website_App_ToolTipClose { get { return T("Website.App.ToolTipClose"); } } 
  /// <summary>Opening {0}...</summary> 
- public static string Website_App_StatusBar_Opening { get { return T("Website.App.StatusBar.Opening"); } } 
+ public static string Website_App_StatusBar_Opening(string parameter0) { return string.Format(T("Website.App.StatusBar.Opening"), parameter0); } 
  /// <summary>Refreshing {0}...</summary> 
- public static string Website_App_StatusBar_Refreshing { get { return T("Website.App.StatusBar.Refreshing"); } } 
+ public static string Website_App_StatusBar_Refreshing(string parameter0) { return string.Format(T("Website.App.StatusBar.Refreshing"), parameter0); } 
  /// <summary>Loading {0}...</summary> 
- public static string Website_App_StatusBar_Loading { get { return T("Website.App.StatusBar.Loading"); } } 
+ public static string Website_App_StatusBar_Loading(string parameter0) { return string.Format(T("Website.App.StatusBar.Loading"), parameter0); } 
  /// <summary>Error</summary> 
  public static string Website_App_StatusBar_Error { get { return T("Website.App.StatusBar.Error"); } } 
  /// <summary>Warning</summary> 
@@ -2342,15 +2342,15 @@ namespace Composite.Core.ResourceSystem
  /// <summary>(no selection)</summary> 
  public static string AspNetUiControl_Selector_NoSelection { get { return T("AspNetUiControl.Selector.NoSelection"); } } 
  /// <summary>No matches for &apos;{0}&apos;</summary> 
- public static string AspNetUiControl_Selector_NoMatchesFor { get { return T("AspNetUiControl.Selector.NoMatchesFor"); } } 
+ public static string AspNetUiControl_Selector_NoMatchesFor(string parameter0) { return string.Format(T("AspNetUiControl.Selector.NoMatchesFor"), parameter0); } 
  /// <summary>This field contains a broken reference</summary> 
  public static string Validation_BrokenReference { get { return T("Validation.BrokenReference"); } } 
  /// <summary>This field is required.</summary> 
  public static string Validation_RequiredField { get { return T("Validation.RequiredField"); } } 
  /// <summary>Only {0} digit(s) after decimal point allowed</summary> 
- public static string Validation_Decimal_SymbolsAfterPointAllowed { get { return T("Validation.Decimal.SymbolsAfterPointAllowed"); } } 
+ public static string Validation_Decimal_SymbolsAfterPointAllowed(string parameter0) { return string.Format(T("Validation.Decimal.SymbolsAfterPointAllowed"), parameter0); } 
  /// <summary>Only {0} digit(s) before decimal point allowed</summary> 
- public static string Validation_Decimal_SymbolsBeforePointAllowed { get { return T("Validation.Decimal.SymbolsBeforePointAllowed"); } } 
+ public static string Validation_Decimal_SymbolsBeforePointAllowed(string parameter0) { return string.Format(T("Validation.Decimal.SymbolsBeforePointAllowed"), parameter0); } 
  /// <summary>The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647</summary> 
  public static string Validation_Int32_Overflow { get { return T("Validation.Int32.Overflow"); } } 
      private static string T(string key) 
@@ -2369,9 +2369,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Namespace can not contain the same name part multiple times</summary> 
  public static string DuplicateElementNamespace { get { return T("DuplicateElementNamespace"); } } 
  /// <summary>The name &apos;{0}&apos; is not a valid identifier</summary> 
- public static string InvalidIdentifier { get { return T("InvalidIdentifier"); } } 
+ public static string InvalidIdentifier(string parameter0) { return string.Format(T("InvalidIdentifier"), parameter0); } 
  /// <summary>The name &apos;{0}&apos; is not a valid identifier. Identifiers may not start with digits.</summary> 
- public static string InvalidIdentifierDigit { get { return T("InvalidIdentifierDigit"); } } 
+ public static string InvalidIdentifierDigit(string parameter0) { return string.Format(T("InvalidIdentifierDigit"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.NameValidation", key);
@@ -2425,7 +2425,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>View function information</summary> 
  public static string AllFunctionsElementProvider_ViewFunctionInformationTooltip { get { return T("AllFunctionsElementProvider.ViewFunctionInformationTooltip"); } } 
  /// <summary>Test: {0}</summary> 
- public static string FunctionTesterWorkflow_Layout_Label { get { return T("FunctionTesterWorkflow.Layout.Label"); } } 
+ public static string FunctionTesterWorkflow_Layout_Label(string parameter0) { return string.Format(T("FunctionTesterWorkflow.Layout.Label"), parameter0); } 
  /// <summary>Functions</summary> 
  public static string FunctionTesterWorkflow_FunctionCalls_Label { get { return T("FunctionTesterWorkflow.FunctionCalls.Label"); } } 
  /// <summary>Results</summary> 
@@ -2540,7 +2540,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Not yet approved or published</summary> 
  public static string DisabledData { get { return T("DisabledData"); } } 
  /// <summary>(undefined [{0}])</summary> 
- public static string UndefinedLabelTemplate { get { return T("UndefinedLabelTemplate"); } } 
+ public static string UndefinedLabelTemplate(string parameter0) { return string.Format(T("UndefinedLabelTemplate"), parameter0); } 
  /// <summary>(undefined)</summary> 
  public static string UndefinedDataLavelTemplate { get { return T("UndefinedDataLavelTemplate"); } } 
  /// <summary>Show in Content perspective</summary> 
@@ -2626,7 +2626,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Error</summary> 
  public static string DeleteAggregationTypeWorkflow_ErrorTitle { get { return T("DeleteAggregationTypeWorkflow.ErrorTitle"); } } 
  /// <summary>Cannot delete type &apos;{0}&apos; since it is used by a page type.</summary> 
- public static string DeleteAggregationTypeWorkflow_IsUsedByPageType { get { return T("DeleteAggregationTypeWorkflow.IsUsedByPageType"); } } 
+ public static string DeleteAggregationTypeWorkflow_IsUsedByPageType(string parameter0) { return string.Format(T("DeleteAggregationTypeWorkflow.IsUsedByPageType"), parameter0); } 
  /// <summary>Delete Datatype</summary> 
  public static string DeleteCompositionTypeWorkflow_LabelFieldGroup { get { return T("DeleteCompositionTypeWorkflow.LabelFieldGroup"); } } 
  /// <summary>Delete the datatype</summary> 
@@ -2634,9 +2634,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Error</summary> 
  public static string DeleteCompositionTypeWorkflow_ErrorTitle { get { return T("DeleteCompositionTypeWorkflow.ErrorTitle"); } } 
  /// <summary>Cannot delete type &apos;{0}&apos; since there&apos;re types that referenced to it.</summary> 
- public static string DeleteCompositionTypeWorkflow_TypeIsReferenced { get { return T("DeleteCompositionTypeWorkflow.TypeIsReferenced"); } } 
+ public static string DeleteCompositionTypeWorkflow_TypeIsReferenced(string parameter0) { return string.Format(T("DeleteCompositionTypeWorkflow.TypeIsReferenced"), parameter0); } 
  /// <summary>Cannot delete type &apos;{0}&apos; since it is used by a page type.</summary> 
- public static string DeleteCompositionTypeWorkflow_IsUsedByPageType { get { return T("DeleteCompositionTypeWorkflow.IsUsedByPageType"); } } 
+ public static string DeleteCompositionTypeWorkflow_IsUsedByPageType(string parameter0) { return string.Format(T("DeleteCompositionTypeWorkflow.IsUsedByPageType"), parameter0); } 
  /// <summary>To Xml</summary> 
  public static string ToXmlLabel { get { return T("ToXmlLabel"); } } 
  /// <summary>To Xml</summary> 
@@ -2682,7 +2682,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The following fields has a reference to a data type. You should translate these data items before you can translate this data item</summary> 
  public static string LocalizeDataWorkflow_ShowError_Description { get { return T("LocalizeDataWorkflow.ShowError.Description"); } } 
  /// <summary>The field &apos;{0}&apos; is referencing data of type &apos;{1}&apos; with the label &apos;{2}&apos;</summary> 
- public static string LocalizeDataWorkflow_ShowError_FieldErrorFormat { get { return T("LocalizeDataWorkflow.ShowError.FieldErrorFormat"); } } 
+ public static string LocalizeDataWorkflow_ShowError_FieldErrorFormat(string parameter0,string parameter1,string parameter2) { return string.Format(T("LocalizeDataWorkflow.ShowError.FieldErrorFormat"), parameter0,parameter1,parameter2); } 
  /// <summary>Error</summary> 
  public static string AddNewInterfaceTypeStep1_ErrorTitle { get { return T("AddNewInterfaceTypeStep1.ErrorTitle"); } } 
  /// <summary>Error</summary> 
@@ -2829,13 +2829,13 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Validation error</summary> 
  public static string EditTemplate_Validation_DialogTitle { get { return T("EditTemplate.Validation.DialogTitle"); } } 
  /// <summary>Compilation failed: {0}</summary> 
- public static string EditTemplate_Validation_CompilationFailed { get { return T("EditTemplate.Validation.CompilationFailed"); } } 
+ public static string EditTemplate_Validation_CompilationFailed(string parameter0) { return string.Format(T("EditTemplate.Validation.CompilationFailed"), parameter0); } 
  /// <summary>Page template class does not inherit &apos;{0}&apos;</summary> 
- public static string EditTemplate_Validation_IncorrectBaseClass { get { return T("EditTemplate.Validation.IncorrectBaseClass"); } } 
+ public static string EditTemplate_Validation_IncorrectBaseClass(string parameter0) { return string.Format(T("EditTemplate.Validation.IncorrectBaseClass"), parameter0); } 
  /// <summary>Failed to evaluate page template property &apos;{0}&apos;. Exception: {1}</summary> 
- public static string EditTemplate_Validation_PropertyError { get { return T("EditTemplate.Validation.PropertyError"); } } 
+ public static string EditTemplate_Validation_PropertyError(string parameter0,string parameter1) { return string.Format(T("EditTemplate.Validation.PropertyError"), parameter0,parameter1); } 
  /// <summary>It is not allowed to change the template ID through the current workflow. The original template ID is &apos;{0}&apos;</summary> 
- public static string EditTemplate_Validation_TemplateIdChanged { get { return T("EditTemplate.Validation.TemplateIdChanged"); } } 
+ public static string EditTemplate_Validation_TemplateIdChanged(string parameter0) { return string.Format(T("EditTemplate.Validation.TemplateIdChanged"), parameter0); } 
  /// <summary>Add New Master Page Template</summary> 
  public static string AddNewMasterPagePageTemplate_LabelDialog { get { return T("AddNewMasterPagePageTemplate.LabelDialog"); } } 
  /// <summary>Master Page Template</summary> 
@@ -2924,7 +2924,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Namespace must be like A.B.C - not start and end with .</summary> 
  public static string AddFunction_InvalidNamespace { get { return T("AddFunction.InvalidNamespace"); } } 
  /// <summary>The function name &apos;{0}&apos; is already used</summary> 
- public static string AddFunction_NameAlreadyUsed { get { return T("AddFunction.NameAlreadyUsed"); } } 
+ public static string AddFunction_NameAlreadyUsed(string parameter0) { return string.Format(T("AddFunction.NameAlreadyUsed"), parameter0); } 
  /// <summary>Edit Method Based Query</summary> 
  public static string EditMethodBasedFunction_LabelFieldGroup { get { return T("EditMethodBasedFunction.LabelFieldGroup"); } } 
  /// <summary>Method Name</summary> 
@@ -3022,17 +3022,17 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Method using data connection</summary> 
  public static string InlineFunctionMethodTemplate_DataConnection { get { return T("InlineFunctionMethodTemplate.DataConnection"); } } 
  /// <summary>A public static class named {0} is missing from the code. This class should contain the function method.</summary> 
- public static string CSharpInlineFunction_OnMissingContainerType { get { return T("CSharpInlineFunction.OnMissingContainerType"); } } 
+ public static string CSharpInlineFunction_OnMissingContainerType(string parameter0) { return string.Format(T("CSharpInlineFunction.OnMissingContainerType"), parameter0); } 
  /// <summary>The namespace in the code &apos;{0}&apos; does not match the given function namespace &apos;{1}&apos;.</summary> 
- public static string CSharpInlineFunction_OnNamespaceMismatch { get { return T("CSharpInlineFunction.OnNamespaceMismatch"); } } 
+ public static string CSharpInlineFunction_OnNamespaceMismatch(string parameter0,string parameter1) { return string.Format(T("CSharpInlineFunction.OnNamespaceMismatch"), parameter0,parameter1); } 
  /// <summary>The given function name &apos;{0}&apos; was not found or not public static in the class &apos;{1}&apos;.</summary> 
- public static string CSharpInlineFunction_OnMissionMethod { get { return T("CSharpInlineFunction.OnMissionMethod"); } } 
+ public static string CSharpInlineFunction_OnMissionMethod(string parameter0,string parameter1) { return string.Format(T("CSharpInlineFunction.OnMissionMethod"), parameter0,parameter1); } 
  /// <summary>The parameter &apos;{0}&apos; has not been added to &apos;Input Parameters&apos; - to call your function you need to add the parameter and give it either a test or default value.</summary> 
- public static string CSharpInlineFunction_MissingParameterDefinition { get { return T("CSharpInlineFunction.MissingParameterDefinition"); } } 
+ public static string CSharpInlineFunction_MissingParameterDefinition(string parameter0) { return string.Format(T("CSharpInlineFunction.MissingParameterDefinition"), parameter0); } 
  /// <summary>The parameter &apos;{0}&apos; is expecting test value of type &apos;{1}&apos;, got value of type &apos;{2}&apos;.</summary> 
- public static string CSharpInlineFunction_WrongParameterTestValueType { get { return T("CSharpInlineFunction.WrongParameterTestValueType"); } } 
+ public static string CSharpInlineFunction_WrongParameterTestValueType(string parameter0,string parameter1,string parameter2) { return string.Format(T("CSharpInlineFunction.WrongParameterTestValueType"), parameter0,parameter1,parameter2); } 
  /// <summary>The parameter &apos;{0}&apos; defined on &apos;Input Parameters&apos; must have a test or default value before your function can be evaluated.</summary> 
- public static string CSharpInlineFunction_MissingParameterTestOrDefaultValue { get { return T("CSharpInlineFunction.MissingParameterTestOrDefaultValue"); } } 
+ public static string CSharpInlineFunction_MissingParameterTestOrDefaultValue(string parameter0) { return string.Format(T("CSharpInlineFunction.MissingParameterTestOrDefaultValue"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", key);
@@ -3392,7 +3392,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>URL title was rewritten</summary> 
  public static string EditPage_UrlTitleFormattedTitle { get { return T("EditPage.UrlTitleFormattedTitle"); } } 
  /// <summary>According to the current URL replacement rules, URL title was changed to &apos;{0}&apos;</summary> 
- public static string EditPage_UrlTitleFormattedMessage { get { return T("EditPage.UrlTitleFormattedMessage"); } } 
+ public static string EditPage_UrlTitleFormattedMessage(string parameter0) { return string.Format(T("EditPage.UrlTitleFormattedMessage"), parameter0); } 
  /// <summary>The entry specified in this field is shown in the browser address bar as a part of the URL address. The field is used by search engines</summary> 
  public static string EditPage_HelpUrlTitle { get { return T("EditPage.HelpUrlTitle"); } } 
  /// <summary>Friendly URL</summary> 
@@ -3420,7 +3420,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The page type selection defines the role of the page, like &apos;a normal page&apos; or &apos;a blog&apos;. The options available depend on features installed.</summary> 
  public static string EditPage_PageTypeSelectorHelp { get { return T("EditPage.PageTypeSelectorHelp"); } } 
  /// <summary>{0} characters maximum</summary> 
- public static string EditPage_MaxLength { get { return T("EditPage.MaxLength"); } } 
+ public static string EditPage_MaxLength(string parameter0) { return string.Format(T("EditPage.MaxLength"), parameter0); } 
  /// <summary>Delete page?</summary> 
  public static string DeletePage_LabelFieldGroup { get { return T("DeletePage.LabelFieldGroup"); } } 
  /// <summary>Delete page and all subpages</summary> 
@@ -3428,7 +3428,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>All subpages will also be deleted. Continue?</summary> 
  public static string DeletePageStep1_Description { get { return T("DeletePageStep1.Description"); } } 
  /// <summary>Delete page &apos;{0}&apos;?</summary> 
- public static string DeletePageStep2_Text { get { return T("DeletePageStep2.Text"); } } 
+ public static string DeletePageStep2_Text(string parameter0) { return string.Format(T("DeletePageStep2.Text"), parameter0); } 
  /// <summary>Another page is using the specified URL title. URL titles must be unique among pages with the same parent.</summary> 
  public static string UrlTitleNotUniqueError { get { return T("UrlTitleNotUniqueError"); } } 
  /// <summary>The specified URL title contains invalid characters. Since this field is used to build the web address for the page, certain special characters (like question mark, slash and dot) are not allowed. You can use letters, digits and dash.</summary> 
@@ -3611,9 +3611,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Unable to Save Template</summary> 
  public static string EditXmlPageTemplateWorkflow_InvalidXmlTitle { get { return T("EditXmlPageTemplateWorkflow.InvalidXmlTitle"); } } 
  /// <summary>The page template markup did not validate. {0}</summary> 
- public static string EditXmlPageTemplateWorkflow_InvalidXmlMessage { get { return T("EditXmlPageTemplateWorkflow.InvalidXmlMessage"); } } 
+ public static string EditXmlPageTemplateWorkflow_InvalidXmlMessage(string parameter0) { return string.Format(T("EditXmlPageTemplateWorkflow.InvalidXmlMessage"), parameter0); } 
  /// <summary>Cannot rename a template - the file with the name &apos;{0}&apos; already exists.</summary> 
- public static string EditXmlPageTemplateWorkflow_CannotRenameFileExists { get { return T("EditXmlPageTemplateWorkflow.CannotRenameFileExists"); } } 
+ public static string EditXmlPageTemplateWorkflow_CannotRenameFileExists(string parameter0) { return string.Format(T("EditXmlPageTemplateWorkflow.CannotRenameFileExists"), parameter0); } 
  /// <summary>Title already used</summary> 
  public static string EditXmlPageTemplateWorkflow_TitleInUseTitle { get { return T("EditXmlPageTemplateWorkflow.TitleInUseTitle"); } } 
  /// <summary>Delete This Page Template?</summary> 
@@ -3625,9 +3625,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The type is referenced by another type that does not allow cascade deletes. This operation is halted.</summary> 
  public static string DeletePageTemplateWorkflow_CascadeDeleteErrorMessage { get { return T("DeletePageTemplateWorkflow.CascadeDeleteErrorMessage"); } } 
  /// <summary>There are {0} page[s] referencing this template: {1}</summary> 
- public static string DeletePageTemplateWorkflow_PageReference { get { return T("DeletePageTemplateWorkflow.PageReference"); } } 
+ public static string DeletePageTemplateWorkflow_PageReference(string parameter0,string parameter1) { return string.Format(T("DeletePageTemplateWorkflow.PageReference"), parameter0,parameter1); } 
  /// <summary>There are {0} page type[s] referencing this template: {1}</summary> 
- public static string DeletePageTemplateWorkflow_PageTypeReference { get { return T("DeletePageTemplateWorkflow.PageTypeReference"); } } 
+ public static string DeletePageTemplateWorkflow_PageTypeReference(string parameter0,string parameter1) { return string.Format(T("DeletePageTemplateWorkflow.PageTypeReference"), parameter0,parameter1); } 
  /// <summary>Add New Page Template</summary> 
  public static string AddNewPageTemplate_LabelDialog { get { return T("AddNewPageTemplate.LabelDialog"); } } 
  /// <summary>New page template</summary> 
@@ -3839,11 +3839,11 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Delete This Page Type?</summary> 
  public static string PageType_DeletePageTypeWorkflow_Confirm_Layout_Label { get { return T("PageType.DeletePageTypeWorkflow.Confirm.Layout.Label"); } } 
  /// <summary>Delete the page type {0}?</summary> 
- public static string PageType_DeletePageTypeWorkflow_Confirm_Layout_Messeage { get { return T("PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage"); } } 
+ public static string PageType_DeletePageTypeWorkflow_Confirm_Layout_Messeage(string parameter0) { return string.Format(T("PageType.DeletePageTypeWorkflow.Confirm.Layout.Messeage"), parameter0); } 
  /// <summary>Page Type in Use</summary> 
  public static string PageType_DeletePageTypeWorkflow_PagesRefering_Layout_Label { get { return T("PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Label"); } } 
  /// <summary>The page type {0} is in use and it is not possible to delete it</summary> 
- public static string PageType_DeletePageTypeWorkflow_PagesRefering_Layout_Message { get { return T("PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message"); } } 
+ public static string PageType_DeletePageTypeWorkflow_PagesRefering_Layout_Message(string parameter0) { return string.Format(T("PageType.DeletePageTypeWorkflow.PagesRefering.Layout.Message"), parameter0); } 
  /// <summary>Add Default Content</summary> 
  public static string PageType_AddPageTypeDefaultPageContentWorkflow_Layout_Label { get { return T("PageType.AddPageTypeDefaultPageContentWorkflow.Layout.Label"); } } 
  /// <summary>Choose placeholder</summary> 
@@ -3853,9 +3853,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>The ID of the placeholder. You can write a non-existing ID and create the placeholder afterwards (by editing Page Template markup).</summary> 
  public static string PageType_AddPageTypeDefaultPageContentWorkflow_PlaceHolderIdTextBox_Help { get { return T("PageType.AddPageTypeDefaultPageContentWorkflow.PlaceHolderIdTextBox.Help"); } } 
  /// <summary>No templates with {0}</summary> 
- public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Title { get { return T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title"); } } 
+ public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Title(string parameter0) { return string.Format(T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Title"), parameter0); } 
  /// <summary>Please note that the Placeholder ID you specified &apos;{0}&apos;, is currently not in any Layout Template.</summary> 
- public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Message { get { return T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message"); } } 
+ public static string PageType_AddPageTypeDefaultPageContentWorkflow_NonExistingPlaceholderId_Message(string parameter0) { return string.Format(T("PageType.AddPageTypeDefaultPageContentWorkflow.NonExistingPlaceholderId.Message"), parameter0); } 
  /// <summary>Edit default content</summary> 
  public static string PageType_EditPageTypeDefaultPageContentWorkflow_Layout_Label { get { return T("PageType.EditPageTypeDefaultPageContentWorkflow.Layout.Label"); } } 
  /// <summary>Settings</summary> 
@@ -3895,7 +3895,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Delete This Metadata Field?</summary> 
  public static string PageType_DeletePageTypeMetaDataFieldWorkflow_Confirm_Layout_Label { get { return T("PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Label"); } } 
  /// <summary>Delete the Metadata field {0}? Warning: all its existing Metadata items will also be deleted</summary> 
- public static string PageType_DeletePageTypeMetaDataFieldWorkflow_Confirm_Layout_Message { get { return T("PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message"); } } 
+ public static string PageType_DeletePageTypeMetaDataFieldWorkflow_Confirm_Layout_Message(string parameter0) { return string.Format(T("PageType.DeletePageTypeMetaDataFieldWorkflow.Confirm.Layout.Message"), parameter0); } 
  /// <summary>Edit Metadata Field</summary> 
  public static string PageType_EditPageTypeMetaDataFieldWorkflow_Layout_Label { get { return T("PageType.EditPageTypeMetaDataFieldWorkflow.Layout.Label"); } } 
  /// <summary>Metadata field settings</summary> 
@@ -3976,9 +3976,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Validation Error</summary> 
  public static string EditRazorFunctionWorkflow_Validation_DialogTitle { get { return T("EditRazorFunctionWorkflow.Validation.DialogTitle"); } } 
  /// <summary>Compilation failed: {0}</summary> 
- public static string EditRazorFunctionWorkflow_Validation_CompilationFailed { get { return T("EditRazorFunctionWorkflow.Validation.CompilationFailed"); } } 
+ public static string EditRazorFunctionWorkflow_Validation_CompilationFailed(string parameter0) { return string.Format(T("EditRazorFunctionWorkflow.Validation.CompilationFailed"), parameter0); } 
  /// <summary>Razor function should inherit &apos;{0}&apos;</summary> 
- public static string EditRazorFunctionWorkflow_Validation_IncorrectBaseClass { get { return T("EditRazorFunctionWorkflow.Validation.IncorrectBaseClass"); } } 
+ public static string EditRazorFunctionWorkflow_Validation_IncorrectBaseClass(string parameter0) { return string.Format(T("EditRazorFunctionWorkflow.Validation.IncorrectBaseClass"), parameter0); } 
  /// <summary>Delete Razor Function?</summary> 
  public static string DeleteRazorFunctionWorkflow_ConfirmDeleteTitle { get { return T("DeleteRazorFunctionWorkflow.ConfirmDeleteTitle"); } } 
  /// <summary>Delete the selected Razor function?</summary> 
@@ -4025,13 +4025,13 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Validation error</summary> 
  public static string EditTemplate_Validation_DialogTitle { get { return T("EditTemplate.Validation.DialogTitle"); } } 
  /// <summary>Compilation failed: {0}</summary> 
- public static string EditTemplate_Validation_CompilationFailed { get { return T("EditTemplate.Validation.CompilationFailed"); } } 
+ public static string EditTemplate_Validation_CompilationFailed(string parameter0) { return string.Format(T("EditTemplate.Validation.CompilationFailed"), parameter0); } 
  /// <summary>Page template class does not inherit &apos;{0}&apos;</summary> 
- public static string EditTemplate_Validation_IncorrectBaseClass { get { return T("EditTemplate.Validation.IncorrectBaseClass"); } } 
+ public static string EditTemplate_Validation_IncorrectBaseClass(string parameter0) { return string.Format(T("EditTemplate.Validation.IncorrectBaseClass"), parameter0); } 
  /// <summary>Failed to evaluate page template property &apos;{0}&apos;. Excepton: {1}</summary> 
- public static string EditTemplate_Validation_PropertyError { get { return T("EditTemplate.Validation.PropertyError"); } } 
+ public static string EditTemplate_Validation_PropertyError(string parameter0,string parameter1) { return string.Format(T("EditTemplate.Validation.PropertyError"), parameter0,parameter1); } 
  /// <summary>It is not allowed to change template id through current workflow. Original template id is &apos;{0}&apos;</summary> 
- public static string EditTemplate_Validation_TemplateIdChanged { get { return T("EditTemplate.Validation.TemplateIdChanged"); } } 
+ public static string EditTemplate_Validation_TemplateIdChanged(string parameter0) { return string.Format(T("EditTemplate.Validation.TemplateIdChanged"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Plugins.RazorPageTemplate", key);
@@ -5128,9 +5128,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Validation Error</summary> 
  public static string EditUserControlFunctionWorkflow_Validation_DialogTitle { get { return T("EditUserControlFunctionWorkflow.Validation.DialogTitle"); } } 
  /// <summary>Compilation failed: {0}</summary> 
- public static string EditUserControlFunctionWorkflow_Validation_CompilationFailed { get { return T("EditUserControlFunctionWorkflow.Validation.CompilationFailed"); } } 
+ public static string EditUserControlFunctionWorkflow_Validation_CompilationFailed(string parameter0) { return string.Format(T("EditUserControlFunctionWorkflow.Validation.CompilationFailed"), parameter0); } 
  /// <summary>The User Control function should inherit &apos;{0}&apos;</summary> 
- public static string EditUserControlFunctionWorkflow_Validation_IncorrectBaseClass { get { return T("EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass"); } } 
+ public static string EditUserControlFunctionWorkflow_Validation_IncorrectBaseClass(string parameter0) { return string.Format(T("EditUserControlFunctionWorkflow.Validation.IncorrectBaseClass"), parameter0); } 
  /// <summary>Delete User Control Function?</summary> 
  public static string DeleteUserControlFunctionWorkflow_ConfirmDeleteTitle { get { return T("DeleteUserControlFunctionWorkflow.ConfirmDeleteTitle"); } } 
  /// <summary>Delete the selected User Control?</summary> 
@@ -5415,13 +5415,13 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Upload file</summary> 
  public static string UploadWebsiteFileToolTip { get { return T("UploadWebsiteFileToolTip"); } } 
  /// <summary>Show in &quot;{0}&quot;</summary> 
- public static string AddFolderToWhiteListTitle { get { return T("AddFolderToWhiteListTitle"); } } 
+ public static string AddFolderToWhiteListTitle(string parameter0) { return string.Format(T("AddFolderToWhiteListTitle"), parameter0); } 
  /// <summary>Control if this folder should be visible in &quot;{0}&quot;</summary> 
- public static string AddFolderToWhiteListToolTip { get { return T("AddFolderToWhiteListToolTip"); } } 
+ public static string AddFolderToWhiteListToolTip(string parameter0) { return string.Format(T("AddFolderToWhiteListToolTip"), parameter0); } 
  /// <summary>Show in &quot;{0}&quot;</summary> 
- public static string RemoveFolderFromWhiteListTitle { get { return T("RemoveFolderFromWhiteListTitle"); } } 
+ public static string RemoveFolderFromWhiteListTitle(string parameter0) { return string.Format(T("RemoveFolderFromWhiteListTitle"), parameter0); } 
  /// <summary>Control if this folder should be visible in &quot;{0}&quot;</summary> 
- public static string RemoveFolderFromWhiteListToolTip { get { return T("RemoveFolderFromWhiteListToolTip"); } } 
+ public static string RemoveFolderFromWhiteListToolTip(string parameter0) { return string.Format(T("RemoveFolderFromWhiteListToolTip"), parameter0); } 
  /// <summary>Error</summary> 
  public static string DeleteWebsiteFileWorkflow_DeleteErrorTitle { get { return T("DeleteWebsiteFileWorkflow.DeleteErrorTitle"); } } 
  /// <summary>Could not delete the file</summary> 
@@ -5482,7 +5482,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Invalid function name</summary> 
  public static string EditXsltFunctionWorkflow_InvalidName { get { return T("EditXsltFunctionWorkflow.InvalidName"); } } 
  /// <summary>Cannot rename the function, file &apos;{0}&apos; already exists.</summary> 
- public static string EditXsltFunctionWorkflow_CannotRenameFileExists { get { return T("EditXsltFunctionWorkflow.CannotRenameFileExists"); } } 
+ public static string EditXsltFunctionWorkflow_CannotRenameFileExists(string parameter0) { return string.Format(T("EditXsltFunctionWorkflow.CannotRenameFileExists"), parameter0); } 
  /// <summary>The total length of the name and the namespace is too long (used to name the XSL file).</summary> 
  public static string EditXsltFunctionWorkflow_TotalNameTooLang { get { return T("EditXsltFunctionWorkflow.TotalNameTooLang"); } } 
  /// <summary>Duplicate local function names</summary> 
@@ -5593,7 +5593,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Select Function</summary> 
  public static string SetNewFunctionDialogLabel { get { return T("SetNewFunctionDialogLabel"); } } 
  /// <summary>Value for parameter &apos;{0}&apos;</summary> 
- public static string ComplexFunctionCallDialogLabel { get { return T("ComplexFunctionCallDialogLabel"); } } 
+ public static string ComplexFunctionCallDialogLabel(string parameter0) { return string.Format(T("ComplexFunctionCallDialogLabel"), parameter0); } 
  /// <summary>Parameter Type</summary> 
  public static string ParameterTypeLabel { get { return T("ParameterTypeLabel"); } } 
  /// <summary>Parameter Name</summary> 
@@ -5603,11 +5603,11 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Validation failed</summary> 
  public static string ValidationFailedAlertTitle { get { return T("ValidationFailedAlertTitle"); } } 
  /// <summary>Function &apos;{0}&apos; does not exist.</summary> 
- public static string FunctionNotFound { get { return T("FunctionNotFound"); } } 
+ public static string FunctionNotFound(string parameter0) { return string.Format(T("FunctionNotFound"), parameter0); } 
  /// <summary>Required parameter &apos;{0}&apos; has not been defined.</summary> 
- public static string RequiredParameterNotDefined { get { return T("RequiredParameterNotDefined"); } } 
+ public static string RequiredParameterNotDefined(string parameter0) { return string.Format(T("RequiredParameterNotDefined"), parameter0); } 
  /// <summary>Incorrect type cast. Parameter name: &apos;{0}&apos;, function name: &apos;{1}&apos;.</summary> 
- public static string IncorrectTypeCast { get { return T("IncorrectTypeCast"); } } 
+ public static string IncorrectTypeCast(string parameter0,string parameter1) { return string.Format(T("IncorrectTypeCast"), parameter0,parameter1); } 
  /// <summary>Default</summary> 
  public static string ParameterTypeDefaultLabel { get { return T("ParameterTypeDefaultLabel"); } } 
  /// <summary>Constant</summary> 
@@ -5807,7 +5807,7 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Group by this field</summary> 
  public static string GroupByPriorityFirst { get { return T("GroupByPriorityFirst"); } } 
  /// <summary>Group as {0}. priority</summary> 
- public static string GroupByPriorityN { get { return T("GroupByPriorityN"); } } 
+ public static string GroupByPriorityN(string parameter0) { return string.Format(T("GroupByPriorityN"), parameter0); } 
  /// <summary>You can specify that a field should be used to group data - this can improve readability when viewing long lists. Use priority when multiple fields are used for grouping.</summary> 
  public static string GroupByPriorityHelp { get { return T("GroupByPriorityHelp"); } } 
  /// <summary>Tree ordering</summary> 
@@ -5819,9 +5819,9 @@ namespace Composite.Core.ResourceSystem
  /// <summary>Order descending (Z-A)</summary> 
  public static string TreeOrderingFirstDescending { get { return T("TreeOrderingFirstDescending"); } } 
  /// <summary>Order {0}. ascending</summary> 
- public static string TreeOrderingNAscending { get { return T("TreeOrderingNAscending"); } } 
+ public static string TreeOrderingNAscending(string parameter0) { return string.Format(T("TreeOrderingNAscending"), parameter0); } 
  /// <summary>Order {0}. descending</summary> 
- public static string TreeOrderingNDescending { get { return T("TreeOrderingNDescending"); } } 
+ public static string TreeOrderingNDescending(string parameter0) { return string.Format(T("TreeOrderingNDescending"), parameter0); } 
  /// <summary>You can specify that a field should be used to order data in the tree view - this can improve readability when a field is used to position elements on the website.</summary> 
  public static string TreeOrderingHelp { get { return T("TreeOrderingHelp"); } } 
  /// <summary>Is title field</summary> 
