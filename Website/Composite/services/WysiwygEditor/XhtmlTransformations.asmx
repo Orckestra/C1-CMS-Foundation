@@ -67,13 +67,17 @@ namespace Composite.Services
                     throw new InvalidOperationException("Parse failed for \n" + htmlFragment, ex);
                 }
 
-                List<XElement> htmlWysiwygImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeHtmlWysiwygRepresentation")).ToList();
+                List<XElement> htmlWysiwygImages = structuredResult
+                    .Descendants(Namespaces.Xhtml + "img")
+                    .Where(e => e.Attribute("alt") != null 
+                                && e.Attribute("class") != null
+                                && e.Attribute("class").Value.Contains("compositeHtmlWysiwygRepresentation")).ToList();
 
                 foreach (var htmlWysiwygImageElement in htmlWysiwygImages)
                 {
                     try
                     {
-                        string html = HttpUtility.UrlDecode(htmlWysiwygImageElement.Attribute("alt").Value);
+                        string html = htmlWysiwygImageElement.Attribute("alt").Value;
                         XElement functionElement = XElement.Parse(html);
 
                         if (IsFunctionAloneInParagraph(htmlWysiwygImageElement))
@@ -100,7 +104,7 @@ namespace Composite.Services
                             && e.Attribute("alt") != null
                            && e.Attribute("class") != null
                            && e.Attribute("class").Value.Contains("compositeFunctionWysiwygRepresentation")).ToList();
-
+                
                 foreach (var functionImageElement in functionImages)
                 {
                     var nextNode = functionImageElement.NextNode;
@@ -119,7 +123,7 @@ namespace Composite.Services
                     // Replacing function call images with function markup
                     try
                     {
-                        string functionMarkup = HttpUtility.UrlDecode(functionImageElement.Attribute("alt").Value);
+                        string functionMarkup = functionImageElement.Attribute("alt").Value;
                         XElement functionElement = XElement.Parse(functionMarkup);
 
                         if (IsFunctionAloneInParagraph(functionImageElement))
@@ -138,7 +142,11 @@ namespace Composite.Services
                 }
 
 
-                IEnumerable<XElement> dataFieldReferenceImages = structuredResult.Descendants(Namespaces.Xhtml + "img").Where(f => f.Attribute("class") != null && f.Attribute("class").Value.Contains("compositeFieldReferenceWysiwygRepresentation"));
+                IEnumerable<XElement> dataFieldReferenceImages = 
+                    structuredResult.Descendants(Namespaces.Xhtml + "img")
+                    .Where(f => f.Attribute("class") != null 
+                                && f.Attribute("class").Value.Contains("compositeFieldReferenceWysiwygRepresentation"));
+                
                 foreach (var referenceImageElement in dataFieldReferenceImages.ToList())
                 {
                     try
