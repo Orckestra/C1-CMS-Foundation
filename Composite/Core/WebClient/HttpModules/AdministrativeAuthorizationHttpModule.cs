@@ -167,9 +167,11 @@ namespace Composite.Core.WebClient.HttpModules
                     _forceHttps = (bool)protocolElement.Attribute("forceHttps");
                     _allowFallbackToHttp = (bool)protocolElement.Attribute("allowFallbackToHttp");
 
-                    if (protocolElement.Attribute("customHttpsPortNumber") != null && protocolElement.Attribute("customHttpsPortNumber").Value.Length > 0)
+                    var customHttpsPortNumberAttrib = protocolElement.Attribute("customHttpsPortNumber");
+
+                    if (customHttpsPortNumberAttrib != null && customHttpsPortNumberAttrib.Value.Length > 0)
                     {
-                        _customHttpsPortNumber = (int)protocolElement.Attribute("customHttpsPortNumber");
+                        _customHttpsPortNumber = (int)customHttpsPortNumberAttrib;
                     }
                 }
                 catch (Exception ex)

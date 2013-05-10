@@ -3,10 +3,10 @@
   <!--
   	Changes to this file require a web app restart to take effect.
   
-  	  C1ConsoleAccess@enabled				        : when false the C1 Console cannot be accessed. Ever.
+  	  C1ConsoleAccess@enabled				        : when false the C1 Console cannot be accessed.
       
   	  ClientProtocol@forceHttps			        : when true requests to ~/Composite will be redirected to HTTPS
-      ClientProtocol@allowFallbackToHttp	  : when true you will be able to enter ~/Composite if no HTTPS is available on the current web server. Only effective when @forceHttps = true.
+      ClientProtocol@allowFallbackToHttp	  : when true you will be able to enter ~/Composite if no HTTPS is available on the current hostname. Only effective when @forceHttps = true.
       ClientProtocol@customHttpsPortNumber  : empty or numeric - the port number HTTPS is running on, if custom.
   -->
 </C1ConsoleAccess>
