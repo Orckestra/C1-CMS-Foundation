@@ -65,7 +65,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
             return new UserControlBasedFunction(@namespace, name, description, parameters, typeof(UserControl), virtualPath, this);
         }
 
-        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, string cachedReturnType, string cachedDescription)
+        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, Type returnType, string cachedDescription)
         {
             return new UserControlBasedFunction(@namespace, name, cachedDescription, virtualPath, this);
         }

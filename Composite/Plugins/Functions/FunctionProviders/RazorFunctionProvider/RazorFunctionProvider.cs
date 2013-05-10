@@ -53,9 +53,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
             return new RazorBasedFunction(@namespace, name, razorFunction.FunctionDescription, functionParameters, razorFunction.FunctionReturnType, virtualPath, this);
 		}
 
-        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, string cachedReturnType, string cachedDescription)
+        protected override IFunction InstantiateFunctionFromCache(string virtualPath, string @namespace, string name, Type returnType, string cachedDescription)
         {
-            var returnType = TypeManager.TryGetType(cachedReturnType);
             if (returnType != null)
             {
                 return new RazorBasedFunction(@namespace, name, cachedDescription, returnType, virtualPath, this);

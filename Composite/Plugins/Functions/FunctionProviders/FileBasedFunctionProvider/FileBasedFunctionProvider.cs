@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Hosting;
 using Composite.Core;
-using Composite.Core.Configuration;
+using Composite.Core.Caching;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Types;
@@ -19,6 +18,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
     internal abstract class FileBasedFunctionProvider<FunctionType> : IFunctionProvider 
         where FunctionType : FileBasedFunction<FunctionType> 
 	{
+        static readonly FileRelatedDataCache<CachedFunctionInformation> _functionInfoCache =
+            new FileRelatedDataCache<CachedFunctionInformation>(
+                "fileBasedFunction",
+                CachedFunctionInformation.Serialize,
+                CachedFunctionInformation.Deserialize);
+
         private static readonly string LogTitle = "FileBasedFunctionProvider";
 		private static readonly object _lock = new object();
 
@@ -60,6 +65,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 				foreach (var file in files)
 				{
+				    string filePath = file.FullName;
                     string @namespace = ExtractFunctionNamespace(file.FullName);
                     string name = Path.GetFileNameWithoutExtension(file.Name);
 
@@ -72,15 +78,15 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         @namespace = DefaultFunctionNamespace;
                     }
 
-                    IFunction function;
+				    string fullFunctionName = @namespace + "." + name;
 
-                    DateTime lastWriteTimeUtc = file.LastWriteTimeUtc;
+                    IFunction function;
 
                     try
                     {
                         CachedFunctionInformation cachedFunctionInfo;
 
-                        if (!GetCachedFunctionInformation(@namespace, name, lastWriteTimeUtc, out cachedFunctionInfo))
+                        if (!_functionInfoCache.Get(fullFunctionName, filePath, out cachedFunctionInfo))
                         {
                             function = InstantiateFunction(virtualPath, @namespace, name);
 
@@ -91,7 +97,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                             if ((function == null && !HostingEnvironment.ApplicationHost.ShutdownInitiated())
                                 || (function != null && !functionFailedToCompile))
                             {
-                                CacheFunctionInformation(@namespace, name, lastWriteTimeUtc, function);
+                                _functionInfoCache.Add(fullFunctionName, filePath,
+                                    function != null ? new CachedFunctionInformation(function) : null);
                             }
                         }
                         else
@@ -134,73 +141,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 				return returnList;
 			}
 		}
-
-        private static string GetCacheFilePath(string @namespace, string name)
-        {
-            string nameHash = (@namespace + "." + name).GetHashCode().ToString(CultureInfo.InvariantCulture);
-
-            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), "function" + nameHash);
-        }
-
-        private void CacheFunctionInformation(string @namespace, string name, DateTime lastWriteTimeUtc, IFunction function)
-        {
-            string cacheFileName = GetCacheFilePath(@namespace, name);
-
-            var lines = new List<string>();
-
-            if (function != null)
-            {
-                lines.Add(TypeManager.SerializeType(function.ReturnType));
-                lines.AddRange(function.Description.Split(new [] { Environment.NewLine }, StringSplitOptions.None));
-            }
-
-            try
-            {
-                C1File.WriteAllLines(cacheFileName, lines);
-                C1File.SetCreationTimeUtc(cacheFileName, lastWriteTimeUtc);
-            }
-            catch (Exception ex)
-            {
-                Log.LogWarning(LogTitle, "Failed to cache function info. Function: '{0}.{1}'", @namespace, name);
-                Log.LogWarning(LogTitle, ex);
-            }
-        }
-
-        private bool GetCachedFunctionInformation(string @namespace, string name, DateTime lastWriteTimeUtc, out CachedFunctionInformation cachedFunctionInformation)
-        {
-            string cacheFileName = GetCacheFilePath(@namespace, name);
-
-            try
-            {
-                if (!C1File.Exists(cacheFileName) || C1File.GetCreationTimeUtc(cacheFileName) != lastWriteTimeUtc)
-                {
-                    cachedFunctionInformation = null;
-                    return false;
-                }
-
-                var lines = C1File.ReadAllLines(cacheFileName);
-                if (lines == null || lines.Length == 0)
-                {
-                    cachedFunctionInformation = null;
-                }
-                else
-                {
-                    string dynamicTypeName = lines[0];
-                    string description = string.Join(Environment.NewLine, lines.Skip(1));
-
-                    cachedFunctionInformation = new CachedFunctionInformation { Description = description, ReturnType = dynamicTypeName };
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.LogWarning(LogTitle, "Failed to load function info from cache. File: '{0}'", cacheFileName);
-                Log.LogWarning(LogTitle, ex);
-
-                cachedFunctionInformation = null;
-                return false;
-            }
-            return true;
-        }
 
         private static string CombineVirtualPath(params string[] parts)
         {
@@ -257,14 +197,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <param name="virtualPath">The virtual path.</param>
         /// <param name="namespace">The namespace.</param>
         /// <param name="name">The name.</param>
-        /// <param name="cachedReturnType">Cached value of return type.</param>
+        /// <param name="returnType">Cached value of return type.</param>
         /// <param name="cachedDescription">Cached value of the description.</param>
         /// <returns></returns>
         protected virtual IFunction InstantiateFunctionFromCache(
             string virtualPath,
             string @namespace,
             string name,
-            string cachedReturnType,
+            Type returnType,
             string cachedDescription)
         {
             return InstantiateFunction(virtualPath, @namespace, name);
@@ -319,8 +259,45 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
         private class CachedFunctionInformation
         {
-            public string ReturnType { get; set; }
-            public string Description { get; set; }
+            public Type ReturnType { get; private set; }
+            public string Description { get; private set; }
+
+            private CachedFunctionInformation() {}
+
+            public CachedFunctionInformation(IFunction function)
+            {
+                ReturnType = function.ReturnType;
+                Description = function.Description;
+            }
+
+            public static void Serialize(CachedFunctionInformation data, string filePath)
+            {
+                var lines = new List<string>();
+
+                if (data != null)
+                {
+                    lines.Add(TypeManager.SerializeType(data.ReturnType));
+                    lines.AddRange(data.Description.Split(new [] { Environment.NewLine }, StringSplitOptions.None));
+                }
+
+                C1File.WriteAllLines(filePath, lines);
+            }
+
+            public static CachedFunctionInformation Deserialize(string filePath)
+            {
+                var lines = C1File.ReadAllLines(filePath);
+                if (lines == null || lines.Length == 0)
+                {
+                    return null;
+                }
+                
+                Type type = TypeManager.TryGetType(lines[0]);
+                if (type == null) return null;
+
+                string description = string.Join(Environment.NewLine, lines.Skip(1));
+
+                return new CachedFunctionInformation { Description = description, ReturnType = type };
+            }
         }
 	}
 }
