@@ -142,11 +142,6 @@ namespace Composite
                         }
                     }
                 }
-
-                using (new TimeMeasurement("Initializing tree system"))
-                {
-                    TreeFacade.Initialize();
-                }
             }
         }
 
@@ -808,16 +803,11 @@ namespace Composite
                 Log.LogVerbose(LogTitle, "Starting: " + _message);
             }
 
-
-            #region IDisposable Members
-
             public void Dispose()
             {
                 int executionTime = Environment.TickCount - _startTime;
                 Log.LogVerbose(LogTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
             }
-
-            #endregion
         }
 
 
