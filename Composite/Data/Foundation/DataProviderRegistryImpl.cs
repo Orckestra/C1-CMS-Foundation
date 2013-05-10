@@ -221,8 +221,6 @@ namespace Composite.Data.Foundation
                 if (false == _interfaceTypeToReadableProviderNamesDictionary.ContainsKey(typeToAdd))
                 {
                     _interfaceTypeToReadableProviderNamesDictionary.Add(typeToAdd, new List<string>());
-
-                    Core.Logging.LoggingService.LogVerbose("DataProviderRegistry", string.Format("Adding supported IData interface: {0}", typeToAdd));
                 }
 
                 if (false == _interfaceTypeToReadableProviderNamesDictionary[typeToAdd].Contains(providerName))

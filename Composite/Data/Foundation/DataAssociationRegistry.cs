@@ -258,11 +258,7 @@ namespace Composite.Data.Foundation
                 Verify.IsFalse(dataAssociationInfos.ContainsKey(associatedInterface), "Failed to register interface '{0}'. Data association already exist, type: '{1}'".FormatWith(interfaceType, associatedInterface));
                 dataAssociationInfos.Add(associatedInterface, dataAssociationInfo);
 
-                if (DataProviderRegistry.AllInterfaces.Contains(associatedInterface) == true)
-                {
-                    Log.LogVerbose("DataReferenceRegistry", string.Format("The data type '{0}' is associated to the data type '{1}'", interfaceType, associatedInterface));
-                }
-                else
+                if (!DataProviderRegistry.AllInterfaces.Contains(associatedInterface))
                 {
                     Log.LogCritical("DataReferenceRegistry", string.Format("The one type '{0}' is associated to the non supported data type '{1}'", interfaceType, associatedInterface));
                 }

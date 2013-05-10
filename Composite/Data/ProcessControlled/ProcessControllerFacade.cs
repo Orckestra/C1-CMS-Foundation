@@ -347,11 +347,6 @@ namespace Composite.Data.ProcessControlled
             foreach (Type interfaceType in ProcessControllerRegistry.DataTypesWithProcessControllers)
             {
                 Dictionary<Type, Type> processControllerTypes = ProcessControllerRegistry.GetProcessControllerTypes(interfaceType);
-
-                foreach (var kvp in processControllerTypes)
-                {
-                    LoggingService.LogVerbose("ProcessControllerFacade", string.Format("'{0}' process controller ('{1}') added to data type '{2}'", kvp.Value, kvp.Key, interfaceType));
-                }
             }
 
             if (RuntimeInformation.IsUnittest == false)
