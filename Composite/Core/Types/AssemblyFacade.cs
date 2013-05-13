@@ -15,8 +15,11 @@ namespace Composite.Core.Types
     /// <exclude />
     [EditorBrowsable(EditorBrowsableState.Never)] 
 	public static class AssemblyFacade
-	{
+    {
+        private static readonly string LogTitle = typeof (AssemblyFacade).Name;
         private static readonly Type RuntimeModuleType = typeof(Module).Assembly.GetType("System.Reflection.RuntimeModule");
+
+        private static bool _compositeGeneratedErrorLogged;
 
         /// <exclude />
         public static IEnumerable<Assembly> GetLoadedAssembliesFromBin()
@@ -70,6 +73,40 @@ namespace Composite.Core.Types
             return assembliesFromBin;
         }
 
+        /// <summary>
+        /// Gets the Composite.Generated assembly from the  "~/Bin" folder
+        /// </summary>
+        /// <exclude />
+        public static Assembly GetGeneratedAssemblyFromBin()
+        {
+            foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll"))
+            {
+                string assemblyFileName = Path.GetFileName(binFilePath);
+
+                if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) < 0)
+                {
+                    continue;
+                }
+
+                try
+                {
+                    return Assembly.LoadFrom(binFilePath);
+                }
+                catch(Exception ex)
+                {
+                    if (!_compositeGeneratedErrorLogged)
+                    {
+                        Log.LogInformation(LogTitle, "Failed to load ~/Bin/Composite.Generated.dll ");
+                        Log.LogWarning(LogTitle, ex);
+
+                        _compositeGeneratedErrorLogged = true;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         private static bool IsDotNetAssembly(string dllFilePath)
         {
             try {
@@ -98,7 +135,7 @@ namespace Composite.Core.Types
             // Checking 
             // (asm.ManifestModule as System.Reflection.RuntimeModule).GetFullyQualifiedName() == "<In Memory Module>"
 
-            if (!RuntimeModuleType.IsAssignableFrom(asm.ManifestModule.GetType())) return false;
+            if (!RuntimeModuleType.IsInstanceOfType(asm.ManifestModule)) return false;
 
             var method = RuntimeModuleType.GetMethod("GetFullyQualifiedName", BindingFlags.NonPublic | BindingFlags.Instance);
             return (method.Invoke(asm.ManifestModule, new object[0]) as string) == "<In Memory Module>";
