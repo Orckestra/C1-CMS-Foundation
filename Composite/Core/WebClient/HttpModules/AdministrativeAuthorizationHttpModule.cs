@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Xml.Linq;
+
 using Composite.C1Console.Security;
 using Composite.Core.IO;
 using Composite.Core.Logging;
 using Composite.Core.Xml;
-using System.IO;
 
 
 namespace Composite.Core.WebClient.HttpModules
@@ -48,7 +49,7 @@ namespace Composite.Core.WebClient.HttpModules
         }
 
 
-        
+
         public void Dispose()
         {
         }
@@ -93,23 +94,26 @@ namespace Composite.Core.WebClient.HttpModules
                     throw new System.Security.SecurityException("~/Composite requests not allowed on this site");
                 }
 
-                // https check
-                if (_forceHttps && context.Request.Url.Scheme != "https")
+                if (currentPath.Length > _adminRootPath.Length)
                 {
-                    if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
+                    // https check
+                    if (_forceHttps && context.Request.Url.Scheme != "https")
                     {
-                        context.Response.Redirect(string.Format("{0}?fallback={1}&httpsport={2}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower(), _customHttpsPortNumber));
+                        if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
+                        {
+                            context.Response.Redirect(string.Format("{0}?fallback={1}&httpsport={2}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower(), _customHttpsPortNumber));
+                        }
                     }
-                }
 
-                // access check
-                if (UserValidationFacade.IsLoggedIn() == false)
-                {
-                    if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
+                    // access check
+                    if (UserValidationFacade.IsLoggedIn() == false)
                     {
-                        LoggingService.LogWarning("Authorization", string.Format("DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath));
-                        string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
-                        context.Response.Redirect(redirectUrl, true);
+                        if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
+                        {
+                            LoggingService.LogWarning("Authorization", string.Format("DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath));
+                            string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
+                            context.Response.Redirect(redirectUrl, true);
+                        }
                     }
                 }
             }
