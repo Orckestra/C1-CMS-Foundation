@@ -94,26 +94,23 @@ namespace Composite.Core.WebClient.HttpModules
                     throw new System.Security.SecurityException("~/Composite requests not allowed on this site");
                 }
 
-                if (currentPath.Length > _adminRootPath.Length)
+                // https check
+                if (_forceHttps && context.Request.Url.Scheme != "https")
                 {
-                    // https check
-                    if (_forceHttps && context.Request.Url.Scheme != "https")
+                    if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
                     {
-                        if (!AlwaysAllowUnsecured(context.Request.Url.LocalPath) && !UserOptedOutOfHttps(context))
-                        {
-                            context.Response.Redirect(string.Format("{0}?fallback={1}&httpsport={2}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower(), _customHttpsPortNumber));
-                        }
+                        context.Response.Redirect(string.Format("{0}?fallback={1}&httpsport={2}", unsecureRedirectRelativePath, _allowFallbackToHttp.ToString().ToLower(), _customHttpsPortNumber));
                     }
+                }
 
-                    // access check
-                    if (UserValidationFacade.IsLoggedIn() == false)
+                // access check
+                if (currentPath.Length > _adminRootPath.Length && UserValidationFacade.IsLoggedIn() == false)
+                {
+                    if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
                     {
-                        if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
-                        {
-                            LoggingService.LogWarning("Authorization", string.Format("DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath));
-                            string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
-                            context.Response.Redirect(redirectUrl, true);
-                        }
+                        LoggingService.LogWarning("Authorization", string.Format("DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath));
+                        string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
+                        context.Response.Redirect(redirectUrl, true);
                     }
                 }
             }

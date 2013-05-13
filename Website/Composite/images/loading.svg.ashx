@@ -8,10 +8,10 @@ public class loading : IHttpHandler {
     public void ProcessRequest (HttpContext context) {
         TimeSpan cacheDuration = TimeSpan.FromDays(7);
         
-        context.Response.Cache.SetCacheability(HttpCacheability.Public);
+        context.Response.Cache.SetCacheability(HttpCacheability.Private);
         context.Response.Cache.SetExpires(DateTime.Now.Add(cacheDuration));
         context.Response.Cache.SetMaxAge(cacheDuration);
-        context.Response.CacheControl = HttpCacheability.Public.ToString();
+        context.Response.CacheControl = HttpCacheability.Private.ToString();
         context.Response.Cache.SetValidUntilExpires(true);
 
         HttpBrowserCapabilities browser = context.Request.Browser;
