@@ -15,7 +15,6 @@ using Composite.Core.Application.Plugins.ApplicationStartupHandler;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
@@ -68,9 +67,18 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private static readonly string LogTitle = typeof (AttributeBasedApplicationStartupHandler).Name;
         private static readonly string TempFileName = "StartupHandlersCache.xml";
 
-        private List<MethodInfo> _onBeforeInitializeMethods = new List<MethodInfo>();
-        private List<MethodInfo> _onInitializedMethods = new List<MethodInfo>();
-        // private string[] AssembliesToIgnore = new[] { "Microsoft.Practices.", "Composite,", "ICSharpCode.SharpZipLib,", "TidyNet," };
+        private readonly List<MethodInfo> _onBeforeInitializeMethods = new List<MethodInfo>();
+        private readonly List<MethodInfo> _onInitializedMethods = new List<MethodInfo>();
+        private static readonly string[] AssembliesToIgnore = new[]
+            {
+                "Composite", 
+                "Composite.Workflows", 
+                "Composite.Generated", 
+                "ICSharpCode.SharpZipLib", 
+                "TidyNet",
+                "System.",
+                "Microsoft."
+            };
         private static XmlSerializer _xmlSerializer;
 
         private string _tempFilePath;
@@ -205,9 +213,14 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private static Type[] GetSubscribedTypes(string filePath, List<AssemblyInfo> cachedTypesInfo, ref bool cacheHasBeenUpdated)
         {
             string assemblyName = Path.GetFileNameWithoutExtension(filePath);
-            if(assemblyName == "Composite.Generated")
+
+            foreach (string assemblyToIgnore in AssembliesToIgnore)
             {
-                return null;
+                if (assemblyName == assemblyToIgnore || assemblyName.StartsWith(assemblyToIgnore + ",")
+                    || (assemblyToIgnore.EndsWith(".") && assemblyName.StartsWith(assemblyToIgnore)))
+                {
+                    return null;
+                }
             }
 
             DateTime modificationDate = C1File.GetLastWriteTime(filePath);
@@ -238,10 +251,10 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (ReflectionTypeLoadException ex)
             {
-                LoggingService.LogWarning(typeof(AttributeBasedApplicationStartupHandler).Name, "Failed to load assebmly '{0}'".FormatWith(filePath));
+                Log.LogWarning(LogTitle, "Failed to load assebmly '{0}'".FormatWith(filePath));
                 if(ex.LoaderExceptions != null && ex.LoaderExceptions.Length > 0)
                 {
-                    LoggingService.LogError(typeof(AttributeBasedApplicationStartupHandler).Name, ex.LoaderExceptions[0]);
+                    Log.LogError(LogTitle, ex.LoaderExceptions[0]);
                 }
 
                 return null;
@@ -278,7 +291,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 try
                 {
-                    bool hasAttribute = type.GetCustomAttributes(false).Where(f => f.GetType() == typeof(ApplicationStartupAttribute)).Any();
+                    bool hasAttribute = type.GetCustomAttributes(false).Any(f => f.GetType() == typeof(ApplicationStartupAttribute));
 
                     if (hasAttribute)
                     {
@@ -479,7 +492,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             public DateTime LastModified { get; set; }
 
             /// <exclude />
-            public string[] SubscribedTypes;
+            public string[] SubscribedTypes; 
         }
     }
 }

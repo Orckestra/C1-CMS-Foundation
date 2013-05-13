@@ -47,6 +47,11 @@ namespace Composite.Core.Types
         }
 
 
+        
+        /// <summary>
+        /// Gets list of file pathes of .NET dll files from "~/Bin" folder, excluding Composite.Generated.dll.
+        /// </summary>
+        /// <returns></returns>
         /// <exclude />
         public static IEnumerable<string> GetAssembliesFromBin()
         {

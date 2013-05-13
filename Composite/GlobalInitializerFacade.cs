@@ -9,13 +9,13 @@ using System.Web.Hosting;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
-using Composite.C1Console.Trees;
 using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.Core.Threading;
@@ -110,11 +110,11 @@ namespace Composite
                 Log.LogWarning(LogTitleNormal, new InvalidOperationException("System is initializing, yet missing first time initialization"));
             }
 
-            if ((_initializing == false) && (_coreInitialized == false))
+            if (!_initializing && !_coreInitialized)
             {
                 using (GlobalInitializerFacade.CoreLockScope)
                 {
-                    if ((_initializing == false) && (_coreInitialized == false))
+                    if (!_initializing && !_coreInitialized)
                     {
                         try
                         {
@@ -155,18 +155,18 @@ namespace Composite
 
             LoggingService.LogVerbose(LogTitle, string.Format("Initializing the system core - installation id = ", installationId));
 
-            using (new TimeMeasurement("Initialization of the static data types"))
+            using (new LogExecutionTime(LogTitle, "Initialization of the static data types"))
             {
                 DataProviderRegistry.InitializeDataTypes();
             }
 
 
-            using (new TimeMeasurement("Auto update of static data types"))
+            using (new LogExecutionTime(LogTitle, "Auto update of static data types"))
             {
                 bool typesUpdated = AutoUpdateStaticDataTypes();
                 if (typesUpdated)
                 {
-                    using (new TimeMeasurement("Reinitialization of the static data types"))
+                    using (new LogExecutionTime(LogTitle, "Reinitialization of the static data types"))
                     {
                         SqlTableInformationStore.Flush();
                         DataProviderRegistry.Flush();
@@ -181,7 +181,7 @@ namespace Composite
             }
 
 
-            using (new TimeMeasurement("Ensure data stores"))
+            using (new LogExecutionTime(LogTitle, "Ensure data stores"))
             {
                 bool dataStoresCreated = DataStoreExistenceVerifier.EnsureDataStores();
 
@@ -196,25 +196,25 @@ namespace Composite
 
 
 
-            using (new TimeMeasurement("Initializing data process controllers"))
+            using (new LogExecutionTime(LogTitle, "Initializing data process controllers"))
             {
                 ProcessControllerFacade.Initialize_PostDataTypes();
             }
 
 
-            using (new TimeMeasurement("Initializing data type references"))
+            using (new LogExecutionTime(LogTitle, "Initializing data type references"))
             {
                 DataReferenceRegistry.Initialize_PostDataTypes();
             }
 
 
-            using (new TimeMeasurement("Initializing data type associations"))
+            using (new LogExecutionTime(LogTitle, "Initializing data type associations"))
             {
                 DataAssociationRegistry.Initialize_PostDataTypes();
             }
 
 
-            using (new TimeMeasurement("Initializing functions"))
+            using (new LogExecutionTime(LogTitle, "Initializing functions"))
             {
                 MetaFunctionProviderRegistry.Initialize_PostDataTypes();
 
@@ -224,7 +224,7 @@ namespace Composite
             LoggingService.LogVerbose(LogTitle, "Starting initialization of administrative secondaries");
 
 
-            using (new TimeMeasurement("Initializing workflow runtime"))
+            using (new LogExecutionTime(LogTitle, "Initializing workflow runtime"))
             {
                 WorkflowFacade.EnsureInitialization();
             }
@@ -232,25 +232,25 @@ namespace Composite
 
             if (!RuntimeInformation.IsUnittest)
             {
-                using (new TimeMeasurement("Initializing flow system"))
+                using (new LogExecutionTime(LogTitle, "Initializing flow system"))
                 {
                     FlowControllerFacade.Initialize();
                 }
 
-                using (new TimeMeasurement("Initializing console system"))
+                using (new LogExecutionTime(LogTitle, "Initializing console system"))
                 {
                     ConsoleFacade.Initialize();
                 }
             }
 
 
-            using (new TimeMeasurement("Auto installing packages"))
+            using (new LogExecutionTime(LogTitle, "Auto installing packages"))
             {
                 DoAutoInstallPackages();
             }
 
 
-            using (new TimeMeasurement("Loading element providers"))
+            using (new LogExecutionTime(LogTitle, "Loading element providers"))
             {
                 ElementProviderLoader.LoadAllProviders();
             }
@@ -315,7 +315,6 @@ namespace Composite
                 _initializing = false;
                 _exceptionThrownDurringInitialization = null;
 
-                // TODO: Check why 1 flush is acceptable here
                 Verify.That(_fatalErrorFlushCount <= 1, "Failed to reload the system. See the log for the details.");
 
                 InitializeTheSystem();
@@ -396,7 +395,7 @@ namespace Composite
         {
             using (GlobalInitializerFacade.CoreLockScope)
             {
-                using (new TimeMeasurement("Uninitializing the system"))
+                using (new LogExecutionTime(LogTitle, "Uninitializing the system"))
                 {
                     runInWriterLockScopeDelegage();
                 }
@@ -420,18 +419,18 @@ namespace Composite
 
         private static void DoAutoInstallPackages()
         {
-            if (IsReinitializingTheSystem == true) return;
+            if (IsReinitializingTheSystem) return;
 
             try
             {
                 // This is not so good, unittests run and normal runs should have same semantic behavior.
                 // But if this is not here, some unittests will start failing. /MRJ
-                if (RuntimeInformation.IsUnittest == true) return;
+                if (RuntimeInformation.IsUnittest) return;
 
                 var zipFiles = new List<AutoInstallPackageInfo>();
 
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory);
-                if (C1Directory.Exists(directory) == true)
+                if (C1Directory.Exists(directory))
                 {
                     Log.LogVerbose(LogTitle, string.Format("Installing packages from: {0}", directory));
                     zipFiles.AddRange(C1Directory.GetFiles(directory, "*.zip")
@@ -442,7 +441,7 @@ namespace Composite
                     Log.LogVerbose(LogTitle, string.Format("Auto install directory not found: {0}", directory));
                 }
 
-                if (RuntimeInformation.IsDebugBuild == true)
+                if (RuntimeInformation.IsDebugBuild)
                 {
                     string workflowTestDir = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.AutoPackageInstallDirectory), "WorkflowTesting");
                     if (C1Directory.Exists(workflowTestDir))
@@ -499,7 +498,7 @@ namespace Composite
                         Log.LogWarning(LogTitleNormal, ex);
                     }
 
-                    if (zipFile.ToBeDeleted == true)
+                    if (zipFile.ToBeDeleted)
                     {
                         FileUtils.Delete(zipFile.FilePath);
                     }
@@ -632,7 +631,7 @@ namespace Composite
         {
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
-            if (_readerWriterLock.IsReaderLockHeld == true)
+            if (_readerWriterLock.IsReaderLockHeld)
             {
                 LockCookie lockCookie = _readerWriterLock.UpgradeToWriterLock(GlobalSettingsFacade.DefaultWriterLockWaitTimeout);
 
@@ -648,7 +647,7 @@ namespace Composite
 
             lock (_threadLocking)
             {
-                if (_threadLocking.WriterLocksPerThreadId.ContainsKey(threadId) == true)
+                if (_threadLocking.WriterLocksPerThreadId.ContainsKey(threadId))
                 {
                     _threadLocking.WriterLocksPerThreadId[threadId] = _threadLocking.WriterLocksPerThreadId[threadId] + 1;
                 }
@@ -671,7 +670,7 @@ namespace Composite
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
             if ((_threadLocking.WriterLocksPerThreadId[threadId] == 1) &&
-                (_threadLocking.LockCookiesPerThreadId.ContainsKey(threadId) == true))
+                (_threadLocking.LockCookiesPerThreadId.ContainsKey(threadId)))
             {
                 LockCookie lockCookie = _threadLocking.LockCookiesPerThreadId[threadId];
 
@@ -788,27 +787,6 @@ namespace Composite
             }
         }
         #endregion
-
-
-
-        private class TimeMeasurement : IDisposable
-        {
-            private string _message;
-            private int _startTime;
-
-            public TimeMeasurement(string message)
-            {
-                _message = message;
-                _startTime = Environment.TickCount;
-                Log.LogVerbose(LogTitle, "Starting: " + _message);
-            }
-
-            public void Dispose()
-            {
-                int executionTime = Environment.TickCount - _startTime;
-                Log.LogVerbose(LogTitle, "Finished: " + _message + " ({0} ms)".FormatWith(executionTime));
-            }
-        }
 
 
         private sealed class ThreadLockingInformation
