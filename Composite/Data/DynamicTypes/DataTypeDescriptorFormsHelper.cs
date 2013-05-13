@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Security;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Core.Xml;
@@ -800,13 +801,19 @@ namespace Composite.Data.DynamicTypes
 
         internal bool BindingIsOptional(string bindingName)
         {
+            XElement bindingsXml;
             string formDefinition = AlternateFormDefinition ?? _generatedForm;
 
-            Verify.IsNotNull(formDefinition, "Failed to get the form definintion");
+            if (!formDefinition.IsNullOrEmpty())
+            {
+                bindingsXml = XElement.Parse(formDefinition);
+            }
+            else
+            {
+                bindingsXml = BindingXml;
+            }
 
-            XElement formDefinitionElement = XElement.Parse(formDefinition);
-
-            var binding = formDefinitionElement
+            var binding = bindingsXml
                 .Descendants(CmsNamespace + "binding")
                 .FirstOrDefault(e => (string) e.Attribute("name") == bindingName);
 
