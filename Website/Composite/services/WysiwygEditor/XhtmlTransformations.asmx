@@ -597,9 +597,16 @@ namespace Composite.Services
                     // just fall back to listing param names and raw values...
                 }
 
-                if (!paramValue.IsNullOrEmpty() && paramValue.Length > 50)
+                if (!paramValue.IsNullOrEmpty() && paramValue.Length > 36)
                 {
-                    paramValue = paramValue.Substring(0, 45) + "...";
+                    if (paramValue.IndexOf(' ') == -1)
+                    {
+                        paramValue = "...";
+                    }
+                    else
+                    {
+                        paramValue = paramValue.Substring(0, 35) + "...";
+                    }
                 }
                         
                 description.AppendLine("{0} = {1}".FormatWith(paramLabel, paramValue));
