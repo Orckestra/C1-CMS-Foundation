@@ -7,12 +7,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 {
     internal sealed class SqlTableInformation : ISqlTableInformation
     {
-        private string _tableName;
+        private readonly string _tableName;
         private bool _hasIdentityColumn;
         private string _identityColumnName;
 
-        private Dictionary<string, SqlColumnInformation> _columns = new Dictionary<string, SqlColumnInformation>();
-        private int? _hashCode = null;
+        private readonly Dictionary<string, SqlColumnInformation> _columns = new Dictionary<string, SqlColumnInformation>();
+        private int? _hashCode;
 
         internal SqlTableInformation(string tableName)
         {
@@ -61,7 +61,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
         internal void AddColumnInformation(SqlColumnInformation columnInformation)
         {
-            if (true == columnInformation.IsIdentity)
+            if (columnInformation.IsIdentity)
             {
                 _hasIdentityColumn = true;
                 _identityColumnName = columnInformation.ColumnName;
@@ -75,21 +75,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
         public override int GetHashCode()
         {
-            if (false == _hashCode.HasValue)
+            if (!_hashCode.HasValue)
             {
-                if (true == _hasIdentityColumn)
+                int calculatedHashCode =_tableName.GetHashCode() ^
+                                        _hasIdentityColumn.GetHashCode() ^
+                                        _columns.GetContentHashCode();
+
+                if (_hasIdentityColumn)
                 {
-                    _hashCode = _tableName.GetHashCode() ^
-                                _hasIdentityColumn.GetHashCode() ^
-                                _identityColumnName.GetHashCode() ^
-                                _columns.GetContentHashCode();
+                    calculatedHashCode  ^= _identityColumnName.GetHashCode();
                 }
-                else
-                {
-                    _hashCode = _tableName.GetHashCode() ^
-                                _hasIdentityColumn.GetHashCode() ^
-                                _columns.GetContentHashCode();
-                }
+
+                _hashCode = calculatedHashCode;
             }
 
             return _hashCode.Value;

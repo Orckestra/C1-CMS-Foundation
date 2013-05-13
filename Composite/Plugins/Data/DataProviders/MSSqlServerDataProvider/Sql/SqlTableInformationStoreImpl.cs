@@ -14,7 +14,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
     internal class SqlTableInformationStoreImpl : ISqlTableInformationStore
     {
         private static Dictionary<string, ISqlTableInformation> _tableInformationCache = new Dictionary<string, ISqlTableInformation>();
-        private static Dictionary<string, List<ColumnInfo>> _columnsInformationCache;
+        private static Dictionary<string, Dictionary<string, ColumnInfo>> _columnsInformationCache;
         
         public ISqlTableInformation GetTableInformation(string connectionString, string tableName)
         {
@@ -40,12 +40,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             _columnsInformationCache = null;
         }
 
-        private static List<ColumnInfo> GetColumnsInfo(SqlConnection connection, string tableName)
+        private static Dictionary<string, ColumnInfo> GetColumnsInfo(SqlConnection connection, string tableName)
         {
-            Dictionary<string, List<ColumnInfo>> columnsCache = _columnsInformationCache;
+            var columnsCache = _columnsInformationCache;
             if(columnsCache == null)
             {
-                columnsCache = new Dictionary<string, List<ColumnInfo>>();
+                columnsCache = new Dictionary<string, Dictionary<string, ColumnInfo>>();
 
                 const string queryString =
                 @"SELECT tableName = obj.name,
@@ -77,13 +77,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
                             if (!columnsCache.ContainsKey(tblName))
                             {
-                                columnsCache.Add(tblName, new List<ColumnInfo>());
+                                columnsCache.Add(tblName, new Dictionary<string, ColumnInfo>());
                             }
 
-                            columnsCache[tblName].Add(new ColumnInfo
+                            string fieldName = record.GetString(1);
+                            columnsCache[tblName].Add(fieldName, new ColumnInfo
                             {
                                 TableName = tblName,
-                                Name = record.GetString(1),
+                                Name = fieldName,
                                 IsPrimaryKey = record.GetInt32(2) == 1,
                                 IsIdentity = record.GetInt32(3) == 1,
                                 IsComputed = record.GetInt32(4) == 1,
@@ -93,10 +94,37 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                     }
                 }
 
+                string[] tableNames = columnsCache.Keys.ToArray();
+
+                // Performing a query with will get no rows but provide us with columns' types information
+                var fieldTypesQuery = string.Join(";", tableNames.Select(t => "SELECT * FROM [{0}] WHERE 1 = 2".FormatWith(t)));
+
+                int index = 0;
+
+                using (var command = new SqlCommand(fieldTypesQuery, connection))
+                using (var reader = command.ExecuteReader())
+                {
+                    do
+                    {
+                        Verify.That(index < tableNames.Length, "Too many results received");
+
+                        for (int i = 0; i < reader.FieldCount; ++i)
+                        {
+                            string name = reader.GetName(i);
+                            Type type = reader.GetProviderSpecificFieldType(i);
+
+                            var fieldsInfo = columnsCache[tableNames[index]];
+                            fieldsInfo[name].Type = type;
+                        }
+
+                        index++;
+                    } while (reader.NextResult());
+                }
+
                 _columnsInformationCache = columnsCache;
             }
 
-            return columnsCache.ContainsKey(tableName) ? columnsCache[tableName] : new List<ColumnInfo>();
+            return columnsCache.ContainsKey(tableName) ? columnsCache[tableName] : new Dictionary<string, ColumnInfo>();
         }
 
 
@@ -111,32 +139,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             {
                 return null;
             }
-
-            // Performing a query with will get no rows but provide us with columns' types information
-            string queryString = "SELECT * FROM [{0}] WHERE 1 = 2".FormatWith(tableName);
-
-            Dictionary<string, Type> columnTypes;
-            using (var command = new SqlCommand(queryString, connection))
-            using (var reader = command.ExecuteReader())
-            {
-                columnTypes = new Dictionary<string, Type>(reader.FieldCount);
-
-                for (int i = 0; i < reader.FieldCount; ++i)
-                {
-                    string name = reader.GetName(i);
-                    Type type = reader.GetProviderSpecificFieldType(i);
-
-                    columnTypes.Add(name, type);
-                }
-            }
             
             var tableInformation = new SqlTableInformation(tableName);
 
-            foreach(var column in columns)
+            foreach(var column in columns.Values)
             {
-                Verify.That(columnTypes.ContainsKey(column.Name), "Unexpected column");
-                Type columnType = columnTypes[column.Name];
-
                 tableInformation.AddColumnInformation(
                         new SqlColumnInformation(
                             column.Name,
@@ -144,8 +151,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                             column.IsIdentity,
                             column.IsComputed,
                             column.IsNullable,
-                            ConvertSqlTypeToSystemType(columnType),
-                            ConvertSqlTypeToSqlDbType(columnType)
+                            ConvertSqlTypeToSystemType(column.Type),
+                            ConvertSqlTypeToSqlDbType(column.Type)
                         ));
             }
 
@@ -202,6 +209,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             public bool IsIdentity;
             public bool IsComputed;
             public bool IsNullable;
+            public Type Type;
         }
     }
 }
