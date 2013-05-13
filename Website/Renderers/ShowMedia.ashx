@@ -271,7 +271,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         int chunk = 0;
 
         int read;
-        while (response.IsClientConnected && (read = inputStream.Read(buffer, 0, buffer.Length)) != 0)
+        while ((read = inputStream.Read(buffer, 0, buffer.Length)) != 0)
         {
             chunk++;
 
@@ -279,6 +279,11 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
             if (chunk % 20 == 0)
             {
+                if (!response.IsClientConnected)
+                {
+                    return;
+                }
+                
                 // Flushing to prevent unnecessary memory usage
                 response.Flush();
             }
