@@ -328,6 +328,7 @@ namespace Composite
                 else
                 {
                     _hookingFacadeThread = new Thread(EnsureHookingFacade);
+                    _hookingFacadeThread.Name = "EnsureHookingFacade";
                     _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
                 }
 

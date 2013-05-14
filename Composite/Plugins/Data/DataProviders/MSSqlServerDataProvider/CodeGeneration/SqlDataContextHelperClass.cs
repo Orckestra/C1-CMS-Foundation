@@ -66,7 +66,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
                 Type dataContextType = _dataContext.GetType();
 
                 FieldInfo fi = dataContextType.GetField(tableName);
-                Verify.IsNotNull(fi, "DataContext class should have a field with name '{0}'".FormatWith(fi));
+                Verify.IsNotNull(fi, "DataContext class should have a field with name '{0}'", tableName);
 
                 Type entityType = fi.FieldType;
 

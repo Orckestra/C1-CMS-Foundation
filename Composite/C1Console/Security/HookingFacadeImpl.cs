@@ -5,7 +5,6 @@ using System.Web.Hosting;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
-using Composite.Core.Logging;
 using Composite.C1Console.Security.Foundation;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.Data;
@@ -32,11 +31,11 @@ namespace Composite.C1Console.Security
 
         public void EnsureInitialization()
         {
-            if (_isInitialized == false)
+            if (!_isInitialized)
             {
                 lock (_lock)
                 {
-                    if (_isInitialized == false)
+                    if (!_isInitialized)
                     {
                         Verify.IsFalse(_isInitializing, "Calling to HookingFacade while it's initialalizing is not allowed");
                         _isInitializing = true;
@@ -62,7 +61,7 @@ namespace Composite.C1Console.Security
                                     }
                                     catch (Exception ex)
                                     {
-                                        LoggingService.LogError("HookingFacade", ex);
+                                        Log.LogError("HookingFacade", ex);
                                     }
                                 }
                             }
@@ -82,21 +81,21 @@ namespace Composite.C1Console.Security
 
 
 
-        public IEnumerable<EntityToken> GetHookies(EntityToken hooker)
+        public IEnumerable<EntityToken> GetHookies(EntityToken hook)
         {
-            if (hooker == null) throw new ArgumentNullException("hooker");
+            Verify.ArgumentNotNull(hook, "hook");
 
             lock (_lock)
             {
                 EnsureInitialization();
 
-                List<EntityToken> hookies;
-                if (_childToParentHooks.TryGetValue(hooker, out hookies) == false)
+                List<EntityToken> hooks;
+                if (!_childToParentHooks.TryGetValue(hook, out hooks))
                 {
                     return null;
                 }
 
-                return hookies;
+                return hooks;
             }
         }
 
@@ -116,7 +115,7 @@ namespace Composite.C1Console.Security
 
         public IEnumerable<EntityToken> GetParentToChildHooks(EntityToken parentEntityToken)
         {
-            if (parentEntityToken == null) throw new ArgumentNullException("parentEntityToken");
+            Verify.ArgumentNotNull(parentEntityToken, "parentEntityToken");
 
             lock (_lock)
             {
@@ -148,7 +147,7 @@ namespace Composite.C1Console.Security
         {
             Verify.ArgumentNotNull(entityTokenHook, "entityTokenHook");
 
-            if (_parentToChildHooks.ContainsKey(entityTokenHook.Hooker) == true)
+            if (_parentToChildHooks.ContainsKey(entityTokenHook.Hooker))
             {
                 List<EntityToken> hookies = _parentToChildHooks[entityTokenHook.Hooker];
 
@@ -252,7 +251,7 @@ namespace Composite.C1Console.Security
 
         public void RegisterDirtyCallback(string id, DirtyHooksCallbackDelegate dirtyHooksCallbackDelegate)
         {
-            if (dirtyHooksCallbackDelegate == null) throw new ArgumentNullException("dirtyHooksCallbackDelegate");
+            Verify.ArgumentNotNull(dirtyHooksCallbackDelegate, "dirtyHooksCallbackDelegate");
 
             lock (_lock)
             {
@@ -287,7 +286,7 @@ namespace Composite.C1Console.Security
 
         public void FireNewElementProviderRootEntitiesEvent(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
 
             lock (_lock)
             {
