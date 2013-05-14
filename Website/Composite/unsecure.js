@@ -24,7 +24,8 @@ window.onload = function () {
             start.onclick = function () {
                 var adminPath = document.location.pathname.replace("unsecure.aspx", "");
                 document.cookie = "avoidc1consolehttps=true; path=" + adminPath;
-                document.location = document.location.toString().replace("unsecure.aspx", "top.aspx");
+                var topUrl = document.location.toString().split("?")[0].replace("unsecure.aspx", "top.aspx");
+                document.location = topUrl;
             }
         }, 2500);
     }

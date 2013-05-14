@@ -1025,6 +1025,7 @@
     <Content Include="Frontend\Config\VisualEditor\Images\italic.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\left.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\right.png" />
+    <Content Include="Frontend\Config\VisualEditor\Images\smalltext.png" />
     <Content Include="Frontend\Styles\VisualEditor.common.css" />
     <Content Include="Frontend\Config\VisualEditor\Styles\core.css" />
     <Content Include="Web.config">

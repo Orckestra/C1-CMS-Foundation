@@ -89,6 +89,7 @@ namespace Composite.Core.WebClient.HttpModules
                 if (!_allowC1ConsoleRequests)
                 {
                     context.Response.StatusCode = 403;
+                    context.Response.ContentType = "text/text";
                     context.Response.Write("ACCESS DISABLED");
                     context.Response.End();
                     throw new System.Security.SecurityException("~/Composite requests not allowed on this site");
