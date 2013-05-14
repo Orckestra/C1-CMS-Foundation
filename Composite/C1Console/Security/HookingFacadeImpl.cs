@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Web.Hosting;
+using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.Instrumentation;
 using Composite.Core.Logging;
 using Composite.C1Console.Security.Foundation;
 using Composite.C1Console.Security.Foundation.PluginFacades;
@@ -314,12 +318,15 @@ namespace Composite.C1Console.Security
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
+                if (HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                {
+                    return;
+                }
+
+                using(new LogExecutionTime("RGB(194, 252, 131)HookingFacade", "Initializing Entity Hooks"))
                 using (new DataScope(DataScopeIdentifier.Administrated))
                 {
-                    LoggingService.LogVerbose("RGB(194, 252, 131)HookingFacade", "----------========== Initializing Entity Hooks ==========----------");
-                    int startTime = Environment.TickCount;
-
-                    if (GlobalInitializerFacade.SystemCoreInitialized == false) throw new InvalidOperationException("Expected system core to be initialized");
+                    Verify.That(GlobalInitializerFacade.SystemCoreInitialized, "Expected system core to be initialized");
 
                     _parentToChildHooks = new Dictionary<EntityToken, List<EntityToken>>();
 
@@ -327,8 +334,6 @@ namespace Composite.C1Console.Security
                     {
                         
                         IEnumerable<EntityTokenHook> entityTokenHooks = HookRegistratorPluginFacade.GetHooks(name);
-                        
-
                         
 
                         foreach (EntityTokenHook entityTokenHook in entityTokenHooks)
@@ -365,8 +370,6 @@ namespace Composite.C1Console.Security
                             hookers.Add(kvp.Key);
                         }
                     }
-                    int endTime = Environment.TickCount;
-                    LoggingService.LogVerbose("RGB(194, 252, 131)HookingFacade", string.Format("----------========== Done initializing Entity Hooks ({0} ms ) ==========----------", endTime - startTime));
                 }
             }
         }

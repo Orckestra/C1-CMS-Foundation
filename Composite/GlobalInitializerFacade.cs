@@ -105,11 +105,6 @@ namespace Composite
                 _exceptionThrownDurringInitialization = null;
             }
 
-            if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
-            {
-                Log.LogWarning(LogTitleNormal, new InvalidOperationException("System is initializing, yet missing first time initialization"));
-            }
-
             if (!_initializing && !_coreInitialized)
             {
                 using (GlobalInitializerFacade.CoreLockScope)
@@ -119,6 +114,11 @@ namespace Composite
                         try
                         {
                             _initializing = true;
+
+                            if (!SystemSetupFacade.IsSystemFirstTimeInitialized && RuntimeInformation.IsDebugBuild)
+                            {
+                                Log.LogWarning(LogTitleNormal, new InvalidOperationException("System is initializing, yet missing first time initialization"));
+                            }
 
                             using (ThreadDataManager.EnsureInitialize())
                             {
