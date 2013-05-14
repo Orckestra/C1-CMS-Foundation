@@ -457,6 +457,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         private Type TryGetGeneratedType(string typeName)
         {
+            Type compiledType = CodeGenerationManager.GetCompiledTypes().LastOrDefault(f => f.FullName == typeName);
+            if (compiledType != null) return compiledType;
+
             if (_compositeGeneratedAssembly != null)
             {
                 Type result = _compositeGeneratedAssembly.GetType(typeName);

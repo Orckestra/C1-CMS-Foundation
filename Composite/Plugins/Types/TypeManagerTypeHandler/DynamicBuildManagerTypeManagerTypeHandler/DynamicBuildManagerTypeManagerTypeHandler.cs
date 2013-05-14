@@ -19,7 +19,7 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
 
         public Type GetType(string fullName)
         {
-            Type compiledType = CodeGenerationManager.GetCompiledTypes().Where(f => f.FullName == fullName).LastOrDefault();
+            Type compiledType = CodeGenerationManager.GetCompiledTypes().LastOrDefault(f => f.FullName == fullName);
             if (compiledType != null) return compiledType;
 
             if (fullName.StartsWith(_prefix) && !fullName.Contains(","))
@@ -29,10 +29,8 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
 
                 return resultType;
             }
-            else
-            {
-                return null;
-            }
+            
+            return null;
         }
 
 
@@ -41,7 +39,7 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
         {
             lock (_lock)
             {
-                string result = null;
+                string result;
 
                 if (_serializedCache.TryGetValue(type, out result) == false)
                 {
