@@ -77,8 +77,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
-                var validatedFileRecords = new Dictionary<IDataId, FileRecord>();
-                var validatedElements = new Dictionary<IDataId, XElement>();
+                var validatedFileRecords = new Dictionary<DataSourceId, FileRecord>();
+                var validatedElements = new Dictionary<DataSourceId, XElement>();
 
                 // verify phase
                 foreach (IData data in dataset)
@@ -116,8 +116,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     XElement updatedElement = CreateUpdatedXElement(wrapper, element);
 
-                    validatedFileRecords.Add(dataId, fileRecord);
-                    validatedElements.Add(dataId, updatedElement);
+                    validatedFileRecords.Add(data.DataSourceId, fileRecord);
+                    validatedElements.Add(data.DataSourceId, updatedElement);
 
                 }
 
@@ -125,7 +125,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 {
                     FileRecord fileRecord = validatedFileRecords[key];
                     fileRecord.Dirty = true;
-                    fileRecord.RecordSet.Index[key] = validatedElements[key];
+                    fileRecord.RecordSet.Index[key.DataId] = validatedElements[key];
 
                 }
 
@@ -147,8 +147,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
-                var validatedElements = new Dictionary<IDataId, XElement>();
-                var validatedData = new Dictionary<IDataId, T>();
+                var validatedElements = new Dictionary<DataSourceId, XElement>();
+                var validatedData = new Dictionary<DataSourceId, T>();
 
                 XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
@@ -174,14 +174,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     Verify.ArgumentCondition(violatingElement == null, "dataset", "Key violation error. An data element with the same dataId is already added");
 
-                    validatedElements.Add(dataId, newElement);
+                    validatedElements.Add(newData.DataSourceId, newElement);
                     resultList.Add(newData);
                 }
 
                 // commit validated elements 
                 foreach (var key in validatedElements.Keys)
 	            {
-                    fileRecord.RecordSet.Index.Add(key, validatedElements[key]);
+                    fileRecord.RecordSet.Index.Add(key.DataId, validatedElements[key]);
                     fileRecord.Dirty = true;
                 }
 
@@ -203,7 +203,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
-                var validated = new Dictionary<IDataId, FileRecord>();
+                var validated = new Dictionary<DataSourceId, FileRecord>();
 
                 // verify phase
                 foreach (DataSourceId dataSourceId in dataSourceIds)
@@ -229,14 +229,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     Verify.ArgumentCondition(index.ContainsKey(dataSourceId.DataId), "No data element corresponds to the given data id", "dataSourceIds");
 
-                    validated.Add(dataSourceId.DataId, fileRecord);
+                    validated.Add(dataSourceId, fileRecord);
                 }
 
                 // commit phase
-                foreach (var dataId in validated.Keys)
+                foreach (var dataSourceId in validated.Keys)
                 {
-                    FileRecord fileRecord = validated[dataId];
-                    fileRecord.RecordSet.Index.Remove(dataId);
+                    FileRecord fileRecord = validated[dataSourceId];
+                    fileRecord.RecordSet.Index.Remove(dataSourceId.DataId);
                     fileRecord.Dirty = true;
                 }
 
