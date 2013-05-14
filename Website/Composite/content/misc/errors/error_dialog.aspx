@@ -28,6 +28,8 @@
        string msg = Request.QueryString["msg" + indexStr];
        string stack = Request.QueryString["stack" + indexStr];
 
+       Response.AddHeader("X-Error-Type" + indexStr, type);
+       Response.AddHeader("X-Error-Message" + indexStr, msg);
 %>                    
 
 <pre class="errordetailshead"><%= HttpUtility.HtmlAttributeEncode(type)%>:

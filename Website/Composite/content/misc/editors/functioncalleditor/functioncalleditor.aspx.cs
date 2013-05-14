@@ -220,6 +220,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
     private void Page_Load(object sender, EventArgs args)
     {
+        this.Error += Page_Error;
+
         if (!IsInTestMode)
         {
             LoadFunctions();
@@ -321,6 +323,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         }
 
         SyncTreeAndEditingPanel();
+    }
+
+    private void Page_Error(object sender, EventArgs e)
+    {
+        Composite.Core.WebClient.ErrorServices.DocumentAdministrativeError(Server.GetLastError());
+        Composite.Core.WebClient.ErrorServices.RedirectUserToErrorPage(null, Server.GetLastError());
     }
 
 
