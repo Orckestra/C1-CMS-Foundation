@@ -25,6 +25,7 @@ namespace Composite.Data
         private static readonly string LogTitle = "DataFacade";
 
         static readonly Cache<string, IData> _dataBySourceIdCache = new Cache<string, IData>("Data by sourceId", 2000);
+        private static readonly object _storeCreationLock = new object();
 
         static DataFacadeImpl()
         {
@@ -272,22 +273,28 @@ namespace Composite.Data
         }
 
 
+        private List<string> GetWritableDataProviders(Type type)
+        {
+            var dataProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(type);
+            if (dataProviders.Count > 1 && dataProviders.Contains(DataProviderRegistry.DefaultDynamicTypeDataProviderName))
+            {
+                dataProviders = new List<string> { DataProviderRegistry.DefaultDynamicTypeDataProviderName };
+            }
+
+            return dataProviders;
+        }
 
         public List<T> AddNew<T>(IEnumerable<T> datas, bool allowStoreCreation, bool suppressEventing, bool performForeignKeyIntegrityCheck, bool performValidation, List<string> writeableProviders)
             where T : class, IData
         {
             if (writeableProviders == null)
             {
-                writeableProviders = DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(typeof(T));
-                if (writeableProviders.Count > 1 && writeableProviders.Contains(DataProviderRegistry.DefaultDynamicTypeDataProviderName))
-                {
-                    writeableProviders = new List<string> { DataProviderRegistry.DefaultDynamicTypeDataProviderName };
-                }
+                writeableProviders = GetWritableDataProviders(typeof (T));
             }
 
-            if ((writeableProviders.Count == 0) &&
-                (typeof(T).GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any()) &&
-                (allowStoreCreation == true))
+            if (writeableProviders.Count == 0
+                && typeof(T).GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any()
+                && allowStoreCreation)
             {
                 if (!DataTypeTypesManager.IsAllowedDataTypeAssembly(typeof(T)))
                 {
@@ -296,13 +303,21 @@ namespace Composite.Data
                     throw new InvalidOperationException(message);
                 }
 
-                Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers adding it to the default dynamic type data provider", typeof(T)));
+                lock (_storeCreationLock)
+                {
+                    writeableProviders = GetWritableDataProviders(typeof (T));
 
-                List<T> result;
-                DynamicTypeManager.EnsureCreateStore(typeof(T));
+                    if (writeableProviders.Count == 0)
+                    {
+                        Log.LogVerbose(LogTitle, string.Format("Type data interface '{0}' is marked auto updateble and is not supported by any providers. Adding it to the default dynamic type data provider", typeof(T)));
 
-                result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
-                return result;
+                        List<T> result;
+                        DynamicTypeManager.EnsureCreateStore(typeof(T));
+
+                        result = AddNew<T>(datas, false, suppressEventing, performForeignKeyIntegrityCheck, performValidation, null);
+                        return result;
+                    }
+                }
             }
 
             if (writeableProviders.Count == 1)
