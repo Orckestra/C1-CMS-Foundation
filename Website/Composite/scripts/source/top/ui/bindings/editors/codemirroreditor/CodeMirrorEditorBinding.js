@@ -1,4 +1,4 @@
-CodeMirrorEditorBinding.prototype = new EditorBinding;
+﻿CodeMirrorEditorBinding.prototype = new EditorBinding;
 CodeMirrorEditorBinding.prototype.constructor = CodeMirrorEditorBinding;
 CodeMirrorEditorBinding.superclass = EditorBinding.prototype;
 
@@ -561,18 +561,32 @@ CodeMirrorEditorBinding.prototype.validate = function () {
 
 				var newSource = source
 					.replace("&nbsp;", "&#160;")
-					.replace("&copy;", "&#169;")
-					.replace("&reg;", "&#174;")
-					.replace("&trade;", "&#8482;")
-					.replace("&laquo;", "&#171;")
-					.replace("&raqou;", "&#187;")
-					.replace("&lsaquo;", "&#8249;")
-					.replace("&rsaquo;", "&#8250;")
-					.replace("&times;", "&#215;")
-					.replace("&larr;", "&#8592;")
-					.replace("&rarr;", "&#8594;")
-					.replace("&uarr;", "&#8593;")
-					.replace("&darr;", "&#8595;")
+                    .replace("&ldquo;", "“")
+                    .replace("&rdguo;", "”")
+                    .replace("&lsquo;", "‘")
+                    .replace("&rsquo;", "’")
+                    .replace("&laquo;", "«")
+                    .replace("&raquo;", "»")
+                    .replace("&lsaquo;", "‹")
+                    .replace("&rsaquo;", "›")
+                    .replace("&bull;", "•")
+                    .replace("&deg;", "°")
+                    .replace("&hellip;", "…")
+                    .replace("&trade;", "™")
+                    .replace("&copy;", "©")
+                    .replace("&reg;", "®")
+                    .replace("&mdash;", "—")
+                    .replace("&ndash;", "–")
+                    .replace("&sup2;", "²")
+                    .replace("&sup3;", "³")
+                    .replace("&frac14;", "¼")
+                    .replace("&frac12;", "½")
+                    .replace("&frac34;", "¾")
+					.replace("&times;", "×")
+					.replace("&larr;", "←")
+					.replace("&rarr;", "→")
+					.replace("&uarr;", "↑")
+					.replace("&darr;", "↓")
 					.replace("<!doctype", "<!DOCTYPE");
 				if (newSource != source)
 				{
