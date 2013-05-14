@@ -33,7 +33,7 @@ namespace Composite.Core.IO
         private static List<string> _textMimeTypes =
             new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
                                MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, 
-                               MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml };
+                               MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
 
         // file types we don't expect IIS to block
         private static List<string> _iisServableTypes = new List<string>();
@@ -164,6 +164,12 @@ namespace Composite.Core.IO
         }
 
         /// <exclude />
+        public static string Svg
+        {
+            get { return "image/svg+xml"; }
+        }
+
+        /// <exclude />
         public static string Ascx
         {
             get { return "application/x-ascx"; }
@@ -210,6 +216,8 @@ namespace Composite.Core.IO
 
             _toCanonical.Add("image/x-png", Png);
             RegisterMimeType(MimeTypeInfo.Png, "png", "mimetype-png", true);
+
+            RegisterMimeType(MimeTypeInfo.Svg, "svg", "mimetype-svg", true);
 
             _toCanonical.Add("image/tif", MimeTypeInfo.Tiff);
             RegisterMimeType(MimeTypeInfo.Tiff, "tif", "mimetype-tiff", true);

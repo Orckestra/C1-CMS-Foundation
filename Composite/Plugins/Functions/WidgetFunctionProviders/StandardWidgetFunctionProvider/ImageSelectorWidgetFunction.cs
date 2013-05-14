@@ -58,7 +58,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition help, string bindingSourceName)
         {
             var searchToken = new MediaFileSearchToken();
-            searchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp };
+            searchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp, MimeTypeInfo.Svg };
 
             var folderReference = parameters.GetParameter<DataReference<IMediaFileFolder>>(MediaFileFolderReferenceParameterName);
             bool selectionRequired = parameters.GetParameter<bool>(RequiredParameterName);

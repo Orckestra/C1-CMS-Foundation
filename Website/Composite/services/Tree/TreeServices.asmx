@@ -253,7 +253,7 @@ namespace Composite.Services
             tokens.Add(new KeyValuePair("MediaFileElementProvider.EmbeddableMedia", embedableMediaFileSearchToken.Serialize()));
 
             MediaFileSearchToken imageMediaFileSearchToken = new MediaFileSearchToken();
-            imageMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp };
+            imageMediaFileSearchToken.MimeTypes = new string[] { MimeTypeInfo.Gif, MimeTypeInfo.Jpeg, MimeTypeInfo.Png, MimeTypeInfo.Bmp, MimeTypeInfo.Svg };
             tokens.Add(new KeyValuePair("MediaFileElementProvider.WebImages", imageMediaFileSearchToken.Serialize()));
 
             var xhtmlDocumentFunctionsSearchToken = AllFunctionsElementProviderSearchToken.Build(new[] { typeof(XhtmlDocument), typeof(System.Web.UI.Control) });

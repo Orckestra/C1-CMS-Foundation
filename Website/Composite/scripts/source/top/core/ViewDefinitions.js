@@ -307,7 +307,7 @@ var ViewDefinitions = {
 		    label               : "${string:Composite.Management:Website.Image.SelectDialog.Title}",
 			image				: "${icon:image}",
 			selectionProperty 	: "ElementType",
-			selectionValue		: "image/jpeg image/gif image/png image/bmp image/tiff",
+			selectionValue      : "image/jpeg image/gif image/png image/bmp image/tiff image/svg+xml",
 			selectionResult		: "Uri",
 			nodes : [{
 				key : "MediaFileElementProvider",

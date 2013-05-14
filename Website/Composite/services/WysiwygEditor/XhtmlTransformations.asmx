@@ -238,6 +238,21 @@ namespace Composite.Services
 
                 XDocument xml = XDocument.Parse(html); //MarkupTransformationServices.TidyHtml(html).Output;
 
+                var nonXhtmlRoots = xml.Descendants().Where(e => e.Name.Namespace != Namespaces.Xhtml && e.Parent.Name.Namespace == Namespaces.Xhtml);
+                var nonXhtmlRootsWithoutPrefix = nonXhtmlRoots.Where(e => !e.Attributes().Any(a => a.Name.Namespace == XNamespace.Xmlns && a.Value == e.Name.Namespace)).ToList();
+
+                foreach (XElement element in nonXhtmlRootsWithoutPrefix)
+                {
+                    XNamespace xmlns = element.Name.Namespace;
+                    string prefix;
+
+                    if (Namespaces.TryGetCanonicalPrefix(xmlns, out prefix))
+                    {
+                        element.Add(new XAttribute(XNamespace.Xmlns + prefix, xmlns));
+                        
+                    }
+                }
+                
                 IEnumerable<XElement> functionRoots = xml
                     .Descendants(Namespaces.Function10 + "function")
                     .Where(f => f.Ancestors(Namespaces.Function10 + "function").Any() == false);
@@ -263,6 +278,7 @@ namespace Composite.Services
                                                         Namespaces.Xhtml + "object",
                                                         Namespaces.Xhtml + "script",
                                                         Namespaces.Xhtml + "noscript",
+                                                        Namespaces.Svg + "svg",
                                                         Namespaces.Xhtml + "video"
                                                     };
                 IEnumerable<XElement> unHandledHtmlElements = xml.Descendants().Where(f => unHandledHtmlElementNames.Contains(f.Name));

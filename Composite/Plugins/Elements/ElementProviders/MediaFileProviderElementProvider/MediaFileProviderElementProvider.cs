@@ -279,19 +279,26 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             if (file.MimeType.StartsWith("image") == true)
             {
-                using (Stream fileStream = file.GetReadStream())
+                if (file.MimeType == MimeTypeInfo.Svg)
                 {
-                    Bitmap bitmap = new Bitmap(fileStream);
-                    propertyList.Add("ImageWidth", "Image width", bitmap.Width);
-                    propertyList.Add("ImageHeight", "Image height", bitmap.Height);
+                    propertyList.Add("ImageFormat", "Image format", "svg");
+                }
+                else
+                {
+                    using (Stream fileStream = file.GetReadStream())
+                    {
+                        Bitmap bitmap = new Bitmap(fileStream);
+                        propertyList.Add("ImageWidth", "Image width", bitmap.Width);
+                        propertyList.Add("ImageHeight", "Image height", bitmap.Height);
 
-                    string formatString = null;
-                    if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Gif.Guid) == 0) formatString = "gif";
-                    if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Jpeg.Guid) == 0) formatString = "jpeg";
-                    if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Png.Guid) == 0) formatString = "png";
-                    if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Tiff.Guid) == 0) formatString = "tiff";
-                    if (formatString != null) propertyList.Add("ImageFormat", "Image format", formatString);
+                        string formatString = null;
+                        if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Gif.Guid) == 0) formatString = "gif";
+                        if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Jpeg.Guid) == 0) formatString = "jpeg";
+                        if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Png.Guid) == 0) formatString = "png";
+                        if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Tiff.Guid) == 0) formatString = "tiff";
+                        if (formatString != null) propertyList.Add("ImageFormat", "Image format", formatString);
 
+                    }
                 }
 
             }
