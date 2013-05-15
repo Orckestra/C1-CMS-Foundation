@@ -327,14 +327,12 @@ namespace CompositeTypeFieldDesigner
         {
             if (this.TypeSelector.SelectedValue=="XHTML")
             {
-                btnDefaultValueFunctionMarkup.Value = @"	<f:function xmlns:f='http://www.composite.net/ns/function/1.0' name='Composite.Constant.XhtmlDocument'>
-		<f:param name='Constant'>
-			<html xmlns='http://www.w3.org/1999/xhtml'>
-				<head />
-				<body />
-			</html>
-		</f:param>
-	</f:function>";
+                var function = StandardFunctions.XhtmlDocumentFunction;
+                var functionParameters = new Dictionary<string,object>();
+                functionParameters.Add( "Constant", new XhtmlDocument());
+                var functionTree = FunctionFacade.BuildTree(StandardFunctions.XhtmlDocumentFunction, functionParameters);
+                btnDefaultValueFunctionMarkup.Value = functionTree.Serialize().ToString();
+
                 return;
             }
             if (btnDefaultValueFunctionMarkup.Value.IsNullOrEmpty())
@@ -352,7 +350,7 @@ namespace CompositeTypeFieldDesigner
 
                 IFunction function = FunctionFacade.GetFunction(functionNode.GetCompositeName());
 
-                if (function.ReturnType.Equals(this.CurrentlySelectedDefaultValueFunctionReturnType))
+                if (!function.ReturnType.Equals(this.CurrentlySelectedDefaultValueFunctionReturnType))
                 {
                     btnDefaultValueFunctionMarkup.Value = "";
                 }
