@@ -167,6 +167,7 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositespellcheck\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\tinymce.js" />
     <Content Include="Composite\content\misc\preview\error.aspx" />
     <Content Include="Composite\content\misc\preview\error.css" />
     <Content Include="Composite\content\misc\preview\stop.aspx" />

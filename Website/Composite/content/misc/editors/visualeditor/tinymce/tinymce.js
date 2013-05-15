@@ -7469,7 +7469,8 @@ define("tinymce/dom/ScriptLoader", [
 			elm.type = 'text/javascript';
 			elm.src = url;
 
-			elm.onload = done;
+			if (!elm.onreadystatechange)
+				elm.onload = done;
 			elm.onreadystatechange = function() {
 				if (/loaded|complete/.test(elm.readyState)) {
 					done();
