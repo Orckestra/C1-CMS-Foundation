@@ -2,8 +2,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
 using Composite.Core.ResourceSystem;
-using Composite.Core.Xml;
-
 
 namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 {
@@ -28,7 +26,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             {
                 if (attribute.Name.LocalName == "xmlns") continue;
 
-                bool isNamespaceDeclaration = attribute.Name.NamespaceName == Namespaces.BindingFormsStdUiControls10;
+                bool isNamespaceDeclaration = attribute.Name.Namespace == "http://www.w3.org/2000/xmlns/";
 
                 var property = new PropertyCompileTreeNode(attribute.Name.LocalName, debugInfo, isNamespaceDeclaration);
                 property.Value = StringResourceSystemFacade.ParseString(attribute.Value);
