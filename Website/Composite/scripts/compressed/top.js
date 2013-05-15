@@ -21365,9 +21365,15 @@ root.removeActionListener(RootBinding.ACTION_PHASE_3,this);
 this.dispatchAction(PageBinding.ACTION_DETACHED);
 };
 PageBinding.prototype.parseDOMProperties=function(){
+if(this.getProperty("label")){
 this.label=this.getProperty("label");
+}
+if(this.getProperty("labelfield")){
 this.labelfield=this.getProperty("labelfield");
+}
+if(this.getProperty("image")){
 this.image=this.getProperty("image");
+}
 this.toolTip=this.getProperty("tooltip");
 if(this.getProperty("fitasdialogsubpage")==false){
 this.isFitAsDialogSubPage=false;
