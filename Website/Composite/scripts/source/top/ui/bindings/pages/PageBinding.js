@@ -203,9 +203,12 @@ PageBinding.prototype.parseDOMProperties = function () {
 	 * These values may have been defined already, 
 	 * for example in the setPageArgument method.
 	 */
-	this.label = this.getProperty ( "label" );
-	this.labelfield = this.getProperty ( "labelfield" );
-	this.image = this.getProperty ( "image" );
+	if (this.getProperty("label"))
+		this.label = this.getProperty("label");
+	if( this.getProperty("labelfield"))
+		this.labelfield =  this.getProperty("labelfield");
+	if (this.getProperty("image"))
+		this.image = this.getProperty("image");
 	this.toolTip = this.getProperty ( "tooltip" );
 	
 	/*
