@@ -9,9 +9,10 @@ namespace Composite.Core.Linq
     internal class ExpressionBuilder
     {
         private Type _currentQueryableType;
-        private IQueryable _sourceQueryable;
+        private readonly IQueryable _sourceQueryable;
         private Expression _currentExpression;
-        private static PropertyInfo _dateDateTimePropertyInfo = typeof(DateTime).GetProperty("Date");
+
+        private static readonly PropertyInfo _dateDateTimePropertyInfo = typeof(DateTime).GetProperty("Date");
 
 
         public ExpressionBuilder(Type queryableType, IQueryable sourceQueryable)
@@ -44,7 +45,7 @@ namespace Composite.Core.Linq
                 Expression left = LambdaExpression.Property(parameterExpression, kvp.Key);                
                 Expression right = Expression.Constant(kvp.Value, kvp.Key.PropertyType);
 
-                if ((useInnerDateTimeDate == true) && (kvp.Key.PropertyType == typeof(DateTime)))
+                if (useInnerDateTimeDate && kvp.Key.PropertyType == typeof(DateTime))
                 {
                     left = InnerDateTimeDateExpression(left);
                     right = InnerDateTimeDateExpression(right);
@@ -121,7 +122,7 @@ namespace Composite.Core.Linq
             ParameterExpression parameter = Expression.Parameter(_currentQueryableType, "s");
 
             Expression expression = Expression.Property(parameter, selectPropertyInfo);
-            if ((useInnerDateTimeDate == true) && (selectPropertyInfo.PropertyType == typeof(DateTime)))
+            if (useInnerDateTimeDate && selectPropertyInfo.PropertyType == typeof(DateTime))
             {
                 expression = InnerDateTimeDateExpression(expression);
             }

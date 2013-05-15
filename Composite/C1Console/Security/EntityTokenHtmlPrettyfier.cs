@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Composite.Core.Extensions;
 using Composite.Core.Types;
 using System.Reflection;
 
@@ -147,11 +148,16 @@ namespace Composite.C1Console.Security
             OnWriteSource(this.EntityToken, helper);
             OnWriteId(this.EntityToken, helper);
 
+            var extraInfo = EntityToken.OnGetExtraPrettyHtml();
+            if (!extraInfo.IsNullOrEmpty())
+            {
+                helper.AddFullRow(new[] { "<b>Extra</b>", extraInfo });
+            }
 
             helper.AddHeading("<b>Custom Properties</b>");
             foreach (var kvp in _customProperties)
             {
-                PropertyInfo propertyInfo = this.EntityToken.GetType().GetPropertiesRecursively().Where(f => f.Name == kvp.Key).Single();
+                PropertyInfo propertyInfo = this.EntityToken.GetType().GetPropertiesRecursively().Single(f => f.Name == kvp.Key);
                 kvp.Value(kvp.Key, propertyInfo.GetValue(this.EntityToken, null), helper);
             }
 
@@ -161,7 +167,6 @@ namespace Composite.C1Console.Security
             {
                 OnPiggyBagEntry(kvp.Key, kvp.Value, helper);
             }
-
 
             helper.AddHeading("<b>SecurityAncestorProvider</b>");
             SecurityAncestorProviderAttribute attribute = this.EntityToken.GetType().GetCustomAttributesRecursively<SecurityAncestorProviderAttribute>().SingleOrDefault();

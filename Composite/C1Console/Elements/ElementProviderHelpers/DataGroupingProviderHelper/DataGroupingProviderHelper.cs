@@ -11,8 +11,6 @@ using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.ProcessControlled;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper
@@ -72,7 +70,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                         EntityToken parentEntityToken = OnGetRootParentEntityToken(type, entityToken);
                         if(parentEntityToken != null)
                         {
-                            result.Add(entityToken, new EntityToken[] { parentEntityToken });
+                            result.Add(entityToken, new [] { parentEntityToken });
                         }
 
                         continue;
@@ -83,7 +81,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     newGroupingParentEntityToken.GroupingValues = new Dictionary<string, object>();
                     foreach (var kvp in groupingEntityToken.GroupingValues.Take(groupingEntityToken.GroupingValues.Count - 1))
                     {
-                        newGroupingParentEntityToken.GroupingValues.Add(kvp.Key, kvp.Value);
+                        newGroupingParentEntityToken.GroupingValues.Add(kvp.Key, NormalizeGroupingValue(kvp.Value));
                     }
 
                     result.Add(entityToken, new EntityToken[] { newGroupingParentEntityToken });
@@ -105,10 +103,10 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                         orderby dfd.GroupByPriority
                         select dfd;
 
-                    if (groupingDataFieldDescriptors.Count() == 0)
+                    if (!groupingDataFieldDescriptors.Any())
                     {
                         EntityToken parentEntityToken = OnGetRootParentEntityToken(interfaceType, dataEntityToken);
-                        result.Add(entityToken, new EntityToken[] { parentEntityToken });
+                        result.Add(entityToken, new [] { parentEntityToken });
                         continue;
                     }
 
@@ -119,10 +117,10 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     parentToken.GroupingValues = new Dictionary<string, object>();
                     foreach (DataFieldDescriptor dfd in groupingDataFieldDescriptors)
                     {
-                        PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Where(f => f.Name == dfd.Name).Single();
+                        PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == dfd.Name);
 
                         object value = propertyInfo.GetValue(data, null);
-                        parentToken.GroupingValues.Add(propertyInfo.Name, value);
+                        parentToken.GroupingValues.Add(propertyInfo.Name, NormalizeGroupingValue(value));
                     }
 
                     result.Add(entityToken, new EntityToken[] { parentToken });
@@ -132,6 +130,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             }
 
             return result;
+        }
+
+        private static object NormalizeGroupingValue(object value)
+        {
+            return value is DateTime ? ((DateTime)value).Date : value;
         }
 
 
@@ -161,7 +164,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     DataFieldDescriptor firstDataFieldDescriptor = groupingDataFieldDescriptors.First();
                     PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Where(f => f.Name == firstDataFieldDescriptor.Name).Single();
 
-                    List<Element> elements = GetRootGroupFoldersFoldersFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo).ToList();
+                    List<Element> elements = GetRootGroupFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo).ToList();
 
                     if (firstDataFieldDescriptor.ForeignKeyReferenceTypeName != null)
                     {
@@ -174,7 +177,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     {
                         using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
-                            elements.AddRange(GetRootGroupFoldersFoldersFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo));
+                            elements.AddRange(GetRootGroupFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo));
                         }
                     }
 
@@ -214,7 +217,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
 
-        private IEnumerable<Element> GetRootGroupFoldersFoldersFolders(Type interfaceType, EntityToken parentEntityToken, DataFieldDescriptor firstDataFieldDescriptor, PropertyInfo propertyInfo)
+        private IEnumerable<Element> GetRootGroupFolders(Type interfaceType, EntityToken parentEntityToken, DataFieldDescriptor firstDataFieldDescriptor, PropertyInfo propertyInfo)
         {
             Func<IData, bool> filter = (this.OnGetLeafsFilter != null) ? this.OnGetLeafsFilter(parentEntityToken) : null;
 
@@ -256,17 +259,13 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                 return ordered;
             }
-            else
+            
+            if (!string.IsNullOrEmpty(typeDescriptor.LabelFieldName))
             {
-                if (!string.IsNullOrEmpty(typeDescriptor.LabelFieldName))
-                {
-                    return source.OrderBy(interfaceType, typeDescriptor.LabelFieldName);
-                }
-                else
-                {
-                    return source;
-                }
+                return source.OrderBy(interfaceType, typeDescriptor.LabelFieldName);
             }
+
+            return source;
         }
 
 
@@ -309,7 +308,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             PropertyInfoValueCollection propertyInfoValueCollection = new PropertyInfoValueCollection();
             foreach (var kvp in groupEntityToken.GroupingValues)
             {
-                PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Where(f => f.Name == kvp.Key).Single();
+                PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == kvp.Key);
                 propertyInfoValueCollection.AddPropertyValue(propertyInfo, kvp.Value);
             }
 
@@ -320,7 +319,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                  where dfd.GroupByPriority == groupEntityToken.GroupingValues.Count + 1
                  select dfd).SingleOrDefault();
 
-            if ((groupingDataFieldDescriptor != null) && (propertyInfoValueCollection.PropertyValues.Where(f => f.Key.Name == groupingDataFieldDescriptor.Name).Any()))
+            if (groupingDataFieldDescriptor != null 
+                && propertyInfoValueCollection.PropertyValues.Any(f => f.Key.Name == groupingDataFieldDescriptor.Name))
             {
                 // Grouping ordering has ben changed, at the moment the best thing we can do its to return no elements
                 // TODO: This class and the whole attach element provider stuff should be redone
@@ -348,7 +348,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                             elements.OrderBy(f => f.VisualData.Label)).ToList();
                     }
 
-                    if (includeForeignFolders == true)
+                    if (includeForeignFolders)
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
@@ -364,9 +364,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                     PropertyInfoValueCollection propertyInfoValueCol = propertyInfoValueCollection.Clone();
                     List<Element> elements = GetGroupChildrenLeafs(interfaceType, filter, propertyInfoValueCol, false).ToList();
 
-                    if (!dataTypeDescriptor.Fields.Where(f => f.TreeOrderingProfile.OrderPriority.HasValue && f.ForeignKeyReferenceTypeName == null).Any())
+                    if (!dataTypeDescriptor.Fields.Any(f => f.TreeOrderingProfile.OrderPriority.HasValue && f.ForeignKeyReferenceTypeName == null))
                     {
-                        var labelFieldDescriptor = dataTypeDescriptor.Fields.Where(f => f.Name == dataTypeDescriptor.LabelFieldName).FirstOrDefault();
+                        var labelFieldDescriptor = dataTypeDescriptor.Fields.FirstOrDefault(f => f.Name == dataTypeDescriptor.LabelFieldName);
                         if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null)
                         {
                             elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?
@@ -375,7 +375,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                         }
                     }
 
-                    if (includeForeignFolders == true)
+                    if (includeForeignFolders)
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
@@ -481,11 +481,11 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private IEnumerable<Element> CreateGroupFolderElements(Type interfaceType, DataFieldDescriptor dataFieldDescriptor, IQueryable queryable, EntityToken parentEntityToken, PropertyInfoValueCollection propertyInfoValueCollection)
         {
-            PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Where(f => f.Name == dataFieldDescriptor.Name).Single();
+            PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == dataFieldDescriptor.Name);
 
             foreach (object obj in queryable)
             {
-                DataGroupingProviderHelperEntityToken entityToken = new DataGroupingProviderHelperEntityToken(TypeManager.SerializeType(interfaceType));
+                var entityToken = new DataGroupingProviderHelperEntityToken(TypeManager.SerializeType(interfaceType));
                 entityToken.Payload = this.OnGetPayload(parentEntityToken);
                 entityToken.GroupingValues = new Dictionary<string, object>();
 
@@ -500,7 +500,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
 
                 string label = (obj == null ? string.Format(_undefinedLableValue, dataFieldDescriptor.Name) : obj.ToString());
-                if ((obj != null) && (obj.GetType() == typeof(DateTime)))
+                if (obj is DateTime)
                 {
                     DateTime dt = (DateTime)obj;
                     label = dt.ToString("yyyy-MM-dd");
@@ -532,22 +532,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 propertyInfoValueCollectionCopy.AddPropertyValue(propertyInfo, obj);
 
                 yield return this.OnAddActions(element, propertyInfoValueCollectionCopy);
-            }
-        }
-
-
-
-        private static string CreateId(object obj)
-        {
-            if (obj == null) return "";
-
-            if (obj.GetType() != typeof(DateTime))
-            {
-                return (obj == null ? "" : obj.ToString());
-            }
-            else
-            {
-                return ((DateTime)obj).ToString("o");
             }
         }
 

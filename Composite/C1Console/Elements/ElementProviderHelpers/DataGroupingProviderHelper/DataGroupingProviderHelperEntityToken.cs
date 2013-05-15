@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Web;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
 using Composite.Core.Serialization;
@@ -166,6 +167,19 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             }
 
             return hashCode;
+        }
+
+
+        /// <exclude />
+        public override string OnGetExtraPrettyHtml()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var kvp in this.GroupingValues.SortByKeys())
+            {
+                sb.Append("<b>" + kvp.Key + " = </b> " + HttpUtility.HtmlEncode(kvp.Value) + "<br />");
+            }
+
+            return sb.ToString();
         }
     }    
 }
