@@ -13,6 +13,7 @@ using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunction
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Utils;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -84,6 +85,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         {
             _widgetStaticTypeFunctions = new List<IWidgetFunction>();
 
+            _widgetStaticTypeFunctions.Add(new FormMarkupWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new TextBoxWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new TextAreaWidgetFuntion(_entityTokenFactory));
             _widgetStaticTypeFunctions.Add(new String.SelectorWidgetFunction(_entityTokenFactory));
