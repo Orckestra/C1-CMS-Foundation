@@ -36,6 +36,17 @@ namespace Composite.Core.WebClient.HttpModules
         private const string allowElementName = "allow";
         private const string allow_pathAttributeName = "path";
 
+        private const string c1ConsoleRequestsNotAllowedHtmlTemplate = @"<html>
+    <head>
+        <title>Access Denied</title>
+    </head>
+    <body>
+        <h1>Access Denied</h1>
+        <p>Administrative access has been disabled on this site.</p>
+        <p style='display:none'>IE Padding: {0}</p>
+    </body>
+</html>";
+
         static AdministrativeAuthorizationHttpModule()
         {
             if (C1Directory.Exists(HostingEnvironment.MapPath(UrlUtils.AdminRootPath)))
@@ -89,10 +100,10 @@ namespace Composite.Core.WebClient.HttpModules
                 if (!_allowC1ConsoleRequests)
                 {
                     context.Response.StatusCode = 403;
-                    context.Response.ContentType = "text/text";
-                    context.Response.Write("ACCESS DISABLED");
+                    context.Response.ContentType = "text/html";
+                    string iePadding = new String('!', 512);
+                    context.Response.Write(string.Format(c1ConsoleRequestsNotAllowedHtmlTemplate, iePadding));
                     context.Response.End();
-                    throw new System.Security.SecurityException("~/Composite requests not allowed on this site");
                 }
 
                 // https check
