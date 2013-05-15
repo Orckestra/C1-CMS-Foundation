@@ -121,26 +121,28 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static XElement CopyWithoutNamespace(XElement source, XNamespace namespaceToRemove)
         {
-            XElement copy;
+            XNamespace sourceNs = source.Name.Namespace;
+            XName newName = sourceNs.Equals(namespaceToRemove) ? source.Name.LocalName : source.Name;
+            XElement copy  = new XElement(source.Name);
 
-            if (source.Name.Namespace == namespaceToRemove)
+            if (!sourceNs.Equals(namespaceToRemove) && sourceNs != source.Parent.Name.Namespace && source.Attribute("xmlns") == null)
+	        {
+                copy.Add(new XAttribute("xmlns", source.Name.Namespace));
+	        }
+
+            copy.Add(source.Attributes().Where(a => a.Name.Namespace == namespaceToRemove).Select(a => new XAttribute(a.Name.LocalName, a.Value)));
+            copy.Add(source.Attributes().Where(a => a.Name.Namespace != namespaceToRemove && (a.IsNamespaceDeclaration == false || a.Value != sourceNs)).Select(a => new XAttribute(a.Name, a.Value)));
+
+            foreach (XNode child in source.Nodes())
             {
-                copy = new XElement(source.Name.LocalName);
-            }
-            else
-            {
-                copy = new XElement(source.Name);
-            }
-
-            var attributesCleaned = source.Attributes().Where(f => f.Name.Namespace == namespaceToRemove).Select(f => new XAttribute(f.Name.LocalName, f.Value));
-            var attributesRaw = source.Attributes().Where(f => f.Name.Namespace != namespaceToRemove && f.Name.LocalName != "xmlns");
-
-            copy.Add(attributesCleaned);
-            copy.Add(attributesRaw);
-
-            foreach (XElement child in source.Elements())
-            {
-                copy.Add(CopyWithoutNamespace(child, namespaceToRemove));
+                if (child is XElement)
+                {
+                    copy.Add(CopyWithoutNamespace(child as XElement, namespaceToRemove));
+                }
+                else
+                {   
+                    copy.Add(child);
+                }
             }
 
             return copy;

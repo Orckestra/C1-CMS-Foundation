@@ -236,23 +236,8 @@ namespace Composite.Services
 
                 string html = WrapInnerBody(htmlFragment);
 
-                XDocument xml = XDocument.Parse(html); //MarkupTransformationServices.TidyHtml(html).Output;
+                XDocument xml = XDocument.Parse(html);
 
-                var nonXhtmlRoots = xml.Descendants().Where(e => e.Name.Namespace != Namespaces.Xhtml && e.Parent.Name.Namespace == Namespaces.Xhtml);
-                var nonXhtmlRootsWithoutPrefix = nonXhtmlRoots.Where(e => !e.Attributes().Any(a => a.Name.Namespace == XNamespace.Xmlns && a.Value == e.Name.Namespace)).ToList();
-
-                foreach (XElement element in nonXhtmlRootsWithoutPrefix)
-                {
-                    XNamespace xmlns = element.Name.Namespace;
-                    string prefix;
-
-                    if (Namespaces.TryGetCanonicalPrefix(xmlns, out prefix))
-                    {
-                        element.Add(new XAttribute(XNamespace.Xmlns + prefix, xmlns));
-                        
-                    }
-                }
-                
                 IEnumerable<XElement> functionRoots = xml
                     .Descendants(Namespaces.Function10 + "function")
                     .Where(f => f.Ancestors(Namespaces.Function10 + "function").Any() == false);

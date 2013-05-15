@@ -140,7 +140,7 @@ namespace Composite.Core.Xml
                     foreach (XmlAttribute attribute in node.Attributes)
                     {
                         if ((attribute.Name.ToLowerInvariant().StartsWith("xmlns") == false) ||
-                            (node.ParentNode == null) || (node.ParentNode.NamespaceDefined(attribute.Name) == false))
+                            (node.ParentNode == null) || (node.ParentNode.NamespaceByPrefix(attribute.Name) !=node.NamespaceURI))
                         {
                             stringBuilder.Append(" " + attribute.Name + "=\"" + EncodeAttributeString(attribute.Value) + "\"");
                         }
@@ -546,16 +546,21 @@ namespace Composite.Core.Xml
 
 
 
-            public bool NamespaceDefined(string namespaceName)
+            public string NamespaceByPrefix(string namespacePrefix)
             {
-                bool defined = _attributes.Where(f => f.Name == namespaceName).Any();
+                var defined = _attributes.Where(f => f.Name == namespacePrefix).FirstOrDefault();
 
-                if ((defined == false) && (this.ParentNode != null))
+                if (defined!=null)
                 {
-                    return this.ParentNode.NamespaceDefined(namespaceName);
+                    return defined.Value;
                 }
 
-                return defined;
+                if (this.ParentNode != null)
+                {
+                    return this.ParentNode.NamespaceByPrefix(namespacePrefix);
+                }
+
+                return null;
             }
 
 
@@ -565,7 +570,7 @@ namespace Composite.Core.Xml
                 if(_isBlockElement == null)
                 {
                     _isBlockElement = this.NodeType == XmlNodeType.Element
-                                      && !InlineElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetNamespace() });
+                                      && !InlineElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetCustomNamespace() });
                 }
 
                 return _isBlockElement.Value;
@@ -577,7 +582,7 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLowerInvariant(), Namespace = GetNamespace() }) == true) return true;
+                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLowerInvariant(), Namespace = GetCustomNamespace() }) == true) return true;
 
                 return false;
             }
@@ -588,14 +593,16 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetNamespace() }) == true) return true;
+                string customNamespace = GetCustomNamespace();
 
-                return false;
+                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = customNamespace }) == true) return true;
+
+                return (customNamespace != "");
             }
 
 
 
-            private string GetNamespace()
+            private string GetCustomNamespace()
             {
                 string namespaceName = this.NamespaceURI.ToLowerInvariant();
                 if (namespaceName == "http://www.w3.org/1999/xhtml")
