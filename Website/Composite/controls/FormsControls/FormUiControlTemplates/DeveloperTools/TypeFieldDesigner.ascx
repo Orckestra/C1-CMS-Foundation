@@ -106,12 +106,13 @@
 														<ui:fielddata>
 															<aspui:Selector ID="TypeSelector" runat="server" AutoPostBack="True" OnSelectedIndexChanged="TypeSelector_SelectedIndexChanged">
 																<asp:ListItem value="System.String" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.String}" />
+																<asp:ListItem value="XHTML" Text="XHTML" />
+																<asp:ListItem value="Reference" Text="${Composite.Web.FormControl.TypeFieldDesigner, Reference}" />
+																<asp:ListItem value="System.Boolean" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.Boolean}" />
+																<asp:ListItem value="System.DateTime" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.DateTime}" />
 																<asp:ListItem value="System.Int32" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.Int32}" />
 																<asp:ListItem value="System.Decimal" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.Decimal}" />
-																<asp:ListItem value="System.DateTime" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.DateTime}" />
-																<asp:ListItem value="System.Boolean" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.Boolean}" />
 																<asp:ListItem value="System.Guid" Text="${Composite.Web.FormControl.TypeFieldDesigner, System.Guid}" />
-																<asp:ListItem value="Reference" Text="${Composite.Web.FormControl.TypeFieldDesigner, Reference}" />
 															</aspui:Selector>
 														</ui:fielddata>
 													</ui:field>

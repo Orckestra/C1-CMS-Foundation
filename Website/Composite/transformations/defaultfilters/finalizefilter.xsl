@@ -31,7 +31,7 @@
 	<xsl:template match="x:textarea | x:div | x:a | x:ul | x:select | x:title | x:script | x:style | x:iframe">
 		<xsl:element name="{local-name()}">
 			<xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" />
-			<xsl:call-template name="uncollapse" />
+      <xsl:value-of select="./@ForceTagNotToCollapseEvenWhenEmpty" />
 		</xsl:element>
 	</xsl:template>
 
@@ -40,7 +40,7 @@
 			<xsl:when test="$browser='explorer'">
 				<xsl:element name="{local-name()}">
 					<xsl:apply-templates select="*|@*|text()|processing-instruction()|comment()" />
-					<xsl:call-template name="uncollapse" />
+          <xsl:value-of select="./@ForceTagNotToCollapseEvenWhenEmpty" />
 				</xsl:element>
 			</xsl:when>
 			<xsl:otherwise>
@@ -49,12 +49,6 @@
 				</xsl:copy>
 			</xsl:otherwise>
 		</xsl:choose>
-		
-	</xsl:template>
-
-	<!-- uncollapse hack -->
-	<xsl:template name="uncollapse">
-		<xsl:value-of select="./@NONEXISTINGATTRIBUTE" />
 	</xsl:template>
 		
 </xsl:stylesheet>

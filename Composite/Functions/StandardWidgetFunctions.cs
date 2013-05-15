@@ -57,6 +57,8 @@ namespace Composite.Functions
             if (type == typeof(DataReference<IMediaFile>)) return StandardWidgetFunctions.GetMediaFileSelectorWidget(true);
             if (type == typeof(NullableDataReference<IMediaFile>)) return StandardWidgetFunctions.GetMediaFileSelectorWidget(false);
 
+            if (type == typeof(XhtmlDocument)) return StandardWidgetFunctions.VisualXhtmlDocumentEditorWidget;
+
             IEnumerable<string> functionNames = FunctionFacade.GetWidgetFunctionNamesByType(type);
             foreach (string functionName in functionNames)
             {
@@ -147,7 +149,7 @@ namespace Composite.Functions
         {
             get
             {
-                return new WidgetFunctionProvider(VisualXhtmlEditorFuntion.CompositeName);
+                return new WidgetFunctionProvider(Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.XhtmlDocument.VisualXhtmlEditorFuntion.CompositeName);
             }
         }
 

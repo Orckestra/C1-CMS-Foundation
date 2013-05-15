@@ -277,6 +277,10 @@ namespace CompositeTypeFieldDesigner
                     TypeDetailsOptionalPlaceHolder.Visible = false;
                     TypeDetailsPlaceHolder.Visible = false;
                     break;
+                case "XHTML":
+                    TypeDetailsOptionalPlaceHolder.Visible = false;
+                    TypeDetailsPlaceHolder.Visible = false;
+                    break;
                 default:
                     TypeDetailsPlaceHolder.Visible = false;
                     break;
@@ -321,6 +325,18 @@ namespace CompositeTypeFieldDesigner
 
         private void ResetDefaultValueSelector()
         {
+            if (this.TypeSelector.SelectedValue=="XHTML")
+            {
+                btnDefaultValueFunctionMarkup.Value = @"	<f:function xmlns:f='http://www.composite.net/ns/function/1.0' name='Composite.Constant.XhtmlDocument'>
+		<f:param name='Constant'>
+			<html xmlns='http://www.w3.org/1999/xhtml'>
+				<head />
+				<body />
+			</html>
+		</f:param>
+	</f:function>";
+                return;
+            }
             if (btnDefaultValueFunctionMarkup.Value.IsNullOrEmpty())
             {
                 return;
@@ -398,7 +414,7 @@ namespace CompositeTypeFieldDesigner
             if (this.OptionalSelector.SelectedValue == "true")
             {
                 this.OptionalSelector.SelectedValue = "false";
-                bool notOptional = (this.CurrentlySelectedType == typeof(bool));
+                bool notOptional = (this.CurrentlySelectedType == typeof(bool) || this.TypeSelector.SelectedValue == "XHTML");
 
                 if (notOptional == true)
                 {
@@ -524,6 +540,17 @@ namespace CompositeTypeFieldDesigner
             else
             {
                 this.TypeSelector.SelectedValue = "Reference";
+            }
+
+            // XHTML compensate
+            if (selectedField.InstanceType == typeof(string) && selectedField.StoreType.IsLargeString && !string.IsNullOrEmpty(selectedField.FormRenderingProfile.WidgetFunctionMarkup))
+            {
+                var viualEditorWidgetName = StandardWidgetFunctions.VisualXhtmlDocumentEditorWidget.WidgetFunctionCompositeName;
+                var widgetFunction = XElement.Parse(selectedField.FormRenderingProfile.WidgetFunctionMarkup);
+                if((string)widgetFunction.Attribute("name") == viualEditorWidgetName)
+                {
+                    this.TypeSelector.SelectedValue = "XHTML";
+                }
             }
 
             this.OptionalSelector.SelectedValue = (selectedField.IsNullable ? "true" : "false");
@@ -711,6 +738,11 @@ namespace CompositeTypeFieldDesigner
         {
             get
             {
+                if (TypeSelector.SelectedValue == "XHTML")
+                {
+                    return typeof(XhtmlDocument);
+                }
+
                 Type selectedType = this.CurrentlySelectedType;
 
                 if (this.CurrentForeignKeyReferenceTypeName != null)
@@ -817,15 +849,18 @@ namespace CompositeTypeFieldDesigner
             get
             {
                 Type selectedType = null;
-
-                if (this.TypeSelector.SelectedValue == "Reference")
+                switch (this.TypeSelector.SelectedValue)
                 {
-                    Type referencedType = TypeManager.GetType(this.CurrentForeignKeyReferenceTypeName);
-                    selectedType = GetInstanceTypeForReference(referencedType);
-                }
-                else
-                {
-                    selectedType = TypeManager.GetType(this.TypeSelector.SelectedValue);
+                    case "Reference":
+                        Type referencedType = TypeManager.GetType(this.CurrentForeignKeyReferenceTypeName);
+                        selectedType = GetInstanceTypeForReference(referencedType);
+                        break;
+                    case "XHTML":
+                        selectedType = typeof(string);
+                        break;
+                    default:
+                        selectedType = TypeManager.GetType(this.TypeSelector.SelectedValue);
+                        break;
                 }
 
                 if (this.OptionalSelector.SelectedValue == "true")
@@ -859,6 +894,8 @@ namespace CompositeTypeFieldDesigner
                     case "System.String":
                         if (this.TypeDetailsSelector.SelectedValue == "max") return StoreFieldType.LargeString;
                         return StoreFieldType.String(Int32.Parse(this.TypeDetailsSelector.SelectedValue));
+                    case "XHTML":
+                        return StoreFieldType.LargeString;
                     case "System.Int32":
                         return StoreFieldType.Integer;
                     case "System.Decimal":
