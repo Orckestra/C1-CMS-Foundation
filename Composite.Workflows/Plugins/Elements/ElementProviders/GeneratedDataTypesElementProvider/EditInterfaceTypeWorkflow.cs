@@ -5,14 +5,14 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
+using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
@@ -40,7 +40,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
             return TypeManager.GetType(entityToken.SerializedTypeName);
-
         }
 
 
@@ -97,29 +96,29 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             GeneratedTypesHelper helper = new GeneratedTypesHelper(oldType);
 
             string errorMessage;
-            if (helper.ValidateNewTypeName(typeName, out errorMessage) == false)
+            if (!helper.ValidateNewTypeName(typeName, out errorMessage))
             {
                 this.ShowFieldMessage("TypeName", errorMessage);
                 return;
             }
 
-            if (helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage) == false)
+            if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
             {
                 this.ShowFieldMessage("TypeNamespace", errorMessage);
                 return;
             }
 
-            if (helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage) == false)
+            if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
             {
                 this.ShowFieldMessage("TypeName", errorMessage);
                 return;
             }
 
-            if (helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage) == false)
+            if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage))
             {
                 this.ShowMessage(
                         DialogType.Warning,
-                        StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditInterfaceTypeStep1.ErrorTitle"),
+                        Texts.EditInterfaceTypeStep1_ErrorTitle,
                         errorMessage
                     );
                 return;
@@ -130,7 +129,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             helper.SetNewTypeTitle(typeTitle);
             helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
-            if (helper.IsEditProcessControlledAllowed == true)
+            if (helper.IsEditProcessControlledAllowed)
             {
                 helper.SetCachable(hasCaching);
                 helper.SetPublishControlled(hasPublishing);
@@ -139,11 +138,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             bool originalTypeHasData = DataFacade.HasDataInAnyScope(oldType);
 
-            if (helper.TryValidateUpdate(originalTypeHasData, out errorMessage) == false)
+            if (!helper.TryValidateUpdate(originalTypeHasData, out errorMessage))
             {
                 this.ShowMessage(
                         DialogType.Warning,
-                        StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "EditInterfaceTypeStep1.ErrorTitle"),
+                        Texts.EditInterfaceTypeStep1_ErrorTitle,
                         errorMessage
                     );
                 return;
@@ -165,9 +164,19 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             SetSaveStatus(true);
 
-            GeneratedDataTypesElementProviderRootEntityToken rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
+            var rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, 
+                GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId);
+
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(rootEntityToken);
+
+            IFile markupFile = DynamicTypesAlternateFormFacade.GetAlternateFormMarkupFile(typeNamespace, typeName);
+            if (markupFile != null)
+            {
+                ShowMessage(DialogType.Message, 
+                    Texts.FormMarkupInfo_Dialog_Label,
+                    Texts.FormMarkupInfo_Message(Texts.EditFormMarkup, markupFile.GetRelativeFilePath()));
+            }
         }
 
         private static void UpdateWhiteListedGeneratedTypes(string oldTypeName, string newTypeName)

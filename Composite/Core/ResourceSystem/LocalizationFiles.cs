@@ -2697,6 +2697,10 @@ namespace Composite.Core.ResourceSystem
  public static string EditAggregationTypeWorkflow_ErrorTitle { get { return T("EditAggregationTypeWorkflow.ErrorTitle"); } } 
  /// <summary>XML Result</summary> 
  public static string DataTypeDescriptorToXmlLabel { get { return T("DataTypeDescriptorToXmlLabel"); } } 
+ /// <summary>This type has custom form markup</summary> 
+ public static string FormMarkupInfo_Dialog_Label { get { return T("FormMarkupInfo.Dialog.Label"); } } 
+ /// <summary>Your field changes will not affect the form for editing data. Do &apos;{0}&apos; to change the form or delete the file &apos;{1}&apos;.</summary> 
+ public static string FormMarkupInfo_Message(string parameter0,string parameter1) { return string.Format(T("FormMarkupInfo.Message"), parameter0,parameter1); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", key);

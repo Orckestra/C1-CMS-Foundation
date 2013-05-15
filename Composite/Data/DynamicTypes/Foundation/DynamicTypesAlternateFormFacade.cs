@@ -16,20 +16,22 @@ namespace Composite.Data.DynamicTypes.Foundation
         /// <exclude />
         public static string GetAlternateFormMarkup(DataTypeDescriptor dataTypeDescriptor)
         {
-            string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor);
-            string dynamicDataFormFileName = GetFilename(dataTypeDescriptor);
+            var file = GetAlternateFormMarkupFile(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
+
+            return file != null ? file.ReadAllText() : null;
+        }
+
+        internal static IFile GetAlternateFormMarkupFile(string @namespace, string typeName)
+        {
+            string dynamicDataFormFolderPath = GetFolderPath(@namespace);
+            string dynamicDataFormFileName = GetFilename(typeName);
 
             IDynamicTypeFormDefinitionFile formOverride =
                 DataFacade.GetData<IDynamicTypeFormDefinitionFile>()
                           .FirstOrDefault(f => f.FolderPath.Equals(dynamicDataFormFolderPath, StringComparison.OrdinalIgnoreCase)
                                             && f.FileName.Equals(dynamicDataFormFileName, StringComparison.OrdinalIgnoreCase));
 
-            if (formOverride == null)
-            {
-                return null;
-            }
-            
-            return formOverride.ReadAllText();
+            return formOverride;
         }
 
 
@@ -37,17 +39,11 @@ namespace Composite.Data.DynamicTypes.Foundation
         /// <exclude />
         public static void SetAlternateForm(DataTypeDescriptor dataTypeDescriptor, string newFormMarkup)
         {
-            string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor);
-            string dynamicDataFormFileName = GetFilename(dataTypeDescriptor);
+            string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor.Namespace);
+            string dynamicDataFormFileName = GetFilename(dataTypeDescriptor.Name);
 
-            try
-            {
-                XDocument parsed = XDocument.Parse(newFormMarkup);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            // Parsing for assertion
+            XDocument.Parse(newFormMarkup);
 
             IDynamicTypeFormDefinitionFile formDefinitionFile =
                 DataFacade.GetData<IDynamicTypeFormDefinitionFile>()
@@ -71,16 +67,16 @@ namespace Composite.Data.DynamicTypes.Foundation
 
 
 
-        private static string GetFilename(DataTypeDescriptor dataTypeDescriptor)
+        private static string GetFilename(string typeName)
         {
-            return string.Format("{0}.xml", dataTypeDescriptor.Name);
+            return string.Format("{0}.xml", typeName);
         }
 
 
 
-        private static string GetFolderPath(DataTypeDescriptor dataTypeDescriptor)
+        private static string GetFolderPath(string @namespace)
         {
-            return "\\" + dataTypeDescriptor.Namespace.Replace('.', '\\');
+            return "\\" + @namespace.Replace('.', '\\');
         }
     }
 }

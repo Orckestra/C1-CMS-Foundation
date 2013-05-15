@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation;
+using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.GeneratedTypes;
-using Composite.Core.Logging;
 using Composite.Core.Types;
+using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditAggregationTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -103,29 +105,29 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 GeneratedTypesHelper helper = new GeneratedTypesHelper(oldType);
 
                 string errorMessage;
-                if (helper.ValidateNewTypeName(typeName, out errorMessage) == false)
+                if (!helper.ValidateNewTypeName(typeName, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeNamespace(typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeNamespace", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage) == false)
+                if (!helper.ValidateNewTypeFullName(typeName, typeNamespace, out errorMessage))
                 {
                     this.ShowFieldMessage("NewTypeName", errorMessage);
                     return;
                 }
 
-                if (helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage) == false)
+                if (!helper.ValidateNewFieldDescriptors(dataFieldDescriptors, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.Plugins.GeneratedDataTypesElementProvider, EditAggregationTypeWorkflow.ErrorTitle}",
+                            Texts.EditAggregationTypeWorkflow_ErrorTitle,
                             errorMessage
                         );
                     return;
@@ -135,7 +137,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
 
-                if (helper.IsEditProcessControlledAllowed == true)
+                if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);
@@ -144,11 +146,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 bool originalTypeDataExists = DataFacade.HasDataInAnyScope(oldType);
 
-                if (helper.TryValidateUpdate(originalTypeDataExists, out errorMessage) == false)
+                if (!helper.TryValidateUpdate(originalTypeDataExists, out errorMessage))
                 {
                     this.ShowMessage(
                             DialogType.Warning,
-                            "${Composite.Plugins.GeneratedDataTypesElementProvider, EditAggregationTypeWorkflow.ErrorTitle}",
+                            Texts.EditAggregationTypeWorkflow_ErrorTitle,
                             errorMessage
                         );
                     return;
@@ -161,13 +163,21 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 SetSaveStatus(true);
 
-                GeneratedDataTypesElementProviderRootEntityToken rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId);
+                var rootEntityToken = new GeneratedDataTypesElementProviderRootEntityToken(this.EntityToken.Source, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId);
                 SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
                 specificTreeRefresher.PostRefreshMesseges(rootEntityToken);
+
+                IFile markupFile = DynamicTypesAlternateFormFacade.GetAlternateFormMarkupFile(typeNamespace, typeName);
+                if (markupFile != null)
+                {
+                    ShowMessage(DialogType.Message,
+                        Texts.FormMarkupInfo_Dialog_Label,
+                        Texts.FormMarkupInfo_Message(Texts.EditFormMarkup, markupFile.GetRelativeFilePath()));
+                }
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("EditAggregationTypeWorkflow", ex);
+                Log.LogCritical("EditAggregationTypeWorkflow", ex);
 
                 this.ShowMessage(DialogType.Error, ex.Message, ex.Message);
             }

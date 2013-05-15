@@ -119,4 +119,8 @@
   <string key="EditAggregationTypeWorkflow.ErrorTitle" value="Error" />
   
   <string key="DataTypeDescriptorToXmlLabel" value="XML Result" />
+
+  <string key="FormMarkupInfo.Dialog.Label" value="This type has custom form markup" />
+  <string key="FormMarkupInfo.Message" value="Your field changes will not affect the form for editing data.
+Do '{0}' to change the form or delete the file '{1}'." />
 </strings>

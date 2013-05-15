@@ -1,5 +1,7 @@
 using System.IO;
+using System.Web.Hosting;
 using Composite.Core.IO;
+using Composite.Data.Plugins.DataProvider.Streams;
 using Composite.Data.Streams;
 
 
@@ -67,6 +69,19 @@ namespace Composite.Data.Types
             {
                 sw.Write(newContent);
             }
+        }
+
+        internal static string GetFilePath(this IFile file)
+        {
+            return (file is FileSystemFileBase) ? (file as FileSystemFileBase).SystemPath : null;
+        }
+
+        internal static string GetRelativeFilePath(this IFile file)
+        {
+            string filePath = GetFilePath(file);
+            if (filePath == null) return null;
+
+            return filePath.StartsWith(PathUtil.BaseDirectory) ? filePath.Substring(PathUtil.BaseDirectory.Length) : filePath;
         }
     }
 }
