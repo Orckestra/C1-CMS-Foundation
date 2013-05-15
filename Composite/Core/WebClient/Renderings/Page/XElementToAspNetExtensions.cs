@@ -123,7 +123,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             XNamespace sourceNs = source.Name.Namespace;
             XName newName = sourceNs.Equals(namespaceToRemove) ? source.Name.LocalName : source.Name;
-            XElement copy  = new XElement(source.Name);
+            XElement copy  = new XElement(newName);
 
             if (!sourceNs.Equals(namespaceToRemove) && sourceNs != source.Parent.Name.Namespace && source.Attribute("xmlns") == null)
 	        {
