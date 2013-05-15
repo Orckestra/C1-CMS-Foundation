@@ -263,14 +263,8 @@ namespace Composite.Services
                                                         Namespaces.Xhtml + "object",
                                                         Namespaces.Xhtml + "script",
                                                         Namespaces.Xhtml + "noscript",
-                                                        Namespaces.Svg + "svg",
                                                         Namespaces.Xhtml + "video"
                                                     };
-                IEnumerable<XElement> unHandledHtmlElements = xml.Descendants().Where(f => unHandledHtmlElementNames.Contains(f.Name));
-                foreach (var unHandledHtmlElement in unHandledHtmlElements.ToList())
-                {
-                    unHandledHtmlElement.ReplaceWith(GetImageTagForHtmlElement(unHandledHtmlElement));
-                }
 
                 IEnumerable<XElement> langElements = xml.Descendants().Where(f => f.Name.Namespace == Namespaces.Localization10);
                 foreach (var langElement in langElements.ToList())
@@ -278,6 +272,11 @@ namespace Composite.Services
                     langElement.ReplaceWith(GetImageTagForLangElement(langElement));
                 }
 
+                IEnumerable<XElement> unHandledHtmlElements = xml.Descendants().Where(f => f.Name.Namespace != Namespaces.Xhtml || unHandledHtmlElementNames.Contains(f.Name));
+                foreach (var unHandledHtmlElement in unHandledHtmlElements.ToList())
+                {
+                    unHandledHtmlElement.ReplaceWith(GetImageTagForHtmlElement(unHandledHtmlElement));
+                }
 
                 Dictionary<string, string> xsltParameters = new Dictionary<string, string>();
                 xsltParameters.Add("requestapppath", UrlUtils.PublicRootPath);
