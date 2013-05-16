@@ -538,7 +538,7 @@ namespace Composite.Services
 
             string functionBoxUrl = GetFunctionBoxImageUrl(error ? "warning" : "function", title, description.ToString());
 
-            XElement imagetag = new XElement("img"
+            XElement imagetag = new XElement(Namespaces.Xhtml + "img"
                 , new XAttribute("alt", compactMarkup)
                 , new XAttribute("src", functionBoxUrl)
                 , new XAttribute("class", "compositeFunctionWysiwygRepresentation")
