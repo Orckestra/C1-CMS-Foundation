@@ -20,9 +20,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 	{
         static readonly FileRelatedDataCache<CachedFunctionInformation> _functionInfoCache =
             new FileRelatedDataCache<CachedFunctionInformation>(
-                "fileBasedFunction",
-                CachedFunctionInformation.Serialize,
-                CachedFunctionInformation.Deserialize);
+                "Functions", "fileBasedFunction", CachedFunctionInformation.Serialize, CachedFunctionInformation.Deserialize);
 
         private static readonly string LogTitle = "FileBasedFunctionProvider";
 		private static readonly object _lock = new object();

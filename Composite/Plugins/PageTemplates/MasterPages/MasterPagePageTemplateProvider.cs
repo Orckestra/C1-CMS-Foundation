@@ -28,7 +28,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
         private static readonly string LogTitle = typeof (MasterPagePageTemplateProvider).FullName;
 
         private static readonly FileRelatedDataCache<CachedTemplateInformation> _templateCache =
-            new FileRelatedDataCache<CachedTemplateInformation>("masterPage",
+            new FileRelatedDataCache<CachedTemplateInformation>("Templates", "masterPage",
                                                                 CachedTemplateInformation.SerializeToFile,
                                                                 CachedTemplateInformation.DeserializeFromFile); 
 

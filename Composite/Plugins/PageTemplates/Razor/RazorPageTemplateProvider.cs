@@ -30,7 +30,7 @@ namespace Composite.Plugins.PageTemplates.Razor
         internal static readonly string TempFilePrefix = "_temp_";
 
         private static readonly FileRelatedDataCache<CachedTemplateInformation> _templateCache =
-            new FileRelatedDataCache<CachedTemplateInformation>("razorTemplate",
+            new FileRelatedDataCache<CachedTemplateInformation>("Templates", "razorTemplate",
                                                                 CachedTemplateInformation.SerializeToFile,
                                                                 CachedTemplateInformation.DeserializeFromFile); 
 

@@ -15,22 +15,38 @@ namespace Composite.Core.Caching
     {
         private static readonly string LogTitle = typeof(FileRelatedDataCache<>).Name;
 
+        private readonly string _cachefolder;
         private readonly string _cacheName;
         private readonly Action<CachedData, string> _serializer;
         private readonly Func<string, CachedData> _deserializer;
 
-        
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileRelatedDataCache{T}"/> class.
+        /// Initializes a new instance of the <see cref="FileRelatedDataCache{T}" /> class.
         /// </summary>
+        /// <param name="cacheDirectoryName">Name of the folder to which cached files will be put.</param>
         /// <param name="cacheName">Name of the cache, used in the naming of cached files.</param>
         /// <param name="toFileSerializer">To file serializer.</param>
         /// <param name="fromFileDeserializer">From file deserializer.</param>
-        public FileRelatedDataCache(string cacheName, Action<CachedData, string> toFileSerializer, Func<string, CachedData> fromFileDeserializer)
+        public FileRelatedDataCache(string cacheDirectoryName, string cacheName, Action<CachedData, string> toFileSerializer, Func<string, CachedData> fromFileDeserializer)
         {
             _cacheName = cacheName;
             _serializer = toFileSerializer;
             _deserializer = fromFileDeserializer;
+
+            string path = PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory);
+
+            if (!string.IsNullOrEmpty(cacheDirectoryName))
+            {
+                path = Path.Combine(path, cacheDirectoryName);
+            }
+
+            _cachefolder = path;
+
+            if (!C1Directory.Exists(_cachefolder))
+            {
+                C1Directory.CreateDirectory(_cachefolder);
+            }
         }
 
         public void Add(string key, string relatedFile, CachedData cachedData) 
@@ -122,7 +138,7 @@ namespace Composite.Core.Caching
         {
             string nameHash = key.GetHashCode().ToString(CultureInfo.InvariantCulture);
 
-            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), _cacheName + nameHash);
+            return Path.Combine(_cachefolder, _cacheName + nameHash);
         }
     }
 

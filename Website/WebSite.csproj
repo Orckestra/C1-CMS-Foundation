@@ -5990,9 +5990,6 @@
     <Content Include="Composite\updated.css" />
     <Content Include="Composite\updated.js" />
     <Content Include="Composite\help\help.ashx" />
-    <Content Include="App_Data\Composite\Azure.Composite.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="App_Data\Razor\web.config" />
     <Content Include="App_Data\UserControls\web.config" />

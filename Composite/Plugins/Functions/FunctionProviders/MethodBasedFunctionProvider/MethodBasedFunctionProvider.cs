@@ -21,7 +21,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
     [ConfigurationElementType(typeof(MethodBasedFunctionProviderData))]
     internal sealed class MethodBasedFunctionProvider : IFunctionProvider
     {
-        FileRelatedDataCache<Type> _inlineFunctionReturnTypeCache = new FileRelatedDataCache<Type>(
+        static readonly FileRelatedDataCache<Type> _inlineFunctionReturnTypeCache = new FileRelatedDataCache<Type>(
+            "Functions",
             "inlineFuncReturnType",
             (type, filePath) => C1File.WriteAllText(filePath, TypeManager.SerializeType(type)),
             (filePath) => TypeManager.TryGetType(C1File.ReadAllText(filePath))); 
