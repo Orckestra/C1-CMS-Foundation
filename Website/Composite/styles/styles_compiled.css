@@ -1537,8 +1537,7 @@ background-color: $(color:threedface);
 }
 ui|textbox ui|box,
 ui|editortextbox ui|box {
-#ie height: 108px;
-#moz height: 104px;
+height: 104px;
 }
 ui|datainputselector.invalid ui|box,
 ui|datainputdialog.invalid ui|box,
@@ -1810,8 +1809,7 @@ ui|editortextbox textarea {
 overflow: auto;
 #ie padding: 5px 5px 5px 7px; /* moz applies padding fugt here! */
 position: absolute;
-#ie height: 106px;
-#moz height: 102px;
+height: 102px;
 -vendor-tab-size: 4;
 }
 
