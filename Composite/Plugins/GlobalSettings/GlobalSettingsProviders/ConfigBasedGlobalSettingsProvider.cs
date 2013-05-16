@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
-using System.Linq;
+
 using Composite.Core.Configuration;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -18,7 +17,6 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         private readonly ConfigBasedGlobalSettingsProviderData _configurationData;
         private readonly ICachingSettings _cachingSettings;
         private readonly List<string> _nonProbeableAssemblyNames;
-        private readonly List<CultureInfo> _activeCultures;
 
         public ConfigBasedGlobalSettingsProvider(ConfigBasedGlobalSettingsProviderData configurationData)
         {
@@ -27,9 +25,6 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
             string cleannonProbeString = _configurationData.NonProbeableAssemblyNames.Replace(" ", "");
             _nonProbeableAssemblyNames = new List<string>(cleannonProbeString.Split(','));
-
-            string cleanApplicationCultureNames = _configurationData.ApplicationCultureNames.Replace(" ", "");
-            _activeCultures = new List<CultureInfo>(cleanApplicationCultureNames.Split(',').Select(f=>new CultureInfo(f)));
         }
 
 
@@ -49,13 +44,6 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         public string DefaultCultureName
         {
             get { return _configurationData.DefaultCultureName; }
-        }
-
-
-
-        public string DefaultLocalizationCultureName
-        {
-            get { return _configurationData.DefaultLocalizationCultureName; }
         }
 
 
@@ -198,18 +186,6 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
-        public IEnumerable<CultureInfo> ApplicationCultures
-        {
-            get 
-            {
-                foreach (CultureInfo ci in _activeCultures)
-                {
-                    yield return ci;
-                }
-            }
-        }
-
-
         public string WorkflowTimeout
         {
             get { return _configurationData.WorkflowTimeout; }
@@ -340,15 +316,6 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
-        private const string _defaultLocalizationCultureNamePropertyName = "defaultLocalizationCultureName";
-        [ConfigurationProperty(_defaultLocalizationCultureNamePropertyName, DefaultValue = "en-US")]
-        public string DefaultLocalizationCultureName
-        {
-            get { return (string)base[_defaultLocalizationCultureNamePropertyName]; }
-            set { base[_defaultLocalizationCultureNamePropertyName] = value; }
-        }
-
-
         private const string _configurationDirectoryPropertyName = "customConfigurationDirectory";
         [ConfigurationProperty(_configurationDirectoryPropertyName, DefaultValue = "~")]
         public string ConfigurationDirectory
@@ -416,12 +383,12 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             set { base[_tempDirectoryPropertyName] = value; }
         }
         
-        private const string _cacheDrectoryPropertyName = "cacheDirectory";
-        [ConfigurationProperty(_cacheDrectoryPropertyName, DefaultValue = "~/App_Data/Composite/Cache")]
+        private const string _cacheDirectoryPropertyName = "cacheDirectory";
+        [ConfigurationProperty(_cacheDirectoryPropertyName, DefaultValue = "~/App_Data/Composite/Cache")]
         public string CacheDirectory
         {
-            get { return (string)base[_cacheDrectoryPropertyName]; }
-            set { base[_cacheDrectoryPropertyName] = value; }
+            get { return (string)base[_cacheDirectoryPropertyName]; }
+            set { base[_cacheDirectoryPropertyName] = value; }
         }
 
         private const string _packageDirectoryPropertyName = "packageDirectory";
@@ -537,15 +504,6 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             set { base[_nonProbeableAssemblyNames] = value; }
         }
 
-
-
-        private const string _applicationCultureNames = "applicationCultureNames";
-        [ConfigurationProperty(_applicationCultureNames, IsRequired = true, DefaultValue = "da-DK,en-US")]
-        public string ApplicationCultureNames
-        {
-            get { return (string)base[_applicationCultureNames]; }
-            set { base[_applicationCultureNames] = value; }
-        }
 
         private const string _onlyTranslateWhenApproved = "onlyTranslateWhenApproved";
         [ConfigurationProperty(_onlyTranslateWhenApproved, IsRequired = false, DefaultValue = false)]

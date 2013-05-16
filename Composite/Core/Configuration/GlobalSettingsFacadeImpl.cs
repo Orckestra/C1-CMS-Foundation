@@ -48,18 +48,6 @@ namespace Composite.Core.Configuration
 
 
 
-        public CultureInfo DefaultLocalizationCultureInfo
-        {
-            get
-            {
-                string defaultLocalizationCultureName = GlobalSettingsProviderPluginFacade.DefaultLocalizationCultureName;
-
-                return CultureInfo.CreateSpecificCulture(defaultLocalizationCultureName);
-            }
-        }
-
-
-
         public string ConfigurationDirectory
         {
             get
@@ -251,16 +239,6 @@ namespace Composite.Core.Configuration
                 _addedNonProbableAssemblyNames.Remove(assemblyNamePatern);
             }
         }
-
-
-        public IEnumerable<CultureInfo> ApplicationCultures
-        {
-            get
-            {
-                return GlobalSettingsProviderPluginFacade.ApplicationCultures;
-            }
-        }
-
 
 
         public int ConsoleMessageQueueItemSecondToLive

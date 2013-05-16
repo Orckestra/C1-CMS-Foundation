@@ -75,16 +75,6 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
 
 
-        public static string DefaultLocalizationCultureName
-        {
-            get
-            {
-                return UseReaderLock(provider => provider.DefaultLocalizationCultureName);
-            }
-        }
-
-
-
         public static string SerializedWorkflowsDirectory
         {
             get
@@ -226,16 +216,6 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
             get
             {
                 return UseReaderLock(provider => provider.NonProbableAssemblyNames);
-            }
-        }
-
-
-
-        public static IEnumerable<CultureInfo> ApplicationCultures
-        {
-            get
-            {
-                return UseReaderLock(provider => provider.ApplicationCultures);
             }
         }
 

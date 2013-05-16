@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Globalization;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider.Runtime;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
@@ -13,8 +12,6 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         string ApplicationName { get; } 
 
         string DefaultCultureName { get; }
-
-        string DefaultLocalizationCultureName { get; }
 
         string ConfigurationDirectory { get; }
 
@@ -47,8 +44,6 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         string PackageLicenseDirectory { get; }
 
         IResourceCacheSettings ResourceCacheSettings { get; }
-
-        IEnumerable<CultureInfo> ApplicationCultures { get; }
 
         /// <summary>
         /// List of assembly names to exclude from type probing. Use "*" as wildcard, like. "System.*"

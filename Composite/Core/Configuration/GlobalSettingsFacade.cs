@@ -102,18 +102,6 @@ namespace Composite.Core.Configuration
 
 
         /// <exclude />
-        [Obsolete("Dont use any more. This is pending deletion")]
-        public static CultureInfo DefaultLocalizationCultureInfo
-        {
-            get
-            {
-                return _globalSettingsFacade.DefaultLocalizationCultureInfo;
-            }
-        }
-
-
-
-        /// <exclude />
         public static string ConfigurationDirectory
         {
             get
@@ -310,17 +298,6 @@ namespace Composite.Core.Configuration
         public static void RemoveNonProbableAssemblyName(string assemblyNamePatern)
         {
             _globalSettingsFacade.RemoveNonProbableAssemblyName(assemblyNamePatern);
-        }
-
-
-
-        /// <exclude />
-        public static IEnumerable<CultureInfo> ApplicationCultures
-        {
-            get
-            {
-                return _globalSettingsFacade.ApplicationCultures;
-            }
         }
 
 

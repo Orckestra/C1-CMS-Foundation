@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Threading;
 using Composite.Core.Configuration.Plugins.GlobalSettingsProvider;
 
@@ -44,12 +42,6 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
             get { return Thread.CurrentThread.CurrentCulture.Name; }
         }
 
-
-
-        public string DefaultLocalizationCultureName
-        {
-            get { return Thread.CurrentThread.CurrentCulture.Name; }
-        }
 
 
 
@@ -222,15 +214,6 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         public string AutoCreatedAdministratorUserName
         {
             get { return null; }
-        }
-
-
-        public IEnumerable<CultureInfo> ApplicationCultures
-        {
-            get
-            {
-                return CultureInfo.GetCultures(CultureTypes.SpecificCultures).ToList();
-            }
         }
 
 

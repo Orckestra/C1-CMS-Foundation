@@ -10,7 +10,6 @@ namespace Composite.Core.Configuration
         string ApplicationName { get; }
         CultureInfo DefaultCultureInfo { get; }
         string DefaultCultureName { get; }
-        CultureInfo DefaultLocalizationCultureInfo { get; }
         string ConfigurationDirectory { get; }
         string GeneratedAssembliesDirectory { get; }
         string SerializedWorkflowsDirectory { get; }
@@ -30,7 +29,6 @@ namespace Composite.Core.Configuration
         IEnumerable<string> NonProbableAssemblyNames { get; }
         void AddNonProbableAssemblyName(string assemblyNamePatern);
         void RemoveNonProbableAssemblyName(string assemblyNamePatern);
-        IEnumerable<CultureInfo> ApplicationCultures { get; }
         int ConsoleMessageQueueItemSecondToLive { get; }
         bool EnableDataTypesAutoUpdate { get; }
         bool BroadcastConsoleElementChanges { get; }
