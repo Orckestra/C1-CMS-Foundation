@@ -54,20 +54,14 @@ namespace Composite.C1Console.Trees.Workflows
                         customFormMarkupPath = StringConversionServices.DeserializeValueString(serializedValues["_CustomFormMarkupPath_"]);
                     }
 
-                    Type interfaceType;
-
                     DataEntityToken dataEntityToken = this.EntityToken as DataEntityToken;
-                    if (dataEntityToken != null)
-                    {
-                        interfaceType = dataEntityToken.InterfaceType;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("The given entity token is of wrong type");
-                    }
+                    Verify.IsNotNull(dataEntityToken, "The given entity token is of wrong type");
+
+                    Type interfaceType = dataEntityToken.InterfaceType;
+                    
 
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
-                    if (dataTypeDescriptor == null) throw new InvalidOperationException(string.Format("Can not find the type descriptor for the type '{0}'", interfaceType));
+                    Verify.IsNotNull(dataTypeDescriptor, "Can not find the type descriptor for the type '{0}'", interfaceType);
 
                     _typeName = dataTypeDescriptor.Name;
 
@@ -161,7 +155,7 @@ namespace Composite.C1Console.Trees.Workflows
 
                 foreach (string fieldName in fieldsWithBrokenReferences)
                 {
-                    ShowFieldMessage(fieldName, StringResourceSystemFacade.GetString("Composite.Management", "Validation.BrokenReference"));
+                    ShowFieldMessage(fieldName, LocalizationFiles.Composite_Management.Validation_BrokenReference);
                 }
             }
 
@@ -177,6 +171,8 @@ namespace Composite.C1Console.Trees.Workflows
                 }
 
                 DataFacade.Update(data);
+
+                EntityTokenCacheFacade.ClearCache(EntityToken);
 
                 bool published = PublishIfNeeded(data);
 
@@ -195,7 +191,7 @@ namespace Composite.C1Console.Trees.Workflows
         {
             if (newData is IPublishControlled && _doPublish)
             {
-                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+                var actionToken = new GenericPublishProcessController.PublishActionToken();
                 FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
                 ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
                 return true;
