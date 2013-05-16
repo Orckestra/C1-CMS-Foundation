@@ -169,7 +169,7 @@ namespace Composite.Data.DynamicTypes
                 string valueTypeString = StringConversionServices.DeserializeValue<string>(dic["ValueType"]);
                 DefaultValueType valueType = (DefaultValueType)Enum.Parse(typeof(DefaultValueType), valueTypeString);
 
-                bool hasValue = dic.ContainsKey("Value") == true;
+                bool hasValue = dic.ContainsKey("Value") ;
 
                 switch (valueType)
                 {

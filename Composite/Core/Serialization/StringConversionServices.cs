@@ -489,9 +489,9 @@ namespace Composite.Core.Serialization
                 MethodInfo method =
                     (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
                      where mi.Name == "SerializeKeyValuePair" &&
-                           mi.IsGenericMethodDefinition == true &&
+                           mi.IsGenericMethodDefinition &&
                            mi.GetParameters().Length == 3 &&
-                           mi.GetParameters()[2].ParameterType.IsGenericParameter == true
+                           mi.GetParameters()[2].ParameterType.IsGenericParameter 
                      select mi).SingleOrDefault();
 
                 method = method.MakeGenericMethod(new Type[] { f });
@@ -514,9 +514,9 @@ namespace Composite.Core.Serialization
                 MethodInfo method =
                     (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
                      where mi.Name == "DeserializeValue" &&
-                           mi.IsGenericMethodDefinition == true &&
+                           mi.IsGenericMethodDefinition &&
                            mi.GetParameters().Length == 2 &&
-                           mi.GetParameters()[1].ParameterType.IsGenericParameter == true
+                           mi.GetParameters()[1].ParameterType.IsGenericParameter 
                      select mi).SingleOrDefault();                
 
                 method = method.MakeGenericMethod(new Type[] { f });

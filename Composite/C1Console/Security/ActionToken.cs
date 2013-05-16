@@ -40,7 +40,7 @@ namespace Composite.C1Console.Security
                 bool ignoreLocking;
                 if (_ignoreEntityTokenLockingCache.TryGetValue(type, out ignoreLocking) == false)
                 {
-                    ignoreLocking = type.GetCustomAttributesRecursively<IgnoreEntityTokenLocking>().Any() == true;
+                    ignoreLocking = type.GetCustomAttributesRecursively<IgnoreEntityTokenLocking>().Any() ;
 
                     _ignoreEntityTokenLockingCache.Add(type, ignoreLocking);
                 }

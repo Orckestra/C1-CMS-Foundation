@@ -56,7 +56,7 @@ namespace Composite.C1Console.Security
         /// <returns>true if the user was auto created. Otherwise false.</returns>
         public static void AutoCreatedAdministrator(string userName, string password, string email, bool validateAutoCreateUserName = true)
         {
-            if (validateAutoCreateUserName == true && AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
+            if (validateAutoCreateUserName && AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
             {
                 throw new InvalidOperationException("Unable to auto create account. Either the user name is not eligble for auto creation or other users exists in the system. This feature only works for a specific user name and when no users exists.");
             }

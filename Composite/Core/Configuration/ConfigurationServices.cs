@@ -287,7 +287,7 @@ namespace Composite.Core.Configuration
             //            FileConfigurationSourceElement fileConfigurationInfo = objectConfiguration as FileConfigurationSourceElement;
             //            if (fileConfigurationInfo == null) throw new InvalidOperationException("Expected EntLib configuration source configuration to be of type " + typeof(FileConfigurationSourceElement).Name);
             //            string relativePath = fileConfigurationInfo.FilePath;
-            //            string tildePath = (Path.IsPathRooted(relativePath) == true ? "~" + relativePath : "~/" + relativePath);
+            //            string tildePath = (Path.IsPathRooted(relativePath) ? "~" + relativePath : "~/" + relativePath);
 
             //            return PathUtil.Resolve(tildePath);
             //        }

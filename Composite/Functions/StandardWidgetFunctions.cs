@@ -302,7 +302,7 @@ namespace Composite.Functions
                 new XAttribute("OptionsKeyField", optionsObjectKeyPropertyName),
                 new XAttribute("OptionsLabelField", optionsObjectLabelPropertyName),
                 new XAttribute("Required", required),
-                ( multiSelect == true ? new XAttribute("CompactMode", compactMode) : null),
+                ( multiSelect ? new XAttribute("CompactMode", compactMode) : null),
                 new XElement(selector.Name.Namespace + (tagName + ".Options"),
                     new XElement(f + "StaticMethodCall",
                        new XAttribute("Type", TypeManager.SerializeType(optionsGeneratingStaticType)),

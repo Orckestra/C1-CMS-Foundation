@@ -130,7 +130,7 @@ namespace Composite.Core.Xml
                 if (node.NodeType == XmlNodeType.Element)
                 {
                     if (!keepWhiteSpaces
-                        && ((node.IsBlockElement() == true) || (node.ContainsBlockElements == true) || ((node.ParentNode != null) && (node.ParentNode.ContainsBlockElements))) && (node.Level > 0))
+                        && ((node.IsBlockElement() ) || (node.ContainsBlockElements ) || ((node.ParentNode != null) && (node.ParentNode.ContainsBlockElements))) && (node.Level > 0))
                     {
                         stringBuilder.AppendLine();
                         stringBuilder.Append(GetIndent(node.Level, indentString));
@@ -147,7 +147,7 @@ namespace Composite.Core.Xml
                     }
 
                     bool isSelfClosingAndEmpty = false;
-                    if ((node.IsSelfClosingElement() == true) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Element).Any() == false) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Text).Any() == false))
+                    if ((node.IsSelfClosingElement() ) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Element).Any() == false) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Text).Any() == false))
                     {
                         isSelfClosingAndEmpty = true;
                     }
@@ -189,7 +189,7 @@ namespace Composite.Core.Xml
 
                         value = SuperTrim(node.Value);
 
-                        if (startsWithWhitespace == true)
+                        if (startsWithWhitespace )
                         {
                             if (((node.PreviousNode != null) && (node.PreviousNode.IsBlockElement() == false)) |
                                 ((node.ParentNode != null) && (node.ParentNode.IsBlockElement() == false)))
@@ -198,7 +198,7 @@ namespace Composite.Core.Xml
                             }
                         }
 
-                        if (endsWithWhitespace == true)
+                        if (endsWithWhitespace )
                         {
                             if (((node.NextNode != null) && (node.NextNode.IsBlockElement() == false)) ||
                                 ((node.ParentNode != null) && (node.ParentNode.IsBlockElement() == false)))
@@ -340,7 +340,7 @@ namespace Composite.Core.Xml
             int oldIndex = 0;
             while (index < value.Length)
             {
-                if (WhitespaceCharsLookup.Contains(value[index]) == true)
+                if (WhitespaceCharsLookup.Contains(value[index]) )
                 {
                     sb.Append(value.Substring(oldIndex, index - oldIndex));
                     sb.Append(" ");
@@ -398,7 +398,7 @@ namespace Composite.Core.Xml
 
         private static IEnumerable<XmlNode> BuildTree(XmlReader xmlReader, int level)
         {
-            while (xmlReader.Read() == true)
+            while (xmlReader.Read() )
             {
                 if (xmlReader.NodeType == XmlNodeType.EndElement) yield break;
 
@@ -582,7 +582,7 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLowerInvariant(), Namespace = GetCustomNamespace() }) == true) return true;
+                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLowerInvariant(), Namespace = GetCustomNamespace() }) ) return true;
 
                 return false;
             }
@@ -595,7 +595,7 @@ namespace Composite.Core.Xml
 
                 string customNamespace = GetCustomNamespace();
 
-                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = customNamespace }) == true) return true;
+                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = customNamespace }) ) return true;
 
                 return (customNamespace != "");
             }

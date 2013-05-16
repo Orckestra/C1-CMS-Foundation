@@ -139,7 +139,7 @@ namespace Composite.Core.WebClient
         {
             try
             {
-                if (LogRequestDetails == true && HttpContext.Current.Items.Contains("Global.asax timer"))
+                if (LogRequestDetails && HttpContext.Current.Items.Contains("Global.asax timer"))
                 {
                     int startTimer = (int)HttpContext.Current.Items["Global.asax timer"];
                     string requesrPath = HttpContext.Current.Request.Path;

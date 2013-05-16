@@ -58,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     {
                         IData administrativeComposition =
                             (from com in administrativeCompositions
-                             where com.DataSourceId.DataId.CompareTo(publicComposition.DataSourceId.DataId, false) == true
+                             where com.DataSourceId.DataId.CompareTo(publicComposition.DataSourceId.DataId, false) 
                              select com).Single();
 
                         publicComposition.FullCopyChangedTo(administrativeComposition, propertyNamesToIgnore);

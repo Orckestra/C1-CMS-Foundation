@@ -56,7 +56,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
             _fileSearchPattern = fileSearchPattern;
 
             _resolvedRootDirectoryPathLength = _resolvedRootDirectory.Length;
-            _fileSearchOptions = (topDirectoryOnly == true ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories);
+            _fileSearchOptions = (topDirectoryOnly ? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories);
 
             _fileSystemFileTypeWithInterface = FileSystemFileGenerator.GenerateFileSystemFileWithInterface(fileInterfaceType);
         }

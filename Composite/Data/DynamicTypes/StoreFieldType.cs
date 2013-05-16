@@ -149,7 +149,7 @@ namespace Composite.Data.DynamicTypes
         public bool IsConvertibleTo(StoreFieldType newStoreFieldType)
         {
             if (this.PhysicalStoreType == newStoreFieldType.PhysicalStoreType) return true;
-            if (this.IsNumeric == true && newStoreFieldType.IsDecimal) return true;
+            if (this.IsNumeric && newStoreFieldType.IsDecimal) return true;
 
             // String and LargeString are convertable to each other
             if ((PhysicalStoreType == PhysicalStoreFieldType.String && newStoreFieldType.PhysicalStoreType == PhysicalStoreFieldType.LargeString)

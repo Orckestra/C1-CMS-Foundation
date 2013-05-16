@@ -1894,7 +1894,7 @@ namespace Composite.Data
                     MethodInfo nonGenericMethod =
                         (from m in typeof(DataFacade).GetMethods(BindingFlags.Public | BindingFlags.Static)
                          where m.Name == "GetDataFromDataSourceId" &&
-                               m.IsGenericMethodDefinition == true &&
+                               m.IsGenericMethodDefinition &&
                                m.GetParameters().Length == 2
                          select m).Single();
 
@@ -1923,9 +1923,9 @@ namespace Composite.Data
                     MethodInfo genericMethod =
                         (from m in typeof(DataFacade).GetMethods(BindingFlags.Public | BindingFlags.Static)
                          where m.Name == "GetData" &&
-                               m.IsGenericMethodDefinition == true &&
+                               m.IsGenericMethodDefinition &&
                                m.GetParameters().Length == 1 &&
-                               m.GetParameters()[0].ParameterType.IsGenericType == true &&
+                               m.GetParameters()[0].ParameterType.IsGenericType &&
                                m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(Expression<>)
                          select m).Single();
 

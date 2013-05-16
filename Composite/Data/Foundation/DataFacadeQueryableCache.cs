@@ -138,7 +138,7 @@ namespace Composite.Data.Foundation
                     methodInfo =
                         (from method in type.GetMethods()
                          where method.Name == "Execute" &&
-                               method.IsGenericMethod == true
+                               method.IsGenericMethod 
                          select method).First();
 
                     methodInfo = methodInfo.MakeGenericMethod(new Type[] { expressionType });

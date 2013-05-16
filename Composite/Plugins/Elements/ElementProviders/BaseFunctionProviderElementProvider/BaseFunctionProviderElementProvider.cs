@@ -112,7 +112,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
                             Label = RootFolderLabel,
                             ToolTip = RootFolderToolTip,
                             HasChildren = hasChildren,
-                            Icon = hasChildren == true ? this.FolderIcon : this.EmptyFolderIcon,
+                            Icon = hasChildren ? this.FolderIcon : this.EmptyFolderIcon,
                             OpenedIcon = OpenFolderIcon
                         }
                 };
@@ -257,7 +257,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
                     Label = node.Name,
                     ToolTip = node.Name,
                     HasChildren = (node.SubFolders.Count != 0) || (node.Leafs.Count != 0),
-                    Icon = hasChildren == true ? this.FolderIcon : this.EmptyFolderIcon,
+                    Icon = hasChildren ? this.FolderIcon : this.EmptyFolderIcon,
                     OpenedIcon = this.FolderIcon
                 }
             };

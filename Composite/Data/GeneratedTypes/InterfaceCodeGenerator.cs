@@ -396,7 +396,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            if (dataFieldDescriptor.StoreType.IsString == true && dataFieldDescriptor.StoreType.IsLargeString == false)
+            if (dataFieldDescriptor.StoreType.IsString && dataFieldDescriptor.StoreType.IsLargeString == false)
             {
                 CodeAttributeDeclaration stringLengthAttribute;
                 if (dataFieldDescriptor.IsNullable == false)

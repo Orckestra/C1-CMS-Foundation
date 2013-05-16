@@ -374,7 +374,7 @@ namespace Composite.C1Console.Workflow
             bool hasEntityLockAttribute;
             if (_hasEntityTokenLockAttributeCache.TryGetValue(workflowType, out hasEntityLockAttribute) == false)
             {
-                hasEntityLockAttribute = workflowType.GetCustomAttributesRecursively<EntityTokenLockAttribute>().Any() == true;
+                hasEntityLockAttribute = workflowType.GetCustomAttributesRecursively<EntityTokenLockAttribute>().Any() ;
 
                 _hasEntityTokenLockAttributeCache.Add(workflowType, hasEntityLockAttribute);
             }

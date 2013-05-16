@@ -58,7 +58,7 @@ namespace Composite.Data
         {
             return
                 from prop in @interface.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                where prop.CanRead == true && prop.CanWrite == true
+                where prop.CanRead && prop.CanWrite 
                 select prop;
         }
 
@@ -72,9 +72,9 @@ namespace Composite.Data
                 MethodInfo methodInfo =
                         (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
                          where mi.Name == "SerializeKeyValuePair" &&
-                               mi.IsGenericMethodDefinition == true &&
+                               mi.IsGenericMethodDefinition &&
                                mi.GetParameters().Length == 3 &&
-                               mi.GetParameters()[2].ParameterType.IsGenericParameter == true
+                               mi.GetParameters()[2].ParameterType.IsGenericParameter 
                          select mi).SingleOrDefault();
 
                 methodInfo = methodInfo.MakeGenericMethod(new Type[] { propertyInfo.PropertyType });
@@ -100,9 +100,9 @@ namespace Composite.Data
                 MethodInfo methodInfo =
                         (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
                          where mi.Name == "DeserializeValue" &&
-                               mi.IsGenericMethodDefinition == true &&
+                               mi.IsGenericMethodDefinition &&
                                mi.GetParameters().Length == 2 &&
-                               mi.GetParameters()[1].ParameterType.IsGenericParameter == true
+                               mi.GetParameters()[1].ParameterType.IsGenericParameter 
                          select mi).SingleOrDefault();
 
                 object defaultValue;

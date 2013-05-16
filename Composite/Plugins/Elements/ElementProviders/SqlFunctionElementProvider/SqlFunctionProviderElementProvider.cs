@@ -77,7 +77,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
                         Label = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.RootLabel"),
                         ToolTip = StringResourceSystemFacade.GetString("Composite.Plugins.SqlFunction", "SqlFunctionElementProvider.RootLabelToolTip"),
                         HasChildren = hasChildren,
-                        Icon = hasChildren == true ? this.FolderIcon : this.EmptyFolderIcon,
+                        Icon = hasChildren ? this.FolderIcon : this.EmptyFolderIcon,
                         OpenedIcon = OpenFolderIcon
                     }
             };
@@ -334,7 +334,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
                     Label = node.Name,
                     ToolTip = node.Name,
                     HasChildren = (node.SubFolders.Count != 0) || (node.Leafs.Count != 0),
-                    Icon = hasChildren == true ? this.FolderIcon : this.EmptyFolderIcon,
+                    Icon = hasChildren ? this.FolderIcon : this.EmptyFolderIcon,
                     OpenedIcon = this.FolderIcon
                 }
             };

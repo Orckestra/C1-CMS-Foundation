@@ -99,7 +99,7 @@ namespace Composite.Data
 
                         IEnumerable<Type> allInterfacesToEnsure =
                             (from type in DataFacade.GetAllInterfaces()
-                             where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) == true
+                             where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) 
                              select type).ToList();
 
                         Log.LogVerbose(LogTitle, "Ensuring interfaces...");
@@ -109,7 +109,7 @@ namespace Composite.Data
 
                         IEnumerable<Type> allInterfaces =
                                 (from type in DataFacade.GetAllInterfaces()
-                                 where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) == true
+                                 where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) 
                                  select type).ToList();
 
                         List<Type> handleLastInterfaceTypes = new List<Type>();

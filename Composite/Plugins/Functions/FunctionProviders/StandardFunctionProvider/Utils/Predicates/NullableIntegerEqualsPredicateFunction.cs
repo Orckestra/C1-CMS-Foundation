@@ -33,7 +33,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             int value = parameters.GetParameter<int>("Value");
-            Expression<Func<int?, bool>> predicate = f => f.HasValue == true && f.Value == value;
+            Expression<Func<int?, bool>> predicate = f => f.HasValue && f.Value == value;
             return predicate;
         }
     }

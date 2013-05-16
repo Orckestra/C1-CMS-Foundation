@@ -30,7 +30,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             decimal value = parameters.GetParameter<decimal>("Value");
-            Expression<Func<decimal?, bool>> predicate = f => f.HasValue == true && f.Value == value;
+            Expression<Func<decimal?, bool>> predicate = f => f.HasValue && f.Value == value;
             return predicate;
         }
     }

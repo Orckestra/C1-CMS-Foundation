@@ -80,7 +80,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
             bool isReadOrBindProduced = property.Value != null && (typeof(BindProducer) == property.Value.GetType() || typeof(ReadProducer) == property.Value.GetType());
 
-            if (isReadOrBindProduced == false && true == typeof(IDictionary).IsAssignableFrom(getMethodInfo.ReturnType))
+            if (isReadOrBindProduced == false && typeof(IDictionary).IsAssignableFrom(getMethodInfo.ReturnType))
             {
                 if (property.Value == null) throw new FormCompileException(string.Format("Can not assign null to {0} dictionary", propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
                 IDictionary dictionary = getMethodInfo.Invoke(element.Producer, null) as IDictionary;
@@ -123,7 +123,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             }
             else
             {
-                if (isReadOrBindProduced == false && true == typeof(IList).IsAssignableFrom(getMethodInfo.ReturnType))
+                if (isReadOrBindProduced == false && typeof(IList).IsAssignableFrom(getMethodInfo.ReturnType))
                 {
                     IList list = getMethodInfo.Invoke(element.Producer, null) as IList;
 

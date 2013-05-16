@@ -109,7 +109,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
             List<IFolderWhiteList> myWhiteLists = DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName).ToList();
 
-            if (string.IsNullOrEmpty(_folderWhiteListKeyName) == true || DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName && f.TildeBasedPath == "~\\").Any())
+            if (string.IsNullOrEmpty(_folderWhiteListKeyName) || DataFacade.GetData<IFolderWhiteList>(f => f.KeyName == _folderWhiteListKeyName && f.TildeBasedPath == "~\\").Any())
             {
                 element.AddAction(
                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.AddNewWebsiteFolderWorkflow"), _addNewWebsiteFolderPermissionTypes)))
@@ -318,7 +318,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 folders =
                     from folder in folders
-                    where folder.FolderName.ToLowerInvariant().Contains(searchToken.Keyword.ToLowerInvariant()) == true
+                    where folder.FolderName.ToLowerInvariant().Contains(searchToken.Keyword.ToLowerInvariant()) 
                     select folder;
             }
 
@@ -364,7 +364,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 files =
                     from file in files
-                    where file.FileName.ToLowerInvariant().Contains(searchToken.Keyword.ToLowerInvariant()) == true
+                    where file.FileName.ToLowerInvariant().Contains(searchToken.Keyword.ToLowerInvariant()) 
                     select file;
             }
 

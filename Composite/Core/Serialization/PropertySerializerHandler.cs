@@ -20,7 +20,7 @@ namespace Composite.Core.Serialization
 
             IEnumerable<PropertyInfo> propertyInfos =
                 from prop in objectToSerialize.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                where prop.CanRead == true && prop.CanWrite == true
+                where prop.CanRead && prop.CanWrite 
                 select prop;
 
             foreach (PropertyInfo propertyInfo in propertyInfos)
@@ -28,9 +28,9 @@ namespace Composite.Core.Serialization
                 MethodInfo methodInfo =
                         (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
                          where mi.Name == "SerializeKeyValuePair" &&
-                               mi.IsGenericMethodDefinition == true &&
+                               mi.IsGenericMethodDefinition &&
                                mi.GetParameters().Length == 3 &&
-                               mi.GetParameters()[2].ParameterType.IsGenericParameter == true
+                               mi.GetParameters()[2].ParameterType.IsGenericParameter 
                          select mi).SingleOrDefault();
                 
                 methodInfo = methodInfo.MakeGenericMethod(new Type[] { propertyInfo.PropertyType });
@@ -56,7 +56,7 @@ namespace Composite.Core.Serialization
 
             IEnumerable<PropertyInfo> propertyInfos =
                 from prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                where prop.CanRead == true && prop.CanWrite == true
+                where prop.CanRead && prop.CanWrite 
                 select prop;
 
             foreach (PropertyInfo propertyInfo in propertyInfos)
@@ -66,9 +66,9 @@ namespace Composite.Core.Serialization
                 MethodInfo methodInfo =
                         (from mi in typeof(StringConversionServices).GetMethods(BindingFlags.Public | BindingFlags.Static)
                          where mi.Name == "DeserializeValue" &&
-                               mi.IsGenericMethodDefinition == true &&
+                               mi.IsGenericMethodDefinition &&
                                mi.GetParameters().Length == 2 &&
-                               mi.GetParameters()[1].ParameterType.IsGenericParameter == true
+                               mi.GetParameters()[1].ParameterType.IsGenericParameter 
                          select mi).SingleOrDefault();
 
                 object defaultValue;

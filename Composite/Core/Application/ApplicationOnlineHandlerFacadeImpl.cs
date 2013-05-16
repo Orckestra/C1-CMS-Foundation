@@ -22,7 +22,7 @@ namespace Composite.Core.Application
         {
             Verify.IsTrue(this.IsApplicationOnline, "The application is already offline");
 
-            Log.LogVerbose("ApplicationOnlineHandlerFacade", string.Format("Turning off the application ({0})", softTurnOff == true ? "Soft" : "Hard"));
+            Log.LogVerbose("ApplicationOnlineHandlerFacade", string.Format("Turning off the application ({0})", softTurnOff ? "Soft" : "Hard"));
 
 
             _recompileCompositeGenerated = recompileCompositeGenerated;

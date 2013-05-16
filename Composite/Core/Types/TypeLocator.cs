@@ -137,7 +137,7 @@ namespace Composite.Core.Types
         {
             return
                 from assembly in AppDomain.CurrentDomain.GetAssemblies()
-                where IsProbeableAssembly(assembly.FullName) == true
+                where IsProbeableAssembly(assembly.FullName) 
                 select assembly;
         }
 

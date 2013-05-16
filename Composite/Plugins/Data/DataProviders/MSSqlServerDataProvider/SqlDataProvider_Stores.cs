@@ -297,7 +297,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             int primaryKeyCount =
                 (from column in sqlTableInformation.ColumnInformations
-                 where column.IsPrimaryKey == true
+                 where column.IsPrimaryKey 
                  select column).Count();
 
             if (primaryKeyCount == 0)

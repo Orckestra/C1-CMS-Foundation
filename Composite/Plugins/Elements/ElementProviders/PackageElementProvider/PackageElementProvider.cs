@@ -321,7 +321,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             bool hasLocalPackageChildren =
                 (from info in PackageManager.GetInstalledPackages()
-                 where info.IsLocalInstalled == true
+                 where info.IsLocalInstalled 
                  select info.Name).FirstOrDefault() != null;
 
             Element localPackagesElement = new Element(_context.CreateElementHandle(new PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken()));
@@ -410,7 +410,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             IEnumerable<InstalledPackageInformation> installedPackageInformations =
                 from info in PackageManager.GetInstalledPackages()
-                where info.IsLocalInstalled == true
+                where info.IsLocalInstalled 
                 orderby info.Name
                 select info;
 

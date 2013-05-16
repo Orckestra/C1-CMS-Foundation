@@ -30,7 +30,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
             DateTime value = parameters.GetParameter<DateTime>("Value");
-            Expression<Func<DateTime?, bool>> predicate = f => f.HasValue == true && f.Value == value;
+            Expression<Func<DateTime?, bool>> predicate = f => f.HasValue && f.Value == value;
             return predicate;
         }
     }

@@ -254,7 +254,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             _standardDynamicTypeFunctions.AddRange(
                 from t in dataInterfaces
-                where DataAssociationRegistry.IsAssociationType(t) == true
+                where DataAssociationRegistry.IsAssociationType(t) 
                 select (IFunction)Activator.CreateInstance(typeof(ActivePageReferenceFilter<>).MakeGenericType(t), args));
 
             _standardDynamicTypeFunctions.AddRange(
