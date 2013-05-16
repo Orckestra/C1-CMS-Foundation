@@ -44,13 +44,13 @@ namespace Composite.Data.Foundation
 
         protected override Expression VisitMember(MemberExpression m)
         {
-            if (m.Member.DeclaringType.IsCompilerGeneratedType() == true)
+            if (m.Member.DeclaringType.IsCompilerGeneratedType())
             {
                 if (m.Member.MemberType == MemberTypes.Field)
                 {
                     Type fieldType = ((FieldInfo)m.Member).FieldType;
 
-                    if ((fieldType.IsGenericType == true) &&
+                    if ((fieldType.IsGenericType) &&
                         (fieldType.GetGenericTypeDefinition() == typeof(IQueryable<>)) &&
                         (m.Expression.NodeType == ExpressionType.Constant))
                     {
@@ -81,7 +81,7 @@ namespace Composite.Data.Foundation
         {
             if (m.Method.DeclaringType == typeof (DataFacade))
             {
-                if ((m.Method.IsGenericMethod == true) &&
+                if ((m.Method.IsGenericMethod) &&
                      (m.Method.GetGenericMethodDefinition() == _dataFacadeGetDataMethodInfo))
                 {
                     object result = m.Method.Invoke(null, null);

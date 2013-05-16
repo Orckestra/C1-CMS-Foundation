@@ -260,7 +260,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
 
 
-            if (userValidated == true)
+            if (userValidated)
             {
                 UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
 
@@ -312,7 +312,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     IEnumerable<PermissionType> newPermissionTypes = GlobalPermissionsFormsHelper.GetSelectedPermissionTypes(this.Bindings);
 
                     if ((user.Username == UserSettings.Username) &&
-                        (oldPermissionTypes.Contains(PermissionType.Administrate) == true) &&
+                        (oldPermissionTypes.Contains(PermissionType.Administrate)) &&
                         (newPermissionTypes.Contains(PermissionType.Administrate) == false))
                     {
                         newPermissionTypes = newPermissionTypes.Concat(new PermissionType[] { PermissionType.Administrate });
@@ -376,7 +376,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     foreach (Guid newUserGroupId in newUserGroupIds)
                     {
                         Guid groupId = newUserGroupId;
-                        if (oldRelations.Any(f => f.UserGroupId == groupId) == true) continue;
+                        if (oldRelations.Any(f => f.UserGroupId == groupId)) continue;
 
                         IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
                         userUserGroupRelation.UserId = user.Id;
@@ -388,7 +388,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     transactionScope.Complete();
                 }
 
-                if (reloadUsersConsoles == true)
+                if (reloadUsersConsoles)
                 {
                     foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
                     {

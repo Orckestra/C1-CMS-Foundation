@@ -33,7 +33,7 @@ namespace Composite.C1Console.Trees.Foundation
                 XElement elementRootElement = document.Descendants(TreeMarkupConstants.Namespace + "ElementRoot").Single();
                 tree.RootTreeNode = BuildInnerTree(elementRootElement, null, tree);
 
-                if ((tree.AttachmentPoints.OfType<DataItemAttachmentPoint>().Any() == true) &&
+                if ((tree.AttachmentPoints.OfType<DataItemAttachmentPoint>().Any()) &&
                     (tree.RootTreeNode.ChildNodes.Any()))
                 {
                     // Only simple tree nodes allowed if data item attaching is done
@@ -91,7 +91,7 @@ namespace Composite.C1Console.Trees.Foundation
                 xmlReaderSettings.ValidationFlags = XmlSchemaValidationFlags.ProcessSchemaLocation | XmlSchemaValidationFlags.ReportValidationWarnings;
                 XmlReader xmlReader = XmlReader.Create(new StringReader(document.ToString()), xmlReaderSettings);
 
-                while (xmlReader.Read() == true) ;
+                while (xmlReader.Read()) ;
 
                 if (schemaValidationResult == false)
                 {

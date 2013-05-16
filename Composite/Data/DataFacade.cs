@@ -256,7 +256,7 @@ namespace Composite.Data
         public static IQueryable GetData(Type interfaceType, string providerName)
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             MethodInfo methodInfo = GetGetDataMethodInfo(interfaceType);
 
@@ -910,7 +910,7 @@ namespace Composite.Data
             where T : class, IData
         {
             Verify.ArgumentNotNull(data, "data");
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             List<T> result = AddNew<T>(new T[] { data }, true, false, true, true, new List<string> { providerName });
 
@@ -937,7 +937,7 @@ namespace Composite.Data
             where T : class, IData
         {
             if (datas == null) throw new ArgumentNullException("datas");
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             return AddNew<T>(datas, true, false, true, true, new List<string> { providerName });
         }
@@ -1532,7 +1532,7 @@ namespace Composite.Data
         public static void SetDataTag(IData data, string id, object value)
         {
             Verify.ArgumentNotNull(data, "data");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             SetDataTag(data.DataSourceId, id, value);
         }
@@ -1543,7 +1543,7 @@ namespace Composite.Data
         public static void SetDataTag(DataSourceId dataSourceId, string id, object value)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             dataSourceId.SetTag(id, value);
         }
@@ -1555,7 +1555,7 @@ namespace Composite.Data
         public static bool TryGetDataTag<T>(IData data, string id, out T tag)
         {
             Verify.ArgumentNotNull(data, "data");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             return TryGetDataTag<T>(data.DataSourceId, id, out tag);
         }
@@ -1566,12 +1566,12 @@ namespace Composite.Data
         public static bool TryGetDataTag<T>(DataSourceId dataSourceId, string id, out T tag)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             object tagValue = null;
             bool result = dataSourceId.TryGetTag(id, out tagValue);
 
-            if (result == true)
+            if (result)
             {
                 tag = (T)tagValue;
             }
@@ -1590,7 +1590,7 @@ namespace Composite.Data
         public static T GetDataTag<T>(IData data, string id)
         {
             Verify.ArgumentNotNull(data, "data");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             return GetDataTag<T>(data.DataSourceId, id);
         }
@@ -1601,7 +1601,7 @@ namespace Composite.Data
         public static T GetDataTag<T>(DataSourceId dataSourceId, string id)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             object value;
             if (dataSourceId.TryGetTag(id, out value) == false)
@@ -1619,7 +1619,7 @@ namespace Composite.Data
         public static void RemoveDataTag(IData data, string id)
         {
             Verify.ArgumentNotNull(data, "data");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             RemoveDataTag(data.DataSourceId, id);
         }
@@ -1630,7 +1630,7 @@ namespace Composite.Data
         public static void RemoveDataTag(DataSourceId dataSourceId, string id)
         {
             if (dataSourceId == null) throw new ArgumentNullException("dataSourceId");
-            if (string.IsNullOrEmpty(id) == true) throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(id)) throw new ArgumentNullException("id");
 
             dataSourceId.RemoveTag(id);
         }
@@ -2036,7 +2036,7 @@ namespace Composite.Data
                          where
                             (method.Name == "ExistsInAnyLocale") &&
                             (method.GetParameters().Count() == 1) &&
-                            (typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType) == true)
+                            (typeof(IEnumerable).IsAssignableFrom(method.GetParameters()[0].ParameterType))
                          select method).First();
 
                     methodInfo = methodInfo.MakeGenericMethod(new Type[] { interfaceType });

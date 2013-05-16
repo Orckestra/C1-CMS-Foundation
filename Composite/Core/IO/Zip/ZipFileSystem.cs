@@ -15,7 +15,7 @@ namespace Composite.Core.IO.Zip
 
         public ZipFileSystem(string zipFilename)
         {
-            if (string.IsNullOrEmpty(zipFilename) == true) throw new ArgumentNullException("zipFilename");
+            if (string.IsNullOrEmpty(zipFilename)) throw new ArgumentNullException("zipFilename");
 
             this.ZipFilename = zipFilename;
 
@@ -60,7 +60,7 @@ namespace Composite.Core.IO.Zip
             {
                 string resultFilename = string.Format("~/{0}", filename);
 
-                if (resultFilename.StartsWith(directoryName) == true)
+                if (resultFilename.StartsWith(directoryName))
                 {
                     yield return resultFilename;
                 }
@@ -71,7 +71,7 @@ namespace Composite.Core.IO.Zip
 
         public IEnumerable<string> GetDirectoryNames()
         {
-            foreach (string directoryName in _existingFilenamesInZip.Values.Where(f => f.IsDirectory == true).Select(f => f.Name))
+            foreach (string directoryName in _existingFilenamesInZip.Values.Where(f => f.IsDirectory).Select(f => f.Name))
             {
                 yield return string.Format("~/{0}", directoryName);
             }

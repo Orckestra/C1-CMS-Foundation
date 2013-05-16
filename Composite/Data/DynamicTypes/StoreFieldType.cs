@@ -87,7 +87,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                if (_maximumLength.HasValue == true)
+                if (_maximumLength.HasValue)
                 {
                     return _maximumLength.Value;
                 }
@@ -108,7 +108,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                if (_numericPrecision.HasValue == true)
+                if (_numericPrecision.HasValue)
                 {
                     return _numericPrecision.Value;
                 }
@@ -129,7 +129,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                if (_numericScale.HasValue == true)
+                if (_numericScale.HasValue)
                 {
                     return _numericScale.Value;
                 }
@@ -149,7 +149,7 @@ namespace Composite.Data.DynamicTypes
         public bool IsConvertibleTo(StoreFieldType newStoreFieldType)
         {
             if (this.PhysicalStoreType == newStoreFieldType.PhysicalStoreType) return true;
-            if (this.IsNumeric == true && newStoreFieldType.IsDecimal == true) return true;
+            if (this.IsNumeric == true && newStoreFieldType.IsDecimal) return true;
 
             // String and LargeString are convertable to each other
             if ((PhysicalStoreType == PhysicalStoreFieldType.String && newStoreFieldType.PhysicalStoreType == PhysicalStoreFieldType.LargeString)
@@ -214,7 +214,7 @@ namespace Composite.Data.DynamicTypes
         {
             using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (string.IsNullOrEmpty(serializedData) == true) throw new ArgumentNullException("serializedData");
+                if (string.IsNullOrEmpty(serializedData)) throw new ArgumentNullException("serializedData");
 
                 Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedData);
 

@@ -153,7 +153,7 @@ namespace Composite.Data.Foundation
 
         internal static void InitializeDataTypes()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }

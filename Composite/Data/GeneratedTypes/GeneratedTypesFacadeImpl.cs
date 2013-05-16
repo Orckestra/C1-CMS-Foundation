@@ -146,7 +146,7 @@ namespace Composite.Data.GeneratedTypes
         /// <param name="dataTypeDescriptor"></param>
         private void UpdateWithNewMetaDataForeignKeySystem(DataTypeDescriptor dataTypeDescriptor)
         {
-            if (dataTypeDescriptor.IsPageMetaDataType == true)
+            if (dataTypeDescriptor.IsPageMetaDataType)
             {
                 DataFieldDescriptor dataFieldDescriptor = dataTypeDescriptor.Fields[PageMetaDataFacade.MetaDataType_MetaDataDefinitionFieldName];
                 if ((dataFieldDescriptor != null) && (dataFieldDescriptor.ForeignKeyReferenceTypeName != null)) // This should never fail, but want to be sure

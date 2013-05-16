@@ -42,9 +42,9 @@ namespace Composite.Core.PackageSystem
         public PackageInstaller(IPackageInstallerUninstallerFactory packageInstallerUninstallerFactory, string zipFilename, string packageInstallDirectory, string tempDirectory, PackageInformation packageInformation)
         {
             if (packageInstallerUninstallerFactory == null) throw new ArgumentNullException("packageInstallerUninstallerFactory");
-            if (string.IsNullOrEmpty(zipFilename) == true) throw new ArgumentNullException("zipFilename");
-            if (string.IsNullOrEmpty(packageInstallDirectory) == true) throw new ArgumentNullException("packageInstallDirectory");
-            if (string.IsNullOrEmpty(tempDirectory) == true) throw new ArgumentNullException("tempDirectory");
+            if (string.IsNullOrEmpty(zipFilename)) throw new ArgumentNullException("zipFilename");
+            if (string.IsNullOrEmpty(packageInstallDirectory)) throw new ArgumentNullException("packageInstallDirectory");
+            if (string.IsNullOrEmpty(tempDirectory)) throw new ArgumentNullException("tempDirectory");
             if (packageInformation == null) throw new ArgumentNullException("packageInformation");
 
             this.PackageInstallerUninstallerFactory = packageInstallerUninstallerFactory;
@@ -150,7 +150,7 @@ namespace Composite.Core.PackageSystem
                     {
                         List<XElement> uninstallInformation = kvp.Key.Install().ToList();
 
-                        if (this.CanBeUninstalled == true)
+                        if (this.CanBeUninstalled)
                         {
                             XElement uninstallElement =
                                 new XElement(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace,
@@ -171,7 +171,7 @@ namespace Composite.Core.PackageSystem
                 }
                 finally
                 {
-                    if (this.CanBeUninstalled == true)
+                    if (this.CanBeUninstalled)
                     {
                         XDocument doc =
                             new XDocument(
@@ -186,7 +186,7 @@ namespace Composite.Core.PackageSystem
 
                 if (installException != null)
                 {
-                    if (this.CanBeUninstalled == true)
+                    if (this.CanBeUninstalled)
                     {
                         IPackageUninstaller packageUninstaller =
                             this.PackageInstallerUninstallerFactory.CreateUninstaller(
@@ -254,7 +254,7 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> Initialize()
         {
-            if (_isInitialized == true) throw new InvalidOperationException("Initialize() may only be called once");
+            if (_isInitialized) throw new InvalidOperationException("Initialize() may only be called once");
             _isInitialized = true;
 
             Exception exception = null;
@@ -375,7 +375,7 @@ namespace Composite.Core.PackageSystem
                 if (packageFragmentInstaller == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The type '{0}' does not implement {1}", installerTypeAttribute.Value, typeof(IPackageFragmentInstaller)), installerTypeAttribute); continue; }
 
                 Type uninstallerType = null;
-                if (this.CanBeUninstalled == true)
+                if (this.CanBeUninstalled)
                 {
                     XAttribute uninstallerTypeAttribute = element.Attribute(PackageSystemSettings.UninstallerTypeAttributeName);
                     if (uninstallerTypeAttribute == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Missing attribute '{0}'", PackageSystemSettings.UninstallerTypeAttributeName), element); continue; }

@@ -92,7 +92,7 @@ namespace Composite.Functions.Foundation
 
         protected override void OnFunctionsAdded(List<string> functionNames, bool fireEvents)
         {
-            if (fireEvents == true)
+            if (fireEvents)
             {
                 FunctionEventSystemFacade.FireWidgetFunctionAddedEvent(new WidgetFunctionsAddedEventArgs(functionNames));
             }

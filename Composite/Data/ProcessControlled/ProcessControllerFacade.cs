@@ -90,8 +90,8 @@ namespace Composite.Data.ProcessControlled
                 foreach (Type processControledType in _controlledTypes.Keys)
                 {
                     if ((compatibleTypes.Contains(type) == false) &&
-                        (processControledType.IsAssignableFrom(targetType) == true) &&
-                        (processControledType.IsAssignableFrom(type) == true))
+                        (processControledType.IsAssignableFrom(targetType)) &&
+                        (processControledType.IsAssignableFrom(type)))
                     {
                         compatibleTypes.Add(type);
                     }
@@ -211,7 +211,7 @@ namespace Composite.Data.ProcessControlled
                 {
                     bool callAuxilaries = controller.OnAfterDataUpdated(dataEventArgs.Data);
 
-                    if (callAuxilaries == true)
+                    if (callAuxilaries)
                     {
                         IEnumerable<IPublishControlledAuxiliary> publishControlledAuxiliaries = GetPublishControlledAuxiliaries(dataEventArgs.DataType);
 
@@ -238,7 +238,7 @@ namespace Composite.Data.ProcessControlled
                 {
                     bool callAuxilaries = controller.OnAfterBuildNew(dataEventArgs.Data);
 
-                    if (callAuxilaries == true)
+                    if (callAuxilaries)
                     {
                         IEnumerable<IPublishControlledAuxiliary> publishControlledAuxiliaries = GetPublishControlledAuxiliaries(dataEventArgs.DataType);
 
@@ -322,7 +322,7 @@ namespace Composite.Data.ProcessControlled
 
         internal static void Initialize_PostDataTypes()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }
@@ -357,7 +357,7 @@ namespace Composite.Data.ProcessControlled
 
                     foreach (var kvp in _controlledTypes)
                     {
-                        if (kvp.Key.IsAssignableFrom(dataType) == true)
+                        if (kvp.Key.IsAssignableFrom(dataType))
                         {
                             if (processControllerTypes.ContainsKey(kvp.Value) == false)
                             {

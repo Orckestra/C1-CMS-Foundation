@@ -53,7 +53,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             bool isUsed = DataFacade.GetData<IPageTypeMetaDataTypeLink>().Where(f => f.DataTypeId == dataTypeDescriptor.DataTypeId).Any();
 
-            if (isUsed == true)
+            if (isUsed)
             {
                 Type interfaceType = GetDataTypeDescriptor().GetInterfaceType();
 

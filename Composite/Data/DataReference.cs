@@ -218,7 +218,7 @@ namespace Composite.Data
             {
                 IDataReference valueCasted = (IDataReference)value;
 
-                if (valueCasted.IsSet == true)
+                if (valueCasted.IsSet)
                 {
                     targetValue = ((IDataReference)value).KeyValue.ToString();
                 }
@@ -235,7 +235,7 @@ namespace Composite.Data
             {
                 IDataReference valueCasted = (IDataReference)value;
                 
-                if (valueCasted.IsSet == true)
+                if (valueCasted.IsSet)
                 {
                     if (targetType.IsAssignableFrom( ((IDataReference)value).KeyValue.GetType() ))
                     {
@@ -254,7 +254,7 @@ namespace Composite.Data
 
             if (typeof(IDataReference).IsAssignableFrom(targetType))
             {
-                if (value is string && string.IsNullOrEmpty((string)value) == true)
+                if (value is string && string.IsNullOrEmpty((string)value))
                     value = null;
 
                 object[] activationParameters = new object[1];

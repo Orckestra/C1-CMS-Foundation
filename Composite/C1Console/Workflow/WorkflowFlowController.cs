@@ -288,7 +288,7 @@ namespace Composite.C1Console.Workflow
         {
             WorkflowFlowToken workflowFlowToken = (WorkflowFlowToken)flowToken;
 
-            if (WorkflowFacade.WorkflowExists(workflowFlowToken.WorkflowInstanceId) == true)
+            if (WorkflowFacade.WorkflowExists(workflowFlowToken.WorkflowInstanceId))
             {
                 using (TaskManagerFacade.RuntTasks(flowToken, new WorkflowTaskManagerEvent(flowToken, workflowFlowToken.WorkflowInstanceId) { EventName = "Cancel" }))
                 {

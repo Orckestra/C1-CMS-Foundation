@@ -289,7 +289,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             List<string> errors;
             IEnumerable<NamedFunctionCall> result = GetValidFunctionCalls(xsltFunctionId, out errors);
 
-            if (errors != null && errors.Any() == true)
+            if (errors != null && errors.Any())
             {
                 throw new InvalidOperationException(errors.First());
             }

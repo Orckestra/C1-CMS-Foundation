@@ -277,7 +277,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             if (file.MimeType.Length > 0) propertyList.Add("MimeType", "MIME type", file.MimeType);
             propertyList.Add("Culture", "Culture", file.Culture);
 
-            if (file.MimeType.StartsWith("image") == true)
+            if (file.MimeType.StartsWith("image"))
             {
                 if (file.MimeType == MimeTypeInfo.Svg)
                 {
@@ -336,11 +336,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             IData draggedData = ((DataEntityToken)draggedEntityToken).Data;
 
             string path;
-            if ((newParentEntityToken is DataEntityToken) == true)
+            if ((newParentEntityToken is DataEntityToken))
             {
                 path = ((IMediaFileFolder)((DataEntityToken)newParentEntityToken).Data).Path;
             }
-            else if ((newParentEntityToken is MediaRootFolderProviderEntityToken) == true)
+            else if ((newParentEntityToken is MediaRootFolderProviderEntityToken))
             {
                 path = "/";
             }
@@ -437,7 +437,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                     string newFilename = draggedFile.FileName;
                     int counter = 1;
-                    while (fileNames.Contains(newFilename) == true)
+                    while (fileNames.Contains(newFilename))
                     {
                         newFilename = string.Format("{0}({1}){2}", draggedFilenamePre, counter++, draggedFilenamePost);
                     }
@@ -587,12 +587,12 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         {
             var predicates = new List<Func<IMediaFile, bool>>();
 
-            if (_showOnlyImages == true)
+            if (_showOnlyImages)
             {
                 predicates.Add(x => x.MimeType != null && x.MimeType.StartsWith("image"));
             }
 
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 string keyword = searchToken.Keyword.ToLower();
 

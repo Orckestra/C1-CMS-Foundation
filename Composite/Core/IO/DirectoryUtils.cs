@@ -60,7 +60,7 @@ namespace Composite.Core.IO
             LoggingService.LogVerbose("DirectoryUtil", string.Format("Deleting file '{0}'", path));
             C1File.Delete(path);
 
-            if (deleteEmptyDirectoresRecursively == true)
+            if (deleteEmptyDirectoresRecursively)
             {
                 string directory = Path.GetDirectoryName(path);
 

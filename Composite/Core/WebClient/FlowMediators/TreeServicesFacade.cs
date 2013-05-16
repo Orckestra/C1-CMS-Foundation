@@ -69,7 +69,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 }
 
                 List<Element> roots;
-                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo) == true))
+                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
                 {
                     roots = ElementFacade.GetRoots(new ElementProviderHandle(providerHandle), searchToken).ToList();
                 }
@@ -91,7 +91,7 @@ namespace Composite.Core.WebClient.FlowMediators
             List<string> clientElementKeys = new List<string>();
             foreach (Element element in elements)
             {
-                if (element.IsLocaleAware == true)
+                if (element.IsLocaleAware)
                 {
                     clientElementKeys.Add(element.GetClientElement().ElementKey);
                 }
@@ -129,7 +129,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 }
 
                 List<Element> childElements;
-                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo) == true))
+                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
                 {
                     childElements = ElementFacade.GetChildren(elementHandle, searchToken).ToList();
                 }
@@ -180,7 +180,7 @@ namespace Composite.Core.WebClient.FlowMediators
                     ElementHandle elementHandle = new ElementHandle(node.ProviderName, entityToken, node.Piggybag);
 
                     List<Element> childElements;
-                    if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo) == true))
+                    if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
                     {
                         childElements = ElementFacade.GetChildren(elementHandle, null).ToList();
                     }
@@ -212,7 +212,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 ElementHandle elementHandle = new ElementHandle(providerName, elementEntityToken, piggybag);
 
                 IEnumerable<LabeledProperty> labeledProperties;
-                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo) == true))
+                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
                 {
                     labeledProperties = ElementFacade.GetLabeledProperties(elementHandle);
                 }

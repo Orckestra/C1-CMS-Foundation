@@ -56,7 +56,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             foreach (string tableToIgnore in _sqlLoggingContext.TablesToIgnore)
             {
-                if (value.Contains(tableToIgnore) == true) return;
+                if (value.Contains(tableToIgnore)) return;
             }
 
 
@@ -102,11 +102,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             Tuple<string, Dictionary<string, string>> entry = null;
 
-            if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId) == true)
+            if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId))
             {
                 lock (_lock)
                 {
-                    if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId) == true)
+                    if (_threadData.ContainsKey(Thread.CurrentThread.ManagedThreadId))
                     {
                         entry = _threadData[Thread.CurrentThread.ManagedThreadId];
                         _threadData.Remove(Thread.CurrentThread.ManagedThreadId);
@@ -130,7 +130,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private void AddLogEntry(string value)
         {
-            if (_sqlLoggingContext.IncludeStack == true)
+            if (_sqlLoggingContext.IncludeStack)
             {
                 StringBuilder sb = new StringBuilder();
                 sb.AppendLine(value);

@@ -22,7 +22,7 @@ namespace Composite.C1Console.Forms.DataServices
         /// <exclude />
         public FormDefinitionFileMarkupProvider(string formPath)
         {
-            if (string.IsNullOrEmpty(formPath) == true) throw new ArgumentException("Path can not be empty", formPath);
+            if (string.IsNullOrEmpty(formPath)) throw new ArgumentException("Path can not be empty", formPath);
             _formPath = formPath;
         }
 

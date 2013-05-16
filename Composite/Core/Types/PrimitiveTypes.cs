@@ -48,7 +48,7 @@ namespace Composite.Core.Types
 
         public static bool IsPrimitiveOrNullableType(this Type type)
         {
-            if ((type.IsGenericType == true) &&
+            if ((type.IsGenericType) &&
                 (type.GetGenericTypeDefinition() == typeof(Nullable<>)))
             {
                 return IsPrimitiveType(type.GetGenericArguments()[0]);

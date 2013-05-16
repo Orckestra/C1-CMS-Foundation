@@ -112,7 +112,7 @@ namespace Composite.C1Console.Security
             }
 
             resultPermissionTypes = userPermissionTypes.Concat(userGroupPermissionTypes).Distinct();
-            if (resultPermissionTypes.Contains(PermissionType.ClearPermissions) == true)
+            if (resultPermissionTypes.Contains(PermissionType.ClearPermissions))
             {
                 resultPermissionTypes = new List<PermissionType>();
             }
@@ -174,13 +174,13 @@ namespace Composite.C1Console.Security
                 foreach (Guid userGroupId in userGroupIds)
                 {
                     IEnumerable<PermissionType> groupPermissionTypes;
-                    if (presetUserGroupPermissions.TryGetValue(userGroupId, out groupPermissionTypes) == true)
+                    if (presetUserGroupPermissions.TryGetValue(userGroupId, out groupPermissionTypes))
                     {
                         localDefinedUserGroupPermissionTypes = localDefinedUserGroupPermissionTypes.Concat(groupPermissionTypes);
                     }
                 }
 
-                if (localDefinedUserGroupPermissionTypes.Contains(PermissionType.ClearPermissions) == true)
+                if (localDefinedUserGroupPermissionTypes.Contains(PermissionType.ClearPermissions))
                 {
                     localDefinedUserGroupPermissionTypes = new List<PermissionType>();
                 }
@@ -314,7 +314,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static IEnumerable<UserPermissionDefinition> GetUserPermissionDefinitions(string username)
         {
-            if (string.IsNullOrEmpty(username) == true) throw new ArgumentNullException("username");
+            if (string.IsNullOrEmpty(username)) throw new ArgumentNullException("username");
 
             IEnumerable<UserPermissionDefinition> userPermissionDefinitions = UserPermissionDefinitionProviderPluginFacade.GetPermissionsByUser(username);
 
@@ -323,13 +323,13 @@ namespace Composite.C1Console.Security
             {
                 EntityToken entityToken = userPermissionDefinition.EntityToken;
 
-                if (entityToken != null && entityToken.IsValid() == true)
+                if (entityToken != null && entityToken.IsValid())
                 {
                     result.Add(userPermissionDefinition);
                 }
                 else
                 {
-                    if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions == true)
+                    if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions)
                     {
                         LoggingService.LogWarning("PermissionTypeFacade", string.Format("System removing invalid permission setting for user '{0}' because the data entity token could not be validated. Token was '{1}'.", username, userPermissionDefinition.SerializedEntityToken));
                         UserPermissionDefinitionProviderPluginFacade.RemoveUserPermissionDefinition(new UserToken(username), userPermissionDefinition.SerializedEntityToken);
@@ -368,13 +368,13 @@ namespace Composite.C1Console.Security
             var result = new List<UserGroupPermissionDefinition>();
             foreach (UserGroupPermissionDefinition userPermissionDefinition in userPermissionDefinitions)
             {
-                if (userPermissionDefinition.EntityToken.IsValid() == true)
+                if (userPermissionDefinition.EntityToken.IsValid())
                 {
                     result.Add(userPermissionDefinition);
                 }
                 else
                 {
-                    if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions == true)
+                    if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions)
                     {
                         UserGroupPermissionDefinitionProviderPluginFacade.RemoveUserGroupPermissionDefinition(userGroupId, userPermissionDefinition.SerializedEntityToken);
                     }
@@ -402,9 +402,9 @@ namespace Composite.C1Console.Security
         {
             if (userPermissionDefinition == null) throw new ArgumentNullException("userPermissionDefinition");
 
-            if ((userPermissionDefinition.EntityToken is NoSecurityEntityToken) == true) return;
+            if ((userPermissionDefinition.EntityToken is NoSecurityEntityToken)) return;
 
-            if ((userPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions) == true) &&
+            if ((userPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions)) &&
                 (userPermissionDefinition.PermissionTypes.Count() > 1))
             {
                 throw new ArgumentException(string.Format("The permission type '{0}' may not be used with other permission types", PermissionType.ClearPermissions));
@@ -425,7 +425,7 @@ namespace Composite.C1Console.Security
             if (userToken == null) throw new ArgumentNullException("userToken");
             if (entityToken == null) throw new ArgumentNullException("entityToken");
 
-            if ((entityToken is NoSecurityEntityToken) == true) return;
+            if ((entityToken is NoSecurityEntityToken)) return;
 
             if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions == false) throw new InvalidOperationException("The user permission definition provider does not support altering user permission defintions");
 
@@ -465,7 +465,7 @@ namespace Composite.C1Console.Security
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");
 
-            if ((entityToken is NoSecurityEntityToken) == true) return;
+            if ((entityToken is NoSecurityEntityToken)) return;
 
             if (UserPermissionDefinitionProviderPluginFacade.CanAlterDefinitions == false) throw new InvalidOperationException("The user permission definition provider does not support altering user permission defintions");
 
@@ -548,7 +548,7 @@ namespace Composite.C1Console.Security
             }
 
             UserPermissionDefinition userPermissionDefinition = userPermissionDefinitions
-                .Where(f => entityToken.Equals(f.EntityToken) == true).SingleOrDefaultOrException("More then one UserPermissionDefinition for the same entity token");
+                .Where(f => entityToken.Equals(f.EntityToken)).SingleOrDefaultOrException("More then one UserPermissionDefinition for the same entity token");
 
             List<PermissionType> thisPermisstionTypes = new List<PermissionType>();
             if (userPermissionDefinition != null)
@@ -561,7 +561,7 @@ namespace Composite.C1Console.Security
             {
                 thisPermisstionTypes = thisPermisstionTypes.Distinct().ToList();
 
-                if (thisPermisstionTypes.Contains(PermissionType.ClearPermissions) == true)
+                if (thisPermisstionTypes.Contains(PermissionType.ClearPermissions))
                 {
                     thisPermisstionTypes = new List<PermissionType>();
                 }
@@ -608,7 +608,7 @@ namespace Composite.C1Console.Security
                 return cached;
             }
 
-            IEnumerable<UserGroupPermissionDefinition> selectedUserGroupPermissionDefinitions = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken) == true);
+            IEnumerable<UserGroupPermissionDefinition> selectedUserGroupPermissionDefinitions = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken));
 
             List<PermissionType> thisPermisstionTypes = new List<PermissionType>();
             foreach (UserGroupPermissionDefinition userGroupPermissionDefinition in selectedUserGroupPermissionDefinitions)
@@ -622,7 +622,7 @@ namespace Composite.C1Console.Security
             {
                 thisPermisstionTypes = thisPermisstionTypes.Distinct().ToList();
 
-                if (thisPermisstionTypes.Contains(PermissionType.ClearPermissions) == true)
+                if (thisPermisstionTypes.Contains(PermissionType.ClearPermissions))
                 {
                     thisPermisstionTypes = new List<PermissionType>();
                 }
@@ -661,7 +661,7 @@ namespace Composite.C1Console.Security
 
         private static IEnumerable<PermissionType> GetInheritedGroupPermissionsTypesRecursivly(EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, List<EntityToken> visitedParents = null)
         {
-            UserGroupPermissionDefinition selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken) == true).SingleOrDefault();
+            UserGroupPermissionDefinition selectedUserGroupPermissionDefinition = userGroupPermissionDefinitions.Where(f => entityToken.Equals(f.EntityToken)).SingleOrDefault();
             if (selectedUserGroupPermissionDefinition != null)
             {
                 if (selectedUserGroupPermissionDefinition.PermissionTypes.Contains(PermissionType.ClearPermissions) == false)

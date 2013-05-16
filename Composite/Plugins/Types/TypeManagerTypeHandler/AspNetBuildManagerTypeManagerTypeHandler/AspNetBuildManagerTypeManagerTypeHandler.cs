@@ -21,7 +21,7 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.AspNetBuildManagerTypeM
 
             string name = fullName;
 
-            if (name.StartsWith(_typeNamePrefix) == true)
+            if (name.StartsWith(_typeNamePrefix))
             {
                 name = name.Remove(0, _typeNamePrefix.Length);
             }
@@ -47,7 +47,7 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.AspNetBuildManagerTypeM
 
                     if (assembly != null)
                     {
-                        if (assembly.GetTypes().Contains(type) == true)
+                        if (assembly.GetTypes().Contains(type))
                         {
                             return string.Format("{0}{1}", _typeNamePrefix, type.FullName);
                         }

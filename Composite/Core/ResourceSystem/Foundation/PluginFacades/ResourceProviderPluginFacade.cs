@@ -27,7 +27,7 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
         #region IIconResourceProvider methods
         public static IEnumerable<string> GetIconNames(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             IIconResourceProvider provider = GetResourceProvider<IIconResourceProvider>(providerName);
 
@@ -38,8 +38,8 @@ namespace Composite.Core.ResourceSystem.Foundation.PluginFacades
 
         public static Bitmap GetIcon(string providerName, string name, IconSize iconSize, CultureInfo cultureInfo)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("stringId");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("stringId");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
 
             IIconResourceProvider provider = GetResourceProvider<IIconResourceProvider>(providerName);

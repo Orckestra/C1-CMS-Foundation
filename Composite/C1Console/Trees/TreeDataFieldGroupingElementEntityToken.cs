@@ -329,7 +329,7 @@ namespace Composite.C1Console.Trees
                 entityToken.ChildGeneratingDataElementsReferenceType = TypeManager.GetType(typeString);
             }
 
-            if (dic.ContainsKey("_ReferenceValueType_") == true)
+            if (dic.ContainsKey("_ReferenceValueType_"))
             {
                 Type referenceValueType = StringConversionServices.DeserializeValueType(dic["_ReferenceValueType_"]);
                 entityToken.ChildGeneratingDataElementsReferenceValue = StringConversionServices.DeserializeValue(dic["_ReferenceValue_"], referenceValueType);

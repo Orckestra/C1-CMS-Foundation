@@ -13,7 +13,7 @@ namespace Composite.Core.Instrumentation
         /// <exclude />
         public static TimerProfiler CreateTimerProfiler()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
 #if PROFILE_MODE
                 return new XmlTimerProfiler();
@@ -31,7 +31,7 @@ namespace Composite.Core.Instrumentation
         /// <exclude />
         public static TimerProfiler CreateTimerProfiler(string message)
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
 #if PROFILE_MODE
                 return new XmlTimerProfiler(message);

@@ -340,7 +340,7 @@ namespace Composite.Data
 
             if (type == typeof(IPage)) return true;
             if (type == typeof(IPagePlaceholderContent)) return true;
-            if (type.IsGenerated() == true) return true;
+            if (type.IsGenerated()) return true;
 
             return typeof(ILocalizedControlled).IsAssignableFrom(type);
         }
@@ -363,13 +363,13 @@ namespace Composite.Data
 
 
                 bool optionalReferenceWithValue = false;
-                if (dataFieldDescriptor.IsNullable == true)
+                if (dataFieldDescriptor.IsNullable)
                 {
                     PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == dataFieldDescriptor.Name).Single();
                     object value = propertyInfo.GetValue(data, null);
 
                     if (value == null) continue; // Optional reference is null;
-                    if (object.Equals(value, dataFieldDescriptor.DefaultValue) == true) continue; // Optional reference is null;
+                    if (object.Equals(value, dataFieldDescriptor.DefaultValue)) continue; // Optional reference is null;
 
                     optionalReferenceWithValue = true;
                 }

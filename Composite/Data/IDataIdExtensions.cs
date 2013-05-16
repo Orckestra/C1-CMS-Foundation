@@ -44,7 +44,7 @@ namespace Composite.Data
 
             if (sourceDataId.GetType() != targetDataId.GetType())
             {
-                if (throwExceptionOnTypeMismathc == true) throw new ArgumentException(string.Format("Type mismatch {0} and {1}", sourceDataId.GetType(), targetDataId.GetType()));
+                if (throwExceptionOnTypeMismathc) throw new ArgumentException(string.Format("Type mismatch {0} and {1}", sourceDataId.GetType(), targetDataId.GetType()));
                 return false;
             }
 

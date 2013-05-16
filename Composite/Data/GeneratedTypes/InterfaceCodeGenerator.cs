@@ -228,7 +228,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)) == false)
             {
-                if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true)
+                if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
                 {
                     codeTypeDeclaration.CustomAttributes.Add(
                         new CodeAttributeDeclaration(
@@ -241,7 +241,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            if (dataTypeDescriptor.Cachable == true)
+            if (dataTypeDescriptor.Cachable)
             {
                 // [CachingAttribute(CachingType.Full)]
                 codeTypeDeclaration.CustomAttributes.Add(
@@ -265,7 +265,7 @@ namespace Composite.Data.GeneratedTypes
         {
             foreach (DataFieldDescriptor dataFieldDescriptor in dataTypeDescriptor.Fields.Where(dfd => dfd.Inherited == false))
             {
-                if (propertyNamesToSkip.Contains(dataFieldDescriptor.Name) == true) continue;
+                if (propertyNamesToSkip.Contains(dataFieldDescriptor.Name)) continue;
 
                 CodeMemberProperty codeMemberProperty = new CodeMemberProperty();
                 codeMemberProperty.Name = dataFieldDescriptor.Name;
@@ -335,7 +335,7 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            if (dataFieldDescriptor.IsNullable == true)
+            if (dataFieldDescriptor.IsNullable)
             {
                 arguments.Add(new CodeAttributeArgument("IsNullable", new CodePrimitiveExpression(true)));
             }
@@ -369,7 +369,7 @@ namespace Composite.Data.GeneratedTypes
                 CodeAttributeDeclaration notNullAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
                 codeMemberProperty.CustomAttributes.Add(notNullAttribute);
 
-                if (dataFieldDescriptor.StoreType.IsDateTime == true)
+                if (dataFieldDescriptor.StoreType.IsDateTime)
                 {
                     CodeAttributeDeclaration dateRangeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.DateTimeRangeValidatorAttribute)));
 
@@ -426,7 +426,7 @@ namespace Composite.Data.GeneratedTypes
                 codeMemberProperty.CustomAttributes.Add(integerRangeValidatorAttribute);
             }
 
-            if (dataFieldDescriptor.StoreType.IsDecimal == true)
+            if (dataFieldDescriptor.StoreType.IsDecimal)
             {
                 CodeAttributeDeclaration decimalPrecisionAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(DecimalPrecisionValidatorAttribute)));
 

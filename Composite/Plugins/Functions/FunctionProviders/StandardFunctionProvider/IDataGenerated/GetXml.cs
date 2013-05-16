@@ -267,7 +267,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             LambdaExpression orderByExpression;
 
-            if (string.IsNullOrEmpty(orderByField) == true)
+            if (string.IsNullOrEmpty(orderByField))
             {
                 orderByField = propertyNames.FirstOrDefault(f => f.Contains(".") == false);
                 if (!randomized && !orderByField.IsNullOrEmpty())
@@ -462,7 +462,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             }
 
             // rewrite with linq
-            if (showReferencesInline == true)
+            if (showReferencesInline)
             {
                 // Ensure keys are included
                 foreach (string referencePropertyName in referencesLookup.Keys)
@@ -508,7 +508,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
                 IReferencedDataHelper<T> fixer = ReferencedDataHelperBuilder<T>.Build(referencePropertyName);
                 string propertyNamePrefix = (showReferencesInline ? referencePropertyName + "." : "");
-                if (showReferencesInline == true)
+                if (showReferencesInline)
                 {
                     if (referencesLookup[referencePropertyName].Contains(fixer.TargetTypeKeyPropertyName) == false)
                     {
@@ -522,7 +522,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 result.AddRange(referencesXml);
             }
 
-            if (showReferencesInline == true)
+            if (showReferencesInline)
             {
                 Dictionary<string, IEnumerable<XElement>> referencedElementsLookup = new Dictionary<string, IEnumerable<XElement>>();
                 Dictionary<string, Func<string, XAttribute>> referencedElementLocatorLookup = new Dictionary<string, Func<string, XAttribute>>();
@@ -570,7 +570,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 }
             }
 
-            if (showPagingInfo == true)
+            if (showPagingInfo)
             {
                 int totalItemCount = DataFacade.GetData<T>(filter).Count(); // TODO: there shoudn't be a query
                 int firstShownElementNumber = ((coreElementPageNumber - 1) * coreElementItemsPerPage) + 1;
@@ -799,7 +799,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             this.TargetTypeKeyPropertyName = _destinationKeyPropertyInfo.Name;
 
             Expression foreignKeyFieldSelect;
-            if ((_sourceKeyPropertyInfo.PropertyType.IsGenericType == true) && (_sourceKeyPropertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+            if ((_sourceKeyPropertyInfo.PropertyType.IsGenericType) && (_sourceKeyPropertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
             {
                 PropertyInfo hasValuePropertyInfo = _sourceKeyPropertyInfo.PropertyType.GetProperty("HasValue");
                 PropertyInfo valuePropertyInfo = _sourceKeyPropertyInfo.PropertyType.GetProperty("Value");

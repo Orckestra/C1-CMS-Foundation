@@ -57,7 +57,7 @@ namespace Composite.Data.Foundation
             {
                 Dictionary<Type, DataAssociationInfo> dataAssociationInfo;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfo) == true)
+                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfo))
                 {
                     return dataAssociationInfo.Single().Value.AssociationType;
 
@@ -79,7 +79,7 @@ namespace Composite.Data.Foundation
             {
                 Dictionary<Type, DataAssociationInfo> dataAssociationInfos;
 
-                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfos) == true)
+                if (_dataAccociationInfoes.TryGetValue(associationType, out dataAssociationInfos))
                 {
                     IEnumerable<string> result =
                         from info in dataAssociationInfos.Values
@@ -190,7 +190,7 @@ namespace Composite.Data.Foundation
 
         internal static void Initialize_PostDataTypes()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }

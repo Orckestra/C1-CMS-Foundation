@@ -286,7 +286,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         {
             TemplatedContainerUiControl control;
 
-            if (_data.IsTabbedContainer == true)
+            if (_data.IsTabbedContainer)
             {
                 control = new TemplatedTabbedContainerUiControl(this.UserControlType);
             }

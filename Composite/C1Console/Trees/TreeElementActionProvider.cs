@@ -23,7 +23,7 @@ namespace Composite.C1Console.Trees
 
         public IEnumerable<ElementAction> GetActions(EntityToken entityToken)
         {
-            if (TreeFacade.HasPossibleAttachmentPoints(entityToken) == true)
+            if (TreeFacade.HasPossibleAttachmentPoints(entityToken))
             {
                 yield return new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.AddApplicationWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                 {

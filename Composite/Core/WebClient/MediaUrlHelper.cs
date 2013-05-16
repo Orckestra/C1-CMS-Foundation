@@ -58,7 +58,7 @@ namespace Composite.Core.WebClient
                 urlBuilder = new UrlBuilder("~/media(" + storeId + file.Id + ")");
             }
 
-            if (downloadableMedia == true)
+            if (downloadableMedia)
             {
                 urlBuilder["download"] = "true";
             }

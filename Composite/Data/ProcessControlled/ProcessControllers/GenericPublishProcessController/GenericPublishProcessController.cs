@@ -333,7 +333,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
                 return new List<ElementAction>();
             }
 
-            if (((data is ILocalizedControlled) == true) && (UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope) == false))
+            if (((data is ILocalizedControlled)) && (UserSettings.ActiveLocaleCultureInfo.Equals(data.DataSourceId.LocaleScope) == false))
             {
                 return new List<ElementAction>();
             }
@@ -542,7 +542,7 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProc
 
                 ValidationResults validationResults = ValidationFacade.Validate((IData)publishControlled);
 
-                if (validationResults.IsValid == true)
+                if (validationResults.IsValid)
                 {
                     UpdateTreeRefresher treeRefresher = new UpdateTreeRefresher(token.Data.GetDataEntityToken(), flowControllerServicesContainer);
 

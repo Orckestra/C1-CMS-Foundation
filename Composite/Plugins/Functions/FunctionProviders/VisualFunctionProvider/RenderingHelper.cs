@@ -128,7 +128,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
                     {
                         bool canRender = DataXhtmlRenderingServices.CanRender(referencedType, XhtmlRenderingType.Embedable);
 
-                        if (canRender == true)
+                        if (canRender)
                         {
                             fieldsWithReferenceRendering.Add(dataPropertyInfo.Name);
                         }
@@ -152,7 +152,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.VisualFunctionProvider
                     {
                         object value = null;
 
-                        if (fieldsWithReferenceRendering.Contains(reference.FieldName) == true)
+                        if (fieldsWithReferenceRendering.Contains(reference.FieldName))
                         {
                             // reference field with rendering...
                             Type referencedType = null;

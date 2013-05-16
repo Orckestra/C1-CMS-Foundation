@@ -43,7 +43,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTypeElementProvider
             DeleteTreeRefresher deleteTreeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
 
             DataTypeDescriptor dataTypeDescriptor;
-            if (DynamicTypeManager.TryGetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId, out dataTypeDescriptor) == true)
+            if (DynamicTypeManager.TryGetDataTypeDescriptor(pageTypeMetaDataTypeLink.DataTypeId, out dataTypeDescriptor))
             {
                 PageMetaDataFacade.RemoveDefinition(pageTypeMetaDataTypeLink.PageTypeId, pageTypeMetaDataTypeLink.Name);
             }

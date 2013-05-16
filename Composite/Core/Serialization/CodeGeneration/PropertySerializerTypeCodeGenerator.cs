@@ -141,7 +141,7 @@ namespace Composite.Core.Serialization.CodeGeneration
             bool isFirst = true;
             foreach (var property in properties)
             {
-                if (isFirst == true)
+                if (isFirst)
                 {
                     isFirst = false;
                 }

@@ -122,7 +122,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             }
 
-            //if (RuntimeInformation.IsDebugBuild == true)
+            //if (RuntimeInformation.IsDebugBuild)
             //{
             //    DynamicTempTypeCreator dynamicTempTypeCreator = new DynamicTempTypeCreator("IAggTest");
 
@@ -185,7 +185,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                     return;
                 }
 
-                if (helper.IsEditProcessControlledAllowed == true)
+                if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetPublishControlled(hasPublishing);
                     helper.SetLocalizedControlled(hasLocalization);

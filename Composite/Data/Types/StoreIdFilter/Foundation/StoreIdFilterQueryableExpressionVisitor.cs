@@ -33,7 +33,7 @@ namespace Composite.Data.Types.StoreIdFilter.Foundation
             {
                 bool hasStoreIdMemberExpression = IsStoreIdMemberExpression(b.Left) || IsStoreIdMemberExpression(b.Right);
 
-                if (hasStoreIdMemberExpression == true)
+                if (hasStoreIdMemberExpression)
                 {
                     string storeId = GetStoreId(b.Left);
                     if (storeId == null) storeId = GetStoreId(b.Right);

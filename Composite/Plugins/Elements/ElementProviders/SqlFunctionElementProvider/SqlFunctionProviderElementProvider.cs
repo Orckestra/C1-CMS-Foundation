@@ -115,7 +115,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
         public IEnumerable<Element> GetChildren(EntityToken entityToken, SearchToken searchToken)
         {
-            if ((entityToken is SqlFunctionProviderRootEntityToken) == true)
+            if ((entityToken is SqlFunctionProviderRootEntityToken))
             {
                 return GetConnectionElements();
             }
@@ -231,7 +231,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
         {
             Guid connectionId;
             string namespaceName;
-            if ((entityToken is DataEntityToken) == true)
+            if ((entityToken is DataEntityToken))
             {
                 DataEntityToken dataEntityToken = (DataEntityToken)entityToken;
 
@@ -246,7 +246,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
                     return new List<Element>();
                 }
             }
-            else if ((entityToken is SqlFunctionProviderFolderEntityToken) == true)
+            else if ((entityToken is SqlFunctionProviderFolderEntityToken))
             {
                 SqlFunctionProviderFolderEntityToken sqlFunctionProviderFolderEntityToken = (SqlFunctionProviderFolderEntityToken)entityToken;
 

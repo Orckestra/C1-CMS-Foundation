@@ -111,7 +111,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private void cleanupCodeActivity_Cleanup_ExecuteCode(object sender, EventArgs e)
         {
             PackageManagerInstallProcess packageManagerInstallProcess;
-            if (this.TryGetBinding<PackageManagerInstallProcess>("PackageManagerInstallProcess", out packageManagerInstallProcess) == true)
+            if (this.TryGetBinding<PackageManagerInstallProcess>("PackageManagerInstallProcess", out packageManagerInstallProcess))
             {
                 packageManagerInstallProcess.CancelInstallation();
             }
@@ -121,12 +121,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void step3CodeActivity_RefreshTree_ExecuteCode(object sender, EventArgs e)
         {
-            if (this.GetBinding<bool>("ReloadConsoleOnCompletion") == true)
+            if (this.GetBinding<bool>("ReloadConsoleOnCompletion"))
             {
                 ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);
             }
 
-            if (this.GetBinding<bool>("FlushOnCompletion") == true)
+            if (this.GetBinding<bool>("FlushOnCompletion"))
             {
                 GlobalEventSystemFacade.FlushTheSystem();
             }

@@ -58,7 +58,7 @@ namespace Composite.Core.ResourceSystem
                 return cachedValue.Value;
             }
 
-            if (throwOnError == true)
+            if (throwOnError)
             {
                 Verify.ArgumentCondition(!section.Contains(','), "section", "providerName may not contain ',' symbol");
                 Verify.ArgumentCondition(!stringName.Contains(','), "stringName", "stringName may not contain ',' symbol");
@@ -244,7 +244,7 @@ namespace Composite.Core.ResourceSystem
             {
                 string compositeName = match.Groups["id"].Value;
 
-                if (string.IsNullOrWhiteSpace(compositeName) == true) continue;
+                if (string.IsNullOrWhiteSpace(compositeName)) continue;
 
                 int idx = compositeName.LastIndexOf(',');
                 if (idx == -1) continue;
@@ -265,7 +265,7 @@ namespace Composite.Core.ResourceSystem
         /// <exclude />
         public static IEnumerable<string> SplitParseableStrings(string stringToSplit, char separator)
         {
-            if (string.IsNullOrEmpty(stringToSplit) == true)
+            if (string.IsNullOrEmpty(stringToSplit))
             {
                 yield break;
             }

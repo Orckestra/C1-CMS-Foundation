@@ -59,7 +59,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            if (DataFacade.WillDeleteSucceed(data) == true)
+            if (DataFacade.WillDeleteSucceed(data))
             {
                 ProcessControllerFacade.FullDelete(data);
 

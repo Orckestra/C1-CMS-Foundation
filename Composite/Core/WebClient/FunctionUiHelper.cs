@@ -25,7 +25,7 @@ namespace Composite.Core.WebClient
             Control form = webUiControl.BuildWebControl();
             attachmentControl.Controls.Add(form);
 
-            if (reset == true)
+            if (reset)
             {
                 webUiControl.InitializeViewState();
             }
@@ -65,7 +65,7 @@ namespace Composite.Core.WebClient
                     bindings.Add(parameterProfile.Name, "");
                 }
 
-                if (parameterProfile.IsRequired == true)
+                if (parameterProfile.IsRequired)
                 {
                     bindingsValidationRules.Add(parameterProfile.Name, new List<ClientValidationRule> { new NotNullClientValidationRule() });
                 }

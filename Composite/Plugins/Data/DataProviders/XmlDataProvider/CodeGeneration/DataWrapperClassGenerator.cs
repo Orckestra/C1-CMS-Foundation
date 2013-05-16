@@ -338,7 +338,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
                 CodeStatement statement;
                 if ((dataFieldDescriptor.InstanceType == typeof(string)) ||
-                    ((dataFieldDescriptor.InstanceType.IsGenericType == true) && (dataFieldDescriptor.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>))))
+                    ((dataFieldDescriptor.InstanceType.IsGenericType) && (dataFieldDescriptor.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>))))
                 {
                     statement = new CodeMethodReturnStatement(new CodePrimitiveExpression(null));
                 }

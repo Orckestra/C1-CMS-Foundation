@@ -32,7 +32,7 @@ namespace Composite.C1Console.Actions
             if (specificEntityToken == null) throw new ArgumentNullException("specificEntityToken");
 
 
-            if (_postRefreshMessegesCalled == true)
+            if (_postRefreshMessegesCalled)
             {
                 throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
             }

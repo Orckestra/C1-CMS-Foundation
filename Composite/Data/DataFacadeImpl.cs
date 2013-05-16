@@ -43,7 +43,7 @@ namespace Composite.Data
         {
             IQueryable<T> resultQueryable;
 
-            if (DataProviderRegistry.AllInterfaces.Contains(typeof(T)) == true)
+            if (DataProviderRegistry.AllInterfaces.Contains(typeof(T)))
             {
                 if (useCaching && DataCachingFacade.IsDataAccessCacheEnabled(typeof(T)))
                 {
@@ -156,7 +156,7 @@ namespace Composite.Data
 
         public void SetDataInterceptor<T>(DataInterceptor dataInterceptor) where T : class, IData
         {
-            if (this.DataInterceptors.ContainsKey(typeof(T)) == true) throw new InvalidOperationException("A data interceptor has already been set");
+            if (this.DataInterceptors.ContainsKey(typeof(T))) throw new InvalidOperationException("A data interceptor has already been set");
 
             this.DataInterceptors.Add(typeof(T), dataInterceptor);
 
@@ -174,7 +174,7 @@ namespace Composite.Data
 
         public void ClearDataInterceptor<T>() where T : class, IData
         {
-            if (this.DataInterceptors.ContainsKey(typeof(T)) == true)
+            if (this.DataInterceptors.ContainsKey(typeof(T)))
             {
                 this.DataInterceptors.Remove(typeof(T));
 
@@ -576,7 +576,7 @@ namespace Composite.Data
                 using (DataScope dataScope = new DataScope(cultureInfo))
                 {
                     bool exists = DataFacade.GetData<T>().Any();
-                    if (exists == true)
+                    if (exists)
                     {
                         return true;
                     }

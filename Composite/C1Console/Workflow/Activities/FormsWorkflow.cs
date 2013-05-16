@@ -197,7 +197,7 @@ namespace Composite.C1Console.Workflow.Activities
                 if (_bindings == null)
                 {
                     // Workflows with WorkflowPersistingType.Never does not get their bindings persisted.
-                    if (FormsWorkflowBindingCache.Bindings.ContainsKey(InstanceId) == true)
+                    if (FormsWorkflowBindingCache.Bindings.ContainsKey(InstanceId))
                     {
                         _bindings = FormsWorkflowBindingCache.Bindings[_instanceId];
                     }
@@ -264,7 +264,7 @@ namespace Composite.C1Console.Workflow.Activities
         public bool TryGetBinding<T>(string name, out T binding)
         {
             object obj;
-            if (this.Bindings.TryGetValue(name, out obj) == true)
+            if (this.Bindings.TryGetValue(name, out obj))
             {
                 binding = (T)obj;
                 return true;
@@ -298,7 +298,7 @@ namespace Composite.C1Console.Workflow.Activities
         {
             foreach (var kvp in bindings)
             {
-                if (this.BindingExist(kvp.Key) == true)
+                if (this.BindingExist(kvp.Key))
                 {
                     this.Bindings[kvp.Key] = kvp.Value;
                 }

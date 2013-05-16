@@ -381,12 +381,12 @@ namespace Composite.Data
 
                         if (attributes.Count == 1)
                         {
-                            if (attributes[0].IsValid == true)
+                            if (attributes[0].IsValid)
                             {
                                 if (attributes[0].InterfaceType == null) throw new InvalidOperationException(string.Format("Null argument is not allowed for the attribute '{0}' on the property '{1}'", typeof(ForeignKeyAttribute), propertyInfo));
                                 if (typeof(IData).IsAssignableFrom(attributes[0].InterfaceType) == false) throw new InvalidOperationException(string.Format("The argument should inherit the type '{0}' for the attribute '{1}' on the property '{2}'", typeof(IData), typeof(ForeignKeyAttribute), propertyInfo));                                
 
-                                if (attributes[0].IsNullReferenceValueSet == true)
+                                if (attributes[0].IsNullReferenceValueSet)
                                 {
                                     foreignKeyProperyInfos.Add(new ForeignPropertyInfo(
                                             propertyInfo,

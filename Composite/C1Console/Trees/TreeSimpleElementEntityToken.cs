@@ -117,7 +117,7 @@ namespace Composite.C1Console.Trees
             EntityToken parentEntityToken = this.ParentEntityToken;
 
             string type;
-            if ((parentEntityToken is TreeSimpleElementEntityToken) == true)
+            if ((parentEntityToken is TreeSimpleElementEntityToken))
             {
                 type = string.Format(@"<div style=""border: 1px solid blue;"">{0}</div>", parentEntityToken.OnGetTypePrettyHtml());
             }

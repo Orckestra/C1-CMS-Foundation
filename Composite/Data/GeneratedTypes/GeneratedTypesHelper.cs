@@ -191,7 +191,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public bool ValidateNewTypeName(string typeName, out string message)
         {
-            if (string.IsNullOrEmpty(typeName) == true) throw new ArgumentNullException("typeName");
+            if (string.IsNullOrEmpty(typeName)) throw new ArgumentNullException("typeName");
 
             return NameValidation.TryValidateName(typeName, out message);
         }
@@ -201,7 +201,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public bool ValidateNewTypeNamespace(string typeNamespace, out string message)
         {
-            if (string.IsNullOrEmpty(typeNamespace) == true) throw new ArgumentNullException("typeNamespace");
+            if (string.IsNullOrEmpty(typeNamespace)) throw new ArgumentNullException("typeNamespace");
 
             return NameValidation.TryValidateNamespace(typeNamespace, out message);
         }
@@ -211,12 +211,12 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public bool ValidateNewTypeFullName(string typeName, string typeNamespace, out string message)
         {
-            if (string.IsNullOrEmpty(typeName) == true) throw new ArgumentNullException("typeName");
-            if (string.IsNullOrEmpty(typeNamespace) == true) throw new ArgumentNullException("typeNamespace");
+            if (string.IsNullOrEmpty(typeName)) throw new ArgumentNullException("typeName");
+            if (string.IsNullOrEmpty(typeNamespace)) throw new ArgumentNullException("typeNamespace");
 
             message = null;
 
-            if (typeNamespace.Split('.').Contains(typeName) == true)
+            if (typeNamespace.Split('.').Contains(typeName))
             {
                 message = string.Format(StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "TypeNameInNamespace"), typeName, typeNamespace);
                 return false;
@@ -261,7 +261,7 @@ namespace Composite.Data.GeneratedTypes
             for (int i = 1; i < partNames.Length; i++)
             {
                 bool exists = TypeManager.HasTypeWithName(sb.ToString());
-                if (exists == true)
+                if (exists)
                 {
                     message = string.Format(StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "NameSpaceIsTypeTypeName"), sb.ToString());
                     return false;
@@ -421,8 +421,8 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public void SetNewTypeFullName(string typeName, string typeNamespace)
         {
-            if (string.IsNullOrEmpty(typeName) == true) throw new ArgumentNullException("typeName");
-            if (string.IsNullOrEmpty(typeNamespace) == true) throw new ArgumentNullException("typeNamespace");
+            if (string.IsNullOrEmpty(typeName)) throw new ArgumentNullException("typeName");
+            if (string.IsNullOrEmpty(typeNamespace)) throw new ArgumentNullException("typeNamespace");
 
             _newTypeName = typeName;
             _newTypeNamespace = typeNamespace;
@@ -433,7 +433,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public void SetNewTypeTitle(string typeTitle)
         {
-            if (string.IsNullOrEmpty(typeTitle) == true) throw new ArgumentNullException("typeTitle");
+            if (string.IsNullOrEmpty(typeTitle)) throw new ArgumentNullException("typeTitle");
 
             _newTypeTitle = typeTitle;
         }
@@ -564,7 +564,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public void CreateType(bool originalTypeHasData)
         {
-            if (_typeCreated == true) throw new InvalidOperationException("The type can only be created once");
+            if (_typeCreated) throw new InvalidOperationException("The type can only be created once");
 
             try
             {
@@ -767,7 +767,7 @@ namespace Composite.Data.GeneratedTypes
 
             dataTypeDescriptor.DataScopes.Add(DataScopeIdentifier.Public);
 
-            if ((publishControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
+            if ((publishControlled) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
             }
@@ -841,12 +841,12 @@ namespace Composite.Data.GeneratedTypes
             }
 
 
-            if ((_publishControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
+            if ((_publishControlled) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(IPublishControlled));
             }
 
-            if ((_localizedControlled == true) && (_dataAssociationType != DataAssociationType.Composition))
+            if ((_localizedControlled) && (_dataAssociationType != DataAssociationType.Composition))
             {
                 dataTypeDescriptor.AddSuperInterface(typeof(ILocalizedControlled));
             }
@@ -1007,12 +1007,12 @@ namespace Composite.Data.GeneratedTypes
                 return false;
             }
 
-            if ((dataFieldDescriptor.Name == CompositionDescriptionFieldName) && (dataTypeDescriptor.IsPageMetaDataType == true))
+            if ((dataFieldDescriptor.Name == CompositionDescriptionFieldName) && (dataTypeDescriptor.IsPageMetaDataType))
             {
                 return false;
             }
 
-            if ((PageFolderFacade.GetAllFolderTypes().Contains(this._oldType) == true) && (dataFieldDescriptor.Name == PageReferenceFieldName))
+            if ((PageFolderFacade.GetAllFolderTypes().Contains(this._oldType)) && (dataFieldDescriptor.Name == PageReferenceFieldName))
             {
                 return false;
             }
@@ -1031,7 +1031,7 @@ namespace Composite.Data.GeneratedTypes
                         }
                     }
 
-                    if ((dataFieldDescriptor.Name == CompositionDescriptionFieldName) && (dataTypeDescriptor.IsPageMetaDataType == true))
+                    if ((dataFieldDescriptor.Name == CompositionDescriptionFieldName) && (dataTypeDescriptor.IsPageMetaDataType))
                     {
                         return false;
                     }

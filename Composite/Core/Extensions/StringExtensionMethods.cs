@@ -63,7 +63,7 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static string CreateNamespace(string namespaceName, string name, char separator)
         {
-            if (string.IsNullOrEmpty(namespaceName) == true)
+            if (string.IsNullOrEmpty(namespaceName))
             {
                 return name;
             }

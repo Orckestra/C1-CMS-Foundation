@@ -45,21 +45,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 {
                     CultureInfo locale = CultureInfo.CreateSpecificCulture(localeElement.Attribute("name").Value);
 
-                    if ((_oldDefaultCultureInfo == null) && (LocalizationFacade.IsDefaultLocale(locale) == true))
+                    if ((_oldDefaultCultureInfo == null) && (LocalizationFacade.IsDefaultLocale(locale)))
                     {
                         // Locale is default -> not possible to unintall
                         validationResults.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"));
                         continue;
                     }
 
-                    if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(locale) == true)
+                    if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(locale))
                     {
                         // only active for the a user
                         validationResults.AddFatal(GetText("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"));
                         continue;
                     }
 
-                    if (LocalizationFacade.IsLocaleInstalled(locale) == true)
+                    if (LocalizationFacade.IsLocaleInstalled(locale))
                     {
                         _culturesToUninstall.Add(locale);
                     }

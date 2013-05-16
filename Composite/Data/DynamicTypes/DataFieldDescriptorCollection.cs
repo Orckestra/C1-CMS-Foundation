@@ -33,7 +33,7 @@ namespace Composite.Data.DynamicTypes
         public void Add(DataFieldDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException("descriptor");
-            if (_descriptors.Contains(descriptor) == true) throw new ArgumentException("The specied DataFieldDescriptor has already been added. Developers should ensure that the Immutable Field Id is unique on all fields.");
+            if (_descriptors.Contains(descriptor)) throw new ArgumentException("The specied DataFieldDescriptor has already been added. Developers should ensure that the Immutable Field Id is unique on all fields.");
             if (this[descriptor.Name] != null) throw new ArgumentException("The specified Name is in use by another DataFieldDescriptor");
             if (this[descriptor.Id] != null) throw new ArgumentException("The specified Id is in use by another DataFieldDescriptor");
 
@@ -45,7 +45,7 @@ namespace Composite.Data.DynamicTypes
         public void Insert(int index, DataFieldDescriptor descriptor)
         {
             if (descriptor == null) throw new ArgumentNullException("descriptor");
-            if (_descriptors.Contains(descriptor) == true) throw new ArgumentException("The specied DataFieldDescriptor has already been added");
+            if (_descriptors.Contains(descriptor)) throw new ArgumentException("The specied DataFieldDescriptor has already been added");
             if (this[descriptor.Name] != null) throw new ArgumentException("The specified Name is in use by another DataFieldDescriptor");
             if (this[descriptor.Id] != null) throw new ArgumentException("The specified Id is in use by another DataFieldDescriptor");
 

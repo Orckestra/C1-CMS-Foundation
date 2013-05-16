@@ -34,7 +34,7 @@ namespace Composite.C1Console.Security
             string serializedActionToken = actionToken.Serialize();
             StringConversionServices.SerializeKeyValuePair(sb, "actionToken", serializedActionToken);
 
-            if (includeHashValue == true)
+            if (includeHashValue)
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "actionTokenHash", HashSigner.GetSignedHash(serializedActionToken).Serialize());
             }
@@ -55,13 +55,13 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static ActionToken Deserialize(string serialziedActionToken, bool includeHashValue)
         {
-            if (string.IsNullOrEmpty(serialziedActionToken) == true) throw new ArgumentNullException("serialziedActionToken");
+            if (string.IsNullOrEmpty(serialziedActionToken)) throw new ArgumentNullException("serialziedActionToken");
 
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialziedActionToken);
 
             if ((dic.ContainsKey("actionTokenType") == false) ||
                 (dic.ContainsKey("actionToken") == false) ||
-                ((includeHashValue == true) && (dic.ContainsKey("actionTokenHash") == false)))
+                ((includeHashValue) && (dic.ContainsKey("actionTokenHash") == false)))
             {
                 throw new ArgumentException("Failed to deserialize the value. It has to be serialized with ActionTokenSerializer class.", "serialziedActionToken");
             }
@@ -69,7 +69,7 @@ namespace Composite.C1Console.Security
             string actionTokenTypeString = StringConversionServices.DeserializeValueString(dic["actionTokenType"]);
             string actionTokenString = StringConversionServices.DeserializeValueString(dic["actionToken"]);
 
-            if (includeHashValue == true)
+            if (includeHashValue)
             {
                 string actionTokenHash = StringConversionServices.DeserializeValueString(dic["actionTokenHash"]);
 

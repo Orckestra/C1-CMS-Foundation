@@ -119,7 +119,7 @@ namespace Composite.Functions.Foundation
 
         internal static void Initialize_PostDataTypes()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }

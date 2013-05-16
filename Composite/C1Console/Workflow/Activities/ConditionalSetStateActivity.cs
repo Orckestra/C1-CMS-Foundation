@@ -46,7 +46,7 @@ namespace Composite.C1Console.Workflow.Activities
             bool result = Condition.Evaluate(this, executionContext);
 
             SetStateEventArgs args;
-            if (result == true)
+            if (result)
             {
                 args = new SetStateEventArgs(this.TrueTargetStateName);
             }

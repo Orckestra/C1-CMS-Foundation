@@ -99,7 +99,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             {
                 if (keyPropertyInfo.PropertyType != typeof(Guid)) continue;
 
-                if (parameters.AllParameterNames.Contains(keyPropertyInfo.Name) == true) continue;
+                if (parameters.AllParameterNames.Contains(keyPropertyInfo.Name)) continue;
 
                 keyPropertyInfo.SetValue(data, Guid.NewGuid(), null);
             }

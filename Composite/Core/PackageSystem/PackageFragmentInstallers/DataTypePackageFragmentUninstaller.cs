@@ -97,7 +97,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 flushTheSystem = true;
             }            
 
-            if (flushTheSystem == true)
+            if (flushTheSystem)
             {
                 GlobalEventSystemFacade.FlushTheSystem(true);
             }

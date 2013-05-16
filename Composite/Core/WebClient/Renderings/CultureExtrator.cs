@@ -30,13 +30,13 @@ namespace Composite.Core.WebClient.Renderings
                 {
                     string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1).ToLowerInvariant();
 
-                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName) == true)
+                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName))
                     {
                         CultureInfo cultureInfo = DataLocalizationFacade.GetCultureInfoByUrlMappingName(urlMappingName);
 
                         bool exists = DataLocalizationFacade.ActiveLocalizationNames.Contains(cultureInfo.Name);
 
-                        if (exists == true)
+                        if (exists)
                         {
                             requestPathWithoutUrlMappingName = requestPath.Remove(startIndex - 1, endIndex - startIndex + 2);
 

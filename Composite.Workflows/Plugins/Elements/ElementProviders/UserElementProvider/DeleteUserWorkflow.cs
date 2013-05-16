@@ -52,7 +52,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             
             IUser user = (IUser)dataEntityToken.Data;
 
-            if (DataFacade.WillDeleteSucceed(user) == true)
+            if (DataFacade.WillDeleteSucceed(user))
             {
                 UserPerspectiveFacade.DeleteAll(user.Username);
 

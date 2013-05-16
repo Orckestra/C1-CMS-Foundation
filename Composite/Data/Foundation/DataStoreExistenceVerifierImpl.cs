@@ -86,7 +86,7 @@ namespace Composite.Data.Foundation
 
         public bool EnsureDataStores()
         {
-            if (DataProviderPluginFacade.HasConfiguration() == true)
+            if (DataProviderPluginFacade.HasConfiguration())
             {
                 List<DataTypeDescriptor> typeDescriptors = new List<DataTypeDescriptor>();
 

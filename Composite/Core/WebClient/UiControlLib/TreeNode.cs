@@ -60,7 +60,7 @@ namespace Composite.Core.WebClient.UiControlLib
             //    writer.WriteAttribute("checksum", DateTime.Now.Ticks.ToString());
             //}
 
-            //if (this.Focused == true)
+            //if (this.Focused)
             //{
             //    writer.WriteAttribute("focused", "true");
             //    if (string.IsNullOrEmpty(this.OnClientClick) == false)

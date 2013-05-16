@@ -52,7 +52,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private IPage GetCurrentPage()
         {
-            if ((this.EntityToken is DataEntityToken) == true)
+            if ((this.EntityToken is DataEntityToken))
             {
                 return this.GetDataItemFromEntityToken<IPage>();
             }
@@ -192,7 +192,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             string metaDataDefinitionLabel = this.GetBinding<string>(FieldGroupLabelBindingName);
             Type type = this.GetBinding<Type>(SelectedTypeBindingName);
 
-            if (PageMetaDataFacade.IsDefinitionAllowed(GetCurrentPageId(), metaDataDefinitionName, metaDataDefinitionLabel, type.GetImmutableTypeId()) == true)
+            if (PageMetaDataFacade.IsDefinitionAllowed(GetCurrentPageId(), metaDataDefinitionName, metaDataDefinitionLabel, type.GetImmutableTypeId()))
             {
                 int startLevel = this.GetBinding<int>(SelectedStartDisplayBindingName);
                 int levels = this.GetBinding<int>(SelectedInheritDisplayBindingName);

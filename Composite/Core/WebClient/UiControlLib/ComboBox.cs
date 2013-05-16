@@ -42,15 +42,15 @@ namespace Composite.Core.WebClient.UiControlLib
             writer.AddAttribute("name", this.UniqueID);
             writer.AddAttribute("callbackid", this.ClientID);
 
-            if (this.AutoPostBack == true)
+            if (this.AutoPostBack)
             {
                 writer.AddAttribute("onchange", "this.dispatchAction(PageBinding.ACTION_DOPOSTBACK)");
             }
-            if (this.SelectionRequired == true)
+            if (this.SelectionRequired)
             {
                 writer.AddAttribute("required", "true");
                 string requiredLabel = this.SelectionRequiredLabel;
-                if (string.IsNullOrEmpty(requiredLabel) == true) requiredLabel = StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.SelectValueLabel");
+                if (string.IsNullOrEmpty(requiredLabel)) requiredLabel = StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.SelectValueLabel");
                 writer.AddAttribute("label", requiredLabel);
             }
 

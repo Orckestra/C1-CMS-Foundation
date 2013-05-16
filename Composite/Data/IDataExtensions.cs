@@ -40,9 +40,9 @@ namespace Composite.Data
             foreach (PropertyInfo targetPropertyInfo in targetData.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 if (targetPropertyInfo.Name == "DataSourceId") continue;
-                if ((propertyNamesToIgnore != null) && (propertyNamesToIgnore.Contains(targetPropertyInfo.Name)) == true) continue;
+                if ((propertyNamesToIgnore != null) && (propertyNamesToIgnore.Contains(targetPropertyInfo.Name))) continue;
 
-                if (targetPropertyInfo.CanWrite == true)
+                if (targetPropertyInfo.CanWrite)
                 {
                     PropertyInfo sourcePropertyInfo = sourceData.GetType().GetProperty(targetPropertyInfo.Name, BindingFlags.Public | BindingFlags.Instance);
 
@@ -86,7 +86,7 @@ namespace Composite.Data
             {
                 if (targetPropertyInfo.Name == "DataSourceId") continue;
 
-                if (targetPropertyInfo.CanWrite == true)
+                if (targetPropertyInfo.CanWrite)
                 {
                     PropertyInfo sourcePropertyInfo = sourceData.GetType().GetProperty(targetPropertyInfo.Name, BindingFlags.Public | BindingFlags.Instance);
 
@@ -96,7 +96,7 @@ namespace Composite.Data
 
                         targetPropertyInfo.SetValue(targetData, value, null);
                     }
-                    else if (useDefaultValues == true)
+                    else if (useDefaultValues)
                     {
                         object oldValue = targetPropertyInfo.GetValue(targetData, null);
 
@@ -157,7 +157,7 @@ namespace Composite.Data
             List<IData> result = new List<IData>();
             foreach (IData data in datas)
             {
-                if (result.Where(f => f.KeyEquals(data) == true).Any() == false)
+                if (result.Where(f => f.KeyEquals(data)).Any() == false)
                 {
                     result.Add(data);
                 }
@@ -226,7 +226,7 @@ namespace Composite.Data
             if (parent == null) throw new ArgumentNullException("parent");
             if (maxLevels < 0) return false;
 
-            if (child.KeyEquals(parent) == true)
+            if (child.KeyEquals(parent))
             {
                 return true;
             }
@@ -375,7 +375,7 @@ namespace Composite.Data
             foreach (Type superInterface in dataType.GetInterfaces())
             {
                 if ((superInterface != typeof(IData)) &&
-                    (typeof(IData).IsAssignableFrom(superInterface) == true))
+                    (typeof(IData).IsAssignableFrom(superInterface)))
                 {
                     PropertyInfo propInfo = superInterface.GetDataPropertyRecursivly(propertyName);
 
@@ -402,7 +402,7 @@ namespace Composite.Data
             foreach (Type superInterface in dataType.GetInterfacesRecursively())
             {
                 if ((superInterface != typeof(IData)) &&
-                    (typeof(IData).IsAssignableFrom(superInterface) == true))
+                    (typeof(IData).IsAssignableFrom(superInterface)))
                 {
                     result.AddRange(superInterface.GetProperties());
                 }

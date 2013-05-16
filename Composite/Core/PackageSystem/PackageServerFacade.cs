@@ -41,7 +41,7 @@ namespace Composite.Core.PackageSystem
         static PackageServerFacade()
         {
             string testFilePath = Path.Combine(PathUtil.Resolve(PathUtil.BaseDirectory), "App_Data/Composite/PackageDescriptions.xml");
-            if (C1File.Exists(testFilePath) == true)
+            if (C1File.Exists(testFilePath))
             {
                 _packageServerFacade = new PackageServerFacadeLocalMock(testFilePath);
             }

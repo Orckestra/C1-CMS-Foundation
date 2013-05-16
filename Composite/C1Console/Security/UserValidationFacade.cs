@@ -88,7 +88,7 @@ namespace Composite.C1Console.Security
 
                     if (loginResult == LoginResult.UserDoesNotExist)
                     {
-                        if (AdministratorAutoCreator.CanBeAutoCreated(userName) == true)
+                        if (AdministratorAutoCreator.CanBeAutoCreated(userName))
                         {
                             AdministratorAutoCreator.AutoCreatedAdministrator(userName, password, "");
 
@@ -177,7 +177,7 @@ namespace Composite.C1Console.Security
             bool userIsValidated = LoginProviderPluginFacade.WindowsValidateUser(userName, domainName);
 
 
-            if (true == userIsValidated)
+            if (userIsValidated)
             {
                 PersistUsernameInSessionDataProvider(userName);
             }

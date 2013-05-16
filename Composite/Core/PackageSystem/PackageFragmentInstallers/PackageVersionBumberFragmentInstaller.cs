@@ -63,7 +63,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    if (_packagesToBumb.ContainsKey(packageId) == true)
+                    if (_packagesToBumb.ContainsKey(packageId))
                     {
                         validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), packageIdAttribute);
                         continue;
@@ -103,7 +103,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             List<XElement> installedElements = new List<XElement>();
             foreach (var kvp in _packagesToBumb)
             {
-                if (this.InstalledPackages.ContainsKey(kvp.Key) == true)
+                if (this.InstalledPackages.ContainsKey(kvp.Key))
                 {
                     XDocument doc = XDocumentUtils.Load(this.InstalledPackages[kvp.Key]);
 
@@ -144,14 +144,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
                     foreach (string packageDirecoty in packageDirectories)
                     {
-                        if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                        if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)))
                         {
                             string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                            if (C1File.Exists(filename) == true)
+                            if (C1File.Exists(filename))
                             {
                                 string path = packageDirecoty.Remove(0, baseDirectory.Length);
-                                if (path.StartsWith("\\") == true)
+                                if (path.StartsWith("\\"))
                                 {
                                     path = path.Remove(0, 1);
                                 }

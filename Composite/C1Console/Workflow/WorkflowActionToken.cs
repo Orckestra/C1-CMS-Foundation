@@ -166,7 +166,7 @@ namespace Composite.C1Console.Workflow
             bool ignoreEntityTokenLocking = StringConversionServices.DeserializeValueBool(dic["_Ignore_"]);
             workflowActionToken.DoIgnoreEntityTokenLocking = ignoreEntityTokenLocking;
 
-            if (dic.ContainsKey("_EventHandleFilterType_") == true)
+            if (dic.ContainsKey("_EventHandleFilterType_"))
             {
                 string serializedFilterType = StringConversionServices.DeserializeValueString(dic["_EventHandleFilterType_"]);
                 workflowActionToken.EventHandleFilterType = TypeManager.GetType(serializedFilterType);

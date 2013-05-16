@@ -313,7 +313,7 @@ namespace Composite.C1Console.Security
 
             if (lazyEvaluation == false)
             {
-                while (_moreLevelsToExpend == true)
+                while (_moreLevelsToExpend)
                 {
                     ExpandNextLevel(userName);
                 }
@@ -412,7 +412,7 @@ namespace Composite.C1Console.Security
         {
             string userName = UserValidationFacade.IsLoggedIn() ? UserSettings.Username : null;
 
-            while ((_levels.Count - 1 < level) && (_moreLevelsToExpend == true))
+            while ((_levels.Count - 1 < level) && (_moreLevelsToExpend))
             {
                 ExpandNextLevel(userName);
             }

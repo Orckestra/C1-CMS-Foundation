@@ -13,7 +13,7 @@ namespace Composite.Functions
         /// <exclude />
         protected BaseParameterRuntimeTreeNode(string name)
         {
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
             this.Name = name;
         }

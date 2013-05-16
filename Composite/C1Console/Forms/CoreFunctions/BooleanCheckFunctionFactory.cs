@@ -25,7 +25,7 @@ namespace Composite.C1Console.Forms.CoreFunctions
 
         public object Execute()
         {
-            if (this.CheckValue == true)
+            if (this.CheckValue)
             {
                 return this.WhenTrue;
             }

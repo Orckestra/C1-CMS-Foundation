@@ -32,7 +32,7 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                     Expression.Constant(maxValue)
                 );
 
-                if (folderRange.IsMinOpenEnded == true)
+                if (folderRange.IsMinOpenEnded)
                 {
                     currentExpression = Expression.Condition(
                         maxExpression,
@@ -40,7 +40,7 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                         currentExpression
                     );
                 }
-                else if (folderRange.IsMaxOpenEnded == true)
+                else if (folderRange.IsMaxOpenEnded)
                 {
                     currentExpression = Expression.Condition(
                         minExpression,
@@ -86,11 +86,11 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                 );
 
                 Expression expression;
-                if (folderRange.IsMinOpenEnded == true)
+                if (folderRange.IsMinOpenEnded)
                 {
                     expression = maxExpression;
                 }
-                else if (folderRange.IsMaxOpenEnded == true)
+                else if (folderRange.IsMaxOpenEnded)
                 {
                     expression = minExpression;
                 }
@@ -119,11 +119,11 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                         Expression.Constant(maxValue)
                     );
 
-                    if (folderRange.IsMinOpenEnded == true)
+                    if (folderRange.IsMinOpenEnded)
                     {
                         currentExpression = currentExpression.NestedAnd(Expression.Not(maxExpression));
                     }
-                    else if (folderRange.IsMaxOpenEnded == true)
+                    else if (folderRange.IsMaxOpenEnded)
                     {
                         currentExpression = currentExpression.NestedAnd(Expression.Not(minExpression));
                     }

@@ -51,7 +51,7 @@ namespace Composite.Core.IO
         /// <returns></returns>
         public static string Resolve(string path)
         {
-            if (String.IsNullOrEmpty(path) == true) throw new ArgumentNullException("path");
+            if (String.IsNullOrEmpty(path)) throw new ArgumentNullException("path");
             if (path.StartsWith("~"))
             {
                 if (path == "~")
@@ -63,7 +63,7 @@ namespace Composite.Core.IO
                 if (Path.IsPathRooted(tildeLessPath) == false) throw new ArgumentException("Tilde based paths must start with tilde (~) and then a directory separator , like ~/folder/file.txt", "path");
 
                 string appRootRelativePath = tildeLessPath.Remove(0, 1);
-                if (Path.IsPathRooted(appRootRelativePath) == true) throw new ArgumentException("Invalid path", "path");
+                if (Path.IsPathRooted(appRootRelativePath)) throw new ArgumentException("Invalid path", "path");
 
                 appRootRelativePath = appRootRelativePath.Replace( '/', '\\' );
 

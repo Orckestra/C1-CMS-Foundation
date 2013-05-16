@@ -32,7 +32,7 @@ namespace Composite.C1Console.Actions
         /// <exclude />
         public void PostRefreshMesseges(EntityToken afterUpdateEntityToken)
         {
-            if (_postRefreshMessegesCalled == true)
+            if (_postRefreshMessegesCalled)
             {
                 throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
             }

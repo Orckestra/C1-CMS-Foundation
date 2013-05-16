@@ -109,7 +109,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
             public static void DoInitializeResources(Resources resources)
             {
-                if (LoginSessionStorePluginFacade.HasConfiguration() == true)
+                if (LoginSessionStorePluginFacade.HasConfiguration())
                 {
                     try
                     {
@@ -125,7 +125,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
                         HandleConfigurationError(ex);
                     }
                 }
-                else if (RuntimeInformation.IsUnittest == true)
+                else if (RuntimeInformation.IsUnittest)
                 {
                     // This is a fall bakc for unittests
                     resources.Provider = new BuildinLoginSessionStore();

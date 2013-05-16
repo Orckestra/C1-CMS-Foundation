@@ -95,7 +95,7 @@ namespace Composite.C1Console.Workflow.Foundation
 
         public void DeliverCustomToolbarDefinition(Guid instanceId, string customToolbarDefinition)
         {
-            if (string.IsNullOrEmpty(customToolbarDefinition) == true) throw new ArgumentNullException("customToolbarDefinition");
+            if (string.IsNullOrEmpty(customToolbarDefinition)) throw new ArgumentNullException("customToolbarDefinition");
             FormData formData;
 
             if (WorkflowFacade.TryGetFormData(instanceId, out formData) == false)

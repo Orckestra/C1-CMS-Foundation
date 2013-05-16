@@ -80,7 +80,7 @@ namespace Composite.Functions.Foundation
             {
                 bool useableType = supportedType.IsAssignableFrom(typeMappedFunctions.Key);
 
-                if (useableType == true)
+                if (useableType)
                 {
                     // Negate that string is an IEnumerable - thats just plain stupid.
                     if ((supportedType is IEnumerable && typeMappedFunctions.Key == typeof(string)) == false)

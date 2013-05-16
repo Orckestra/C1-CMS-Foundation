@@ -106,7 +106,7 @@ namespace Composite.Core.Localization
         public static void RenameUrlMappingNameForLocale(string cultureName, string newUrlMappingName)
         {
             if (IsLocaleInstalled(cultureName) == false) throw new InvalidOperationException(string.Format("The locale '{0}' is not installed and the url mapping name can not be renamed", cultureName));
-            if (IsUrlMappingNameInUse(cultureName, newUrlMappingName) == true) throw new InvalidOperationException(string.Format("The url '{0}' is already used", newUrlMappingName));
+            if (IsUrlMappingNameInUse(cultureName, newUrlMappingName)) throw new InvalidOperationException(string.Format("The url '{0}' is already used", newUrlMappingName));
 
             ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Where(f => f.CultureName != cultureName).Single();            
             systemActiveLocale.UrlMappingName = newUrlMappingName;
@@ -128,8 +128,8 @@ namespace Composite.Core.Localization
         {            
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                if (IsLocaleInstalled(cultureInfo) == true) throw new InvalidOperationException(string.Format("The locale '{0}' has already been added to the system", cultureInfo));
-                if (IsUrlMappingNameInUse(urlMappingName) == true) throw new InvalidOperationException(string.Format("The url mapping name '{0}' has already been used in the system", urlMappingName));
+                if (IsLocaleInstalled(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' has already been added to the system", cultureInfo));
+                if (IsUrlMappingNameInUse(urlMappingName)) throw new InvalidOperationException(string.Format("The url mapping name '{0}' has already been used in the system", urlMappingName));
 
                 if (DataLocalizationFacade.ActiveLocalizationCultures.Count() == 0)
                 {
@@ -142,7 +142,7 @@ namespace Composite.Core.Localization
                 systemActiveLocale.UrlMappingName = urlMappingName;
                 DataFacade.AddNew<ISystemActiveLocale>(systemActiveLocale);
 
-                if (addAccessToAllUsers == true)
+                if (addAccessToAllUsers)
                 {
                     List<string> usernames =
                         (from u in DataFacade.GetData<IUser>()
@@ -237,7 +237,7 @@ namespace Composite.Core.Localization
         {
             foreach (Type type in DataFacade.GetAllInterfaces())
             {
-                if (DataLocalizationFacade.IsLocalized(type) == true)
+                if (DataLocalizationFacade.IsLocalized(type))
                 {
                     return true;
                 }
@@ -277,7 +277,7 @@ namespace Composite.Core.Localization
             {
                 List<CultureInfo> activeLocales = UserSettings.GetActiveLocaleCultureInfos(username).ToList();
 
-                if ((activeLocales.Count == 1) && (activeLocales[0].Equals(cultureInfo) == true))
+                if ((activeLocales.Count == 1) && (activeLocales[0].Equals(cultureInfo)))
                 {
                     return true;
                 }
@@ -307,8 +307,8 @@ namespace Composite.Core.Localization
         /// <param name="makeFlush"></param>
         public static void RemoveLocale(CultureInfo cultureInfo, bool makeFlush = true)
         {
-            if (LocalizationFacade.IsDefaultLocale(cultureInfo) == true) throw new InvalidOperationException(string.Format("The locale '{0}' is the default locale and can not be removed", cultureInfo));
-            if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(cultureInfo) == true) throw new InvalidOperationException(string.Format("The locale '{0}' is the only locale for some user(s) and can not be removed", cultureInfo));
+            if (LocalizationFacade.IsDefaultLocale(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the default locale and can not be removed", cultureInfo));
+            if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the only locale for some user(s) and can not be removed", cultureInfo));
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {

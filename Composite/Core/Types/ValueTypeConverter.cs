@@ -52,7 +52,7 @@ namespace Composite.Core.Types
             if (helper != null)
             {
                 object ret = null;
-                if (helper.TryConvert(value, targetType, out ret) == true)
+                if (helper.TryConvert(value, targetType, out ret))
                 {
                     return ret;
                 }
@@ -62,7 +62,7 @@ namespace Composite.Core.Types
             if (helper2 != null)
             {
                 object ret = null;
-                if (helper2.TryConvert(value, targetType, out ret) == true)
+                if (helper2.TryConvert(value, targetType, out ret))
                 {
                     return ret;
                 }
@@ -73,8 +73,8 @@ namespace Composite.Core.Types
                 return value;
             }
 
-            if ((IsGenericEnumerable(value.GetType()) == true) &&
-                (IsGenericEnumerable(targetType) == true))
+            if ((IsGenericEnumerable(value.GetType())) &&
+                (IsGenericEnumerable(targetType)))
             {
                 Type targetItemType = targetType.GetGenericArguments()[0];
 
@@ -92,7 +92,7 @@ namespace Composite.Core.Types
 
             // Haz item, wantz list of it.
             if ((IsGenericEnumerable(value.GetType()) == false) &&
-                (IsGenericEnumerable(targetType) == true))
+                (IsGenericEnumerable(targetType)))
             {
                 Type targetItemType = targetType.GetGenericArguments()[0];
 
@@ -199,13 +199,13 @@ namespace Composite.Core.Types
             }
 
             TypeConverter targetConverter = TypeDescriptor.GetConverter(targetType);
-            if (true == targetConverter.CanConvertFrom(value.GetType()))
+            if (targetConverter.CanConvertFrom(value.GetType()))
             {
                 return targetConverter.ConvertFrom(null, UserSettings.CultureInfo, value);
             }
 
             TypeConverter valueConverter = TypeDescriptor.GetConverter(value.GetType());
-            if (true == valueConverter.CanConvertTo(targetType))
+            if (valueConverter.CanConvertTo(targetType))
             {
                 return valueConverter.ConvertTo(null, UserSettings.CultureInfo, value, targetType);
             }
@@ -296,9 +296,9 @@ namespace Composite.Core.Types
 
             type = type.GetGenericTypeDefinition();
 
-            if (typeof(IEnumerable<>).IsAssignableFrom(type) == true) return true;
-            if (typeof(List<>).IsAssignableFrom(type) == true) return true;
-            if (typeof(IList<>).IsAssignableFrom(type) == true) return true;
+            if (typeof(IEnumerable<>).IsAssignableFrom(type)) return true;
+            if (typeof(List<>).IsAssignableFrom(type)) return true;
+            if (typeof(IList<>).IsAssignableFrom(type)) return true;
 
             return false;
         }

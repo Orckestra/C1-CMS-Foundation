@@ -61,7 +61,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            if (DataFacade.WillDeleteSucceed(data) == true)
+            if (DataFacade.WillDeleteSucceed(data))
             {
                 ProcessControllerFacade.FullDelete(data);
 

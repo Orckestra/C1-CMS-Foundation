@@ -25,7 +25,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private IPage GetCurrentPage()
         {
-            if ((this.EntityToken is DataEntityToken) == true)
+            if ((this.EntityToken is DataEntityToken))
             {
                 return this.GetDataItemFromEntityToken<IPage>();
             }

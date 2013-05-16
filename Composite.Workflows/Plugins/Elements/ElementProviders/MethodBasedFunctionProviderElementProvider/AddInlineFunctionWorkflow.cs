@@ -139,7 +139,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
 
             bool exists = FunctionFacade.FunctionExists(function.Namespace, function.Name);
 
-            if (exists == true)
+            if (exists)
             {
                 string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.NameAlreadyUsed");
                 errorMessage = string.Format(errorMessage, FunctionFacade.GetFunctionCompositionName(function.Namespace, function.Name));

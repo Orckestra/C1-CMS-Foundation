@@ -31,7 +31,7 @@ namespace Composite.Core.WebClient.FlowMediators
 
             ActionResult result = new ActionResult();
 
-            if (typeof(FlowUiDefinitionBase).IsAssignableFrom(uiDefinition.GetType()) == true)
+            if (typeof(FlowUiDefinitionBase).IsAssignableFrom(uiDefinition.GetType()))
             {
                 string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken, true);
                 ViewTransitionHelper.HandleNew(this.ConsoleId, this.ElementProviderName, serializedEntityToken, flowToken, (FlowUiDefinitionBase)uiDefinition);

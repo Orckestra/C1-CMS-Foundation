@@ -18,7 +18,7 @@ namespace Composite.Data.Plugins.DataProvider
         /// <exclude />
         public DataProviderContext(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             _providerName = providerName;
         }
@@ -70,7 +70,7 @@ namespace Composite.Data.Plugins.DataProvider
                 throw new InvalidOperationException("Updates on DataSourceIds can only be done on objects that are returned by the DataFacade.BuildNew<T>() method");
             }
 
-            if (emptyDataClassBase.DataSourceId.ExistsInStore == true)
+            if (emptyDataClassBase.DataSourceId.ExistsInStore)
             {
                 throw new InvalidOperationException("Updates on DataSourceIds can only be done once");
             }

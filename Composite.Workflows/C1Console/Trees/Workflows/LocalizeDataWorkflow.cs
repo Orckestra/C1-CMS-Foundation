@@ -70,7 +70,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             CultureInfo targetCultureInfo = UserSettings.ActiveLocaleCultureInfo;
 
-            if (ExistsInLocale(data, targetCultureInfo) == true)
+            if (ExistsInLocale(data, targetCultureInfo))
             {
                 this.ShowMessage(
                     DialogType.Message,

@@ -34,7 +34,7 @@ namespace Composite.Core.Linq
 
         public static void DebugLogExpression(this Expression expression, string title, string label = "Expression")
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 if (expression != null)
                 {

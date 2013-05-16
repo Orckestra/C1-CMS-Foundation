@@ -173,7 +173,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                             elements.OrderBy(f => f.VisualData.Label)).ToList();
                     }
 
-                    if (includeForeignFolders == true)
+                    if (includeForeignFolders)
                     {
                         using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
@@ -202,7 +202,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                             elements.OrderBy(f => f.VisualData.Label)).ToList();
                     }
 
-                    if (includeForeignFolders == true)
+                    if (includeForeignFolders)
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
@@ -426,7 +426,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
             List<IData> datas = resultQueryable.ToDataList();
 
             Func<IData, Element> func = OnCreateLeafElement;
-            if (isForeign == true)
+            if (isForeign)
             {
                 func = OnCreateGhostedLeafElement;
             }

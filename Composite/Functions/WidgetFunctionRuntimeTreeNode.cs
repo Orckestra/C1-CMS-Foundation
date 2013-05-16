@@ -124,7 +124,7 @@ namespace Composite.Functions
             {
                 foreach (var parameter in this.Parameters)
                 {
-                    if (parameter.ContainsNestedFunctions == true)
+                    if (parameter.ContainsNestedFunctions)
                     {
                         return true;
                     }

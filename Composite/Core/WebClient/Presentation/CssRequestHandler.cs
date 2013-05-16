@@ -198,7 +198,7 @@ namespace Composite.Core.WebClient.Presentation
             char firstChar = trim[0];
 
 
-            if (firstChar == '#' && trim.StartsWith("#endregion", StringComparison.Ordinal) == true)
+            if (firstChar == '#' && trim.StartsWith("#endregion", StringComparison.Ordinal))
             {
                 state.isValid = true;
                 return null;
@@ -209,7 +209,7 @@ namespace Composite.Core.WebClient.Presentation
 			    return null;
 			}
 
-            if (firstChar == '-' && trim.StartsWith("-vendor-", StringComparison.Ordinal) == true)
+            if (firstChar == '-' && trim.StartsWith("-vendor-", StringComparison.Ordinal))
             {
                 String was = line;
                 if (user.isWebKit)

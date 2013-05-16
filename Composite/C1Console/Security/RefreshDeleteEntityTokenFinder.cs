@@ -22,7 +22,7 @@ namespace Composite.C1Console.Security
 
             foreach (RelationshipGraphNode node in beforeGraph.BottomNodes)
             {
-                if (skipBottemNodes == true)
+                if (skipBottemNodes)
                 {
                     foreach (RelationshipGraphNode parentNode in node.ParentNodes)
                     {

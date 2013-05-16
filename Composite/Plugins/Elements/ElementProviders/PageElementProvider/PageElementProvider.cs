@@ -237,7 +237,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             // Creates a problem for the front-end "toolbar caching" mechanism - dont re-introduce this right befroe a release
             // Reason: ActionTokin is always unique for a page, making the ActionKey (hash) unique
-            //if (RuntimeInformation.IsDebugBuild == true)
+            //if (RuntimeInformation.IsDebugBuild)
             //{
             //    element.AddAction(new ElementAction(new ActionHandle(new DisplayLocalOrderingActionToken(Guid.Empty)))
             //    {
@@ -523,11 +523,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             Verify.IsNotNull(draggedPage, "Dragged page does not exist");
 
             Guid newParentPageId;
-            if ((newParentEntityToken is PageElementProviderEntityToken) == true)
+            if ((newParentEntityToken is PageElementProviderEntityToken))
             {
                 newParentPageId = Guid.Empty;
             }
-            else if ((newParentEntityToken is DataEntityToken) == true)
+            else if ((newParentEntityToken is DataEntityToken))
             {
                 IPage newParentPage = (IPage)((DataEntityToken)newParentEntityToken).Data;
                 newParentPageId = newParentPage.Id;
@@ -792,7 +792,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     // Creates a problem for the front-end "toolbar caching" mechanism - dont re-introduce this right befroe a release
                     // Reason: ActionTokin is always unique for a page, making the ActionKey (hash) unique
 
-                    //if (RuntimeInformation.IsDebugBuild == true)
+                    //if (RuntimeInformation.IsDebugBuild)
                     //{
                     //    element.AddAction(new ElementAction(new ActionHandle(new DisplayLocalOrderingActionToken(page.Id)))
                     //    {
@@ -830,7 +830,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         using (new DataScope(DataScopeIdentifier.Administrated, UserSettings.ActiveLocaleCultureInfo))
                         {
                             bool exists = DataFacade.GetData<IPage>(f => f.Id == parentId).Any();
-                            if (exists == true)
+                            if (exists)
                             {
                                 addAction = true;
                             }
@@ -838,7 +838,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     }
 
 
-                    if (addAction == true)
+                    if (addAction)
                     {
                         element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.LocalizePageWorkflow"), LocalizePermissionTypes)))
                         {

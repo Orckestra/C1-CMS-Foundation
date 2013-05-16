@@ -42,7 +42,7 @@ namespace Composite.Core.Localization
                 foreach (XAttribute attribute in attributes)
                 {
                     Match match = _attributRegex.Match(attribute.Value);
-                    if ((match.Success == true) && (match.Groups["type"].Value == "lang")) 
+                    if ((match.Success) && (match.Groups["type"].Value == "lang")) 
                     {
                         string newValue = StringResourceSystemFacade.ParseString(string.Format("${{{0}}}", match.Groups["id"].Value));
                         attribute.SetValue(newValue);

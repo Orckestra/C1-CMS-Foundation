@@ -28,7 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.LocalizationElementProvide
 
             CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(systemActiveLocale.CultureName);
 
-            if (LocalizationFacade.SetDefaultLocale(cultureInfo) == true)
+            if (LocalizationFacade.SetDefaultLocale(cultureInfo))
             {
                 ParentTreeRefresher parentTreeRefresher = this.CreateParentTreeRefresher();
                 parentTreeRefresher.PostRefreshMesseges(this.EntityToken);

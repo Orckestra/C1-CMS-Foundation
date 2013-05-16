@@ -29,7 +29,7 @@ namespace Composite.C1Console.Actions
             string serializedFlowToken = flowToken.Serialize();
             StringConversionServices.SerializeKeyValuePair(sb, "flowToken", serializedFlowToken);
 
-            if (includeHashValue == true)
+            if (includeHashValue)
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "flowTokenHash", HashSigner.GetSignedHash(serializedFlowToken).Serialize());
             }
@@ -48,13 +48,13 @@ namespace Composite.C1Console.Actions
 
         public static FlowToken Deserialize(string serialziedFlowToken, bool includeHashValue)
         {
-            if (string.IsNullOrEmpty(serialziedFlowToken) == true) throw new ArgumentNullException("serialziedFlowToken");
+            if (string.IsNullOrEmpty(serialziedFlowToken)) throw new ArgumentNullException("serialziedFlowToken");
 
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialziedFlowToken);
 
             if ((dic.ContainsKey("flowTokenType") == false) ||
                 (dic.ContainsKey("flowToken") == false) ||
-                ((includeHashValue == true) && (dic.ContainsKey("flowTokenHash") == false)))
+                ((includeHashValue) && (dic.ContainsKey("flowTokenHash") == false)))
             {
                 throw new ArgumentException("The serialziedFlowToken is not a serialized flowToken", "serialziedFlowToken");
             }
@@ -62,7 +62,7 @@ namespace Composite.C1Console.Actions
             string flowTokenTypeString = StringConversionServices.DeserializeValueString(dic["flowTokenType"]);
             string flowTokenString = StringConversionServices.DeserializeValueString(dic["flowToken"]);
 
-            if (includeHashValue == true)
+            if (includeHashValue)
             {
                 string flowTokenHash = StringConversionServices.DeserializeValueString(dic["flowTokenHash"]);
 

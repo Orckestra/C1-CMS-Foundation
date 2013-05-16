@@ -34,10 +34,10 @@ namespace Composite.Plugins.ResourceSystem.XmlStringResourceProvider
                 _resourceLocker.Resources.DefaultCulture = new CultureInfo(defaultCultureName);
                 _resourceLocker.Resources.CultureToFileLookup = cultureToFileLookup;
 
-                foreach (CultureInfo watchedCulture in watchForFileChanges.Where(f => f.Value == true).Select(f => f.Key))
+                foreach (CultureInfo watchedCulture in watchForFileChanges.Where(f => f.Value).Select(f => f.Key))
                 {
                     string unresolvedFileName;
-                    if (_resourceLocker.Resources.CultureToFileLookup.TryGetValue(watchedCulture, out unresolvedFileName) == true)
+                    if (_resourceLocker.Resources.CultureToFileLookup.TryGetValue(watchedCulture, out unresolvedFileName))
                     {
                         string resolvedFileName = PathUtil.Resolve(unresolvedFileName);
                         DateTime lastWrite = C1File.GetLastWriteTime(resolvedFileName);

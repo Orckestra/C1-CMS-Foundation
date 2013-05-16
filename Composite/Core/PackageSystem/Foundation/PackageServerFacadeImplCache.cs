@@ -19,7 +19,7 @@ namespace Composite.Core.PackageSystem.Foundation
         public PackageServerFacadeImplCache()
         {
             _cacheLiveTime = TimeSpan.FromMinutes(30);
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 _cacheLiveTime = TimeSpan.FromSeconds(30);
             }

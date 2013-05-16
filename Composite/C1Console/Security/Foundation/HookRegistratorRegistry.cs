@@ -77,7 +77,7 @@ namespace Composite.C1Console.Security.Foundation
 
             public static void DoInitializeResources(Resources resources)
             {
-                if (HasConfiguration() == true)
+                if (HasConfiguration())
                 {
                     resources.HookRegistratorPluginNames = new List<string>();
 

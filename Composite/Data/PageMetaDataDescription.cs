@@ -109,7 +109,7 @@ namespace Composite.Data
             }
 
             string serializedDataAssociationVisabilityRuleType;
-            if (dic.ContainsKey("_PageMetaDataDescriptionType_") == true)
+            if (dic.ContainsKey("_PageMetaDataDescriptionType_"))
             {
                 serializedDataAssociationVisabilityRuleType = StringConversionServices.DeserializeValueString(dic["_PageMetaDataDescriptionType_"]);
             }

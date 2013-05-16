@@ -133,7 +133,7 @@ namespace Composite.C1Console.Trees
             string treeId = StringConversionServices.DeserializeValueString(serializedValueCollection[TreeIdSerializedKeyName]);
             int actionNodeId = StringConversionServices.DeserializeValueInt(serializedValueCollection[ActionNodeIdSerializedKeyName]);
 
-            if (removeEntiresFromCollection == true)
+            if (removeEntiresFromCollection)
             {
                 serializedValueCollection.Remove(TreeIdSerializedKeyName);
                 serializedValueCollection.Remove(ActionNodeIdSerializedKeyName);

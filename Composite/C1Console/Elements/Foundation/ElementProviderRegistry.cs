@@ -52,7 +52,7 @@ namespace Composite.C1Console.Elements.Foundation
 
         public static Type GetElementProviderType(string elementProviderName)
         {
-            if (string.IsNullOrEmpty(elementProviderName) == true) throw new ArgumentNullException("elementProviderName");
+            if (string.IsNullOrEmpty(elementProviderName)) throw new ArgumentNullException("elementProviderName");
 
             Type type;
             using (_resourceLocker.ReadLocker)
@@ -133,7 +133,7 @@ namespace Composite.C1Console.Elements.Foundation
                     resources.ElementProviderNames.Add(data.Name, data.Type);
 
 #pragma warning disable 612
-                    if ((data is ElementProviderData) == true)
+                    if ((data is ElementProviderData))
                     {
                         resources.HookingProviderNames.Add(data.Name);
                     }

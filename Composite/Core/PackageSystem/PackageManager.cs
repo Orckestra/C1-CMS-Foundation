@@ -32,11 +32,11 @@ namespace Composite.Core.PackageSystem
             string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
             foreach (string packageDirecoty in packageDirectories)
             {
-                if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)))
                 {
                     string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                    if (C1File.Exists(filename) == true)
+                    if (C1File.Exists(filename))
                     {
                         XDocument doc = XDocumentUtils.Load(filename);
 
@@ -64,7 +64,7 @@ namespace Composite.Core.PackageSystem
                         if (systemLockingAttribute.TryDeserialize(out systemLockingType) == false) throw new InvalidOperationException("The systemLocking attibute value is wrong");
 
                         string path = packageDirecoty.Remove(0, baseDirectory.Length);
-                        if (path.StartsWith("\\") == true)
+                        if (path.StartsWith("\\"))
                         {
                             path = path.Remove(0, 1);
                         }
@@ -158,7 +158,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public static PackageManagerInstallProcess Install(Stream zipFileStream, bool isLocalInstall, string packageServerAddress)
         {
-            if ((isLocalInstall == false) && (string.IsNullOrEmpty(packageServerAddress) == true)) throw new ArgumentException("Non local install needs a packageServerAddress");
+            if ((isLocalInstall == false) && (string.IsNullOrEmpty(packageServerAddress))) throw new ArgumentException("Non local install needs a packageServerAddress");
 
             string zipFilename = null;
 
@@ -179,7 +179,7 @@ namespace Composite.Core.PackageSystem
                 if ((RuntimeInformation.ProductVersion < packageInformation.MinCompositeVersionSupported) ||
                     (RuntimeInformation.ProductVersion > packageInformation.MaxCompositeVersionSupported)) return new PackageManagerInstallProcess(new List<PackageFragmentValidationResult> { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetText("PackageManager.CompositeVersionMisMatch")) }, zipFilename);
 
-                if (IsInstalled(packageInformation.Id) == true)
+                if (IsInstalled(packageInformation.Id))
                 {
                     string currentVersionString = GetCurrentVersion(packageInformation.Id);
 
@@ -206,7 +206,7 @@ namespace Composite.Core.PackageSystem
                 C1File.Copy(zipFilename, packageZipFilename, true);
 
                 string username = "Composite";
-                if (UserValidationFacade.IsLoggedIn() == true)
+                if (UserValidationFacade.IsLoggedIn())
                 {
                     username = UserValidationFacade.GetUsername();
                 }
@@ -328,12 +328,12 @@ namespace Composite.Core.PackageSystem
             if (canBeUninstalledAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.MissingAttribute"), PackageSystemSettings.CanBeUninstalledAttributeName), packageInformationElement);
             if (systemLockingAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.MissingAttribute"), PackageSystemSettings.SystemLockingAttributeName), packageInformationElement);
 
-            if (string.IsNullOrEmpty(nameAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.NameAttributeName), nameAttribute);
-            if (string.IsNullOrEmpty(groupNameAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.GroupNameAttributeName), groupNameAttribute);
-            if (string.IsNullOrEmpty(authorAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.AuthorAttributeName), authorAttribute);
-            if (string.IsNullOrEmpty(websiteAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.WebsiteAttributeName), websiteAttribute);
-            if (string.IsNullOrEmpty(versionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
-            if (string.IsNullOrEmpty(packageInformationElement.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidElementValue"), PackageSystemSettings.PackageInformationElementName), packageInformationElement);
+            if (string.IsNullOrEmpty(nameAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.NameAttributeName), nameAttribute);
+            if (string.IsNullOrEmpty(groupNameAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.GroupNameAttributeName), groupNameAttribute);
+            if (string.IsNullOrEmpty(authorAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.AuthorAttributeName), authorAttribute);
+            if (string.IsNullOrEmpty(websiteAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.WebsiteAttributeName), websiteAttribute);
+            if (string.IsNullOrEmpty(versionAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
+            if (string.IsNullOrEmpty(packageInformationElement.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidElementValue"), PackageSystemSettings.PackageInformationElementName), packageInformationElement);
 
             Guid id;
             if (idAttribute.TryGetGuidValue(out id) == false) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.IdAttributeName), idAttribute);
@@ -341,7 +341,7 @@ namespace Composite.Core.PackageSystem
 
             string newVersion;
 
-            if (VersionStringHelper.ValidateVersion(versionAttribute.Value, out newVersion) == true) versionAttribute.Value = newVersion;
+            if (VersionStringHelper.ValidateVersion(versionAttribute.Value, out newVersion)) versionAttribute.Value = newVersion;
             else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), versionAttribute);
 
             bool canBeUninstalled;
@@ -366,13 +366,13 @@ namespace Composite.Core.PackageSystem
             if (minimumCompositeVersionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.MissingAttribute"), PackageSystemSettings.MinimumCompositeVersionAttributeName), packageRequirementsElement);
             if (maximumCompositeVersionAttribute == null) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.MissingAttribute"), PackageSystemSettings.MaximumCompositeVersionAttributeName), packageRequirementsElement);
 
-            if (string.IsNullOrEmpty(minimumCompositeVersionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.MinimumCompositeVersionAttributeName), minimumCompositeVersionAttribute);
-            if (string.IsNullOrEmpty(maximumCompositeVersionAttribute.Value) == true) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.MaximumCompositeVersionAttributeName), maximumCompositeVersionAttribute);
+            if (string.IsNullOrEmpty(minimumCompositeVersionAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.MinimumCompositeVersionAttributeName), minimumCompositeVersionAttribute);
+            if (string.IsNullOrEmpty(maximumCompositeVersionAttribute.Value)) return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.MaximumCompositeVersionAttributeName), maximumCompositeVersionAttribute);
 
-            if (VersionStringHelper.ValidateVersion(minimumCompositeVersionAttribute.Value, out newVersion) == true) minimumCompositeVersionAttribute.Value = newVersion;
+            if (VersionStringHelper.ValidateVersion(minimumCompositeVersionAttribute.Value, out newVersion)) minimumCompositeVersionAttribute.Value = newVersion;
             else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), minimumCompositeVersionAttribute);
 
-            if (VersionStringHelper.ValidateVersion(maximumCompositeVersionAttribute.Value, out newVersion) == true) maximumCompositeVersionAttribute.Value = newVersion;
+            if (VersionStringHelper.ValidateVersion(maximumCompositeVersionAttribute.Value, out newVersion)) maximumCompositeVersionAttribute.Value = newVersion;
             else return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetText("PackageManager.InvalidAttributeValue"), PackageSystemSettings.VersionAttributeName), maximumCompositeVersionAttribute);
 
 
@@ -404,7 +404,7 @@ namespace Composite.Core.PackageSystem
             {
                 zipFilename = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory), PackageSystemSettings.ZipFilename);
 
-                if (C1File.Exists(zipFilename) == true)
+                if (C1File.Exists(zipFilename))
                 {
                     C1File.Delete(zipFilename);
                 }

@@ -432,7 +432,7 @@ namespace Composite.Core.Configuration
 
             bool enabled = Caching.Enabled;
             int size = CachingSettings.DefaultCacheSize;
-            if ((enabled == true) && (cacheSettings != null))
+            if ((enabled) && (cacheSettings != null))
             {
                 enabled = cacheSettings.Enabled && cacheSettings.Size != CachingSettings.NoCacheSize;
                 size = cacheSettings.Size;

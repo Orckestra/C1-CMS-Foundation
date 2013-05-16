@@ -309,7 +309,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                 }
                         );
 
-                if ((field.InstanceType.IsGenericType == true) &&
+                if ((field.InstanceType.IsGenericType) &&
                     (field.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>)))
                 {
                     method.Statements.Add(

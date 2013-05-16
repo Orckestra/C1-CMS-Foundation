@@ -50,7 +50,7 @@ namespace Composite.C1Console.Actions
 
             bool ignoreLocking = actionToken.IsIgnoreEntityTokenLocking();
 
-            if ((ignoreLocking == true) ||
+            if ((ignoreLocking) ||
                 (ActionLockingFacade.IsLocked(entityToken) == false))
             {
                 IActionExecutor actionExecutor = ActionExecutorCache.GetActionExecutor(actionToken);
@@ -69,7 +69,7 @@ namespace Composite.C1Console.Actions
 
                     try
                     {
-                        if ((actionExecutor is IActionExecutorSerializedParameters) == true)
+                        if ((actionExecutor is IActionExecutorSerializedParameters))
                         {
                             string serializedEntityToken = EntityTokenSerializer.Serialize(entityToken);
                             string serializedActionToken = ActionTokenSerializer.Serialize(actionToken);

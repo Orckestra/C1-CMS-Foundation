@@ -22,11 +22,11 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             {
                 ElementCompileTreeNode element = node as ElementCompileTreeNode;
 
-                if ((true == CompilerGlobals.IsProducerTag(element)) ||
-                    (true == CompilerGlobals.IsReadTag(element)) ||
-                    (true == CompilerGlobals.IsBindTag(element)) ||
-                    (true == CompilerGlobals.IsBindingTag(element)) ||
-                    (true == CompilerGlobals.IsLayoutTag(element)))
+                if ((CompilerGlobals.IsProducerTag(element)) ||
+                    (CompilerGlobals.IsReadTag(element)) ||
+                    (CompilerGlobals.IsBindTag(element)) ||
+                    (CompilerGlobals.IsBindingTag(element)) ||
+                    (CompilerGlobals.IsLayoutTag(element)))
                 {
                     element.Producer = ProducerMediatorPluginFacade.CreateProducer(_compileContext.CurrentChannel, element.XmlSourceNodeInformation.NamespaceURI, element.XmlSourceNodeInformation.Name);
 
@@ -36,7 +36,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
                         
                     }
                 }
-                else if (true == CompilerGlobals.IsBindingsTag(element))
+                else if (CompilerGlobals.IsBindingsTag(element))
                 {
                     if (null == _compileContext.BindingsProducer)
                     {

@@ -41,7 +41,7 @@ namespace Composite.Core.PackageSystem
 
             List<DataKeyPropertyCollection> dataKeyPropertyCollections = GetDataKeyPropertyCollections(interfaceType, dataScopeIdentifier, locale);
 
-            if (dataKeyPropertyCollections.Contains(dataKeyPropertyCollection) == true)
+            if (dataKeyPropertyCollections.Contains(dataKeyPropertyCollection))
             {
                 throw new ArgumentException(string.Format("The data item of type '{0}' with the key '{1}' has already been added", interfaceType, dataKeyPropertyCollection));
             }

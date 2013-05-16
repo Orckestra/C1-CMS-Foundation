@@ -31,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Type type;
 
-            if ((this.EntityToken is Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken) == true)
+            if ((this.EntityToken is Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken))
             {
                 Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken castedEntityToken = this.EntityToken as Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken;
 
@@ -62,7 +62,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     e.Result = DataFacade.GetData(interfaceType).ToDataEnumerable().Any();
 
-                    if (e.Result == true)
+                    if (e.Result)
                     {
                         return;
                     }
@@ -85,7 +85,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     bool dataExists = DataFacade.GetData(interfaceType).ToDataEnumerable().Any();
 
-                    if (dataExists == true)
+                    if (dataExists)
                     {
                         culturesWithData.Add(cultureInfo);
                     }
@@ -110,7 +110,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(dataTypeDescriptor, newDataTypeDescriptor, false);
 
-            if (this.BindingExist("CultureName") == true)
+            if (this.BindingExist("CultureName"))
             {
                 string cultureName = this.GetBinding<string>("CultureName");
                 CultureInfo cultureInfo = CultureInfo.CreateSpecificCulture(cultureName);

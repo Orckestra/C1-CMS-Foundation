@@ -89,11 +89,11 @@ namespace Composite.Core.ResourceSystem.Foundation
                     {
                         Type type = ResourceProviderPluginFacade.GetProviderType(data.Name);
 
-                        if (typeof(IIconResourceProvider).IsAssignableFrom(type) == true)
+                        if (typeof(IIconResourceProvider).IsAssignableFrom(type))
                         {
                             resources.IconResourceProviders.Add(data.Name);
                         }
-                        else if (typeof(IStringResourceProvider).IsAssignableFrom(type) == true)
+                        else if (typeof(IStringResourceProvider).IsAssignableFrom(type))
                         {
                             Log.LogCritical(LogTitle, ("String resource provider '{0}' definition ignored." +
                                                       "\nDefine provider of type '{1}' provider and move provider definition under it")
@@ -101,7 +101,7 @@ namespace Composite.Core.ResourceSystem.Foundation
 
                             resources.StringResourceProviders.Add(data.Name);
                         }
-                        else if (typeof(ILocalizationProvider).IsAssignableFrom(type) == true)
+                        else if (typeof(ILocalizationProvider).IsAssignableFrom(type))
                         {
                             resources.LocalizationProviders.Add(data.Name);
                         }

@@ -15,7 +15,7 @@ namespace Composite.C1Console.Elements.Foundation
             foreach (string providerName in ElementAttachingProviderRegistry.ElementAttachingProviderNames)
             {
                 bool result = ElementAttachingProviderPluginFacade.HaveCustomChildElements(providerName, parentEntityToken, piggybag);
-                if (result == true)
+                if (result)
                 {
                     return true;
                 }

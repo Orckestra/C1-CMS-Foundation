@@ -117,7 +117,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             string cacheKey = parameters.GetParameter<string>("ObjectCacheId");
 
             bool languageSpecific = parameters.GetParameter<bool>("LanguageSpecific");
-            if (languageSpecific == true)
+            if (languageSpecific)
             {
                 cacheKey = string.Format("{0}:{1}", cacheKey, Thread.CurrentThread.CurrentCulture);
             }

@@ -63,7 +63,7 @@ namespace Composite.C1Console.Workflow
         {
             string filename = GetFileName(instanceId);
 
-            if (C1File.Exists(filename) == true)
+            if (C1File.Exists(filename))
             {
                 try
                 {

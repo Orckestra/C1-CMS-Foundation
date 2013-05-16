@@ -303,7 +303,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
 
                 bool isAlpabeticOrdered = PageServices.IsChildrenAlphabeticOrdered(parentId);
-                if (isAlpabeticOrdered == true)
+                if (isAlpabeticOrdered)
                 {
                     sortOrder.Add("Alphabetic", GetText("AddNewPageStep1.LabelAddAlphabetic"));
                 }
@@ -529,7 +529,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)
             {
                 Tree tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
-                if (tree.HasAttachmentPoints(newPage.GetDataEntityToken()) == true) continue;
+                if (tree.HasAttachmentPoints(newPage.GetDataEntityToken())) continue;
 
                 TreeFacade.AddPersistedAttachmentPoint(pageTypeTreeLink.TreeId, typeof(IPage), newPage.Id);
             }
@@ -583,7 +583,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IPage newPage = this.GetBinding<IPage>("NewPage");
             IPageType selectedPageType = DataFacade.GetData<IPageType>().Single(f => f.Id == newPage.PageTypeId);
 
-            if ((selectedPageType.PresetMenuTitle == true) && (page.MenuTitle.IsNullOrEmpty() == true))
+            if ((selectedPageType.PresetMenuTitle) && (page.MenuTitle.IsNullOrEmpty()))
             {
                 page.MenuTitle = page.Title;
             }

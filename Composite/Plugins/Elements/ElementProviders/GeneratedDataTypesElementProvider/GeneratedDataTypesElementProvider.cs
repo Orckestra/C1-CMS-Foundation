@@ -206,10 +206,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 _dataGroupingProviderHelper.OnOwnsType = type =>
                 {
                     if (type.IsGenerated() == false) return false;
-                    if (PageFolderFacade.GetAllFolderTypes().Contains(type) == true) return false;
-                    if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type) == true) return false;
+                    if (PageFolderFacade.GetAllFolderTypes().Contains(type)) return false;
+                    if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type)) return false;
 
-                    if (_onlyShowGlobalDatas == true)
+                    if (_onlyShowGlobalDatas)
                     {
                         return IsTypeWhiteListed(type);
                     }
@@ -230,7 +230,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 foreach (Type type in DataFacade.GetGeneratedInterfaces())
                 {
-                    if (DataLocalizationFacade.IsLocalized(type) == true)
+                    if (DataLocalizationFacade.IsLocalized(type))
                     {
                         return true;
                     }
@@ -248,7 +248,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             List<Element> roots = new List<Element>();
 
             Element globalDataElement;
-            if (_onlyShowGlobalDatas == true)
+            if (_onlyShowGlobalDatas)
             {
                 globalDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                 {
@@ -507,7 +507,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             allGeneratedInterfaces = allGeneratedInterfaces.Except(PageFolderFacade.GetAllFolderTypes());
             allGeneratedInterfaces = allGeneratedInterfaces.Except(PageMetaDataFacade.GetAllMetaDataTypes());
 
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 allGeneratedInterfaces = allGeneratedInterfaces.Where(x => x.FullName.ToLower().Contains(searchToken.Keyword.ToLower())).ToList();
             }
@@ -516,7 +516,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             Dictionary<Type, DataTypeDescriptor> interfaces = allGeneratedInterfaces.ToDictionary(f => f, f => DynamicTypeManager.GetDataTypeDescriptor(f));
 
             IEnumerable<KeyValuePair<Type, DataTypeDescriptor>> sortedInterface = interfaces;
-            if (_onlyShowGlobalDatas == true)
+            if (_onlyShowGlobalDatas)
             {
                 sortedInterface = interfaces.OrderBy(f => f.Value.Title);
             }
@@ -536,7 +536,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 DataScopeIdentifier dataScopeIdentifier = DataScopeIdentifier.Public;
-                if (typeof(IPublishControlled).IsAssignableFrom(type) == true)
+                if (typeof(IPublishControlled).IsAssignableFrom(type))
                 {
                     dataScopeIdentifier = DataScopeIdentifier.Administrated;
                 }
@@ -546,7 +546,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 {
                     hasChildren = DataFacade.GetData(type).Any();
 
-                    if (DataLocalizationFacade.IsLocalized(type) == true)
+                    if (DataLocalizationFacade.IsLocalized(type))
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
@@ -556,7 +556,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 string label = type.FullName;
-                if (_onlyShowGlobalDatas == true)
+                if (_onlyShowGlobalDatas)
                 {
                     label = dataTypeDescriptor.Title;
                 }
@@ -600,7 +600,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         }
                     });
 
-                if (RuntimeInformation.IsDebugBuild == true)
+                if (RuntimeInformation.IsDebugBuild)
                 {
                     element.AddAction(
                     new ElementAction(new ActionHandle(new DataTypeDescriptorToXmlActionToken()))
@@ -637,7 +637,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());
             bool isEditable = dataTypeDescriptor.IsCodeGenerated;
 
-            if (DataLocalizationFacade.UseLocalization == true)
+            if (DataLocalizationFacade.UseLocalization)
             {
                 element.AddAction(GetChangeLocalizationElementAction(type, isEditable));
             }
@@ -780,7 +780,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IEnumerable<Type> types = PageFolderFacade.GetAllFolderTypes();
 
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 types = types.Where(x => x.FullName.ToLower().Contains(searchToken.Keyword.ToLower()));
             }
@@ -806,7 +806,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     }
                 };
 
-                if (DataLocalizationFacade.UseLocalization == true)
+                if (DataLocalizationFacade.UseLocalization)
                 {
                     element.AddAction(GetChangeLocalizationElementAction(type, true));
                 }
@@ -884,7 +884,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IEnumerable<Type> types = PageMetaDataFacade.GetAllMetaDataTypes();
 
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 types = types.Where(x => x.FullName.ToLower().Contains(searchToken.Keyword.ToLower()));
             }

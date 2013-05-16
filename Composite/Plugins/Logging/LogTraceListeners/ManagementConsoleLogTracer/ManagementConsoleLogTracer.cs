@@ -52,7 +52,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.ManagementConsoleLogTracer
         {
             Regex regex = new Regex(@"RGB\((?<r>[0-9]+), (?<g>[0-9]+), (?<b>[0-9]+)\)");
             Match matchMessage = regex.Match(message);
-            if (matchMessage.Success == true)
+            if (matchMessage.Success)
             {
                 message = message.Replace(matchMessage.Groups[0].Value, "");
             }

@@ -33,7 +33,7 @@ namespace Composite.Data.Foundation
                     {
                         try
                         {
-                            if (DynamicTypeManager.EnsureUpdateStore(interfaceType, providerName, true) == true)
+                            if (DynamicTypeManager.EnsureUpdateStore(interfaceType, providerName, true))
                             {
                                 doFlush = true;
                             }
@@ -73,7 +73,7 @@ namespace Composite.Data.Foundation
                     {
                         try
                         {
-                            if (DynamicTypeManager.IsEnsureUpdateStoreNeeded(interfaceType) == true)
+                            if (DynamicTypeManager.IsEnsureUpdateStoreNeeded(interfaceType))
                             {
                                 LoggingService.LogError("DataInterfaceAutoUpdater", string.Format("Autoupdating the data interface '{0}' on the '{1}' data provider failed!", interfaceType, providerName));
                             }

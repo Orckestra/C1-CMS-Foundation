@@ -23,7 +23,7 @@ namespace Composite.Data.Caching.Foundation
         {
             if (c.Value == null) return base.VisitConstant(c);
 
-            if (typeof(ICachingQueryable).IsAssignableFrom(c.Value.GetType()) == true)
+            if (typeof(ICachingQueryable).IsAssignableFrom(c.Value.GetType()))
             {
                 if (_newSourceExpression == null)
                 {

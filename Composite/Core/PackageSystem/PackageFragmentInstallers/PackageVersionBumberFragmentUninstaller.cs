@@ -58,7 +58,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    if (_packageToRestore.ContainsKey(packageId) == true)
+                    if (_packageToRestore.ContainsKey(packageId))
                     {
                         validationResult.AddFatal(GetText("PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), packageIdAttribute);
                         continue;
@@ -95,7 +95,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             foreach (var kvp in _packageToRestore.Reverse())
             {
-                if (this.InstalledPackages.ContainsKey(kvp.Key) == true)
+                if (this.InstalledPackages.ContainsKey(kvp.Key))
                 {
                     XDocument doc = XDocumentUtils.Load(this.InstalledPackages[kvp.Key]);
 
@@ -128,14 +128,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
                     foreach (string packageDirecoty in packageDirectories)
                     {
-                        if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)) == true)
+                        if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)))
                         {
                             string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                            if (C1File.Exists(filename) == true)
+                            if (C1File.Exists(filename))
                             {
                                 string path = packageDirecoty.Remove(0, baseDirectory.Length);
-                                if (path.StartsWith("\\") == true)
+                                if (path.StartsWith("\\"))
                                 {
                                     path = path.Remove(0, 1);
                                 }

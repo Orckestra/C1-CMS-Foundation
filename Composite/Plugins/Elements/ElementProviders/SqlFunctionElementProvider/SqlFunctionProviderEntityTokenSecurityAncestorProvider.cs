@@ -15,11 +15,11 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
-            if ((entityToken is SqlFunctionProviderRootEntityToken) == true)
+            if ((entityToken is SqlFunctionProviderRootEntityToken))
             {
                 return new EntityToken[] { };
             }
-            else if ((entityToken is SqlFunctionProviderFolderEntityToken) == true)
+            else if ((entityToken is SqlFunctionProviderFolderEntityToken))
             {
                 SqlFunctionProviderFolderEntityToken token = entityToken as SqlFunctionProviderFolderEntityToken;
 

@@ -254,7 +254,7 @@ namespace Composite.C1Console.Users
         {
             get
             {
-                if (UserProfileDataAvailable == true)
+                if (UserProfileDataAvailable)
                 {
                     return GetDeveloperSettings().LastSpecifiedNamespace;
                 }

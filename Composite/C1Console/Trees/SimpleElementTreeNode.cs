@@ -49,14 +49,14 @@ namespace Composite.C1Console.Trees
             EntityToken parentEntityToken = treeSimpleElementEntityToken.ParentEntityToken;
             foreach (EntityToken entityToken in parentGeneretedEntityTokens)
             {
-                if (parentEntityToken.Equals(entityToken) == true)
+                if (parentEntityToken.Equals(entityToken))
                 {
                     return new[] { parentEntityToken };
                 }
 
                 TreeSimpleElementEntityToken castedEntityToken = entityToken as TreeSimpleElementEntityToken;
                 if ((castedEntityToken != null) &&
-                    (parentEntityToken.Equals(castedEntityToken.ParentEntityToken) == true))
+                    (parentEntityToken.Equals(castedEntityToken.ParentEntityToken)))
                 {
                     return new [] { parentEntityToken };
                 }

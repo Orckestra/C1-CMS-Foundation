@@ -15,7 +15,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
         private void UpdateInformation(CompileTreeNode node, string currentXPath, int? childNumber)
         {
-            if (true == childNumber.HasValue)
+            if (childNumber.HasValue)
             {
                 currentXPath = string.Format("{0}/{1}[{2}]", currentXPath, node.XmlSourceNodeInformation.TagName, childNumber.Value);
             }

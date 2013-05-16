@@ -196,7 +196,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
             if (type != null)
             {
                 Guid immuteableTypeId;
-                if (type.TryGetImmutableTypeId(out immuteableTypeId) == true)
+                if (type.TryGetImmutableTypeId(out immuteableTypeId))
                 {
                     e.Result = true;
                 }

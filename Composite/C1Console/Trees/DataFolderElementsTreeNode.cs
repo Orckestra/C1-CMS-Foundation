@@ -631,7 +631,7 @@ namespace Composite.C1Console.Trees
 
             if (this.FolderRanges == null)
             {
-                if (dynamicContext.FieldGroupingValues.ContainsKey(this.GroupingValuesFieldName) == true)
+                if (dynamicContext.FieldGroupingValues.ContainsKey(this.GroupingValuesFieldName))
                 {
                     value = dynamicContext.FieldGroupingValues[this.GroupingValuesFieldName];
                 }
@@ -1004,7 +1004,7 @@ namespace Composite.C1Console.Trees
 
                 if (treeNode.PropertyInfo.PropertyType != typeof(DateTime))
                 {
-                    if (usedPropertyNames.Contains(treeNode.FieldName) == true)
+                    if (usedPropertyNames.Contains(treeNode.FieldName))
                     {
                         AddValidationError("TreeValidationError.DataFolderElements.SameFieldUsedTwice", treeNode.FieldName);
                         break;

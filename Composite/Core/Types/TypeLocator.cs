@@ -158,7 +158,7 @@ namespace Composite.Core.Types
                 if (lowerAssemblyName == excludeName.ToLowerInvariant()) return false;
             }
 
-            foreach (string excludeStartName in GlobalSettingsFacade.NonProbableAssemblyNames.Where(n => n.EndsWith("*") == true))
+            foreach (string excludeStartName in GlobalSettingsFacade.NonProbableAssemblyNames.Where(n => n.EndsWith("*")))
             {
                 if (lowerAssemblyName.StartsWith(excludeStartName.Replace("*", "").ToLowerInvariant())) return false;
             }

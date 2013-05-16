@@ -219,7 +219,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             ValidationResults validationResults = ValidationFacade.Validate<IUserGroup>(userGroup);
             e.Result = validationResults.IsValid;
-            if (validationResults.IsValid == true)
+            if (validationResults.IsValid)
             {
                 return;
             }

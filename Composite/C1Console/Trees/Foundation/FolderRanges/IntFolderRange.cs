@@ -69,11 +69,11 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                 {
                     return StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeRanges.IntRange.Other");
                 }
-                else if (this.IsMinOpenEnded == true)
+                else if (this.IsMinOpenEnded)
                 {
                     return string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeRanges.IntRange.MinOpenEnded"), this.MaxValue);
                 }
-                else if (this.IsMaxOpenEnded == true)
+                else if (this.IsMaxOpenEnded)
                 {
                     return string.Format(StringResourceSystemFacade.GetString("Composite.C1Console.Trees", "TreeRanges.IntRange.MaxOpenEnded"), this.MinValue);
                 }

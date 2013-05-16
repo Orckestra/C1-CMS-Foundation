@@ -47,7 +47,7 @@ namespace Composite.Functions.Foundation
 
         public IEnumerable<string> FunctionNamesByProviderName(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -62,7 +62,7 @@ namespace Composite.Functions.Foundation
 
         public IEnumerable<string> WidgetFunctionNamesByProviderName(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -107,7 +107,7 @@ namespace Composite.Functions.Foundation
 
         public IFunction GetFunction(string name)
         {
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -122,7 +122,7 @@ namespace Composite.Functions.Foundation
 
         public IWidgetFunction GetWidgetFunction(string name)
         {
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -169,7 +169,7 @@ namespace Composite.Functions.Foundation
 
         public void ReinitializeFunctionFromProvider(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -184,7 +184,7 @@ namespace Composite.Functions.Foundation
 
         public void ReinitializeWidgetFunctionFromProvider(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {

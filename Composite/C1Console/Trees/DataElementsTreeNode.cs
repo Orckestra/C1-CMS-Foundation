@@ -364,7 +364,7 @@ namespace Composite.C1Console.Trees
             {
                 if (this.ParentFilteringHelpers == null) this.ParentFilteringHelpers = new Dictionary<Type, ParentFilterHelper>();
 
-                if (this.ParentFilteringHelpers.ContainsKey(parentIdFilterNode.ParentFilterType) == true)
+                if (this.ParentFilteringHelpers.ContainsKey(parentIdFilterNode.ParentFilterType))
                 {
                     AddValidationError("TreeValidationError.DataElementsTreeNode.SameParentFilterInterfaceUsedTwice", parentIdFilterNode.ParentFilterType);
                     return;
@@ -560,7 +560,7 @@ namespace Composite.C1Console.Trees
             List<int> filtersToSkip = new List<int>() { parentIdFilterNode.Id };
             foreach (ParentIdFilterNode childParentIdFilterNode in dataElementsTreeNode.FilterNodes.OfType<ParentIdFilterNode>().Where(f => f.Id != parentIdFilterNode.Id))
             {
-                if (childParentIdFilterNode.ParentFilterTypeTreeNode.IsAncestor(parentIdFilterNode.ParentFilterTypeTreeNode) == true)
+                if (childParentIdFilterNode.ParentFilterTypeTreeNode.IsAncestor(parentIdFilterNode.ParentFilterTypeTreeNode))
                 {
                     filtersToSkip.Add(childParentIdFilterNode.Id);
                 }
@@ -571,7 +571,7 @@ namespace Composite.C1Console.Trees
             Expression whereExpression = ExpressionHelper.CreateWhereExpression(DataFacade.GetData(interfaceType).Expression, parameterExpression, filterExpression);
 
 
-            if ((includeJoin == true) && (dataElementsTreeNode.JoinDataElementsTreeNode != null))
+            if ((includeJoin) && (dataElementsTreeNode.JoinDataElementsTreeNode != null))
             {
                 //MRJ: Multiple Parent Filter: Recursive call, so we would have to make multiple recursive calls
                 Expression innerInnerExpression = CreateInnerExpression(dynamicContext, dataElementsTreeNode.JoinParentIdFilterNode, dataElementsTreeNode.JoinDataElementsTreeNode);
@@ -610,7 +610,7 @@ namespace Composite.C1Console.Trees
 
         private IData GetParentDataItem(Type parentType, EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            if (dynamicContext.CustomData.ContainsKey("ParentData") == true)
+            if (dynamicContext.CustomData.ContainsKey("ParentData"))
             {
                 return (IData)dynamicContext.CustomData["ParentData"];
             }

@@ -22,7 +22,7 @@ namespace Composite.Data.Validation.Foundation.PluginFacades
 
         public IEnumerable<Type> GetSupportedAttributeTypes(string translatorName)
         {
-            if (string.IsNullOrEmpty(translatorName) == true) throw new ArgumentNullException("translatorName");
+            if (string.IsNullOrEmpty(translatorName)) throw new ArgumentNullException("translatorName");
 
                 using (_resourceLocker.ReadLocker)
                 {
@@ -36,7 +36,7 @@ namespace Composite.Data.Validation.Foundation.PluginFacades
 
         public ClientValidationRule Translate(string translatorName, Attribute attribute)
         {
-            if (string.IsNullOrEmpty(translatorName) == true) throw new ArgumentNullException("translatorName");
+            if (string.IsNullOrEmpty(translatorName)) throw new ArgumentNullException("translatorName");
             if (attribute == null) throw new ArgumentNullException("attribute");
 
                 using (_resourceLocker.ReadLocker)

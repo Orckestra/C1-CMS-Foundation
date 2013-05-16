@@ -51,7 +51,7 @@ namespace Composite.Core.WebClient
                 return;
             }
 
-            if (_systemIsInitialized == true)
+            if (_systemIsInitialized)
             {
                 return;
             }
@@ -126,7 +126,7 @@ namespace Composite.Core.WebClient
         {
             ThreadDataManager.InitializeThroughHttpContext(true);
 
-            if (LogRequestDetails == true)
+            if (LogRequestDetails)
             {
                 // LoggingService.LogVerbose("Begin request", string.Format("{0}", Request.Path));
                 HttpContext.Current.Items.Add("Global.asax timer", Environment.TickCount);
@@ -258,7 +258,7 @@ namespace Composite.Core.WebClient
         {
             ThreadDataManager.InitializeThroughHttpContext();
 
-            if (displayDebugInfo == true)
+            if (displayDebugInfo)
             {
                 Log.LogVerbose("Global.asax", "--- Web Application Start, {0} Id = {1} ---", DateTime.Now.ToLongTimeString(), AppDomain.CurrentDomain.Id);
             }

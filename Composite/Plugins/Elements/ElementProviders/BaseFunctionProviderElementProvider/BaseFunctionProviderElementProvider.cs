@@ -215,7 +215,7 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
         private bool SubTreeContainsToken(NamespaceTreeBuilderFolder folder, SearchToken searchToken)
         {
-            if (string.IsNullOrEmpty(searchToken.Keyword) == true)
+            if (string.IsNullOrEmpty(searchToken.Keyword))
             {
                 return true;
 

@@ -35,7 +35,7 @@ namespace Composite.C1Console.Workflow.Foundation.PluginFacades
 
         public WorkflowRuntime GetWorkflowRuntime(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
 
             using (_resources.Locker)
             {

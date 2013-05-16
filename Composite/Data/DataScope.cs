@@ -55,7 +55,7 @@ namespace Composite.Data
                 LocalizationScopeManager.PushLocalizationScope(cultureInfo);
                 _cultureInfoPushed = true;
             }
-            else if (LocalizationScopeManager.IsEmpty == true)
+            else if (LocalizationScopeManager.IsEmpty)
             {
                 LocalizationScopeManager.PushLocalizationScope(DataLocalizationFacade.DefaultLocalizationCulture);
                 _cultureInfoPushed = true;
@@ -84,12 +84,12 @@ namespace Composite.Data
         /// <exclude />
         public void Dispose()
         {
-            if (_dataScopePushed == true)
+            if (_dataScopePushed)
             {
                 DataScopeManager.PopDataScope();
             }
 
-            if (_cultureInfoPushed == true)
+            if (_cultureInfoPushed)
             {
                 LocalizationScopeManager.PopLocalizationScope();
             }

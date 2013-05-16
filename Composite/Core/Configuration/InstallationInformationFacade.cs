@@ -19,7 +19,7 @@ namespace Composite.Core.Configuration
         {
             string filepath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), "InstallationInformation.xml");
 
-            if (C1File.Exists(filepath) == true)
+            if (C1File.Exists(filepath))
             {
                 XDocument doc = XDocumentUtils.Load(filepath);
 

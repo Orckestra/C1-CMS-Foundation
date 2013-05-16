@@ -95,7 +95,7 @@ namespace Composite.Core.WebClient.HttpModules
 
             string currentPath = context.Request.Path.ToLowerInvariant();
 
-            if (currentPath.StartsWith(_adminRootPath) == true)
+            if (currentPath.StartsWith(_adminRootPath))
             {
                 if (!_allowC1ConsoleRequests)
                 {

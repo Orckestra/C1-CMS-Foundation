@@ -46,7 +46,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             IXsltFunction xsltFunction = (IXsltFunction)dataEntityToken.Data;
 
-            if (DataFacade.WillDeleteSucceed<IXsltFunction>(xsltFunction) == true)
+            if (DataFacade.WillDeleteSucceed<IXsltFunction>(xsltFunction))
             {
                 DeleteTreeRefresher deleteTreeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
 

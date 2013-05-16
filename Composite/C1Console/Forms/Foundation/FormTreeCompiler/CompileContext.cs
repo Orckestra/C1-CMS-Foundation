@@ -29,7 +29,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         internal bool RegistarBindingName(string bindingName)
         {
-            if (_registeredBindingNames.Contains(bindingName) == true) return false;
+            if (_registeredBindingNames.Contains(bindingName)) return false;
 
             _registeredBindingNames.Add(bindingName);
             
@@ -61,10 +61,10 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         {
             List<string> boundProperties;
 
-            if (_registeredSourcePropertyBindings.ContainsKey(bindSounceName) == true)
+            if (_registeredSourcePropertyBindings.ContainsKey(bindSounceName))
             {
                 boundProperties = _registeredSourcePropertyBindings[bindSounceName];
-                if (boundProperties.Contains(bindPropertyName) == true) return false;
+                if (boundProperties.Contains(bindPropertyName)) return false;
             }
             else
             {

@@ -59,7 +59,7 @@ namespace Composite.Data.Validation.Foundation
 
                     foreach (Type type in types)
                     {
-                        if (resources.AttributeTypeToTranslatorName.ContainsKey(type) == true) throw new InvalidOperationException(string.Format("The attribute type '{0}' is already handle by a nother translator", type));
+                        if (resources.AttributeTypeToTranslatorName.ContainsKey(type)) throw new InvalidOperationException(string.Format("The attribute type '{0}' is already handle by a nother translator", type));
                         if (typeof(ValidatorAttribute).IsAssignableFrom(type) == false) throw new InvalidOperationException(string.Format("The type '{0}' is not an {1}", type, typeof(ValidatorAttribute)));
 
                         resources.AttributeTypeToTranslatorName.Add(type, data.Name);

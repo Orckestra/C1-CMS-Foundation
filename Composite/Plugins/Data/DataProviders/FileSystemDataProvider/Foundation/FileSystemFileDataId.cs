@@ -28,7 +28,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation
         {
             get 
             {
-                if (string.IsNullOrEmpty(_fullPath) == true) throw new InvalidOperationException("RelativePath has not been initialized or has an invalid value");
+                if (string.IsNullOrEmpty(_fullPath)) throw new InvalidOperationException("RelativePath has not been initialized or has an invalid value");
                 return _fullPath; 
             }
             set { _fullPath = value; }

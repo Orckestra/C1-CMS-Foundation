@@ -25,7 +25,7 @@ namespace Composite.C1Console.Elements.Security
 
             foreach (Element element in elements)
             {
-                if (PermissionTypeFacade.IsSubBrachContainingPermissionTypes(userToken, element.ElementHandle.EntityToken, userPermissionDefinitions, userGroupPermissionDefinition) == true)
+                if (PermissionTypeFacade.IsSubBrachContainingPermissionTypes(userToken, element.ElementHandle.EntityToken, userPermissionDefinitions, userGroupPermissionDefinition))
                 {
 
                     List<ElementAction> actionsToRemove = new List<ElementAction>();

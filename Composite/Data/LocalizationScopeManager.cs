@@ -34,7 +34,7 @@ namespace Composite.Data
         /// <exclude />
         public static CultureInfo MapByType(Type type)
         {
-            if (DataLocalizationFacade.IsLocalized(type) == true)
+            if (DataLocalizationFacade.IsLocalized(type))
             {
                 return CurrentLocalizationScope;
             }

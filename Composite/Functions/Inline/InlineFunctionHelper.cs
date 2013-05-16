@@ -73,7 +73,7 @@ namespace Composite.Functions.Inline
             CSharpCodeProvider compiler = new CSharpCodeProvider();
             CompilerResults results = compiler.CompileAssemblyFromSource(compilerParameters, code);
 
-            if (results.Errors.HasErrors == true)
+            if (results.Errors.HasErrors)
             {
                 foreach (CompilerError error in results.Errors)
                 {

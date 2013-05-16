@@ -15,7 +15,7 @@ namespace Composite
         /// <returns>Returns true if the two objects are equal.</returns>
         public static bool ObjectCompare(object object1, object object2)
         {
-            if (true == object.ReferenceEquals(object1, object2)) return true;
+            if (object.ReferenceEquals(object1, object2)) return true;
 
             Type type1 = object1.GetType();
             Type type2 = object2.GetType();
@@ -33,7 +33,7 @@ namespace Composite
                 object result1 = getMethodInfo1.Invoke(object1, null);
                 object result2 = getMethodInfo2.Invoke(object2, null);
 
-                if (true == result1.GetType().IsPrimitive)
+                if (result1.GetType().IsPrimitive)
                 {
                     if (false == result1.Equals(result2)) return false;
                 }
@@ -95,7 +95,7 @@ namespace Composite
                 object value1 = methodInfo1.Invoke(object1, null);
                 object value2 = methodInfo2.Invoke(object2, null);
 
-                if ((propertyInfos1[i].PropertyType.IsPrimitive == true) ||
+                if ((propertyInfos1[i].PropertyType.IsPrimitive) ||
                     (propertyInfos1[i].PropertyType == typeof(string)) ||
                     (propertyInfos1[i].PropertyType == typeof(Guid)) ||
                     (recursive == false))

@@ -160,7 +160,7 @@ namespace Composite.Data.DynamicTypes
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (string.IsNullOrEmpty(serializedData) == true) throw new ArgumentNullException("serializedData");
+                if (string.IsNullOrEmpty(serializedData)) throw new ArgumentNullException("serializedData");
 
                 Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serializedData);
 
@@ -206,7 +206,7 @@ namespace Composite.Data.DynamicTypes
 
                     case DefaultValueType.String:
                         string stringValue = null;
-                        if (hasValue == true)
+                        if (hasValue)
                         {
                             stringValue = StringConversionServices.DeserializeValueString(dic["Value"]);
                         }

@@ -38,9 +38,9 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
 
         internal FileSystemDataProvider(string resolvedRootDirectory, Type fileInterfaceType, string fileSearchPattern, bool topDirectoryOnly)
         {
-            if (string.IsNullOrEmpty(resolvedRootDirectory) == true) throw new ArgumentNullException("resolvedRootDirectory");
+            if (string.IsNullOrEmpty(resolvedRootDirectory)) throw new ArgumentNullException("resolvedRootDirectory");
             if (fileInterfaceType == null) throw new ArgumentNullException("fileInterfaceType");
-            if (string.IsNullOrEmpty(fileSearchPattern) == true) throw new ArgumentNullException("fileSearchPattern");
+            if (string.IsNullOrEmpty(fileSearchPattern)) throw new ArgumentNullException("fileSearchPattern");
 
             if (typeof(IFile).IsAssignableFrom(fileInterfaceType) == false) throw new ArgumentException(string.Format("The interface '{0}' does not implement the interface '{1}'", fileInterfaceType, typeof(IFile)));
             if (typeof(IFile).GetPropertiesRecursively().Count < fileInterfaceType.GetPropertiesRecursively().Count) throw new ArgumentException(string.Format("The interface '{0}' may not have any properties", fileInterfaceType));
@@ -324,7 +324,7 @@ namespace Composite.Plugins.Data.DataProviders.FileSystemDataProvider
                 throw new ConfigurationErrorsException(invalidInterfaceSelectionMsg, configuration.ElementInformation.Source, configuration.ElementInformation.LineNumber);
             }
 
-            if (string.IsNullOrEmpty(configuration.FileSearchPattern) == true)
+            if (string.IsNullOrEmpty(configuration.FileSearchPattern))
             {
                 string invalidFileSearchPatternMsg = "The file search pattern can not be empty. Use '*' for all files.";
                 throw new ConfigurationErrorsException(invalidFileSearchPatternMsg, configuration.ElementInformation.Source, configuration.ElementInformation.LineNumber);

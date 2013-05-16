@@ -24,13 +24,13 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
             if (null == element) return false;
 
-            if (true == IsElementEmbeddedProperty(element)) return false;
-            if (true == IsReadTag(element)) return false;
-            if (true == IsBindTag(element)) return false;
-            if (true == IsBindingTag(element)) return false;            
-            if (true == IsBindingsTag(element)) return false;
-            if (true == IsLayoutTag(element)) return false;
-            if (true == IsFormDefinitionTag(element)) return false;
+            if (IsElementEmbeddedProperty(element)) return false;
+            if (IsReadTag(element)) return false;
+            if (IsBindTag(element)) return false;
+            if (IsBindingTag(element)) return false;            
+            if (IsBindingsTag(element)) return false;
+            if (IsLayoutTag(element)) return false;
+            if (IsFormDefinitionTag(element)) return false;
 
             return true;
         }

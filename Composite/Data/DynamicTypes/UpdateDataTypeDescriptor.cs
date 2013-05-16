@@ -104,7 +104,7 @@ namespace Composite.Data.DynamicTypes
             get
             {
                 return (OldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false) &&
-                       (NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true);
+                       (NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)));
             }
         }
 
@@ -117,7 +117,7 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return (OldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true) &&
+                return (OldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled))) &&
                        (NewDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == false);
             }
         }

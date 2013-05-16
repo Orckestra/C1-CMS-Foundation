@@ -42,7 +42,7 @@ namespace Composite.C1Console.Security
 
             StringConversionServices.SerializeKeyValuePair(sb, "entityToken", serializedEntityToken);
 
-            if (includeHashValue == true)
+            if (includeHashValue)
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "entityTokenHash", HashSigner.GetSignedHash(serializedEntityToken).Serialize());
             }
@@ -63,13 +63,13 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static EntityToken Deserialize(string serialziedEntityToken, bool includeHashValue)
         {
-            if (string.IsNullOrEmpty(serialziedEntityToken) == true) throw new ArgumentNullException("serialziedEntityToken");
+            if (string.IsNullOrEmpty(serialziedEntityToken)) throw new ArgumentNullException("serialziedEntityToken");
 
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialziedEntityToken);
 
             if ((dic.ContainsKey("entityTokenType") == false) ||
                 (dic.ContainsKey("entityToken") == false) ||
-                ((includeHashValue == true) && (dic.ContainsKey("entityTokenHash") == false)))
+                ((includeHashValue) && (dic.ContainsKey("entityTokenHash") == false)))
             {
                 throw new ArgumentException("Failed to deserialize the value. Is has to be searized with EntityTokenSerializer.", "serialziedEntityToken");
             }
@@ -77,7 +77,7 @@ namespace Composite.C1Console.Security
             string entityTokenTypeString = StringConversionServices.DeserializeValueString(dic["entityTokenType"]);
             string entityTokenString = StringConversionServices.DeserializeValueString(dic["entityToken"]);
 
-            if (includeHashValue == true)
+            if (includeHashValue)
             {
                 string entityTokenHash = StringConversionServices.DeserializeValueString(dic["entityTokenHash"]);
 

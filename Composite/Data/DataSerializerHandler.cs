@@ -155,7 +155,7 @@ namespace Composite.Data
             IData data = null;
 
             bool isNew = StringConversionServices.DeserializeValueBool(serializationData["_IsNew_"]);
-            if (isNew == true)
+            if (isNew)
             {
                 if (serializationData.ContainsKey("_Type_") == false) throw new ArgumentException("serializedObject is of wrong format");
 

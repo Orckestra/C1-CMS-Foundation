@@ -209,13 +209,13 @@ namespace Composite.C1Console.Security
 
         private void ValidateEntityToken()
         {
-            if (_entityTokenUniquenessValidated == true) return;
+            if (_entityTokenUniquenessValidated) return;
 
             _entityTokenUniquenessValidated = true;
 
-            if ((string.IsNullOrEmpty(this.Type) == true) &&
-                (string.IsNullOrEmpty(this.Source) == true) &&
-                (string.IsNullOrEmpty(this.Id) == true))
+            if ((string.IsNullOrEmpty(this.Type)) &&
+                (string.IsNullOrEmpty(this.Source)) &&
+                (string.IsNullOrEmpty(this.Id)))
             {
                 ThrowNotUniqueException();
             }

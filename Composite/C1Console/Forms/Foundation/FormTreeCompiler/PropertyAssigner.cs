@@ -92,11 +92,11 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
                 Type valueType = property.Value.GetType();
 
-                if ((property.Value != null) && (typeof(IDictionary).IsAssignableFrom(valueType) == true))
+                if ((property.Value != null) && (typeof(IDictionary).IsAssignableFrom(valueType)))
                 {
                     IDictionary values = (IDictionary)property.Value;
                     IDictionaryEnumerator dictionaryEnumerator = values.GetEnumerator();
-                    while (dictionaryEnumerator.MoveNext() == true)
+                    while (dictionaryEnumerator.MoveNext())
                     {
                         dictionary.Add(dictionaryEnumerator.Key, dictionaryEnumerator.Value);
                     }
@@ -313,7 +313,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         {
             if (makeBinding)
             {
-                if (compileContext.IsUniqueSourcePropertyBinding(bindSourceName) == true) throw new FormCompileException(string.Format("{0} binds to {1} which is already property bound. Object bindings to a source object which is property bound is not allowed.", element.XmlSourceNodeInformation.XPath, bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                if (compileContext.IsUniqueSourcePropertyBinding(bindSourceName)) throw new FormCompileException(string.Format("{0} binds to {1} which is already property bound. Object bindings to a source object which is property bound is not allowed.", element.XmlSourceNodeInformation.XPath, bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
 
                 if (compileContext.RegisterUniqueSourceObjectBinding(bindSourceName) == false) throw new FormCompileException(string.Format("{0} binds to {1} which is already bound. Multiple bindings to the same source object.", element.XmlSourceNodeInformation.XPath, bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
             }
@@ -355,13 +355,13 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         private static void EvalutePropertyBinding(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, MethodInfo sourceGetMethodInfo, string bindSourceName, string[] propertyPath, bool makeBinding)
         {
-            if (makeBinding == true)
+            if (makeBinding)
             {
                 bool? optional = ((BindingsProducer)compileContext.BindingsProducer).GetOptionalValueByName(bindSourceName);
                 if (optional.HasValue == false) throw new FormCompileException(string.Format("{1} binds to an undeclared binding name '{0}'. All binding names must be declared in /cms:formdefinition/cms:bindings", bindSourceName, element.XmlSourceNodeInformation.XPath), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
-                else if (optional == true) throw new FormCompileException(string.Format("Property binding to the optional object named '{0}' is not allowed", bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                else if (optional.Value) throw new FormCompileException(string.Format("Property binding to the optional object named '{0}' is not allowed", bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
 
-                if (compileContext.IsUniqueSourceObjectBinding(bindSourceName) == true) throw new FormCompileException(string.Format("{0} binds to {1} which is already object bound. Property bindings to a source object which is object bound is not allowed.", element.XmlSourceNodeInformation.XPath, bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                if (compileContext.IsUniqueSourceObjectBinding(bindSourceName)) throw new FormCompileException(string.Format("{0} binds to {1} which is already object bound. Property bindings to a source object which is object bound is not allowed.", element.XmlSourceNodeInformation.XPath, bindSourceName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
 
                 StringBuilder uniquePropertyName = new StringBuilder();
                 for (int i = 0; i < propertyPath.Length; ++i)
@@ -409,7 +409,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             }
 
 
-            if (makeBinding == true)
+            if (makeBinding)
             {
                 if (currentSetMethodInfo == null) throw new FormCompileException(string.Format("The type {0} does not have a set property named {1}", currentType, currentPropertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
 

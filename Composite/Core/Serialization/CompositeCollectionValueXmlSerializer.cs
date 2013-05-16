@@ -17,7 +17,7 @@ namespace Composite.Core.Serialization
             serializedObject = null;
 
             MethodInfo methodInfo;
-            if (objectToSerializeType.IsGenericType == true)
+            if (objectToSerializeType.IsGenericType)
             {
                 Type genericType = objectToSerializeType.GetGenericTypeDefinition();
 
@@ -74,7 +74,7 @@ namespace Composite.Core.Serialization
             Type type = TypeManager.GetType(typeAttribute.Value);
 
             MethodInfo methodInfo;
-            if (type.IsGenericType == true)
+            if (type.IsGenericType)
             {
                 Type genericType = type.GetGenericTypeDefinition();
 

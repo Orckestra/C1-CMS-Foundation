@@ -17,7 +17,7 @@ namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.WindowsP
         {
             base.Install(stateSaver);
 
-            if (PerformanceCounterCategory.Exists(PerformanceNames.CategoryName) == true) throw new InvalidOperationException("Already installed");
+            if (PerformanceCounterCategory.Exists(PerformanceNames.CategoryName)) throw new InvalidOperationException("Already installed");
 
             CounterCreationDataCollection collection = new CounterCreationDataCollection();
             collection.Add(new CounterCreationData(PerformanceNames.SystemStartupCountName, PerformanceNames.SystemStartupCountDescription, PerformanceCounterType.NumberOfItems32));
@@ -41,7 +41,7 @@ namespace Composite.Plugins.Instrumentation.PerformanceCounterProviders.WindowsP
         {
             base.Uninstall(savedState);
 
-            if (PerformanceCounterCategory.Exists(PerformanceNames.CategoryName) == true)
+            if (PerformanceCounterCategory.Exists(PerformanceNames.CategoryName))
             {
                 PerformanceCounterCategory.Delete(PerformanceNames.CategoryName);
             }

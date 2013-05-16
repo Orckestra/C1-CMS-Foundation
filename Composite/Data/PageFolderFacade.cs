@@ -302,7 +302,7 @@ namespace Composite.Data
         /// <param name="deleteExistingFolderData"></param>
         public static void RemoveAllFolderDefinitions(Guid dataFolderTypeId, bool deleteExistingFolderData = true)
         {
-            if (deleteExistingFolderData == true)
+            if (deleteExistingFolderData)
             {
                 IEnumerable<IPageFolderDefinition> pageFolderDefinitions =
                     DataFacade.GetData<IPageFolderDefinition>().

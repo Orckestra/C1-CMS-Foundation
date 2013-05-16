@@ -25,7 +25,7 @@ namespace Composite.C1Console.Elements.Plugins.ElementProvider
         {
             ElementProviderSettings settings = (ElementProviderSettings)ConfigurationServices.ConfigurationSource.GetSection(ElementProviderSettings.SectionName);
 
-            if (settings.ElementProviderPlugins.Contains(providerName) == true)
+            if (settings.ElementProviderPlugins.Contains(providerName))
             {
                 settings.ElementProviderPlugins.Remove(providerName);
 

@@ -55,7 +55,7 @@ namespace Composite.C1Console.Security
 
         private static bool HandleError(string message, string paramName, bool throwException)
         {
-            if (true == throwException)
+            if (throwException)
             {
                 throw new ArgumentException(message, paramName);
             }

@@ -212,7 +212,7 @@ namespace Composite.Data
 
             foreach (IPageMetaDataDefinition pageMetaDataDefinition in pageMetaDataDefinitions)
             {
-                if (IsDefinitionAllowed(pageMetaDataDefinition, page) == true)
+                if (IsDefinitionAllowed(pageMetaDataDefinition, page))
                 {
                     if (resultPageMetaDataDefinitions.Where(f => f.Name == pageMetaDataDefinition.Name).Any() == false)
                     {
@@ -796,7 +796,7 @@ namespace Composite.Data
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageMetaDataDefinition.MetaDataTypeId);
             Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
-            if (deleteExistingMetaData == true)
+            if (deleteExistingMetaData)
             {
                 using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
@@ -843,7 +843,7 @@ namespace Composite.Data
                 }
 
                 bool existsINOtherScope = ExistInOtherScope(page, otherPageMetaDataDefintions);
-                if (existsINOtherScope == true)
+                if (existsINOtherScope)
                 {
                     datasNotToDelete.Add(data);
                 }
@@ -861,7 +861,7 @@ namespace Composite.Data
             foreach (IPageMetaDataDefinition pageMetaDataDefinition in otherPageMetaDataDefinition)
             {
                 bool isAllowed = IsDefinitionAllowed(pageMetaDataDefinition, page);
-                if (isAllowed == true) return true;
+                if (isAllowed) return true;
             }
 
             return false;

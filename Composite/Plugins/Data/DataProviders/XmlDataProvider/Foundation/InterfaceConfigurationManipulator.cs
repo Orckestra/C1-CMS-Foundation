@@ -96,7 +96,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             foreach (Type type in interfaceTypes)
             {
-                if (DataLocalizationFacade.IsLocalizable(type) == true)
+                if (DataLocalizationFacade.IsLocalizable(type))
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
@@ -124,7 +124,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             foreach (Type type in interfaceTypes)
             {
-                if (DataLocalizationFacade.IsLocalizable(type) == true)
+                if (DataLocalizationFacade.IsLocalizable(type))
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
@@ -188,7 +188,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
                 });
 
-                if (isLocalizable == true)
+                if (isLocalizable)
                 {
                     List<string> localezationNames = DataLocalizationFacade.ActiveLocalizationNames.ToList();
                     foreach (string cultureName in localezationNames)

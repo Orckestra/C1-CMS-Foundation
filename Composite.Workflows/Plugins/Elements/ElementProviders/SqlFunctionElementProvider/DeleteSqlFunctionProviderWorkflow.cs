@@ -28,7 +28,7 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
 
             ISqlFunctionInfo sqlFunctionInfo = (ISqlFunctionInfo)token.Data;
 
-            if (DataFacade.WillDeleteSucceed(token.Data) == true)
+            if (DataFacade.WillDeleteSucceed(token.Data))
             {
                 DeleteTreeRefresher treeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
 

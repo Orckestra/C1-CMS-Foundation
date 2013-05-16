@@ -87,7 +87,7 @@ namespace Composite.Data.Foundation
             {
                 foreach (string providerName in DataProviderRegistry.DataProviderNames)
                 {
-                    if (DataProviderPluginFacade.IsDynamicProvider(providerName) == true)
+                    if (DataProviderPluginFacade.IsDynamicProvider(providerName))
                     {
                         yield return providerName;
                     }
@@ -101,7 +101,7 @@ namespace Composite.Data.Foundation
         {
             List<string> providerNames = new List<string>();
 
-            if (true == _interfaceTypeToReadableProviderNamesDictionary.ContainsKey(interfaceType))
+            if (_interfaceTypeToReadableProviderNamesDictionary.ContainsKey(interfaceType))
             {
                 providerNames.AddRange(_interfaceTypeToReadableProviderNamesDictionary[interfaceType]);
             }
@@ -117,7 +117,7 @@ namespace Composite.Data.Foundation
 
         public List<string> GetWriteableDataProviderNamesByInterfaceType(Type interfaceType)
         {
-            if (true == _interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(interfaceType))
+            if (_interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(interfaceType))
             {
                 return _interfaceTypeToWriteableProviderNamesDictionary[interfaceType];
             }
@@ -160,12 +160,12 @@ namespace Composite.Data.Foundation
                 _knownInterfaceTypeToDynamicProviderNamesDictionary = new Dictionary<Type, List<string>>();
                 _generatedInterfaceTypes = new List<Type>();
 
-                if (DataProviderPluginFacade.HasConfiguration() == true)
+                if (DataProviderPluginFacade.HasConfiguration())
                 {
                     BuildDataProviderNames();
                     BuildDictionaries();
                 }
-                else if (RuntimeInformation.IsDebugBuild == true)
+                else if (RuntimeInformation.IsDebugBuild)
                 {
                     Log.LogError("DataProviderRegistry", string.Format("Failed to load the configuration section '{0}' from the configuration", DataProviderSettings.SectionName));
                 }
@@ -229,7 +229,7 @@ namespace Composite.Data.Foundation
                 }
 
 
-                if (writeableProvider == true)
+                if (writeableProvider)
                 {
                     if (false == _interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(typeToAdd))
                     {
@@ -301,7 +301,7 @@ namespace Composite.Data.Foundation
             {
                 foreach (string providerName in _dataProviderNames)
                 {
-                    if (DataProviderPluginFacade.IsDynamicProvider(providerName) == true)
+                    if (DataProviderPluginFacade.IsDynamicProvider(providerName))
                     {
                         IEnumerable<Type> knownTypes = DataProviderPluginFacade.GetKnownInterfaces(providerName);
 

@@ -48,7 +48,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 if (xhtmlDocument.DocumentType != null)
                 {
                     string docType = xhtmlDocument.DocumentType.ToString();
-                    if (docType.Contains("[]") == true)
+                    if (docType.Contains("[]"))
                     {
                         docType = docType.Remove(docType.IndexOf("[]"), 2);
                     }

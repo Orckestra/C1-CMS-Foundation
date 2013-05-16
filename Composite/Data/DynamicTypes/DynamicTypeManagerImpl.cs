@@ -44,7 +44,7 @@ namespace Composite.Data.DynamicTypes
 
             DataMetaDataFacade.PersistMetaData(dataTypeDescriptor);
 
-            if (flushTheSystem == true)
+            if (flushTheSystem)
             {
                 GlobalEventSystemFacade.FlushTheSystem();
             }
@@ -55,7 +55,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (typeDescriptor == null) throw new ArgumentNullException("typeDescriptor");
 
             typeDescriptor.Validate();
@@ -69,7 +69,7 @@ namespace Composite.Data.DynamicTypes
                 transactionScope.Complete();
             }
 
-            if (doFlush == true)
+            if (doFlush)
             {
                 GlobalEventSystemFacade.FlushTheSystem();
             }
@@ -125,7 +125,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void AddLocale(string providerName, CultureInfo cultureInfo)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
@@ -142,7 +142,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void RemoveLocale(string providerName, CultureInfo cultureInfo)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())

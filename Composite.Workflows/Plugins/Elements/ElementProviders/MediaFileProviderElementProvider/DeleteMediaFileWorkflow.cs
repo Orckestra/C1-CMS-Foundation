@@ -56,7 +56,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             DataEntityToken token = (DataEntityToken)this.EntityToken;
             IMediaFile file = (IMediaFile)token.Data;
 
-            if (DataFacade.WillDeleteSucceed(file) == true)
+            if (DataFacade.WillDeleteSucceed(file))
             {
                 DataFacade.Delete(file);
 

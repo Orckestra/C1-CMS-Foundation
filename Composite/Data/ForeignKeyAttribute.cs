@@ -164,7 +164,7 @@ namespace Composite.Data
             {
                 lock (_lock)
                 {
-                    if (string.IsNullOrEmpty(_interfaceTypeManagerName) == true)
+                    if (string.IsNullOrEmpty(_interfaceTypeManagerName))
                     {
                         _interfaceTypeManagerName = TypeManager.TrySerializeType(_interfaceType);
                     }

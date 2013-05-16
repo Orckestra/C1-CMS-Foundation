@@ -25,8 +25,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         /// <exclude />
         public static void AddZip(string providerName, string parentPath, Stream compressedStream, bool recreateDirStructure, bool overwrite)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
-            if (string.IsNullOrEmpty(parentPath) == true) throw new ArgumentNullException("parentPath");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(parentPath)) throw new ArgumentNullException("parentPath");
 
             IList<IMediaFile> files;
             IList<IMediaFileFolder> folders;

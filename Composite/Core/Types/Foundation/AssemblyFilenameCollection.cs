@@ -13,7 +13,7 @@ namespace Composite.Core.Types.Foundation
 
         public bool ContainsAssemblyFilename(string assemblyFilename)
         {
-            if (string.IsNullOrEmpty(assemblyFilename) == true) throw new ArgumentNullException("assemblyFilename");
+            if (string.IsNullOrEmpty(assemblyFilename)) throw new ArgumentNullException("assemblyFilename");
 
             string assemblyName = GetAssemblyName(assemblyFilename);
 
@@ -24,7 +24,7 @@ namespace Composite.Core.Types.Foundation
 
         public bool ContainsAssemblyName(string assemblyName)
         {
-            if (string.IsNullOrEmpty(assemblyName) == true) throw new ArgumentNullException("assemblyName");
+            if (string.IsNullOrEmpty(assemblyName)) throw new ArgumentNullException("assemblyName");
 
             return _assemblyFilenames.ContainsKey(assemblyName);
         }
@@ -33,7 +33,7 @@ namespace Composite.Core.Types.Foundation
 
         public void Add(string assemblyFilename)
         {
-            if (string.IsNullOrEmpty(assemblyFilename) == true) throw new ArgumentNullException("assemblyFilename");
+            if (string.IsNullOrEmpty(assemblyFilename)) throw new ArgumentNullException("assemblyFilename");
 
             string assemblyName = GetAssemblyName(assemblyFilename);
 
@@ -44,7 +44,7 @@ namespace Composite.Core.Types.Foundation
 
         public string GetFilenameByAssemblyName(string assemblyName)
         {
-            if (string.IsNullOrEmpty(assemblyName) == true) throw new ArgumentNullException("assemblyName");
+            if (string.IsNullOrEmpty(assemblyName)) throw new ArgumentNullException("assemblyName");
 
             string assemblyFilename;
             if (_assemblyFilenames.TryGetValue(assemblyName, out assemblyFilename) == false) throw new ArgumentException(string.Format("Does not contain the assembly name '{0}'", assemblyName));

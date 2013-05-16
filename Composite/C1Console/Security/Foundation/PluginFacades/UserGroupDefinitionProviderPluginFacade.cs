@@ -64,7 +64,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         public static void RemoveUserGroupPermissionDefinition(Guid userGroupID, string serializedEntityToken)
         {
             if (userGroupID == Guid.Empty) throw new ArgumentNullException("userGroupID");
-            if (string.IsNullOrEmpty(serializedEntityToken) == true) throw new ArgumentNullException("serializedEntityToken");
+            if (string.IsNullOrEmpty(serializedEntityToken)) throw new ArgumentNullException("serializedEntityToken");
 
             _resourceLocker.Resources.Plugin.RemoveUserGroupPermissionDefinition(userGroupID, serializedEntityToken);
         }

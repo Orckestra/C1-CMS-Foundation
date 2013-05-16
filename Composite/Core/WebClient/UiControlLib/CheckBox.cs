@@ -30,7 +30,7 @@ namespace Composite.Core.WebClient.UiControlLib
 
             writer.WriteAttribute("name", this.UniqueID);
 
-            if (this.AutoPostBack == true)
+            if (this.AutoPostBack)
             {
                 throw new NotImplementedException("The CheckBox AutoPostBack feature is volatile. Event is not raised in certain circumstances");
             }

@@ -55,8 +55,8 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         public static void SetUserPermissionDefinition(UserPermissionDefinition userPermissionDefinition)
         {
             if (userPermissionDefinition == null) throw new ArgumentNullException("userPermissionDefinition");
-            if (string.IsNullOrEmpty(userPermissionDefinition.SerializedEntityToken) == true) throw new ArgumentNullException("userPermissionDefinition");
-            if (string.IsNullOrEmpty(userPermissionDefinition.Username) == true) throw new ArgumentNullException("userPermissionDefinition");
+            if (string.IsNullOrEmpty(userPermissionDefinition.SerializedEntityToken)) throw new ArgumentNullException("userPermissionDefinition");
+            if (string.IsNullOrEmpty(userPermissionDefinition.Username)) throw new ArgumentNullException("userPermissionDefinition");
 
             _resourceLocker.Resources.Plugin.SetUserPermissionDefinition(userPermissionDefinition);
         }
@@ -66,7 +66,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         public static void RemoveUserPermissionDefinition(UserToken userToken, string serializedEntityToken)
         {
             if (userToken == null) throw new ArgumentNullException("userToken");
-            if (string.IsNullOrEmpty(serializedEntityToken) == true) throw new ArgumentNullException("serializedEntityToken");
+            if (string.IsNullOrEmpty(serializedEntityToken)) throw new ArgumentNullException("serializedEntityToken");
 
             _resourceLocker.Resources.Plugin.RemoveUserPermissionDefinition(userToken, serializedEntityToken);
         }
@@ -110,7 +110,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
             public static void DoInitializeResources(Resources resources)
             {
-                if (HasConfiguration() == true)
+                if (HasConfiguration())
                 {
                     try
                     {

@@ -24,14 +24,14 @@ namespace Composite.Plugins.Elements.ElementProviders.SqlFunctionElementProvider
             string namespaceName;
             ISqlConnection sqlConnection;
 
-            if ((this.EntityToken is DataEntityToken) == true)
+            if ((this.EntityToken is DataEntityToken))
             {
                 DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
 
                 namespaceName = UserSettings.LastSpecifiedNamespace;
                 sqlConnection = (ISqlConnection)dataEntityToken.Data;
             }
-            else if ((this.EntityToken is SqlFunctionProviderFolderEntityToken) == true)
+            else if ((this.EntityToken is SqlFunctionProviderFolderEntityToken))
             {
                 Guid connectionId = new Guid(((SqlFunctionProviderFolderEntityToken)this.EntityToken).ConnectionId);
 

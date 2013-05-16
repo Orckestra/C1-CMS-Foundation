@@ -25,7 +25,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 InterfaceConfigurationElement interfaceConfig = BuildInterfaceConfigurationElement(dataTypeDescriptor);
 
-                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig) == true)
+                if (configuration.Section.Interfaces.ContainsInterfaceType(interfaceConfig))
                 {
                     string typeFullName = (dataTypeDescriptor.Namespace ?? string.Empty) + "." + dataTypeDescriptor.Name;
                 

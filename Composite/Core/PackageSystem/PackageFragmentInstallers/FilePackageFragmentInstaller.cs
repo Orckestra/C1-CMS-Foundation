@@ -115,14 +115,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    if ((loadAssembly == true) && (onlyUpdate == true))
+                    if ((loadAssembly) && (onlyUpdate))
                     {
                         validationResult.AddFatal(GetText("FilePackageFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby"), onlyUpdateAttribute);
                         continue;
                     }
 
                     string targetFilename = PathUtil.Resolve(targetFilenameAttribute.Value);
-                    if (C1File.Exists(targetFilename) == true)
+                    if (C1File.Exists(targetFilename))
                     {
                         if ((allowOverwrite == false) && (onlyUpdate == false))
                         {
@@ -136,7 +136,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
                     }
-                    else if (onlyUpdate == true)
+                    else if (onlyUpdate)
                     {
                         LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Skipping updating of the file '{0}' because it does not exist", targetFilename));
                         continue; // Target file does not, so skip this
@@ -152,7 +152,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     _filesToCopy.Add(fileToCopy);
 
-                    if (loadAssembly == true)
+                    if (loadAssembly)
                     {
                         string tempFilename = Path.Combine(this.InstallerContext.TempDirectory, Path.GetFileName(targetFilename));
 
@@ -230,9 +230,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     string targetDirectory = PathUtil.Resolve(targetDirectoryAttribute.Value);
 
-                    if (deleteTargetDirectory == true)
+                    if (deleteTargetDirectory)
                     {
-                        if (C1Directory.Exists(targetDirectory) == true)
+                        if (C1Directory.Exists(targetDirectory))
                         {
                             _directoriesToDelete.Add(targetDirectory);
                         }
@@ -241,14 +241,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     foreach (string sourceFilename in this.InstallerContext.ZipFileSystem.GetFilenames(sourceDirectory))
                     {
                         string resolvedSourceFilename = sourceFilename.Remove(0, sourceDirectory.Length);
-                        if (resolvedSourceFilename.StartsWith("/") == true)
+                        if (resolvedSourceFilename.StartsWith("/"))
                         {
                             resolvedSourceFilename = resolvedSourceFilename.Remove(0, 1);
                         }
 
                         string targetFilename = Path.Combine(targetDirectory, resolvedSourceFilename);
 
-                        if ((C1File.Exists(targetFilename) == true) && (deleteTargetDirectory == false) && (allowOverwrite == false))
+                        if ((C1File.Exists(targetFilename)) && (deleteTargetDirectory == false) && (allowOverwrite == false))
                         {
                             validationResult.AddFatal(GetText("FilePackageFragmentInstaller.FileExists").FormatWith(targetFilename), targetDirectoryAttribute);
                             continue;

@@ -56,7 +56,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
         protected override IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken)
         {
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 string keyword = searchToken.Keyword.ToLowerInvariant();
 

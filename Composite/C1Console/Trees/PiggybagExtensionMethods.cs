@@ -39,7 +39,7 @@ namespace Composite.C1Console.Trees
 
             foreach (KeyValuePair<string, string> kvp in piggybag)
             {
-                if (kvp.Key.StartsWith(ParrentEntityTokenPiggybagString) == true)
+                if (kvp.Key.StartsWith(ParrentEntityTokenPiggybagString))
                 {
                     int generation = int.Parse(kvp.Key.Substring(ParrentEntityTokenPiggybagString.Length));
 
@@ -47,7 +47,7 @@ namespace Composite.C1Console.Trees
 
                     newPiggybag.Add(string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation), kvp.Value);
                 }
-                else if (kvp.Key.StartsWith(ParrentNodeIdPiggybagString) == true)
+                else if (kvp.Key.StartsWith(ParrentNodeIdPiggybagString))
                 {
                     int generation = int.Parse(kvp.Key.Substring(ParrentNodeIdPiggybagString.Length));
 
@@ -106,7 +106,7 @@ namespace Composite.C1Console.Trees
             int generation = 1;
 
             string seriazliedEntityToken;
-            while (piggybag.TryGetValue(string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation), out seriazliedEntityToken) == true)
+            while (piggybag.TryGetValue(string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation), out seriazliedEntityToken))
             {
                 yield return EntityTokenSerializer.Deserialize(seriazliedEntityToken);
 

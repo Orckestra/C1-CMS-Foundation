@@ -29,7 +29,7 @@ namespace Composite.Core.Linq
             foreach (Type interf in interfaces)
             {
                 Type def = interf;
-                if (true == interf.IsGenericType)
+                if (interf.IsGenericType)
                 {
                     def = interf.GetGenericTypeDefinition();
                 }

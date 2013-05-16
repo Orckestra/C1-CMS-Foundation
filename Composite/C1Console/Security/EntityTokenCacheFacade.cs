@@ -162,7 +162,7 @@ namespace Composite.C1Console.Security
             CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             CacheEntry cacheEntry;
-            if (_nativeCache.TryGetValue(cacheKey, out cacheEntry) == true)
+            if (_nativeCache.TryGetValue(cacheKey, out cacheEntry))
             {
                 PerformanceCounterFacade.EntityTokenParentCacheHitIncrement();
                 parentEntityTokens = cacheEntry.ParentEntityTokens;
@@ -215,7 +215,7 @@ namespace Composite.C1Console.Security
             CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             CacheEntry cacheEntry;
-            if (_hookingCache.TryGetValue(cacheKey, out cacheEntry) == true)
+            if (_hookingCache.TryGetValue(cacheKey, out cacheEntry))
             {
                 PerformanceCounterFacade.EntityTokenParentCacheHitIncrement();
                 parentEntityTokens = cacheEntry.ParentEntityTokens;

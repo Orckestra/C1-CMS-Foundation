@@ -29,7 +29,7 @@ namespace Composite.C1Console.Security
             if (userToken == null) throw new ArgumentNullException("userToken");
             if (requiredPermissions == null) throw new ArgumentNullException("requiredPermissions");
 
-            if ((entityToken is NoSecurityEntityToken) == true) return SecurityResult.Allowed;
+            if ((entityToken is NoSecurityEntityToken)) return SecurityResult.Allowed;
 
             requiredPermissions = requiredPermissions.Evaluate();
 
@@ -48,7 +48,7 @@ namespace Composite.C1Console.Security
             // At least one of the permissions should be allowed
             foreach (PermissionType permissionType in currentPermissionTypes)
             {
-                if (requiredPermissions.Contains(permissionType) == true)
+                if (requiredPermissions.Contains(permissionType))
                 {
                     return SecurityResult.Allowed;
                 }

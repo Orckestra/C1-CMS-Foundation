@@ -27,7 +27,7 @@ namespace Composite.Core.WebClient
                 bool compiledVersionExists = _xsltLookup.ContainsKey(stylesheetPath);
                 bool reloadFresh = (DateTime.Now - lastXsltFileWrite).Minutes < 30;
 
-                if (compiledVersionExists == false || lastXsltFileWrite > _xsltFileTimestamps[stylesheetPath] || reloadFresh == true)
+                if (compiledVersionExists == false || lastXsltFileWrite > _xsltFileTimestamps[stylesheetPath] || reloadFresh)
                 {
                     XslCompiledTransform xslt = new XslCompiledTransform();
                     using (XmlReader reader = XmlReaderUtils.Create(stylesheetPath))
@@ -35,7 +35,7 @@ namespace Composite.Core.WebClient
                         xslt.Load(reader);
                     }
 
-                    if (compiledVersionExists == true)
+                    if (compiledVersionExists)
                     {
                         _xsltLookup.Remove(stylesheetPath);
                         _xsltFileTimestamps.Remove(stylesheetPath);

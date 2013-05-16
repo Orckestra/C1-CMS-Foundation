@@ -128,10 +128,10 @@ namespace Composite.Data.DynamicTypes
             get { return _isNullable; }
             set
             {
-                if (value == true)
+                if (value)
                 {
-                    if (this.InstanceType.IsEnum == true) throw new InvalidOperationException("The associated instance type is an enum, which is not nullable");
-                    if (this.InstanceType.IsValueType == true)
+                    if (this.InstanceType.IsEnum) throw new InvalidOperationException("The associated instance type is an enum, which is not nullable");
+                    if (this.InstanceType.IsValueType)
                     {
                         if (this.InstanceType.IsGenericType == false || this.InstanceType.GetGenericTypeDefinition() != typeof(Nullable<>))
                         {

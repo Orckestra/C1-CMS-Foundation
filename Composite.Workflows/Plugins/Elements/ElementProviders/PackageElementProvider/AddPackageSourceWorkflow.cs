@@ -46,7 +46,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 UriBuilder uriBuilder = new UriBuilder(url);
 
                 string cleanedUrl = uriBuilder.Uri.ToString().Remove(0, uriBuilder.Scheme.Length + 3);
-                if (cleanedUrl.EndsWith("/") == true)
+                if (cleanedUrl.EndsWith("/"))
                 {
                     cleanedUrl = cleanedUrl.Remove(cleanedUrl.Length - 1);
                 }

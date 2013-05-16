@@ -26,7 +26,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         /// <exclude />
         protected CompositeWidgetFunctionBase(string compositeName, Type returnType, EntityTokenFactory entityTokenFactory)
         {
-            if (string.IsNullOrEmpty(compositeName) == true) throw new ArgumentNullException("compositeName");
+            if (string.IsNullOrEmpty(compositeName)) throw new ArgumentNullException("compositeName");
 
             this.Namespace = compositeName.Substring(0,compositeName.LastIndexOf('.'));
             this.Name = compositeName.Substring(compositeName.LastIndexOf('.')+1);

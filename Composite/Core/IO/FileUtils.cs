@@ -30,7 +30,7 @@ namespace Composite.Core.IO
         /// <exclude />
         public static void Delete(string filePath)
         {
-            if (C1File.Exists(filePath) == true)
+            if (C1File.Exists(filePath))
             {
                 RemoveReadOnly(filePath);
                 C1File.Delete(filePath);

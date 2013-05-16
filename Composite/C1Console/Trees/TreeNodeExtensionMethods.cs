@@ -73,7 +73,7 @@ namespace Composite.C1Console.Trees
 
         public static IEnumerable<TreeNode> Ancestors(this TreeNode treeNode, bool includeSelf = false)
         {
-            if (includeSelf == true)
+            if (includeSelf)
             {
                 yield return treeNode;
             }
@@ -92,7 +92,7 @@ namespace Composite.C1Console.Trees
 
         public static IEnumerable<TreeNode> Descendants(this TreeNode treeNode, bool includeSelf = false)
         {
-            if (includeSelf == true) yield return treeNode;
+            if (includeSelf) yield return treeNode;
 
             foreach (TreeNode childTreeNode in treeNode.ChildNodes)
             {
@@ -122,7 +122,7 @@ namespace Composite.C1Console.Trees
         {
             Queue<TreeNode> notVisistedTreeNodes = new Queue<TreeNode>();
 
-            if (includeSelf == true)
+            if (includeSelf)
             {
                 notVisistedTreeNodes.Enqueue(treeNode);
             }

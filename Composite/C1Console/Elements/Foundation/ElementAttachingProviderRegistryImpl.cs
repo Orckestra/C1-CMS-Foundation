@@ -31,7 +31,7 @@ namespace Composite.C1Console.Elements.Foundation
 
         public Type GetElementProviderType(string elementProviderName)
         {
-            if (string.IsNullOrEmpty(elementProviderName) == true) throw new ArgumentNullException("elementProviderName");
+            if (string.IsNullOrEmpty(elementProviderName)) throw new ArgumentNullException("elementProviderName");
 
             Type type;
             using (_resourceLocker.ReadLocker)

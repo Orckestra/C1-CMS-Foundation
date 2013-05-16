@@ -16,7 +16,7 @@ namespace Composite.C1Console.Elements
 
         public object GetData(string name)
         {
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
 
             return ElementFacade.GetData(new ElementProviderHandle(this.ElementProviderName), name);
         }

@@ -88,11 +88,11 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
 
             if (entry.PropertyValueMethodInfo.ReturnType == typeof(Guid))
             {
-                if (Equals(propertyValue, Guid.Empty) == true) return null;
+                if (Equals(propertyValue, Guid.Empty)) return null;
             }
             else
             {
-                if (Equals(propertyValue, entry.NullValue) == true) return null;
+                if (Equals(propertyValue, entry.NullValue)) return null;
             }
 
             using (DataScope dataScope = new DataScope(data.DataSourceId.DataScopeIdentifier))

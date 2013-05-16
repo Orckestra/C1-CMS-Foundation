@@ -416,7 +416,7 @@ namespace Composite.C1Console.Elements.Foundation
                 //    }
                 //});
 
-                if (RuntimeInformation.IsDebugBuild == true)
+                if (RuntimeInformation.IsDebugBuild)
                 {
                 }
             }
@@ -452,7 +452,7 @@ namespace Composite.C1Console.Elements.Foundation
                     DataEntityToken token = (DataEntityToken)element.ElementHandle.EntityToken;
 
                     Type elementProviderType;
-                    if (ElementProviderRegistry.ElementProviderNames.Contains(providerName) == true)
+                    if (ElementProviderRegistry.ElementProviderNames.Contains(providerName))
                     {
                         elementProviderType = ElementProviderRegistry.GetElementProviderType(providerName);
                     }

@@ -7,12 +7,12 @@ namespace Composite.Core.Linq
     {
         public static LambdaExpression GetLambdaExpression(Expression expression)
         {
-            if ((expression is LambdaExpression) == true)
+            if ((expression is LambdaExpression))
             {
                 return (LambdaExpression)expression;
             }
 
-            if ((expression is UnaryExpression) == true)
+            if ((expression is UnaryExpression))
             {
                 return GetLambdaExpression(((UnaryExpression)expression).Operand);
             }

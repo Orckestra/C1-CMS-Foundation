@@ -419,7 +419,7 @@ namespace Composite.Core.Serialization
 
                 foreach (string value in valuesAsStringArray)
                 {
-                    if (isFirst == true)
+                    if (isFirst)
                     {
                         isFirst = false;
                     }

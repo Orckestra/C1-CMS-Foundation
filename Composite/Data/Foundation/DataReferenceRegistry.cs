@@ -96,7 +96,7 @@ namespace Composite.Data.Foundation
             foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperties)
             {
                 if (foreignKeyProperyInfo.SourcePropertyInfo.CanRead == false) throw new InvalidOperationException(string.Format("The property '{0}' shoud have a getter", foreignKeyProperyInfo.SourcePropertyInfo));
-                if (foreignKeyProperyInfo.TargetType.IsNotReferenceable() == true) throw new InvalidOperationException(string.Format("The referenced type '{0}' is marked NotReferenceable and can not be referenced by the interfaceType '{1}'", foreignKeyProperyInfo.TargetType, interfaceType));
+                if (foreignKeyProperyInfo.TargetType.IsNotReferenceable()) throw new InvalidOperationException(string.Format("The referenced type '{0}' is marked NotReferenceable and can not be referenced by the interfaceType '{1}'", foreignKeyProperyInfo.TargetType, interfaceType));
 
                 PropertyInfo propertyInfo = foreignKeyProperyInfo.TargetType.GetDataPropertyRecursivly(foreignKeyProperyInfo.TargetKeyPropertyName);
 

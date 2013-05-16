@@ -233,7 +233,7 @@ namespace Composite.Data.DynamicTypes
 
         private void ValidateTypeChanges()
         {
-            if (this.OriginalTypeDataExists == true)
+            if (this.OriginalTypeDataExists)
             {
                 foreach (var existingField in this.ExistingFields)
                 {

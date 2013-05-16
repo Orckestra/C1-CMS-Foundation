@@ -220,7 +220,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 {
                     DataScopeIdentifier dataScopeIdentifier = DataScopeIdentifier.Public;
 
-                    if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)) == true)
+                    if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
                     {
                         dataScopeIdentifier = DataScopeIdentifier.Administrated;
                     }

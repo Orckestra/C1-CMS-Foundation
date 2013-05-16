@@ -117,9 +117,9 @@ namespace Composite.Functions.ManagedParameters
 
         private static void ValidateParameter(ManagedParameterDefinition parameterDefinition)
         {
-            if (string.IsNullOrEmpty(parameterDefinition.Name) == true) throw new InvalidOperationException("Name property can not be null or an empty string");
+            if (string.IsNullOrEmpty(parameterDefinition.Name)) throw new InvalidOperationException("Name property can not be null or an empty string");
             if (parameterDefinition.Type == null) throw new InvalidOperationException("Type property can not be null");
-            if (string.IsNullOrEmpty(parameterDefinition.Label) == true) throw new InvalidOperationException("Parameter '{0}' has an empty 'Label' field".FormatWith(parameterDefinition.Name));
+            if (string.IsNullOrEmpty(parameterDefinition.Label)) throw new InvalidOperationException("Parameter '{0}' has an empty 'Label' field".FormatWith(parameterDefinition.Name));
         }
 
 

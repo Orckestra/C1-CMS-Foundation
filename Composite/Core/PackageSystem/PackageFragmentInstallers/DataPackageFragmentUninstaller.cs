@@ -201,7 +201,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 (from dt in _datasToDelete
                  where dt.InterfaceType == interfaceType &&
                        dt.DataScopeIdentifier.Equals(dataScopeIdentifier) &&
-                       (((dt.Locale == null) && (locale == null)) || (dt.Locale.Equals(locale) == true))
+                       (((dt.Locale == null) && (locale == null)) || (dt.Locale.Equals(locale)))
                  select dt).SingleOrDefault();
 
             if (dataType == null)

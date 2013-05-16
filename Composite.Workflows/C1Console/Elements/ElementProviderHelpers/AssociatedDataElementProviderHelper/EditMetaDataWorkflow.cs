@@ -27,7 +27,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         private IPage GetCurrentPage()
         {
-            if ((this.EntityToken is DataEntityToken) == true)
+            if ((this.EntityToken is DataEntityToken))
             {
                 return this.GetDataItemFromEntityToken<IPage>();
             }
@@ -265,7 +265,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                     
                     bool otherDefinitionExists = page.GetAllowedMetaDataDefinitions().Where(f => f.Name == metaDataPair.First).Any();
 
-                    if (otherDefinitionExists == true) continue;
+                    if (otherDefinitionExists) continue;
                                         
                     using (new DataScope(DataScopeIdentifier.Public))
                     {
@@ -288,7 +288,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
 
                 IData newDataTemplate = null;
-                if (this.BindingExist("NewDataTemplate") == true)
+                if (this.BindingExist("NewDataTemplate"))
                 {
                     newDataTemplate = this.GetBinding<IData>("NewDataTemplate");
 

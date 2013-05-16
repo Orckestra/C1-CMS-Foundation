@@ -316,7 +316,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         
             threadData.SetValue(threadDataKey, dataContext);
 
-            if (_sqlLoggingContext.Enabled == true)
+            if (_sqlLoggingContext.Enabled)
             {
                 dataContext.Log = new SqlLoggerTextWriter(_sqlLoggingContext);
             }
@@ -332,7 +332,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             DataContext dataContext = (DataContext)Activator.CreateInstance(DataContextType, connection);
 
-            if (_sqlLoggingContext.Enabled == true)
+            if (_sqlLoggingContext.Enabled)
             {
                 dataContext.Log = new SqlLoggerTextWriter(_sqlLoggingContext);
             }

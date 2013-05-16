@@ -86,7 +86,7 @@ namespace Composite.Core.Linq
             ParameterExpression parameter = Expression.Parameter(_currentQueryableType, "o");
 
             Expression expression = Expression.Property(parameter, orderByPropertyInfo);
-            if ((useInnerDateTimeDate == true) && (orderByPropertyInfo.PropertyType == typeof(DateTime)))
+            if ((useInnerDateTimeDate) && (orderByPropertyInfo.PropertyType == typeof(DateTime)))
             {
                 expression = InnerDateTimeDateExpression(expression);
             }

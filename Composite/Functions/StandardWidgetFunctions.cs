@@ -64,7 +64,7 @@ namespace Composite.Functions
             {
                 IWidgetFunction widgetFunction = FunctionFacade.GetWidgetFunction(functionName);
                 bool sameType = widgetFunction.ReturnType.Equals(type);
-                if (sameType && widgetFunction.ParameterProfiles.Where(p => p.IsRequired == true).Any() == false)
+                if (sameType && widgetFunction.ParameterProfiles.Where(p => p.IsRequired).Any() == false)
                 {
                     return new WidgetFunctionProvider(widgetFunction);
                 }

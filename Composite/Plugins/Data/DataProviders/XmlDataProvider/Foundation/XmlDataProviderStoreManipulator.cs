@@ -307,7 +307,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             bool keepExistingFile = false;
             string rootLocalName = string.Format("{0}s", scopeElement.ElementName);
 
-            if (C1File.Exists(filename) == true)
+            if (C1File.Exists(filename))
             {
                 try
                 {
@@ -342,7 +342,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string filename = ResolvePath(scopeElement.Filename, providerName);
 
-            if (C1File.Exists(filename) == true)
+            if (C1File.Exists(filename))
             {
                 C1File.Delete(filename);
             }

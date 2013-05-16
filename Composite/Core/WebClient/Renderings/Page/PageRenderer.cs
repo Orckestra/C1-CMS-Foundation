@@ -106,7 +106,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 List<XElement> placeHolders = document.Descendants(RenderingElementNames.PlaceHolder).ToList();
 
-                if (placeHolders.Any() == true)
+                if (placeHolders.Any())
                 {
                     foreach (XElement placeHolder in placeHolders.Where(f => f.Attribute(RenderingElementNames.PlaceHolderIdAttribute) != null))
                     {
@@ -202,7 +202,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             get
             {
-                if (RequestLifetimeCache.HasKey("PageRenderer.IPage") == true)
+                if (RequestLifetimeCache.HasKey("PageRenderer.IPage"))
                 {
                     return CultureInfo.CreateSpecificCulture(RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage").CultureName);
                 }
@@ -567,7 +567,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             foreach (Control child in c.Controls)
             {
                 DisableAspNetPostback(child, out formDisabled);
-                if (formDisabled == true) break;
+                if (formDisabled) break;
             }
         }
     }

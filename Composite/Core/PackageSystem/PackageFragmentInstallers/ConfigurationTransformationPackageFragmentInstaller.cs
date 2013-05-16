@@ -45,7 +45,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 true);
 
             if (validationResults.Count == 0 
-                && this.InstallerContext.PackageInformation.CanBeUninstalled == true)
+                && this.InstallerContext.PackageInformation.CanBeUninstalled)
             {
 
                 ValidateXslt(
@@ -77,7 +77,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 }
             }
 
-            if (this.InstallerContext.PackageInformation.CanBeUninstalled == true)
+            if (this.InstallerContext.PackageInformation.CanBeUninstalled)
             {
                 yield return this.UninstallElement;
             }
@@ -138,7 +138,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             .FormatWith(xslFilePath, ex.Message), xsltPathAttributeProvider());
                     }
 
-                    if (xslt != null && validateResultingConfigurationFile == true)
+                    if (xslt != null && validateResultingConfigurationFile)
                     {
                         try
                         {

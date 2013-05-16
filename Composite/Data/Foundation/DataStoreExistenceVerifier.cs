@@ -26,7 +26,7 @@ namespace Composite.Data.Foundation
 
         public static bool EnsureDataStores()
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 GlobalInitializerFacade.ValidateIsOnlyCalledFromGlobalInitializerFacade(new StackTrace());
             }

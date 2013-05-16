@@ -390,7 +390,7 @@ namespace Composite.Data.Types
 
                 DataFacade.Update(pageStructures.Cast<IData>());
 
-                if (addNewPage == true)
+                if (addNewPage)
                 {
                     return DataFacade.AddNew<IPage>(newPage);
                 }
@@ -471,7 +471,7 @@ namespace Composite.Data.Types
                 using (DataScope dataScope = new DataScope(cultureInfo))
                 {
                     bool exists = DataFacade.GetData<IPage>(f => f.Id == page.Id).Any();
-                    if (exists == true)
+                    if (exists)
                     {
                         return true;
                     }

@@ -277,7 +277,7 @@ namespace Composite.Data.DynamicTypes
                 return;
             }
 
-            if (_superInterfaces.Contains(interfaceType) == true)
+            if (_superInterfaces.Contains(interfaceType))
             {
                 _superInterfaces.Remove(interfaceType);
             }
@@ -286,13 +286,13 @@ namespace Composite.Data.DynamicTypes
             {
                 DataFieldDescriptor dataFieldDescriptor = ReflectionBasedDescriptorBuilder.BuildFieldDescriptor(propertyInfo, true);
 
-                if (this.Fields.Contains(dataFieldDescriptor) == true)
+                if (this.Fields.Contains(dataFieldDescriptor))
                 {
                     this.Fields.Remove(dataFieldDescriptor);
                 }
 
-                if ((DynamicTypeReflectionFacade.IsKeyField(propertyInfo) == true) &&
-                    (this.KeyPropertyNames.Contains(propertyInfo.Name) == true))
+                if ((DynamicTypeReflectionFacade.IsKeyField(propertyInfo)) &&
+                    (this.KeyPropertyNames.Contains(propertyInfo.Name)))
                 {
                     this.KeyPropertyNames.Remove(propertyInfo.Name);
                 }
@@ -301,7 +301,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
             {
-                if (this.DataScopes.Contains(dataScopeIdentifier) == true)
+                if (this.DataScopes.Contains(dataScopeIdentifier))
                 {
                     this.DataScopes.Remove(dataScopeIdentifier);
                 }
@@ -381,9 +381,9 @@ namespace Composite.Data.DynamicTypes
             try
             {
                 if (this.DataTypeId == Guid.Empty) throw new InvalidOperationException("The type descriptor property DataTypeId can not be empty");
-                if (string.IsNullOrEmpty(this.Namespace) == true) throw new InvalidOperationException("The type descriptor property Namespace can not be empty");
-                if (string.IsNullOrEmpty(this.Name) == true) throw new InvalidOperationException("The type descriptor property Name can not be empty");
-                if (string.IsNullOrEmpty(this.TypeManagerTypeName) == true) throw new InvalidOperationException("The type descriptor property TypeManagerTypeName can not be empty");
+                if (string.IsNullOrEmpty(this.Namespace)) throw new InvalidOperationException("The type descriptor property Namespace can not be empty");
+                if (string.IsNullOrEmpty(this.Name)) throw new InvalidOperationException("The type descriptor property Name can not be empty");
+                if (string.IsNullOrEmpty(this.TypeManagerTypeName)) throw new InvalidOperationException("The type descriptor property TypeManagerTypeName can not be empty");
                 if (this.Fields.Count == 0) throw new InvalidOperationException("The type descriptors Fields collection may not be empty");
                 if (this.KeyPropertyNames.Count == 0) throw new InvalidOperationException("The type descriptors KeyFieldNames collection may not be empty");
                 if (this.DataScopes.Count == 0) throw new InvalidOperationException("The DataScopes list containing the list of data scopes this type must support can not be empty. Please provide at least one data scopes.");

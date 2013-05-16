@@ -111,7 +111,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
 
-                    if (transitions.Contains(GenericPublishProcessController.Draft) == true)
+                    if (transitions.Contains(GenericPublishProcessController.Draft))
                     {
                         page.PublicationStatus = GenericPublishProcessController.Draft;
 

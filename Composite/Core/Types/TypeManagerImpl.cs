@@ -44,7 +44,7 @@ namespace Composite.Core.Types
             if (string.IsNullOrEmpty(fullName)) throw new ArgumentNullException("fullName");
 
             // A little nasty check here... /MRJ
-            if (fullName.StartsWith("<t") == true)
+            if (fullName.StartsWith("<t"))
             {
                 XElement element = XElement.Parse(fullName);
 
@@ -62,7 +62,7 @@ namespace Composite.Core.Types
         {
             string serializedType = TrySerializeType(type);
 
-            if (string.IsNullOrEmpty(serializedType) == true) throw new InvalidOperationException(string.Format("No TypeManagerTypeHandler plugins could serialize the given type '{0}'", type));
+            if (string.IsNullOrEmpty(serializedType)) throw new InvalidOperationException(string.Format("No TypeManagerTypeHandler plugins could serialize the given type '{0}'", type));
 
             return serializedType;
         }
@@ -105,7 +105,7 @@ namespace Composite.Core.Types
             foreach (ProviderEntry entry in providerEntries)
             {
                 bool result = TypeManagerTypeHandlerPluginFacade.HasTypeWithName(entry.ProviderName, typeFullname);
-                if (result == true)
+                if (result)
                 {
                     return result;
                 }
@@ -127,7 +127,7 @@ namespace Composite.Core.Types
 
         private Type TryGetGenericType(XElement element)
         {
-            if (element.HasElements == true)
+            if (element.HasElements)
             {
                 XAttribute attribute = element.Attribute("n");
 
@@ -211,7 +211,7 @@ namespace Composite.Core.Types
 
         private XElement TrySerializeGenericType(Type type)
         {
-            if (type.IsGenericType == true)
+            if (type.IsGenericType)
             {
                 Type genericType = type.GetGenericTypeDefinition();
 

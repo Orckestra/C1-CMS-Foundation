@@ -134,7 +134,7 @@ namespace Composite.C1Console.Trees
 
             AncestorResult ancestorResult = treeNode.GetParentEntityToken(entityToken, this.ParentFilterType, dynamicContext);
 
-            if ((this.OwnerNode.Id == ancestorResult.TreeNode.Id) || (this.OwnerNode.IsDescendant(ancestorResult.TreeNode) == true)) // Search upwards
+            if ((this.OwnerNode.Id == ancestorResult.TreeNode.Id) || (this.OwnerNode.IsDescendant(ancestorResult.TreeNode))) // Search upwards
             {
                 return FindOwnEntityToken(ancestorResult.TreeNode, ancestorResult.EntityToken, dynamicContext);
             }
@@ -169,7 +169,7 @@ namespace Composite.C1Console.Trees
 
         internal object FindParentKeyValue(TreeNodeDynamicContext dynamicContext)
         {
-            if ((dynamicContext.CurrentEntityToken is DataEntityToken) == true)
+            if ((dynamicContext.CurrentEntityToken is DataEntityToken))
             {
                 DataEntityToken currentDataEntityToken = dynamicContext.CurrentEntityToken as DataEntityToken;
                 if (currentDataEntityToken.InterfaceType == this.ParentFilterType)
@@ -221,7 +221,7 @@ namespace Composite.C1Console.Trees
                 this.OwnerNode.Tree.AttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == this.ParentFilterType)
                 || this.OwnerNode.Tree.PossibleAttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == this.ParentFilterType);
 
-            if ((this.ParentFilterTypeTreeNode != null) || (dataItemAttachmentPointExists == true))
+            if ((this.ParentFilterTypeTreeNode != null) || (dataItemAttachmentPointExists))
             {
                 this.KeyPropertyInfo = this.ParentFilterType.GetKeyProperties()[0];
             }
@@ -252,7 +252,7 @@ namespace Composite.C1Console.Trees
 
         private object Find(TreeNode currentTreeNode, EntityToken currentEntityToken)
         {
-            if (this.OwnerNode.IsAncestor(currentTreeNode) == true) // Is parent
+            if (this.OwnerNode.IsAncestor(currentTreeNode)) // Is parent
             {
                 return currentTreeNode;
             }
@@ -282,7 +282,7 @@ namespace Composite.C1Console.Trees
 
         private IData GetParentDataItem(Type parentType, EntityToken parentEntityToken, TreeNodeDynamicContext dynamicContext)
         {
-            if (dynamicContext.CustomData.ContainsKey("ParentData") == true)
+            if (dynamicContext.CustomData.ContainsKey("ParentData"))
             {
                 return (IData)dynamicContext.CustomData["ParentData"];
             }

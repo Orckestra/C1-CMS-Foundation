@@ -41,9 +41,9 @@ namespace Composite.Core.PackageSystem
 
         public ServerUrlValidationResult ValidateServerUrl(string packageServerUrl)
         {
-            if (packageServerUrl.ToLowerInvariant().EndsWith("dk") == true) return ServerUrlValidationResult.Http;
-            if (packageServerUrl.ToLowerInvariant().EndsWith("net") == true) return ServerUrlValidationResult.Https;
-            if (packageServerUrl.ToLowerInvariant().EndsWith("xxx") == true) return ServerUrlValidationResult.Invalid;
+            if (packageServerUrl.ToLowerInvariant().EndsWith("dk")) return ServerUrlValidationResult.Http;
+            if (packageServerUrl.ToLowerInvariant().EndsWith("net")) return ServerUrlValidationResult.Https;
+            if (packageServerUrl.ToLowerInvariant().EndsWith("xxx")) return ServerUrlValidationResult.Invalid;
 
             return ServerUrlValidationResult.Http;
         }
@@ -56,7 +56,7 @@ namespace Composite.Core.PackageSystem
 
             packageServerUrl = packageServerUrl.ToLowerInvariant();
 
-            if (_packageDescriptions.ContainsKey(packageServerUrl) == true)
+            if (_packageDescriptions.ContainsKey(packageServerUrl))
             {
                 return _packageDescriptions[packageServerUrl].Select(f => f.Key);
             }
@@ -74,8 +74,8 @@ namespace Composite.Core.PackageSystem
 
             packageServerUrl = packageServerUrl.ToLowerInvariant();
 
-            if ((_eulaTexts.ContainsKey(packageServerUrl) == true) &&
-                (_eulaTexts[packageServerUrl].ContainsKey(eulaId) == true))
+            if ((_eulaTexts.ContainsKey(packageServerUrl)) &&
+                (_eulaTexts[packageServerUrl].ContainsKey(eulaId)))
             {
                 return _eulaTexts[packageServerUrl][eulaId];
             }

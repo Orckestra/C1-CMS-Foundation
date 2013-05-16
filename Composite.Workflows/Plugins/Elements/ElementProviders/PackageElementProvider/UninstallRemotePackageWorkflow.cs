@@ -106,12 +106,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void step3CodeActivity_RefreshTree_ExecuteCode(object sender, EventArgs e)
         {
-            if (this.GetBinding<bool>("ReloadConsoleOnCompletion") == true)
+            if (this.GetBinding<bool>("ReloadConsoleOnCompletion"))
             {
                 ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), null);
             }
 
-            if (this.GetBinding<bool>("FlushOnCompletion") == true)
+            if (this.GetBinding<bool>("FlushOnCompletion"))
             {
                 GlobalEventSystemFacade.FlushTheSystem();
             }

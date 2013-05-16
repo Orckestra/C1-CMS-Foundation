@@ -18,7 +18,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         public static IDisposable CompletionTime( Type callingType, string actionInfo )
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 return new DebugLoggingScope(callingType.Name, actionInfo, false, TimeSpan.MinValue);
             }
@@ -32,7 +32,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         public static IDisposable CompletionTime(Type callingType, string actionInfo, TimeSpan loggingThreshold)
         {
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 return new DebugLoggingScope(callingType.Name, actionInfo, false, loggingThreshold);
             }
@@ -48,7 +48,7 @@ namespace Composite.Core.Logging
         {
             get
             {
-                if (RuntimeInformation.IsDebugBuild == true)
+                if (RuntimeInformation.IsDebugBuild)
                 {
                     StackTrace stackTrace = new StackTrace();
                     StackFrame stackFrame = stackTrace.GetFrame(1);

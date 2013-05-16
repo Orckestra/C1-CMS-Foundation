@@ -43,7 +43,7 @@ namespace Composite.C1Console.Events
 
         public void CloseCurrentView()
         {
-            if (string.IsNullOrEmpty(this.ViewId) == true) throw new InvalidOperationException("Can not close current view. No view ID has been associated with this message service");
+            if (string.IsNullOrEmpty(this.ViewId)) throw new InvalidOperationException("Can not close current view. No view ID has been associated with this message service");
 
             if (_closeCurrentViewRequested == false)
             {
@@ -58,7 +58,7 @@ namespace Composite.C1Console.Events
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");
 
-            if (GlobalSettingsFacade.BroadcastConsoleElementChanges == true)
+            if (GlobalSettingsFacade.BroadcastConsoleElementChanges)
             {
                 ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = entityToken }, null);
             }

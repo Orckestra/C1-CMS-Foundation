@@ -105,7 +105,7 @@ namespace Composite.C1Console.Elements
         {
             if (elementHandle == null) throw new ArgumentNullException("elementHandle");
 
-            if (ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName) == true)
+            if (ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName))
             {
                 return ElementProviderPluginFacade.GetForeignLabeledProperties(elementHandle.ProviderName, elementHandle.EntityToken);
             }
@@ -122,7 +122,7 @@ namespace Composite.C1Console.Elements
         public static object GetData(ElementProviderHandle elementProviderHandle, string dataName)
         {
             if (elementProviderHandle == null) throw new ArgumentNullException("elementProviderHandle");
-            if (string.IsNullOrEmpty(dataName) == true) throw new ArgumentNullException("dataName");
+            if (string.IsNullOrEmpty(dataName)) throw new ArgumentNullException("dataName");
 
             return ElementProviderPluginFacade.GetData(elementProviderHandle.ProviderName, dataName);
         }
@@ -136,14 +136,14 @@ namespace Composite.C1Console.Elements
             if (newParentElementHandle == null) throw new ArgumentNullException("newParentElementHandle");
             if (draggedElementFlowControllerServicesContainer == null) throw new ArgumentNullException("draggedElementFlowControllerServicesContainer");
 
-            if (draggedElementHandle.Equals(newParentElementHandle) == true)
+            if (draggedElementHandle.Equals(newParentElementHandle))
             {
                 LoggingService.LogError("ElementFacade", "ExecuteElementDraggedAndDropped on the same element is not allowed");
                 return false;
             }
 
             DragAndDropType dragAndDropType = DragAndDropType.Move;
-            if (isCopy == true)
+            if (isCopy)
             {
                 dragAndDropType = DragAndDropType.Copy;
             }
@@ -277,7 +277,7 @@ namespace Composite.C1Console.Elements
 
             ElementActionProviderFacade.AddActions(roots, providerName);
 
-            if (performSecurityCheck == true)
+            if (performSecurityCheck)
             {
                 return roots.FilterActions();
             }
@@ -296,7 +296,7 @@ namespace Composite.C1Console.Elements
             IPerformanceCounterToken performanceToken = PerformanceCounterFacade.BeginElementCreation();
 
             IEnumerable<Element> children;
-            if (ElementProviderRegistry.ElementProviderNames.Contains(elementHandle.ProviderName) == true)
+            if (ElementProviderRegistry.ElementProviderNames.Contains(elementHandle.ProviderName))
             {
                 if ((useForeign == false) || (ElementProviderPluginFacade.IsLocaleAwareElementProvider(elementHandle.ProviderName) == false))
                 {
@@ -307,7 +307,7 @@ namespace Composite.C1Console.Elements
                     children = ElementProviderPluginFacade.GetForeignChildren(elementHandle.ProviderName, elementHandle.EntityToken, searchToken).Evaluate();
                 }
             }
-            else if (ElementAttachingProviderRegistry.ElementAttachingProviderNames.Contains(elementHandle.ProviderName) == true)
+            else if (ElementAttachingProviderRegistry.ElementAttachingProviderNames.Contains(elementHandle.ProviderName))
             {
                 children = ElementAttachingProviderPluginFacade.GetChildren(elementHandle.ProviderName, elementHandle.EntityToken, elementHandle.Piggyback).Evaluate();
             }
@@ -330,7 +330,7 @@ namespace Composite.C1Console.Elements
 
             ElementActionProviderFacade.AddActions(children, elementHandle.ProviderName);
 
-            if (performSecurityCheck == true)
+            if (performSecurityCheck)
             {
                 children = children.FilterActions().Evaluate();
             }

@@ -136,7 +136,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             IData newData = DataFacade.BuildNew(InterfaceType);
 
-            if (PageFolderFacade.GetAllFolderTypes().Contains(InterfaceType) == true)
+            if (PageFolderFacade.GetAllFolderTypes().Contains(InterfaceType))
             {
                 Dictionary<string, string> piggybag = PiggybagSerializer.Deserialize(this.ExtraPayload);
                 PiggybagDataFinder piggybagDataFinder = new PiggybagDataFinder(piggybag, this.EntityToken);

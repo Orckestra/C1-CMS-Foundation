@@ -54,7 +54,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             this.BindingsValidationRules.Add(this.NewTypeNamespaceBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
             this.BindingsValidationRules.Add(this.NewTypeTitleBindingName, new List<ClientValidationRule> { new NotNullClientValidationRule() });
 
-            if ((RuntimeInformation.IsDebugBuild == true) && (DynamicTempTypeCreator.UseTempTypeCreator))
+            if ((RuntimeInformation.IsDebugBuild) && (DynamicTempTypeCreator.UseTempTypeCreator))
             {
                 DynamicTempTypeCreator dynamicTempTypeCreator = new DynamicTempTypeCreator("PageFolder");
 
@@ -82,7 +82,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 GeneratedTypesHelper helper = new GeneratedTypesHelper();
                 Type interfaceType = null;
-                if (this.BindingExist("InterfaceType") == true)
+                if (this.BindingExist("InterfaceType"))
                 {
                     interfaceType = this.GetBinding<Type>("InterfaceType");
 
@@ -122,7 +122,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     return;
                 }
 
-                if (helper.IsEditProcessControlledAllowed == true)
+                if (helper.IsEditProcessControlledAllowed)
                 {
                     helper.SetCachable(hasCaching);
                     helper.SetPublishControlled(hasPublishing);

@@ -55,7 +55,7 @@ namespace Composite.Functions
 
         public override XElement Serialize()
         {
-            if (_isEnumerable == true)
+            if (_isEnumerable)
             {
                 XElement element = 
                     new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),

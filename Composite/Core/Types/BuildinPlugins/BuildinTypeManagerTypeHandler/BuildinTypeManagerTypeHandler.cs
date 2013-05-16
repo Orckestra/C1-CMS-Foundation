@@ -49,10 +49,10 @@ namespace Composite.Core.Types.BuildinPlugins.BuildinTypeManagerTypeHandler
             ITypeManagerTypeHandler handler;
 
             handler = new DynamicBuildManagerTypeManagerTypeHandler();
-            if (handler.HasTypeWithName(typeFullname) == true) return true;
+            if (handler.HasTypeWithName(typeFullname)) return true;
 
             handler = new SystemTypeManagerTypeHandler();
-            if (handler.HasTypeWithName(typeFullname) == true) return true;
+            if (handler.HasTypeWithName(typeFullname)) return true;
 
             return false;
         }

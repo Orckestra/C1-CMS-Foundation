@@ -193,7 +193,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
             {
                 string path = ((WebsiteFileElementProviderEntityToken)entityToken).Path;
 
-                if (C1Directory.Exists(path) == true)
+                if (C1Directory.Exists(path))
                 {
                     return GetChildrenOnPath(path, searchToken);
                 }
@@ -314,7 +314,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 orderby folderPath
                 select new WebsiteFolder(folderPath);
 
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 folders =
                     from folder in folders
@@ -360,7 +360,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                 orderby filename
                 select new WebsiteFile(filename);
 
-            if (searchToken.IsValidKeyword() == true)
+            if (searchToken.IsValidKeyword())
             {
                 files =
                     from file in files
@@ -440,7 +440,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
 
 
-            if (IsDeleteActionAllowed(websiteFolder) == true)
+            if (IsDeleteActionAllowed(websiteFolder))
             {
                 folderActions.Add(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.DeleteWebsiteFolderWorkflow"), _deleteWebsiteFolderPermissionTypes)))
@@ -483,7 +483,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 ActionCheckedStatus checkedStatus = ActionCheckedStatus.Uncheckable;
 
-                if (manageableFolderWhiteLists.Where(f => f.KeyName == keyName && f.TildeBasedPath == IFolderWhiteListExtensions.GetTildePath(websiteFolderPath)).Any() == true)
+                if (manageableFolderWhiteLists.Where(f => f.KeyName == keyName && f.TildeBasedPath == IFolderWhiteListExtensions.GetTildePath(websiteFolderPath)).Any())
                 {
                     workflowActionToken = new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.RemoveWebsiteFolderFromWhiteListWorkflow"), _changeWhiteListPermissionTypes);
                     label = StringResourceSystemFacade.GetString("Composite.Plugins.WebsiteFileElementProvider", "RemoveFolderFromWhiteListTitle");
@@ -534,7 +534,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
         {
             IList<ElementAction> fileActions = new List<ElementAction>();
 
-            if (IsDeleteActionAllowed(websiteFile) == true)
+            if (IsDeleteActionAllowed(websiteFile))
             {
                 fileActions.Add(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.DeleteWebsiteFileWorkflow"), _deleteWebsiteFilePermissionTypes)))
@@ -577,7 +577,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
                     }
                 });
 
-            if (IsEditActionAllowed(websiteFile) == true)
+            if (IsEditActionAllowed(websiteFile))
             {
                 fileActions.Add(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider.EditWebsiteFileTextContentWorkflow"), _editWebsiteFilePermissionTypes)))
@@ -606,7 +606,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
         private static bool IsDeleteActionAllowed(WebsiteEntity websiteEntity)
         {
-            if ((websiteEntity is WebsiteFile) == true)
+            if ((websiteEntity is WebsiteFile))
             {
                 return true;
                 //WebsiteFile websiteFile = websiteEntity as WebsiteFile;
@@ -615,7 +615,7 @@ namespace Composite.Plugins.Elements.ElementProviders.WebsiteFileElementProvider
 
                 //return _editableMimeTypes.Contains(canonical);
             }
-            else if ((websiteEntity is WebsiteFolder) == true)
+            else if ((websiteEntity is WebsiteFolder))
             {
                 //return false;
                 // Deleting a folder causes the webserver to restart...

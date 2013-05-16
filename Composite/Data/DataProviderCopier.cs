@@ -197,7 +197,7 @@ namespace Composite.Data
                         {
                             dataset = DataFacade.GetData(interfaceType, SourceProviderName).ToDataList();
 
-                            if (_specialHandleInterfaces.ContainsKey(interfaceType) == true)
+                            if (_specialHandleInterfaces.ContainsKey(interfaceType))
                             {
                                 _specialHandleInterfaces[interfaceType](dataset, this.SourceProviderName,
                                                                         this.TargetProviderName);

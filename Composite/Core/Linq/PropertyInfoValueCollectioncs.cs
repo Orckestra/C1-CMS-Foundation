@@ -15,7 +15,7 @@ namespace Composite.Core.Linq
             if (propertyInfo == null) throw new ArgumentNullException("propertyInfo");
             // allow null values
 
-            if (_propertyValues.ContainsKey(propertyInfo) == true) throw new ArgumentException(string.Format("The property name '{0}' has already been added", propertyInfo.Name));
+            if (_propertyValues.ContainsKey(propertyInfo)) throw new ArgumentException(string.Format("The property name '{0}' has already been added", propertyInfo.Name));
 
             _propertyValues.Add(propertyInfo, value);
         }

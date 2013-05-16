@@ -35,7 +35,7 @@ namespace Composite.Data.Validation
                     methodInfo =
                         (from mi in typeof(ValidationFacade).GetMethods()
                          where (mi.Name == "Validate") &&
-                               (mi.ContainsGenericParameters == true)
+                               (mi.ContainsGenericParameters)
                          select mi).First();
 
                     methodInfo = methodInfo.MakeGenericMethod(new Type[] { interfaceType });

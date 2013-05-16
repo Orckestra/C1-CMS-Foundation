@@ -36,7 +36,7 @@ namespace Composite.Data.Types
         /// <exclude />
         public static PageTypeHomepageRelation GetPageTypeHomepageRelation(this string value)
         {
-            if (string.IsNullOrEmpty(value) == true) throw new ArgumentNullException("value");
+            if (string.IsNullOrEmpty(value)) throw new ArgumentNullException("value");
 
             PageTypeHomepageRelation result;
             if (Enum.TryParse<PageTypeHomepageRelation>(value, out result) == false)
@@ -72,7 +72,7 @@ namespace Composite.Data.Types
             {
                 return
                     DataFacade.GetData<IPageType>().
-                    Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
+                    Where(f => (f.Available) && (f.HomepageRelation != PageTypeHomepageRelation.OnlySubPages.ToString())).
                     OrderBy(f => f.Name).
                     Evaluate();
             }
@@ -83,7 +83,7 @@ namespace Composite.Data.Types
                 {
                     pageTypes =
                         DataFacade.GetData<IPageType>().
-                        Where(f => (f.Available == true) && (f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString())).
+                        Where(f => (f.Available) && (f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString())).
                         OrderBy(f => f.Name).
                         Evaluate();
                 }
@@ -92,7 +92,7 @@ namespace Composite.Data.Types
                     pageTypes =
                         DataFacade.GetData<IPageType>().
                         Where(f => 
-                            (f.Available == true) && 
+                            (f.Available) && 
                             ((f.HomepageRelation != PageTypeHomepageRelation.OnlyHomePages.ToString()) || (f.Id == childPage.PageTypeId))).
                         OrderBy(f => f.Name).
                         Evaluate();
@@ -105,9 +105,9 @@ namespace Composite.Data.Types
                     {
                         result.Add(pageType); 
                     }
-                    else if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id).Any() == true)
+                    else if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id).Any())
                     {
-                        if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id && f.AllowedParentPageTypeId == parentPage.PageTypeId).Any() == true)
+                        if (DataFacade.GetData<IPageTypeParentRestriction>().Where(f => f.PageTypeId == pageType.Id && f.AllowedParentPageTypeId == parentPage.PageTypeId).Any())
                         {
                             result.Add(pageType);
                         }

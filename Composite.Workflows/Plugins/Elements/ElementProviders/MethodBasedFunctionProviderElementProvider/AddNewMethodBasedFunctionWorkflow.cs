@@ -142,7 +142,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
             bool exists = FunctionFacade.FunctionExists(function.Namespace, function.UserMethodName);
 
-            if (exists == true)
+            if (exists)
             {
                 string errorMessage = StringResourceSystemFacade.GetString("Composite.Plugins.MethodBasedFunctionProviderElementProvider", "AddFunction.NameAlreadyUsed");
                 errorMessage = string.Format(errorMessage, StringExtensionMethods.CreateNamespace(function.Namespace, function.UserMethodName));

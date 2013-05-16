@@ -28,7 +28,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (InterfaceConfigurationManipulator.ConfigurationExists(_dataProviderContext.ProviderName, dataTypeDescriptor) == true)
+                if (InterfaceConfigurationManipulator.ConfigurationExists(_dataProviderContext.ProviderName, dataTypeDescriptor))
                 {
                     throw new InvalidOperationException(string.Format("SqlDataProvider configuration already contains a interface named '{0}'. Remove it from the configuration and restart the application.", dataTypeDescriptor.TypeManagerTypeName));
                 }

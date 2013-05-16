@@ -59,7 +59,7 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                 folderRanges.AddFolderRange(folderRange);
             }
 
-            if (includeWildCard == true)
+            if (includeWildCard)
             {
                 IntFolderRange folderRange = new IntFolderRange(
                     -1,
@@ -143,7 +143,7 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                 folderRanges.AddFolderRange(folderRange);
             }
 
-            if (includeWildCard == true)
+            if (includeWildCard)
             {
                 StringFolderRange folderRange = new StringFolderRange(
                     -1,

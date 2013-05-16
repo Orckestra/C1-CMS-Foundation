@@ -57,7 +57,7 @@ namespace Composite.C1Console.Forms.Flows
                 _bindingPathedMessages = new Dictionary<string, string>();
             }
 
-            if (_bindingPathedMessages.ContainsKey(fieldBindingPath) == true)
+            if (_bindingPathedMessages.ContainsKey(fieldBindingPath))
             {
                 _bindingPathedMessages[fieldBindingPath] += "\n" + message;
             }

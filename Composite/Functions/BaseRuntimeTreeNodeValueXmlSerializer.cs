@@ -14,7 +14,7 @@ namespace Composite.Functions
 
             serializedObject = null;
 
-            if (typeof(BaseRuntimeTreeNode).IsAssignableFrom(objectToSerializeType) == true)
+            if (typeof(BaseRuntimeTreeNode).IsAssignableFrom(objectToSerializeType))
             {
                 serializedObject = new XElement("BaseRuntimeTreeNode");
 

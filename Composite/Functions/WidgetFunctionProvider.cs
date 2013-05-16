@@ -32,7 +32,7 @@ namespace Composite.Functions
 
         internal WidgetFunctionProvider(string widgetName)
         {
-            if (string.IsNullOrEmpty(widgetName) == true) throw new ArgumentNullException("widgetName");
+            if (string.IsNullOrEmpty(widgetName)) throw new ArgumentNullException("widgetName");
 
             _widgetFunctionName = widgetName;
         }
@@ -41,7 +41,7 @@ namespace Composite.Functions
 
         internal WidgetFunctionProvider(string widgetName, IEnumerable<BaseParameterRuntimeTreeNode> parameters)
         {
-            if (string.IsNullOrEmpty(widgetName) == true) throw new ArgumentNullException("widgetName");
+            if (string.IsNullOrEmpty(widgetName)) throw new ArgumentNullException("widgetName");
             if (parameters == null) throw new ArgumentNullException("parameters");
 
             _widgetFunctionName = widgetName;

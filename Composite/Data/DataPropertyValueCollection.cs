@@ -22,7 +22,7 @@ namespace Composite.Data
             if (propertyInfo == null) throw new ArgumentNullException("keyPropertyName");
             if (value == null) throw new ArgumentNullException("value");
 
-            if (_propertyValues.ContainsKey(propertyInfo) == true) throw new ArgumentException(string.Format("The key property name '{0}' has already been added", propertyInfo.Name));
+            if (_propertyValues.ContainsKey(propertyInfo)) throw new ArgumentException(string.Format("The key property name '{0}' has already been added", propertyInfo.Name));
 
             _propertyValues.Add(propertyInfo, value);
         }

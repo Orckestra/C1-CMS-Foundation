@@ -75,12 +75,12 @@ namespace Composite.C1Console.Forms.CoreUiControls
             if (dic.ContainsKey("HasFile") == false) throw new InvalidOperationException("Not correct serialized format");
             uploadedFile.HasFile = StringConversionServices.DeserializeValueBool(dic["HasFile"]);
 
-            if (dic.ContainsKey("FileName") == true)
+            if (dic.ContainsKey("FileName"))
             {
                 uploadedFile.FileName = StringConversionServices.DeserializeValueString(dic["FileName"]);
             }
 
-            if (dic.ContainsKey("ContentType") == true)
+            if (dic.ContainsKey("ContentType"))
             {
                 uploadedFile.ContentType = StringConversionServices.DeserializeValueString(dic["ContentType"]);
             }
@@ -88,7 +88,7 @@ namespace Composite.C1Console.Forms.CoreUiControls
             if (dic.ContainsKey("ContentLength") == false) throw new InvalidOperationException("Not correct serialized format");
             uploadedFile.ContentLength = StringConversionServices.DeserializeValueInt(dic["ContentLength"]);
 
-            if (dic.ContainsKey("FileStream") == true)
+            if (dic.ContainsKey("FileStream"))
             {
                 byte[] bytes = StringConversionServices.DeserializeValueArray<byte>(dic["FileStream"]);
 

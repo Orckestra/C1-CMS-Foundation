@@ -132,7 +132,7 @@ namespace Composite.C1Console.Security
                 {
                     bool result = IsParent(parentNode, possibleParentNode);
 
-                    if (result == true)
+                    if (result)
                     {
                         return true;
                     }

@@ -49,7 +49,7 @@ namespace Composite.C1Console.Trees
             foreach (XAttribute attribute in GetAttributes(this.Element))
             {
                 string key = GetKeyValue(attribute);
-                if (_dynamicValuesHelpers.ContainsKey(key) == true) continue;
+                if (_dynamicValuesHelpers.ContainsKey(key)) continue;
 
                 DynamicValuesHelper dynamicValuesHelper = new DynamicValuesHelper(attribute.Value);
                 dynamicValuesHelper.Initialize(ownerTreeNode);

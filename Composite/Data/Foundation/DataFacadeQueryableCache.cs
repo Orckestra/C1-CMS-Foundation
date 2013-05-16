@@ -104,7 +104,7 @@ namespace Composite.Data.Foundation
 
                 if (_asQueryableMethodInfo.TryGetValue(type, out asQueryableMethodInfo) == false)
                 {
-                    asQueryableMethodInfo = typeof(Queryable).GetMethods().Where(m => m.Name == "AsQueryable" && m.IsGenericMethod == true).First();
+                    asQueryableMethodInfo = typeof(Queryable).GetMethods().Where(m => m.Name == "AsQueryable" && m.IsGenericMethod).First();
                     asQueryableMethodInfo = asQueryableMethodInfo.MakeGenericMethod(new Type[] { type });
 
                     _asQueryableMethodInfo.Add(type, asQueryableMethodInfo);

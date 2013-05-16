@@ -44,7 +44,7 @@ namespace Composite.Data.Types
         {
             try
             {
-                if (PathUtil.BaseDirectory.StartsWith(fullPath) == true)
+                if (PathUtil.BaseDirectory.StartsWith(fullPath))
                 {
                     return "~\\";
                 }

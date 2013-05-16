@@ -12,8 +12,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         internal StandardFunctionBase(string name, string namespaceName, Type returnType, EntityTokenFactory entityTokenFactory)
         {
-            if (string.IsNullOrEmpty(name) == true) throw new ArgumentNullException("name");
-            if (string.IsNullOrEmpty(namespaceName) == true) throw new ArgumentNullException("namespaceName");
+            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(namespaceName)) throw new ArgumentNullException("namespaceName");
             if (entityTokenFactory == null) throw new ArgumentNullException("entityTokenFactory");
 
             this.Namespace = namespaceName;

@@ -58,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 }
             }
 
-            if (castedToken.CanBeUninstalled == true)
+            if (castedToken.CanBeUninstalled)
             {
                 this.SetCustomToolbarDefinition(new FormDefinitionFileMarkupProvider(@"\Administrative\PackageElementProviderViewInstalledPackageInformationToolbar.xml"));
             }
@@ -77,7 +77,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             if (installedAddOnInformation != null)
             {
-                if (installedAddOnInformation.IsLocalInstalled == true)
+                if (installedAddOnInformation.IsLocalInstalled)
                 {
                     this.ExecuteWorklow(this.EntityToken, typeof(UninstallLocalPackageWorkflow));
                 }

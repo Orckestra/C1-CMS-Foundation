@@ -230,14 +230,14 @@ namespace Composite.Data.Caching
         {
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.CachedData.ContainsKey(interfaceType) == true)
+                if (_resourceLocker.Resources.CachedData.ContainsKey(interfaceType))
                 {
                     if (dataScopeIdentifier == null)
                     {
                         dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
                     }
 
-                    if (_resourceLocker.Resources.CachedData[interfaceType].ContainsKey(dataScopeIdentifier) == true)
+                    if (_resourceLocker.Resources.CachedData[interfaceType].ContainsKey(dataScopeIdentifier))
                     {
                         _resourceLocker.Resources.CachedData[interfaceType].Remove(dataScopeIdentifier);
 

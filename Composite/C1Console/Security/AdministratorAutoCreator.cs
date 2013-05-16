@@ -37,7 +37,7 @@ namespace Composite.C1Console.Security
                 return false;
             }
 
-            if (LoginProviderPluginFacade.UsersExists == true)
+            if (LoginProviderPluginFacade.UsersExists)
             {
                 return false;
             }
@@ -114,7 +114,7 @@ namespace Composite.C1Console.Security
             {
                 UserSettings.AddActiveLocaleCultureInfo(userName, cultureInfo);
 
-                if (Core.Localization.LocalizationFacade.IsDefaultLocale(cultureInfo) == true)                        
+                if (Core.Localization.LocalizationFacade.IsDefaultLocale(cultureInfo))                        
                 {
                     UserSettings.SetCurrentActiveLocaleCultureInfo(userName, cultureInfo);                            
                     UserSettings.SetForeignLocaleCultureInfo(userName, cultureInfo);

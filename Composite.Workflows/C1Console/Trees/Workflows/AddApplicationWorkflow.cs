@@ -38,7 +38,7 @@ namespace Composite.C1Console.Trees.Workflows
             foreach (Tree tree in TreeFacade.AllTrees)
             {
                 if (tree.HasPossibleAttachmentPoints(this.EntityToken) == false) continue;
-                if (tree.HasAttachmentPoints(this.EntityToken) == true) continue;
+                if (tree.HasAttachmentPoints(this.EntityToken)) continue;
 
                 selectableTreeIds.Add(tree.TreeId, tree.AllowedAttachmentApplicationName);
             }

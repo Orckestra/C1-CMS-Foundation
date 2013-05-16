@@ -127,7 +127,7 @@ namespace Composite.Data
                 object refereeForeignKeyValue = foreignPropertyInfo.SourcePropertyInfo.GetValue(refereeData, null);
 
                 // Handling Nullable<>
-                if ((refereeForeignKeyValue == null) && (foreignPropertyInfo.SourcePropertyInfo.PropertyType.IsGenericType == true))
+                if ((refereeForeignKeyValue == null) && (foreignPropertyInfo.SourcePropertyInfo.PropertyType.IsGenericType))
                 {
                     Type type = foreignPropertyInfo.SourcePropertyInfo.PropertyType.GetGenericTypeDefinition();
                     if (type == typeof(Nullable<>))
@@ -142,7 +142,7 @@ namespace Composite.Data
                     continue;
                 }
 
-                if (foreignPropertyInfo.IsNullReferenceValueSet == true)
+                if (foreignPropertyInfo.IsNullReferenceValueSet)
                 {
                     object nullReferenceKeyValue = foreignPropertyInfo.NullReferenceValue;
 
@@ -151,7 +151,7 @@ namespace Composite.Data
                         nullReferenceKeyValue = ValueTypeConverter.Convert(nullReferenceKeyValue, foreignPropertyInfo.NullReferenceValueType);
                     }
 
-                    if (object.Equals(nullReferenceKeyValue, refereeForeignKeyValue) == true)
+                    if (object.Equals(nullReferenceKeyValue, refereeForeignKeyValue))
                     {
                         continue; // The foreign key is a null reference 
                     }
@@ -623,7 +623,7 @@ namespace Composite.Data
         public static IData GetReferenced(this IData refereeData, string foreignKeyProrptyName)
         {
             if (refereeData == null) throw new ArgumentNullException("refereeData");
-            if (string.IsNullOrEmpty(foreignKeyProrptyName) == true) throw new ArgumentNullException("foreignKeyProrptyName");
+            if (string.IsNullOrEmpty(foreignKeyProrptyName)) throw new ArgumentNullException("foreignKeyProrptyName");
 
             ForeignPropertyInfo foreignPropertyInfo =
                 (from fkpi in DataReferenceRegistry.GetForeignKeyProperties(refereeData.DataSourceId.InterfaceType)
@@ -736,7 +736,7 @@ namespace Composite.Data
                             List<IData> refs = GetReferees(referencedData, dataset, foreignKeyProperyInfos, returnOnFirstFound);
                             referees.AddRange(refs.KeyDistinct()); // KeyDistinct is used here if a type has more than one refernce to a nother time
 
-                            if ((returnOnFirstFound == true) && (referees.Count > 0))
+                            if ((returnOnFirstFound) && (referees.Count > 0))
                             {
                                 return referees;
                             }
@@ -749,7 +749,7 @@ namespace Composite.Data
                     List<IData> refs = GetReferees(referencedData, dataset, foreignKeyProperyInfos, returnOnFirstFound);
                     referees.AddRange(refs.KeyDistinct()); // KeyDistinct is used here if a type has more than one refernce to a nother time
 
-                    if ((returnOnFirstFound == true) && (referees.Count > 0))
+                    if ((returnOnFirstFound) && (referees.Count > 0))
                     {
                         return referees;
                     }
@@ -779,13 +779,13 @@ namespace Composite.Data
 
 
                 string typeTitle = DynamicTypeReflectionFacade.GetTitle(type);
-                if (string.IsNullOrEmpty(typeTitle) == true)
+                if (string.IsNullOrEmpty(typeTitle))
                 {
                     typeTitle = type.FullName;
                 }
                 
                 string labelField = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
-                if (string.IsNullOrEmpty(labelField) == true)
+                if (string.IsNullOrEmpty(labelField))
                 {
                     labelField = "Id"; // Is is a nasty fallback, but will work in post cases and all the time with generated types.
                 }

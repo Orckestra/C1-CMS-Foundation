@@ -59,7 +59,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             Expression compound;
 
-            if (isAndQuery == true)
+            if (isAndQuery)
             {
                 Expression leftFilter = Expression.Invoke(left, _dataItem);
                 Expression rightFilter = Expression.Invoke(right, _dataItem);

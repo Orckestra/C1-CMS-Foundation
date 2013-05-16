@@ -12,7 +12,7 @@ namespace Composite.Core.PackageSystem.Foundation
         {
             Regex shotVersionRegex = new Regex(@"[0-9]+");
             Match shotVersionMatch = shotVersionRegex.Match(version);
-            if ((shotVersionMatch.Success == true) && (shotVersionMatch.Value == version))
+            if ((shotVersionMatch.Success) && (shotVersionMatch.Value == version))
             {
                 newVersion = string.Format("{0}.0.0.0", version);
                 return true;
@@ -20,7 +20,7 @@ namespace Composite.Core.PackageSystem.Foundation
 
             Regex versionRegex = new Regex(@"[0-9]+\.[0-9]+\.*[0-9]*\.*[0-9]*");
             Match versionMatch = versionRegex.Match(version);
-            if ((versionMatch.Success == true) && (versionMatch.Groups[0].Value.Length == version.Length))
+            if ((versionMatch.Success) && (versionMatch.Groups[0].Value.Length == version.Length))
             {
                 newVersion = version;
                 return true;

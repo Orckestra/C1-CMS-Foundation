@@ -56,18 +56,18 @@ namespace Composite.Core.PackageSystem
             // And "Composite.Core.XmlSerializers" <-- Licensing?
             // For now ignore it, so no exception is thrown /MRJ
             if ((filename == "System.Web.Extensions") ||
-                (filename.StartsWith("Composite.Core.XmlSerializers") == true))
+                (filename.StartsWith("Composite.Core.XmlSerializers")))
             {
                 return null;
             }
 
             string fn = filename;
-            if (fn.Contains(",") == true)
+            if (fn.Contains(","))
             {
                 fn = fn.Remove(fn.IndexOf(",")).Trim();
             }
 
-            if (_loadedAssemblyFilenames.ContainsAssemblyName(fn) == true)
+            if (_loadedAssemblyFilenames.ContainsAssemblyName(fn))
             {
                 filename = _loadedAssemblyFilenames.GetFilenameByAssemblyName(fn);
             }

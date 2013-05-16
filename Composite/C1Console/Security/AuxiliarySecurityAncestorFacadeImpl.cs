@@ -74,7 +74,7 @@ namespace Composite.C1Console.Security
                 providers.Add(entityTokenType, auxiliarySecurityAncestorProviders);
             }
 
-            if (auxiliarySecurityAncestorProviders.Contains(auxiliarySecurityAncestorProvider) == true)
+            if (auxiliarySecurityAncestorProviders.Contains(auxiliarySecurityAncestorProvider))
             {
                 throw new ArgumentNullException("The given auxiliarySecurityAncestorProvider has already been added with the given entity token");
             }
@@ -88,12 +88,12 @@ namespace Composite.C1Console.Security
         {
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
 
-            if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
+            if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders))
             {
                 auxiliarySecurityAncestorProviders.Remove(auxiliarySecurityAncestorProvider);
             }
 
-            if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
+            if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders))
             {
                 auxiliarySecurityAncestorProviders.Remove(auxiliarySecurityAncestorProvider);
             }
@@ -105,7 +105,7 @@ namespace Composite.C1Console.Security
         {
             List<IAuxiliarySecurityAncestorProvider> auxiliarySecurityAncestorProviders;
 
-            if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
+            if (_auxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders))
             {
                 foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in auxiliarySecurityAncestorProviders)
                 {
@@ -114,7 +114,7 @@ namespace Composite.C1Console.Security
             }
 
 
-            if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders) == true)
+            if (_flushPersistentAuxiliarySecurityAncestorProviders.TryGetValue(entityTokenType, out auxiliarySecurityAncestorProviders))
             {
                 foreach (IAuxiliarySecurityAncestorProvider auxiliarySecurityAncestorProvider in auxiliarySecurityAncestorProviders)
                 {

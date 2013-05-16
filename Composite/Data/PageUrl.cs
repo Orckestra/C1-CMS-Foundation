@@ -216,7 +216,7 @@ namespace Composite.Data
                 {
                     string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1);
 
-                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName) == true)
+                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName))
                     {
                         CultureInfo cultureInfo = DataLocalizationFacade.GetCultureInfoByUrlMappingName(urlMappingName);
 

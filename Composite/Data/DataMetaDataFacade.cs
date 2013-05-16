@@ -139,7 +139,7 @@ namespace Composite.Data
             {
                 foreach (DataTypeDescriptor dataTypeDescriptor in AllDataTypeDescriptors)
                 {
-                    if (dataTypeDescriptor.IsCodeGenerated == true)
+                    if (dataTypeDescriptor.IsCodeGenerated)
                     {
                         yield return dataTypeDescriptor;
                     }
@@ -227,7 +227,7 @@ namespace Composite.Data
 
                 _dataTypeDescriptorCache[dataTypeDescriptor.DataTypeId] = dataTypeDescriptor;
 
-                if ((_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeDescriptor.DataTypeId) == true) &&
+                if ((_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeDescriptor.DataTypeId)) &&
                     (_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId] != filepath))
                 {
                     FileUtils.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeDescriptor.DataTypeId]);
@@ -245,7 +245,7 @@ namespace Composite.Data
             {
                 Initialize();
 
-                if (_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeId) == true)
+                if (_dataTypeDescriptorFilesnamesCache.ContainsKey(dataTypeId))
                 {
                     FileUtils.Delete(_dataTypeDescriptorFilesnamesCache[dataTypeId]);
 

@@ -116,7 +116,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             List<string> functionErrors;
             List<NamedFunctionCall> FunctionCalls = RenderHelper.GetValidFunctionCalls(xsltFunction.Id, out functionErrors).ToList();
 
-            if ((functionErrors != null) && (functionErrors.Any() == true))
+            if ((functionErrors != null) && (functionErrors.Any()))
             {
                 foreach (string error in functionErrors)
                 {

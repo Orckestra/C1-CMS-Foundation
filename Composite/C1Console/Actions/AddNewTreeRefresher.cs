@@ -35,7 +35,7 @@ namespace Composite.C1Console.Actions
         {
             if (newChildEntityToken == null) throw new ArgumentNullException("newChildEntityToken");
 
-            if (_postRefreshMessegesCalled == true)
+            if (_postRefreshMessegesCalled)
             {
                 throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
             }

@@ -227,7 +227,7 @@ namespace Composite.C1Console.Trees.Foundation
                             tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.MissingAttribute", "Key");
                             continue;
                         }
-                        else if (string.IsNullOrWhiteSpace(keyAttribute.Value) == true)
+                        else if (string.IsNullOrWhiteSpace(keyAttribute.Value))
                         {
                             tree.AddValidationError(element.GetXPath(), "TreeValidationError.Common.WrongAttributeValue", "Key");
                             continue;                            

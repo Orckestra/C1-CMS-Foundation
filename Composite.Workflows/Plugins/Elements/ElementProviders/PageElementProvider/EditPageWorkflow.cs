@@ -103,7 +103,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             IEnumerable<PageTemplateDescriptor> result;
 
-            if (templateRestrictions.Any() == true)
+            if (templateRestrictions.Any())
             {
                 var allowedTemplatesHash = new HashSet<Guid>(templateRestrictions);
 
@@ -253,7 +253,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             IEnumerable<PermissionType> currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), this.EntityToken, userPermissionDefinitions, userGroupPermissionDefinitions);
             foreach (PermissionType permissionType in currentPermissionTypes)
             {
-                if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType) == true)
+                if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
                 {
                     transitionNames.Add(GenericPublishProcessController.AwaitingPublication, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.AwaitingPublicationTransition"));
                     break;
@@ -352,7 +352,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     _dataValidated = PrepareAddUpdateMetaData(selectedPage, dataToAdd, dataToUpdate);
 
 
-                    if (_dataValidated == true)
+                    if (_dataValidated)
                     {
                         HandlePublishUnpublishWorkflows(selectedPage, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
 
@@ -398,7 +398,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)
                             {
                                 Tree tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
-                                if (tree.HasAttachmentPoints(selectedPage.GetDataEntityToken()) == true) continue;
+                                if (tree.HasAttachmentPoints(selectedPage.GetDataEntityToken())) continue;
 
                                 TreeFacade.AddPersistedAttachmentPoint(pageTypeTreeLink.TreeId, typeof(IPage), selectedPage.Id);
                                 treeviewRequiresRefreshing = true;
@@ -779,7 +779,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            if (string.IsNullOrEmpty(selectedPage.Title) == true)
+            if (string.IsNullOrEmpty(selectedPage.Title))
             {
                 this.ShowFieldMessage("SelectedPage.Title", "${Composite.Plugins.PageElementProvider, TitleMissingError}");
                 e.Result = false;

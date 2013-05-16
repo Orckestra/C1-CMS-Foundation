@@ -51,7 +51,7 @@ namespace Composite.Core.WebClient.UiControlLib
             {
                 oncommand += this.OnClientClick;
             }
-            if (this.AutoPostBack == true)
+            if (this.AutoPostBack)
             {
                 if (oncommand.Length > 0 && oncommand.Trim().EndsWith(";") == false)
                 {

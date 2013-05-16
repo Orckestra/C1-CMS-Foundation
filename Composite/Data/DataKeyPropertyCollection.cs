@@ -37,7 +37,7 @@ namespace Composite.Data
             if (keyPropertyName == null) throw new ArgumentNullException("keyPropertyName");
             if (value == null) throw new ArgumentNullException("value");
 
-            if (_keyProperties.ContainsKey(keyPropertyName) == true) throw new ArgumentException(string.Format("The key property name '{0}' has already been added", keyPropertyName));
+            if (_keyProperties.ContainsKey(keyPropertyName)) throw new ArgumentException(string.Format("The key property name '{0}' has already been added", keyPropertyName));
 
             _keyProperties.Add(keyPropertyName, value);
         }

@@ -29,7 +29,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MethodBasedFunctionProvide
 
             IMethodBasedFunctionInfo methodBasedFunctionInfo = (IMethodBasedFunctionInfo)token.Data;
 
-            if (DataFacade.WillDeleteSucceed(methodBasedFunctionInfo) == true)
+            if (DataFacade.WillDeleteSucceed(methodBasedFunctionInfo))
             {
                 DeleteTreeRefresher treeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
 

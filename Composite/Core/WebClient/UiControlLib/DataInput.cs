@@ -82,7 +82,7 @@ namespace Composite.Core.WebClient.UiControlLib
                 writer.AddAttribute("minlength", this.MinLength.ToString());
             }
 
-            if (this.AutoPostBack == true)
+            if (this.AutoPostBack)
             {
                 writer.AddAttribute("callbackid", this.ClientID);
                 writer.AddAttribute("onvaluechange", "this.dispatchAction ( PageBinding.ACTION_DOPOSTBACK )");

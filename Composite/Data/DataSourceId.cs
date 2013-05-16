@@ -232,7 +232,7 @@ namespace Composite.Data
                 (dic.ContainsKey("_dataScope_") == false) ||
                 (dic.ContainsKey("_localeScope_") == false))
             {
-                if (throwException == true)
+                if (throwException)
                 {
                     throw new ArgumentException("The serializedDataSourceId is not a serialized data source id", "serializedDataSourceId");
                 }
@@ -246,7 +246,7 @@ namespace Composite.Data
             string dataIdType = StringConversionServices.DeserializeValueString(dic["_dataIdType_"]);
 
             string providerName;
-            if (dic.ContainsKey("_providerName_") == true)
+            if (dic.ContainsKey("_providerName_"))
             {
                 providerName = StringConversionServices.DeserializeValueString(dic["_providerName_"]);
             }
@@ -332,7 +332,7 @@ namespace Composite.Data
         {
             InitializeTagInformation();
 
-            if (_tagInformation.ContainsKey(id) == true)
+            if (_tagInformation.ContainsKey(id))
             {
                 _tagInformation[id] = value;
             }
@@ -350,7 +350,7 @@ namespace Composite.Data
 
             InitializeTagInformation();
 
-            if (_tagInformation.ContainsKey(id) == true)
+            if (_tagInformation.ContainsKey(id))
             {
                 _tagInformation.Remove(id);
             }

@@ -74,7 +74,7 @@ namespace Composite.Core.Collections
 
         private NamespaceTreeBuilderFolder FindFolder(NamespaceTreeBuilderFolder currentFolder, Func<NamespaceTreeBuilderFolder, bool> predicate)
         {
-            if (predicate(currentFolder) == true) return currentFolder;
+            if (predicate(currentFolder)) return currentFolder;
 
             foreach (NamespaceTreeBuilderFolder subFolder in currentFolder.SubFolders)
             {

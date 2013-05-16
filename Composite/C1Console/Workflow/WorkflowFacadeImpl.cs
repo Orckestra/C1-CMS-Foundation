@@ -167,8 +167,8 @@ namespace Composite.C1Console.Workflow
 
                 SetWorkflowPersistingType(workflowType, workflowInstance.InstanceId);
 
-                if ((arguments.ContainsKey("SerializedEntityToken") == true) &&
-                    (arguments.ContainsKey("SerializedActionToken") == true))
+                if ((arguments.ContainsKey("SerializedEntityToken")) &&
+                    (arguments.ContainsKey("SerializedActionToken")))
                 {
                     ActionToken actionToken = ActionTokenSerializer.Deserialize((string)arguments["SerializedActionToken"]);
 
@@ -255,7 +255,7 @@ namespace Composite.C1Console.Workflow
                 _manualWorkflowSchedulerService.RunWorkflow(instanceId);
 
                 Exception exception;
-                if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception) == true)
+                if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception))
                 {
                     _resourceLocker.Resources.ExceptionFromWorkflow.Remove(Thread.CurrentThread.ManagedThreadId);
 
@@ -283,14 +283,14 @@ namespace Composite.C1Console.Workflow
                 if (AbortedWorkflows.Contains(instanceId)) return;
                 AbortedWorkflows.Add(instanceId);
 
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     var workflowInstance = WorkflowRuntime.GetWorkflow(instanceId);
 
                     workflowInstance.Abort();
                     
                     Exception exception;
-                    if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception) == true)
+                    if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception))
                     {
                         _resourceLocker.Resources.ExceptionFromWorkflow.Remove(Thread.CurrentThread.ManagedThreadId);
 
@@ -322,7 +322,7 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowPersistingTypeDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowPersistingTypeDictionary.ContainsKey(instanceId))
                 {
                     _resourceLocker.Resources.WorkflowPersistingTypeDictionary.Remove(instanceId);
                 }
@@ -333,7 +333,7 @@ namespace Composite.C1Console.Workflow
 
         private void AcquireLockIfNeeded(Type workflowType, Guid instanceId, string serializedEntityToken)
         {
-            if (HasEntityTokenLockAttribute(workflowType) == true)
+            if (HasEntityTokenLockAttribute(workflowType))
             {
                 EntityToken entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
@@ -345,7 +345,7 @@ namespace Composite.C1Console.Workflow
 
         private void AcquireLockIfNeeded(Type workflowType, Guid instanceId, EntityToken entityToken)
         {
-            if (HasEntityTokenLockAttribute(workflowType) == true)
+            if (HasEntityTokenLockAttribute(workflowType))
             {
                 AcquireLock(instanceId, entityToken);
             }
@@ -427,7 +427,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.FlowControllerServicesContainers.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.FlowControllerServicesContainers.ContainsKey(instanceId))
                 {
                     _resourceLocker.Resources.FlowControllerServicesContainers.Remove(instanceId);
                 }
@@ -493,7 +493,7 @@ namespace Composite.C1Console.Workflow
                             _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); ;
                         }
 
-                        if ((_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == false) && (newlyCreateOrLoaded == true))
+                        if ((_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == false) && (newlyCreateOrLoaded))
                         {
                             _resourceLocker.Resources.WorkflowStatusDictionary.Add(instanceId, WorkflowInstanceStatus.Idle);
                         }
@@ -598,7 +598,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FireSaveEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -613,7 +613,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FireSaveAndPublishEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -628,7 +628,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FireNextEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -643,7 +643,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FirePreviousEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -658,7 +658,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FireFinishEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -673,7 +673,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FireCancelEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -688,7 +688,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     _formsWorkflowEventService.FirePreviewEvent(new FormEventArgs(instanceId, bindings));
                 }
@@ -705,7 +705,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                 {
                     switch (customEventNumber)
                     {
@@ -739,7 +739,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(parentInstanceId) == true)
+                if (_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(parentInstanceId))
                 {
                     _formsWorkflowEventService.FireChildWorkflowDoneEvent(new FormEventArgs(parentInstanceId, workflowResult));
                 }
@@ -766,7 +766,7 @@ namespace Composite.C1Console.Workflow
             {
                 formData = null;
 
-                if (_resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData) == true)
+                if (_resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData))
                 {
                     return true;
                 }
@@ -797,7 +797,7 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.FormData.ContainsKey(instanceId) == true)
+                if (_resourceLocker.Resources.FormData.ContainsKey(instanceId))
                 {
                     _resourceLocker.Resources.FormData.Remove(instanceId);
                 }
@@ -925,7 +925,7 @@ namespace Composite.C1Console.Workflow
 
         private void InitializeWorkflowRuntime()
         {
-            if (WorkflowRuntimeProviderPluginFacade.HasConfiguration == true)
+            if (WorkflowRuntimeProviderPluginFacade.HasConfiguration)
             {
                 string providerName = WorkflowRuntimeProviderRegistry.DefaultWorkflowRuntimeProviderName;
 
@@ -1406,7 +1406,7 @@ namespace Composite.C1Console.Workflow
             {
                 string filename = Path.Combine(SerializedWorkflowsDirectory, string.Format("{0}.xml", instanceId));
 
-                if (C1File.Exists(filename) == true)
+                if (C1File.Exists(filename))
                 {
                     C1File.Delete(filename);
 
@@ -1521,17 +1521,17 @@ namespace Composite.C1Console.Workflow
 
                 foreach (Guid instanceId in instanceIds)
                 {
-                    if (resources.WorkflowStatusDictionary.ContainsKey(instanceId) == true)
+                    if (resources.WorkflowStatusDictionary.ContainsKey(instanceId))
                     {
                         resources.WorkflowStatusDictionary.Remove(instanceId);
                     }
 
-                    if (resources.FormData.ContainsKey(instanceId) == true)
+                    if (resources.FormData.ContainsKey(instanceId))
                     {
                         resources.FormData.Remove(instanceId);
                     }
 
-                    if (resources.FlowControllerServicesContainers.ContainsKey(instanceId) == true)
+                    if (resources.FlowControllerServicesContainers.ContainsKey(instanceId))
                     {
                         resources.FlowControllerServicesContainers.Remove(instanceId);
                     }

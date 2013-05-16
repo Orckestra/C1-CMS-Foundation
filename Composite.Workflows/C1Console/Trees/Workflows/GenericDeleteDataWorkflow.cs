@@ -59,7 +59,7 @@ namespace Composite.C1Console.Trees.Workflows
 
             IData data = ((DataEntityToken)this.EntityToken).Data;
 
-            if (DataFacade.WillDeleteSucceed(data) == true)
+            if (DataFacade.WillDeleteSucceed(data))
             {
                 ProcessControllerFacade.FullDelete(data);
 

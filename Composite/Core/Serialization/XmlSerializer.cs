@@ -50,7 +50,7 @@ namespace Composite.Core.Serialization
             XElement serializedObject;
             foreach (IValueXmlSerializer valueXmlSerializer in _valueXmlSerializers)
             {
-                if (valueXmlSerializer.TrySerialize(objectToSerializeType, objectToSerialize, this, out serializedObject) == true)
+                if (valueXmlSerializer.TrySerialize(objectToSerializeType, objectToSerialize, this, out serializedObject))
                 {
                     return serializedObject;
                 }
@@ -71,7 +71,7 @@ namespace Composite.Core.Serialization
             object deserializedObject;
             foreach (IValueXmlSerializer valueXmlSerializer in _valueXmlSerializers)
             {
-                if (valueXmlSerializer.TryDeserialize(serializedObject, this, out deserializedObject) == true)
+                if (valueXmlSerializer.TryDeserialize(serializedObject, this, out deserializedObject))
                 {
                     return deserializedObject;
                 }

@@ -180,7 +180,7 @@ namespace Composite.Core.Configuration
                 {
                     XDocument document = XDocumentUtils.Load(ConfigurationServices.FileConfigurationSourcePath);
 
-                    if (transformer(document) == true)
+                    if (transformer(document))
                     {
                         ValidateConfigurationFile(document);
 

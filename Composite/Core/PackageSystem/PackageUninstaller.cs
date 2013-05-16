@@ -32,10 +32,10 @@ namespace Composite.Core.PackageSystem
 
         public PackageUninstaller(string zipFilename, string uninstallFilename, string packageInstallationDirectory, string tempDirectory, bool flushOnCompletion, bool reloadConsoleOnCompletion, bool useTransaction, PackageInformation packageInformation)
         {
-            if (string.IsNullOrEmpty(zipFilename) == true) throw new ArgumentNullException("zipFilename");
-            if (string.IsNullOrEmpty(uninstallFilename) == true) throw new ArgumentNullException("uninstallFilename");
-            if (string.IsNullOrEmpty(packageInstallationDirectory) == true) throw new ArgumentNullException("packageInstallationDirectory");
-            if (string.IsNullOrEmpty(tempDirectory) == true) throw new ArgumentNullException("tempDirectory");
+            if (string.IsNullOrEmpty(zipFilename)) throw new ArgumentNullException("zipFilename");
+            if (string.IsNullOrEmpty(uninstallFilename)) throw new ArgumentNullException("uninstallFilename");
+            if (string.IsNullOrEmpty(packageInstallationDirectory)) throw new ArgumentNullException("packageInstallationDirectory");
+            if (string.IsNullOrEmpty(tempDirectory)) throw new ArgumentNullException("tempDirectory");
 
             this.ZipFilename = zipFilename;
             this.UninstallFilename = uninstallFilename;
@@ -90,7 +90,7 @@ namespace Composite.Core.PackageSystem
             {
                 if (systemLockingType == SystemLockingType.None)
                 {
-                    if (this.UseTransaction == true)
+                    if (this.UseTransaction)
                     {
                         DoUninstall();
                     }
@@ -111,7 +111,7 @@ namespace Composite.Core.PackageSystem
 
                     using (ApplicationOnlineHandlerFacade.TurnOffScope(isSoftSystemLocking))
                     {
-                        if (this.UseTransaction == true)
+                        if (this.UseTransaction)
                         {
                             DoUninstall();
                         }
@@ -155,7 +155,7 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> Initialize()
         {
-            if (_isInitialized == true) throw new InvalidOperationException("Initialize may only be called once");
+            if (_isInitialized) throw new InvalidOperationException("Initialize may only be called once");
             _isInitialized = true;
 
             List<PackageFragmentValidationResult> result1 = LoadPackageFragmentInstallerBinaries().ToList();
@@ -193,7 +193,7 @@ namespace Composite.Core.PackageSystem
         {
             string binariesDirectory = Path.Combine(this.PackageInstallationDirectory, PackageSystemSettings.BinariesDirectoryName);
 
-            if (C1Directory.Exists(binariesDirectory) == true)
+            if (C1Directory.Exists(binariesDirectory))
             {
                 foreach (string filename in C1Directory.GetFiles(binariesDirectory))
                 {

@@ -471,7 +471,7 @@ namespace Composite.C1Console.Trees
                      where d.InterfaceType == serializedInterfaceType && d.KeyValue == serializedKeyValue && d.TreeId == treeId
                      select d).Evaluate();
 
-                if (dataItemTreeAttachmentPoints.Any() == true)
+                if (dataItemTreeAttachmentPoints.Any())
                 {
                     DataFacade.Delete<IDataItemTreeAttachmentPoint>(dataItemTreeAttachmentPoints);
                     removed = true;
@@ -543,7 +543,7 @@ namespace Composite.C1Console.Trees
                     string treePath = Path.Combine(TreeDefinitionsFolder, attachmentPoint.TreeId);
                     if (C1File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
                     {
-                        if (DataFacade.WillDeleteSucceed(attachmentPoint) == true)
+                        if (DataFacade.WillDeleteSucceed(attachmentPoint))
                         {
                             Log.LogWarning("TreeFacade", string.Format("A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId));
                             DataFacade.Delete(attachmentPoint);
@@ -591,14 +591,14 @@ namespace Composite.C1Console.Trees
         {
             Type interfaceType = dataEventArgs.Data.DataSourceId.InterfaceType;
 
-            if ((typeof(IPublishControlled).IsAssignableFrom(interfaceType) == true) &&
+            if ((typeof(IPublishControlled).IsAssignableFrom(interfaceType)) &&
                 (dataEventArgs.Data.DataSourceId.DataScopeIdentifier.Equals(DataScopeIdentifier.Administrated) == false))
             {
                 return; // Only remove attachemnt point if its the admin version of a publishable data item that have been delete
             }
 
-            if ((typeof(ILocalizedControlled).IsAssignableFrom(interfaceType) == true) &&
-                (DataFacade.ExistsInAnyLocale(interfaceType, dataEventArgs.Data.DataSourceId.LocaleScope) == true))
+            if ((typeof(ILocalizedControlled).IsAssignableFrom(interfaceType)) &&
+                (DataFacade.ExistsInAnyLocale(interfaceType, dataEventArgs.Data.DataSourceId.LocaleScope)))
             {
                 return; // Data exists in other locales, so do not remove this attachment point
             }

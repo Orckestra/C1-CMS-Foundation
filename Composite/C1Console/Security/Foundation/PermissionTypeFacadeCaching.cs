@@ -84,7 +84,7 @@ namespace Composite.C1Console.Security.Foundation
 
             Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>> permissionTypeCache;
 
-            if (RequestLifetimeCache.HasKey(cachingKey) == true)
+            if (RequestLifetimeCache.HasKey(cachingKey))
             {
                 permissionTypeCache = RequestLifetimeCache.TryGet<Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>>>(cachingKey);
             }
@@ -120,7 +120,7 @@ namespace Composite.C1Console.Security.Foundation
 
             Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>> permissionTypeCache;
 
-            if (RequestLifetimeCache.HasKey(cachingKey) == true)
+            if (RequestLifetimeCache.HasKey(cachingKey))
             {
                 permissionTypeCache = RequestLifetimeCache.TryGet<Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>>>(cachingKey);
             }

@@ -46,7 +46,7 @@ namespace Composite.Core.PackageSystem
         {
             BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
 
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(1);
                 basicHttpBinding.OpenTimeout = TimeSpan.FromSeconds(1);
@@ -66,7 +66,7 @@ namespace Composite.Core.PackageSystem
                 basicHttpBinding.SendTimeout = TimeSpan.FromMinutes(1);
             }
 
-            if (LicenseServerUrl.StartsWith("https") == true)
+            if (LicenseServerUrl.StartsWith("https"))
             {
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
             }

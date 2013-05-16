@@ -34,7 +34,7 @@ namespace Composite.Core.PackageSystem
         internal PackageManagerUninstallProcess(IPackageUninstaller packageUninstaller, string packageInstallDirectory, SystemLockingType systemLockingType)
         {
             if (packageUninstaller == null) throw new ArgumentNullException("packageUninstaller");
-            if (string.IsNullOrEmpty(packageInstallDirectory) == true) throw new ArgumentNullException("packageInstallDirectory");
+            if (string.IsNullOrEmpty(packageInstallDirectory)) throw new ArgumentNullException("packageInstallDirectory");
 
             _packageUninstaller = packageUninstaller;
             _packageInstallDirectory = packageInstallDirectory;

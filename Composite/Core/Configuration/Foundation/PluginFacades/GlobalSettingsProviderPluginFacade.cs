@@ -324,7 +324,7 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 
             public static void Initialize(Resources resources)
             {
-                if ((RuntimeInformation.IsDebugBuild == true) &&
+                if ((RuntimeInformation.IsDebugBuild) &&
                             ((ConfigurationServices.ConfigurationSource == null) ||
                              (ConfigurationServices.ConfigurationSource.GetSection(GlobalSettingsProviderSettings.SectionName) == null)))
                 {

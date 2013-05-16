@@ -71,7 +71,7 @@ namespace Composite.Core.PackageSystem
             {
                 foreach (PackageDescriptor packageDescriptor in packageDescriptors)
                 {
-                    if (ValidatePackageDescriptor(packageDescriptor) == true)
+                    if (ValidatePackageDescriptor(packageDescriptor))
                     {
                         packageDescriptions.Add(new PackageDescription
                         {
@@ -204,7 +204,7 @@ namespace Composite.Core.PackageSystem
         {
             BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
 
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(1);
                 basicHttpBinding.OpenTimeout = TimeSpan.FromSeconds(1);
@@ -224,7 +224,7 @@ namespace Composite.Core.PackageSystem
                 basicHttpBinding.SendTimeout = TimeSpan.FromMinutes(1);
             }
 
-            if (packageServerUrl.StartsWith("https") == true)
+            if (packageServerUrl.StartsWith("https"))
             {
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
             }

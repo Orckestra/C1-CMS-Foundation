@@ -26,7 +26,7 @@ namespace Composite.C1Console.Actions.Foundation.PluginFacades
 
         public static IDataAction GetAction(string providerName, IDataActionId dataActionId)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (dataActionId == null) throw new ArgumentNullException("dataActionId");
 
             using (_resourceLocker.Locker)
@@ -39,7 +39,7 @@ namespace Composite.C1Console.Actions.Foundation.PluginFacades
 
         public static IEnumerable<IDataActionId> GetActionsByType(string providerName, Type dataInterfaceType)
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (dataInterfaceType == null) throw new ArgumentNullException("dataInterfaceType");
 
             using (_resourceLocker.Locker)
@@ -53,7 +53,7 @@ namespace Composite.C1Console.Actions.Foundation.PluginFacades
         public static Dictionary<DataSourceId, List<IDataActionId>> GetActionsByData<T>(string providerName, IQueryable<T> data)
             where T : class, IData
         {
-            if (string.IsNullOrEmpty(providerName) == true) throw new ArgumentNullException("providerName");
+            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (data == null) throw new ArgumentNullException("data");
 
             using (_resourceLocker.Locker)

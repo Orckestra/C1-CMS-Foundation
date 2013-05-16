@@ -75,7 +75,7 @@ namespace Composite.Core.WebClient
                 string scriptPath = scriptFilename.Replace("${root}", folderPath);
                 if (scriptPath.IndexOf("/scripts/source/page/") == -1)
                 {
-                    if (first == true)
+                    if (first)
                     {
                         first = false;
                     }

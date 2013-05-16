@@ -101,7 +101,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
         public ElementCompileTreeNode EvaluateElementCompileTreeNode(ElementCompileTreeNode element, List<PropertyCompileTreeNode> newProperties, string defaultOverloadPropertyName)
         {
-            if (true == CompilerGlobals.IsElementEmbeddedProperty(element))
+            if (CompilerGlobals.IsElementEmbeddedProperty(element))
             {
                 return HandleEmbeddedProperty(element, newProperties);
             }
@@ -152,9 +152,9 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
             foreach (ElementCompileTreeNode child in element.Children)
             {
-                if (CompilerGlobals.IsElementIfConditionTag(child) == true) conditionElement = child;
-                if (CompilerGlobals.IsElementIfWhenTrueTag(child) == true) whenTrueElement = child;
-                if (CompilerGlobals.IsElementIfWhenFalseTag(child) == true) whenFalseElement = child;
+                if (CompilerGlobals.IsElementIfConditionTag(child)) conditionElement = child;
+                if (CompilerGlobals.IsElementIfWhenTrueTag(child)) whenTrueElement = child;
+                if (CompilerGlobals.IsElementIfWhenFalseTag(child)) whenFalseElement = child;
             }
 
             if (conditionElement == null) throw new FormCompileException(string.Format("Missing condition tag ({0})", CompilerGlobals.IfCondition_TagName), element.XmlSourceNodeInformation);
@@ -167,7 +167,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
 
             object value;
-            if (conditionProducer.Condition == true)
+            if (conditionProducer.Condition)
             {
                 List<PropertyCompileTreeNode> newWhenTrueProperties = new List<PropertyCompileTreeNode>();
                 Evaluate(whenTrueElement, newWhenTrueProperties);
@@ -233,7 +233,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             {
                 BindingProducer bindingProducer = (BindingProducer)result;
 
-                if (string.IsNullOrEmpty(bindingProducer.name) == true) throw new FormCompileException("A binding declaraions is missing its name attribute", element.XmlSourceNodeInformation);
+                if (string.IsNullOrEmpty(bindingProducer.name)) throw new FormCompileException("A binding declaraions is missing its name attribute", element.XmlSourceNodeInformation);
 
                 if (_compileContext.RegistarBindingName(bindingProducer.name) == false) throw new FormCompileException(string.Format("Name binding name {0} is used twice which is not allowed", bindingProducer.name), element.XmlSourceNodeInformation);
 
@@ -246,7 +246,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
                 _compileContext.SetBindingType(bindingProducer.name, type);
             }
-            else if ((true == _withDebug) && (result is IUiControl))
+            else if ((_withDebug) && (result is IUiControl))
             {
                 IUiControl uiControl = result as IUiControl;
 
@@ -266,7 +266,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
                 foreach (CompileContext.IRebinding rd in _compileContext.Rebindings)
                 {
-                    if (true == ReferenceEquals(uiControl, rd.SourceProducer))
+                    if (ReferenceEquals(uiControl, rd.SourceProducer))
                     {
                         debug.Bindings.Add(new DebugUiControl.BindingInformation(
                             rd.BindingObjectName,

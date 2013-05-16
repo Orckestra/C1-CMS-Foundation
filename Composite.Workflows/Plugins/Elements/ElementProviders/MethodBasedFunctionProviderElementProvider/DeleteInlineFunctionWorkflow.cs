@@ -24,7 +24,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
         {
             IInlineFunction function = GetDataItemFromEntityToken<IInlineFunction>();
 
-            if (DataFacade.WillDeleteSucceed(function) == true)
+            if (DataFacade.WillDeleteSucceed(function))
             {
                 DeleteTreeRefresher treeRefresher = this.CreateDeleteTreeRefresher(this.EntityToken);
 

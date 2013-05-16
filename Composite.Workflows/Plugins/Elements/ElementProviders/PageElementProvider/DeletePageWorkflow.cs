@@ -124,7 +124,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 List<CultureInfo> cultures = DataLocalizationFacade.ActiveLocalizationCultures.ToList();
                 cultures.Remove(selectedPage.DataSourceId.LocaleScope);
 
-                if (hasSubPages == true)
+                if (hasSubPages)
                 {
                     List<IPage> pagesToDelete = selectedPage.GetSubChildren().ToList();
 

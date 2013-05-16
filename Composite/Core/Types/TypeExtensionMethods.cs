@@ -131,7 +131,7 @@ namespace Composite.Core.Types
         {
             foreach (Type interfaceType in type.GetInterfaces())
             {
-                if ((predicate == null) || (predicate(interfaceType) == true))
+                if ((predicate == null) || (predicate(interfaceType)))
                 {
                     if (interfaces.Contains(interfaceType) == false)
                     {
@@ -269,7 +269,7 @@ namespace Composite.Core.Types
 
         private static void GetCustomAttributesRecursively(Type type, List<Attribute> foundAttributes, string propertyName, List<Type> typesChecked, bool examineInterfacesOnly)
         {
-            if (typesChecked.Contains(type) == true)
+            if (typesChecked.Contains(type))
             {
                 return;
             }
@@ -282,7 +282,7 @@ namespace Composite.Core.Types
 
             if (propertyName == null)
             {
-                if (examineInterfacesOnly == false || type.IsInterface == true)
+                if (examineInterfacesOnly == false || type.IsInterface)
                 {
                     attributes =
                         from attr in type.GetCustomAttributes(true)
@@ -325,7 +325,7 @@ namespace Composite.Core.Types
         /// <exclude />
         public static string GetShortLabel(this Type type)
         {
-            if (type.IsGenericType == true)
+            if (type.IsGenericType)
             {
                 string genericUglyName = type.Name;
 

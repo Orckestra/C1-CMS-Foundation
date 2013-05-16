@@ -331,7 +331,7 @@ namespace Composite.Core.WebClient.Setup
         private static SetupSoapClient CreateClient()
         {
             BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-            if (RuntimeInformation.IsDebugBuild == true)
+            if (RuntimeInformation.IsDebugBuild)
             {
                 basicHttpBinding.CloseTimeout = TimeSpan.FromMinutes(2);
                 basicHttpBinding.OpenTimeout = TimeSpan.FromMinutes(2);
@@ -349,7 +349,7 @@ namespace Composite.Core.WebClient.Setup
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
             string url = PackageServerUrl;
-            if (PackageServerUrl.StartsWith("https://") == true)
+            if (PackageServerUrl.StartsWith("https://"))
             {
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
 
