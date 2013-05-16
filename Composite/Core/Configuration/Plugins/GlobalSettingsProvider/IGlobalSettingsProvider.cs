@@ -30,6 +30,8 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
 
         string TempDirectory { get; }
 
+        string CacheDirectory { get; }
+
         string PackageDirectory { get; }
 
         string AutoPackageInstallDirectory { get; }

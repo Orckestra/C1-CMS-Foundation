@@ -135,3 +135,5 @@ Changes in 4.0
 - Added pageTemplateFeaturesDirectory="~/App_Data/PageTemplateFeatures" to global configuration  
 - Changed VirtualElementProvider configuration
 - Adding "Composite.Data.Foundation.ProcessControllerConfiguration" section
+- GlobalSettings: adding cacheDirectory="~/App_Data/Composite/Cache" 
+- GlobalSettings: renaming cachePath -> resourceCacheDirectory

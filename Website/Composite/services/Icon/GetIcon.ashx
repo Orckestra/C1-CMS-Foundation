@@ -99,7 +99,7 @@ public class GetIcon : IHttpHandler
     private string GetCachePathForFile(HttpContext context, ResourceHandle resourceHandle, IconSize iconSize)
     {        
         string fileName = string.Format("{0}.{1}.{2}.png", resourceHandle.ResourceNamespace, resourceHandle.ResourceName, iconSize);
-        string relativePath = Path.Combine(GlobalSettingsFacade.ResourceCacheSettings.CachePath, fileName);
+        string relativePath = Path.Combine(GlobalSettingsFacade.ResourceCacheSettings.ResourceCacheDirectory, fileName);
         return context.Server.MapPath(relativePath);
     }
     
@@ -156,7 +156,7 @@ public class GetIcon : IHttpHandler
             if (_folderExistanceChecked == false)
             {
                 // ensure cache folder exists
-                string folderPath = context.Server.MapPath(GlobalSettingsFacade.ResourceCacheSettings.CachePath);
+                string folderPath = context.Server.MapPath(GlobalSettingsFacade.ResourceCacheSettings.ResourceCacheDirectory);
                 if (C1Directory.Exists(folderPath) == false)
                 {
                     C1Directory.CreateDirectory(folderPath);

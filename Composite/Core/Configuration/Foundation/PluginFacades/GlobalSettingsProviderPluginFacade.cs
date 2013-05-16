@@ -14,7 +14,8 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
 {
     internal sealed class GlobalSettingsProviderPluginFacade
     {
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
+        private static readonly ResourceLocker<Resources> _resourceLocker = 
+            new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
 
 
 
@@ -129,7 +130,15 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
                 return UseReaderLock(provider => provider.TempDirectory);
             }
         }
+        
 
+        public static string CacheDirectory
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.CacheDirectory);
+            }
+        }
 
 
         public static string PackageDirectory

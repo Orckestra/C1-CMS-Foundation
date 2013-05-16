@@ -7,7 +7,7 @@ namespace Composite.Core.Configuration
     public interface IResourceCacheSettings
     {
         /// <exclude />
-        string CachePath { get; set; }
+        string ResourceCacheDirectory { get; set; }
         
         /// <exclude />
         int ServerCacheMinutes { get; set; }

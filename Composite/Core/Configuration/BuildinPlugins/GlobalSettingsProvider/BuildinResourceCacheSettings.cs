@@ -4,15 +4,15 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
 {
     internal sealed class BuildinResourceCacheSettings : IResourceCacheSettings
     {
-        private string _cachePath = "~";
+        private string _resourceCacheDirectory = "~";
         private int _serverCacheMinutes = 0;
         private int _clientCacheMinutes = 0;
 
 
-        public string CachePath
+        public string ResourceCacheDirectory
         {
-            get { return _cachePath; }
-            set { _cachePath = value;  }
+            get { return _resourceCacheDirectory; }
+            set { _resourceCacheDirectory = value;  }
         }
 
 

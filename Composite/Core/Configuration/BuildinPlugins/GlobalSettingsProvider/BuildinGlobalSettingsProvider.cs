@@ -17,6 +17,7 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         private string _appCodeDirectory = "App_Code";
         private string _binDirectory = "~";
         private string _tempDirectory = "~/Temp";
+        private string _cacheDirectory = "~/Cache/Startup";
         private string _packageDirectory = "~/Packages";
         private string _autoPackageInstallDirectory = "~/AutoInstallPackages";
         private string _treeDefinitionsDirectory = "~/TreeDefinitions";
@@ -107,6 +108,13 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
             {
                 return _tempDirectory;
             }
+        }
+
+
+
+        public string CacheDirectory
+        {
+            get { return _cacheDirectory; }
         }
 
 

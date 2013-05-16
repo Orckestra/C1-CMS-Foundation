@@ -189,6 +189,15 @@ namespace Composite.Core.Configuration
         }
 
 
+        /// <exclude />
+        public static string CacheDirectory
+        {
+            get
+            {
+                return _globalSettingsFacade.CacheDirectory;
+            }
+        }
+
 
         /// <exclude />
         public static string PackageDirectory
@@ -422,7 +431,6 @@ namespace Composite.Core.Configuration
                 return _globalSettingsFacade.OnlyTranslateWhenApproved;
             }
         }
-
 
         /// <summary>
         /// The maximum number of characters the path to the application root (like 'C:\InetPub\MySite') can contain.

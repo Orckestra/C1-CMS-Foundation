@@ -65,7 +65,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
     public sealed class AttributeBasedApplicationStartupHandler : IApplicationStartupHandler
     {
         private static readonly string LogTitle = typeof (AttributeBasedApplicationStartupHandler).Name;
-        private static readonly string TempFileName = "StartupHandlersCache.xml";
+        private static readonly string CacheFileName = "StartupHandlersCache.xml";
 
         private readonly List<MethodInfo> _onBeforeInitializeMethods = new List<MethodInfo>();
         private readonly List<MethodInfo> _onInitializedMethods = new List<MethodInfo>();
@@ -81,7 +81,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             };
         private static XmlSerializer _xmlSerializer;
 
-        private string _tempFilePath;
+        private string _cacheFilePath;
 
 
         /// <exclude />
@@ -162,7 +162,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         private List<AssemblyInfo> GetCachedAssemblyInfo()
         {
             var result = new List<AssemblyInfo>();
-            if (!File.Exists(TempFilePath))
+            if (!File.Exists(CacheFilePath))
             {
                 return result;
             }
@@ -170,7 +170,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             SubscribedTypesCache cached;
             try
             {
-                using (var fileStream = File.Open(TempFilePath, FileMode.Open))
+                using (var fileStream = File.Open(CacheFilePath, FileMode.Open))
                 {
                     cached = GetSerializer().Deserialize(fileStream) as SubscribedTypesCache;
                 }
@@ -179,7 +179,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if(ex is IOException || ex is UnauthorizedAccessException)
                 {
-                    Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
+                    Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(CacheFilePath));
                     Log.LogError(LogTitle, ex);
                     return result;
                 }
@@ -192,7 +192,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
                 if(innerEx is XmlException || innerEx is SerializationException)
                 {
-                    Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(TempFilePath));
+                    Log.LogWarning(LogTitle, "Failed to deserialize file '{0}'".FormatWith(CacheFilePath));
                     Log.LogError(LogTitle, ex);
                     return result;
                 }
@@ -322,16 +322,16 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             {
                 if(root == null)
                 {
-                    File.Delete(TempFilePath);
+                    File.Delete(CacheFilePath);
                 }
                 else
                 {
-                    if (!C1Directory.Exists(TempDirectoryPath))
+                    if (!C1Directory.Exists(CacheDirectoryPath))
                     {
-                        C1Directory.CreateDirectory(TempDirectoryPath);
+                        C1Directory.CreateDirectory(CacheDirectoryPath);
                     }
 
-                    using (var fileStream = File.Open(TempFilePath, FileMode.Create))
+                    using (var fileStream = File.Open(CacheFilePath, FileMode.Create))
                     {
                         GetSerializer().Serialize(fileStream, root);
                     }
@@ -339,7 +339,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
             }
             catch (UnauthorizedAccessException)
             {
-                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(TempFilePath));
+                Log.LogWarning(LogTitle, "Failed to open file '{0}'".FormatWith(CacheFilePath));
             }
         }
 
@@ -403,25 +403,25 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
         }
 
 
-        private static string TempDirectoryPath
+        private static string CacheDirectoryPath
         {
             get
             {
-                return PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
+                return PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory);
             }
         }
 
 
-        private string TempFilePath
+        private string CacheFilePath
         {
             get
             {
-                if (_tempFilePath == null)
+                if (_cacheFilePath == null)
                 {
-                    _tempFilePath = Path.Combine(TempDirectoryPath, TempFileName);
+                    _cacheFilePath = Path.Combine(CacheDirectoryPath, CacheFileName);
                 }
                 
-                return _tempFilePath;
+                return _cacheFilePath;
             }
         }
 

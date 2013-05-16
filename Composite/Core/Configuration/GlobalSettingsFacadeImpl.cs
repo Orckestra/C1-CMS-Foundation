@@ -8,8 +8,8 @@ namespace Composite.Core.Configuration
 {
     internal sealed class GlobalSettingsFacadeImpl : IGlobalSettingsFacade
     {
-        private List<string> _addedNonProbableAssemblyNames = new List<string>();
-        private object _lock = new object();
+        private readonly List<string> _addedNonProbableAssemblyNames = new List<string>();
+        private readonly object _lock = new object();
 
 
         public string ApplicationName
@@ -126,6 +126,15 @@ namespace Composite.Core.Configuration
             }
         }
 
+
+
+        public string CacheDirectory
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.CacheDirectory;
+            }
+        }
 
 
         public string PackageDirectory
@@ -329,7 +338,5 @@ namespace Composite.Core.Configuration
         }
 
         #endregion
-
-
     }
 }

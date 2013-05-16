@@ -28,7 +28,7 @@ namespace Composite.Core.Application
         {
             string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
 
-            if (C1Directory.Exists(tempDirectoryName) == false)
+            if (!C1Directory.Exists(tempDirectoryName))
             {
                 C1Directory.CreateDirectory(tempDirectoryName);
             }
@@ -38,37 +38,41 @@ namespace Composite.Core.Application
         /// <exclude />
         public static void OnApplicationEnd()
         {
+            // Deleting everything this is older than 24 hours
             string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
 
-            if (C1Directory.Exists(tempDirectoryName) == true)
+            if (!C1Directory.Exists(tempDirectoryName))
             {
-                foreach (string filename in C1Directory.GetFiles(tempDirectoryName))
+                return;
+            }
+
+            var temporaryFileExpirationSpan = TimeSpan.FromHours(24.0);
+
+            foreach (string filename in C1Directory.GetFiles(tempDirectoryName))
+            {
+                try
                 {
-                    try
+                    if (DateTime.Now > C1File.GetLastWriteTime(filename) + temporaryFileExpirationSpan)
                     {
-                        if (C1File.GetCreationTime(filename) > DateTime.Now + TimeSpan.FromHours(24.0))
-                        {
-                            C1File.Delete(filename);
-                        }
-                    }
-                    catch (Exception)
-                    {
+                        C1File.Delete(filename);
                     }
                 }
-
-                foreach (string directoryPath in C1Directory.GetDirectories(tempDirectoryName))
+                catch 
                 {
-                    try
-                    {
+                }
+            }
 
-                        if (C1Directory.GetCreationTime(directoryPath) > DateTime.Now + TimeSpan.FromHours(24.0))
-                        {
-                            C1Directory.Delete(directoryPath, true);
-                        }
-                    }
-                    catch (Exception)
+            foreach (string directoryPath in C1Directory.GetDirectories(tempDirectoryName))
+            {
+                try
+                {
+                    if (DateTime.Now > C1Directory.GetCreationTime(directoryPath) + temporaryFileExpirationSpan)
                     {
+                        C1Directory.Delete(directoryPath, true);
                     }
+                }
+                catch 
+                {
                 }
             }
         }

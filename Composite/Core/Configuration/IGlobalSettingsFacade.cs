@@ -18,6 +18,7 @@ namespace Composite.Core.Configuration
         string BinDirectory { get; }
         string AppCodeDirectory { get; }
         string TempDirectory { get; }
+        string CacheDirectory { get; }
         string PackageDirectory { get; }
         string AutoPackageInstallDirectory { get; }
         string TreeDefinitionsDirectory { get; }

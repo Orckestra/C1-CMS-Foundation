@@ -101,6 +101,11 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
+        public string CacheDirectory
+        {
+            get { return _configurationData.CacheDirectory; }
+        }
+        
 
         public string PackageDirectory
         {
@@ -152,7 +157,7 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get
             {
-                return new ConfigResourceCacheSettings(_configurationData.CachePath, _configurationData.ServerCacheMinutes, _configurationData.ClientCacheMinutes);
+                return new ConfigResourceCacheSettings(_configurationData.ResourceCacheDirectory, _configurationData.ServerCacheMinutes, _configurationData.ClientCacheMinutes);
             }
         }
 
@@ -270,20 +275,20 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
 
     internal class ConfigResourceCacheSettings : IResourceCacheSettings
     {
-        private readonly string _cachePath;
+        private readonly string _resourceCacheDirectory;
         private readonly int _serverChacheMinutes;
         private readonly int _clientCacheinutes;
 
-        internal ConfigResourceCacheSettings(string cachePath, int serverCacheMinutes, int clientCacheMinutes)
+        internal ConfigResourceCacheSettings(string resourceCacheDirectory, int serverCacheMinutes, int clientCacheMinutes)
         {
-            _cachePath = cachePath;
+            _resourceCacheDirectory = resourceCacheDirectory;
             _serverChacheMinutes = serverCacheMinutes;
             _clientCacheinutes = clientCacheMinutes;
         }
 
-        public string CachePath
+        public string ResourceCacheDirectory
         {
-            get { return _cachePath; }
+            get { return _resourceCacheDirectory; }
             set { throw new NotSupportedException(GetType().ToString()); }
         }
 
@@ -410,8 +415,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
             get { return (string)base[_tempDirectoryPropertyName]; }
             set { base[_tempDirectoryPropertyName] = value; }
         }
-
-
+        
+        private const string _cacheDrectoryPropertyName = "cacheDirectory";
+        [ConfigurationProperty(_cacheDrectoryPropertyName, DefaultValue = "~/App_Data/Composite/Cache")]
+        public string CacheDirectory
+        {
+            get { return (string)base[_cacheDrectoryPropertyName]; }
+            set { base[_cacheDrectoryPropertyName] = value; }
+        }
 
         private const string _packageDirectoryPropertyName = "packageDirectory";
         [ConfigurationProperty(_packageDirectoryPropertyName, DefaultValue = "~")]
@@ -482,16 +493,16 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
         
 
-        private const int A_DAY_IN_MINUTES = 1440;
-        private const int A_WEEK_IN_MINUTES = 10080;
+        private const int A_DAY_IN_MINUTES = 24*60;
+        private const int A_WEEK_IN_MINUTES = 7*24*60;
 
 
-        private const string _cachePathProperty = "cachePath";
-        [ConfigurationProperty(_cachePathProperty, IsRequired = true)]
-        public string CachePath
+        private const string _resourceCacheDirectory = "resourceCacheDirectory";
+        [ConfigurationProperty(_resourceCacheDirectory, IsRequired = true)]
+        public string ResourceCacheDirectory
         {
-            get { return (string)base[_cachePathProperty]; }
-            set { base[_cachePathProperty] = value; }
+            get { return (string)base[_resourceCacheDirectory]; }
+            set { base[_resourceCacheDirectory] = value; }
         }
 
 
