@@ -197,10 +197,13 @@ namespace Composite.C1Console.Trees.Foundation
                     case "System":
                         attachingPoint = AttachingPoint.SystemPerspective;
                         break;
-
-                    default:
+                    case null:
+                    case "":
                         tree.AddValidationError(nameAttribute.GetXPath(), "TreeValidationError.AutoAttachments.UnknownAttachmentPoint", nameAttribute.Value);
                         attachingPoint = null;
+                        break;
+                    default:
+                        attachingPoint = AttachingPoint.VirtualElementAttachingPoint(nameAttribute.Value);
                         break;
                 }
 

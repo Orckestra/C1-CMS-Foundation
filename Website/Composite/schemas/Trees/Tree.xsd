@@ -27,21 +27,7 @@
     <xs:annotation>
       <xs:documentation xml:lang="en-us">Name of the perspective</xs:documentation>
     </xs:annotation>
-    <xs:attribute name="Name" use="required">
-      <xs:simpleType>
-        <xs:restriction base="xs:string">
-          <xs:enumeration value="Content" />
-          <xs:enumeration value="Content.WebsiteItems" />
-          <xs:enumeration value="Media" />
-          <xs:enumeration value="Layout" />
-          <xs:enumeration value="Function" />
-          <xs:enumeration value="Data" />
-          <xs:enumeration value="User" />
-          <xs:enumeration value="System" />
-          <xs:enumeration value="PerspectivesRoot" />
-        </xs:restriction>
-      </xs:simpleType>
-    </xs:attribute>
+    <xs:attribute name="Name" use="required" type="AttachmentPointName" />
     <xs:attribute name="Position" use="optional" default="Top">
       <xs:simpleType>
         <xs:restriction base="xs:string">
@@ -52,6 +38,29 @@
     </xs:attribute>
   </xs:complexType>
 
+  <xs:simpleType name="AttachmentPointName">
+    <xs:union memberTypes="BuildInAttachmentPointName CustomAttachmentPointName" />
+  </xs:simpleType>
+
+    <xs:simpleType name="BuildInAttachmentPointName">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Content" />
+      <xs:enumeration value="Content.WebsiteItems" />
+      <xs:enumeration value="Media" />
+      <xs:enumeration value="Layout" />
+      <xs:enumeration value="Function" />
+      <xs:enumeration value="Data" />
+      <xs:enumeration value="User" />
+      <xs:enumeration value="System" />
+      <xs:enumeration value="PerspectivesRoot" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CustomAttachmentPointName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z.]+" />
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:complexType name="ElementStructure.AllowedAttachmentsType">
     <xs:annotation>
