@@ -32,7 +32,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 File.Delete(TemporaryFilePath);
             }
 
-            string tempFile = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory),  "upload" + DateTime.UtcNow.Ticks);
+            string tempFile = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory),  "upload" + Path.GetRandomFileName());
 
             this.TemporaryFilePath = tempFile;
             this.TemporaryFileStream = File.Open(tempFile, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
