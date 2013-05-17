@@ -55,7 +55,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             AddGetHashCodeMethod(declaration);
 
 
-            foreach (DataFieldDescriptor field in _dataTypeDescriptor.Fields.Where(f => _dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)))
+            foreach (DataFieldDescriptor field in _dataTypeDescriptor.KeyFields)
             {
                 AddProperty(declaration, field.Name, field.InstanceType);
             }
@@ -72,7 +72,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             {
                 Dictionary<string, Type> result = new Dictionary<string, Type>();
 
-                foreach (DataFieldDescriptor field in _dataTypeDescriptor.Fields.Where(f => _dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)))
+                foreach (DataFieldDescriptor field in _dataTypeDescriptor.KeyFields)
                 {
                     result.Add(field.Name, field.InstanceType);
                 }

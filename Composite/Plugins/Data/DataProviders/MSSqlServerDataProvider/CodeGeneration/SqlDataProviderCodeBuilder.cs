@@ -54,7 +54,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             // Property serializer for entity tokens and more
             string dataIdClassFullName = NamesCreator.MakeDataIdClassFullName(dataTypeDescriptor, _providerName);
-            Dictionary<string, Type> serializerProperties = dataTypeDescriptor.Fields.Where(f => dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)).ToDictionary(f => f.Name, f => f.InstanceType);
+            Dictionary<string, Type> serializerProperties = dataTypeDescriptor.KeyFields.ToDictionary(f => f.Name, f => f.InstanceType);
             PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, dataIdClassFullName, serializerProperties);
         }
 

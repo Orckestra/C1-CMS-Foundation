@@ -131,7 +131,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             //    propertyMappings.Add(field.Name, field.Name);
             //}
 
-            foreach (DataFieldDescriptor field in dataTypeDescriptor.Fields.Where(f => dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)))
+            foreach (DataFieldDescriptor field in dataTypeDescriptor.KeyFields)
             {
                 keyInfo.Add(field.Name, field.InstanceType);
             }

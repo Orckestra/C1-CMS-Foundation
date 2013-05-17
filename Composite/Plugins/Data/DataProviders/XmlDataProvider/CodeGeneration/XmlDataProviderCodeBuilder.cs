@@ -44,7 +44,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             codeTypeDeclarations.ForEach(f => _codeGenerationBuilder.AddType(_namespaceName, f));
 
             // Property serializer for entity tokens and more
-            Dictionary<string, Type> serializerProperties = dataTypeDescriptor.Fields.Where(f => dataTypeDescriptor.KeyPropertyNames.Contains(f.Name)).ToDictionary(f => f.Name, f => f.InstanceType);
+            Dictionary<string, Type> serializerProperties = dataTypeDescriptor.KeyFields.ToDictionary(f => f.Name, f => f.InstanceType);
             PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, codeGenerator.DataIdClassFullName, serializerProperties);
             
             _codeGenerationBuilder.AddReference(interfaceType.Assembly);

@@ -125,6 +125,14 @@ namespace Composite.Data.DynamicTypes
         /// <summary>The fields (aka properties or columns) of the type.</summary>
         public DataFieldDescriptorCollection Fields { get; set; }
 
+        internal IEnumerable<DataFieldDescriptor> KeyFields
+        {
+            get
+            {
+                return this.KeyPropertyNames.Select(fieldName => this.Fields.Single(field => field.Name == fieldName));
+            }
+        } 
+
 
         /// <summary>The short name of the type, without namespace and assembly info</summary>
         public string Name
@@ -349,9 +357,7 @@ namespace Composite.Data.DynamicTypes
             get
             {
                 return
-                    this.DataAssociations.
-                    Where(f => f.AssociatedInterfaceType == typeof(IPage) && f.AssociationType == DataAssociationType.Aggregation).
-                    Any();
+                    this.DataAssociations.Any(f => f.AssociatedInterfaceType == typeof(IPage) && f.AssociationType == DataAssociationType.Aggregation);
             }
         }
 
@@ -362,9 +368,7 @@ namespace Composite.Data.DynamicTypes
             get
             {
                 return
-                    this.DataAssociations.
-                    Where(f => f.AssociatedInterfaceType == typeof(IPage) && f.AssociationType == DataAssociationType.Composition).
-                    Any();
+                    this.DataAssociations.Any(f => f.AssociatedInterfaceType == typeof(IPage) && f.AssociationType == DataAssociationType.Composition);
             }
         }
 
@@ -389,11 +393,11 @@ namespace Composite.Data.DynamicTypes
                 if (this.DataScopes.Count == 0) throw new InvalidOperationException("The DataScopes list containing the list of data scopes this type must support can not be empty. Please provide at least one data scopes.");
                 if (this.DataScopes.Select(f => f.Name).Distinct().Count() != this.DataScopes.Count) throw new InvalidOperationException("The DataScopes list contains redundant data scopes");
 
-                if (this.DataScopes.Where(f => f.Equals(DataScopeIdentifier.PublicName)).Count() > 0)
+                if (this.DataScopes.Any(f => f.Equals(DataScopeIdentifier.PublicName)))
                 {
                     foreach (PropertyInfo propertyInfo in typeof(IPublishControlled).GetProperties())
                     {
-                        if (this.Fields.Where(f => f.Name == propertyInfo.Name).Count() == 0)
+                        if (!this.Fields.Any(f => f.Name == propertyInfo.Name))
                         {
                             throw new InvalidOperationException(string.Format("DataScope '{0}' require you to implement '{1}' and a field named '{2} is missing", DataScopeIdentifier.Public, typeof(IPublishControlled), propertyInfo.Name));
                         }
@@ -405,7 +409,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (this.LabelFieldName != null)
                 {
-                    if (this.Fields.Where(f => f.Name == this.LabelFieldName).Count() == 0)
+                    if (!this.Fields.Where(f => f.Name == this.LabelFieldName).Any())
                     {
                         throw new InvalidOperationException(string.Format("The label field name '{0}' is not an existing field", this.LabelFieldName));
                     }
@@ -657,7 +661,7 @@ namespace Composite.Data.DynamicTypes
 
                 string propertyName = keyPropertyNameAttribute.Value;
 
-                bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Where(f => f.GetProperty(propertyName) != null).Any();
+                bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Any(f => f.GetProperty(propertyName) != null);
                 if (!isDefinedOnSuperInterface)
                 {
                     dataTypeDescriptor.KeyPropertyNames.Add(propertyName);
@@ -702,10 +706,8 @@ namespace Composite.Data.DynamicTypes
             {
                 return this.Name;
             }
-            else
-            {
-                return string.Format("{0}.{1}", this.Namespace, this.Name);
-            }
+
+            return string.Format("{0}.{1}", this.Namespace, this.Name);
         }
     }
 
