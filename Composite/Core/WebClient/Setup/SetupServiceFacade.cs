@@ -139,6 +139,8 @@ namespace Composite.Core.WebClient.Setup
             }
             catch (Exception ex)
             {
+                Log.LogCritical(LogTitle, ex);
+                Log.LogWarning(LogTitle, "First time setup failed - could not download, install package or otherwise complete the setup.");
                 RegisterSetup(setupRegisrtatoinDescription.ToString(), ex.ToString());
 
                 if (RuntimeInformation.IsDebugBuild)
