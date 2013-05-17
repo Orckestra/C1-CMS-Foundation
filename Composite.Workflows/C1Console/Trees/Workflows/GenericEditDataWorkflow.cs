@@ -174,13 +174,9 @@ namespace Composite.C1Console.Trees.Workflows
 
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
-                bool published = PublishIfNeeded(data);
+                PublishIfNeeded(data);
 
-                // Removing double refresh when doing a save'n'publish
-                if (!published)
-                {
-                    updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
-                }
+                updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
             }
 
             SetSaveStatus(isValid);

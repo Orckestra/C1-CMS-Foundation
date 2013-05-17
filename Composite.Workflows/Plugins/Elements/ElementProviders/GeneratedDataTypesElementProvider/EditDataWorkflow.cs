@@ -141,13 +141,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
-                bool published = PublishIfNeeded(data);
+                PublishIfNeeded(data);
 
-                // Removing double refresh when doing a save'n'publish
-                if (!published)
-                {
-                    updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
-                }
+                updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
             }
             
             SetSaveStatus(isValid);
