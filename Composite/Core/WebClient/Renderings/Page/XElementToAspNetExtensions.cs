@@ -104,7 +104,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 {
                     control = new HtmlGenericControl(element.Name.LocalName);
                     control.ClientIDMode = ClientIDMode.Static;
-                    CopyAttributes(element, (HtmlControl)control);
+                    CopyAttributes(element, (HtmlControl)control, true);
                     ExportChildNodes(element.Nodes(), control, controlMapper);
                 }
                 else
@@ -212,10 +212,15 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+        /// <exclude />
+        public static void CopyAttributes(this XElement source, HtmlControl target)
+        {
+            CopyAttributes(source, target, false);
+        }
 
 
         /// <exclude />
-        public static void CopyAttributes(this XElement source, HtmlControl target)
+        public static void CopyAttributes(this XElement source, HtmlControl target, bool copyXmlNamespaceAttribute)
         {
             foreach (var attribute in source.Attributes())
             {
@@ -239,7 +244,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 string localName = attribute.Name.LocalName;
-                if (localName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
+                if (localName != "xmlns" 
+                    || (copyXmlNamespaceAttribute 
+                        &&  (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace)))
                 {
                     string htmlAttributeName;
 
