@@ -88,6 +88,7 @@ namespace Composite.Core.Xml
                 new NamespaceName { Name = "frame", Namespace = "" }, 
                 new NamespaceName { Name = "img", Namespace = "" }, 
                 new NamespaceName { Name = "area", Namespace = "" }, 
+                new NamespaceName { Name = "meta", Namespace = "" }, 
                 new NamespaceName { Name = "link", Namespace = "" }, 
                 new NamespaceName { Name = "col", Namespace = "" }, 
                 new NamespaceName { Name = "base", Namespace = "" }, 
