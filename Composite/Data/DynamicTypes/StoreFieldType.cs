@@ -8,9 +8,8 @@ using Composite.Core.Serialization;
 namespace Composite.Data.DynamicTypes
 {
     /// <summary>    
+    /// Describe a field on a Composite C1 data type, see <see cref="DataTypeDescriptor"/>.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable()]
     public sealed class StoreFieldType
     {
@@ -25,33 +24,56 @@ namespace Composite.Data.DynamicTypes
         public static int NumericPrecisionMaximum { get { return 28; } }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a string.
+        /// </summary>
+        /// <param name="maximumLength">String maximum length</param>
+        /// <returns></returns>
         public static StoreFieldType String(int maximumLength) { return new StoreFieldType(PhysicalStoreFieldType.String, maximumLength); }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a int.
+        /// </summary>
         public static StoreFieldType Integer { get { return new StoreFieldType(PhysicalStoreFieldType.Integer); } }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a long.
+        /// </summary>
         public static StoreFieldType Long { get { return new StoreFieldType(PhysicalStoreFieldType.Long); } }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a decimal.
+        /// </summary>
+        /// <param name="precision">precision</param>
+        /// <param name="scale">scale</param>
+        /// <returns></returns>
         public static StoreFieldType Decimal(int precision, int scale) { return new StoreFieldType(PhysicalStoreFieldType.Decimal, precision, scale); }
 
-        /// <exclude />        
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a DateTime.
+        /// </summary>
         public static StoreFieldType DateTime { get { return new StoreFieldType(PhysicalStoreFieldType.DateTime); } }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a string with unlimited length.
+        /// </summary>
         public static StoreFieldType LargeString { get { return new StoreFieldType(PhysicalStoreFieldType.LargeString); } }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a bool.
+        /// </summary>
         public static StoreFieldType Boolean { get { return new StoreFieldType(PhysicalStoreFieldType.Boolean); } }
 
-        /// <exclude />
+        /// <summary>
+        /// Builds a <see cref="StoreFieldType"/> describing a Guid.
+        /// </summary>
         public static StoreFieldType Guid { get { return new StoreFieldType(PhysicalStoreFieldType.Guid); } }
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The type of physical store for this field
+        /// </summary>
         public PhysicalStoreFieldType PhysicalStoreType
         {
             get;
@@ -60,29 +82,43 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is a string.
+        /// </summary>
         public bool IsString { get { return this.PhysicalStoreType == PhysicalStoreFieldType.String || this.PhysicalStoreType == PhysicalStoreFieldType.LargeString; } }
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is a string of unlimited length.
+        /// </summary>
         public bool IsLargeString { get { return this.PhysicalStoreType == PhysicalStoreFieldType.LargeString; } }
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is a decimal.
+        /// </summary>
         public bool IsDecimal { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Decimal; } }
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is a DateTime.
+        /// </summary>
         public bool IsDateTime { get { return this.PhysicalStoreType == PhysicalStoreFieldType.DateTime; } }
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is a Guid.
+        /// </summary>
         public bool IsGuid { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Guid; } }
 
         /// <exclude />
         public bool IsNumeric { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Decimal || this.PhysicalStoreType == PhysicalStoreFieldType.Long || this.PhysicalStoreType == PhysicalStoreFieldType.Integer; } }
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is a boolean.
+        /// </summary>
         public bool IsBoolean { get { return this.PhysicalStoreType == PhysicalStoreFieldType.Boolean; } }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Maximum length of string. This field is only used for string.
+        /// </summary>
         public int MaximumLength
         {
             get
@@ -103,7 +139,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Numeric precision of decimal. This field is only used for decimal.
+        /// </summary>
         public int NumericPrecision
         {
             get
@@ -124,7 +162,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Numeric scale of decimal. This field is only used for decimal.
+        /// </summary>
         public int NumericScale
         {
             get
@@ -145,7 +185,11 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Evaluate if one field type can safely change to another type.
+        /// </summary>
+        /// <param name="newStoreFieldType">New store field type</param>
+        /// <returns>True is conversion is allowed.</returns>
         public bool IsConvertibleTo(StoreFieldType newStoreFieldType)
         {
             if (this.PhysicalStoreType == newStoreFieldType.PhysicalStoreType) return true;

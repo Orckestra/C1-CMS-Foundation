@@ -11,8 +11,6 @@ namespace Composite.Data.DynamicTypes
 {
     /// <summary>    
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable()]
     public sealed class DefaultValue : IComparable
     {
@@ -20,33 +18,67 @@ namespace Composite.Data.DynamicTypes
         private DefaultValueType _valueType;
 
 
-        /// <exclude />
+        /// <summary>
+        /// String default value
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue String(string defaultValue) { return new DefaultValue(defaultValue); }
 
-        /// <exclude />
+        /// <summary>
+        /// Int default value
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue Integer(int defaultValue) { return new DefaultValue(defaultValue); }
 
-        /// <exclude />
+        /// <summary>
+        /// Demimal default value
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue Decimal(decimal defaultValue) { return new DefaultValue(defaultValue); }
 
-        /// <exclude />
+        /// <summary>
+        /// Bool default value
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue Boolean(bool defaultValue) { return new DefaultValue(defaultValue); }
 
-        /// <exclude />
+        /// <summary>
+        /// DateTime default value
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue DateTime(DateTime defaultValue) { return new DefaultValue(defaultValue); }
 
-        /// <exclude />
+        /// <summary>
+        /// Guid default value
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue Guid(Guid defaultValue) { return new DefaultValue(defaultValue); }
 
-        /// <exclude />
+        /// <summary>
+        /// 'Now' as a default value (time stamp)
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue Now { get { return new DefaultValue(DefaultValueType.DateTimeNow); } }
 
-        /// <exclude />
+        /// <summary>
+        /// New Guid as default value. Generate a new unique Guid.
+        /// </summary>
+        /// <param name="defaultValue">value</param>
+        /// <returns></returns>
         public static DefaultValue NewGuid { get { return new DefaultValue(DefaultValueType.NewGuid); } }
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The default value.
+        /// </summary>
         public object Value
         {
             get
@@ -66,7 +98,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Type of the default value
+        /// </summary>
         public DefaultValueType ValueType { get { return _valueType; } }
 
 

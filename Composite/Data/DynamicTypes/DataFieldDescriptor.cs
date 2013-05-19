@@ -7,10 +7,9 @@ using Composite.Core.Types;
 
 namespace Composite.Data.DynamicTypes
 {
-    /// <summary>    
+    /// <summary>
+    /// Describe a field on a <see cref="DataTypeDescriptor"/>.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable()]
     [DebuggerDisplay("Name = {Name}, Inherited = {Inherited}")]
     public sealed class DataFieldDescriptor
@@ -23,7 +22,13 @@ namespace Composite.Data.DynamicTypes
         private Guid _id;
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
+        /// <param name="id">Permanent unique id for this field. This should never change.</param>
+        /// <param name="name">Name (programmatic) of field.</param>
+        /// <param name="storeType">Type to use when storing field.</param>
+        /// <param name="instanceType">Type to use when field is exposed to .NET.</param>
         public DataFieldDescriptor(Guid id, string name, StoreFieldType storeType, Type instanceType)
             : this(id, name, storeType, instanceType, false)
         {
@@ -38,7 +43,14 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Constructs a new instance.
+        /// </summary>
+        /// <param name="id">Permanent unique id for this field. This should never change.</param>
+        /// <param name="name">Name (programmatic) of field </param>
+        /// <param name="storeType">Type to use when storing field</param>
+        /// <param name="instanceType">Type to use when field is exposed to .NET</param>
+        /// <param name="inherited">True when this field is inherited from a super interface.</param>
         public DataFieldDescriptor(Guid id, string name, StoreFieldType storeType, Type instanceType, bool inherited)
         {
             _id = id;
@@ -52,19 +64,28 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Position, relative to other fields.
+        /// </summary>
         public int Position { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// For grouping (ex. tree views), the priority of this field, relative to other fields. Lowest number gets grouped first. 
+        /// 0 means no grouping on this field.
+        /// </summary>
         public int GroupByPriority { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Describe how this field should be edited in a form view
+        /// </summary>
         public DataFieldFormRenderingProfile FormRenderingProfile { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Describe how this field should influence ordering of items in a tree view
+        /// </summary>
         public DataFieldTreeOrderingProfile TreeOrderingProfile { get; set; }
 
 
@@ -74,11 +95,15 @@ namespace Composite.Data.DynamicTypes
         public string ForeignKeyReferenceTypeName { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The CLR type of the field.
+        /// </summary>
         public Type InstanceType { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Programmatic name of the field.
+        /// </summary>
         public string Name
         {
             get { return _name; }
@@ -86,14 +111,18 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Permanent unique id for the field. This should never change.
+        /// </summary>
         public Guid Id
         {
             get { return _id; }
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Describe how this field should be sored physically.
+        /// </summary>
         public StoreFieldType StoreType
         {
             get { return _storeType; }
@@ -106,7 +135,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Default value for the field, to be used for the physical store. See also <see cref="NewInstanceDefaultFieldValue"/>
+        /// </summary>
         public DefaultValue DefaultValue
         {
             get
@@ -122,7 +153,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field can be NULL
+        /// </summary>
         public bool IsNullable
         {
             get { return _isNullable; }
@@ -144,7 +177,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when this field is inherited from a super interface.
+        /// </summary>
         public bool Inherited
         {
             get;
@@ -153,7 +188,9 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when data in this field can not be changed.
+        /// </summary>
         public bool IsReadOnly
         {
             get;
@@ -162,7 +199,9 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Function markup that can deliver validators for this field. They will execute and valudate if values set on this field is valid.
+        /// </summary>
         public List<string> ValidationFunctionMarkup
         {
             get;
@@ -171,7 +210,9 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Default value to set on new instances of this field.
+        /// </summary>
         public string NewInstanceDefaultFieldValue
         {
             get;
@@ -180,7 +221,10 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Create a clone of this field.
+        /// </summary>
+        /// <returns>The clone.</returns>
         public DataFieldDescriptor Clone()
         {
             DataFieldDescriptor dataFieldDescriptor = new DataFieldDescriptor(this.Id, this.Name, this.StoreType, this.InstanceType);
@@ -204,7 +248,10 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Serialize this field description XML.
+        /// </summary>
+        /// <returns>Serialized field descriptor.</returns>
         public XElement ToXml()
         {
             XElement element = new XElement("DataFieldDescriptor");
@@ -276,7 +323,11 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Deserialize a <see cref="DataFieldDescriptor"/>.
+        /// </summary>
+        /// <param name="element">Deserialized DataFieldDescriptor</param>
+        /// <returns></returns>
         public static DataFieldDescriptor FromXml(XElement element)
         {
             if (element.Name != "DataFieldDescriptor") throw new ArgumentException("The xml is not correctly formattet");

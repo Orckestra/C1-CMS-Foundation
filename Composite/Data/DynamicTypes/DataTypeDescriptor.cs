@@ -16,9 +16,8 @@ using Composite.Data.Types;
 namespace Composite.Data.DynamicTypes
 {
     /// <summary>    
+    /// Describes a data type in Composite C1
     /// </summary>
-    /// <exclude />
-    [EditorBrowsable(EditorBrowsableState.Never)]
     [DebuggerDisplay("Type name = {Namespace + '.' + Name}")]
     public class DataTypeDescriptor
     {
@@ -30,7 +29,9 @@ namespace Composite.Data.DynamicTypes
         private List<DataTypeAssociationDescriptor> _dataTypeAssociationDescriptors = new List<DataTypeAssociationDescriptor>();
 
 
-        /// <exclude />
+        /// <summary>
+        /// Instanciates an instance of <see cref="DataTypeDescriptor"/> with default settings.
+        /// </summary>
         public DataTypeDescriptor()
         {
             this.Fields = new DataFieldDescriptorCollection(this);
@@ -41,7 +42,13 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Instanciates an instance of <see cref="DataTypeDescriptor"/>.
+        /// </summary>
+        /// <param name="dataTypeId">The permanent Guid which should represent this data type.</param>
+        /// <param name="dataTypeNamespace">Namespace of the type.</param>
+        /// <param name="dataTypeName">Name of the type.</param>
+        /// <param name="isCodeGenerated">True if this type is dynamically compiled.</param>
         public DataTypeDescriptor(Guid dataTypeId, string dataTypeNamespace, string dataTypeName, bool isCodeGenerated)
             : this()
         {
@@ -52,7 +59,13 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Instanciates an instance of <see cref="DataTypeDescriptor"/> with a custom Type Manager.
+        /// </summary>
+        /// <param name="dataTypeId">The permanent Guid which should represent this data type.</param>
+        /// <param name="dataTypeNamespace">Namespace of the type.</param>
+        /// <param name="dataTypeName">Name of the type.</param>
+        /// <param name="typeManagerTypeName">If this data type has a custom type manager</param>
         public DataTypeDescriptor(Guid dataTypeId, string dataTypeNamespace, string dataTypeName, string typeManagerTypeName)
             : this()
         {
@@ -64,7 +77,14 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Instanciates an instance of <see cref="DataTypeDescriptor"/> with a custom Type Manager.
+        /// </summary>
+        /// <param name="dataTypeId">The permanent Guid which should represent this data type.</param>
+        /// <param name="dataTypeNamespace">Namespace of the type.</param>
+        /// <param name="dataTypeName">Name of the type.</param>
+        /// <param name="typeManagerTypeName">If this data type has a custom type manager</param>
+        /// <param name="isCodeGenerated">True if this type is dynamically compiled.</param>
         public DataTypeDescriptor(Guid dataTypeId, string dataTypeNamespace, string dataTypeName, string typeManagerTypeName, bool isCodeGenerated)
             : this()
         {
@@ -76,7 +96,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data types permant id.
+        /// </summary>
         public Guid DataTypeId
         {
             get
@@ -92,11 +114,16 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Primary keys.
+        /// </summary>
         public DataFieldNameCollection KeyPropertyNames { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Returns the CLT Type for this data type description.
+        /// </summary>
+        /// <returns></returns>
         public Type GetInterfaceType()
         {
             if (this.TypeManagerTypeName == null)
@@ -105,12 +132,13 @@ namespace Composite.Data.DynamicTypes
             }
 
             return DataTypeTypesManager.GetDataType(this);
-            //return TypeManager.GetType(this.TypeManagerTypeName);
         }
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Type name of the Type Manager responsible for this data type.
+        /// </summary>
         public string TypeManagerTypeName { get; set; }
 
 
@@ -142,7 +170,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data types namespace 
+        /// </summary>
         public string Namespace
         {
             get
@@ -157,12 +187,16 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data types title
+        /// </summary>
         public string Title { get; set; }
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// The name of field to use when labeling data of this type.
+        /// </summary>
         public string LabelFieldName
         {
             get
@@ -176,13 +210,20 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// True if the interface code for this type is created via code generation. False for statically compiled types.
+        /// </summary>
         public bool IsCodeGenerated { get; private set; }
 
-        /// <exclude />
+        /// <summary>
+        /// When true data of this type may be cached.
+        /// </summary>
         public bool Cachable { get; internal set; }
 
-        /// <exclude />
+
+        /// <summary>
+        /// When true this type has a physical sortorder specified.
+        /// </summary>
         public bool HasCustomPhysicalSortOrder
         {
             get
@@ -198,11 +239,15 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// The data scopes this data type exist in. Typically always "public". Also "administrated" if this type supports publishing.
+        /// </summary>
         public List<DataScopeIdentifier> DataScopes { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// When true data can be localized.
+        /// </summary>
         public bool Localizeable
         {
             get
@@ -212,7 +257,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Type name for custom handler to use when building new instances of the data type.
+        /// </summary>
         public string BuildNewHandlerTypeName
         {
             get;
@@ -220,7 +267,10 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Adds an interface the data type should inherit from
+        /// </summary>
+        /// <param name="interfaceType"></param>
         public void AddSuperInterface(Type interfaceType)
         {
             if ((_superInterfaces.Contains(interfaceType) == false) && (interfaceType != typeof(IData)))
@@ -277,7 +327,10 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Removes a super interface
+        /// </summary>
+        /// <param name="interfaceType">Type to remove</param>
         public void RemoveSuperInterface(Type interfaceType)
         {
             if (interfaceType == typeof(IData))
@@ -324,7 +377,9 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// All interfaces this data type inherit from
+        /// </summary>
         public IEnumerable<Type> SuperInterfaces
         {
             get
@@ -335,7 +390,9 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Attached a associated to another data type, like page meta data or page folder data.
+        /// </summary>
         public List<DataTypeAssociationDescriptor> DataAssociations
         {
             get
@@ -351,7 +408,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when the data type is associated to Composite C1 pages as an agregation
+        /// </summary>
         public bool IsPageFolderDataType
         {
             get
@@ -362,7 +421,9 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// True when the data type is associated to Composite C1 pages as an composition
+        /// </summary>
         public bool IsPageMetaDataType
         {
             get
@@ -373,14 +434,20 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <summary>
+        /// Resets the list of interfaces this data type inherit from
+        /// </summary>
+        /// <param name="superInterfaces"></param>
         internal void SetSuperInterfaces(List<Type> superInterfaces)
         {
             _superInterfaces = superInterfaces;
         }
 
 
-
-        internal void Validate()
+        /// <summary>
+        /// Validate the data type description or throw an exception.
+        /// </summary>
+        public void Validate()
         {
             try
             {
@@ -442,7 +509,10 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Clones the data type descriotion.
+        /// </summary>
+        /// <returns>A clone</returns>
         public DataTypeDescriptor Clone()
         {
             DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(this.DataTypeId, this.Namespace, this.Name, this.TypeManagerTypeName, this.IsCodeGenerated);
@@ -492,7 +562,10 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Serialize the data type descriotion to XML
+        /// </summary>
+        /// <returns>Serialized data type descriptor</returns>
         public XElement ToXml()
         {
             XElement element = new XElement("DataTypeDescriptor");
@@ -549,7 +622,11 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Deserialized a data type descriptor
+        /// </summary>
+        /// <param name="element">A serialized (XML) data type descriptor</param>
+        /// <returns>De-serialized data type descriptor</returns>
         public static DataTypeDescriptor FromXml(XElement element)
         {
             if (element == null) throw new ArgumentNullException("element");

@@ -15,8 +15,6 @@ namespace Composite.Core.Types
     /// usage which is when the Composite.Generated.dll is compiled. This is done through the implementation
     /// and adding of the interface <see cref="ICodeProvider"/> and <see cref="CodeGenerationManager"/>.
     /// </summary>
-    /// <exclude />
-    [EditorBrowsable(EditorBrowsableState.Never)]
     public class CodeGenerationBuilder
     {
         private readonly Dictionary<string, CodeNamespace> _namespaces = new Dictionary<string, CodeNamespace>();
@@ -30,7 +28,6 @@ namespace Composite.Core.Types
         /// Creates a new instance.
         /// </summary>
         /// <param name="debugLabel">This label will be used for logging when compiling the types.</param>
-        /// <exclude />
         public CodeGenerationBuilder(string debugLabel = null)
         {
             DebugLabel = debugLabel ?? "";
@@ -42,7 +39,6 @@ namespace Composite.Core.Types
         /// Adds a referenced assembly to be used in the compilation.
         /// </summary>
         /// <param name="assembly">The referenced assembly.</param>
-        /// <exclude />
         public void AddReference(Assembly assembly)
         {
             AddReference(assembly.Location);
@@ -54,7 +50,6 @@ namespace Composite.Core.Types
         /// Adds a referenced assembly to be used in the compilation.
         /// </summary>
         /// <param name="assemblyLocation">The location of the referenced assembly.</param>
-        /// <exclude />
         public void AddReference(string assemblyLocation)
         {
             if (!_assemblyLocations.Contains(assemblyLocation, StringComparer.InvariantCultureIgnoreCase))
@@ -69,7 +64,6 @@ namespace Composite.Core.Types
         /// Adds a code namespace containing types to compile.
         /// </summary>
         /// <param name="codeNamespace">Code namespace to add.</param>
-        /// <exclude />
         public void AddNamespace(CodeNamespace codeNamespace)
         {
             CodeNamespace existingCodeNamespace;
@@ -91,7 +85,6 @@ namespace Composite.Core.Types
         /// </summary>
         /// <param name="namespaceName">Namespace to add the type to.</param>
         /// <param name="codeTypeDeclaration">Type declaration to compile.</param>
-        /// <exclude />
         public void AddType(string namespaceName, CodeTypeDeclaration codeTypeDeclaration)
         {
             AddTypes(namespaceName, new[] { codeTypeDeclaration });
@@ -105,7 +98,6 @@ namespace Composite.Core.Types
         /// </summary>
         /// <param name="namespaceName"></param>
         /// <param name="codeTypeDeclarations"></param>
-        /// <exclude />
         public void AddTypes(string namespaceName, IEnumerable<CodeTypeDeclaration> codeTypeDeclarations)
         {
             CodeNamespace codeNamespace;
@@ -147,8 +139,7 @@ namespace Composite.Core.Types
         /// <summary>
         /// Added assembly locations
         /// </summary>
-        /// <exclude />
-        internal IEnumerable<string> AssemblyLocations
+        public IEnumerable<string> AssemblyLocations
         {
             get
             {
@@ -161,8 +152,7 @@ namespace Composite.Core.Types
         /// <summary>
         /// Added namespaces
         /// </summary>
-        /// <exclude />
-        internal IEnumerable<CodeNamespace> Namespaces
+        public IEnumerable<CodeNamespace> Namespaces
         {
             get
             {

@@ -23,8 +23,6 @@ namespace Composite.Core.Types
     /// <summary>
     /// Handles all dynamic type compilations and the generation of Composite.Generated.dll
     /// </summary>
-    /// <exclude />
-    [EditorBrowsable(EditorBrowsableState.Never)]
     internal static class CodeGenerationManager
     {
         public const string LogTitle = "CodeGenerationManager";
@@ -344,6 +342,8 @@ namespace Composite.Core.Types
 
 
 
+        /// <summary>
+        /// </summary>
         internal static string TempAssemblyFolderPath
         {
             get
@@ -354,6 +354,8 @@ namespace Composite.Core.Types
 
 
 
+        /// <summary>
+        /// </summary>
         internal static string BinFolder
         {
             get
@@ -364,6 +366,8 @@ namespace Composite.Core.Types
 
 
 
+        /// <summary>
+        /// </summary>
         internal static string CompositeGeneratedFileName
         {
             get
@@ -374,6 +378,8 @@ namespace Composite.Core.Types
 
 
 
+        /// <summary>
+        /// </summary>
         internal static string CompositeGeneratedAssemblyPath
         {
             get

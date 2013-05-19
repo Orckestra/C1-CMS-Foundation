@@ -17,7 +17,10 @@ using System.Reflection;
 
 namespace Composite.Data.GeneratedTypes
 {
-    internal static class InterfaceCodeGenerator
+    /// <summary>
+    /// Will generate data interfaces given <see cref="DataTypeDescriptor"/>.
+    /// </summary>
+    public static class InterfaceCodeGenerator
     {
         private static readonly ResourceLocker<Resources> ResourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
 
@@ -28,8 +31,12 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
-
-        internal static void AddAssemblyReferences(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
+        /// <summary>
+        /// Adds the assembly references required by the supplied <see cref="DataTypeDescriptor"/> to the supplied  <see cref="CodeGenerationBuilder"/>
+        /// </summary>
+        /// <param name="codeGenerationBuilder">Assembly refences is added to this builder</param>
+        /// <param name="dataTypeDescriptor">Data type descriptor which may contain references to assemblies</param>
+        public static void AddAssemblyReferences(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
             foreach (Assembly assembly in GetReferencedAssemblies(dataTypeDescriptor))
             {
@@ -38,8 +45,12 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
-
-        internal static void AddInterfaceTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
+        /// <summary>
+        /// Adds the source code defined by <see cref="DataTypeDescriptor"/> to the supplied  <see cref="CodeGenerationBuilder"/>
+        /// </summary>
+        /// <param name="codeGenerationBuilder">Source code is added to this builder</param>
+        /// <param name="dataTypeDescriptor">Data type descriptor to convert into source code</param>
+        public static void AddInterfaceTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
             CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor);
 
@@ -57,8 +68,12 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
-
-        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
+        /// <summary>
+        /// Given a <see cref="DataTypeDescriptor"/> creates a interface declaration inheriting from IData, a valid C1 Datatype.
+        /// </summary>
+        /// <param name="dataTypeDescriptor">A description of the data type to generate interface for</param>
+        /// <returns>The gerenated interface<</returns>
+        public static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
         {
             try
             {
