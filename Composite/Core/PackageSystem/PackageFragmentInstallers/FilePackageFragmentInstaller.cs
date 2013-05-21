@@ -5,13 +5,11 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Logging;
-using Composite.Core.ResourceSystem;
-using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data;
 using System.Reflection;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
@@ -30,15 +28,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Files").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Files") > 1)
             {
-                validationResult.AddFatal(GetText("FilePackageFragmentInstaller.OnlyOneFilesElement"), this.ConfigurationParent);
+                validationResult.AddFatal(Texts.FilePackageFragmentInstaller_OnlyOneFilesElement, this.ConfigurationParent);
                 return validationResult;
             }
 
-            if (this.Configuration.Where(f => f.Name == "Directories").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Directories") > 1)
             {
-                validationResult.AddFatal(GetText("FilePackageFragmentInstaller.OnlyOneDirectoriesElement"), this.ConfigurationParent);
+                validationResult.AddFatal(Texts.FilePackageFragmentInstaller_OnlyOneDirectoriesElement, this.ConfigurationParent);
                 return validationResult;
             }
 
@@ -57,13 +55,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (sourceFilenameAttribute == null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("sourceFilename"), fileElement); 
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingAttribute("sourceFilename"), fileElement); 
                         continue;
                     }
 
                     if (targetFilenameAttribute == null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("targetFilename"), fileElement); 
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingAttribute("targetFilename"), fileElement); 
                         continue;
                     }
 
@@ -74,71 +72,59 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (deleteTargetDirectoryAttribute != null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.DeleteTargetDirectoryNotAllowed"), fileElement);
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_DeleteTargetDirectoryNotAllowed, fileElement);
                         continue;
                     }
 
                     bool allowOverwrite = false;
-                    if (allowOverwriteAttribute != null)
+                    if (!ParseBoolAttribute(allowOverwriteAttribute, validationResult, ref allowOverwrite))
                     {
-                        if (allowOverwriteAttribute.TryGetBoolValue(out allowOverwrite) == false)
-                        {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.WrongAttributeBoolFormat"), allowOverwriteAttribute);
-                            continue;
-                        }
-                    }
-
-                    bool loadAssembly = false;
-                    if (assemblyLoadAttribute != null)
-                    {
-                        if (assemblyLoadAttribute.TryGetBoolValue(out loadAssembly) == false)
-                        {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.WrongAttributeBoolFormat"), assemblyLoadAttribute);
-                            continue;
-                        }
-                    }
-
-                    bool onlyUpdate = false;
-                    if (onlyUpdateAttribute != null)
-                    {
-                        if (onlyUpdateAttribute.TryGetBoolValue(out onlyUpdate) == false)
-                        {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.WrongAttributeBoolFormat"), onlyUpdateAttribute);
-                            continue;
-                        }
-                    }
-
-                    string sourceFilename = sourceFilenameAttribute.Value;
-                    if (this.InstallerContext.ZipFileSystem.ContainsFile(sourceFilename) == false)
-                    {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingFile").FormatWith(sourceFilename), sourceFilenameAttribute);
                         continue;
                     }
 
-                    if ((loadAssembly) && (onlyUpdate))
+                    bool loadAssembly = false;
+                    if (!ParseBoolAttribute(assemblyLoadAttribute, validationResult, ref loadAssembly))
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.OnlyUpdateNotAllowedWithLoadAssemlby"), onlyUpdateAttribute);
+                        continue;
+                    }
+
+                    bool onlyUpdate = false;
+                    if (!ParseBoolAttribute(onlyUpdateAttribute, validationResult, ref onlyUpdate))
+                    {
+                        continue;
+                    }
+
+                    string sourceFilename = sourceFilenameAttribute.Value;
+                    if (!this.InstallerContext.ZipFileSystem.ContainsFile(sourceFilename))
+                    {
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingFile(sourceFilename), sourceFilenameAttribute);
+                        continue;
+                    }
+
+                    if (loadAssembly && onlyUpdate)
+                    {
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_OnlyUpdateNotAllowedWithLoadAssemlby, onlyUpdateAttribute);
                         continue;
                     }
 
                     string targetFilename = PathUtil.Resolve(targetFilenameAttribute.Value);
                     if (C1File.Exists(targetFilename))
                     {
-                        if ((allowOverwrite == false) && (onlyUpdate == false))
+                        if (!allowOverwrite && !onlyUpdate)
                         {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.FileExists").FormatWith(targetFilename), targetFilenameAttribute);
+                            validationResult.AddFatal(Texts.FilePackageFragmentInstaller_FileExists(targetFilename), targetFilenameAttribute);
                             continue;
                         }
 
-                        if (((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0) && (allowOverwrite == false))
+                        if (((C1File.GetAttributes(targetFilename) & FileAttributes.ReadOnly) > 0) && !allowOverwrite)
                         {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.FileReadOnly").FormatWith(targetFilename), targetFilenameAttribute);
+                            validationResult.AddFatal(Texts.FilePackageFragmentInstaller_FileReadOnly(targetFilename), targetFilenameAttribute);
                             continue;
                         }
                     }
                     else if (onlyUpdate)
                     {
-                        LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Skipping updating of the file '{0}' because it does not exist", targetFilename));
+                        Log.LogVerbose("FilePackageFragmentInstaller", string.Format("Skipping updating of the file '{0}' because it does not exist", targetFilename));
                         continue; // Target file does not, so skip this
                     }
 
@@ -172,13 +158,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (sourceDirectoryAttribute == null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("sourceDirectory"), directoryElement); 
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingAttribute("sourceDirectory"), directoryElement); 
                         continue;
                     }
 
                     if (targetDirectoryAttribute == null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("targetDirectory"), directoryElement); 
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingAttribute("targetDirectory"), directoryElement); 
                         continue;
                     }
 
@@ -190,41 +176,33 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (assemblyLoadAttribute != null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.AssemblyLoadNotAllowed"), directoryElement);
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_AssemblyLoadNotAllowed, directoryElement);
                         continue;
                     }
 
                     if (onlyUpdateAttribute != null)
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.OnlyUpdateNotAllowed"), directoryElement);
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_OnlyUpdateNotAllowed, directoryElement);
                         continue;
                     }
 
 
                     bool allowOverwrite = false;
-                    if (allowOverwriteAttribute != null)
+                    if (!ParseBoolAttribute(allowOverwriteAttribute, validationResult, ref allowOverwrite))
                     {
-                        if (allowOverwriteAttribute.TryGetBoolValue(out allowOverwrite) == false)
-                        {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.WrongAttributeBoolFormat"), allowOverwriteAttribute);
-                            continue;
-                        }
+                        continue;
                     }
 
                     bool deleteTargetDirectory = false;
-                    if (deleteTargetDirectoryAttribute != null)
+                    if (!ParseBoolAttribute(deleteTargetDirectoryAttribute, validationResult, ref deleteTargetDirectory))
                     {
-                        if (deleteTargetDirectoryAttribute.TryGetBoolValue(out deleteTargetDirectory) == false)
-                        {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.WrongAttributeBoolFormat"), deleteTargetDirectoryAttribute);
-                            continue;
-                        }
+                        continue;
                     }
 
                     string sourceDirectory = sourceDirectoryAttribute.Value;
-                    if (this.InstallerContext.ZipFileSystem.ContainsDirectory(sourceDirectory) == false)
+                    if (!this.InstallerContext.ZipFileSystem.ContainsDirectory(sourceDirectory))
                     {
-                        validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingDirectory").FormatWith(sourceDirectory), sourceDirectoryAttribute);
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingDirectory(sourceDirectory), sourceDirectoryAttribute);
                         continue;
                     }
 
@@ -248,9 +226,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                         string targetFilename = Path.Combine(targetDirectory, resolvedSourceFilename);
 
-                        if ((C1File.Exists(targetFilename)) && (deleteTargetDirectory == false) && (allowOverwrite == false))
+                        if (C1File.Exists(targetFilename) && !deleteTargetDirectory && !allowOverwrite)
                         {
-                            validationResult.AddFatal(GetText("FilePackageFragmentInstaller.FileExists").FormatWith(targetFilename), targetDirectoryAttribute);
+                            validationResult.AddFatal(Texts.FilePackageFragmentInstaller_FileExists(targetFilename), targetDirectoryAttribute);
                             continue;
                         }
 
@@ -275,15 +253,24 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return validationResult;
         }
 
-        private static string GetText(string stringId)
+        private static bool ParseBoolAttribute(XAttribute attribute, List<PackageFragmentValidationResult> validationResult,
+                                               ref bool resultValue)
         {
-            return GetResourceString(stringId);
+            if (attribute == null) return true;
+            
+            if (!attribute.TryGetBoolValue(out resultValue))
+            {
+                validationResult.AddFatal(Texts.FilePackageFragmentInstaller_WrongAttributeBoolFormat, attribute);
+                return false;
+            }
+            
+            return true;
         }
 
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            if (_filesToCopy == null) throw new InvalidOperationException("FilePackageFragmentInstaller has not been validated");
+            Verify.IsNotNull(_filesToCopy, "FilePackageFragmentInstaller has not been validated");
 
             foreach (string directoryToDelete in _directoriesToDelete)
             {
@@ -293,15 +280,17 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             List<XElement> fileElements = new List<XElement>();
             foreach (FileToCopy fileToCopy in _filesToCopy)
             {
-                LoggingService.LogVerbose("FilePackageFragmentInstaller", string.Format("Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath));
+                Log.LogVerbose("FilePackageFragmentInstaller", "Installing the file '{0}' to the target filename '{1}'", fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
 
                 string targetDirectory = Path.GetDirectoryName(fileToCopy.TargetFilePath);
-                if (Directory.Exists(targetDirectory) == false)
+                if (!Directory.Exists(targetDirectory))
                 {
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                if ((C1File.Exists(fileToCopy.TargetFilePath) && ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0) && (fileToCopy.AllowOverwrite)))
+                if (C1File.Exists(fileToCopy.TargetFilePath)
+                    && fileToCopy.AllowOverwrite
+                    && ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0))
                 {
                     FileUtils.RemoveReadOnly(fileToCopy.TargetFilePath);
                 }
@@ -322,7 +311,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             yield return new XElement("Files", fileElements);
         }
-
 
 
         private sealed class FileToCopy

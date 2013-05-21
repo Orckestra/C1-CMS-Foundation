@@ -4,7 +4,8 @@ using System.Xml.Linq;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-    internal static class PackageFragmentValidationExtension
+    /// <exclude />
+    public static class PackageFragmentValidationExtension
     {
         internal static void AddFatal(this IList<PackageFragmentValidationResult> validationResults, Exception exception)
         {
