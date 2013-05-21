@@ -110,6 +110,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             folder = DataFacade.AddNew<IMediaFileFolder>(folder, providerName);
 
             addNewTreeRefresher.PostRefreshMesseges(folder.GetDataEntityToken());
+
+            SelectElement(folder.GetDataEntityToken());
+
         }
 
 
