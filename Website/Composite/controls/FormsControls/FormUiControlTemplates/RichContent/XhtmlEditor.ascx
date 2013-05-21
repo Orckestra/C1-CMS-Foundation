@@ -55,7 +55,7 @@
 </script>
 
 <ui:visualeditor 
-	formattingconfiguration="common"
+	formattingconfiguration="<%= this.ClassConfigurationName %>"
 	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
 	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
