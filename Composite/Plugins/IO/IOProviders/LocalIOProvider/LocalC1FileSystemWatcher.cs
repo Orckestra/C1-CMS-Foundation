@@ -55,7 +55,7 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
             }
         }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileSystemWatcherClass:DoNotUseFileSystemWatcherClass")]
         private void DoEnableRaisingEvents(bool raiseEvents)
         {
             try

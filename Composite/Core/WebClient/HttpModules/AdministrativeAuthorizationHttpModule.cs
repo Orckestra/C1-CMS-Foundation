@@ -5,10 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Xml.Linq;
-
 using Composite.C1Console.Security;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.Xml;
 
 
@@ -116,11 +114,11 @@ namespace Composite.Core.WebClient.HttpModules
                 }
 
                 // access check
-                if (currentPath.Length > _adminRootPath.Length && UserValidationFacade.IsLoggedIn() == false)
+                if (currentPath.Length > _adminRootPath.Length && !UserValidationFacade.IsLoggedIn())
                 {
-                    if (_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)) == false)
+                    if (!_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
                     {
-                        LoggingService.LogWarning("Authorization", string.Format("DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath));
+                        Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
                         string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
                         context.Response.Redirect(redirectUrl, true);
                     }
@@ -169,11 +167,11 @@ namespace Composite.Core.WebClient.HttpModules
 
             string c1ConsoleAccessConfigPath = HostingEnvironment.MapPath(c1ConsoleAccessRelativeConfigPath);
 
-            if (File.Exists(c1ConsoleAccessConfigPath))
+            if (C1File.Exists(c1ConsoleAccessConfigPath))
             {
                 try
                 {
-                    XDocument accessDoc = XDocument.Load(c1ConsoleAccessConfigPath);
+                    XDocument accessDoc = XDocumentUtils.Load(c1ConsoleAccessConfigPath);
                     _allowC1ConsoleRequests = _allowC1ConsoleRequests && (bool)accessDoc.Root.Attribute("enabled");
 
                     XElement protocolElement = accessDoc.Root.Element("ClientProtocol");
@@ -189,7 +187,7 @@ namespace Composite.Core.WebClient.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    LoggingService.LogError("Authorization", string.Format("Problem parsing '{0}'. Will use defaults and allow normal access. Error was '{1}'", c1ConsoleAccessRelativeConfigPath, ex.Message));
+                    Log.LogError("Authorization", "Problem parsing '{0}'. Will use defaults and allow normal access. Error was '{1}'", c1ConsoleAccessRelativeConfigPath, ex.Message);
                 }
             }
         }

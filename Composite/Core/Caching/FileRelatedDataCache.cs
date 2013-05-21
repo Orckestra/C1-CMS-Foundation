@@ -96,9 +96,9 @@ namespace Composite.Core.Caching
 
             foreach (var filePath in relatedFiles)
             {
-                if (!string.IsNullOrWhiteSpace(filePath) && File.Exists(filePath))
+                if (!string.IsNullOrWhiteSpace(filePath) && C1File.Exists(filePath))
                 {
-                    DateTime lastModifiedUtc = File.GetLastWriteTimeUtc(filePath);
+                    DateTime lastModifiedUtc = C1File.GetLastWriteTimeUtc(filePath);
                     if (lastModifiedUtc > maxLastModifiedUtc)
                     {
                         maxLastModifiedUtc = lastModifiedUtc;
