@@ -146,7 +146,8 @@ EditorClickButtonBinding.prototype._setupEditorButton = function () {
 EditorClickButtonBinding.prototype.buildDOMContent = function () {
 
 	EditorClickButtonBinding.superclass.buildDOMContent.call ( this );
-	this._buildDesignModeSanitizer ();
+	this._buildDesignModeSanitizer();
+
 }
 
 /**
@@ -193,9 +194,18 @@ EditorClickButtonBinding.prototype._buildDesignModeSanitizer = function () {
 		img.src = Resolver.resolve("${root}/images/blank.png");
 		img.ondragstart = function (e) { e.preventDefault(); }
 		this.shadowTree.designmodesanitizer = img;
-		this.bindingElement.appendChild ( img );
+		this.bindingElement.appendChild(img);
+
+		// Hack for tinymce 
+		// if button is not input,button,a[href],... tinymce lost focus in IE
+		var a = this.bindingDocument.createElement("a");
+		a.href = "javascript:;";
+		a.appendChild(this.bindingElement.firstChild);
+		this.bindingElement.replaceChild(a, this.bindingElement.firstChild);
 	}
+	
 }
+
 
 /**
  * Bookmark editor selection when the button is handled. 
