@@ -26763,37 +26763,41 @@ e.preventDefault();
 };
 this.shadowTree.designmodesanitizer=img;
 this.bindingElement.appendChild(img);
+var a=this.bindingDocument.createElement("a");
+a.href="javascript:;";
+a.appendChild(this.bindingElement.firstChild);
+this.bindingElement.replaceChild(a,this.bindingElement.firstChild);
 }
 };
 EditorClickButtonBinding.prototype._setupEditorBookmarking=function(){
-var _101a=this._editorBinding;
-if(_101a!=null){
+var _101b=this._editorBinding;
+if(_101b!=null){
 var self=this;
-var _101c={handleEvent:function(e){
+var _101d={handleEvent:function(e){
 switch(e.type){
 case DOMEvents.MOUSEDOWN:
-if(!_101a.hasBookmark()){
-_101a.createBookmark();
+if(!_101b.hasBookmark()){
+_101b.createBookmark();
 }
 break;
 case DOMEvents.MOUSEUP:
 if(self.isEditorSimpleControl){
 if(self.popupBinding==null){
-if(_101a.hasBookmark()){
-_101a.restoreBookmark();
+if(_101b.hasBookmark()){
+_101b.restoreBookmark();
 }
 }
 }
 break;
 }
 }};
-DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEDOWN,_101c);
-DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEUP,_101c);
+DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEDOWN,_101d);
+DOMEvents.addEventListener(this.bindingElement,DOMEvents.MOUSEUP,_101d);
 }
 };
-EditorClickButtonBinding.newInstance=function(_101e){
-var _101f=DOMUtil.createElementNS(Constants.NS_UI,"ui:clickbutton",_101e);
-return UserInterface.registerBinding(_101f,EditorClickButtonBinding);
+EditorClickButtonBinding.newInstance=function(_101f){
+var _1020=DOMUtil.createElementNS(Constants.NS_UI,"ui:clickbutton",_101f);
+return UserInterface.registerBinding(_1020,EditorClickButtonBinding);
 };
 EditorToolBarButtonBinding.prototype=new ToolBarButtonBinding;
 EditorToolBarButtonBinding.prototype.constructor=EditorToolBarButtonBinding;
@@ -26826,9 +26830,9 @@ EditorToolBarButtonBinding.prototype.initializeComponent=EditorClickButtonBindin
 EditorToolBarButtonBinding.prototype.initializeSourceEditorComponent=EditorClickButtonBinding.prototype.initializeSourceEditorComponent;
 EditorToolBarButtonBinding.prototype._buildDesignModeSanitizer=EditorClickButtonBinding.prototype._buildDesignModeSanitizer;
 EditorToolBarButtonBinding.prototype._setupEditorBookmarking=EditorClickButtonBinding.prototype._setupEditorBookmarking;
-EditorToolBarButtonBinding.newInstance=function(_1020){
-var _1021=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_1020);
-return UserInterface.registerBinding(_1021,EditorToolBarButtonBinding);
+EditorToolBarButtonBinding.newInstance=function(_1021){
+var _1022=DOMUtil.createElementNS(Constants.NS_UI,"ui:toolbarbutton",_1021);
+return UserInterface.registerBinding(_1022,EditorToolBarButtonBinding);
 };
 EditorSelectorBinding.prototype=new SelectorBinding;
 EditorSelectorBinding.prototype.constructor=EditorSelectorBinding;
@@ -26854,8 +26858,8 @@ this.isEditorControlBinding=false;
 this.BUTTON_IMPLEMENTATION=ClickButtonBinding;
 this.MENUITEM_IMPLEMENTATION=MenuItemBinding;
 }
-var _1022=this.bindingWindow.bindingMap.tinywindow;
-EditorBinding.registerComponent(this,_1022);
+var _1023=this.bindingWindow.bindingMap.tinywindow;
+EditorBinding.registerComponent(this,_1023);
 EditorSelectorBinding.superclass.onBindingAttach.call(this);
 };
 EditorSelectorBinding.prototype.buildButton=function(){
@@ -26865,15 +26869,15 @@ if(this.isEditorControlBinding==false){
 this._buttonBinding.isEditorControlBinding=false;
 }
 };
-EditorSelectorBinding.prototype.initializeComponent=function(_1023,_1024,_1025,theme){
-this._editorBinding=_1023;
-this._tinyEngine=_1024;
-this._tinyInstance=_1025;
+EditorSelectorBinding.prototype.initializeComponent=function(_1024,_1025,_1026,theme){
+this._editorBinding=_1024;
+this._tinyEngine=_1025;
+this._tinyInstance=_1026;
 this._tinyTheme=theme;
 };
-EditorSelectorBinding.prototype.handleAction=function(_1027){
-EditorSelectorBinding.superclass.handleAction.call(this,_1027);
-switch(_1027.type){
+EditorSelectorBinding.prototype.handleAction=function(_1028){
+EditorSelectorBinding.superclass.handleAction.call(this,_1028);
+switch(_1028.type){
 case MenuItemBinding.ACTION_COMMAND:
 if(this._editorBinding.hasBookmark()){
 var self=this;
@@ -26919,9 +26923,9 @@ this.shadowTree.designmodesanitizer=img;
 this.bindingElement.appendChild(img);
 }
 };
-EditorMenuItemBinding.newInstance=function(_102b){
-var _102c=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_102b);
-return UserInterface.registerBinding(_102c,EditorMenuItemBinding);
+EditorMenuItemBinding.newInstance=function(_102c){
+var _102d=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_102c);
+return UserInterface.registerBinding(_102d,EditorMenuItemBinding);
 };
 VisualEditorBinding.prototype=new EditorBinding;
 VisualEditorBinding.prototype.constructor=VisualEditorBinding;
@@ -26933,82 +26937,82 @@ VisualEditorBinding.ACTION_INITIALIZED="visualeditor initialized";
 VisualEditorBinding.DEFAULT_CONTENT="<p></p>";
 VisualEditorBinding.URL_DIALOG_CONTENTERROR="${root}/content/dialogs/wysiwygeditor/errors/contenterror.aspx";
 VisualEditorBinding.XHTML="<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head></head>\n\t<body>\n${body}\n\t</body>\n</html>";
-VisualEditorBinding.getTinyLessClassName=function(_102d){
-var i=0,_102f,_1030=[],split=_102d.split(" ");
-while((_102f=split[i++])!=null){
-if(_102f.length>=3&&_102f.substring(0,3)=="mce"){
+VisualEditorBinding.getTinyLessClassName=function(_102e){
+var i=0,_1030,_1031=[],split=_102e.split(" ");
+while((_1030=split[i++])!=null){
+if(_1030.length>=3&&_1030.substring(0,3)=="mce"){
 continue;
 }else{
-if(_102f.length>=14&&_102f.substring(0,14)=="compositemedia"){
+if(_1030.length>=14&&_1030.substring(0,14)=="compositemedia"){
 continue;
 }
 }
-_1030.push(_102f);
+_1031.push(_1030);
 }
-return _1030.join(" ");
+return _1031.join(" ");
 };
-VisualEditorBinding.getStructuredContent=function(_1032){
-var _1033=null;
+VisualEditorBinding.getStructuredContent=function(_1033){
+var _1034=null;
 WebServiceProxy.isFaultHandler=false;
-var soap=XhtmlTransformationsService.TinyContentToStructuredContent(_1032);
+var soap=XhtmlTransformationsService.TinyContentToStructuredContent(_1033);
 if(soap instanceof SOAPFault){
 }else{
-_1033=soap.XhtmlFragment;
-if(!_1033){
-_1033="";
+_1034=soap.XhtmlFragment;
+if(!_1034){
+_1034="";
 }
 }
 WebServiceProxy.isFaultHandler=true;
-return _1033;
+return _1034;
 };
-VisualEditorBinding.getTinyContent=function(_1035,_1036){
-var _1037=null;
-if(_1035==null||_1035==""){
-_1035=VisualEditorBinding.DEFAULT_CONTENT;
+VisualEditorBinding.getTinyContent=function(_1036,_1037){
+var _1038=null;
+if(_1036==null||_1036==""){
+_1036=VisualEditorBinding.DEFAULT_CONTENT;
 }
 WebServiceProxy.isFaultHandler=false;
-var soap=XhtmlTransformationsService.StructuredContentToTinyContent(_1035);
+var soap=XhtmlTransformationsService.StructuredContentToTinyContent(_1036);
 if(soap instanceof SOAPFault){
-var _1039=soap;
-var _103a={handleDialogResponse:function(){
-_1036.dispatchAction(Binding.ACTION_VALID);
+var _103a=soap;
+var _103b={handleDialogResponse:function(){
+_1037.dispatchAction(Binding.ACTION_VALID);
 }};
-Dialog.invokeModal(VisualEditorBinding.URL_DIALOG_CONTENTERROR,_103a,_1039);
+Dialog.invokeModal(VisualEditorBinding.URL_DIALOG_CONTENTERROR,_103b,_103a);
 }else{
-_1037=soap.XhtmlFragment;
-if(_1037==null){
-_1037=new String("");
+_1038=soap.XhtmlFragment;
+if(_1038==null){
+_1038=new String("");
 }
 }
 WebServiceProxy.isFaultHandler=true;
-return _1037;
+return _1038;
 };
-VisualEditorBinding.isImage=function(_103b){
-return _103b&&_103b.nodeName=="IMG";
+VisualEditorBinding.isImage=function(_103c){
+return _103c&&_103c.nodeName=="IMG";
 };
-VisualEditorBinding.isImageElement=function(_103c){
-return VisualEditorBinding.isImage(_103c)&&!VisualEditorBinding.isReservedElement(_103c);
+VisualEditorBinding.isImageElement=function(_103d){
+return VisualEditorBinding.isImage(_103d)&&!VisualEditorBinding.isReservedElement(_103d);
 };
-VisualEditorBinding.isReservedElement=function(_103d){
-if(VisualEditorBinding.isFunctionElement(_103d)){
+VisualEditorBinding.isReservedElement=function(_103e){
+if(VisualEditorBinding.isFunctionElement(_103e)){
 return true;
 }
-if(VisualEditorBinding.isFieldElement(_103d)){
+if(VisualEditorBinding.isFieldElement(_103e)){
 return true;
 }
-if(VisualEditorBinding.isHtmlElement(_103d)){
+if(VisualEditorBinding.isHtmlElement(_103e)){
 return true;
 }
 return false;
 };
-VisualEditorBinding.isFunctionElement=function(_103e){
-return VisualEditorBinding.isImage(_103e)&&CSSUtil.hasClassName(_103e,VisualEditorBinding.FUNCTION_CLASSNAME);
+VisualEditorBinding.isFunctionElement=function(_103f){
+return VisualEditorBinding.isImage(_103f)&&CSSUtil.hasClassName(_103f,VisualEditorBinding.FUNCTION_CLASSNAME);
 };
-VisualEditorBinding.isFieldElement=function(_103f){
-return VisualEditorBinding.isImage(_103f)&&CSSUtil.hasClassName(_103f,VisualEditorBinding.FIELD_CLASSNAME);
+VisualEditorBinding.isFieldElement=function(_1040){
+return VisualEditorBinding.isImage(_1040)&&CSSUtil.hasClassName(_1040,VisualEditorBinding.FIELD_CLASSNAME);
 };
-VisualEditorBinding.isHtmlElement=function(_1040){
-return VisualEditorBinding.isImage(_1040)&&CSSUtil.hasClassName(_1040,VisualEditorBinding.HTML_CLASSNAME);
+VisualEditorBinding.isHtmlElement=function(_1041){
+return VisualEditorBinding.isImage(_1041)&&CSSUtil.hasClassName(_1041,VisualEditorBinding.HTML_CLASSNAME);
 };
 function VisualEditorBinding(){
 this.logger=SystemLogger.getLogger("VisualEditorBinding");
@@ -27026,13 +27030,13 @@ VisualEditorBinding.superclass.onBindingRegister.call(this);
 StringBundle.getString("Composite.Web.VisualEditor","Preload.Key");
 };
 VisualEditorBinding.prototype.onBindingAttach=function(){
-var _1041=this.getProperty("embedablefieldstypenames");
-if(_1041!=null){
-this.embedableFieldConfiguration=VisualEditorFieldGroupConfiguration.getConfiguration(_1041);
-}
-var _1042=this.getProperty("formattingconfiguration");
+var _1042=this.getProperty("embedablefieldstypenames");
 if(_1042!=null){
-this._url+="?config="+_1042;
+this.embedableFieldConfiguration=VisualEditorFieldGroupConfiguration.getConfiguration(_1042);
+}
+var _1043=this.getProperty("formattingconfiguration");
+if(_1043!=null){
+this._url+="?config="+_1043;
 }
 VisualEditorBinding.superclass.onBindingAttach.call(this);
 this.subscribe(BroadcastMessages.TINYMCE_INITIALIZED);
@@ -27040,13 +27044,13 @@ this.subscribe(BroadcastMessages.TINYMCE_INITIALIZED);
 VisualEditorBinding.prototype.toString=function(){
 return "[VisualEditorBinding]";
 };
-VisualEditorBinding.prototype.handleBroadcast=function(_1043,arg){
-VisualEditorBinding.superclass.handleBroadcast.call(this,_1043,arg);
-var _1045=this.getContentWindow().bindingMap.tinywindow;
-var _1046=_1045.getContentWindow();
-switch(_1043){
+VisualEditorBinding.prototype.handleBroadcast=function(_1044,arg){
+VisualEditorBinding.superclass.handleBroadcast.call(this,_1044,arg);
+var _1046=this.getContentWindow().bindingMap.tinywindow;
+var _1047=_1046.getContentWindow();
+switch(_1044){
 case BroadcastMessages.TINYMCE_INITIALIZED:
-if(arg.broadcastWindow==_1046){
+if(arg.broadcastWindow==_1047){
 this._tinyEngine=arg.tinyEngine;
 this._tinyInstance=arg.tinyInstance;
 this._tinyTheme=arg.tinyTheme;
@@ -27057,22 +27061,22 @@ this._startContent=VisualEditorBinding.DEFAULT_CONTENT;
 this._startContent=this.normalizeToDocument(this._startContent);
 this._startContent=this.extractBody(this._startContent);
 arg.tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent),{format:"raw"});
-this.initializeEditorComponents(_1045);
+this.initializeEditorComponents(_1046);
 this._initialize();
 this.unsubscribe(BroadcastMessages.TINYMCE_INITIALIZED);
 }
 break;
 }
 };
-VisualEditorBinding.prototype.initializeEditorComponent=function(_1047){
-_1047.initializeComponent(this,this._tinyEngine,this._tinyInstance,this._tinyTheme);
+VisualEditorBinding.prototype.initializeEditorComponent=function(_1048){
+_1048.initializeComponent(this,this._tinyEngine,this._tinyInstance,this._tinyTheme);
 };
 VisualEditorBinding.prototype._finalize=function(){
 VisualEditorBinding.superclass._finalize.call(this);
 this._maybeShowEditor();
 };
-VisualEditorBinding.prototype._onPageInitialize=function(_1048){
-VisualEditorBinding.superclass._onPageInitialize.call(this,_1048);
+VisualEditorBinding.prototype._onPageInitialize=function(_1049){
+VisualEditorBinding.superclass._onPageInitialize.call(this,_1049);
 this._maybeShowEditor();
 };
 VisualEditorBinding.prototype._maybeShowEditor=function(){
@@ -27082,65 +27086,65 @@ this._pageBinding.showEditor(true);
 }
 };
 VisualEditorBinding.prototype.extractBody=function(html){
-var _104a=null;
+var _104b=null;
 var doc=XMLParser.parse(html);
 if(doc!=null){
-var _104c=new List(doc.documentElement.childNodes);
-var _104d=new List();
-_104c.each(function(child){
+var _104d=new List(doc.documentElement.childNodes);
+var _104e=new List();
+_104d.each(function(child){
 if(child.nodeType==Node.ELEMENT_NODE){
-_104d.add(child);
+_104e.add(child);
 }
 });
-var _104f=_104d.get(1);
-if(_104f==null){
+var _1050=_104e.get(1);
+if(_1050==null){
 if(Application.isDeveloperMode){
 alert("VisualEditorBinding: Bad HTML!"+"\n\n"+html);
 }
 }else{
-_104a=DOMSerializer.serialize(_104f);
-_104a=_104a.substring(_104a.indexOf(">")+1,_104a.length);
-_104a=_104a.substring(0,_104a.lastIndexOf("<"));
-while(_104f.lastChild){
-_104f.removeChild(_104f.lastChild);
+_104b=DOMSerializer.serialize(_1050);
+_104b=_104b.substring(_104b.indexOf(">")+1,_104b.length);
+_104b=_104b.substring(0,_104b.lastIndexOf("<"));
+while(_1050.lastChild){
+_1050.removeChild(_1050.lastChild);
 }
-_104f.appendChild(doc.createTextNode("\n${body}\n\t"));
+_1050.appendChild(doc.createTextNode("\n${body}\n\t"));
 this._xhtml=DOMSerializer.serialize(doc);
 }
 }
-if(_104a==null){
-_104a=new String("");
+if(_104b==null){
+_104b=new String("");
 }
-return _104a;
+return _104b;
 };
-VisualEditorBinding.prototype.normalizeToDocument=function(_1050){
-var _1051=_1050;
-if(!this._isNormalizedDocument(_1050)){
-_1051=this._getHtmlMarkup().replace("${body}",_1050);
+VisualEditorBinding.prototype.normalizeToDocument=function(_1051){
+var _1052=_1051;
+if(!this._isNormalizedDocument(_1051)){
+_1052=this._getHtmlMarkup().replace("${body}",_1051);
 }
-return _1051;
+return _1052;
 };
-VisualEditorBinding.prototype._isNormalizedDocument=function(_1052){
-var _1053=false;
-var doc=XMLParser.parse(_1052,true);
+VisualEditorBinding.prototype._isNormalizedDocument=function(_1053){
+var _1054=false;
+var doc=XMLParser.parse(_1053,true);
 if(doc!=null){
 if(doc.documentElement.nodeName=="html"){
-_1053=true;
+_1054=true;
 }
 }
 if(Client.isWebKit){
-if(_1052.indexOf("<html")!==0){
-_1053=false;
+if(_1053.indexOf("<html")!==0){
+_1054=false;
 }
 }
-return _1053;
+return _1054;
 };
 VisualEditorBinding.prototype._getHtmlMarkup=function(){
 return this._xhtml!=null?this._xhtml:VisualEditorBinding.XHTML;
 };
 VisualEditorBinding.prototype.handleCommand=function(cmd,gui,val){
-var _1058=VisualEditorBinding.superclass.handleCommand.call(this,cmd,gui,val);
-if(!_1058){
+var _1059=VisualEditorBinding.superclass.handleCommand.call(this,cmd,gui,val);
+if(!_1059){
 try{
 this._tinyInstance.execCommand(cmd,gui,val);
 this.checkForDirty();
@@ -27148,13 +27152,13 @@ this.checkForDirty();
 catch(e){
 SystemDebug.stack(arguments);
 }
-_1058=true;
+_1059=true;
 }
-return _1058;
+return _1059;
 };
 VisualEditorBinding.prototype.handleContextMenu=function(e){
-var _105a=DOMEvents.getTarget(e);
-this._popupBinding.configure(this._tinyInstance,this._tinyEngine,_105a);
+var _105b=DOMEvents.getTarget(e);
+this._popupBinding.configure(this._tinyInstance,this._tinyEngine,_105b);
 VisualEditorBinding.superclass.handleContextMenu.call(this,e);
 };
 VisualEditorBinding.prototype.getEditorWindow=function(){
@@ -27218,7 +27222,7 @@ if(Client.isExplorer&&this._tinyInstance){
 this._tinyInstance.selection.setRng(this._tinyInstance.selection.getRng());
 }
 };
-VisualEditorBinding.prototype.setResult=function(_105c){
+VisualEditorBinding.prototype.setResult=function(_105d){
 };
 VisualEditorPopupBinding.prototype=new EditorPopupBinding;
 VisualEditorPopupBinding.prototype.constructor=VisualEditorPopupBinding;
@@ -27234,12 +27238,12 @@ this.hasSelection=false;
 VisualEditorPopupBinding.prototype.toString=function(){
 return "[VisualEditorPopupBinding]";
 };
-VisualEditorPopupBinding.prototype.configure=function(_105d,_105e,_105f){
-var _1060=this.editorBinding.hasSelection();
-this.tinyInstance=_105d;
-this.tinyEngine=_105e;
-this.tinyElement=_105f;
-this.hasSelection=_1060;
+VisualEditorPopupBinding.prototype.configure=function(_105e,_105f,_1060){
+var _1061=this.editorBinding.hasSelection();
+this.tinyInstance=_105e;
+this.tinyEngine=_105f;
+this.tinyElement=_1060;
+this.hasSelection=_1061;
 VisualEditorPopupBinding.superclass.configure.call(this);
 };
 VisualEditorPopupBinding.prototype.handleCommand=function(cmd,gui,val){
@@ -27258,21 +27262,21 @@ this._configureSpellCheckGroup();
 }
 };
 VisualEditorPopupBinding.prototype._configureLinkGroup=function(){
-var _1064=false;
+var _1065=false;
 if(this.hasSelection){
-_1064=true;
+_1065=true;
 }else{
 if(this.tinyElement){
 if(this.tinyElement.nodeName=="A"&&!this.tinyElement.getAttribute("name")){
-_1064=true;
+_1065=true;
 }else{
 if(this.tinyElement.nodeName=="IMG"){
-_1064=true;
+_1065=true;
 }
 }
 }
 }
-if(_1064){
+if(_1065){
 this._showMenuGroups("link");
 this._configureLinkGroupDetails();
 }else{
@@ -27280,19 +27284,19 @@ this._hideMenuGroups("link");
 }
 };
 VisualEditorPopupBinding.prototype._configureLinkGroupDetails=function(){
-var _1065=this.getMenuItemForCommand("compositeInsertLink");
-var _1066=this.getMenuItemForCommand("unlink");
-var _1067=this.editorBinding.getButtonForCommand("compositeInsertLink");
-var _1068=this.editorBinding.getButtonForCommand("unlink");
-_1066.setDisabled(_1068.isDisabled);
-if(_1066.isDisabled){
-_1065.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelLink}");
+var _1066=this.getMenuItemForCommand("compositeInsertLink");
+var _1067=this.getMenuItemForCommand("unlink");
+var _1068=this.editorBinding.getButtonForCommand("compositeInsertLink");
+var _1069=this.editorBinding.getButtonForCommand("unlink");
+_1067.setDisabled(_1069.isDisabled);
+if(_1067.isDisabled){
+_1066.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelLink}");
 }else{
-_1065.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelLinkProperties}");
+_1066.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelLinkProperties}");
 }
 };
 VisualEditorPopupBinding.prototype._configureInsertGroup=function(){
-var _1069=this.editorBinding.embedableFieldConfiguration;
+var _106a=this.editorBinding.embedableFieldConfiguration;
 var item=this.getMenuItemForCommand("compositeInsertFieldParent");
 var doc=this.bindingDocument;
 if(item){
@@ -27303,20 +27307,20 @@ item.setLabel("${string:Composite.Web.VisualEditor:ContextMenu.LabelField}");
 item.image="${icon:fields}";
 item.imageDisabled="${icon:fields-disabled}";
 item.setProperty("cmd","compositeInsertFieldParent");
-if(_1069){
-var _106c=_1069.getGroupNames();
-if(_106c.hasEntries()){
+if(_106a){
+var _106d=_106a.getGroupNames();
+if(_106d.hasEntries()){
 var popup=MenuPopupBinding.newInstance(doc);
 var body=popup.add(MenuBodyBinding.newInstance(doc));
 var group=body.add(MenuGroupBinding.newInstance(doc));
-_106c.each(function(_1070){
-var _1071=_1069.getFieldNames(_1070);
-_1071.each(function(_1072){
+_106d.each(function(_1071){
+var _1072=_106a.getFieldNames(_1071);
+_1072.each(function(_1073){
 var i=group.add(MenuItemBinding.newInstance(doc));
-i.setLabel(_1072);
+i.setLabel(_1073);
 i.setImage("${icon:field}");
 i.setProperty("cmd","compositeInsertField");
-i.setProperty("val",_1070+":"+_1072);
+i.setProperty("val",_1071+":"+_1073);
 group.add(i);
 });
 });
@@ -27330,19 +27334,19 @@ item.attachRecursive();
 this._menuItems["compositeInsertFieldParent"]=item;
 };
 VisualEditorPopupBinding.prototype._configureTableGroup=function(){
-var _1074=this.tinyInstance.dom.getParent(this.tinyElement,"table,td");
-var _1075=null;
+var _1075=this.tinyInstance.dom.getParent(this.tinyElement,"table,td");
 var _1076=null;
-if(_1074){
-if(_1074.nodeName=="TD"){
-_1075=_1074.getAttribute("colspan");
-_1076=_1074.getAttribute("rowspan");
+var _1077=null;
+if(_1075){
+if(_1075.nodeName=="TD"){
+_1076=_1075.getAttribute("colspan");
+_1077=_1075.getAttribute("rowspan");
 }
-this._menuItems["mceTableSplitCells"].setDisabled(_1075=="1"&&_1076=="1");
+this._menuItems["mceTableSplitCells"].setDisabled(_1076=="1"&&_1077=="1");
 this._menuItems["mceTablePasteRowBefore"].setDisabled(this.tinyInstance.tableRowClipboard==null);
 this._menuItems["mceTablePasteRowAfter"].setDisabled(this.tinyInstance.tableRowClipboard==null);
 }
-if(_1074){
+if(_1075){
 this._showMenuGroups("table");
 }else{
 this._hideMenuGroups("table");
@@ -27378,12 +27382,12 @@ this._hideMenuGroups("spellcheck");
 };
 VisualEditorFormattingConfiguration._configurations=new Map();
 VisualEditorFormattingConfiguration._options=null;
-VisualEditorFormattingConfiguration.getConfiguration=function(_1077){
-var _1078=VisualEditorFormattingConfiguration._configurations;
-if(!_1078.has(_1077)){
-_1078.set(_1077,new VisualEditorFormattingConfiguration());
+VisualEditorFormattingConfiguration.getConfiguration=function(_1078){
+var _1079=VisualEditorFormattingConfiguration._configurations;
+if(!_1079.has(_1078)){
+_1079.set(_1078,new VisualEditorFormattingConfiguration());
 }
-return _1078.get(_1077);
+return _1079.get(_1078);
 };
 VisualEditorFormattingConfiguration._getOptions=function(){
 if(VisualEditorFormattingConfiguration._options==null){
@@ -27392,40 +27396,40 @@ VisualEditorFormattingConfiguration._options={"p":StringBundle.getString(p,"Form
 }
 return VisualEditorFormattingConfiguration._options;
 };
-function VisualEditorFormattingConfiguration(_107a){
+function VisualEditorFormattingConfiguration(_107b){
 this._options=VisualEditorFormattingConfiguration._getOptions();
 }
 VisualEditorFormattingConfiguration.prototype.getFormattingOptions=function(){
 return this._options;
 };
 VisualEditorFieldGroupConfiguration._configurations=new Map();
-VisualEditorFieldGroupConfiguration.getConfiguration=function(_107b){
-var _107c=null;
-var _107d=VisualEditorFieldGroupConfiguration._configurations;
-if(!_107d.has(_107b)){
-_107d.set(_107b,new VisualEditorFieldGroupConfiguration(EditorConfigurationService.GetEmbedableFieldGroupConfigurations(_107b)));
+VisualEditorFieldGroupConfiguration.getConfiguration=function(_107c){
+var _107d=null;
+var _107e=VisualEditorFieldGroupConfiguration._configurations;
+if(!_107e.has(_107c)){
+_107e.set(_107c,new VisualEditorFieldGroupConfiguration(EditorConfigurationService.GetEmbedableFieldGroupConfigurations(_107c)));
 }
-return _107d.get(_107b);
+return _107e.get(_107c);
 };
-function VisualEditorFieldGroupConfiguration(_107e){
-var _107f=new Map();
-new List(_107e).each(function(group){
+function VisualEditorFieldGroupConfiguration(_107f){
+var _1080=new Map();
+new List(_107f).each(function(group){
 var map=new Map();
 new List(group.Fields).each(function(field){
 map.set(field.Name,{xhtml:field.XhtmlRepresentation,xml:field.XhtmlRepresentation});
 });
-_107f.set(group.GroupName,map);
+_1080.set(group.GroupName,map);
 });
-this._groups=_107f;
+this._groups=_1080;
 }
 VisualEditorFieldGroupConfiguration.prototype.getGroupNames=function(){
 return this._groups.toList(true);
 };
-VisualEditorFieldGroupConfiguration.prototype.getFieldNames=function(_1083){
-return this._groups.get(_1083).toList(true);
+VisualEditorFieldGroupConfiguration.prototype.getFieldNames=function(_1084){
+return this._groups.get(_1084).toList(true);
 };
-VisualEditorFieldGroupConfiguration.prototype.getTinyMarkup=function(_1084,_1085){
-return this._groups.get(_1084).get(_1085).xhtml;
+VisualEditorFieldGroupConfiguration.prototype.getTinyMarkup=function(_1085,_1086){
+return this._groups.get(_1085).get(_1086).xhtml;
 };
 VisualEditorFieldGroupConfiguration.prototype.getStructuredMarkup=function(name){
 return this._groups.get(groupname).get(fieldname).xml;
@@ -27451,12 +27455,12 @@ VisualMultiEditorBinding.superclass._maybeShowEditor.call(this);
 };
 VisualMultiEditorBinding.prototype._setup=function(){
 this._xhtmls=new Map();
-var _1087=this.getDescendantElementsByLocalName("textarea");
-while(_1087.hasNext()){
-var _1088=_1087.getNext();
-if(_1088.getAttribute("selected")=="true"){
-this._startContent=_1088.value;
-this._textareaname=_1088.getAttribute("placeholderid");
+var _1088=this.getDescendantElementsByLocalName("textarea");
+while(_1088.hasNext()){
+var _1089=_1088.getNext();
+if(_1089.getAttribute("selected")=="true"){
+this._startContent=_1089.value;
+this._textareaname=_1089.getAttribute("placeholderid");
 }
 }
 if(this._startContent==null){
@@ -27466,27 +27470,27 @@ this._startContent=VisualEditorBinding.DEFAULT_CONTENT;
 VisualMultiEditorBinding.prototype._initialize=function(){
 var self=this;
 this._registerWithDataManager("generated"+KeyMaster.getUniqueKey());
-var _108a=this.getContentWindow().bindingMap.templatetree;
-_108a.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED,{handleAction:function(_108b){
-var _108c=_108a.getSelectedTreeNodeBindings().getFirst();
-self._placeHolderSelected(_108c.textareaname);
-_108b.consume();
+var _108b=this.getContentWindow().bindingMap.templatetree;
+_108b.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED,{handleAction:function(_108c){
+var _108d=_108b.getSelectedTreeNodeBindings().getFirst();
+self._placeHolderSelected(_108d.textareaname);
+_108c.consume();
 }});
-_108a.addActionListener(Binding.ACTION_FOCUSED,{handleAction:function(_108d){
+_108b.addActionListener(Binding.ACTION_FOCUSED,{handleAction:function(_108e){
 self._activateEditor(false);
 }});
 this._updatePlaceHolders();
-var _108e=this.getContentWindow().bindingMap.toolsplitter;
-_108e.unCollapse();
+var _108f=this.getContentWindow().bindingMap.toolsplitter;
+_108f.unCollapse();
 VisualMultiEditorBinding.superclass._initialize.call(this);
 };
 VisualMultiEditorBinding.prototype._updatePlaceHolders=function(){
 templatetree=this.getContentWindow().bindingMap.templatetree;
-var _108f=this.getDescendantElementsByLocalName("textarea");
+var _1090=this.getDescendantElementsByLocalName("textarea");
 templatetree.empty();
-if(_108f.hasEntries()){
+if(_1090.hasEntries()){
 this._hasPlaceHolders=true;
-this._parsePlaceHolders(_108f);
+this._parsePlaceHolders(_1090);
 if(this._isFinalized){
 this._pageBinding.showEditor(true);
 }
@@ -27498,121 +27502,121 @@ this._pageBinding.showEditor(false);
 }
 }
 };
-VisualMultiEditorBinding.prototype._parsePlaceHolders=function(_1090){
+VisualMultiEditorBinding.prototype._parsePlaceHolders=function(_1091){
 this._textareas=new Map();
-while(_1090.hasNext()){
-var _1091=_1090.getNext();
-var _1092=_1091.getAttribute("placeholderid");
-this._textareas.set(_1092,{placeholderid:_1092,placeholdername:_1091.getAttribute("placeholdername"),placeholdermarkup:_1091.value,textareaelement:_1091,isSelected:_1091.getAttribute("selected")=="true"});
+while(_1091.hasNext()){
+var _1092=_1091.getNext();
+var _1093=_1092.getAttribute("placeholderid");
+this._textareas.set(_1093,{placeholderid:_1093,placeholdername:_1092.getAttribute("placeholdername"),placeholdermarkup:_1092.value,textareaelement:_1092,isSelected:_1092.getAttribute("selected")=="true"});
 }
-var _1093=new Map();
-this._textareas.each(function(name,_1095){
-var _1096=templatetree.add(TreeNodeBinding.newInstance(templatetree.bindingDocument));
-_1096.setLabel(_1095.placeholdername);
-_1096.setImage("${icon:placeholder}");
-_1096.setProperty("placeholder",true);
-_1096.textareaname=name;
-_1093.set(_1095.placeholdername,_1096);
-if(_1095.isSelected){
-selected=_1096;
+var _1094=new Map();
+this._textareas.each(function(name,_1096){
+var _1097=templatetree.add(TreeNodeBinding.newInstance(templatetree.bindingDocument));
+_1097.setLabel(_1096.placeholdername);
+_1097.setImage("${icon:placeholder}");
+_1097.setProperty("placeholder",true);
+_1097.textareaname=name;
+_1094.set(_1096.placeholdername,_1097);
+if(_1096.isSelected){
+selected=_1097;
 }
 });
 templatetree.attachRecursive();
 if(selected!=null){
-var _1097=this._textareas.get(selected.textareaname);
+var _1098=this._textareas.get(selected.textareaname);
 this._textareaname=selected.textareaname;
-this._placeholdername=_1097.placeholdername;
+this._placeholdername=_1098.placeholdername;
 this._setContentFromPlaceHolder(selected.textareaname);
 selected.focus();
 }
 };
 VisualMultiEditorBinding.prototype._noPlaceHolders=function(){
-var _1098=this.getContentWindow().bindingMap.templatetree;
-var _1099=_1098.add(TreeNodeBinding.newInstance(_1098.bindingDocument));
-_1099.setLabel(StringBundle.getString("Composite.Web.VisualEditor","TemplateTree.NoTemplateWarning"));
-_1099.setImage("${icon:warning}");
-_1099.attach();
-var _109a=this.getContentWindow().bindingMap.statusbar;
-_109a.setPlaceHolderName(null);
+var _1099=this.getContentWindow().bindingMap.templatetree;
+var _109a=_1099.add(TreeNodeBinding.newInstance(_1099.bindingDocument));
+_109a.setLabel(StringBundle.getString("Composite.Web.VisualEditor","TemplateTree.NoTemplateWarning"));
+_109a.setImage("${icon:warning}");
+_109a.attach();
+var _109b=this.getContentWindow().bindingMap.statusbar;
+_109b.setPlaceHolderName(null);
 };
 VisualMultiEditorBinding.prototype._setContentFromPlaceHolder=function(name){
 if(this._isFinalized==true){
-var _109c=this._textareas.get(name);
-var _109d=_109c.placeholdermarkup;
-this.setValue(this.normalizeToDocument(_109d));
+var _109d=this._textareas.get(name);
+var _109e=_109d.placeholdermarkup;
+this.setValue(this.normalizeToDocument(_109e));
 this.resetUndoRedo();
 }
 };
-VisualMultiEditorBinding.prototype._placeHolderSelected=function(_109e){
+VisualMultiEditorBinding.prototype._placeHolderSelected=function(_109f){
 if(this._isFinalized==true){
 if(this._textareaname&&this._textareas.has(this._textareaname)){
 this._textareas.get(this._textareaname).placeholdermarkup=this.getValue();
 }
 }
-this._textareaname=_109e;
+this._textareaname=_109f;
 this._placeholdername=this._textareas.get(this._textareaname).placeholdername;
-var _109f=this.getContentWindow().bindingMap.statusbar;
-_109f.setPlaceHolderName(this._placeholdername);
+var _10a0=this.getContentWindow().bindingMap.statusbar;
+_10a0.setPlaceHolderName(this._placeholdername);
 if(this._isFinalized==true){
 var self=this;
 Application.lock(self);
 setTimeout(function(){
-self._setContentFromPlaceHolder(_109e);
+self._setContentFromPlaceHolder(_109f);
 Application.unlock(self);
 },0);
 }
 };
 VisualMultiEditorBinding.prototype.extractBody=function(html){
-var _10a2=VisualMultiEditorBinding.superclass.extractBody.call(this,html);
+var _10a3=VisualMultiEditorBinding.superclass.extractBody.call(this,html);
 this._xhtmls.set(this._textareaname,this._xhtml);
-return _10a2;
+return _10a3;
 };
 VisualMultiEditorBinding.prototype._getHtmlMarkup=function(){
-var _10a3=VisualEditorBinding.XHTML;
+var _10a4=VisualEditorBinding.XHTML;
 if(this._xhtmls.has(this._textareaname)){
-_10a3=this._xhtmls.get(this._textareaname);
-if(_10a3==null){
-_10a3=VisualEditorBinding.XHTML;
+_10a4=this._xhtmls.get(this._textareaname);
+if(_10a4==null){
+_10a4=VisualEditorBinding.XHTML;
 }
 }
-return _10a3;
+return _10a4;
 };
 VisualMultiEditorBinding.prototype.manifest=function(){
 if(this._textareas!=null&&this._textareas.hasEntries()){
 this._textareas.get(this._textareaname).placeholdermarkup=this.getValue();
-this._textareas.each(function(name,_10a5){
-_10a5.textareaelement.value=_10a5.placeholdermarkup;
+this._textareas.each(function(name,_10a6){
+_10a6.textareaelement.value=_10a6.placeholdermarkup;
 });
 }
 };
-VisualMultiEditorBinding.prototype.updateElement=function(_10a6,_10a7){
-var _10a8=_10a6.getElementsByTagName("div").item(0);
+VisualMultiEditorBinding.prototype.updateElement=function(_10a7,_10a8){
 var _10a9=_10a7.getElementsByTagName("div").item(0);
-var _10aa=new List(_10a8.getElementsByTagName("textarea"));
+var _10aa=_10a8.getElementsByTagName("div").item(0);
 var _10ab=new List(_10a9.getElementsByTagName("textarea"));
-var _10ac=false;
-if(_10aa.getLength()!=_10ab.getLength()){
-_10ac=true;
+var _10ac=new List(_10aa.getElementsByTagName("textarea"));
+var _10ad=false;
+if(_10ab.getLength()!=_10ac.getLength()){
+_10ad=true;
 }else{
 var index=0;
-_10aa.each(function(_10ae,index){
-var _10b0=_10ab.get(index);
-var newid=_10ae.getAttribute("placeholderid");
-var oldid=_10b0.getAttribute("placeholderid");
-var _10b3=_10ae.getAttribute("placeholdername");
-var _10b4=_10b0.getAttribute("placeholdername");
-if(newid!=oldid||_10b3!=_10b4){
-_10ac=true;
+_10ab.each(function(_10af,index){
+var _10b1=_10ac.get(index);
+var newid=_10af.getAttribute("placeholderid");
+var oldid=_10b1.getAttribute("placeholderid");
+var _10b4=_10af.getAttribute("placeholdername");
+var _10b5=_10b1.getAttribute("placeholdername");
+if(newid!=oldid||_10b4!=_10b5){
+_10ad=true;
 }
-return !_10ac;
+return !_10ad;
 });
 }
-if(_10ac){
+if(_10ad){
 var html=null;
-if(_10a8.innerHTML!=null){
-html=_10a8.innerHTML;
+if(_10a9.innerHTML!=null){
+html=_10a9.innerHTML;
 }else{
-html=DOMSerializer.serialize(_10a8);
+html=DOMSerializer.serialize(_10a9);
 html=html.substring(html.indexOf(">")+1,html.length);
 html=html.substring(0,html.lastIndexOf("<"));
 }
@@ -27641,11 +27645,11 @@ this._oldtextareas=new Map();
 };
 VisualMultiTemplateEditorBinding.prototype._initialize=function(){
 var self=this;
-var _10b8=this.getDescendantBindingByLocalName("selector");
-_10b8.attach();
+var _10b9=this.getDescendantBindingByLocalName("selector");
+_10b9.attach();
 this._populateTemplateSelector();
-var _10b9=this.getContentWindow().bindingMap.templateselector;
-_10b9.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED,{handleAction:function(){
+var _10ba=this.getContentWindow().bindingMap.templateselector;
+_10ba.addActionListener(SelectorBinding.ACTION_SELECTIONCHANGED,{handleAction:function(){
 setTimeout(function(){
 self._onTemplateSelectionChanged();
 },0);
@@ -27654,21 +27658,21 @@ this.getContentWindow().bindingMap.templatetoolbar.show();
 VisualMultiTemplateEditorBinding.superclass._initialize.call(this);
 };
 VisualMultiTemplateEditorBinding.prototype._populateTemplateSelector=function(){
-var _10ba=this.getDescendantBindingByLocalName("selector");
-var _10bb=this.getContentWindow().bindingMap.templateselector;
-_10ba.selections.each(function(_10bc){
-_10bc.imageProfile=new ImageProfile({image:"${icon:page-template-template}"});
+var _10bb=this.getDescendantBindingByLocalName("selector");
+var _10bc=this.getContentWindow().bindingMap.templateselector;
+_10bb.selections.each(function(_10bd){
+_10bd.imageProfile=new ImageProfile({image:"${icon:page-template-template}"});
 });
-_10bb.populateFromList(_10ba.selections);
+_10bc.populateFromList(_10bb.selections);
 };
 VisualMultiTemplateEditorBinding.prototype._onTemplateSelectionChanged=function(){
-var _10bd=this.getDescendantBindingByLocalName("selector");
-var _10be=this.getContentWindow().bindingMap.templateselector;
-_10bd.selectByValue(_10be.getValue());
-_10bd.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
+var _10be=this.getDescendantBindingByLocalName("selector");
+var _10bf=this.getContentWindow().bindingMap.templateselector;
+_10be.selectByValue(_10bf.getValue());
+_10be.dispatchAction(PageBinding.ACTION_DOPOSTBACK);
 this.checkForDirty(true);
 };
-VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders=function(_10bf){
+VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders=function(_10c0){
 var nev=this._textareas;
 var old=this._oldtextareas;
 if(nev!=null){
@@ -27677,86 +27681,86 @@ old.set(key,value);
 });
 }
 this._textareas=new Map();
-function compute(_10c4,_10c5){
-var _10c6=_10c5;
-if(old.has(_10c4)){
-_10c6=old.get(_10c4).placeholdermarkup;
+function compute(_10c5,_10c6){
+var _10c7=_10c6;
+if(old.has(_10c5)){
+_10c7=old.get(_10c5).placeholdermarkup;
 }
-return _10c6;
+return _10c7;
 }
-while(_10bf.hasNext()){
-var _10c7=_10bf.getNext();
-var _10c8=_10c7.getAttribute("placeholderid");
-this._textareas.set(_10c8,{placeholderid:_10c8,placeholdername:_10c7.getAttribute("placeholdername"),placeholdermarkup:compute(_10c8,_10c7.value),textareaelement:_10c7,isSelected:_10c7.getAttribute("selected")=="true"});
+while(_10c0.hasNext()){
+var _10c8=_10c0.getNext();
+var _10c9=_10c8.getAttribute("placeholderid");
+this._textareas.set(_10c9,{placeholderid:_10c9,placeholdername:_10c8.getAttribute("placeholdername"),placeholdermarkup:compute(_10c9,_10c8.value),textareaelement:_10c8,isSelected:_10c8.getAttribute("selected")=="true"});
 }
-var _10c9=null;
-var _10ca=this.getContentWindow().bindingMap.templatetree;
-var _10cb=new Map();
-this._textareas.each(function(name,_10cd){
-var _10ce=_10ca.add(TreeNodeBinding.newInstance(_10ca.bindingDocument));
-_10ce.setLabel(_10cd.placeholdername);
-_10ce.setImage("${icon:placeholder}");
-_10ce.setProperty("placeholder",true);
-_10ce.textareaname=name;
-_10cb.set(_10cd.placeholdername,_10ce);
-if(_10cd.isSelected){
-_10c9=_10ce;
+var _10ca=null;
+var _10cb=this.getContentWindow().bindingMap.templatetree;
+var _10cc=new Map();
+this._textareas.each(function(name,_10ce){
+var _10cf=_10cb.add(TreeNodeBinding.newInstance(_10cb.bindingDocument));
+_10cf.setLabel(_10ce.placeholdername);
+_10cf.setImage("${icon:placeholder}");
+_10cf.setProperty("placeholder",true);
+_10cf.textareaname=name;
+_10cc.set(_10ce.placeholdername,_10cf);
+if(_10ce.isSelected){
+_10ca=_10cf;
 }
 });
-_10ca.attachRecursive();
-if(_10c9!=null){
-var _10cf=true;
+_10cb.attachRecursive();
+if(_10ca!=null){
+var _10d0=true;
 if(this._oldtextareas.hasEntries()){
-_10cf=false;
+_10d0=false;
 var map=new Map();
-this._textareas.each(function(id,_10d2){
-map.set(_10d2.placeholdername,true);
+this._textareas.each(function(id,_10d3){
+map.set(_10d3.placeholdername,true);
 });
 if(!map.has(this._placeholdername)){
-_10cf=true;
+_10d0=true;
 }
 }
-if(_10cf){
-var _10d3=this._textareas.get(_10c9.textareaname);
-this._textareaname=_10c9.textareaname;
-this._placeholdername=_10d3.placeholdername;
-this._setContentFromPlaceHolder(_10c9.textareaname);
-_10c9.focus();
+if(_10d0){
+var _10d4=this._textareas.get(_10ca.textareaname);
+this._textareaname=_10ca.textareaname;
+this._placeholdername=_10d4.placeholdername;
+this._setContentFromPlaceHolder(_10ca.textareaname);
+_10ca.focus();
 }else{
-var _10d4=_10cb.get(this._placeholdername);
-this._textareaname=_10d4.textareaname;
-_10d4.focus();
+var _10d5=_10cc.get(this._placeholdername);
+this._textareaname=_10d5.textareaname;
+_10d5.focus();
 }
 }
 };
-VisualMultiTemplateEditorBinding.prototype.updateElement=function(_10d5,_10d6){
-var _10d7=_10d5.getElementsByTagName("ui:selector").item(0);
+VisualMultiTemplateEditorBinding.prototype.updateElement=function(_10d6,_10d7){
 var _10d8=_10d6.getElementsByTagName("ui:selector").item(0);
-var _10d9=false;
-if(_10d7!=null&&_10d8!=null){
-var _10da=new List(_10d7.getElementsByTagName("ui:selection"));
+var _10d9=_10d7.getElementsByTagName("ui:selector").item(0);
+var _10da=false;
+if(_10d8!=null&&_10d9!=null){
 var _10db=new List(_10d8.getElementsByTagName("ui:selection"));
-if(_10da.getLength()!=_10db.getLength()){
-_10d9=true;
+var _10dc=new List(_10d9.getElementsByTagName("ui:selection"));
+if(_10db.getLength()!=_10dc.getLength()){
+_10da=true;
 }else{
-_10da.each(function(_10dc,index){
-var _10de=_10dc.getAttribute("value");
-var _10df=_10db.get(index).getAttribute("value");
-if(_10de!=_10df){
-_10d9=true;
+_10db.each(function(_10dd,index){
+var _10df=_10dd.getAttribute("value");
+var _10e0=_10dc.get(index).getAttribute("value");
+if(_10df!=_10e0){
+_10da=true;
 }
-return !_10d9;
+return !_10da;
 });
 }
 }
-if(_10d9){
+if(_10da){
 var div=this.bindingElement.getElementsByTagName("div").item(1);
 this.bindingWindow.DocumentManager.detachBindings(div,true);
-div.innerHTML=DOMSerializer.serialize(_10d7);
+div.innerHTML=DOMSerializer.serialize(_10d8);
 this.bindingWindow.DocumentManager.attachBindings(div);
 this._populateTemplateSelector();
 }
-return VisualMultiTemplateEditorBinding.superclass.updateElement.call(this,_10d5,_10d6);
+return VisualMultiTemplateEditorBinding.superclass.updateElement.call(this,_10d6,_10d7);
 };
 CodeMirrorEditorPopupBinding.prototype=new EditorPopupBinding;
 CodeMirrorEditorPopupBinding.prototype.constructor=CodeMirrorEditorPopupBinding;
@@ -27771,10 +27775,10 @@ this._codePressEngine=null;
 CodeMirrorEditorPopupBinding.prototype.toString=function(){
 return "[CodeMirrorEditorPopupBinding]";
 };
-CodeMirrorEditorPopupBinding.prototype.configure=function(_10e1,frame,_10e3){
-this._editorBinding=_10e1;
+CodeMirrorEditorPopupBinding.prototype.configure=function(_10e2,frame,_10e4){
+this._editorBinding=_10e2;
 this._codePressFrame=frame;
-this._codePressEngine=_10e3;
+this._codePressEngine=_10e4;
 WysiwygEditorPopupBinding.superclass.configure.call(this);
 };
 CodeMirrorEditorPopupBinding.prototype._configure=function(){
@@ -27838,13 +27842,13 @@ this.subscribe(BroadcastMessages.CODEMIRROR_LOADED);
 if(this.getProperty("embedded")==true){
 this._isEmbedded=true;
 }
-var _10e9=this.getProperty("validate");
-if(_10e9==true){
+var _10ea=this.getProperty("validate");
+if(_10ea==true){
 this._hasStrictValidation=true;
 }
-var _10ea=this.getProperty("validator");
-if(_10ea!=null){
-this._validator=_10ea;
+var _10eb=this.getProperty("validator");
+if(_10eb!=null){
+this._validator=_10eb;
 }
 this.syntax=this.getProperty("syntax");
 if(this.getProperty("debug")){
@@ -27852,15 +27856,15 @@ this._startContent=Templates.getPlainText("sourcecodeeditor/"+this.syntax+".txt"
 }
 CodeMirrorEditorBinding.superclass.onBindingAttach.call(this);
 };
-CodeMirrorEditorBinding.prototype.handleBroadcast=function(_10eb,arg){
-CodeMirrorEditorBinding.superclass.handleBroadcast.call(this,_10eb,arg);
-switch(_10eb){
+CodeMirrorEditorBinding.prototype.handleBroadcast=function(_10ec,arg){
+CodeMirrorEditorBinding.superclass.handleBroadcast.call(this,_10ec,arg);
+switch(_10ec){
 case BroadcastMessages.CODEMIRROR_LOADED:
-var _10ed=this.getContentWindow().bindingMap.codemirrorwindow;
-if(_10ed!=null){
-var _10ee=_10ed.getContentWindow();
-if(arg.broadcastWindow==_10ee){
-this._codemirrorWindow=_10ee;
+var _10ee=this.getContentWindow().bindingMap.codemirrorwindow;
+if(_10ee!=null){
+var _10ef=_10ee.getContentWindow();
+if(arg.broadcastWindow==_10ef){
+this._codemirrorWindow=_10ef;
 this._codemirrorEditor=arg.codemirrorEditor;
 this._codemirrorWrapperElement=arg.codemirrorEditor.getWrapperElement();
 switch(this.syntax){
@@ -27893,7 +27897,7 @@ case CodeMirrorEditorBinding.syntax.TEXT:
 this._codemirrorEditor.setOption("mode","");
 break;
 }
-this.initializeEditorComponents(_10ed);
+this.initializeEditorComponents(_10ee);
 var self=this;
 this._codemirrorEditor.on("change",function(e){
 self.checkForDirty();
@@ -27904,37 +27908,37 @@ self._activateEditor(true);
 if(this._pageBinding!=null){
 this._initialize();
 }
-this.unsubscribe(_10eb);
+this.unsubscribe(_10ec);
 }
 }
 break;
 }
 };
-CodeMirrorEditorBinding.prototype._onPageInitialize=function(_10f2){
-CodeMirrorEditorBinding.superclass._onPageInitialize.call(this,_10f2);
+CodeMirrorEditorBinding.prototype._onPageInitialize=function(_10f3){
+CodeMirrorEditorBinding.superclass._onPageInitialize.call(this,_10f3);
 if(Client.isExplorer||this._codemirrorEditor!=null){
 this._initialize();
 }
 };
-CodeMirrorEditorBinding.prototype._activateEditor=function(_10f3){
-if(_10f3!=this._isActivated||this.isFocusable&&!this.isFocused){
-this._isActivated=_10f3;
-EditorBinding.isActive=_10f3;
-var _10f4=this.getContentWindow().standardEventHandler;
-if(_10f3){
-_10f4.enableNativeKeys(true);
+CodeMirrorEditorBinding.prototype._activateEditor=function(_10f4){
+if(_10f4!=this._isActivated||this.isFocusable&&!this.isFocused){
+this._isActivated=_10f4;
+EditorBinding.isActive=_10f4;
+var _10f5=this.getContentWindow().standardEventHandler;
+if(_10f4){
+_10f5.enableNativeKeys(true);
 }else{
-_10f4.disableNativeKeys();
+_10f5.disableNativeKeys();
 }
-var _10f5=this.getContentWindow().bindingMap.broadcasterIsActive;
-if(_10f5!=null){
-if(_10f3){
-_10f5.enable();
+var _10f6=this.getContentWindow().bindingMap.broadcasterIsActive;
+if(_10f6!=null){
+if(_10f4){
+_10f6.enable();
 }else{
-_10f5.disable();
+_10f6.disable();
 }
 }
-if(_10f3){
+if(_10f4){
 this.focus();
 }else{
 this.blur();
@@ -27942,15 +27946,15 @@ this.blur();
 }
 };
 CodeMirrorEditorBinding.prototype.handleCommand=function(cmd,gui,val){
-var _10f9=CodeMirrorEditorBinding.superclass.handleCommand.call(this,cmd,val);
-return _10f9;
+var _10fa=CodeMirrorEditorBinding.superclass.handleCommand.call(this,cmd,val);
+return _10fa;
 };
 CodeMirrorEditorBinding.prototype._finalize=function(){
 this.setContent(this._startContent);
 CodeMirrorEditorBinding.superclass._finalize.call(this);
 };
-CodeMirrorEditorBinding.prototype.initializeEditorComponent=function(_10fa){
-_10fa.initializeSourceEditorComponent(this,this._codemirrorEditor);
+CodeMirrorEditorBinding.prototype.initializeEditorComponent=function(_10fb){
+_10fb.initializeSourceEditorComponent(this,this._codemirrorEditor);
 };
 CodeMirrorEditorBinding.prototype.clean=function(){
 CodeMirrorEditorBinding.superclass.clean.call(this);
@@ -27970,34 +27974,34 @@ return this._codemirrorWrapperElement.ownerDocument;
 }
 return null;
 };
-CodeMirrorEditorBinding.prototype.setContent=function(_10fc){
+CodeMirrorEditorBinding.prototype.setContent=function(_10fd){
 if(!this._isFinalized){
-if(_10fc!=this._startContent){
-this._startContent=_10fc;
+if(_10fd!=this._startContent){
+this._startContent=_10fd;
 }
 }
 if(this.isInitialized&&this.getContentWindow().bindingMap!=null){
-this.getContentWindow().bindingMap.editorpage.setContent(_10fc);
+this.getContentWindow().bindingMap.editorpage.setContent(_10fd);
 this.resetUndoRedo();
 this._checksum=this.getCheckSum();
 }
 return true;
 };
 CodeMirrorEditorBinding.prototype.getContent=function(){
-var _10fd=this.getContentWindow().bindingMap.editorpage.getContent();
-return _10fd?_10fd:"";
+var _10fe=this.getContentWindow().bindingMap.editorpage.getContent();
+return _10fe?_10fe:"";
 };
 CodeMirrorEditorBinding.prototype.resetUndoRedo=function(){
 this._codemirrorEditor.clearHistory();
 };
-CodeMirrorEditorBinding.prototype.cover=function(_10fe){
+CodeMirrorEditorBinding.prototype.cover=function(_10ff){
 if(this._pageBinding!=null){
-this._pageBinding.cover(_10fe);
+this._pageBinding.cover(_10ff);
 }
 };
-CodeMirrorEditorBinding.prototype.updateElement=function(_10ff){
-if(_10ff!=null&&this.shadowTree.dotnetinput!=null){
-var value=_10ff.getAttribute("value");
+CodeMirrorEditorBinding.prototype.updateElement=function(_1100){
+if(_1100!=null&&this.shadowTree.dotnetinput!=null){
+var value=_1100.getAttribute("value");
 if(value!=null&&value!=this.shadowTree.dotnetinput.value){
 this.setValue(decodeURIComponent(value));
 }
@@ -28007,63 +28011,63 @@ return true;
 CodeMirrorEditorBinding.prototype.blurEditor=function(){
 };
 CodeMirrorEditorBinding.prototype.validate=function(){
-var _1101=true;
-var _1102=this.getContent();
+var _1102=true;
+var _1103=this.getContent();
 if(this._validator!=null){
-_1101=Validator.validateInformed(_1102,this._validator);
+_1102=Validator.validateInformed(_1103,this._validator);
 }else{
 switch(this.syntax){
 case CodeMirrorEditorBinding.syntax.XML:
 case CodeMirrorEditorBinding.syntax.XSL:
 case CodeMirrorEditorBinding.syntax.HTML:
-var _1103=_1102.replace("&nbsp;","&#160;").replace("&ldquo;","\xe2\u20ac\u0153").replace("&rdguo;","\xe2\u20ac\ufffd").replace("&lsquo;","\xe2\u20ac\u02dc").replace("&rsquo;","\xe2\u20ac\u2122").replace("&laquo;","\xc2\xab").replace("&raquo;","\xc2\xbb").replace("&lsaquo;","\xe2\u20ac\xb9").replace("&rsaquo;","\xe2\u20ac\xba").replace("&bull;","\xe2\u20ac\xa2").replace("&deg;","\xc2\xb0").replace("&hellip;","\xe2\u20ac\xa6").replace("&trade;","\xe2\u201e\xa2").replace("&copy;","\xc2\xa9").replace("&reg;","\xc2\xae").replace("&mdash;","\xe2\u20ac\u201d").replace("&ndash;","\xe2\u20ac\u201c").replace("&sup2;","\xc2\xb2").replace("&sup3;","\xc2\xb3").replace("&frac14;","\xc2\xbc").replace("&frac12;","\xc2\xbd").replace("&frac34;","\xc2\xbe").replace("&times;","\xc3\u2014").replace("&larr;","\xe2\u2020\ufffd").replace("&rarr;","\xe2\u2020\u2019").replace("&uarr;","\xe2\u2020\u2018").replace("&darr;","\xe2\u2020\u201c").replace("<!doctype","<!DOCTYPE");
-if(_1103!=_1102){
-_1102=_1103;
-this.setContent(_1103);
+var _1104=_1103.replace("&nbsp;","&#160;").replace("&ldquo;","\xe2\u20ac\u0153").replace("&rdguo;","\xe2\u20ac\ufffd").replace("&lsquo;","\xe2\u20ac\u02dc").replace("&rsquo;","\xe2\u20ac\u2122").replace("&laquo;","\xc2\xab").replace("&raquo;","\xc2\xbb").replace("&lsaquo;","\xe2\u20ac\xb9").replace("&rsaquo;","\xe2\u20ac\xba").replace("&bull;","\xe2\u20ac\xa2").replace("&deg;","\xc2\xb0").replace("&hellip;","\xe2\u20ac\xa6").replace("&trade;","\xe2\u201e\xa2").replace("&copy;","\xc2\xa9").replace("&reg;","\xc2\xae").replace("&mdash;","\xe2\u20ac\u201d").replace("&ndash;","\xe2\u20ac\u201c").replace("&sup2;","\xc2\xb2").replace("&sup3;","\xc2\xb3").replace("&frac14;","\xc2\xbc").replace("&frac12;","\xc2\xbd").replace("&frac34;","\xc2\xbe").replace("&times;","\xc3\u2014").replace("&larr;","\xe2\u2020\ufffd").replace("&rarr;","\xe2\u2020\u2019").replace("&uarr;","\xe2\u2020\u2018").replace("&darr;","\xe2\u2020\u201c").replace("<!doctype","<!DOCTYPE");
+if(_1104!=_1103){
+_1103=_1104;
+this.setContent(_1104);
 }
-_1101=XMLParser.isWellFormedDocument(_1102,true);
-if(_1101==true&&this._hasStrictValidation){
+_1102=XMLParser.isWellFormedDocument(_1103,true);
+if(_1102==true&&this._hasStrictValidation){
 switch(this.syntax){
 case CodeMirrorEditorBinding.syntax.HTML:
-_1101=this._isValidHTML(_1102);
+_1102=this._isValidHTML(_1103);
 break;
 }
 }
 break;
 }
 }
-return _1101;
+return _1102;
 };
 CodeMirrorEditorBinding.prototype._isValidHTML=function(xml){
-var _1105=true;
+var _1106=true;
 var doc=XMLParser.parse(xml);
-var _1107=new List();
+var _1108=new List();
 if(doc!=null){
 var root=doc.documentElement;
 if(root.nodeName!="html"){
-_1107.add("MissingHtml");
+_1108.add("MissingHtml");
 }
 if(root.namespaceURI!=Constants.NS_XHTML){
-_1107.add("NamespaceURI");
+_1108.add("NamespaceURI");
 }
 var head=null,body=null;
-var _110b=new List(root.childNodes);
-while(_110b.hasNext()){
-var child=_110b.getNext();
+var _110c=new List(root.childNodes);
+while(_110c.hasNext()){
+var child=_110c.getNext();
 if(child.nodeType==Node.ELEMENT_NODE){
 switch(child.nodeName){
 case "head":
 if(head!=null){
-_1107.add("MultipleHead");
+_1108.add("MultipleHead");
 }
 if(body!=null){
-_1107.add("HeadBodyIndex");
+_1108.add("HeadBodyIndex");
 }
 head=child;
 break;
 case "body":
 if(body!=null){
-_1107.add("MultipleBody");
+_1108.add("MultipleBody");
 }
 body=child;
 break;
@@ -28071,21 +28075,21 @@ break;
 }
 }
 if(head==null){
-_1107.add("MissingHead");
+_1108.add("MissingHead");
 }
 if(body==null){
-_1107.add("MissingBody");
+_1108.add("MissingBody");
 }
 }
-if(_1107.hasEntries()){
-_1105=false;
+if(_1108.hasEntries()){
+_1106=false;
 if(Client.isWebKit){
-alert(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1107.getFirst()));
+alert(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1108.getFirst()));
 }else{
-Dialog.error(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML.DialogTitle"),StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1107.getFirst()));
+Dialog.error(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML.DialogTitle"),StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1108.getFirst()));
 }
 }
-return _1105;
+return _1106;
 };
 CodeMirrorEditorBinding.prototype._isValidXSL=function(){
 return true;
@@ -28103,12 +28107,12 @@ CodeMirrorEditorBinding.prototype.hasBookmark=function(){
 CodeMirrorEditorBinding.prototype.deleteBookmark=function(){
 };
 CodeMirrorEditorBinding.prototype.getCheckSum=function(){
-var _110d=null;
+var _110e=null;
 var page=this._pageBinding;
 if(page!=null){
-_110d=page.getCheckSum();
+_110e=page.getCheckSum();
 }
-return _110d;
+return _110e;
 };
 ThrobberBinding.prototype=new Binding;
 ThrobberBinding.prototype.constructor=ThrobberBinding;
@@ -28138,9 +28142,9 @@ EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
 }});
 }
 };
-ThrobberBinding.prototype.handleBroadcast=function(_110f,arg){
-ThrobberBinding.superclass.handleBroadcast.call(this,_110f,arg);
-switch(_110f){
+ThrobberBinding.prototype.handleBroadcast=function(_1110,arg){
+ThrobberBinding.superclass.handleBroadcast.call(this,_1110,arg);
+switch(_1110){
 case BroadcastMessages.COMPOSITE_START:
 case BroadcastMessages.START_COMPOSITE:
 this.hide();
@@ -28183,10 +28187,10 @@ ProgressBarBinding.superclass=Binding.prototype;
 ProgressBarBinding.WIDTH=190;
 ProgressBarBinding.NOTCH=9;
 ProgressBarBinding._bindingInstance=null;
-ProgressBarBinding.notch=function(_1112){
+ProgressBarBinding.notch=function(_1113){
 var bar=ProgressBarBinding._bindingInstance;
 if(bar!=null){
-bar.notch(_1112);
+bar.notch(_1113);
 }
 };
 function ProgressBarBinding(){
@@ -28205,9 +28209,9 @@ this._cover.setBusy(false);
 this._cover.setWidth(ProgressBarBinding.WIDTH);
 this.shadowTree.cover=this._cover;
 };
-ProgressBarBinding.prototype.notch=function(_1114){
-_1114=_1114?_1114:1;
-var width=this._cover.getWidth()-(ProgressBarBinding.NOTCH*_1114);
+ProgressBarBinding.prototype.notch=function(_1115){
+_1115=_1115?_1115:1;
+var width=this._cover.getWidth()-(ProgressBarBinding.NOTCH*_1115);
 this._cover.setWidth(width>=0?width:0);
 };
 StartMenuItemBinding.prototype=new MenuItemBinding;
@@ -28225,9 +28229,9 @@ StartMenuItemBinding.superclass.onBindingRegister.call(this);
 this.subscribe(BroadcastMessages.COMPOSITE_START);
 this.subscribe(BroadcastMessages.COMPOSITE_STOP);
 };
-StartMenuItemBinding.prototype.handleBroadcast=function(_1116,arg){
-StartMenuItemBinding.superclass.handleBroadcast.call(this,_1116,arg);
-switch(_1116){
+StartMenuItemBinding.prototype.handleBroadcast=function(_1117,arg){
+StartMenuItemBinding.superclass.handleBroadcast.call(this,_1117,arg);
+switch(_1117){
 case BroadcastMessages.COMPOSITE_START:
 if(!this.isChecked){
 this.check(true);
@@ -28240,9 +28244,9 @@ this.uncheck(true);
 break;
 }
 };
-StartMenuItemBinding.prototype.setChecked=function(_1118,_1119){
-StartMenuItemBinding.superclass.setChecked.call(this,_1118,_1119);
-if(!_1119){
+StartMenuItemBinding.prototype.setChecked=function(_1119,_111a){
+StartMenuItemBinding.superclass.setChecked.call(this,_1119,_111a);
+if(!_111a){
 if(this.isChecked){
 EventBroadcaster.broadcast(BroadcastMessages.START_COMPOSITE);
 }else{
@@ -28250,69 +28254,69 @@ EventBroadcaster.broadcast(BroadcastMessages.STOP_COMPOSITE);
 }
 }
 };
-StartMenuItemBinding.newInstance=function(_111a){
-var _111b=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_111a);
-UserInterface.registerBinding(_111b,StartMenuItemBinding);
-return UserInterface.getBinding(_111b);
+StartMenuItemBinding.newInstance=function(_111b){
+var _111c=DOMUtil.createElementNS(Constants.NS_UI,"ui:menuitem",_111b);
+UserInterface.registerBinding(_111c,StartMenuItemBinding);
+return UserInterface.getBinding(_111c);
 };
 KeySetBinding.prototype=new Binding;
 KeySetBinding.prototype.constructor=KeySetBinding;
 KeySetBinding.superclass=Binding.prototype;
 KeySetBinding.keyEventHandlers={};
-KeySetBinding.registerKeyEventHandler=function(doc,key,_111e,_111f){
-var _1120=KeySetBinding.keyEventHandlers;
-if(Interfaces.isImplemented(IKeyEventHandler,_111f,true)==true){
-if(_111e!="*"){
-_111e=KeySetBinding._sanitizeKeyModifiers(_111e);
+KeySetBinding.registerKeyEventHandler=function(doc,key,_111f,_1120){
+var _1121=KeySetBinding.keyEventHandlers;
+if(Interfaces.isImplemented(IKeyEventHandler,_1120,true)==true){
+if(_111f!="*"){
+_111f=KeySetBinding._sanitizeKeyModifiers(_111f);
 }
 var code=window.KeyEventCodes[key];
 if(!code){
 code=key.charCodeAt(0);
 }
-if(!_1120[doc]){
-_1120[doc]={};
+if(!_1121[doc]){
+_1121[doc]={};
 }
-if(!_1120[doc][code]){
-_1120[doc][code]={};
+if(!_1121[doc][code]){
+_1121[doc][code]={};
 }
-_1120[doc][code][_111e]=_111f;
+_1121[doc][code][_111f]=_1120;
 }
 };
 KeySetBinding.handleKey=function(doc,e){
-var _1124=false;
+var _1125=false;
 var code=e.keyCode;
-var _1126=KeySetBinding.keyEventHandlers;
-if(_1126[doc]&&_1126[doc][code]){
-var _1127="[default]";
-_1127+=code!=KeyEventCodes.VK_SHIFT?e.shiftKey?" shift":"":"";
-_1127+=code!=KeyEventCodes.VK_CONTROL?e.ctrlKey?" control":"":"";
-var _1128=_1126[doc][code][_1127];
-if(_1128==null){
-_1128=_1126[doc][code]["*"];
+var _1127=KeySetBinding.keyEventHandlers;
+if(_1127[doc]&&_1127[doc][code]){
+var _1128="[default]";
+_1128+=code!=KeyEventCodes.VK_SHIFT?e.shiftKey?" shift":"":"";
+_1128+=code!=KeyEventCodes.VK_CONTROL?e.ctrlKey?" control":"":"";
+var _1129=_1127[doc][code][_1128];
+if(_1129==null){
+_1129=_1127[doc][code]["*"];
 }
-if(_1128!=null){
-_1128.handleKeyEvent(e);
-_1124=true;
+if(_1129!=null){
+_1129.handleKeyEvent(e);
+_1125=true;
 }
 }
-return _1124;
+return _1125;
 };
-KeySetBinding._sanitizeKeyModifiers=function(_1129){
-var _112a="[default]";
+KeySetBinding._sanitizeKeyModifiers=function(_112a){
+var _112b="[default]";
 var mods={};
-if(_1129){
-new List(_1129.split(" ")).each(function(_112c){
-mods[_112c]=true;
+if(_112a){
+new List(_112a.split(" ")).each(function(_112d){
+mods[_112d]=true;
 });
-function check(_112d){
-if(mods[_112d]){
-_112a+=" "+_112d;
+function check(_112e){
+if(mods[_112e]){
+_112b+=" "+_112e;
 }
 }
 check("shift");
 check("control");
 }
-return _112a;
+return _112b;
 };
 function KeySetBinding(){
 this.logger=SystemLogger.getLogger("KeySetBinding");
@@ -28327,16 +28331,16 @@ KeySetBinding.superclass.onBindingAttach.call(this);
 var self=this;
 var keys=new List(DOMUtil.getElementsByTagName(this.bindingElement,"key"));
 keys.each(function(key){
-var _1131=key.getAttribute("oncommand");
-var _1132=key.getAttribute("preventdefault")=="true";
+var _1132=key.getAttribute("oncommand");
+var _1133=key.getAttribute("preventdefault")=="true";
 KeySetBinding.registerKeyEventHandler(self.bindingDocument,key.getAttribute("key"),key.getAttribute("modifiers"),{handleKeyEvent:function(e){
 DOMEvents.stopPropagation(e);
-if(_1132){
+if(_1133){
 DOMEvents.preventDefault(e);
 }
-var _1134=self.bindingWindow.WindowManager;
+var _1135=self.bindingWindow.WindowManager;
 top.setTimeout(function(){
-Binding.evaluate(_1131,self);
+Binding.evaluate(_1132,self);
 },0);
 }});
 });
@@ -28344,35 +28348,35 @@ Binding.evaluate(_1131,self);
 CursorBinding.prototype=new Binding;
 CursorBinding.prototype.constructor=CursorBinding;
 CursorBinding.superclass=Binding.prototype;
-CursorBinding.fadeIn=function(_1135){
-if(_1135 instanceof CursorBinding){
-_1135.setOpacity(0);
-_1135.show();
-new Animation({modifier:9,onstep:function(_1136){
-_1135.setOpacity(Math.sin(_1136*Math.PI/180));
+CursorBinding.fadeIn=function(_1136){
+if(_1136 instanceof CursorBinding){
+_1136.setOpacity(0);
+_1136.show();
+new Animation({modifier:9,onstep:function(_1137){
+_1136.setOpacity(Math.sin(_1137*Math.PI/180));
 },onstop:function(){
-_1135.setOpacity(1);
+_1136.setOpacity(1);
 }}).play();
 }
 };
-CursorBinding.fadeOut=function(_1137){
-if(_1137 instanceof CursorBinding){
-new Animation({modifier:9,onstep:function(_1138){
-_1137.setOpacity(Math.cos(_1138*Math.PI/180));
+CursorBinding.fadeOut=function(_1138){
+if(_1138 instanceof CursorBinding){
+new Animation({modifier:9,onstep:function(_1139){
+_1138.setOpacity(Math.cos(_1139*Math.PI/180));
 },onstop:function(){
-_1137.hide();
+_1138.hide();
 }}).play();
 }
 };
-CursorBinding.moveOut=function(_1139,_113a,_113b){
-if(_1139 instanceof CursorBinding){
-_113b.x-=16;
-_113b.y-=16;
-new Animation({modifier:3,onstep:function(_113c){
-var tal=Math.sin(_113c*Math.PI/180);
-_1139.setPosition(new Point(((1-tal)*_113a.x)+((0+tal)*_113b.x),((1-tal)*_113a.y)+((0+tal)*_113b.y)));
+CursorBinding.moveOut=function(_113a,_113b,_113c){
+if(_113a instanceof CursorBinding){
+_113c.x-=16;
+_113c.y-=16;
+new Animation({modifier:3,onstep:function(_113d){
+var tal=Math.sin(_113d*Math.PI/180);
+_113a.setPosition(new Point(((1-tal)*_113b.x)+((0+tal)*_113c.x),((1-tal)*_113b.y)+((0+tal)*_113c.y)));
 },onstop:function(){
-CursorBinding.fadeOut(_1139);
+CursorBinding.fadeOut(_113a);
 }}).play();
 }
 };
@@ -28431,9 +28435,9 @@ self._stopIndicatorBinding.show();
 CursorBinding.prototype.show=function(){
 CursorBinding.superclass.show.call(this);
 };
-CursorBinding.prototype.setOpacity=function(_1142){
-this.bindingElement.style.opacity=new String(_1142);
-this._opacity=_1142;
+CursorBinding.prototype.setOpacity=function(_1143){
+this.bindingElement.style.opacity=new String(_1143);
+this._opacity=_1143;
 };
 CursorBinding.prototype.getOpacity=function(){
 return this._opacity;
@@ -28456,13 +28460,13 @@ CoverBinding.prototype.constructor=CoverBinding;
 CoverBinding.superclass=Binding.prototype;
 CoverBinding.CLASSNAME_TRANSPARENT="transparent";
 CoverBinding.fadeOut=function(cover){
-function setOpacity(_1145){
-cover.bindingElement.style.opacity=new String(_1145);
+function setOpacity(_1146){
+cover.bindingElement.style.opacity=new String(_1146);
 }
 if(cover instanceof CoverBinding){
-new Animation({modifier:18,onstep:function(_1146){
+new Animation({modifier:18,onstep:function(_1147){
 if(Binding.exists(cover)){
-setOpacity(Math.cos(_1146*Math.PI/180));
+setOpacity(Math.cos(_1147*Math.PI/180));
 }
 },onstop:function(){
 if(Binding.exists(cover)){
@@ -28472,8 +28476,8 @@ cover.hide();
 }
 };
 CoverBinding.fadeIn=function(cover){
-function setOpacity(_1148){
-cover.bindingElement.style.MozOpacity=new String(_1148);
+function setOpacity(_1149){
+cover.bindingElement.style.MozOpacity=new String(_1149);
 }
 if(cover instanceof CoverBinding){
 new Animation({modifier:18,onstart:function(){
@@ -28481,9 +28485,9 @@ if(Binding.exists(cover)){
 setOpacity(0);
 cover.show();
 }
-},onstep:function(_1149){
+},onstep:function(_114a){
 if(Binding.exists(cover)){
-setOpacity(Math.sin(_1149*Math.PI/180));
+setOpacity(Math.sin(_114a*Math.PI/180));
 }
 },onstop:function(){
 setOpacity(1);
@@ -28541,24 +28545,24 @@ this._position=DOMUtil.getUniversalMousePosition(e);
 break;
 }
 };
-CoverBinding.prototype.setBusy=function(_114b){
-if(_114b!=this._isBusy){
-if(_114b){
+CoverBinding.prototype.setBusy=function(_114c){
+if(_114c!=this._isBusy){
+if(_114c){
 this.bindingElement.style.cursor="wait";
 }else{
 this.bindingElement.style.cursor="default";
 }
-this._isBusy=_114b;
+this._isBusy=_114c;
 }
 };
-CoverBinding.prototype.setTransparent=function(_114c){
-if(_114c!=this._isTransparent){
-if(_114c){
+CoverBinding.prototype.setTransparent=function(_114d){
+if(_114d!=this._isTransparent){
+if(_114d){
 this.attachClassName(CoverBinding.CLASSNAME_TRANSPARENT);
 }else{
 this.detachClassName(CoverBinding.CLASSNAME_TRANSPARENT);
 }
-this._isTransparent=_114c;
+this._isTransparent=_114d;
 }
 };
 CoverBinding.prototype.setWidth=function(width){
@@ -28569,26 +28573,26 @@ this.bindingElement.style.width=new String(width+"px");
 CoverBinding.prototype.getWidth=function(){
 return this.bindingElement.offsetWidth;
 };
-CoverBinding.prototype.setHeight=function(_114e){
-if(_114e>=0){
-this.bindingElement.style.height=new String(_114e+"px");
+CoverBinding.prototype.setHeight=function(_114f){
+if(_114f>=0){
+this.bindingElement.style.height=new String(_114f+"px");
 }
 };
 CoverBinding.prototype.getHeight=function(){
 return this.bindingElement.offsetHeight;
 };
-CoverBinding.newInstance=function(_114f){
-var _1150=DOMUtil.createElementNS(Constants.NS_UI,"ui:cover",_114f);
-return UserInterface.registerBinding(_1150,CoverBinding);
+CoverBinding.newInstance=function(_1150){
+var _1151=DOMUtil.createElementNS(Constants.NS_UI,"ui:cover",_1150);
+return UserInterface.registerBinding(_1151,CoverBinding);
 };
 UncoverBinding.prototype=new Binding;
 UncoverBinding.prototype.constructor=UncoverBinding;
 UncoverBinding.superclass=Binding.prototype;
 UncoverBinding._bindingInstance=null;
 UncoverBinding.uncover=function(pos){
-var _1152=UncoverBinding._bindingInstance;
-if(Binding.exists(_1152)){
-_1152.setPosition(pos);
+var _1153=UncoverBinding._bindingInstance;
+if(Binding.exists(_1153)){
+_1153.setPosition(pos);
 }
 };
 function UncoverBinding(){
@@ -28632,8 +28636,8 @@ TheatreBinding.superclass.onBindingAttach.call(this);
 this._canvas=document.createElement("canvas");
 this.bindingElement.appendChild(this._canvas);
 };
-TheatreBinding.prototype.play=function(_1156){
-this._isFading=_1156==true;
+TheatreBinding.prototype.play=function(_1157){
+this._isFading=_1157==true;
 if(!this._isPlaying){
 Application.lock(this);
 this.show();
@@ -28644,13 +28648,13 @@ this._fade();
 }
 };
 TheatreBinding.prototype._fade=function(){
-var _1157=this._canvas.getContext("2d");
+var _1158=this._canvas.getContext("2d");
 var alpha=parseInt(0);
 TheatreBinding._interval=top.setInterval(function(){
 if(alpha<0.5){
-_1157.fillStyle="rgba(0,0,0,"+new String(alpha)+")";
-_1157.clearRect(0,0,300,150);
-_1157.fillRect(0,0,300,150);
+_1158.fillStyle="rgba(0,0,0,"+new String(alpha)+")";
+_1158.clearRect(0,0,300,150);
+_1158.fillRect(0,0,300,150);
 alpha+=0.002;
 }else{
 top.clearInterval(TheatreBinding._interval);
@@ -28664,8 +28668,8 @@ if(this._isFading){
 if(TheatreBinding._interval!=null){
 top.clearInterval(TheatreBinding._interval);
 }
-var _1159=this._canvas.getContext("2d");
-_1159.clearRect(0,0,300,150);
+var _115a=this._canvas.getContext("2d");
+_115a.clearRect(0,0,300,150);
 }
 Application.unlock(this,true);
 this.hide();
@@ -28691,37 +28695,37 @@ SourceCodeViewerBinding.prototype.onBindingAttach=function(){
 this._syntax=this.getProperty("syntax");
 switch(this._syntax){
 case SourceCodeViewerBinding.syntax.XML:
-var _115a=SourceCodeViewerBinding.stylesheets[this._syntax];
+var _115b=SourceCodeViewerBinding.stylesheets[this._syntax];
 this._transformer=new XSLTransformer();
-this._transformer.importStylesheet(_115a);
+this._transformer.importStylesheet(_115b);
 break;
 default:
 throw "SourceCodeViewer: Syntax error!";
 this._syntax=null;
 break;
 }
-var _115b=DOMUtil.getElementsByTagName(this.bindingElement,"textarea").item(0);
-if(_115b){
-this._startcontent=_115b.value;
+var _115c=DOMUtil.getElementsByTagName(this.bindingElement,"textarea").item(0);
+if(_115c){
+this._startcontent=_115c.value;
 }
 this.setURL(SourceCodeViewerBinding.URL_DEFAULT);
 this.addActionListener(WindowBinding.ACTION_ONLOAD);
 SourceCodeViewerBinding.superclass.onBindingAttach.call(this);
 };
-SourceCodeViewerBinding.prototype.handleAction=function(_115c){
-SourceCodeViewerBinding.superclass.handleAction.call(this,_115c);
-switch(_115c.type){
+SourceCodeViewerBinding.prototype.handleAction=function(_115d){
+SourceCodeViewerBinding.superclass.handleAction.call(this,_115d);
+switch(_115d.type){
 case WindowBinding.ACTION_ONLOAD:
-if(_115c.target==this){
+if(_115d.target==this){
 if(this._startcontent){
 this.view(this._startcontent);
 }
 this.dispatchAction(SourceCodeViewerBinding.ACTION_INITIALIZED);
-_115c.consume();
+_115d.consume();
 }
 break;
 }
-SourceCodeViewerBinding.superclass.handleAction.call(this,_115c);
+SourceCodeViewerBinding.superclass.handleAction.call(this,_115d);
 };
 SourceCodeViewerBinding.prototype.view=function(arg){
 switch(this._syntax){
@@ -28742,16 +28746,16 @@ doc=object;
 }
 }
 if(doc){
-var _1160=this._transformer.transformToString(doc);
-this._inject(_1160);
+var _1161=this._transformer.transformToString(doc);
+this._inject(_1161);
 }
 };
 SourceCodeViewerBinding.prototype._viewHTML=function(arg){
 };
 SourceCodeViewerBinding.prototype._viewJavascript=function(arg){
 };
-SourceCodeViewerBinding.prototype._inject=function(_1163){
-this.getContentDocument().body.innerHTML=_1163;
+SourceCodeViewerBinding.prototype._inject=function(_1164){
+this.getContentDocument().body.innerHTML=_1164;
 };
 PersistanceBinding.prototype=new Binding;
 PersistanceBinding.prototype.constructor=PersistanceBinding;
@@ -28799,10 +28803,10 @@ this._resolver.setNamespacePrefixResolver({"p":Constants.NS_PERSISTANCE});
 }
 var list=this._resolver.resolveAll("p:persist",doc.documentElement);
 while(list.hasNext()){
-var _116b=list.getNext();
-var id=_116b.getAttribute("id");
+var _116c=list.getNext();
+var id=_116c.getAttribute("id");
 map[id]={};
-var atts=this._resolver.resolveAll("p:att",_116b);
+var atts=this._resolver.resolveAll("p:att",_116c);
 while(atts.hasNext()){
 var att=atts.getNext();
 var name=att.getAttribute("name");
@@ -28820,15 +28824,15 @@ while(elm.hasChildNodes()){
 elm.removeChild(elm.lastChild);
 }
 for(var id in map){
-var _1175=DOMUtil.createElementNS(Constants.NS_PERSISTANCE,"persist",doc);
-_1175.setAttribute("id",id);
+var _1176=DOMUtil.createElementNS(Constants.NS_PERSISTANCE,"persist",doc);
+_1176.setAttribute("id",id);
 for(var name in map[id]){
 var att=DOMUtil.createElementNS(Constants.NS_PERSISTANCE,"att",doc);
 att.setAttribute("name",name);
 att.setAttribute("value",map[id][name]);
-_1175.appendChild(att);
+_1176.appendChild(att);
 }
-elm.appendChild(_1175);
+elm.appendChild(_1176);
 }
 return doc;
 };
@@ -28854,9 +28858,9 @@ this.bindingElement.save(PersistanceBinding.USERDATAKEY);
 PersistanceBinding.prototype._getDocMozilla=function(){
 delete window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance;
 var doc=null;
-var _117f=window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance;
-if(_117f){
-doc=XMLParser.parse(_117f);
+var _1180=window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance;
+if(_1180){
+doc=XMLParser.parse(_1180);
 }else{
 var file=PersistanceBinding.TEMPLATE;
 doc=Templates.getTemplateDocument(file);
@@ -28868,8 +28872,8 @@ elm.removeChild(elm.lastChild);
 return doc;
 };
 PersistanceBinding.prototype._persistDocMozilla=function(doc){
-var _1183=DOMSerializer.serialize(doc,true);
-window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance=_1183;
+var _1184=DOMSerializer.serialize(doc,true);
+window.globalStorage[PersistanceBinding.GLOBALSTOREKEY].persistance=_1184;
 };
 LocalizationSelectorBinding.prototype=new SelectorBinding;
 LocalizationSelectorBinding.prototype.constructor=LocalizationSelectorBinding;
@@ -28887,9 +28891,9 @@ this.subscribe(BroadcastMessages.UPDATE_LANGUAGES);
 this.subscribe(BroadcastMessages.TOLANGUAGE_UPDATED);
 this._populateFromLanguages(Localization.languages);
 };
-LocalizationSelectorBinding.prototype.handleBroadcast=function(_1184,arg){
-LocalizationSelectorBinding.superclass.handleBroadcast.call(this,_1184,arg);
-switch(_1184){
+LocalizationSelectorBinding.prototype.handleBroadcast=function(_1185,arg){
+LocalizationSelectorBinding.superclass.handleBroadcast.call(this,_1185,arg);
+switch(_1185){
 case BroadcastMessages.TOLANGUAGE_UPDATED:
 ExplorerBinding.restoreFocuseNodes();
 break;
@@ -28905,11 +28909,11 @@ break;
 };
 LocalizationSelectorBinding.prototype._populateFromLanguages=function(list){
 if(list!=null&&list.hasEntries()&&list.getLength()>1){
-var _1187=new List();
+var _1188=new List();
 list.each(function(lang){
-_1187.add(new SelectorBindingSelection(lang.Name,lang.SerializedActionToken,lang.IsCurrent,null));
+_1188.add(new SelectorBindingSelection(lang.Name,lang.SerializedActionToken,lang.IsCurrent,null));
 });
-this.populateFromList(_1187);
+this.populateFromList(_1188);
 this.show();
 }else{
 this.hide();
@@ -28922,8 +28926,8 @@ this._backupSelectionValue=this._selectionValue;
 LocalizationSelectorBinding.prototype.onValueChange=function(){
 ExplorerBinding.saveFocusedNodes();
 var self=this;
-Dialog.warning(StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogTitle"),StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogText"),Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_118b){
-switch(_118b){
+Dialog.warning(StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogTitle"),StringBundle.getString(StringBundle.UI,"UserElementProvider.ChangeOtherActiveLocaleDialogText"),Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_118c){
+switch(_118c){
 case Dialog.RESPONSE_ACCEPT:
 if(Application.hasDirtyDockTabs()){
 self.subscribe(BroadcastMessages.SAVE_ALL_DONE);
@@ -28943,8 +28947,8 @@ break;
 LocalizationSelectorBinding.prototype._invokeAction=function(){
 var token=this.getValue();
 var root=SystemNode.taggedNodes.get("Root");
-var _118e=new SystemAction({Label:"Generated Action: Change Locale",ActionToken:token});
-SystemAction.invoke(_118e,root);
+var _118f=new SystemAction({Label:"Generated Action: Change Locale",ActionToken:token});
+SystemAction.invoke(_118f,root);
 };
 ResponseBinding.prototype=new Binding;
 ResponseBinding.prototype.constructor=ResponseBinding;
@@ -28968,9 +28972,9 @@ ResponseBinding.prototype._update=function(){
 if(this.getProperty("dirty")===true){
 this.dispatchAction(Binding.ACTION_DIRTY);
 }
-var _118f=this.getProperty("status");
-if(_118f!=null){
-switch(_118f){
+var _1190=this.getProperty("status");
+if(_1190!=null){
+switch(_1190){
 case "success":
 this.dispatchAction(ResponseBinding.ACTION_SUCCESS);
 break;
@@ -29000,51 +29004,51 @@ this.map[m.replace("ui:","")]=map[m];
 this.map=map;
 }
 }
-UserInterfaceMapping.prototype.merge=function(_1193){
-for(var _1194 in _1193.map){
-this.map[_1194]=_1193.getBindingImplementation(_1194);
+UserInterfaceMapping.prototype.merge=function(_1194){
+for(var _1195 in _1194.map){
+this.map[_1195]=_1194.getBindingImplementation(_1195);
 }
 };
-UserInterfaceMapping.prototype.getBindingImplementation=function(_1195){
-var _1196=null;
-var name=_1195.nodeName.toLowerCase();
+UserInterfaceMapping.prototype.getBindingImplementation=function(_1196){
+var _1197=null;
+var name=_1196.nodeName.toLowerCase();
 if(this.map[name]){
-_1196=this.map[name];
+_1197=this.map[name];
 }
-return _1196;
+return _1197;
 };
 var UserInterface=new function(){
-var _1198=(Client.isMozilla?MozEditorTextBoxBinding:IEEditorTextBoxBinding);
-var _1199=new UserInterfaceMapping({"body":RootBinding,"ui:binding":Binding,"ui:box":Binding,"ui:dialog":DialogBinding,"ui:dialoghead":DialogHeadBinding,"ui:dialogbody":DialogBodyBinding,"ui:dialogmatrix":DialogMatrixBinding,"ui:dialogset":DialogSetBinding,"ui:dialogborder":DialogBorderBinding,"ui:dialogcover":DialogCoverBinding,"ui:titlebar":DialogTitleBarBinding,"ui:titlebarbody":DialogTitleBarBodyBinding,"ui:window":WindowBinding,"ui:controlgroup":ControlGroupBinding,"ui:control":ControlBinding,"ui:menubar":MenuBarBinding,"ui:menu":MenuBinding,"ui:menubody":MenuBodyBinding,"ui:menugroup":MenuGroupBinding,"ui:menuitem":MenuItemBinding,"ui:menupopup":MenuPopupBinding,"ui:tabbox":TabBoxBinding,"ui:tabs":TabsBinding,"ui:tab":TabBinding,"ui:tabpanels":TabPanelsBinding,"ui:tabpanel":TabPanelBinding,"ui:splitbox":SplitBoxBinding,"ui:splitpanel":SplitPanelBinding,"ui:splitter":SplitterBinding,"ui:decks":DecksBinding,"ui:deck":DeckBinding,"ui:toolbar":ToolBarBinding,"ui:toolbargroup":ToolBarGroupBinding,"ui:toolbarbody":ToolBarBodyBinding,"ui:toolbarbutton":ToolBarButtonBinding,"ui:toolbarlabel":ToolBarLabelBinding,"ui:labelbox":LabelBinding,"ui:text":TextBinding,"ui:clickbutton":ClickButtonBinding,"ui:tree":TreeBinding,"ui:treebody":TreeBodyBinding,"ui:treenode":TreeNodeBinding,"ui:flexbox":FlexBoxBinding,"ui:scrollbox":ScrollBoxBinding,"ui:popupset":PopupSetBinding,"ui:popup":PopupBinding,"ui:matrix":MatrixBinding,"ui:sourceeditor":CodeMirrorEditorBinding,"ui:visualeditor":VisualEditorBinding,"ui:visualmultieditor":VisualMultiEditorBinding,"ui:visualmultitemplateeditor":VisualMultiTemplateEditorBinding,"ui:wysiwygeditortoolbarbutton":EditorToolBarButtonBinding,"ui:dock":DockBinding,"ui:docktabs":DockTabsBinding,"ui:docktab":DockTabBinding,"ui:dockpanels":DockPanelsBinding,"ui:dockpanel":DockPanelBinding,"ui:page":PageBinding,"ui:editorpage":EditorPageBinding,"ui:dialogpage":DialogPageBinding,"ui:pagebody":DialogPageBodyBinding,"ui:wizardpage":WizardPageBinding,"ui:explorer":ExplorerBinding,"ui:explorerdecks":ExplorerDecksBinding,"ui:explorerdeck":ExplorerDeckBinding,"ui:explorersplitter":ExplorerSplitterBinding,"ui:explorermenu":ExplorerMenuBinding,"ui:explorertoolbar":ExplorerToolBarBinding,"ui:explorertoolbarbutton":ExplorerToolBarButtonBinding,"ui:stagecontainer":StageContainerBinding,"ui:stage":StageBinding,"ui:stagedecks":StageDecksBinding,"ui:stagedeck":StageDeckBinding,"ui:viewset":ViewSetBinding,"ui:view":ViewBinding,"ui:broadcasterset":BroadcasterSetBinding,"ui:broadcaster":BroadcasterBinding,"ui:fields":FieldsBinding,"ui:fieldgroup":FieldGroupBinding,"ui:field":FieldBinding,"ui:fielddesc":FieldDescBinding,"ui:fielddata":FieldDataBinding,"ui:fieldhelp":FieldHelpBinding,"ui:datainput":DataInputBinding,"ui:selector":SelectorBinding,"ui:simpleselector":SimpleSelectorBinding,"ui:multiselector":MultiSelectorBinding,"ui:datainputselector":DataInputSelectorBinding,"ui:datainputdialog":DataInputDialogBinding,"ui:urlinputdialog":UrlInputDialogBinding,"ui:datainputbutton":DataInputButtonBinding,"ui:textbox":TextBoxBinding,"ui:editortextbox":_1198,"ui:radiodatagroup":RadioDataGroupBinding,"ui:radio":RadioDataBinding,"ui:checkbutton":CheckButtonBinding,"ui:checkbox":CheckBoxBinding,"ui:checkboxgroup":CheckBoxGroupBinding,"ui:datadialog":DataDialogBinding,"ui:postbackdialog":PostBackDataDialogBinding,"ui:nullpostbackdialog":NullPostBackDataDialogBinding,"ui:htmldatadialog":HTMLDataDialogBinding,"ui:functioneditor":FunctionEditorDataBinding,"ui:parametereditor":ParameterEditorDataBinding,"ui:keyset":KeySetBinding,"ui:cover":CoverBinding,"ui:uncover":UncoverBinding,"ui:cursor":CursorBinding,"ui:dialogtoolbar":DialogToolBarBinding,"ui:focus":FocusBinding,"ui:balloonset":BalloonSetBinding,"ui:balloon":BalloonBinding,"ui:error":ErrorBinding,"ui:throbber":ThrobberBinding,"ui:progressbar":ProgressBarBinding,"ui:lazybinding":LazyBindingBinding,"ui:sourcecodeviewer":SourceCodeViewerBinding,"ui:theatre":TheatreBinding,"ui:persistance":PersistanceBinding,"ui:filepicker":FilePickerBinding,"ui:request":RequestBinding,"ui:response":ResponseBinding});
-var _119a=SystemLogger.getLogger("UserInterface");
+var _1199=(Client.isMozilla?MozEditorTextBoxBinding:IEEditorTextBoxBinding);
+var _119a=new UserInterfaceMapping({"body":RootBinding,"ui:binding":Binding,"ui:box":Binding,"ui:dialog":DialogBinding,"ui:dialoghead":DialogHeadBinding,"ui:dialogbody":DialogBodyBinding,"ui:dialogmatrix":DialogMatrixBinding,"ui:dialogset":DialogSetBinding,"ui:dialogborder":DialogBorderBinding,"ui:dialogcover":DialogCoverBinding,"ui:titlebar":DialogTitleBarBinding,"ui:titlebarbody":DialogTitleBarBodyBinding,"ui:window":WindowBinding,"ui:controlgroup":ControlGroupBinding,"ui:control":ControlBinding,"ui:menubar":MenuBarBinding,"ui:menu":MenuBinding,"ui:menubody":MenuBodyBinding,"ui:menugroup":MenuGroupBinding,"ui:menuitem":MenuItemBinding,"ui:menupopup":MenuPopupBinding,"ui:tabbox":TabBoxBinding,"ui:tabs":TabsBinding,"ui:tab":TabBinding,"ui:tabpanels":TabPanelsBinding,"ui:tabpanel":TabPanelBinding,"ui:splitbox":SplitBoxBinding,"ui:splitpanel":SplitPanelBinding,"ui:splitter":SplitterBinding,"ui:decks":DecksBinding,"ui:deck":DeckBinding,"ui:toolbar":ToolBarBinding,"ui:toolbargroup":ToolBarGroupBinding,"ui:toolbarbody":ToolBarBodyBinding,"ui:toolbarbutton":ToolBarButtonBinding,"ui:toolbarlabel":ToolBarLabelBinding,"ui:labelbox":LabelBinding,"ui:text":TextBinding,"ui:clickbutton":ClickButtonBinding,"ui:tree":TreeBinding,"ui:treebody":TreeBodyBinding,"ui:treenode":TreeNodeBinding,"ui:flexbox":FlexBoxBinding,"ui:scrollbox":ScrollBoxBinding,"ui:popupset":PopupSetBinding,"ui:popup":PopupBinding,"ui:matrix":MatrixBinding,"ui:sourceeditor":CodeMirrorEditorBinding,"ui:visualeditor":VisualEditorBinding,"ui:visualmultieditor":VisualMultiEditorBinding,"ui:visualmultitemplateeditor":VisualMultiTemplateEditorBinding,"ui:wysiwygeditortoolbarbutton":EditorToolBarButtonBinding,"ui:dock":DockBinding,"ui:docktabs":DockTabsBinding,"ui:docktab":DockTabBinding,"ui:dockpanels":DockPanelsBinding,"ui:dockpanel":DockPanelBinding,"ui:page":PageBinding,"ui:editorpage":EditorPageBinding,"ui:dialogpage":DialogPageBinding,"ui:pagebody":DialogPageBodyBinding,"ui:wizardpage":WizardPageBinding,"ui:explorer":ExplorerBinding,"ui:explorerdecks":ExplorerDecksBinding,"ui:explorerdeck":ExplorerDeckBinding,"ui:explorersplitter":ExplorerSplitterBinding,"ui:explorermenu":ExplorerMenuBinding,"ui:explorertoolbar":ExplorerToolBarBinding,"ui:explorertoolbarbutton":ExplorerToolBarButtonBinding,"ui:stagecontainer":StageContainerBinding,"ui:stage":StageBinding,"ui:stagedecks":StageDecksBinding,"ui:stagedeck":StageDeckBinding,"ui:viewset":ViewSetBinding,"ui:view":ViewBinding,"ui:broadcasterset":BroadcasterSetBinding,"ui:broadcaster":BroadcasterBinding,"ui:fields":FieldsBinding,"ui:fieldgroup":FieldGroupBinding,"ui:field":FieldBinding,"ui:fielddesc":FieldDescBinding,"ui:fielddata":FieldDataBinding,"ui:fieldhelp":FieldHelpBinding,"ui:datainput":DataInputBinding,"ui:selector":SelectorBinding,"ui:simpleselector":SimpleSelectorBinding,"ui:multiselector":MultiSelectorBinding,"ui:datainputselector":DataInputSelectorBinding,"ui:datainputdialog":DataInputDialogBinding,"ui:urlinputdialog":UrlInputDialogBinding,"ui:datainputbutton":DataInputButtonBinding,"ui:textbox":TextBoxBinding,"ui:editortextbox":_1199,"ui:radiodatagroup":RadioDataGroupBinding,"ui:radio":RadioDataBinding,"ui:checkbutton":CheckButtonBinding,"ui:checkbox":CheckBoxBinding,"ui:checkboxgroup":CheckBoxGroupBinding,"ui:datadialog":DataDialogBinding,"ui:postbackdialog":PostBackDataDialogBinding,"ui:nullpostbackdialog":NullPostBackDataDialogBinding,"ui:htmldatadialog":HTMLDataDialogBinding,"ui:functioneditor":FunctionEditorDataBinding,"ui:parametereditor":ParameterEditorDataBinding,"ui:keyset":KeySetBinding,"ui:cover":CoverBinding,"ui:uncover":UncoverBinding,"ui:cursor":CursorBinding,"ui:dialogtoolbar":DialogToolBarBinding,"ui:focus":FocusBinding,"ui:balloonset":BalloonSetBinding,"ui:balloon":BalloonBinding,"ui:error":ErrorBinding,"ui:throbber":ThrobberBinding,"ui:progressbar":ProgressBarBinding,"ui:lazybinding":LazyBindingBinding,"ui:sourcecodeviewer":SourceCodeViewerBinding,"ui:theatre":TheatreBinding,"ui:persistance":PersistanceBinding,"ui:filepicker":FilePickerBinding,"ui:request":RequestBinding,"ui:response":ResponseBinding});
+var _119b=SystemLogger.getLogger("UserInterface");
 var keys={};
-this.registerBinding=function(_119c,impl){
-var _119e=null;
-if(!this.hasBinding(_119c)){
-var _119f=DOMUtil.getParentWindow(_119c);
-if(DOMUtil.getLocalName(_119c)!="bindingmapping"){
-if(!impl&&_119c.getAttribute("binding")!=null){
-var _11a0=_119c.getAttribute("binding");
-impl=_119f[_11a0];
+this.registerBinding=function(_119d,impl){
+var _119f=null;
+if(!this.hasBinding(_119d)){
+var _11a0=DOMUtil.getParentWindow(_119d);
+if(DOMUtil.getLocalName(_119d)!="bindingmapping"){
+if(!impl&&_119d.getAttribute("binding")!=null){
+var _11a1=_119d.getAttribute("binding");
+impl=_11a0[_11a1];
 if(impl==null){
-throw "No such binding in scope: "+_11a0;
+throw "No such binding in scope: "+_11a1;
 }
 }
 if(!impl){
-var _11a1=_119f.DocumentManager;
-if(_11a1){
-var _11a2=_11a1.customUserInterfaceMapping;
+var _11a2=_11a0.DocumentManager;
 if(_11a2){
-impl=_11a2.getBindingImplementation(_119c);
+var _11a3=_11a2.customUserInterfaceMapping;
+if(_11a3){
+impl=_11a3.getBindingImplementation(_119d);
 }
 }
 }
 if(!impl){
-impl=_1199.getBindingImplementation(_119c);
+impl=_119a.getBindingImplementation(_119d);
 }
 if(impl!=null&&!Application.isMalFunctional){
 try{
-_119e=new impl();
+_119f=new impl();
 }
 catch(exception){
 Application.isMalFunctional=true;
@@ -29052,95 +29056,95 @@ alert("No such binding!\n"+exception.message+(exception.stack?"\n"+exception.sta
 throw (exception);
 }
 }
-if(_119e){
+if(_119f){
 var key=KeyMaster.getUniqueKey();
-_119c.setAttribute("key",key);
-_119e.key=key;
-if(!_119c.id){
-_119c.id=key;
+_119d.setAttribute("key",key);
+_119f.key=key;
+if(!_119d.id){
+_119d.id=key;
 }
-keys[key]={element:_119c,binding:_119e};
-_119e.onBindingRegister();
+keys[key]={element:_119d,binding:_119f};
+_119f.onBindingRegister();
 }
 }
 }
-return _119e;
+return _119f;
 };
-this.unRegisterBinding=function(_11a4){
-terminate(_11a4);
+this.unRegisterBinding=function(_11a5){
+terminate(_11a5);
 };
-function terminate(_11a5){
-if(Binding.exists(_11a5)==true){
-var key=_11a5.key;
-Binding.destroy(_11a5);
+function terminate(_11a6){
+if(Binding.exists(_11a6)==true){
+var key=_11a6.key;
+Binding.destroy(_11a6);
 if(key){
 if(keys[key]){
 keys[key].binding=null;
 keys[key].element=null;
 delete keys[key];
-_11a5=null;
+_11a6=null;
 }else{
-_119a.error("URGH: "+key);
+_119b.error("URGH: "+key);
 }
 }
 }
 }
-this.getElement=function(_11a7){
-var _11a8=null;
-if(keys[_11a7.key]){
-_11a8=keys[_11a7.key].element;
+this.getElement=function(_11a8){
+var _11a9=null;
+if(keys[_11a8.key]){
+_11a9=keys[_11a8.key].element;
 }
-return _11a8;
+return _11a9;
 };
-this.getBinding=function(_11a9){
-var _11aa=null;
-if(_11a9&&_11a9.nodeType==Node.ELEMENT_NODE){
+this.getBinding=function(_11aa){
+var _11ab=null;
+if(_11aa&&_11aa.nodeType==Node.ELEMENT_NODE){
 try{
-var key=_11a9.getAttribute("key");
+var key=_11aa.getAttribute("key");
 if(key&&keys[key]){
-_11aa=keys[key].binding;
+_11ab=keys[key].binding;
 }
 }
 catch(exception){
-alert("getBinding exception occured on element:\n\n\t\t"+_11a9);
+alert("getBinding exception occured on element:\n\n\t\t"+_11aa);
 if(exception.stack){
 alert(exception.stack);
 }
 }
 }
-return _11aa;
+return _11ab;
 };
 this.getBindingByKey=function(key){
-var _11ad=null;
+var _11ae=null;
 if(keys[key]){
-_11ad=keys[key].binding;
+_11ae=keys[key].binding;
 }
-return _11ad;
+return _11ae;
 };
-this.hasBinding=function(_11ae){
-return this.getBinding(_11ae)!=null;
+this.hasBinding=function(_11af){
+return this.getBinding(_11af)!=null;
 };
-this.isBindingVisible=function(_11af){
-var _11b0=Application.isOperational;
-if(_11b0==true){
-var _11b1=new Crawler();
-_11b1.type=NodeCrawler.TYPE_ASCENDING;
-_11b1.id="visibilitycrawler";
-_11b1.addFilter(function(_11b2){
-var b=UserInterface.getBinding(_11b2);
+this.isBindingVisible=function(_11b0){
+var _11b1=Application.isOperational;
+if(_11b1==true){
+var _11b2=new Crawler();
+_11b2.type=NodeCrawler.TYPE_ASCENDING;
+_11b2.id="visibilitycrawler";
+_11b2.addFilter(function(_11b3){
+var b=UserInterface.getBinding(_11b3);
 var res=0;
 if(!b.isVisible){
-_11b0=false;
+_11b1=false;
 res=NodeCrawler.STOP_CRAWLING;
 }
 return res;
 });
-_11b1.crawl(_11af.bindingElement);
-_11b1.dispose();
+_11b2.crawl(_11b0.bindingElement);
+_11b2.dispose();
 }
-return _11b0;
+return _11b1;
 };
-var _11b5=null;
+var _11b6=null;
 this.getBindingCount=function(){
 var count=0;
 for(var key in keys){
@@ -29149,43 +29153,43 @@ count++;
 return count;
 };
 this.setPoint=function(){
-_11b5={};
+_11b6={};
 for(var key in keys){
-_11b5[key]=true;
+_11b6[key]=true;
 }
 };
 this.getPoint=function(){
-var _11b9=null;
-if(_11b5){
-_11b9=new List();
+var _11ba=null;
+if(_11b6){
+_11ba=new List();
 for(var key in keys){
-if(!_11b5[key]){
-_11b9.add(key);
+if(!_11b6[key]){
+_11ba.add(key);
 }
 }
 }
-return _11b9;
+return _11ba;
 };
 this.clearPoint=function(){
-_11b5=null;
+_11b6=null;
 };
 this.trackUndisposedBindings=function(){
-var _11bb=null;
+var _11bc=null;
 for(var key in keys){
 var entry=keys[key];
 if(!entry.binding||!entry.element||!Binding.exists(entry.binding)){
-if(!_11bb){
-_11bb="Bindings illdisposed: ";
+if(!_11bc){
+_11bc="Bindings illdisposed: ";
 }
-_11bb+=entry.binding+" ";
+_11bc+=entry.binding+" ";
 }
 }
-if(_11bb!=null){
-_119a.error(_11bb);
+if(_11bc!=null){
+_119b.error(_11bc);
 }
 };
-this.autoTrackDisposedBindings=function(_11be){
-if(_11be){
+this.autoTrackDisposedBindings=function(_11bf){
+if(_11bf){
 if(!window.disposedbindingtrackinterval){
 window.disposedbindingtrackinterval=window.setInterval(UserInterface.trackUndisposedBindings,10000);
 this.trackUndisposedBindings();
@@ -29206,33 +29210,33 @@ SOAPRequest.prototype.constructor=SOAPRequest;
 SOAPRequest.superclass=SOAPMessage.prototype;
 SOAPRequest.resolver=new XPathResolver();
 SOAPRequest.resolver.setNamespacePrefixResolver({"soap":Constants.NS_ENVELOPE,"xhtml":Constants.NS_XHTML});
-SOAPRequest.newInstance=function(_11bf,_11c0){
-var _11c1=_11bf+"/"+_11c0;
-var _11c2=new SOAPRequest(_11c1);
-var _11c3=SOAPRequest.resolver;
-_11c2.document=Templates.getTemplateDocument("soapenvelope.xml");
-_11c2.envelope=_11c3.resolve("soap:Envelope",_11c2.document);
-_11c2.header=_11c3.resolve("soap:Header",_11c2.envelope);
-_11c2.body=_11c3.resolve("soap:Body",_11c2.envelope);
-return _11c2;
+SOAPRequest.newInstance=function(_11c0,_11c1){
+var _11c2=_11c0+"/"+_11c1;
+var _11c3=new SOAPRequest(_11c2);
+var _11c4=SOAPRequest.resolver;
+_11c3.document=Templates.getTemplateDocument("soapenvelope.xml");
+_11c3.envelope=_11c4.resolve("soap:Envelope",_11c3.document);
+_11c3.header=_11c4.resolve("soap:Header",_11c3.envelope);
+_11c3.body=_11c4.resolve("soap:Body",_11c3.envelope);
+return _11c3;
 };
-SOAPRequest._parseResponse=function(_11c4){
-var _11c5=null;
-var _11c6=false;
-var doc=_11c4.responseXML;
+SOAPRequest._parseResponse=function(_11c5){
+var _11c6=null;
+var _11c7=false;
+var doc=_11c5.responseXML;
 if(doc!=null&&doc.documentElement!=null){
 switch(doc.documentElement.namespaceURI){
 case Constants.NS_ENVELOPE:
-_11c5=SOAPRequestResponse.newInstance(_11c4.responseXML);
+_11c6=SOAPRequestResponse.newInstance(_11c5.responseXML);
 if(Application.isOffLine){
 EventBroadcaster.broadcast(BroadcastMessages.SERVER_ONLINE);
 }
 break;
 case Constants.NS_XHTML:
 if(!Application.isOffLine){
-var body=SOAPRequest.resolver.resolve("xhtml:html/xhtml:body",_11c4.responseXML);
+var body=SOAPRequest.resolver.resolve("xhtml:html/xhtml:body",_11c5.responseXML);
 if(body&&body.getAttribute("id")=="offline"){
-_11c6=true;
+_11c7=true;
 }
 }
 break;
@@ -29251,38 +29255,38 @@ break;
 }
 }else{
 if(!Application.isOffLine&&!Application.isLoggedOut){
-var text=_11c4.responseText;
-if(_11c4.status==503||text.indexOf("id=\"offline\"")>-1){
-_11c6=true;
+var text=_11c5.responseText;
+if(_11c5.status==503||text.indexOf("id=\"offline\"")>-1){
+_11c7=true;
 }else{
-var cry="Invalid SOAP response: \n\n"+_11c4.responseText;
+var cry="Invalid SOAP response: \n\n"+_11c5.responseText;
 SystemLogger.getLogger("SOAPRequest._parseResponse (static)").error(cry);
 if(Application.isDeveloperMode){
 alert("Invalid SOAP response");
-window.open("about:blank").document.write(_11c4.responseText);
+window.open("about:blank").document.write(_11c5.responseText);
 }
 }
 }
 }
-if(_11c6==true){
+if(_11c7==true){
 EventBroadcaster.broadcast(BroadcastMessages.SERVER_OFFLINE);
 }
-return _11c5;
+return _11c6;
 };
-function SOAPRequest(_11cb){
+function SOAPRequest(_11cc){
 this.logger=SystemLogger.getLogger("SOAPRequest");
-this.action=_11cb;
+this.action=_11cc;
 return this;
 }
 SOAPRequest.prototype.invoke=function(url){
-var _11cd=DOMUtil.getXMLHTTPRequest();
-var _11ce=null;
-_11cd.open("post",url,false);
-_11cd.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
-_11cd.setRequestHeader("SOAPAction",this.action);
+var _11ce=DOMUtil.getXMLHTTPRequest();
+var _11cf=null;
+_11ce.open("post",url,false);
+_11ce.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+_11ce.setRequestHeader("SOAPAction",this.action);
 try{
-_11cd.send(this.document);
-_11ce=SOAPRequest._parseResponse(_11cd);
+_11ce.send(this.document);
+_11cf=SOAPRequest._parseResponse(_11ce);
 }
 catch(exception){
 var error="Dysfuntion in SOAP invoke: "+url;
@@ -29292,26 +29296,26 @@ error+="\n"+DOMSerializer.serialize(this.document,true);
 this.logger.error(error);
 throw exception;
 }
-_11cd=null;
-return _11ce;
+_11ce=null;
+return _11cf;
 };
-SOAPRequest.prototype.asyncInvoke=function(url,_11d1){
-var _11d2=DOMUtil.getXMLHTTPRequest();
-_11d2.open("post",url,true);
-_11d2.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
-_11d2.setRequestHeader("SOAPAction",this.action);
-_11d2.onreadystatechange=function(){
-if(_11d2.readyState==4){
-var _11d3=SOAPRequest._parseResponse(_11d2);
-_11d1(_11d3);
-_11d2=null;
+SOAPRequest.prototype.asyncInvoke=function(url,_11d2){
+var _11d3=DOMUtil.getXMLHTTPRequest();
+_11d3.open("post",url,true);
+_11d3.setRequestHeader("Content-Type","text/xml; charset=UTF-8");
+_11d3.setRequestHeader("SOAPAction",this.action);
+_11d3.onreadystatechange=function(){
+if(_11d3.readyState==4){
+var _11d4=SOAPRequest._parseResponse(_11d3);
+_11d2(_11d4);
+_11d3=null;
 }
 };
-_11d2.send(this.document);
+_11d3.send(this.document);
 };
 SOAPRequest.prototype.dispose=function(){
-for(var _11d4 in this){
-this[_11d4]=null;
+for(var _11d5 in this){
+this[_11d5]=null;
 }
 };
 SOAPRequestResponse.prototype=new SOAPMessage;
@@ -29323,26 +29327,26 @@ SOAPRequestResponse.logger=SystemLogger.getLogger("SOAPRequestResponse");
 SOAPRequestResponse.resolver=new XPathResolver();
 SOAPRequestResponse.resolver.setNamespacePrefixResolver({"soap":Constants.NS_ENVELOPE});
 SOAPRequestResponse.newInstance=function(doc){
-var _11d6=null;
+var _11d7=null;
 if(doc&&doc.documentElement){
-_11d6=new SOAPRequestResponse();
-var _11d7=SOAPRequestResponse.resolver;
-_11d6.document=doc;
-_11d6.envelope=_11d7.resolve("soap:Envelope",_11d6.document);
-_11d6.header=_11d7.resolve("soap:Header",_11d6.envelope);
-_11d6.body=_11d7.resolve("soap:Body",_11d6.envelope);
-var fault=_11d7.resolve("soap:Fault",_11d6.body);
+_11d7=new SOAPRequestResponse();
+var _11d8=SOAPRequestResponse.resolver;
+_11d7.document=doc;
+_11d7.envelope=_11d8.resolve("soap:Envelope",_11d7.document);
+_11d7.header=_11d8.resolve("soap:Header",_11d7.envelope);
+_11d7.body=_11d8.resolve("soap:Body",_11d7.envelope);
+var fault=_11d8.resolve("soap:Fault",_11d7.body);
 if(fault){
 SOAPRequestResponse.logger.fatal(DOMSerializer.serialize(fault,true));
-_11d6.fault={element:fault,faultNamespaceURI:fault.namespaceURI,faultCode:DOMUtil.getTextContent(_11d7.resolve("faultcode",fault)),faultString:DOMUtil.getTextContent(_11d7.resolve("faultstring",fault)),detail:fault.getElementsByTagName("detail").item(0)};
+_11d7.fault={element:fault,faultNamespaceURI:fault.namespaceURI,faultCode:DOMUtil.getTextContent(_11d8.resolve("faultcode",fault)),faultString:DOMUtil.getTextContent(_11d8.resolve("faultstring",fault)),detail:fault.getElementsByTagName("detail").item(0)};
 }
 }
-return _11d6;
+return _11d7;
 };
-function SOAPFault(_11d9,_11da,_11db){
-this._operationName=_11d9;
-this._operationAddress=_11da;
-this._faultString=_11db;
+function SOAPFault(_11da,_11db,_11dc){
+this._operationName=_11da;
+this._operationAddress=_11db;
+this._faultString=_11dc;
 }
 SOAPFault.prototype.getOperationName=function(){
 return this._operationName;
@@ -29353,45 +29357,45 @@ return this._operationAddress;
 SOAPFault.prototype.getFaultString=function(){
 return this._faultString;
 };
-SOAPFault.newInstance=function(_11dc,fault){
-return new SOAPFault(_11dc.name,_11dc.address,fault.faultString);
+SOAPFault.newInstance=function(_11dd,fault){
+return new SOAPFault(_11dd.name,_11dd.address,fault.faultString);
 };
-function SOAPEncoder(wsdl,_11df){
+function SOAPEncoder(wsdl,_11e0){
 this.logger=SystemLogger.getLogger("SOAPEncoder");
 this._wsdl=wsdl;
-this._operation=_11df;
+this._operation=_11e0;
 this._namespace=wsdl.getTargetNamespace();
 }
 SOAPEncoder.prototype.encode=function(args){
-var _11e1=SOAPRequest.newInstance(this._namespace,this._operation);
-var root=this._appendElement(_11e1.body,this._operation);
-var _11e3=this._wsdl.getSchema();
-var _11e4=_11e3.lookup(this._operation);
-var _11e5=_11e4.getListedDefinitions();
-while(_11e5.hasNext()){
-var def=_11e5.getNext();
+var _11e2=SOAPRequest.newInstance(this._namespace,this._operation);
+var root=this._appendElement(_11e2.body,this._operation);
+var _11e4=this._wsdl.getSchema();
+var _11e5=_11e4.lookup(this._operation);
+var _11e6=_11e5.getListedDefinitions();
+while(_11e6.hasNext()){
+var def=_11e6.getNext();
 var elm=this._appendElement(root,def.name);
 var val=args.getNext();
 this._resolve(elm,def,val);
 }
-return _11e1;
+return _11e2;
 };
-SOAPEncoder.prototype._resolve=function(_11e9,_11ea,value){
-var _11ec=this._wsdl.getSchema();
-if(_11ea.isSimpleValue){
-this._appendText(_11e9,value,_11ea.type=="string");
+SOAPEncoder.prototype._resolve=function(_11ea,_11eb,value){
+var _11ed=this._wsdl.getSchema();
+if(_11eb.isSimpleValue){
+this._appendText(_11ea,value,_11eb.type=="string");
 }else{
-var _11ed=_11ec.lookup(_11ea.type);
-if(_11ed instanceof SchemaSimpleType){
+var _11ee=_11ed.lookup(_11eb.type);
+if(_11ee instanceof SchemaSimpleType){
 alert("SOAPEncoder: SchemaSimpleType support not implemented!");
 }else{
-var defs=_11ed.getListedDefinitions();
-if(_11ed.isArray){
-var _11ef=new List(value);
+var defs=_11ee.getListedDefinitions();
+if(_11ee.isArray){
+var _11f0=new List(value);
 var def=defs.getNext();
-while(_11ef.hasNext()){
-var elm=this._appendElement(_11e9,def.name);
-var val=_11ef.getNext();
+while(_11f0.hasNext()){
+var elm=this._appendElement(_11ea,def.name);
+var val=_11f0.getNext();
 this._resolve(elm,def,val);
 }
 }else{
@@ -29401,7 +29405,7 @@ this.logger.error("SOAPEncoder: value is undefined");
 while(defs.hasNext()){
 try{
 var def=defs.getNext();
-var elm=this._appendElement(_11e9,def.name);
+var elm=this._appendElement(_11ea,def.name);
 var val=value[def.name];
 this._resolve(elm,def,val);
 }
@@ -29419,43 +29423,43 @@ var child=DOMUtil.createElementNS(this._namespace,name,node.ownerDocument);
 node.appendChild(child);
 return child;
 };
-SOAPEncoder.prototype._appendText=function(_11f6,value,_11f8){
+SOAPEncoder.prototype._appendText=function(_11f7,value,_11f9){
 if(value!=null){
 value=new String(value);
 var safe=new String("");
 var chars=value.split("");
-var _11fb=false;
+var _11fc=false;
 var i=0,c;
 while(c=chars[i++]){
-var _11fe=true;
+var _11ff=true;
 var code=c.charCodeAt(0);
 switch(code){
 case 9:
 case 10:
 case 13:
-_11fe=false;
+_11ff=false;
 break;
 default:
 if((code>=32&&code<=55295)||(code>=57344&&code<=65533)||(code>=65536&&code<=1114111)){
-_11fe=false;
+_11ff=false;
 }
 break;
 }
-if(!_11fe){
+if(!_11ff){
 safe+=c;
 }else{
-_11fb=true;
+_11fc=true;
 }
 }
-if(_11fb){
+if(_11fc){
 this.logger.debug("Illegal XML character(s) was deleted from the string: "+value);
 }
-_11f6.appendChild(_11f6.ownerDocument.createTextNode(safe));
+_11f7.appendChild(_11f7.ownerDocument.createTextNode(safe));
 }
 };
-function SOAPDecoder(wsdl,_1201){
+function SOAPDecoder(wsdl,_1202){
 this._wsdl=wsdl;
-this._operation=_1201;
+this._operation=_1202;
 this._resolver=new XPathResolver();
 this._resolver.setNamespacePrefixResolver({"result":wsdl.getTargetNamespace()});
 }
@@ -29465,57 +29469,57 @@ return this._resolver.resolve("result:"+xpath,node);
 SOAPDecoder.prototype.resolveAll=function(xpath,node){
 return this._resolver.resolveAll("result:"+xpath,node);
 };
-SOAPDecoder.prototype.decode=function(_1206){
-var _1207=null;
-var _1208=this._wsdl.getSchema();
+SOAPDecoder.prototype.decode=function(_1207){
+var _1208=null;
+var _1209=this._wsdl.getSchema();
 var id=this._operation+"Response";
-var _120a=this.resolve(id,_1206.body);
-var _120b=_1208.lookup(id);
-var _120c=_120b.getListedDefinitions();
-while(!_1207&&_120c.hasNext()){
-var def=_120c.getNext();
-var elm=this.resolve(def.name,_120a);
+var _120b=this.resolve(id,_1207.body);
+var _120c=_1209.lookup(id);
+var _120d=_120c.getListedDefinitions();
+while(!_1208&&_120d.hasNext()){
+var def=_120d.getNext();
+var elm=this.resolve(def.name,_120b);
 if(def.type==SchemaDefinition.TYPE_XML_DOCUMENT){
-_1207=DOMUtil.getDOMDocument();
+_1208=DOMUtil.getDOMDocument();
 var e=elm.getElementsByTagName("*").item(0);
-if(typeof _1207.importNode!=Types.UNDEFINED){
-_1207.appendChild(_1207.importNode(e,true));
+if(typeof _1208.importNode!=Types.UNDEFINED){
+_1208.appendChild(_1208.importNode(e,true));
 }else{
-_1207.loadXML(DOMSerializer.serialize(e));
+_1208.loadXML(DOMSerializer.serialize(e));
 }
 }else{
-_1207=this._compute(elm,def);
+_1208=this._compute(elm,def);
 }
 }
-return _1207;
+return _1208;
 };
-SOAPDecoder.prototype._compute=function(_1210,_1211){
-var _1212=null;
-var _1213=this._wsdl.getSchema();
-if(_1211.isSimpleValue){
-_1212=this._getSimpleValue(_1210,_1211.type);
+SOAPDecoder.prototype._compute=function(_1211,_1212){
+var _1213=null;
+var _1214=this._wsdl.getSchema();
+if(_1212.isSimpleValue){
+_1213=this._getSimpleValue(_1211,_1212.type);
 }else{
-var _1214=_1213.lookup(_1211.type);
-if(_1214 instanceof SchemaSimpleType){
-_1212=this._getSimpleValue(_1210,_1214.restrictionType);
+var _1215=_1214.lookup(_1212.type);
+if(_1215 instanceof SchemaSimpleType){
+_1213=this._getSimpleValue(_1211,_1215.restrictionType);
 }else{
-var defs=_1214.getListedDefinitions();
-if(_1214.isArray){
-_1212=[];
+var defs=_1215.getListedDefinitions();
+if(_1215.isArray){
+_1213=[];
 var def=defs.getNext();
-var elms=this.resolveAll(def.type,_1210);
+var elms=this.resolveAll(def.type,_1211);
 while(elms.hasNext()){
 var elm=elms.getNext();
-_1212.push(this._compute(elm,def));
+_1213.push(this._compute(elm,def));
 }
 }else{
-_1212={};
+_1213={};
 defs.reset();
 while(defs.hasNext()){
 var def=defs.getNext();
-var elm=this.resolve(def.name,_1210);
+var elm=this.resolve(def.name,_1211);
 if(elm){
-_1212[def.name]=this._compute(elm,def);
+_1213[def.name]=this._compute(elm,def);
 }else{
 if(def.isRequired){
 throw new Error("SOAPDecoder: invalid SOAP response.");
@@ -29525,48 +29529,48 @@ throw new Error("SOAPDecoder: invalid SOAP response.");
 }
 }
 }
-return _1212;
+return _1213;
 };
-SOAPDecoder.prototype._getSimpleValue=function(_1219,type){
-var _121b=null;
-if(_1219!=null&&_1219.firstChild&&_1219.firstChild.nodeType==Node.TEXT_NODE){
-if(Client.isMozilla&&_1219.childNodes.length>1){
-_1219.normalize();
+SOAPDecoder.prototype._getSimpleValue=function(_121a,type){
+var _121c=null;
+if(_121a!=null&&_121a.firstChild&&_121a.firstChild.nodeType==Node.TEXT_NODE){
+if(Client.isMozilla&&_121a.childNodes.length>1){
+_121a.normalize();
 }
-_121b=_1219.firstChild.data;
+_121c=_121a.firstChild.data;
 switch(type){
 case Schema.types.STRING:
-_121b=_121b;
+_121c=_121c;
 break;
 case Schema.types.INT:
 case Schema.types.FLOAT:
 case Schema.types.DOUBLE:
-_121b=Number(_121b);
+_121c=Number(_121c);
 break;
 case Schema.types.BOOLEAN:
-_121b=_121b=="true";
+_121c=_121c=="true";
 break;
 default:
 throw ("SOAPDecoder: schema type \""+type+"\" not handled.");
 break;
 }
 }
-return _121b;
+return _121c;
 };
 Schema.prototype=new XPathResolver;
 Schema.prototype.constructor=Schema;
 Schema.superclass=XPathResolver.prototype;
 Schema.types={STRING:"string",INT:"int",FLOAT:"float",DOUBLE:"double",BOOLEAN:"boolean"};
 Schema.notSupportedException=new Error("Schema: Schema structure not supported!");
-function Schema(_121c){
+function Schema(_121d){
 this.logger=SystemLogger.getLogger("Schema");
-this._map=this._parseSchema(_121c);
+this._map=this._parseSchema(_121d);
 }
-Schema.prototype._parseSchema=function(_121d){
+Schema.prototype._parseSchema=function(_121e){
 this.setNamespacePrefixResolver({"wsdl":Constants.NS_WSDL,"soap":Constants.NS_SOAP,"s":Constants.NS_SCHEMA});
-var _121e={};
+var _121f={};
 var entry=null;
-var rules=this.resolveAll("s:*[@name]",_121d);
+var rules=this.resolveAll("s:*[@name]",_121e);
 while(rules.hasNext()){
 var rule=rules.getNext();
 switch(DOMUtil.getLocalName(rule)){
@@ -29580,34 +29584,34 @@ case "simpleType":
 entry=new SchemaSimpleType(this,rule);
 break;
 }
-_121e[rule.getAttribute("name")]=entry;
+_121f[rule.getAttribute("name")]=entry;
 }
-return _121e;
+return _121f;
 };
 Schema.prototype.lookup=function(name){
 return this._map[name];
 };
 SchemaDefinition.TYPE_XML_DOCUMENT="xmldocument";
-function SchemaDefinition(_1223){
+function SchemaDefinition(_1224){
 this.logger=SystemLogger.getLogger("SchemaDefinition");
 this.isRequired=null;
 this.type=null;
-this._parse(_1223);
+this._parse(_1224);
 }
-SchemaDefinition.prototype._parse=function(_1224){
-var min=_1224.getAttribute("minOccurs");
-var max=_1224.getAttribute("maxOccurs");
-var type=_1224.getAttribute("type");
-this.name=_1224.getAttribute("name");
+SchemaDefinition.prototype._parse=function(_1225){
+var min=_1225.getAttribute("minOccurs");
+var max=_1225.getAttribute("maxOccurs");
+var type=_1225.getAttribute("type");
+this.name=_1225.getAttribute("name");
 this.isRequired=min!="0";
 if(type){
 var split=type.split(":");
 var sort=split[0];
-var _122a=split[1];
+var _122b=split[1];
 this.isSimpleValue=sort!="tns";
-this.type=_122a;
+this.type=_122b;
 }else{
-var elm=_1224.getElementsByTagName("*").item(0);
+var elm=_1225.getElementsByTagName("*").item(0);
 if(elm&&DOMUtil.getLocalName(elm)=="complexType"&&elm.getAttribute("mixed")=="true"){
 elm=elm.getElementsByTagName("*").item(0);
 if(elm&&DOMUtil.getLocalName(elm)=="sequence"){
@@ -29625,13 +29629,13 @@ SchemaType.prototype={};
 SchemaElementType.prototype=new SchemaType;
 SchemaElementType.prototype.constructor=SchemaElementType;
 SchemaElementType.superclass=SchemaType.prototype;
-function SchemaElementType(_122c,_122d){
+function SchemaElementType(_122d,_122e){
 this.logger=SystemLogger.getLogger("SchemaElementType");
 this._definitions=new List();
-this._parseListedDefinitions(_122c,_122d);
+this._parseListedDefinitions(_122d,_122e);
 }
-SchemaElementType.prototype._parseListedDefinitions=function(_122e,_122f){
-var els=_122e.resolveAll("s:complexType/s:sequence/s:element",_122f);
+SchemaElementType.prototype._parseListedDefinitions=function(_122f,_1230){
+var els=_122f.resolveAll("s:complexType/s:sequence/s:element",_1230);
 if(els.hasEntries()){
 while(els.hasNext()){
 this._definitions.add(new SchemaDefinition(els.getNext()));
@@ -29647,13 +29651,13 @@ return this._definitions.copy();
 SchemaComplexType.prototype=new SchemaType;
 SchemaComplexType.prototype.constructor=SchemaComplexType;
 SchemaComplexType.superclass=SchemaType.prototype;
-function SchemaComplexType(_1231,_1232){
+function SchemaComplexType(_1232,_1233){
 this._definitions=new List();
-this._parseListedDefinitions(_1231,_1232);
-this.isArray=_1232.getAttribute("name").indexOf("ArrayOf")>-1;
+this._parseListedDefinitions(_1232,_1233);
+this.isArray=_1233.getAttribute("name").indexOf("ArrayOf")>-1;
 }
-SchemaComplexType.prototype._parseListedDefinitions=function(_1233,_1234){
-var els=_1233.resolveAll("s:sequence/s:element",_1234);
+SchemaComplexType.prototype._parseListedDefinitions=function(_1234,_1235){
+var els=_1234.resolveAll("s:sequence/s:element",_1235);
 if(els.hasEntries()){
 while(els.hasNext()){
 var el=els.getNext();
@@ -29669,14 +29673,14 @@ return this._definitions.copy();
 SchemaSimpleType.prototype=new SchemaType;
 SchemaSimpleType.prototype.constructor=SchemaSimpleType;
 SchemaSimpleType.superclass=SchemaType.prototype;
-function SchemaSimpleType(_1237,_1238){
+function SchemaSimpleType(_1238,_1239){
 this.restrictionType=null;
-this._parse(_1237,_1238);
+this._parse(_1238,_1239);
 }
-SchemaSimpleType.prototype._parse=function(_1239,_123a){
-var _123b=_1239.resolve("s:restriction",_123a);
-if(_123b){
-this.restrictionType=_123b.getAttribute("base").split(":")[1];
+SchemaSimpleType.prototype._parse=function(_123a,_123b){
+var _123c=_123a.resolve("s:restriction",_123b);
+if(_123c){
+this.restrictionType=_123c.getAttribute("base").split(":")[1];
 }else{
 throw Schema.notSupportedException;
 }
@@ -29695,17 +29699,17 @@ this._schema=new Schema(this.resolve("wsdl:types/s:schema",this._root));
 this._WSDLURL=url;
 }
 WebServiceResolver.prototype._getDocumentElement=function(url){
-var _123e=null;
-var _123f=DOMUtil.getXMLHTTPRequest();
-_123f.open("get",url,false);
-_123f.send(null);
-if(_123f.responseXML){
-_123e=_123f.responseXML.documentElement;
+var _123f=null;
+var _1240=DOMUtil.getXMLHTTPRequest();
+_1240.open("get",url,false);
+_1240.send(null);
+if(_1240.responseXML){
+_123f=_1240.responseXML.documentElement;
 }else{
-alert(_123f.responseText);
+alert(_1240.responseText);
 throw new Error("WebServiceResolver: Could not read WSDL: "+url);
 }
-return _123e;
+return _123f;
 };
 WebServiceResolver.prototype.getPortAddress=function(){
 return this._WSDLURL.split("?WSDL")[0];
@@ -29714,27 +29718,27 @@ WebServiceResolver.prototype.getTargetNamespace=function(){
 return this._root.getAttribute("targetNamespace");
 };
 WebServiceResolver.prototype.getOperations=function(){
-var _1240=new List();
-var _1241=this.resolveAll("wsdl:portType/wsdl:operation",this._root);
-if(_1241.hasEntries()){
-while(_1241.hasNext()){
-var _1242=_1241.getNext();
-var name=_1242.getAttribute("name");
-_1240.add(new WebServiceOperation(name,this.getPortAddress(),new SOAPEncoder(this,name),new SOAPDecoder(this,name)));
+var _1241=new List();
+var _1242=this.resolveAll("wsdl:portType/wsdl:operation",this._root);
+if(_1242.hasEntries()){
+while(_1242.hasNext()){
+var _1243=_1242.getNext();
+var name=_1243.getAttribute("name");
+_1241.add(new WebServiceOperation(name,this.getPortAddress(),new SOAPEncoder(this,name),new SOAPDecoder(this,name)));
 }
 }else{
 throw new Error("WebServiceResolver: No portType found.");
 }
-return _1240;
+return _1241;
 };
 WebServiceResolver.prototype.getSchema=function(){
 return this._schema;
 };
-function WebServiceOperation(name,_1245,_1246,_1247){
+function WebServiceOperation(name,_1246,_1247,_1248){
 this.name=name;
-this.address=_1245;
-this.encoder=_1246;
-this.decoder=_1247;
+this.address=_1246;
+this.encoder=_1247;
+this.decoder=_1248;
 }
 WebServiceOperation.prototype={name:null,address:null,encoder:null,decoder:null};
 WebServiceProxy.isLoggingEnabled=true;
@@ -29746,78 +29750,78 @@ this.logger=SystemLogger.getLogger("WebServiceProxy");
 WebServiceProxy.createProxy=function(url){
 var wsdl=new WebServiceResolver(url);
 var proxy=new WebServiceProxy();
-var _124b=wsdl.getOperations();
-_124b.each(function(_124c){
-proxy[_124c.name]=WebServiceProxy.createProxyOperation(_124c);
+var _124c=wsdl.getOperations();
+_124c.each(function(_124d){
+proxy[_124d.name]=WebServiceProxy.createProxyOperation(_124d);
 });
 return proxy;
 };
-WebServiceProxy.prototype._log=function(_124d,_124e){
-if(WebServiceProxy.isLoggingEnabled&&Application.isDeveloperMode&&_124e){
-var log=_124e instanceof SOAPRequest?"SOAPRequest for ":"SOAPResponse from ";
-log+=_124d.address+": "+_124d.name+"\n\n";
-log+=DOMSerializer.serialize(_124e.document,true);
+WebServiceProxy.prototype._log=function(_124e,_124f){
+if(WebServiceProxy.isLoggingEnabled&&Application.isDeveloperMode&&_124f){
+var log=_124f instanceof SOAPRequest?"SOAPRequest for ":"SOAPResponse from ";
+log+=_124e.address+": "+_124e.name+"\n\n";
+log+=DOMSerializer.serialize(_124f.document,true);
 this.logger.fine(log);
 }
 };
-WebServiceProxy.createProxyOperation=function(_1250){
+WebServiceProxy.createProxyOperation=function(_1251){
 return function(){
-var _1251=new List(arguments);
-var _1252=null;
-if(typeof (_1251.getLast())=="function"){
-var _1253=_1251.extractLast();
-var _1254=_1250.encoder.encode(_1251);
-this._log(_1250,_1254);
+var _1252=new List(arguments);
+var _1253=null;
+if(typeof (_1252.getLast())=="function"){
+var _1254=_1252.extractLast();
+var _1255=_1251.encoder.encode(_1252);
+this._log(_1251,_1255);
 var self=this;
-var _1256=_1254.asyncInvoke(_1250.address,function(_1257){
-self._log(_1250,_1257);
-if(_1257){
-if(_1257.fault){
-_1252=SOAPFault.newInstance(_1250,_1257.fault);
+var _1257=_1255.asyncInvoke(_1251.address,function(_1258){
+self._log(_1251,_1258);
+if(_1258){
+if(_1258.fault){
+_1253=SOAPFault.newInstance(_1251,_1258.fault);
 if(WebServiceProxy.isFaultHandler){
-WebServiceProxy.handleFault(_1252,_1254,_1257);
+WebServiceProxy.handleFault(_1253,_1255,_1258);
 }
 }else{
 if(WebServiceProxy.isDOMResult){
-_1252=_1257.document;
+_1253=_1258.document;
 }else{
-_1252=_1250.decoder.decode(_1257);
+_1253=_1251.decoder.decode(_1258);
 }
 }
 }
-_1254.dispose();
-_1253(_1252);
+_1255.dispose();
+_1254(_1253);
 });
 }else{
-var _1254=_1250.encoder.encode(new List(arguments));
-this._log(_1250,_1254);
-var _1256=_1254.invoke(_1250.address);
-this._log(_1250,_1256);
-if(_1256){
-if(_1256.fault){
-_1252=SOAPFault.newInstance(_1250,_1256.fault);
+var _1255=_1251.encoder.encode(new List(arguments));
+this._log(_1251,_1255);
+var _1257=_1255.invoke(_1251.address);
+this._log(_1251,_1257);
+if(_1257){
+if(_1257.fault){
+_1253=SOAPFault.newInstance(_1251,_1257.fault);
 if(WebServiceProxy.isFaultHandler){
-WebServiceProxy.handleFault(_1252,_1254,_1256);
+WebServiceProxy.handleFault(_1253,_1255,_1257);
 }
 }else{
 if(WebServiceProxy.isDOMResult){
-_1252=_1256.document;
+_1253=_1257.document;
 }else{
-_1252=_1250.decoder.decode(_1256);
+_1253=_1251.decoder.decode(_1257);
 }
 }
 }
-_1254.dispose();
-return _1252;
+_1255.dispose();
+return _1253;
 }
 };
 };
-WebServiceProxy.handleFault=function(_1258,_1259,_125a){
+WebServiceProxy.handleFault=function(_1259,_125a,_125b){
 try{
-Dialog.invokeModal(Dialog.URL_SERVICEFAULT,null,{soapFault:_1258,soapRequest:_1259,soapResponse:_125a});
+Dialog.invokeModal(Dialog.URL_SERVICEFAULT,null,{soapFault:_1259,soapRequest:_125a,soapResponse:_125b});
 }
 catch(exception){
-alert(_1258.getFaultString());
+alert(_1259.getFaultString());
 }
 };
 var ConfigurationService=null;
@@ -29842,21 +29846,21 @@ this.INTERVAL_OFFLINE=1*1000;
 this._actions=new List();
 this._index={};
 this.index=0;
-var _125b=SystemLogger.getLogger("MessageQueue");
-var _125c=null;
-var _125d=0;
-var _125e=null;
-var _125f=new Map();
+var _125c=SystemLogger.getLogger("MessageQueue");
+var _125d=null;
+var _125e=0;
+var _125f=null;
 var _1260=new Map();
-var _1261=false;
+var _1261=new Map();
 var _1262=false;
 var _1263=false;
 var _1264=false;
-var _1265={"Main":DockBinding.MAIN,"External":DockBinding.EXTERNAL,"BottomLeft":DockBinding.BOTTOMLEFT,"BottomRight":DockBinding.BOTTOMRIGHT,"RightTop":DockBinding.RIGHTTOP,"RightBottom":DockBinding.RIGHTBOTTOM,"AbsBottomLeft":DockBinding.ABSBOTTOMLEFT,"AbsBottomRight":DockBinding.ABSBOTTOMRIGHT};
+var _1265=false;
+var _1266={"Main":DockBinding.MAIN,"External":DockBinding.EXTERNAL,"BottomLeft":DockBinding.BOTTOMLEFT,"BottomRight":DockBinding.BOTTOMRIGHT,"RightTop":DockBinding.RIGHTTOP,"RightBottom":DockBinding.RIGHTBOTTOM,"AbsBottomLeft":DockBinding.ABSBOTTOMLEFT,"AbsBottomRight":DockBinding.ABSBOTTOMRIGHT};
 this.initialize=function(){
-_125c=ConsoleMessageQueueService;
-_125d=_125c.GetCurrentSequenceNumber("dummyparam!");
-this.index=_125d;
+_125d=ConsoleMessageQueueService;
+_125e=_125d.GetCurrentSequenceNumber("dummyparam!");
+this.index=_125e;
 EventBroadcaster.subscribe(BroadcastMessages.VIEW_COMPLETED,this);
 EventBroadcaster.subscribe(BroadcastMessages.VIEW_CLOSED,this);
 EventBroadcaster.subscribe(BroadcastMessages.SERVER_OFFLINE,this);
@@ -29864,156 +29868,156 @@ EventBroadcaster.subscribe(BroadcastMessages.SERVER_ONLINE,this);
 window.messageQueueInterval=window.setInterval(MessageQueue._autoupdate,MessageQueue.INTERVAL_ONLINE);
 };
 this._autoupdate=function(){
-if(!_1261){
+if(!_1262){
 if(!MessageQueue._actions.hasEntries()){
-var _1266=WebServiceProxy.isLoggingEnabled;
+var _1267=WebServiceProxy.isLoggingEnabled;
 if(Application.isLoggedIn){
-_1262=true;
+_1263=true;
 WebServiceProxy.isLoggingEnabled=false;
 MessageQueue.update();
-WebServiceProxy.isLoggingEnabled=_1266;
-_1262=false;
+WebServiceProxy.isLoggingEnabled=_1267;
+_1263=false;
 }
 }
 }
 };
 this._pokeserver=function(){
-if(_1261==true){
+if(_1262==true){
 if(ReadyService.IsServerReady(true)){
 MessageQueue._lockSystem(false);
 }
 }
 };
-this.update=function(_1267){
+this.update=function(_1268){
 if(Application.isLoggedIn){
-EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED,_1262);
-this._updateMessages(_1267);
+EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_REQUESTED,_1263);
+this._updateMessages(_1268);
 }
 };
-this._updateMessages=function(_1268){
-if(_1263){
-_1264=true;
+this._updateMessages=function(_1269){
+if(_1264){
+_1265=true;
 }else{
-_1263=true;
+_1264=true;
 var self=this;
-var _126a=function(_126b){
-if(_126b!=null){
-if(Types.isDefined(_126b.CurrentSequenceNumber)){
-var _126c=_126b.CurrentSequenceNumber;
-if(_126c<self.index){
-_125b.debug("SERVER WAS RESTARTED! old messagequeue index: "+self.index+", new messagequeue index: "+_126c);
+var _126b=function(_126c){
+if(_126c!=null){
+if(Types.isDefined(_126c.CurrentSequenceNumber)){
+var _126d=_126c.CurrentSequenceNumber;
+if(_126d<self.index){
+_125c.debug("SERVER WAS RESTARTED! old messagequeue index: "+self.index+", new messagequeue index: "+_126d);
 }
-self.index=_126c;
-var _126d=new List(_126b.ConsoleActions);
-if(_126d.hasEntries()){
-self.evaluate(_126d);
+self.index=_126d;
+var _126e=new List(_126c.ConsoleActions);
+if(_126e.hasEntries()){
+self.evaluate(_126e);
 }else{
 if(!self._actions.hasEntries()){
 broadcastUpdateEvaluated();
 }
 }
 }else{
-_125b.error("No sequencenumber in MessageQueue response!");
+_125c.error("No sequencenumber in MessageQueue response!");
 }
 }
-_1263=false;
-if(_1264){
 _1264=false;
+if(_1265){
+_1265=false;
 self._updateMessages();
 }
 };
-if(_1268){
-_126a(_125c.GetMessages(Application.CONSOLE_ID,this.index));
+if(_1269){
+_126b(_125d.GetMessages(Application.CONSOLE_ID,this.index));
 }else{
-_125c.GetMessages(Application.CONSOLE_ID,this.index,_126a);
+_125d.GetMessages(Application.CONSOLE_ID,this.index,_126b);
 }
 }
 };
-this.evaluate=function(_126e){
-var _126f=new List();
-if(_126e.hasEntries()){
-_126e.each(function(_1270){
-if(this._index[_1270.Id]!=true){
-_126f.add(_1270);
-}
-this._index[_1270.Id]=true;
-},this);
+this.evaluate=function(_126f){
+var _1270=new List();
 if(_126f.hasEntries()){
+_126f.each(function(_1271){
+if(this._index[_1271.Id]!=true){
+_1270.add(_1271);
+}
+this._index[_1271.Id]=true;
+},this);
+if(_1270.hasEntries()){
 if(this._actions.hasEntries()){
-this._actions.merge(_126f);
+this._actions.merge(_1270);
 }else{
-this._actions=_126f;
+this._actions=_1270;
 }
 this._nextAction();
 }
 }
 };
-this._closeAllViews=function(_1271){
-var _1272="(No reason)";
-if(_1271!=null){
-_1272=_1271.Reason;
+this._closeAllViews=function(_1272){
+var _1273="(No reason)";
+if(_1272!=null){
+_1273=_1272.Reason;
 }
 var title="Warning";
 var text="The server has requested a close of all active editors for the following reason: \"${reason}\". It is recommended that you accept this request by clicking OK.";
-text=text.replace("${reason}",_1272);
+text=text.replace("${reason}",_1273);
 var self=this;
-Dialog.warning(title,text,Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_1276){
-if(_1276==Dialog.RESPONSE_ACCEPT){
+Dialog.warning(title,text,Dialog.BUTTONS_ACCEPT_CANCEL,{handleDialogResponse:function(_1277){
+if(_1277==Dialog.RESPONSE_ACCEPT){
 EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEWS);
 }
 self._nextAction();
 }});
 };
 this._nextAction=function(){
-var _1277=null;
+var _1278=null;
 if(this._actions.hasEntries()){
-var _1278=this._actions.extractFirst();
-_125d=_1278.SequenceNumber;
-_125b.debug("MessageQueue action: "+_1278.ActionType+" > QUEUE-MAX-SEQNUM: "+this.index+" > CURRENT SEQNUM: "+_125d+" > ACTIONS-LEFT: "+this._actions.getLength());
-switch(_1278.ActionType){
+var _1279=this._actions.extractFirst();
+_125e=_1279.SequenceNumber;
+_125c.debug("MessageQueue action: "+_1279.ActionType+" > QUEUE-MAX-SEQNUM: "+this.index+" > CURRENT SEQNUM: "+_125e+" > ACTIONS-LEFT: "+this._actions.getLength());
+switch(_1279.ActionType){
 case "OpenView":
-_1277=_1278.OpenViewParams;
-if(_1277.ViewType=="ModalDialog"){
-openDialogView(_1277);
+_1278=_1279.OpenViewParams;
+if(_1278.ViewType=="ModalDialog"){
+openDialogView(_1278);
 }else{
-_125e=_1277.ViewId;
-openView(_1277);
+_125f=_1278.ViewId;
+openView(_1278);
 }
 break;
 case "CloseView":
-_1277=_1278.CloseViewParams;
-_125e=_1277.ViewId;
-closeView(_1277);
+_1278=_1279.CloseViewParams;
+_125f=_1278.ViewId;
+closeView(_1278);
 break;
 case "RefreshTree":
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,_1278.RefreshTreeParams.EntityToken);
-var debug="REFRESHING TREES: "+_125f.countEntries()+"\n";
-_125f.each(function(token){
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESH,_1279.RefreshTreeParams.EntityToken);
+var debug="REFRESHING TREES: "+_1260.countEntries()+"\n";
+_1260.each(function(token){
 debug+="\n\tTOKEN: "+token;
 });
-_125b.debug(debug);
-if(!_125f.hasEntries()){
+_125c.debug(debug);
+if(!_1260.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
 break;
 case "SelectElement":
-EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS,_1278.BindEntityTokenToViewParams.EntityToken);
+EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_FOCUS,_1279.BindEntityTokenToViewParams.EntityToken);
 this._nextAction();
 break;
 case "MessageBox":
-openMessageBox(_1278.MessageBoxParams);
+openMessageBox(_1279.MessageBoxParams);
 break;
 case "OpenViewDefinition":
-_1277=_1278.OpenViewDefinitionParams;
-_125e=_1277.Handle;
-openViewDefinition(_1277);
+_1278=_1279.OpenViewDefinitionParams;
+_125f=_1278.Handle;
+openViewDefinition(_1278);
 break;
 case "LogEntry":
-logEntry(_1278.LogEntryParams);
+logEntry(_1279.LogEntryParams);
 this._nextAction();
 break;
 case "Reboot":
@@ -30023,9 +30027,9 @@ case "LockSystem":
 MessageQueue._lockSystem(true);
 break;
 case "BroadcastMessage":
-_1277=_1278.BroadcastMessageParams;
-_125b.debug("Server says: EventBroadcaster.broadcast ( \""+_1277.Name+"\", "+_1277.Value+" )");
-EventBroadcaster.broadcast(_1277.Name,_1277.Value);
+_1278=_1279.BroadcastMessageParams;
+_125c.debug("Server says: EventBroadcaster.broadcast ( \""+_1278.Name+"\", "+_1278.Value+" )");
+EventBroadcaster.broadcast(_1278.Name,_1278.Value);
 this._nextAction();
 break;
 case "CollapseAndRefresh":
@@ -30033,41 +30037,41 @@ EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHALL);
-if(!_125f.hasEntries()){
+if(!_1260.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 this._nextAction();
 }
 break;
 case "CloseAllViews":
-this._closeAllViews(_1278.CloseAllViewsParams);
+this._closeAllViews(_1279.CloseAllViewsParams);
 break;
 case "SaveStatus":
-saveStatus(_1278.SaveStatusParams);
+saveStatus(_1279.SaveStatusParams);
 this._nextAction();
 break;
 case "DownloadFile":
-Download.init(_1278.DownloadFileParams.Url);
+Download.init(_1279.DownloadFileParams.Url);
 this._nextAction();
 break;
 case "ExpandTreeNode":
 this._nextAction();
 break;
 case "BindEntityTokenToView":
-_1277=_1278.BindEntityTokenToViewParams;
-EventBroadcaster.broadcast(BroadcastMessages.BIND_TOKEN_TO_VIEW,{handle:_1277.ViewId,entityToken:_1277.EntityToken});
+_1278=_1279.BindEntityTokenToViewParams;
+EventBroadcaster.broadcast(BroadcastMessages.BIND_TOKEN_TO_VIEW,{handle:_1278.ViewId,entityToken:_1278.EntityToken});
 this._nextAction();
 break;
 case "OpenGenericView":
-_1277=_1278.OpenGenericViewParams;
-openGenericView(_1277);
+_1278=_1279.OpenGenericViewParams;
+openGenericView(_1278);
 break;
 case "OpenExternalView":
-_1277=_1278.OpenExternalViewParams;
-openExternalView(_1277);
+_1278=_1279.OpenExternalViewParams;
+openExternalView(_1278);
 break;
 default:
-Dialog.error("Dysfunction","Unhandled action: "+_1278.ActionType);
+Dialog.error("Dysfunction","Unhandled action: "+_1279.ActionType);
 break;
 }
 }else{
@@ -30075,43 +30079,43 @@ broadcastUpdateEvaluated();
 }
 };
 function broadcastUpdateEvaluated(){
-EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED,_1262);
+EventBroadcaster.broadcast(BroadcastMessages.MESSAGEQUEUE_EVALUATED,_1263);
 }
-function logEntry(_127b){
-var _127c=_127b.Level.toLowerCase();
-SystemLogger.getLogger(_127b.SenderId)[_127c](_127b.Message);
+function logEntry(_127c){
+var _127d=_127c.Level.toLowerCase();
+SystemLogger.getLogger(_127c.SenderId)[_127d](_127c.Message);
 }
-function openView(_127d){
-var list=paramsToList(_127d.Argument);
+function openView(_127e){
+var list=paramsToList(_127e.Argument);
 if(list.hasEntries()){
-var def=ViewDefinition.clone("Composite.Management.PostBackView",_127d.ViewId);
-def.entityToken=_127d.EntityToken;
-def.flowHandle=_127d.FlowHandle;
-def.position=_1265[_127d.ViewType],def.label=_127d.Label;
-def.image=_127d.Image;
-def.toolTip=_127d.ToolTip;
-def.argument={"url":_127d.Url,"list":list};
+var def=ViewDefinition.clone("Composite.Management.PostBackView",_127e.ViewId);
+def.entityToken=_127e.EntityToken;
+def.flowHandle=_127e.FlowHandle;
+def.position=_1266[_127e.ViewType],def.label=_127e.Label;
+def.image=_127e.Image;
+def.toolTip=_127e.ToolTip;
+def.argument={"url":_127e.Url,"list":list};
 StageBinding.presentViewDefinition(def);
 }else{
-StageBinding.presentViewDefinition(new HostedViewDefinition({handle:_127d.ViewId,entityToken:_127d.EntityToken,flowHandle:_127d.FlowHandle,position:_1265[_127d.ViewType],url:_127d.Url,label:_127d.Label,image:_127d.Image,toolTip:_127d.ToolTip}));
+StageBinding.presentViewDefinition(new HostedViewDefinition({handle:_127e.ViewId,entityToken:_127e.EntityToken,flowHandle:_127e.FlowHandle,position:_1266[_127e.ViewType],url:_127e.Url,label:_127e.Label,image:_127e.Image,toolTip:_127e.ToolTip}));
 }
 }
-function openDialogView(_1280){
-StageBinding.presentViewDefinition(new DialogViewDefinition({handle:_1280.ViewId,flowHandle:_1280.FlowHandle,position:Dialog.MODAL,url:_1280.Url,handler:{handleDialogResponse:function(){
+function openDialogView(_1281){
+StageBinding.presentViewDefinition(new DialogViewDefinition({handle:_1281.ViewId,flowHandle:_1281.FlowHandle,position:Dialog.MODAL,url:_1281.Url,handler:{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
 }}}));
 }
-function openMessageBox(_1281){
-var _1282=_1281.DialogType.toLowerCase();
-if(_1282=="question"){
+function openMessageBox(_1282){
+var _1283=_1282.DialogType.toLowerCase();
+if(_1283=="question"){
 throw "Not supported!";
 }else{
 if(Client.isWebKit){
-alert(_1281.Title+"\n"+_1281.Message);
+alert(_1282.Title+"\n"+_1282.Message);
 }else{
-Dialog[_1282](_1281.Title,_1281.Message,null,{handleDialogResponse:function(){
+Dialog[_1283](_1282.Title,_1282.Message,null,{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
@@ -30119,14 +30123,14 @@ MessageQueue._nextAction();
 }
 }
 }
-function openViewDefinition(_1283){
+function openViewDefinition(_1284){
 var map={};
-var _1285=false;
-new List(_1283.Argument).each(function(entry){
+var _1286=false;
+new List(_1284.Argument).each(function(entry){
 map[entry.Key]=entry.Value;
-_1285=true;
+_1286=true;
 });
-var proto=ViewDefinitions[_1283.Handle];
+var proto=ViewDefinitions[_1284.Handle];
 if(proto!=null){
 var def=null;
 if(proto.isMutable==false){
@@ -30136,47 +30140,47 @@ def=new HostedViewDefinition();
 for(var prop in proto){
 def[prop]=proto[prop];
 }
-def.handle=_1283.ViewId;
+def.handle=_1284.ViewId;
 }
-def.argument=_1285?map:null;
+def.argument=_1286?map:null;
 StageBinding.presentViewDefinition(def);
 }else{
 throw "Unknown ViewDefinition: "+param.Handle;
 }
 }
-function openGenericView(_128a){
-var def=ViewDefinition.clone("Composite.Management.GenericView",_128a.ViewId);
-def.label=_128a.Label;
-def.toolTip=_128a.ToolTip;
-def.image=_128a.Image;
-def.argument={"url":_128a.Url,"list":paramsToList(_128a.UrlPostArguments)};
+function openGenericView(_128b){
+var def=ViewDefinition.clone("Composite.Management.GenericView",_128b.ViewId);
+def.label=_128b.Label;
+def.toolTip=_128b.ToolTip;
+def.image=_128b.Image;
+def.argument={"url":_128b.Url,"list":paramsToList(_128b.UrlPostArguments)};
 StageBinding.presentViewDefinition(def);
 }
-function openExternalView(_128c){
-var def=ViewDefinition.clone("Composite.Management.ExternalView",_128c.ViewId);
-def.label=_128c.Label;
-def.toolTip=_128c.ToolTip;
-def.image=_128c.Image;
-def.url=_128c.Url,StageBinding.presentViewDefinition(def);
+function openExternalView(_128d){
+var def=ViewDefinition.clone("Composite.Management.ExternalView",_128d.ViewId);
+def.label=_128d.Label;
+def.toolTip=_128d.ToolTip;
+def.image=_128d.Image;
+def.url=_128d.Url,StageBinding.presentViewDefinition(def);
 }
-function closeView(_128e){
-if(StageBinding.isViewOpen(_128e.ViewId)){
-EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_128e.ViewId);
+function closeView(_128f){
+if(StageBinding.isViewOpen(_128f.ViewId)){
+EventBroadcaster.broadcast(BroadcastMessages.CLOSE_VIEW,_128f.ViewId);
 }else{
 MessageQueue._nextAction();
 }
 }
-function saveStatus(_128f){
-EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED,{handle:_128f.ViewId,isSuccess:_128f.Succeeded});
+function saveStatus(_1290){
+EventBroadcaster.broadcast(BroadcastMessages.CURRENT_SAVED,{handle:_1290.ViewId,isSuccess:_1290.Succeeded});
 }
-this._lockSystem=function(_1290){
-var _1291=top.bindingMap.offlinetheatre;
-if(_1290){
-_1291.play(true);
+this._lockSystem=function(_1291){
+var _1292=top.bindingMap.offlinetheatre;
+if(_1291){
+_1292.play(true);
 window.clearInterval(window.messageQueueInterval);
 window.messageQueueInterval=window.setInterval(MessageQueue._pokeserver,MessageQueue.INTERVAL_OFFLINE);
 }else{
-_1291.stop();
+_1292.stop();
 window.clearInterval(window.messageQueueInterval);
 window.messageQueueInterval=window.setInterval(MessageQueue._autoupdate,MessageQueue.INTERVAL_ONLINE);
 var self=this;
@@ -30186,32 +30190,32 @@ self._nextAction();
 }
 },0);
 }
-_1261=_1290;
+_1262=_1291;
 };
-this.handleBroadcast=function(_1293,arg){
-switch(_1293){
+this.handleBroadcast=function(_1294,arg){
+switch(_1294){
 case BroadcastMessages.APPLICATION_LOGIN:
 this.initialize();
 break;
 case BroadcastMessages.VIEW_COMPLETED:
 case BroadcastMessages.VIEW_CLOSED:
-if(_125e!=null&&arg==_125e){
-_125e=null;
+if(_125f!=null&&arg==_125f){
+_125f=null;
 this._nextAction();
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHING:
 if(arg!=null){
-_125f.set(arg,true);
+_1260.set(arg,true);
 }else{
-_125b.debug("Saa har vi balladen!");
+_125c.debug("Saa har vi balladen!");
 }
 break;
 case BroadcastMessages.SYSTEMTREEBINDING_REFRESHED:
-if(_125f.hasEntries()){
-_125f.del(arg);
-_125b.debug("Refreshed tree: "+arg+"\n("+_125f.countEntries()+" trees left!)");
-if(!_125f.hasEntries()){
+if(_1260.hasEntries()){
+_1260.del(arg);
+_125c.debug("Refreshed tree: "+arg+"\n("+_1260.countEntries()+" trees left!)");
+if(!_1260.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESHED,this);
 setTimeout(function(){
@@ -30221,12 +30225,12 @@ MessageQueue._nextAction();
 }
 break;
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN:
-_1260.set(arg,true);
+_1261.set(arg,true);
 break;
 case BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN:
-if(_1260.hasEntries()==true){
-_1260.del(arg);
-if(!_1260.hasEntries()){
+if(_1261.hasEntries()==true){
+_1261.del(arg);
+if(!_1261.hasEntries()){
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCING_OPEN,this);
 EventBroadcaster.unsubscribe(BroadcastMessages.SYSTEMTREENODEBINDING_FORCED_OPEN,this);
 MessageQueue._nextAction();
@@ -30241,9 +30245,9 @@ MessageQueue._lockSystem(false);
 break;
 }
 };
-function paramsToList(_1295){
+function paramsToList(_1296){
 var list=new List();
-new List(_1295).each(function(entry){
+new List(_1296).each(function(entry){
 list.add({name:entry.Key,value:entry.Value});
 });
 return list;
@@ -30252,13 +30256,13 @@ EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN,this);
 };
 var ViewDefinitions={"Composite.Management.Null":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.Null"}),"Composite.Management.PostBackDialog":new DialogViewDefinition({handle:"Composite.Management.PostBackDialog",isMutable:true,position:Dialog.MODAL,url:"${root}/content/dialogs/postback/postbackdialog.aspx",argument:{"url":null,"list":null}}),"Composite.Management.PostBackView":new HostedViewDefinition({handle:"Composite.Management.PostBackView",isMutable:true,position:DockBinding.MAIN,url:"${root}/postback.aspx",argument:{"url":null,"list":null}}),"Composite.Management.GenericView":new HostedViewDefinition({handle:"Composite.Management.GenericView",isMutable:true,position:DockBinding.MAIN,url:"${root}/content/views/generic/generic.aspx",label:null,image:null,toolTip:null,argument:{"url":null,"list":null}}),"Composite.Management.ExternalView":new HostedViewDefinition({handle:"Composite.Management.ExternalView",isMutable:true,position:DockBinding.EXTERNAL,url:null,label:null,image:null,toolTip:null}),"Composite.Management.Start":new HostedViewDefinition({handle:"Composite.Management.Start",position:DockBinding.START,label:"Welcome Travellers",url:"${root}/content/views/start/start.aspx"}),"Composite.Management.About":new DialogViewDefinition({handle:"Composite.Management.About",position:Dialog.MODAL,url:"${root}/content/dialogs/about/about.aspx"}),"Composite.Management.PermissionEditor":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.PermissionEditor",position:DockBinding.MAIN,url:"${root}/content/views/editors/permissioneditor/permissioneditor.aspx",argument:{serializedEntityToken:"entityTokenType='Composite\\.Plugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.Plugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""}}),"Composite.Management.SystemLog":new HostedViewDefinition({handle:"Composite.Management.SystemLog",position:DockBinding.ABSBOTTOMLEFT,label:"System Log",url:"${root}/content/views/dev/systemlog/systemlog.aspx"}),"Composite.Management.Developer":new HostedViewDefinition({handle:"Composite.Management.Developer",position:DockBinding.ABSBOTTOMRIGHT,label:"Developer",url:"${root}/content/views/dev/developer/developer.aspx"}),"Composite.Management.IconPack.System":new HostedViewDefinition({handle:"Composite.Management.IconPack.System",position:DockBinding.ABSBOTTOMLEFT,label:"Freja",image:"${icon:icon}",url:"${root}/content/views/dev/icons/system/Default.aspx"}),"Composite.Management.IconPack.Republic":new HostedViewDefinition({handle:"Composite.Management.IconPack.Republic",position:DockBinding.ABSBOTTOMLEFT,label:"Republic",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/republic.aspx"}),"Composite.Management.IconPack.Harmony":new HostedViewDefinition({handle:"Composite.Management.IconPack.Harmony",position:DockBinding.ABSBOTTOMLEFT,label:"Harmony",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/harmony.aspx"}),"Composite.Management.Explorer":new HostedViewDefinition({handle:"Composite.Management.Explorer",position:DockBinding.EXPLORER,url:"${root}/content/views/explorer/explorer.aspx",label:"Explorer"}),"Composite.Management.Options":new DialogViewDefinition({handle:"Composite.Management.Options",position:Dialog.MODAL,url:"${root}/content/dialogs/options/options.aspx",label:"Options"}),"Composite.Management.VisualEditorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.VisualEditorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx",width:600,argument:{"formattingconfiguration":null,"elementclassconfiguration":null,"configurationstylesheet":null,"presentationstylesheet":null,"embedablefieldstypenames":null}}),"Composite.Management.MultiSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.MultiSelectorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/multiselector/multiselectordialog.aspx"}),"Composite.Management.Search":new HostedViewDefinition({handle:"Composite.Management.Search",position:DockBinding.RIGHTBOTTOM,url:"${root}/content/views/search/search.aspx",label:"Search",image:"${icon:view_search}",argument:null}),"Composite.Management.Browser":new HostedViewDefinition({isMutable:false,handle:"Composite.Management.Browser",position:DockBinding.MAIN,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,label:"Page Browser",image:"${icon:page-view-administrated-scope}",toolTip:"Browse unpublished pages",url:"${root}/content/views/browser/browser.aspx",argument:{"URL":null}}),"Composite.Management.SEOAssistant":new HostedViewDefinition({handle:"Composite.Management.SEOAssistant",position:DockBinding.RIGHTTOP,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,url:"${root}/content/views/seoassist/seoassist.aspx",label:"${string:Composite.Web.SEOAssistant:SEOAssistant}",image:"${icon:seoassistant}",toolTip:"Search engine optimization"}),"Composite.Management.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.SourceCodeViewer",position:DockBinding.ABSBOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.User.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.User.SourceCodeViewer",position:DockBinding.BOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.Management.Help":new HostedViewDefinition({label:"${string:Website.App.LabelHelp}",image:"${icon:help}",handle:"Composite.Management.Help",position:DockBinding.ABSRIGHTTOP,url:"${root}/content/views/help/help.aspx"}),"Composite.Management.Dialog.Translations":new DialogViewDefinition({handle:"Composite.Management.TranslationsDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/translations/translations.aspx",label:"Translations",image:"${icon:users-changepublicculture}"}),"Composite.Management.ImageSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.ImageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_IMAGESELECTOR,argument:{label:"${string:Composite.Management:Website.Image.SelectDialog.Title}",image:"${icon:image}",selectionProperty:"ElementType",selectionValue:"image/jpeg image/gif image/png image/bmp image/tiff image/svg+xml",selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:"MediaFileElementProvider.WebImages"}]}}),"Composite.Management.EmbeddableMediaSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.Media.SelectDialog.Title}",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:null}]}}),"Composite.Management.FrontendFileSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.FrontendFile.SelectDialog.Title}",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"LayoutFileElementProvider"}],width:480}}),"Composite.Management.PageSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Page.SelectDialog.Title}",image:"${icon:page}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.PageIdSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageIdSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Page.SelectDialog.Title}",image:"${icon:page}",selectionProperty:"DataId",selectionValue:null,selectionResult:"DataId",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.LinkableSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.LinkableSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"},{key:"MediaFileElementProvider"}]}}),"Composite.Management.MediaSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.MediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider"}]}}),"Composite.Management.FunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.FunctionSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Function.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider"}]}}),"Composite.Management.WidgetFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.WidgetFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Widget.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllWidgetFunctionsElementProvider"}]}}),"Composite.Management.XhtmlDocumentFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.XhtmlDocumentFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Function.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider",search:"AllFunctionsElementProvider.VisualEditorFunctions"}]}})};
 var KickStart=new function(){
-var _1298=false;
-var _1299=null;
-var _129a=false;
-var _129b=Client.qualifies();
-var _129c="admin";
-var _129d="123456";
-if(!_129b){
+var _1299=false;
+var _129a=null;
+var _129b=false;
+var _129c=Client.qualifies();
+var _129d="admin";
+var _129e="123456";
+if(!_129c){
 document.location="unsupported.aspx";
 return;
 }
@@ -30275,10 +30279,10 @@ setTimeout(function(){
 Persistance.initialize();
 },0);
 };
-this.handleBroadcast=function(_129e){
-switch(_129e){
+this.handleBroadcast=function(_129f){
+switch(_129f){
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-kickStart(_129e);
+kickStart(_129f);
 break;
 case BroadcastMessages.APPLICATION_STARTUP:
 break;
@@ -30286,8 +30290,8 @@ case BroadcastMessages.KEY_ENTER:
 this.login();
 break;
 case BroadcastMessages.APPLICATION_LOGIN:
-var _129f=window.bindingMap.appwindow;
-_129f.setURL("app.aspx");
+var _12a0=window.bindingMap.appwindow;
+_12a0.setURL("app.aspx");
 break;
 case BroadcastMessages.APPLICATION_OPERATIONAL:
 showWorkbench();
@@ -30300,22 +30304,22 @@ bindingMap.cover.show();
 break;
 }
 };
-function fileEventBroadcasterSubscriptions(_12a0){
-new List([BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_12a1){
-if(_12a0){
-EventBroadcaster.subscribe(_12a1,KickStart);
+function fileEventBroadcasterSubscriptions(_12a1){
+new List([BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_12a2){
+if(_12a1){
+EventBroadcaster.subscribe(_12a2,KickStart);
 }else{
-EventBroadcaster.unsubscribe(_12a1,KickStart);
+EventBroadcaster.unsubscribe(_12a2,KickStart);
 }
 });
 }
-function kickStart(_12a2){
-switch(_12a2){
+function kickStart(_12a3){
+switch(_12a3){
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-_1298=true;
+_1299=true;
 break;
 }
-if(_1298){
+if(_1299){
 if(bindingMap.decks!=null&&LoginService.IsLoggedIn(true)){
 accessGranted();
 }else{
@@ -30346,8 +30350,8 @@ Application.unlock(KickStart);
 bindingMap.decks.select("logindeck");
 setTimeout(function(){
 if(Application.isDeveloperMode&&Application.isLocalHost){
-DataManager.getDataBinding("username").setValue(_129c);
-DataManager.getDataBinding("password").setValue(_129d);
+DataManager.getDataBinding("username").setValue(_129d);
+DataManager.getDataBinding("password").setValue(_129e);
 }
 setTimeout(function(){
 DataManager.getDataBinding("username").focus();
@@ -30381,18 +30385,18 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_12a5,_12a6){
-var _12a7=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_12a6,_12a7){
+var _12a8=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12a8=false;
-var _12a9=LoginService.ValidateAndLogin(_12a5,_12a6);
-if(_12a9 instanceof SOAPFault){
-alert(_12a9.getFaultString());
+var _12a9=false;
+var _12aa=LoginService.ValidateAndLogin(_12a6,_12a7);
+if(_12aa instanceof SOAPFault){
+alert(_12aa.getFaultString());
 }else{
-_12a8=_12a9;
+_12a9=_12aa;
 }
-if(_12a8){
+if(_12a9){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -30402,7 +30406,7 @@ accesssDenied();
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_12a7){
+if(_12a8){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -30417,24 +30421,24 @@ Application.login();
 },0);
 }
 function accesssDenied(){
-var _12aa=DataManager.getDataBinding("username");
-var _12ab=DataManager.getDataBinding("password");
-_12aa.blur();
+var _12ab=DataManager.getDataBinding("username");
+var _12ac=DataManager.getDataBinding("password");
 _12ab.blur();
-_12aa.setValue("");
+_12ac.blur();
 _12ab.setValue("");
-_12aa.clean();
+_12ac.setValue("");
 _12ab.clean();
-_12aa.focus();
+_12ac.clean();
+_12ab.focus();
 document.getElementById("loginerror").style.display="block";
-var _12ac={handleAction:function(_12ad){
+var _12ad={handleAction:function(_12ae){
 document.getElementById("loginerror").style.display="none";
-_12ad.target.removeActionListener(Binding.ACTION_DIRTY,_12ac);
+_12ae.target.removeActionListener(Binding.ACTION_DIRTY,_12ad);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12ac);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12ad);
 }
 WindowManager.fireOnLoad(this);
-if(!_129b){
+if(!_129c){
 UpdateManager.isEnabled=false;
 }
 };
