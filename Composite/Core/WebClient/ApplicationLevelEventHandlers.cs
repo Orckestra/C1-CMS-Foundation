@@ -46,7 +46,7 @@ namespace Composite.Core.WebClient
 
             SystemSetupFacade.SetFirstTimeStart();
 
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
                 return;
             }
@@ -82,7 +82,7 @@ namespace Composite.Core.WebClient
         {
             Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} ended at {1} in process {2}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"), Process.GetCurrentProcess().Id);
 
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
                 return;
             }
@@ -192,13 +192,27 @@ namespace Composite.Core.WebClient
                     eventType = TraceEventType.Verbose;
                 }
 
+                // Logging request url
                 if (LogApplicationLevelErrors)
                 {
-                    var request = httpContext.Request;
-                    string origianalUrl = request.RawUrl;
-                    LoggingService.LogEntry("Application Error", 
-                                            "Failed to process '{0}' request to url '{1}'".FormatWith(request.RequestType, origianalUrl), 
+                    HttpRequest request = null;
+
+                    try
+                    {
+                        request = httpContext.Request;
+                    }
+                    catch
+                    {
+                        // Request may not be available at this point
+                    }
+
+                    if (request != null)
+                    {
+                        LoggingService.LogEntry("Application Error",
+                                            "Failed to process '{0}' request to url '{1}'"
+                                            .FormatWith(request.RequestType, request.RawUrl),
                                             LoggingService.Category.General, eventType);
+                    }
                 }
             }
 
