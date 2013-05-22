@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -9,11 +10,12 @@ namespace Composite.Data.Plugins.DataProvider.Streams
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class FileSystemFileBase
     {
         /// <exclude />
-        protected C1FileStream TemporaryFileStream { get; set; }
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
+        protected FileStream TemporaryFileStream { get; set; }
 
         /// <exclude />
         protected string TemporaryFilePath { get; set; }
@@ -22,25 +24,28 @@ namespace Composite.Data.Plugins.DataProvider.Streams
         public virtual string SystemPath { get; set; }
 
         /// <exclude />
-        public C1FileStream GetNewWriteStream()
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
+        public FileStream GetNewWriteStream()
         {
             if (TemporaryFileStream != null)
             {
                 Verify.That(!TemporaryFileStream.CanWrite, "Stream for writing has not been closed.");
 
                 TemporaryFileStream = null;
-                C1File.Delete(TemporaryFilePath);
+                File.Delete(TemporaryFilePath);
             }
 
             string tempFile = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory),  "upload" + Path.GetRandomFileName());
 
             this.TemporaryFilePath = tempFile;
-            this.TemporaryFileStream = C1File.Open(tempFile, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
+            this.TemporaryFileStream = File.Open(tempFile, FileMode.Create, FileAccess.ReadWrite, FileShare.None);
 
             return TemporaryFileStream;
         }
 
         /// <exclude />
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass")]
         public Stream GetReadStream()
         {
             string filePath;
@@ -56,10 +61,11 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 filePath = this.SystemPath;
             }
 
-            return new C1FileStream(filePath, FileMode.Open, FileAccess.Read);
+            return new FileStream(filePath, FileMode.Open, FileAccess.Read);
         }
 
         /// <exclude />
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         public void CommitChanges()
         {
             if (this.TemporaryFileStream == null) return;
@@ -70,23 +76,24 @@ namespace Composite.Data.Plugins.DataProvider.Streams
 
             if (!this.SystemPath.IsNullOrEmpty())
             {
-                C1File.Delete(this.SystemPath);
+                File.Delete(this.SystemPath);
             }
 
-            C1File.Move(this.TemporaryFilePath, this.SystemPath);
+            File.Move(this.TemporaryFilePath, this.SystemPath);
 
             this.TemporaryFileStream = null;
             this.TemporaryFilePath = null;
         }
 
         /// <exclude />
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         ~FileSystemFileBase()
         {
             if (TemporaryFilePath != null)
             {
                 try
                 {
-                    C1File.Delete(TemporaryFilePath);
+                    File.Delete(TemporaryFilePath);
                 }
                 catch
                 {
