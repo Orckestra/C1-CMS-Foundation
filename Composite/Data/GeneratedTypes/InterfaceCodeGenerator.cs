@@ -72,7 +72,7 @@ namespace Composite.Data.GeneratedTypes
         /// Given a <see cref="DataTypeDescriptor"/> creates a interface declaration inheriting from IData, a valid C1 Datatype.
         /// </summary>
         /// <param name="dataTypeDescriptor">A description of the data type to generate interface for</param>
-        /// <returns>The gerenated interface<</returns>
+        /// <returns>The gerenated interface</returns>
         public static CodeTypeDeclaration CreateCodeTypeDeclaration(DataTypeDescriptor dataTypeDescriptor)
         {
             try

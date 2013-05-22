@@ -63,14 +63,12 @@ namespace Composite.Data.DynamicTypes
         /// <summary>
         /// 'Now' as a default value (time stamp)
         /// </summary>
-        /// <param name="defaultValue">value</param>
         /// <returns></returns>
         public static DefaultValue Now { get { return new DefaultValue(DefaultValueType.DateTimeNow); } }
 
         /// <summary>
         /// New Guid as default value. Generate a new unique Guid.
         /// </summary>
-        /// <param name="defaultValue">value</param>
         /// <returns></returns>
         public static DefaultValue NewGuid { get { return new DefaultValue(DefaultValueType.NewGuid); } }
 
