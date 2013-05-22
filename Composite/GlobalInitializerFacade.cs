@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Web;
 using System.Web.Hosting;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
@@ -131,7 +132,14 @@ namespace Composite
                         {
                             _exceptionThrownDurringInitialization = ex;
                             _exceptionThrownDurringInitializationTimeStamp = DateTime.Now;
-                            Log.LogCritical(LogTitleNormal, HostingEnvironment.ShutdownReason.ToString());
+
+                            var shutdownReason = HostingEnvironment.ShutdownReason;
+
+                            if (shutdownReason != ApplicationShutdownReason.None)
+                            {
+                                Log.LogCritical(LogTitleNormal, "Shutdown reason: " + HostingEnvironment.ShutdownReason);
+                            }
+                            
                             Log.LogCritical(LogTitleNormal, ex);
                             throw;
                         }

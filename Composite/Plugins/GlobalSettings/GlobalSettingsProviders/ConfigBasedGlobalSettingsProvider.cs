@@ -514,6 +514,17 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         }
 
 
+        private const string _applicationCultureNames = "applicationCultureNames";
+        [ConfigurationProperty(_applicationCultureNames, IsRequired = false, DefaultValue = "da-DK,en-US")]
+        [Obsolete("Preserved for compatibility with old language packages (versions older than C1 4.0)")]
+        public string ApplicationCultureNames
+        {
+            get { return (string)base[_applicationCultureNames]; }
+            set { base[_applicationCultureNames] = value; }
+        }
+
+
+
         private const string _consoleMessageQueueItemSecondToLiveProperty = "consoleMessageQueueItemSecondToLive";
         public static readonly int DefaultConsoleMessageQueueItemSecondToLive = 600;
         [ConfigurationProperty(_consoleMessageQueueItemSecondToLiveProperty, IsRequired = false, DefaultValue = 600)]
