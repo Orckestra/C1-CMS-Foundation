@@ -305,6 +305,10 @@ TreeSelectorDialogPageBinding.prototype.handleAction = function (action) {
 				if (action.target && action.target.response == Dialog.RESPONSE_ACCEPT) {
 					this._saveOpenedSystemNodes();
 				}
+				//Disable bindingMap.buttonAccept after first invoke
+				if (action.target == bindingMap.buttonAccept) {
+					bindingMap.buttonAccept.setDisabled(true);
+				}
 				break;
 			case TreeNodeBinding.ACTION_COMMAND:
 				bindingMap.buttonAccept.fireCommand();
