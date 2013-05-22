@@ -66,6 +66,10 @@ namespace Composite.Data
                     XDocument doc = XDocumentUtils.Load(filepath);
 
                     DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
+
+                    Verify.That(!_dataTypeDescriptorCache.ContainsKey(dataTypeDescriptor.DataTypeId),
+                        "Data type with id '{0}' is already added. File: '{1}'", dataTypeDescriptor.DataTypeId, filepath);
+
                     _dataTypeDescriptorCache.Add(dataTypeDescriptor.DataTypeId, dataTypeDescriptor);
                     _dataTypeDescriptorFilesnamesCache.Add(dataTypeDescriptor.DataTypeId, filepath);
                 }
