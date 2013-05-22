@@ -195,13 +195,6 @@ EditorClickButtonBinding.prototype._buildDesignModeSanitizer = function () {
 		img.ondragstart = function (e) { e.preventDefault(); }
 		this.shadowTree.designmodesanitizer = img;
 		this.bindingElement.appendChild(img);
-
-		// Hack for tinymce 
-		// if button is not input,button,a[href],... tinymce lost focus in IE
-		var a = this.bindingDocument.createElement("a");
-		a.href = "javascript:;";
-		a.appendChild(this.bindingElement.firstChild);
-		this.bindingElement.replaceChild(a, this.bindingElement.firstChild);
 	}
 	
 }

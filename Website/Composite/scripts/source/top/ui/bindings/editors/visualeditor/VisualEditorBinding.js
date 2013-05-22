@@ -638,7 +638,7 @@ VisualEditorBinding.prototype.getEditorPopupBinding = function () {
  */
 VisualEditorBinding.prototype.createBookmark = function () {
 	
-	//this._bookmark = this._tinyInstance.selection.getBookmark ( true );
+	this._bookmark = this._tinyInstance.selection.getBookmark ( true );
 };
 
 /**
@@ -658,7 +658,7 @@ VisualEditorBinding.prototype.restoreBookmark = function () {
  */
 VisualEditorBinding.prototype.hasBookmark = function () {
 	
-	return true;
+	return this._bookmark != null;
 };
 
 /**
