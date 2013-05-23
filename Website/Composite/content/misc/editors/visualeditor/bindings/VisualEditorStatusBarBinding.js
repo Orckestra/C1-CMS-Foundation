@@ -155,6 +155,7 @@ VisualEditorStatusBarBinding.prototype.handleAction = function (action) {
 
 			setTimeout(function () { // chrome needs a timeout
 				self._tinyInstance.execCommand("mceSelectNodeDepth", false, depth);
+				self._tinyInstance.nodeChanged();
 			}, 0);
 
 			action.consume();
