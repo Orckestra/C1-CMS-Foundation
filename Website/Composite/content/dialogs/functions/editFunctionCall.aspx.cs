@@ -77,7 +77,7 @@ namespace CompositeEditFunctionCall
 
             if (string.IsNullOrEmpty(functionMarkup))
             {
-                functionMarkup = HttpUtility.UrlDecode(this.Request.Form["functionMarkup"]);
+                functionMarkup = this.Request.Form["functionMarkup"];
             }
 
             const string ZipPrefix = "ZIP_";
