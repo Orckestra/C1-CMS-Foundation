@@ -14,6 +14,7 @@ using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Forms.Flows.Foundation.PluginFacades;
 using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using Composite.Data.Validation.ClientValidationRules;
@@ -105,7 +106,12 @@ namespace Composite.Core.WebClient.FlowMediators.FormFlowRendering
 
             CurrentControlTreeRoot = (IWebUiControl)innerForm;
 
-            string label = formCompiler.Label ?? formFlowUiCommand.ContainerLabel;
+            string label = formCompiler.Label;
+            if(label.IsNullOrEmpty())
+            {
+                label = formFlowUiCommand.ContainerLabel ?? "";
+            }
+
             string labelField = GetFormLabelField(document);
             ResourceHandle containerIcon = formCompiler.Icon;
 
