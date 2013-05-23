@@ -654,6 +654,7 @@ ui|filepicker {
 	display: block;
 	position: relative;
 	width: 100%;
+	overflow: hidden;
 }
 ui|filepicker input.real {
 	display: block;
@@ -662,7 +663,8 @@ ui|filepicker input.real {
 	top: 3px;
 	left: 0;
 	cursor: default;
-	#opacity: 0;
+	opacity: 0;
+	transform: translate(-200px, 0) scale(4);
 }
 ui|filepicker ui|datainput.fake,
 ui|filepicker ui|datainput.fake input {
