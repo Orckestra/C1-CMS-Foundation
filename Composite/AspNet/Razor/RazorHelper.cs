@@ -52,24 +52,7 @@ namespace Composite.AspNet.Razor
 
 				httpContext = new HttpContextWrapper(currentContext);
 
-                requestLock = currentContext.Items[ExecutionLock_ItemsKey];
-
-                if (requestLock == null)
-                {
-                    lock (_lock)
-                    {
-                        requestLock = currentContext.Items[ExecutionLock_ItemsKey];
-
-                        if (requestLock == null)
-                        {
-                            requestLock = new object();
-                            lock (currentContext.Items.SyncRoot)
-                            {
-                                currentContext.Items[ExecutionLock_ItemsKey] = requestLock;
-                            }
-                        }
-                    }
-                }
+                requestLock = GetRazorExecutionLock(currentContext);
 			}
 
 			var pageContext = new WebPageContext(httpContext, webPage, startPage);
@@ -91,7 +74,7 @@ namespace Composite.AspNet.Razor
 				{
 					if (requestLock != null)
 					{
-						Monitor.TryEnter(requestLock, ref lockTaken);
+						Monitor.Enter(requestLock, ref lockTaken);
 					}
 
 					webPage.ExecutePageHierarchy(pageContext, writer);
@@ -126,6 +109,29 @@ namespace Composite.AspNet.Razor
 			}
 
 			return ValueTypeConverter.Convert(output, resultType);
+        }
+
+        private static object GetRazorExecutionLock(HttpContext currentContext)
+        {
+            object requestLock = currentContext.Items[ExecutionLock_ItemsKey];
+
+            if (requestLock == null)
+            {
+                lock (_lock)
+                {
+                    requestLock = currentContext.Items[ExecutionLock_ItemsKey];
+
+                    if (requestLock == null)
+                    {
+                        requestLock = new object();
+                        lock (currentContext.Items.SyncRoot)
+                        {
+                            currentContext.Items[ExecutionLock_ItemsKey] = requestLock;
+                        }
+                    }
+                }
+            }
+            return requestLock;
         }
 
         private static XhtmlDocument OutputToXhtmlDocument(string output)
