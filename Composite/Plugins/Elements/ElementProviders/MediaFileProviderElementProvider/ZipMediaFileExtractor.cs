@@ -57,7 +57,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private static bool Exists(IMediaFile file)
         {
-            return (DataFacade.GetData<IMediaFile>().Where(x => x.FolderPath == file.FolderPath && x.FileName == file.FileName).FirstOrDefault() != null);
+            return DataFacade.GetData<IMediaFile>().Any(x => x.FolderPath == file.FolderPath && x.FileName == file.FileName);
         }
 
 
@@ -74,7 +74,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     {
                         if (Exists(file))
                         {
-                            IMediaFile currentFile = DataFacade.GetData<IMediaFile>().Where(x => x.FolderPath == file.FolderPath && x.FileName == file.FileName).First();
+                            IMediaFile currentFile = DataFacade.GetData<IMediaFile>()
+                                                    .First(x => x.FolderPath == file.FolderPath && x.FileName == file.FileName);
                             using (Stream readStream = file.GetReadStream())
                             {
                                 using (Stream writeStream = currentFile.GetNewWriteStream())
@@ -129,19 +130,18 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 {
                     if (theEntry.IsDirectory)
                     {
-                        IMediaFileFolder folder = DataFacade.BuildNew<IMediaFileFolder>();
-                        folder.Title = theEntry.Name.GetFolderName('/');
-                        folder.Path = parentPath.Combine(theEntry.Name, '/');
-                        folders.Add(folder);
+                        CreateFoldersRec(folders, parentPath, theEntry.Name);
                     }
                     else
                     {
+                        string directory = theEntry.Name.GetDirectory('/');
+
                         WorkflowMediaFile mediaFile = new WorkflowMediaFile();
                         int length = CopyZipData(zipInputStream, mediaFile);
 
                         mediaFile.FileName = Path.GetFileName(theEntry.Name);
                         mediaFile.Title = mediaFile.FileName.GetNameWithoutExtension();
-                        mediaFile.FolderPath = parentPath.Combine(theEntry.Name.GetDirectory('/'), '/');
+                        mediaFile.FolderPath = parentPath.Combine(directory, '/');
 
                         mediaFile.CreationTime = DateTime.Now;
                         mediaFile.Culture = C1Console.Users.UserSettings.ActiveLocaleCultureInfo.Name;
@@ -150,13 +150,10 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         mediaFile.MimeType = MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(theEntry.Name));
 
                         files.Add(mediaFile);
-
-                        if (theEntry.Name.GetDirectory('/') != "")
+                        
+                        if (directory != "")
                         {
-                            IMediaFileFolder folder = DataFacade.BuildNew<IMediaFileFolder>();
-                            folder.Title = theEntry.Name.GetDirectory('/');
-                            folder.Path = parentPath.Combine(theEntry.Name.GetDirectory('/'), '/');
-                            folders.Add(folder);
+                            CreateFoldersRec(folders, parentPath, directory);
                         }
                     }
                 }
@@ -165,7 +162,31 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             folders = folders.Distinct(new FolderComparer()).Where(x => x.Path != string.Empty).OrderBy(x => x.Path.Length).ToList();
         }
 
+        private static void CreateFoldersRec(IList<IMediaFileFolder> folders, string parentPath, string directoryEntryName)
+        {
+            do
+            {
+                CreateFolder(folders, parentPath, directoryEntryName);
 
+                directoryEntryName = ReduceFolderPath(directoryEntryName);
+            }
+            while (directoryEntryName != null);
+        }
+
+        private static void CreateFolder(IList<IMediaFileFolder> folders, string parentPath, string directoryEntryName)
+        {
+            IMediaFileFolder folder = DataFacade.BuildNew<IMediaFileFolder>();
+            folder.Title = directoryEntryName.GetFolderName('/');
+            folder.Path = parentPath.Combine(directoryEntryName, '/');
+
+            folders.Add(folder);
+        }
+
+        private static string ReduceFolderPath(string folderPath)
+        {
+            int offset = folderPath.LastIndexOf("/", folderPath.Length - 2, StringComparison.Ordinal);
+            return (offset > 0) ? folderPath.Substring(0, offset) : null;
+        }
 
         private static int CopyZipData(Stream from, WorkflowMediaFile mediaFile)
         {
