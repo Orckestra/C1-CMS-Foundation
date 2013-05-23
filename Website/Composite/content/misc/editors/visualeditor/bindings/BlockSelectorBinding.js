@@ -132,18 +132,19 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 
 			var start = this._tinyInstance.selection.getStart();
 			var end = this._tinyInstance.selection.getEnd();
-			while (start.parentNode != null && start.parentNode.nodeName.toLocaleLowerCase() != "body") {
-				start = start.parentNode;
-			}
-			while (end.parentNode != null && end.parentNode.nodeName.toLocaleLowerCase() != "body") {
-				end = end.parentNode;
-			}
+			if (start.nodeName.toLowerCase() != "body") {
+				while (start.parentNode != null && start.parentNode.nodeName.toLowerCase() != "body") {
+					start = start.parentNode;
+				}
+				while (end.parentNode != null && end.parentNode.nodeName.toLowerCase() != "body") {
+					end = end.parentNode;
+				}
 
-			var rng = this._tinyInstance.selection.getRng();
-			rng.setStartBefore(start);
-			rng.setEndAfter(end);
-			this._tinyInstance.selection.setRng(rng);
-
+				var rng = this._tinyInstance.selection.getRng();
+				rng.setStartBefore(start);
+				rng.setEndAfter(end);
+				this._tinyInstance.selection.setRng(rng);
+			}
 			var value = this.getValue();
 			if (value != BlockSelectorBinding.VALUE_DEFAULT) {
 
