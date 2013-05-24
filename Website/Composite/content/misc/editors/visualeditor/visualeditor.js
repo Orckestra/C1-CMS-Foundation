@@ -18,7 +18,7 @@ var config = {
 	force_br_newlines: false,
 	forced_root_block: '',
 	visual : true,
-	object_resizing : false,
+	object_resizing : Client.isExplorer,
 	auto_reset_designmode : true,
 	list_outdent_on_enter: true,
 	init_instance_callback 	: onInstanceInitialize
