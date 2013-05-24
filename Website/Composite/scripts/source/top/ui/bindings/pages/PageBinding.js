@@ -789,15 +789,20 @@ PageBinding.prototype.cleanAllDataBindings = function () {
  */
 PageBinding.prototype.getLabel = function () {
 
-	if (this.labelfield) {
+	var label = "";
+	if (!label && this.labelfield){
 		var binding = this.bindingWindow.DataManager.getDataBinding(this.labelfield);
 		if (binding != null && binding.getLabel) {
-			return binding.getLabel();
+			label = binding.getLabel();
 		} else if (binding != null && binding.getValue) {
-			return binding.getValue();
+			label = binding.getValue();
 		} 
 	}
-	return this.label;
+	if (!label && this.label) {
+		label = this.label;
+	}
+
+	return label;
 };
 
 /**
