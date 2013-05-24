@@ -25,8 +25,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 
         protected override void InitializeParameters()
         {
-            base.InitializeParameters();
-
             WebPageBase razorPage;
 
             using (BuildManagerHelper.DisableUrlMetadataCachingScope())

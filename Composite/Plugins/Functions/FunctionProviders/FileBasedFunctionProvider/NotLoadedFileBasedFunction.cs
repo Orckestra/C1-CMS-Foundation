@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Hosting;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Functions;
@@ -77,6 +76,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         Type IMetaFunction.ReturnType
         {
             get { return typeof(void); }
+        }
+
+        protected override void InitializeParameters()
+        {
+            Parameters = new Dictionary<string, FunctionParameter>();
         }
 
         IEnumerable<ParameterProfile> IMetaFunction.ParameterProfiles

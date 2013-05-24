@@ -24,10 +24,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			get { return new FileBasedFunctionEntityToken(_provider.Name, String.Join(".", Namespace, Name)); }
 		}
 
-        protected virtual void InitializeParameters()
-        {
-            Parameters = new Dictionary<string, FunctionParameter>();
-        }
+	    protected abstract void InitializeParameters();
 
 		public virtual IEnumerable<ParameterProfile> ParameterProfiles
 		{
@@ -35,8 +32,14 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			{
                 if (Parameters == null)
                 {
-                    InitializeParameters();
-                    Verify.IsNotNull(Parameters, "Parameters collection is null");
+                    lock (this)
+                    {
+                        if (Parameters == null)
+                        {
+                            InitializeParameters();
+                            Verify.IsNotNull(Parameters, "Parameters collection is null");
+                        }
+                    }
 			    }
 			    
 			    foreach (var param in Parameters.Values)
