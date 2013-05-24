@@ -476,7 +476,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (this.LabelFieldName != null)
                 {
-                    if (!this.Fields.Where(f => f.Name == this.LabelFieldName).Any())
+                    if (!this.Fields.Any(f => f.Name == this.LabelFieldName))
                     {
                         throw new InvalidOperationException(string.Format("The label field name '{0}' is not an existing field", this.LabelFieldName));
                     }
@@ -488,7 +488,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (distinctForeignKeyPropertyNames != this.DataAssociations.Count)
                 {
-                    throw new InvalidOperationException(string.Format("Two or more data associations are using the same foreign key field"));
+                    throw new InvalidOperationException("Two or more data associations are using the same foreign key field");
                 }
 
                 int distinctAssociatedInterfaceType =
@@ -497,7 +497,7 @@ namespace Composite.Data.DynamicTypes
 
                 if (distinctAssociatedInterfaceType != this.DataAssociations.Count)
                 {
-                    throw new InvalidOperationException(string.Format("Two or more data associations are associated to the same interface type"));
+                    throw new InvalidOperationException("Two or more data associations are associated to the same interface type");
                 }
             }
             catch (Exception ex)
@@ -568,54 +568,36 @@ namespace Composite.Data.DynamicTypes
         /// <returns>Serialized data type descriptor</returns>
         public XElement ToXml()
         {
-            XElement element = new XElement("DataTypeDescriptor");
+            XElement element = new XElement("DataTypeDescriptor",
+                new XAttribute("dataTypeId", this.DataTypeId),
+                new XAttribute("name", this.Name),
+                new XAttribute("namespace", this.Namespace),
+                this.Title != null ? new XAttribute("title", this.Title) : null,
+                new XAttribute("hasCustomPhysicalSortOrder", this.HasCustomPhysicalSortOrder),
+                new XAttribute("isCodeGenerated", this.IsCodeGenerated),
+                new XAttribute("cachable", this.Cachable),
+                this.LabelFieldName != null ? new XAttribute("labelFieldName", this.LabelFieldName) : null,
+                this.TypeManagerTypeName != null ? new XAttribute("typeManagerTypeName", this.TypeManagerTypeName) : null,
+                !string.IsNullOrEmpty(this.BuildNewHandlerTypeName) ? new XAttribute("buildNewHandlerTypeName", this.BuildNewHandlerTypeName) : null);
 
-            element.Add(new XAttribute("dataTypeId", this.DataTypeId));
-            element.Add(new XAttribute("name", this.Name));
-            element.Add(new XAttribute("namespace", this.Namespace));
-            if (this.Title != null) element.Add(new XAttribute("title", this.Title));
-            element.Add(new XAttribute("hasCustomPhysicalSortOrder", this.HasCustomPhysicalSortOrder));
-            element.Add(new XAttribute("isCodeGenerated", this.IsCodeGenerated));
-            element.Add(new XAttribute("cachable", this.Cachable));
-            if (this.LabelFieldName != null) element.Add(new XAttribute("labelFieldName", this.LabelFieldName));
-            if (this.TypeManagerTypeName != null) element.Add(new XAttribute("typeManagerTypeName", this.TypeManagerTypeName));
-            if (!string.IsNullOrEmpty(this.BuildNewHandlerTypeName)) element.Add(new XAttribute("buildNewHandlerTypeName", this.BuildNewHandlerTypeName));
+
+            element.Add(new XElement("DataAssociations",
+                                     DataAssociations.Select(da => da.ToXml())));
+
+            element.Add(new XElement("DataScopes", 
+                                     DataScopes.Select(dsi => new XElement("DataScopeIdentifier", new XAttribute("name", dsi)))));
+
+            element.Add(new XElement("KeyPropertyNames",
+                                     KeyPropertyNames.Select(name => new XElement("KeyPropertyName", new XAttribute("name", name)))));
+
+            element.Add(new XElement("SuperInterfaces", 
+                                     SuperInterfaces.Select(su => new XElement("SuperInterface", new XAttribute("type", TypeManager.SerializeType(su))))));
 
 
-            XElement dataAssociationsElement = new XElement("DataAssociations");
-            foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in this.DataAssociations)
-            {
-                dataAssociationsElement.Add(dataTypeAssociationDescriptor.ToXml());
-            }
-            element.Add(dataAssociationsElement);
-
-            XElement dataScopesElement = new XElement("DataScopes");
-            foreach (DataScopeIdentifier dataScopeIdentifier in this.DataScopes)
-            {
-                dataScopesElement.Add(new XElement("DataScopeIdentifier", new XAttribute("name", dataScopeIdentifier)));
-            }
-            element.Add(dataScopesElement);
-
-            XElement keyPropertyNamesElement = new XElement("KeyPropertyNames");
-            foreach (string keyPropertyName in this.KeyPropertyNames)
-            {
-                keyPropertyNamesElement.Add(new XElement("KeyPropertyName", new XAttribute("name", keyPropertyName)));
-            }
-            element.Add(keyPropertyNamesElement);
-
-            XElement superInterfacesElement = new XElement("SuperInterfaces");
-            foreach (Type superInterface in this.SuperInterfaces)
-            {
-                superInterfacesElement.Add(new XElement("SuperInterface", new XAttribute("type", TypeManager.SerializeType(superInterface))));
-            }
-            element.Add(superInterfacesElement);
-
-            XElement fieldsElement = new XElement("Fields");
-            foreach (DataFieldDescriptor dataFieldDescriptor in this.Fields.Where(f => f.Inherited == false))
-            {
-                fieldsElement.Add(dataFieldDescriptor.ToXml());
-            }
-            element.Add(fieldsElement);
+            element.Add(new XElement("Fields",
+                                     Fields
+                                         .Where(f => f.Inherited == false)
+                                         .Select(dataFieldDescriptor => dataFieldDescriptor.ToXml())));
 
             return element;
         }
@@ -643,7 +625,7 @@ namespace Composite.Data.DynamicTypes
             XElement dataScopesElement = element.Element("DataScopes");
             XElement keyPropertyNamesElement = element.Element("KeyPropertyNames");
             // TODO: check why "superInterfaceKeyPropertyNamesElement" is not used
-            XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
+            // XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
             XElement superInterfacesElement = element.Element("SuperInterfaces");
             XElement fieldsElement = element.Element("Fields");
 
