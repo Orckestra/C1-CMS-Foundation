@@ -67,7 +67,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             {
                 control = new HtmlForm();
 
-                element.CopyAttributes(control as HtmlForm);
+                element.CopyAttributes(control as HtmlForm, false);
 
                 foreach (var child in element.Nodes())
                 {

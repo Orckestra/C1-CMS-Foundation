@@ -123,12 +123,12 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             XNamespace sourceNs = source.Name.Namespace;
             XName newName = sourceNs.Equals(namespaceToRemove) ? source.Name.LocalName : source.Name;
-            XElement copy  = new XElement(newName);
+            XElement copy = new XElement(newName);
 
             if (!sourceNs.Equals(namespaceToRemove) && sourceNs != source.Parent.Name.Namespace && source.Attribute("xmlns") == null)
-	        {
+            {
                 copy.Add(new XAttribute("xmlns", source.Name.Namespace));
-	        }
+            }
 
             copy.Add(source.Attributes().Where(a => a.Name.Namespace == namespaceToRemove).Select(a => new XAttribute(a.Name.LocalName, a.Value)));
             copy.Add(source.Attributes().Where(a => a.Name.Namespace != namespaceToRemove && (a.IsNamespaceDeclaration == false || a.Value != sourceNs)).Select(a => new XAttribute(a.Name, a.Value)));
@@ -140,7 +140,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     copy.Add(CopyWithoutNamespace(child as XElement, namespaceToRemove));
                 }
                 else
-                {   
+                {
                     copy.Add(child);
                 }
             }
@@ -151,7 +151,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static bool IsHtmlControlElement(XElement element)
         {
-            
+
             var name = element.Name;
             string xnamespace = element.Name.Namespace.NamespaceName;
             if (xnamespace == Namespaces.Xhtml.NamespaceName || xnamespace == string.Empty)
@@ -186,7 +186,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 if (childNode is XCData)
                 {
-                    if (!childNode.Ancestors().Any(f=>f.Name.LocalName == "script"))
+                    if (!childNode.Ancestors().Any(f => f.Name.LocalName == "script"))
                     {
                         XCData cdata = (XCData)childNode;
                         LiteralControl literal = new LiteralControl(cdata.Value);
@@ -212,10 +212,15 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+        /// <exclude />
+        public static void CopyAttributes(this XElement source, HtmlControl target)
+        {
+            CopyAttributes(source, target, true);
+        }
 
 
         /// <exclude />
-        public static void CopyAttributes(this XElement source, HtmlControl target)
+        public static void CopyAttributes(this XElement source, HtmlControl target, bool copyXmlnsAttribute)
         {
             foreach (var attribute in source.Attributes())
             {
@@ -239,7 +244,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                 }
 
                 string localName = attribute.Name.LocalName;
-                if (localName != "xmlns" || (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace))
+                if (localName != "xmlns"
+                    || (copyXmlnsAttribute
+                        && (source.Parent == null || source.Name.Namespace != source.Parent.Name.Namespace)))
                 {
                     string htmlAttributeName;
 
