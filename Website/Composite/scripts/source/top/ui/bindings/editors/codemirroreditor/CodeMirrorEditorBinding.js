@@ -587,6 +587,7 @@ CodeMirrorEditorBinding.prototype.validate = function () {
 					.replace("&rarr;", "→")
 					.replace("&uarr;", "↑")
 					.replace("&darr;", "↓")
+			        .replace("&middot;", "·")
 					.replace("<!doctype", "<!DOCTYPE");
 				if (newSource != source)
 				{

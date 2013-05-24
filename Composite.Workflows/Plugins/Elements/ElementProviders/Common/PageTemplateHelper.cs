@@ -22,9 +22,35 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
         public static string FixHtmlEscapeSequences(string xhtml)
         {
             return xhtml
-                .Replace("&copy;", "&#169;", StringComparison.OrdinalIgnoreCase)
                 .Replace("&nbsp;", "&#160;", StringComparison.OrdinalIgnoreCase)
-                .Replace("<!doctype", "<!DOCTYPE", StringComparison.OrdinalIgnoreCase);
+                .Replace("&ldquo;", "“", StringComparison.OrdinalIgnoreCase)
+                .Replace("&rdguo;", "”", StringComparison.OrdinalIgnoreCase)
+                .Replace("&lsquo;", "‘", StringComparison.OrdinalIgnoreCase)
+                .Replace("&rsquo;", "’", StringComparison.OrdinalIgnoreCase)
+                .Replace("&laquo;", "«", StringComparison.OrdinalIgnoreCase)
+                .Replace("&raquo;", "»", StringComparison.OrdinalIgnoreCase)
+                .Replace("&lsaquo;", "‹", StringComparison.OrdinalIgnoreCase)
+                .Replace("&rsaquo;", "›", StringComparison.OrdinalIgnoreCase)
+                .Replace("&bull;", "•", StringComparison.OrdinalIgnoreCase)
+                .Replace("&deg;", "°", StringComparison.OrdinalIgnoreCase)
+                .Replace("&hellip;", "…", StringComparison.OrdinalIgnoreCase)
+                .Replace("&trade;", "™", StringComparison.OrdinalIgnoreCase)
+                .Replace("&copy;", "©", StringComparison.OrdinalIgnoreCase)
+                .Replace("&reg;", "®", StringComparison.OrdinalIgnoreCase)
+                .Replace("&mdash;", "—", StringComparison.OrdinalIgnoreCase)
+                .Replace("&ndash;", "–", StringComparison.OrdinalIgnoreCase)
+                .Replace("&sup2;", "²", StringComparison.OrdinalIgnoreCase)
+                .Replace("&sup3;", "³", StringComparison.OrdinalIgnoreCase)
+                .Replace("&frac14;", "¼", StringComparison.OrdinalIgnoreCase)
+                .Replace("&frac12;", "½", StringComparison.OrdinalIgnoreCase)
+                .Replace("&frac34;", "¾", StringComparison.OrdinalIgnoreCase)
+				.Replace("&times;", "×", StringComparison.OrdinalIgnoreCase)
+				.Replace("&larr;", "←", StringComparison.OrdinalIgnoreCase)
+				.Replace("&rarr;", "→", StringComparison.OrdinalIgnoreCase)
+				.Replace("&uarr;", "↑", StringComparison.OrdinalIgnoreCase)
+				.Replace("&darr;", "↓", StringComparison.OrdinalIgnoreCase)
+			    .Replace("&middot;", "·", StringComparison.OrdinalIgnoreCase)
+				.Replace("<!doctype", "<!DOCTYPE", StringComparison.OrdinalIgnoreCase);
         }
 
         public static Guid GetTheMostUsedTemplate(IEnumerable<Guid> templateIds)
