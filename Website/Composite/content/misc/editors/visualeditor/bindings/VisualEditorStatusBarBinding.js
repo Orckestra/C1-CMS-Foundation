@@ -154,7 +154,14 @@ VisualEditorStatusBarBinding.prototype.handleAction = function (action) {
 			var self = this;
 
 			setTimeout(function () { // chrome needs a timeout
-				self._tinyInstance.execCommand("mceSelectNodeDepth", false, depth);
+				//self._tinyInstance.execCommand("mceSelectNodeDepth", false, depth);
+				var counter = 0;
+				self._tinyInstance.dom.getParent(self._tinyInstance.selection.getNode(), function (node) {
+					if (node.nodeType == 1 && counter++ == depth) {
+						self._tinyInstance.selection.select(node);
+						return false;
+					}
+				}, self._tinyInstance.getBody());
 				self._tinyInstance.nodeChanged();
 			}, 0);
 
