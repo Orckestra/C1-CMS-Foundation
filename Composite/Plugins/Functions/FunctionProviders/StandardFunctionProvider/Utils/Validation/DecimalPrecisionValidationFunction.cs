@@ -38,7 +38,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
             codeAttributeDeclaration.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression(maxDigits)));
 
-            return new ConstrucorBasedPropertyValidatorBuilder<decimal>(codeAttributeDeclaration, new DecimalPrecisionValidatorAttribute(maxDigits));
+            return new ConstrucorBasedPropertyValidatorBuilder<decimal>(codeAttributeDeclaration, new DecimalPrecisionValidatorAttribute(28, maxDigits));
         }
 	}
 }

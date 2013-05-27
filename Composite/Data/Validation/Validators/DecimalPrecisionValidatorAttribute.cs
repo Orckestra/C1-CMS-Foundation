@@ -11,24 +11,52 @@ namespace Composite.Data.Validation.Validators
     public sealed class DecimalPrecisionValidatorAttribute : Microsoft.Practices.EnterpriseLibrary.Validation.Validators.ValueValidatorAttribute
     {
         /// <exclude />
+        [Obsolete("Use constructor that allow for both precision and scale")]
         public DecimalPrecisionValidatorAttribute(int digits)
         {
-            this.Digits = digits;
+            this.Precision = digits + 10; ; // uneducated guess
+            this.Scale = digits
         }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Creates a decimal precision validator
+        /// </summary>
+        /// <param name="precision">Digits in total</param>
+        /// <param name="scale">Digits after decimal point</param>
+        public DecimalPrecisionValidatorAttribute(int precision, int scale)
+        {
+            this.Precision = precision;
+            this.Scale = scale;
+        }
+
+
+        /// <summary>
+        /// Number of digits after decimal point - normally you would call this scale.
+        /// </summary>
+        [Obsolete("Use 'Sacle'")]
         public int Digits
+        {
+            get { return this.Scale; }
+        }
+
+
+        /// <summary>
+        /// Number of digits in total
+        /// </summary>
+        public int Scale
         {
             get;
             private set;
         }
 
-
-        /// <exclude />
+        /// <summary>
+        /// Number of digits in total
+        /// </summary>
         public int Precision
         {
-            get { return 10; /* Hardcoded for now */ }
+            get;
+            private set;
         }
 
 

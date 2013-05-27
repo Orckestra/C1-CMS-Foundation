@@ -36,10 +36,10 @@ namespace Composite.Data.Validation.Validators
             List<DecimalPrecisionValidatorAttribute> attributes = currentTarget.GetType().GetProperty(key).GetCustomAttributesRecursively<DecimalPrecisionValidatorAttribute>().ToList();
             var validatiorAttribute = attributes[0];
 
-            if (number != Decimal.Round(number, validatiorAttribute.Digits))
+            if (number != Decimal.Round(number, validatiorAttribute.Scale))
             {
-                
-                LogValidationResult(validationResults, GetString("Validation.Decimal.SymbolsAfterPointAllowed").FormatWith(attributes[0].Digits), currentTarget, key);
+
+                LogValidationResult(validationResults, GetString("Validation.Decimal.SymbolsAfterPointAllowed").FormatWith(validatiorAttribute.Scale), currentTarget, key);
                 return;
             }
 
@@ -52,7 +52,7 @@ namespace Composite.Data.Validation.Validators
 
             if (str.StartsWith("-")) str = str.Substring(1);
 
-            int allowedDigitsBeforeSeparator = validatiorAttribute.Precision - validatiorAttribute.Digits;
+            int allowedDigitsBeforeSeparator = validatiorAttribute.Precision - validatiorAttribute.Scale;
             if (str.Length > allowedDigitsBeforeSeparator)
             {
                 LogValidationResult(validationResults, GetString("Validation.Decimal.SymbolsBeforePointAllowed").FormatWith(allowedDigitsBeforeSeparator), currentTarget, key);
