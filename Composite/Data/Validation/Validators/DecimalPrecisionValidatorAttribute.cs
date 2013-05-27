@@ -14,8 +14,8 @@ namespace Composite.Data.Validation.Validators
         [Obsolete("Use constructor that allow for both precision and scale")]
         public DecimalPrecisionValidatorAttribute(int digits)
         {
-            this.Precision = digits + 10; ; // uneducated guess
-            this.Scale = digits
+            this.Precision = digits + 10; // uneducated guess
+            this.Scale = digits;
         }
 
 
