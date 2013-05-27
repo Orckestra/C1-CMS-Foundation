@@ -132,7 +132,7 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 
 			var start = this._tinyInstance.selection.getStart();
 			var end = this._tinyInstance.selection.getEnd();
-			if (start.nodeName.toLowerCase() != "body") {
+			if (start.nodeName.toLowerCase() != "body" || end.nodeName.toLowerCase() != "body") {
 				while (start.parentNode != null && start.parentNode.nodeName.toLowerCase() != "body") {
 					start = start.parentNode;
 				}
@@ -144,7 +144,10 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 				rng.setStartBefore(start);
 				rng.setEndAfter(end);
 				this._tinyInstance.selection.setRng(rng);
+			} else if (start.nodeName.toLowerCase() != "body") {
+				this._tinyInstance.selection.select(start);
 			}
+			
 			var value = this.getValue();
 			if (value != BlockSelectorBinding.VALUE_DEFAULT) {
 
