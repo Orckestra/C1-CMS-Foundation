@@ -766,7 +766,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         bool newValueNotEmpty = newValue != null 
                                 && (!(newValue is IList) || ((IList)newValue).Count > 0)
-                                && !(parameterProfile.IsRequired && newValue == string.Empty);
+                                && !(parameterProfile.IsRequired && newValue as string == string.Empty);
 
         parameterNode.Remove();
 
