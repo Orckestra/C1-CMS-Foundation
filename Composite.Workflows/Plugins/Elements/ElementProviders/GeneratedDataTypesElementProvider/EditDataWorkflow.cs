@@ -141,9 +141,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
-                PublishIfNeeded(data);
-
                 updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+
+                PublishIfNeeded(data);
             }
             
             SetSaveStatus(isValid);

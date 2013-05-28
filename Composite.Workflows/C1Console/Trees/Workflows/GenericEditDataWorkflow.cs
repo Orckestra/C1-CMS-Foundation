@@ -174,9 +174,9 @@ namespace Composite.C1Console.Trees.Workflows
 
                 EntityTokenCacheFacade.ClearCache(EntityToken);
 
-                PublishIfNeeded(data);
-
                 updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                
+                PublishIfNeeded(data);
             }
 
             SetSaveStatus(isValid);
