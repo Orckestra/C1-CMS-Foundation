@@ -55,7 +55,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         public string CompositePath
         {
             get { return this.GetCompositePath(); }
-            set { throw new NotImplementedException(); }
+            set { /* Do nothing. Used for deserialization purpouses */ }
         }
 
 
