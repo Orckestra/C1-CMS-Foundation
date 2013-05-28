@@ -43,8 +43,8 @@ namespace Composite.C1Console.Trees
     {
         private const string XslFilename = "Tree.xsl";
 
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
-
+        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
+        private static readonly object _reloadAttachmentPointsSyncRoot = new object();
 
 
         public void Initialize()
@@ -531,56 +531,59 @@ namespace Composite.C1Console.Trees
 
         private void InitializeTreeAttachmentPoints()
         {
-            ClearAttachmentPoints<DynamicDataItemAttachmentPoint>();
-
-            IEnumerable<IDataItemTreeAttachmentPoint> attachmentPoints = DataFacade.GetData<IDataItemTreeAttachmentPoint>().Evaluate();
-
-            foreach (IDataItemTreeAttachmentPoint attachmentPoint in attachmentPoints)
+            lock (_reloadAttachmentPointsSyncRoot)
             {
-                Tree tree = GetTree(attachmentPoint.TreeId);
-                if (tree == null)
+                ClearAttachmentPoints<DynamicDataItemAttachmentPoint>();
+
+                IEnumerable<IDataItemTreeAttachmentPoint> attachmentPoints = DataFacade.GetData<IDataItemTreeAttachmentPoint>().Evaluate();
+
+                foreach (IDataItemTreeAttachmentPoint attachmentPoint in attachmentPoints)
                 {
-                    string treePath = Path.Combine(TreeDefinitionsFolder, attachmentPoint.TreeId);
-                    if (C1File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
+                    Tree tree = GetTree(attachmentPoint.TreeId);
+                    if (tree == null)
                     {
-                        if (DataFacade.WillDeleteSucceed(attachmentPoint))
+                        string treePath = Path.Combine(TreeDefinitionsFolder, attachmentPoint.TreeId);
+                        if (C1File.Exists(treePath) == false) // This ensures that invalid, but existing trees does not remove these attachment points
                         {
-                            Log.LogWarning("TreeFacade", string.Format("A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId));
-                            DataFacade.Delete(attachmentPoint);
+                            if (DataFacade.WillDeleteSucceed(attachmentPoint))
+                            {
+                                Log.LogWarning("TreeFacade", string.Format("A data item attachment points is referring a non existing tree '{0}' and is deleted", attachmentPoint.TreeId));
+                                DataFacade.Delete(attachmentPoint);
+                            }
                         }
+
+                        continue;
                     }
 
-                    continue;
+                    Type interfaceType = TypeManager.GetType(attachmentPoint.InterfaceType);
+                    object keyValue = ValueTypeConverter.Convert(attachmentPoint.KeyValue, interfaceType.GetKeyProperties()[0].PropertyType);
+
+                    ElementAttachingProviderPosition position = (ElementAttachingProviderPosition)Enum.Parse(typeof(ElementAttachingProviderPosition), attachmentPoint.Position);
+
+                    DynamicDataItemAttachmentPoint dataItemTreeAttachmentPoint = new DynamicDataItemAttachmentPoint
+                    {
+                        InterfaceType = interfaceType,
+                        KeyValue = keyValue,
+                        Position = position
+                    };
+
+                    // Log.LogVerbose("TreeFacade", string.Format("Tree with id '{0}' is dynamicly attached to the data type '{1}' with key value of '{2}'", attachmentPoint.TreeId, interfaceType, keyValue));
+
+                    tree.AttachmentPoints.Add(dataItemTreeAttachmentPoint);
+
+                    DataEventSystemFacade.SubscribeToDataDeleted(interfaceType, OnDataItemDeleted, false);
                 }
 
-                Type interfaceType = TypeManager.GetType(attachmentPoint.InterfaceType);
-                object keyValue = ValueTypeConverter.Convert(attachmentPoint.KeyValue, interfaceType.GetKeyProperties()[0].PropertyType);
 
-                ElementAttachingProviderPosition position = (ElementAttachingProviderPosition)Enum.Parse(typeof(ElementAttachingProviderPosition), attachmentPoint.Position);
-
-                DynamicDataItemAttachmentPoint dataItemTreeAttachmentPoint = new DynamicDataItemAttachmentPoint
+                using (_resourceLocker.ReadLocker)
                 {
-                    InterfaceType = interfaceType,
-                    KeyValue = keyValue,
-                    Position = position
-                };
+                    foreach (var kvp in _resourceLocker.Resources.PersistentAttachmentPoints)
+                    {
+                        Tree tree = GetTree(kvp.Key);
+                        if (tree == null) continue;
 
-                // Log.LogVerbose("TreeFacade", string.Format("Tree with id '{0}' is dynamicly attached to the data type '{1}' with key value of '{2}'", attachmentPoint.TreeId, interfaceType, keyValue));
-
-                tree.AttachmentPoints.Add(dataItemTreeAttachmentPoint);
-
-                DataEventSystemFacade.SubscribeToDataDeleted(interfaceType, OnDataItemDeleted, false);
-            }
-
-
-            using (_resourceLocker.ReadLocker)
-            {
-                foreach (var kvp in _resourceLocker.Resources.PersistentAttachmentPoints)
-                {
-                    Tree tree = GetTree(kvp.Key);
-                    if (tree == null) continue;
-
-                    tree.AttachmentPoints.AddRange(kvp.Value);
+                        tree.AttachmentPoints.AddRange(kvp.Value);
+                    }
                 }
             }
         }
