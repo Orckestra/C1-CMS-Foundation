@@ -93,8 +93,12 @@ BlockSelectorBinding.prototype.buildDOMContent = function() {
 
 	this.populateFromList(list);
 
+	//disable block seletor for IE
+	if (Client.isExplorer) {
+		this.hide();
+	}
 	if (!this.priorities.hasEntries())
-		this.hide()
+		this.hide();
 };
 
 /**
@@ -130,20 +134,27 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 	switch (action.type) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED:
 
-			var start = this._tinyInstance.selection.getStart();
-			var end = this._tinyInstance.selection.getEnd();
-			if (start.nodeName.toLowerCase() != "body" || end.nodeName.toLowerCase() != "body") {
+			var superstart = this._tinyInstance.selection.getStart();
+			var superend = this._tinyInstance.selection.getEnd();
+			var start = superstart;
+			var end = superend;
+			if (start.nodeName.toLowerCase() != "body" && end.nodeName.toLowerCase() != "body") {
 				while (start.parentNode != null && start.parentNode.nodeName.toLowerCase() != "body") {
 					start = start.parentNode;
 				}
 				while (end.parentNode != null && end.parentNode.nodeName.toLowerCase() != "body") {
 					end = end.parentNode;
 				}
-
-				var rng = this._tinyInstance.selection.getRng();
-				rng.setStartBefore(start);
-				rng.setEndAfter(end);
-				this._tinyInstance.selection.setRng(rng);
+				if (start == superstart && start == end) {
+					
+				} else if (start == end) {
+					this._tinyInstance.selection.select(start);
+				} else {
+					var rng = this._tinyInstance.selection.getRng();
+					rng.setStartBefore(start);
+					rng.setEndAfter(end);
+					this._tinyInstance.selection.setRng(rng);
+				}
 			} else if (start.nodeName.toLowerCase() != "body") {
 				this._tinyInstance.selection.select(start);
 			}
