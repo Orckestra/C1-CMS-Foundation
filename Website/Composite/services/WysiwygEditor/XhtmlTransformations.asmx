@@ -343,7 +343,7 @@ namespace Composite.Services
             {
                 string fieldName = fieldReferenceElement.Attribute("fieldname").Value;
 
-                return GetImageTagForDynamicDataFieldReference(fieldName, type.AssemblyQualifiedName, type.AssemblyQualifiedName);                
+                return GetImageTagForDynamicDataFieldReference(fieldName, fieldName, type.AssemblyQualifiedName, type.AssemblyQualifiedName);                
             }
 
             DataTypeDescriptor typeDescriptor;
@@ -472,10 +472,10 @@ namespace Composite.Services
                 fieldLabel = StringResourceSystemFacade.ParseString(dataField.FormRenderingProfile.Label);
             }
 
-            return GetImageTagForDynamicDataFieldReference(fieldLabel, dataTypeDescriptor.Name, dataTypeDescriptor.TypeManagerTypeName);
+            return GetImageTagForDynamicDataFieldReference(dataField.Name, fieldLabel, dataTypeDescriptor.Name, dataTypeDescriptor.TypeManagerTypeName);
         }
 
-        private XElement GetImageTagForDynamicDataFieldReference(string fieldLabel, string typeName, string uiFriendlyTypeName)
+        private XElement GetImageTagForDynamicDataFieldReference(string fieldName, string fieldLabel, string typeName, string uiFriendlyTypeName)
         {
             string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}",
                 HttpUtility.UrlEncodeUnicode(fieldLabel),
@@ -484,7 +484,7 @@ namespace Composite.Services
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldLabel)))
+                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldName)))
                 );
         }
 
