@@ -197,10 +197,6 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = 
 SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionMarkup = function (string) {
 
     switch (this._editorBinding.syntax) {
-        case CodeMirrorEditorBinding.syntax.CSHTML:
-            string = string.replace(/(<f:function[^>]*) xmlns:f="[^"]*"/gi, '$1');
-            string = string.replace(/(<f:param[^>]*) xmlns:f="[^"]*"/gi, '$1');
-            break;
         case CodeMirrorEditorBinding.syntax.ASPX:
             string = string.replace(/(<f:function[^>]*) xmlns:f="[^"]*"/gi, '$1 runat="server"');
             string = string.replace(/(<f:param[^>]*) xmlns:f="[^"]*"/gi, '$1');
