@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace Composite.Core.WebClient.HttpModules
 {
@@ -8,6 +9,8 @@ namespace Composite.Core.WebClient.HttpModules
     {
         private readonly Stream _innerStream;
         private MemoryStream _ms = new MemoryStream();
+
+        private bool? _responseIsHtml;
 
         public Utf8StringTransformationStream(Stream innerOuputStream)
         {
@@ -36,32 +39,44 @@ namespace Composite.Core.WebClient.HttpModules
 
         public override long Length
         {
-            get { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
         }
 
         public override long Position
         {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
+            get { throw new NotSupportedException(); }
+            set { throw new NotSupportedException(); }
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override void SetLength(long value)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public override void Write(byte[] buffer, int offset, int count)
         {
+            if (_responseIsHtml == null)
+            {
+                var context = HttpContext.Current;
+                _responseIsHtml = context.Response.Headers["Content-Type"].Contains("html");
+            }
+
+            if (!_responseIsHtml.Value)
+            {
+                _innerStream.Write(buffer, offset, count);
+                return;
+            }
+
             if (!_ms.CanWrite)
             {
                 // Reopening stream if it was empty
@@ -72,6 +87,12 @@ namespace Composite.Core.WebClient.HttpModules
 
         public override void Close()
         {
+            if (_responseIsHtml == null || !_responseIsHtml.Value)
+            {
+                _innerStream.Close();
+                return;
+            }
+
             // Checking if the stream was already closed
             if (!_ms.CanSeek)
             {
