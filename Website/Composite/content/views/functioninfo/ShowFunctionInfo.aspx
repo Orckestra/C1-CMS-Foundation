@@ -12,6 +12,9 @@ xmlns:control="http://www.composite.net/ns/uicontrol">
     <control:scriptloader ID="Scriptloader" type="sub" runat="server" />
     <link rel="stylesheet" type="text/css" href="ShowFunctionInfo.css" media="all" />
     <title>Function Info</title>
+    <script type="text/javascript">
+        DocumentManager.isDocumentSelectable = true;
+    </script>
 </head>
 <body>
     <ui:page label="<%= this.PageLabel %>" image="${icon:zoom}">
