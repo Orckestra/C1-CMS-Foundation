@@ -32,6 +32,8 @@ namespace Composite.Functions.Inline
         /// <exclude />
         public string MissionMethod { get; set; }
 
+        /// <exclude />
+        public Exception LoadingException { get; set; }
 
         /// <exclude />
         public override bool HasErrors { get { return _hasErrors; } }
@@ -66,6 +68,12 @@ namespace Composite.Functions.Inline
         {
             _hasErrors = true;
             this.MissionMethod = message;
+        }
+
+        public override void OnLoadSourceError(Exception exception)
+        {
+            _hasErrors = true;
+            LoadingException = exception;
         }
     }
 }

@@ -220,6 +220,11 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.MethodBasedFunct
                     AddFormattedTextBlock(sb, handler.MissionMethod);
                 }
 
+                if (handler.LoadingException != null)
+                {
+                    AddFormattedTextBlock(sb, handler.LoadingException.ToString());
+                }
+
                 foreach (Tuple<int, string, string> compileError in handler.CompileErrors)
                 {
                     AddFormattedTextBlock(sb, "{0} : {1} : {2}".FormatWith(compileError.Item1, compileError.Item2, compileError.Item3));

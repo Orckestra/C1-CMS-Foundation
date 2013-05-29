@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace Composite.Functions.Inline
 {
     /// <summary>    
@@ -22,5 +24,8 @@ namespace Composite.Functions.Inline
 
         /// <exclude />
         public virtual void OnMissionMethod(string message) { }
+
+        /// <exclude />
+        public virtual void OnLoadSourceError(Exception exception) { }
     }
 }

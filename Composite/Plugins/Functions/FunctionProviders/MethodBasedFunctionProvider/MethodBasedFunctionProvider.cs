@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Threading;
+using Composite.Core;
 using Composite.Core.Caching;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
@@ -25,7 +26,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             "Functions",
             "inlineFuncReturnType",
             (type, filePath) => C1File.WriteAllText(filePath, TypeManager.SerializeType(type)),
-            (filePath) => TypeManager.TryGetType(C1File.ReadAllText(filePath))); 
+            (filePath) => TypeManager.TryGetType(C1File.ReadAllText(filePath)));
+
+        private static readonly string LogTitle = typeof (MethodBasedFunctionProvider).Name;
 
         private FunctionNotifier _functionNotifier;
 
@@ -185,9 +188,21 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                             if (_lastWriteHandleTime < writeTime)
                             {
                                 _lastWriteHandleTime = writeTime;
-                                using (ThreadDataManager.EnsureInitialize())
+
+                                try
                                 {
-                                    hander(sender, e);
+                                    using (ThreadDataManager.EnsureInitialize())
+                                    {
+                                        hander(sender, e);
+                                    }
+                                }
+                                catch (ThreadAbortException)
+                                {
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.LogWarning(LogTitle, "Failed to reload functions on file watcher event");
+                                    Log.LogError(LogTitle, ex);
                                 }
                             }
                         }

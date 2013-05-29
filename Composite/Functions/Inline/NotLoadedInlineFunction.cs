@@ -54,6 +54,11 @@ namespace Composite.Functions.Inline
                 throw exception;
             }
 
+            if (_errors.LoadingException != null)
+            {
+                throw _errors.LoadingException;
+            }
+
             throw new InvalidOperationException("Function wasn't loaded due to compilation errors");
         }
 
@@ -76,6 +81,11 @@ namespace Composite.Functions.Inline
                 {
                     var error = _errors.CompileErrors[0];
                     return "{1} Line {0}: {2}".FormatWith(error.Item1, error.Item2, error.Item3);
+                }
+
+                if (_errors.LoadingException != null)
+                {
+                    return _errors.LoadingException.Message;
                 }
 
                 return _function.Description;

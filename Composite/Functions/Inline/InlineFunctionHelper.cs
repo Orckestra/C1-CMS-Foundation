@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Web.Hosting;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -37,7 +38,25 @@ namespace Composite.Functions.Inline
         {
             if (string.IsNullOrWhiteSpace(code))
             {
-                code = GetFunctionCode(function);
+                try
+                {
+                    code = GetFunctionCode(function);
+                }
+                catch (ThreadAbortException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    if (createMethodErrorHandler != null)
+                    {
+                        createMethodErrorHandler.OnLoadSourceError(ex);
+                    }
+                    else
+                    {
+                        LogMessageIfNotShuttingDown(function, ex.Message);
+                    }
+                    return null;
+                }
             }
 
             CompilerParameters compilerParameters = new CompilerParameters();
@@ -83,10 +102,7 @@ namespace Composite.Functions.Inline
                     }
                     else
                     {
-                        if(!HostingEnvironment.ApplicationHost.ShutdownInitiated())
-                        {
-                            Log.LogWarning(LogTitle, "{0}.{1} : {2}", function.Namespace, function.Name, error.ErrorText);
-                        }
+                        LogMessageIfNotShuttingDown(function, error.ErrorText);
                     }
                 }
 
@@ -105,10 +121,7 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
-                    {
-                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
-                    }
+                    LogMessageIfNotShuttingDown(function, message);
                 }
 
                 return null;
@@ -124,10 +137,7 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
-                    {
-                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
-                    }
+                    LogMessageIfNotShuttingDown(function, message);
                 }
 
                 return null;
@@ -144,10 +154,7 @@ namespace Composite.Functions.Inline
                 }
                 else
                 {
-                    if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
-                    {
-                        Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
-                    }
+                    LogMessageIfNotShuttingDown(function, message);
                 }
 
                 return null;
@@ -156,6 +163,14 @@ namespace Composite.Functions.Inline
             return methodInfo;
         }
 
+
+        private static void LogMessageIfNotShuttingDown(IInlineFunction function, string message)
+        {
+            if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
+            {
+                Log.LogWarning(LogTitle, string.Format("{0}.{1} : {2}", function.Namespace, function.Name, message));
+            }
+        }
 
 
         /// <exclude />
@@ -194,7 +209,25 @@ namespace Composite.Functions.Inline
         {
             string filepath = GetSourceFilePath(function);
 
-            return C1File.ReadAllText(filepath);
+            // Making 5 attempts to read the file
+            for (int i = 5; i > 0; i--)
+            {
+                try
+                {
+                    return C1File.ReadAllText(filepath);
+                }
+                catch (FileNotFoundException)
+                {
+                    throw;
+                }
+                catch (IOException)
+                {
+                    if (i == 1) throw;
+
+                    Thread.Sleep(100);
+                }
+            }
+            throw new InvalidOperationException("This line should not be reachable");
         }
 
 
