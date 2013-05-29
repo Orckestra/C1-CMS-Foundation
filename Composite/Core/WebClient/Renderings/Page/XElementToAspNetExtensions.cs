@@ -125,13 +125,22 @@ namespace Composite.Core.WebClient.Renderings.Page
             XName newName = sourceNs.Equals(namespaceToRemove) ? source.Name.LocalName : source.Name;
             XElement copy = new XElement(newName);
 
-            if (!sourceNs.Equals(namespaceToRemove) && sourceNs != source.Parent.Name.Namespace && source.Attribute("xmlns") == null)
+            if (!sourceNs.Equals(namespaceToRemove) 
+                && sourceNs != source.Parent.Name.Namespace 
+                && source.Attribute("xmlns") == null
+                && (sourceNs == Namespaces.Xhtml.NamespaceName || sourceNs == Namespaces.Svg.NamespaceName))
             {
                 copy.Add(new XAttribute("xmlns", source.Name.Namespace));
             }
 
-            copy.Add(source.Attributes().Where(a => a.Name.Namespace == namespaceToRemove).Select(a => new XAttribute(a.Name.LocalName, a.Value)));
-            copy.Add(source.Attributes().Where(a => a.Name.Namespace != namespaceToRemove && (a.IsNamespaceDeclaration == false || a.Value != sourceNs)).Select(a => new XAttribute(a.Name, a.Value)));
+            copy.Add(source.Attributes().Where(a => a.Name.Namespace == namespaceToRemove)
+                                                .Select(a => new XAttribute(a.Name.LocalName, a.Value)));
+
+            Func<XAttribute, bool> isNotHtmlRelatedNsDeclaration = 
+                ns => !ns.IsNamespaceDeclaration || (ns.Value != Namespaces.Xhtml.NamespaceName && ns.Value != Namespaces.Svg.NamespaceName);
+
+            copy.Add(source.Attributes().Where(a => a.Name.Namespace != namespaceToRemove && isNotHtmlRelatedNsDeclaration(a))
+                                        .Select(a => new XAttribute(a.Name, a.Value)));
 
             foreach (XNode child in source.Nodes())
             {
