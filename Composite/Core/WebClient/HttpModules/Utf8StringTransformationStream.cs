@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
 
@@ -10,7 +11,7 @@ namespace Composite.Core.WebClient.HttpModules
         private readonly Stream _innerStream;
         private MemoryStream _ms = new MemoryStream();
 
-        private bool? _responseIsHtml;
+        private bool? _responseIsUtf8;
 
         public Utf8StringTransformationStream(Stream innerOuputStream)
         {
@@ -65,13 +66,12 @@ namespace Composite.Core.WebClient.HttpModules
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            if (_responseIsHtml == null)
+            if (_responseIsUtf8 == null)
             {
-                var context = HttpContext.Current;
-                _responseIsHtml = context.Response.Headers["Content-Type"].Contains("html");
+                _responseIsUtf8 = buffer.Take(3).SequenceEqual(Encoding.UTF8.GetPreamble());
             }
 
-            if (!_responseIsHtml.Value)
+            if (!_responseIsUtf8.Value)
             {
                 _innerStream.Write(buffer, offset, count);
                 return;
@@ -87,7 +87,7 @@ namespace Composite.Core.WebClient.HttpModules
 
         public override void Close()
         {
-            if (_responseIsHtml == null || !_responseIsHtml.Value)
+            if (_responseIsUtf8 == null || !_responseIsUtf8.Value)
             {
                 _innerStream.Close();
                 return;
