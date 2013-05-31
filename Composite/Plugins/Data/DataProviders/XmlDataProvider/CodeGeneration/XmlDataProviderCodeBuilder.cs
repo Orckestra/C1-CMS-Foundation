@@ -44,8 +44,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             codeTypeDeclarations.ForEach(f => _codeGenerationBuilder.AddType(_namespaceName, f));
 
             // Property serializer for entity tokens and more
-            Dictionary<string, Type> serializerProperties = dataTypeDescriptor.KeyFields.ToDictionary(f => f.Name, f => f.InstanceType);
-            PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, codeGenerator.DataIdClassFullName, serializerProperties);
+            var keyPropertiesDictionary = new Dictionary<string, Type>();
+            var keyPropertiesList = new List<Tuple<string, Type>>();
+            foreach (var keyField in dataTypeDescriptor.KeyFields)
+            {
+                Verify.That(!keyPropertiesDictionary.ContainsKey(keyField.Name), "Key field with name '{0}' already present. Data type: {1}. Check for multiple [KeyPropertyName(...)] attributes.", keyField.Name, dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name);
+
+                keyPropertiesDictionary.Add(keyField.Name, keyField.InstanceType);
+                keyPropertiesList.Add(new Tuple<string, Type>(keyField.Name, keyField.InstanceType));
+            }
+
+            PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, codeGenerator.DataIdClassFullName, keyPropertiesList);
             
             _codeGenerationBuilder.AddReference(interfaceType.Assembly);
         }

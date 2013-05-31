@@ -33,7 +33,7 @@ namespace Composite.Core.Serialization.CodeGeneration
 
 
 
-        internal static void AddPropertySerializerTypeCode(CodeGenerationBuilder codeGenerationBuilder, string propertyClassTypeName, Dictionary<string, Type> properties)
+        internal static void AddPropertySerializerTypeCode(CodeGenerationBuilder codeGenerationBuilder, string propertyClassTypeName, IList<Tuple<string, Type>> properties)
         {
             codeGenerationBuilder.AddReference(typeof(EditorBrowsableAttribute).Assembly);
             codeGenerationBuilder.AddReference(typeof(StringConversionServices).Assembly);
@@ -52,23 +52,16 @@ namespace Composite.Core.Serialization.CodeGeneration
 
 
 
-        private static string CreateSerializerClassName(Type propertyClassType)
-        {
-            return CreateSerializerClassName(propertyClassType.FullName);
-        }
-        
-
-
         internal static CodeTypeDeclaration CreateCodeTypeDeclaration(Type propertyClassType)
         {
-            Dictionary<string, Type> properties = GetSerializeableProperties(propertyClassType).ToDictionary(f => f.Name, f => f.PropertyType);
+            var properties = GetSerializeableProperties(propertyClassType).Select(p => new Tuple<string,Type>(p.Name, p.PropertyType)).ToList();
 
             return CreateCodeTypeDeclaration(propertyClassType.FullName, properties);
         }
 
 
 
-        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(string propertyClassTypeName, Dictionary<string, Type> properties)
+        internal static CodeTypeDeclaration CreateCodeTypeDeclaration(string propertyClassTypeName, IList<Tuple<string, Type>> properties)
         {
             string className = CreateSerializerClassName(propertyClassTypeName);
 
@@ -96,7 +89,7 @@ namespace Composite.Core.Serialization.CodeGeneration
 
 
 
-        private static void AddSerializeMethod(CodeTypeDeclaration declaration, string propertyClassTypeName, Dictionary<string, Type> properties)
+        private static void AddSerializeMethod(CodeTypeDeclaration declaration, string propertyClassTypeName, IList<Tuple<string, Type>> properties)
         {
             CodeMemberMethod method = new CodeMemberMethod();
             method.Name = "Serialize";
@@ -160,14 +153,14 @@ namespace Composite.Core.Serialization.CodeGeneration
 
                 Type propertyType;
                 string methodName;
-                if (property.Value.IsArray == false)
+                if (!property.Item2.IsArray)
                 {
-                    propertyType = property.Value;
+                    propertyType = property.Item2;
                     methodName = "SerializeKeyValuePair";
                 }
                 else
                 {
-                    propertyType = property.Value.GetElementType();
+                    propertyType = property.Item2.GetElementType();
                     methodName = "SerializeKeyValueArrayPair";
                 }
 
@@ -182,10 +175,10 @@ namespace Composite.Core.Serialization.CodeGeneration
                             ),
                             new CodeExpression[] {
                                 new CodeVariableReferenceExpression("serializedValues"),
-                                new CodePrimitiveExpression(property.Key),
+                                new CodePrimitiveExpression(property.Item1),
                                 new CodePropertyReferenceExpression(
                                     new CodeVariableReferenceExpression("classToSerialize"),
-                                    property.Key
+                                    property.Item1
                                 )
                             }
                         )
@@ -198,7 +191,7 @@ namespace Composite.Core.Serialization.CodeGeneration
 
 
 
-        private static void AddDeserializeMethod(CodeTypeDeclaration declaration, string propertyClassTypeName, Dictionary<string, Type> properties)
+        private static void AddDeserializeMethod(CodeTypeDeclaration declaration, string propertyClassTypeName, IList<Tuple<string, Type>> properties)
         {
             CodeMemberMethod method = new CodeMemberMethod();
             method.Name = "Deserialize";
@@ -218,14 +211,14 @@ namespace Composite.Core.Serialization.CodeGeneration
             {
                 Type propertyType;
                 string methodName;
-                if (property.Value.IsArray == false)
+                if (property.Item2.IsArray == false)
                 {
-                    propertyType = property.Value;
+                    propertyType = property.Item2;
                     methodName = "DeserializeValue";
                 }
                 else
                 {
-                    propertyType = property.Value.GetElementType();
+                    propertyType = property.Item2.GetElementType();
                     methodName = "DeserializeValueArray";
                 }
 
@@ -233,7 +226,7 @@ namespace Composite.Core.Serialization.CodeGeneration
                 method.Statements.Add(new CodeAssignStatement(
                         new CodePropertyReferenceExpression(
                             new CodeVariableReferenceExpression("propertyClass"),
-                            property.Key
+                            property.Item1
                         ),
                         new CodeMethodInvokeExpression(
                             new CodeMethodReferenceExpression(
@@ -248,13 +241,13 @@ namespace Composite.Core.Serialization.CodeGeneration
                                     new CodeVariableReferenceExpression("objectState"),
                                     new CodeExpression[] {
                                         new CodePrimitiveExpression(
-                                            property.Key
+                                            property.Item1
                                         )    
                                     }
                                 ),
                                 new CodePropertyReferenceExpression(
                                     new CodeVariableReferenceExpression("propertyClass"),
-                                    property.Key
+                                    property.Item1
                                 )
                             }
                         )
@@ -321,7 +314,7 @@ namespace Composite.Core.Serialization.CodeGeneration
                 return false;
             }
 
-            if (propertyType.IsAbstract && (propertyType.Equals(typeof(Type)) == false))
+            if (propertyType.IsAbstract && propertyType != typeof(Type))
             {
                 return false;
             }

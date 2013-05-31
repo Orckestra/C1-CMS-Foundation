@@ -54,8 +54,18 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
             // Property serializer for entity tokens and more
             string dataIdClassFullName = NamesCreator.MakeDataIdClassFullName(dataTypeDescriptor, _providerName);
-            Dictionary<string, Type> serializerProperties = dataTypeDescriptor.KeyFields.ToDictionary(f => f.Name, f => f.InstanceType);
-            PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, dataIdClassFullName, serializerProperties);
+
+            var keyPropertiesDictionary = new Dictionary<string, Type>();
+            var keyPropertiesList = new List<Tuple<string, Type>>();
+            foreach (var keyField in dataTypeDescriptor.KeyFields)
+            {
+                Verify.That(!keyPropertiesDictionary.ContainsKey(keyField.Name), "Key field with name '{0}' already present. Data type: {1}. Check for multiple [KeyPropertyName(...)] attributes", keyField.Name, dataTypeDescriptor.Namespace + "." + dataTypeDescriptor.Name);
+
+                keyPropertiesDictionary.Add(keyField.Name, keyField.InstanceType);
+                keyPropertiesList.Add(new Tuple<string, Type>(keyField.Name, keyField.InstanceType));
+            }
+
+            PropertySerializerTypeCodeGenerator.AddPropertySerializerTypeCode(_codeGenerationBuilder, dataIdClassFullName, keyPropertiesList);
         }
 
 

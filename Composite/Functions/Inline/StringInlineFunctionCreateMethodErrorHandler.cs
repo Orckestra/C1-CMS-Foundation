@@ -70,6 +70,8 @@ namespace Composite.Functions.Inline
             this.MissionMethod = message;
         }
 
+
+        /// <exclude />
         public override void OnLoadSourceError(Exception exception)
         {
             _hasErrors = true;

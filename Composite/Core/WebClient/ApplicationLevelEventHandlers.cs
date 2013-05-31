@@ -110,10 +110,7 @@ namespace Composite.Core.WebClient
                 }
                 catch (Exception ex)
                 {
-                    if (RuntimeInformation.IsDebugBuild)
-                    {
-                        Log.LogCritical("Global.asax", ex);
-                    }
+                    Log.LogCritical("Global.asax", ex);
 
                     throw;
                 }               

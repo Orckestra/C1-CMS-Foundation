@@ -153,6 +153,9 @@ namespace Composite.Data.DynamicTypes
         /// <summary>The fields (aka properties or columns) of the type.</summary>
         public DataFieldDescriptorCollection Fields { get; set; }
 
+        /// <summary>
+        /// Key fields. Note that the order of the fields is important.
+        /// </summary>
         internal IEnumerable<DataFieldDescriptor> KeyFields
         {
             get
