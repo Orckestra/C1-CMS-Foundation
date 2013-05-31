@@ -2,7 +2,6 @@
 using Composite.Data;
 using System.IO;
 using System.Text;
-using System.Threading;
 
 
 namespace Composite.Core.Implementation
@@ -166,7 +165,7 @@ namespace Composite.Core.Implementation
 
             CultureInfo localeToUse = locale ?? LocalizationScopeManager.CurrentLocalizationScope;
 
-            if ((localeToUse == null) || (localeToUse == CultureInfo.InvariantCulture))
+            if (localeToUse == null || localeToUse.Equals(CultureInfo.InvariantCulture))
             {
                 localeToUse = DataLocalizationFacade.DefaultLocalizationCulture;
             }

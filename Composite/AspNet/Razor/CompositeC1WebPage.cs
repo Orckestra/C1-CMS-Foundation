@@ -15,14 +15,22 @@ namespace Composite.AspNet.Razor
 	public abstract class CompositeC1WebPage : WebPage, IDisposable
 	{
 		private bool _disposed;
-		private DataConnection _data;
+		private readonly DataConnection _data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeC1WebPage"/> class.
+        /// </summary>
+        protected CompositeC1WebPage()
+        {
+            _data = new DataConnection();
+        }
 
         /// <summary>
         /// Gets a <see cref="DataConnection"/> object.
         /// </summary>
 		public DataConnection Data
 		{
-			get { return _data ?? (_data = new DataConnection()); }
+            get { return _data; }
 		}
 
         /// <summary>
@@ -154,7 +162,7 @@ namespace Composite.AspNet.Razor
 			{
 				if (disposing)
 				{
-					_data.Dispose();
+                    _data.Dispose();
 				}
 
 				_disposed = true;

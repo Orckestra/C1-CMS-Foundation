@@ -238,7 +238,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             {
                 ParseTemplate(virtualPath, razorPageTemplate, out parsedTemplate, out placeholderProperties);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.LogError(LogTitle, "Failed to load razor page template '{0}'", virtualPath);
                 Log.LogError(LogTitle, ex);
@@ -247,6 +247,10 @@ namespace Composite.Plugins.PageTemplates.Razor
                 parsedTemplate = null;
                 placeholderProperties = null;
                 return false;
+            }
+            finally
+            {
+                razorPageTemplate.Dispose();
             }
 
             loadingException = null;

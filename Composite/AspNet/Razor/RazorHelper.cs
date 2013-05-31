@@ -36,59 +36,73 @@ namespace Composite.AspNet.Razor
             Type resultType, 
             FunctionContextContainer functionContextContainer) 
         {
-   			HttpContextBase httpContext;
-			object requestLock = null;
+   			
+            string output; 
 
-            var webPage = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
-			var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] { "cshtml" });
-
-			if (HttpContext.Current == null)
-			{
-				httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
-			}
-			else
-			{
-				var currentContext = HttpContext.Current;
-
-				httpContext = new HttpContextWrapper(currentContext);
-
-                requestLock = GetRazorExecutionLock(currentContext);
-			}
-
-			var pageContext = new WebPageContext(httpContext, webPage, startPage);
-            if (functionContextContainer != null)
+            WebPageBase webPage = null;
+            try
             {
-                pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
-            }
+                webPage = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
+                var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] {"cshtml"});
 
-            if(setParameters != null)
+                object requestLock = null;
+                HttpContextBase httpContext;
+
+                HttpContext currentContext = HttpContext.Current;
+                if (currentContext == null)
+                {
+                    httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
+                }
+                else
+                {
+                    httpContext = new HttpContextWrapper(currentContext);
+
+                    requestLock = GetRazorExecutionLock(currentContext);
+                }
+
+                var pageContext = new WebPageContext(httpContext, webPage, startPage);
+                if (functionContextContainer != null)
+                {
+                    pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
+                }
+
+                if (setParameters != null)
+                {
+                    setParameters(webPage);
+                }
+
+                var sb = new StringBuilder();
+                using (var writer = new StringWriter(sb))
+                {
+                    bool lockTaken = false;
+                    try
+                    {
+                        if (requestLock != null)
+                        {
+                            Monitor.Enter(requestLock, ref lockTaken);
+                        }
+
+                        webPage.ExecutePageHierarchy(pageContext, writer);
+                    }
+                    finally
+                    {
+                        if (lockTaken)
+                        {
+                            Monitor.Exit(requestLock);
+                        }
+                    }
+                }
+
+                output = sb.ToString().Trim();
+            }
+            finally
             {
-                setParameters(webPage);
+                if (webPage is IDisposable)
+                {
+                    (webPage as IDisposable).Dispose();
+                }
             }
-
-			var sb = new StringBuilder();
-			using (var writer = new StringWriter(sb))
-			{
-				bool lockTaken = false;
-				try
-				{
-					if (requestLock != null)
-					{
-						Monitor.Enter(requestLock, ref lockTaken);
-					}
-
-					webPage.ExecutePageHierarchy(pageContext, writer);
-				}
-				finally
-				{
-					if (lockTaken)
-					{
-						Monitor.Exit(requestLock);
-					}
-				}
-			}
-
-			string output = sb.ToString().Trim();
+            
 
 			if (resultType == typeof(XhtmlDocument))
 			{
