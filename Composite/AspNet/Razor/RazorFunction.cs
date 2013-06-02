@@ -9,16 +9,28 @@ namespace Composite.AspNet.Razor
     public abstract class RazorFunction : CompositeC1WebPage
     {
         /// <summary>
-        /// Gets the function description.
+        /// Gets the function description. Override this to make a custom description.
         /// </summary>
+        /// <example>
+        ///public override string FunctionDescription
+        ///{
+        ///    get { return "Will show recent Twitter activity for a given keyword."; }
+        ///}
+        /// </example>
         public virtual string FunctionDescription
         {
             get { return string.Empty; }
         }
 
         /// <summary>
-        /// Returns default value for a C1 function
+        /// Gets the return type. By default this is XhtmlDocument (html). Override this to set another return type, like string or XElement.
         /// </summary>
+        /// <example>
+        ///public override Type FunctionReturnType
+	    ///{
+        ///    get { return typeof(string); }
+        ///}
+        /// </example>
         public virtual Type FunctionReturnType
         {
             get { return typeof (XhtmlDocument); }
