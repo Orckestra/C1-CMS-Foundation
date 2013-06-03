@@ -42,6 +42,8 @@ namespace Composite.Core.WebClient.Renderings.Page
                 // asp.net 4.5 request validation will see the 'page edit http post' data and start bitching. It really should not.
                 var headers = new System.Collections.Specialized.NameValueCollection();
                 headers.Add("Content-Length", "0");
+                headers.Add("Cookie", ctx.Request.Headers["Cookie"]);
+
                 ctx.Server.TransferRequest("~/Renderers/Page.aspx?" + query, false, "GET", headers);
             }
             else
