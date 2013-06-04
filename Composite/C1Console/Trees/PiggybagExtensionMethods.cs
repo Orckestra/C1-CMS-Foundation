@@ -12,8 +12,8 @@ namespace Composite.C1Console.Trees
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PiggybagExtensionMethods
     {
-        private const string ParrentEntityTokenPiggybagString = "ParentEntityToken";
-        private const string ParrentNodeIdPiggybagString = "ParentId";
+        private const string ParentEntityTokenPiggybagString = "ParentEntityToken";
+        private const string ParentNodeIdPiggybagString = "ParentId";
 
 
         /// <exclude />
@@ -27,7 +27,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public static string GetParentIdFromPiggybag(this Dictionary<string, string> piggybag, int generation)
         {
-            return piggybag[string.Format("{0}{1}", ParrentNodeIdPiggybagString, generation)];
+            return piggybag[string.Format("{0}{1}", ParentNodeIdPiggybagString, generation)];
         }
 
 
@@ -35,25 +35,25 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public static Dictionary<string, string> PreparePiggybag(this Dictionary<string, string> piggybag, TreeNode parentNode, EntityToken parentEntityToken)
         {
-            Dictionary<string, string> newPiggybag = new Dictionary<string, string>();
+            var newPiggybag = new Dictionary<string, string>();
 
             foreach (KeyValuePair<string, string> kvp in piggybag)
             {
-                if (kvp.Key.StartsWith(ParrentEntityTokenPiggybagString))
+                if (kvp.Key.StartsWith(ParentEntityTokenPiggybagString))
                 {
-                    int generation = int.Parse(kvp.Key.Substring(ParrentEntityTokenPiggybagString.Length));
+                    int generation = int.Parse(kvp.Key.Substring(ParentEntityTokenPiggybagString.Length));
 
                     generation += 1;
 
-                    newPiggybag.Add(string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation), kvp.Value);
+                    newPiggybag.Add(string.Format("{0}{1}", ParentEntityTokenPiggybagString, generation), kvp.Value);
                 }
-                else if (kvp.Key.StartsWith(ParrentNodeIdPiggybagString))
+                else if (kvp.Key.StartsWith(ParentNodeIdPiggybagString))
                 {
-                    int generation = int.Parse(kvp.Key.Substring(ParrentNodeIdPiggybagString.Length));
+                    int generation = int.Parse(kvp.Key.Substring(ParentNodeIdPiggybagString.Length));
 
                     generation += 1;
 
-                    newPiggybag.Add(string.Format("{0}{1}", ParrentNodeIdPiggybagString, generation), kvp.Value);
+                    newPiggybag.Add(string.Format("{0}{1}", ParentNodeIdPiggybagString, generation), kvp.Value);
                 }
                 else
                 {
@@ -61,8 +61,8 @@ namespace Composite.C1Console.Trees
                 }
             }
 
-            newPiggybag.Add(string.Format("{0}1", ParrentEntityTokenPiggybagString), EntityTokenSerializer.Serialize(parentEntityToken));
-            newPiggybag.Add(string.Format("{0}1", ParrentNodeIdPiggybagString), parentNode.Id.ToString());
+            newPiggybag.Add(string.Format("{0}1", ParentEntityTokenPiggybagString), EntityTokenSerializer.Serialize(parentEntityToken));
+            newPiggybag.Add(string.Format("{0}1", ParentNodeIdPiggybagString), parentNode.Id.ToString());
 
             return newPiggybag;
         }
@@ -80,7 +80,7 @@ namespace Composite.C1Console.Trees
         /// <exclude />
         public static bool TryGetPiggybaggedEntityToken(this Dictionary<string, string> piggybag, int generation, out EntityToken entityToken)
         {
-            string key = string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation);
+            string key = string.Format("{0}{1}", ParentEntityTokenPiggybagString, generation);
 
             string serializedEntityToken;
             if (piggybag.TryGetValue(key, out serializedEntityToken) == false)
@@ -106,7 +106,7 @@ namespace Composite.C1Console.Trees
             int generation = 1;
 
             string seriazliedEntityToken;
-            while (piggybag.TryGetValue(string.Format("{0}{1}", ParrentEntityTokenPiggybagString, generation), out seriazliedEntityToken))
+            while (piggybag.TryGetValue(string.Format("{0}{1}", ParentEntityTokenPiggybagString, generation), out seriazliedEntityToken))
             {
                 yield return EntityTokenSerializer.Deserialize(seriazliedEntityToken);
 
