@@ -18,7 +18,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
     {
         private static readonly ConcurrentQueue<FileRecord> _dirtyRecords = new ConcurrentQueue<FileRecord>();
         private static readonly Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>> _fileOrderers = new Dictionary<string, Func<IEnumerable<XElement>, IOrderedEnumerable<XElement>>>();
-        private static readonly object _flushLock = new object();
+        private static readonly object _flushEnterLock = new object();
+        private static readonly object _flushExecuteLock = new object();
         private static DateTime _activeFlushActivityStart = DateTime.MinValue;
         private static System.Timers.Timer _autoCommitTimer;
 
@@ -87,7 +88,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         internal static void Flush()
         {
-            lock (_flushLock)
+            lock (_flushEnterLock)
             {
                 if (!forceImmediateWrite && (DateTime.Now - _activeFlushActivityStart).TotalSeconds < 30)
                 {
@@ -100,24 +101,27 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             FileRecord dirtyFileRecord;
             List<FileRecord> fileRecords = new List<FileRecord>();
 
-            while (_dirtyRecords.TryDequeue(out dirtyFileRecord))
+            lock (_flushExecuteLock)
             {
-                if (!fileRecords.Any(f => f.FilePath == dirtyFileRecord.FilePath))
+                while (_dirtyRecords.TryDequeue(out dirtyFileRecord))
                 {
-                    fileRecords.Add(dirtyFileRecord);
+                    if (!fileRecords.Any(f => f.FilePath == dirtyFileRecord.FilePath))
+                    {
+                        fileRecords.Add(dirtyFileRecord);
+                    }
                 }
-            }
 
-            foreach (var fileRecord in fileRecords)
-            {
-                try
+                foreach (var fileRecord in fileRecords)
                 {
-                    DoSave(fileRecord);
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, ex);
-                    _dirtyRecords.Enqueue(fileRecord);
+                    try
+                    {
+                        DoSave(fileRecord);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogError(LogTitle, ex);
+                        _dirtyRecords.Enqueue(fileRecord);
+                    }
                 }
             }
 
