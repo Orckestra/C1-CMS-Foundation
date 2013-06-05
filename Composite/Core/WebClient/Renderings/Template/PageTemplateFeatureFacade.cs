@@ -17,11 +17,11 @@ namespace Composite.Core.WebClient.Renderings.Template
     public static class PageTemplateFeatureFacade
     {
         private static readonly Cache<string, XhtmlDocument> _featureCache = new Cache<string, XhtmlDocument>("Page Template Features");
-        private static List<string> _featureNamesCache = null;
+        private static List<string> _featureNamesCache;
 
         private static readonly object _lock = new object();
 
-        private static C1FileSystemWatcher _featureDirectoryFileSystemWatcher = null;
+        private static C1FileSystemWatcher _featureDirectoryFileSystemWatcher;
 
 
         /// <summary>
@@ -35,25 +35,25 @@ namespace Composite.Core.WebClient.Renderings.Template
 
             string featureKey = featureName.ToLowerInvariant();
 
-            XhtmlDocument featureDocument = _featureCache.Get(featureKey);
+            XhtmlDocument cachedFeatureDocument = _featureCache.Get(featureKey);
 
-            if (featureDocument == null)
+            if (cachedFeatureDocument == null)
             {
                 lock (_lock)
                 {
-                    featureDocument = _featureCache.Get(featureKey);
+                    cachedFeatureDocument = _featureCache.Get(featureKey);
 
-                    if (featureDocument == null)
+                    if (cachedFeatureDocument == null)
                     {
-                        featureDocument = LoadPageTemplateFeature(featureName);
+                        cachedFeatureDocument = LoadPageTemplateFeature(featureName);
 
-                        _featureCache.Add(featureKey, featureDocument);
+                        _featureCache.Add(featureKey, cachedFeatureDocument);
                     }
                 }
 
             }
 
-            return featureDocument;
+            return new XhtmlDocument(cachedFeatureDocument);
         }
 
 

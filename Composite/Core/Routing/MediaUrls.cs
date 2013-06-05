@@ -190,6 +190,7 @@ namespace Composite.Core.Routing
         {
             Verify.ArgumentNotNull(mediaUrlData, "mediaUrlData");
 
+            // TODO: support for "UrkKind.Internal" urls
             switch (urlKind)
             {
                 case UrlKind.Renderer:
