@@ -31,6 +31,10 @@ ui|toolbarbutton.isdisabled {
 	filter: url("${root}/templates/grayscalefilter.xml#grayscale");
 	opacity: 0.35;
 }
+
+ui|toolbar {
+	white-space: normal;
+}
 ui|toolbar#statusbar {
 	border-top: none;
 }
