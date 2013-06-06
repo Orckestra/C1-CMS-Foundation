@@ -112,13 +112,7 @@ _XMLParser.prototype = {
 		* Timeout allows any previous method to returnvalue first.
 		*/
 		setTimeout(function () {
-			//Workarround for webkit and codemirror
-			if (Client.isWebKit) {
-				alert(string);
-			}
-			else {
-				Dialog.error("Not well-formed", string);
-			}
+			Dialog.error("Not well-formed", string);
 		}, 0);
 	}
 }
