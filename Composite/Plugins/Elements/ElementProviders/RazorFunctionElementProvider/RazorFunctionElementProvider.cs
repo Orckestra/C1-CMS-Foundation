@@ -35,6 +35,11 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionElementProvid
             _rootLabel = rootLabel;
         }
 
+        public override string FunctionProviderName
+        {
+            get { return _functionProviderName; }
+        }
+
         protected override IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken)
         {
             var functions = FunctionFacade.GetFunctionsByProvider(_functionProviderName);

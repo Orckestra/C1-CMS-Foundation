@@ -97,6 +97,20 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
 
 
 
+        /// <summary>
+        /// Gets the name of the function provider.
+        /// </summary>
+        /// <value>
+        /// The name of the function provider.
+        /// </value>
+        /// <exclude />
+        /// <exception cref="System.NotImplementedException"></exception>
+        public virtual string FunctionProviderName
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+
         #region Element methods
         /// <exclude />
         public IEnumerable<Element> GetRoots(SearchToken searchToken)
@@ -325,10 +339,8 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
             {
                 return CreateId(folderNode.Name, providerName);
             }
-            else
-            {
-                return CreateId(string.Format("{0}.{1}", folderNode.Namespace, folderNode.Name), providerName);
-            }
+            
+            return CreateId(string.Format("{0}.{1}", folderNode.Namespace, folderNode.Name), providerName);
         }
 
 
@@ -340,10 +352,8 @@ namespace Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElemen
             {
                 return string.Format("ROOT:{0}", providerName);
             }
-            else
-            {
-                return string.Format("ROOT:{0}.{1}", providerName, namespaceName);
-            }
+            
+            return string.Format("ROOT:{0}.{1}", providerName, namespaceName);
         }
         #endregion
 

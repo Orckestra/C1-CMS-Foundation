@@ -1,17 +1,18 @@
 using System;
 using System.Linq;
 using Composite.AspNet.Security;
-using Composite.Functions;
-using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.C1Console.Actions;
-using Composite.C1Console.Workflow.Activities;
+using Composite.C1Console.Elements.Foundation.PluginFacades;
 using Composite.C1Console.Workflow;
-using Composite.Functions.Plugins.FunctionProvider;
+using Composite.C1Console.Workflow.Activities;
 using Composite.Core.Configuration;
-using Composite.Functions.Plugins.FunctionProvider.Runtime;
+using Composite.Functions;
 using Composite.Functions.Foundation.PluginFacades;
+using Composite.Functions.Plugins.FunctionProvider;
+using Composite.Functions.Plugins.FunctionProvider.Runtime;
+using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
-
+using BaseFunctionElementProvider = Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementProvider.BaseFunctionProviderElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.Common
 {
@@ -36,6 +37,21 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
 
         public T GetFunctionProvider<T>() where T: class, IFunctionProvider
         {
+            var functionFolderEntityToken = (this.EntityToken as BaseFunctionFolderElementEntityToken);
+            if (functionFolderEntityToken != null)
+            {
+                var elementProvider = ElementProviderPluginFacade.GetElementProvider(functionFolderEntityToken.ElementProviderName) as BaseFunctionElementProvider;
+                if (elementProvider != null)
+                {
+                    var provider = FunctionProviderPluginFacade.GetFunctionProvider(elementProvider.FunctionProviderName);
+
+                    if (provider is T)
+                    {
+                        return provider as T;
+                    }
+                }
+            }
+
             var functionProviderSettings = ConfigurationServices.ConfigurationSource.GetSection(FunctionProviderSettings.SectionName) 
                                            as FunctionProviderSettings;
 
