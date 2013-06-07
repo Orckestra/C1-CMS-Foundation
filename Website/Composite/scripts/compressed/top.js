@@ -1763,11 +1763,7 @@ this._illFormedDialog(_1bb);
 return _1ba;
 },_illFormedDialog:function(_1bc){
 setTimeout(function(){
-if(Client.isWebKit){
-alert(_1bc);
-}else{
 Dialog.error("Not well-formed",_1bc);
-}
 },0);
 }};
 var XMLParser=new _XMLParser();
@@ -28084,11 +28080,7 @@ _1108.add("MissingBody");
 }
 if(_1108.hasEntries()){
 _1106=false;
-if(Client.isWebKit){
-alert(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1108.getFirst()));
-}else{
 Dialog.error(StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML.DialogTitle"),StringBundle.getString("Composite.Web.SourceEditor","Invalid.HTML."+_1108.getFirst()));
-}
 }
 return _1106;
 };
