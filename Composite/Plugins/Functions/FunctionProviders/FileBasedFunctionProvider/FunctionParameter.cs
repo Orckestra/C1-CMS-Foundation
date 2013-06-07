@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using Composite.Core.Extensions;
 using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
@@ -53,8 +55,26 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
         /// <param name="functionObject">The function object.</param>
         /// <param name="parameterValue">The parameter value.</param>
 		public void SetValue(object functionObject, object parameterValue)
-		{
-            functionObject.GetType().GetProperty(Name).SetValue(functionObject, parameterValue, null);
+        {
+            GetParameterProperty(functionObject.GetType(), Name).SetValue(functionObject, parameterValue, null);
 		}
+
+        private static PropertyInfo GetParameterProperty(Type type, string propertyName)
+        {
+            var bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty | BindingFlags.DeclaredOnly;
+
+            Type currentType = type;
+
+            while (currentType != typeof(Type))
+            {
+                var property = currentType.GetProperty(propertyName, bindingFlags);
+
+                if (property != null) return property;
+
+                currentType = currentType.BaseType;
+            }
+
+            throw new InvalidOperationException("Failed to find parameter property '{0}' on type '{1}'".FormatWith(propertyName, type.FullName));
+        }
 	}
 }
