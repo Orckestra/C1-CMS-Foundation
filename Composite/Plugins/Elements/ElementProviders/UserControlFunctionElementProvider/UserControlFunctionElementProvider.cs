@@ -14,7 +14,8 @@ using Composite.Plugins.Elements.ElementProviders.BaseFunctionProviderElementPro
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
-using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
+
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_UserControlFunction;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElementProvider
 {
@@ -28,10 +29,12 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
         protected static ResourceHandle DeleteFunctionIcon { get { return GetIconHandle("usercontrol-function-delete"); } }
 
         private readonly string _functionProviderName;
+        private readonly string _rootLabel;
 
-        public UserControlFunctionElementProvider(string functionProvider)
+        public UserControlFunctionElementProvider(string functionProvider, string rootLabel)
         {
             _functionProviderName = functionProvider;
+            _rootLabel = rootLabel;
         }
 
         protected override IEnumerable<IFunctionTreeBuilderLeafInfo> OnGetFunctionInfos(SearchToken searchToken)
@@ -102,8 +105,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
 
             return new [] { new ElementAction(new ActionHandle(new WorkflowActionToken(workflow, new [] { PermissionType.Add }))) {
                          VisualData = new ActionVisualizedData { 
-                            Label = GetText("AddNewUserControlFunction.Label"), 
-                            ToolTip = GetText("AddNewUserControlFunction.ToolTip"),
+                            Label = Texts.AddNewUserControlFunction_Label, 
+                            ToolTip = Texts.AddNewUserControlFunction_ToolTip,
                             Icon = AddFunctionIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -131,8 +134,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
                             editWorkflow, new [] { PermissionType.Edit }
                         ))) {
                         VisualData = new ActionVisualizedData { 
-                            Label = GetText("EditUserControlFunction.Label"), 
-                            ToolTip = GetText("EditUserControlFunction.ToolTip"),
+                            Label = Texts.EditUserControlFunction_Label, 
+                            ToolTip = Texts.EditUserControlFunction_ToolTip,
                             Icon = EditFunctionIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -149,8 +152,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
                             deleteWorkflow, new [] { PermissionType.Delete }
                         ){Payload = GetContext().ProviderName})) {
                         VisualData = new ActionVisualizedData { 
-                            Label = GetText("DeleteUserControlFunction.Label"), 
-                            ToolTip = GetText("DeleteUserControlFunction.ToolTip"),
+                            Label = Texts.DeleteUserControlFunction_Label, 
+                            ToolTip = Texts.DeleteUserControlFunction_ToolTip,
                             Icon = DeleteFunctionIcon,
                             Disabled = false, 
                             ActionLocation = new ActionLocation { 
@@ -174,7 +177,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
             {
                 var data = (UserControlFunctionProviderElementProviderData)objectConfiguration;
 
-                return new UserControlFunctionElementProvider(data.UserControlFunctionProviderName);
+                return new UserControlFunctionElementProvider(data.UserControlFunctionProviderName, data.Label);
             }
         }
 
@@ -188,23 +191,31 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionElement
                 get { return (string)base[_UserControlFunctionProviderNameProperty]; }
                 set { base[_UserControlFunctionProviderNameProperty] = value; }
             }
+
+            private const string _labelProperty = "label";
+            [ConfigurationProperty(_labelProperty, DefaultValue = null)]
+            public string Label
+            {
+                get { return (string)base[_labelProperty]; }
+                set { base[_labelProperty] = value; }
+            }
         }
 
         #endregion Configuration
 
         protected override string RootFolderLabel
         {
-            get { return GetText("RootElement.Label"); }
+            get
+            {
+                return !string.IsNullOrEmpty(_rootLabel)
+                        ? StringResourceSystemFacade.ParseString(_rootLabel)
+                        : Texts.RootElement_Label;
+            }
         }
 
         protected override string RootFolderToolTip
         {
-            get { return GetText("RootElement.ToolTip"); }
-        }
-
-        private static string GetText(string stringId)
-        {
-            return StringResourceSystemFacade.GetString("Composite.Plugins.UserControlFunction", stringId);
+            get { return Texts.RootElement_ToolTip; }
         }
     }
 }
