@@ -1,0 +1,23 @@
+﻿body {
+	background-color: #00bfff;
+}
+/* Disable hasLayout for IE*/
+.mce-content-body * {
+	position: inherit !important;
+	display: inherit !important;
+	float: none !important;
+	width: auto;
+	height: auto;
+	zoom: normal !important;
+	overflow: visible !important;
+	min-height: auto !important;
+	min-width: auto !important;
+	max-height: none !important;
+	max-width: none !important;
+	column-count: auto  !important;
+}
+
+.mce-content-body div.mce-resizehandle,
+.mce-content-body .mce-clonedresizable {
+	position: absolute !important;
+}

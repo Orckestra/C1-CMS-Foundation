@@ -64,6 +64,10 @@ elements.each ( function ( el ) {
 	groups.add ( group );
 });
 
+if (Client.isExplorer) {
+	config.content_css = "ie.css";
+}
+
 /*
  * Init TinyMCE. 
  */
@@ -122,12 +126,13 @@ function onInstanceInitialize ( inst ) {
 	 * Load CSS.
 	 */
 	var styles = new List ( doc.getElementsByTagName ( "style" ));
-	styles.each ( function ( style ) {
-		var file = style.getAttribute ( "file" );
-		if ( file != null && file != "" ) {
-			tinyInstance.dom.loadCSS ( Constants.CONFIGROOT + file );
+	styles.each(function(style) {
+		var file = style.getAttribute("file");
+		if (file != null && file != "") {
+			tinyInstance.dom.loadCSS(Constants.CONFIGROOT + file);
 		}
-	})
+	});
+
 
 
 	//Enable SpellCheck

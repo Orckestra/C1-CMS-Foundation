@@ -182,6 +182,7 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\razor\razor.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\BlockSelectorBinding.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\ie.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\autolink\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositeimageresize\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositespellcheck\plugin.min.js" />

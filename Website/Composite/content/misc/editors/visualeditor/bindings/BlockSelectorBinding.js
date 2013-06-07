@@ -93,10 +93,6 @@ BlockSelectorBinding.prototype.buildDOMContent = function() {
 
 	this.populateFromList(list);
 
-	//disable block seletor for IE
-	if (Client.isExplorer) {
-		this.hide();
-	}
 	if (!this.priorities.hasEntries())
 		this.hide();
 };
