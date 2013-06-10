@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Web;
-using System.Web.Hosting;
-using Composite.Data.Types;
 using System.Web.Caching;
-using Composite.C1Console.Security;
+using System.Web.Hosting;
 using System.Web.SessionState;
-using System.Reflection;
+using Composite.Data.Types;
 
 namespace Composite.Core.WebClient.Renderings.Page
 {
@@ -30,8 +29,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents)
         {
             HttpContext ctx = HttpContext.Current;
-            string key = string.Format("{0}/{1}/{2}", UserValidationFacade.GetUsername(), DateTime.Now.Ticks.ToString(), selectedPage.Id);
-            string query = string.Format("previewKey={0}", key);
+            string key = Guid.NewGuid().ToString();
+            string query = "previewKey=" + key;
 
             ctx.Cache.Add(key + "_SelectedPage", selectedPage, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 20, 0), CacheItemPriority.NotRemovable, null);
             ctx.Cache.Add(key + "_SelectedContents", contents, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 20, 0), CacheItemPriority.NotRemovable, null);
@@ -170,34 +169,34 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             public override long Length
             {
-                get { throw new NotImplementedException(); }
+                get { throw new NotSupportedException(); }
             }
 
             public override long Position
             {
                 get
                 {
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
                 }
                 set
                 {
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
                 }
             }
 
             public override int Read(byte[] buffer, int offset, int count)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             public override long Seek(long offset, System.IO.SeekOrigin origin)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             public override void SetLength(long value)
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
 
             public override void Write(byte[] buffer, int offset, int count)
