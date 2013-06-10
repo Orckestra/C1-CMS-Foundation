@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <functions>
-  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.SitemapXml">
+  <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Pages.SitemapXml">
     <f:param name="SitemapScope" value="AncestorAndCurrent" />
   </f:function>
   <f:function xmlns:f="http://www.composite.net/ns/function/1.0" name="Composite.Data.Types.IPage.GetIPageXml">
