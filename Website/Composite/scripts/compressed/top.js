@@ -25708,6 +25708,7 @@ var _f85=LocalStore.focuseNodes.getEntityTokens();
 var _f86=ExplorerBinding.bindingInstance.getSelectedDeckBinding();
 var _f87=_f86.getAssociatedView();
 var _f88=_f87.getContentWindow().bindingMap.tree;
+_f85=new List(TreeService.GetCurrentLocaleEntityTokens(_f85.toArray()));
 _f85.each(function(_f89){
 _f88._focusTreeNodeByEntityToken(_f89);
 });
