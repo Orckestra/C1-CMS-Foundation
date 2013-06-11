@@ -63,9 +63,12 @@ ExplorerBinding.saveFocusedNodes = function () {
  */
 ExplorerBinding.restoreFocuseNodes = function () {
 	var entityTokens = LocalStore.focuseNodes.getEntityTokens();
+	
 	var selectedDeck = ExplorerBinding.bindingInstance.getSelectedDeckBinding();
 	var selectedView = selectedDeck.getAssociatedView();
 	var selectedTree = selectedView.getContentWindow().bindingMap.tree;
+	
+	entityTokens =  new List ( TreeService.GetCurrentLocaleEntityTokens(entityTokens.toArray()) );
 	
 	entityTokens.each(function(entityToken) {
 		selectedTree._focusTreeNodeByEntityToken(entityToken);

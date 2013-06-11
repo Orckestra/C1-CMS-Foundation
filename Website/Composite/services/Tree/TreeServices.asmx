@@ -22,6 +22,7 @@ using Composite.Core.WebClient.Services.TreeServiceObjects;
 using Composite.Core.WebClient.FlowMediators;
 using Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods;
 using Composite.Data;
+using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 
 // Search token stuff
@@ -311,6 +312,39 @@ namespace Composite.Services
 				
 			}
 			return tokens;
+		}
+
+		[WebMethod]
+		public List<string> GetCurrentLocaleEntityTokens(List<string> serializedEntityTokens)
+		{
+			var currentLocaleEntityTokens = new List<string>();
+			foreach (var serializedEntityToken in serializedEntityTokens)
+			{
+				try
+				{
+					var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
+					if (entityToken is DataEntityToken)
+					{
+						var dataItem = (entityToken as DataEntityToken).Data;
+						if (dataItem is ILocalizedControlled)
+						{
+							var dataItemFromTheotherLocale =
+								DataFacade.GetDataFromOtherLocale(dataItem, Composite.C1Console.Users.UserSettings.ActiveLocaleCultureInfo).ToList();
+							if (dataItemFromTheotherLocale.Count == 1)
+							{
+								currentLocaleEntityTokens.Add(EntityTokenSerializer.Serialize(
+									dataItemFromTheotherLocale[0].GetDataEntityToken(), true));
+								continue;
+							}
+						}
+					}
+					currentLocaleEntityTokens.Add(serializedEntityToken);
+				}
+				catch
+				{
+				}
+			}
+			return currentLocaleEntityTokens;
 		}
 
 		[WebMethod]
