@@ -66,7 +66,9 @@ namespace Composite.Core.Xml
             return new XElement(Namespaces.Xhtml + "div",
                                 new XAttribute("class", "c1errordetails"),
                                 new XAttribute("style", ErrorDivStyle),
-                                new XElement(Namespaces.Xhtml + "strong", string.Format("Error: {0}",innermostException.Message)),
+                                new XElement(Namespaces.Xhtml + "strong", 
+                                                new XAttribute("title", ex.StackTrace),
+                                                string.Format("Error: {0}",innermostException.Message)),
                                 sourceCode,
                                 functionInfo,
 

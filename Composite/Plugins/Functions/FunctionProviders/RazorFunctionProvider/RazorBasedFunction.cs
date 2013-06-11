@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading;
+using System.Web.Hosting;
 using System.Web.WebPages;
 using Composite.AspNet.Razor;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.WebClient;
+using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider;
 
@@ -52,7 +56,44 @@ namespace Composite.Plugins.Functions.FunctionProviders.RazorFunctionProvider
 			        }
 		    };
 
-		    return RazorHelper.ExecuteRazorPage(VirtualPath, setParametersAction, ReturnType, context);
+            try
+            {
+                return RazorHelper.ExecuteRazorPage(VirtualPath, setParametersAction, ReturnType, context);
+            }
+            catch (Exception ex)
+            {
+                EmbedExecutionExceptionSourceCode(ex);
+
+                throw;
+            }
 		}
+
+        private void EmbedExecutionExceptionSourceCode(Exception ex)
+        {
+            if (ex is ThreadAbortException
+                   || ex is StackOverflowException
+                   || ex is OutOfMemoryException
+                   || ex is ThreadInterruptedException)
+            {
+                return;
+            }
+
+            var stackTrace = new StackTrace(ex, true);
+
+            string fullFilePath = PathUtil.Resolve(VirtualPath);
+
+            foreach (var frame in stackTrace.GetFrames())
+            {
+                string fileName = frame.GetFileName();
+
+                if (fileName != null && fileName.StartsWith(fullFilePath, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    var sourceCode = C1File.ReadAllLines(fileName);
+
+                    XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, sourceCode, frame.GetFileLineNumber());
+                    return;
+                }
+            }
+        }
 	}
 }
