@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Hosting;
-using Composite.Core.IO;
-using Composite.Core.Xml;
 using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
 {
     internal class NotLoadedFileBasedFunction<T> : FileBasedFunction<T>, IFunctionInitializationInfo where T : FileBasedFunction<T>
     {
-        private readonly string _virtualPath;
         private readonly Exception _exception;
-
-        private string[] _sourceCode;
 
         public NotLoadedFileBasedFunction(
             FileBasedFunctionProvider<T> provider,
@@ -23,7 +18,6 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             Exception exception): 
             base(@namespace, functionName, string.Empty, null, typeof(void), virtualPath, provider)
         {
-            _virtualPath = virtualPath;
             _exception = exception;
         }
 
@@ -45,29 +39,9 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
         override public object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            if (!(_exception is HttpCompileException))
+            if (_exception is HttpException)
             {
-                throw _exception;
-            }
-            
-            var compilationErrors = (_exception as HttpCompileException).Results.Errors;
-            if (compilationErrors.HasErrors)
-            {
-                var firstError = compilationErrors[0];
-
-                if (_sourceCode == null && string.Equals(firstError.FileName, PathUtil.Resolve(_virtualPath), StringComparison.OrdinalIgnoreCase))
-                {
-                    _sourceCode = C1File.ReadAllLines(firstError.FileName);
-                }
-                else
-                {
-                    _sourceCode = new string[0];
-                }
-
-                if (_sourceCode.Length > 0)
-                {
-                    XhtmlErrorFormatter.EmbedSouceCodeInformation(_exception, _sourceCode, firstError.Line);
-                }
+                EmbedSourceCodeInformation(_exception as HttpException);
             }
 
             throw _exception;

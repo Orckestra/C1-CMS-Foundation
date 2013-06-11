@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using Composite.AspNet.Security;
 using Composite.C1Console.Security;
+using Composite.Core.IO;
+using Composite.Core.Xml;
 using Composite.Functions;
 using Composite.Core.Extensions;
 
@@ -36,7 +39,16 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                     {
                         if (Parameters == null)
                         {
-                            InitializeParameters();
+                            try
+                            {
+                                InitializeParameters();
+                            }
+                            catch (HttpException ex)
+                            {
+                                EmbedSourceCodeInformation(ex);
+                                throw;
+                            }
+                            
                             Verify.IsNotNull(Parameters, "Parameters collection is null");
                         }
                     }
@@ -98,6 +110,52 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
             Description = description;
             ReturnType = returnType;
             VirtualPath = virtualPath;
+        }
+
+        protected void EmbedSourceCodeInformation(HttpException ex)
+        {
+            if (ex is HttpParseException)
+            {
+                EmbedSourceCodeInformation(ex as HttpParseException);
+            }
+            else if (ex is HttpCompileException)
+            {
+                EmbedSourceCodeInformation(ex as HttpCompileException);
+            }
+        }
+	    
+        private void EmbedSourceCodeInformation(HttpParseException ex)
+	    {
+            // Not showing source code of not related files
+	        if (!ex.FileName.StartsWith(PathUtil.Resolve(VirtualPath), StringComparison.OrdinalIgnoreCase))
+	        {
+	            return;
+	        }
+
+            string[] sourceCode = C1File.ReadAllLines(ex.FileName);
+
+            XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, sourceCode, ex.Line);
+        }
+
+        private void EmbedSourceCodeInformation(HttpCompileException ex)
+        {
+            var compilationErrors = ex.Results.Errors;
+            if (!compilationErrors.HasErrors)
+            {
+                return;
+            }
+            
+            var firstError = compilationErrors[0];
+
+            // Not showing source code of not related files
+	        if (!firstError.FileName.StartsWith(PathUtil.Resolve(VirtualPath), StringComparison.OrdinalIgnoreCase))
+	        {
+	            return;
+	        }
+
+	        string[] sourceCode = C1File.ReadAllLines(firstError.FileName);
+
+	        XhtmlErrorFormatter.EmbedSouceCodeInformation(ex, sourceCode, firstError.Line);
         }
 
 		public abstract object Execute(ParameterList parameters, FunctionContextContainer context);
