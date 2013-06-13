@@ -3,9 +3,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.UI;
-
 using Composite.Core.Instrumentation;
+using Composite.Core.WebClient;
 using Composite.Core.WebClient.Renderings;
 
 
@@ -19,6 +20,13 @@ public partial class Renderers_Page : System.Web.UI.Page
 
     protected override void OnPreInit(EventArgs e)
     {
+        // If there's no parameters to the request, redirecting to the application root url
+        if (Request.RawUrl.Equals( UrlUtils.ResolvePublicUrl("~/Renderers/Page.aspx"), StringComparison.OrdinalIgnoreCase))
+        {
+            Response.Redirect(HostingEnvironment.ApplicationVirtualPath, true);
+            return;
+        }
+
         _renderingContext = RenderingContext.InitializeFromHttpContext();
 
         InitializeCulture();
