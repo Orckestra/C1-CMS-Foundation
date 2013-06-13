@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using Composite.Data.Types;
 
 namespace Composite.Core.Routing
 {
@@ -9,6 +10,35 @@ namespace Composite.Core.Routing
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class MediaUrlData
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaUrlData"/> class.
+        /// </summary>
+        public MediaUrlData() {}
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaUrlData" /> class.
+        /// </summary>
+        /// <param name="mediaStore">The media store.</param>
+        /// <param name="mediaId">The media id.</param>
+        /// <param name="queryParameters">The query parameters.</param>
+        public MediaUrlData(string mediaStore, Guid mediaId, NameValueCollection queryParameters = null)
+        {
+            MediaStore = mediaStore;
+            MediaId = mediaId;
+            QueryParameters = queryParameters ?? new NameValueCollection();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaUrlData"/> class.
+        /// </summary>
+        /// <param name="mediaFile">The media file.</param>
+        public MediaUrlData(IMediaFile mediaFile)
+        {
+            MediaStore = mediaFile.StoreId;
+            MediaId = mediaFile.Id;
+            QueryParameters = new NameValueCollection();
+        }
+
 
         /// <summary>
         /// Gets or sets the media id.

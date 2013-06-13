@@ -179,7 +179,17 @@ namespace Composite.Core.Routing
                        };
         }
 
-
+        /// <summary>
+        /// Builds the URL.
+        /// </summary>
+        /// <param name="mediaFile">The media file.</param>
+        /// <param name="urlKind">Kind of the URL.</param>
+        /// <returns></returns>
+        public static string BuildUrl(IMediaFile mediaFile, UrlKind urlKind = UrlKind.Public)
+        {
+            return BuildUrl(new MediaUrlData(mediaFile), urlKind);
+        }
+        
         /// <summary>
         /// Builds the URL.
         /// </summary>
@@ -190,9 +200,10 @@ namespace Composite.Core.Routing
         {
             Verify.ArgumentNotNull(mediaUrlData, "mediaUrlData");
 
-            // TODO: support for "UrkKind.Internal" urls
             switch (urlKind)
             {
+                case UrlKind.Internal:
+                    return BuildInternalUrl(mediaUrlData);
                 case UrlKind.Renderer:
                     return BuildRendererUrl(mediaUrlData);
                 case UrlKind.Public:
@@ -200,6 +211,22 @@ namespace Composite.Core.Routing
             }
 
             throw new NotSupportedException("Not supported url kind. urlKind == '0'".FormatWith(urlKind));
+        }
+
+        private static string BuildInternalUrl(MediaUrlData mediaUrlData)
+        {
+            string storeId = mediaUrlData.MediaStore == DefaultMediaStore 
+                             ? "" 
+                             : mediaUrlData.MediaStore + ":";
+
+            var urlBuilder = new UrlBuilder("~/media(" + storeId + mediaUrlData.MediaId + ")");
+
+            if (mediaUrlData.QueryParameters != null)
+            {
+                urlBuilder.AddQueryParameters(mediaUrlData.QueryParameters);
+            }
+
+            return urlBuilder.ToString();
         }
 
         private static string BuildRendererUrl(MediaUrlData mediaUrlData)
@@ -222,7 +249,12 @@ namespace Composite.Core.Routing
 
         private static string BuildPublicUrl(MediaUrlData mediaUrlData)
         {
-            NameValueCollection queryParams = new NameValueCollection(mediaUrlData.QueryParameters);
+            var queryParams = new NameValueCollection();
+
+            if (mediaUrlData.QueryParameters != null)
+            {
+                queryParams.Add(mediaUrlData.QueryParameters);
+            }
 
             IMediaFile file = GetFileById(mediaUrlData.MediaStore, mediaUrlData.MediaId);
             if (file == null)

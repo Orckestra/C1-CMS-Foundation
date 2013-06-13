@@ -44,26 +44,14 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static string GetUrl(IMediaFile file, bool isInternal, bool downloadableMedia)
         {
-            UrlBuilder urlBuilder;
+            string url = MediaUrls.BuildUrl(file, isInternal ? UrlKind.Internal : UrlKind.Public);
 
-            if(!isInternal)
-            {
-                urlBuilder = new UrlBuilder(UrlUtils.ResolvePublicUrl("Renderers/ShowMedia.ashx"));
+            if (!downloadableMedia) return url;
 
-                urlBuilder["i"] = file.CompositePath;
-            }
-            else
-            {
-                string storeId = (file.StoreId == DefaultMediaStore ? "" : file.StoreId + ":");
-                urlBuilder = new UrlBuilder("~/media(" + storeId + file.Id + ")");
-            }
+            var urlBuilder = new UrlBuilder(url);
+            urlBuilder["download"] = "true";
 
-            if (downloadableMedia)
-            {
-                urlBuilder["download"] = "true";
-            }
-
-            return urlBuilder.ToString();
+            return  urlBuilder.ToString();
         }
 
 
