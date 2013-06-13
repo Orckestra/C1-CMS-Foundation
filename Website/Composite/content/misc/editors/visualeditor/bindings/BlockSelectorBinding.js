@@ -116,6 +116,7 @@ BlockSelectorBinding.prototype.initializeComponent = function(editor, engine, in
 	);
 
 	this._tinyTheme.registerNodeChangeHandler(this);
+	this._tinyTheme.registerEnterKeyHandler(this);
 };
 
 /**
@@ -203,5 +204,45 @@ BlockSelectorBinding.prototype.handleNodeChange = function(element) {
 			value = BlockSelectorBinding.VALUE_DEFAULT;
 		}
 		this.selectByValue(value, true);
+	}
+};
+
+/**
+* Handle Editor Enter Key
+*/
+BlockSelectorBinding.prototype.handleEnterKey = function (e) {
+
+	var editor = this._tinyInstance;
+	var dom = editor.dom;
+	var rng = editor.selection.getRng();
+	
+	if (rng.startContainer != null && rng.startContainer == rng.endContainer && rng.startOffset == 0 && rng.endOffset == 0) {
+		var node = rng.startContainer;
+		if (dom.isBlock(node) && editor.dom.isEmpty(node) && (node.nextElementSibling === null || node.previousElementSibling === null)) {
+			var parent = rng.startContainer.parentNode;
+			var value;
+			this.priorities.each(function (format) {
+				if (editor.formatter.matchNode(parent, format.id)) {
+					value = format.id;
+				}
+				return value == null;
+			}, this);
+
+			if (value) {
+				var p = dom.create("p");
+				if (!editor.isIE) {
+					p.innerHTML = '<br data-mce-bogus="1">';
+				}
+				if (node.previousElementSibling === null) {
+					parent.parentNode.insertBefore(p, parent);
+				} else {
+					dom.insertAfter(p, parent);
+				}
+				dom.remove(node);
+				editor.selection.setCursorLocation(p, 0);
+				editor.undoManager.add();
+				e.preventDefault();
+			}
+		}
 	}
 };
