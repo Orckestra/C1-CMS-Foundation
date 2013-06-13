@@ -299,11 +299,23 @@ namespace Composite.Core.Routing
             return url.ToString();
         }
 
+        private static string RemoveFilePathIllegalCharacters(string path)
+        {
+            path = path.Replace("\"", " ").Replace("<", " ").Replace(">", " ").Replace("|", " ");
+            for (int i = 0; i < 31; i++)
+            {
+                path = path.Replace((char) i, ' ');
+            }
+            return path;
+        }
+
         private static string RemoveForbiddenCharactersAndNormalize(string path)
         {
             // Replacing dots with underscores, so IIS will not intercept requests in some scenarios
-            
-            string extension = Path.GetExtension(path);
+
+            string legalFilePath = RemoveFilePathIllegalCharacters(path);
+            string extension = Path.GetExtension(legalFilePath);
+
             if (!MimeTypeInfo.IsIisServable(extension))
             {
                 path = path.Replace(".", "_");
