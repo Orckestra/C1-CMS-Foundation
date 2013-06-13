@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceTreeSelectorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
-<%@ Import Namespace="Composite.Core.Logging" %>
 <%@ Import Namespace="Composite.Core.Extensions" %>
 <%@ Import Namespace="Composite.Core.ResourceSystem" %>
 
@@ -21,13 +21,16 @@
         if(IsPostBack && !_loaded)
         {
             _value = ctlSelectorDialog.Value;
-            Guid mediaId;
+            MediaUrlData mediaUrlData;
             
             if(!_value.IsNullOrEmpty()
-                && IsMediaReference() 
-                && TryExtractMediaId(_value, out mediaId))
+                && IsMediaReference()
+                && TryExtractMedia(_value, out mediaUrlData))
             {
-                IMediaFile media = DataFacade.GetData<IMediaFile>(file => file.Id == mediaId).FirstOrDefault();
+                Guid mediaId = mediaUrlData.MediaId;
+                string storeId = mediaUrlData.MediaStore;
+
+                IMediaFile media = DataFacade.GetData<IMediaFile>(file => file.Id == mediaId && file.StoreId == storeId).FirstOrDefault();
                 if (media != null)
                 {
                     _value = new DataReference<IMediaFile>(media).ToString();
@@ -38,23 +41,12 @@
             _loaded = true;
         }
     }
-    
-    static bool TryExtractMediaId(string value, out Guid mediaId)
+
+    static bool TryExtractMedia(string value, out MediaUrlData mediaUrlData)
     {
-        if(value.Contains("="))
-        {
-            return Guid.TryParse(value.Substring(value.LastIndexOf("=") + 1), out mediaId);
-        }
+        mediaUrlData = MediaUrls.ParseUrl(value);
         
-        if(value.StartsWith("~/media(") && value.EndsWith(")"))
-        {
-            int openingBracketOffset = value.IndexOf("(");
-            int closingBracketOffset = value.IndexOf(")");
-            string guidStr = value.Substring(openingBracketOffset + 1, closingBracketOffset - openingBracketOffset - 1);
-            return Guid.TryParse(guidStr, out mediaId);
-        }
-        mediaId = Guid.Empty;
-        return false;
+        return mediaUrlData != null;
     }
     
     protected override void InitializeViewState()
@@ -130,7 +122,7 @@
     
     private bool IsMediaReference()
     {
-        return DataType.Equals(typeof (IImageFile)) || DataType.Equals(typeof (IMediaFile));
+        return DataType == typeof (IImageFile) || DataType == typeof (IMediaFile);
     }
 
     public override string GetDataFieldClientName()

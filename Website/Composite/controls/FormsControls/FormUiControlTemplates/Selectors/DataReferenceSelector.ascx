@@ -1,9 +1,9 @@
 ﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.DataReferenceSelectorTemplateUserControlBase"  %>
 <%@ Register TagPrefix="ui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
-<%@ Import Namespace="Composite.Plugins.Forms.WebChannel.UiControlFactories" %>
+
 <%@ Import Namespace="System.Linq" %>
-<%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="Composite.Data" %>
+<%@ Import Namespace="Composite.Data.Types" %>
 
 <script runat="server">
     protected override void BindStateToProperties()
@@ -43,7 +43,7 @@
     {
         PopulateSelector();
 
-        if (this.Selected != null && this.Selected.IsSet == true)
+        if (this.Selected != null && this.Selected.IsSet)
         {
             ListItem selectedItem = DataReferenceSelector.Items.FindByValue(this.Selected.KeyValue.ToString());
             if (selectedItem != null) selectedItem.Selected = true;
@@ -54,9 +54,9 @@
     {
         // This widget is currently 'code bound' to IMediaFileFolder. Rename or - even better - put this out of it's missery.
         
-        if (this.DataType.Equals(typeof(Composite.Data.Types.IMediaFileFolder)))
+        if (this.DataType == typeof(IMediaFileFolder))
         {
-            DataReferenceSelector.DataSource = DataFacade.GetData<Composite.Data.Types.IMediaFileFolder>().OrderBy(f => f.Path).ToDataList();
+            DataReferenceSelector.DataSource = DataFacade.GetData<IMediaFileFolder>().OrderBy(f => f.Path).ToDataList();
         }
         else
         {
