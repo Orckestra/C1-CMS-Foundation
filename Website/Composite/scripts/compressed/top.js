@@ -433,12 +433,17 @@ SystemNodeList.prototype.clear=function(){
 this._entityTokens.clear();
 };
 SystemNodeList.prototype.add=function(_59){
+if(_59.getEntityToken){
 var _5a=_59.getEntityToken();
 this._entityTokens.add(_5a);
+}
 };
 SystemNodeList.prototype.has=function(_5b){
+if(_5b.getEntityToken){
 var _5c=_5b.getEntityToken();
 return this._entityTokens.has(_5c);
+}
+return false;
 };
 SystemNodeList.prototype.getEntityTokens=function(){
 return this._entityTokens.copy();
