@@ -157,6 +157,8 @@
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.css" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.html" />
     <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
+    <Content Include="Composite\content\dialogs\util\upload\upload.aspx" />
+    <Content Include="Composite\content\dialogs\util\upload\UploadDialogPageBinding.js" />
     <Content Include="Composite\content\forms\Administrative\PageTemplateFeature\Add.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -6026,6 +6028,7 @@
     <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="App_Data\Razor\web.config" />
     <Content Include="App_Data\UserControls\web.config" />
+    <Content Include="Composite\content\dialogs\util\upload\upload.ashx" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbarsimple.inc" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\langs\readme.md" />
