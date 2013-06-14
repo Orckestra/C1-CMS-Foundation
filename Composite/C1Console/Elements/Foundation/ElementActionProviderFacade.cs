@@ -11,7 +11,6 @@ using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.WebClient;
@@ -297,23 +296,23 @@ namespace Composite.C1Console.Elements.Foundation
             string showElementInformationLabel = StringResourceSystemFacade.GetString("Composite.Management", "ShowElementInformationActionExecutor.ShowElementInformation.Label");
             string showElementInformationToolTip = StringResourceSystemFacade.GetString("Composite.Management", "ShowElementInformationActionExecutor.ShowElementInformation.ToolTip");
 
+            IEnumerable<string> elementActionProviderNames = ElementActionProviderRegistry.ElementActionProviderNames;
+
+            if (elementActionProviderNames == null)
+            {
+                const string message = "Failed to load one of the element action providers";
+                Log.LogCritical("ElementActionProviderFacade", message);
+
+                return;
+            }
+
             foreach (Element element in elements)
             {
                 AddBuildinActions(providerName, manageUserPermissionsOnBranchLabel, manageUserPermissionsItemLabel, manageUserPermissionsToolTip, relationshipGraphLabel, relationshipGraphToolTip, relationshipOrientedGraphLabel, relationshipOrientedGraphToolTip, showElementInformationLabel, showElementInformationToolTip, element);
 
                 if ((element.ElementExternalActionAdding & ElementExternalActionAdding.AllowGlobal) == ElementExternalActionAdding.AllowGlobal)
                 {
-                    IEnumerable<string> elementActionProviderNames = ElementActionProviderRegistry.ElementActionProviderNames;
-
-                    if(elementActionProviderNames == null)
-                    {
-                        const string message = "Failed to load one of the element action providers";
-                        Log.LogCritical("ElementActionProviderFacade", message);
-
-                        Verify.ThrowInvalidOperationException(message);
-                    }
-
-                    foreach (string elementActionProviderName in ElementActionProviderRegistry.ElementActionProviderNames)
+                    foreach (string elementActionProviderName in elementActionProviderNames)
                     {
                         try
                         {
@@ -423,7 +422,7 @@ namespace Composite.C1Console.Elements.Foundation
 
             if ((element.ElementExternalActionAdding & ElementExternalActionAdding.AllowManageUserPermissions) == ElementExternalActionAdding.AllowManageUserPermissions)
             {
-                if (element.Actions.Where(f => f.ActionHandle.ActionToken is ManageUserPermissionsActionToken).Any() == false) // Fixing problem with the buggy virtual element provider
+                if (!element.Actions.Any(f => f.ActionHandle.ActionToken is ManageUserPermissionsActionToken)) // Fixing problem with the buggy virtual element provider
                 {
                     element.AddAction(new ElementAction(new ActionHandle(new ManageUserPermissionsActionToken()))
                     {
