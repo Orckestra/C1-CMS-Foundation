@@ -6,7 +6,6 @@
 function SystemNodeList() {
 
 	this._entityTokens = new List([]);
-
 	return this;
 }
 
@@ -22,8 +21,10 @@ SystemNodeList.prototype.clear = function () {
 * @param {SystenNode} node
 */
 SystemNodeList.prototype.add = function (node) {
-	var entityToken = node.getEntityToken();
-	this._entityTokens.add(entityToken);
+	if (node.getEntityToken) {
+		var entityToken = node.getEntityToken();
+		this._entityTokens.add(entityToken);
+	}
 };
 
 /**
@@ -31,8 +32,11 @@ SystemNodeList.prototype.add = function (node) {
 * @param {string} key
 */
 SystemNodeList.prototype.has = function (node) {
-	var entityToken = node.getEntityToken();
-	return this._entityTokens.has(entityToken);
+	if (node.getEntityToken) {
+		var entityToken = node.getEntityToken();
+		return this._entityTokens.has(entityToken);
+	}
+	return false;
 };
 
 /**
