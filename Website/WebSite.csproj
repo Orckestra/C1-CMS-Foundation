@@ -157,8 +157,6 @@
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.css" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestringscontent.html" />
     <Content Include="Composite\content\dialogs\util\comparestrings\CompareStringsDialogPageBinding.js" />
-    <Content Include="Composite\content\dialogs\util\upload\upload.aspx" />
-    <Content Include="Composite\content\dialogs\util\upload\UploadDialogPageBinding.js" />
     <Content Include="Composite\content\forms\Administrative\PageTemplateFeature\Add.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -6028,7 +6026,7 @@
     <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="App_Data\Razor\web.config" />
     <Content Include="App_Data\UserControls\web.config" />
-    <Content Include="Composite\content\dialogs\util\upload\upload.ashx" />
+    <Content Include="Composite\services\Media\Upload.ashx" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbarsimple.inc" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\langs\readme.md" />
@@ -6192,6 +6190,7 @@
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
+    <Folder Include="Composite\content\dialogs\util\upload\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />
     <Folder Include="Frontend\Controls\" />

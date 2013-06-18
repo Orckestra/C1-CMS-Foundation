@@ -16,12 +16,14 @@ public class Upload : IHttpHandler
 	{
 		context.Response.ContentType = "text/plain";
 		var fileName = context.Request.Headers["X-FileName"];
-		var folderPath = context.Request.Headers["X-FolderPath"]??"/";
-		var mw = context.Request.Headers["X-MaxWidth"];
-		var mh = context.Request.Headers["X-MaxHeight"];
+		var folder = context.Request.Headers["X-FolderPath"]??"MediaArchive:/";
+		var storeId = folder.Split(':').FirstOrDefault();
+		var folderPath = folder.Split(':').Skip(1).FirstOrDefault();
+
 
 		var file = new WorkflowMediaFile
 			{
+				StoreId = storeId,
 				FileName = Path.GetFileName(fileName),
 				FolderPath = folderPath,
 				Title = fileName,
@@ -51,20 +53,7 @@ public class Upload : IHttpHandler
 		IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(file);
 		if (IsImage(addedFile))
 		{
-			var qs = "";
-			if (mw != null && mh != null)
-			{
-				qs = string.Format("?mw={0}&amp;mw={1}", mw, mh);
-			}
-			else if (mw != null)
-			{
-				qs = string.Format("?mw={0}", mw);
-			}
-			else if (mh != null)
-			{
-				qs = string.Format("?mh={0}", mh);
-			}
-			context.Response.Write(string.Format(@" <img src=""{0}{1}"" /> ", UrlUtils.ResolvePublicUrl( MediaUrlHelper.GetUrl(addedFile, true)), qs));
+			context.Response.Write(string.Format(@" <img src=""{0}?mw={1}"" /> ", UrlUtils.ResolvePublicUrl( MediaUrlHelper.GetUrl(addedFile, true)), 800));
 		}
 		else
 		{

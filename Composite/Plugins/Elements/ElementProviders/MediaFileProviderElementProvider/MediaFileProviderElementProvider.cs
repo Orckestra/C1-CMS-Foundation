@@ -95,12 +95,15 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     }
                 };
 
+                element.PropertyBag.Add("ReadOnly", store.IsReadOnly.ToString());
+                element.PropertyBag.Add("ElementId", store.Id + ":/");
+
                 if(!store.IsReadOnly)
                 {
                     element.MovabilityInfo.AddDropType(typeof(IMediaFileFolder), store.Id);
                     element.MovabilityInfo.AddDropType(typeof(IMediaFile), store.Id);
                     element.MovabilityInfo.DragType = typeof(IMediaFileStore);
-                
+
                     element.AddAction(
                        new ElementAction(new ActionHandle(
                            new WorkflowActionToken(
@@ -758,6 +761,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             element.MovabilityInfo.AddDropType(typeof(IMediaFile), folder.StoreId);
             element.MovabilityInfo.DragType = typeof(IMediaFileFolder);
             element.MovabilityInfo.DragSubType = folder.StoreId;
+
+            element.PropertyBag.Add("ReadOnly", folder.IsReadOnly.ToString());
+            element.PropertyBag.Add("ElementId", folder.StoreId + ":" + folder.Path);
 
             foreach (ElementAction action in GetFolderActions(folder))
             {
