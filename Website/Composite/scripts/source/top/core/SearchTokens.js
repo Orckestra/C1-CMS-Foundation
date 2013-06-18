@@ -14,7 +14,9 @@ window.SearchTokens = new function () {
 		// searching gif, jpeg and png files.
 		"MediaFileElementProvider.WebImages" : null,
 		// searching flash, quicktime, director and windows media files.
-		"MediaFileElementProvider.EmbeddableMedia" : null,
+		"MediaFileElementProvider.EmbeddableMedia": null,
+		// searching only writable folders.
+		"MediaFileElementProvider.WritableFolders": null,
 		// searching functions that return XhtmlDocument (suitable for rendering) 
 		"AllFunctionsElementProvider.VisualEditorFunctions": null,
 		// searching functions that are sutable for Xslt function's function call section
