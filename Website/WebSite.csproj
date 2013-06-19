@@ -6190,7 +6190,6 @@
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
-    <Folder Include="Composite\content\dialogs\util\upload\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
     <Folder Include="Composite\images\icons\republic\Zip files\" />
     <Folder Include="Frontend\Controls\" />

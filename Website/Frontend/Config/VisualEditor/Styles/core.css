@@ -10,6 +10,8 @@ body {
 	padding: 0;
 	border: none;
 	background-color: #FFF;
+	height: 100%; 
+	box-sizing: border-box;
 }
 body {
 	padding: 22px 10% 30px 26px;
@@ -49,13 +51,7 @@ img.mceC1Focused {
 body.mceForceColors {
 	background:#FFF; color:#000;
 }
-.mceItemTable, 
-.mceItemTable td, 
-.mceItemTable th, 
-.mceItemTable caption, 
-.mceItemVisualAid {
-	border: 1px dashed #BBB;
-}
+
 img {
 	border:0;
 }
