@@ -353,9 +353,16 @@ TreeSelectorDialogPageBinding.prototype._updateDisplayAndResult = function () {
 	var prop 		= this._selectionResult;
 	
 	selections.each ( function ( binding ) {
-		result.add ( 
-			binding.getProperty ( prop )
-		);
+		if (prop == "EntityToken" && binding.node) {
+
+			result.add(
+				binding.node.getEntityToken()
+			);
+		} else {
+			result.add(
+				binding.getProperty(prop)
+			);
+		}
 		value += binding.getLabel ();
 		if ( selections.hasNext ()) {
 			value += "; ";

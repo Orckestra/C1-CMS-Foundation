@@ -23,6 +23,7 @@
 	<string key="Website.FrontendFile.SelectDialog.Title" value="Select Frontend File" />
 	<string key="Website.Media.SelectDialog.Title" value="Select Media" />
 	<string key="Website.Image.SelectDialog.Title" value="Select Image" />
+	<string key="Website.Folder.SelectDialog.Title" value="Select Folder" />
 
 
 	<string key="Website.Forms.Administrative.EditUserStep1.LabelFieldGroup" value="General settings" />

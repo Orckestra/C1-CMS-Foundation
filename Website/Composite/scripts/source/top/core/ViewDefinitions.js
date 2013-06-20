@@ -325,11 +325,11 @@ var ViewDefinitions = {
 		position: Dialog.MODAL,
 		url: Dialog.URL_TREEACTIONSELECTOR,
 		argument: {
-			label: "${string:Composite.Management:Website.Image.SelectDialog.Title}",
+			label: "${string:Composite.Management:Website.Folder.SelectDialog.Title}",
 			image: "${icon:image}",
 			selectionProperty: "ReadOnly",
 			selectionValue: "False",
-			selectionResult: "ElementId",
+			selectionResult: "EntityToken",
 			nodes: [{
 				key: "MediaFileElementProvider",
 				search: "MediaFileElementProvider.WritableFolders"

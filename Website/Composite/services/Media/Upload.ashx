@@ -1,8 +1,10 @@
 ﻿<%@ WebHandler Language="C#" Class="Upload" %>
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Web;
+using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.WebClient;
@@ -16,10 +18,29 @@ public class Upload : IHttpHandler
 	{
 		context.Response.ContentType = "text/plain";
 		var fileName = context.Request.Headers["X-FileName"];
-		var folder = context.Request.Headers["X-FolderPath"]??"MediaArchive:/";
-		var storeId = folder.Split(':').FirstOrDefault();
-		var folderPath = folder.Split(':').Skip(1).FirstOrDefault();
-
+		var serializedFolderEntityToken = context.Request.Headers["X-Folder"];
+		var storeId = "MediaArchive";
+		var folderPath = "/";
+		try
+		{
+			var entityToken = EntityTokenSerializer.Deserialize(serializedFolderEntityToken);
+			if (entityToken is MediaRootFolderProviderEntityToken)
+			{
+				var token = (MediaRootFolderProviderEntityToken)entityToken;
+				storeId = token.Id;
+				folderPath = "/";
+			}
+			else
+			{
+				var token = (DataEntityToken)entityToken;
+				var parentFolder = (IMediaFileFolder)token.Data;
+				storeId = parentFolder.StoreId;
+				folderPath = parentFolder.Path;
+			}
+		}
+		catch
+		{
+		}
 
 		var file = new WorkflowMediaFile
 			{
@@ -39,7 +60,7 @@ public class Upload : IHttpHandler
 		while (Exists(file))
 		{
 			counter++;
-			file.FileName = name + counter.ToString() + extension;
+			file.FileName = string.Format("{0}{1}{2}", name, counter.ToString(), extension);
 		}
 
 		using (var readStream = context.Request.InputStream)
@@ -50,7 +71,7 @@ public class Upload : IHttpHandler
 			}
 		}
 
-		IMediaFile addedFile = DataFacade.AddNew<IMediaFile>(file);
+		var addedFile = DataFacade.AddNew<IMediaFile>(file);
 		if (IsImage(addedFile))
 		{
 			context.Response.Write(string.Format(@" <img src=""{0}?mw={1}"" /> ", UrlUtils.ResolvePublicUrl( MediaUrlHelper.GetUrl(addedFile, true)), 800));
