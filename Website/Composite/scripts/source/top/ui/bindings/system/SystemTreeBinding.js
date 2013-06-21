@@ -60,6 +60,11 @@ function SystemTreeBinding () {
 	this._activePosition = SystemAction.activePositions.NavigatorTree;
 	
 	/**
+	 * @type {HashMap<string><boolean>}
+	 */
+	this._actionGroup = null;
+
+	/**
 	 * This can be deprecated if we implement serverside treenode selection.
 	 * @type {string}
 	 */
@@ -1067,6 +1072,24 @@ SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
 };
 
 /**
+ * Set Action Profile Group
+ * @param {function} 
+ */
+SystemTreeBinding.prototype.setActionGroup = function (value) {
+
+	
+		if (value) {
+			var list = new List(value.split(" "));
+			this._actionGroup = {};
+			while (list.hasNext()) {
+				this._actionGroup[list.getNext()] = true;
+			}
+		}
+	
+}
+
+
+/**
  * Compile actionprofile based on the individual actionprofile of all focused treenodes.
  * In case of multiple focused treenodes, only SystemActions relevant for *all* focused 
  * treenodes will be included in the result.
@@ -1081,20 +1104,22 @@ SystemTreeBinding.prototype.getCompiledActionProfile = function () {
 	var actionProfile = focusedBindings.getFirst().node.getActionProfile();
 
 	if (actionProfile != null) {
-	    var self = this;
-	    actionProfile.each(
-		    function (groupid, list) {
-			    var newList = new List();
-			    list.each(function (systemAction) {
-				    if (systemAction.getActivePositions() & self._activePosition) {
-					    newList.add(systemAction);
-				    }
-			    });
-			    if (newList.hasEntries()) {
-				    result.set(groupid, newList);
-			    }
-		    }
-	    );
+		var self = this;
+		actionProfile.each(
+			function (groupid, list) {
+				var newList = new List();
+				list.each(function (systemAction) {
+					if (systemAction.getActivePositions() & self._activePosition) {
+						if (!self._actionGroup || self._actionGroup[systemAction.getGroupName()]) {
+							newList.add(systemAction);
+						}
+					}
+				});
+				if (newList.hasEntries()) {
+					result.set(groupid, newList);
+				}
+			}
+		);
 	}
 
 	result.activePosition = this._activePosition;

@@ -66,6 +66,12 @@ function TreeSelectorDialogPageBinding () {
 	this._selectionResult = null;
 	
 	/**
+	 *  The (optional) action groups.
+	 * @type {tring}}
+	 */
+	this._actionGroup = null;
+	
+	/**
 	 * Search token.
 	 * @type {string}
 	 *
@@ -109,6 +115,8 @@ TreeSelectorDialogPageBinding.prototype.setPageArgument = function (arg) {
 	this._selectionProperty = arg.selectionProperty;
 	this._selectionValue = arg.selectionValue;
 	this._selectionResult = arg.selectionResult;
+	this._actionGroup = arg.actionGroup;
+
 	if (arg.selectedToken) {
 		this._selectedToken = arg.selectedToken;
 	}
@@ -183,6 +191,7 @@ TreeSelectorDialogPageBinding.prototype.onBeforePageInitialize = function () {
 	this._treeBinding.setSelectable ( true );
 	this._treeBinding.setSelectionProperty ( this._selectionProperty );
 	this._treeBinding.setSelectionValue(this._selectionValue);
+	this._treeBinding.setActionGroup(this._actionGroup);
 
 	//Remove default double click action
 	this._treeBinding.removeActionListener(TreeNodeBinding.ACTION_COMMAND); 

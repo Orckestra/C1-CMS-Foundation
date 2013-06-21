@@ -50,9 +50,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         public static ResourceHandle DeleteMediaFolder { get { return GetIconHandle("media-delete-media-folder"); } }
         public static ResourceHandle DeleteMediaFile { get { return GetIconHandle("media-delete-media-file"); } }
 
-        private static readonly ActionGroup PrimaryFolderActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
-        private static readonly ActionGroup PrimaryFileActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh); // new ActionGroup("File", ActionGroupPriority.PrimaryMedium);
-        private static readonly ActionGroup PrimaryFileToolsActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh); // new ActionGroup("FileTools", ActionGroupPriority.PrimaryMedium);
+        private static readonly ActionGroup PrimaryFolderActionGroup = new ActionGroup("Folder", ActionGroupPriority.PrimaryMedium);
+        private static readonly ActionGroup PrimaryFileActionGroup = new ActionGroup("File", ActionGroupPriority.PrimaryMedium);
+        private static readonly ActionGroup PrimaryFileToolsActionGroup = new ActionGroup("FileTools", ActionGroupPriority.PrimaryMedium);
 
         private static readonly Expression IgnoreCaseConstantExpression = Expression.Constant(StringComparison.OrdinalIgnoreCase, typeof(StringComparison));
         private static readonly MethodInfo EndsWithMethodInfo = typeof(string).GetMethod("EndsWith", new[] { typeof(string), typeof(StringComparison) });

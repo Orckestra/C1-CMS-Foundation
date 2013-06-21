@@ -330,6 +330,7 @@ var ViewDefinitions = {
 			selectionProperty: "ReadOnly",
 			selectionValue: "False",
 			selectionResult: "EntityToken",
+			actionGroup: "Folder",
 			nodes: [{
 				key: "MediaFileElementProvider",
 				search: "MediaFileElementProvider.WritableFolders"

@@ -27,6 +27,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
                           ActionCategory = new ClientActionCategory
                                {
                                    GroupId = CalculateActionCategoryGroupId(action.VisualData.ActionLocation),
+                                   GroupName = action.VisualData.ActionLocation.ActionGroup.Name,
                                    Name = action.VisualData.ActionLocation.ActionType.ToString(),
                                    IsInFolder = action.VisualData.ActionLocation.IsInFolder,
                                    IsInToolbar = action.VisualData.ActionLocation.IsInToolbar,

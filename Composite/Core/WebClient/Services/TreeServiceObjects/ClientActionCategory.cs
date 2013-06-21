@@ -7,6 +7,9 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects
         /// <exclude />
         public string GroupId { get; set; }
 
+		/// <exclude />
+		public string GroupName { get; set; }
+
         /// <exclude />
         public string Name { get; set; }
 

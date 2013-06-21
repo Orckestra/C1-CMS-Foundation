@@ -244,7 +244,7 @@ SystemAction.prototype.getCategory = function () {
 }
 
 /**
- * Get group name.
+ * Get group Id.
  * @return {string}
  */
 SystemAction.prototype.getGroupID = function () {
@@ -252,6 +252,14 @@ SystemAction.prototype.getGroupID = function () {
 	return this._data.ActionCategory.GroupId;
 }
 
+/**
+ * Get group name.
+ * @return {string}
+ */
+SystemAction.prototype.getGroupName = function () {
+
+	return this._data.ActionCategory.GroupName;
+}
 
 
 /**

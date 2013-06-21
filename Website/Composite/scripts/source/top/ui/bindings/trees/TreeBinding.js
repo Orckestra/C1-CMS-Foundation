@@ -114,6 +114,11 @@ function TreeBinding () {
 	this._selectionType = TreeBinding.SELECTIONTYPE_SINGLE;
 	
 	/**
+	 * @type {function}
+	 */
+	this._actionFilter = null;
+	
+	/**
 	 * @type {Position}
 	 */
 	this._acceptingPosition = null;
@@ -791,17 +796,18 @@ TreeBinding.prototype.setSelectionProperty = function ( property ) {
 	this._selectionProperty = property;
 }
 
+
 /**
  * Define selection value(s).
  * @param {string} value White-space separated string
  */
-TreeBinding.prototype.setSelectionValue = function ( value ) {
-	
-	if ( value ) {
-		var list = new List ( value.split ( " " ));
+TreeBinding.prototype.setSelectionValue = function (value) {
+
+	if (value) {
+		var list = new List(value.split(" "));
 		this._selectionValue = {};
-		while ( list.hasNext ()) {
-			this._selectionValue [ list.getNext ()] = true;
+		while (list.hasNext()) {
+			this._selectionValue[list.getNext()] = true;
 		}
 	}
 }
