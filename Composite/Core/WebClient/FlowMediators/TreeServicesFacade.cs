@@ -178,15 +178,20 @@ namespace Composite.Core.WebClient.FlowMediators
                     }
                     
                     ElementHandle elementHandle = new ElementHandle(node.ProviderName, entityToken, node.Piggybag);
+                    SearchToken searchToken = null;
+                    if (string.IsNullOrEmpty(node.SearchToken) == false)
+                    {
+                        searchToken = SearchToken.Deserialize(node.SearchToken);
+                    }
 
                     List<Element> childElements;
                     if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
                     {
-                        childElements = ElementFacade.GetChildren(elementHandle, null).ToList();
+                        childElements = ElementFacade.GetChildren(elementHandle, searchToken).ToList();
                     }
                     else
                     {
-                        childElements = ElementFacade.GetForeignChildren(elementHandle, null).ToList();
+                        childElements = ElementFacade.GetForeignChildren(elementHandle, searchToken).ToList();
                     }
 
                     result.Add(new RefreshChildrenInfo

@@ -111,7 +111,8 @@ var System = new function () {
 			arg.push({
 				ProviderName: node.getProviderName(),
 				EntityToken: node.getEntityToken(),
-				Piggybag: node.getPiggyBag()
+				Piggybag: node.getPiggyBag(),
+				SearchToken: node.searchToken,
 			});
 		});
 

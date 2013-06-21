@@ -448,8 +448,10 @@ SystemTreeNodeBinding.prototype.XXX = function ( branch ) {
 					parent.add ( treenode );
 					parent.isOpen = true;
 					parent.hasBeenOpened = true;
+					node.searchToken = parent.node.searchToken;
 				} else if ( key == self.node.getHandle ()) {
 					self.add ( treenode );
+					node.searchToken = self.node.searchToken;
 				} else {
 					/*
 					 * Now there is a hole in the structure and the 

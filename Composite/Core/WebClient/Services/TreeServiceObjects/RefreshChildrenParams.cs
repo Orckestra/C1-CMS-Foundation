@@ -12,5 +12,8 @@
 
         /// <exclude />
         public string Piggybag { get; set; }
+
+		/// <exclude />
+		public string SearchToken { get; set; }
 	}
 }
