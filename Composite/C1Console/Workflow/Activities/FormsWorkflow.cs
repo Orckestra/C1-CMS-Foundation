@@ -865,7 +865,9 @@ namespace Composite.C1Console.Workflow.Activities
             var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(data.DataSourceId.InterfaceType);
             
             foreach (var fieldName in dataTypeDescriptor.Fields
-                                                        .Where(f => !f.IsNullable && f.InstanceType == typeof (string))
+                                                        .Where(f => !f.IsNullable 
+                                                                && f.InstanceType == typeof (string)
+                                                                && !(f.Inherited && f.Name == "FieldName")) // Skipping validation for inherited IPageMetaData.FieldName
                                                         .Select(f => f.Name))
             {
                 string bindingName = (helper.BindingNamesPrefix ?? "").Replace('.', '_') + fieldName;

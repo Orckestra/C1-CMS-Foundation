@@ -1,6 +1,7 @@
 ﻿using System;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.Plugins.ProducerMediator;
+using Composite.Core.Extensions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
 
@@ -23,7 +24,7 @@ namespace Composite.Functions.Forms
                     return new FunctionParameterElementProducer();
 
                 default:
-                    throw new NotImplementedException();
+                    throw new NotSupportedException("Not supported producer tag. Check whether the namespace or the tag name is correct. {{ {0} }} {1}".FormatWith(namespaceName, name));
             }
         }
 
