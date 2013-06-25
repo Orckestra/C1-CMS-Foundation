@@ -64,9 +64,9 @@ namespace Composite.Data
                         queryables.Add(queryable);
                     }
 
-                    DataFacadeQueryable<T> multibleSourceQueryable = new DataFacadeQueryable<T>(queryables);
+                    DataFacadeQueryable<T> multipleSourceQueryable = new DataFacadeQueryable<T>(queryables);
 
-                    resultQueryable = multibleSourceQueryable;
+                    resultQueryable = multipleSourceQueryable;
                 }
             }
             else if (typeof(T).GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any())

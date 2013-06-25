@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
+using Composite.Core.Types;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 
 
@@ -14,6 +15,9 @@ namespace Composite.Data.Foundation
     {
         private static readonly MethodInfo _dataFacadeGetDataMethodInfo = typeof(DataFacade).GetMethods().First(x => x.Name == "GetData" && x.IsGenericMethod);
         private static readonly MethodInfo _dataConnectionGetDataMethodInfo = typeof(DataConnection).GetMethods().First(x => x.Name == "Get" && x.IsGenericMethod);
+
+        private static readonly MethodInfo Queryable_Where = StaticReflection.GetGenericMethodInfo(() => System.Linq.Queryable.Where(null, (Expression<Func<int, bool>>)null));
+        private static readonly MethodInfo Queryable_Any = typeof(Queryable).GetMethods().Single(x => x.Name == "Any" && x.IsGenericMethod && x.GetParameters().Count() == 1);
 
         private readonly bool _pullAllToMemory;
         private IQueryable _queryable;
@@ -127,6 +131,45 @@ namespace Composite.Data.Foundation
                 }
             }
 
+            // Processing queries that have multiple IQueryable sources 
+            if (m.Method.IsStatic
+                && (m.Method.Name == "Where" || m.Method.Name == "FirstOrDefault" || m.Method.Name == "Any" || m.Method.Name == "First")
+                && m.Arguments.Count == 2
+                && m.Arguments[1] is UnaryExpression
+                && m.Arguments[0] is ConstantExpression
+                && (m.Arguments[0] as ConstantExpression).Value is IDataFacadeQueryable
+                && ((m.Arguments[0] as ConstantExpression).Value as IDataFacadeQueryable).Sources.Count() > 1)
+            {
+                var condition = m.Arguments[1] as UnaryExpression;
+                var sources = ((m.Arguments[0] as ConstantExpression).Value as IDataFacadeQueryable).Sources.ToArray();
+
+                if (m.Method.Name == "Any")
+                {
+                    _queryable = _queryable ?? new bool[0].AsQueryable(); // TODO: refactor ?
+
+                    return Expression.Constant(Any(sources, condition.Operand));
+                }
+
+                IQueryable loadedSet = LoadToMemory(sources, condition.Operand);
+
+                if (_queryable == null)
+                {
+                    _queryable = loadedSet;
+                }
+
+                if (m.Method.Name == "Where")
+                {
+                    return Expression.Constant(loadedSet);
+                }
+
+                var methodToCall = typeof (Queryable).GetMethods()
+                    .First(method => method.Name == m.Method.Name 
+                        && method.GetParameters().Length == 1)
+                    .MakeGenericMethod(m.Method.GetGenericArguments());
+
+                return Expression.Call(methodToCall, Expression.Constant(loadedSet));
+            }
+
             return base.VisitMethodCall(m);
         }
 
@@ -159,6 +202,69 @@ namespace Composite.Data.Foundation
         }
 
 
+        private static Type GetElementType(IQueryable[] sources)
+        {
+            // Choosing element type which is the "highest" in hierarhy. F.e. if we have IQueryable<IPage> and IQueryable<IData>, 
+            // the "highest" element type would be IData
+            Type elementType = sources[0].ElementType;
+            for(int i=1; i<sources.Length; i++)
+            {
+                if(elementType != sources[i].ElementType && sources[i].ElementType.IsAssignableFrom(elementType))
+                {
+                    elementType = sources[i].ElementType;
+                }
+            }
+
+            return elementType;
+        }
+
+        private static bool Any(IQueryable[] sources, Expression predicate = null)
+        {
+            Type elementType = GetElementType(sources);
+
+            foreach (IQueryable query in sources)
+            {
+                IQueryable filteredQuery = predicate != null
+                    ? (IQueryable)Queryable_Where.MakeGenericMethod(elementType).Invoke(null, new object[] { query, predicate })
+                    : query;
+
+
+                bool any = (bool) Queryable_Any.MakeGenericMethod(elementType).Invoke(null, new object[] { filteredQuery });
+
+                if (any) return true;
+            }
+
+            return false;
+        }
+
+        private static IQueryable LoadToMemory(IQueryable[] sources, Expression predicate = null)
+        {
+            Type elementType = GetElementType(sources);
+
+            MethodInfo addRangeToListMethodInfo = DataFacadeQueryableCache.GetAddRangeToListMethodInfo(elementType);
+            MethodInfo toListMethodInfo = DataFacadeQueryableCache.GetToListMethodInfo(elementType);
+
+            Type listType = DataFacadeQueryableCache.GetListType(elementType);
+            var listedData = Activator.CreateInstance(listType);
+
+            foreach (IQueryable query in sources)
+            {
+                IQueryable filteredQuery = predicate != null 
+                    ? (IQueryable)Queryable_Where.MakeGenericMethod(elementType).Invoke(null, new object[] { query, predicate })
+                    : query;
+
+
+                var subList = toListMethodInfo.Invoke(null, new object[] { filteredQuery });
+
+                addRangeToListMethodInfo.Invoke(listedData, new object[] { subList });
+            }
+
+            MethodInfo asQueryableMethodInfo = DataFacadeQueryableCache.GetAsQueryableMethodInfo(elementType);
+
+            object listedDataAsQueryable = asQueryableMethodInfo.Invoke(null, new object[] { listedData });
+
+            return (IQueryable)listedDataAsQueryable;
+        }
 
         private IQueryable HandleMultipleSourceQueryable(object multipleSourceQueryableCandidate)
         {
@@ -176,35 +282,7 @@ namespace Composite.Data.Foundation
             {
                 IQueryable[] sources = multipleSourceQueryable.Sources.ToArray();
 
-                // Choosing element type which is the "highest" in hierarhy. F.e. if we have IQueryable<IPage> and IQueryable<IData>, 
-                // the "highest" element type would be IData
-                Type elementType = sources[0].ElementType;
-                for(int i=1; i<sources.Length; i++)
-                {
-                    if(elementType != sources[i].ElementType && sources[i].ElementType.IsAssignableFrom(elementType))
-                    {
-                        elementType = sources[i].ElementType;
-                    }
-                }
-
-                MethodInfo addRangeToListMethodInfo = DataFacadeQueryableCache.GetAddRangeToListMethodInfo(elementType);
-                MethodInfo toListMethodInfo = DataFacadeQueryableCache.GetToListMethodInfo(elementType);
-
-                Type listType = DataFacadeQueryableCache.GetListType(elementType);
-                var listedData = Activator.CreateInstance(listType);
-
-                foreach (IQueryable query in sources)
-                {
-                    var subList = toListMethodInfo.Invoke(null, new object[] { query });
-
-                    addRangeToListMethodInfo.Invoke(listedData, new object[] { subList });
-                }
-
-                MethodInfo asQueryableMethodInfo = DataFacadeQueryableCache.GetAsQueryableMethodInfo(elementType);
-
-                object listedDataAsQueryable = asQueryableMethodInfo.Invoke(null, new object[] { listedData });
-
-                queryable = (IQueryable)listedDataAsQueryable;
+                queryable = LoadToMemory(sources);
             }
 
             if (_queryable == null)
@@ -214,5 +292,7 @@ namespace Composite.Data.Foundation
 
             return queryable;
         }
+
+
     }
 }

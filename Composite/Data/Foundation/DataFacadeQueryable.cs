@@ -215,7 +215,7 @@ namespace Composite.Data.Foundation
             protected override Expression VisitConstant(ConstantExpression node)
             {
                 var value = node.Value;
-                if (value != null && value is IQueryable)
+                if (value is IQueryable)
                 {
                     if (value is ITable)
                     {
@@ -225,7 +225,7 @@ namespace Composite.Data.Foundation
                     {
                         CachedSqlQueries++;
                     }
-                    else if (typeof(EnumerableQuery).IsAssignableFrom(value.GetType()))
+                    else if (value is EnumerableQuery)
                     {
                         InMemoryQueries++;
                     }
@@ -255,7 +255,7 @@ namespace Composite.Data.Foundation
             protected override Expression VisitConstant(ConstantExpression node)
             {
                 object value = node.Value;
-                if(value != null && value is ICachedQuery)
+                if(value is ICachedQuery)
                 {
                     IQueryable originalQuery = (value as ICachedQuery).GetOriginalQuery();
 

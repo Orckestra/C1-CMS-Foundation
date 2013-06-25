@@ -15,6 +15,7 @@ using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.WebClient;
@@ -531,7 +532,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             bool showFolders = true;
             string folderChainToShow = null;
 
-            if(searchToken != null && searchToken is MediaFileSearchToken)
+            if(searchToken is MediaFileSearchToken)
             {
                 var mediaSearchToken = searchToken as MediaFileSearchToken;
                 string folderPath = mediaSearchToken.Folder;
@@ -553,31 +554,33 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             IEnumerable<Element> result = null;
             if (showFolders)
             {
-                var folderQueryable = new StoreIdFilterQueryable<IMediaFileFolder>(DataFacade.GetData<IMediaFileFolder>(), storeId);
+                var folderQueryable = GetQuery<IMediaFileFolder>(storeId);
+
+                string parentPathPrefix = parentPath + (parentPath.EndsWith("/") ? "" : "/");
+                int parentPathPrefixLength = parentPath.Length;
+
+                var childFolders = folderQueryable.Where(item => item.Path.StartsWith(parentPathPrefix)
+                                    && item.Path.LastIndexOf('/') <= parentPathPrefixLength).Evaluate();
 
                 result =
-                   (from item in folderQueryable
-                    where item.Path.IsDirectChildOf(parentPath, '/')
-                    && (folderChainToShow == null || folderChainToShow.StartsWith(item.Path + '/'))
-                    && item.StoreId == storeId
+                   (from item in childFolders
+                    where (folderChainToShow == null || folderChainToShow.StartsWith(item.Path + '/'))
+                          && item.StoreId == storeId
                     orderby item.Path
                     select CreateFolderElement(item)).ToList();
+
             }
 
             if(showFiles)
             {
-                Func<IMediaFile, bool> predicate = BuildFilePredicate(searchToken);
+                Expression<Func<IMediaFile, bool>> predicate = BuildFilePredicate(searchToken);
 
-                var fileQueryable = new StoreIdFilterQueryable<IMediaFile>(DataFacade.GetData<IMediaFile>(), storeId);
+                var fileQueryable = GetQuery<IMediaFile>(storeId);
 
-                List<IMediaFile> mediaFiles = (from item in fileQueryable
-                                               where item.StoreId == storeId && predicate(item)
-                                               select item).ToList();
-
-                List<Element> files = (from item in mediaFiles
-                                         where item.FolderPath == parentPath
-                                         orderby item.FileName
-                                         select CreateFileElement(item)).ToList();
+                var files = (from item in fileQueryable
+                             where item.FolderPath == parentPath
+                             orderby item.FileName
+                             select item).Where(predicate).Evaluate().Select(CreateFileElement).ToList();
 
                 result = result != null ? result.Concat(files) : files;
             }
@@ -586,9 +589,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
         }
 
 
-        private Func<IMediaFile, bool> BuildFilePredicate(SearchToken searchToken)
+        private Expression<Func<IMediaFile, bool>> BuildFilePredicate(SearchToken searchToken)
         {
-            var predicates = new List<Func<IMediaFile, bool>>();
+            var predicates = new List<Expression<Func<IMediaFile, bool>>>();
 
             if (_showOnlyImages)
             {
@@ -646,7 +649,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         }
                     }
 
-                    predicates.Add(Expression.Lambda<Func<IMediaFile, bool>>(body, fileParameter).Compile());
+                    predicates.Add(Expression.Lambda<Func<IMediaFile, bool>>(body, fileParameter));
                 }
             }
 
@@ -655,17 +658,26 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 return (x => true);
             }
             
-            Func<Func<IMediaFile, bool>, Func<IMediaFile, bool>, Func<IMediaFile, bool>>
-                and = (f1, f2) => (t => f1(t) && f2(t));
-
-            Func<IMediaFile, bool> current = (x => true);
-            foreach (Func<IMediaFile, bool> predicate in predicates)
-            {
-                current = and(predicate, current);
-            }
-            return current;
+            return AndPredicates(predicates);
         }
 
+        private static Expression<Func<T, bool>> AndPredicates<T>(IEnumerable<Expression<Func<T, bool>>> predicates) where T: IData
+        {
+            var p = Expression.Parameter(typeof(IMediaFile));
+
+            Expression andBody = null;
+
+            foreach (Expression<Func<T, bool>> predicate in predicates)
+            {
+                var conditionPart = Expression.Invoke(predicate, p);
+
+                andBody = andBody == null
+                            ? conditionPart as Expression
+                            : Expression.And(andBody, conditionPart);
+            }
+
+            return Expression.Lambda<Func<T, bool>>(andBody, p);
+        }
 
 
         private bool IsImage(IMediaFile file)
@@ -718,18 +730,14 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private Element CreateFolderElement(IMediaFileFolder folder)
         {
-            var folders = from item in DataFacade.GetData<IMediaFileFolder>()
-                          where item.Path.IsDirectChildOf(folder.Path, '/')
-                          select item;
+            bool hasFolders = DataFacade.GetData<IMediaFileFolder>().Any(f => f.Path.StartsWith(folder.Path));
 
-            var files = from item in DataFacade.GetData<IMediaFile>()
-                        where item.FolderPath == folder.Path
-                        select item;
+            bool hasChildren = hasFolders;
 
-            bool hasChildren = false;
-            if (folders.Count() > 0 || files.Count() > 0)
+            if(!hasChildren)
             {
-                hasChildren = true;
+                bool hasFiles = DataFacade.GetData<IMediaFile>().Any(file => file.FolderPath == folder.Path);
+                hasChildren = hasFiles;
             }
 
             ResourceHandle icon = this.EmptyFolderIcon;

@@ -52,9 +52,9 @@ namespace Composite.Data
         /// <returns>Returns the data type. Never null.</returns>
         public static Type GetDataType(DataTypeDescriptor dataTypeDescriptor)
         {
-            if (dataTypeDescriptor == null) throw new ArgumentNullException("dataTypeDescriptor", "dataTypeDescriptor");
+            Verify.ArgumentNotNull(dataTypeDescriptor, "dataTypeDescriptor");
 
-            Type loadedDataType = _LoadedDataTypes.Where(f => f.FullName == dataTypeDescriptor.GetFullInterfaceName()).FirstOrDefault();
+            Type loadedDataType = _LoadedDataTypes.FirstOrDefault(f => f.FullName == dataTypeDescriptor.GetFullInterfaceName());
             if (loadedDataType != null) return loadedDataType;
 
             Type type = InterfaceCodeManager.GetType(dataTypeDescriptor);
