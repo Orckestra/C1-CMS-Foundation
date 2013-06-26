@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Composite.Core.Linq;
 using Composite.Data;
+using Composite.Data.Caching;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -24,12 +28,12 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
 
         public IQueryable<T> GetData<T>() where T : class, IData
         {
-            if (typeof(T)!=typeof(IImageFile)) throw new InvalidOperationException( "Unsupported data interface" );
+            if (typeof(T) != typeof(IImageFile)) throw new InvalidOperationException( "Unsupported data interface" );
 
-            return
+            return new VirtualImageFileQueryable<T>(
                 from mediaFile in DataFacade.GetData<IMediaFile>()
                 where mediaFile.MimeType != null && mediaFile.MimeType.StartsWith("image")
-                select new VirtualImageFile(mediaFile) as T;
+                select new VirtualImageFile(mediaFile) as T);
         }
 
         public T GetData<T>(IDataId dataId) where T : class, IData

@@ -21,8 +21,13 @@ namespace Composite.Core.Types
             return GetMethodInfo(expression.Body).GetGenericMethodDefinition();
         }
 
+        public static MethodInfo GetMethodInfo<T, S>(Expression<Func<T, S>>  expression)
+        {
+            return GetMethodInfo(expression.Body as MethodCallExpression);
+        }
 
-        private static MethodInfo GetMethodInfo(Expression expression)
+
+        public static MethodInfo GetMethodInfo(Expression expression)
         {
             Verify.ArgumentCondition(expression is MethodCallExpression, "expressionBody", 
                                      "Expression body should be of type '{0}'".FormatWith(typeof(MethodCallExpression).Name));

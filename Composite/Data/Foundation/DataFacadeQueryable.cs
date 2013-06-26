@@ -22,7 +22,7 @@ namespace Composite.Data.Foundation
 
         public DataFacadeQueryable(IEnumerable<IQueryable<T>> sources)
         {
-            if (null == sources) throw new ArgumentNullException("sources");
+            Verify.ArgumentNotNull(sources, "sources");
 
             _sources = new List<IQueryable>();
             foreach (IQueryable<T> source in sources)
@@ -36,7 +36,7 @@ namespace Composite.Data.Foundation
 
 
         /// <summary>
-        /// DO NOT USE! For internal use only
+        /// Invoked via reflection
         /// </summary>
         public DataFacadeQueryable(List<IQueryable> sources, Expression currentExpression)
         {
@@ -60,8 +60,7 @@ namespace Composite.Data.Foundation
         {
             bool pullIntoMemory = ShouldBePulledIntoMemory(expression);
 
-            DataFacadeQueryableExpressionVisitor handleInProviderVisitor =
-                new DataFacadeQueryableExpressionVisitor(pullIntoMemory);
+            var handleInProviderVisitor = new DataFacadeQueryableExpressionVisitor(pullIntoMemory);
 
             Expression newExpression = handleInProviderVisitor.Visit(expression);
 

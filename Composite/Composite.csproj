@@ -181,6 +181,8 @@
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
+    <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryable.cs" />
+    <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryableVisitor.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\FileRecord.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\XmlDataProviderDocumentWriter.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageTemplateFeatureElementProvider\PageTemplateFeatureElementProvider.cs" />

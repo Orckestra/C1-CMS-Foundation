@@ -17,19 +17,26 @@ namespace Composite.Data.Types
     [RelevantToUserType(UserType.Developer)]
     public interface IMediaFileFolder : IData
     {
-        /// <exclude />
+        /// <summary>
+        /// Gets the id.
+        /// </summary>
         [StoreFieldType(PhysicalStoreFieldType.Guid)]
         [ImmutableFieldId("{84c8046c-a53c-42dd-bd54-b64c6f7511c1}")]
         Guid Id { get; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Gets the key path. Should contain StoreId as well as Id. Used for identifying a media file within the system.
+        /// Example: 'MediaArchive:63e1480c-1b8a-4ca1-ba02-792437e654ec'
+        /// </summary>
         [StoreFieldType(PhysicalStoreFieldType.String, 2048)]
         [ImmutableFieldId("{e03e1acb-b5bd-4354-bfd4-5e2626381d82}")]
         string KeyPath { get; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Used for labels in widgets. Example: 'MediaArchive:/Folder1/Folder2'
+        /// </summary>
         [ImmutableFieldId("{ADB2660D-BAB3-499a-AE12-50AA703FA3B0}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 2048)]
         string CompositePath { get; set; }
@@ -41,25 +48,33 @@ namespace Composite.Data.Types
         string StoreId { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Gets or sets the path. F.e. '/', '/Folder1', '/Folder1/Folder2'
+        /// </summary>
         [ImmutableFieldId("{A71332BC-F6E5-4e1b-8BB6-7C6AA57BECC6}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 2048)]
         string Path { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
         [ImmutableFieldId("{E4DBB69F-B1F6-46a1-A8A6-BDDD4CB344D6}")]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         string Title { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
         [ImmutableFieldId("{51CF6EFA-66C3-413e-9FCD-06EA52871182}")]
         [StoreFieldType(PhysicalStoreFieldType.LargeString)]
         string Description { get; set; }
 
 
-        /// <exclude />
+        /// <summary>
+        /// Gets a value indicating whether this media file is read only.
+        /// </summary>
         [ImmutableFieldId("{FA03F9D5-C8AF-469c-BC02-F11118D21A0F}")]
         [StoreFieldType(PhysicalStoreFieldType.Boolean)]
         bool IsReadOnly { get; }
