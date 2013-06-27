@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
 using Composite.Core.Types;
 using Composite.Data.Types;
 
@@ -12,6 +11,10 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
     internal class VirtualImageFileQueryableVisitor: ExpressionVisitor
     {
         private static readonly MethodInfo Queryable_Count = typeof(Queryable).GetMethods().Single(x => x.Name == "Count" && x.IsGenericMethod && x.GetParameters().Count() == 1);
+        private static readonly MethodInfo Queryable_Where = StaticReflection.GetGenericMethodInfo(() => System.Linq.Queryable.Where(null, (Expression<Func<int, bool>>)null));
+        private static readonly MethodInfo Queryable_Take = typeof(Queryable).GetMethods().Single(x => x.Name == "Take" && x.IsGenericMethod && x.GetParameters().Count() == 2);
+        private static readonly MethodInfo Queryable_First = typeof(Queryable).GetMethods().Single(x => x.Name == "First" && x.IsGenericMethod && x.GetParameters().Count() == 1);
+        private static readonly MethodInfo Queryable_FirstOrDefault = typeof(Queryable).GetMethods().Single(x => x.Name == "FirstOrDefault" && x.IsGenericMethod && x.GetParameters().Count() == 1);
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
@@ -48,16 +51,19 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
             }
 
             var mediaFileExpression = (firstArgument as MethodCallExpression).Arguments[0];
+            var selectorMethod = (firstArgument as MethodCallExpression).Method;
             var selectorLambdaExpression = (firstArgument as MethodCallExpression).Arguments[1];
 
-
-            /*
             // Converting
             //     IQueryable<IMediaFile>.Select(mediaFile => ...).Count([condition])
+            //     IQueryable<IMediaFile>.Select(mediaFile => ...).Any([condition])
+            //     IQueryable<IMediaFile>.Select(mediaFile => ...).All([condition])
             // to
             //     IQueryable<IMediaFile>.Count([condition])
-            */
-            if (m.Method.Name == "Count")
+            //     IQueryable<IMediaFile>.Any([condition])
+            //     IQueryable<IMediaFile>.All([condition])
+            
+            if (m.Method.Name == "Count" || m.Method.Name == "Any" || m.Method.Name == "All")
             {
                 var mediaFileMethod = m.Method.GetGenericMethodDefinition().MakeGenericMethod(typeof (IMediaFile));
 
@@ -72,16 +78,90 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
             }
 
 
-            /*
             // Converting
-            //     IQueryable<IMediaFile>.Select(mediaFile => (new VirtualImageFile(mediaFile) As IImageFile)).Where([condition])
+            //     IQueryable<IMediaFile>.Select(mediaFile => ....).Where(CONDITION)
             // to
-            //     IQueryable<IMediaFile>.Method([condition]).Where(mediaFile => (new VirtualImageFile(mediaFile) As IImageFile))
-            */
-           
+            //     IQueryable<IMediaFile>.Where(CONDITION).Select(mediaFile => ....)
+
+            if (m.Method.Name == "Where" && m.Arguments[1] is UnaryExpression)
+            {
+                var Where_mediaFile = m.Method.GetGenericMethodDefinition().MakeGenericMethod(typeof(IMediaFile));
+
+                var convertedCondition = new ParameterTypeReplacer().Visit(m.Arguments[1]);
+
+                //     IQueryable<IMediaFile>.Where(CONDITION)
+                var whereExpression = Expression.Call(Where_mediaFile, mediaFileExpression, convertedCondition);
+
+                //     IQueryable<IMediaFile>.Where(CONDITION).Select(mediaFile => ....)
+                return base.Visit(Expression.Call(selectorMethod, whereExpression, selectorLambdaExpression));
+            }
+
+
+            // Converting
+            //     IQueryable<IMediaFile>.Select(mediaFile => ....).Take(count)
+            // to
+            //     IQueryable<IMediaFile>.Take(count).Select(mediaFile => ....)
+
+            if (m.Method.Name == "Take"
+                && m.Arguments[1] is ConstantExpression
+                && (m.Arguments[1] as ConstantExpression).Value is int)
+            {
+                var Take_mediaFile = m.Method.GetGenericMethodDefinition().MakeGenericMethod(typeof(IMediaFile));
+
+                //     IQueryable<IMediaFile>.Take(count)
+                var takeExpression = Expression.Call(Take_mediaFile, mediaFileExpression, m.Arguments[1]);
+
+                //     IQueryable<IMediaFile>.Take(count).Select(mediaFile => ....)
+                return base.Visit(Expression.Call(selectorMethod, takeExpression, selectorLambdaExpression));
+            }
+
+
+            // Converting
+            //     IQueryable<IMediaFile>.Select(mediaFile => ....).First([predicate])
+            //     IQueryable<IMediaFile>.Select(mediaFile => ....).FirstOrDefault([predicate])
+            // to
+            //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....).First()
+            //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....).FirstOrDefault()
+
+            if ((m.Method.Name == "First" || m.Method.Name == "FirstOrDefault")
+                && m.Arguments.Count == 1
+                || (m.Arguments.Count == 2
+                    && m.Arguments[1] is UnaryExpression))
+            {
+                var predicate = m.Arguments.Count == 2 ? (m.Arguments[1] as UnaryExpression).Operand : null;
+
+                // IQueryable<IMediaFile>[.Where(predicate)]
+                var filteredMediaExpression = predicate != null 
+                    ? Expression.Call(Queryable_Where.MakeGenericMethod(typeof (IMediaFile)), mediaFileExpression, ConvertPredicate(predicate))
+                    : mediaFileExpression;
+
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(1)
+                var takeExpression = Expression.Call(Queryable_Take.MakeGenericMethod(typeof (IMediaFile)), 
+                    filteredMediaExpression, Expression.Constant(1));
+
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....)
+                var selector = Expression.Call(selectorMethod, takeExpression, selectorLambdaExpression);
+                
+                
+                var method = (m.Method.Name == "First" ? Queryable_First : Queryable_FirstOrDefault).MakeGenericMethod(typeof (IMediaFile));
+
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(count).Select(mediaFile => ....).First
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(count).Select(mediaFile => ....).FirstOrDefault()
+                return base.Visit(Expression.Call(method, selector));
+            }
 
             return base.VisitMethodCall(m);
 
+        }
+
+        /// <summary>
+        /// Converts predicates Expression<Func<IImage, bool>> to Expression<Func<IMediaFile, bool>>
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        private static Expression ConvertPredicate(Expression predicate)
+        {
+            return new ParameterTypeReplacer().Visit(predicate);
         }
 
         /// <summary>

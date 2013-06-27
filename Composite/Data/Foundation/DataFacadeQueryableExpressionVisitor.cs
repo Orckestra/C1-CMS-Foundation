@@ -22,6 +22,7 @@ namespace Composite.Data.Foundation
 
         private static readonly MethodInfo Queryable_Where = StaticReflection.GetGenericMethodInfo(() => System.Linq.Queryable.Where(null, (Expression<Func<int, bool>>)null));
         private static readonly MethodInfo Queryable_Any = typeof(Queryable).GetMethods().Single(x => x.Name == "Any" && x.IsGenericMethod && x.GetParameters().Count() == 1);
+        private static readonly MethodInfo Queryable_All = typeof(Queryable).GetMethods().Single(x => x.Name == "All" && x.IsGenericMethod && x.GetParameters().Count() == 2);
         private static readonly MethodInfo Queryable_Count = typeof(Queryable).GetMethods().Single(x => x.Name == "Count" && x.IsGenericMethod && x.GetParameters().Count() == 1);
         private static readonly MethodInfo Queryable_FirstOrDefault = typeof(Queryable).GetMethods().Single(x => x.Name == "FirstOrDefault" && x.IsGenericMethod && x.GetParameters().Count() == 1);
         private static readonly MethodInfo Queryable_Take = typeof(Queryable).GetMethods().Single(x => x.Name == "Take" && x.IsGenericMethod && x.GetParameters().Count() == 2);
@@ -144,48 +145,39 @@ namespace Composite.Data.Foundation
             //
             // multipleSourceQueryable.METHOD()
             // multipleSourceQueryable.METHOD(predicate)
-            // multipleSourceQueryable.Where(predicate).METHOD()
-            // multipleSourceQueryable.Where(predicate1).METHOD(predicate2)
+            // multipleSourceQueryable(.Where(predicate))*.METHOD()
+            // multipleSourceQueryable(.Where(predicate))*.METHOD(predicate)
             //
             // Where the supported METHOD options are: "Where", "Any", "Count", "First" and "FirstOrDefault"
+
+            IQueryable[] sources = null;
+            List<Expression> predicates = null;
 
             if (m.Method.IsStatic
                 && (m.Method.Name == "Where"
                     || m.Method.Name == "Any"
                     || m.Method.Name == "Count"
                     || m.Method.Name == "FirstOrDefault" 
-                    || m.Method.Name == "First")
-                && ( IsMultipleSourceQueryable(m.Arguments[0])
-                     || (m.Arguments[0] is MethodCallExpression
-                         && (m.Arguments[0] as MethodCallExpression).Method.Name == "Where"
-                         && IsMultipleSourceQueryable((m.Arguments[0] as MethodCallExpression).Arguments[0])
-                         && (m.Arguments[0] as MethodCallExpression).Arguments[1] is UnaryExpression))
+                    || m.Method.Name == "First"
+                    || m.Method.Name == "All")
                 && (m.Arguments.Count == 1
                     || (m.Arguments.Count == 2 
-                        && m.Arguments[1] is UnaryExpression)))
+                        && m.Arguments[1] is UnaryExpression))
+                && ExtractMultipleSourceQueryable(m.Arguments[0], ref sources, ref predicates))
             {
-                IQueryable[] sources;
-                Expression predicate1;
+                Expression operationPredicate = m.Arguments.Count == 2 ? (m.Arguments[1] as UnaryExpression).Operand : null;
 
-                if (IsMultipleSourceQueryable(m.Arguments[0]))
+                if (m.Method.Name == "All")
                 {
-                    sources = GetSourceQueries(m.Arguments[0]);
-                    predicate1 = null;
-                }
-                else
-                {
-                    var whereExpression = m.Arguments[0] as MethodCallExpression;
+                    _queryable = _queryable ?? new bool[0].AsQueryable(); 
 
-                    sources = GetSourceQueries(whereExpression.Arguments[0]);
-                    predicate1 = (whereExpression.Arguments[1] as UnaryExpression).Operand; 
+                    return Expression.Constant(All(sources, predicates, operationPredicate));
                 }
 
-                Expression predicate2 = m.Arguments.Count == 2 ? (m.Arguments[1] as UnaryExpression).Operand : null;
-
-                var predicates = new List<Expression>();
-
-                if (predicate1 != null) predicates.Add(predicate1);
-                if (predicate2 != null) predicates.Add(predicate2);
+                if (operationPredicate != null)
+                {
+                    predicates.Add(operationPredicate);
+                }
 
                 if (m.Method.Name == "Any")
                 {
@@ -229,41 +221,15 @@ namespace Composite.Data.Foundation
 
             // Processing queries like
             //
-            // multipleSourceQueryable.Take(N)
-            // multipleSourceQueryable.Where(predicate).Take(N)
-
+            // multipleSourceQueryable(.Where(predicate))*.Take(N)
             if (m.Method.IsStatic
-                && (m.Method.Name == "Take")
-                && (IsMultipleSourceQueryable(m.Arguments[0])
-                     || (m.Arguments[0] is MethodCallExpression
-                         && (m.Arguments[0] as MethodCallExpression).Method.Name == "Where"
-                         && IsMultipleSourceQueryable((m.Arguments[0] as MethodCallExpression).Arguments[0])
-                         && (m.Arguments[0] as MethodCallExpression).Arguments[1] is UnaryExpression))
+                && m.Method.Name == "Take"
                 && (m.Arguments.Count == 2
                     && m.Arguments[1] is ConstantExpression
-                    && (m.Arguments[1] as ConstantExpression).Value is int))
+                    && (m.Arguments[1] as ConstantExpression).Value is int)
+                && ExtractMultipleSourceQueryable(m.Arguments[0], ref sources, ref predicates))
             {
-                IQueryable[] sources;
-                Expression predicate;
-
                 int count = (int) (m.Arguments[1] as ConstantExpression).Value;
-
-                if (IsMultipleSourceQueryable(m.Arguments[0]))
-                {
-                    sources = GetSourceQueries(m.Arguments[0]);
-                    predicate = null;
-                }
-                else
-                {
-                    var whereExpression = m.Arguments[0] as MethodCallExpression;
-
-                    sources = GetSourceQueries(whereExpression.Arguments[0]);
-                    predicate = (whereExpression.Arguments[1] as UnaryExpression).Operand;
-                }
-
-                var predicates = new List<Expression>();
-
-                if (predicate != null) predicates.Add(predicate);
 
                 var result = Take(sources, count, predicates);
 
@@ -334,6 +300,22 @@ namespace Composite.Data.Foundation
             }
 
             return false;
+        }
+
+        private static bool All(IQueryable[] sources, IEnumerable<Expression> predicates, Expression operationPredicate)
+        {
+            Type elementType = GetElementType(sources);
+
+            foreach (IQueryable query in sources)
+            {
+                IQueryable filteredQuery = ApplyPredicates(query, elementType, predicates);
+
+                bool all = (bool)Queryable_All.MakeGenericMethod(elementType).Invoke(null, new object[] { filteredQuery, operationPredicate });
+
+                if (!all) return false;
+            }
+
+            return true;
         }
 
         private static int Count(IQueryable[] sources, IEnumerable<Expression> predicates = null)
@@ -463,6 +445,41 @@ namespace Composite.Data.Foundation
             return queryable;
         }
 
+        /// <summary>
+        /// Extracts multiple source queryable with predicates defined in WHERE statements
+        /// </summary>
+        private static bool ExtractMultipleSourceQueryable(Expression expression, ref IQueryable[] sources, ref List<Expression> predicates)
+        {
+            if (expression is ConstantExpression)
+            {
+                var constantExpression = expression as ConstantExpression;
+
+                if (constantExpression.Value is IDataFacadeQueryable 
+                    && (constantExpression.Value as IDataFacadeQueryable).Sources.Count() > 1)
+                {
+                    predicates = new List<Expression>();
+                    sources = (constantExpression.Value as IDataFacadeQueryable).Sources.ToArray();
+                    return true;
+                }
+                
+                return false;
+            }
+
+            if (expression is MethodCallExpression)
+            {
+                var methodCallExpression = (expression as MethodCallExpression);
+
+                if (methodCallExpression.Method.Name == "Where"
+                    && methodCallExpression.Arguments[1] is UnaryExpression
+                    && ExtractMultipleSourceQueryable(methodCallExpression.Arguments[0], ref sources, ref predicates))
+                {
+                    predicates.Add((methodCallExpression.Arguments[1] as UnaryExpression).Operand);
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         private static bool IsMultipleSourceQueryable(Expression expression)
         {
