@@ -4,6 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -113,7 +114,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+                Verify.IsNotNull(element.DataTypeId, "'DataTypeId' attribute is missing");
+
+                Guid dataTypeId = element.DataTypeId.Value;
+
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
+                if (dataTypeDescriptor == null)
+                {
+                    throw new InvalidOperationException("Failed to get a DataTypeDescriptor by id '{0}'".FormatWith(dataTypeId));
+                }
+
                 Type interfaceType = null;
 
                 try
@@ -153,7 +163,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     {
                         DataProviderRegistry.AddKnownDataType(interfaceType, _dataProviderContext.ProviderName);
                     }
-                    Log.LogError("XmlDataProvider", string.Format("Failed initialization for the datatype {0}", dataTypeDescriptor.TypeManagerTypeName));
+                    Log.LogError("XmlDataProvider", "Failed initialization for the datatype {{{0}}}, {1}", dataTypeId, dataTypeDescriptor.TypeManagerTypeName);
                 }
             }
         }
@@ -218,8 +228,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                     IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false);
 
-                    dataProviderHelperType = types.Where(f => f.FullName == dataProviderHelperClassFullName).Single();
-                    dataIdClassType = types.Where(f => f.FullName == dataIdClassFullName).Single();
+                    dataProviderHelperType = types.Single(f => f.FullName == dataProviderHelperClassFullName);
+                    dataIdClassType = types.Single(f => f.FullName == dataIdClassFullName);
                 }
 
                 return true;
