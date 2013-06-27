@@ -25,6 +25,7 @@ namespace Composite.Data.Foundation
         private static readonly MethodInfo Queryable_All = typeof(Queryable).GetMethods().Single(x => x.Name == "All" && x.IsGenericMethod && x.GetParameters().Count() == 2);
         private static readonly MethodInfo Queryable_Count = typeof(Queryable).GetMethods().Single(x => x.Name == "Count" && x.IsGenericMethod && x.GetParameters().Count() == 1);
         private static readonly MethodInfo Queryable_FirstOrDefault = typeof(Queryable).GetMethods().Single(x => x.Name == "FirstOrDefault" && x.IsGenericMethod && x.GetParameters().Count() == 1);
+        private static readonly MethodInfo Queryable_SingleOrDefault = typeof(Queryable).GetMethods().Single(x => x.Name == "SingleOrDefault" && x.IsGenericMethod && x.GetParameters().Count() == 1);
         private static readonly MethodInfo Queryable_Take = typeof(Queryable).GetMethods().Single(x => x.Name == "Take" && x.IsGenericMethod && x.GetParameters().Count() == 2);
 
         private readonly bool _pullAllToMemory;
@@ -156,10 +157,12 @@ namespace Composite.Data.Foundation
             if (m.Method.IsStatic
                 && (m.Method.Name == "Where"
                     || m.Method.Name == "Any"
+                    || m.Method.Name == "All"
                     || m.Method.Name == "Count"
-                    || m.Method.Name == "FirstOrDefault" 
                     || m.Method.Name == "First"
-                    || m.Method.Name == "All")
+                    || m.Method.Name == "FirstOrDefault"
+                    || m.Method.Name == "Single"
+                    || m.Method.Name == "SingleOrDefault")
                 && (m.Arguments.Count == 1
                     || (m.Arguments.Count == 2 
                         && m.Arguments[1] is UnaryExpression))
@@ -179,34 +182,6 @@ namespace Composite.Data.Foundation
                     predicates.Add(operationPredicate);
                 }
 
-                if (m.Method.Name == "Any")
-                {
-                    _queryable = _queryable ?? new bool[0].AsQueryable(); // TODO: refactor ?
-
-                    return Expression.Constant(Any(sources, predicates));
-                }
-
-                if (m.Method.Name == "Count")
-                {
-                    _queryable = _queryable ?? new bool[0].AsQueryable();
-
-                    return Expression.Constant(Count(sources, predicates));
-                }
-
-                if (m.Method.Name == "FirstOrDefault")
-                {
-                    _queryable = _queryable ?? new bool[0].AsQueryable();
-
-                    return Expression.Constant(FirstOrDefault(sources, predicates));
-                }
-
-                if (m.Method.Name == "First")
-                {
-                    _queryable = _queryable ?? new bool[0].AsQueryable();
-
-                    return Expression.Constant(First(sources, predicates));
-                }
-
                 if (m.Method.Name == "Where")
                 {
                     IQueryable loadedSet = LoadToMemory(sources, predicates);
@@ -216,6 +191,38 @@ namespace Composite.Data.Foundation
                     return Expression.Constant(loadedSet);
                 }
 
+                _queryable = _queryable ?? new bool[0].AsQueryable();
+
+                if (m.Method.Name == "Any")
+                {
+                    return Expression.Constant(Any(sources, predicates));
+                }
+
+                if (m.Method.Name == "Count")
+                {
+                    return Expression.Constant(Count(sources, predicates));
+                }
+
+                if (m.Method.Name == "First")
+                {
+                    return Expression.Constant(First(sources, predicates));
+                }
+                
+                if (m.Method.Name == "FirstOrDefault")
+                {
+                    return Expression.Constant(FirstOrDefault(sources, predicates));
+                }
+
+                if (m.Method.Name == "Single")
+                {
+                    return Expression.Constant(Single(sources, predicates));
+                }
+
+                if (m.Method.Name == "SingleOrDefault")
+                {
+                    return Expression.Constant(SingleOrDefault(sources, predicates));
+                }
+                
                 throw new InvalidOperationException("This code should not be reachable. Current expression: " + m);
             }
 
@@ -368,6 +375,47 @@ namespace Composite.Data.Foundation
             }
 
             return null;
+        }
+
+
+        private static object Single(IQueryable[] sources, IEnumerable<Expression> predicates = null)
+        {
+            var result = SingleOrDefault(sources, predicates);
+
+            if (result == null)
+            {
+                string predicateInfo = predicates != null ? string.Join(" ANDALSO ", predicates.Select(p => p.ToString())) : "";
+                throw new InvalidOperationException("Sequence contains no elements. " + predicateInfo);
+            }
+
+            return result;
+        }
+
+        private static object SingleOrDefault(IQueryable[] sources, IEnumerable<Expression> predicates = null)
+        {
+            Type elementType = GetElementType(sources);
+
+            object result = null;
+
+            foreach (IQueryable query in sources)
+            {
+                IQueryable filteredQuery = ApplyPredicates(query, elementType, predicates);
+
+                object subqueryResult = Queryable_SingleOrDefault.MakeGenericMethod(elementType).Invoke(null, new object[] { filteredQuery });
+
+                if (subqueryResult != null)
+                {
+                    if (result != null)
+                    {
+                        string predicateInfo = predicates != null ? string.Join(" ANDALSO ", predicates.Select(p => p.ToString())) : "";
+                        throw new InvalidOperationException("More than one value returned. " + predicateInfo);
+                    }
+
+                    result = subqueryResult;
+                }
+            }
+
+            return result;
         }
 
 

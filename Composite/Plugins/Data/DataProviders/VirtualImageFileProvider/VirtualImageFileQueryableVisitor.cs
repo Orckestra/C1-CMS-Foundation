@@ -15,6 +15,8 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
         private static readonly MethodInfo Queryable_Take = typeof(Queryable).GetMethods().Single(x => x.Name == "Take" && x.IsGenericMethod && x.GetParameters().Count() == 2);
         private static readonly MethodInfo Queryable_First = typeof(Queryable).GetMethods().Single(x => x.Name == "First" && x.IsGenericMethod && x.GetParameters().Count() == 1);
         private static readonly MethodInfo Queryable_FirstOrDefault = typeof(Queryable).GetMethods().Single(x => x.Name == "FirstOrDefault" && x.IsGenericMethod && x.GetParameters().Count() == 1);
+        private static readonly MethodInfo Queryable_Single = typeof(Queryable).GetMethods().Single(x => x.Name == "Single" && x.IsGenericMethod && x.GetParameters().Count() == 1);
+        private static readonly MethodInfo Queryable_SingleOrDefault = typeof(Queryable).GetMethods().Single(x => x.Name == "SingleOrDefault" && x.IsGenericMethod && x.GetParameters().Count() == 1);
 
         protected override Expression VisitConstant(ConstantExpression node)
         {
@@ -119,11 +121,18 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
             // Converting
             //     IQueryable<IMediaFile>.Select(mediaFile => ....).First([predicate])
             //     IQueryable<IMediaFile>.Select(mediaFile => ....).FirstOrDefault([predicate])
+            //     IQueryable<IMediaFile>.Select(mediaFile => ....).Single([predicate])
+            //     IQueryable<IMediaFile>.Select(mediaFile => ....).SingleOrDefault([predicate])
             // to
             //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....).First()
             //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....).FirstOrDefault()
+            //     IQueryable<IMediaFile>[.Where(predicate)].Take(2).Select(mediaFile => ....).Single()
+            //     IQueryable<IMediaFile>[.Where(predicate)].Take(2).Select(mediaFile => ....).SingleOrDefault()
 
-            if ((m.Method.Name == "First" || m.Method.Name == "FirstOrDefault")
+            if ((m.Method.Name == "First" 
+                || m.Method.Name == "FirstOrDefault"
+                || m.Method.Name == "Single"
+                || m.Method.Name == "SingleOrDefault")
                 && m.Arguments.Count == 1
                 || (m.Arguments.Count == 2
                     && m.Arguments[1] is UnaryExpression))
@@ -135,18 +144,25 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
                     ? Expression.Call(Queryable_Where.MakeGenericMethod(typeof (IMediaFile)), mediaFileExpression, ConvertPredicate(predicate))
                     : mediaFileExpression;
 
+                bool isSingleQuery = m.Method.Name == "Single" || m.Method.Name == "SingleOrDefault";
+
                 //     IQueryable<IMediaFile>[.Where(predicate)].Take(1)
-                var takeExpression = Expression.Call(Queryable_Take.MakeGenericMethod(typeof (IMediaFile)), 
-                    filteredMediaExpression, Expression.Constant(1));
+                var takeExpression = Expression.Call(Queryable_Take.MakeGenericMethod(typeof (IMediaFile)),
+                    filteredMediaExpression, Expression.Constant(isSingleQuery ? 2 : 1));
 
                 //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....)
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(2).Select(mediaFile => ....)
                 var selector = Expression.Call(selectorMethod, takeExpression, selectorLambdaExpression);
-                
-                
-                var method = (m.Method.Name == "First" ? Queryable_First : Queryable_FirstOrDefault).MakeGenericMethod(typeof (IMediaFile));
 
-                //     IQueryable<IMediaFile>[.Where(predicate)].Take(count).Select(mediaFile => ....).First
-                //     IQueryable<IMediaFile>[.Where(predicate)].Take(count).Select(mediaFile => ....).FirstOrDefault()
+
+                var method = isSingleQuery
+                    ? (m.Method.Name == "Single" ? Queryable_Single : Queryable_SingleOrDefault).MakeGenericMethod(typeof(IMediaFile))
+                    : (m.Method.Name == "First" ? Queryable_First : Queryable_FirstOrDefault).MakeGenericMethod(typeof(IMediaFile));
+
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....).First()
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(1).Select(mediaFile => ....).FirstOrDefault()
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(2).Select(mediaFile => ....).Single()
+                //     IQueryable<IMediaFile>[.Where(predicate)].Take(2).Select(mediaFile => ....).SingleOrDefault()
                 return base.Visit(Expression.Call(method, selector));
             }
 
