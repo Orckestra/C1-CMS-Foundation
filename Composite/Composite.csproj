@@ -1807,7 +1807,7 @@
     <Compile Include="Data\DynamicTypes\StoreFieldType.cs" />
     <Compile Include="Data\Foundation\CodeGeneration\EmptyDataClassBase.cs" />
     <Compile Include="Data\Foundation\CodeGeneration\EmptyDataClassCodeGenerator.cs" />
-    <Compile Include="Data\Foundation\DataFacadeQueryableCache.cs" />
+    <Compile Include="Data\Foundation\DataFacadeReflectionCache.cs" />
     <Compile Include="Data\Foundation\DataFacadeQueryableExpressionVisitor.cs" />
     <Compile Include="Data\Foundation\DataFacadeQueryableGathererExpressionVisitor.cs" />
     <Compile Include="Data\Foundation\IDataFacadeQueryable.cs" />

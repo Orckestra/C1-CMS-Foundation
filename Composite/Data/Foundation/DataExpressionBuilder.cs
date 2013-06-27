@@ -68,7 +68,7 @@ namespace Composite.Data.Foundation
 
             Expression whereExpression = ExpressionCreator.Where(queryable.Expression, whereLambdaExpression);
 
-            MethodInfo methodInfo = DataFacadeQueryableCache.GetCreateQueryMethodInfo(data.DataSourceId.InterfaceType);
+            MethodInfo methodInfo = DataFacadeReflectionCache.GetCreateQueryMethodInfo(data.DataSourceId.InterfaceType);
 
             return (IQueryable<T>)methodInfo.Invoke(queryable.Provider, new object[] { whereExpression });
         }

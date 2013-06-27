@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Types;
@@ -423,7 +425,7 @@ namespace Composite.Data.Foundation
         {
             Type elementType = GetElementType(sources);
 
-            MethodInfo addRangeToListMethodInfo = DataFacadeQueryableCache.GetAddRangeToListMethodInfo(elementType);
+            MethodInfo addRangeToListMethodInfo = DataFacadeReflectionCache.List_AddRangeMethodInfo(elementType);
 
             Type listType = typeof(List<>).MakeGenericType(elementType);
             var List_Count = listType.GetProperty("Count");
@@ -446,7 +448,7 @@ namespace Composite.Data.Foundation
                 if(taken == count) break;
             }
 
-            MethodInfo asQueryableMethodInfo = DataFacadeQueryableCache.GetAsQueryableMethodInfo(elementType);
+            MethodInfo asQueryableMethodInfo = DataFacadeReflectionCache.Queryable_AsQueryableMethodInfo(elementType);
 
             object listedDataAsQueryable = asQueryableMethodInfo.Invoke(null, new [] { list });
 
@@ -457,11 +459,10 @@ namespace Composite.Data.Foundation
         {
             Type elementType = GetElementType(sources);
 
-            MethodInfo addRangeToListMethodInfo = DataFacadeQueryableCache.GetAddRangeToListMethodInfo(elementType);
-            MethodInfo toListMethodInfo = DataFacadeQueryableCache.GetToListMethodInfo(elementType);
+            MethodInfo addRangeToListMethodInfo = DataFacadeReflectionCache.List_AddRangeMethodInfo(elementType);
+            MethodInfo toListMethodInfo = DataFacadeReflectionCache.Enumerable_ToList(elementType);
 
-            Type listType = DataFacadeQueryableCache.GetListType(elementType);
-            var listedData = Activator.CreateInstance(listType);
+            IList list = DataFacadeReflectionCache.List_New(elementType);
 
             foreach (IQueryable query in sources)
             {
@@ -469,12 +470,19 @@ namespace Composite.Data.Foundation
 
                 var subList = toListMethodInfo.Invoke(null, new object[] { filteredQuery });
 
-                addRangeToListMethodInfo.Invoke(listedData, new object[] { subList });
+                addRangeToListMethodInfo.Invoke(list, new object[] { subList });
             }
 
-            MethodInfo asQueryableMethodInfo = DataFacadeQueryableCache.GetAsQueryableMethodInfo(elementType);
+            MethodInfo asQueryableMethodInfo = DataFacadeReflectionCache.Queryable_AsQueryableMethodInfo(elementType);
 
-            object listedDataAsQueryable = asQueryableMethodInfo.Invoke(null, new object[] { listedData });
+            object listedDataAsQueryable = asQueryableMethodInfo.Invoke(null, new object[] { list });
+
+
+            // TODO: remove before release
+            if (list.Count > 500)
+            {
+                Log.LogInformation("DataFacadeQuery", list.Count + " rows in a single query. Element type:" + elementType.FullName);
+            }
 
             return (IQueryable)listedDataAsQueryable;
         }
@@ -527,20 +535,6 @@ namespace Composite.Data.Foundation
             }
 
             return false;
-        }
-
-        private static bool IsMultipleSourceQueryable(Expression expression)
-        {
-            var constantExpression = expression as ConstantExpression;
-
-            return constantExpression != null 
-                && constantExpression.Value is IDataFacadeQueryable
-                && (constantExpression.Value as IDataFacadeQueryable).Sources.Count() > 1;
-        }
-
-        private static IQueryable[] GetSourceQueries(Expression expression)
-        {
-            return  (((ConstantExpression) expression).Value as IDataFacadeQueryable).Sources.ToArray();
         }
 
         private IQueryable HandleMultipleSourceQueryable(object multipleSourceQueryableCandidate)

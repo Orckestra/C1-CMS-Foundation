@@ -114,7 +114,7 @@ namespace Composite.Data.Foundation
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            MethodInfo methodInfo = DataFacadeQueryableCache.GetDataFacadeQueryableGetEnumeratorMethodInfo(typeof(T));         
+            MethodInfo methodInfo = DataFacadeReflectionCache.GetDataFacadeQueryableGetEnumeratorMethodInfo(typeof(T));         
 
             return (IEnumerator)methodInfo.Invoke(this, null);
         }
@@ -145,7 +145,7 @@ namespace Composite.Data.Foundation
 
         public object Execute(Expression expression)
         {
-            MethodInfo methodInfo = DataFacadeQueryableCache.GetDataFacadeQueryableExecuteMethodInfo(typeof(T), expression.Type);
+            MethodInfo methodInfo = DataFacadeReflectionCache.GetDataFacadeQueryableExecuteMethodInfo(typeof(T), expression.Type);
 
             return methodInfo.Invoke(this, new object[] { expression });
         }
