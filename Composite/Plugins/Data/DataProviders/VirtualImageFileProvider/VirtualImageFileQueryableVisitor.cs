@@ -171,10 +171,8 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
         }
 
         /// <summary>
-        /// Converts predicates Expression<Func<IImage, bool>> to Expression<Func<IMediaFile, bool>>
+        /// Converts predicates Expression&lt;Func&lt;IImage, bool&gt;&gt; to Expression&lt;Func&lt;IMediaFile, bool&gt;&gt;
         /// </summary>
-        /// <param name="expression"></param>
-        /// <returns></returns>
         private static Expression ConvertPredicate(Expression predicate)
         {
             return new ParameterTypeReplacer().Visit(predicate);
