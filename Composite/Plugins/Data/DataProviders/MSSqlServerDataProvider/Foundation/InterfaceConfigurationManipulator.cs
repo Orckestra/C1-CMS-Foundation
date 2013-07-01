@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
@@ -30,7 +31,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     string typeFullName = (dataTypeDescriptor.Namespace ?? string.Empty) + "." + dataTypeDescriptor.Name;
                 
                     throw new InvalidOperationException(
-                        string.Format("Configuration already contains an interface with data type ID '{0}', type name '{1}'",
+                        string.Format("Configuration file '{0}' already contains an interface with data type ID '{1}', type name '{2}'",
+                                      configuration.ConfigurationFilePath,
                                       interfaceConfig.DataTypeId,
                                       typeFullName));
                 }
@@ -157,11 +159,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
         private sealed class SqlDataProviderConfiguration
         {
+            readonly string _configurationFilePath;
             readonly C1Configuration _configuration;
 
             public SqlDataProviderConfiguration(string providerName)
             {
-                _configuration = new C1Configuration(System.IO.Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", providerName)));
+                _configurationFilePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), 
+                                                      string.Format("{0}.config", providerName));
+                _configuration = new C1Configuration(_configurationFilePath);
 
                 Section = _configuration.GetSection(SqlDataProviderConfigurationSection.SectionName) as SqlDataProviderConfigurationSection;
 
@@ -180,6 +185,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 private set;
             }
 
+
+            public string ConfigurationFilePath
+            {
+                get { return _configurationFilePath; }
+            }
 
 
             public void Save()
