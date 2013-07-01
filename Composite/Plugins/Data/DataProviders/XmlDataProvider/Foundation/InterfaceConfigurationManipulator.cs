@@ -23,7 +23,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         /// <param name="dataTypeDescriptor"></param>
         public static void AddNew(string providerName, DataTypeDescriptor dataTypeDescriptor)
         {
-            XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(providerName);
+            var xmlDataProviderConfiguration = new XmlDataProviderConfiguration(providerName);
 
             XmlProviderInterfaceConfigurationElement configurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor);
 
@@ -35,7 +35,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                 if (key != null)
                 {
-                    throw new InvalidOperationException(string.Format("Configuration already contains an interface type with id '{0}'", configurationElement.DataTypeId));
+                    throw new InvalidOperationException(
+                        "Configuration file '{0}' already contains an interface type with id '{1}'."
+                        .FormatWith(xmlDataProviderConfiguration.ConfigurationFilePath, configurationElement.DataTypeId));
                 }
             }
 
@@ -234,11 +236,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private sealed class XmlDataProviderConfiguration
         {
-            C1Configuration _configuration = null;
+            readonly string _configurationFilePath;
+            readonly C1Configuration _configuration;
 
             public XmlDataProviderConfiguration(string providerName)
             {
-                _configuration = new C1Configuration(Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory), string.Format("{0}.config", providerName)));
+                _configurationFilePath =
+                    Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.ConfigurationDirectory),
+                                 string.Format("{0}.config", providerName));
+
+                _configuration = new C1Configuration(_configurationFilePath);
 
                 this.Section = _configuration.GetSection(XmlDataProviderConfigurationSection.SectionName) as XmlDataProviderConfigurationSection;
 
@@ -257,6 +264,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 private set;
             }
 
+
+            public string ConfigurationFilePath
+            {
+                get { return _configurationFilePath; }
+            }
 
 
             public void Save()

@@ -29,6 +29,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
     [ConfigurationElementType(typeof(XmlDataProviderData))]
     internal partial class XmlDataProvider : IWritableDataProvider, IDynamicDataProvider, IGeneratedTypesDataProvider, ILocalizedDataProvider, ISupportCachingDataProvider
     {
+        private static readonly string LogTitle = typeof(XmlDataProvider).Name;
+
         private readonly string _fileStoreDirectory;
         private readonly IEnumerable<XmlProviderInterfaceConfigurationElement> _dataTypeConfigurationElements;
         private XmlDataTypeStoresContainer _xmlDataTypeStoresContainer;
@@ -99,11 +101,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     continue;
                 }
 
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value);
+                Guid dataTypeId = element.DataTypeId.Value;
+
+                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId);
+
+                if (dataTypeDescriptor == null)
+                {
+                    Log.LogError(LogTitle, "Failed to find interface by id '{0}'. Skipping code generation for that type", dataTypeId);
+                    continue;
+                }
 
                 if (!dataTypeDescriptor.ValidateRuntimeType())
                 {
-                    Log.LogError("XmlDataProvider", string.Format("The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.BuildNewHandlerTypeName));
+                    Log.LogError(LogTitle, "The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.BuildNewHandlerTypeName);
                     continue;
                 }
 

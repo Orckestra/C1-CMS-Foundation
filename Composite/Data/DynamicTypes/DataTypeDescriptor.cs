@@ -800,6 +800,8 @@ namespace Composite.Data.DynamicTypes
         /// <returns></returns>
         public static bool ValidateRuntimeType(this DataTypeDescriptor dataTypeDescriptor)
         {
+            Verify.ArgumentNotNull(dataTypeDescriptor, "dataTypeDescriptor");
+
             if (dataTypeDescriptor.IsCodeGenerated) return true;
 
             Type dataType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
