@@ -189,6 +189,7 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositespellcheck\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\plugin.min.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\content.inline.min.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\content.min.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\icomoon-small.svg" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\icomoon.svg" />
@@ -197,7 +198,6 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\img\object.gif" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\img\trans.gif" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\img\wline.gif" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\skin.classic.min.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\skin.ie7.min.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\skin.min.css" />
     <Content Include="Composite\content\misc\preview\error.aspx" />
