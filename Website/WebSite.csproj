@@ -176,6 +176,7 @@
     <Content Include="Composite\content\forms\Administrative\DeleteUserControlFunctionConfirm.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\EditMasterPage.xml" />
     <Content Include="Composite\content\forms\Administrative\PageTemplate\AddNewPageTemplate.xml" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\dropmedia\dropmedia.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\selection\active-line.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\selection\mark-selection.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlembedded\htmlembedded.js" />
@@ -184,9 +185,9 @@
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\BlockSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\ie.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\autolink\plugin.min.js" />
+    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositespellcheck\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\composite\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositeimageresize\plugin.min.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositespellcheck\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\content.inline.min.css" />

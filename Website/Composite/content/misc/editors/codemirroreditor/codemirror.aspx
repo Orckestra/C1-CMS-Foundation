@@ -5,7 +5,9 @@
 
 <head>
 	<title>Codemirror</title>
-
+	<script type="text/javascript">
+		top.Application.declareTopLocal(window);
+	</script>
 	<script type="text/javascript" src="CodeMirror/lib/codemirror.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/xml/xml.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/javascript/javascript.js"></script>
@@ -14,6 +16,7 @@
 	<script type="text/javascript" src="CodeMirror/mode/htmlembedded/htmlembedded.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/clike/clike.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/razor/razor.js"></script>
+	<script type="text/javascript" src="CodeMirror/addon/dropmedia/dropmedia.js"></script>
 	<link rel="stylesheet" type="text/css" href="CodeMirror/lib/codemirror.css" />
 	<link rel="stylesheet" type="text/css" href="codemirror.css" />
 	<link rel="stylesheet" type="text/css" href="theme/composite.css" />
