@@ -46,7 +46,7 @@
 			<ui:popup id="insertpopup">
 				<ui:menubody>
 					<ui:menugroup rel="insertions">
-						<ui:menuitem cmd="mceInsertTable" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTable}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding" />
+						<ui:menuitem cmd="compositeInsertTable" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTable}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertImage" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImage}" image="${icon:image}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertRendering" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRendering}" image="${icon:functioncall}" binding="EditorMenuItemBinding" />
 						<ui:menuitem cmd="compositeInsertCharacter" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCharacter}" image="${icon:specialchar}" binding="EditorMenuItemBinding" />

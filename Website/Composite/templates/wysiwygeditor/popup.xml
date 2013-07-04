@@ -48,9 +48,9 @@
 						</ui:menuitem>
 					</ui:menugroup>
 					<ui:menugroup>
-						<ui:menuitem cmd="mceInsertTable" val="update" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTableProperties}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding"/>
-						<ui:menuitem cmd="mceTableCellProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCellProperties}" image="${skin}/wysiwygeditor/table_cell_props.png" binding="EditorMenuItemBinding"/>
-						<ui:menuitem cmd="mceTableRowProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRowProperties}" image="${skin}/wysiwygeditor/table_row_props.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="compositeInsertTable" val="update" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTableProperties}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="compositeTableCellProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCellProperties}" image="${skin}/wysiwygeditor/table_cell_props.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="compositeTableRowProps" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRowProperties}" image="${skin}/wysiwygeditor/table_row_props.png" binding="EditorMenuItemBinding"/>
 					</ui:menugroup>	
 					<ui:menugroup>
 						<ui:menuitem label="${string:Composite.Web.VisualEditor:ContextMenu.LabelInsertRow}" image="${skin}/wysiwygeditor/table_insert_row_before.png" binding="EditorMenuItemBinding">
@@ -94,7 +94,7 @@
 			<ui:menupopup>
 				<ui:menubody>
 					<ui:menugroup rel="insertions">
-						<ui:menuitem cmd="mceInsertTable" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTable}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding"/>
+						<ui:menuitem cmd="compositeInsertTable" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelTable}" image="${skin}/wysiwygeditor/table.png" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="compositeInsertImage" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelImage}" image="${icon:image}" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="compositeInsertRendering" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelRendering}" image="${icon:functioncall}" binding="EditorMenuItemBinding"/>
 						<ui:menuitem cmd="compositeInsertCharacter" val="insert" gui="true" label="${string:Composite.Web.VisualEditor:ContextMenu.LabelCharacter}" image="${icon:specialchar}" binding="EditorMenuItemBinding"/>
