@@ -52,6 +52,8 @@ UrlInputDialogBinding.prototype.onBindingRegister = function () {
 UrlInputDialogBinding.prototype._buildDOMContent = function () {
 
 	UrlInputDialogBinding.superclass._buildDOMContent.call(this);
+
+	this.buildButtonAndLabel();
 }
 
 
@@ -70,9 +72,9 @@ UrlInputDialogBinding.prototype.buildButtonAndLabel = function () {
 		this.shadowTree.box.appendChild(this.shadowTree.labelInput);
 		this.shadowTree.labelInput.style.display = "none";
 		this.shadowTree.labelInput.readOnly = true;
-		
 
 		var self = this;
+		
 		DOMEvents.addEventListener(this.shadowTree.labelInput, DOMEvents.DOUBLECLICK, {
 			handleEvent: function (e) {
 				self.clearLabel();
@@ -125,21 +127,20 @@ UrlInputDialogBinding.prototype.setValue = function (value) {
 
 	UrlInputDialogBinding.superclass.setValue.call(this, value);
 
-	if (this.shadowTree.labelText == null) {
-		this.buildButtonAndLabel();
-	}
+	if (this.isAttached) {
 
-	this.compositeUrl = new Uri(value);
+		this.compositeUrl = new Uri(value);
 
-	if (this.compositeUrl.isMedia || this.compositeUrl.isPage) {
-		var label = TreeService.GetCompositeUrlLabel(value);
-		if (label != value) {
-			this.setLabel(label);
+		if (this.compositeUrl.isMedia || this.compositeUrl.isPage) {
+			var label = TreeService.GetCompositeUrlLabel(value);
+			if (label != value) {
+				this.setLabel(label);
+			}
+		} else {
+			this.clearLabel();
 		}
-	} else {
-		this.clearLabel();
+		this.dispatchAction(UrlInputDialogBinding.URL_SELECTED);
 	}
-	this.dispatchAction(UrlInputDialogBinding.URL_SELECTED);
 }
 
 
