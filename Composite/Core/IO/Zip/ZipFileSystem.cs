@@ -28,7 +28,7 @@ namespace Composite.Core.IO.Zip
         {
             filename = filename.Replace('\\', '/');
 
-            return GetFilenames().Contains(filename);
+            return GetFilenames().Any(f => f.Equals(filename, StringComparison.OrdinalIgnoreCase));
         }
 
 
@@ -37,7 +37,7 @@ namespace Composite.Core.IO.Zip
         {
             directoryName = directoryName.Replace('\\', '/');
 
-            return GetDirectoryNames().Contains(directoryName);
+            return GetDirectoryNames().Any(f => f.Equals(directoryName, StringComparison.OrdinalIgnoreCase));
         }
 
 
