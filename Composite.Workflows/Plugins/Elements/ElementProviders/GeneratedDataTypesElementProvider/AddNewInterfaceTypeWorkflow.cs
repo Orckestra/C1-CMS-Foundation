@@ -32,6 +32,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Dictionary<string, object> bindings = new Dictionary<string, object>();
 
+            bindings.Add("ViewLabel", Texts.AddNewInterfaceTypeStep1_DocumentTitle);
             bindings.Add("NewTypeName", "");
             bindings.Add("NewTypeNamespace", UserSettings.LastSpecifiedNamespace);
             bindings.Add("NewTypeTitle", "");
@@ -77,7 +78,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 GeneratedTypesHelper helper;
                 Type interfaceType = null;
-                if (this.BindingExist("InterfaceType") == true)
+                if (this.BindingExist("InterfaceType"))
                 {
                     interfaceType = this.GetBinding<Type>("InterfaceType");
 
@@ -185,6 +186,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 this.UpdateBinding("InterfaceType", helper.InterfaceType);
+
+                this.UpdateBinding("ViewLabel", typeTitle);
+                RerenderView();
 
                 UserSettings.LastSpecifiedNamespace = typeNamespace;
 
