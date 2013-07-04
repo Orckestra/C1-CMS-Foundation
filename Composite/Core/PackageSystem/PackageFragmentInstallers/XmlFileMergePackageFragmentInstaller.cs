@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 
@@ -56,7 +57,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		/// <exclude />
 		public override IEnumerable<PackageFragmentValidationResult> Validate()
 		{
-			List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+			var validationResult = new List<PackageFragmentValidationResult>();
 
 			if (Configuration.Count(f => f.Name == XmlFileMergePackageFragmentInstaller.mergeContainerElementName) > 1)
 			{
@@ -71,13 +72,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 			foreach (XElement fileElement in filesElement.Elements(mergeElementName))
 			{
-				XAttribute sourceAttribute = fileElement.Attribute(XmlFileMergePackageFragmentInstaller.changeDefFileAttributeName);
-				XAttribute targetAttribute = fileElement.Attribute(XmlFileMergePackageFragmentInstaller.targetFileAttributeName);
+			    XAttribute sourceAttribute;
+			    XAttribute targetAttribute;
 
-				if (sourceAttribute == null || targetAttribute == null)
+                if(!GetAttributeNotNull(fileElement, XmlFileMergePackageFragmentInstaller.changeDefFileAttributeName, validationResult, out sourceAttribute)
+                   || !GetAttributeNotNull(fileElement, XmlFileMergePackageFragmentInstaller.targetFileAttributeName, validationResult, out targetAttribute))
 				{
-					validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "MissingAttribute", fileElement));
-
 					continue;
 				}
 
@@ -88,9 +88,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 				};
 
 
-				if (!C1File.Exists(PathUtil.Resolve(xmlFileMerge.TargetPath)))
+			    string filePath = PathUtil.Resolve(xmlFileMerge.TargetPath);
+                if (!C1File.Exists(filePath))
 				{
-					validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "FileNotFound", fileElement));
+                    validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "File '{0}' not found".FormatWith(filePath), fileElement));
 
 					continue;
 				}
@@ -105,5 +106,20 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 			return validationResult;
 		}
+
+        private static bool GetAttributeNotNull(XElement element, string attributeName, List<PackageFragmentValidationResult> validationSummary, out XAttribute attribute)
+        {
+            attribute = element.Attribute(attributeName);
+
+            if (attribute == null)
+            {
+                validationSummary.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
+                    "MissingAttribute '{0}'. XPath: '{1}' ".FormatWith(attributeName, element.GetXPath())));
+
+                return false;
+            }
+
+            return true;
+        }
 	}
 }
