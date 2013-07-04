@@ -643,6 +643,9 @@ namespace Composite.Data.DynamicTypes
             }
             layout.Add(_panelXml);
 
+            bool widgetsDefined =_dataTypeDescriptor.Fields
+                                .Any(field => (field.FormRenderingProfile != null) && field.FormRenderingProfile.Label != null);
+
             foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 Type bindingType = GetFieldBindingType(fieldDescriptor);
@@ -664,20 +667,61 @@ namespace Composite.Data.DynamicTypes
 
                 _bindingsXml.Add(binding);
 
-                if (_readOnlyFields.Contains(fieldDescriptor.Name) == false)
+                if (!_readOnlyFields.Contains(fieldDescriptor.Name))
                 {
-                    if (string.IsNullOrEmpty(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup) == false)
+                    XElement widgetFunctionMarkup;
+                    string label;
+                    string helptext;
+
+                    if (!string.IsNullOrEmpty(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup))
                     {
-                        XElement widgetFunctionMarkup = XElement.Parse(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup);
-                        WidgetFunctionRuntimeTreeNode widgetRuntimeTreeNode = (WidgetFunctionRuntimeTreeNode)FunctionTreeBuilder.Build(widgetFunctionMarkup);
-                        widgetRuntimeTreeNode.Label = fieldDescriptor.FormRenderingProfile.Label;
-                        widgetRuntimeTreeNode.HelpDefinition = new HelpDefinition(fieldDescriptor.FormRenderingProfile.HelpText);
-                        widgetRuntimeTreeNode.BindingSourceName = bindingName;
-
-                        XElement element = (XElement)widgetRuntimeTreeNode.GetValue();
-
-                        _panelXml.Add(element);
+                        widgetFunctionMarkup = XElement.Parse(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup);
+                        
+                        label = fieldDescriptor.FormRenderingProfile.Label;
+                        helptext = fieldDescriptor.FormRenderingProfile.HelpText;
                     }
+                    else if (!widgetsDefined)
+                    {
+                        // Auto generating a widget
+                        Type fieldType;
+
+                        if (!fieldDescriptor.ForeignKeyReferenceTypeName.IsNullOrEmpty())
+                        {
+                            Type foreignKeyType = Type.GetType(fieldDescriptor.ForeignKeyReferenceTypeName, true);
+
+                            var referenceTemplateType = fieldDescriptor.IsNullable ? typeof(NullableDataReference<>) : typeof(DataReference<>);
+
+                            fieldType = referenceTemplateType.MakeGenericType(foreignKeyType);
+                        }
+                        else
+                        {
+                            fieldType = fieldDescriptor.InstanceType;
+                        }
+
+                        var widgetFunctionProvider = StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(fieldType);
+                        if (widgetFunctionProvider != null)
+                        {
+                            widgetFunctionMarkup = widgetFunctionProvider.SerializedWidgetFunction;
+                            label = fieldDescriptor.Name;
+                            helptext = "";
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    var widgetRuntimeTreeNode = (WidgetFunctionRuntimeTreeNode)FunctionTreeBuilder.Build(widgetFunctionMarkup);
+                    widgetRuntimeTreeNode.Label = label;
+                    widgetRuntimeTreeNode.HelpDefinition = new HelpDefinition(helptext);
+                    widgetRuntimeTreeNode.BindingSourceName = bindingName;
+
+                    XElement element = (XElement)widgetRuntimeTreeNode.GetValue();
+                    _panelXml.Add(element);
                 }
             }
 

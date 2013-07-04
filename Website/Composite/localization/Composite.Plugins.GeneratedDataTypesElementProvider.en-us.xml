@@ -4,6 +4,8 @@
   <string key="GlobalDataFolderToolTip" value="Global datatypes" />
   <string key="GlobalDataFolderLabel_OnlyGlobalData" value="Website Items" />
   <string key="GlobalDataFolderToolTip_OnlyGlobalData" value="Website Items (Data)" />
+  <string key="StaticDataTypesFolderLabel" value="Static Datatypes" />
+  <string key="StaticDataTypesFolderToolTip" value="Custom defined interfaces" />
   <string key="PageDataFolderDataFolderLabel" value="Page Datafolders" />
   <string key="PageDataFolderDataFolderToolTip" value="Page datafolders" />
   <string key="PageMetaDataFolderLabel" value="Page Metatypes" />

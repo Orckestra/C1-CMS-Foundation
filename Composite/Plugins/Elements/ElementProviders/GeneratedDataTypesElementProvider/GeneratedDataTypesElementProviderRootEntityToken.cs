@@ -65,6 +65,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         public static string GlobalDataTypeFolderId { get { return "GlobalDataTypeFolder"; } }
 
         /// <exclude />
+        public static string StaticGlobalDataTypeFolderId { get { return "StaticGlobalDataTypeFolder"; } }
+
+        /// <exclude />
         public static string PageDataFolderTypeFolderId { get { return "PageDataFolderTypeFolder"; } }
 
         /// <exclude />

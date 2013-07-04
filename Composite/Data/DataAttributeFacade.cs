@@ -58,6 +58,17 @@ namespace Composite.Data
         }
 
 
+        /// <summary>
+        /// Checks whether the specified type is a custom defined IData interface, which is not generated
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <exclude />
+        internal static bool IsStaticDataType(this Type interfaceType)
+        {
+            return typeof (IData).IsAssignableFrom(interfaceType)
+                   && interfaceType.Assembly != typeof (IData).Assembly
+                   && !IsGenerated(interfaceType);
+        }
 
         /// <exclude />
         public static bool IsGenerated(this Type interfaceType)

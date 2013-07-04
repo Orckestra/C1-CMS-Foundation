@@ -1105,6 +1105,8 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Media_SelectDialog_Title { get { return T("Website.Media.SelectDialog.Title"); } } 
  /// <summary>Select Image</summary> 
  public static string Website_Image_SelectDialog_Title { get { return T("Website.Image.SelectDialog.Title"); } } 
+ /// <summary>Select Folder</summary> 
+ public static string Website_Folder_SelectDialog_Title { get { return T("Website.Folder.SelectDialog.Title"); } } 
  /// <summary>General settings</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_LabelFieldGroup { get { return T("Website.Forms.Administrative.EditUserStep1.LabelFieldGroup"); } } 
  /// <summary>User name</summary> 
@@ -2471,6 +2473,10 @@ namespace Composite.Core.ResourceSystem
  public static string GlobalDataFolderLabel_OnlyGlobalData { get { return T("GlobalDataFolderLabel_OnlyGlobalData"); } } 
  /// <summary>Website Items (Data)</summary> 
  public static string GlobalDataFolderToolTip_OnlyGlobalData { get { return T("GlobalDataFolderToolTip_OnlyGlobalData"); } } 
+ /// <summary>Static Datatypes</summary> 
+ public static string StaticDataTypesFolderLabel { get { return T("StaticDataTypesFolderLabel"); } } 
+ /// <summary>Custom defined interfaces</summary> 
+ public static string StaticDataTypesFolderToolTip { get { return T("StaticDataTypesFolderToolTip"); } } 
  /// <summary>Page Datafolders</summary> 
  public static string PageDataFolderDataFolderLabel { get { return T("PageDataFolderDataFolderLabel"); } } 
  /// <summary>Page datafolders</summary> 

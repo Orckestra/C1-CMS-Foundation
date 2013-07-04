@@ -28,6 +28,7 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
@@ -95,7 +96,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     internal sealed class GeneratedDataTypesElementProvider : IHooklessElementProvider, ILocaleAwareElementProvider
     {
         private ElementProviderContext _providerContext;
-        private bool _onlyShowGlobalDatas;
+        private bool _websiteItemsView;
         private DataGroupingProviderHelper _dataGroupingProviderHelper;
 
 
@@ -184,7 +185,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         /// <exclude />
         public GeneratedDataTypesElementProvider(bool onlyShowGlobalDatas)
         {
-            _onlyShowGlobalDatas = onlyShowGlobalDatas;
+            _websiteItemsView = onlyShowGlobalDatas;
         }
 
 
@@ -198,18 +199,18 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 _dataGroupingProviderHelper = new DataGroupingProviderHelper(_providerContext);
                 _dataGroupingProviderHelper.FolderOpenIcon = GetIconHandle("generated-interface-open");
                 _dataGroupingProviderHelper.FolderClosedIcon = GetIconHandle("generated-interface-closed");
-                _dataGroupingProviderHelper.OnCreateLeafElement = data => { return GetElementFromData(data); };
-                _dataGroupingProviderHelper.OnCreateGhostedLeafElement = data => { return GetGhostedElementFromData(data); };
-                _dataGroupingProviderHelper.OnCreateDisabledLeafElement = data => { return GetDisabledElementFromData(data); };
-                _dataGroupingProviderHelper.OnAddActions = (element, propertyValues) => { return AddGroupFolderActions(element, propertyValues); };
+                _dataGroupingProviderHelper.OnCreateLeafElement = GetElementFromData;
+                _dataGroupingProviderHelper.OnCreateGhostedLeafElement = GetGhostedElementFromData;
+                _dataGroupingProviderHelper.OnCreateDisabledLeafElement = GetDisabledElementFromData;
+                _dataGroupingProviderHelper.OnAddActions = AddGroupFolderActions;
                 _dataGroupingProviderHelper.OnGetRootParentEntityToken = GetRootParentEntityToken;
                 _dataGroupingProviderHelper.OnOwnsType = type =>
                 {
-                    if (type.IsGenerated() == false) return false;
+                    if (!type.IsGenerated() && !type.IsStaticDataType()) return false;
                     if (PageFolderFacade.GetAllFolderTypes().Contains(type)) return false;
                     if (PageMetaDataFacade.GetAllMetaDataTypes().Contains(type)) return false;
 
-                    if (_onlyShowGlobalDatas)
+                    if (_websiteItemsView)
                     {
                         return IsTypeWhiteListed(type);
                     }
@@ -248,14 +249,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             List<Element> roots = new List<Element>();
 
             Element globalDataElement;
-            if (_onlyShowGlobalDatas)
+            if (_websiteItemsView)
             {
                 globalDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
-                        Label = GetText("GlobalDataFolderLabel_OnlyGlobalData"),
-                        ToolTip = GetText("GlobalDataFolderToolTip_OnlyGlobalData"),
+                        Label = Texts.GlobalDataFolderLabel_OnlyGlobalData,
+                        ToolTip = Texts.GlobalDataFolderToolTip_OnlyGlobalData,
                         HasChildren = true,
                         Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
                         OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
@@ -268,8 +269,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     {
                         VisualData = new ElementVisualizedData
                         {
-                            Label = GetText("GlobalDataFolderLabel"),
-                            ToolTip = GetText("GlobalDataFolderToolTip"),
+                            Label = Texts.GlobalDataFolderLabel,
+                            ToolTip = Texts.GlobalDataFolderToolTip,
                             HasChildren = GlobalDataTypeFacade.GetAllGlobalDataTypes().Any(),
                             Icon = GeneratedDataTypesElementProvider.RootClosed,
                             OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
@@ -277,7 +278,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     };
             }
 
-            if (_onlyShowGlobalDatas == false)
+            if (!_websiteItemsView)
             {
                 globalDataElement.AddAction(
                     new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewInterfaceTypeWorkflow"), _addNewInterfaceTypePermissionTypes) { Payload = _providerContext.ProviderName }))
@@ -322,9 +323,25 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             roots.Add(globalDataElement);
 
 
-            if (_onlyShowGlobalDatas == false)
+            if (!_websiteItemsView)
             {
-                bool pageDataFolderHasChildren = PageFolderFacade.GetAllFolderTypes().Count() > 0;
+                bool staticDataTypesFolderHasChildren = DataFacade.GetAllKnownInterfaces().Any(t => t.IsStaticDataType());
+
+                Element staticDataTypesFolderElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId)))
+                {
+                    VisualData = new ElementVisualizedData
+                    {
+                        Label = Texts.StaticDataTypesFolderLabel,
+                        ToolTip = Texts.StaticDataTypesFolderToolTip, 
+                        HasChildren = staticDataTypesFolderHasChildren,
+                        Icon = GeneratedDataTypesElementProvider.RootClosed,
+                        OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
+                    }
+                };
+
+                roots.Add(staticDataTypesFolderElement);
+
+                bool pageDataFolderHasChildren = PageFolderFacade.GetAllFolderTypes().Any();
 
                 Element pageDataFolderElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
                 {
@@ -360,7 +377,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 roots.Add(pageDataFolderElement);
 
 
-                bool pageMetaDataHasChildren = PageMetaDataFacade.GetAllMetaDataTypes().Count() > 0;
+                bool pageMetaDataHasChildren = PageMetaDataFacade.GetAllMetaDataTypes().Any();
 
 
                 Element pageMetaDataElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)))
@@ -472,7 +489,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return new List<Element>();
             }
 
-            throw new NotImplementedException();
+            throw new InvalidOperationException("This code should not be reachable");
         }
 
 
@@ -481,42 +498,64 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)
             {
-                return GetGlobalDataTypesElements(searchToken).OrderBy(f => f.VisualData.Label).ToList();
+                return GetGlobalDataTypesElements(searchToken, false).OrderBy(f => f.VisualData.Label).ToList();
             }
-            else if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)
+            if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId)
+            {
+                return GetGlobalDataTypesElements(searchToken, true).OrderBy(f => f.VisualData.Label).ToList();
+            }
+            if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)
             {
                 return GetPageFolderDataTypesElements(searchToken).OrderBy(f => f.VisualData.Label).ToList();
             }
-            else if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)
+            if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)
             {
                 return GetPageMetaDataTypesElements(searchToken).OrderBy(f => f.VisualData.Label).ToList();
             }
-            else
-            {
-                throw new NotImplementedException();
-            }
+
+            throw new InvalidOperationException("This code should not be reachable");
         }
 
 
 
-        private List<Element> GetGlobalDataTypesElements(SearchToken searchToken)
+        private List<Element> GetGlobalDataTypesElements(SearchToken searchToken, bool showStatic)
         {
             List<Element> elements = new List<Element>();
 
-            IEnumerable<Type> allGeneratedInterfaces = DataFacade.GetGeneratedInterfaces().OrderBy(t => t.FullName);
-            allGeneratedInterfaces = allGeneratedInterfaces.Except(PageFolderFacade.GetAllFolderTypes());
-            allGeneratedInterfaces = allGeneratedInterfaces.Except(PageMetaDataFacade.GetAllMetaDataTypes());
+            IEnumerable<Type> interfaceList;
+            
+            if (_websiteItemsView)
+            {
+                // Showing both generated and custom static interfaces
+                interfaceList = DataFacade.GetAllInterfaces().Where(i => i.IsStaticDataType() || i.IsGenerated());
+            }
+            else
+            {
+                if (showStatic)
+                {
+                    interfaceList = DataFacade.GetAllInterfaces().Where(t => t.IsStaticDataType());
+                }
+                else
+                {
+                    interfaceList = DataFacade.GetGeneratedInterfaces();
+                }
+            }
+
+            interfaceList = interfaceList.OrderBy(t => t.FullName);
+
+            interfaceList = interfaceList.Except(PageFolderFacade.GetAllFolderTypes());
+            interfaceList = interfaceList.Except(PageMetaDataFacade.GetAllMetaDataTypes());
 
             if (searchToken.IsValidKeyword())
             {
-                allGeneratedInterfaces = allGeneratedInterfaces.Where(x => x.FullName.ToLower().Contains(searchToken.Keyword.ToLower())).ToList();
+                interfaceList = interfaceList.Where(x => x.FullName.ToLower().Contains(searchToken.Keyword.ToLower())).ToList();
             }
 
 
-            Dictionary<Type, DataTypeDescriptor> interfaces = allGeneratedInterfaces.ToDictionary(f => f, f => DynamicTypeManager.GetDataTypeDescriptor(f));
+            Dictionary<Type, DataTypeDescriptor> interfaces = interfaceList.ToDictionary(f => f, DynamicTypeManager.GetDataTypeDescriptor);
 
             IEnumerable<KeyValuePair<Type, DataTypeDescriptor>> sortedInterface = interfaces;
-            if (_onlyShowGlobalDatas)
+            if (_websiteItemsView)
             {
                 sortedInterface = interfaces.OrderBy(f => f.Value.Title);
             }
@@ -530,7 +569,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 string typeName = TypeManager.SerializeType(type);
 
-                if (_onlyShowGlobalDatas && !whiteList.Contains(typeName))
+                if (_websiteItemsView && !whiteList.Contains(typeName))
                 {
                     continue;
                 }
@@ -556,7 +595,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 string label = type.FullName;
-                if (_onlyShowGlobalDatas)
+                if (_websiteItemsView)
                 {
                     label = dataTypeDescriptor.Title;
                 }
@@ -575,7 +614,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 };
 
 
-                if (_onlyShowGlobalDatas == false)
+                if (!_websiteItemsView)
                 {
                     AddNonShowOnlyGlobalActions(type, typeName, element);
                 }
@@ -700,7 +739,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 });
 
 
-            bool exists = DataFacade.GetData<IGeneratedTypeWhiteList>().Where(f => f.TypeManagerTypeName == typeName).Any();
+            bool exists = DataFacade.GetData<IGeneratedTypeWhiteList>().Any(f => f.TypeManagerTypeName == typeName);
 
 
             element.AddAction(
@@ -1161,16 +1200,18 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (!isPageFolder)
             {
-                if (_onlyShowGlobalDatas && !IsTypeWhiteListed(type)) return null;
+                if (_websiteItemsView && !IsTypeWhiteListed(type)) return null;
 
                 return new GeneratedDataTypesElementProviderTypeEntityToken(
                     TypeManager.SerializeType(type),
                     _providerContext.ProviderName,
-                    GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
+                    (_websiteItemsView || type.IsGenerated())
+                    ? GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
+                    : GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId
                 );
             }
 
-            if (_onlyShowGlobalDatas) return null;
+            if (_websiteItemsView) return null;
 
             return new GeneratedDataTypesElementProviderTypeEntityToken(
                     TypeManager.SerializeType(type),
