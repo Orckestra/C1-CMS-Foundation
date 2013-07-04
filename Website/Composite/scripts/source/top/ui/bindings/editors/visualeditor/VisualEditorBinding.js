@@ -465,47 +465,14 @@ VisualEditorBinding.prototype._maybeShowEditor = function () {
 VisualEditorBinding.prototype.extractBody = function ( html ) {
 	
 	var result = null;
-	var doc = XMLParser.parse(html);
-
-	if (doc != null) {
-
-		/* For some lame reason, IE cannot find elements in a DOM document based 
-		 * on their node name. This must be something new and absurd. Instead, we 
-		 * locate the element by ordinal index and forget about it. But this is 
-		 * seriously twisted, so consider looking into it...
-		 */
-		var children = new List(doc.documentElement.childNodes);
-		var elements = new List();
-		children.each(function(child) {
-			if (child.nodeType == Node.ELEMENT_NODE) {
-				elements.add(child);
-			}
-		});
-
-		//get body
-		var target = elements.get(1);
-
-		if (target == null) {
-			if (Application.isDeveloperMode) {
-				alert("VisualEditorBinding: Bad HTML!" + "\n\n" + html);
-			}
-		} else {
-			result = DOMSerializer.serialize(target);
-			result = result.substring(result.indexOf(">") + 1, result.length);
-			result = result.substring(0, result.lastIndexOf("<"));
-
-			//Clean document from body content
-			while (target.lastChild) target.removeChild(target.lastChild);
-			target.appendChild(doc.createTextNode("\n${body}\n\t"));
-			this._xhtml = DOMSerializer.serialize(doc);
-		}
-	}
-
-	/*
-	 * We don't want to return a null here.
-	 */
-	if (result == null) {
+	var re = /(<body\s*[^>]*>)([\S\s]*)(<\/body>)/i;
+	var match = html.match(re);
+	if (match) {
+		result = match[2];
+		this._xhtml = html.replace(re, "$1\n${body}\n\t$3");
+	} else {
 		result = new String("");
+		this._xhtml = VisualEditorBinding.XHTML;
 	}
 	return result;
 }
