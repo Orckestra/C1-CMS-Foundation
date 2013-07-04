@@ -63,8 +63,8 @@ namespace Composite.Functions
             foreach (string functionName in functionNames)
             {
                 IWidgetFunction widgetFunction = FunctionFacade.GetWidgetFunction(functionName);
-                bool sameType = widgetFunction.ReturnType.Equals(type);
-                if (sameType && widgetFunction.ParameterProfiles.Where(p => p.IsRequired).Any() == false)
+                bool sameType = widgetFunction.ReturnType == type;
+                if (sameType && !widgetFunction.ParameterProfiles.Any(p => p.IsRequired))
                 {
                     return new WidgetFunctionProvider(widgetFunction);
                 }
