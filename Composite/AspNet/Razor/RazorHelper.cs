@@ -32,68 +32,16 @@ namespace Composite.AspNet.Razor
         /// <returns></returns>
         public static object ExecuteRazorPage(
             string virtualPath, 
-            Action<WebPageBase> setParameters, 
-            Type resultType, 
-            FunctionContextContainer functionContextContainer) 
+            Action<WebPageBase> setParameters,
+            Type resultType,
+            FunctionContextContainer functionContextContainer)
         {
-   			
-            string output; 
-
             WebPageBase webPage = null;
             try
             {
                 webPage = WebPageBase.CreateInstanceFromVirtualPath(virtualPath);
-                var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] {"cshtml"});
 
-                object requestLock = null;
-                HttpContextBase httpContext;
-
-                HttpContext currentContext = HttpContext.Current;
-                if (currentContext == null)
-                {
-                    httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
-                }
-                else
-                {
-                    httpContext = new HttpContextWrapper(currentContext);
-
-                    requestLock = GetRazorExecutionLock(currentContext);
-                }
-
-                var pageContext = new WebPageContext(httpContext, webPage, startPage);
-                if (functionContextContainer != null)
-                {
-                    pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
-                }
-
-                if (setParameters != null)
-                {
-                    setParameters(webPage);
-                }
-
-                var sb = new StringBuilder();
-                using (var writer = new StringWriter(sb))
-                {
-                    bool lockTaken = false;
-                    try
-                    {
-                        if (requestLock != null)
-                        {
-                            Monitor.Enter(requestLock, ref lockTaken);
-                        }
-
-                        webPage.ExecutePageHierarchy(pageContext, writer);
-                    }
-                    finally
-                    {
-                        if (lockTaken)
-                        {
-                            Monitor.Exit(requestLock);
-                        }
-                    }
-                }
-
-                output = sb.ToString().Trim();
+                return ExecuteRazorPage(webPage, setParameters, resultType, functionContextContainer);
             }
             finally
             {
@@ -102,6 +50,73 @@ namespace Composite.AspNet.Razor
                     (webPage as IDisposable).Dispose();
                 }
             }
+        }
+
+        /// <summary>
+        /// Executes the razor page.
+        /// </summary>
+        /// <param name="webPage">The web page.</param>
+        /// <param name="setParameters">Delegate to set the parameters.</param>
+        /// <param name="resultType">The type of the result.</param>
+        /// <param name="functionContextContainer">The function context container</param>
+        /// <returns></returns>
+        public static object ExecuteRazorPage(
+            WebPageBase webPage,
+            Action<WebPageBase> setParameters, 
+            Type resultType, 
+            FunctionContextContainer functionContextContainer) 
+        {
+            var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] {"cshtml"});
+
+            object requestLock = null;
+            HttpContextBase httpContext;
+
+            HttpContext currentContext = HttpContext.Current;
+            if (currentContext == null)
+            {
+                httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
+            }
+            else
+            {
+                httpContext = new HttpContextWrapper(currentContext);
+
+                requestLock = GetRazorExecutionLock(currentContext);
+            }
+
+            var pageContext = new WebPageContext(httpContext, webPage, startPage);
+            if (functionContextContainer != null)
+            {
+                pageContext.PageData.Add(PageContext_FunctionContextContainer, functionContextContainer);
+            }
+
+            if (setParameters != null)
+            {
+                setParameters(webPage);
+            }
+
+            var sb = new StringBuilder();
+            using (var writer = new StringWriter(sb))
+            {
+                bool lockTaken = false;
+                try
+                {
+                    if (requestLock != null)
+                    {
+                        Monitor.Enter(requestLock, ref lockTaken);
+                    }
+
+                    webPage.ExecutePageHierarchy(pageContext, writer);
+                }
+                finally
+                {
+                    if (lockTaken)
+                    {
+                        Monitor.Exit(requestLock);
+                    }
+                }
+            }
+
+            string output = sb.ToString().Trim();
             
 
 			if (resultType == typeof(XhtmlDocument))
@@ -124,6 +139,8 @@ namespace Composite.AspNet.Razor
 
 			return ValueTypeConverter.Convert(output, resultType);
         }
+
+
 
         private static object GetRazorExecutionLock(HttpContext currentContext)
         {

@@ -135,7 +135,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     bool typeOk = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
                     if (!typeOk)
                     {
-                        Log.LogError("XmlDataProvider", string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
+                        Log.LogError(LogTitle, string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
                         continue;
                     }
 
@@ -163,7 +163,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     {
                         DataProviderRegistry.AddKnownDataType(interfaceType, _dataProviderContext.ProviderName);
                     }
-                    Log.LogError("XmlDataProvider", "Failed initialization for the datatype {{{0}}}, {1}", dataTypeId, dataTypeDescriptor.TypeManagerTypeName);
+                    Log.LogError(LogTitle, "Failed initialization for the datatype {{{0}}}, {1}", dataTypeId, dataTypeDescriptor.TypeManagerTypeName);
                 }
             }
         }

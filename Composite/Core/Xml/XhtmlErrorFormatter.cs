@@ -6,13 +6,21 @@ namespace Composite.Core.Xml
     /// <summary>
     /// Provide html formatting for errors
     /// </summary>
-    internal static class XhtmlErrorFormatter
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class XhtmlErrorFormatter
     {
         private const string ErrorDivStyle = "border: 1px solid red; padding: 2px 6px 2px 6px; background-color: InfoBackground; color: InfoText; -moz-border-radius: 4px; -moz-box-shadow: 1px 1px 3px 0 rgba(0,0,0,0.75); margin-bottom: 5px;font-size: 12px; line-height: 16px;";
         private const string SourceCodeStyle = "border: 1px solid #AAAAAA; padding: 5px; background-color: #EEEEEE;font-size: 12px;";
         private const string SourceCodeErrorLineStyle = "background-color: white; color: red";
         private static readonly string ExceptionData_SourceCode = "C1.SourceCode";
 
+        /// <summary>
+        /// Embeds the souce code information.
+        /// </summary>
+        /// <param name="ex">The exception.</param>
+        /// <param name="sourceCodeLines">The source code lines.</param>
+        /// <param name="errorLine">The error line number.</param>
         public static void EmbedSouceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
         {
             var result = new XElement(Namespaces.Xhtml + "pre", new XAttribute("style", SourceCodeStyle));
