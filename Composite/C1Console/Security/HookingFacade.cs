@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using Composite.Core.Collections.Generic;
-using Composite.C1Console.Events;
-using Composite.C1Console.Security.Foundation;
-using Composite.C1Console.Security.Foundation.PluginFacades;
-using Composite.Core.Logging;
 using System.ComponentModel;
+using Composite.C1Console.Events;
+using Composite.Core;
+
 
 
 namespace Composite.C1Console.Security
@@ -61,7 +57,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
@@ -83,7 +79,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
@@ -105,7 +101,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
@@ -127,7 +123,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
@@ -150,7 +146,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
@@ -172,7 +168,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
@@ -195,7 +191,7 @@ namespace Composite.C1Console.Security
             }
             catch (Exception ex)
             {
-                LoggingService.LogCritical("HookingFacade", ex);
+                Log.LogCritical("HookingFacade", ex);
 
                 GlobalInitializerFacade.FatalResetTheSytem();
 
