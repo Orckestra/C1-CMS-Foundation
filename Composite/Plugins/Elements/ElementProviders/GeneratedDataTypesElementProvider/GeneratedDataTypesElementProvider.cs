@@ -554,18 +554,22 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             Dictionary<Type, DataTypeDescriptor> interfaces = interfaceList.ToDictionary(f => f, DynamicTypeManager.GetDataTypeDescriptor);
 
-            IEnumerable<KeyValuePair<Type, DataTypeDescriptor>> sortedInterface = interfaces;
+            IEnumerable<KeyValuePair<Type, DataTypeDescriptor>> sortedInterfaces = interfaces;
             if (_websiteItemsView)
             {
-                sortedInterface = interfaces.OrderBy(f => f.Value.Title);
+                sortedInterfaces = interfaces.OrderBy(f => f.Value.Title);
             }
 
             List<string> whiteList = DataFacade.GetData<IGeneratedTypeWhiteList>().Select(element => element.TypeManagerTypeName).ToList();
 
-            foreach (var kvp in sortedInterface)
+            foreach (var kvp in sortedInterfaces)
             {
                 Type type = kvp.Key;
                 DataTypeDescriptor dataTypeDescriptor = kvp.Value;
+
+                DataTypeDescriptor tempDescriptor;
+
+                bool storeCreated = DynamicTypeManager.TryGetDataTypeDescriptor(type.GetImmutableTypeId(), out tempDescriptor);
 
                 string typeName = TypeManager.SerializeType(type);
 
@@ -583,9 +587,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasChildren;
                 using (new DataScope(dataScopeIdentifier))
                 {
-                    hasChildren = DataFacade.GetData(type).Any();
+                    hasChildren = storeCreated && DataFacade.GetData(type).Any();
 
-                    if (DataLocalizationFacade.IsLocalized(type))
+                    if (!hasChildren && storeCreated && DataLocalizationFacade.IsLocalized(type))
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
@@ -614,14 +618,14 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 };
 
 
-                if (!_websiteItemsView)
+                if (storeCreated && !_websiteItemsView)
                 {
                     AddNonShowOnlyGlobalActions(type, typeName, element);
                 }
 
-
-                element.AddAction(
-                    new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewDataWorkflow"), _addNewDataPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+                if (storeCreated)
+                {
+                    element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider.AddNewDataWorkflow"), _addNewDataPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
                     {
                         VisualData = new ActionVisualizedData
                         {
@@ -638,6 +642,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             }
                         }
                     });
+                }
 
                 if (RuntimeInformation.IsDebugBuild)
                 {
@@ -659,11 +664,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                             }
                         }
                     });
-
                 }
 
+                // TODO: add "Create store" action
                 elements.Add(element);
-
             }
 
             return elements;
