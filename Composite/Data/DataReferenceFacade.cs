@@ -22,9 +22,11 @@ namespace Composite.Data
     public static class DataReferenceFacade
     {
         private static readonly Dictionary<PropertyInfo, Type> _propertyReferenceTargetTypeLookup = new Dictionary<PropertyInfo, Type>();
-        private static MethodInfo _hasReferenceMethodInfo;
-        private static MethodInfo _getReferencesMethodInfo;
+
         private static readonly object _lock = new object();
+
+        private static readonly MethodInfo HasReferenceMethodInfo = StaticReflection.GetGenericMethodInfo(() => HasReference<IData>(null, null, null));
+        private static readonly MethodInfo GetReferencesMethodInfo = StaticReflection.GetGenericMethodInfo(() => GetReferences<IData>(null, null, null, false));
 
 
         /// <exclude />
@@ -121,13 +123,13 @@ namespace Composite.Data
             foreach (ForeignPropertyInfo foreignPropertyInfo in DataReferenceRegistry.GetForeignKeyProperties(refereeData.DataSourceId.InterfaceType))
             {
                 // If Nullable references are allowed, a check for SourcePropertyInfo.PropertyType.GetGenericDef == typeof(Nullable<?>) 
-                // If it is a nullable and has no value, then all is ok and contine 
+                // If it is a nullable and has no value, then all is ok and continue 
                 // If it is a nullable and has a value, assign the value to refereeForeignKeyValue
                 // Else change nothing /MRJ
                 object refereeForeignKeyValue = foreignPropertyInfo.SourcePropertyInfo.GetValue(refereeData, null);
 
                 // Handling Nullable<>
-                if ((refereeForeignKeyValue == null) && (foreignPropertyInfo.SourcePropertyInfo.PropertyType.IsGenericType))
+                if (refereeForeignKeyValue == null && (foreignPropertyInfo.SourcePropertyInfo.PropertyType.IsGenericType))
                 {
                     Type type = foreignPropertyInfo.SourcePropertyInfo.PropertyType.GetGenericTypeDefinition();
                     if (type == typeof(Nullable<>))
@@ -137,7 +139,7 @@ namespace Composite.Data
                 }
 
                 // Handling null of type string where the reference should be handled as a non-reference
-                if ((refereeForeignKeyValue == null) && foreignPropertyInfo.IsNullableString)
+                if (refereeForeignKeyValue == null && foreignPropertyInfo.IsNullableString)
                 {
                     continue;
                 }
@@ -158,17 +160,21 @@ namespace Composite.Data
                 }
 
                 bool valid = false;
-                foreach (DataScopeIdentifier dataScopeIdentifier in DataFacade.GetSupportedDataScopes(foreignPropertyInfo.TargetType))
+
+                if (refereeForeignKeyValue != null)
                 {
-                    using (new DataScope(dataScopeIdentifier))
+                    foreach (DataScopeIdentifier dataScopeIdentifier in DataFacade.GetSupportedDataScopes(foreignPropertyInfo.TargetType))
                     {
-                        IQueryable scopeData = DataFacade.GetData(foreignPropertyInfo.TargetType);
-
-                        if (HasReference(scopeData, foreignPropertyInfo, refereeForeignKeyValue))
+                        using (new DataScope(dataScopeIdentifier))
                         {
-                            valid = true;
+                            IQueryable scopeData = DataFacade.GetData(foreignPropertyInfo.TargetType);
 
-                            break;
+                            if (HasReference(scopeData, foreignPropertyInfo, refereeForeignKeyValue))
+                            {
+                                valid = true;
+
+                                break;
+                            }
                         }
                     }
                 }
@@ -261,41 +267,6 @@ namespace Composite.Data
 
             return Expression.Constant(keyValue);
         }
-
-
-
-        private static MethodInfo HasReferenceMethodInfo
-        {
-            get
-            {
-                if (_hasReferenceMethodInfo == null)
-                {
-                    _hasReferenceMethodInfo = (from method in typeof(DataReferenceFacade).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-                                               where method.Name == "HasReference" &&
-                                               method.IsGenericMethod
-                                               select method).First();
-                }
-                return _hasReferenceMethodInfo;
-            }
-        }
-
-
-
-        private static MethodInfo GetReferencesMethodInfo
-        {
-            get
-            {
-                if (_getReferencesMethodInfo == null)
-                {
-                    _getReferencesMethodInfo = (from method in typeof(DataReferenceFacade).GetMethods(BindingFlags.Static | BindingFlags.NonPublic)
-                                                where method.Name == "GetReferences" &&
-                                                method.IsGenericMethod
-                                                select method).First();
-                }
-                return _getReferencesMethodInfo;
-            }
-        }
-
 
 
         /// <summary>

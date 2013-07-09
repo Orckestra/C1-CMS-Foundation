@@ -29,6 +29,14 @@ namespace Composite.Core.Types
 
         public static MethodInfo GetMethodInfo(Expression expression)
         {
+            Verify.ArgumentNotNull(expression, "expression");
+
+            if (expression is UnaryExpression
+                && (expression as UnaryExpression).NodeType == ExpressionType.Convert)
+            {
+                expression = (expression as UnaryExpression).Operand;
+            }
+
             Verify.ArgumentCondition(expression is MethodCallExpression, "expressionBody", 
                                      "Expression body should be of type '{0}'".FormatWith(typeof(MethodCallExpression).Name));
 
