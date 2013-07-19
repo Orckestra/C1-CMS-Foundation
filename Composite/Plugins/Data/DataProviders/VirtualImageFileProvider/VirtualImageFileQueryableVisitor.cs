@@ -133,9 +133,9 @@ namespace Composite.Plugins.Data.DataProviders.VirtualImageFileProvider
                 || m.Method.Name == "FirstOrDefault"
                 || m.Method.Name == "Single"
                 || m.Method.Name == "SingleOrDefault")
-                && m.Arguments.Count == 1
-                || (m.Arguments.Count == 2
-                    && m.Arguments[1] is UnaryExpression))
+                && (m.Arguments.Count == 1
+                    || (m.Arguments.Count == 2
+                        && m.Arguments[1] is UnaryExpression)))
             {
                 var predicate = m.Arguments.Count == 2 ? (m.Arguments[1] as UnaryExpression).Operand : null;
 
