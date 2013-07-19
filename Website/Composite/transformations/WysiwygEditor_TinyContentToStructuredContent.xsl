@@ -371,7 +371,7 @@
   <xsl:template match="x:img/@style[starts-with(.,'outline-width:') or starts-with(.,'border-top-width:') or contains(.,' initial') ]" />
 
 
-  <xsl:template match="x:img[@c1-preserve-tilda]/@src[not (starts-with(., '../'))]" >
+  <xsl:template match="x:img[@c1-preserve-tilde]/@src[not (starts-with(., '../'))]" >
     <xsl:choose>
       <xsl:when test="starts-with(., '~')">
         <xsl:attribute name="src">
@@ -392,6 +392,6 @@
     
   </xsl:template>
 
-  <xsl:template match="x:img/@c1-preserve-tilda" />
+  <xsl:template match="x:img/@c1-preserve-tilde" />
 
 </xsl:stylesheet>
