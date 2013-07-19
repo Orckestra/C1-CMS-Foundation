@@ -476,7 +476,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             }
 
 
-            List<XElement> result = new List<XElement>();
+            var result = new List<XElement>();
 
             Expression<Func<T, XElement>> xelementSelector = XElementSelectHelper<T>.BuildXElementSelector(propertyNameList.Where(f => f.IndexOf('.') == -1).ToList(), coreElementName);
 
@@ -501,11 +501,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 result.AddRange(coreDataItems.Select(xelementSelector));
             }
 
+            var referencedResults = new List<XElement>();
+
             // int referencedCoreElementCount = (orderByIsDeterministic ? coreElementItemsPerPage : int.MaxValue);
             foreach (string referencePropertyName in referencesLookup.Keys)
             {
-                if (referencePropertyName == elementNameString) throw new InvalidOperationException("Element name can not be the same as that of a foreign key property");
-
                 IReferencedDataHelper<T> fixer = ReferencedDataHelperBuilder<T>.Build(referencePropertyName);
                 string propertyNamePrefix = (showReferencesInline ? referencePropertyName + "." : "");
                 if (showReferencesInline)
@@ -519,7 +519,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 }
                 XName referenceElementName = elementNamespace + referencePropertyName;
                 IEnumerable<XElement> referencesXml = fixer.GetReferencedXElements(coreDataItems, referencesLookup[referencePropertyName], referenceElementName, propertyNamePrefix);
-                result.AddRange(referencesXml);
+                referencedResults.AddRange(referencesXml);
             }
 
             if (showReferencesInline)
@@ -531,12 +531,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
                 {
                     XName referenceElementName = elementNamespace + referencePropertyName;
 
-                    IEnumerable<XElement> referenceElements = result.Where(f => f.Name == referenceElementName);
+                    IEnumerable<XElement> referenceElements = referencedResults.Where(f => f.Name == referenceElementName);
                     referencedElementsLookup.Add(referencePropertyName, referenceElements);
 
                     string idPropertyName = referencedIdAttrubuteNames.First(g => g.StartsWith(referencePropertyName + "."));
                     IEnumerable<XElement> referencedElements = referencedElementsLookup[referencePropertyName];
-                    Func<string, XAttribute> locateByKeyFunc = f => referencedElements.Attributes(idPropertyName).Where(g => g.Value == f).FirstOrDefault();
+                    Func<string, XAttribute> locateByKeyFunc = f => referencedElements.Attributes(idPropertyName).FirstOrDefault(g => g.Value == f);
                     referencedElementLocatorLookup.Add(referencePropertyName, locateByKeyFunc);
                 }
 
@@ -565,6 +565,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
             else
             {
                 foreach (XElement anyElement in result)
+                {
+                    yield return anyElement;
+                }
+
+                foreach (XElement anyElement in referencedResults)
                 {
                     yield return anyElement;
                 }
