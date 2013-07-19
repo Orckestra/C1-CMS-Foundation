@@ -31,7 +31,7 @@ namespace Composite.Core.IO
         private static readonly MethodInfo _getMimeMappingMethodInfo;
 
         private static List<string> _textMimeTypes =
-            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, 
+            new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Sass,
                                MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, 
                                MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
 
@@ -84,6 +84,13 @@ namespace Composite.Core.IO
         {
             get { return "text/css"; }
         }
+
+        /// <exclude />
+        public static string Sass
+        {
+            get { return "text/x-sass"; }
+        }
+
 
         /// <exclude />
         public static string Js
@@ -224,6 +231,7 @@ namespace Composite.Core.IO
 
             // Web
             RegisterMimeType(MimeTypeInfo.Css, new[] { "css", "less" }, "mimetype-css", true);
+            RegisterMimeType(MimeTypeInfo.Sass, new[] { "scss" }, "mimetype-css", true);
             RegisterMimeType(MimeTypeInfo.Resx, "resx", "mimetype-resx");
 
             _toCanonical.Add("application/x-javascript", MimeTypeInfo.Js);
