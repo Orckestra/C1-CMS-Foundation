@@ -140,12 +140,14 @@
     <xsl:attribute name="src">
       <xsl:value-of select="concat($requestapppath,substring-after(.,'%7E'))"/>
     </xsl:attribute>
+    <xsl:attribute name="c1-preserve-tilda">true</xsl:attribute>
   </xsl:template>
 
   <xsl:template match="x:img/@src[starts-with(.,'~')]">
     <xsl:attribute name="src">
       <xsl:value-of select="concat($requestapppath,substring-after(.,'~'))"/>
     </xsl:attribute>
+    <xsl:attribute name="c1-preserve-tilda">true</xsl:attribute>
   </xsl:template>
 
 </xsl:stylesheet>

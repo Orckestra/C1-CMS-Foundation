@@ -369,6 +369,29 @@
 
   <!-- remove Chrome's fetish for putting crappy styles on images that was copy/pasted in wysiwyg -->
   <xsl:template match="x:img/@style[starts-with(.,'outline-width:') or starts-with(.,'border-top-width:') or contains(.,' initial') ]" />
-  
+
+
+  <xsl:template match="x:img[@c1-preserve-tilda]/@src[not (starts-with(., '../'))]" >
+    <xsl:choose>
+      <xsl:when test="starts-with(., '~')">
+        <xsl:attribute name="src">
+          <xsl:value-of select="." />
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:when test="starts-with(., $requestapppath)">
+        <xsl:attribute name="src">
+          <xsl:value-of select="concat('~', substring-after(.,$requestapppath))"/>
+        </xsl:attribute>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:attribute name="src">
+          <xsl:value-of select="." />
+        </xsl:attribute>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+  </xsl:template>
+
+  <xsl:template match="x:img/@c1-preserve-tilda" />
 
 </xsl:stylesheet>
