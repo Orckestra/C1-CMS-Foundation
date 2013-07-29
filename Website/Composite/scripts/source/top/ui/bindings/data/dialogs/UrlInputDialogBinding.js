@@ -150,20 +150,26 @@ UrlInputDialogBinding.prototype.setValue = function (value) {
 * @overloads {DataInputBinding#setValue}
 */
 UrlInputDialogBinding.prototype.setLabel = function (label) {
-	this.setReadOnly(true);
-	this.editButtonBinding.show();
-	this.shadowTree.input.style.display = "none";
-	this.shadowTree.labelInput.style.display = "block";
-	this.shadowTree.labelInput.value = label;
+	if (this.shadowTree.labelInput) {
+		if (label) {
+			this.setReadOnly(true);
+			this.editButtonBinding.show();
+			this.shadowTree.input.style.display = "none";
+			this.shadowTree.labelInput.style.display = "block";
+			this.shadowTree.labelInput.value = label;
+		} else {
+			this.setReadOnly(false);
+			this.editButtonBinding.hide();
+			this.shadowTree.input.style.display = "block";
+			this.shadowTree.labelInput.style.display = "none";
+		} 
+	}
 }
 
 /**
 * Unset Label for input
-* @overloads {DataInputBinding#setValue}
 */
 UrlInputDialogBinding.prototype.clearLabel = function () {
-	this.setReadOnly(false);
-	this.editButtonBinding.hide();
-	this.shadowTree.input.style.display = "block";
-	this.shadowTree.labelInput.style.display = "none";
+	this.setLabel();
 }
+
