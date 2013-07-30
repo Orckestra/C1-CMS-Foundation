@@ -45,7 +45,7 @@
 	display: table-column-group !important;
 }
 
-.mce-content-body td, th {
+.mce-content-body td, .mce-content-body th {
 	display: table-cell !important;
 }
 
