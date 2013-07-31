@@ -181,6 +181,7 @@
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\addon\selection\mark-selection.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\htmlembedded\htmlembedded.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\razor\razor.js" />
+    <Content Include="Composite\content\misc\editors\codemirroreditor\CodeMirror\mode\sass\sass.js" />
     <Content Include="Composite\content\misc\editors\codemirroreditor\theme\composite.css" />
     <Content Include="Composite\content\misc\editors\visualeditor\bindings\BlockSelectorBinding.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\ie.css" />

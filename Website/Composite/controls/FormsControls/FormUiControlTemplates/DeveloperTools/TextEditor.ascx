@@ -40,6 +40,8 @@
             case "application/x-ascx":
             case "application/x-master-page":
                 return "aspx";
+            case "text/x-sass":
+                return "sass";
             default:
                 return "text";
         }

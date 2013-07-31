@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="CodeMirror/mode/htmlembedded/htmlembedded.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/clike/clike.js"></script>
 	<script type="text/javascript" src="CodeMirror/mode/razor/razor.js"></script>
+	<script type="text/javascript" src="CodeMirror/mode/sass/sass.js"></script>
 	<script type="text/javascript" src="CodeMirror/addon/dropmedia/dropmedia.js"></script>
 	<link rel="stylesheet" type="text/css" href="CodeMirror/lib/codemirror.css" />
 	<link rel="stylesheet" type="text/css" href="codemirror.css" />
