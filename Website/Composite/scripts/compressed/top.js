@@ -553,6 +553,7 @@ this.isExplorer8=this.isExplorer&&window.XDomainRequest!=null;
 this.isPrism=_73;
 this.isWindows=_70.indexOf("win")>-1;
 this.isVista=this.isWindows&&_6f.indexOf("windows nt 6")>-1;
+this.isiPad=navigator.userAgent.match(/iPad/i)!=null;
 var _75=this._getFlashVersion();
 this.hasFlash=(_75&&_75>=9);
 this.hasTransitions=_74;
@@ -13437,17 +13438,23 @@ this.dispatchAction(UrlInputDialogBinding.URL_SELECTED);
 }
 };
 UrlInputDialogBinding.prototype.setLabel=function(_921){
+if(this.shadowTree.labelInput){
+if(_921){
 this.setReadOnly(true);
 this.editButtonBinding.show();
 this.shadowTree.input.style.display="none";
 this.shadowTree.labelInput.style.display="block";
 this.shadowTree.labelInput.value=_921;
-};
-UrlInputDialogBinding.prototype.clearLabel=function(){
+}else{
 this.setReadOnly(false);
 this.editButtonBinding.hide();
 this.shadowTree.input.style.display="block";
 this.shadowTree.labelInput.style.display="none";
+}
+}
+};
+UrlInputDialogBinding.prototype.clearLabel=function(){
+this.setLabel();
 };
 DataInputButtonBinding.prototype=new DataInputBinding;
 DataInputButtonBinding.prototype.constructor=DataInputButtonBinding;
@@ -26067,6 +26074,9 @@ _fb1.node=_fb0.node;
 this._maxGroup.add(_fb1);
 this._maxList.add(_fb1);
 _fb1.attach();
+if(Client.isiPad){
+_fb1.hide();
+}
 return _fb1;
 };
 ExplorerMenuBinding.prototype._mountMinButton=function(_fb2){
@@ -26078,7 +26088,9 @@ _fb3.node=_fb2.node;
 this._minGroup.addFirst(_fb3);
 this._minList.add(_fb3);
 _fb3.attach();
+if(!Client.isiPad){
 _fb3.hide();
+}
 return _fb3;
 };
 ExplorerMenuBinding.prototype.handleAction=function(_fb4){
@@ -27814,7 +27826,7 @@ CodeMirrorEditorBinding.prototype=new EditorBinding;
 CodeMirrorEditorBinding.prototype.constructor=CodeMirrorEditorBinding;
 CodeMirrorEditorBinding.superclass=EditorBinding.prototype;
 CodeMirrorEditorBinding.ACTION_INITIALIZED="codemirroreditor initialized";
-CodeMirrorEditorBinding.syntax={TEXT:"text",XML:"xml",XSL:"xsl",HTML:"html",CSS:"css",JAVASCRIPT:"js",CSHARP:"cs",CSHTML:"cshtml",ASPX:"aspx",SQL:"sql"};
+CodeMirrorEditorBinding.syntax={TEXT:"text",XML:"xml",XSL:"xsl",HTML:"html",CSS:"css",JAVASCRIPT:"js",CSHARP:"cs",CSHTML:"cshtml",ASPX:"aspx",SQL:"sql",SASS:"sass"};
 function CodeMirrorEditorBinding(){
 this.logger=SystemLogger.getLogger("CodeMirrorEditorBinding");
 this.action_initialized=CodeMirrorEditorBinding.ACTION_INITIALIZED;
@@ -27891,6 +27903,9 @@ this._codemirrorEditor.setOption("mode","text/javascript");
 break;
 case CodeMirrorEditorBinding.syntax.ASPX:
 this._codemirrorEditor.setOption("mode","application/x-aspx");
+break;
+case CodeMirrorEditorBinding.syntax.SASS:
+this._codemirrorEditor.setOption("mode","text/x-sass");
 break;
 case CodeMirrorEditorBinding.syntax.SQL:
 this._codemirrorEditor.setOption("mode","");
