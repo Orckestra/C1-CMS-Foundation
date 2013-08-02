@@ -135,8 +135,10 @@ ExplorerMenuBinding.prototype._mountMaxButton = function ( definition ) {
 	button.handle = definition.handle;
 	button.node = definition.node;
 	this._maxGroup.add ( button );
-	this._maxList.add ( button );
-	button.attach ();
+	this._maxList.add ( button ); 
+	button.attach();
+	if (Client.isiPad)
+		button.hide(); // note that we hide large buttons on startup for iPad!
 	return button;
 }
 
@@ -157,8 +159,9 @@ ExplorerMenuBinding.prototype._mountMinButton = function ( definition ) {
 	button.node = definition.node;
 	this._minGroup.addFirst ( button );
 	this._minList.add ( button );
-	button.attach ();
-	button.hide (); // note that we hide small buttons on startup!
+	button.attach();
+	if (!Client.isiPad)
+		button.hide (); // note that we hide small buttons on startup!
 	return button;
 }
 
