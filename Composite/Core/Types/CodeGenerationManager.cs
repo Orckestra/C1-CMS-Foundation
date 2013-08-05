@@ -5,7 +5,6 @@ using System;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,9 +22,9 @@ namespace Composite.Core.Types
     /// <summary>
     /// Handles all dynamic type compilations and the generation of Composite.Generated.dll
     /// </summary>
-    internal static class CodeGenerationManager
+    public static class CodeGenerationManager
     {
-        public const string LogTitle = "CodeGenerationManager";
+        private static readonly string LogTitle = typeof(CodeGenerationManager).Name;
         private const int NumberOfCompileRetries = 10;
 
         private static readonly object _lock = new object();
@@ -117,7 +116,7 @@ namespace Composite.Core.Types
                 }
             }
 
-            Log.LogVerbose(LogTitle, string.Format("New assembly already compiled by this application domain ({0})", AppDomain.CurrentDomain.Id));
+            Log.LogVerbose(LogTitle, "New assembly already compiled by this application domain ({0})", AppDomain.CurrentDomain.Id);
         }
 
 
@@ -272,6 +271,10 @@ namespace Composite.Core.Types
 
 
 
+        /// <summary>
+        /// Gets the compiled types.
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<Type> GetCompiledTypes() { return _compiledTypes; }
 
 
@@ -412,8 +415,6 @@ namespace Composite.Core.Types
                 {
                     yield return codeProvider;
                 }
-
-                yield break;
             }
         }
 
@@ -426,7 +427,7 @@ namespace Composite.Core.Types
             List<Assembly> assembliesToRemove = new List<Assembly>();
             foreach (Assembly assembly in _compiledAssemblies)
             {
-                Type type = assembly.GetTypes().Where(f => f.FullName == newType.FullName).SingleOrDefault();
+                Type type = assembly.GetTypes().SingleOrDefault(f => f.FullName == newType.FullName);
                 if (type != null)
                 {
                     assembliesToRemove.Add(assembly);
