@@ -647,32 +647,32 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 if (!_isLocalized)
                 {
-                    RegisterKeyUsage("", dataScopeIdentifier, keyValuePair);
+                    RegisterKeyUsage(dataType, "", dataScopeIdentifier, keyValuePair);
                     return;
                 }
 
                 if (dataType.AddToCurrentLocale)
                 {
-                    RegisterKeyUsage(LocalizationScopeManager.CurrentLocalizationScope.Name, dataScopeIdentifier, keyValuePair);
+                    RegisterKeyUsage(dataType, LocalizationScopeManager.CurrentLocalizationScope.Name, dataScopeIdentifier, keyValuePair);
                     return;
                 }
 
                 if (dataType.Locale != null)
                 {
-                    RegisterKeyUsage(dataType.Locale.Name, dataScopeIdentifier, keyValuePair);
+                    RegisterKeyUsage(dataType, dataType.Locale.Name, dataScopeIdentifier, keyValuePair);
                     return;
                 }
 
                 if (dataType.AddToAllLocales)
                 {
-                    RegisterKeyUsage(AllLocalesKey, dataScopeIdentifier, keyValuePair);
+                    RegisterKeyUsage(dataType, AllLocalesKey, dataScopeIdentifier, keyValuePair);
                     return;
                 }
 
                 throw new InvalidOperationException("Type is localized but no localization info specified");
             }
 
-            private void RegisterKeyUsage(string localeName, DataScopeIdentifier publicationScope, KeyValuePair<string, object> keyValuePair)
+            private void RegisterKeyUsage(DataType dataType, string localeName, DataScopeIdentifier publicationScope, KeyValuePair<string, object> keyValuePair)
             {
                 string dataScopeKey = GetDataScopeKey(publicationScope, localeName);
 
@@ -683,7 +683,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 var hashset = _dataScopes[dataScopeKey];
 
-                Verify.That(!hashset.Contains(keyValuePair), "Item with the same key present twice. {0}, value {1}", keyValuePair.Key, keyValuePair.Value ?? "null");
+                Verify.That(!hashset.Contains(keyValuePair), "Item with the same key present twice. Data type: '{0}', field '{1}', value '{2}'",
+                    dataType.InterfaceTypeName ?? "null", keyValuePair.Key, keyValuePair.Value ?? "null");
 
                 hashset.Add(keyValuePair);
             }
