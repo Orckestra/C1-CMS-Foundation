@@ -22,8 +22,9 @@ _Constants.prototype = {
 	DUMMY_LINK					: "javascript:void(false);",
 	
 	APPROOT     				: temproot,
-	CONFIGROOT                  : temproot.substring(0, temproot.length - 9) + "Frontend/Config/VisualEditor/",
-   	TEMPLATESROOT     			: temproot + "/templates",
+	WEBSITEROOT					: temproot.substring(0, temproot.length - 9),
+	CONFIGROOT					: temproot.substring(0, temproot.length - 9) + "Frontend/Config/VisualEditor/",
+	TEMPLATESROOT     			: temproot + "/templates",
 	SKINROOT     				: temproot + "/skins/system", // TODO: unhardcode this!
 	TINYROOT					: temproot + "/content/misc/editors/visualeditor/tinymce",
 

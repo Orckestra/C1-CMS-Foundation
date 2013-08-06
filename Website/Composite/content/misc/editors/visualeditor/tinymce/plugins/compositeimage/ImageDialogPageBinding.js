@@ -80,11 +80,14 @@ ImageDialogPageBinding.prototype._populateDataBindingsFromDOM = function () {
 	var src = img.getAttribute("src");
 	var alt = img.getAttribute("alt");
 	var title = img.getAttribute("title");
+	var c1PreserveTilde = img.getAttribute("c1-preserve-tilde");
 	var manager = this.bindingWindow.DataManager;
 
 	if (src) {
 		if (src.indexOf("../../../../..") > -1) {
 			src = "~" + src.substring(src.indexOf("../../../../..") + 14);
+		} else if (c1PreserveTilde && src.indexOf(Constants.WEBSITEROOT) === 0) {
+			src = src.replace(Constants.WEBSITEROOT, "~/");
 		}
 
 		src = src.replace(/%28/g, "(").replace(/%29/g, ")");
