@@ -24,7 +24,7 @@ namespace Composite.Core.Types
     /// </summary>
     public static class CodeGenerationManager
     {
-        private static readonly string LogTitle = typeof(CodeGenerationManager).Name;
+        internal static readonly string LogTitle = typeof(CodeGenerationManager).Name;
         private const int NumberOfCompileRetries = 10;
 
         private static readonly object _lock = new object();
