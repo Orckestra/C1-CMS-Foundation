@@ -53,32 +53,25 @@ namespace Composite.Functions
                     foundFunction = GetFunction(name);
                     return true;
                 }
-                else
-                {
-                    foundFunction = null;
-                    return false;
-                }
+
+                foundFunction = null;
+                return false;
             }
-            else
+
+
+            if (functionType == typeof(IWidgetFunction))
             {
-                if (functionType == typeof(IWidgetFunction))
+                if (MetaFunctionProviderRegistry.WidgetFunctionNames.Contains(name))
                 {
-                    if (MetaFunctionProviderRegistry.WidgetFunctionNames.Contains(name))
-                    {
-                        foundFunction = GetWidgetFunction(name);
-                        return true;
-                    }
-                    else
-                    {
-                        foundFunction = null;
-                        return false;
-                    }
+                    foundFunction = GetWidgetFunction(name);
+                    return true;
                 }
-                else
-                {
-                    throw new ArgumentException("Type of function must be IFunction or IWidgetFunction");
-                }
+
+                foundFunction = null;
+                return false;
             }
+
+            throw new ArgumentException("Type of function must be IFunction or IWidgetFunction");
         }
 
 
@@ -91,11 +84,9 @@ namespace Composite.Functions
                 foundFunction = GetFunction(name);
                 return true;
             }
-            else
-            {
-                foundFunction = null;
-                return false;
-            }
+            
+            foundFunction = null;
+            return false;
         }
 
 
@@ -108,11 +99,9 @@ namespace Composite.Functions
                 foundFunction = GetWidgetFunction(name);
                 return true;
             }
-            else
-            {
-                foundFunction = null;
-                return false;
-            }
+            
+            foundFunction = null;
+            return false;
         }
 
 

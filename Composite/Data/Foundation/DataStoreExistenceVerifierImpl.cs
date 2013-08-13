@@ -17,6 +17,7 @@ namespace Composite.Data.Foundation
         private static readonly List<Type> _interfaceTypes = new List<Type>
                 {
                     typeof(ICompositionContainer),
+                    typeof(ICustomFunctionCallEditorMapping),
                     typeof(IDataItemTreeAttachmentPoint),
                     typeof(IFlowInformation),
                     typeof(IFolderWhiteList),

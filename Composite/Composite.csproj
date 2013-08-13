@@ -180,7 +180,9 @@
     <Compile Include="Data\Foundation\ProcessControllerSettings.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />
+    <Compile Include="Data\Types\ICustomFunctionCallEditorMapping.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
+    <Compile Include="Functions\FunctionCallEditorManager.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryable.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryableVisitor.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\FileRecord.cs" />
