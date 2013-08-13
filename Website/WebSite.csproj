@@ -481,7 +481,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
-    <Content Include="Composite\services\SourceEditor\FunctionService.asmx" />
+    <Content Include="Composite\services\WysiwygEditor\FunctionService.asmx" />
     <Content Include="Composite\unsecure.js" />
     <Content Include="Composite\skins\system\dialogpages\unsecure_32.png" />
     <Content Include="Composite\unsecure.css" />
