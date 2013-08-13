@@ -170,6 +170,8 @@
       <DependentUpon>LocalizationFiles.tt</DependentUpon>
     </Compile>
     <Compile Include="Core\ResourceSystem\Plugins\ResourceProvider\ILocalizationProvider.cs" />
+    <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectHttpHandler.cs" />
+    <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectRouteHandler.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />

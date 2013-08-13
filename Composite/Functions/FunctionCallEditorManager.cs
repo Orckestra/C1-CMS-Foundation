@@ -6,6 +6,8 @@ using Composite.Data.Types;
 
 namespace Composite.Functions
 {
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class FunctionCallEditorManager
     {
         private static readonly Hashtable<string, string> _customEditorUrls = new Hashtable<string, string>();

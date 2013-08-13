@@ -132,7 +132,7 @@ namespace Composite.Core.Routing.Pages
                 }
                 else
                 {
-                    return SeoFriendlyRedirect(context, publicUrl);
+                    return GetRedirectRoute(publicUrl);
                 }
             }
 
@@ -147,7 +147,7 @@ namespace Composite.Core.Routing.Pages
                 if (pageUrlData.PathInfo == "/")
                 {
                     pageUrlData.PathInfo = null;
-                    return SeoFriendlyRedirect(context, urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace));
+                    return GetRedirectRoute(urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace));
                 }
 
                 // Checking casing in url, so the same page will appear as a few pages by a crawler
@@ -160,41 +160,20 @@ namespace Composite.Core.Routing.Pages
                     string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0)
                 {
                     // redirect to a url with right casing
-                    return SeoFriendlyRedirect(context, correctUrl);
+                    return GetRedirectRoute(correctUrl);
                 }
             }
 
-            // Disabling ASP.NET cache if there's a logged-in user
-            if (Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
+            // GetRouteData may be executed multiple times
+            if (!context.Items.Contains(HttpContextItem_C1PageUrl))
             {
-                context.Response.Cache.SetCacheability(HttpCacheability.NoCache);
+                PageUrlData = pageUrlData;
             }
 
-            Verify.IsFalse(context.Items.Contains(HttpContextItem_C1PageUrl), "C1PageRoute was executed twice during the same request. If could be f.e. because there's an MVC player that have a route that matches a C1 page url.");
-            PageUrlData = pageUrlData;
-
-            var data = GetRouteData();
+            var data = new RouteData(this, new C1PageRouteHandler(pageUrlData));
             data.Values.Add(RouteDate_PageUrl, pageUrlData);
 
-            // Doing url rewriting so ASP.NET will get correct FilePath/PathInfo properties
-            if(!pageUrlData.PathInfo.IsNullOrEmpty())
-            {
-                string filePath = localPath.Substring(0, localPath.Length - pageUrlData.PathInfo.Length);
-
-                string queryString = context.Request.Url.Query;
-                if(queryString.StartsWith("?"))
-                {
-                    queryString = queryString.Substring(1);
-                }
-                context.RewritePath(filePath, pageUrlData.PathInfo, queryString);
-            }
-
             return data;
-        }
-
-        private RouteData GetRouteData()
-        {
-            return new RouteData(this, new C1PageRouteHandler());
         }
 
         /// <exclude />
@@ -207,13 +186,9 @@ namespace Composite.Core.Routing.Pages
             return relativeUrl.StartsWith(UrlUtils.RenderersRootPath + "/", true);
         }
 
-        private RouteData SeoFriendlyRedirect(HttpContextBase context, string url)
+        private RouteData GetRedirectRoute(string url)
         {
-            context.Response.AddHeader("Location", url);
-            context.Response.StatusCode = 301; // Http 301 - "Permanently moved"
-            context.ApplicationInstance.CompleteRequest();
-
-            return GetRouteData(); // returning route so other routers will not be executed
+            return new RouteData(this, new SeoFriendlyRedirectRouteHandler(url));
         }
 
         /// <exclude />
