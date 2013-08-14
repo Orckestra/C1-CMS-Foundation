@@ -4,6 +4,7 @@ using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.IO;
+using Composite.Core.WebClient;
 
 namespace Composite.Functions
 {
@@ -38,7 +39,7 @@ namespace Composite.Functions
                 return null;
             }
 
-            return PathUtil.Resolve(sourcePath);
+            return UrlUtils.ResolvePublicUrl(sourcePath);
         }
 
         /// <summary>

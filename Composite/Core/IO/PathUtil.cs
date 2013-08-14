@@ -45,7 +45,7 @@ namespace Composite.Core.IO
         }
 
         /// <summary>
-        /// Resolves a (tilde based) partial path to a full path
+        /// Resolves a (tilde based) partial path to a full file system path. 
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
