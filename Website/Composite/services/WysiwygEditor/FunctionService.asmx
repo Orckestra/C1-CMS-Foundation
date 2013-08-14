@@ -20,7 +20,8 @@ namespace Composite.Services
 
             return result != null ? PathUtil.Resolve(result) : result;
         }
-        
+
+        [WebMethod]
         public string GetCustomEditorPathByMarkup(string xml)
         {
             var xElement = XElement.Parse(xml);

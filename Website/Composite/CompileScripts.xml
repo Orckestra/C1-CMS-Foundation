@@ -267,6 +267,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/pages/DialogPageBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/pages/DialogPageBodyBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/pages/EditorPageBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/pages/ResponsePageBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/pages/WizardPageBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/pages/MarkupAwarePageBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/system/SystemToolBarBinding.js"/>
@@ -358,6 +359,7 @@
 			<Script filename="${root}/scripts/source/top/proxies/StringService.js"/>
 			<Script filename="${root}/scripts/source/top/proxies/TreeService.js"/>
 			<Script filename="${root}/scripts/source/top/proxies/XhtmlTransformationsService.js"/>
+			<Script filename="${root}/scripts/source/top/proxies/FunctionService.js"/>
 			<Script filename="${root}/scripts/source/top/core/MessageQueue.js"/>
 			<Script filename="${root}/scripts/source/top/core/ViewDefinitions.js"/>
 			<Script filename="${root}/scripts/source/top/core/KickStart.js"/>
