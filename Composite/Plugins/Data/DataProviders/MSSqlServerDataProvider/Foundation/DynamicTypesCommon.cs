@@ -12,44 +12,31 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 	{
 		internal static string GenerateTableName(DataTypeDescriptor dataTypeDescriptor)
 		{
-			string tableNameStem = dataTypeDescriptor.Namespace.Replace('.', '_');
-			return string.Format("{0}_{1}", tableNameStem, dataTypeDescriptor.Name);
+		    return dataTypeDescriptor.GetFullInterfaceName().Replace('.', '_');
 		}
 
 		internal static string GenerateTableName(DataTypeDescriptor dataTypeDescriptor, DataScopeIdentifier dataScope, CultureInfo cultureInfo)
 		{
-			string tableNameStem = dataTypeDescriptor.Namespace.Replace('.', '_');
-
-			PublicationScope publicationScope;
+		    string tableName = dataTypeDescriptor.GetFullInterfaceName().Replace('.', '_');
 
 			switch (dataScope.Name)
 			{
 				case DataScopeIdentifier.PublicName:
-					publicationScope = PublicationScope.Published;
 					break;
 				case DataScopeIdentifier.AdministratedName:
-					publicationScope = PublicationScope.Unpublished;
+			        tableName += "_Unpublished";
 					break;
 				default:
 					throw new InvalidOperationException("Unsupported data scope identifier: '{0}'".FormatWith(dataScope.Name));
 			}
 
-            string storageKey = GetStorageName(publicationScope.ToString(), cultureInfo.Name);
-
-            return string.Format("{0}_{1}_{2}", tableNameStem, dataTypeDescriptor.Name, storageKey);
-		}
-
-
-        internal static string GetStorageName(string dataScope, string cultureName)
-        {
-            string result = dataScope;
-            if (!cultureName.IsNullOrEmpty())
+            if (!cultureInfo.Name.IsNullOrEmpty())
             {
-                result += "_" + cultureName.Replace('-', '_').Replace(' ', '_');
+                tableName += "_" + cultureInfo.Name.Replace('-', '_').Replace(' ', '_');
             }
-            return result;
-        }
 
+            return tableName;
+		}
 
 
 		internal static string GenerateListTableName(DataTypeDescriptor typeDescriptor, DataFieldDescriptor fieldDescriptor)

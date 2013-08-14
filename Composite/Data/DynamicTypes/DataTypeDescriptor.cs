@@ -782,8 +782,7 @@ namespace Composite.Data.DynamicTypes
     public static class DataTypeDescriptorExtensions
     {
         /// <summary>
-        /// This method returns the full interface name with out assembly name
-        /// and other C1 specific prefixes like DynamicType:
+        /// This method returns the full interface name. F.e. "Composite.Data.Types.IPage"
         /// </summary>
         /// <param name="dataTypeDescriptor"></param>
         /// <returns></returns>
