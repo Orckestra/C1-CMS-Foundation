@@ -16,9 +16,7 @@ namespace Composite.Services
         [WebMethod]
         public string GetCustomEditorPath(string functionName)
         {
-            var result = FunctionCallEditorManager.GetCustomEditorPath(functionName);
-
-            return result != null ? PathUtil.Resolve(result) : result;
+            return FunctionCallEditorManager.GetCustomEditorPath(functionName);
         }
 
         [WebMethod]

@@ -3,6 +3,7 @@ using System.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Types;
+using Composite.Core.IO;
 
 namespace Composite.Functions
 {
@@ -19,29 +20,39 @@ namespace Composite.Functions
         /// <returns>A relative path to a custom call editor, or <value>null</value> if no custom editor was defined.</returns>
         public static string GetCustomEditorPath(string functionName)
         {
-            var result = _customEditorUrls[functionName];
+            var sourcePath = _customEditorUrls[functionName];
 
-            if (result != null) return result;
-
-            using (var c = new DataConnection())
+            if (sourcePath == null)
             {
-                return c.Get<ICustomFunctionCallEditorMapping>()
-                        .Where(e => e.FunctionName == functionName)
-                        .Select(e => e.CustomEditorPath)
-                        .FirstOrDefault();
+                using (var c = new DataConnection())
+                {
+                    sourcePath = c.Get<ICustomFunctionCallEditorMapping>()
+                            .Where(e => e.FunctionName == functionName)
+                            .Select(e => e.CustomEditorPath)
+                            .FirstOrDefault();
+                }
             }
+
+            if (sourcePath == null)
+            {
+                return null;
+            }
+
+            return PathUtil.Resolve(sourcePath);
         }
 
         /// <summary>
         /// Registers the custom call editor.
         /// </summary>
         /// <param name="functionName">Name of the function.</param>
-        /// <param name="relativePath">The relative path.</param>
-        public static void RegisterCustomCallEditor(string functionName, string relativePath)
+        /// <param name="tildeBasedPath">A tilde based website path, like ~/Composite/custom.aspx</param>
+        public static void RegisterCustomCallEditor(string functionName, string tildeBasedPath)
         {
+            Verify.ArgumentCondition(tildeBasedPath.StartsWith("~"), "tildeBasedPath", "Must start with tilde (~)");
+
             lock (_customEditorUrls)
             {
-                _customEditorUrls[functionName] = relativePath;
+                _customEditorUrls[functionName] = tildeBasedPath;
             }
         }
     }
