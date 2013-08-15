@@ -45,16 +45,15 @@ namespace Composite.AspNet
 
                 if (IsRootRequest())
                 {
-                    var rootNodes = ((CompositeC1SiteMapProvider) provider).GetRootNodes();
-                    var rootNodesFiltered = FilterOutOtherDomains(rootNodes).ToList();
+                    var rootNodes = ((CompositeC1SiteMapProvider) provider).GetRootNodes().ToList();
 
-                    if (rootNodesFiltered.Count > 1)
+                    if (rootNodes.Count > 1)
                     {
-                        WriteSiteMapList(rootNodesFiltered);
+                        WriteSiteMapList(rootNodes);
                     }
                     else
                     {
-                        var rootNode = rootNodesFiltered.FirstOrDefault();
+                        var rootNode = rootNodes.FirstOrDefault();
 
                         if (rootNode != null)
                         {
@@ -149,24 +148,6 @@ namespace Composite.AspNet
             return null;
         }
 
-        private IEnumerable<CompositeC1SiteMapNode> FilterOutOtherDomains(IEnumerable<CompositeC1SiteMapNode> rootNodes)
-        {
-            List<IHostnameBinding> bindings;
-
-            using (var data = new DataConnection())
-            {
-                bindings = data.Get<IHostnameBinding>().ToList();
-            }
-
-            foreach (var node in rootNodes)
-            {
-                var hostname = bindings.SingleOrDefault(h => h.HomePageId == Guid.Parse(node.Key) && h.Culture == node.Culture.Name);
-                if (hostname == null || MatchHostname(hostname))
-                {
-                    yield return node;
-                }
-            }
-        }
 
         private bool MatchHostname(IHostnameBinding binding)
         {
@@ -186,6 +167,13 @@ namespace Composite.AspNet
         {
             _writer.WriteStartElement("sitemapindex", _ns);
 
+            List<IHostnameBinding> bindings;
+
+            using (var data = new DataConnection())
+            {
+                bindings = data.Get<IHostnameBinding>().ToList();
+            }
+
             foreach (var node in rootNodes)
             {
                 string urlTitle = null;
@@ -199,15 +187,29 @@ namespace Composite.AspNet
                     }
                 }
 
+                IHostnameBinding binding = FindMatchingBinding(node, bindings);
+
                 _writer.WriteStartElement("sitemap");
 
                 var uri = _context.Request.Url;
 
                 _writer.WriteStartElement("loc");
-                _writer.WriteString("{0}://{1}{2}{3}/{4}{5}/sitemap.xml".FormatWith(
-                                    uri.Scheme,
-                                    uri.Host,
-                                    uri.IsDefaultPort ? string.Empty : ":" + uri.Port,
+
+                string hostnameUrl;
+
+                if (binding == null || MatchHostname(binding))
+                {
+                    hostnameUrl = "{0}://{1}{2}".FormatWith(
+                        uri.Scheme,
+                        uri.Host,
+                        uri.IsDefaultPort ? string.Empty : ":" + uri.Port);
+                }
+                else
+                {
+                    hostnameUrl = "http://" + binding.Hostname;
+                }
+
+                _writer.WriteString(hostnameUrl + "{0}/{1}{2}/sitemap.xml".FormatWith(
                                     UrlUtils.PublicRootPath,
                                     node.Culture,
                                     urlTitle.IsNullOrEmpty() ? string.Empty : "/" + urlTitle));
@@ -217,6 +219,27 @@ namespace Composite.AspNet
             }
 
             _writer.WriteEndElement();
+        }
+
+        private IHostnameBinding FindMatchingBinding(CompositeC1SiteMapNode sitemapNode, List<IHostnameBinding> bindings)
+        {
+            Guid homePageId = Guid.Parse(sitemapNode.Key);
+            string cultureName = sitemapNode.Culture.Name;
+
+            var bestMatch = bindings.SingleOrDefault(h => h.HomePageId == homePageId && h.Culture == cultureName);
+            if (bestMatch != null)
+            {
+                return bestMatch;
+            }
+
+            string defaultCulture = DataLocalizationFacade.DefaultLocalizationCulture.Name;
+            var secondBestMatch = bindings.SingleOrDefault(h => h.HomePageId == homePageId && h.Culture == defaultCulture);
+            if (secondBestMatch != null)
+            {
+                return secondBestMatch;
+            }
+
+            return  bindings.OrderBy(b => b.Hostname).FirstOrDefault(h => h.HomePageId == homePageId);
         }
 
         private void WriteFullSiteMap(SiteMapProvider provider)
