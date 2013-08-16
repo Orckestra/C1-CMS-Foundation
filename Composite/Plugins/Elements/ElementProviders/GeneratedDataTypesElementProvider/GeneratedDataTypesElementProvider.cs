@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
@@ -95,8 +96,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
     [ConfigurationElementType(typeof(GeneratedDataTypesElementProviderData))]
     internal sealed class GeneratedDataTypesElementProvider : IHooklessElementProvider, ILocaleAwareElementProvider
     {
+        private static readonly string LogTitle = typeof (GeneratedDataTypesElementProvider).Name;
+
         private ElementProviderContext _providerContext;
-        private bool _websiteItemsView;
+        private readonly bool _websiteItemsView;
         private DataGroupingProviderHelper _dataGroupingProviderHelper;
 
 
@@ -153,6 +156,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         /// <exclude />
         public static readonly Dictionary<string, ResourceHandle> DataIconLookup;
+
+        /// <exclude />
+        public static ResourceHandle ErrorIcon { get { return GetIconHandle("error"); } }
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
         private static readonly ActionGroup ViewActionGroup = new ActionGroup("View", ActionGroupPriority.PrimaryLow);
@@ -584,36 +590,47 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     dataScopeIdentifier = DataScopeIdentifier.Administrated;
                 }
 
-                bool hasChildren;
-                using (new DataScope(dataScopeIdentifier))
-                {
-                    hasChildren = storeCreated && DataFacade.GetData(type).Any();
+                Exception queryDataException = null;
 
-                    if (!hasChildren && storeCreated && DataLocalizationFacade.IsLocalized(type))
+                bool hasChildren = false;
+                try
+                {
+                    using (new DataScope(dataScopeIdentifier))
                     {
-                        using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                        hasChildren = storeCreated && DataFacade.GetData(type).Any();
+
+                        if (!hasChildren && storeCreated && DataLocalizationFacade.IsLocalized(type))
                         {
-                            hasChildren |= DataFacade.GetData(type).Any();
+                            using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                            {
+                                hasChildren |= DataFacade.GetData(type).Any();
+                            }
                         }
                     }
                 }
-
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                    queryDataException = ex;
+                }
+                
                 string label = type.FullName;
                 if (_websiteItemsView)
                 {
                     label = dataTypeDescriptor.Title;
                 }
 
+                bool failedToLoad = queryDataException != null;
 
                 Element element = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
                         Label = label,
-                        ToolTip = label,
+                        ToolTip = !failedToLoad ? label : GetNestedExceptionMessage(queryDataException),
                         HasChildren = hasChildren,
-                        Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
-                        OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
+                        Icon = !failedToLoad ? GeneratedDataTypesElementProvider.InterfaceClosed : ErrorIcon,
+                        OpenedIcon = !failedToLoad ? GeneratedDataTypesElementProvider.InterfaceOpen : ErrorIcon
                     }
                 };
 
@@ -673,8 +690,19 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             return elements;
         }
 
+        private string GetNestedExceptionMessage(Exception queryDataException)
+        {
+            var ex = queryDataException;
 
+            while (ex is TargetInvocationException)
+            {
+                ex = ex.InnerException;
+            }
 
+            return ex.Message;
+        }
+
+        
         private void AddNonShowOnlyGlobalActions(Type type, string typeName, Element element)
         {
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());

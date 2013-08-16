@@ -2,7 +2,6 @@
 using System.Data.Linq;
 using System.Reflection;
 using Composite.Core.Collections.Generic;
-using Composite.Core.Extensions;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 
 
@@ -82,6 +81,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
         internal static ITable GetTable(DataContext _dataContext, SqlDataTypeStoreTable storeInformation)
         {
             FieldInfo fi = storeInformation.DataContextQueryableFieldInfo;
+            Verify.IsNotNull(fi, "Missing FieldInfo for a DataContext field.");
+
             object value = fi.GetValue(_dataContext);
             if(value == null)
             {
