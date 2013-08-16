@@ -622,7 +622,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 bool failedToLoad = queryDataException != null;
 
-                Element element = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
+                Element element = new Element(_providerContext.CreateElementHandle(
+                    new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName,
+                        showStatic ? GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
