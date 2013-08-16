@@ -87,12 +87,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
 
                 Guid dataTypeId = changeDescriptor.OriginalType.DataTypeId;
 
-                Verify.IsTrue(configuration.Section.Interfaces.ContainsInterfaceType(changeDescriptor.OriginalType),
-                        "Configuration does not contain the original interface named '{0}'".FormatWith(dataTypeId));
+                var existingElement = configuration.Section.Interfaces.Get(changeDescriptor.OriginalType);
+
+                Verify.IsNotNull(existingElement, "Configuration does not contain the original interface with id '{0}'", dataTypeId);
 
                 configuration.Section.Interfaces.Remove(changeDescriptor.OriginalType);
 
-                InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType);
+                InterfaceConfigurationElement newInterfaceConfig = BuildInterfaceConfigurationElement(changeDescriptor.AlteredType, existingElement);
 
                 configuration.Section.Interfaces.Add(newInterfaceConfig);
 
@@ -118,7 +119,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         }
 
 
-        private static InterfaceConfigurationElement BuildInterfaceConfigurationElement(DataTypeDescriptor dataTypeDescriptor)
+        private static InterfaceConfigurationElement BuildInterfaceConfigurationElement(
+            DataTypeDescriptor dataTypeDescriptor, 
+            InterfaceConfigurationElement existingElement = null)
         {
             var tableConfig = new InterfaceConfigurationElement();            
 
@@ -144,7 +147,23 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 foreach (var culture in SqlDataProviderStoreManipulator.GetCultures(dataTypeDescriptor))
                 {
-                    string tableName = DynamicTypesCommon.GenerateTableName(dataTypeDescriptor, dataScope, culture);
+                    string tableName = null;
+
+                    if (existingElement != null)
+                    {
+                        foreach (StoreConfigurationElement table  in existingElement.ConfigurationStores)
+                        {
+                            if (table.DataScope == dataScope.Name && table.CultureName == culture.Name)
+                            {
+                                tableName = table.TableName;
+                                break;
+                            }
+                        }
+                        
+                    }
+
+                    tableName = tableName ?? DynamicTypesCommon.GenerateTableName(dataTypeDescriptor, dataScope, culture);
+
                     tableConfig.ConfigurationStores.Add(new StoreConfigurationElement
                                                             {TableName = tableName, DataScope = dataScope.Name, CultureName = culture.Name});
                 }

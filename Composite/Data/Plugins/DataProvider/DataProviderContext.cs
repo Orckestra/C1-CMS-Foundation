@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using Composite.Core.Extensions;
 using Composite.Data.Foundation.CodeGeneration;
 
 
@@ -11,14 +12,12 @@ namespace Composite.Data.Plugins.DataProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataProviderContext
     {
-        private string _providerName;
-
-
+        private readonly string _providerName;
 
         /// <exclude />
         public DataProviderContext(string providerName)
         {
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
+            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
 
             _providerName = providerName;
         }
@@ -36,20 +35,20 @@ namespace Composite.Data.Plugins.DataProvider
         /// <exclude />
         public DataSourceId CreateDataSourceId(IDataId dataId, Type interfaceType)
         {
-            if (dataId == null) throw new ArgumentNullException("dataId");
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The interface type '{0}' does not inherit the interface '{1}'", interfaceType, typeof(IData)));
+            Verify.ArgumentNotNull(dataId, "dataId");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(interfaceType), "interfaceType", "The interface type '{0}' does not inherit the interface '{1}'".FormatWith(interfaceType, typeof(IData)));
 
             return new DataSourceId(dataId, _providerName, interfaceType, DataScopeManager.MapByType(interfaceType), LocalizationScopeManager.MapByType(interfaceType));
         }
 
         internal DataSourceId CreateDataSourceId(IDataId dataId, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo)
         {
-            if (dataId == null) throw new ArgumentNullException("dataId");
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (dataScopeIdentifier == null) throw new ArgumentNullException("dataScopeIdentifier");
-            if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
-            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException(string.Format("The interface type '{0}' does not inherit the interface '{1}'", interfaceType, typeof(IData)));
+            Verify.ArgumentNotNull(dataId, "dataId");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentNotNull(dataScopeIdentifier, "dataScopeIdentifier");
+            Verify.ArgumentNotNull(cultureInfo, "cultureInfo");
+            Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(interfaceType), "interfaceType", "The interface type '{0}' does not inherit the interface '{1}'".FormatWith(interfaceType, typeof(IData)));
 
             return new DataSourceId(dataId, _providerName, interfaceType, dataScopeIdentifier, cultureInfo);
         }
@@ -59,10 +58,10 @@ namespace Composite.Data.Plugins.DataProvider
         /// <exclude />
         public void UpdateDataSourceId(IData data, IDataId dataId, Type interfaceType)
         {
-            if (data == null) throw new ArgumentNullException("data");
-            if (dataId == null) throw new ArgumentNullException("dataId");
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The interface type '{0}' does not inherit the interface '{1}'", interfaceType, typeof(IData)));
+            Verify.ArgumentNotNull(data, "data");
+            Verify.ArgumentNotNull(dataId, "dataId");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(interfaceType), "interfaceType", "The interface type '{0}' does not inherit the interface '{1}'".FormatWith(interfaceType, typeof(IData)));
 
             EmptyDataClassBase emptyDataClassBase = data as EmptyDataClassBase;
             if (emptyDataClassBase == null)
@@ -83,7 +82,7 @@ namespace Composite.Data.Plugins.DataProvider
         /// <exclude />
         public void UpdateDataSourceIdDataScope(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             data.DataSourceId.DataScopeIdentifier = DataScopeManager.MapByType(data);
         }

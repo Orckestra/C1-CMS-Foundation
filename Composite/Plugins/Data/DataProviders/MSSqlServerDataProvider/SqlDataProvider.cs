@@ -747,11 +747,28 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             return ContainsInterfaceType(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName);
         }
 
+        internal InterfaceConfigurationElement Get(DataTypeDescriptor dataTypeDescriptor)
+        {
+            var keys = GetKeys(dataTypeDescriptor.DataTypeId, dataTypeDescriptor.TypeManagerTypeName).ToList();
+
+            foreach (InterfaceConfigurationElement element in this)
+            {
+                object key = GetElementKey(element);
+
+                if (keys.Contains(key))
+                {
+                    return element;
+                }
+            }
+
+            return null;
+        }
+
         internal bool ContainsInterfaceType(Guid? dataTypeId, string typeName)
         {
             object[] allKeys = BaseGetAllKeys();
 
-            return GetKeys(dataTypeId, typeName).Any(key => allKeys.Contains(key));
+            return GetKeys(dataTypeId, typeName).Any(allKeys.Contains);
         }
 
         internal void Remove(DataTypeDescriptor dataTypeDescriptor)
