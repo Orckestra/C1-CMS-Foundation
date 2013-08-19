@@ -24,7 +24,7 @@ namespace Composite.C1Console.Trees
 
     internal static class TreeSharedRootsFacade
     {
-        private static Dictionary<string, CustomTreePerspectiveInfo> _sharedRootFolders = null;
+        private volatile static Dictionary<string, CustomTreePerspectiveInfo> _sharedRootFolders;
         private static string _elementAttachingProviderName;
         private static readonly object _lock = new object();
 
@@ -32,57 +32,69 @@ namespace Composite.C1Console.Trees
         {
             get
             {
-                Initialize();
-                return _sharedRootFolders;
+                var result = _sharedRootFolders;
+
+                if (result != null)
+                {
+                    return result;
+                }
+
+                lock (_lock)
+                {
+                    Initialize();
+
+                    return _sharedRootFolders;
+                }
             }
         }
 
 
         public static void Initialize(string elementAttachingProviderName = null)
         {
-            if (_sharedRootFolders == null)
+            if (_sharedRootFolders != null) return;
+
+            lock (_lock)
             {
-                lock (_lock)
+                if (_sharedRootFolders != null) return;
+
+                if (_elementAttachingProviderName == null)
                 {
-                    if (_sharedRootFolders == null)
+                    if (elementAttachingProviderName == null)
                     {
-                        if (_elementAttachingProviderName == null)
+                        foreach (string providerName in ElementActionProviderRegistry.ElementActionProviderNames)
                         {
-                            if (elementAttachingProviderName == null)
+                            IElementAttachingProvider elementAttachingProvider = ElementAttachingProviderPluginFacade.GetElementAttachingProvider(providerName);
+                            if (elementAttachingProvider is TreeElementAttachingProvider)
                             {
-                                foreach (string providerName in ElementActionProviderRegistry.ElementActionProviderNames)
-                                {
-                                    IElementAttachingProvider elementAttachingProvider = ElementAttachingProviderPluginFacade.GetElementAttachingProvider(providerName);
-                                    if (elementAttachingProvider is TreeElementAttachingProvider)
-                                    {
-                                        _elementAttachingProviderName = providerName;
-                                        break;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                _elementAttachingProviderName = elementAttachingProviderName;
+                                _elementAttachingProviderName = providerName;
+                                break;
                             }
                         }
-
-                        DoInitialize(_elementAttachingProviderName);
+                    }
+                    else
+                    {
+                        _elementAttachingProviderName = elementAttachingProviderName;
                     }
                 }
+
+                DoInitialize(_elementAttachingProviderName);
             }
         }
 
 
         public static void Clear()
         {
-            _sharedRootFolders = null;
+            lock (_lock)
+            {
+                _sharedRootFolders = null;
+            }
         }
 
 
 
         private static void DoInitialize(string elementAttachingProviderName)
         {
-            _sharedRootFolders = new Dictionary<string, CustomTreePerspectiveInfo>();
+            var sharedRootFolders = new Dictionary<string, CustomTreePerspectiveInfo>();
 
             TreeNodeDynamicContext treeNodeDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down);
             treeNodeDynamicContext.Piggybag = new Dictionary<string, string>();
@@ -107,7 +119,7 @@ namespace Composite.C1Console.Trees
 
 
                 EntityToken perspectiveEntityToken;
-                if (!_sharedRootFolders.ContainsKey(childTreeNode.Id))
+                if (!sharedRootFolders.ContainsKey(childTreeNode.Id))
                 {
                     perspectiveEntityToken = new TreePerspectiveEntityToken(childTreeNode.Id);
 
@@ -128,7 +140,7 @@ namespace Composite.C1Console.Trees
                         }
                     };
 
-                    _sharedRootFolders.Add(childTreeNode.Id, new CustomTreePerspectiveInfo
+                    sharedRootFolders.Add(childTreeNode.Id, new CustomTreePerspectiveInfo
                     {
                         AttachmentPoint = new NamedAttachmentPoint { AttachingPoint = new AttachingPoint(namedAttachmentPoint.AttachingPoint) },
                         Element = element,
@@ -137,13 +149,15 @@ namespace Composite.C1Console.Trees
                 }
                 else
                 {
-                    perspectiveEntityToken = _sharedRootFolders[childTreeNode.Id].Element.ElementHandle.EntityToken;
-                    _sharedRootFolders[childTreeNode.Id].Trees.Add(tree);
+                    perspectiveEntityToken = sharedRootFolders[childTreeNode.Id].Element.ElementHandle.EntityToken;
+                    sharedRootFolders[childTreeNode.Id].Trees.Add(tree);
                 }
 
                 namedAttachmentPoint.AttachingPoint = new AttachingPoint(perspectiveEntityToken);
                 tree.RootTreeNode = childTreeNode;
             }
+            
+            _sharedRootFolders = sharedRootFolders;
         }
     }
 }
