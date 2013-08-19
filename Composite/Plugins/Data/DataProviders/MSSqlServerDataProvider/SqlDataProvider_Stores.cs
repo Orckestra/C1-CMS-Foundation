@@ -7,6 +7,7 @@ using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
+using Composite.Core.Sql;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -419,38 +420,34 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             bool success = true;
 
-            using (var connection = new SqlConnection(_connectionString))
+            var connection = SqlConnectionManager.GetConnection(_connectionString);
+            
+            try
             {
-                connection.Open();
+                DataContext dataContext = (DataContext)Activator.CreateInstance(dataContextClassType, connection);
+                dataContext.Dispose();
+            }
+            catch (Exception ex)
+            {
+                var innerEx = ex;
 
-                try
+                while (innerEx is TargetInvocationException)
                 {
-                    DataContext dataContext = (DataContext)Activator.CreateInstance(dataContextClassType, connection);
-                    dataContext.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    var innerEx = ex;
-
-                    while (innerEx is TargetInvocationException)
-                    {
-                        innerEx = innerEx.InnerException;
-                    }
-
-                    if (!(innerEx is TypeLoadException))
-                    {
-                        throw;
-                    }
-
-                    Log.LogWarning(LogTitle, "Failed to load DataContext class, creating a new one.");
-                    Log.LogWarning(LogTitle, innerEx.Message);
-
-                    success = false;
+                    innerEx = innerEx.InnerException;
                 }
 
-                connection.Close();
+                if (!(innerEx is TypeLoadException))
+                {
+                    throw;
+                }
+
+                Log.LogWarning(LogTitle, "Failed to load DataContext class, creating a new one.");
+                Log.LogWarning(LogTitle, innerEx.Message);
+
+                success = false;
             }
 
+            
             lock (_typeLoadResults)
             {
                 _typeLoadResults[dataContextClassType] = success;
