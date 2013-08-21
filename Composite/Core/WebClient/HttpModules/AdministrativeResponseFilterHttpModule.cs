@@ -4,6 +4,7 @@ using System.Text;
 using System.Web;
 using System.Web.UI;
 using Composite.Core.Types;
+using System.Web.WebPages;
 
 
 namespace Composite.Core.WebClient.HttpModules
@@ -26,7 +27,8 @@ namespace Composite.Core.WebClient.HttpModules
         {
             var httpContext = HttpContext.Current;
 
-            if (httpContext.Handler is Page
+            if (
+                (httpContext.Handler is Page || httpContext.Handler is WebPageHttpHandler)
                 && UrlUtils.IsAdminConsoleRequest(httpContext))
             {
                 httpContext.Response.Filter = new ReplacementStream(httpContext.Response.Filter);

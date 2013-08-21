@@ -9,17 +9,15 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using System.Web.UI.HtmlControls;
+using Composite.Core.WebClient.Presentation;
 
 public partial class HttpHeadersControl : System.Web.UI.UserControl
 {
     protected void Page_Load(object sender, EventArgs e)
     {
- 		
-        if (Request.UserAgent != null && !Request.UserAgent.Contains ( "MSIE" ))
-        {
-            Response.ContentType = "application/xhtml+xml";
-        }
-        
+        ViewServices.RegisterCommonTransformations();
+        ViewServices.RegisterMimeType();
+
 		// Force NET mumbojumbo scripts to appear - needed for UpdateManager.js
 		this.Page.ClientScript.GetPostBackEventReference ( this, string.Empty );
     }

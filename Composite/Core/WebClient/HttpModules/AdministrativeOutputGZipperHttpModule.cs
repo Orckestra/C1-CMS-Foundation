@@ -28,7 +28,7 @@ namespace Composite.Core.WebClient.HttpModules
 
             string requestPathExtension = Path.GetExtension(context.Request.Path).ToLowerInvariant();
 
-            if (requestPathExtension == ".aspx" || requestPathExtension == ".asmx")
+            if (requestPathExtension == ".aspx" || requestPathExtension == ".asmx" || requestPathExtension == ".cshtml")
             {
                 SetResponseHeaders();
             }

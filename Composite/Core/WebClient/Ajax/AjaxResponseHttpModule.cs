@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.UI;
+using System.Web.WebPages;
 
 namespace Composite.Core.WebClient.Ajax
 {
@@ -16,7 +17,7 @@ namespace Composite.Core.WebClient.Ajax
             var httpContext = HttpContext.Current;
 
             if (httpContext.Handler != null 
-                && httpContext.Handler is Page
+                && (httpContext.Handler is Page || httpContext.Handler is WebPageHttpHandler)
                 && httpContext.Request.RequestType == "GET")
             {
                 var response = httpContext.Response;
