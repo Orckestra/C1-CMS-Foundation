@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
 @{
       
     Composite.Core.WebClient.Presentation.ViewServices.RegisterCommonTransformations();
@@ -7,20 +8,27 @@
 }
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
-    <head>
-		<title>Composite.Management.ServerLog</title>
+<head>
+    <title>Composite.Management.ServerLog</title>
 
+    @Html.Raw(Composite.Core.WebClient.ScriptLoader.Render("sub"))
+    @Html.Raw(Composite.Core.WebClient.StyleLoader.Render())
 
-        @Html.Raw(Composite.Core.WebClient.ScriptLoader.Render("sub"))
-        @Html.Raw(Composite.Core.WebClient.StyleLoader.Render())
+    <script type="text/javascript">
+        DocumentManager.isDocumentSelectable = true;
+    </script>
 
-		<script type="text/javascript">
-		    DocumentManager.isDocumentSelectable = true;
-		</script>
-	</head>
-	<body>
-        <ui:page label="${string:ServerLog.LabelTitle}" image="${icon:log-showlog}">
-			        @RenderBody()
-	    </ui:page>
-	</body>
+    @RenderSection("HtmlHead", false)
+
+</head>
+<body>
+    <ui:page>
+        @RenderSection("BodyHead", false)
+
+        @RenderBody()
+
+        @RenderSection("BodyFoot", false)
+    </ui:page>
+
+</body>
 </html>
