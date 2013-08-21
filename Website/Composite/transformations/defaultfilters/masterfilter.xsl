@@ -26,7 +26,7 @@
 
   <!-- supress nested documents head elements (see above) -->
   <xsl:template match="/x:html/x:body//x:html">
-    <xsl:apply-templates select="x:body/*" />
+    <xsl:apply-templates select="x:body/node()" />
   </xsl:template>
 
   <!-- resolve browser and platform regions -->
