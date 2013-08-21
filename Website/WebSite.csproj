@@ -6043,6 +6043,7 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\icomoon.ttf" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\icomoon.woff" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\fonts\readme.md" />
+    <Content Include="Composite\controls\Razor\RazorLayout.cshtml" />
     <None Include="Composite\extensions\compositec1\chrome.manifest" />
     <None Include="Composite\extensions\compositec1\chrome\content\compositec1.xul" />
     <None Include="Composite\extensions\compositec1\compositec1.xpi" />
@@ -6107,6 +6108,7 @@
     <None Include="Composite\images\originals\winxpskin\winxp-toolbarbutton-on.xcf" />
     <None Include="Composite\images\originals\winxpskin\winxp-toolbarbutton.xcf" />
     <Content Include="Composite\ping.ashx" />
+    <Content Include="Composite\InstalledPackages\content\views\TestRazorPage.cshtml" />
     <None Include="Composite\schemas\FormsControls\AspNetManagement__www_composite_net_ns_management_bindingforms_internal_ui_controls_lib_1_0.xsd" />
     <None Include="Composite\schemas\FormsControls\AspNetManagement__www_composite_net_ns_management_bindingforms_std_ui_controls_lib_1_0.xsd" />
     <None Include="Composite\schemas\FormsControls\bindingforms10.xsd" />
@@ -6194,6 +6196,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Code\" />
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
     <Folder Include="Composite\content\dialogs\querytreeeditor\" />
     <Folder Include="Composite\controls\FormsControls\FormUiControlTemplates\ElementSelectors\" />
