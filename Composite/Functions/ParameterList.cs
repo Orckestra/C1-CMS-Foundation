@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
 using Composite.Core.Types;
 
 
@@ -24,6 +25,8 @@ namespace Composite.Functions
 
         private readonly FunctionContextContainer _functionContextContainer;
         private readonly Dictionary<string, StoredParameterReturnValue> _parameters = new Dictionary<string, StoredParameterReturnValue>();
+
+        private static readonly MethodInfo NewLazyObjectMethodInfo = StaticReflection.GetGenericMethodInfo(() => NewLazyObject<object>(null));
 
 
         internal ParameterList(FunctionContextContainer functionContextContainer)
@@ -149,25 +152,48 @@ namespace Composite.Functions
                 value = null;
                 return false;
             }
-            
-            object storedValue = storedParameterReturnValue.ValueObject;
 
-            if (storedValue is BaseRuntimeTreeNode)
+            object valueObject = storedParameterReturnValue.ValueObject;
+            var parameterType = storedParameterReturnValue.ValueType;
+
+            if (parameterType.IsGenericType && parameterType.GetGenericTypeDefinition() == typeof (Lazy<>))
             {
-                storedValue = ((BaseRuntimeTreeNode) storedValue).GetValue(_functionContextContainer);
-            }
+                Type genericArgument = parameterType.GetGenericArguments()[0];
 
-            if (storedValue != null && !storedParameterReturnValue.ValueType.IsInstanceOfType(storedValue))
+                value = CreateLazyObject(() => EvaluateTreeNode(valueObject, genericArgument, _functionContextContainer), genericArgument);
+            }
+            else
             {
-                storedValue = ValueTypeConverter.Convert(storedValue, storedParameterReturnValue.ValueType);
+                value = EvaluateTreeNode(valueObject, parameterType, _functionContextContainer);
             }
-
-            value = storedValue;
 
             return true;
         }
 
+        private static object EvaluateTreeNode(object node, Type type, FunctionContextContainer functionContextContainer)
+        {
+            if (node is BaseRuntimeTreeNode)
+            {
+                node = ((BaseRuntimeTreeNode)node).GetValue(functionContextContainer);
+            }
 
+            if (node != null && !type.IsInstanceOfType(node))
+            {
+                node = ValueTypeConverter.Convert(node, type);
+            }
+
+            return node;
+        }
+
+        private static object CreateLazyObject(Func<object> func, Type type)
+        {
+            return NewLazyObjectMethodInfo.MakeGenericMethod(type).Invoke(null, new object[] { func });
+        }
+
+        private static Lazy<T> NewLazyObject<T>(Func<object> func)
+        {
+            return new Lazy<T>(() => (T) func(), true);
+        }
 
         /// <exclude />
         public bool IsDefaultValue(string parameterName)

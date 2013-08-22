@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Users;
+using Composite.Core.Extensions;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -20,6 +22,8 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ValueTypeConverter
     {
+        // private static readonly MethodInfo NewLazyObjectMethodInfo = StaticReflection.GetGenericMethodInfo(() => NewLazyObject<object>(null));
+
         /// <exclude />
         public static object Convert(object value, Type targetType)
         {
@@ -34,7 +38,7 @@ namespace Composite.Core.Types
 
             if (value == null)
             {
-                if (targetType.IsPrimitive == false)
+                if (!targetType.IsPrimitive)
                 {
                     return null;
                 }
@@ -43,25 +47,35 @@ namespace Composite.Core.Types
             }
 
             
-            if (targetType.IsAssignableFrom(value.GetType()))
+            if (targetType.IsInstanceOfType(value))
             {
                 return value;
             }
 
-            ValueTypeConverterHelperAttribute helper = targetType.GetCustomAttributesRecursively<ValueTypeConverterHelperAttribute>().FirstOrDefault();
+            //if (IsLazy(targetType) && !IsLazy(value.GetType()))
+            //{
+            //    Type genericArgument = targetType.GetGenericArguments()[0];
+
+            //    object convertedValue = TryConvert(value, genericArgument, out conversionError);
+
+            //    return CreateLazyObject(() => convertedValue, genericArgument);
+            //}
+
+
+            var helper = targetType.GetCustomAttributesRecursively<ValueTypeConverterHelperAttribute>().FirstOrDefault();
             if (helper != null)
             {
-                object ret = null;
+                object ret;
                 if (helper.TryConvert(value, targetType, out ret))
                 {
                     return ret;
                 }
             }
 
-            ValueTypeConverterHelperAttribute helper2 = value.GetType().GetCustomAttributesRecursively<ValueTypeConverterHelperAttribute>().FirstOrDefault();
+            var helper2 = value.GetType().GetCustomAttributesRecursively<ValueTypeConverterHelperAttribute>().FirstOrDefault();
             if (helper2 != null)
             {
-                object ret = null;
+                object ret;
                 if (helper2.TryConvert(value, targetType, out ret))
                 {
                     return ret;
@@ -78,7 +92,7 @@ namespace Composite.Core.Types
             {
                 Type targetItemType = targetType.GetGenericArguments()[0];
 
-                IList targetValue = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(new Type[] { targetItemType }));
+                IList targetValue = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(new [] { targetItemType }));
 
                 foreach (object valueItem in ((IEnumerable)value))
                 {
@@ -91,105 +105,23 @@ namespace Composite.Core.Types
             }
 
             // Haz item, wantz list of it.
-            if ((IsGenericEnumerable(value.GetType()) == false) &&
-                (IsGenericEnumerable(targetType)))
+            if (!IsGenericEnumerable(value.GetType())
+                && IsGenericEnumerable(targetType))
             {
                 Type targetItemType = targetType.GetGenericArguments()[0];
 
-                if (targetItemType.IsAssignableFrom(value.GetType()))
+                if (targetItemType.IsInstanceOfType(value))
                 {
-                    IList targetValue = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(new Type[] { targetItemType }));
+                    IList targetValue = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(new [] { targetItemType }));
                     targetValue.Add(value);
                     return targetValue;
                 }
             }
 
-
-            if (value.GetType() == typeof(string))
+            var stringValue = value as string;
+            if (stringValue != null)
             {
-                if (targetType == typeof(Type))
-                {
-                    return (value as string) != string.Empty ? TypeManager.GetType((string)value) : null;
-                }
-
-                if (targetType == typeof(XhtmlDocument))
-                {
-                    if ((string)value == string.Empty)
-                    {
-                        return new XhtmlDocument();
-                    }
-                    return XhtmlDocument.Parse((string)value);
-                }
-
-                if (targetType == typeof(XDocument))
-                {
-                    return XDocument.Parse((string)value);
-                }
-
-                if (targetType == typeof(XElement))
-                {
-                    return XElement.Parse((string)value);
-                }
-
-                if (targetType == typeof(IEnumerable<XNode>))
-                {
-                    try
-                    {
-                        XElement wrapper = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", value));
-                        return wrapper.Nodes();
-                    }
-                    catch
-                    {
-                        throw new InvalidCastException(string.Format("Unable to convert string '{0}' to a list of XNodes.", value));
-                    }
-                }
-
-                if (targetType == typeof(IEnumerable<XElement>))
-                {
-                    try
-                    {
-                        XElement wrapper = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", value));
-                        return wrapper.Elements();
-                    }
-                    catch
-                    {
-                        throw new InvalidCastException(string.Format("Unable to convert string '{0}' to a list of XElements.", value));
-                    }
-                }
-
-                if (targetType == typeof(XNamespace))
-                {
-                    return XNamespace.Get((string)value);
-                }
-
-                if(targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                {
-                    Type valueType = targetType.GetGenericArguments()[0];
-                    if(IsOneOfTheHandledValueTypes(valueType))
-                    {
-                        if((value as string).Trim().Length == 0)
-                        {
-                            return null;
-                        }
-
-                        return TryConvertValueType(value, valueType, out conversionError);    
-                    }
-                }
-
-
-                if(IsOneOfTheHandledValueTypes(targetType))
-                {
-                    return TryConvertValueType(value, targetType, out conversionError);
-                }
-
-                TypeConverter tc = TypeDescriptor.GetConverter(targetType);
-                CultureInfo culture = LocalizationScopeManager.CurrentLocalizationScope;
-                object convertedResult = tc.ConvertFromString(null, culture, value as string);
-
-                if (convertedResult == null && string.IsNullOrEmpty((string)value) == false)
-                    throw new InvalidOperationException(string.Format("Unable to convert string value '{0}' to type '{1}'", value, targetType.FullName));
-
-                return convertedResult;
+                return TryConvertStringValue(stringValue, targetType, ref conversionError);
             }
 
             if (targetType == typeof(string))
@@ -210,26 +142,132 @@ namespace Composite.Core.Types
                 return valueConverter.ConvertTo(null, UserSettings.CultureInfo, value, targetType);
             }
 
-            throw new InvalidOperationException(string.Format("No conversion from {0} to {1} could be found", value.GetType().ToString(), targetType.ToString()));
+            throw new InvalidOperationException(string.Format("No conversion from {0} to {1} could be found", value.GetType(), targetType));
         }
 
+        private static object TryConvertStringValue(string stringValue, Type targetType, ref Exception conversionError)
+        {
+            if (targetType == typeof (Type))
+            {
+                return stringValue != string.Empty ? TypeManager.GetType(stringValue) : null;
+            }
+
+            if (targetType == typeof (XhtmlDocument))
+            {
+                if (stringValue == string.Empty)
+                {
+                    return new XhtmlDocument();
+                }
+                return XhtmlDocument.Parse(stringValue);
+            }
+
+            if (targetType == typeof (XDocument))
+            {
+                return XDocument.Parse(stringValue);
+            }
+
+            if (targetType == typeof (XElement))
+            {
+                return XElement.Parse(stringValue);
+            }
+
+            if (targetType == typeof (IEnumerable<XNode>))
+            {
+                try
+                {
+                    XElement wrapper = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", stringValue));
+                    return wrapper.Nodes();
+                }
+                catch
+                {
+                    throw new InvalidCastException(string.Format("Unable to convert string '{0}' to a list of XNodes.", stringValue));
+                }
+            }
+
+            if (targetType == typeof (IEnumerable<XElement>))
+            {
+                try
+                {
+                    XElement wrapper = XElement.Parse(string.Format("<wrapper>{0}</wrapper>", stringValue));
+                    return wrapper.Elements();
+                }
+                catch
+                {
+                    throw new InvalidCastException(string.Format("Unable to convert string '{0}' to a list of XElements.", stringValue));
+                }
+            }
+
+            if (targetType == typeof (XNamespace))
+            {
+                return XNamespace.Get(stringValue);
+            }
+
+            if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof (Nullable<>))
+            {
+                Type valueType = targetType.GetGenericArguments()[0];
+                if (IsOneOfTheHandledValueTypes(valueType))
+                {
+                    if (stringValue.Trim().Length == 0)
+                    {
+                        return null;
+                    }
+
+                    return TryConvertValueType(stringValue, valueType, out conversionError);
+                }
+            }
+
+
+            if (IsOneOfTheHandledValueTypes(targetType))
+            {
+                return TryConvertValueType(stringValue, targetType, out conversionError);
+            }
+
+            TypeConverter tc = TypeDescriptor.GetConverter(targetType);
+            CultureInfo culture = LocalizationScopeManager.CurrentLocalizationScope;
+            object convertedResult = tc.ConvertFromString(null, culture, stringValue);
+
+            if (convertedResult == null && !string.IsNullOrEmpty(stringValue))
+            {
+                throw new InvalidOperationException(string.Format("Unable to convert string value '{0}' to type '{1}'", stringValue, targetType.FullName));
+            }
+
+            return convertedResult;
+        }
+
+        //private static object CreateLazyObject(Func<object> func, Type type)
+        //{
+        //    return NewLazyObjectMethodInfo.MakeGenericMethod(type).Invoke(null, new object[] { func });
+        //}
+
+        //private static Lazy<T> NewLazyObject<T>(Func<object> func)
+        //{
+        //    return new Lazy<T>(() => (T)func(), true);
+        //}
+
+        //private static bool IsLazy(Type type)
+        //{
+        //    return type.IsGenericTypeDefinition && type.GetGenericTypeDefinition() == typeof(Lazy<>);
+        //}
 
         private static bool IsOneOfTheHandledValueTypes(Type type)
         {
             return type == typeof (bool) || type == typeof (Guid) || type == typeof (int) || type == typeof (Decimal);
         }
 
-        private static object TryConvertValueType(object value, Type targetType, out Exception conversionError)
+        private static object TryConvertValueType(string stringValue, Type targetType, out Exception conversionError)
         {
             conversionError = null;
 
             if (targetType == typeof(bool))
             {
-                // TODO: return validation message
                 bool boolResult;
-                if (bool.TryParse((string)value, out boolResult) == false)
+
+                if (!bool.TryParse(stringValue, out boolResult))
                 {
                     boolResult = false;
+
+                    // TODO: localize
+                    conversionError = new InvalidOperationException("Failed to convert value '{0}' into a Boolean".FormatWith(stringValue));
                 }
                 return boolResult;
             }
@@ -239,12 +277,11 @@ namespace Composite.Core.Types
                 int intResult = 0;
                 try
                 {
-                    intResult = Int32.Parse((string)value);
+                    intResult = Int32.Parse(stringValue);
                 }
                 catch(OverflowException)
                 {
-                    string message = StringResourceSystemFacade.GetString("Composite.Management", "Validation.Int32.Overflow");
-                    conversionError = new InvalidOperationException(message);
+                    conversionError = new InvalidOperationException(LocalizationFiles.Composite_Management.Validation_Int32_Overflow);
                 }
                 catch (Exception ex)
                 {
@@ -256,9 +293,13 @@ namespace Composite.Core.Types
 
             if (targetType == typeof(decimal))
             {
-                // TODO: return validation message
-                decimal decimalResult = 0;
-                decimal.TryParse((string)value, out decimalResult);
+                // TODO: localize
+                decimal decimalResult;
+                if (!decimal.TryParse(stringValue, out decimalResult))
+                {
+                    conversionError = new InvalidOperationException("Failed to convert value '{0}' into a Decimal".FormatWith(stringValue));
+                }
+
                 return decimalResult;
             }
 
@@ -268,12 +309,12 @@ namespace Composite.Core.Types
 
                 try
                 {
-                    guidResult = new Guid((string)value);
+                    guidResult = new Guid(stringValue);
                 }
                 catch
                 {
-                    // TODO: return validation message
-                    // Ignore
+                    // TODO: localize
+                    conversionError = new InvalidOperationException("Failed to convert value '{0}' into a Guid".FormatWith(stringValue));
                 }
 
                 return guidResult;
@@ -292,15 +333,13 @@ namespace Composite.Core.Types
 
         private static bool IsGenericEnumerable(Type type)
         {
-            if (type.IsGenericType == false) return false;
+            if (!type.IsGenericType) return false;
 
             type = type.GetGenericTypeDefinition();
 
-            if (typeof(IEnumerable<>).IsAssignableFrom(type)) return true;
-            if (typeof(List<>).IsAssignableFrom(type)) return true;
-            if (typeof(IList<>).IsAssignableFrom(type)) return true;
-
-            return false;
+            return typeof (IEnumerable<>).IsAssignableFrom(type) 
+                || typeof (List<>).IsAssignableFrom(type) 
+                || typeof (IList<>).IsAssignableFrom(type);
         }
     }
 }
