@@ -14,21 +14,40 @@
     @Html.Raw(Composite.Core.WebClient.ScriptLoader.Render("sub"))
     @Html.Raw(Composite.Core.WebClient.StyleLoader.Render())
 
+	<script type="text/javascript">
+		DocumentManager.isDocumentSelectable = true;
+	</script>
     <script type="text/javascript">
-        DocumentManager.isDocumentSelectable = true;
-    </script>
+        //
+        function __doPostBack(eventTarget, eventArgument) {
+            var theForm = document.forms['Form1'];
+            if (!theForm) {
+                theForm = document.Form1;
+            }
+            if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+                theForm.__EVENTTARGET.value = eventTarget;
+                theForm.__EVENTARGUMENT.value = eventArgument;
+                theForm.submit();
+            }
+        } 
+        //
+	</script>
+
 
     @RenderSection("HtmlHead", false)
 
 </head>
-<body>
-    <ui:page>
-        @RenderSection("BodyHead", false)
+    <body>
+        <form name="Form1" id="Form1" class="updateform updatezone" method="POST"> <!-- simulate dot net --> 
+            <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" />
+            <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" />
+            <ui:page>
+                @RenderSection("BodyHead", false)
 
-        @RenderBody()
+                @RenderBody()
 
-        @RenderSection("BodyFoot", false)
-    </ui:page>
-
-</body>
+                @RenderSection("BodyFoot", false)
+            </ui:page>
+        </form>
+    </body>
 </html>
