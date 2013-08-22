@@ -22,7 +22,7 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ValueTypeConverter
     {
-        // private static readonly MethodInfo NewLazyObjectMethodInfo = StaticReflection.GetGenericMethodInfo(() => NewLazyObject<object>(null));
+        private static readonly MethodInfo NewLazyObjectMethodInfo = StaticReflection.GetGenericMethodInfo(() => NewLazyObject<object>(null));
 
         /// <exclude />
         public static object Convert(object value, Type targetType)
@@ -52,14 +52,14 @@ namespace Composite.Core.Types
                 return value;
             }
 
-            //if (IsLazy(targetType) && !IsLazy(value.GetType()))
-            //{
-            //    Type genericArgument = targetType.GetGenericArguments()[0];
+            if (IsLazy(targetType) && !IsLazy(value.GetType()))
+            {
+                Type genericArgument = targetType.GetGenericArguments()[0];
 
-            //    object convertedValue = TryConvert(value, genericArgument, out conversionError);
+                object convertedValue = TryConvert(value, genericArgument, out conversionError);
 
-            //    return CreateLazyObject(() => convertedValue, genericArgument);
-            //}
+                return CreateLazyObject(() => convertedValue, genericArgument);
+            }
 
 
             var helper = targetType.GetCustomAttributesRecursively<ValueTypeConverterHelperAttribute>().FirstOrDefault();
@@ -234,20 +234,20 @@ namespace Composite.Core.Types
             return convertedResult;
         }
 
-        //private static object CreateLazyObject(Func<object> func, Type type)
-        //{
-        //    return NewLazyObjectMethodInfo.MakeGenericMethod(type).Invoke(null, new object[] { func });
-        //}
+        private static object CreateLazyObject(Func<object> func, Type type)
+        {
+            return NewLazyObjectMethodInfo.MakeGenericMethod(type).Invoke(null, new object[] { func });
+        }
 
-        //private static Lazy<T> NewLazyObject<T>(Func<object> func)
-        //{
-        //    return new Lazy<T>(() => (T)func(), true);
-        //}
+        private static Lazy<T> NewLazyObject<T>(Func<object> func)
+        {
+            return new Lazy<T>(() => (T)func(), true);
+        }
 
-        //private static bool IsLazy(Type type)
-        //{
-        //    return type.IsGenericTypeDefinition && type.GetGenericTypeDefinition() == typeof(Lazy<>);
-        //}
+        private static bool IsLazy(Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>);
+        }
 
         private static bool IsOneOfTheHandledValueTypes(Type type)
         {
