@@ -62,7 +62,7 @@ _XMLParser.prototype = {
 	* @param {string} xml
 	* @param @optional {boolean} hasDialog If true, automatically show a dialog
 	*/
-	isWellFormedDocument: function (xml, hasDialog) {
+	isWellFormedDocument: function (xml, hasDialog, isConfirmDialog) {
 
 		var result = true;
 		var dec = '<?xml version="1.0" encoding="UTF-8"?>';
@@ -74,7 +74,13 @@ _XMLParser.prototype = {
 		if (string != "True") {
 			result = false;
 			if (hasDialog == true) {
-				this._illFormedDialog(string);
+				if (isConfirmDialog) {
+					if (confirm("Not well-formed\n" + string + "\nContinue?")) {
+						result = true;
+					}
+				}else {
+					this._illFormedDialog(string);
+				}
 			}
 		}
 

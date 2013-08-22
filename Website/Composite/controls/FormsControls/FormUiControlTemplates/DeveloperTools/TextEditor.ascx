@@ -56,4 +56,6 @@
 	value="<%= _currentStringValue %>"
 	id="<%= this.UniqueID %>"
 	name="<%= this.UniqueID %>"
-	callbackid="<%= this.UniqueID %>"/>
+	callbackid="<%= this.UniqueID %>"
+	strictsave="false"
+	/>

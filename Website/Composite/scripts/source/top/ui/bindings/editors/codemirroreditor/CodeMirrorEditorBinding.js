@@ -98,6 +98,12 @@ function CodeMirrorEditorBinding() {
 	this._hasStrictValidation = false;
 
 	/**
+	*  If false then editor can save invalid document, but ask this from user.
+	* @type {boolean}
+	*/
+	this._strictSave = true;
+
+	/**
 	* This new thingy will rule all validation.
 	* TODO: Deprecate _hasStrictValidation eventually...
 	* @type {String}
@@ -166,6 +172,14 @@ CodeMirrorEditorBinding.prototype.onBindingAttach = function () {
 	var validate = this.getProperty("validate");
 	if (validate == true) {
 		this._hasStrictValidation = true;
+	}
+	
+	/*
+	* Disable strict validation?
+	*/
+	var strictsave = this.getProperty("strictsave");
+	if (strictsave === false) {
+		this._strictSave = false;
 	}
 
 	/*
@@ -599,7 +613,7 @@ CodeMirrorEditorBinding.prototype.validate = function () {
 					this.setContent(newSource);
 				}
 
-				result = XMLParser.isWellFormedDocument(source, true);
+				result = XMLParser.isWellFormedDocument(source, true, !this._strictSave);
 
 				/*
 				* Strict validation?
