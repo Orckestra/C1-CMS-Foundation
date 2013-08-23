@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Web;
 using System.Web.WebPages;
 using System.Xml;
@@ -19,8 +18,6 @@ namespace Composite.AspNet.Razor
     public static class RazorHelper
     {
         internal static readonly string PageContext_FunctionContextContainer = "C1.FunctionContextContainer";
-        private static readonly string ExecutionLock_ItemsKey = "__razor_execute_lock__";
-        private static readonly object _lock = new object();
 
         /// <summary>
         /// Executes the razor page.
@@ -68,7 +65,6 @@ namespace Composite.AspNet.Razor
         {
             var startPage = StartPage.GetStartPage(webPage, "_PageStart", new[] {"cshtml"});
 
-            object requestLock = null;
             HttpContextBase httpContext;
 
             HttpContext currentContext = HttpContext.Current;
@@ -78,9 +74,7 @@ namespace Composite.AspNet.Razor
             }
             else
             {
-                httpContext = new HttpContextWrapper(currentContext);
-
-                requestLock = GetRazorExecutionLock(currentContext);
+                httpContext = new CustomHttpContextWrapper(currentContext);
             }
 
             var pageContext = new WebPageContext(httpContext, webPage, startPage);
@@ -97,23 +91,7 @@ namespace Composite.AspNet.Razor
             var sb = new StringBuilder();
             using (var writer = new StringWriter(sb))
             {
-                bool lockTaken = false;
-                try
-                {
-                    if (requestLock != null)
-                    {
-                        Monitor.Enter(requestLock, ref lockTaken);
-                    }
-
-                    webPage.ExecutePageHierarchy(pageContext, writer);
-                }
-                finally
-                {
-                    if (lockTaken)
-                    {
-                        Monitor.Exit(requestLock);
-                    }
-                }
+                webPage.ExecutePageHierarchy(pageContext, writer);
             }
 
             string output = sb.ToString().Trim();
@@ -140,30 +118,6 @@ namespace Composite.AspNet.Razor
 			return ValueTypeConverter.Convert(output, resultType);
         }
 
-
-
-        private static object GetRazorExecutionLock(HttpContext currentContext)
-        {
-            object requestLock = currentContext.Items[ExecutionLock_ItemsKey];
-
-            if (requestLock == null)
-            {
-                lock (_lock)
-                {
-                    requestLock = currentContext.Items[ExecutionLock_ItemsKey];
-
-                    if (requestLock == null)
-                    {
-                        requestLock = new object();
-                        lock (currentContext.Items.SyncRoot)
-                        {
-                            currentContext.Items[ExecutionLock_ItemsKey] = requestLock;
-                        }
-                    }
-                }
-            }
-            return requestLock;
-        }
 
         private static XhtmlDocument OutputToXhtmlDocument(string output)
         {
