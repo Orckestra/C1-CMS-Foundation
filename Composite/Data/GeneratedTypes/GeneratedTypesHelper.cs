@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +13,7 @@ using Composite.Data.Types;
 using Composite.Functions;
 using Microsoft.CSharp;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_GeneratedTypes;
 
 namespace Composite.Data.GeneratedTypes
 {
@@ -28,7 +28,7 @@ namespace Composite.Data.GeneratedTypes
 
         private Type _associatedType = null;
         private Type _oldType = null;
-        private DataTypeDescriptor _oldDataTypeDescriptor;
+        private readonly DataTypeDescriptor _oldDataTypeDescriptor;
         private DataTypeDescriptor _newDataTypeDescriptor;
 
         private string _newTypeName = null;
@@ -63,7 +63,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public GeneratedTypesHelper(Type oldType)
         {
-            if (oldType == null) throw new ArgumentNullException("oldType");
+            Verify.ArgumentNotNull(oldType, "oldType");
 
             _oldType = oldType;
             _oldDataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(oldType);
@@ -76,7 +76,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public GeneratedTypesHelper(DataTypeDescriptor oldDataTypeDescriptor)
         {
-            if (oldDataTypeDescriptor == null) throw new ArgumentNullException("oldDataTypeDescriptor");
+            Verify.ArgumentNotNull(oldDataTypeDescriptor, "oldDataTypeDescriptor");
 
             _oldType = oldDataTypeDescriptor.GetInterfaceType();
             _oldDataTypeDescriptor = oldDataTypeDescriptor;
@@ -143,7 +143,7 @@ namespace Composite.Data.GeneratedTypes
         {
             get
             {
-                if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
                 return _oldDataTypeDescriptor.Cachable;
             }
@@ -156,7 +156,7 @@ namespace Composite.Data.GeneratedTypes
         {
             get
             {
-                if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
                 return _oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled));
             }
@@ -169,7 +169,7 @@ namespace Composite.Data.GeneratedTypes
         {
             get
             {
-                if (_oldDataTypeDescriptor == null) throw new InvalidOperationException("No old data type specified");
+                Verify.IsNotNull(_oldDataTypeDescriptor, "No old data type specified");
 
                 return _oldDataTypeDescriptor.SuperInterfaces.Contains(typeof(ILocalizedControlled));
             }
@@ -191,7 +191,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public bool ValidateNewTypeName(string typeName, out string message)
         {
-            if (string.IsNullOrEmpty(typeName)) throw new ArgumentNullException("typeName");
+            Verify.ArgumentNotNullOrEmpty(typeName, "typeName");
 
             return NameValidation.TryValidateName(typeName, out message);
         }
@@ -201,7 +201,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public bool ValidateNewTypeNamespace(string typeNamespace, out string message)
         {
-            if (string.IsNullOrEmpty(typeNamespace)) throw new ArgumentNullException("typeNamespace");
+            Verify.ArgumentNotNullOrEmpty(typeNamespace, "typeNamespace");
 
             return NameValidation.TryValidateNamespace(typeNamespace, out message);
         }
@@ -211,14 +211,14 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public bool ValidateNewTypeFullName(string typeName, string typeNamespace, out string message)
         {
-            if (string.IsNullOrEmpty(typeName)) throw new ArgumentNullException("typeName");
-            if (string.IsNullOrEmpty(typeNamespace)) throw new ArgumentNullException("typeNamespace");
+            Verify.ArgumentNotNullOrEmpty(typeName, "typeName");
+            Verify.ArgumentNotNullOrEmpty(typeNamespace, "typeNamespace");
 
             message = null;
 
             if (typeNamespace.Split('.').Contains(typeName))
             {
-                message = string.Format(StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "TypeNameInNamespace"), typeName, typeNamespace);
+                message = Texts.TypeNameInNamespace(typeName, typeNamespace);
                 return false;
             }
 
@@ -226,20 +226,18 @@ namespace Composite.Data.GeneratedTypes
 
             if (_oldDataTypeDescriptor != null)
             {
-                if ((_oldDataTypeDescriptor.Name == typeName) &&
-                    (_oldDataTypeDescriptor.Namespace == typeNamespace))
+                if (_oldDataTypeDescriptor.Name == typeName &&
+                    _oldDataTypeDescriptor.Namespace == typeNamespace)
                 {
                     return true;
                 }
-                else
-                {
-                    Type interfaceType = _oldDataTypeDescriptor.GetInterfaceType();
 
-                    if (interfaceType.GetRefereeTypes().Count > 0)
-                    {
-                        message = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "TypesAreReferencing");
-                        return false;
-                    }
+                Type interfaceType = _oldDataTypeDescriptor.GetInterfaceType();
+
+                if (interfaceType.GetRefereeTypes().Count > 0)
+                {
+                    message = Texts.TypesAreReferencing;
+                    return false;
                 }
             }
 
@@ -250,7 +248,7 @@ namespace Composite.Data.GeneratedTypes
 
                 if (typeFullname == fullname)
                 {
-                    message = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "TypesNameClash");
+                    message = Texts.TypesNameClash;
                     return false;
                 }
             }
@@ -263,7 +261,7 @@ namespace Composite.Data.GeneratedTypes
                 bool exists = TypeManager.HasTypeWithName(sb.ToString());
                 if (exists)
                 {
-                    message = string.Format(StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "NameSpaceIsTypeTypeName"), sb.ToString());
+                    message = Texts.NameSpaceIsTypeTypeName(sb.ToString());
                     return false;
                 }
 
@@ -287,7 +285,7 @@ namespace Composite.Data.GeneratedTypes
             {
                 if (classFullNameWithDot.StartsWith(reservedNamespace + ".", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    errorMessage = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "NamespaceIsReserved");
+                    errorMessage = Texts.NamespaceIsReserved;
                     return false;
                 }
             }
@@ -296,8 +294,7 @@ namespace Composite.Data.GeneratedTypes
             {
                 if (!IsCSharpValidIdentifier(namePart))
                 {
-                    errorMessage = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "TypeNameIsInvalidIdentifier")
-                                   .FormatWith(classFullName);
+                    errorMessage = Texts.TypeNameIsInvalidIdentifier(classFullName);
                     return false;
                 }
             }
@@ -306,8 +303,7 @@ namespace Composite.Data.GeneratedTypes
             {
                 if (!IsCSharpValidIdentifier(dataField.Name))
                 {
-                    errorMessage = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "FieldNameCannotBeUsed")
-                                   .FormatWith(dataField.Name);
+                    errorMessage = Texts.FieldNameCannotBeUsed(dataField.Name);
                     return false;
                 }
             }
@@ -322,7 +318,7 @@ namespace Composite.Data.GeneratedTypes
                     if (classFullNameWithDot.StartsWith(typeNameWithDot, StringComparison.InvariantCultureIgnoreCase)
                        || typeNameWithDot.StartsWith(classFullNameWithDot, StringComparison.InvariantCultureIgnoreCase))
                     {
-                        errorMessage = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", "CompileErrorWhileAddingType");
+                        errorMessage = Texts.CompileErrorWhileAddingType;
                         return false;
                     }
                 }
@@ -333,9 +329,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (!compatibilityCheckResult.Successful)
             {
-                string messageKey = _oldDataTypeDescriptor == null ? "CompileErrorWhileAddingType" : "CompileErrorWhileChangingType";
-
-                errorMessage = StringResourceSystemFacade.GetString("Composite.GeneratedTypes", messageKey);
+                errorMessage = _oldDataTypeDescriptor == null ? Texts.CompileErrorWhileAddingType : Texts.CompileErrorWhileChangingType;
 
                 errorMessage += compatibilityCheckResult.ErrorMessage;
                 return false;
@@ -354,7 +348,7 @@ namespace Composite.Data.GeneratedTypes
 
             message = null;
 
-            if (newDataFieldDescriptors.Count() == 0)
+            if (!newDataFieldDescriptors.Any())
             {
                 message = GetString("MissingFields");
                 return false;
@@ -370,17 +364,6 @@ namespace Composite.Data.GeneratedTypes
                 message = GetString("FieldNameCannotBeUsed").FormatWith(IdFieldName);
                 return false;
             }
-
-            // Removing this check in 3.0 RC3 - it can actually make sense to have fields with no widget, like a "CreationDate" date field with a default value "Now"
-            //foreach (var fieldDescriptor in newDataFieldDescriptors)
-            //{
-            //    if (fieldDescriptor.FormRenderingProfile == null ||
-            //       fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup.IsNullOrEmpty())
-            //    {
-            //        message = GetString("FieldDoesNotHaveWidget").FormatWith(fieldDescriptor.Name);
-            //        return false;
-            //    }
-            //}
 
             return true;
         }
@@ -405,7 +388,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public static PropertyInfo GetCompositionDescriptionPropertyInfo(Type compositionType)
         {
-            return compositionType.GetPropertiesRecursively().Where(f => f.Name == CompositionDescriptionFieldName).Single();
+            return compositionType.GetPropertiesRecursively().Single(f => f.Name == CompositionDescriptionFieldName);
         }
 
 
@@ -413,7 +396,7 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public static PropertyInfo GetPageReferencePropertyInfo(Type compositionType)
         {
-            return compositionType.GetPropertiesRecursively().Where(f => f.Name == PageReferenceFieldName).Single();
+            return compositionType.GetPropertiesRecursively().Single(f => f.Name == PageReferenceFieldName);
         }
 
 
@@ -500,8 +483,8 @@ namespace Composite.Data.GeneratedTypes
         public void SetForeignKeyReference(DataTypeDescriptor targetDataTypeDescriptor, DataAssociationType dataAssociationType)
         {
             if (dataAssociationType == DataAssociationType.None) throw new ArgumentException("dataAssociationType");
-            else if ((dataAssociationType == DataAssociationType.Aggregation) && (_pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null)) throw new InvalidOperationException("The type already have an foreign key reference");
-            else if ((dataAssociationType == DataAssociationType.Composition) && (_pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null)) throw new InvalidOperationException("The type already have an foreign key reference");
+            if (dataAssociationType == DataAssociationType.Aggregation && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null) throw new InvalidOperationException("The type already have a foreign key reference");
+            if (dataAssociationType == DataAssociationType.Composition && _pageMetaDataDescriptionForeignKeyDataFieldDescriptor != null) throw new InvalidOperationException("The type already have a foreign key reference");
 
 
             Type targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
@@ -580,9 +563,9 @@ namespace Composite.Data.GeneratedTypes
 
                 if (_oldDataTypeDescriptor == null)
                 {
-                    if (_newTypeName == null) throw new InvalidOperationException("Type name not set");
-                    if (_newTypeNamespace == null) throw new InvalidOperationException("Type namespace not set");
-                    if (_newDataFieldDescriptors == null) throw new InvalidOperationException("Type field descritpros not set");
+                    Verify.IsNotNull(_newTypeName, "Type name not set");
+                    Verify.IsNotNull(_newTypeNamespace, "Type namespace not set");
+                    Verify.IsNotNull(_newDataFieldDescriptors, "Type field descritpros not set");
 
                     CreateNewType();
                 }
@@ -617,25 +600,27 @@ namespace Composite.Data.GeneratedTypes
         /// <exclude />
         public static void SetNewIdFieldValue(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
-            PropertyInfo propertyInfo = data.GetType().GetProperty(IdFieldName);
-            if (propertyInfo == null) throw new ArgumentException(string.Format("The type '{0}' does not have a property named '{1}'", data.GetType(), IdFieldName));
+            var keyProperties = data.GetType().GetKeyProperties();
 
-            bool hasDefaultFieldValueAttribute = propertyInfo.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
-            bool hasNewInstanceDefaultFieldValueAtteibute = propertyInfo.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
-
-            if ((!hasDefaultFieldValueAttribute) && (!hasNewInstanceDefaultFieldValueAtteibute))
+            foreach (var keyProperty in keyProperties)
             {
-                if (propertyInfo.PropertyType == typeof(Guid))
+                bool hasDefaultFieldValueAttribute = keyProperty.GetCustomAttributesRecursively<DefaultFieldValueAttribute>().Any();
+                bool hasNewInstanceDefaultFieldValueAtteibute = keyProperty.GetCustomAttributesRecursively<NewInstanceDefaultFieldValueAttribute>().Any();
+
+                if (!hasDefaultFieldValueAttribute && !hasNewInstanceDefaultFieldValueAtteibute)
                 {
-                    // Assigning a guid key a value because its not part of the genereted UI
-                    propertyInfo.SetValue(data, Guid.NewGuid(), null);
-                }
-                else
-                {
-                    // For now, do nothing. This would fix auto increament issue for int key properties
-                    // throw new InvalidOperationException(string.Format("The property '{0}' on the data interface '{1}' does not a DefaultFieldValueAttribute or NewInstanceDefaultFieldValueAttribute and no default value could be created", propertyInfo.Name, data.GetType());
+                    if (keyProperty.PropertyType == typeof(Guid))
+                    {
+                        // Assigning a guid key a value because its not part of the genereted UI
+                        keyProperty.SetValue(data, Guid.NewGuid(), null);
+                    }
+                    else
+                    {
+                        // For now, do nothing. This would fix auto increament issue for int key properties
+                        // throw new InvalidOperationException(string.Format("The property '{0}' on the data interface '{1}' does not a DefaultFieldValueAttribute or NewInstanceDefaultFieldValueAttribute and no default value could be created", propertyInfo.Name, data.GetType());
+                    }
                 }
             }
         }
@@ -691,15 +676,6 @@ namespace Composite.Data.GeneratedTypes
         {
             return new CSharpCodeProvider().IsValidIdentifier(name);
         }
-
-
-        private static CultureInfo[] GetLocalizationScopes(DataTypeDescriptor dataTypeDescriptor)
-        {
-            return dataTypeDescriptor.Localizeable 
-                ? DataLocalizationFacade.ActiveLocalizationCultures.ToArray() 
-                : new [] { CultureInfo.InvariantCulture } ;
-        }
-
 
 
         private bool UpdateOldType(bool validateOnly, bool originalTypeDataExists, out string errorMessage)

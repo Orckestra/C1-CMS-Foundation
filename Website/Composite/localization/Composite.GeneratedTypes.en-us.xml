@@ -10,5 +10,4 @@
 	<string key="NamespaceIsReserved" value="Type name belongs to a reserved namespace." />
 	<string key="CompileErrorWhileAddingType" value="Cannot add a data type since it will cause some compilation errors." />
 	<string key="CompileErrorWhileChangingType" value="Cannot change a data type since it will cause some compilation errors." />
-  <string key="FieldDoesNotHaveWidget" value="Field '{0}' does not have a widget provider specified." />
 </strings>
