@@ -5,6 +5,8 @@
     Composite.Core.WebClient.Presentation.ViewServices.RegisterCommonTransformations();
     Composite.Core.WebClient.Presentation.ViewServices.RegisterMimeType();
 
+    dynamic state;
+    
 }
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
@@ -15,7 +17,7 @@
     @Html.Raw(Composite.Core.WebClient.StyleLoader.Render())
 
 	<script type="text/javascript">
-		DocumentManager.isDocumentSelectable = true;
+	    DocumentManager.isDocumentSelectable = true;
 	</script>
     <script type="text/javascript">
         //
@@ -29,7 +31,7 @@
                 theForm.__EVENTARGUMENT.value = eventArgument;
                 theForm.submit();
             }
-        } 
+        }
         //
 	</script>
 
@@ -39,9 +41,11 @@
 </head>
     <body>
         <form name="Form1" id="Form1" class="updateform updatezone" method="POST"> <!-- simulate dot net --> 
-            <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" />
-            <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" />
+           <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" />
+           <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT"  />
+          @if(PageData.TryGetValue("__STATE", out state)){ <input type="hidden" name="__STATE" id="__STATE"  value="@state.Serialize()" /> } @* If used it should implement Serialize*@
             <ui:page>
+
                 @RenderSection("BodyHead", false)
 
                 @RenderBody()
