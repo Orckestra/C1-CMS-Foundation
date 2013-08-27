@@ -13,6 +13,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
+using Composite.Data.Types;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -480,15 +481,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
+                    Type referenceType;
+                    string keyPropertyName;
+                    object referenceKey;
+                    
+                    MapReference(foreignKeyProperty.TargetType, foreignKeyProperty.TargetKeyPropertyName, propertyValue, out referenceType, out keyPropertyName, out referenceKey);
+
                     // Checking key in the keys to be installed
-                    var keyValuePair = new KeyValuePair<string, object>(foreignKeyProperty.TargetKeyPropertyName, propertyValue);
+                    var keyValuePair = new KeyValuePair<string, object>(keyPropertyName, referenceKey);
 
                     if (!_missingDataReferences.ContainsKey(dataType.InterfaceType) 
                         || !_missingDataReferences[dataType.InterfaceType].Contains(keyValuePair))
                     {
-                        if (_dataKeysToBeInstalled.ContainsKey(foreignKeyProperty.TargetType))
+                        if (_dataKeysToBeInstalled.ContainsKey(referenceType))
                         {
-                            if (_dataKeysToBeInstalled[foreignKeyProperty.TargetType].KeyRegistered(dataType, keyValuePair))
+                            if (_dataKeysToBeInstalled[referenceType].KeyRegistered(dataType, keyValuePair))
                             {
                                 continue;
                             }
@@ -519,6 +526,25 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists").FormatWith(dataType.InterfaceType, itemsAlreadePresentInDatabase));
             }
         }
+
+        private void MapReference(Type type, string propertyName, object key, out Type referenceType, out string keyPropertyName, out object referenceKey)
+        {
+            if ((type == typeof(IImageFile) || type == typeof(IMediaFile))
+                && ((string)key).StartsWith("MediaArchive:")
+                && propertyName == "KeyPath")
+            {
+                referenceType = typeof(IMediaFileData);
+                referenceKey = new Guid(((string)key).Substring("MediaArchive:".Length));
+                keyPropertyName = "Id";
+                return;
+            }
+
+            referenceType = type;
+            keyPropertyName = propertyName;
+            referenceKey = key;
+        }
+
+
 
         private DataScope GetDataScopeFromDataTypeElement(DataType dataType)
         {
