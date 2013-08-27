@@ -1,29 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Text;
-using System.Web;
 using System.Web.Hosting;
-using System.Web.UI;
-using System.Xml.Linq;
 
 namespace Composite.Core.WebClient
 {
-
-
-
-    /// <summary>
-    /// Summary description for ScriptLoader
-    /// </summary>
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class StyleLoader
     {
-
-
-
-
+        /// <exclude />
         public static string Render(string directive = null)
         {
             StringBuilder _builder = new StringBuilder();

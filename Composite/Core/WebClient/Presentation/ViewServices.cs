@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
+﻿using System.Web;
 
 namespace Composite.Core.WebClient.Presentation
 {
@@ -33,7 +29,6 @@ namespace Composite.Core.WebClient.Presentation
         {
             OutputTransformationManager.Activate();
 
-            HttpContext context = HttpContext.Current;
             OutputTransformationManager.RegisterTransformation(
                 Request.MapPath("~/Composite/transformations/defaultfilters/structurefilter.xsl"), 1);
             OutputTransformationManager.RegisterTransformation(
@@ -43,7 +38,7 @@ namespace Composite.Core.WebClient.Presentation
 
         }
 
-
+        /// <exclude />
         public static void RegisterMimeType()
         {
             if (Request.UserAgent != null && !Request.UserAgent.Contains("MSIE"))

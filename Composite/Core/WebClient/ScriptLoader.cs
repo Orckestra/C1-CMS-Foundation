@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
-using System.Web.UI;
 using System.Xml.Linq;
+using Composite.Core.Xml;
 
 namespace Composite.Core.WebClient
 {
@@ -18,16 +20,16 @@ namespace Composite.Core.WebClient
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ScriptLoader
     {
-        static bool _hasServerToServerConnection = false;
+        static bool _hasServerToServerConnection;
 
         private readonly HttpContext _ctx;        
         private readonly string _type;
         private readonly CompositeScriptMode _mode;
 
-        private IEnumerable<string> _defaultscripts;
+        private readonly IEnumerable<string> _defaultscripts;
 
 
-
+        /// <exclude />
         public ScriptLoader(string type, string directive = null)
         {
             _ctx = HttpContext.Current;
@@ -72,10 +74,9 @@ namespace Composite.Core.WebClient
         {
             return new ScriptLoader(type, directive).Render();
         }
+        
 
-
-        #region Private Methods
-
+        /// <exclude />
         public string Render()
         {
             StringBuilder _builder = new StringBuilder();
@@ -93,11 +94,13 @@ namespace Composite.Core.WebClient
         }
 
 
+        #region Private Methods
+
         private void CompileScript(StringBuilder writer)
         {
             try
             {
-                string folderPath = Path.Combine(HttpContext.Current.Request.PhysicalApplicationPath, "Composite");
+                string folderPath = Path.Combine(_ctx.Request.PhysicalApplicationPath, "Composite");
 
                 string targetPath = folderPath + "\\scripts\\compressed";
 
@@ -110,7 +113,7 @@ namespace Composite.Core.WebClient
             }
             catch (Exception e)
             {
-                Composite.Core.Logging.LoggingService.LogError(typeof(ScriptLoader).FullName, new InvalidOperationException("Failed to compile scripts", e));
+                Log.LogError(typeof(ScriptLoader).FullName, new InvalidOperationException("Failed to compile scripts", e));
 
                 writer.Append("<p> Failed to compile scripts. Exception text:");
                 writer.Append(HttpUtility.HtmlEncode(e.ToString()));
@@ -128,18 +131,17 @@ namespace Composite.Core.WebClient
             //string parentVirtualFolder = thisVirtualFolder.Substring(0, thisVirtualFolder.LastIndexOf(Composite.Core.IO.Path.DirectorySeparatorChar));
             //string fullPathWindowsStyle = parentVirtualFolder.Replace( "~", HttpContext.Current.Request.ApplicationPath );
 
-            string _root = Composite.Core.WebClient.UrlUtils.AdminRootPath;
+            string root = UrlUtils.AdminRootPath;
 
-            string _scriptmarkup = _getScriptMarkup();
-            string _scriptsource = null;
-
+            string scriptMarkup = GetScriptMarkup();
 
 
             foreach (string ss in _defaultscripts)
             {
-                _scriptsource = ss.Replace("${root}", _root);
+                string scriptsource = ss.Replace("${root}", root);
+
                 builder.AppendLine(
-                    _scriptmarkup.Replace("${scriptsource}", _scriptsource)
+                    scriptMarkup.Replace("${scriptsource}", scriptsource)
                 );
             }
 
@@ -149,7 +151,7 @@ namespace Composite.Core.WebClient
                 _ctx.Response.Cache.SetExpires(DateTime.Now.AddYears(-10));
                 _ctx.Response.Cache.SetCacheability(HttpCacheability.Private);
 
-                _hasServerToServerConnection = _HasServerToServerConnection();
+                _hasServerToServerConnection = HasServerToServerConnection();
                 builder.AppendLine(@"<script type=""text/javascript"">");
                 builder.AppendLine(string.Format(@"Application.hasExternalConnection = {0};", _hasServerToServerConnection.ToString().ToLower()));
                 builder.AppendLine(@"</script>");
@@ -171,20 +173,19 @@ namespace Composite.Core.WebClient
                 builder.AppendLine(@"UpdateManager.xhtml = null;");
                 builder.AppendLine(@"</script>");
             }
-
-
         }
 
-        /**
-         * When there are lots of scripts around, Mozilla cannot grok the closing 
-         * script tag. It throws a "Error: mismatched tag. Expected: </head>". 
-         * Explorer, on the other hand, needs the closing script tag.
-         */
-        private string _getScriptMarkup()
+        
+        /// <summary>
+        /// When there are lots of scripts around, Mozilla cannot grok the closing 
+        /// script tag. It throws a "Error: mismatched tag. Expected: &lt;/head&gt;". 
+        /// Explorer, on the other hand, needs the closing script tag.
+        /// </summary>
+        private string GetScriptMarkup()
         {
             string userAgent = _ctx.Request.UserAgent;
 
-            if (userAgent != null && userAgent.IndexOf("Gecko") > -1)
+            if (userAgent != null && userAgent.IndexOf("Gecko", StringComparison.InvariantCulture) > -1)
             {
                 return @"<script type=""application/javascript"" src=""${scriptsource}""/>";
             }
@@ -196,7 +197,8 @@ namespace Composite.Core.WebClient
          * Attempt remote connection. We stress-test the connection by 
          * looking for the exact document title "Start" in the response. 
          */
-        private static bool _HasServerToServerConnection()
+        [SuppressMessage("Composite.IO", "Composite.DoNotUseConfigurationManagerClass:DoNotUseConfigurationManagerClass")]
+        private static bool HasServerToServerConnection()
         {
             bool result = false;
             try
@@ -204,12 +206,12 @@ namespace Composite.Core.WebClient
                 string uri = ConfigurationManager.AppSettings["Composite.StartPage.Url"];
 
                 XDocument loaded = null;
-                System.Threading.Tasks.Task task = System.Threading.Tasks.Task.Factory.StartNew(() => loaded = TryLoad(uri));
+                Task task = Task.Factory.StartNew(() => loaded = TryLoad(uri));
 
                 task.Wait(2500);
                 if (task.IsCompleted && loaded != null)
                 {
-                    XElement titleElement = loaded.Descendants(Composite.Core.Xml.Namespaces.Xhtml + "title").FirstOrDefault();
+                    XElement titleElement = loaded.Descendants(Namespaces.Xhtml + "title").FirstOrDefault();
                     result = (titleElement != null && titleElement.Value == "Start");
                 }
             }
@@ -222,7 +224,7 @@ namespace Composite.Core.WebClient
         {
             try
             {
-                return XDocument.Load(uri);
+                return XDocumentUtils.Load(uri);
             }
             catch
             {

@@ -511,7 +511,7 @@ namespace Composite.Data.GeneratedTypes
             {
                 DataTypeDescriptor compositionRuleDataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeof(IPageMetaDataDefinition));
 
-                _pageMetaDataDescriptionForeignKeyDataFieldDescriptor = CreateWeekReferenceDataFieldDescriptor(compositionRuleDataTypeDescriptor, compositionRuleDataTypeDescriptor.Fields["Name"], CompositionDescriptionFieldName);
+                _pageMetaDataDescriptionForeignKeyDataFieldDescriptor = CreateWeakReferenceDataFieldDescriptor(compositionRuleDataTypeDescriptor, compositionRuleDataTypeDescriptor.Fields["Name"], CompositionDescriptionFieldName);
             }
         }
 
@@ -884,7 +884,7 @@ namespace Composite.Data.GeneratedTypes
 
 
 
-        private DataFieldDescriptor CreateWeekReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, DataFieldDescriptor targetDataFieldDescriptor, string fieldName)
+        private DataFieldDescriptor CreateWeakReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, DataFieldDescriptor targetDataFieldDescriptor, string fieldName)
         {
             Type targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
 
@@ -910,15 +910,6 @@ namespace Composite.Data.GeneratedTypes
             dataFieldDescriptor.FormRenderingProfile = dataFieldFormRenderingProfile;
 
             return dataFieldDescriptor;
-        }
-
-
-
-        private DataFieldDescriptor CreateReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, string fieldName = null)
-        {
-            string foreignKeyFieldName;
-
-            return CreateReferenceDataFieldDescriptor(targetDataTypeDescriptor, out foreignKeyFieldName, fieldName);
         }
 
 
@@ -983,12 +974,12 @@ namespace Composite.Data.GeneratedTypes
                 return false;
             }
 
-            if ((dataFieldDescriptor.Name == CompositionDescriptionFieldName) && (dataTypeDescriptor.IsPageMetaDataType))
+            if (dataFieldDescriptor.Name == CompositionDescriptionFieldName && dataTypeDescriptor.IsPageMetaDataType)
             {
                 return false;
             }
 
-            if ((PageFolderFacade.GetAllFolderTypes().Contains(this._oldType)) && (dataFieldDescriptor.Name == PageReferenceFieldName))
+            if (PageFolderFacade.GetAllFolderTypes().Contains(this._oldType) && dataFieldDescriptor.Name == PageReferenceFieldName)
             {
                 return false;
             }
@@ -999,7 +990,7 @@ namespace Composite.Data.GeneratedTypes
 
                 if (dataTypeAssociationDescriptor != null)
                 {
-                    if (this.AllowForiegnKeyEditing == false)
+                    if (!this.AllowForiegnKeyEditing)
                     {
                         if (dataFieldDescriptor.Name == dataTypeAssociationDescriptor.ForeignKeyPropertyName)
                         {
@@ -1007,7 +998,7 @@ namespace Composite.Data.GeneratedTypes
                         }
                     }
 
-                    if ((dataFieldDescriptor.Name == CompositionDescriptionFieldName) && (dataTypeDescriptor.IsPageMetaDataType))
+                    if (dataFieldDescriptor.Name == CompositionDescriptionFieldName && dataTypeDescriptor.IsPageMetaDataType)
                     {
                         return false;
                     }
