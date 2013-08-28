@@ -6,7 +6,7 @@ namespace Composite.Core.PackageSystem
 {
     internal interface IPackageFragmentInstaller
     {
-        void Initialize(PackageInstallerContext packageInstallerContex, IEnumerable<XElement> configuration, XElement configurationParent);
+        void Initialize(PackageInstallerContext packageInstallerContext, IEnumerable<XElement> configuration, XElement configurationParent);
         IEnumerable<PackageFragmentValidationResult> Validate();
 
         /// <summary>

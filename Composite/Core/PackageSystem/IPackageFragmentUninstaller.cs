@@ -6,7 +6,7 @@ namespace Composite.Core.PackageSystem
 {
     internal interface IPackageFragmentUninstaller
     {
-        void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContex);
+        void Initialize(PackageUninstallerContext packageUninstallerContext, IEnumerable<XElement> configuration, XElement configurationParent);
         IEnumerable<PackageFragmentValidationResult> Validate();
         void Uninstall();
     }

@@ -523,8 +523,6 @@ namespace Composite.Core.ResourceSystem
  public static string VirtualElementProviderNodePackageFragmentUninstaller_OnlyOneElement { get { return T("VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>Missing {0} attribute in the configuration</summary> 
  public static string VirtualElementProviderNodePackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute"), parameter0); } 
- /// <summary>Missing {0} attribute in the configuration</summary> 
- public static string FileXslTransformationPackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>File &apos;{0}&apos; not found</summary> 
  public static string FileXslTransformationPackageFragmentInstaller_FileNotFound(string parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.FileNotFound"), parameter0); } 
  /// <summary>File &apos;{0}&apos; marked as &apos;Read Only&apos; and therefore cannot be overwritten.</summary> 
@@ -565,6 +563,12 @@ namespace Composite.Core.ResourceSystem
  public static string License_Failed(string parameter0) { return string.Format(T("License.Failed"), parameter0); } 
  /// <summary>The Windows user under which this C1 instance is running does not have write permission to file or folder &apos;{0}&apos;.</summary> 
  public static string NotEnoughNtfsPermissions(string parameter0) { return string.Format(T("NotEnoughNtfsPermissions"), parameter0); } 
+ /// <summary>Only one &apos;{0}&apos; element allowed</summary> 
+ public static string PackageFragmentInstaller_OnlyOneElementAllowed(string parameter0) { return string.Format(T("PackageFragmentInstaller.OnlyOneElementAllowed"), parameter0); } 
+ /// <summary>Unexpected element name &apos;{0}&apos;, only allowed element name is &apos;{1}&apos;</summary> 
+ public static string PackageFragmentInstaller_IncorrectElement(string parameter0,string parameter1) { return string.Format(T("PackageFragmentInstaller.IncorrectElement"), parameter0,parameter1); } 
+ /// <summary>Missing &apos;{0}&apos; attribute.</summary> 
+ public static string PackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("PackageFragmentInstaller.MissingAttribute"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
@@ -1050,8 +1054,6 @@ namespace Composite.Core.ResourceSystem
  public static string CompileErrorWhileAddingType { get { return T("CompileErrorWhileAddingType"); } } 
  /// <summary>Cannot change a data type since it will cause some compilation errors.</summary> 
  public static string CompileErrorWhileChangingType { get { return T("CompileErrorWhileChangingType"); } } 
- /// <summary>Field &apos;{0}&apos; does not have a widget provider specified.</summary> 
- public static string FieldDoesNotHaveWidget(string parameter0) { return string.Format(T("FieldDoesNotHaveWidget"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.GeneratedTypes", key);

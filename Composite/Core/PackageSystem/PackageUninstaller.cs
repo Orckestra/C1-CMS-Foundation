@@ -226,12 +226,12 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> LoadPackageFramentUninstallers(XElement packageFragmentInstallersElement)
         {
-            PackageUninstallerContext packageUninstallerContex = null;
+            PackageUninstallerContext packageUninstallerContext = null;
 
             Exception exception = null;
             try
             {
-                packageUninstallerContex = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename), this.PackageInformation);
+                packageUninstallerContext = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename), this.PackageInformation);
             }
             catch (Exception ex)
             {
@@ -270,10 +270,9 @@ namespace Composite.Core.PackageSystem
                 }
                 if (packageFragmentUninstaller == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The type '{0}' does not implement {1}", uninstallerTypeAttribute.Value, typeof(IPackageFragmentUninstaller)), uninstallerTypeAttribute); continue; }
 
-                exception = null;
                 try
                 {
-                    packageFragmentUninstaller.Initialize(element.Descendants(), packageUninstallerContex);
+                    packageFragmentUninstaller.Initialize(packageUninstallerContext, element.Descendants(), element);
                 }
                 catch (Exception ex)
                 {

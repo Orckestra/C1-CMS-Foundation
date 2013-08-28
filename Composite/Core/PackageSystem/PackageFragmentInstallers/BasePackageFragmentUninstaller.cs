@@ -13,13 +13,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     public abstract class BasePackageFragmentUninstaller : IPackageFragmentUninstaller
 	{
         /// <exclude />
-        public void Initialize(IEnumerable<XElement> configuration, PackageUninstallerContext packageUninstallerContext)
+        public void Initialize(PackageUninstallerContext packageUninstallerContext, IEnumerable<XElement> configuration, XElement configurationParent)
         {
-            Verify.ArgumentNotNull(configuration, "configuration");
             Verify.ArgumentNotNull(packageUninstallerContext, "packageUninstallerContext");
+            Verify.ArgumentNotNull(configuration, "configuration");
+            Verify.ArgumentNotNull(configurationParent, "configurationParent");
+            
 
-            this.Configuration = configuration;
             this.UninstallerContext = packageUninstallerContext;
+            this.Configuration = configuration;
+            this.ConfigurationParent = configurationParent;
         }
 
 
@@ -31,6 +34,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         /// <exclude />
         protected IEnumerable<XElement> Configuration { get; set; }
+
+        /// <exclude />
+        protected XElement ConfigurationParent { get; set; }
 
         /// <exclude />
         protected PackageUninstallerContext UninstallerContext { get; private set; }

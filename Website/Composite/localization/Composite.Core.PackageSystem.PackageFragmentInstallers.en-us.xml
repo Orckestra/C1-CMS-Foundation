@@ -75,7 +75,6 @@
   <string key="VirtualElementProviderNodePackageFragmentInstaller.MissingIcon" value="Could not find the icon '{0}'" />
   <string key="VirtualElementProviderNodePackageFragmentUninstaller.OnlyOneElement" value="Only one 'Areas' element allowed" />
   <string key="VirtualElementProviderNodePackageFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-  <string key="FileXslTransformationPackageFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="FileXslTransformationPackageFragmentInstaller.FileNotFound" value="File '{0}' not found" />
   <string key="FileXslTransformationPackageFragmentInstaller.FileReadOnly" value="File '{0}' marked as 'Read Only' and therefore cannot be overwritten." />
   <string key="FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride" value="File '{0}' was marked as 'Read Only'. This file attribute was explicitly removed and the file was updated normally." />
@@ -99,4 +98,8 @@
   <string key="License.Failed" value="Failed to get license information. ProductId: {0}" />
 
   <string key="NotEnoughNtfsPermissions" value="The Windows user under which this C1 instance is running does not have write permission to file or folder '{0}'." />
+
+  <string key="PackageFragmentInstaller.OnlyOneElementAllowed" value="Only one '{0}' element allowed" />
+  <string key="PackageFragmentInstaller.IncorrectElement" value="Unexpected element name '{0}', only allowed element name is '{1}'" />
+  <string key="PackageFragmentInstaller.MissingAttribute" value="Missing '{0}' attribute." />
 </strings>

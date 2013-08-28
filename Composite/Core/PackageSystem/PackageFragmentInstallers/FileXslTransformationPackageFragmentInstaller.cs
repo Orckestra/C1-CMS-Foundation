@@ -7,9 +7,9 @@ using System.Xml.Linq;
 using System.Xml.Xsl;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 using Composite.Core.Xml;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
@@ -38,130 +38,110 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
 		public override IEnumerable<PackageFragmentValidationResult> Validate()
 		{
-			List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+			var validationResult = new List<PackageFragmentValidationResult>();
 
-			if (this.Configuration.Where(f => f.Name == "XslFiles").Count() > 1)
-			{
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                    GetResourceString("FileXslTransformationPackageFragmentInstaller.OnlyOneFilesElement")));
-				return validationResult;
-			}
-
-			var filesElement = this.Configuration.Where(f => f.Name == "XslFiles");
+            var filesElement = this.ConfigurationParent.GetSingleConfigurationElement("XslFiles", validationResult);
+            if (filesElement == null)
+            {
+                return validationResult;
+            }
 
 			_xslTransformations = new List<XslTransformation>();
 
-            if (filesElement != null)
+            
+            foreach (XElement fileElement in filesElement.GetConfigurationElements("XslFile", validationResult))
             {
-                foreach (XElement fileElement in filesElement.Elements("XslFile"))
+                XAttribute pathXMLAttribute = fileElement.Attribute(TargetXmlAttributeName);
+                XAttribute inputXMLAttribute = fileElement.Attribute(InputXmlAttributeName);
+                XAttribute outputXMLAttribute = fileElement.Attribute(OutputXmlAttributeName);
+
+                XAttribute pathXSLAttribute = fileElement.Attribute(TargetXslAttributeName);
+                XAttribute installXSLAttribute = fileElement.Attribute(InstallXslAttributeName);
+                XAttribute uninstallXSLAttribute = fileElement.Attribute(UninstallXslAttributeName);
+                XAttribute overrideReadOnlyAttribute = fileElement.Attribute(OverrideReadOnlyAttributeName);
+
+                XAttribute skipIfNotExistAttribute = fileElement.Attribute(SkipIfNotExistAttributeName);
+                bool skipIfNotExist = skipIfNotExistAttribute != null && skipIfNotExistAttribute.Value.ToLower() == "true";
+
+                if (pathXSLAttribute == null && installXSLAttribute == null)
                 {
-                    XAttribute pathXMLAttribute = fileElement.Attribute(TargetXmlAttributeName);
-                    XAttribute inputXMLAttribute = fileElement.Attribute(InputXmlAttributeName);
-                    XAttribute outputXMLAttribute = fileElement.Attribute(OutputXmlAttributeName);
-
-                    XAttribute pathXSLAttribute = fileElement.Attribute(TargetXslAttributeName);
-                    XAttribute installXSLAttribute = fileElement.Attribute(InstallXslAttributeName);
-                    XAttribute uninstallXSLAttribute = fileElement.Attribute(UninstallXslAttributeName);
-                    XAttribute overrideReadOnlyAttribute = fileElement.Attribute(OverrideReadOnlyAttributeName);
-
-                    XAttribute skipIfNotExistAttribute = fileElement.Attribute(SkipIfNotExistAttributeName);
-                    bool skipIfNotExist = skipIfNotExistAttribute != null && skipIfNotExistAttribute.Value.ToLower() == "true";
-
-                    if (pathXSLAttribute == null && installXSLAttribute == null)
-                    {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
-                            fileElement));
-                        continue;
-                    }
-
-                    if (outputXMLAttribute != null && uninstallXSLAttribute != null)
-                    {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                            "Xsl installer does not suppurt simultaneous usage of attributes '{0}' and '{1}'".FormatWith(OutputXmlAttributeName, UninstallXslAttributeName),
-                            fileElement));
-                        continue;
-                    }
-
-                    string xslFilePath = (pathXSLAttribute ?? installXSLAttribute).Value;
-
-
-                    XslTransformation xslFile;
-                    if (inputXMLAttribute != null)
-                    {
-                        if (outputXMLAttribute == null)
-                        {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                GetResourceString("FileXslTransformationPackageFragmentInstaller.MissingAttribute").FormatWith("outputFilename"),
-                                fileElement));
-                            continue;
-                        }
-
-                        xslFile = new XslTransformation
-                                      {
-                                          XslPath = xslFilePath,
-                                          InputXmlPath = inputXMLAttribute.Value,
-                                          OutputXmlPath = outputXMLAttribute.Value
-                                      };
-                    }
-                    else
-                    {
-                        if (pathXMLAttribute == null)
-                        {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                GetResourceString("FilePackageFragmentInstaller.MissingAttribute").FormatWith(TargetXmlAttributeName),
-                                fileElement));
-                            continue;
-                        }
-
-                        string pathToXmlFile = pathXMLAttribute.Value;
-
-                        xslFile = new XslTransformation
-                                      {
-                                          XslPath = xslFilePath,
-                                          // UninstallXslPath = uninstallXSLAttribute != null ? uninstallXSLAttribute.Value : null,
-                                          InputXmlPath = pathToXmlFile,
-                                          OutputXmlPath = pathToXmlFile
-                                      };
-                    }
-
-                    if (!C1File.Exists(PathUtil.Resolve(xslFile.InputXmlPath)))
-                    {
-                        if (skipIfNotExist) continue;
-
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                GetResourceString("FileXslTransformationPackageFragmentInstaller.FileNotFound").FormatWith(xslFile.InputXmlPath),
-                                fileElement));
-                        continue;
-                    }
-
-                    string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
-                    if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & FileAttributes.ReadOnly) > 0)
-                    {
-                        if (overrideReadOnlyAttribute == null || overrideReadOnlyAttribute.Value != "true")
-                        {
-                            validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                    GetResourceString("FileXslTransformationPackageFragmentInstaller.FileReadOnly").FormatWith(xslFile.OutputXmlPath),
-                                    fileElement));
-                            continue;
-                        }
-                        
-                        FileUtils.RemoveReadOnly(outputXmlFullPath);
-                        Log.LogWarning(LogTitle, GetResourceString("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride").FormatWith(xslFile.OutputXmlPath));
-                    }
-
-                    if (!PathUtil.WritePermissionGranted(outputXmlFullPath))
-                    {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal,
-                                    GetResourceString("NotEnoughNtfsPermissions").FormatWith(xslFile.OutputXmlPath),
-                                    fileElement));
-                        continue;
-                    }
-
-
-
-                    _xslTransformations.Add(xslFile);
+                    validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute(TargetXmlAttributeName), fileElement);
+                    continue;
                 }
+
+                if (outputXMLAttribute != null && uninstallXSLAttribute != null)
+                {
+                    validationResult.AddFatal("Xsl installer does not suppurt simultaneous usage of attributes '{0}' and '{1}'"
+                                                .FormatWith(OutputXmlAttributeName, UninstallXslAttributeName), fileElement);
+                    continue;
+                }
+
+                string xslFilePath = (pathXSLAttribute ?? installXSLAttribute).Value;
+
+
+                XslTransformation xslFile;
+                if (inputXMLAttribute != null)
+                {
+                    if (outputXMLAttribute == null)
+                    {
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute("outputFilename"), fileElement);
+                        continue;
+                    }
+
+                    xslFile = new XslTransformation
+                                    {
+                                        XslPath = xslFilePath,
+                                        InputXmlPath = inputXMLAttribute.Value,
+                                        OutputXmlPath = outputXMLAttribute.Value
+                                    };
+                }
+                else
+                {
+                    if (pathXMLAttribute == null)
+                    {
+                        validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingAttribute(TargetXmlAttributeName), fileElement);
+                        continue;
+                    }
+
+                    string pathToXmlFile = pathXMLAttribute.Value;
+
+                    xslFile = new XslTransformation
+                                    {
+                                        XslPath = xslFilePath,
+                                        // UninstallXslPath = uninstallXSLAttribute != null ? uninstallXSLAttribute.Value : null,
+                                        InputXmlPath = pathToXmlFile,
+                                        OutputXmlPath = pathToXmlFile
+                                    };
+                }
+
+                if (!C1File.Exists(PathUtil.Resolve(xslFile.InputXmlPath)))
+                {
+                    if (skipIfNotExist) continue;
+
+                    validationResult.AddFatal(Texts.FileXslTransformationPackageFragmentInstaller_FileNotFound(xslFile.InputXmlPath), fileElement);
+                    continue;
+                }
+
+                string outputXmlFullPath = PathUtil.Resolve(xslFile.OutputXmlPath);
+                if (C1File.Exists(outputXmlFullPath) && (C1File.GetAttributes(outputXmlFullPath) & FileAttributes.ReadOnly) > 0)
+                {
+                    if (overrideReadOnlyAttribute == null || overrideReadOnlyAttribute.Value != "true")
+                    {
+                        validationResult.AddFatal(Texts.FileXslTransformationPackageFragmentInstaller_FileReadOnly(xslFile.OutputXmlPath), fileElement);
+                        continue;
+                    }
+                        
+                    FileUtils.RemoveReadOnly(outputXmlFullPath);
+                    Log.LogWarning(LogTitle, Texts.FileXslTransformationPackageFragmentInstaller_FileReadOnlyOverride(xslFile.OutputXmlPath));
+                }
+
+                if (!PathUtil.WritePermissionGranted(outputXmlFullPath))
+                {
+                    validationResult.AddFatal(Texts.NotEnoughNtfsPermissions(xslFile.OutputXmlPath), fileElement);
+                    continue;
+                }
+
+                _xslTransformations.Add(xslFile);
             }
 
 
@@ -188,7 +168,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					"Performing XSL-transformation. xml-file: '{1}'; xsl-file: '{0}'"
 					: "Performing XSL-transformation. xsl-file: '{0}'; input xml file: '{1}'; output xml file: '{2}'";
 
-                LoggingService.LogVerbose(LogTitle, string.Format(messageFormat, xslfile.XslPath, xslfile.InputXmlPath, xslfile.OutputXmlPath));
+                Log.LogVerbose(LogTitle, string.Format(messageFormat, xslfile.XslPath, xslfile.InputXmlPath, xslfile.OutputXmlPath));
 
                 string inputXml = PathUtil.Resolve(xslfile.InputXmlPath);
                 string outputXml = PathUtil.Resolve(xslfile.OutputXmlPath);
@@ -209,7 +189,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     resultDocument.SaveToFile(outputXml);
 
-                    LoggingService.LogVerbose(LogTitle, resultDocument.ToString());
+                    Log.LogVerbose(LogTitle, resultDocument.ToString());
 				}
 			}
 
