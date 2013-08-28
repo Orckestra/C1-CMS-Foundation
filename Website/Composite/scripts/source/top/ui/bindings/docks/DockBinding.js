@@ -244,7 +244,7 @@ DockBinding.prototype.prepareNewView = function ( definition ) {
 	// notice setup with tab label
 	var tabBinding = DockTabBinding.newInstance ( this.bindingDocument );
 	tabBinding.setHandle ( definition.handle );
-	tabBinding.setLabel ( this.type == DockBinding.TYPE_EDITORS ? null : definition.label );
+	tabBinding.setLabel( definition.flowHandle ? null : definition.label);
 	tabBinding.setImage ( definition.image );
 	tabBinding.setToolTip ( definition.toolTip );
 	tabBinding.setEntityToken ( definition.entityToken );
