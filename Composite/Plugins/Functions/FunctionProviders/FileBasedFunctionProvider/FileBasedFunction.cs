@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Web;
 using Composite.AspNet.Security;
@@ -145,7 +146,18 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 return;
             }
             
-            var firstError = compilationErrors[0];
+            CompilerError firstError = null;
+            
+            for (int i = 0; i < compilationErrors.Count; i++)
+            {
+                if (!compilationErrors[i].IsWarning)
+                {
+                    firstError = compilationErrors[i];
+                    break;
+                }
+            }
+
+            Verify.IsNotNull(firstError, "Failed to finding an error in the compiler results.");
 
             // Not showing source code of not related files
 	        if (!firstError.FileName.StartsWith(PathUtil.Resolve(VirtualPath), StringComparison.OrdinalIgnoreCase))

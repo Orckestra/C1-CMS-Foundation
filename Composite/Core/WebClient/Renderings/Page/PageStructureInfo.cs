@@ -219,10 +219,13 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static Map GetMap(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
+            Verify.ArgumentNotNull(localizationScope, "localizationScope");
+            Verify.ArgumentNotNull(urlSpace, "urlSpace");
+
             if (System.Transactions.Transaction.Current != null)
             {
                 var exceptionToLog = new Exception("It is not safe to use PageStructureInfo/SiteMap functionality in transactional context. Method Composite.Data.PageManager can be used instead.");
-                LoggingService.LogWarning(typeof(PageStructureInfo).Name, exceptionToLog);
+                Log.LogWarning(typeof(PageStructureInfo).Name, exceptionToLog);
             }
 
             var scopeKey = GetScopeKey(publicationScope, localizationScope, urlSpace);

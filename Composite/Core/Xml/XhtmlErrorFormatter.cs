@@ -96,7 +96,7 @@ namespace Composite.Core.Xml
 
             return new XElement(Namespaces.Xhtml + "div",
                 new XAttribute("style", "padding-left: 10px;"),
-                new XAttribute("title", ex.StackTrace),
+                new XAttribute("title", ex.StackTrace ?? ""),
                 ex.Message,
                 sourceCode,
                 GetNestedHtmlListFromExceptions(ex.InnerException)
