@@ -122,18 +122,37 @@ function onInstanceInitialize ( inst ) {
 	// The toolbar will access this at some point...
 	tinyTheme.formatGroups = groups; 
 	
+	var head = tinyInstance.dom.doc.getElementsByTagName('head')[0];
+
 	/*
 	 * Load CSS.
 	 */
+	
 	var styles = new List ( doc.getElementsByTagName ( "style" ));
 	styles.each(function(style) {
 		var file = style.getAttribute("file");
+		var rel = style.getAttribute("rel");
 		if (file != null && file != "") {
-			tinyInstance.dom.loadCSS(Constants.CONFIGROOT + file);
+			tinyInstance.dom.add(head, 'link', {
+				'href': Constants.CONFIGROOT + file,
+				'rel': rel ? rel:'stylesheet'
+			});
 		}
 	});
 
-
+	/*
+	 * Load Scripts.
+	 */
+	var scripts = new List(doc.getElementsByTagName("script"));
+	scripts.each(function (script) {
+		var file = script.getAttribute("file");
+		if (file != null && file != "") {
+			tinyInstance.dom.add(head, 'script', {
+				src: Constants.CONFIGROOT + file,
+				type: 'text/javascript'
+			});
+		}
+	});
 
 	//Enable SpellCheck
 	if (Client.hasSpellcheck) {
