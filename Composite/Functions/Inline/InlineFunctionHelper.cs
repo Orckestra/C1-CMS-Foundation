@@ -296,10 +296,10 @@ namespace Composite.Functions.Inline
                 yield return file;
             }
 
-            foreach (string file in AssemblyFacade.GetAssembliesFromBin())
+            foreach (string file in AssemblyFacade.GetAssembliesFromBin(true))
             {
                 yield return file;
-            }            
+            }
         }
 
 
@@ -344,3 +344,4 @@ namespace Composite.Functions.Inline
         }
     }
 }
+

@@ -50,7 +50,6 @@ namespace Composite.Core.Types
         }
 
 
-        
         /// <summary>
         /// Gets list of file pathes of .NET dll files from "~/Bin" folder, excluding Composite.Generated.dll.
         /// </summary>
@@ -58,12 +57,26 @@ namespace Composite.Core.Types
         /// <exclude />
         public static IEnumerable<string> GetAssembliesFromBin()
         {
+            return GetAssembliesFromBin(false);
+        }
+
+        /// <summary>
+        /// Gets list of file pathes of .NET dll files from "~/Bin" folder.
+        /// </summary>
+        /// <param name="includeCompositeGenerated">if set to <c>true</c> Composite.Generated.dll will also be included.</param>
+        /// <returns></returns>
+        /// <exclude />
+        public static IEnumerable<string> GetAssembliesFromBin(bool includeCompositeGenerated)
+        {
             var assembliesFromBin = new List<string>();
 
             foreach (string binFilePath in C1Directory.GetFiles(PathUtil.Resolve(GlobalSettingsFacade.BinDirectory), "*.dll")) {
                 string assemblyFileName = Path.GetFileName(binFilePath);
 
-                if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                if (!includeCompositeGenerated)
+                {
+                    if (assemblyFileName.IndexOf(CodeGenerationManager.CompositeGeneratedFileName, StringComparison.OrdinalIgnoreCase) >= 0) continue;
+                }
 
                 if (IsDotNetAssembly(binFilePath)) {
                     assembliesFromBin.Add(binFilePath);
