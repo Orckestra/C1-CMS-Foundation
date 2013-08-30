@@ -20010,7 +20010,7 @@ DockBinding.prototype.prepareNewView=function(_ca6){
 var _ca7=this._getBindingForDefinition(_ca6);
 var _ca8=DockTabBinding.newInstance(this.bindingDocument);
 _ca8.setHandle(_ca6.handle);
-_ca8.setLabel(this.type==DockBinding.TYPE_EDITORS?null:_ca6.label);
+_ca8.setLabel(_ca6.flowHandle?null:_ca6.label);
 _ca8.setImage(_ca6.image);
 _ca8.setToolTip(_ca6.toolTip);
 _ca8.setEntityToken(_ca6.entityToken);
