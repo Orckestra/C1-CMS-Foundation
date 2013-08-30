@@ -77,11 +77,10 @@ namespace Composite.Data
         /// </value>
         public bool IgnorePrimaryKeyViolation { get; set; }
 
-
         /// <summary>
-        /// Copies all the data from the source data provider to the target data provider.
+        /// Copies all the types that the query returns.
         /// </summary>
-        public void FullCopy()
+        public void Copy(IEnumerable<Type> queryToTypes)
         {
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -97,20 +96,14 @@ namespace Composite.Data
 
                         Log.LogVerbose(LogTitle, "Full copy started");
 
-                        IEnumerable<Type> allInterfacesToEnsure =
-                            (from type in DataFacade.GetAllInterfaces()
-                             where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) 
-                             select type).ToList();
+                        IEnumerable<Type> allInterfacesToEnsure = queryToTypes.ToList();
 
                         Log.LogVerbose(LogTitle, "Ensuring interfaces...");
                         EnsureInterfaces(allInterfacesToEnsure);
 
                         Log.LogVerbose(LogTitle, "Done insuring interfaces!");
 
-                        IEnumerable<Type> allInterfaces =
-                                (from type in DataFacade.GetAllInterfaces()
-                                 where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName) 
-                                 select type).ToList();
+                        IEnumerable<Type> allInterfaces = queryToTypes.ToList();
 
                         List<Type> handleLastInterfaceTypes = new List<Type>();
 
@@ -147,6 +140,16 @@ namespace Composite.Data
                     Log.LogVerbose(LogTitle, "Full copy done!");
                 }
             }
+        }
+        /// <summary>
+        /// Copies all the data from the source data provider to the target data provider.
+        /// </summary>
+        public void FullCopy()
+        {
+            var allTypes =  from type in DataFacade.GetAllInterfaces()
+                            where DataProviderRegistry.GetDataProviderNamesByInterfaceType(type).Contains(this.SourceProviderName)
+                            select type;
+            Copy(allTypes);
         }
 
 
