@@ -165,7 +165,7 @@ namespace Composite.Data
         }
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataBeforeAdd<T>(DataEventHandler, bool)")]
         public static void SubscribeToDataBeforeAdd<T>(DataEventHandler dataBeforeAddDelegate)
             where T : IData
         {
@@ -174,7 +174,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataBeforeAdd(Type, DataEventHandler, bool)")]
         public static void SubscribeToDataBeforeAdd(Type dataType, DataEventHandler dataBeforeAddDelegate) {
             SubscribeToDataBeforeAdd(dataType, dataBeforeAddDelegate, false);
         }
@@ -211,7 +211,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataAfterAdd(Type, DataEventHandler, bool)")]
         public static void SubscribeToDataAfterAdd(Type dataType, DataEventHandler dataAfterAddDelegate)
         {
             SubscribeToDataAfterAdd(dataType, dataAfterAddDelegate, false);
@@ -226,7 +226,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataAfterAdd<T>(DataEventHandler, bool)")]
         public static void SubscribeToDataAfterAdd<T>(DataEventHandler dataAfterAddDelegate)
             where T : IData
         {
@@ -273,7 +273,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataBeforeUpdate(Type, DataEventHandler, bool)")]
         public static void SubscribeToDataBeforeUpdate(Type dataType, DataEventHandler dataBeforeUpdateDelegate)
         {
             SubscribeToDataBeforeUpdate(dataType, dataBeforeUpdateDelegate, false);
@@ -288,7 +288,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataBeforeUpdate<T>(DataEventHandler, bool)")]
         public static void SubscribeToDataBeforeUpdate<T>(DataEventHandler dataBeforeUpdateDelegate)
             where T : IData
         {
@@ -312,7 +312,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataAfterUpdate(Type, DataEventHandler, bool)")]
         public static void SubscribeToDataAfterUpdate(Type dataType, DataEventHandler dataAfterUpdateDelegate)
         {
             SubscribeToDataAfterUpdate(dataType, dataAfterUpdateDelegate, false);
@@ -327,7 +327,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataAfterUpdate<T>(DataEventHandler, bool)")]
         public static void SubscribeToDataAfterUpdate<T>(DataEventHandler dataAfterUpdateDelegate)
             where T : IData
         {
@@ -351,7 +351,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataDeleted(Type, DataEventHandler, bool)")]
         public static void SubscribeToDataDeleted(Type dataType, DataEventHandler dataDeletedDelegate)
         {
             SubscribeToDataDeleted(dataType, dataDeletedDelegate, false);
@@ -366,7 +366,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataDeleted<T>(DataEventHandler, bool)")]
         public static void SubscribeToDataDeleted<T>(DataEventHandler dataDeletedDelegate)
             where T : IData
         {
@@ -390,7 +390,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataAfterBuildNew(Type, DataEventHandler, bool)")]
         public static void SubscribeToDataAfterBuildNew(Type dataType, DataEventHandler dataAfterBuildNewDelegate)
         {
             SubscribeToDataAfterBuildNew(dataType, dataAfterBuildNewDelegate, false);
@@ -405,7 +405,7 @@ namespace Composite.Data
 
 
         /// <exclude />
-        [Obsolete("Use overload")]
+        [Obsolete("Use SubscribeToDataAfterBuildNew<T>(DataEventHandler, bool)")]
         public static void SubscribeToDataAfterBuildNew<T>(DataEventHandler dataAfterBuildNewDelegate)
             where T : IData
         {
@@ -616,7 +616,7 @@ namespace Composite.Data
 
         private class SuppressEventScope: IDisposable
         {
-            private bool _active;
+            private readonly bool _active;
 
             public SuppressEventScope(bool active)
             {
@@ -644,8 +644,6 @@ namespace Composite.Data
                     return RequestLifetimeCache.GetCachedOrNew<CounterContainer>("SuppressEventScope:Counter");
                 }
             }
-
-            static readonly SuppressEventScope _instance = new SuppressEventScope(false);
 
             public static bool IsEnabled
             {
