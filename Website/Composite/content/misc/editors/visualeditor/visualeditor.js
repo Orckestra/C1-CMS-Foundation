@@ -28,9 +28,11 @@ var config = {
  * Load configuration.
  */
 var conf = "common";
-var editorpath = window.location.toString ();
-if (editorpath.indexOf("config=") > -1) {
-    conf = editorpath.split("config=")[1];
+
+var editorpath = window.location.toString();
+var configParam = /[\?&]config=([^&#]*)/.exec(window.location.search);
+if (configParam != null) {
+	conf = configParam[1];
 }
 var sitepath = editorpath.substring(0, editorpath.toLowerCase().indexOf("/composite/content/"));
 var relconfigpath = "/Composite/services/WysiwygEditor/getconfig.ashx?name=" + conf;
@@ -67,6 +69,26 @@ elements.each ( function ( el ) {
 if (Client.isExplorer) {
 	config.content_css = "ie.css";
 }
+
+/*
+ * Preload plugins
+ */
+
+var plugins = config.plugins.split(',');
+var loadedPlugins = [];
+for (var i = 0, length = plugins.length; i < length; i++) {
+	var plugin = plugins[i];
+	window.tinyMCE.PluginManager.load(plugin, sitepath + "/Composite/content/misc/editors/visualeditor/tinymce/plugins/" + plugin + "/plugin.min.js?c1=" + Installation.versionString);
+	loadedPlugins.push("-" + plugin);
+}
+config.plugins = loadedPlugins.join(",");
+
+/*
+ * Preload theme
+ */
+window.tinyMCE.ThemeManager.load(plugin, sitepath + "/Composite/content/misc/editors/visualeditor/tinymce/themes/" + config.theme + "/theme.min.js?c1=" + Installation.versionString);
+config.theme = "-" + config.theme;
+
 
 /*
  * Init TinyMCE. 
