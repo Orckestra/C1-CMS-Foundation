@@ -60,47 +60,52 @@ namespace Composite.Core.Xml
                                     "[ Error ]");
             }
 
-            Exception innermostException = ex;
-
-            while (innermostException.InnerException !=null)
-            {
-                innermostException = innermostException.InnerException;
-            }
-
-            XElement functionInfo = functionName == null ? null : new XElement(Namespaces.Xhtml + "div", "C1 Function: " + functionName);
+            XElement functionInfo = functionName == null ? null : new XElement(Namespaces.Xhtml + "div", "Function: " + functionName);
 
             XElement sourceCode = GetSourceCodeInfo(ex);
+
+            bool sourceAlreadyShown = false;
+
+            XElement nestedExceptionInfo = ex.InnerException == null
+                                               ? null
+                                               : new XElement(Namespaces.Xhtml + "div",
+                                                              new XAttribute("style", "font-size: 0.9em"),
+                                                              GetNestedHtmlListFromExceptions(ex.InnerException,
+                                                                                              ref sourceAlreadyShown));
 
             return new XElement(Namespaces.Xhtml + "div",
                                 new XAttribute("class", "c1errordetails"),
                                 new XAttribute("style", ErrorDivStyle),
                                 new XElement(Namespaces.Xhtml + "strong", 
                                                 new XAttribute("title", ex.StackTrace),
-                                                string.Format("Error: {0}",innermostException.Message)),
-                                sourceCode,
+                                                string.Format("Error: {0}", ex.Message)),
+                                !sourceAlreadyShown ? sourceCode : null,
                                 functionInfo,
-
-                                ex.InnerException == null 
-                                    ? null 
-                                    : new XElement(Namespaces.Xhtml + "div",
-                                                   new XAttribute("style", "font-size: 0.9em"),
-                                                   "Error details:",
-                                                   GetNestedHtmlListFromExceptions(ex.InnerException)));
+                                nestedExceptionInfo
+                                );
         }
 
-        private static XElement GetNestedHtmlListFromExceptions(Exception ex)
+        private static XElement GetNestedHtmlListFromExceptions(Exception ex, ref bool sourceCodeShown)
         {
-            if (ex == null) return null;
+            if (ex == null)
+            {
+                return null;
+            }
 
             XElement sourceCode = GetSourceCodeInfo(ex);
+
+            XElement nestedExceptionsInfo = GetNestedHtmlListFromExceptions(ex.InnerException, ref sourceCodeShown);
+
+            bool showSourceCode = !sourceCodeShown && sourceCode != null;
+
+            sourceCodeShown |= showSourceCode;
 
             return new XElement(Namespaces.Xhtml + "div",
                 new XAttribute("style", "padding-left: 10px;"),
                 new XAttribute("title", ex.StackTrace ?? ""),
                 ex.Message,
-                sourceCode,
-                GetNestedHtmlListFromExceptions(ex.InnerException)
-                );
+                showSourceCode ? sourceCode : null,
+                nestedExceptionsInfo);
         }
 
         private static XElement GetSourceCodeInfo(Exception ex)
