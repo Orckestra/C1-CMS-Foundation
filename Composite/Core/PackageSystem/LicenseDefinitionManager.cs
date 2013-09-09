@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -9,55 +10,68 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.PackageSystem
 {
-
     internal static class LicenseDefinitionManager
     {
+        private const string LicenseFileExtension = ".license";
+        private static readonly string LogTitle = typeof (LicenseDefinitionManager).Name;
+
+        private static readonly string _packageLicenseDirectory;
+        private static readonly int _maximumProductNameLength;
+
         static LicenseDefinitionManager()
         {
-            string path = PathUtil.Resolve(GlobalSettingsFacade.PackageLicenseDirectory);
+            _packageLicenseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageLicenseDirectory);
 
-            if (C1Directory.Exists(path) == false)
+            if (!C1Directory.Exists(_packageLicenseDirectory))
             {
-                C1Directory.CreateDirectory(path);
+                C1Directory.CreateDirectory(_packageLicenseDirectory);
             }
+
+            _maximumProductNameLength = 255 - (GlobalSettingsFacade.MaximumRootPathLength + (GlobalSettingsFacade.PackageLicenseDirectory.Length - 1) + LicenseFileExtension.Length);
         }
 
 
         
         public static PackageLicenseDefinition GetLicenseDefinition(Guid productId)
         {
-            string filename = GetLicenseFilename(productId);
-
-            if (C1File.Exists(filename) == false) return null;
-
-            XDocument doc = XDocumentUtils.Load(filename);
-
-            PackageLicenseDefinition licenseDefinition = new PackageLicenseDefinition
-            {
-                ProductName = doc.Descendants("Name").Single().Value,
-                InstallationId = (Guid)doc.Descendants("InstallationId").Single(),
-                ProductId = (Guid)doc.Descendants("ProductId").Single(),
-                Permanent = (bool)doc.Descendants("Permanent").Single(),
-                Expires = (doc.Descendants("Expires").Any() ? (DateTime)doc.Descendants("Expires").Single() : DateTime.MaxValue),
-                LicenseKey = doc.Descendants("LicenseKey").Single().Value,
-                PurchaseUrl = (doc.Descendants("PurchaseUrl").Any() ? doc.Descendants("PurchaseUrl").Single().Value : "")
-            };
-
-            if (licenseDefinition.InstallationId != InstallationInformationFacade.InstallationId)
-            {
-                Log.LogError("LicenseDefinitionManager", string.Format("The license for the product '{0}' ({1}) does not match the current installation", licenseDefinition.ProductId, licenseDefinition.ProductName));
-                return null;
-            }
-
-            if (licenseDefinition.ProductId != productId)
-            {
-                Log.LogError("LicenseDefinitionManager", string.Format("The license for the product '{0}' does not match the product in the license file '{1}'", productId, licenseDefinition.ProductId));
-                return null;
-            }
-
-            return licenseDefinition;
+            return GetLicenseDefinitions(productId).OrderByDescending(l => l.Expires).FirstOrDefault();
         }
 
+
+        public static PackageLicenseDefinition[] GetLicenseDefinitions(Guid productId)
+        {
+            var result = new List<PackageLicenseDefinition>();
+
+            foreach (var file in C1Directory.GetFiles(_packageLicenseDirectory, "*" + LicenseFileExtension, SearchOption.TopDirectoryOnly))
+            {
+                var license = TryLoadLicenseFile(file);
+
+                if (license != null && license.ProductId == productId)
+                {
+                    result.Add(license);
+                }
+            }
+
+            string obsoloteFilename = GetObsoleteLicenseFilename(productId);
+            if (C1File.Exists(obsoloteFilename))
+            {
+                var license = TryLoadLicenseFile(obsoloteFilename);
+
+                if (license != null)
+                {
+                    if (license.ProductId == productId)
+                    {
+                        result.Add(license);
+                    }
+                    else
+                    {
+                        Log.LogError(LogTitle, "The license for the product '{0}' does not match the product in the license file '{1}'", productId, license.ProductId);
+                    }
+                }
+            }
+
+            return result.ToArray();
+        }
 
         
         public static void StoreLicenseDefinition(PackageLicenseDefinition licenseDefinition)
@@ -74,7 +88,7 @@ namespace Composite.Core.PackageSystem
                 )
             );
 
-            string filename = GetLicenseFilename(licenseDefinition.ProductId);
+            string filename = GetLicenseFilename(licenseDefinition);
 
             licenseDefinition.LicenseFileName = filename;
 
@@ -82,19 +96,56 @@ namespace Composite.Core.PackageSystem
         }
 
 
+        private static PackageLicenseDefinition TryLoadLicenseFile(string filePath)
+        {
+            XDocument doc = XDocumentUtils.Load(filePath);
+
+            var licenseDefinition = new PackageLicenseDefinition
+            {
+                ProductName = doc.Descendants("Name").Single().Value,
+                InstallationId = (Guid)doc.Descendants("InstallationId").Single(),
+                ProductId = (Guid)doc.Descendants("ProductId").Single(),
+                Permanent = (bool)doc.Descendants("Permanent").Single(),
+                Expires = (doc.Descendants("Expires").Any() ? (DateTime)doc.Descendants("Expires").Single() : DateTime.MaxValue),
+                LicenseKey = doc.Descendants("LicenseKey").Single().Value,
+                PurchaseUrl = (doc.Descendants("PurchaseUrl").Any() ? doc.Descendants("PurchaseUrl").Single().Value : ""),
+                LicenseFileName = filePath
+            };
+
+            if (licenseDefinition.InstallationId != InstallationInformationFacade.InstallationId)
+            {
+                Log.LogError(LogTitle, string.Format("The license for the product '{0}' ({1}) does not match the current installation", licenseDefinition.ProductId, licenseDefinition.ProductName));
+                return null;
+            }
+
+            return licenseDefinition;
+        }
 
         public static void RemoveLicenseDefintion(Guid productId)
         {
-            string filename = GetLicenseFilename(productId);
-
-            FileUtils.Delete(filename);
+            foreach (var license in GetLicenseDefinitions(productId))
+            {
+                FileUtils.Delete(license.LicenseFileName);
+            }
         }
 
 
-
-        private static string GetLicenseFilename(Guid productId)
+        private static string GetLicenseFilename(PackageLicenseDefinition packageLicenseDefinition)
         {
-            return Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.PackageLicenseDirectory), string.Format("{0}.xml", productId));
+            string productName = packageLicenseDefinition.ProductName;
+
+            if (productName.Length > _maximumProductNameLength)
+            {
+                productName = productName.Substring(productName.Length - _maximumProductNameLength);
+            }
+
+            return Path.Combine(_packageLicenseDirectory, productName + LicenseFileExtension);
+        }
+
+
+        private static string GetObsoleteLicenseFilename(Guid productId)
+        {
+            return Path.Combine(_packageLicenseDirectory, string.Format("{0}.xml", productId));
         }
     }
 }
