@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core;
@@ -436,7 +437,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     innerEx = innerEx.InnerException;
                 }
 
-                if (!(innerEx is TypeLoadException))
+                if (!(innerEx is TypeLoadException || innerEx is FileNotFoundException))
                 {
                     throw;
                 }
