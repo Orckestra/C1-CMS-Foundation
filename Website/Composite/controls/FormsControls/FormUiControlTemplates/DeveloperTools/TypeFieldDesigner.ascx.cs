@@ -252,9 +252,10 @@ namespace CompositeTypeFieldDesigner
                     TypeDetailsLabel.Text = GetString("DecimalNumberFormat");
                     TypeDetailsSelector.AutoPostBack = false; // this is a fix to plug bug in update manager (client)
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("1DecimalPlace"), "1"));
-                    TypeDetailsSelector.Items.Add(new ListItem(GetString("2DecimalPlace"), "2"));
-                    TypeDetailsSelector.Items.Add(new ListItem(GetString("3DecimalPlace"), "3"));
-                    TypeDetailsSelector.Items.Add(new ListItem(GetString("4DecimalPlace"), "4"));
+                    for (int i = 2; i < 9; i++)
+                    {
+                        TypeDetailsSelector.Items.Add(new ListItem(GetString("nDecimalPlaces").FormatWith(i), i.ToString()));
+                    }
                     TypeDetailsSelector.SelectedValue = "2";
                     break;
                 case "Reference":

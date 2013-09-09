@@ -82,10 +82,8 @@
   
   <string key="DecimalNumberFormat" value="Decimal number format" />
   <string key="1DecimalPlace" value="1 decimal place" />
-  <string key="2DecimalPlace" value="2 decimal place" />
-  <string key="3DecimalPlace" value="3 decimal place" />
-  <string key="4DecimalPlace" value="4 decimal place" />
-  
+  <string key="nDecimalPlaces" value="{0} decimal places" />
+
   <string key="ReferenceType" value="Reference Type" />
   
   <string key="FieldNameSyntaxInvalid" value="The specified name is not valid." />
