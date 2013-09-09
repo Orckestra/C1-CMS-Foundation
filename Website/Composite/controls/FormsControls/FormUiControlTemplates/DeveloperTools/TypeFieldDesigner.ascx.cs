@@ -583,7 +583,7 @@ namespace CompositeTypeFieldDesigner
                         selected.Selected = true;
                     }
                 }
-                if (selectedField.InstanceType == typeof(decimal))
+                if (selectedField.InstanceType == typeof(decimal) || selectedField.InstanceType == typeof(decimal?))
                 {
                     ListItem selected = this.TypeDetailsSelector.Items.FindByValue(selectedField.StoreType.NumericScale.ToString());
                     if (selected == null)
