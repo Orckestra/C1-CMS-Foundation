@@ -25,7 +25,12 @@ namespace Composite.Data.DynamicTypes
         {
             OldDataTypeDescriptor = oldDataTypeDescriptor;
             NewDataTypeDescriptor = newDataTypeDescriptor;
-            ProviderName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
+
+            var interfaceType = oldDataTypeDescriptor.GetInterfaceType();
+
+            ProviderName = interfaceType != null 
+                ? DataProviderRegistry.GetWriteableDataProviderNamesByInterfaceType(interfaceType).Single()
+                : DataProviderRegistry.DefaultDynamicTypeDataProviderName;
         }
 
 
