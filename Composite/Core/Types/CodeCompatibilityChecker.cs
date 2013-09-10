@@ -57,9 +57,6 @@ namespace Composite.Core.Types
         /// If false, it will be excluded.
         /// </param>
         /// <returns></returns>
-
-
-
         [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass", Justification = "File api is used for creating temporary files")]
         [SuppressMessage("Composite.IO", "Composite.DoNotUseFileStreamClass:DoNotUseFileStreamClass", Justification = "File api is used for creating temporary files")]
         [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "File api is used for creating temporary files")]
@@ -76,10 +73,10 @@ namespace Composite.Core.Types
 
             foreach (DataTypeDescriptor dataTypeDescriptor in DataMetaDataFacade.GeneratedTypeDataTypeDescriptors)
             {
-                if ((!includeDataTypeDescriptor) && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) continue;
+                if (!includeDataTypeDescriptor && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) continue;
 
                 DataTypeDescriptor dataTypeDescriptorToUse = dataTypeDescriptor;
-                if ((includeDataTypeDescriptor) && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) dataTypeDescriptorToUse = dataTypeDescriptorToTest;
+                if (includeDataTypeDescriptor && (dataTypeDescriptor.DataTypeId == dataTypeDescriptorToTest.DataTypeId)) dataTypeDescriptorToUse = dataTypeDescriptorToTest;
 
                 referencedAssemblies.AddRange(InterfaceCodeGenerator.GetReferencedAssemblies(dataTypeDescriptorToUse));
                 CodeTypeDeclaration codeTypeDeclaration = InterfaceCodeGenerator.CreateCodeTypeDeclaration(dataTypeDescriptorToUse);
@@ -92,7 +89,7 @@ namespace Composite.Core.Types
                 }
                 declarations.Add(codeTypeDeclaration);
 
-                string tempFilePath = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory), dataTypeDescriptorToUse.DataTypeId + ".cs");
+                string tempFilePath = GetTempFileName(dataTypeDescriptorToUse);
                 filesToCompile.Add(tempFilePath);
 
                 using (FileStream file = File.Create(tempFilePath))
@@ -109,9 +106,10 @@ namespace Composite.Core.Types
                     {
                         csCompiler.GenerateCodeFromMember(codeTypeDeclaration, sw, new CodeGeneratorOptions());
                     }
-
                 }
             }
+
+            filesToCompile.Sort();
 
 
             CompilerParameters compilerParameters = new CompilerParameters();
@@ -138,9 +136,31 @@ namespace Composite.Core.Types
 
             if (compileResult.Errors.Count == 0) return new CompatibilityCheckResult();
 
+            // Checking for a missing assembly error, if it is present, that means that App_Code check isn't applicable due to circular reference
+            foreach (CompilerError error in compileResult.Errors)
+            {
+                if (error.ErrorNumber == "CS0012" && error.ErrorText.Contains("Composite.Generated"))
+                {
+                    return new CompatibilityCheckResult();
+                }
+            }
+
             return new CompatibilityCheckResult(compileResult);
         }
 
+
+        private static string GetTempFileName(DataTypeDescriptor typeDescriptor)
+        {
+            string folderPath = PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
+
+            string filePath = Path.Combine(folderPath, typeDescriptor.GetFullInterfaceName() + ".cs");
+            if (filePath.Length > 255)
+            {
+                filePath = Path.Combine(folderPath, typeDescriptor.DataTypeId + ".cs");
+            }
+
+            return filePath;
+        }
 
         [SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
         private static string[] GetAppCodeFiles()
