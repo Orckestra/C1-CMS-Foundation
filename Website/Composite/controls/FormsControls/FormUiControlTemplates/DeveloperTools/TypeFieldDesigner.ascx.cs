@@ -252,7 +252,7 @@ namespace CompositeTypeFieldDesigner
                     TypeDetailsLabel.Text = GetString("DecimalNumberFormat");
                     TypeDetailsSelector.AutoPostBack = false; // this is a fix to plug bug in update manager (client)
                     TypeDetailsSelector.Items.Add(new ListItem(GetString("1DecimalPlace"), "1"));
-                    for (int i = 2; i < 9; i++)
+                    for (int i = 1; i < 16; i++)
                     {
                         TypeDetailsSelector.Items.Add(new ListItem(GetString("nDecimalPlaces").FormatWith(i), i.ToString()));
                     }
@@ -899,7 +899,7 @@ namespace CompositeTypeFieldDesigner
                         return StoreFieldType.Integer;
                     case "System.Decimal":
                         int decimalPlaces = Int32.Parse(this.TypeDetailsSelector.SelectedValue);
-                        return StoreFieldType.Decimal(10, decimalPlaces);
+                        return StoreFieldType.Decimal(28, decimalPlaces);
                     case "System.DateTime":
                         return StoreFieldType.DateTime;
                     case "System.Boolean":
