@@ -6,6 +6,7 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 namespace Composite.Data.Types
 {
     /// <summary>    
+    /// A named function call for an xslt function
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

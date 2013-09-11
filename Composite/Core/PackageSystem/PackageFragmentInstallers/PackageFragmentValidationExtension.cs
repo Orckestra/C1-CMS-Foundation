@@ -27,13 +27,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <summary>
         /// Gets a single configuration element. Elements other than the specified one will cause validation errors.
         /// </summary>
-        internal static XElement GetSingleConfigurationElement(this XElement configurationElement,  string elementName, IList<PackageFragmentValidationResult> validationResult)
+        internal static XElement GetSingleConfigurationElement(this XElement configurationElement,  string elementName, IList<PackageFragmentValidationResult> validationResult, bool required)
         {
             XElement result = null;
 
             foreach (var element in configurationElement.Elements())
             {
-                if (element.Name != elementName)
+                if (element.Name.LocalName != elementName)
                 {
                     validationResult.AddFatal(Texts.PackageFragmentInstaller_IncorrectElement(element.Name.LocalName, elementName), element);
                     continue;
@@ -48,6 +48,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 result = element;
             }
 
+            if (required && result == null)
+            {
+                validationResult.AddFatal(Texts.PackageFragmentInstaller_MissingElement(elementName));
+            }
+
             return result;
         }
 
@@ -60,7 +65,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (var element in configurationElement.Elements())
             {
-                if (element.Name != elementName)
+                if (element.Name.LocalName != elementName)
                 {
                     validationResult.AddFatal(Texts.PackageFragmentInstaller_IncorrectElement(element.Name.LocalName, elementName), element);
                     continue;

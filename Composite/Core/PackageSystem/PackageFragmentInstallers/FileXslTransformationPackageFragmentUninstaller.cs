@@ -23,16 +23,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
 		public override IEnumerable<PackageFragmentValidationResult> Validate()
 		{
+            _xsls = new List<XslTransformation>();
 			var validationResult = new List<PackageFragmentValidationResult>();
 
-            var filesElement = this.ConfigurationParent.GetSingleConfigurationElement("XslFiles", validationResult);
+            var filesElement = this.ConfigurationParent.GetSingleConfigurationElement("XslFiles", validationResult, false);
             if (filesElement == null)
             {
                 return validationResult;
             }
 
-            _xsls = new List<XslTransformation>();
-            
             foreach (XElement fileElement in filesElement.Elements("XslFile"))
             {
                 XAttribute pathXMLAttribute = fileElement.Attribute(Installer.TargetXmlAttributeName);

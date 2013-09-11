@@ -7,6 +7,7 @@ using Composite.Core.IO;
 namespace Composite.Data.Types
 {
     /// <summary>    
+    /// Reference to a folder to be shown in the 'Layout' perspective.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

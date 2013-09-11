@@ -569,6 +569,8 @@ namespace Composite.Core.ResourceSystem
  public static string PackageFragmentInstaller_IncorrectElement(string parameter0,string parameter1) { return string.Format(T("PackageFragmentInstaller.IncorrectElement"), parameter0,parameter1); } 
  /// <summary>Missing &apos;{0}&apos; attribute.</summary> 
  public static string PackageFragmentInstaller_MissingAttribute(string parameter0) { return string.Format(T("PackageFragmentInstaller.MissingAttribute"), parameter0); } 
+ /// <summary>Missing element &apos;{0}&apos;.</summary> 
+ public static string PackageFragmentInstaller_MissingElement(string parameter0) { return string.Format(T("PackageFragmentInstaller.MissingElement"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Core.PackageSystem.PackageFragmentInstallers", key);
@@ -5872,12 +5874,8 @@ namespace Composite.Core.ResourceSystem
  public static string DecimalNumberFormat { get { return T("DecimalNumberFormat"); } } 
  /// <summary>1 decimal place</summary> 
  public static string _1DecimalPlace { get { return T("1DecimalPlace"); } } 
- /// <summary>2 decimal place</summary> 
- public static string _2DecimalPlace { get { return T("2DecimalPlace"); } } 
- /// <summary>3 decimal place</summary> 
- public static string _3DecimalPlace { get { return T("3DecimalPlace"); } } 
- /// <summary>4 decimal place</summary> 
- public static string _4DecimalPlace { get { return T("4DecimalPlace"); } } 
+ /// <summary>{0} decimal places</summary> 
+ public static string nDecimalPlaces(string parameter0) { return string.Format(T("nDecimalPlaces"), parameter0); } 
  /// <summary>Reference Type</summary> 
  public static string ReferenceType { get { return T("ReferenceType"); } } 
  /// <summary>The specified name is not valid.</summary> 

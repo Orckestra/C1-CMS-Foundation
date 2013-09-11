@@ -4,7 +4,8 @@ using Composite.Data.Hierarchy.DataAncestorProviders;
 
 namespace Composite.Data.Types
 {
-    /// <summary>    
+    /// <summary>  
+    /// Reference to a generated/static data type that has to be shown in the 'Content' perspective, under 'Website Items' element
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

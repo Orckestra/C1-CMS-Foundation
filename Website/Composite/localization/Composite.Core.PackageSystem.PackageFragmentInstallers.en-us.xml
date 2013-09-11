@@ -102,4 +102,5 @@
   <string key="PackageFragmentInstaller.OnlyOneElementAllowed" value="Only one '{0}' element allowed" />
   <string key="PackageFragmentInstaller.IncorrectElement" value="Unexpected element name '{0}', only allowed element name is '{1}'" />
   <string key="PackageFragmentInstaller.MissingAttribute" value="Missing '{0}' attribute." />
+  <string key="PackageFragmentInstaller.MissingElement" value="Missing element '{0}'." />
 </strings>
