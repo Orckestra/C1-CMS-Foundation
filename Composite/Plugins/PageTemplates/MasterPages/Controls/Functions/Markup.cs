@@ -72,6 +72,11 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                 PageRenderer.NormalizeXhtmlDocument(xhmlDocument);
                 PageRenderer.ResolveRelativePaths(xhmlDocument);
 
+                if (PageRenderer.CurrentPage != null)
+                {
+                    PageRenderer.ResolvePageFields(xhmlDocument, PageRenderer.CurrentPage);
+                }
+
                 NormalizeAspNetForms(xhmlDocument);
 
                 AddNodesAsControls(xhmlDocument.Body.Nodes(), this, controlMapper);

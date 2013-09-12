@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
@@ -352,7 +351,8 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
-        private static void ResolvePageFields(XDocument document, IPage page)
+        /// <exclude />
+        public static void ResolvePageFields(XDocument document, IPage page)
         {
             foreach (XElement elem in document.Descendants(RenderingElementNames.PageTitle).ToList())
             {
