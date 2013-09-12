@@ -144,7 +144,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
                     StringBuilder sb = new StringBuilder();
                     while (ex != null)
                     {
-                        sb.AppendLine(ex.Message);
+                        sb.AppendLine(ex.ToString());
                         ex = ex.InnerException;
                     }
 
