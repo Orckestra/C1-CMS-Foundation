@@ -136,7 +136,7 @@
 
 <asp:PlaceHolder ID="verboseModePlaceHolder" runat="server" Visible="false">
     <ui:checkboxgroup name="<%= this.ClientID %>">
-    <asp:Repeater runat="server" ID="CheckBoxRepeater">
+    <asp:Repeater runat="server" ID="CheckBoxRepeater" ViewStateMode="Disabled">
         <ItemTemplate>
             <aspui:CheckBox ID="CheckBox" runat="server"
               ToolTip="<%# HttpUtility.HtmlAttributeEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
@@ -149,7 +149,7 @@
 
 <asp:PlaceHolder ID="compactModePlaceHolder" runat="server" Visible="false">
     <ui:multiselector name="<%= this.ClientID %>">
-        <asp:Repeater runat="server" ID="optionsRepeater">
+        <asp:Repeater runat="server" ID="optionsRepeater" ViewStateMode="Disabled">
             <ItemTemplate>
                       <ui:selection 
                           label="<%# Server.HtmlEncode(((KeyLabelPair)Container.DataItem).Label) %>" 
