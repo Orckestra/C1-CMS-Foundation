@@ -675,6 +675,8 @@ CodeMirrorEditorBinding.prototype._isValidHTML = function (xml) {
 						}
 						body = child;
 						break;
+				    default:
+				        errors.add("NotAllowedHtmlChild");
 				}
 			}
 		}

@@ -13,8 +13,10 @@
 	<string key="Invalid.HTML.NamespaceURI" value="The root namespace is wrong." />
 	<string key="Invalid.HTML.MultipleBody" value="Only one &lt;body&gt; tag allowed."/>
 	<string key="Invalid.HTML.MultipleHead" value="Only one &lt;head&gt; tag allowed."/>
-	
-	<string key="Format.XML.ErrorDialog.Title" value="Source format aborted"/> 
+  <string key="Invalid.HTML.NotAllowedHtmlChild" value="The root &lt;html&gt; tag can only have &lt;head&gt; and &lt;body&gt; tags as children."/>
+  
+
+  <string key="Format.XML.ErrorDialog.Title" value="Source format aborted"/> 
 	<string key="Format.XML.ErrorDialog.Text" value="XML source formatting requires a well-formed document structure."/>
 	
 	<!-- plain/colored switch button -->
