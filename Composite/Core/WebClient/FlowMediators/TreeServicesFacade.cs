@@ -370,15 +370,26 @@ namespace Composite.Core.WebClient.FlowMediators
 
                 if (entityTokensToBeExpanded.Contains(child.EntityToken))
                 {
-                    ExpandNodesRec(child.EntityToken,
-                        child.ProviderName,
-                        child.Piggybag,
-                        entityTokensToBeExpanded,
-                        resultList,
-                        keyNodes);
+                    if (ExpandNodesRec(child.EntityToken, 
+                                       child.ProviderName, 
+                                       child.Piggybag, 
+                                       entityTokensToBeExpanded,
+                                       resultList, 
+                                       keyNodes))
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (keyNodes.Contains(child.EntityToken))
+                    {
+                        return true;
+                    }
                 }
             }
-            return true;
+
+            return false;
         }
 
 
