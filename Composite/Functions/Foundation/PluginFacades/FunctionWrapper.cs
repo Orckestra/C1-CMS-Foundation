@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using System.Xml.Linq;
-using Composite.C1Console.Security;
-using Composite.Core;
 using Composite.Core.Xml;
+using Composite.C1Console.Security;
+
 
 
 namespace Composite.Functions.Foundation.PluginFacades
@@ -92,7 +91,9 @@ namespace Composite.Functions.Foundation.PluginFacades
         {
             try
             {
-                return _functionToWrap.Execute(parameters, context);
+                var dynamicMethod = DynamicMethodHelper.GetDynamicMethod("<C1 function> " + _functionToWrap.CompositeName());
+
+                return dynamicMethod(() => _functionToWrap.Execute(parameters, context));
             }
             catch (Exception ex)
             {
