@@ -1,11 +1,7 @@
 ﻿//#define DISABLE_ENTITYTOKEN_CACHE
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Collections.Concurrent;
-using Composite.Core.Logging;
 using Composite.Core.Linq;
 using Composite.Core.Instrumentation;
 using Composite.Core.Configuration;
@@ -68,6 +64,10 @@ namespace Composite.C1Console.Security
             CachingSettings cachingSettings = GlobalSettingsFacade.GetNamedCaching("Entity token parents");
             Enabled = cachingSettings.Enabled;
             MaxSize = cachingSettings.GetSize(DefaultSize);
+
+#if DISABLE_ENTITYTOKEN_CACHE
+            Enabled = false;
+#endif
         }
 
 
@@ -75,10 +75,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static void AddNativeCache(EntityToken entityToken, IEnumerable<EntityToken> parentEntityTokens)
         {
-#if DISABLE_ENTITYTOKEN_CACHE
-            return;
-#else
-            if ((Enabled == false) || (UserValidationFacade.IsLoggedIn() == false)) return;
+            if (!Enabled || !UserValidationFacade.IsLoggedIn()) return;
 
             CacheEntry cacheEntry = new CacheEntry(entityToken)
             {
@@ -94,7 +91,6 @@ namespace Composite.C1Console.Security
             {
                 _nativeCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
             }
-#endif
         }
 
 
@@ -102,10 +98,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static void AddHookingCache(EntityToken entityToken, IEnumerable<EntityToken> parentEntityTokens)
         {
-#if DISABLE_ENTITYTOKEN_CACHE
-            return;
-#else
-            if ((Enabled == false) || (UserValidationFacade.IsLoggedIn() == false)) return;
+            if (!Enabled || !UserValidationFacade.IsLoggedIn()) return;
 
             CacheEntry cacheEntry = new CacheEntry(entityToken)
             {
@@ -121,7 +114,6 @@ namespace Composite.C1Console.Security
             {
                 _hookingCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
             }
-#endif
         }
 
 
@@ -129,11 +121,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static bool GetCachedNativeParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens)
         {
-#if DISABLE_ENTITYTOKEN_CACHE
-            parentEntityTokens = null;
-            return false;
-#else
-            if (Enabled == false)
+            if (!Enabled)
             {
                 parentEntityTokens = null;
                 return false;
@@ -142,18 +130,13 @@ namespace Composite.C1Console.Security
             string userName = UserValidationFacade.IsLoggedIn() ? ResolveUsername() : null;
 
             return GetCachedNativeParents(entityToken, out parentEntityTokens, userName);
-#endif
         }
 
 
 
         internal static bool GetCachedNativeParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens, string userName)
         {
-#if DISABLE_ENTITYTOKEN_CACHE
-            parentEntityTokens = null;
-            return false;
-#else
-            if ((Enabled == false) || (userName == null))
+            if (!Enabled || userName == null)
             {
                 parentEntityTokens = null;
                 return false;
@@ -168,13 +151,10 @@ namespace Composite.C1Console.Security
                 parentEntityTokens = cacheEntry.ParentEntityTokens;
                 return true;
             }
-            else
-            {
-                PerformanceCounterFacade.EntityTokenParentCacheMissIncrement();
-                parentEntityTokens = null;
-                return false;
-            }
-#endif
+            
+            PerformanceCounterFacade.EntityTokenParentCacheMissIncrement();
+            parentEntityTokens = null;
+            return false;
         }
 
 
@@ -182,11 +162,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static bool GetCachedHookingParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens)
         {
-#if DISABLE_ENTITYTOKEN_CACHE
-            parentEntityTokens = null;
-            return false;
-#else
-            if (Enabled == false)
+            if (!Enabled)
             {
                 parentEntityTokens = null;
                 return false;
@@ -195,18 +171,13 @@ namespace Composite.C1Console.Security
             string userName = UserValidationFacade.IsLoggedIn() ? ResolveUsername() : null;
 
             return GetCachedHookingParents(entityToken, out parentEntityTokens, userName);
-#endif
         }
 
 
 
         internal static bool GetCachedHookingParents(EntityToken entityToken, out IEnumerable<EntityToken> parentEntityTokens, string userName)
         {
-#if DISABLE_ENTITYTOKEN_CACHE
-            parentEntityTokens = null;
-            return false;
-#else
-            if ((Enabled == false) || (userName == null))
+            if (!Enabled || userName == null)
             {
                 parentEntityTokens = null;
                 return false;
@@ -221,13 +192,11 @@ namespace Composite.C1Console.Security
                 parentEntityTokens = cacheEntry.ParentEntityTokens;
                 return true;
             }
-            else
-            {
-                PerformanceCounterFacade.EntityTokenParentCacheMissIncrement();
-                parentEntityTokens = null;
-                return false;
-            }
-#endif
+            
+            PerformanceCounterFacade.EntityTokenParentCacheMissIncrement();
+            parentEntityTokens = null;
+            return false;
+            
         }
 
 
@@ -235,10 +204,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static void ClearCache(EntityToken entityToken)
         {
-#if DISABLE_ENTITYTOKEN_CACHE            
-            return;
-#else
-            if (Enabled == false)
+            if (!Enabled)
             {
                 return;
             }
@@ -246,7 +212,6 @@ namespace Composite.C1Console.Security
             string userName = UserValidationFacade.IsLoggedIn() ? ResolveUsername() : null;
 
             ClearCache(entityToken, userName);
-#endif
         }
 
 
@@ -254,11 +219,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static void ClearCache(EntityToken entityToken, string userName)
         {
-#if DISABLE_ENTITYTOKEN_CACHE            
-            return;
-#else
-
-            if ((Enabled == false) || (userName == null))
+            if (!Enabled || userName == null)
             {
                 return;
             }
@@ -273,7 +234,6 @@ namespace Composite.C1Console.Security
             {
                 _hookingCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
             }
-#endif
         }
 
 

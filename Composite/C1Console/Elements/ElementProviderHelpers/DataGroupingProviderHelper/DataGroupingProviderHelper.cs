@@ -17,8 +17,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 {
     internal sealed class DataGroupingProviderHelper : IAuxiliarySecurityAncestorProvider
     {
-        private ElementProviderContext _elementProviderContext;
-        private string _undefinedLableValue;
+        private readonly ElementProviderContext _elementProviderContext;
+        private readonly string _undefinedLableValue;
 
         private static readonly MethodInfo GenericCastMethodInfo = 
             StaticReflection.GetGenericMethodInfo(() => DataGroupingProviderHelper.Cast<IData>((IQueryable<IData>)null));
@@ -60,82 +60,88 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             foreach (EntityToken entityToken in entityTokens)
             {
-                DataGroupingProviderHelperEntityToken groupingEntityToken = entityToken as DataGroupingProviderHelperEntityToken;
+                var groupingEntityToken = entityToken as DataGroupingProviderHelperEntityToken;
                 if (groupingEntityToken != null)
                 {
-                    Type type = TypeManager.TryGetType(groupingEntityToken.Type);
+                    var parent = GetGroupingEntityTokenParent(groupingEntityToken);
 
-                    if (groupingEntityToken.GroupingValues.Count == 1)
+                    if (parent != null)
                     {
-                        if (!groupingEntityToken.Payload.IsNullOrEmpty())
-                        {
-                            // Grouping entity tokens with payload aren't attached to the data type folder in the 'Data' perspective
-                            continue;
-                        }
-
-                        EntityToken parentEntityToken = OnGetRootParentEntityToken(type, entityToken);
-                        if(parentEntityToken != null)
-                        {
-                            result.Add(entityToken, new [] { parentEntityToken });
-                        }
-
-                        continue;
+                        result.Add(entityToken, new [] { parent });
                     }
-
-                    DataGroupingProviderHelperEntityToken newGroupingParentEntityToken = new DataGroupingProviderHelperEntityToken(groupingEntityToken.Type);
-                    newGroupingParentEntityToken.Payload = this.OnGetPayload(groupingEntityToken);
-                    newGroupingParentEntityToken.GroupingValues = new Dictionary<string, object>();
-                    foreach (var kvp in groupingEntityToken.GroupingValues.Take(groupingEntityToken.GroupingValues.Count - 1))
-                    {
-                        newGroupingParentEntityToken.GroupingValues.Add(kvp.Key, NormalizeGroupingValue(kvp.Value));
-                    }
-
-                    result.Add(entityToken, new EntityToken[] { newGroupingParentEntityToken });
                     continue;
                 }
 
 
-                DataEntityToken dataEntityToken = entityToken as DataEntityToken;
+                var dataEntityToken = entityToken as DataEntityToken;
                 if (dataEntityToken != null)
                 {
-                    Type interfaceType = dataEntityToken.InterfaceType;
-                    if (OnOwnsType(interfaceType) == false) continue;
-
-                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
-
-                    IEnumerable<DataFieldDescriptor> groupingDataFieldDescriptors =
-                        from dfd in dataTypeDescriptor.Fields
-                        where dfd.GroupByPriority != 0
-                        orderby dfd.GroupByPriority
-                        select dfd;
-
-                    if (!groupingDataFieldDescriptors.Any())
+                    var parent = GetDataEntityTokenParent(dataEntityToken);
+                    if (parent != null)
                     {
-                        EntityToken parentEntityToken = OnGetRootParentEntityToken(interfaceType, dataEntityToken);
-                        result.Add(entityToken, new [] { parentEntityToken });
-                        continue;
+                        result.Add(entityToken, new[] { parent });
                     }
-
-                    IData data = dataEntityToken.Data;
-
-                    DataGroupingProviderHelperEntityToken parentToken = new DataGroupingProviderHelperEntityToken(dataEntityToken.Type);
-                    parentToken.Payload = this.OnGetPayload(dataEntityToken);
-                    parentToken.GroupingValues = new Dictionary<string, object>();
-                    foreach (DataFieldDescriptor dfd in groupingDataFieldDescriptors)
-                    {
-                        PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == dfd.Name);
-
-                        object value = propertyInfo.GetValue(data, null);
-                        parentToken.GroupingValues.Add(propertyInfo.Name, NormalizeGroupingValue(value));
-                    }
-
-                    result.Add(entityToken, new EntityToken[] { parentToken });
-                    continue;
                 }
-
             }
 
             return result;
+        }
+
+        private EntityToken GetGroupingEntityTokenParent(DataGroupingProviderHelperEntityToken groupingEntityToken)
+        {
+            Type type = TypeManager.TryGetType(groupingEntityToken.Type);
+
+            if (groupingEntityToken.GroupingValues.Count == 1)
+            {
+                return OnGetRootParentEntityToken(type, groupingEntityToken);
+            }
+
+            var newGroupingParentEntityToken = new DataGroupingProviderHelperEntityToken(groupingEntityToken.Type);
+            newGroupingParentEntityToken.Payload = this.OnGetPayload(groupingEntityToken);
+            newGroupingParentEntityToken.GroupingValues = new Dictionary<string, object>();
+            foreach (var kvp in groupingEntityToken.GroupingValues.Take(groupingEntityToken.GroupingValues.Count - 1))
+            {
+                newGroupingParentEntityToken.GroupingValues.Add(kvp.Key, NormalizeGroupingValue(kvp.Value));
+            }
+
+            return newGroupingParentEntityToken;
+        }
+
+        private EntityToken GetDataEntityTokenParent(DataEntityToken dataEntityToken)
+        {
+            Type interfaceType = dataEntityToken.InterfaceType;
+            if (!OnOwnsType(interfaceType))
+            {
+                return null;
+            }
+
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
+
+            IEnumerable<DataFieldDescriptor> groupingDataFieldDescriptors =
+                from dfd in dataTypeDescriptor.Fields
+                where dfd.GroupByPriority != 0
+                orderby dfd.GroupByPriority
+                select dfd;
+
+            if (!groupingDataFieldDescriptors.Any())
+            {
+                return OnGetRootParentEntityToken(interfaceType, dataEntityToken);
+            }
+
+            IData data = dataEntityToken.Data;
+
+            var parentToken = new DataGroupingProviderHelperEntityToken(dataEntityToken.Type);
+            parentToken.Payload = this.OnGetPayload(dataEntityToken);
+            parentToken.GroupingValues = new Dictionary<string, object>();
+            foreach (DataFieldDescriptor dfd in groupingDataFieldDescriptors)
+            {
+                PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == dfd.Name);
+
+                object value = propertyInfo.GetValue(data, null);
+                parentToken.GroupingValues.Add(propertyInfo.Name, NormalizeGroupingValue(value));
+            }
+
+            return parentToken;
         }
 
         private static object NormalizeGroupingValue(object value)
@@ -161,14 +167,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 orderby dfd.GroupByPriority
                 select dfd;
 
-            using (DataScope dataScope = new DataScope(this.OnGetDataScopeIdentifier(interfaceType)))
+            using (new DataScope(this.OnGetDataScopeIdentifier(interfaceType)))
             {
                 if (groupingDataFieldDescriptors.Count() != 0)
                 {
                     ValidateGroupByPriorities(interfaceType, groupingDataFieldDescriptors);
 
                     DataFieldDescriptor firstDataFieldDescriptor = groupingDataFieldDescriptors.First();
-                    PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Where(f => f.Name == firstDataFieldDescriptor.Name).Single();
+                    PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == firstDataFieldDescriptor.Name);
 
                     List<Element> elements = GetRootGroupFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo).ToList();
 
@@ -181,7 +187,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     if (includeForeignFolders)
                     {
-                        using (DataScope localeScope = new DataScope(UserSettings.ForeignLocaleCultureInfo))
+                        using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
                             elements.AddRange(GetRootGroupFolders(interfaceType, parentEntityToken, firstDataFieldDescriptor, propertyInfo));
                         }
@@ -200,7 +206,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     List<Element> elements = GetRootGroupFoldersFoldersLeafs(interfaceType, filter, false).ToList();
 
-                    var labelFieldDescriptor = dataTypeDescriptor.Fields.Where(f => f.Name == dataTypeDescriptor.LabelFieldName).FirstOrDefault();
+                    var labelFieldDescriptor = dataTypeDescriptor.Fields.FirstOrDefault(f => f.Name == dataTypeDescriptor.LabelFieldName);
                     if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null && labelFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
                     {
                         elements = (labelFieldDescriptor.TreeOrderingProfile.OrderDescending ?

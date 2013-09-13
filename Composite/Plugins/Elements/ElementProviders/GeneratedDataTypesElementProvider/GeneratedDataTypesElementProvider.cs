@@ -1247,6 +1247,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (_websiteItemsView) return null;
 
+            var groupingEntityToken = entityToken as DataGroupingProviderHelperEntityToken;
+            if (groupingEntityToken != null && !groupingEntityToken.Payload.IsNullOrEmpty())
+            {
+                // Grouping entity tokens with payload aren't attached to the data type folder in the 'Data' perspective
+                return null;
+            }
+
             return new GeneratedDataTypesElementProviderTypeEntityToken(
                     TypeManager.SerializeType(type),
                     _providerContext.ProviderName,
