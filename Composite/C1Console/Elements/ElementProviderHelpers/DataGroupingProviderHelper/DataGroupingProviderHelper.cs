@@ -67,6 +67,12 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     if (groupingEntityToken.GroupingValues.Count == 1)
                     {
+                        if (!groupingEntityToken.Payload.IsNullOrEmpty())
+                        {
+                            // Grouping entity tokens with payload aren't attached to the data type folder in the 'Data' perspective
+                            continue;
+                        }
+
                         EntityToken parentEntityToken = OnGetRootParentEntityToken(type, entityToken);
                         if(parentEntityToken != null)
                         {
