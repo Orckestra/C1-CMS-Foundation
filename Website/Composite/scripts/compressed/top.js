@@ -28138,6 +28138,8 @@ _110b.add("MultipleBody");
 }
 body=child;
 break;
+default:
+_110b.add("NotAllowedHtmlChild");
 }
 }
 }
