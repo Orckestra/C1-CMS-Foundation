@@ -564,8 +564,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
                 result =
                    (from item in childFolders
-                    where (folderChainToShow == null || folderChainToShow.StartsWith(item.Path + '/'))
-                          && item.StoreId == storeId
+                    where folderChainToShow == null || folderChainToShow.StartsWith(item.Path + '/')
                     orderby item.Path
                     select CreateFolderElement(item)).ToList();
 
@@ -677,13 +676,6 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             }
 
             return Expression.Lambda<Func<T, bool>>(andBody, p);
-        }
-
-
-        private bool IsImage(IMediaFile file)
-        {
-            return (file.MimeType != null && file.MimeType.StartsWith("image")) ||
-                (MimeTypeInfo.GetCanonicalFromExtension(Path.GetExtension(file.FileName)).StartsWith("image"));
         }
 
        

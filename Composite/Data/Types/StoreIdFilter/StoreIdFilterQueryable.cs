@@ -28,12 +28,13 @@ namespace Composite.Data.Types.StoreIdFilter
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class StoreIdFilterQueryable<T> : IStoreIdFilterQueryable, IOrderedQueryable<T>, IQueryProvider, IStorageFilter
     {
-        private IQueryable<T> _originalQueryable;
-        private string _storeId;
+        private readonly IQueryable<T> _originalQueryable;
+        private readonly string _storeId;
+        private readonly Expression _currentExpression;
 
-        private Expression _currentExpression;
 
-
+        private static readonly PropertyInfo _mediaFileStoreIdPropertyInfo = typeof(IMediaFile).GetProperty("StoreId");
+        private static readonly PropertyInfo _mediaFileFolderStoreIdPropertyInfo = typeof(IMediaFileFolder).GetProperty("StoreId");
 
         /// <exclude />
         public StoreIdFilterQueryable(IQueryable<T> originalQueryable, string storeId)
@@ -58,7 +59,7 @@ namespace Composite.Data.Types.StoreIdFilter
         /// <exclude />
         public IQueryable<S> CreateQuery<S>(Expression expression)
         {
-            StoreIdFilterQueryableSourceChanringExpressionVisitor visitor = new StoreIdFilterQueryableSourceChanringExpressionVisitor();
+            var visitor = new StoreIdFilterQueryableChangeSourceExpressionVisitor();
 
             Expression newExpression = visitor.Visit(expression);
 
@@ -84,15 +85,15 @@ namespace Composite.Data.Types.StoreIdFilter
         /// <exclude />
         public S Execute<S>(Expression expression)
         {
-            StoreIdFilterQueryableExpressionVisitor visitor = new StoreIdFilterQueryableExpressionVisitor();
+            var visitor = new StoreIdFilterQueryableExpressionVisitor();
 
             visitor.Visit(_currentExpression);
 
             if (visitor.FoundStoreId == _storeId)
             {
-                StoreIdFilterQueryableSourceChanringExpressionVisitor sourceChachingvisitor = new StoreIdFilterQueryableSourceChanringExpressionVisitor();
+                var sourceChangingVisitor = new StoreIdFilterQueryableChangeSourceExpressionVisitor();
 
-                Expression newExpression = sourceChachingvisitor.Visit(expression);
+                Expression newExpression = sourceChangingVisitor.Visit(expression);
 
                 return _originalQueryable.Provider.Execute<S>(newExpression);
             }
@@ -100,9 +101,9 @@ namespace Composite.Data.Types.StoreIdFilter
             {
                 List<T> emptyList = new List<T>();
 
-                StoreIdFilterQueryableSourceChanringExpressionVisitor sourceChachingvisitor = new StoreIdFilterQueryableSourceChanringExpressionVisitor(emptyList.AsQueryable().Expression);
+                var sourceChangingVisitor = new StoreIdFilterQueryableChangeSourceExpressionVisitor(emptyList.AsQueryable().Expression);
 
-                Expression newExpression = sourceChachingvisitor.Visit(expression);
+                Expression newExpression = sourceChangingVisitor.Visit(expression);
 
                 return emptyList.AsQueryable().Provider.Execute<S>(newExpression);
             }
@@ -123,25 +124,49 @@ namespace Composite.Data.Types.StoreIdFilter
         /// <exclude />
         public IEnumerator<T> GetEnumerator()
         {
-            StoreIdFilterQueryableExpressionVisitor visitor = new StoreIdFilterQueryableExpressionVisitor();
+            var visitor = new StoreIdFilterQueryableExpressionVisitor();
 
             visitor.Visit(_currentExpression);
 
             if (visitor.FoundStoreId == null)
             {
                 throw new InvalidOperationException("Missing storeId test found in where");
-            }            
-            else if (visitor.FoundStoreId == _storeId)
-            {
-                return _originalQueryable.GetEnumerator();
-            }            
-            else
+            }
+
+            if (visitor.FoundStoreId != _storeId)
             {
                 return new List<T>().GetEnumerator();
             }
+
+            return FilterByStoreId(_originalQueryable).GetEnumerator();
         }
 
 
+        IEnumerable<T> FilterByStoreId(IEnumerable<T> enumeration)
+        {
+            foreach (T item in enumeration)
+            {
+                if (GetStoreId(item) == _storeId)
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        static string GetStoreId(T item)
+        {
+            if (item is IMediaFile)
+            {
+                return (string) _mediaFileStoreIdPropertyInfo.GetValue(item, null);
+            }
+
+            if (item is IMediaFileFolder)
+            {
+                return (string)_mediaFileFolderStoreIdPropertyInfo.GetValue(item, null);
+            }
+
+            throw new InvalidOperationException("This line should not be reachable");
+        }
 
         /// <exclude />
         IEnumerator IEnumerable.GetEnumerator()

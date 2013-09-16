@@ -1696,7 +1696,7 @@
     <Compile Include="Data\Types\StoreIdFilter\Foundation\IStoreIdFilterQueryable.cs" />
     <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableCache.cs" />
     <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableExpressionVisitor.cs" />
-    <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableSourceChanringExpressionVisitor.cs" />
+    <Compile Include="Data\Types\StoreIdFilter\Foundation\StoreIdFilterQueryableChangeSourceExpressionVisitor.cs" />
     <Compile Include="Data\Types\StoreIdFilter\StoreIdFilterQueryable.cs" />
     <Compile Include="C1Console\Elements\Foundation\ElementActionProviderFacade.cs" />
     <Compile Include="C1Console\Elements\ElementDragAndDropInfo.cs" />
