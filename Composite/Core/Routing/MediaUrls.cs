@@ -27,7 +27,7 @@ namespace Composite.Core.Routing
         private static readonly string MediaUrl_UnprocessedRenderPrefix = "~/Renderers/ShowMedia.ashx";
         private static readonly string MediaUrl_RenderPrefix = UrlUtils.PublicRootPath + "/Renderers/ShowMedia.ashx";
 
-        private static readonly string ForbiddenUrlCharacters = @"<>*%&\?#";
+        private static readonly string ForbiddenUrlCharacters = @"<>*%&\?#""";
 
 
         /// <summary>
