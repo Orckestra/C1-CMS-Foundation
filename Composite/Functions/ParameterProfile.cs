@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Composite.Core;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Extensions;
@@ -105,6 +107,41 @@ namespace Composite.Functions
         /// <exclude />
         public HelpDefinition HelpDefinition { get; private set; }
 
+
+        /// <exclude />
+        public object GetDefaultValue()
+        {
+            // Initializing the binding
+            object value = null;
+
+            try
+            {
+                var fallbackValueProvider = FallbackValueProvider;
+
+                if (!(fallbackValueProvider is NoValueValueProvider))
+                {
+                    object defaultValue = fallbackValueProvider.GetValue();
+
+                    if (defaultValue != null)
+                    {
+                        value = ValueTypeConverter.Convert(defaultValue, this.Type);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning(typeof(ParameterProfile).Name, ex);
+            }
+
+            if (value == null)
+            {
+                if (this.Type == typeof(bool))
+                {
+                    value = false;
+                }
+            }
+            return value;
+        }
 
         /// <exclude />
         public string LabelLocalized

@@ -101,13 +101,20 @@ namespace Composite.C1Console.Forms
             extractUiArtifacts.ExtractUiArtifacts(_rootCompilerNode, out _uiControl, out _label, out _iconHandle);
         }
 
+        /// <summary>
+        /// Saves control properties into bindings.
+        /// </summary>
         /// <exclude />
         public void SaveControlProperties()
         {
             SaveAndValidateControlProperties();
         }
 
-        internal Dictionary<string, Exception> SaveAndValidateControlProperties()
+        /// <summary>
+        /// Saves control properties into bindings.
+        /// </summary>
+        /// <exclude />
+        public Dictionary<string, Exception> SaveAndValidateControlProperties()
         {
             _uiControl.BindStateToControlProperties();
 
@@ -134,14 +141,7 @@ namespace Composite.C1Console.Forms
         {
             get 
             {
-                if (string.IsNullOrEmpty(_label) == false)
-                {
-                    return _label;
-                }
-                else
-                {
-                    return _uiControl.Label;
-                }
+                return !string.IsNullOrEmpty(_label) ? _label : _uiControl.Label;
             }
         }
 
@@ -151,27 +151,30 @@ namespace Composite.C1Console.Forms
         {
             get
             {
-                if (string.IsNullOrEmpty(_iconHandle) == false)
-                {
-                    if (_iconHandle.IndexOf(',') == -1)
-                    {
-                        return new ResourceHandle(BuildInIconProviderName.ProviderName, _iconHandle.Trim());
-                    }
-                    else
-                    {
-                        string[] resourceParts = _iconHandle.Split(',');
-                        if (resourceParts.Length != 2) throw new InvalidOperationException( string.Format( "Invalid icon resource name '{0}'. Only one comma expected.", _iconHandle ));
-
-                        return new ResourceHandle(resourceParts[0].Trim(), resourceParts[1].Trim());
-                    }
-                }
-                else
+                if (string.IsNullOrEmpty(_iconHandle))
                 {
                     return null;
                 }
+                
+                if (_iconHandle.IndexOf(',') == -1)
+                {
+                    return new ResourceHandle(BuildInIconProviderName.ProviderName, _iconHandle.Trim());
+                }
+                
+                string[] resourceParts = _iconHandle.Split(',');
+                if (resourceParts.Length != 2)
+                    throw new InvalidOperationException(
+                        string.Format("Invalid icon resource name '{0}'. Only one comma expected.", _iconHandle));
+
+                return new ResourceHandle(resourceParts[0].Trim(), resourceParts[1].Trim());
             }
         }
 
+        /// <exclude />
+        public Dictionary<string, object> BindingObjects
+        {
+            get { return _bindingObjects; }
+        }
 
         /// <exclude />
         public CompileTreeNode RootCompileTreeNode

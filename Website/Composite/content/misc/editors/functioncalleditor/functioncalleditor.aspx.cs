@@ -741,7 +741,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         ParameterProfile parameterProfile = function.ParameterProfiles.FirstOrDefault(p => p.Name == parameterName);
 
         // Creating a widget instance
-        object defaultParameterValue = GetDefaultValue(parameterProfile);
+        object defaultParameterValue = parameterProfile.GetDefaultValue();
         var bindings = new Dictionary<string, object> { { parameterProfile.Name, defaultParameterValue } };
 
 
@@ -846,7 +846,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             parameterNode.Remove();
         }
 
-        object defaultParameterValue = GetDefaultValue(parameterProfile);
+        object defaultParameterValue = parameterProfile.GetDefaultValue();
 
         var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, defaultParameterValue ?? string.Empty);
         functionNode.Add(newConstantParam.Serialize());
@@ -1176,7 +1176,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             {
                 Log.LogError(LogTitle, ex);
 
-                return GetDefaultValue(parameterProfile);
+                return parameterProfile.GetDefaultValue();
             }
         }
 
@@ -1194,8 +1194,8 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             
             throw new NotImplementedException("Not supported type of function parameter element node: '{0}'".FormatWith(paramType.FullName));
         }
-        
-        return GetDefaultValue(parameterProfile);
+
+        return parameterProfile.GetDefaultValue();
     }
 
     private static bool FunctionIsOnTopLevel(XElement functionNode)
@@ -1249,37 +1249,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
             plhEditLocalName.Visible = false;
         }
         mlvMain.SetActiveView(viewFunction);
-    }
-
-    private object GetDefaultValue(ParameterProfile parameterProfile)
-    {
-        // Initializing the binding
-        object value = null;
-
-        try
-        {
-            var fallbackValueProvider = parameterProfile.FallbackValueProvider;
-
-            if (!(fallbackValueProvider is NoValueValueProvider))
-            {
-                object defaultValue = fallbackValueProvider.GetValue();
-
-                if (defaultValue != null)
-                {
-                    value = ValueTypeConverter.Convert(defaultValue, parameterProfile.Type);
-                }
-            }
-        }
-        catch (Exception) { }
-
-        if (value == null)
-        {
-            if (parameterProfile.Type == typeof(bool))
-            {
-                value = false;
-            }
-        }
-        return value;
     }
 
     private XElement CopyWithId(XElement source)
