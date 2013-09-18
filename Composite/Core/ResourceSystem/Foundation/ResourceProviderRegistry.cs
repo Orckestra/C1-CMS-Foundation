@@ -95,9 +95,9 @@ namespace Composite.Core.ResourceSystem.Foundation
                         }
                         else if (typeof(IStringResourceProvider).IsAssignableFrom(type))
                         {
-                            Log.LogCritical(LogTitle, ("String resource provider '{0}' definition ignored." +
-                                                      "\nDefine provider of type '{1}' provider and move provider definition under it")
-                                                       .FormatWith(data.Name, typeof(AggregationLocalizationProvider).Name));
+                            Log.LogWarning(LogTitle, ("String resource provider '{0}' definition ignored." +
+                                                      "\nEither remove it from Composite.config, or move the provider definition under a provider of type '{1}' ")
+                                                      .FormatWith(data.Name, typeof(AggregationLocalizationProvider).FullName));
 
                             resources.StringResourceProviders.Add(data.Name);
                         }
@@ -107,7 +107,7 @@ namespace Composite.Core.ResourceSystem.Foundation
                         }
                         else 
                         {
-                            throw new NotImplementedException(string.Format("Unkown resource provider type '{0}'", type));
+                            throw new NotSupportedException(string.Format("Unkown resource provider type '{0}'", type));
                         }
                     }
                 }
