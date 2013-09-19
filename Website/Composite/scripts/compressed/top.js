@@ -11026,22 +11026,27 @@ this._hasLoadActionFired=true;
 }
 }
 };
-WindowBinding.prototype.setURL=function(url){
+WindowBinding.prototype.setURL=function(url,data){
 this.setProperty("url",url);
 this._hasLoadActionFired=false;
 if(this.isAttached==true){
 this._disposeContentDocument();
 if(url.length>1900){
-var self=this;
-var _7e3=this.getFrameElement();
-var _7e4=new Uri(Resolver.resolve(url));
-var data=new Map();
-_7e4.getQueryString().each(function(name,_7e7){
-if(_7e7.length>512){
-data.set(name,_7e7);
-_7e4.setParam(name,null);
+var _7e3=new Uri(Resolver.resolve(url));
+if(!data){
+data=new Map();
+}
+_7e3.getQueryString().each(function(name,_7e5){
+if(_7e5.length>512){
+data.set(name,_7e5);
+_7e3.setParam(name,null);
 }
 });
+url=_7e3.toString();
+}
+if(data){
+var self=this;
+var _7e7=this.getFrameElement();
 if(typeof this.shadowTree.form=="undefined"){
 this.shadowTree.form=DOMUtil.createElementNS(Constants.NS_XHTML,"form",this.bindingDocument);
 this.shadowTree.form.style.display="none";
@@ -11050,9 +11055,9 @@ this.shadowTree.form.method="POST";
 this.bindingElement.appendChild(this.shadowTree.form);
 }
 var form=this.shadowTree.form;
-form.action=_7e4.toString();
-form.target=_7e3.id;
-form.setAttribute("target",_7e3.id);
+form.action=url;
+form.target=_7e7.id;
+form.setAttribute("target",_7e7.id);
 while(form.firstChild){
 form.removeChild(form.firstChild);
 }
