@@ -421,8 +421,9 @@ WindowBinding.prototype.onWindowLoaded = function ( win ) {
 /**
  * Set URL.
  * @param {string} url
+ * @param {map} data
  */
-WindowBinding.prototype.setURL = function ( url ) {
+WindowBinding.prototype.setURL = function ( url, data) {
 
 	this.setProperty ( "url", url );
 	this._hasLoadActionFired = false;
@@ -451,17 +452,22 @@ WindowBinding.prototype.setURL = function ( url ) {
 		 * Load resolved URL.
 		 */
 		if (url.length > 1900) {
-			var self = this;
-			var iframe = this.getFrameElement();
 			var actionUrl = new Uri(Resolver.resolve(url));
+			if (!data) data = new Map();
 			
-			var data = new Map();
 			actionUrl.getQueryString().each(function(name, value) {
 				if (value.length > 512) {
 					data.set(name, value);
 					actionUrl.setParam(name, null);
 				}
 			});
+
+			url = actionUrl.toString();
+		}
+		
+		if (data) {
+			var self = this;
+			var iframe = this.getFrameElement();
 
 			if(typeof this.shadowTree.form == 'undefined'){
 				
@@ -473,7 +479,7 @@ WindowBinding.prototype.setURL = function ( url ) {
 			}
 			var form = this.shadowTree.form;
 
-			form.action = actionUrl.toString();
+			form.action = url;
 			form.target = iframe.id;
 			form.setAttribute("target", iframe.id);
 			while(form.firstChild){
