@@ -5,8 +5,10 @@ using System.Xml.Linq;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases;
 using Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompileTreeNodes;
+using Composite.C1Console.Forms.WebChannel;
 using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
+using Composite.Core.WebClient.FlowMediators.FormFlowRendering;
 using Composite.Data.Validation.ClientValidationRules;
 
 
@@ -111,7 +113,7 @@ namespace Composite.C1Console.Forms
         }
 
         /// <summary>
-        /// Saves control properties into bindings.
+        /// Saves control properties into bindings and returns validation errors.
         /// </summary>
         /// <exclude />
         public Dictionary<string, Exception> SaveAndValidateControlProperties()
@@ -128,6 +130,15 @@ namespace Composite.C1Console.Forms
             return bindingErrors;
         }
 
+
+        /// <exclude />
+        public Dictionary<string, string> GetBindingToClientIDMapping()
+        {
+            var result = new Dictionary<string, string>();
+            FormFlowUiDefinitionRenderer.ResolveBindingPathToCliendIDMappings(_uiControl as IWebUiControl, result);
+
+            return result;
+        } 
 
         /// <exclude />
         public IUiControl UiControl
