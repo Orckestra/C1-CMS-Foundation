@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Linq;
 using System.IO;
 using System.Linq;
@@ -121,7 +122,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
         }
 
-
+        private static Exception NewConfigurationException(ConfigurationElement element, string message)
+        {
+            return new ConfigurationErrorsException(message, element.ElementInformation.Source, element.ElementInformation.LineNumber);
+        }
 
         private InitializeStoreResult InitializeStore(InterfaceConfigurationElement element, Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, bool forceCompile = false)
         {
@@ -141,8 +145,19 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 sqlDataTypeStoreDataScopes.Add(sqlDataTypeStoreDataScope);
             }
 
-            Verify.That(element.DataTypeId.HasValue, "Missing 'dataTypeId' attribute");
-            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+
+            if (!element.DataTypeId.HasValue)
+            {
+                throw NewConfigurationException(element, "Missing 'dataTypeId' attribute");
+            }
+
+            Guid dataTypeId = element.DataTypeId.Value;
+
+            var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
+            if (dataTypeDescriptor == null)
+            {
+                throw NewConfigurationException(element, "Failed to get a DataTypeDescriptor by id '{0}'".FormatWith(dataTypeId));
+            }
 
             Type interfaceType = null;
 
@@ -581,9 +596,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     continue;
                 }
 
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(element.DataTypeId.Value, true);
+                Guid dataTypeId = element.DataTypeId.Value;
+                var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
+                if (dataTypeDescriptor == null)
+                {
+                    Log.LogWarning(LogTitle, "Failed to get data type descriptor by id '{0}'".FormatWith(dataTypeId));
+                    continue;
+                }
 
-                List<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
+                var sqlDataTypeStoreDataScopes = new List<SqlDataTypeStoreDataScope>();
 
                 foreach (StorageInformation storageInformation in element.Stores)
                 {

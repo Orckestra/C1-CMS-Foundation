@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -105,6 +106,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
+        private static Exception NewConfigurationException(ConfigurationElement element, string message)
+        {
+            return new ConfigurationErrorsException(message, element.ElementInformation.Source, element.ElementInformation.LineNumber);
+        }
 
         private void InitializeExistingStores()
         {
@@ -114,14 +119,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
-                Verify.IsNotNull(element.DataTypeId, "'DataTypeId' attribute is missing");
+                if (!element.DataTypeId.HasValue)
+                {
+                    throw NewConfigurationException(element, "Missing 'dataTypeId' attribute");
+                }
 
                 Guid dataTypeId = element.DataTypeId.Value;
 
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
+                var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(dataTypeId, true);
                 if (dataTypeDescriptor == null)
                 {
-                    throw new InvalidOperationException("Failed to get a DataTypeDescriptor by id '{0}'".FormatWith(dataTypeId));
+                    throw NewConfigurationException(element, "Failed to get a DataTypeDescriptor by id '{0}'".FormatWith(dataTypeId));
                 }
 
                 Type interfaceType = null;
