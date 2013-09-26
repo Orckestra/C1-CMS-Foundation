@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Caching;
+using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Xsl;
 using Composite.Core.Extensions;
@@ -82,24 +83,8 @@ namespace Composite.Core.WebClient.Presentation
                 _responseOutputStream = outputStream;
             }
 
-            private Stream _responseOutputStream;
-            private MemoryStream _buffer;
-
-            /// <summary>
-            /// Performs the actual transformation and write the result to the original stream
-            /// </summary>
-            /*
-             * Moth knows about the ugly parameters, please refactor!
-             * We should probably supply XSLT params by webcontrol markup...
-             */
-            [Obsolete("Use Transform() instead")]
-            public void TransformBufferToOutput(String mode, String browser, String platform)
-            {
-                MemoryStream result = Transform(_buffer, mode, browser, platform);
-                result.Seek(0, SeekOrigin.Begin);
-
-                result.WriteTo(_responseOutputStream);
-            }
+            private readonly Stream _responseOutputStream;
+            private readonly MemoryStream _buffer;
 
 
             /*
@@ -128,7 +113,6 @@ namespace Composite.Core.WebClient.Presentation
                 buffer.Seek(0, SeekOrigin.Begin);
 
 
-                MemoryStream inputStream;
                 MemoryStream outputStream = null;
 
                 int xsltCount = xsltFilePaths.Count;
@@ -138,7 +122,7 @@ namespace Composite.Core.WebClient.Presentation
                     string xsltFilePath = xsltFilePaths[i];
                     bool isFirst = (i == 0);
 
-                    inputStream = (isFirst ? buffer : outputStream);
+                    MemoryStream inputStream = isFirst ? buffer : outputStream;
                     inputStream.Position = 0;
                     outputStream = new MemoryStream();
                         
@@ -148,7 +132,7 @@ namespace Composite.Core.WebClient.Presentation
                         */
 
                     string transformationCacheKey = "Compiled" + xsltFilePath;
-                    var cache = HttpContext.Current.Cache;
+                    var cache = HostingEnvironment.Cache;
 
                     XslCompiledTransform transformer = cache[transformationCacheKey] as XslCompiledTransform;
                     if(transformer == null) 
@@ -184,6 +168,7 @@ namespace Composite.Core.WebClient.Presentation
                     }
                     argList.AddParam("version", "", RuntimeInformation.ProductVersion.ToString());
                     argList.AddParam("doctype", "", doctype.ToString());
+                    argList.AddParam("appVirtualPath", "", GetAppRootPath());
 
                     transformer.Transform(XmlReader.Create(inputStream, readerSettings), argList, XmlWriter.Create(outputStream, transformer.OutputSettings));
                 }
@@ -193,6 +178,18 @@ namespace Composite.Core.WebClient.Presentation
                 return outputStream;
             }
 
+
+            private static string GetAppRootPath()
+            {
+                string appPath = HostingEnvironment.ApplicationVirtualPath;
+
+                if (appPath.EndsWith("/") || appPath.EndsWith(@"\"))
+                {
+                    appPath = appPath.Remove(appPath.Length - 1, 1);
+                }
+
+                return appPath;
+            }
 
             public override void Write(byte[] buffer, int offset, int count)
             {

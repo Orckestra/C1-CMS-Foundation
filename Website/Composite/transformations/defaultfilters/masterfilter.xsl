@@ -8,6 +8,7 @@
   <xsl:param name="browser">opera</xsl:param>
   <xsl:param name="platform">amigaos</xsl:param>
   <xsl:param name="version">-1</xsl:param>
+  <xsl:param name="appVirtualPath"></xsl:param>
 
   <xsl:template match="/|@*|*|processing-instruction()|comment()">
     <xsl:copy>
@@ -66,13 +67,15 @@
   <xsl:template match="x:script[(not(starts-with(@src,'/')) or contains(translate(@src,'COMPSITE\','compsite/'),'/composite/'))]/@src|x:link[@rel='stylesheet' and (not(starts-with(@href,'/')) or contains(translate(@href,'COMPSITE\','compsite/'),'/composite/')) ]/@href">
     <xsl:attribute name="{name()}">
       <xsl:value-of select="." />
-      <xsl:if test="not(contains(.,'.aspx'))">
-        <xsl:text>.aspx</xsl:text>
+      <xsl:if test="not(starts-with(.,'/')) or starts-with(translate(.,'COMPSITE\','compsite/'), translate(concat($appVirtualPath, '/composite/'),'COMPSITE\','compsite/'))">
+        <xsl:if test="not(contains(.,'.aspx'))">
+          <xsl:text>.aspx</xsl:text>
+        </xsl:if>
+        <xsl:if test="not(contains(.,'?'))">
+          <xsl:text>?c1=</xsl:text>
+        </xsl:if>
+        <xsl:value-of select="$version" />
       </xsl:if>
-      <xsl:if test="not(contains(.,'?'))">
-        <xsl:text>?c1=</xsl:text>
-      </xsl:if>
-      <xsl:value-of select="$version" />
     </xsl:attribute>
   </xsl:template>
 
