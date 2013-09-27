@@ -21,18 +21,19 @@ namespace Composite.Core.WebClient.UiControlLib
         {
             writer.WriteBeginTag("ui:checkbox");
 
-            writer.WriteAttribute("label", StringResourceSystemFacade.ParseString((this.ItemLabel ?? "")));
+            writer.WriteAttribute("label", StringResourceSystemFacade.ParseString(this.ItemLabel ?? ""));
 
             if (string.IsNullOrEmpty(this.ToolTip) == false)
             {
-                writer.WriteAttribute("title", StringResourceSystemFacade.ParseString((this.ToolTip ?? "")));
+                writer.WriteAttribute("title", StringResourceSystemFacade.ParseString(this.ToolTip ?? ""));
             }
 
             writer.WriteAttribute("name", this.UniqueID);
 
             if (this.AutoPostBack)
             {
-                throw new NotImplementedException("The CheckBox AutoPostBack feature is volatile. Event is not raised in certain circumstances");
+                writer.WriteAttribute("callbackid", this.ClientID);
+                writer.WriteAttribute("oncommand", "this.dispatchAction(PageBinding.ACTIONEVENT_DOPOSTBACK);");
             }
 
             writer.WriteAttribute("ischecked", this.Checked.ToString().ToLower());
