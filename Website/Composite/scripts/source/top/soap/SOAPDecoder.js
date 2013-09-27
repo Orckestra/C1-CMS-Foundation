@@ -121,16 +121,22 @@ SOAPDecoder.prototype._compute = function ( element, definition ) {
 					);
 				}
 			} else {
-				result = {};
-				defs.reset ();
-				while ( defs.hasNext ()) {
-					var def = defs.getNext ();
-					var elm = this.resolve ( def.name, element );
-					if ( elm ) {
-						result [ def.name ] = this._compute ( elm, def );
-					} else if ( def.isRequired ) {
-						throw new Error ( "SOAPDecoder: invalid SOAP response." );
-					}
+			    
+			    if (element == null) {
+			        result = null;
+			    } else {
+				    result = {};
+				    defs.reset();
+			    
+				    while ( defs.hasNext ()) {
+					    var def = defs.getNext ();
+					    var elm = this.resolve ( def.name, element );
+					    if ( elm ) {
+						    result [ def.name ] = this._compute ( elm, def );
+					    } else if ( def.isRequired ) {
+						    throw new Error ( "SOAPDecoder: invalid SOAP response." );
+					    }
+				    }
 				}
 			}
 		}
