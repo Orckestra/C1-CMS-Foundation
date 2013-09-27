@@ -198,7 +198,7 @@ Binding.imageProfile = function ( binding ) {
 			binding.image = image;
 		}
 		if ( binding.imageHover == null && imageHover != null ) {
-			binding.imageHover = image;
+			binding.imageHover = imageHover;
 		}
 		if ( binding.imageActive == null && imageActive != null ) {
 			binding.imageActive = imageActive;
