@@ -6096,7 +6096,7 @@ if(_54f.image==null&&_550!=null){
 _54f.image=_550;
 }
 if(_54f.imageHover==null&&_551!=null){
-_54f.imageHover=_550;
+_54f.imageHover=_551;
 }
 if(_54f.imageActive==null&&_552!=null){
 _54f.imageActive=_552;
@@ -29583,6 +29583,9 @@ var elm=elms.getNext();
 _1216.push(this._compute(elm,def));
 }
 }else{
+if(_1214==null){
+_1216=null;
+}else{
 _1216={};
 defs.reset();
 while(defs.hasNext()){
@@ -29593,6 +29596,7 @@ _1216[def.name]=this._compute(elm,def);
 }else{
 if(def.isRequired){
 throw new Error("SOAPDecoder: invalid SOAP response.");
+}
 }
 }
 }
