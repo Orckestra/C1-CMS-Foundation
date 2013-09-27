@@ -19,6 +19,16 @@
         [StoreFieldType(PhysicalStoreFieldType.String, 255)]
         [ImmutableFieldId("{96671d53-4657-439b-8abd-4e01f3c80fd7}")]
         string CustomEditorPath { get; set; }
+
+        /// <exclude />
+        [StoreFieldType(PhysicalStoreFieldType.Integer, IsNullable = true)]
+        [ImmutableFieldId("{3af4e226-c06d-448d-a93e-3457cd4e9bf6}")]
+        int? Width { get; set; }
+
+        /// <exclude />
+        [StoreFieldType(PhysicalStoreFieldType.Integer, IsNullable = true)]
+        [ImmutableFieldId("{7bd25407-193b-42e5-ae59-26a99bdee2c1}")]
+        int? Height { get; set; }
     }
 }
  

@@ -3,7 +3,6 @@
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
-using Composite.Core.IO;
 using Composite.Functions;
 
 
@@ -14,19 +13,19 @@ namespace Composite.Services
     public class FunctionService : System.Web.Services.WebService
     {
         [WebMethod]
-        public string GetCustomEditorPath(string functionName)
+        public FunctionCallEditorSettings GetCustomEditorSettings(string functionName)
         {
-            return FunctionCallEditorManager.GetCustomEditorPath(functionName);
+            return FunctionCallEditorManager.GetCustomEditorSettings(functionName);
         }
 
         [WebMethod]
-        public string GetCustomEditorPathByMarkup(string xml)
+        public FunctionCallEditorSettings GetCustomEditorSettingsByMarkup(string xml)
         {
             var xElement = XElement.Parse(xml);
 
             string functionName = (string) xElement.Attribute("name");
 
-            return functionName != null ? FunctionCallEditorManager.GetCustomEditorPath(functionName) : null;
+            return functionName != null ? FunctionCallEditorManager.GetCustomEditorSettings(functionName) : null;
         }
     }
 }
