@@ -367,7 +367,7 @@ namespace Composite.Plugins.Routing.Pages
                 {
                     string urlMappingName = requestPath.Substring(startIndex, endIndex - startIndex + 1);
 
-                    if (DataLocalizationFacade.UrlMappingNames.Contains(urlMappingName))
+                    if (DataLocalizationFacade.UrlMappingNames.Any(um => String.Equals(um, urlMappingName, StringComparison.OrdinalIgnoreCase)))
                     {
                         CultureInfo cultureInfo = DataLocalizationFacade.GetCultureInfoByUrlMappingName(urlMappingName);
 
