@@ -44,14 +44,12 @@
            <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" />
            <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT"  />
           @if(PageData.TryGetValue("__STATE", out state)){ <input type="hidden" name="__STATE" id="__STATE"  value="@state.Serialize()" /> } @* If used it should implement Serialize*@
-            <ui:page>
 
                 @RenderSection("BodyHead", false)
 
                 @RenderBody()
 
                 @RenderSection("BodyFoot", false)
-            </ui:page>
         </form>
     </body>
 </html>
