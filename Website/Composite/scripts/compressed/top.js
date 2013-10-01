@@ -15232,7 +15232,7 @@ return "[RadioDataBinding]";
 };
 RadioDataBinding.prototype.onBindingRegister=function(){
 RadioDataBinding.superclass.onBindingRegister.call(this);
-this.propertyMethodMap["checked"]=function(_a07){
+this.propertyMethodMap["ischecked"]=function(_a07){
 if(_a07!=this.isChecked){
 this.setChecked(_a07,true);
 }
@@ -15391,7 +15391,7 @@ CheckBoxBinding.prototype.onBindingRegister=function(){
 CheckBoxBinding.superclass.onBindingRegister.call(this);
 DataBinding.prototype.onBindingRegister.call(this);
 this._buildButtonBinding();
-this.propertyMethodMap["checked"]=function(_a19){
+this.propertyMethodMap["ischecked"]=function(_a19){
 if(_a19!=this.isChecked){
 this.setChecked(_a19,true);
 }
