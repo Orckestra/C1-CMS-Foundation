@@ -58,14 +58,7 @@ public class ImageManipulator : IHttpHandler
         // TODO: Caching here?
         using (Stream readStream = mediaFile.GetReadStream())
         {
-            // the double new Bitmap(new Bitmap(..)) fixes GIF prb; 
-            // "a graphics object cannot be created from an image that has an indexed pixel format"
-            using (var innerBitmap = new Bitmap(readStream))
-            using (Bitmap lockedSource = new Bitmap(innerBitmap))
-            using (Graphics g = Graphics.FromImage(lockedSource)) {
-                image = new Bitmap(lockedSource);
-                g.DrawImage(image, new Point(0, 0));
-            }
+			image = new Bitmap(readStream);
         }
         
      
@@ -373,34 +366,7 @@ public class ImageManipulator : IHttpHandler
             }
         }
 
-
-        Bitmap scaled = new Bitmap(resultWidth, resultHeight, image.PixelFormat);
-        try
-        {
-            using (Graphics graphics = Graphics.FromImage(scaled))
-            {
-                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                
-                using(var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-
-                    graphics.DrawImage(image,
-                                       new Rectangle(0, 0, resultWidth, resultHeight),
-                                       0, 0, image.Width, image.Height,
-                                       GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-            image.Dispose();
-        }
-        catch (Exception)
-        {
-            scaled.Dispose();
-            throw;
-        }
-        
-        return scaled;
+		return Composite.Core.WebClient.Media.ImageResizer.ResizeImage(image, resultWidth, resultHeight, false);
     }
     
 

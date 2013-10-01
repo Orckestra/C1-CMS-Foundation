@@ -177,6 +177,7 @@
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\FunctionBoxRouteHandler.cs" />
+    <Compile Include="Core\WebClient\Media\ImageSizeReader.cs" />
     <Compile Include="Core\WebClient\Presentation\ViewServices.cs" />
     <Compile Include="Core\WebClient\Renderings\Template\PageTemplateFeatureFacade.cs" />
     <Compile Include="Core\WebClient\ScriptLoader.cs" />

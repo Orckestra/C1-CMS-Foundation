@@ -17,7 +17,7 @@ namespace Composite.Core.WebClient.Media
     ///Class that performs image resizing
     ///</summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class ImageResizer
     {
         private const string ResizedImagesCacheDirectory = "~/App_Data/Composite/Cache/Resized images";
@@ -74,10 +74,14 @@ namespace Composite.Core.WebClient.Media
                 if (imageSize == null)
                 {
                     fileStream = file.GetReadStream();
-                    bitmap = new Bitmap(fileStream);
-                    
-                    imageSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
-                    
+
+                    Size calculatedSize;
+                    if (!ImageSizeReader.TryGetSize(fileStream, out calculatedSize))
+                    {
+                        bitmap = new Bitmap(fileStream);
+                        calculatedSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
+                    }
+                    imageSize = calculatedSize;
 
                     // We can provider cache dependency only for the native media provider
                     var cacheDependency = isNativeProvider ? new CacheDependency((file as FileSystemFileBase).SystemPath) : null;
@@ -139,7 +143,7 @@ namespace Composite.Core.WebClient.Media
         {
             // Can be refactored to use System.Drawing.Size class instead of (width & height).
 
-            if(width == 0 || height == 0)
+            if (width == 0 || height == 0)
             {
                 newHeight = newWidth = 0;
                 centerCrop = false;
@@ -169,12 +173,12 @@ namespace Composite.Core.WebClient.Media
                 }
 
                 // If the target dimensions are bigger or the same size as of the image - no resizing is done
-                if(newWidth == width && newHeight == height)
+                if (newWidth == width && newHeight == height)
                 {
                     return false;
                 }
 
-                switch(resizingOptions.ResizingAction)
+                switch (resizingOptions.ResizingAction)
                 {
                     case ResizingAction.Stretch:
                         // no additional logic
@@ -190,13 +194,13 @@ namespace Composite.Core.WebClient.Media
                         Int64 heightProportionArea = (Int64)newHeight * width;
                         Int64 widthProportionArea = (Int64)newWidth * height;
 
-                        if(heightProportionArea == widthProportionArea)
+                        if (heightProportionArea == widthProportionArea)
                         {
                             break;
                         }
 
                         if ((heightProportionArea > widthProportionArea)
-                        //  (newHeight / height) > (newWidth / width) 
+                            //  (newHeight / height) > (newWidth / width) 
                               ^ (resizingOptions.ResizingAction == ResizingAction.Fit))
                         {
                             newWidth = (int)(heightProportionArea / height);
@@ -249,47 +253,9 @@ namespace Composite.Core.WebClient.Media
 
         private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool centerCrop, ImageFormat imageFormat)
         {
-            Verify.ArgumentNotNull(image, "image");
-
-            using (Bitmap resizedImage = new Bitmap(newWidth, newHeight))
+            using (Bitmap resizedImage = ResizeImage(image, newWidth, newHeight, centerCrop))
             {
-                resizedImage.SetResolution(72, 72);
-
-                using (Graphics newGraphic = Graphics.FromImage(resizedImage))
-                {
-                    newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                    // newGraphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                    if (centerCrop)
-                    {
-                        float xRatio = image.Width/(float) newWidth;
-                        float yRatio = image.Height/(float) newHeight;
-
-                        if (xRatio > yRatio)
-                        {
-                            float dx = (image.Width/yRatio) - newWidth;
-
-                            DrawWithoutBlending(newGraphic, image, -dx/2.0f, 0.0f, newWidth + dx, newHeight);
-                        }
-                        else if (yRatio > xRatio)
-                        {
-                            float dy = (image.Height/xRatio) - newHeight;
-                            DrawWithoutBlending(newGraphic, image, 0.0f, -dy / 2.0f, newWidth, newHeight + dy);
-                        }
-                        else
-                        {
-                            DrawWithoutBlending(newGraphic, image, 0, 0, newWidth, newHeight);
-                        }
-                    }
-                    else
-                    {
-                        DrawWithoutBlending(newGraphic, image, 0, 0, newWidth, newHeight);
-                    }
-
-                }
-
-                if(imageFormat.Guid == ImageFormat.Jpeg.Guid)
+                if (imageFormat.Guid == ImageFormat.Jpeg.Guid)
                 {
                     EncoderParameters parameters = new EncoderParameters(1);
 
@@ -306,7 +272,60 @@ namespace Composite.Core.WebClient.Media
             }
         }
 
-        
+        /// <summary>
+        /// Resizes an image
+        /// </summary>
+        /// <param name="image">source</param>
+        /// <param name="newWidth">width</param>
+        /// <param name="newHeight">height</param>
+        /// <param name="centerCrop">when true, cropping will happen</param>
+        /// <param name="imageFormat">desired output format</param>
+        /// <returns>the resized image</returns>
+        public static Bitmap ResizeImage(Bitmap image, int newWidth, int newHeight, bool centerCrop)
+        {
+            Verify.ArgumentNotNull(image, "image");
+
+            Bitmap resizedImage = new Bitmap(newWidth, newHeight);
+
+            resizedImage.SetResolution(72, 72);
+
+            using (Graphics newGraphic = Graphics.FromImage(resizedImage))
+            {
+                newGraphic.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                newGraphic.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                // newGraphic.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+                if (centerCrop)
+                {
+                    float xRatio = image.Width / (float)newWidth;
+                    float yRatio = image.Height / (float)newHeight;
+
+                    if (xRatio > yRatio)
+                    {
+                        float dx = (image.Width / yRatio) - newWidth;
+
+                        DrawWithoutBlending(newGraphic, image, -dx / 2.0f, 0.0f, newWidth + dx, newHeight);
+                    }
+                    else if (yRatio > xRatio)
+                    {
+                        float dy = (image.Height / xRatio) - newHeight;
+                        DrawWithoutBlending(newGraphic, image, 0.0f, -dy / 2.0f, newWidth, newHeight + dy);
+                    }
+                    else
+                    {
+                        DrawWithoutBlending(newGraphic, image, 0, 0, newWidth, newHeight);
+                    }
+                }
+                else
+                {
+                    DrawWithoutBlending(newGraphic, image, 0, 0, newWidth, newHeight);
+                }
+            }
+
+            return resizedImage;
+        }
+
+
 
 
         /// <summary>
@@ -318,7 +337,7 @@ namespace Composite.Core.WebClient.Media
             {
                 wrapMode.SetWrapMode(WrapMode.TileFlipXY);
 
-                graphic.DrawImage(bitmap, 
+                graphic.DrawImage(bitmap,
                                   new Rectangle(x, y, width, height),
                                   0, 0, bitmap.Width, bitmap.Height,
                                   GraphicsUnit.Pixel,
@@ -357,7 +376,7 @@ namespace Composite.Core.WebClient.Media
             public static ImageFormat GIF { get { return ImageFormat.Gif; } }
             /// <exclude />
             public static ImageFormat BMP { get { return ImageFormat.Bmp; } }
-            
+
         }
     }
 }
