@@ -59,7 +59,7 @@ RadioDataBinding.prototype.onBindingRegister = function () {
 	/*
 	 * This may not always be enough, see below...
 	 */
-	this.propertyMethodMap [ "checked" ] = function ( isChecked ) {
+	this.propertyMethodMap [ "ischecked" ] = function ( isChecked ) {
 		if ( isChecked != this.isChecked ) {
 			this.setChecked ( isChecked, true );
 		}
