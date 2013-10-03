@@ -557,7 +557,10 @@ namespace Composite.Services
 
             try
             {
-                string paramValue = parameter.GetValue().ToString();
+
+                object rawValue = parameter.GetValue();
+
+                string paramValue = rawValue.ToString();
                 string paramLabel = parameter.Name;
 
                 try
@@ -574,27 +577,29 @@ namespace Composite.Services
                                 paramValue = dataReference.Data.GetLabel();
                             }
                         }
-                        else
+                        else if (parameterProfile.Type == typeof(XhtmlDocument))
                         {
-                            if (parameterProfile.Type == typeof(XhtmlDocument))
+                            XhtmlDocument xhtmlDoc = parameter.GetValue<XhtmlDocument>();
+                            if (xhtmlDoc.Body.Nodes().Any() && xhtmlDoc.Head.Nodes().Any())
                             {
-                                XhtmlDocument xhtmlDoc = parameter.GetValue<XhtmlDocument>();
-                                if (xhtmlDoc.Body.Nodes().Any() && xhtmlDoc.Head.Nodes().Any())
-                                {
-                                    paramValue = "(Empty HTML)";
-                                }
-                                else
-                                {
-                                    string bodyText = xhtmlDoc.Body.Value.Trim();
-                                    paramValue = (bodyText.Length > 0 ? string.Format("HTML: {0}", bodyText) : "(HTML)");
-                                }
+                                paramValue = "(Empty HTML)";
                             }
+                            else
+                            {
+                                string bodyText = xhtmlDoc.Body.Value.Trim();
+                                paramValue = (bodyText.Length > 0 ? string.Format("HTML: {0}", bodyText) : "(HTML)");
+                            }
+                        }
+                        else if (rawValue is XNode || rawValue is IEnumerable<XNode>)
+                        {
+                            paramValue = "...";
                         }
                     }
                 }
                 catch (Exception)
                 {
                     // just fall back to listing param names and raw values...
+                    paramValue = "[error]";
                 }
 
                 if (!paramValue.IsNullOrEmpty() && paramValue.Length > 35)
@@ -613,7 +618,7 @@ namespace Composite.Services
             }
             catch (Exception)
             {
-                description.AppendLine("{0} = ....".FormatWith(parameter.Name));
+                description.AppendLine("{0} = ...".FormatWith(parameter.Name));
             }
         }
 
