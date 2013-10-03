@@ -202,6 +202,14 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return _cachingSettings; }
         }
+
+        public int ImageQuality
+        {
+            get
+            {
+                return _configurationData.ImageQuality;
+            }
+        }
     }
 
     internal class ConfigCachingSettings: ICachingSettings
@@ -587,6 +595,15 @@ namespace Composite.Plugins.GlobalSettings.GlobalSettingsProviders
         {
             get { return (CachingConfigurationElement)base[_cachingElementName]; }
             set { base[_cachingElementName] = value; }
+        }
+
+
+        private const string _imageQualityPropertyName = "imageQuality";
+        [ConfigurationProperty(_imageQualityPropertyName, DefaultValue = 80)]
+        public int ImageQuality
+        {
+            get { return (int)base[_imageQualityPropertyName]; }
+            set { base[_imageQualityPropertyName] = value; }
         }
     }
 

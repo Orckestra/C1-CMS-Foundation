@@ -398,6 +398,17 @@ namespace Composite.Core.Configuration
             }
         }
 
+
+
+        /// <exclude />
+        public static int ImageQuality
+        {
+            get
+            {
+                return _globalSettingsFacade.ImageQuality;
+            }
+        }
+
         /// <summary>
         /// When <value>true</value> only pages that are published or awaiting publication can be translated in console.
         /// </summary>

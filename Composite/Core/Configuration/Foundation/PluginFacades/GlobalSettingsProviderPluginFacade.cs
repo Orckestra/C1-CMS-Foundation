@@ -286,6 +286,15 @@ namespace Composite.Core.Configuration.Foundation.PluginFacades
         }
 
 
+        public static int ImageQuality
+        {
+            get
+            {
+                return UseReaderLock(provider => provider.ImageQuality);
+            }
+        }
+
+
         private static void Flush()
         {
             _resourceLocker.ResetInitialization();

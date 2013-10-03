@@ -244,5 +244,13 @@ namespace Composite.Core.Configuration.BuildinPlugins.GlobalSettingsProvider
         {
             get { return _cachingSettings; }
         }
+
+        public int ImageQuality
+        {
+            get
+            {
+                return 80;
+            }
+        }
     }
 }

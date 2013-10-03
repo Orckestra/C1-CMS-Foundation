@@ -72,5 +72,7 @@ namespace Composite.Core.Configuration.Plugins.GlobalSettingsProvider
         bool OnlyTranslateWhenApproved { get;  }
 
         ICachingSettings Caching { get; }
+
+        int ImageQuality { get; }
     }
 }

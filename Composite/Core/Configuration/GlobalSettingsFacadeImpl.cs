@@ -304,8 +304,6 @@ namespace Composite.Core.Configuration
             }
         }
 
-        #region IGlobalSettingsFacade Members
-
 
         public ICachingSettings Caching
         {
@@ -315,6 +313,13 @@ namespace Composite.Core.Configuration
             }
         }
 
-        #endregion
+
+        public int ImageQuality
+        {
+            get
+            {
+                return GlobalSettingsProviderPluginFacade.ImageQuality;
+            }
+        }
     }
 }

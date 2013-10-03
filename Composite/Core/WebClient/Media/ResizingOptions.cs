@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Core.Extensions;
+using Composite.Core.Configuration;
 
 namespace Composite.Core.WebClient.Media
 {
@@ -42,6 +43,29 @@ namespace Composite.Core.WebClient.Media
         public int? MaxWidth { get; set; }
 
         /// <summary>
+        /// Image quality (when doing lossy compression)
+        /// </summary>
+        public int? Quality { get; set; }
+
+        /// <summary>
+        /// Image quality (when doing lossy compression)
+        /// </summary>
+        public int QualityOrDefault
+        {
+            get
+            {
+                if (Quality.HasValue)
+                {
+                    return Quality.Value;
+                }
+                else
+                {
+                    return GlobalSettingsFacade.ImageQuality;
+                }
+            }
+        }
+
+        /// <summary>
         /// Resizing action
         /// </summary>
         public ResizingAction ResizingAction { get; set; }
@@ -53,7 +77,7 @@ namespace Composite.Core.WebClient.Media
         {
             get
             {
-                return Height == null && Width == null && MaxHeight == null && MaxWidth == null;
+                return Height == null && Width == null && MaxHeight == null && MaxWidth == null && Quality == null;
             }
         }
 
@@ -107,12 +131,20 @@ namespace Composite.Core.WebClient.Media
                 result.MaxHeight = int.Parse(str);
             }
 
+            str = queryString["q"];
+            if (!string.IsNullOrEmpty(str))
+            {
+                result.Quality = int.Parse(str);
+                if (result.Quality < 1) result.Quality = 1;
+                if (result.Quality > 100) result.Quality = 100;
+            }
+
             ResizingAction resizingAction;
             string action = queryString["action"];
             if (!action.IsNullOrEmpty() && Enum.TryParse(action, true, out resizingAction))
             {
                 result.ResizingAction = resizingAction;
-            } 
+            }
             else
             {
                 result.ResizingAction = Media.ResizingAction.Stretch;

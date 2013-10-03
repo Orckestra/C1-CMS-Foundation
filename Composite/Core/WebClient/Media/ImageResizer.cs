@@ -93,6 +93,8 @@ namespace Composite.Core.WebClient.Media
                 bool centerCrop;
                 bool needToResize = CalculateSize(imageSize.Value.Width, imageSize.Value.Height, resizingOptions, out newWidth, out newHeight, out centerCrop);
 
+                needToResize = needToResize || resizingOptions.Quality.HasValue;
+
                 if (!needToResize)
                 {
                     return null;
@@ -103,7 +105,7 @@ namespace Composite.Core.WebClient.Media
                 string centerCroppedString = centerCrop ? "c" : string.Empty;
 
                 string fileExtension = _ImageFormat2Extension[targetImageFormat];
-                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}.{4}", newWidth, newHeight, filePathHash, centerCroppedString, fileExtension);
+                string resizedImageFileName = string.Format("{0}x{1}_{2}{3}_{4}.{5}", newWidth, newHeight, filePathHash, centerCroppedString, resizingOptions.QualityOrDefault, fileExtension);
 
                 string imageFullPath = Path.Combine(_resizedImagesDirectoryPath, resizedImageFileName);
 
@@ -115,7 +117,7 @@ namespace Composite.Core.WebClient.Media
                         bitmap = new Bitmap(fileStream);
                     }
 
-                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat);
+                    ResizeImage(bitmap, imageFullPath, newWidth, newHeight, centerCrop, targetImageFormat, resizingOptions.QualityOrDefault);
 
                     if (file.LastWriteTime.HasValue)
                     {
@@ -251,7 +253,7 @@ namespace Composite.Core.WebClient.Media
         }
 
 
-        private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool centerCrop, ImageFormat imageFormat)
+        private static void ResizeImage(Bitmap image, string outputFilePath, int newWidth, int newHeight, bool centerCrop, ImageFormat imageFormat, int quality)
         {
             using (Bitmap resizedImage = ResizeImage(image, newWidth, newHeight, centerCrop))
             {
@@ -261,7 +263,7 @@ namespace Composite.Core.WebClient.Media
 
                     // Setting image quality, the deafult value is 75
                     parameters.Param[0] = new EncoderParameter(
-                        System.Drawing.Imaging.Encoder.Quality, 80L);
+                        System.Drawing.Imaging.Encoder.Quality, quality);
 
                     resizedImage.Save(outputFilePath, JpegCodecInfo, parameters);
                 }

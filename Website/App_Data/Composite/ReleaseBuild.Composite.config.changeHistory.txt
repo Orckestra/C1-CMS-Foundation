@@ -138,3 +138,6 @@ Changes in 4.0
 - GlobalSettings: adding cacheDirectory="~/App_Data/Composite/Cache" 
 - GlobalSettings: renaming cachePath -> resourceCacheDirectory
 - GlobalSettings: removed attributes - applicationCultureNames, defaultLocalizationCultureName
+
+Changes in 4.1
+- Added attribute imageQuality="80" to ConfigBasedGlobalSettingsProvider - this is the default lossy compression used for images. Higher is better.
