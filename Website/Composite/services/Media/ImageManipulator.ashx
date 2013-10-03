@@ -58,7 +58,14 @@ public class ImageManipulator : IHttpHandler
         // TODO: Caching here?
         using (Stream readStream = mediaFile.GetReadStream())
         {
-			image = new Bitmap(readStream);
+            // the double new Bitmap(new Bitmap(..)) fixes GIF prb; 
+            // "a graphics object cannot be created from an image that has an indexed pixel format"
+            using (var innerBitmap = new Bitmap(readStream))
+            using (Bitmap lockedSource = new Bitmap(innerBitmap))
+            using (Graphics g = Graphics.FromImage(lockedSource)) {
+                image = new Bitmap(lockedSource);
+                g.DrawImage(image, new Point(0, 0));
+            }
         }
         
      

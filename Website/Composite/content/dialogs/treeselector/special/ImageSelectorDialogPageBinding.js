@@ -38,8 +38,8 @@ ImageSelectorDialogPageBinding.prototype._updateDisplayAndResult = function () {
 	
 	// Page id is in brackets, so getting subscring from opening bracket to closing bracket
 	var mediaItemId = new String(String(url).split("(")[1]).split(")")[0];
-	s = Resolver.resolve ( "${root}/services/Media/ImageManipulator.ashx?id=" ) + mediaItemId;
-	s += "&action=fit&maxwidth=220&maxheight=288";
+	s = Resolver.resolve("${root}/../media/") + mediaItemId;
+	s += "?&action=fit&mw=220&mh=288";
 	
 	image.style.backgroundImage = "url('" + s + "')";	
 	info.className = "image";
