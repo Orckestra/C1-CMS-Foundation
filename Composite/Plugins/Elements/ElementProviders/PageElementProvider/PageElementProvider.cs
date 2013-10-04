@@ -8,7 +8,6 @@ using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementP
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
 using Composite.C1Console.Elements.Plugins.ElementProvider;
 using Composite.C1Console.Events;
-using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.Routing;
@@ -275,12 +274,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return _pageAccociatedHelper.GetChildren((DataGroupingProviderHelperEntityToken)entityToken, false);
             }
 
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 var allChildPages = GetChildrenPages(entityToken, searchToken);
                 List<KeyValuePair<PageLocaleState, IPage>> childPages = IEnumerableExtensionMethods.ToList(allChildPages, f => new KeyValuePair<PageLocaleState, IPage>(PageLocaleState.Own, f));
 
-                List<Element> childPageElements = GetElements(childPages);
+                List<Element> childPageElements = GetElements(childPages, entityToken is PageElementProviderEntityToken);
 
                 return GetChildElements(entityToken, childPageElements);
             }
@@ -297,7 +296,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         public IEnumerable<Element> GetForeignChildren(EntityToken entityToken, SearchToken searchToken)
         {
-            if ((entityToken is DataEntityToken) && (((DataEntityToken)entityToken).Data == null)) return new Element[] { };
+            if (entityToken is DataEntityToken && ((DataEntityToken)entityToken).Data == null) return new Element[] { };
 
             if (entityToken is AssociatedDataElementProviderHelperEntityToken)
             {
@@ -362,7 +361,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             }
 
-            List<Element> childPageElements = GetElements(resultPages);
+            List<Element> childPageElements = GetElements(resultPages, entityToken is PageElementProviderEntityToken);
 
             return GetChildElements(entityToken, childPageElements);
         }
@@ -451,10 +450,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             Guid? itemId = GetParentPageId(entityToken);
 
-            if (itemId.HasValue == false) return new IPage[] { };
+            if (!itemId.HasValue) return new IPage[] { };
 
 
-            if (searchToken.IsValidKeyword() == false)
+            if (!searchToken.IsValidKeyword())
             {
                 return PageServices.GetChildren(itemId.Value).Evaluate().AsQueryable();
             }
@@ -463,13 +462,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var predicateItems =
                 from page in DataFacade.GetData<IPage>()
-                where ((page.Description != null) && (page.Description.ToLowerInvariant().Contains(keyword))) ||
-                      ((page.Title != null) && (page.Title.ToLowerInvariant().Contains(keyword)))
-                select new TreeNode() { Key = page.Id, ParentKey = page.GetParentId() };
+                where (page.Description != null && page.Description.ToLowerInvariant().Contains(keyword)) ||
+                      (page.Title != null && page.Title.ToLowerInvariant().Contains(keyword))
+                select new TreeNode { Key = page.Id, ParentKey = page.GetParentId() };
 
 
             List<TreeNode> keyTree =
-                DataFacade.GetData<IPage>().Select(x => new TreeNode() { Key = x.Id, ParentKey = x.GetParentId() }).ToList();
+                DataFacade.GetData<IPage>().Select(x => new TreeNode { Key = x.Id, ParentKey = x.GetParentId() }).ToList();
 
             IEnumerable<TreeNode> nodes = new List<TreeNode>();
             foreach (TreeNode node in predicateItems)
@@ -644,7 +643,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         /// </summary>
         /// <param name="pages">isLocalized -> IPage</param>
         /// <returns></returns>
-        private List<Element> GetElements(List<KeyValuePair<PageLocaleState, IPage>> pages)
+        private List<Element> GetElements(List<KeyValuePair<PageLocaleState, IPage>> pages, bool rootPages)
         {
             //ElementDragAndDropInfo dragAndDropInfo = new ElementDragAndDropInfo(typeof(IPage));
             //dragAndDropInfo.AddDropType(typeof(IPage));
@@ -687,7 +686,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 dragAndDropInfo.AddDropType(typeof(IPage));
                 dragAndDropInfo.SupportsIndexedPosition = true;
 
-                Element element = new Element(_context.CreateElementHandle(entityToken), MakeVisualData(page, kvp.Key, urlMappingName), dragAndDropInfo);
+                Element element = new Element(_context.CreateElementHandle(entityToken), MakeVisualData(page, kvp.Key, urlMappingName, rootPages), dragAndDropInfo);
 
                 element.PropertyBag.Add("Uri", "~/page({0})".FormatWith(page.Id));
                 element.PropertyBag.Add("ElementType", "application/x-composite-page");
@@ -907,14 +906,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
 
-        private ElementVisualizedData MakeVisualData(IPage page, PageLocaleState pageLocaleState, string urlMappingName)
+        private ElementVisualizedData MakeVisualData(IPage page, PageLocaleState pageLocaleState, string urlMappingName, bool isRootPage)
         {
             ElementVisualizedData visualizedElement = new ElementVisualizedData();
 
             bool hasChildren = PageServices.GetChildrenCount(page.Id) > 0 || _pageAccociatedHelper.HasChildren(page);
 
             visualizedElement.HasChildren = hasChildren;
-            visualizedElement.Label = (string.IsNullOrWhiteSpace(page.MenuTitle) ? page.Title : page.MenuTitle);
+            visualizedElement.Label = (isRootPage || string.IsNullOrWhiteSpace(page.MenuTitle)) ? page.Title : page.MenuTitle;
             visualizedElement.ToolTip = page.Description;
 
             if (pageLocaleState == PageLocaleState.Own)
