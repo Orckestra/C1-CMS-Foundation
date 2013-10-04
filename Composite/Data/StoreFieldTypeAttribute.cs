@@ -62,7 +62,8 @@ namespace Composite.Data
                     return;
             }
 
-            throw new ArgumentException(string.Format("{1} require aditional arguments", this.GetType(), physicalStoreFieldType));
+            throw new ArgumentException(string.Format("[{0}] - field type {1}.{2} require some aditional arguments in the attribute constructor.",
+                this.GetType().Name, typeof(PhysicalStoreFieldType).Name, physicalStoreFieldType));
         }
 
 
@@ -82,7 +83,8 @@ namespace Composite.Data
                     return;
             }
 
-            throw new ArgumentException(string.Format("{1} does not take an int argument", this.GetType(), physicalStoreFieldType));
+            throw new ArgumentException(string.Format("[{0}] - field type {1}.{2} does not take an int argument in the attribute constructor.",
+                this.GetType().Name, typeof(PhysicalStoreFieldType).Name, physicalStoreFieldType));
         }
 
 
@@ -103,7 +105,8 @@ namespace Composite.Data
                     return;
             }
 
-            throw new ArgumentException(string.Format("{1} does not take an int argument", this.GetType(), physicalStoreFieldType));
+            throw new ArgumentException(string.Format("[{0}] - field type {1}.{2} does not take two 'int' arguments in the attribute constructor.",
+                this.GetType().Name, typeof(PhysicalStoreFieldType).Name, physicalStoreFieldType));
         }
 
 

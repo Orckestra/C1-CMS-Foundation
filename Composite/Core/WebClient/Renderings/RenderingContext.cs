@@ -46,7 +46,7 @@ namespace Composite.Core.WebClient.Renderings
         /// <value><c>true</c> if page caching is disabled; otherwise, <c>false</c>.</value>
         public bool CachingDisabled { get; private set; }
 
-        private static readonly string ProfilerXslPath = UrlUtils.PublicRootPath + "/Composite/Transformations/page_profiler.xslt";
+        private static readonly string ProfilerXslPath = UrlUtils.AdminRootPath + "/Transformations/page_profiler.xslt";
 
         private string _previewKey;
         private IDisposable _pagePerfMeasuring;
