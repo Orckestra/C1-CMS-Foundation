@@ -577,17 +577,18 @@ namespace Composite.Services
                                 paramValue = dataReference.Data.GetLabel();
                             }
                         }
-                        else if (parameterProfile.Type == typeof(XhtmlDocument))
+                        else if (parameterProfile.Type == typeof(XhtmlDocument) || parameterProfile.Type == typeof(Lazy<XhtmlDocument>))
                         {
-                            XhtmlDocument xhtmlDoc = parameter.GetValue<XhtmlDocument>();
-                            if (xhtmlDoc.Body.Nodes().Any() && xhtmlDoc.Head.Nodes().Any())
+							var serialized = parameter.Serialize();
+							var textNodes = serialized.DescendantNodes().Where(n => !n.Ancestors().Any(a => a.Name == Namespaces.Xhtml + "head")).OfType<XText>().Where(t=>!t.Value.IsNullOrEmpty());
+							
+                            if (!textNodes.Any())
                             {
-                                paramValue = "(Empty HTML)";
+                                paramValue = "(HTML)";
                             }
                             else
                             {
-                                string bodyText = xhtmlDoc.Body.Value.Trim();
-                                paramValue = (bodyText.Length > 0 ? string.Format("HTML: {0}", bodyText) : "(HTML)");
+                                paramValue = "HTML: " + string.Join(" ", textNodes.Take(5));
                             }
                         }
                         else if (rawValue is XNode || rawValue is IEnumerable<XNode>)
