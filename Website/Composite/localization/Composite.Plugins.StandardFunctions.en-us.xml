@@ -175,10 +175,10 @@
 	<string key="Composite.Utils.Predicates.IntegerEquals.description" value="Check if an integer equals a certain value" />
 	<string key="Composite.Utils.Predicates.IntegerEquals.param.Value.help" value="" />
 	<string key="Composite.Utils.Predicates.IntegerEquals.param.Value.label" value="The value to compare with" />
-	<string key="Composite.Utils.Predicates.IntegerGreaterThan.description" value="Check if a integer is greater than a certain value" />
+	<string key="Composite.Utils.Predicates.IntegerGreaterThan.description" value="Check if an integer is greater than a certain value" />
 	<string key="Composite.Utils.Predicates.IntegerGreaterThan.param.Value.help" value="" />
 	<string key="Composite.Utils.Predicates.IntegerGreaterThan.param.Value.label" value="The value to compare with" />
-	<string key="Composite.Utils.Predicates.IntegerLessThan.description" value="Check if a integer is less than a certain value" />
+	<string key="Composite.Utils.Predicates.IntegerLessThan.description" value="Check if an integer is less than a certain value" />
 	<string key="Composite.Utils.Predicates.IntegerLessThan.param.Value.help" value="" />
 	<string key="Composite.Utils.Predicates.IntegerLessThan.param.Value.label" value="The value to compare with" />
 	<string key="Composite.Utils.Predicates.StringContains.description" value="Check if a string contains a certain value" />
@@ -307,7 +307,7 @@
 	<string key="Composite.Web.Request.FormPostGuidValue.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.FormPostGuidValue.param.ParameterName.help" value="" />
 	<string key="Composite.Web.Request.FormPostGuidValue.param.ParameterName.label" value="Parameter name" />
-	<string key="Composite.Web.Request.FormPostIntegerValue.description" value="Gets a integer value from a form post (HTTP POST)" />
+	<string key="Composite.Web.Request.FormPostIntegerValue.description" value="Gets an integer value from a form post (HTTP POST)" />
 	<string key="Composite.Web.Request.FormPostIntegerValue.param.FallbackValue.help" value="" />
 	<string key="Composite.Web.Request.FormPostIntegerValue.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.FormPostIntegerValue.param.ParameterName.help" value="" />
@@ -337,7 +337,7 @@
 	<string key="Composite.Web.Request.QueryStringGuidValue.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.QueryStringGuidValue.param.ParameterName.help" value="" />
 	<string key="Composite.Web.Request.QueryStringGuidValue.param.ParameterName.label" value="Parameter name" />
-	<string key="Composite.Web.Request.QueryStringIntegerValue.description" value="Gets a integer value from a Url parameter (HTTP GET)" />
+	<string key="Composite.Web.Request.QueryStringIntegerValue.description" value="Gets an integer value from a Url parameter (HTTP GET)" />
 	<string key="Composite.Web.Request.QueryStringIntegerValue.param.FallbackValue.help" value="" />
 	<string key="Composite.Web.Request.QueryStringIntegerValue.param.FallbackValue.label" value="Fallback value" />
 	<string key="Composite.Web.Request.QueryStringIntegerValue.param.ParameterName.help" value="" />

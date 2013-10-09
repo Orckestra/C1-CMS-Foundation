@@ -46,7 +46,7 @@ namespace Composite.Data
 
 
     /// <summary>    
-    /// Associate a static default value to a integer property on a data type.
+    /// Associate a static default value to an integer property on a data type.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DefaultFieldIntValueAttribute : DefaultFieldValueAttribute
@@ -55,7 +55,7 @@ namespace Composite.Data
 
 
         /// <summary>    
-        /// Associate a static default value to a integer property on a data type.
+        /// Associate a static default value to an integer property on a data type.
         /// </summary>
         public DefaultFieldIntValueAttribute(int defaultValue)
         {

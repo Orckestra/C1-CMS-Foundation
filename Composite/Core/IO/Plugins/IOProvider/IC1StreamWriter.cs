@@ -106,7 +106,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
         /// <summary>
-        /// Writes a unsigned long to the stream.
+        /// Writes an unsigned long to the stream.
         /// </summary>
         /// <param name="value">Unsigned long value to write.</param>
         void Write(ulong value);
@@ -219,14 +219,14 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
         /// <summary>
-        /// Writes a integer with a line break to the stream.
+        /// Writes an integer with a line break to the stream.
         /// </summary>
         /// <param name="value">Integer value to write.</param>
         void WriteLine(int value);
 
 
         /// <summary>
-        /// Writes a unsigned integer with a line break to the stream.
+        /// Writes an unsigned integer with a line break to the stream.
         /// </summary>
         /// <param name="value">Unsigned integer to write.</param>
         void WriteLine(uint value);
@@ -240,7 +240,7 @@ namespace Composite.Core.IO.Plugins.IOProvider
 
 
         /// <summary>
-        /// Writes a unsigned long with a line break to the stream.
+        /// Writes an unsigned long with a line break to the stream.
         /// </summary>
         /// <param name="value">Unsigned long value to write.</param>
         void WriteLine(ulong value);
