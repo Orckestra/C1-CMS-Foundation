@@ -2,6 +2,7 @@
 <%@ Register TagPrefix="ui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
 
 <%@ Import Namespace="System.Linq" %>
+<%@ Import Namespace="Composite.Core.Extensions" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 
@@ -60,7 +61,7 @@
         }
         else
         {
-            throw new NotSupportedException("Type '{0}' not supported by this widget");
+            throw new NotSupportedException("Type '{0}' not supported by this widget".FormatWith(DataType.FullName));
         }
 
         DataReferenceSelector.DataTextField = "Path";
