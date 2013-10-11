@@ -9,7 +9,7 @@ function _Client () {
 	var agent = navigator.userAgent.toLowerCase ();
 	var platform = navigator.platform.toLowerCase ();
 
-	var isExplorer = navigator.appName == "Microsoft Internet Explorer";
+	var isExplorer = navigator.appName == "Microsoft Internet Explorer" || !!navigator.userAgent.match(/Trident\/7\./); // IE<=10 OR IE11
 	var isMozilla = !isExplorer && typeof document.createTreeWalker != "undefined";
 	var isPrism = isMozilla && ( agent.indexOf ( "webrunner" ) >-1 || agent.indexOf ( "prism" ) >-1 );
 	var hasTransitions = history.pushState != null;

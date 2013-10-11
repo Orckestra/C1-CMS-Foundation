@@ -222,7 +222,7 @@ namespace Composite.Core.WebClient.Presentation
 
                             if (!userAgent.IsNullOrEmpty())
                             {
-                                if (userAgent.IndexOf("Gecko") > -1)
+                                if (userAgent.IndexOf("Gecko") > -1 && !userAgent.Contains("Trident"))
                                 {
                                     browser = "mozilla";
                                 }
