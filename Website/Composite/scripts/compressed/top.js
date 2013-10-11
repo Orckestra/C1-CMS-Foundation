@@ -540,7 +540,7 @@ temproot=null;
 function _Client(){
 var _6f=navigator.userAgent.toLowerCase();
 var _70=navigator.platform.toLowerCase();
-var _71=navigator.appName=="Microsoft Internet Explorer";
+var _71=navigator.appName=="Microsoft Internet Explorer"||!!navigator.userAgent.match(/Trident\/7\./);
 var _72=!_71&&typeof document.createTreeWalker!="undefined";
 var _73=_72&&(_6f.indexOf("webrunner")>-1||_6f.indexOf("prism")>-1);
 var _74=history.pushState!=null;
