@@ -1067,6 +1067,7 @@
     <Content Include="Frontend\Config\VisualEditor\Images\smalltext.png" />
     <Content Include="Frontend\Styles\VisualEditor.common.css" />
     <Content Include="Frontend\Config\VisualEditor\Styles\core.css" />
+    <Content Include="robots.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1473,7 +1474,9 @@
     <Content Include="App_Data\Composite\Composite.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="App_Data\Composite\ReleaseBuild.Composite.config" />
+    <Content Include="App_Data\Composite\ReleaseBuild.Composite.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Data\Composite\app_offline.htm" />
     <Content Include="App_Data\Composite\ReleaseBuild.Composite.config.changeHistory.txt" />
     <Content Include="Composite\app.aspx" />
