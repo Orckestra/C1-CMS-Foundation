@@ -127,7 +127,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             var result = new List<XElement>(xDocument.Root.Elements());
 
-            result.ForEach(element => element.Remove());
+            xDocument.Root.RemoveNodes();
 
             return result;
         }
@@ -137,8 +137,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static void SaveChanges(FileRecord fileRecord)
         {
             fileRecord.LastModified = DateTime.Now;
-            List<XElement> elements = new List<XElement>(fileRecord.RecordSet.Index.GetValues());
-            fileRecord.ReadOnlyElementsList = new List<XElement>(elements);
+            fileRecord.ReadOnlyElementsList = fileRecord.RecordSet.Index.GetValues().ToList();
             fileRecord.Dirty = false;
 
             XmlDataProviderDocumentWriter.Save(fileRecord);

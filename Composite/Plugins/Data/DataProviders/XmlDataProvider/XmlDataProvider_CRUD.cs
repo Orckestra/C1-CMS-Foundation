@@ -148,7 +148,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             using (XmlDataProviderDocumentCache.CreateEditingContext())
             {
                 var validatedElements = new Dictionary<DataSourceId, XElement>();
-                var validatedData = new Dictionary<DataSourceId, T>();
 
                 XmlDataTypeStore dataTypeStore = _xmlDataTypeStoresContainer.GetDataTypeStore(typeof(T));
 
