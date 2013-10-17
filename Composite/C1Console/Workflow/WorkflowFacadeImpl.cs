@@ -1159,20 +1159,16 @@ namespace Composite.C1Console.Workflow
 
             _workflowRuntime.WorkflowTerminated += delegate(object sender, WorkflowTerminatedEventArgs args)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine(string.Format("Workflow terminated - Id = {0}, Exception:", args.WorkflowInstance.InstanceId));
-                sb.AppendLine(args.Exception.Message);
-                sb.AppendLine(args.Exception.StackTrace);
-
-                Log.LogVerbose(LogTitle, sb.ToString());
+                Log.LogError(LogTitle, "Workflow terminated - Id = {0}, Exception:", args.WorkflowInstance.InstanceId);
+                Log.LogError(LogTitle, args.Exception);
             };
 
-            _workflowRuntime.WorkflowUnloaded += delegate(object sender, WorkflowEventArgs args)
-            {
+            //_workflowRuntime.WorkflowUnloaded += delegate(object sender, WorkflowEventArgs args)
+            //{
                 //LoggingService.LogVerbose(
                 //    "WorkflowFacade",
                 //    string.Format("Workflow unloaded   - Id = {0}", args.WorkflowInstance.InstanceId));
-            };
+            //};
         }
 
 

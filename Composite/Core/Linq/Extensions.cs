@@ -85,6 +85,25 @@ namespace Composite.Core.Linq
         /// Extends standard IQueryable<typeparamref name="T"/>.Single method, allows specifying exception text.
         /// </summary>
         /// <param name="query"></param>
+        /// <param name="exceptionOnEmpty">Exception format for not a single row found</param>
+        /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
+        /// <param name="formatArgs"></param>
+        /// <returns></returns>
+        public static T SingleOrException<T>(this IEnumerable<T> query, string exceptionOnEmpty, string exceptionOnMultipleResults, params object[] formatArgs)
+        {
+            var result = query.ToList();
+
+            if (result.Count == 0) throw new InvalidOperationException(string.Format(exceptionOnEmpty, formatArgs));
+
+            if (result.Count == 1) return result[0];
+
+            throw new InvalidOperationException(string.Format(exceptionOnMultipleResults, formatArgs));
+        }
+
+        /// <summary>
+        /// Extends standard IQueryable<typeparamref name="T"/>.Single method, allows specifying exception text.
+        /// </summary>
+        /// <param name="query"></param>
         /// <param name="exceptionOnMultipleResults">Exception format for multiple rows found</param>
         /// <param name="formatArgs">Format arguments</param>
         /// <returns></returns>
