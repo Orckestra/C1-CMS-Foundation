@@ -94,7 +94,15 @@ namespace Composite.Core.WebClient
                 {
                     CodeGenerationManager.ValidateCompositeGenerate(_startTime);
                     CodeGenerationManager.GenerateCompositeGeneratedAssembly();
+                }
+                catch (Exception ex)
+                {
+                    Log.LogCritical("Global.asax", "Error updating Composite.Generated.dll");
+                    Log.LogCritical("Global.asax", ex);
+                }               
 
+                try
+                {
                     GlobalEventSystemFacade.PrepareForShutDown();
                     if (RuntimeInformation.IsDebugBuild)
                     {
@@ -103,17 +111,17 @@ namespace Composite.Core.WebClient
                     GlobalEventSystemFacade.ShutDownTheSystem();
                     
                     TempDirectoryFacade.OnApplicationEnd();
-
-                    Log.LogVerbose("Global.asax", string.Format("--- Web Application End, {0} Id = {1}---",
-                                                  DateTime.Now.ToLongTimeString(),
-                                                  AppDomain.CurrentDomain.Id));
                 }
                 catch (Exception ex)
                 {
                     Log.LogCritical("Global.asax", ex);
 
                     throw;
-                }               
+                }
+
+                Log.LogVerbose("Global.asax", string.Format("--- Web Application End, {0} Id = {1}---",
+                              DateTime.Now.ToLongTimeString(),
+                              AppDomain.CurrentDomain.Id));
             }
         }
 
