@@ -37,7 +37,7 @@ _DOMUtil.prototype = {
 	getXMLHTTPRequest : function () {
 	
 		var result = null;
-		if ( Client.isExplorer ) {
+		if (Client.isExplorer || Client.isExplorer11) {
 			result = this.getMSComponent ( this.MSXML_HTTPREQUEST );
 		} else {
 			result = new XMLHttpRequest ();
@@ -53,7 +53,7 @@ _DOMUtil.prototype = {
 	getDOMDocument : function ( isFreeThreaded ) {
 	
 		var result = null;
-		if ( Client.isExplorer ) {
+		if (Client.isExplorer || Client.isExplorer11) {
 			result = this.getMSComponent ( isFreeThreaded ? this.MSXML_FREETHREADED : this.MSXML_DOMDOCUMENT );
 		} else {
 			/*
@@ -291,7 +291,7 @@ _DOMUtil.prototype = {
 		if ( ownerDocument == null ) { // always forget this argument...
 			alert ( "DOMUtil#createElementNS : Missing argument (DOMDocument)" );
 		} else {
-			if ( Client.isMozilla ) {
+			if ( !Client.isExplorer && !Client.isExplorer11) {
 				result = ownerDocument.createElementNS ( namespaceURI, nodeName );
 			} else {
 				if ( ownerDocument.xml != null ) {

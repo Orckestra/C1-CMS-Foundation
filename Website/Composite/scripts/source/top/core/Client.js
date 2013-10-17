@@ -9,8 +9,8 @@ function _Client () {
 	var agent = navigator.userAgent.toLowerCase ();
 	var platform = navigator.platform.toLowerCase ();
 
-	var isExplorer = navigator.appName == "Microsoft Internet Explorer" || !!navigator.userAgent.match(/Trident\/7\./); // IE<=10 OR IE11
-	var isMozilla = !isExplorer && typeof document.createTreeWalker != "undefined";
+	var isExplorer = navigator.appName == "Microsoft Internet Explorer"; // IE<=10 OR IE11
+	var isMozilla = !isExplorer && typeof document.createTreeWalker != "undefined" ;
 	var isPrism = isMozilla && ( agent.indexOf ( "webrunner" ) >-1 || agent.indexOf ( "prism" ) >-1 );
 	var hasTransitions = history.pushState != null;
 
@@ -20,6 +20,7 @@ function _Client () {
 	this.isExplorer = isExplorer;
 	this.isExplorer6 = this.isExplorer && ( agent.indexOf ( "msie 6.0" ) > -1 || agent.indexOf ( "msie 6.1" ) > -1 );
 	this.isExplorer8 = this.isExplorer && window.XDomainRequest != null;
+	this.isExplorer11 = !!navigator.userAgent.match(/Trident\/7\./); 
 	this.isPrism = isPrism;
 	this.isWindows = platform.indexOf ( "win" ) > -1;
 	this.isVista = this.isWindows && agent.indexOf ( "windows nt 6" ) > -1;
@@ -127,7 +128,7 @@ _Client.prototype = {
 
 		var result = true;
 		var isOldFox = false;
-		if (this.isMozilla && !this.isWebKit) {
+		if (this.isMozilla && !this.isWebKit && !this.isExplorer11) {
 			isOldFox = (document.documentElement.mozMatchesSelector === undefined);
 		}
 		if (window.opera != null || isOldFox || this.isExplorer && !this.canvas) {

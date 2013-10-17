@@ -88,22 +88,22 @@ _DocumentUpdatePlugin.prototype = {
 		DOMEvents.addEventListener ( document, DOMEvents.ERRORUPDATE, this );
 		DOMEvents.addEventListener ( window, DOMEvents.UNLOAD, this );
 		
-		/*
-		 * This evil hackery fixes the glitch where a the Gecko serializer 
-		 * would mess up the prefixes on HTML and UI elements. Since these 
-		 * elements reside in the same namespace, Gecko is perfectly 
-		 * entitled to do so. Unfortunately, it is also perfectly entitled  
-		 * to ignore the evil hack presented below, but it does seem to work.
-		 * TODO: Verify this after https://bugzilla.mozilla.org/show_bug.cgi?id=368437
-		 */
-		if ( Client.isMozilla ) {
-			UpdateAssistant.serialize = function ( element ) {
-				element = element.cloneNode ( true ); // don't modify UpdateManager.currentDOM!
-				element.setAttributeNS ( Constants.NS_NS, "xmlns", Constants.NS_XHTML );
-				element.setAttributeNS ( Constants.NS_NS, "xmlns:ui", Constants.NS_UI );
-				return this._serializer.serializeToString ( element );
-			};
-		}
+//		/*
+//		 * This evil hackery fixes the glitch where a the Gecko serializer 
+//		 * would mess up the prefixes on HTML and UI elements. Since these 
+//		 * elements reside in the same namespace, Gecko is perfectly 
+//		 * entitled to do so. Unfortunately, it is also perfectly entitled  
+//		 * to ignore the evil hack presented below, but it does seem to work.
+//		 * TODO: Verify this after https://bugzilla.mozilla.org/show_bug.cgi?id=368437
+//		 */
+//		if ( Client.isMozilla ) {
+//			UpdateAssistant.serialize = function ( element ) {
+//				element = element.cloneNode ( true ); // don't modify UpdateManager.currentDOM!
+//				element.setAttributeNS ( Constants.NS_NS, "xmlns", Constants.NS_XHTML );
+//				element.setAttributeNS ( Constants.NS_NS, "xmlns:ui", Constants.NS_UI );
+//				return this._serializer.serializeToString ( element );
+//			};
+//		}
 	
 	},
 	
