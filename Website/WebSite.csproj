@@ -749,7 +749,6 @@
     <Content Include="Composite\scripts\source\top\dom\DOMEvents.js" />
     <Content Include="Composite\scripts\source\top\dom\DOMFormatter.js" />
     <Content Include="Composite\scripts\source\top\dom\DOMSerializer.js" />
-    <Content Include="Composite\scripts\source\top\dom\DOMUtil.BACKUP.js" />
     <Content Include="Composite\scripts\source\top\dom\DOMUtil.js" />
     <Content Include="Composite\scripts\source\top\dom\XMLParser.js" />
     <Content Include="Composite\scripts\source\top\dom\XPathResolver.js" />

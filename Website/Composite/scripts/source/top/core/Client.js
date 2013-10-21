@@ -33,6 +33,7 @@ function _Client () {
 	this.canvas = !!document.createElement('canvas').getContext;
 
 	this.hasSpellcheck = this.isFirefox || this.isExplorer && document.documentElement.spellcheck;
+	this.hasXSLTProcessor = this.isMozilla && !this.isExplorer11;
 
 	return this;
 }

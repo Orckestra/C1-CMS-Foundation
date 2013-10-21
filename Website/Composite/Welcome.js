@@ -415,7 +415,7 @@ var Welcome = new function () {
 		target.innerHTML = setup.documentElement.getAttribute("desc");
 
 		target = document.getElementById("setupfields");
-		target.innerHTML = html.replace(/xmlns:ui=\"urn:HACKED\"/g, "");
+		target.innerHTML = html.replace(/xmlns:ui=\"urn:HACKED\"/g, "").replace('<?xml version="1.0"?>',"");
 		DocumentManager.attachBindings(target);
 	}
 

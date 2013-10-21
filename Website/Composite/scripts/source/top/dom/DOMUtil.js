@@ -74,7 +74,7 @@ _DOMUtil.prototype = {
 	getMSXMLXSLTemplate : function () {
 		
 		var result = null;
-		if ( Client.isExplorer ) {
+		if (Client.isExplorer || Client.isExplorer11) {
 			result = this.getMSComponent ( this.MSXML_XSLTEMPLATE );
 		}
 		return result;

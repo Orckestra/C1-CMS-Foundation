@@ -30,7 +30,7 @@ XSLTransformer.prototype.importStylesheet = function ( url ) {
 		Resolver.resolve ( url )
 	);
 	
-	if ( Client.isMozilla ) {
+	if (Client.hasXSLTProcessor) {
 		this._processor = new XSLTProcessor ();
 		this._processor.importStylesheet ( stylesheet );
 	} else {	
@@ -47,7 +47,7 @@ XSLTransformer.prototype._import = function ( url ) {
 
 	var result = null;
 
-	if ( Client.isMozilla ) {
+	if (Client.hasXSLTProcessor) {
 	
 		var request = DOMUtil.getXMLHTTPRequest ();
 		request.open ( "get", Resolver.resolve ( url ),  false );
@@ -71,7 +71,7 @@ XSLTransformer.prototype._import = function ( url ) {
 XSLTransformer.prototype.transformToDocument = function ( dom ) {
 	
 	var result = null;
-	if ( Client.isMozilla ) {
+	if (Client.hasXSLTProcessor) {
 		result = this._processor.transformToDocument ( dom );
 	} else {
 		alert ( "TODO!" );
@@ -88,7 +88,7 @@ XSLTransformer.prototype.transformToDocument = function ( dom ) {
 XSLTransformer.prototype.transformToString = function ( dom, isPrettyPrint ) {
 	
 	var result = null;
-	if ( Client.isMozilla ) {
+	if (Client.hasXSLTProcessor) {
 		var doc = this.transformToDocument ( dom );
 		result = DOMSerializer.serialize ( doc, isPrettyPrint ); 
 	} else {
