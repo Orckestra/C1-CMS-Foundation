@@ -66,7 +66,7 @@ elements.each ( function ( el ) {
 	groups.add ( group );
 });
 
-if (Client.isExplorer) {
+if (Client.isExplorer || Client.isExplorer11) {
 	config.content_css = "ie.css";
 }
 

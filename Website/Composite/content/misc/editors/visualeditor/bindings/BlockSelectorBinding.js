@@ -130,7 +130,7 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 
 	switch (action.type) {
 		case SelectorBinding.ACTION_SELECTIONCHANGED:
-			if (Client.isExplorer11) {
+			if (Client.isExplorer || Client.isExplorer11) {
 				this._editorBinding.deleteBookmark();
 			} else {
 

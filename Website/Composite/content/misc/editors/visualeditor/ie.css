@@ -3,57 +3,9 @@
 }
 /* Disable hasLayout for IE*/
 .mce-content-body * {
-	position: inherit !important;
-	display: inherit !important;
-	float: none !important;
-	width: auto;
-	height: auto;
-	zoom: normal !important;
-	overflow: visible !important;
 	min-height: auto !important;
 	min-width: auto !important;
 	max-height: none !important;
 	max-width: none !important;
 	column-count: auto !important;
-}
-
-.mce-content-body table {
-	display: table !important;
-}
-
-.mce-content-body tr {
-	display: table-row !important;
-}
-
-.mce-content-body thead {
-	display: table-header-group !important;
-}
-
-.mce-content-body tbody {
-	display: table-row-group !important;
-}
-
-.mce-content-body tfoot {
-	display: table-footer-group !important;
-}
-
-.mce-content-body col {
-	display: table-column !important;
-}
-
-.mce-content-body colgroup {
-	display: table-column-group !important;
-}
-
-.mce-content-body td, .mce-content-body th {
-	display: table-cell !important;
-}
-
-.mce-content-body caption {
-	display: table-caption !important;
-}
-
-.mce-content-body div.mce-resizehandle,
-.mce-content-body .mce-clonedresizable {
-	position: absolute !important;
 }
