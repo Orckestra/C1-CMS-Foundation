@@ -188,7 +188,7 @@ EditorClickButtonBinding.prototype.initializeSourceEditorComponent = function ( 
  */
 EditorClickButtonBinding.prototype._buildDesignModeSanitizer = function () {
 
-	if ( Client.isExplorer ) {
+	if (Client.isExplorer || Client.isExplorer11) {
 		var img = this.bindingDocument.createElement ( "img" );
 		img.className = "designmodesanitizer";
 		img.src = Resolver.resolve("${root}/images/blank.png");

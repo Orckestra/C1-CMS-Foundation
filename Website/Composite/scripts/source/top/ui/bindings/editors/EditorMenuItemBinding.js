@@ -38,7 +38,7 @@ EditorMenuItemBinding.prototype.buildDOMContent = function () {
 	
 	EditorMenuItemBinding.superclass.buildDOMContent.call ( this );
 	
-	if ( Client.isExplorer ) {
+	if (Client.isExplorer || Client.isExplorer11) {
 		this._buildDesignModeSanitizer ();
 	}
 }
@@ -50,7 +50,7 @@ EditorMenuItemBinding.prototype.buildDOMContent = function () {
  */
 EditorMenuItemBinding.prototype._buildDesignModeSanitizer = function () {
 	
-	if ( Client.isExplorer ) {
+	if ( Client.isExplorer || Client.isExplorer11) {
 		var img = this.bindingDocument.createElement ( "img" );
 		img.className = "designmodesanitizer";
 		img.src = Resolver.resolve("${root}/images/blank.png");

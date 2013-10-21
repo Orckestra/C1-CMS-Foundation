@@ -517,7 +517,7 @@ EditorBinding.prototype.handleEvent = function (e) {
 		* that mousedown on a contenteditable document should not invoke focus. 
 		*/ 
 		case DOMEvents.MOUSEMOVE:
-			if (Client.isExplorer) {
+			if (Client.isExplorer || Client.isExplorer11) {
 				if (Application.isBlurred) {
 					if (!this._isActivated) {
 						this.getContentWindow().focus();
