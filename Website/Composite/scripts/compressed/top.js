@@ -560,6 +560,7 @@ this.hasFlash=(_75&&_75>=9);
 this.hasTransitions=_74;
 this.canvas=!!document.createElement("canvas").getContext;
 this.hasSpellcheck=this.isFirefox||this.isExplorer&&document.documentElement.spellcheck;
+this.hasXSLTProcessor=this.isMozilla&&!this.isExplorer11;
 return this;
 }
 _Client.prototype={isExplorer:false,isMozilla:false,isPrism:false,hasFlash:false,isWindows:false,isVista:false,hasTransitions:false,_getFlashVersion:function(){
@@ -1488,7 +1489,7 @@ _168=doc;
 return _168;
 },getMSXMLXSLTemplate:function(){
 var _16a=null;
-if(Client.isExplorer){
+if(Client.isExplorer||Client.isExplorer11){
 _16a=this.getMSComponent(this.MSXML_XSLTEMPLATE);
 }
 return _16a;
@@ -1866,7 +1867,7 @@ this._cache=null;
 }
 XSLTransformer.prototype.importStylesheet=function(url){
 var _1d6=this._import(Resolver.resolve(url));
-if(Client.isMozilla){
+if(Client.hasXSLTProcessor){
 this._processor=new XSLTProcessor();
 this._processor.importStylesheet(_1d6);
 }else{
@@ -1876,7 +1877,7 @@ this._cache.stylesheet=_1d6;
 };
 XSLTransformer.prototype._import=function(url){
 var _1d8=null;
-if(Client.isMozilla){
+if(Client.hasXSLTProcessor){
 var _1d9=DOMUtil.getXMLHTTPRequest();
 _1d9.open("get",Resolver.resolve(url),false);
 _1d9.send(null);
@@ -1890,7 +1891,7 @@ return _1d8;
 };
 XSLTransformer.prototype.transformToDocument=function(dom){
 var _1db=null;
-if(Client.isMozilla){
+if(Client.hasXSLTProcessor){
 _1db=this._processor.transformToDocument(dom);
 }else{
 alert("TODO!");
@@ -1899,7 +1900,7 @@ return _1db;
 };
 XSLTransformer.prototype.transformToString=function(dom,_1dd){
 var _1de=null;
-if(Client.isMozilla){
+if(Client.hasXSLTProcessor){
 var doc=this.transformToDocument(dom);
 _1de=DOMSerializer.serialize(doc,_1dd);
 }else{
@@ -26446,7 +26447,7 @@ this._activateEditor(true);
 }
 break;
 case DOMEvents.MOUSEMOVE:
-if(Client.isExplorer){
+if(Client.isExplorer||Client.isExplorer11){
 if(Application.isBlurred){
 if(!this._isActivated){
 this.getContentWindow().focus();
@@ -26833,7 +26834,7 @@ this._codePressFrame=frame;
 this._codePressEngine=_101c;
 };
 EditorClickButtonBinding.prototype._buildDesignModeSanitizer=function(){
-if(Client.isExplorer){
+if(Client.isExplorer||Client.isExplorer11){
 var img=this.bindingDocument.createElement("img");
 img.className="designmodesanitizer";
 img.src=Resolver.resolve("${root}/images/blank.png");
@@ -26982,12 +26983,12 @@ return "[EditorMenuItemBinding]";
 };
 EditorMenuItemBinding.prototype.buildDOMContent=function(){
 EditorMenuItemBinding.superclass.buildDOMContent.call(this);
-if(Client.isExplorer){
+if(Client.isExplorer||Client.isExplorer11){
 this._buildDesignModeSanitizer();
 }
 };
 EditorMenuItemBinding.prototype._buildDesignModeSanitizer=function(){
-if(Client.isExplorer){
+if(Client.isExplorer||Client.isExplorer11){
 var img=this.bindingDocument.createElement("img");
 img.className="designmodesanitizer";
 img.src=Resolver.resolve("${root}/images/blank.png");
@@ -29545,11 +29546,7 @@ var elm=this.resolve(def.name,_120d);
 if(def.type==SchemaDefinition.TYPE_XML_DOCUMENT){
 _120a=DOMUtil.getDOMDocument();
 var e=elm.getElementsByTagName("*").item(0);
-if(typeof _120a.importNode!=Types.UNDEFINED){
 _120a.appendChild(_120a.importNode(e,true));
-}else{
-_120a.loadXML(DOMSerializer.serialize(e));
-}
 }else{
 _120a=this._compute(elm,def);
 }
