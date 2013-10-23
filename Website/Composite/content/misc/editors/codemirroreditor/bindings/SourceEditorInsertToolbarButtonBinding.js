@@ -171,9 +171,7 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunction = function () {
  * @param {string} markup
  */
 SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = function ( markup ) {
-	
-	var url = "${root}/content/dialogs/functions/editFunctionCall.aspx?functionmarkup=" + markup; // type=Composite.Core.Xml.XhtmlDocument,Composite&
-	
+		
 	var self = this;
 	var handler = {
 		handleDialogResponse : function ( response, result ) {		
@@ -183,11 +181,7 @@ SourceEditorInsertToolbarButtonBinding.prototype._injectFunctionConfiguration = 
 		}
 	}
 	
-	Dialog.invokeModal ( 
-		url,
-		handler, 
-		null 
-	);
+	EditorBinding.invokeFunctionEditorDialog(markup, handler);
 }
 
 /**

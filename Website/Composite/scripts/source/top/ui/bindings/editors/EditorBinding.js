@@ -26,6 +26,11 @@ EditorBinding.ACTION_ATTACHED = null;
 EditorBinding.URL_DIALOG_MOZ_CONFIGURE = "${root}/content/dialogs/wysiwygeditor/mozsecuritynote/mozsecuritynote.aspx";
 
 /**
+ *
+ */
+EditorBinding.URL_UPDATERENDERING = "${root}/content/dialogs/functions/editFunctionCall.aspx?type={0}";
+
+/**
  * The number of the beast.
  * @type {int}
  */
@@ -40,6 +45,34 @@ EditorBinding.LINE_BREAK_ENTITY_HACK = "C1.LINE.BREAK.ENTITY.HACK";
 
 
 // EDITITOR COMPONENT STUFF ..............................................
+EditorBinding.invokeFunctionEditorDialog = function (markup, handler, type )
+{
+    type = type?type:'';
+    var settings = FunctionService.GetCustomEditorSettingsByMarkup(markup);
+
+    var def = ViewDefinitions["Composite.Management.PostBackDialog"];
+    if (!settings) {
+        def.width = 880; //760;
+        def.height = 520;
+    } else {
+        var dim = top.WindowManager.getWindowDimensions();
+        def.width = settings.Width ? (settings.Width > dim.w ? dim.w : settings.Width) : undefined;
+        def.height = settings.Height ? (settings.Height > dim.h ? dim.h : settings.Height) : undefined;
+        if (settings.Url)
+            settings.Url = settings.Url.indexOf("?") > -1 ? settings.Url + "&consoleId=" + Application.CONSOLE_ID : settings.Url + "?consoleId=" + Application.CONSOLE_ID;
+    }
+
+    def.label = "${string:Composite.Web.FormControl.FunctionCallsDesigner:DialogTitle}";
+    def.image = "${icon:parameter_overloaded}";
+    def.handler = handler;
+    def.argument = {
+    	url: settings ? settings.Url : EditorBinding.URL_UPDATERENDERING.replace('{0}', type),
+        list: new List([{ name: "functionmarkup", value: markup }])
+    }
+    StageBinding.presentViewDefinition(def);
+}
+
+
 
 /**
  * Considered private to the EditorBinding.
