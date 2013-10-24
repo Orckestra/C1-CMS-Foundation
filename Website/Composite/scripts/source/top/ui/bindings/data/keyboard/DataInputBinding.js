@@ -751,9 +751,6 @@ DataInputBinding.prototype.validate = function ( isInternal ) {
 DataInputBinding.prototype._normalizeToValid = function () {
 	
 	if ( this._isValid ) {
-		if ( this._timeout != null ) {
-			top.window.clearTimeout ( this._timeout );
-		}
 		if ( this.hasClassName ( DataBinding.CLASSNAME_INVALID )) {
 			this.detachClassName ( DataBinding.CLASSNAME_INVALID );
 		}
@@ -932,7 +929,9 @@ DataInputBinding.prototype.updateElement = function ( element ) {
  * @implements {IData}
  */
 DataInputBinding.prototype.manifest = function () {
-	
+    if (this._timeout != null) {
+        top.window.clearTimeout(this._timeout);
+    }
 	if ( !this._isValid ) {
 		this.setValue ( "" ); // post empty to the server
 		this._isValid = true; // prepare for next validation
