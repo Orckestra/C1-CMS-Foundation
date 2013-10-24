@@ -717,36 +717,28 @@ EditorBinding.prototype.hasSelection = function () {
 	var result = false;
 	try {
 
-		if (!Client.isExplorer) {
-			var selection = this.getEditorWindow().getSelection();
-			if (selection != null) {
-				result = selection.toString().length > 0;
-				if (!result) {
-					var range = selection.getRangeAt(0);
-					var frag = range.cloneContents();
-					var element = this.getEditorDocument().createElement("element");
-					while (frag.hasChildNodes()) {
-						element.appendChild(frag.firstChild);
-					}
-					var img = element.getElementsByTagName("img").item(0);
-					if (img != null) {
+		var selection = this.getEditorWindow().getSelection();
+		if (selection != null) {
+			result = selection.toString().length > 0;
+			if (!result) {
+				var range = selection.getRangeAt(0);
+				var frag = range.cloneContents();
+				var element = this.getEditorDocument().createElement("element");
+				while (frag.hasChildNodes()) {
+					element.appendChild(frag.firstChild);
+				}
+				var img = element.getElementsByTagName("img").item(0);
+				if (img != null) {
 
-						/*
-						* Major hack. Should not be performed here, but the  
-						* class check will at least prevent the Link button 
-						* from being enabled when a Function is selected.
-						*/
-						if (!VisualEditorBinding.isReservedElement(img)) {
-							result = true;
-						}
+					/*
+					* Major hack. Should not be performed here, but the  
+					* class check will at least prevent the Link button 
+					* from being enabled when a Function is selected.
+					*/
+					if (!VisualEditorBinding.isReservedElement(img)) {
+						result = true;
 					}
 				}
-			}
-		} else {
-			var range = this.getEditorDocument().selection.createRange();
-			result = (range && range.text) && range.text.length > 0;
-			if (range.commonParentElement && VisualEditorBinding.isImageElement(range.commonParentElement())) {
-				result = true;
 			}
 		}
 
