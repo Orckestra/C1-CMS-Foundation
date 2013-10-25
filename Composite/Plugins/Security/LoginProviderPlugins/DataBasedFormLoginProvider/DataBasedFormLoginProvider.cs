@@ -169,7 +169,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             IUser user = DataFacade.BuildNew<IUser>();
 
             user.Id = Guid.NewGuid();
-            user.Username = userName;
+            user.Username = userName.Trim().ToLowerInvariant();
             user.EncryptedPassword = password.Encrypt();
             user.Group = group;
             user.Email = email;
