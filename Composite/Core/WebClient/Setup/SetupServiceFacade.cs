@@ -82,7 +82,7 @@ namespace Composite.Core.WebClient.Setup
         {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
 
-            username = username.ToLowerInvariant();
+            username = username.Trim().ToLowerInvariant();
 
             XElement setupDescription = XElement.Parse(setupDescriptionXml);
 
