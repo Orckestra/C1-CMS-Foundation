@@ -26560,7 +26560,6 @@ EditorBinding.prototype._sanitizeMozilla=function(){
 EditorBinding.prototype.hasSelection=function(){
 var _ff4=false;
 try{
-if(!Client.isExplorer){
 var _ff5=this.getEditorWindow().getSelection();
 if(_ff5!=null){
 _ff4=_ff5.toString().length>0;
@@ -26577,13 +26576,6 @@ if(!VisualEditorBinding.isReservedElement(img)){
 _ff4=true;
 }
 }
-}
-}
-}else{
-var _ff6=this.getEditorDocument().selection.createRange();
-_ff4=(_ff6&&_ff6.text)&&_ff6.text.length>0;
-if(_ff6.commonParentElement&&VisualEditorBinding.isImageElement(_ff6.commonParentElement())){
-_ff4=true;
 }
 }
 }
