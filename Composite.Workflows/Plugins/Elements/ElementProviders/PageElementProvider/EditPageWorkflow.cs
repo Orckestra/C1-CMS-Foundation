@@ -148,7 +148,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
             IPage selectedPage;
-            if (this.BindingExist("SelectedPage") == false)
+            if (!this.BindingExist("SelectedPage"))
             {
                 selectedPage = this.GetDataItemFromEntityToken<IPage>();
                 selectedPage.PublicationStatus = GenericPublishProcessController.Draft;
@@ -162,7 +162,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             if (!this.BindingExist("UrlTitleIsRequired"))
             {
                 bool isRootPage = PageManager.GetParentId(selectedPage.Id) == Guid.Empty;
-                this.Bindings.Add("UrlTitleIsRequired", !isRootPage);
+
+                this.Bindings["UrlTitleIsRequired"] = !isRootPage;
+                this.Bindings["IsRootPage"] = isRootPage;
             }
 
             IFormMarkupProvider markupProvider = new FormDefinitionFileMarkupProvider(@"\Administrative\EditPage.xml");

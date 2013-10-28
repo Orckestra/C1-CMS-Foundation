@@ -11,21 +11,32 @@
 		<cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="true" />
 		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
 		<cms:binding name="UrlTitleIsRequired" type="System.Boolean"/>
+    <cms:binding name="IsRootPage" type="System.Boolean"/>
 	</cms:bindings>
 	<cms:layout iconhandle="page-edit-page">
 		<TabPanels PreSelectedIndex="1">
 			<TabPanels.Label>
-        <f:NullCheck>
-          <f:NullCheck.CheckValue>
-            <cms:read source="SelectedPage.MenuTitle" />
-          </f:NullCheck.CheckValue>
-          <f:NullCheck.WhenNull>
+        <f:BooleanCheck>
+          <f:BooleanCheck.CheckValue>
+            <cms:read source="IsRootPage"/>
+          </f:BooleanCheck.CheckValue>
+          <f:BooleanCheck.WhenTrue>
             <cms:read source="SelectedPage.Title" />
-          </f:NullCheck.WhenNull>
-          <f:NullCheck.WhenNotNull>
-            <cms:read source="SelectedPage.MenuTitle" />
-          </f:NullCheck.WhenNotNull>
-        </f:NullCheck>
+          </f:BooleanCheck.WhenTrue>
+          <f:BooleanCheck.WhenFalse>
+            <f:NullCheck>
+              <f:NullCheck.CheckValue>
+                <cms:read source="SelectedPage.MenuTitle" />
+              </f:NullCheck.CheckValue>
+              <f:NullCheck.WhenNull>
+                <cms:read source="SelectedPage.Title" />
+              </f:NullCheck.WhenNull>
+              <f:NullCheck.WhenNotNull>
+                <cms:read source="SelectedPage.MenuTitle" />
+              </f:NullCheck.WhenNotNull>
+            </f:NullCheck>
+          </f:BooleanCheck.WhenFalse>
+        </f:BooleanCheck>
 			</TabPanels.Label>
 			<PlaceHolder Label="${Composite.Plugins.PageElementProvider, EditPage.LabelPaneSettings}">
 				<FieldGroup Label="${Composite.Plugins.PageElementProvider, GeneralSettings.FieldGroupLabel}">
