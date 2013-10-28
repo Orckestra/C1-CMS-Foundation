@@ -692,8 +692,13 @@ ViewBinding.prototype.handleCrawler = function ( crawler ) {
 ViewBinding.prototype.show = function () {
 	
 	if ( !this.isVisible ) {
-		if ( this.isFreeFloating == true ) {
-			if ( this._type == ViewBinding.TYPE_DOCKVIEW && this.windowBinding != null ) {
+		if (this.isFreeFloating == true) {
+			
+			//Workaround for #4508
+			if (Client.isWebKit)
+				this.bindingElement.style.display = "";
+
+			if (this._type == ViewBinding.TYPE_DOCKVIEW && this.windowBinding != null) {
 				this.windowBinding.getBindingElement ().style.position = "static";
 			}
 			this.updatePositionDimension ();
@@ -716,6 +721,11 @@ ViewBinding.prototype.hide = function () {
 				this.windowBinding.getBindingElement ().style.position = "absolute";
 			}
 			this.bindingElement.style.top = "-10000px";
+			
+			//Workaround for #4508
+			if (Client.isWebKit)
+				this.bindingElement.style.display = "none";
+			
 			this.isVisible = false;
 		} else {
 			ViewBinding.superclass.hide.call ( this );
