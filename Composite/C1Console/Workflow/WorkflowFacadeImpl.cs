@@ -372,9 +372,9 @@ namespace Composite.C1Console.Workflow
         private bool HasEntityTokenLockAttribute(Type workflowType)
         {
             bool hasEntityLockAttribute;
-            if (_hasEntityTokenLockAttributeCache.TryGetValue(workflowType, out hasEntityLockAttribute) == false)
+            if (!_hasEntityTokenLockAttributeCache.TryGetValue(workflowType, out hasEntityLockAttribute))
             {
-                hasEntityLockAttribute = workflowType.GetCustomAttributesRecursively<EntityTokenLockAttribute>().Any() ;
+                hasEntityLockAttribute = workflowType.GetCustomAttributesRecursively<EntityTokenLockAttribute>().Any();
 
                 _hasEntityTokenLockAttributeCache.Add(workflowType, hasEntityLockAttribute);
             }
@@ -392,7 +392,7 @@ namespace Composite.C1Console.Workflow
 
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.FlowControllerServicesContainers.ContainsKey(instanceId) == false)
+                if (!_resourceLocker.Resources.FlowControllerServicesContainers.ContainsKey(instanceId))
                 {
                     _resourceLocker.Resources.FlowControllerServicesContainers.Add(instanceId, flowControllerServicesContainer);
                 }
@@ -457,7 +457,7 @@ namespace Composite.C1Console.Workflow
             using (_resourceLocker.Locker)
             {
                 WorkflowInstanceStatus workflowInstanceStatus;
-                if (_resourceLocker.Resources.WorkflowStatusDictionary.TryGetValue(instanceId, out workflowInstanceStatus) == false)
+                if (!_resourceLocker.Resources.WorkflowStatusDictionary.TryGetValue(instanceId, out workflowInstanceStatus))
                 {
                     throw new InvalidOperationException(string.Format("The workflow with the id '{0}' is unknown", instanceId));
                 }
@@ -493,7 +493,7 @@ namespace Composite.C1Console.Workflow
                             _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); ;
                         }
 
-                        if ((_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == false) && (newlyCreateOrLoaded))
+                        if (!_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) && newlyCreateOrLoaded)
                         {
                             _resourceLocker.Resources.WorkflowStatusDictionary.Add(instanceId, WorkflowInstanceStatus.Idle);
                         }
@@ -555,12 +555,12 @@ namespace Composite.C1Console.Workflow
 
             FormData formData = GetFormData(instanceId);
 
-            if ((formData == null) || (formData.EventHandleFilterType == null)) return null;
+            if (formData == null || formData.EventHandleFilterType == null) return null;
 
             IEventHandleFilter eventHandleFilter;
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.EventHandleFilters.TryGetValue(formData.EventHandleFilterType, out eventHandleFilter) == false)
+                if (!_resourceLocker.Resources.EventHandleFilters.TryGetValue(formData.EventHandleFilterType, out eventHandleFilter))
                 {
                     eventHandleFilter = (IEventHandleFilter)Activator.CreateInstance(formData.EventHandleFilterType);
                     _resourceLocker.Resources.EventHandleFilters.Add(formData.EventHandleFilterType, eventHandleFilter);
@@ -724,8 +724,6 @@ namespace Composite.C1Console.Workflow
                         case 05:
                             _formsWorkflowEventService.FireCustomEvent05(new FormEventArgs(instanceId, bindings));
                             break;
-                        default:
-                            break;
                     }
                 }
             }
@@ -764,16 +762,7 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
-                formData = null;
-
-                if (_resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return _resourceLocker.Resources.FormData.TryGetValue(instanceId, out formData);
             }
         }
 
@@ -884,39 +873,38 @@ namespace Composite.C1Console.Workflow
 
         private void DoInitialize(int delayedTime)
         {
-            if (_workflowRuntime == null)
+            if (_workflowRuntime != null) return;
+            
+            using (GlobalInitializerFacade.CoreNotLockedScope)
+            using (_resourceLocker.Locker)
             {
-                using (_resourceLocker.Locker)
+                if (_workflowRuntime != null) return;
+
+                Log.LogVerbose(LogTitleColored, "----------========== Initializing Workflows (Delayed: {0}) ==========----------", delayedTime);
+                int startTime = Environment.TickCount;
+
+                _resourceLocker.ResetInitialization();
+
+                InitializeWorkflowRuntime();
+
+                InitializeFormsWorkflowRuntime();
+
+                if (!_workflowRuntime.IsStarted)
                 {
-                    if (_workflowRuntime == null)
-                    {
-                        Log.LogVerbose(LogTitleColored, "----------========== Initializing Workflows (Delayed: {0}) ==========----------", delayedTime);
-                        int startTime = Environment.TickCount;
+                    _workflowRuntime.StartRuntime();
+                }
 
-                        _resourceLocker.ResetInitialization();
+                DeleteOldWorkflows();
 
-                        InitializeWorkflowRuntime();
+                LoadPersistedWorkflows();
+                LoadPerssistedFormDatas();
 
-                        InitializeFormsWorkflowRuntime();
+                int endTime = Environment.TickCount;
+                Log.LogVerbose(LogTitleColored, "----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime);
 
-                        if (_workflowRuntime.IsStarted == false)
-                        {
-                            _workflowRuntime.StartRuntime();
-                        }
-
-                        DeleteOldWorkflows();
-
-                        LoadPersistedWorkflows();
-                        LoadPerssistedFormDatas();
-
-                        int endTime = Environment.TickCount;
-                        Log.LogVerbose(LogTitleColored, "----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime);
-
-                        foreach (Action action in _actionToRunWhenInitialized)
-                        {
-                            action();
-                        }
-                    }
+                foreach (Action action in _actionToRunWhenInitialized)
+                {
+                    action();
                 }
             }
         }
