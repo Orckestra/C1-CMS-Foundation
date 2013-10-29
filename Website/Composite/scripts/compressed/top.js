@@ -5822,7 +5822,7 @@ this._logger.warn("Prism methods should only be invoked in Prism! ("+type+")");
 }};
 var Prism=new _Prism();
 function Uri(url){
-var _51f=/^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
+var _51f=/^(~?\/|(\.\.\/)+|https?:\/\/[\w\d-\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
 var _520=_51f.exec(url);
 if(_520){
 if(_520[3]=="media"){
@@ -21200,6 +21200,9 @@ break;
 ViewBinding.prototype.show=function(){
 if(!this.isVisible){
 if(this.isFreeFloating==true){
+if(Client.isWebKit){
+this.bindingElement.style.display="";
+}
 if(this._type==ViewBinding.TYPE_DOCKVIEW&&this.windowBinding!=null){
 this.windowBinding.getBindingElement().style.position="static";
 }
@@ -21217,6 +21220,9 @@ if(this.windowBinding){
 this.windowBinding.getBindingElement().style.position="absolute";
 }
 this.bindingElement.style.top="-10000px";
+if(Client.isWebKit){
+this.bindingElement.style.display="none";
+}
 this.isVisible=false;
 }else{
 ViewBinding.superclass.hide.call(this);
