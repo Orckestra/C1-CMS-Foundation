@@ -9,6 +9,7 @@ using Composite.Plugins.Forms.WebChannel.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
+using System.Text.RegularExpressions;
 
 
 namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
@@ -72,7 +73,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public override void BindStateToControlProperties()
         {
             _userControl.BindStateToControlProperties();
-            this.Text = _userControl.Text;
+            this.Text = NormalizeLineFeeds(_userControl.Text);
         }
 
         public void InitializeViewState()
@@ -86,7 +87,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl = _userControlType.ActivateAsUserControl<TextEditorTemplateUserControlBase>(this.UiControlID);
 
             _userControl.FormControlLabel = this.Label;
-            _userControl.Text = this.Text;
+            _userControl.Text = NormalizeLineFeeds(this.Text);
             _userControl.MimeType = this.MimeType;
 
             return _userControl;
@@ -95,6 +96,11 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public bool IsFullWidthControl { get { return true; } }
 
         public string ClientName { get { return _userControl.GetDataFieldClientName(); } }
+
+        private string NormalizeLineFeeds(string originalString)
+        {
+            return Regex.Replace(originalString, @"\r\n|\n\r|\n|\r", "\r\n");
+        }
     }
 
 
