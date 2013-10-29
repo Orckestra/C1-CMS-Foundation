@@ -6,7 +6,7 @@
 //TODO Add escaping
 function Uri(url) {
 
-    var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
+    var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d-\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
 	var result = mediaExpr.exec(url);
 
 	if (result) {
