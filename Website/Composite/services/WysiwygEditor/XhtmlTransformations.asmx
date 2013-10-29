@@ -236,7 +236,7 @@ namespace Composite.Services
 
                 string html = WrapInnerBody(htmlFragment);
 
-                XDocument xml = XDocument.Parse(html);
+                XDocument xml = XDocument.Parse(html, LoadOptions.PreserveWhitespace);
 
                 IEnumerable<XElement> functionRoots = xml
                     .Descendants(Namespaces.Function10 + "function")
