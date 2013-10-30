@@ -895,6 +895,7 @@ DataInputBinding.prototype.updateElement = function ( element ) {
 	var newtype = element.getAttribute ( "type" );
 	var newmax = element.getAttribute ( "maxlength" );
 	var newmin = element.getAttribute ( "minlength" );
+	var newrequired = element.getAttribute ( "required" ) === "true";
 	
 	if ( newval == null ) {
 		newval = "";
@@ -916,6 +917,10 @@ DataInputBinding.prototype.updateElement = function ( element ) {
 	if ( this.minlength != newmin ) {
 		manager.report ( "Property [minlength] updated on binding \"" + this.getID () + "\"" );
 		this.minlength = newmin;
+	}
+	if (this.isRequired != newrequired) {
+	    manager.report("Property [required] updated on binding \"" + this.getID() + "\"");
+	    this.isRequired = newrequired;
 	}
 	
 	return true;
