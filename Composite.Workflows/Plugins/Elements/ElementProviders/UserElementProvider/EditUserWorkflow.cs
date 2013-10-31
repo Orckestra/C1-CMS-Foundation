@@ -342,7 +342,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                         DataFacade.AddNew(userUserGroupRelation);
                     }
 
-                    LoggingService.LogVerbose("UserManagement", String.Format("Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+                    LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
 
                     transactionScope.Complete();
                 }
