@@ -333,7 +333,7 @@ CodeMirrorEditorBinding.prototype._activateEditor = function (isActivate) {
 		/*
 		* Enable all keyboard keys.
 		*/
-		var handler = this.getContentWindow().standardEventHandler;
+		var handler = this._codemirrorWindow.standardEventHandler;
 
 		if (isActivate) {
 			handler.enableNativeKeys(true);
