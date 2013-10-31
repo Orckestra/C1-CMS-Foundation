@@ -7,6 +7,7 @@ using Composite.Data.Types;
 using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
+using Composite.Core.Logging;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
@@ -57,6 +58,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                 UserPerspectiveFacade.DeleteAll(user.Username);
 
                 DataFacade.Delete(user);
+
+                LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user '{0}' deleted by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
 
                 deleteTreeRefresher.PostRefreshMesseges();
             }

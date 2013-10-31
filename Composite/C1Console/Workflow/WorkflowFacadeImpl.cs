@@ -484,6 +484,8 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
+                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
+
                 switch (workflowInstanceStatus)
                 {
                     case WorkflowInstanceStatus.Idle:
@@ -500,7 +502,7 @@ namespace Composite.C1Console.Workflow
 
                         _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Idle;                        
 
-                        Log.LogVerbose(LogTitle, "Workflow instance status changed to idle. Id = {0}", instanceId);
+                        Log.LogVerbose(LogTitle, "Workflow instance status changed to idle. Id = {0}, User = {1}", instanceId, identity);
 
                         PersistFormData(instanceId);
 
@@ -509,7 +511,7 @@ namespace Composite.C1Console.Workflow
                     case WorkflowInstanceStatus.Running:
                         _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Running;
 
-                        Log.LogVerbose(LogTitle, "Workflow instance status changed to running. Id = {0}", instanceId);
+                        Log.LogVerbose(LogTitle, "Workflow instance status changed to running. Id = {0}, User = {1}", instanceId, identity);
                         break;
 
                     case WorkflowInstanceStatus.Terminated:
@@ -521,7 +523,7 @@ namespace Composite.C1Console.Workflow
 
                         _resourceLocker.Resources.WorkflowStatusDictionary.Remove(instanceId);
 
-                        Log.LogVerbose(LogTitle, "Workflow instance status changed to terminated. Id = {0}", instanceId);
+                        Log.LogVerbose(LogTitle, "Workflow instance status changed to terminated. Id = {0}, User = {1}", instanceId, identity);
                         break;
                 }
             }
@@ -1078,85 +1080,28 @@ namespace Composite.C1Console.Workflow
         {
             _workflowRuntime.WorkflowAborted += HandleWorkflowAbortedEvent;
 
-
-            //_workflowRuntime.WorkflowCompleted += delegate(object sender, WorkflowCompletedEventArgs args)
-            //{
-            //    LoggingService.LogVerbose(
-            //        "WorkflowFacade",
-            //        string.Format("Workflow completed  - Id = {0}", args.WorkflowInstance.InstanceId));
-            //};
-
             _workflowRuntime.WorkflowCreated += delegate(object sender, WorkflowEventArgs args)
             {
-                Log.LogVerbose(LogTitle, "Workflow created, Activity = {1}, Id = {0}", 
-                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId);
+                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
+                Log.LogVerbose(LogTitle, "Workflow created, Activity = {0}, Id = {1}, User = {2}",
+                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId, identity);
             };
-
-            //_workflowRuntime.WorkflowIdled += delegate(object sender, WorkflowEventArgs args)
-            //{
-            //    LoggingService.LogVerbose(
-            //        "WorkflowFacade",
-            //        string.Format("Workflow idled      - Id = {0}", args.WorkflowInstance.InstanceId));
-            //};
 
             _workflowRuntime.WorkflowLoaded += delegate(object sender, WorkflowEventArgs args)
             {
-                Log.LogVerbose(LogTitle, "Workflow loaded, Activity = {0}, Id = {1}", 
-                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId);
+                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
+                Log.LogVerbose(LogTitle, "Workflow loaded, Activity = {0}, Id = {1}, User = {2}", 
+                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId, identity);
             };
 
 
             _workflowRuntime.WorkflowPersisted += HandleWorkflowPersistedEvent;
-
-            /*  _workflowRuntime.WorkflowPersisted += delegate(object sender, WorkflowEventArgs args)
-              {                
-                  //try
-                  //{
-                  //    LoggingService.LogVerbose(
-                  //        "WorkflowFacade",
-                  //        string.Format("Workflow persisted, Activity = {0}, Id = {1}", args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId));
-                  //}
-                  //catch (Exception)
-                  //{
-                  //    LoggingService.LogVerbose(
-                  //        "WorkflowFacade",
-                  //        string.Format("Workflow persisted, Id = {0}", args.WorkflowInstance.InstanceId));
-                  //}                
-              };*/
-
-            //_workflowRuntime.WorkflowResumed += delegate(object sender, WorkflowEventArgs args)
-            //{
-            //    LoggingService.LogVerbose(
-            //        "WorkflowFacade",
-            //        string.Format("Workflow resumed    - Id = {0}", args.WorkflowInstance.InstanceId));
-            //};
-
-            //_workflowRuntime.WorkflowStarted += delegate(object sender, WorkflowEventArgs args)
-            //{
-            //    LoggingService.LogVerbose(
-            //        "WorkflowFacade",
-            //        string.Format("Workflow started    - Id = {0}", args.WorkflowInstance.InstanceId));
-            //};
-
-            //_workflowRuntime.WorkflowSuspended += delegate(object sender, WorkflowSuspendedEventArgs args)
-            //{
-            //    LoggingService.LogVerbose(
-            //        "WorkflowFacade",
-            //        string.Format("Workflow suspended  - Id = {0}, Error = {1}", args.WorkflowInstance.InstanceId, args.Error));
-            //};
 
             _workflowRuntime.WorkflowTerminated += delegate(object sender, WorkflowTerminatedEventArgs args)
             {
                 Log.LogError(LogTitle, "Workflow terminated - Id = {0}, Exception:", args.WorkflowInstance.InstanceId);
                 Log.LogError(LogTitle, args.Exception);
             };
-
-            //_workflowRuntime.WorkflowUnloaded += delegate(object sender, WorkflowEventArgs args)
-            //{
-                //LoggingService.LogVerbose(
-                //    "WorkflowFacade",
-                //    string.Format("Workflow unloaded   - Id = {0}", args.WorkflowInstance.InstanceId));
-            //};
         }
 
 
@@ -1321,8 +1266,6 @@ namespace Composite.C1Console.Workflow
 
                 XDocument doc = new XDocument(element);
                 doc.SaveToFile(filename);
-
-                Log.LogVerbose(LogTitle, string.Format("FormData persisted for workflow id = {0}", instanceId));
             }
             catch (Exception ex)
             {

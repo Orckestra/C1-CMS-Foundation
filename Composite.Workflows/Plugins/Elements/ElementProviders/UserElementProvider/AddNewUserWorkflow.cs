@@ -17,6 +17,8 @@ using Composite.C1Console.Workflow;
 using Composite.C1Console.Events;
 
 using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
@@ -161,6 +163,9 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             this.CloseCurrentView();
 
             addNewTreeRefresher.PostRefreshMesseges(newUser.GetDataEntityToken());
+
+            LoggingService.LogVerbose("UserManagement", String.Format("New C1 Console user '{0}' created by '{1}'.", newUser.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+
 
             this.ExecuteWorklow(newUser.GetDataEntityToken(), typeof(EditUserWorkflow));
         }

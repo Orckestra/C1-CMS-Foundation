@@ -18,6 +18,8 @@ using Composite.Core.ResourceSystem;
 using Composite.C1Console.Actions;
 using Composite.Data.Validation;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
@@ -74,6 +76,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             userGroup = DataFacade.AddNew<IUserGroup>(userGroup);
 
             this.CloseCurrentView();
+
+            LoggingService.LogVerbose("UserManagement", String.Format("New C1 Console user group '{0}' created by '{1}'.", userGroup.Name, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
 
             addNewTreeRefresher.PostRefreshMesseges(userGroup.GetDataEntityToken());
 

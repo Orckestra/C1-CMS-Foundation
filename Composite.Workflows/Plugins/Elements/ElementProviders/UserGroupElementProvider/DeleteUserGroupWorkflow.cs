@@ -6,6 +6,8 @@ using Composite.C1Console.Actions;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
 using Composite.Core.ResourceSystem;
+using Composite.Core.Logging;
+using Composite.C1Console.Security;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
@@ -48,6 +50,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             IUserGroup userGroup = (IUserGroup)dataEntityToken.Data;
 
             DataFacade.Delete(userGroup);
+
+            LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user group '{0}' deleted by '{1}'.", userGroup.Name, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
 
             deleteTreeRefresher.PostRefreshMesseges();
         }

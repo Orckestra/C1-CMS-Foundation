@@ -21,6 +21,7 @@ using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 using SR = Composite.Core.ResourceSystem.StringResourceSystemFacade;
+using Composite.Core.Logging;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 {
@@ -134,6 +135,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             UserGroupPerspectiveFacade.SetSerializedEntityTokens(userGroup.Id, newUserGroupEntityTokens);
 
             SetSaveStatus(true);
+
+            LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user group '{0}' updated by '{1}'.", userGroup.Name, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
 
             if (userGroup.Name != this.GetBinding<string>("OldName"))
             {

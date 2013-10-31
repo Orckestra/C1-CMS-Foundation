@@ -7,13 +7,14 @@ using System.Security;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 
+using Composite.Core.Logging;
+using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
-using Composite.Data;
-using Composite.Data.Types;
-using Composite.C1Console.Security;
 using Composite.Core.WebClient.Services.SecurityServiceObjets;
 using Composite.C1Console.Events;
-using Composite.Core.ResourceSystem;
+using Composite.C1Console.Security;
+using Composite.Data;
+using Composite.Data.Types;
 
 namespace Composite.Services
 {
@@ -248,6 +249,9 @@ namespace Composite.Services
                 PermissionTypeFacade.RemoveUserPermissionDefinition(userGroupId, entityToken);
             }
 
+
+			LoggingService.LogVerbose("UserManagement", String.Format("C1 Console element permission change done by '{1}'. Changed element is '{0}'.", entityToken.Serialize(), UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+			
             ConsoleMessageQueueFacade.Enqueue(new SaveStatusConsoleMessageQueueItem { ViewId = viewId, Succeeded = true }, consoleId);
 
             return "";

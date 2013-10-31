@@ -100,7 +100,7 @@ namespace Composite.C1Console.Security
 
             if (loginResult == LoginResult.Success)
             {
-                LoggingService.LogVerbose("UserValidation", String.Format("The user: [{0}], has been validated and accepted", userName), LoggingService.Category.Audit);
+                LoggingService.LogVerbose("UserValidation", String.Format("The user: [{0}], has been validated and accepted. {1}", userName, GetIpInformation()), LoggingService.Category.Audit);
                 PersistUsernameInSessionDataProvider(userName);
             }
             else if(loginResult == LoginResult.IncorrectPassword)

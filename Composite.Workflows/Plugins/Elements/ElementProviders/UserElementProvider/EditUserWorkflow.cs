@@ -25,6 +25,7 @@ using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
+using Composite.Core.Logging;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
@@ -130,26 +131,6 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             helper.UpdateWithNewBindings(this.Bindings, serializedEntityToken);
         }
-
-
-
-        //private void UpdateFormDefinitionWithGlobalPermissions(IUser user, XElement bindingsElement, XElement placeHolderElement)
-        //{
-        //    GlobalPermissionsFormsHelper helper = new GlobalPermissionsFormsHelper(
-        //            GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel"),
-        //            GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel"),
-        //            GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp")
-        //        );
-
-        //    bindingsElement.Add(helper.GetBindingsMarkup());
-        //    placeHolderElement.Add(helper.GetFormMarkup());
-
-        //    EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();
-        //    UserToken userToken = new UserToken(user.Username);
-        //    IEnumerable<PermissionType> permissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(userToken, rootEntityToken);
-
-        //    helper.UpdateWithNewBindings(this.Bindings, permissionTypes);
-        //}
 
 
 
@@ -305,30 +286,6 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                         }
                     }
 
-                    /*UserToken userToken = new UserToken(user.Username);
-                    EntityToken rootEntityToken = ElementFacade.GetRootsWithNoSecurity().Select(f => f.ElementHandle.EntityToken).Single();*/
-
-                    /*IEnumerable<PermissionType> oldPermissionTypes = PermissionTypeFacade.GetLocallyDefinedUserPermissionTypes(userToken, rootEntityToken);
-                    IEnumerable<PermissionType> newPermissionTypes = GlobalPermissionsFormsHelper.GetSelectedPermissionTypes(this.Bindings);
-
-                    if ((user.Username == UserSettings.Username) &&
-                        (oldPermissionTypes.Contains(PermissionType.Administrate)) &&
-                        (newPermissionTypes.Contains(PermissionType.Administrate) == false))
-                    {
-                        newPermissionTypes = newPermissionTypes.Concat(new PermissionType[] { PermissionType.Administrate });
-                        this.ShowFieldMessage(GlobalPermissionsFormsHelper.GetFieldBindingPath(), GetText("Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval"));
-                    }
-
-                    UserPermissionDefinition userPermissionDefinition =
-                        new ConstructorBasedUserPermissionDefinition(
-                            user.Username,
-                            newPermissionTypes,
-                            EntityTokenSerializer.Serialize(rootEntityToken)
-                        );
-
-                    PermissionTypeFacade.SetUserPermissionDefinition(userPermissionDefinition);*/
-
-
                     if (DataLocalizationFacade.ActiveLocalizationCultures.Any())
                     {
                         foreach (CultureInfo cultureInfo in newActiveLocales)
@@ -384,6 +341,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
                         DataFacade.AddNew(userUserGroupRelation);
                     }
+
+                    LoggingService.LogVerbose("UserManagement", String.Format("Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
 
                     transactionScope.Complete();
                 }
