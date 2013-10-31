@@ -46,13 +46,6 @@ namespace Composite.Core.WebClient.Media
             }
         }
 
-
-        /// <summary>
-        /// Gets the dimensions of an image.
-        /// </summary>
-        /// <param name="path">The path of the image to get the dimensions of.</param>
-        /// <returns>The dimensions of the specified image.</returns>
-        /// <exception cref="ArgumentException">The image was of an unrecognised format.</exception>    
         private static Size GetSize(BinaryReader binaryReader)
         {
             int maxMagicBytesLength = imageFormatDecoders.Keys.OrderByDescending(x => x.Length).First().Length;

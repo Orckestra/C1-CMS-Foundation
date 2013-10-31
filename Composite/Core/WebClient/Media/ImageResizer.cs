@@ -281,7 +281,6 @@ namespace Composite.Core.WebClient.Media
         /// <param name="newWidth">width</param>
         /// <param name="newHeight">height</param>
         /// <param name="centerCrop">when true, cropping will happen</param>
-        /// <param name="imageFormat">desired output format</param>
         /// <returns>the resized image</returns>
         public static Bitmap ResizeImage(Bitmap image, int newWidth, int newHeight, bool centerCrop)
         {

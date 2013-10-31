@@ -638,11 +638,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="pages">isLocalized -> IPage</param>
-        /// <returns></returns>
         private List<Element> GetElements(List<KeyValuePair<PageLocaleState, IPage>> pages, bool rootPages)
         {
             //ElementDragAndDropInfo dragAndDropInfo = new ElementDragAndDropInfo(typeof(IPage));
