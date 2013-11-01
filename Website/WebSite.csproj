@@ -1064,7 +1064,6 @@
     <Content Include="Frontend\Config\VisualEditor\Images\left.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\right.png" />
     <Content Include="Frontend\Config\VisualEditor\Images\smalltext.png" />
-    <Content Include="Frontend\Styles\VisualEditor.common.css" />
     <Content Include="Frontend\Config\VisualEditor\Styles\core.css" />
     <Content Include="robots.txt" />
     <Content Include="Web.config">
@@ -6204,6 +6203,7 @@
     <Folder Include="Frontend\Controls\" />
     <Folder Include="Frontend\Images\" />
     <Folder Include="Frontend\Scripts\" />
+    <Folder Include="Frontend\Styles\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
