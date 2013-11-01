@@ -86,7 +86,7 @@ _DOMEvents.prototype = {
 		* Clearing eventlisteners on unload. This should 
 		* in theory minimize memory leaks (clearly not!).
 		*/
-		if (!Client.isExplorer)
+		if (!Client.isExplorer &&  !Client.isExplorer11)
 		{
 			if (target && typeof target.nodeType != Types.UNDEFINED) {
 				if (target.nodeType == Node.ELEMENT_NODE) {
@@ -262,7 +262,7 @@ _DOMEvents.prototype = {
 			if (typeof event != Types.UNDEFINED) {
 				var action = this._getAction(isAdd);
 				if (target[action]) {
-					if (Client.isExplorer == true) {
+					if (Client.isExplorer || Client.isExplorer11) {
 						switch (event) {
 							case DOMEvents.MOUSEDOWN:
 							case DOMEvents.MOUSEUP:
