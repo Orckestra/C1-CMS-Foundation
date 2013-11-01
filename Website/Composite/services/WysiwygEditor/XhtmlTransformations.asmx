@@ -455,8 +455,8 @@ namespace Composite.Services
         private static string GetFunctionBoxImageUrl(string type, string title, string description)
         {
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}".FormatWith(
-                HttpUtility.UrlEncodeUnicode(type),
-                HttpUtility.UrlEncodeUnicode(title),
+				HttpUtility.UrlEncode(type, Encoding.UTF8),
+				HttpUtility.UrlEncode(title, Encoding.UTF8),
                 UrlUtils.ZipContent(description.Trim())); // ZIPping description as it may contain xml tags f.e. <iframe />
 
             return UrlUtils.ResolvePublicUrl(imageUrl);
@@ -478,13 +478,13 @@ namespace Composite.Services
         private XElement GetImageTagForDynamicDataFieldReference(string fieldName, string fieldLabel, string typeName, string uiFriendlyTypeName)
         {
             string imageUrl = string.Format("services/WysiwygEditor/FieldImage.ashx?name={0}&groupname={1}",
-                HttpUtility.UrlEncodeUnicode(fieldLabel),
-                HttpUtility.UrlEncodeUnicode(typeName));
+				HttpUtility.UrlEncode(fieldLabel, Encoding.UTF8),
+				HttpUtility.UrlEncode(typeName, Encoding.UTF8));
 
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-                new XAttribute("alt", HttpUtility.UrlEncodeUnicode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldName)))
+				new XAttribute("alt", HttpUtility.UrlEncode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldName), Encoding.UTF8))
                 );
         }
 

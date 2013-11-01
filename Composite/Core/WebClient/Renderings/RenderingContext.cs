@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Web;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
+using Composite.Core.PageTemplates;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Plugins.Routing.Pages;
-using Composite.Core.PageTemplates;
 
 namespace Composite.Core.WebClient.Renderings
 {
@@ -277,7 +278,7 @@ namespace Composite.Core.WebClient.Renderings
         private static string GetLoginRedirectUrl(string url)
         {
             return UrlUtils.PublicRootPath + "/Composite/Login.aspx?ReturnUrl=" +
-                   HttpUtility.UrlEncodeUnicode(url);
+                   HttpUtility.UrlEncode(url, Encoding.UTF8);
         }
 
         /// <exclude />

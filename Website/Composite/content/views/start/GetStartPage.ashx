@@ -2,13 +2,14 @@
 
 using System;
 using System.IO;
-using Composite.Core.IO;
 using System.Net;
-using System.Xml.Linq;
+using System.Text;
 using System.Web;
-using Composite.Core.Configuration;
+using System.Xml.Linq;
 using Composite;
 using Composite.C1Console.Users;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
 using Composite.Core.WebClient;
 
 public class FetchPage : IHttpHandler 
@@ -24,11 +25,11 @@ public class FetchPage : IHttpHandler
         string baseUriString = System.Configuration.ConfigurationManager.AppSettings["Composite.StartPage.Url"];
         string sourceUriString = string.Format("{0}?culture={1}&version={2}&installation={3}&browser={4}&platform={5}", 
             baseUriString,
-            HttpUtility.UrlEncodeUnicode(userCultureName), 
-            HttpUtility.UrlEncodeUnicode(productVersion), 
-            HttpUtility.UrlEncodeUnicode(installationId),
-            HttpUtility.UrlEncodeUnicode(browser),
-            HttpUtility.UrlEncodeUnicode(platform));
+            HttpUtility.UrlEncode(userCultureName, Encoding.UTF8),
+			HttpUtility.UrlEncode(productVersion, Encoding.UTF8),
+			HttpUtility.UrlEncode(installationId, Encoding.UTF8),
+			HttpUtility.UrlEncode(browser, Encoding.UTF8),
+			HttpUtility.UrlEncode(platform, Encoding.UTF8));
        
         Uri sourceUri = new Uri(sourceUriString);
 

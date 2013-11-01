@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-
-using Composite.C1Console.Actions;
-using Composite.C1Console.Security;
-using Composite.Plugins.Elements.ElementProviders.VirtualElementProvider;
-using Composite.C1Console.Events;
-using Composite.Core.WebClient;
+using System.Text;
 using System.Web;
+using Composite.C1Console.Actions;
+using Composite.C1Console.Events;
+using Composite.C1Console.Security;
 using Composite.Core.ResourceSystem;
+using Composite.Core.WebClient;
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
@@ -48,9 +47,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             string emptyLabel = StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "ViewUnpublishedItems-document-empty-label");
             string url = string.Format("{0}?showglobaldata=true&title={1}&description={2}&emptyLabel={3}",
                 UrlUtils.ResolveAdminUrl(string.Format("content/views/publishworkflowstatus/ViewUnpublishedItems.aspx")),
-                HttpUtility.UrlEncodeUnicode(documentTitle),
-                HttpUtility.UrlEncodeUnicode(description),
-                HttpUtility.UrlEncodeUnicode(emptyLabel));
+                HttpUtility.UrlEncode(documentTitle, Encoding.UTF8),
+                HttpUtility.UrlEncode(description, Encoding.UTF8),
+                HttpUtility.UrlEncode(emptyLabel, Encoding.UTF8));
 
             IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
             OpenViewMessageQueueItem openViewMsg = new OpenViewMessageQueueItem

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Xml.Linq;
@@ -119,7 +120,7 @@ namespace Composite.Core.WebClient.HttpModules
                     if (!_allAllowedPaths.Any(p => currentPath.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
                     {
                         Log.LogWarning("Authorization", "DENIED {0} access to {1}", context.Request.UserHostAddress, currentPath);
-                        string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncodeUnicode(context.Request.Url.PathAndQuery));
+                        string redirectUrl = string.Format("{0}?ReturnUrl={1}", _loginPagePath, HttpUtility.UrlEncode(context.Request.Url.PathAndQuery, Encoding.UTF8));
                         context.Response.Redirect(redirectUrl, true);
                     }
                 }
