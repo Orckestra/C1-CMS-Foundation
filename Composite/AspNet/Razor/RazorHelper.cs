@@ -70,7 +70,7 @@ namespace Composite.AspNet.Razor
             HttpContext currentContext = HttpContext.Current;
             if (currentContext == null)
             {
-                httpContext = new NoHttpRazorContext();
+                httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
             }
             else
             {
