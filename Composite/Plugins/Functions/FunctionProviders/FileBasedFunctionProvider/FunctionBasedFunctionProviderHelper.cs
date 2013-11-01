@@ -54,6 +54,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 {
                     // Skipping overriden base properties
                     if (property.GetAccessors()[0].GetBaseDefinition().DeclaringType == baseFunctionType) continue;
+                    // Skipping private setters
+                    if (property.GetSetMethod(false) == null) continue;
 
                     var propType = property.PropertyType;
                     var name = property.Name;
