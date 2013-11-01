@@ -192,6 +192,17 @@ _DOMEvents.prototype = {
 		return e.button == 2 ? true : false;
 	},
 
+    /**
+    * @param {MouseEvent} e
+    */
+	isButtonPressed: function (e) {
+		if ((Client.isFirefox || Client.isExplorer11) && e.buttons === 0)
+			return false;
+		else if (Client.isWebKit && e.which === 0)
+			return false;
+		return undefined;
+	},
+
 	/**
 	* @param {IEventListener} handler
 	*/

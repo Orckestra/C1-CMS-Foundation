@@ -7,7 +7,7 @@
 function Uri(url) {
 
     var mediaExpr = /^(~?\/|(\.\.\/)+|https?:\/\/[\w\d-\.:]*\/)(media|page)(\(|%28)[\w\d-\:]+(\)|%29)/;
-	var result = mediaExpr.exec(url);
+	var result = mediaExpr.exec(url?url:"");
 
 	if (result) {
 		if (result[3] == "media") {
