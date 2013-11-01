@@ -19,7 +19,7 @@ namespace Composite.C1Console.Events
         void RefreshTreeSection(EntityToken entityToken);
 
         /// <exclude />
-        void ShowMessage(DialogType dislogType, string title, string message);
+        void ShowMessage(DialogType dialogType, string title, string message);
 
         /// <exclude />
         void ShowGlobalMessage(DialogType dialogType, string title, string message);

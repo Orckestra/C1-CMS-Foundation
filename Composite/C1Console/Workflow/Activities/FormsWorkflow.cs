@@ -433,7 +433,7 @@ namespace Composite.C1Console.Workflow.Activities
 
 
         /// <exclude />
-        protected void ShowMessage(DialogType dislogType, string title, string message)
+        protected void ShowMessage(DialogType dialogType, string title, string message)
         {
             FlowControllerServicesContainer container = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
@@ -443,7 +443,7 @@ namespace Composite.C1Console.Workflow.Activities
             string localizedMessage = StringResourceSystemFacade.ParseString(message);
 
             service.ShowMessage(
-                    dislogType,
+                    dialogType,
                     localizedTitle,
                     localizedMessage
                 );

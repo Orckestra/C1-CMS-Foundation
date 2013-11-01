@@ -109,7 +109,7 @@ namespace Composite.Core.ResourceSystem
 				}
 
 
-				output.Append(" /// <summary>%comment%</summary> \r\n"
+				output.Append(" /// <summary>&quot;%comment%&quot;</summary> \r\n"
 							   .Replace("%comment%", XmlEncode(value).Replace("\r\n", "\r\n ///")));
 
 
