@@ -15,8 +15,8 @@ public class loading : IHttpHandler {
         context.Response.Cache.SetValidUntilExpires(true);
 
         HttpBrowserCapabilities browser = context.Request.Browser;
-        
-        if (browser.Browser == "IE")
+
+		if (browser.Browser == "IE" || browser.Browser == "InternetExplorer")
         {
             context.Response.ContentType = "image/gif";
             context.Response.WriteFile(context.Request.MapPath("loading.gif"));
