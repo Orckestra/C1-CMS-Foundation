@@ -64,7 +64,7 @@ StandardEventHandler.prototype._addListeners = function () {
 	/*
 	 * Disable F1 to launch OS help in IE.
 	 */
-	if ( Client.isExplorer ) {
+	if ( Client.isExplorer || Client.isExplorer11 ) {
 		DOMEvents.addEventListener(this._contextDocument, DOMEvents.HELP, {
 			handleEvent: function (e) {
 				DOMEvents.stopPropagation(e);
