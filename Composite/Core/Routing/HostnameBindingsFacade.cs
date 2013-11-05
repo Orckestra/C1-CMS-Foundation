@@ -179,7 +179,7 @@ namespace Composite.Core.Routing
 
             httpContext.Response.Redirect(customPageNotFoundUrl, true);
 
-            throw new IndexOutOfRangeException("This code should not be reachable");
+            throw new InvalidOperationException("This code should not be reachable");
         }
     }
 }
