@@ -189,6 +189,7 @@
     <Compile Include="Data\StoreEventArgs.cs" />
     <Compile Include="Data\Types\ICustomFunctionCallEditorMapping.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
+    <Compile Include="Functions\FunctionParameterIgnoreAttribute.cs" />
     <Compile Include="Functions\DynamicMethodHelper.cs" />
     <Compile Include="Functions\FunctionCallEditorManager.cs" />
     <Compile Include="Functions\FunctionCallEditorSettings.cs" />
