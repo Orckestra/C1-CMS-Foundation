@@ -588,7 +588,7 @@ namespace Composite.Services
                             }
                             else
                             {
-                                paramValue = "HTML: " + string.Join(" ", textNodes.Take(5)).Replace( Environment.NewLine, " " );
+                                paramValue = "HTML: " + string.Join(" ", textNodes.Take(5)).Replace( Environment.NewLine, " " ).Trim();
                             }
                         }
                         else if (rawValue is XNode || rawValue is IEnumerable<XNode>)

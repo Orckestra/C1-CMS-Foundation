@@ -100,7 +100,7 @@ namespace Composite.Plugins.Routing.Pages
             else
             {
                 cultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
-                if (cultureInfo == CultureInfo.InvariantCulture)
+                if (cultureInfo.Equals(CultureInfo.InvariantCulture))
                 {
                     cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
                 }
@@ -109,6 +109,11 @@ namespace Composite.Plugins.Routing.Pages
             queryString.Remove("cultureInfo");
 
             urlKind = UrlKind.Internal;
+
+            if (pathInfo != null)
+            {
+                pathInfo = HttpUtility.UrlDecode(pathInfo);
+            }
 
             return new PageUrlData(pageId, isUnpublished ? PublicationScope.Unpublished : PublicationScope.Published, cultureInfo)
             {
@@ -148,7 +153,7 @@ namespace Composite.Plugins.Routing.Pages
             else
             {
                 cultureInfo = LocalizationScopeManager.CurrentLocalizationScope;
-                if (cultureInfo == CultureInfo.InvariantCulture)
+                if (cultureInfo.Equals(CultureInfo.InvariantCulture))
                 {
                     cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
                 }
@@ -167,9 +172,11 @@ namespace Composite.Plugins.Routing.Pages
                 queryParameters.Add(key, queryString[key]);
             }
 
+            string pathInfo = urlBuilder.PathInfo != null ? HttpUtility.UrlDecode(urlBuilder.PathInfo) : null;
+
             return new PageUrlData(pageId, publicationScope, cultureInfo)
             {
-                PathInfo = urlBuilder.PathInfo,
+                PathInfo = pathInfo,
                 QueryParameters = queryParameters,
             };
         }
@@ -326,7 +333,7 @@ namespace Composite.Plugins.Routing.Pages
 
             var queryParameters = urlBuilder.GetQueryParameters();
 
-            string pathInfo = (pagePath.Length < requestPath.Length) ? requestPath.Substring(pagePath.Length) : null;
+            string pathInfo = (pagePath.Length < requestPath.Length) ? HttpUtility.UrlDecode(requestPath.Substring(pagePath.Length)) : null;
 
             return new PageUrlData(pageId, publicationScope, locale)
             {

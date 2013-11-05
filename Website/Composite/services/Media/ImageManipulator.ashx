@@ -429,7 +429,7 @@ public class ImageManipulator : IHttpHandler
         {
         }
 
-        public void ShowMessage(DialogType dislogType, string title, string message)
+        public void ShowMessage(DialogType dialogType, string title, string message)
         {
         }
 
