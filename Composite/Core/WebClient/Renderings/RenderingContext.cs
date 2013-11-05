@@ -197,6 +197,7 @@ namespace Composite.Core.WebClient.Renderings
             if (PreviewMode)
             {
                 Page = (IPage)HttpRuntime.Cache.Get(_previewKey + "_SelectedPage");
+                C1PageRoute.PageUrlData = new PageUrlData(Page);
             }
             else
             {
