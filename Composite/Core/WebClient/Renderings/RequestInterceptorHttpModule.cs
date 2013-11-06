@@ -146,8 +146,9 @@ namespace Composite.Core.WebClient.Renderings
             if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
             {
                 page.Response.StatusCode = 404;
-                page.Response.End();
             }
+
+            page.Response.End();
         }
 
 
