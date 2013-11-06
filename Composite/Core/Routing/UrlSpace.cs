@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using Composite.Plugins.Routing.Pages;
 
 namespace Composite.Core.Routing
@@ -33,7 +34,6 @@ namespace Composite.Core.Routing
             }
         }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="UrlSpace"/> class.
         /// </summary>
@@ -54,7 +54,9 @@ namespace Composite.Core.Routing
         {
             Verify.ArgumentNotNull(httpContextBase, "httpContextBase");
 
-            Initialize(httpContextBase.Request.Url.Host, httpContextBase.Request.Url.LocalPath);
+            var url = httpContextBase.Request.Url;
+
+            Initialize(url.Host, url.LocalPath);
         }
 
         private void InitializeThroughHttpContext(HttpContext httpContext)

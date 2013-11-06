@@ -176,7 +176,8 @@ namespace Composite.Services
         public string GetEntityTokenByPageUrl(string pageUrl)
         {
             UrlKind urlKind;
-            PageUrlData pageUrlData = PageUrls.ParseUrl(pageUrl, new UrlSpace(HttpContext.Current), out urlKind);
+            
+            PageUrlData pageUrlData = PageUrls.ParseUrl(pageUrl, out urlKind);
             if (pageUrlData == null) return string.Empty;
 
             if (pageUrlData.PublicationScope == PublicationScope.Published)

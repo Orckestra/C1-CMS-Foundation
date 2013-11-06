@@ -24,40 +24,40 @@ namespace Composite.Core.Routing
         /// <summary>
         /// Parses the URL.
         /// </summary>
-        /// <param name="url">The URL.</param>
+        /// <param name="absoluteUrl">The absolute URL.</param>
         /// <returns></returns>
-        public static PageUrlData ParseUrl(string url)
+        public static PageUrlData ParseUrl(string absoluteUrl)
         {
             UrlKind urlKind;
-            return ParseUrl(url, out urlKind);
+            return ParseUrl(absoluteUrl, out urlKind);
         }
 
         /// <summary>
         /// Parses the URL.
         /// </summary>
-        /// <param name="url">The URL.</param>
+        /// <param name="absoluteUrl">The absolute URL.</param>
         /// <param name="urlKind">Kind of the URL.</param>
         /// <returns></returns>
-        public static PageUrlData ParseUrl(string url, out UrlKind urlKind)
+        public static PageUrlData ParseUrl(string absoluteUrl, out UrlKind urlKind)
         {
-            if (url.StartsWith("http") && url.Contains("://"))
+            if (absoluteUrl.StartsWith("http") && absoluteUrl.Contains("://"))
             {
-                return UrlProvider.ParseUrl(url, out urlKind);
+                return UrlProvider.ParseUrl(absoluteUrl, out urlKind);
             }
 
-            return UrlProvider.ParseUrl(url, new UrlSpace(), out urlKind);
+            return UrlProvider.ParseUrl(absoluteUrl, new UrlSpace(), out urlKind);
         }
 
         /// <summary>
         /// Parses the URL.
         /// </summary>
-        /// <param name="url">The URL.</param>
+        /// <param name="relativeUrl">The relative URL.</param>
         /// <param name="urlSpace">The URL space.</param>
         /// <param name="urlKind">Kind of the URL.</param>
         /// <returns></returns>
-        public static PageUrlData ParseUrl(string url, UrlSpace urlSpace, out UrlKind urlKind) 
+        public static PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind) 
         {
-            return UrlProvider.ParseUrl(url, urlSpace, out urlKind);
+            return UrlProvider.ParseUrl(relativeUrl, urlSpace, out urlKind);
         }
 
         /// <summary>
