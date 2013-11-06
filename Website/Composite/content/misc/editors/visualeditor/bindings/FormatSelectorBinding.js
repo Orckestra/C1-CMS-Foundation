@@ -198,7 +198,8 @@ FormatSelectorBinding.prototype.handleNodeChange = function (element) {
 			}, this);
 
 			if (element.nodeName.toLowerCase() == "li") { isList = true; }
-			if (element.parentNode.nodeName.toLowerCase() == "body"
+			if (element.parentNode != null
+				&& element.parentNode.nodeName.toLowerCase() == "body"
                 && element.nodeName.toLowerCase() == "div") {
 			    isText = true;
 			}
