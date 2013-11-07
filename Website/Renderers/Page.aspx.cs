@@ -67,13 +67,16 @@ public partial class Renderers_Page : System.Web.UI.Page
         ScriptManager scriptManager = ScriptManager.GetCurrent(this);
         bool isUpdatePanelPostback = scriptManager != null && scriptManager.IsInAsyncPostBack;
 
-        if (isUpdatePanelPostback == true)
+        if (isUpdatePanelPostback)
         {
             base.Render(writer);
             return;
         }
 
-        _renderingContext.PreRenderRedirectCheck();
+        if (_renderingContext.PreRenderRedirectCheck())
+        {
+            return;
+        }
 
         var markupBuilder = new StringBuilder();
         var sw = new StringWriter(markupBuilder);

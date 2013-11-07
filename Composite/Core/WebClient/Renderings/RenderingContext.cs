@@ -253,7 +253,8 @@ namespace Composite.Core.WebClient.Renderings
         /// Redirects to 404 page if PathInfo wasn't used. Adds 404 status code if the current page is specified as 404 page in hostname binding.
         /// Note that all C1 functions on page have to be executed before calling this method.
         /// </summary>
-        public void PreRenderRedirectCheck()
+        /// <returns><c>True</c> if the request was transferred to a 404 page and rendering should be stopped.</returns>
+        public bool PreRenderRedirectCheck()
         {
             var httpContext = HttpContext.Current;
 
@@ -261,12 +262,13 @@ namespace Composite.Core.WebClient.Renderings
                 && !C1PageRoute.PathInfoUsed)
             {
                 // Redirecting to PageNotFoundUrl or setting 404 response code if PathInfo url part hasn't been used
-                if (!HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
+                if (HostnameBindingsFacade.RedirectCustomPageNotFoundUrl(httpContext))
                 {
-                    httpContext.Response.StatusCode = 404;
-                    httpContext.Response.End();
+                    return true;
                 }
-                return;
+
+                httpContext.Response.StatusCode = 404;
+                httpContext.Response.End();
             }
 
             // Setting 404 response code if it is a request to a custom "Page not found" page
@@ -274,6 +276,8 @@ namespace Composite.Core.WebClient.Renderings
             {
                 httpContext.Response.StatusCode = 404;
             }
+
+            return false;
         }
         
         private static string GetLoginRedirectUrl(string url)
