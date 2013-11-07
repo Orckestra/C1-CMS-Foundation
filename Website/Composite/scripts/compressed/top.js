@@ -28047,9 +28047,9 @@ _1101.disable();
 }
 }
 if(_10ff){
-this.focus();
+this._codemirrorWindow.focus();
 }else{
-this.blur();
+this._codemirrorWindow.blur();
 }
 }
 };
