@@ -289,7 +289,7 @@ namespace Composite.Core.Types
             {
                 if (!examineInterfacesOnly || type.IsInterface)
                 {
-                    attributes = type.GetCustomAttributes(true).Cast<Attribute>();
+                    attributes = type.GetCustomAttributes(false).Cast<Attribute>();
                 }
             }
             else

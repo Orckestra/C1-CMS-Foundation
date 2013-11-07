@@ -306,7 +306,7 @@ namespace Composite.C1Console.Workflow
         {
             List<AllowPersistingWorkflowAttribute> attributes = workflowType.GetCustomAttributesRecursively<AllowPersistingWorkflowAttribute>().ToList();
 
-            Verify.That(attributes.Count <= 1, "More than one attribute of type '0' found", typeof(AllowPersistingWorkflowAttribute).FullName);
+            Verify.That(attributes.Count <= 1, "More than one attribute of type '{0}' found", typeof(AllowPersistingWorkflowAttribute).FullName);
 
             var persistanceType = attributes.Count == 1 ? attributes[0].WorkflowPersistingType : WorkflowPersistingType.Never;
 
