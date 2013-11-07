@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,48 +16,46 @@ namespace Composite.Core.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TypeExtensionMethods
     {
-        private static Dictionary<PropertyInfo, List<Attribute>> _propertyAttributeCache = new Dictionary<PropertyInfo, List<Attribute>>();
+        private static Hashtable<PropertyInfo, List<Attribute>> _propertyAttributeCache = new Hashtable<PropertyInfo, List<Attribute>>();
 
         /// <exclude />
         static TypeExtensionMethods()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
         /// <exclude />
         public static string GetVersionNeutralName(this Type type)
         {
-            if (type.IsGenericType == false)
+            if (!type.IsGenericType)
             {
                 return string.Format("{0},{1}", type.FullName, type.Assembly.FullName.Split(',')[0]);
             }
-            else
+            
+            Type[] genericArguments = type.GetGenericArguments();
+
+            StringBuilder sb = new StringBuilder();
+            bool firstTime = true;
+            foreach (Type genericType in genericArguments)
             {
-                Type[] genericArguments = type.GetGenericArguments();
+                string serializedType = GetVersionNeutralName(genericType);
 
-                StringBuilder sb = new StringBuilder();
-                bool firstTime = true;
-                foreach (Type genericType in genericArguments)
+                if (firstTime == false)
                 {
-                    string serializedType = GetVersionNeutralName(genericType);
-
-                    if (firstTime == false)
-                    {
-                        sb.Append(",");
-                    }
-                    else
-                    {
-                        firstTime = false;
-                    }
-
-                    sb.Append(string.Format("[{0}]", serializedType));
+                    sb.Append(",");
+                }
+                else
+                {
+                    firstTime = false;
                 }
 
-                string fullName = type.FullName.Remove(type.FullName.IndexOf('['));
-
-                return string.Format("{0}[{1}],{2}", fullName, sb, type.Assembly.FullName.Split(',')[0]);
+                sb.Append(string.Format("[{0}]", serializedType));
             }
+
+            string fullName = type.FullName.Remove(type.FullName.IndexOf('['));
+
+            return string.Format("{0}[{1}],{2}", fullName, sb, type.Assembly.FullName.Split(',')[0]);
         }
 
 
@@ -131,9 +128,9 @@ namespace Composite.Core.Types
         {
             foreach (Type interfaceType in type.GetInterfaces())
             {
-                if ((predicate == null) || (predicate(interfaceType)))
+                if (predicate == null || predicate(interfaceType))
                 {
-                    if (interfaces.Contains(interfaceType) == false)
+                    if (!interfaces.Contains(interfaceType))
                     {
                         interfaces.Add(interfaceType);
                     }
@@ -172,8 +169,8 @@ namespace Composite.Core.Types
         }
 
 
-        private static Hashtable<Type, List<Attribute>> _interfaceAttributeCache = new Hashtable<Type, List<Attribute>>();
-        private static object _lock = new object();
+        private static readonly Hashtable<Type, List<Attribute>> _interfaceAttributeCache = new Hashtable<Type, List<Attribute>>();
+        private static readonly object _lock = new object();
 
 
         /// <exclude />
@@ -181,11 +178,11 @@ namespace Composite.Core.Types
         {
             List<Attribute> attributeList;
 
-            if (_interfaceAttributeCache.TryGetValue(type, out attributeList) == false)
+            if (!_interfaceAttributeCache.TryGetValue(type, out attributeList))
             {
                 lock (_lock)
                 {
-                    if (_interfaceAttributeCache.TryGetValue(type, out attributeList) == false)
+                    if (!_interfaceAttributeCache.TryGetValue(type, out attributeList))
                     {
                         attributeList = new List<Attribute>();
                         GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), true);
@@ -201,7 +198,7 @@ namespace Composite.Core.Types
 
 
 
-        private static Dictionary<Type, List<Attribute>> _typeAttributeCache = new Dictionary<Type, List<Attribute>>();
+        private static readonly Hashtable<Type, List<Attribute>> _typeAttributeCache = new Hashtable<Type, List<Attribute>>();
 
 
         /// <exclude />
@@ -210,14 +207,17 @@ namespace Composite.Core.Types
         {
             List<Attribute> attributeList;
 
-            lock (_lock)
+            if (!_typeAttributeCache.TryGetValue(type, out attributeList))
             {
-                if (!_typeAttributeCache.TryGetValue(type, out attributeList))
+                lock (_lock)
                 {
-                    attributeList = new List<Attribute>();
-                    GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), false);
+                    if (!_typeAttributeCache.TryGetValue(type, out attributeList))
+                    {
+                        attributeList = new List<Attribute>();
+                        GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), false);
 
-                    _typeAttributeCache.Add(type, attributeList);
+                        _typeAttributeCache.Add(type, attributeList);
+                    }
                 }
             }
 
@@ -229,18 +229,21 @@ namespace Composite.Core.Types
         {
             List<Attribute> attributeList;
 
-            lock (_lock)
+            if (!_typeAttributeCache.TryGetValue(type, out attributeList))
             {
-                if (!_typeAttributeCache.TryGetValue(type, out attributeList))
+                lock (_lock)
                 {
-                    attributeList = new List<Attribute>();
-                    GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), false);
+                    if (!_typeAttributeCache.TryGetValue(type, out attributeList))
+                    {
+                        attributeList = new List<Attribute>();
+                        GetCustomAttributesRecursively(type, attributeList, null, new List<Type>(), false);
 
-                    _typeAttributeCache.Add(type, attributeList);
+                        _typeAttributeCache.Add(type, attributeList);
+                    }
                 }
             }
 
-            return attributeList.Where(t => t.GetType().Equals(attributeType));
+            return attributeList.Where(t => t.GetType() == attributeType);
         }
 
 
@@ -249,16 +252,19 @@ namespace Composite.Core.Types
         public static IEnumerable<T> GetCustomAttributesRecursively<T>(this PropertyInfo propertyInfo)
             where T : Attribute
         {
-            List<Attribute> attributeList = null;
+            List<Attribute> attributeList;
 
-            lock (_lock)
+            if (!_propertyAttributeCache.TryGetValue(propertyInfo, out attributeList))
             {
-                if (_propertyAttributeCache.TryGetValue(propertyInfo, out attributeList) == false)
+                lock (_lock)
                 {
-                    attributeList = new List<Attribute>();
-                    GetCustomAttributesRecursively(propertyInfo.DeclaringType, attributeList, propertyInfo.Name, new List<Type>(), false);
+                    if (!_propertyAttributeCache.TryGetValue(propertyInfo, out attributeList))
+                    {
+                        attributeList = new List<Attribute>();
+                        GetCustomAttributesRecursively(propertyInfo.DeclaringType, attributeList, propertyInfo.Name, new List<Type>(), false);
 
-                    _propertyAttributeCache.Add(propertyInfo, attributeList);
+                        _propertyAttributeCache.Add(propertyInfo, attributeList);
+                    }
                 }
             }
 
@@ -273,20 +279,17 @@ namespace Composite.Core.Types
             {
                 return;
             }
-            else
-            {
-                typesChecked.Add(type);
-            }
+            
+            typesChecked.Add(type);
+            
 
             IEnumerable<Attribute> attributes = null;
 
             if (propertyName == null)
             {
-                if (examineInterfacesOnly == false || type.IsInterface)
+                if (!examineInterfacesOnly || type.IsInterface)
                 {
-                    attributes =
-                        from attr in type.GetCustomAttributes(true)
-                        select attr as Attribute;
+                    attributes = type.GetCustomAttributes(true).Cast<Attribute>();
                 }
             }
             else
@@ -295,20 +298,16 @@ namespace Composite.Core.Types
 
                 if (propertyInfo != null)
                 {
-                    attributes =
-                        from attr in propertyInfo.GetCustomAttributes(true)
-                        select attr as Attribute;
+                    attributes = propertyInfo.GetCustomAttributes(true).Cast<Attribute>();
                 }
             }
-
 
             if (attributes != null)
             {
                 foundAttributes.AddRange(attributes);
             }
-
-
-            if (examineInterfacesOnly == false && (type.BaseType != null) && (type.BaseType != typeof(object)))
+            
+            if (!examineInterfacesOnly && type.BaseType != null && type.BaseType != typeof(object))
             {
                 GetCustomAttributesRecursively(type.BaseType, foundAttributes, propertyName, typesChecked, examineInterfacesOnly);
             }
@@ -345,38 +344,24 @@ namespace Composite.Core.Types
 
                     return sb.ToString();
                 }
-                else
-                {
-                    return type.Name;
-                }
+                
+                return type.Name;
             }
-            else
+            
+            var titleAttributes = type.GetCustomInterfaceAttributes<TitleAttribute>();
+            if (titleAttributes != null && titleAttributes.Any())
             {
-                var titleAttributes = type.GetCustomInterfaceAttributes<TitleAttribute>();
-                if (titleAttributes != null && titleAttributes.Any())
-                {
-                    return titleAttributes.First().Title;
-                }
-                else
-                {
-                    return type.Name;
-                }
+                return titleAttributes.First().Title;
             }
 
+            return type.Name;
         }
 
 
 
         private static void Flush()
         {
-            _propertyAttributeCache = new Dictionary<PropertyInfo, List<Attribute>>();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
+            _propertyAttributeCache = new Hashtable<PropertyInfo, List<Attribute>>();
         }
     }
 }
