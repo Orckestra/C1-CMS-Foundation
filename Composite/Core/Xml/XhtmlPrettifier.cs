@@ -147,13 +147,11 @@ namespace Composite.Core.Xml
                         }
                     }
 
-                    bool isSelfClosingAndEmpty = false;
-                    if ((node.IsSelfClosingElement() ) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Element).Any() == false) && (node.ChildNodes.Where(f => f.NodeType == XmlNodeType.Text).Any() == false))
-                    {
-                        isSelfClosingAndEmpty = true;
-                    }
+                    bool isSelfClosingAndEmpty = node.IsSelfClosingElement() &&
+                                                 !node.ChildNodes.Any(f => f.NodeType == XmlNodeType.Element 
+                                                                           || f.NodeType == XmlNodeType.Text);
 
-                    if ((node.IsEmpty == false) && (isSelfClosingAndEmpty == false))
+                    if (!node.IsEmpty && !isSelfClosingAndEmpty)
                     {
                         stringBuilder.Append(">");
                     }

@@ -148,13 +148,12 @@ namespace Composite.Data.Foundation.CodeGeneration
 
                 CodeTypeReference nullableType = new CodeTypeReference(
                         typeof(ExtendedNullable<>).FullName,
-                        new CodeTypeReference[] { new CodeTypeReference(propertyType) }
+                        new [] { new CodeTypeReference(propertyType) }
                     );
 
                 CodeMemberField codeField = new CodeMemberField();
                 codeField.Name = fieldName;
                 codeField.Type = nullableType;
-                codeField.InitExpression = new CodeObjectCreateExpression(nullableType, new CodeExpression[] { });
 
                 declaration.Members.Add(codeField);
 
@@ -169,15 +168,12 @@ namespace Composite.Data.Foundation.CodeGeneration
                 codeProperty.GetStatements.Add(
                     new CodeConditionStatement(
                         new CodeBinaryOperatorExpression(
-                            new CodePropertyReferenceExpression(
-                                new CodeFieldReferenceExpression(
+                            new CodeFieldReferenceExpression(
                                     new CodeThisReferenceExpression(),
                                     fieldName
                                 ),
-                                "HasValue"
-                            ),
-                            CodeBinaryOperatorType.IdentityEquality,
-                            new CodePrimitiveExpression(true)
+                            CodeBinaryOperatorType.IdentityInequality,
+                            new CodePrimitiveExpression(null)
                         ),
                         new CodeStatement[] {
                             new CodeMethodReturnStatement(
@@ -206,6 +202,31 @@ namespace Composite.Data.Foundation.CodeGeneration
 
                 if (!readOnly)
                 {
+
+                    // CODEGEN:
+                    // if(this.[fieldName] == null) {
+                    //   this.[fieldName] = new ExtendedNullable<...>(); 
+                    // }
+
+                    codeProperty.SetStatements.Add(
+                        new CodeConditionStatement(
+                            new CodeBinaryOperatorExpression(
+                                new CodeFieldReferenceExpression(
+                                    new CodeThisReferenceExpression(),
+                                    fieldName
+                                    ),
+                                CodeBinaryOperatorType.IdentityEquality,
+                                new CodePrimitiveExpression(null)
+                                ),
+                            new CodeAssignStatement(
+                                new CodeFieldReferenceExpression(
+                                    new CodeThisReferenceExpression(),
+                                    fieldName
+                                    ),
+                                new CodeObjectCreateExpression(nullableType, new CodeExpression[] {}))));
+
+                    // CODEGEN:
+                    // this.[fieldName] = value;
                     codeProperty.SetStatements.Add(
                     new CodeAssignStatement(
                         new CodePropertyReferenceExpression(
@@ -290,15 +311,12 @@ namespace Composite.Data.Foundation.CodeGeneration
 
                 codeMemberMethod.Statements.Add(new CodeConditionStatement(
                         new CodeBinaryOperatorExpression(
-                            new CodePropertyReferenceExpression(
-                                new CodeFieldReferenceExpression(
+                            new CodeFieldReferenceExpression(
                                     new CodeThisReferenceExpression(),
                                     fieldName
                                 ),
-                                "HasValue"
-                            ),
-                            CodeBinaryOperatorType.IdentityEquality,
-                            new CodePrimitiveExpression(true)
+                            CodeBinaryOperatorType.IdentityInequality,
+                            new CodePrimitiveExpression(null)
                         ),
                         statements.ToArray()
                     ));
