@@ -105,16 +105,6 @@ height: 100%;
 overflow: hidden;
 }
 
-@media only screen and (device-width: 768px) and (device-height: 1024px) and (-webkit-min-device-pixel-ratio: 1)
-{
-ui|*.maxboxelement,
-ui|*.flexboxelement {
-height: auto;
-overflow: auto;
-}
-}
-
-
 /* Fix for IE9-10 */
 ui|wizardpage > .flexboxelement,
 ui|dialogpage > .flexboxelement {
