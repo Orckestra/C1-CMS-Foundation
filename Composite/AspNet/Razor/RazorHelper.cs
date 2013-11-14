@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.WebPages;
@@ -18,6 +19,8 @@ namespace Composite.AspNet.Razor
     public static class RazorHelper
     {
         internal static readonly string PageContext_FunctionContextContainer = "C1.FunctionContextContainer";
+
+        private static FieldInfo HttpContext_items = typeof (HttpContext).GetField("_items", BindingFlags.Instance | BindingFlags.NonPublic);
 
         /// <summary>
         /// Executes the razor page.
@@ -68,6 +71,7 @@ namespace Composite.AspNet.Razor
             HttpContextBase httpContext;
 
             HttpContext currentContext = HttpContext.Current;
+            HttpContext replacementContext = null;
             if (currentContext == null)
             {
                 httpContext = NoHttpRazorContext.GetDotNetSpecificVersion();
@@ -75,6 +79,7 @@ namespace Composite.AspNet.Razor
             else
             {
                 httpContext = new CustomHttpContextWrapper(currentContext);
+                replacementContext = BuildContextWithReplacedItems(currentContext, httpContext);
             }
 
             var pageContext = new WebPageContext(httpContext, webPage, startPage);
@@ -91,7 +96,22 @@ namespace Composite.AspNet.Razor
             var sb = new StringBuilder();
             using (var writer = new StringWriter(sb))
             {
-                webPage.ExecutePageHierarchy(pageContext, writer);
+                try
+                {
+                    if (replacementContext != null)
+                    {
+                        HttpContext.Current = replacementContext;
+                    }
+                    
+                    webPage.ExecutePageHierarchy(pageContext, writer);
+                }
+                finally
+                {
+                    if (replacementContext != null)
+                    {
+                        HttpContext.Current = currentContext;
+                    }
+                }
             }
 
             string output = sb.ToString().Trim();
@@ -118,6 +138,15 @@ namespace Composite.AspNet.Razor
 			return ValueTypeConverter.Convert(output, resultType);
         }
 
+
+        private static HttpContext BuildContextWithReplacedItems(HttpContext currentContext, HttpContextBase newContext)
+        {
+            var result = new HttpContext(currentContext.Request, currentContext.Response);
+
+            HttpContext_items.SetValue(result, newContext.Items);
+
+            return result;
+        }
 
         private static XhtmlDocument OutputToXhtmlDocument(string output)
         {

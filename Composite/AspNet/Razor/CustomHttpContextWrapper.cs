@@ -27,7 +27,7 @@ namespace Composite.AspNet.Razor
         }
 
 
-        private class FixedItemsCollection: IDictionary
+        private class FixedItemsCollection : Hashtable, IEnumerable
         {
             private readonly IDictionary _innerDictionary;
             private static readonly object _webPageStackKey;
@@ -44,7 +44,7 @@ namespace Composite.AspNet.Razor
                 _innerDictionary = innerDictionary;
             }
 
-            public void Add(object key, object value)
+            override public void Add(object key, object value)
             {
                 if (key == _webPageStackKey)
                 {
@@ -55,12 +55,12 @@ namespace Composite.AspNet.Razor
                 _innerDictionary.Add(key, value);
             }
 
-            public void Clear()
+            override public void Clear()
             {
                 throw new NotSupportedException();
             }
 
-            public bool Contains(object key)
+            override public bool Contains(object key)
             {
                 if (key == _webPageStackKey)
                 {
@@ -70,27 +70,27 @@ namespace Composite.AspNet.Razor
                 return _innerDictionary.Contains(key);
             }
 
-            public IDictionaryEnumerator GetEnumerator()
+            override public IDictionaryEnumerator GetEnumerator()
             {
                 return _innerDictionary.GetEnumerator();
             }
 
-            public bool IsFixedSize
+            override public bool IsFixedSize
             {
                 get { return _innerDictionary.IsFixedSize; }
             }
 
-            public bool IsReadOnly
+            override public bool IsReadOnly
             {
                 get { return _innerDictionary.IsReadOnly; }
             }
 
-            public ICollection Keys
+            override public ICollection Keys
             {
                 get { return _innerDictionary.Keys; }
             }
 
-            public void Remove(object key)
+            override public void Remove(object key)
             {
                 if (key == _webPageStackKey)
                 {
@@ -101,12 +101,12 @@ namespace Composite.AspNet.Razor
                 _innerDictionary.Remove(_templateStack);
             }
 
-            public ICollection Values
+            override public ICollection Values
             {
                 get { return _innerDictionary.Values; }
             }
 
-            public object this[object key]
+            override public object this[object key]
             {
                 get
                 {
@@ -129,22 +129,22 @@ namespace Composite.AspNet.Razor
                 }
             }
 
-            public void CopyTo(Array array, int index)
+            override public void CopyTo(Array array, int index)
             {
                 _innerDictionary.CopyTo(array, index);
             }
 
-            public int Count
+            override public int Count
             {
                 get { return _innerDictionary.Count; }
             }
 
-            public bool IsSynchronized
+            override public bool IsSynchronized
             {
                 get { return _innerDictionary.IsSynchronized; }
             }
 
-            public object SyncRoot
+            override public object SyncRoot
             {
                 get { return _innerDictionary.SyncRoot; }
             }
