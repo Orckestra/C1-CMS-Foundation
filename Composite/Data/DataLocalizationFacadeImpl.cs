@@ -365,7 +365,7 @@ namespace Composite.Data
                 bool optionalReferenceWithValue = false;
                 if (dataFieldDescriptor.IsNullable)
                 {
-                    PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == dataFieldDescriptor.Name).Single();
+                    PropertyInfo propertyInfo = data.DataSourceId.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == dataFieldDescriptor.Name);
                     object value = propertyInfo.GetValue(data, null);
 
                     if (value == null) continue; // Optional reference is null;
@@ -374,7 +374,10 @@ namespace Composite.Data
                     optionalReferenceWithValue = true;
                 }
 
-                using (new DataScope(CultureInfo.CreateSpecificCulture(data.CultureName)))
+                // TODO: Refactor out usage of the CultureName
+                CultureInfo locale = data.CultureName != null ? CultureInfo.CreateSpecificCulture(data.CultureName) : data.DataSourceId.LocaleScope;
+
+                using (new DataScope(locale))
                 {
                     referencedData = data.GetReferenced(dataFieldDescriptor.Name);
                 }
