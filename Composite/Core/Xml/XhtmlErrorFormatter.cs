@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Reflection;
+using System.Web;
 using System.Xml.Linq;
+using Composite.Core.IO;
 
 namespace Composite.Core.Xml
 {
@@ -23,6 +26,16 @@ namespace Composite.Core.Xml
         /// <param name="errorLine">The error line number.</param>
         public static void EmbedSouceCodeInformation(Exception ex, string[] sourceCodeLines, int errorLine)
         {
+            if (ex.Data.Contains(ExceptionData_SourceCode))
+            {
+                return;
+            }
+
+            ex.Data[ExceptionData_SourceCode] = SourceCodePreview(sourceCodeLines, errorLine).ToString();
+        }
+
+        private static XElement SourceCodePreview(string[] sourceCodeLines, int errorLine)
+        {
             var result = new XElement(Namespaces.Xhtml + "pre", new XAttribute("style", SourceCodeStyle));
 
             int firstLineIndexToShow = Math.Max(0, errorLine - 3);
@@ -40,8 +53,8 @@ namespace Composite.Core.Xml
                     result.Add(text + Environment.NewLine);
                 }
             }
-            
-            ex.Data[ExceptionData_SourceCode] = result.ToString();
+
+            return result;
         }
 
         /// <summary>
@@ -110,9 +123,36 @@ namespace Composite.Core.Xml
 
         private static XElement GetSourceCodeInfo(Exception ex)
         {
-            if (!ex.Data.Contains(ExceptionData_SourceCode)) return null;
+            if (ex.Data.Contains(ExceptionData_SourceCode))
+            {
+                return XElement.Parse((string)ex.Data[ExceptionData_SourceCode]);
+            }
 
-            return XElement.Parse((string)ex.Data[ExceptionData_SourceCode]);
+            if (ex is HttpCompileException)
+            {
+                object firstCompileError = GetPropertyValue(ex, "FirstCompileError");
+
+                if (firstCompileError != null)
+                {
+                    string filePath = (string) GetPropertyValue(firstCompileError, "FileName");
+                    int line = (int) GetPropertyValue(firstCompileError, "Line");
+
+                    string[] lines = C1File.ReadAllLines(filePath);
+
+                    return SourceCodePreview(lines, line);
+                }
+            }
+
+            return null;
+        }
+
+        private static object GetPropertyValue(object @object, string name)
+        {
+            var property = @object.GetType().GetProperty(name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            Verify.IsNotNull(property, "Missing property '{0}' on type '{1}'", name, @object.GetType());
+
+            return property.GetValue(@object, null);
         }
     }
 }
