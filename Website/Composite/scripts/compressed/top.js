@@ -554,7 +554,7 @@ this.isExplorer11=!!navigator.userAgent.match(/Trident\/7\./);
 this.isPrism=_73;
 this.isWindows=_70.indexOf("win")>-1;
 this.isVista=this.isWindows&&_6f.indexOf("windows nt 6")>-1;
-this.isiPad=navigator.userAgent.match(/iPad/i)!=null;
+this.isPad=navigator.userAgent.match(/iPad/i)!=null;
 var _75=this._getFlashVersion();
 this.hasFlash=(_75&&_75>=9);
 this.hasTransitions=_74;
@@ -3425,7 +3425,7 @@ EventBroadcaster.subscribe(BroadcastMessages.SYSTEMLOG_CLOSED,{handleBroadcast:f
 SystemLogger.suspend();
 }});
 EventBroadcaster.subscribe(BroadcastMessages.STAGE_INITIALIZED,{handleBroadcast:function(){
-if(Application.isDeveloperMode){
+if(Application.isDeveloperMode&&!Client.isPad){
 StageBinding.handleViewPresentation("Composite.Management.SystemLog");
 StageBinding.handleViewPresentation("Composite.Management.Developer");
 }
@@ -26146,7 +26146,7 @@ _fb6.node=_fb5.node;
 this._maxGroup.add(_fb6);
 this._maxList.add(_fb6);
 _fb6.attach();
-if(Client.isiPad){
+if(Client.isPad){
 _fb6.hide();
 }
 return _fb6;
@@ -26160,7 +26160,7 @@ _fb8.node=_fb7.node;
 this._minGroup.addFirst(_fb8);
 this._minList.add(_fb8);
 _fb8.attach();
-if(!Client.isiPad){
+if(!Client.isPad){
 _fb8.hide();
 }
 return _fb8;
@@ -26978,6 +26978,9 @@ this.MENUITEM_IMPLEMENTATION=MenuItemBinding;
 }
 var _1030=this.bindingWindow.bindingMap.tinywindow;
 EditorBinding.registerComponent(this,_1030);
+if(Client.isPad){
+this.setProperty("width",140);
+}
 EditorSelectorBinding.superclass.onBindingAttach.call(this);
 };
 EditorSelectorBinding.prototype.buildButton=function(){
