@@ -101,6 +101,9 @@ EditorSelectorBinding.prototype.onBindingAttach = function () {
 	var tinywindow = this.bindingWindow.bindingMap.tinywindow;
 	EditorBinding.registerComponent ( this, tinywindow );
 	
+	if (Client.isPad) {
+		this.setProperty("width", 140);
+	}
 	
 	/*
 	 * Executed last so that isEditorControlBinding 
@@ -114,8 +117,8 @@ EditorSelectorBinding.prototype.onBindingAttach = function () {
  * @overloads {SelectorBinding#buildButton}
  */
 EditorSelectorBinding.prototype.buildButton = function () {
-	
-	EditorSelectorBinding.superclass.buildButton.call ( this );
+
+	EditorSelectorBinding.superclass.buildButton.call(this);
 	this._buttonBinding.isEditorSimpleControl = false;
 	if ( this.isEditorControlBinding == false ) {
 		this._buttonBinding.isEditorControlBinding = false;

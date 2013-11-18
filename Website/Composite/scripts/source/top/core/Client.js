@@ -24,7 +24,7 @@ function _Client () {
 	this.isPrism = isPrism;
 	this.isWindows = platform.indexOf ( "win" ) > -1;
 	this.isVista = this.isWindows && agent.indexOf ( "windows nt 6" ) > -1;
-	this.isiPad = navigator.userAgent.match(/iPad/i) != null;
+	this.isPad = navigator.userAgent.match(/iPad/i) != null;
 	
 	var version = this._getFlashVersion ();
 	this.hasFlash = ( version && version >= 9 );

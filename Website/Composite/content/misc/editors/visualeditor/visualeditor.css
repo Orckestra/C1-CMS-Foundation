@@ -48,3 +48,7 @@ input#focusableinput { /* synchronize with sourcecodeeditor.css */
 	background-color: red !important;
 	cursor: help;
 }
+
+#switchbutton {
+	margin-left: -10px;
+}

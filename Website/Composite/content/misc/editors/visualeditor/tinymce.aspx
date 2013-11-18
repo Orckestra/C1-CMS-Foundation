@@ -28,6 +28,13 @@
 			margin: 0;
 			padding: 0;
 		}
+
+		.ipad #editor_container{
+			overflow: scroll !important;
+			width: 100% !important;
+			height: 100% !important;
+			-webkit-overflow-scrolling: touch !important;
+		}
 	</style>
 </head>
 <body>

@@ -256,7 +256,7 @@ _Application.prototype = {
 				/*
 				 * Launching system developer panels.
 				 */
-				if ( Application.isDeveloperMode ) {
+				if (Application.isDeveloperMode && !Client.isPad) {
 					StageBinding.handleViewPresentation ( "Composite.Management.SystemLog" );
 					StageBinding.handleViewPresentation ( "Composite.Management.Developer" );
 				}
