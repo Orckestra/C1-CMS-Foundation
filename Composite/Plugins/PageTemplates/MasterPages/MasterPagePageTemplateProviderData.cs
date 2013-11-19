@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using Composite.Core;
+using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Plugins;
 using Composite.Core.Types;
@@ -56,6 +58,14 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 {
                     Log.LogError(this.GetType().FullName, ex);
                 }
+            }
+
+            string folderPath = PathUtil.Resolve(data.Directory);
+
+            if (!C1Directory.Exists(folderPath))
+            {
+                throw new ConfigurationErrorsException("Folder '{0}' does not exists".FormatWith(folderPath),
+                    objectConfiguration.ElementInformation.Source, objectConfiguration.ElementInformation.LineNumber);
             }
 
             return new MasterPagePageTemplateProvider(data.Name, data.Directory, data.AddNewTemplateLabel, addNewTemplateWorkflow);
