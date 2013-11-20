@@ -34,6 +34,13 @@ namespace Composite.Core.Xml
             ex.Data[ExceptionData_SourceCode] = SourceCodePreview(sourceCodeLines, errorLine).ToString();
         }
 
+        private static XElement SourceCodePreview(string filePath, int errorLine)
+        {
+            string[] lines = C1File.ReadAllLines(filePath);
+
+            return SourceCodePreview(lines, errorLine);
+        }
+
         private static XElement SourceCodePreview(string[] sourceCodeLines, int errorLine)
         {
             var result = new XElement(Namespaces.Xhtml + "pre", new XAttribute("style", SourceCodeStyle));
@@ -137,10 +144,14 @@ namespace Composite.Core.Xml
                     string filePath = (string) GetPropertyValue(firstCompileError, "FileName");
                     int line = (int) GetPropertyValue(firstCompileError, "Line");
 
-                    string[] lines = C1File.ReadAllLines(filePath);
-
-                    return SourceCodePreview(lines, line);
+                    return SourceCodePreview(filePath, line);
                 }
+            }
+
+            var httpParseException = ex as HttpParseException;
+            if (httpParseException != null)
+            {
+                return SourceCodePreview(httpParseException.FileName, httpParseException.Line);
             }
 
             return null;
