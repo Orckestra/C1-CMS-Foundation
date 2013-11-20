@@ -554,6 +554,7 @@ this.isExplorer11=!!navigator.userAgent.match(/Trident\/7\./);
 this.isPrism=_73;
 this.isWindows=_70.indexOf("win")>-1;
 this.isVista=this.isWindows&&_6f.indexOf("windows nt 6")>-1;
+this.isMac=_70.indexOf("mac")>-1;
 this.isPad=navigator.userAgent.match(/iPad/i)!=null;
 var _75=this._getFlashVersion();
 this.hasFlash=(_75&&_75>=9);
@@ -3303,7 +3304,7 @@ this.currentElement=null;
 if(!window.Node){
 window.Node={ELEMENT_NODE:1,ATTRIBUTE_NODE:2,TEXT_NODE:3,CDATA_SECTION_NODE:4,ENTITY_REFERENCE_NODE:5,ENTITY_NODE:6,PROCESSING_INSTRUCTION_NODE:7,COMMENT_NODE:8,DOCUMENT_NODE:9,DOCUMENT_TYPE_NODE:10,DOCUMENT_FRAGMENT_NODE:11,NOTATION_NODE:12};
 }
-window.KeyEventCodes={VK_BACK:8,VK_TAB:9,VK_ENTER:13,VK_SHIFT:16,VK_CONTROL:17,VK_ALT:null,VK_ESCAPE:27,VK_SPACE:32,VK_PAGE_UP:33,VK_PAGE_DOWN:34,VK_END:35,VK_HOME:36,VK_LEFT:37,VK_UP:38,VK_RIGHT:39,VK_DOWN:40,VK_INSERT:null,VK_DELETE:127,VK_PLUS:187,VK_MINUS:189,VK_NUMPLUS:107,VK_NUMMINUS:109,VK_F1:112};
+window.KeyEventCodes={VK_BACK:8,VK_TAB:9,VK_ENTER:13,VK_SHIFT:16,VK_CONTROL:17,VK_ALT:null,VK_ESCAPE:27,VK_SPACE:32,VK_PAGE_UP:33,VK_PAGE_DOWN:34,VK_END:35,VK_HOME:36,VK_LEFT:37,VK_UP:38,VK_RIGHT:39,VK_DOWN:40,VK_COMMAND:91,VK_INSERT:null,VK_DELETE:127,VK_PLUS:187,VK_MINUS:189,VK_NUMPLUS:107,VK_NUMMINUS:109,VK_F1:112};
 if(window==top){
 window.app=this;
 }else{
@@ -3408,7 +3409,7 @@ top.app=null;
 function _Application(){
 this._construct();
 }
-_Application.prototype={CONSOLE_ID:KeyMaster.getUniqueKey(),_TIMEOUT_LOSTFOCUS:250,logger:SystemLogger.getLogger("Application"),timer:SystemTimer.getTimer("Application"),isDeveloperMode:false,isLocalHost:false,hasExternalConnection:false,isLoggedIn:false,isLoggedOut:false,isLocked:false,hasStartPage:true,isMalFunctional:false,isOperational:false,isShuttingDown:false,isOffLine:false,isFocused:true,isBlurred:false,_isMousePositionTracking:false,_mousePosition:null,_cursorStartPoint:null,_isDragging:false,_isShutDownAllowed:true,_lockers:0,_lockthings:{},_isRegistered:null,_activeBinding:null,_activatedBindings:new List(),_dirtyTabs:new Map(),_topLevelClasses:typeof topLevelClassNames!="undefined"?new List(topLevelClassNames):null,_construct:function(){
+_Application.prototype={CONSOLE_ID:KeyMaster.getUniqueKey(),_TIMEOUT_LOSTFOCUS:250,logger:SystemLogger.getLogger("Application"),timer:SystemTimer.getTimer("Application"),isDeveloperMode:false,isLocalHost:false,hasExternalConnection:false,isLoggedIn:false,isLoggedOut:false,isLocked:false,hasStartPage:!Client.isPad,isMalFunctional:false,isOperational:false,isShuttingDown:false,isOffLine:false,isFocused:true,isBlurred:false,_isMousePositionTracking:false,_mousePosition:null,_cursorStartPoint:null,_isDragging:false,_isShutDownAllowed:true,_lockers:0,_lockthings:{},_isRegistered:null,_activeBinding:null,_activatedBindings:new List(),_dirtyTabs:new Map(),_topLevelClasses:typeof topLevelClassNames!="undefined"?new List(topLevelClassNames):null,_construct:function(){
 EventBroadcaster.subscribe(WindowManager.WINDOW_EVALUATED_BROADCAST,{handleBroadcast:function(){
 try{
 Application.initialize();
@@ -3961,8 +3962,14 @@ DOMEvents.addEventListener(this._contextWindow,DOMEvents.FOCUS,_38e);
 if(Client.isMozilla){
 doc.addEventListener(DOMEvents.KEYDOWN,{handleEvent:function(e){
 var s=83;
+if(Client.isMac){
+if(e.metaKey&&e.keyCode==s){
+e.preventDefault();
+}
+}else{
 if(e.ctrlKey&&e.keyCode==s){
 e.preventDefault();
+}
 }
 }},true);
 }
@@ -28398,7 +28405,11 @@ var _1132=KeySetBinding.keyEventHandlers;
 if(_1132[doc]&&_1132[doc][code]){
 var _1133="[default]";
 _1133+=code!=KeyEventCodes.VK_SHIFT?e.shiftKey?" shift":"":"";
+if(Client.isMac){
+_1133+=code!=KeyEventCodes.VK_COMMAND?e.metaKey?" control":"":"";
+}else{
 _1133+=code!=KeyEventCodes.VK_CONTROL?e.ctrlKey?" control":"":"";
+}
 var _1134=_1132[doc][code][_1133];
 if(_1134==null){
 _1134=_1132[doc][code]["*"];
