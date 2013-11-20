@@ -125,8 +125,14 @@ StandardEventHandler.prototype._addListeners = function () {
 		doc.addEventListener ( DOMEvents.KEYDOWN, {
 			handleEvent : function ( e ) {
 				var s = 83;
-				if ( e.ctrlKey && e.keyCode == s ) {
-					e.preventDefault ();
+				if (Client.isMac) {
+					if (e.metaKey && e.keyCode == s) {
+						e.preventDefault();
+					}
+				} else {
+					if (e.ctrlKey && e.keyCode == s) {
+						e.preventDefault();
+					}
 				}
 			}
 		}, true );

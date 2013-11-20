@@ -67,7 +67,11 @@ KeySetBinding.handleKey = function ( doc, e ) {
 	
 		var modifiers = "[default]";	
 		modifiers += code != KeyEventCodes.VK_SHIFT ? e.shiftKey ? " shift" : "" : "";
-		modifiers += code != KeyEventCodes.VK_CONTROL ? e.ctrlKey ? " control" : "" : "";
+		if (Client.isMac) {
+			modifiers += code != KeyEventCodes.VK_COMMAND ? e.metaKey ? " control" : "" : "";
+		} else {
+			modifiers += code != KeyEventCodes.VK_CONTROL ? e.ctrlKey ? " control" : "" : "";
+		}
 		
 		var handler = handlers [ doc ][ code ][ modifiers ];
 		if ( handler == null ) {
