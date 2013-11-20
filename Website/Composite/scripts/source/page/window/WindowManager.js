@@ -40,6 +40,7 @@ window.KeyEventCodes = {
 	VK_UP						: 38,
 	VK_RIGHT					: 39,
 	VK_DOWN						: 40,
+	VK_COMMAND					: 91,
 	VK_INSERT					: null,
 	VK_DELETE					: 127,
 	VK_PLUS						: 187,

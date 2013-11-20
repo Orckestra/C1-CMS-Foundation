@@ -88,7 +88,7 @@ _Application.prototype = {
 	/** 
 	 * @type {boolean} 
 	 */
-	hasStartPage : true,
+	hasStartPage : !Client.isPad,
 	
 	/**
 	 * Flipped when certain critical errors are encountered.
