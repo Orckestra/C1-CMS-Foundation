@@ -1352,7 +1352,7 @@
     <Compile Include="Core\WebClient\Services\TreeServiceObjects\ExtensionMethods\ElementExtensionMethods.cs" />
     <Compile Include="Core\WebClient\Services\TreeServiceObjects\RefreshChildrenInfo.cs" />
     <Compile Include="Core\WebClient\Services\TreeServiceObjects\RefreshChildrenParams.cs" />
-    <Compile Include="Core\WebClient\Services\WysiwygEditor\HtmlTransformationServices.cs" />
+    <Compile Include="Core\WebClient\Services\WysiwygEditor\MarkupTransformationServices.cs" />
     <Compile Include="Core\WebClient\Setup\SetupServiceFacade.cs" />
     <Compile Include="Core\WebClient\Setup\WebServiceClient\Reference.cs" />
     <Compile Include="Core\WebClient\StandardPlugins\SessionStateProviders\DefaultSessionStateProvider\DefaultSessionStateProvider.cs" />
