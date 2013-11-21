@@ -34,6 +34,11 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class MarkupTransformationServices
     {
+        static readonly Regex _duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>""|')([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>""|')([^>]*?)(\k<quote2>)([^>]*?)>", RegexOptions.Compiled);
+        static readonly Regex _namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)([^>]*?)(/?)>", RegexOptions.Multiline | RegexOptions.Compiled);
+        static readonly Regex _elementWithNamespaceDeclaration = new Regex(@"<(.*?) xmlns:([a-zA-Z0-9\._]*)=""(.*?)""(.*?)(/?)>", RegexOptions.Compiled);
+        static readonly Regex _elementsWithPrefixedAttributes = new Regex(@"<[^>]*? ([\w]):.*?>", RegexOptions.Compiled);
+
         /// <summary>
         /// Repairs an html fragment (makes it Xhtml) and executes a transformation on it.
         /// </summary>
@@ -325,17 +330,13 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             return html;
         }
 
-
-
         private static string RemoveDuplicateAttributes(string html)
         {
-            Regex duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>""|')([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>""|')([^>]*?)(\k<quote2>)([^>]*?)>");
-
             int prevLength = -1;
             while (html.Length != prevLength)
             {
                 prevLength = html.Length;
-                html = duplicateAttributesRegex.Replace(html, @"<$1 ${attributeName}=""$2""$4$8>");
+                html = _duplicateAttributesRegex.Replace(html, @"<$1 ${attributeName}=""$2""$4$8>");
             }
 
             return html;
@@ -438,15 +439,14 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
         private static List<string> LocateNamespacePrefixedElementNames(string htmlMarkup)
         {
-            List<string> prefixedElementNames = new List<string>();
+            var prefixedElementNames = new List<string>();
 
-            Regex namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)([^>]*?)(/?)>", RegexOptions.Multiline);
-            MatchCollection matches = namespacePrefixedElement.Matches(htmlMarkup);
+            MatchCollection matches = _namespacePrefixedElement.Matches(htmlMarkup);
 
             foreach (Match match in matches)
             {
                 string prefixedElementName = string.Format("{0}:{1}", match.Groups[1].Value, match.Groups[2].Value);
-                if (prefixedElementNames.Contains(prefixedElementName) == false)
+                if (!prefixedElementNames.Contains(prefixedElementName))
                 {
                     prefixedElementNames.Add(prefixedElementName);
                 }
@@ -460,8 +460,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         {
             List<string> prefixes = new List<string>();
 
-            Regex elementsWithPrefixedAttributes = new Regex(@"<[^>]*? ([\w]):.*?>");
-            MatchCollection matches = elementsWithPrefixedAttributes.Matches(htmlMarkup);
+            
+            MatchCollection matches = _elementsWithPrefixedAttributes.Matches(htmlMarkup);
 
             foreach (Match match in matches)
             {
@@ -478,18 +478,16 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
         private static Dictionary<string, string> LocateNamespacePrefixToUriDeclarations(string htmlMarkup)
         {
-            Dictionary<string, string> prefixToUri = new Dictionary<string, string>();
-            Dictionary<string, string> lowerCasePrefixToUri = new Dictionary<string, string>();
+            var prefixToUri = new Dictionary<string, string>();
 
-            Regex elementWithNamespaceDeclaration = new Regex(@"<(.*?) xmlns:([a-zA-Z0-9\._]*)=""(.*?)""(.*?)(/?)>");
-            MatchCollection matches = elementWithNamespaceDeclaration.Matches(htmlMarkup);
+            MatchCollection matches = _elementWithNamespaceDeclaration.Matches(htmlMarkup);
 
             foreach (Match match in matches)
             {
                 string prefix = match.Groups[2].Value;
                 string uri = match.Groups[3].Value;
 
-                if (prefixToUri.ContainsKey(prefix) == false)
+                if (!prefixToUri.ContainsKey(prefix))
                 {
                     prefixToUri.Add(prefix, uri);
                 }
