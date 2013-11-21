@@ -78,6 +78,9 @@ namespace Composite.Core.WebClient.Media
                     Size calculatedSize;
                     if (!ImageSizeReader.TryGetSize(fileStream, out calculatedSize))
                     {
+                        fileStream.Dispose();
+                        fileStream = file.GetReadStream();
+
                         bitmap = new Bitmap(fileStream);
                         calculatedSize = new Size { Width = bitmap.Width, Height = bitmap.Height };
                     }
