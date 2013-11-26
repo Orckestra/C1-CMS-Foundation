@@ -142,6 +142,10 @@ namespace Composite.AspNet.Razor
         private static HttpContext BuildContextWithReplacedItems(HttpContext currentContext, HttpContextBase newContext)
         {
             var result = new HttpContext(currentContext.Request, currentContext.Response);
+            result.ApplicationInstance = currentContext.ApplicationInstance;
+            result.Handler = currentContext.Handler;
+            result.SkipAuthorization = currentContext.SkipAuthorization;
+            result.User = currentContext.User;
 
             HttpContext_items.SetValue(result, newContext.Items);
 
