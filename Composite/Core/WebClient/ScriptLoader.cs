@@ -24,16 +24,18 @@ namespace Composite.Core.WebClient
 
         private readonly HttpContext _ctx;        
         private readonly string _type;
+        private readonly bool _updateManagerDisabled;
         private readonly CompositeScriptMode _mode;
 
         private readonly IEnumerable<string> _defaultscripts;
 
 
         /// <exclude />
-        public ScriptLoader(string type, string directive = null)
+        public ScriptLoader(string type, string directive = null, bool updateManagerDisabled = false)
         {
             _ctx = HttpContext.Current;
             _type = type;
+            _updateManagerDisabled = updateManagerDisabled;
 
             if (directive == "compile")
             {
@@ -169,9 +171,12 @@ namespace Composite.Core.WebClient
             }
             else
             {
-                builder.AppendLine(@"<script type=""text/javascript"">");
-                builder.AppendLine(@"UpdateManager.xhtml = null;");
-                builder.AppendLine(@"</script>");
+                if (!_updateManagerDisabled)
+                {
+                    builder.AppendLine(@"<script type=""text/javascript"">");
+                    builder.AppendLine(@"UpdateManager.xhtml = null;");
+                    builder.AppendLine(@"</script>");
+                }
             }
         }
 
