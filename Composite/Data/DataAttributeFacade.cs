@@ -439,7 +439,7 @@ namespace Composite.Data
         /// <exclude />
         public static List<string> GetKeyPropertyNames(this Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
             List<string> keyPropertyNames;
 
@@ -448,6 +448,7 @@ namespace Composite.Data
             if (!hashtable.TryGetValue(interfaceType, out keyPropertyNames))
             {
                 keyPropertyNames = (from kpn in interfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
+                                    orderby kpn.Index
                                     select kpn.KeyPropertyName).ToList();
 
                 lock (hashtable)

@@ -13,8 +13,8 @@ namespace Composite.Data.Types
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [ImmutableTypeId("{b831fee3-fb55-44be-b00d-034bbd83574f}")]
-    [KeyPropertyName("KeyName")]
-    [KeyPropertyName("TildeBasedPath")]
+    [KeyPropertyName(0, "KeyName")]
+    [KeyPropertyName(1, "TildeBasedPath")]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
     [DataScope(DataScopeIdentifier.AdministratedName)]
     public interface IFolderWhiteList : IData

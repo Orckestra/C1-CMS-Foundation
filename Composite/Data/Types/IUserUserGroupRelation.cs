@@ -9,8 +9,8 @@ namespace Composite.Data.Types
     /// This data interface represents a user relation to a user group in Composite C1. This can be used to query user group members through a <see cref="Composite.Data.DataConnection"/>. 
     /// </summary>
     [AutoUpdateble]
-    [KeyPropertyName("UserId")]
-    [KeyPropertyName("UserGroupId")]
+    [KeyPropertyName(0, "UserId")]
+    [KeyPropertyName(1, "UserGroupId")]
     [DataScope(DataScopeIdentifier.PublicName)]
     [ImmutableTypeId("{956BC414-4612-4a8a-A673-B82695F322DD}")]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
