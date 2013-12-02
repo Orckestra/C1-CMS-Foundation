@@ -184,7 +184,16 @@ namespace Composite.C1Console.Events.Foundation
             {
                 if (!C1File.Exists(MessageQueueFilePath)) return;
 
-                XElement serializedMessages = XElementUtils.Load(MessageQueueFilePath);
+                XElement serializedMessages;
+
+                try
+                {
+                    serializedMessages = XElementUtils.Load(MessageQueueFilePath);
+                }
+                catch (Exception)
+                {
+                    return;
+                }
 
                 IXmlSerializer xmlSerializer = GetMessageListXmlSerializer();
 
