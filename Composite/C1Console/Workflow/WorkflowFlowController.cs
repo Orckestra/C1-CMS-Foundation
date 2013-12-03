@@ -7,13 +7,14 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Forms.Flows;
 using Composite.C1Console.Tasks;
 using Composite.C1Console.Workflow.Foundation;
-using Composite.Core.Logging;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Workflow
 {
     internal sealed class WorkflowFlowController : IFlowController
     {
+        private static readonly string LogTitle = typeof (WorkflowFlowController).Name;
         private FlowControllerServicesContainer _servicesContainer;
 
 
@@ -29,9 +30,9 @@ namespace Composite.C1Console.Workflow
         {
             WorkflowFlowToken workflowFlowToken = (WorkflowFlowToken)flowToken;
 
-            if (WorkflowFacade.WorkflowExists(workflowFlowToken.WorkflowInstanceId) == false)
+            if (!WorkflowFacade.WorkflowExists(workflowFlowToken.WorkflowInstanceId))
             {
-                LoggingService.LogVerbose("WorkflowFlowController", string.Format("The workflow with Id = {0} does not exists", workflowFlowToken.WorkflowInstanceId));
+                Log.LogVerbose(LogTitle, "The workflow with Id = {0} does not exists", workflowFlowToken.WorkflowInstanceId);
                 return null;
             }
 
@@ -41,11 +42,11 @@ namespace Composite.C1Console.Workflow
                 Semaphore semaphore = WorkflowFacade.WaitForIdleStatus(workflowFlowToken.WorkflowInstanceId);
                 if (semaphore != null)
                 {
-                    LoggingService.LogVerbose("WorkflowFlowController", string.Format("The workflow with Id = {0} is running, waiting until its done.", workflowFlowToken.WorkflowInstanceId));
+                    Log.LogVerbose(LogTitle, "The workflow with Id = {0} is running, waiting until its done.", workflowFlowToken.WorkflowInstanceId);
 
                     semaphore.WaitOne(TimeSpan.FromSeconds(10), true);
 
-                    LoggingService.LogVerbose("WorkflowFlowController", string.Format("Done waiting ont eh workflow with Id = {0}.", workflowFlowToken.WorkflowInstanceId));
+                    Log.LogVerbose(LogTitle, "Done waiting on the workflow with Id = {0}.", workflowFlowToken.WorkflowInstanceId);
                 }
             }
 
@@ -82,7 +83,7 @@ namespace Composite.C1Console.Workflow
                 throw new NotImplementedException();
             }
 
-            if (string.IsNullOrEmpty(formFunction.CustomToolbarDefinition) == false)
+            if (!string.IsNullOrEmpty(formFunction.CustomToolbarDefinition))
             {
                 formFlowUiDefinition.SetCustomToolbarMarkupProvider(new XmlTextReader(new StringReader(formFunction.CustomToolbarDefinition)));
             }
@@ -116,56 +117,56 @@ namespace Composite.C1Console.Workflow
 
             foreach (string eventName in eventNames)
             {
-                if (formData != null && formData.ExcludedEvents != null && formData.ExcludedEvents.Contains(eventName)) continue; ;
+                if (formData != null && formData.ExcludedEvents != null && formData.ExcludedEvents.Contains(eventName)) continue;
 
                 switch (eventName)
                 {
                     case "Save":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Save, new FormFlowEventHandler(OnSave));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Save, OnSave);
                         break;
 
                     case "SaveAndPublish":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.SaveAndPublish, new FormFlowEventHandler(OnSaveAndPublish));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.SaveAndPublish, OnSaveAndPublish);
                         break;
 
                     case "Next":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Next, new FormFlowEventHandler(OnNext));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Next, OnNext);
                         break;
 
                     case "Previous":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Previous, new FormFlowEventHandler(OnPrevious));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Previous, OnPrevious);
                         break;
 
                     case "Finish":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Finish, new FormFlowEventHandler(OnFinish));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Finish, OnFinish);
                         break;
 
                     case "Cancel":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Cancel, new FormFlowEventHandler(OnCancel));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Cancel, OnCancel);
                         break;
 
                     case "Preview":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Preview, new FormFlowEventHandler(OnPreview));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.Preview, OnPreview);
                         break;
 
                     case "CustomEvent01":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent01, new FormFlowEventHandler(OnCustomEvent01));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent01, OnCustomEvent01);
                         break;
 
                     case "CustomEvent02":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent02, new FormFlowEventHandler(OnCustomEvent02));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent02, OnCustomEvent02);
                         break;
 
                     case "CustomEvent03":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent03, new FormFlowEventHandler(OnCustomEvent03));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent03, OnCustomEvent03);
                         break;
 
                     case "CustomEvent04":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent04, new FormFlowEventHandler(OnCustomEvent04));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent04, OnCustomEvent04);
                         break;
 
                     case "CustomEvent05":
-                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent05, new FormFlowEventHandler(OnCustomEvent05));
+                        formFlowUiDefinition.EventHandlers.Add(StandardEventIdentifiers.CustomEvent05, OnCustomEvent05);
                         break;
                 }
             }
@@ -233,7 +234,7 @@ namespace Composite.C1Console.Workflow
 
             IFormFlowRenderingService formServices = serviceContainer.GetService<IFormFlowRenderingService>();
 
-            if (formServices.HasFieldMessages == false)
+            if (!formServices.HasFieldMessages)
             {
                 serviceContainer.GetService<IFormFlowRenderingService>().RerenderView();
             }
@@ -276,7 +277,7 @@ namespace Composite.C1Console.Workflow
 
             IFormFlowRenderingService formServices = serviceContainer.GetService<IFormFlowRenderingService>();
 
-            if (formServices.HasFieldMessages == false)
+            if (!formServices.HasFieldMessages)
             {
                 serviceContainer.GetService<IFormFlowRenderingService>().RerenderView();
             }
@@ -299,7 +300,7 @@ namespace Composite.C1Console.Workflow
             }
             else
             {
-                Core.Logging.LoggingService.LogVerbose("Workflow", string.Format("Cancel event suppressed because the workflow was terminated ({0})", workflowFlowToken.WorkflowInstanceId));
+                Log.LogVerbose(LogTitle, "Cancel event suppressed because the workflow was terminated ({0})", workflowFlowToken.WorkflowInstanceId);
             }
 
             if (serviceContainer != null)
@@ -366,7 +367,7 @@ namespace Composite.C1Console.Workflow
 
             WorkflowFlowToken workflowFlowToken = (WorkflowFlowToken)flowToken;
 
-            using (TaskContainer taskContainer = TaskManagerFacade.RuntTasks(flowToken, new WorkflowTaskManagerEvent(flowToken, workflowFlowToken.WorkflowInstanceId) { EventName = "CustomEvent0" + customEventNumber.ToString() }))
+            using (TaskContainer taskContainer = TaskManagerFacade.RuntTasks(flowToken, new WorkflowTaskManagerEvent(flowToken, workflowFlowToken.WorkflowInstanceId) { EventName = "CustomEvent0" + customEventNumber }))
             {
                 WorkflowFacade.FireCustomEvent(customEventNumber, workflowFlowToken.WorkflowInstanceId, bindings);
                 WorkflowFacade.SetFlowControllerServicesContainer(workflowFlowToken.WorkflowInstanceId, serviceContainer);

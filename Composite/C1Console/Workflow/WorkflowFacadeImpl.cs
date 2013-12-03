@@ -467,13 +467,13 @@ namespace Composite.C1Console.Workflow
                     return null;
                 }
                 
-                if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
+                if (_resourceLocker.Resources.WorkflowIdleWaitSemaphores.ContainsKey(instanceId))
                 {
-                    _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId);
+                    _resourceLocker.Resources.WorkflowIdleWaitSemaphores.Remove(instanceId);
                 }
 
                 Semaphore semaphore = new Semaphore(0, 1);
-                _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Add(instanceId, semaphore);
+                _resourceLocker.Resources.WorkflowIdleWaitSemaphores.Add(instanceId, semaphore);
                 return semaphore;
             }
         }
@@ -484,48 +484,48 @@ namespace Composite.C1Console.Workflow
         {
             using (_resourceLocker.Locker)
             {
+                var resources = _resourceLocker.Resources;
+
                 string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
+
+                Action releaseIdleWaitSemaphore = () =>
+                {
+                    if (resources.WorkflowIdleWaitSemaphores.ContainsKey(instanceId))
+                    {
+                        resources.WorkflowIdleWaitSemaphores[instanceId].Release();
+                        resources.WorkflowIdleWaitSemaphores.Remove(instanceId);
+                    }
+                };
 
                 switch (workflowInstanceStatus)
                 {
                     case WorkflowInstanceStatus.Idle:
-                        if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
+                        releaseIdleWaitSemaphore();
+
+                        if (!resources.WorkflowStatusDictionary.ContainsKey(instanceId) && newlyCreateOrLoaded)
                         {
-                            _resourceLocker.Resources.WorkflowIdleWaitSemaphoes[instanceId].Release();
-                            _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); ;
+                            resources.WorkflowStatusDictionary.Add(instanceId, WorkflowInstanceStatus.Idle);
                         }
 
-                        if (!_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) && newlyCreateOrLoaded)
-                        {
-                            _resourceLocker.Resources.WorkflowStatusDictionary.Add(instanceId, WorkflowInstanceStatus.Idle);
-                        }
-
-                        _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Idle;                        
-
-                        Log.LogVerbose(LogTitle, "Workflow instance status changed to idle. Id = {0}, User = {1}", instanceId, identity);
+                        resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Idle;                        
 
                         PersistFormData(instanceId);
 
                         break;
 
                     case WorkflowInstanceStatus.Running:
-                        _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Running;
-
-                        Log.LogVerbose(LogTitle, "Workflow instance status changed to running. Id = {0}, User = {1}", instanceId, identity);
+                        resources.WorkflowStatusDictionary[instanceId] = WorkflowInstanceStatus.Running;
                         break;
 
                     case WorkflowInstanceStatus.Terminated:
-                        if (_resourceLocker.Resources.WorkflowIdleWaitSemaphoes.ContainsKey(instanceId))
-                        {
-                            _resourceLocker.Resources.WorkflowIdleWaitSemaphoes[instanceId].Release();
-                            _resourceLocker.Resources.WorkflowIdleWaitSemaphoes.Remove(instanceId); 
-                        }
-
-                        _resourceLocker.Resources.WorkflowStatusDictionary.Remove(instanceId);
-
-                        Log.LogVerbose(LogTitle, "Workflow instance status changed to terminated. Id = {0}, User = {1}", instanceId, identity);
+                        releaseIdleWaitSemaphore();
+                        resources.WorkflowStatusDictionary.Remove(instanceId);
                         break;
+                    default:
+                        throw new InvalidOperationException("This line should not be reachable.");
                 }
+
+                Log.LogVerbose(LogTitle, "Workflow instance status changed to {0}. Id = {1}, User = {2}", workflowInstanceStatus, instanceId, identity);
             }
         }
         #endregion
@@ -1238,7 +1238,7 @@ namespace Composite.C1Console.Workflow
         }
 
 
-        static List<Guid> AbortedWorkflows = new List<Guid>();
+        static readonly HashSet<Guid> AbortedWorkflows = new HashSet<Guid>();
 
         private void PersistFormData(Guid instanceId)
         {
@@ -1410,9 +1410,9 @@ namespace Composite.C1Console.Workflow
 
         private enum WorkflowInstanceStatus
         {
-            Idle,
-            Running,
-            Terminated
+            Idle = 0,
+            Running = 1,
+            Terminated = 2
         }
 
 
@@ -1434,7 +1434,7 @@ namespace Composite.C1Console.Workflow
 
             public Dictionary<Guid, WorkflowPersistingType> WorkflowPersistingTypeDictionary { get; set; }
 
-            public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphoes { get; set; }
+            public Dictionary<Guid, Semaphore> WorkflowIdleWaitSemaphores { get; set; }
             public Dictionary<int, Exception> ExceptionFromWorkflow { get; set; }
 
             public Dictionary<Type, IEventHandleFilter> EventHandleFilters { get; set; }
@@ -1466,7 +1466,7 @@ namespace Composite.C1Console.Workflow
                     resources.WorkflowPersistingTypeDictionary.Remove(instanceId);
                 }
 
-                resources.WorkflowIdleWaitSemaphoes = new Dictionary<Guid, Semaphore>();
+                resources.WorkflowIdleWaitSemaphores = new Dictionary<Guid, Semaphore>();
                 resources.ExceptionFromWorkflow = new Dictionary<int, Exception>();
             }
         }
