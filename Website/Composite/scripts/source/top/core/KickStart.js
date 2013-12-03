@@ -22,7 +22,10 @@ var KickStart = new function () {
 		*/
 	this.fireOnLoad = function () {
 		
-		
+			// iPad IOS7 hack
+			if (Client.isPad && Client.isOS7 && window.innerHeight != document.documentElement.clientHeight) {
+				document.documentElement.style.height = window.innerHeight + "px";
+			}
 			
 			Application.lock ( this );
 			fileEventBroadcasterSubscriptions ( true );

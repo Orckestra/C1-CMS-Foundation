@@ -26,6 +26,7 @@ function _Client () {
 	this.isVista = this.isWindows && agent.indexOf("windows nt 6") > -1;
 	this.isMac = platform.indexOf("mac") > -1;
 	this.isPad = navigator.userAgent.match(/iPad/i) != null;
+	this.isOS7 = navigator.userAgent.match(/CPU.*OS 7_\d/i) != null;
 	
 	var version = this._getFlashVersion ();
 	this.hasFlash = ( version && version >= 9 );
