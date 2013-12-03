@@ -167,12 +167,12 @@ namespace Composite.C1Console.Workflow
 
                 SetWorkflowPersistingType(workflowType, workflowInstance.InstanceId);
 
-                if ((arguments.ContainsKey("SerializedEntityToken")) &&
-                    (arguments.ContainsKey("SerializedActionToken")))
+                if (arguments.ContainsKey("SerializedEntityToken")
+                    && arguments.ContainsKey("SerializedActionToken"))
                 {
                     ActionToken actionToken = ActionTokenSerializer.Deserialize((string)arguments["SerializedActionToken"]);
 
-                    if (actionToken.IgnoreEntityTokenLocking == false)
+                    if (!actionToken.IgnoreEntityTokenLocking)
                     {
                         AcquireLockIfNeeded(workflowType, workflowInstance.InstanceId, (string)arguments["SerializedEntityToken"]);
                     }
@@ -539,7 +539,7 @@ namespace Composite.C1Console.Workflow
 
             if (eventHandlerFilterType != null)
             {
-                if (typeof(IEventHandleFilter).IsAssignableFrom(eventHandlerFilterType) == false) throw new ArgumentException(string.Format("The argument eventHandlerFilterType does dot implement the interface '{0}'", typeof(IEventHandleFilter)));
+                Verify.That(typeof(IEventHandleFilter).IsAssignableFrom(eventHandlerFilterType), "The argument eventHandlerFilterType does dot implement the interface '{0}'", typeof(IEventHandleFilter));
 
                 FormData formData = GetFormData(instanceId);
                 if (formData != null)
@@ -887,7 +887,7 @@ namespace Composite.C1Console.Workflow
 
                 _resourceLocker.ResetInitialization();
 
-                InitializeWorkflowRuntime();
+                _workflowRuntime = InitializeWorkflowRuntime();
 
                 InitializeFormsWorkflowRuntime();
 
@@ -913,35 +913,37 @@ namespace Composite.C1Console.Workflow
 
 
 
-        private void InitializeWorkflowRuntime()
+        private WorkflowRuntime InitializeWorkflowRuntime()
         {
+            WorkflowRuntime workflowRuntime;
+
             if (WorkflowRuntimeProviderPluginFacade.HasConfiguration)
             {
                 string providerName = WorkflowRuntimeProviderRegistry.DefaultWorkflowRuntimeProviderName;
 
-                _workflowRuntime = WorkflowRuntimeProviderPluginFacade.GetWorkflowRuntime(providerName);
+                workflowRuntime = WorkflowRuntimeProviderPluginFacade.GetWorkflowRuntime(providerName);
             }
             else
             {
                 Log.LogVerbose(LogTitle, "Using default workflow runtime");
-                _workflowRuntime = new WorkflowRuntime();
+                workflowRuntime = new WorkflowRuntime();
             }
 
 
             _manualWorkflowSchedulerService = new ManualWorkflowSchedulerService(true);
-            _workflowRuntime.AddService(_manualWorkflowSchedulerService);
+            workflowRuntime.AddService(_manualWorkflowSchedulerService);
 
             _fileWorkFlowPersistenceService = new FileWorkFlowPersisetenceService(SerializedWorkflowsDirectory);
-            _workflowRuntime.AddService(_fileWorkFlowPersistenceService);
+            workflowRuntime.AddService(_fileWorkFlowPersistenceService);
 
             _externalDataExchangeService = new ExternalDataExchangeService();
-            _workflowRuntime.AddService(_externalDataExchangeService);
+            workflowRuntime.AddService(_externalDataExchangeService);
 
 
-            AddWorkflowLoggingEvents();
+            AddWorkflowLoggingEvents(workflowRuntime);
 
 
-            _workflowRuntime.WorkflowCompleted += delegate(object sender, WorkflowCompletedEventArgs args)
+            workflowRuntime.WorkflowCompleted += (sender, args) =>
             {
                 using (ThreadDataManager.EnsureInitialize())
                 {
@@ -951,7 +953,7 @@ namespace Composite.C1Console.Workflow
 
 
 
-            _workflowRuntime.WorkflowAborted += delegate(object sender, WorkflowEventArgs args)
+            workflowRuntime.WorkflowAborted += (sender, args) =>
             {
                 using (ThreadDataManager.EnsureInitialize())
                 {
@@ -961,7 +963,7 @@ namespace Composite.C1Console.Workflow
 
 
 
-            _workflowRuntime.WorkflowTerminated += delegate(object sender, WorkflowTerminatedEventArgs args)
+            workflowRuntime.WorkflowTerminated += (sender, args) =>
             {
                 using (ThreadDataManager.EnsureInitialize())
                 {
@@ -976,24 +978,16 @@ namespace Composite.C1Console.Workflow
 
 
 
-            _workflowRuntime.WorkflowCreated += delegate(object sender, WorkflowEventArgs args)
-            {
+            workflowRuntime.WorkflowCreated += (sender, args) =>
                 SetWorkflowInstanceStatus(args.WorkflowInstance.InstanceId, WorkflowInstanceStatus.Idle, true);
-            };
 
-
-
-            _workflowRuntime.WorkflowIdled += delegate(object sender, WorkflowEventArgs args)
-            {
+            workflowRuntime.WorkflowIdled += (sender, args) =>
                 SetWorkflowInstanceStatus(args.WorkflowInstance.InstanceId, WorkflowInstanceStatus.Idle, false);
-            };
 
-
-
-            _workflowRuntime.WorkflowLoaded += delegate(object sender, WorkflowEventArgs args)
-            {
+            workflowRuntime.WorkflowLoaded += (sender, args) => 
                 SetWorkflowInstanceStatus(args.WorkflowInstance.InstanceId, WorkflowInstanceStatus.Idle, true);
-            };
+
+            return workflowRuntime;
         }
 
 
@@ -1041,65 +1035,53 @@ namespace Composite.C1Console.Workflow
 
 
         [DebuggerHidden]
-        private void HandleWorkflowPersistedEvent(object sender, WorkflowEventArgs args)
+        private void LogWorkflowChange(string change, WorkflowEventArgs args, bool logUserName)
         {
             var instance = args.WorkflowInstance;
 
+            string activityTypeName = null;
+
             try
             {
-                Log.LogVerbose(LogTitle,
-                    "Workflow persisted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId);
+                activityTypeName = instance.GetWorkflowDefinition().GetType().FullName;
             }
-            catch (Exception)
+            catch 
             {
-                Log.LogVerbose(LogTitle, "Workflow persisted, Id = {0}", instance.InstanceId);
+                // Silent
             }
+
+            var message = new StringBuilder("Worflow ").Append(change);
+
+            if (activityTypeName != null)
+            {
+                message.Append(", Activity = " + activityTypeName);
+            }
+
+            message.Append(", Id = " + instance.InstanceId);
+
+            if (logUserName)
+            {
+                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
+                message.Append(", User = " + identity);
+            }
+
+            Log.LogVerbose(LogTitle, message.ToString());
         }
 
 
 
-        [DebuggerHidden]
-        private void HandleWorkflowAbortedEvent(object sender, WorkflowEventArgs args)
+        private void AddWorkflowLoggingEvents(WorkflowRuntime workflowRuntime)
         {
-            var instance = args.WorkflowInstance;
 
-            try
+            workflowRuntime.WorkflowCreated += (sender, args) => LogWorkflowChange("created", args, true);
+            workflowRuntime.WorkflowLoaded += (sender, args) => LogWorkflowChange("loaded", args, true);
+            workflowRuntime.WorkflowPersisted += (sender, args) => LogWorkflowChange("persisted", args, false);
+            workflowRuntime.WorkflowAborted += (sender, args) => LogWorkflowChange("aborted", args, false);
+
+            workflowRuntime.WorkflowTerminated += (sender, args) =>
             {
-                Log.LogVerbose(LogTitle,
-                    "Workflow aborted, Activity = {0}, Id = {1}", instance.GetWorkflowDefinition().GetType(), instance.InstanceId);
-            }
-            catch (Exception)
-            {
-                Log.LogVerbose(LogTitle, "Workflow aborted Id = " + instance.InstanceId);
-            }
-        }
-
-
-
-        private void AddWorkflowLoggingEvents()
-        {
-            _workflowRuntime.WorkflowAborted += HandleWorkflowAbortedEvent;
-
-            _workflowRuntime.WorkflowCreated += delegate(object sender, WorkflowEventArgs args)
-            {
-                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
-                Log.LogVerbose(LogTitle, "Workflow created, Activity = {0}, Id = {1}, User = {2}",
-                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId, identity);
-            };
-
-            _workflowRuntime.WorkflowLoaded += delegate(object sender, WorkflowEventArgs args)
-            {
-                string identity = UserValidationFacade.IsLoggedIn() ? UserValidationFacade.GetUsername() : "(system process)";
-                Log.LogVerbose(LogTitle, "Workflow loaded, Activity = {0}, Id = {1}, User = {2}", 
-                    args.WorkflowInstance.GetWorkflowDefinition().GetType(), args.WorkflowInstance.InstanceId, identity);
-            };
-
-
-            _workflowRuntime.WorkflowPersisted += HandleWorkflowPersistedEvent;
-
-            _workflowRuntime.WorkflowTerminated += delegate(object sender, WorkflowTerminatedEventArgs args)
-            {
-                Log.LogError(LogTitle, "Workflow terminated - Id = {0}, Exception:", args.WorkflowInstance.InstanceId);
+                Log.LogError(LogTitle, "Workflow terminated - Id = {0}, Exception:",
+                                args.WorkflowInstance.InstanceId);
                 Log.LogError(LogTitle, args.Exception);
             };
         }
@@ -1110,8 +1092,8 @@ namespace Composite.C1Console.Workflow
         {
             foreach (Guid instanceId in _fileWorkFlowPersistenceService.GetPersistedWorkflows())
             {
-                if ((_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) == false) ||
-                    (_resourceLocker.Resources.WorkflowStatusDictionary[instanceId] != WorkflowInstanceStatus.Running))
+                if (!_resourceLocker.Resources.WorkflowStatusDictionary.ContainsKey(instanceId) 
+                    || _resourceLocker.Resources.WorkflowStatusDictionary[instanceId] != WorkflowInstanceStatus.Running)
                 {
                     // This will make the runtime load the persised workflow
                     WorkflowInstance workflowInstance = null;
@@ -1151,7 +1133,7 @@ namespace Composite.C1Console.Workflow
                         XDocument doc = XDocumentUtils.Load(filename);
                         FormData formData = FormData.Deserialize(doc.Root);
 
-                        if (_resourceLocker.Resources.FormData.ContainsKey(id) == false)
+                        if (!_resourceLocker.Resources.FormData.ContainsKey(id))
                         {
                             _resourceLocker.Resources.FormData.Add(id, formData);
                             FormsWorkflowBindingCache.Bindings.Add(id, formData.Bindings);
@@ -1159,7 +1141,7 @@ namespace Composite.C1Console.Workflow
                     }
                     catch (DataSerilizationException)
                     {
-                        //Log.LogVerbose(LogTitle, string.Format("The workflow {0} contained one or more bindings where data was deleted or data type changed, workflow can not be resumed", id));
+                        Log.LogWarning(LogTitle, "The workflow {0} contained one or more bindings where data was deleted or data type changed", id);
 
                         //AbortWorkflow(id);
                     }
@@ -1198,7 +1180,7 @@ namespace Composite.C1Console.Workflow
         {
             _fileWorkFlowPersistenceService.PersistAll = true;
 
-            HashSet<Guid> abortedWorkflows = new HashSet<Guid>(_fileWorkFlowPersistenceService.GetAbortedWorkflows());
+            var abortedWorkflows = new HashSet<Guid>(_fileWorkFlowPersistenceService.GetAbortedWorkflows());
 
             foreach (Guid instanceId in _resourceLocker.Resources.WorkflowStatusDictionary.Keys.ToList())
             {
@@ -1206,14 +1188,6 @@ namespace Composite.C1Console.Workflow
                 {
                     continue;
                 }
-
-                /*WorkflowPersistingType workflowPersistingType;
-
-                if (_resourceLocker.Resources.WorkflowPersistingTypeDictionary.TryGetValue(instanceId, out workflowPersistingType)
-                    && workflowPersistingType != WorkflowPersistingType.Never)
-                {
-                    UnloadSilent(instanceId);
-                }*/
 
                 UnloadSilent(instanceId);
             }
@@ -1337,7 +1311,7 @@ namespace Composite.C1Console.Workflow
                 {
                     C1File.Delete(filename);
 
-                    Log.LogVerbose(LogTitle, string.Format("Persisted FormData deleted for workflow id = {0}", instanceId));
+                    Log.LogVerbose(LogTitle, "Persisted FormData deleted for workflow id = {0}", instanceId);
                 }
             }
         }
@@ -1383,7 +1357,7 @@ namespace Composite.C1Console.Workflow
             get
             {
                 string directory = PathUtil.Resolve(GlobalSettingsFacade.SerializedWorkflowsDirectory);
-                if (C1Directory.Exists(directory) == false)
+                if (!C1Directory.Exists(directory))
                 {
                     C1Directory.CreateDirectory(directory);
                 }
@@ -1397,13 +1371,11 @@ namespace Composite.C1Console.Workflow
         {
             if (flowControllerServicesContainer == null) return false;
 
-            IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
             if (managementConsoleMessageService == null) return false;
 
-            if (managementConsoleMessageService.CurrentConsoleId == consoleId) return true;
-
-            return false;
+            return managementConsoleMessageService.CurrentConsoleId == consoleId;
         }
 
 
