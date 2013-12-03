@@ -556,6 +556,7 @@ this.isWindows=_70.indexOf("win")>-1;
 this.isVista=this.isWindows&&_6f.indexOf("windows nt 6")>-1;
 this.isMac=_70.indexOf("mac")>-1;
 this.isPad=navigator.userAgent.match(/iPad/i)!=null;
+this.isOS7=navigator.userAgent.match(/CPU.*OS 7_\d/i)!=null;
 var _75=this._getFlashVersion();
 this.hasFlash=(_75&&_75>=9);
 this.hasTransitions=_74;
@@ -30388,6 +30389,9 @@ document.location="unsupported.aspx";
 return;
 }
 this.fireOnLoad=function(){
+if(Client.isPad&&Client.isOS7&&window.innerHeight!=document.documentElement.clientHeight){
+document.documentElement.style.height=window.innerHeight+"px";
+}
 Application.lock(this);
 fileEventBroadcasterSubscriptions(true);
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_SHUTDOWN,this);
