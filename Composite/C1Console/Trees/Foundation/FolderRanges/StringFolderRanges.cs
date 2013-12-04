@@ -1,15 +1,16 @@
 ﻿using System.Linq;
-using Composite.Core.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Composite.Core.Linq;
 
 
 namespace Composite.C1Console.Trees.Foundation.FolderRanges
 {
     internal sealed class StringFolderRanges : BaseFolderRanges
     {
-        private readonly MethodInfo StringCompareMethodInfo = typeof(string).GetMethods().Where(f => f.Name == "Compare").First();
-        private readonly MethodInfo ToUpperCompareMethodInfo = typeof(string).GetMethods().Where(f => f.Name == "ToUpper").First();
+        private readonly MethodInfo StringCompare_MethodInfo = typeof(string).GetMethods().First(f => f.Name == "Compare");
+        private readonly MethodInfo StringToUpper_MethodInfo = typeof(string).GetMethods().First(f => f.Name == "ToUpper");
+        private readonly MethodInfo StringStartsWith_MethodInfo = typeof(string).GetMethods().First(f => f.Name == "StartsWith");
 
 
         public override Expression CreateContainsListSelectBodyExpression(Expression fieldExpression, ParameterExpression parameterExpression)
@@ -26,6 +27,8 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                     currentExpression = Expression.Constant(-1);
                 }
 
+                var fieldToUpper = Expression.Call(fieldExpression, this.StringToUpper_MethodInfo);
+
                 currentExpression = Expression.Condition(
                     Expression.AndAlso(
                         Expression.NotEqual(
@@ -35,30 +38,24 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                         Expression.AndAlso(
                             Expression.GreaterThanOrEqual(
                                 Expression.Call(
-                                    this.StringCompareMethodInfo,
-                                    Expression.Call(
-                                        fieldExpression,
-                                        this.ToUpperCompareMethodInfo
-                                    ),
-                                    Expression.Constant(
-                                        minValue.ToUpper()
-                                    )
+                                    this.StringCompare_MethodInfo,
+                                    fieldToUpper,
+                                    Expression.Constant(minValue.ToUpperInvariant())
                                 ),
                                 Expression.Constant(0)
                             ),
-                            Expression.LessThanOrEqual(
-                                Expression.Call(
-                                    this.StringCompareMethodInfo,
+                            Expression.OrElse(
+                                Expression.LessThanOrEqual(
                                     Expression.Call(
-                                        fieldExpression,
-                                        this.ToUpperCompareMethodInfo
+                                        this.StringCompare_MethodInfo,
+                                        fieldToUpper,
+                                        Expression.Constant(maxValue.ToUpperInvariant())
                                     ),
-                                    Expression.Constant(
-                                        maxValue.ToUpper() + (char)(64967) + (char)(64967) + (char)(64967)
-                                    )
+                                    Expression.Constant(0)
                                 ),
-                                Expression.Constant(0)
+                                Expression.Call(fieldToUpper, StringStartsWith_MethodInfo, Expression.Constant(maxValue.ToUpperInvariant()))
                             )
+                            
                         )
                     ),
                     Expression.Constant(folderRange.Index),
@@ -77,24 +74,20 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
             {
                 IFolderRange folderRange = this.GetFolderRange(folderRangeIndex);
 
+                return CreateFolderRangeExpression(folderRange, fieldExpression);
+            }
+            
+            Expression currentExpression = null;
+            foreach (IFolderRange folderRange in this.Ranges.Where(f => f.Index != -1))
+            {
                 Expression expression = CreateFolderRangeExpression(folderRange, fieldExpression);
 
-                return expression;
+                expression = Expression.Not(expression);
+
+                currentExpression = currentExpression.NestedAnd(expression);
             }
-            else
-            {
-                Expression currentExpression = null;
-                foreach (IFolderRange folderRange in this.Ranges.Where(f => f.Index != -1))
-                {
-                    Expression expression = CreateFolderRangeExpression(folderRange, fieldExpression);
 
-                    expression = Expression.Not(expression);
-
-                    currentExpression = currentExpression.NestedAnd(expression);
-                }
-
-                return currentExpression;
-            }
+            return currentExpression;
         }
 
 
@@ -102,7 +95,9 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
         private Expression CreateFolderRangeExpression(IFolderRange folderRange, Expression fieldExpression)
         {
             string minValue = GetMinValue(folderRange);
-            string maxValue = GetMaxValue(folderRange);            
+            string maxValue = GetMaxValue(folderRange);
+
+            var fieldToUpper = Expression.Call(fieldExpression, this.StringToUpper_MethodInfo);
 
             Expression expression = Expression.AndAlso(
                 Expression.NotEqual(
@@ -112,30 +107,26 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
                 Expression.AndAlso(
                     Expression.GreaterThanOrEqual(
                         Expression.Call(
-                            this.StringCompareMethodInfo,
-                            Expression.Call(
-                                fieldExpression,
-                                this.ToUpperCompareMethodInfo
-                            ),
-                            Expression.Constant(
-                                minValue.ToUpper()
-                            )
+                            this.StringCompare_MethodInfo,
+                            fieldToUpper,
+                            Expression.Constant(minValue.ToUpperInvariant())
                         ),
                         Expression.Constant(0)
                     ),
-                    Expression.LessThanOrEqual(
-                        Expression.Call(
-                            this.StringCompareMethodInfo,
+
+                    Expression.OrElse(
+                        Expression.LessThanOrEqual(
                             Expression.Call(
-                                fieldExpression,
-                                this.ToUpperCompareMethodInfo
+                                this.StringCompare_MethodInfo,
+                                fieldToUpper,
+                                Expression.Constant(maxValue.ToUpperInvariant())
                             ),
-                            Expression.Constant(
-                                maxValue.ToUpper() + (char)(64967) + (char)(64967) + (char)(64967)
-                            )
+                            Expression.Constant(0)
                         ),
-                        Expression.Constant(0)
+
+                        Expression.Call(fieldToUpper, StringStartsWith_MethodInfo, Expression.Constant(maxValue.ToUpperInvariant()))
                     )
+                    
                 )
             );
 
@@ -144,17 +135,25 @@ namespace Composite.C1Console.Trees.Foundation.FolderRanges
 
 
 
-        private string GetMinValue(IFolderRange folderRange)
+        private static string GetMinValue(IFolderRange folderRange)
         {
-            if (folderRange.IsMinOpenEnded == false) return (string)folderRange.MinValue;
-            else return "" + (char.MinValue + 1) + (char.MinValue + 1) + (char.MinValue + 1);
+            if (folderRange.IsMinOpenEnded)
+            {
+                return "" + (char.MinValue + 1) + (char.MinValue + 1) + (char.MinValue + 1);
+            }
+
+            return (string) folderRange.MinValue;
         }
 
 
-        private string GetMaxValue(IFolderRange folderRange)
+        private static string GetMaxValue(IFolderRange folderRange)
         {
-            if (folderRange.IsMaxOpenEnded == false) return (string)folderRange.MaxValue;
-            else return "" + char.MaxValue + char.MaxValue + char.MaxValue;
+            if (folderRange.IsMaxOpenEnded)
+            {
+                return "" + char.MaxValue + char.MaxValue + char.MaxValue;
+            }
+
+            return (string) folderRange.MaxValue;
         }
     }
 }
