@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
@@ -23,16 +24,34 @@ namespace Composite.Core.Types
 
         public Type GetType(string fullName)
         {
-            Type type = TryGetType(fullName);
-
-            if (type != null)
-            {
-                return type;
-            }
-
-            throw new InvalidOperationException(string.Format("The type {0} could not be found", fullName));
+            return GetType(fullName, true);
         }
 
+        private Type GetType(string fullName, bool throwIfNotFound)
+        {
+            Verify.ArgumentNotNullOrEmpty(fullName, "fullName");
+
+            Type type;
+
+            // A little nasty check here... /MRJ
+            if (fullName.StartsWith("<t"))
+            {
+                var element = XElement.Parse(fullName);
+
+                type = GetGenericType(element);
+            }
+            else
+            {
+                type = GetNonGenericType(fullName);
+            }
+
+            if (throwIfNotFound && type == null)
+            {
+                throw new InvalidOperationException(string.Format("The type '{0}' could not be found", fullName));
+            }
+
+            return type;
+        }
 
 
         /// <summary>
@@ -41,18 +60,13 @@ namespace Composite.Core.Types
         /// <returns>A type or null</returns>
         public Type TryGetType(string fullName)
         {
-            if (string.IsNullOrEmpty(fullName)) throw new ArgumentNullException("fullName");
-
-            // A little nasty check here... /MRJ
-            if (fullName.StartsWith("<t"))
+            try
             {
-                XElement element = XElement.Parse(fullName);
-
-                return TryGetGenericType(element);
+                return GetType(fullName, false);
             }
-            else
+            catch
             {
-                return TryGetNonGenericType(fullName);
+                return null;
             }
         }
 
@@ -62,7 +76,10 @@ namespace Composite.Core.Types
         {
             string serializedType = TrySerializeType(type);
 
-            if (string.IsNullOrEmpty(serializedType)) throw new InvalidOperationException(string.Format("No TypeManagerTypeHandler plugins could serialize the given type '{0}'", type));
+            if (string.IsNullOrEmpty(serializedType))
+            {
+                throw new InvalidOperationException(string.Format("No TypeManagerTypeHandler plugins could serialize the given type '{0}'", type));
+            }
 
             return serializedType;
         }
@@ -100,19 +117,9 @@ namespace Composite.Core.Types
                 }
             }
 
-            List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
-
-            foreach (ProviderEntry entry in providerEntries)
-            {
-                bool result = TypeManagerTypeHandlerPluginFacade.HasTypeWithName(entry.ProviderName, typeFullname);
-                if (result)
-                {
-                    return result;
-                }
-
-            }
-
-            return false;
+            var providerEntries = _resourceLocker.Resources.ProviderNameList;
+            
+            return providerEntries.Any(entry => TypeManagerTypeHandlerPluginFacade.HasTypeWithName(entry.ProviderName, typeFullname));
         }
 
 
@@ -125,7 +132,7 @@ namespace Composite.Core.Types
 
 
 
-        private Type TryGetGenericType(XElement element)
+        private Type GetGenericType(XElement element)
         {
             if (element.HasElements)
             {
@@ -137,7 +144,7 @@ namespace Composite.Core.Types
 
                 foreach (XElement childElement in element.Elements())
                 {
-                    Type type = TryGetGenericType(childElement);
+                    Type type = GetGenericType(childElement);
 
                     if (type == null) return null;
 
@@ -148,9 +155,7 @@ namespace Composite.Core.Types
 
                 if (genericType == null) return null;
 
-                genericType = genericType.MakeGenericType(genericArguments.ToArray());
-
-                return genericType;
+                return genericType.MakeGenericType(genericArguments.ToArray());
             }
             else
             {
@@ -158,13 +163,13 @@ namespace Composite.Core.Types
 
                 if (attribute == null) return null;
 
-                return TryGetNonGenericType(attribute.Value);
+                return GetNonGenericType(attribute.Value);
             }
         }
 
 
 
-        private Type TryGetNonGenericType(string fullName)
+        private Type GetNonGenericType(string fullName)
         {
             using (_resourceLocker.ReadLocker)
             {
@@ -177,7 +182,7 @@ namespace Composite.Core.Types
             fullName = TypeManager.FixLegasyTypeName(fullName);
 
             // This should be the first thing tried, otherwise "old" types are found in Composite.Genereted.dll instead of a possible new compiled version of the type /MRJ
-            if (fullName.Contains(",") == false)
+            if (!fullName.Contains(","))
             {
                 Type compositeType = typeof (Composite.Data.IData).Assembly.GetType(fullName, false);
                 if (compositeType != null) return compositeType;
@@ -187,23 +192,14 @@ namespace Composite.Core.Types
 
             foreach (ProviderEntry entry in providerEntries)
             {
-                Type type;
-                try
-                {
-                    type = TypeManagerTypeHandlerPluginFacade.GetType(entry.ProviderName, fullName);
-                }
-                catch
-                {
-                    // Do nothing here...
-                    type = null;
-                }
+                Type type = TypeManagerTypeHandlerPluginFacade.GetType(entry.ProviderName, fullName);
+
                 if (type != null)
                 {
                     return type;
                 }
             }
-
-
+            
             return null;
         }
 
@@ -233,13 +229,11 @@ namespace Composite.Core.Types
 
                 return element;
             }
-            else
-            {
-                string serializedType = TrySerializeNonGenericType(type);
-                if (serializedType == null) return null;
+            
+            string serializedType = TrySerializeNonGenericType(type);
+            if (serializedType == null) return null;
 
-                return new XElement("t", new XAttribute("n", serializedType));
-            }
+            return new XElement("t", new XAttribute("n", serializedType));
         }
 
 
@@ -259,7 +253,7 @@ namespace Composite.Core.Types
                 }
             }
 
-            List<ProviderEntry> providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
+            var providerEntries = new List<ProviderEntry>(_resourceLocker.Resources.ProviderNameList);
 
             foreach (ProviderEntry entry in providerEntries)
             {
@@ -333,8 +327,8 @@ namespace Composite.Core.Types
         [DebuggerDisplay("ProviderName = {ProviderName}, Priority = {Priority}")]
         private class ProviderEntry
         {
-            private int _priority;
-            private string _providerName;
+            private readonly int _priority;
+            private readonly string _providerName;
 
             public ProviderEntry(int priority, string providerName)
             {

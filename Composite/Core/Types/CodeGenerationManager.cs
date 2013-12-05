@@ -40,10 +40,23 @@ namespace Composite.Core.Types
 
         static CodeGenerationManager()
         {
-            string assemblyTempPath = PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
-            if (!C1Directory.Exists(assemblyTempPath))
+            string assemblyTempPath = null;
+
+            try
             {
-                C1Directory.CreateDirectory(assemblyTempPath);
+                assemblyTempPath = PathUtil.Resolve(GlobalSettingsFacade.GeneratedAssembliesDirectory);
+            }
+            catch
+            {
+                // NOTE: We don't want this static constructor fail if GlobalSettingsFacade failed to load.
+            }
+
+            if (assemblyTempPath != null)
+            {
+                if (!C1Directory.Exists(assemblyTempPath))
+                {
+                    C1Directory.CreateDirectory(assemblyTempPath);
+                }
             }
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);

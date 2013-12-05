@@ -15,11 +15,13 @@ namespace Composite.Core.Collections.Generic
         public delegate void InitializerDelegate(T resources);
 
         private readonly T _resources;
-        private InitializerDelegate _initializerDelegate;
+        private readonly InitializerDelegate _initializerDelegate;
+        private readonly bool _requireCoreReaderLock;
 
-        private bool _initialized = false;
-        private bool _initializing = false;
-        private bool _requireCoreReaderLock;
+        private bool _initialized;
+        private bool _initializing;
+        private Exception _initializationException;
+        
         private readonly object _lock = new object();
 
 
@@ -44,7 +46,12 @@ namespace Composite.Core.Collections.Generic
             {
                 if (!_initialized)
                 {
-                  Initialize();
+                    Initialize();
+                }
+
+                if (_initializationException != null)
+                {
+                    throw _initializationException;
                 }
 
                 return _resources;
@@ -86,11 +93,17 @@ namespace Composite.Core.Collections.Generic
 						return;
 
 					_initializing = true;
+                    _initializationException = null;
 
-					try
-					{
-						_initializerDelegate(_resources);
-					}
+				    try
+				    {
+				        _initializerDelegate(_resources);
+				    }
+				    catch (Exception exception)
+				    {
+				        _initializationException = exception;
+				        throw;
+				    }
 					finally
 					{
 						_initialized = true;
@@ -153,7 +166,7 @@ namespace Composite.Core.Collections.Generic
 
         private sealed class ResourceLockerToken : IDisposable
         {
-            private ResourceLocker<T> _resourceLocker;
+            private readonly ResourceLocker<T> _resourceLocker;
 
             internal ResourceLockerToken(ResourceLocker<T> resourceLocker)
             {
