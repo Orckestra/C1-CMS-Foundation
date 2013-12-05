@@ -311,7 +311,12 @@ WindowBinding.prototype.buildDOMContent = function () {
 	this.shadowTree.iframe.id = KeyMaster.getUniqueKey();
 	this.shadowTree.iframe.name = this.shadowTree.iframe.id;
 	this.bindingElement.appendChild ( this.shadowTree.iframe );
-	this._registerOnloadListener ( true );
+	this._registerOnloadListener(true);
+
+
+	this.bindingElement.onresize = function () {
+		alert(1);
+	}
 };
 
 /**
@@ -414,6 +419,8 @@ WindowBinding.prototype.onWindowLoaded = function ( win ) {
 			this._registerUnloadListener ( true );
 			this.dispatchAction ( WindowBinding.ACTION_ONLOAD );
 			this._hasLoadActionFired = true;
+
+			this.fitContentWindow();
 		}
 	}
 };
@@ -667,6 +674,30 @@ WindowBinding.prototype.post = function ( list, url ) {
 		throw "Post aborted";
 	}
 };
+
+/**
+ * Action dispatched to be intercepted by the {@link ViewBinding}.
+ * @implements {IFlexible}
+ */
+WindowBinding.prototype.flex = function () {
+
+	this.fitContentWindow();
+	WindowBinding.superclass.flex.call(this);
+}
+
+
+/**
+ * Fit ContentWindows to WindowBinding.
+ */
+WindowBinding.prototype.fitContentWindow = function () {
+	if (Client.isPad) {
+		var contentWindow = this.getContentWindow();
+		if (contentWindow != null && contentWindow.document != null && contentWindow.document.body != null) {
+			contentWindow.document.body.style.height = this.bindingElement.offsetHeight + "px";
+		}
+	}
+}
+
 
 /**
  * WindowBinding factory.

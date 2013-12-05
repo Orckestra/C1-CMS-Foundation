@@ -11,7 +11,6 @@
 		<title>C1: <%=Request.Url.Host%></title>
         <meta name="robots" content="noindex, nofollow" />
         <meta name="google" value="notranslate" />
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 
 		<control:styleloader runat="server"/>
