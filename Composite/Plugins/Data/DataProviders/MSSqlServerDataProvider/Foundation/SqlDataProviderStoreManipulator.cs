@@ -351,7 +351,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                             FROM [{1}];", toTableName, fromTableName, fieldList);
                     ExecuteNonQuery(copyCommandText);
 
-                    string updateCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}', [{3}] = '{4}'", toTableName, "CultureName", locale.Name, "SourceCultureName", locale.Name);
+                    string updateCommandTesxt = string.Format("UPDATE [{0}] SET [{1}] = '{2}'", toTableName, "SourceCultureName", locale.Name);
                     ExecuteNonQuery(updateCommandTesxt);
                 }
 

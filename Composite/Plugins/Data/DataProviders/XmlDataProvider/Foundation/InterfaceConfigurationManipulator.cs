@@ -162,40 +162,35 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             configurationElement.DataTypeId = dataTypeDescriptor.DataTypeId;
             configurationElement.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
 
-            bool isLocalizable = false;
-            if (dataTypeDescriptor.IsCodeGenerated == false)
+            bool isLocalized = dataTypeDescriptor.Localizeable;
+            if (!dataTypeDescriptor.IsCodeGenerated)
             {
                 Type interfaceType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
                 if (interfaceType != null)
                 {
-                    isLocalizable = DataLocalizationFacade.IsLocalizable(interfaceType);
+                    isLocalized = DataLocalizationFacade.IsLocalizable(interfaceType);
                 }
-                else
-                {
-                    isLocalizable = dataTypeDescriptor.Localizeable;
-                }
-            }
-            else 
-            {
-                isLocalizable = true;
             }
 
             foreach (DataScopeIdentifier dataScopeIdentifier in dataTypeDescriptor.DataScopes)
             {
-                configurationElement.ConfigurationStores.Add(new DataScopeConfigurationElement
+                if (!isLocalized)
                 {
-                    DataScope = dataScopeIdentifier.Name,
-                    CultureName = CultureInfo.InvariantCulture.Name,
-                    Filename = NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, CultureInfo.InvariantCulture.Name),
-                    ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
-                });
-
-                if (isLocalizable)
-                {
-                    List<string> localezationNames = DataLocalizationFacade.ActiveLocalizationNames.ToList();
-                    foreach (string cultureName in localezationNames)
+                    configurationElement.ConfigurationStores.Add(new DataScopeConfigurationElement
                     {
-                        if ((removedCultureInfo != null) && (removedCultureInfo.Name == cultureName)) continue;
+                        DataScope = dataScopeIdentifier.Name,
+                        CultureName = CultureInfo.InvariantCulture.Name,
+                        Filename = NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, CultureInfo.InvariantCulture.Name),
+                        ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
+                    });
+                }
+
+                if (isLocalized)
+                {
+                    List<string> localizationNames = DataLocalizationFacade.ActiveLocalizationNames.ToList();
+                    foreach (string cultureName in localizationNames)
+                    {
+                        if (removedCultureInfo != null && removedCultureInfo.Name == cultureName) continue;
 
                         configurationElement.ConfigurationStores.Add(new DataScopeConfigurationElement
                             {
@@ -207,7 +202,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     }
 
 
-                    if ((addedCultureInfo != null) && (localezationNames.Contains(addedCultureInfo.Name) == false))
+                    if (addedCultureInfo != null && !localizationNames.Contains(addedCultureInfo.Name))
                     {
                         configurationElement.ConfigurationStores.Add(new DataScopeConfigurationElement
                         {

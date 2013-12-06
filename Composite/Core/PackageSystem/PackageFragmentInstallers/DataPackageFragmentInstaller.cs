@@ -104,7 +104,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             using (new DataScope(locale))
                             {
-                                XElement element = AddDatas(dataType, locale);
+                                XElement element = AddData(dataType, locale);
                                 typeElement.Add(element);
                             }
                         }
@@ -113,7 +113,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
                         {
-                            XElement element = AddDatas(dataType, UserSettings.ActiveLocaleCultureInfo);
+                            XElement element = AddData(dataType, UserSettings.ActiveLocaleCultureInfo);
                             typeElement.Add(element);
                         }
                     }
@@ -123,7 +123,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         {
                             using (new DataScope(dataType.Locale))
                             {
-                                XElement element = AddDatas(dataType, dataType.Locale);
+                                XElement element = AddData(dataType, dataType.Locale);
                                 typeElement.Add(element);
                             }
                         }
@@ -132,7 +132,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     {
                         using (new DataScope(UserSettings.ActiveLocaleCultureInfo))
                         {
-                            XElement element = AddDatas(dataType, null);
+                            XElement element = AddData(dataType, null);
                             typeElement.Add(element);
                         }
                     }
@@ -151,7 +151,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         }
 
 
-        private static XElement AddDatas(DataType dataType, CultureInfo cultureInfo)
+        private static XElement AddData(DataType dataType, CultureInfo cultureInfo)
         {
             XElement datasElement = new XElement("Datas");
 
@@ -171,6 +171,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
+                    if (IsObsoleteField(dataType, attribute.Name.LocalName))
+                    {
+                        continue;
+                    }
+
                     PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().Single(f => f.Name == attribute.Name);
 
                     propertyInfo.SetValue(data, ValueTypeConverter.Convert(attribute.Value, propertyInfo.PropertyType), null);
@@ -388,6 +393,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     PropertyInfo propertyInfo = dataType.InterfaceType.GetPropertiesRecursively().FirstOrDefault(f => f.Name == attribute.Name);
                     if (propertyInfo == null)
                     {
+                        // A compatibility fix
+                        if (IsObsoleteField(dataType, attribute.Name.LocalName))
+                        {
+                            continue;
+                        }
+
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataType.InterfaceType, attribute.Name));
                         propertyValidationPassed = false;
                         continue;
@@ -526,6 +537,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
         }
 
+        private static bool IsObsoleteField(DataType dataType, string fieldName)
+        {
+            return typeof(ILocalizedControlled).IsAssignableFrom(dataType.InterfaceType) && fieldName == "CultureName";
+        }
+
         private void MapReference(Type type, string propertyName, object key, out Type referenceType, out string keyPropertyName, out object referenceKey)
         {
             if ((type == typeof(IImageFile) || type == typeof(IMediaFile))
@@ -588,6 +604,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
+                    // A compatibility fix
+                    if (IsObsoleteField(dataType, attribute.Name.LocalName))
+                    {
+                        continue;
+                    }
+
                     DataFieldDescriptor dataFieldDescriptor = dataTypeDescriptor.Fields[attribute.Name.LocalName];
 
                     if (dataFieldDescriptor == null)

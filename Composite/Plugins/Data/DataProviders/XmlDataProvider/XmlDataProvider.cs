@@ -429,7 +429,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
         private const string _storesPropertyName = "Stores";
-        [System.Configuration.ConfigurationProperty(_storesPropertyName, IsRequired = true)]
+        [System.Configuration.ConfigurationProperty(_storesPropertyName, IsRequired = false)]
         public DataScopeConfigurationElementCollection ConfigurationStores
         {
             get { return (DataScopeConfigurationElementCollection)base[_storesPropertyName]; }

@@ -101,7 +101,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[dataScopeIdentifier][locale.Name];
 
                         Dictionary<string, object> nfv = new Dictionary<string, object>(newFieldValues);
-                        nfv.Add("CultureName", locale.Name);
                         nfv.Add("SourceCultureName", locale.Name);
 
                         CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, nfv, false);
