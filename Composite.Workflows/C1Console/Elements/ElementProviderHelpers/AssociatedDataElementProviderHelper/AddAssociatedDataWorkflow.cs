@@ -162,12 +162,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 ILocalizedControlled localizedData = newData as ILocalizedControlled;
                 if (localizedData != null)
                 {
-                    CultureInfo cultureInfo = UserSettings.ActiveLocaleCultureInfo;
-                    if (cultureInfo == null)
-                    {
-                        cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
-                    }
-                    localizedData.CultureName = cultureInfo.Name;
+                    CultureInfo cultureInfo = UserSettings.ActiveLocaleCultureInfo ?? DataLocalizationFacade.DefaultLocalizationCulture;
                     localizedData.SourceCultureName = cultureInfo.Name;
                 }
 

@@ -215,7 +215,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     ILocalizedControlled localizedData = metaData as ILocalizedControlled;
                     if (localizedData != null)
                     {
-                        localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                         localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                     }
 
@@ -436,7 +435,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         originalPage.FriendlyUrl = selectedPage.FriendlyUrl;
                         originalPage.Description = selectedPage.Description;
                         originalPage.PublicationStatus = selectedPage.PublicationStatus;
-                        originalPage.CultureName = selectedPage.CultureName;
                         originalPage.SourceCultureName = selectedPage.SourceCultureName;
                         DataFacade.Update(originalPage);
 
@@ -463,7 +461,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             newContent.PageId = selectedPage.Id;
                             newContent.PlaceHolderId = contentDictionaryElement.Key;
                             newContent.Content = contentDictionaryElement.Value;
-                            newContent.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                             newContent.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                             newContent.PublicationStatus = GenericPublishProcessController.Draft;
 
@@ -544,7 +541,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     ILocalizedControlled localizedData = newData as ILocalizedControlled;
                     if (localizedData != null)
                     {
-                        localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                         localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                     }
 

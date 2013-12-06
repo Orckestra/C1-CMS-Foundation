@@ -248,7 +248,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 IPage selectedPage = (IPage)dataEntityToken.Data;
 
                 templateId = selectedPage.TemplateId;
-                cultureName = selectedPage.CultureName;
             }
             else
             {
@@ -280,7 +279,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             newPage.Id = Guid.NewGuid();
             newPage.TemplateId = templateId;
             newPage.PageTypeId = pageTypeId.Value;
-            newPage.CultureName = cultureName;
             newPage.Title = "";
             newPage.MenuTitle = "";
             newPage.UrlTitle = "";
@@ -444,7 +442,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             Guid parentId = GetParentId();
 
             IPage newPage = this.GetBinding<IPage>("NewPage");
-            newPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
             newPage.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
             IPageType selectedPageType = DataFacade.GetData<IPageType>().Single(f => f.Id == newPage.PageTypeId);

@@ -105,7 +105,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                     data.ProjectedCopyTo(newData);
 
                     ILocalizedControlled localizedControlled = newData as ILocalizedControlled;
-                    localizedControlled.CultureName = targetCultureInfo.Name;
                     localizedControlled.SourceCultureName = targetCultureInfo.Name;
 
                     if (newData is IPublishControlled)

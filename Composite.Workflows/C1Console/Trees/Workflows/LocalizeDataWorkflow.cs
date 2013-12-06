@@ -97,7 +97,6 @@ namespace Composite.C1Console.Trees.Workflows
                     data.ProjectedCopyTo(newData);
 
                     ILocalizedControlled localizedControlled = newData as ILocalizedControlled;
-                    localizedControlled.CultureName = targetCultureInfo.Name;
                     localizedControlled.SourceCultureName = targetCultureInfo.Name;
 
                     if (newData is IPublishControlled)

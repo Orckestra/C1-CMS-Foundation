@@ -190,7 +190,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VisualFunctionProviderElem
                 previewPage.DataSourceId.LocaleScope = LocalizationScopeManager.CurrentLocalizationScope;
 
                 previewPage.TemplateId = this.GetBinding<Guid>("PreviewTemplateId");
-                previewPage.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
 
                 var pageTemplate = PageTemplateFacade.GetPageTemplate(previewPage.TemplateId);
                 IPagePlaceholderContent placeHolderContent = DataFacade.BuildNew<IPagePlaceholderContent>();

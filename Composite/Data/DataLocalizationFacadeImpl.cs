@@ -375,8 +375,7 @@ namespace Composite.Data
                     optionalReferenceWithValue = true;
                 }
 
-                // TODO: Refactor out usage of the CultureName
-                CultureInfo locale = data.CultureName != null ? CultureInfo.CreateSpecificCulture(data.CultureName) : data.DataSourceId.LocaleScope;
+                CultureInfo locale = data.DataSourceId.LocaleScope;
 
                 using (new DataScope(locale))
                 {

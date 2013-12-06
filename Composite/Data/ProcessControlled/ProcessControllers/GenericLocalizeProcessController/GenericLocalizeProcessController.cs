@@ -29,7 +29,6 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericLocalizePro
 
                 if (cultureInfo != null)
                 {
-                    localizedData.CultureName = cultureInfo.Name;
                     localizedData.SourceCultureName = cultureInfo.Name;
                 }
             }

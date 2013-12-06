@@ -64,7 +64,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     newPage = DataFacade.BuildNew<IPage>();
                     sourcePage.ProjectedCopyTo(newPage);
 
-                    newPage.CultureName = targetCultureInfo.Name;
                     newPage.SourceCultureName = targetCultureInfo.Name;
                     newPage.PublicationStatus = GenericPublishProcessController.Draft;
                     newPage = DataFacade.AddNew<IPage>(newPage);
@@ -74,7 +73,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         IPagePlaceholderContent newPagePlaceholderContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                         sourcePagePlaceholderContent.ProjectedCopyTo(newPagePlaceholderContent);
 
-                        newPagePlaceholderContent.CultureName = targetCultureInfo.Name;
                         newPagePlaceholderContent.SourceCultureName = targetCultureInfo.Name;
                         newPagePlaceholderContent.PublicationStatus = GenericPublishProcessController.Draft;
                         DataFacade.AddNew<IPagePlaceholderContent>(newPagePlaceholderContent);
@@ -91,13 +89,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                         IEnumerable<ReferenceFailingPropertyInfo> referenceFailingPropertyInfos = DataLocalizationFacade.GetReferencingLocalizeFailingProperties(localizedData).Evaluate();
 
-                        if (referenceFailingPropertyInfos.Any() == false)
+                        if (!referenceFailingPropertyInfos.Any())
                         {
                             IData newMetaData = DataFacade.BuildNew(metaData.DataSourceId.InterfaceType);
                             metaData.ProjectedCopyTo(newMetaData);
 
                             ILocalizedControlled localizedControlled = newMetaData as ILocalizedControlled;
-                            localizedControlled.CultureName = targetCultureInfo.Name;
                             localizedControlled.SourceCultureName = targetCultureInfo.Name;
 
                             IPublishControlled publishControlled = newMetaData as IPublishControlled;

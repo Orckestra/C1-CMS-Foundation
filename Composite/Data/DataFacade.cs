@@ -517,6 +517,8 @@ namespace Composite.Data
         public static T TryGetDataByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
+            // TODO: cache check missing!!!111
+
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();

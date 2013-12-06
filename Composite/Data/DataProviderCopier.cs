@@ -278,10 +278,6 @@ namespace Composite.Data
             if (data is ILocalizedControlled)
             {
                 var localizedData = data as ILocalizedControlled;
-                if (localizedData.CultureName == null)
-                {
-                    localizedData.CultureName = LocalizationScopeManager.CurrentLocalizationScope.Name;
-                }
 
                 if (localizedData.SourceCultureName == null)
                 {

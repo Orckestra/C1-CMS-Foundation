@@ -622,7 +622,6 @@ namespace Composite.Data
             ILocalizedControlled localizedData = newData as ILocalizedControlled;
             if (localizedData != null)
             {
-                localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                 localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
             }
 
@@ -672,7 +671,6 @@ namespace Composite.Data
                 ILocalizedControlled localizedData = newData as ILocalizedControlled;
                 if(localizedData != null)
                 {
-                    localizedData.CultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                     localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                 }
 

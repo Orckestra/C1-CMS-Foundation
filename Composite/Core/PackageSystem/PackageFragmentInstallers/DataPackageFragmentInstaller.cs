@@ -179,7 +179,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 ILocalizedControlled localizedControlled = data as ILocalizedControlled;
                 if (localizedControlled != null)
                 {
-                    localizedControlled.CultureName = LocalizationScopeManager.MapByType(dataType.InterfaceType).Name;
                     localizedControlled.SourceCultureName = LocalizationScopeManager.MapByType(dataType.InterfaceType).Name;
                 }
 

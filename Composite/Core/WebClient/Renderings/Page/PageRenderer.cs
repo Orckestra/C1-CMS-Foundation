@@ -62,7 +62,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 using (TimerProfilerFacade.CreateTimerProfiler(url ?? "(no url)"))
                 {
-                    var cultureInfo = new CultureInfo(page.CultureName);
+                    var cultureInfo = page.DataSourceId.LocaleScope;
                     System.Threading.Thread.CurrentThread.CurrentCulture = cultureInfo;
                     System.Threading.Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
@@ -201,14 +201,13 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             get
             {
-                if (RequestLifetimeCache.HasKey("PageRenderer.IPage"))
-                {
-                    return CultureInfo.CreateSpecificCulture(RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage").CultureName);
-                }
-                else
+                if (!RequestLifetimeCache.HasKey("PageRenderer.IPage"))
                 {
                     return null;
                 }
+
+                var page = RequestLifetimeCache.TryGet<IPage>("PageRenderer.IPage");
+                return page.DataSourceId.LocaleScope;
             }
         }
 
