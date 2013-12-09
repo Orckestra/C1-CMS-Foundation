@@ -27,9 +27,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, XmlProviderInterfaceConfigurationElement oldConfigurationElement, XmlProviderInterfaceConfigurationElement newConfigurationElement)
+        public static void AlterStore(UpdateDataTypeDescriptor updateDescriptor, XmlProviderInterfaceConfigurationElement oldConfigurationElement, XmlProviderInterfaceConfigurationElement newConfigurationElement)
         {
-            DataTypeChangeDescriptor dataTypeChangeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
+            DataTypeChangeDescriptor dataTypeChangeDescriptor = updateDescriptor.CreateDataTypeChangeDescriptor();
 
             foreach (KeyValuePair<string, Type> kvp in oldConfigurationElement.PropertyInitializers)
             {
@@ -42,7 +42,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             {
                 foreach (DataScopeConfigurationElement dataScopeConfigurationElement in newConfigurationElement.DataScopes[scopeIdentifier.Name].Values)
                 {
-                    CreateStore(updateDataTypeDescriptor.ProviderName, dataScopeConfigurationElement);
+                    CreateStore(updateDescriptor.ProviderName, dataScopeConfigurationElement);
                 }
             }
            
@@ -65,85 +65,104 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     newFieldValues = new Dictionary<string, object>();
                     newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
 
-                    CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues);
+                    CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues);
                 }
             }
 
 
-            if (updateDataTypeDescriptor.PublicationAdded)
+            if (updateDescriptor.PublicationAdded)
             {
-                foreach (var fileForLanguage in oldConfigurationElement.DataScopes[DataScopeIdentifier.PublicName])
+                foreach (var fileByLanguage in oldConfigurationElement.DataScopes[DataScopeIdentifier.PublicName])
                 {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = fileForLanguage.Value;
-                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][fileForLanguage.Key];
+                    var oldDataScopeConfigurationElement = fileByLanguage.Value;
+                    var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][fileByLanguage.Key];
 
                     newFieldValues = new Dictionary<string, object>();
                     newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
 
-                    CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
+                    CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
                 }
             }
 
-            if (updateDataTypeDescriptor.PublicationRemoved)
+            if (updateDescriptor.PublicationRemoved)
             {
-                foreach (var fileForLanguage in oldConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName])
+                foreach (var fileByLanguage in oldConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName])
                 {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = fileForLanguage.Value;
-                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.PublicName][fileForLanguage.Key];
+                    var oldDataScopeConfigurationElement = fileByLanguage.Value;
+                    var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.PublicName][fileByLanguage.Key];
 
-                    CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
+                    CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
                 }
             }
 
 
+            bool oldTypeLocalized = updateDescriptor.OldDataTypeDescriptor.Localizeable;
+            bool newTypeLocalized = updateDescriptor.NewDataTypeDescriptor.Localizeable;
 
-            if (updateDataTypeDescriptor.LocalesToCopyTo != null)
+            if (!oldTypeLocalized && newTypeLocalized)
             {
+                foreach (var newStore in newConfigurationElement.DataScopes.Values.SelectMany(kvp => kvp.Values))
+                {
+                    CreateStore(updateDescriptor.ProviderName, newStore);
+                }
+
                 foreach (string dataScopeIdentifier in oldConfigurationElement.DataScopes.Keys)
                 {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = oldConfigurationElement.DataScopes[dataScopeIdentifier][""];
+                    var oldFilesByCulture = oldConfigurationElement.DataScopes[dataScopeIdentifier];
 
-                    foreach (CultureInfo locale in updateDataTypeDescriptor.LocalesToCopyTo)
+                    string invariantCultureKey = "";
+
+                    if (oldFilesByCulture.ContainsKey(invariantCultureKey))
                     {
-                        DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[dataScopeIdentifier][locale.Name];
+                        var oldDataScopeConfigurationElement = oldFilesByCulture[invariantCultureKey];
 
-                        Dictionary<string, object> nfv = new Dictionary<string, object>(newFieldValues);
-                        nfv.Add("SourceCultureName", locale.Name);
+                        if (updateDescriptor.LocalesToCopyTo != null)
+                        {
+                            foreach (CultureInfo locale in updateDescriptor.LocalesToCopyTo)
+                            {
+                                var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[dataScopeIdentifier][locale.Name];
 
-                        CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, nfv, false);
-                    }
+                                var nfv = new Dictionary<string, object>(newFieldValues);
+                                nfv.Add("SourceCultureName", locale.Name);
 
-                    DeleteData(updateDataTypeDescriptor.ProviderName, oldDataScopeConfigurationElement);
-                }
-            }
+                                CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, nfv, false);
+                            }
+                        }
 
-
-            if (updateDataTypeDescriptor.LocaleToCopyFrom != null)
-            {
-                foreach (string dataScopeIdentifier in oldConfigurationElement.DataScopes.Keys)
-                {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = oldConfigurationElement.DataScopes[dataScopeIdentifier][updateDataTypeDescriptor.LocaleToCopyFrom.Name];
-                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[dataScopeIdentifier][""];
-
-                    CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
-                }
-
-                foreach (var dataScopes in oldConfigurationElement.DataScopes)
-                {
-                    foreach (var kvp in dataScopes.Value.Where(f => f.Key != ""))
-                    {
-                        DataScopeConfigurationElement dataScopeConfigurationElement = kvp.Value;
-                        DeleteData(updateDataTypeDescriptor.ProviderName, dataScopeConfigurationElement);
+                        DropStore(updateDescriptor.ProviderName, oldDataScopeConfigurationElement);
                     }
                 }
             }
 
+            if (oldTypeLocalized && !newTypeLocalized)
+            {
+                foreach (var newStore in newConfigurationElement.DataScopes.Values.SelectMany(kvp => kvp.Values))
+                {
+                    CreateStore(updateDescriptor.ProviderName, newStore);
+                }
+
+                if (updateDescriptor.LocaleToCopyFrom != null)
+                {
+                    foreach (string dataScopeIdentifier in oldConfigurationElement.DataScopes.Keys)
+                    {
+                        var oldDataScopeConfigurationElement = oldConfigurationElement.DataScopes[dataScopeIdentifier][updateDescriptor.LocaleToCopyFrom.Name];
+                        var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[dataScopeIdentifier][""];
+
+                        CopyData(updateDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
+                    }
+                }
+
+                foreach (var oldStore in oldConfigurationElement.DataScopes.SelectMany(d => d.Value).Where(f => f.Key != "").Select(f => f.Value))
+                {
+                    DropStore(updateDescriptor.ProviderName, oldStore);
+                }
+            }
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.DeletedDataScopes)
             {
                 foreach (DataScopeConfigurationElement dataScopeConfigurationElement in oldConfigurationElement.DataScopes[scopeIdentifier.Name].Values)
                 {
-                    DropStore(updateDataTypeDescriptor.ProviderName, dataScopeConfigurationElement);
+                    DropStore(updateDescriptor.ProviderName, dataScopeConfigurationElement);
                 }
             }
         }
@@ -274,21 +293,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             throw new NotImplementedException("Supplied StoreFieldType contains an unsupported PhysicalStoreType '{0}'."
                                               .FormatWith(fieldDescriptor.StoreType.PhysicalStoreType));
         }
-
-
-        private static void DeleteData(string providerName, DataScopeConfigurationElement dataScopeConfigurationElement)
-        {
-            string filename = ResolvePath(dataScopeConfigurationElement.Filename, providerName);
-
-            XElement root = new XElement(XmlDataProviderDocumentWriter.GetRootElementName(dataScopeConfigurationElement.ElementName));
-
-            XDocument document = new XDocument();
-            document.Add(root);
-
-            XDocumentUtils.Save(document, filename);
-        }
-
-
 
         public static void DropStore(string providerName, XmlProviderInterfaceConfigurationElement configurationElement)
         {
