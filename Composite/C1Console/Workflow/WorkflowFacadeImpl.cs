@@ -1035,19 +1035,31 @@ namespace Composite.C1Console.Workflow
 
 
         [DebuggerHidden]
-        private void LogWorkflowChange(string change, WorkflowEventArgs args, bool logUserName)
+        private void LogWorkflowChange(string change, WorkflowEventArgs args, bool logUserName, bool workflowDefinitionAvailable)
         {
-            var instance = args.WorkflowInstance;
+            WorkflowInstance instance = null;
 
             string activityTypeName = null;
 
             try
             {
-                activityTypeName = instance.GetWorkflowDefinition().GetType().FullName;
+                instance = args.WorkflowInstance;
             }
             catch 
             {
                 // Silent
+            }
+
+            if (workflowDefinitionAvailable && instance != null)
+            {
+                try
+                {
+                    activityTypeName = instance.GetWorkflowDefinition().GetType().FullName;
+                }
+                catch
+                {
+                    // Silent
+                }
             }
 
             var message = new StringBuilder("Worflow ").Append(change);
@@ -1057,7 +1069,10 @@ namespace Composite.C1Console.Workflow
                 message.Append(", Activity = " + activityTypeName);
             }
 
-            message.Append(", Id = " + instance.InstanceId);
+            if (instance != null)
+            {
+                message.Append(", Id = " + instance.InstanceId);
+            }
 
             if (logUserName)
             {
@@ -1073,10 +1088,10 @@ namespace Composite.C1Console.Workflow
         private void AddWorkflowLoggingEvents(WorkflowRuntime workflowRuntime)
         {
 
-            workflowRuntime.WorkflowCreated += (sender, args) => LogWorkflowChange("created", args, true);
-            workflowRuntime.WorkflowLoaded += (sender, args) => LogWorkflowChange("loaded", args, true);
-            workflowRuntime.WorkflowPersisted += (sender, args) => LogWorkflowChange("persisted", args, false);
-            workflowRuntime.WorkflowAborted += (sender, args) => LogWorkflowChange("aborted", args, false);
+            workflowRuntime.WorkflowCreated += (sender, args) => LogWorkflowChange("created", args, true, true);
+            workflowRuntime.WorkflowLoaded += (sender, args) => LogWorkflowChange("loaded", args, true, true);
+            workflowRuntime.WorkflowPersisted += (sender, args) => LogWorkflowChange("persisted", args, false, false);
+            workflowRuntime.WorkflowAborted += (sender, args) => LogWorkflowChange("aborted", args, false, true);
 
             workflowRuntime.WorkflowTerminated += (sender, args) =>
             {

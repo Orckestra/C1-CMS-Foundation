@@ -231,7 +231,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             if (thrownException != null) throw thrownException;
         }
 
-        private static string GetRootElementName(string elementName)
+        internal static string GetRootElementName(string elementName)
         {
             return elementName + "Elements";
         }

@@ -50,10 +50,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             foreach (DataScopeIdentifier scopeIdentifier in dataTypeChangeDescriptor.ExistingDataScopes)
             {
-                foreach (var kvp in oldConfigurationElement.DataScopes[scopeIdentifier.Name])
+                foreach (KeyValuePair<string, DataScopeConfigurationElement> fileForLanguage in oldConfigurationElement.DataScopes[scopeIdentifier.Name])
                 {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
-                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[scopeIdentifier.Name][kvp.Key];
+                    string cultureName = fileForLanguage.Key;
+
+                    if (!newConfigurationElement.DataScopes[scopeIdentifier.Name].ContainsKey(cultureName))
+                    {
+                        continue;
+                    }
+
+                    var oldDataScopeConfigurationElement = fileForLanguage.Value;
+                    var newDataScopeConfigurationElement = newConfigurationElement.DataScopes[scopeIdentifier.Name][cultureName];
 
                     newFieldValues = new Dictionary<string, object>();
                     newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
@@ -65,10 +72,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             if (updateDataTypeDescriptor.PublicationAdded)
             {
-                foreach (var kvp in oldConfigurationElement.DataScopes[DataScopeIdentifier.PublicName])
+                foreach (var fileForLanguage in oldConfigurationElement.DataScopes[DataScopeIdentifier.PublicName])
                 {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
-                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][kvp.Key];
+                    DataScopeConfigurationElement oldDataScopeConfigurationElement = fileForLanguage.Value;
+                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName][fileForLanguage.Key];
 
                     newFieldValues = new Dictionary<string, object>();
                     newFieldValues.Add("PublicationStatus", GenericPublishProcessController.Published);
@@ -79,10 +86,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             if (updateDataTypeDescriptor.PublicationRemoved)
             {
-                foreach (var kvp in oldConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName])
+                foreach (var fileForLanguage in oldConfigurationElement.DataScopes[DataScopeIdentifier.AdministratedName])
                 {
-                    DataScopeConfigurationElement oldDataScopeConfigurationElement = kvp.Value;
-                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.PublicName][kvp.Key];
+                    DataScopeConfigurationElement oldDataScopeConfigurationElement = fileForLanguage.Value;
+                    DataScopeConfigurationElement newDataScopeConfigurationElement = newConfigurationElement.DataScopes[DataScopeIdentifier.PublicName][fileForLanguage.Key];
 
                     CopyData(updateDataTypeDescriptor.ProviderName, dataTypeChangeDescriptor, oldDataScopeConfigurationElement, newDataScopeConfigurationElement, newFieldValues, false);
                 }
@@ -228,7 +235,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                 C1File.Delete(oldFilename);
             }
 
-            XElement newRoot = new XElement(string.Format("{0}s", newDataScopeConfigurationElement.ElementName));
+            XElement newRoot = new XElement(XmlDataProviderDocumentWriter.GetRootElementName(newDataScopeConfigurationElement.ElementName));
             newRoot.Add(newElements);
 
             XDocument newDocument = new XDocument();
@@ -273,7 +280,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             string filename = ResolvePath(dataScopeConfigurationElement.Filename, providerName);
 
-            XElement root = new XElement(string.Format("{0}s", dataScopeConfigurationElement.ElementName));
+            XElement root = new XElement(XmlDataProviderDocumentWriter.GetRootElementName(dataScopeConfigurationElement.ElementName));
 
             XDocument document = new XDocument();
             document.Add(root);
@@ -298,20 +305,22 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             string filename = ResolvePath(scopeElement.Filename, providerName);
 
             string directoryPath = Path.GetDirectoryName(filename);
-            if (C1Directory.Exists(directoryPath) == false)
+            if (!C1Directory.Exists(directoryPath))
             {
                 C1Directory.CreateDirectory(directoryPath);
             }
 
             bool keepExistingFile = false;
-            string rootLocalName = string.Format("{0}s", scopeElement.ElementName);
+            string rootLocalName = XmlDataProviderDocumentWriter.GetRootElementName(scopeElement.ElementName);
+            string obsoleteRootElementName = scopeElement.ElementName + "s";
 
             if (C1File.Exists(filename))
             {
                 try
                 {
                     XDocument existingDocument = XDocumentUtils.Load(filename);
-                    if (existingDocument.Root.Name.LocalName == rootLocalName)
+                    if (existingDocument.Root.Name.LocalName == rootLocalName
+                        || existingDocument.Root.Name.LocalName == obsoleteRootElementName)
                     {
                         keepExistingFile = true;
                     }
@@ -321,15 +330,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     keepExistingFile = false;
                 }
 
-                if (keepExistingFile == false)
+                if (!keepExistingFile)
                 {
                     C1File.Delete(filename);
                 }
             }
 
-            if (keepExistingFile == false)
+            if (!keepExistingFile)
             {
-                XDocument document = new XDocument();
+                var document = new XDocument();
                 document.Add(new XElement(rootLocalName));
                 XDocumentUtils.Save(document, filename);
             }
@@ -351,7 +360,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private static DataTypeChangeDescriptor.ExistingFieldInfo GetExistingFieldInfo(DataTypeChangeDescriptor dataTypeChangeDescriptor, string name)
         {
-            return dataTypeChangeDescriptor.ExistingFields.Where(f => f.OriginalField.Name == name).FirstOrDefault();
+            return dataTypeChangeDescriptor.ExistingFields.FirstOrDefault(f => f.OriginalField.Name == name);
         }
 
 

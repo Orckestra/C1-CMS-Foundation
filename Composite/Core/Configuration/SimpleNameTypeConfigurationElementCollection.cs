@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 
 namespace Composite.Core.Configuration
@@ -7,13 +9,13 @@ namespace Composite.Core.Configuration
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public sealed class SimpleNameTypeConfigurationElementCollection : ConfigurationElementCollection
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public sealed class SimpleNameTypeConfigurationElementCollection : ConfigurationElementCollection, IEnumerable<SimpleNameTypeConfigurationElement>
     {
         /// <exclude />
         public void Add(string name, Type type)
         {
-            SimpleNameTypeConfigurationElement element = new SimpleNameTypeConfigurationElement();
+            var element = new SimpleNameTypeConfigurationElement();
             element.Name = name;
             element.Type = type;
 
@@ -32,6 +34,11 @@ namespace Composite.Core.Configuration
         protected override object GetElementKey(ConfigurationElement element)
         {
             return (element as SimpleNameTypeConfigurationElement).Name;
+        }
+
+        IEnumerator<SimpleNameTypeConfigurationElement> IEnumerable<SimpleNameTypeConfigurationElement>.GetEnumerator()
+        {
+            return this.OfType<SimpleNameTypeConfigurationElement>().GetEnumerator();
         }
     }
 }

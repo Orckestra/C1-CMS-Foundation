@@ -2,16 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Activities;
+using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
-using Composite.Core.Logging;
-using Composite.Core.ResourceSystem;
-using Composite.C1Console.Security;
-using Composite.Data.Transactions;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Users;
@@ -34,15 +30,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             Type type;
 
-            if ((this.EntityToken is Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken))
+            if (this.EntityToken is AssociatedDataElementProviderHelperEntityToken)
             {
-                var castedEntityToken = this.EntityToken as Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AssociatedDataElementProviderHelperEntityToken;
+                var castedEntityToken = this.EntityToken as AssociatedDataElementProviderHelperEntityToken;
 
                 type = TypeManager.GetType(castedEntityToken.Payload);
             }
             else
             {
-                GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
+                var entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
                 type = TypeManager.GetType(entityToken.SerializedTypeName);
             }
 
@@ -62,7 +58,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private void step1CodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            Dictionary<string, string> culturesDictionary = DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
+            var culturesDictionary = DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle);
 
             this.UpdateBinding("CultureName", (UserSettings.ForeignLocaleCultureInfo ?? UserSettings.ActiveLocaleCultureInfo).Name);
             this.UpdateBinding("CultureNameList", culturesDictionary);
@@ -89,7 +85,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 localesToCopyTo.Add(CultureInfo.CreateSpecificCulture(cultureName));
             }
 
-            UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(dataTypeDescriptor, newDataTypeDescriptor, false)
+            var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(dataTypeDescriptor, newDataTypeDescriptor, false)
             {
                 LocalesToCopyTo = localesToCopyTo
             };
@@ -108,14 +104,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             }
 
             Type type = GetDataTypeDescriptor().GetInterfaceType();
-            foreach (Type referencedType in type.GetRefereeTypes())
-            {
-                if (DataLocalizationFacade.IsLocalized(referencedType))
-                {
-                    return true;
-                }
-            }
-            return false;
+
+            return type.GetRefereeTypes().Any(DataLocalizationFacade.IsLocalized);
         }
 
         private void ThereAreReferencesInLocalizedData(object sender, ConditionalEventArgs e)

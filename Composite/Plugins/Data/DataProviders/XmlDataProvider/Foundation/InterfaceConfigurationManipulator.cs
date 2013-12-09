@@ -6,7 +6,6 @@ using System.Linq;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Plugins.Data.DataProviders.Common;
@@ -54,12 +53,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             DataTypeChangeDescriptor changeDescriptor = updateDataTypeDescriptor.CreateDataTypeChangeDescriptor();
 
-            XmlDataProviderConfiguration xmlDataProviderConfiguration = new XmlDataProviderConfiguration(updateDataTypeDescriptor.ProviderName);
+            var xmlDataProviderConfiguration = new XmlDataProviderConfiguration(updateDataTypeDescriptor.ProviderName);
 
             object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(changeDescriptor.OriginalType);
 
-            XmlProviderInterfaceConfigurationElement oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
-            XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(changeDescriptor.AlteredType);
+            var oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
+            var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(changeDescriptor.AlteredType);
 
             XmlDataProviderStoreManipulator.AlterStore(updateDataTypeDescriptor, oldConfigurationElement, newConfigurationElement);
 
@@ -98,19 +97,19 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             foreach (Type type in interfaceTypes)
             {
-                if (DataLocalizationFacade.IsLocalizable(type))
+                if (DataLocalizationFacade.IsLocalized(type))
                 {
                     DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
                     object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
-                    XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, cultureInfo, null);
+                    var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, cultureInfo, null);
 
                     xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
                     xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
 
-                    foreach (var kvp in newConfigurationElement.DataScopes.Values)
+                    foreach (Dictionary<string, DataScopeConfigurationElement> filesByCulture in newConfigurationElement.DataScopes.Values)
                     {
-                        XmlDataProviderStoreManipulator.CreateStore(providerName, kvp[cultureInfo.Name]);
+                        XmlDataProviderStoreManipulator.CreateStore(providerName, filesByCulture[cultureInfo.Name]);
                     }
                 }
             }
@@ -132,16 +131,25 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
 
-                    XmlProviderInterfaceConfigurationElement oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
-                    foreach (var kvp in oldConfigurationElement.DataScopes.Values)
+                    bool configurationChanged = false;
+
+                    var oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
+                    foreach (Dictionary<string, DataScopeConfigurationElement> scopesByLanguage in oldConfigurationElement.DataScopes.Values)
                     {
-                        XmlDataProviderStoreManipulator.DropStore(providerName, kvp[cultureInfo.Name]);
+                        if (scopesByLanguage.ContainsKey(cultureInfo.Name))
+                        {
+                            XmlDataProviderStoreManipulator.DropStore(providerName, scopesByLanguage[cultureInfo.Name]);
+                            configurationChanged = true;
+                        }
                     }
 
-                    XmlProviderInterfaceConfigurationElement newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, null, cultureInfo);
+                    if (configurationChanged)
+                    {
+                        var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, null, cultureInfo);
 
-                    xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
-                    xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
+                        xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
+                        xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
+                    }
                 }
             }
 
@@ -163,15 +171,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             configurationElement.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
 
             bool isLocalized = dataTypeDescriptor.Localizeable;
-            if (!dataTypeDescriptor.IsCodeGenerated)
-            {
-                Type interfaceType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
-                if (interfaceType != null)
-                {
-                    isLocalized = DataLocalizationFacade.IsLocalizable(interfaceType);
-                }
-            }
-
             foreach (DataScopeIdentifier dataScopeIdentifier in dataTypeDescriptor.DataScopes)
             {
                 if (!isLocalized)

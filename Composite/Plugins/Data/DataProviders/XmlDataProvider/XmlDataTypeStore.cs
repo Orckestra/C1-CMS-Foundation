@@ -106,10 +106,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             {
                 if (_helper == null)
                 {
-                    if (_helper == null)
-                    {
-                        _helper = (IXmlDataProviderHelper)Activator.CreateInstance(this.DataProviderHelperType);
-                    }
+                    _helper = (IXmlDataProviderHelper)Activator.CreateInstance(this.DataProviderHelperType);
                 }
 
                 return _helper;

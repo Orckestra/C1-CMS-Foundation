@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Workflow.Activities;
 
 using Composite.C1Console.Actions;
@@ -235,11 +234,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private void stepInitialize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
             Guid templateId;
-            string cultureName;
 
             if (this.EntityToken is PageElementProviderEntityToken)
             {
-                cultureName = null;
                 templateId = PageTemplateFacade.GetPageTemplates().Select(t => t.Id).FirstOrDefault();
             }
             else if (this.EntityToken is DataEntityToken)
