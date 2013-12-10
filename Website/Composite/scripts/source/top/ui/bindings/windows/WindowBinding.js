@@ -312,11 +312,6 @@ WindowBinding.prototype.buildDOMContent = function () {
 	this.shadowTree.iframe.name = this.shadowTree.iframe.id;
 	this.bindingElement.appendChild ( this.shadowTree.iframe );
 	this._registerOnloadListener(true);
-
-
-	this.bindingElement.onresize = function () {
-		alert(1);
-	}
 };
 
 /**
