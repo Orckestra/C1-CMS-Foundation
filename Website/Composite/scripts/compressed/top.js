@@ -10987,9 +10987,6 @@ this.shadowTree.iframe.id=KeyMaster.getUniqueKey();
 this.shadowTree.iframe.name=this.shadowTree.iframe.id;
 this.bindingElement.appendChild(this.shadowTree.iframe);
 this._registerOnloadListener(true);
-this.bindingElement.onresize=function(){
-alert(1);
-};
 };
 WindowBinding.prototype._registerOnloadListener=function(_7d8){
 var _7d9=this.shadowTree.iframe;
