@@ -24,8 +24,9 @@ namespace Composite.Core.Sql
             else
             {
                 connection = new SqlConnection(connectionString);
-                threadData.SetValue(threadDataKey, connection);
                 connection.Open();
+
+                threadData.SetValue(threadDataKey, connection);
                 threadData.OnDispose += connection.Close;
             }
             return connection;

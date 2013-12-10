@@ -217,6 +217,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 if (interfaceType != null)
                 {
+                    DataProviderRegistry.RegisterDataTypeInitializationError(interfaceType, ex);
                     DataProviderRegistry.AddKnownDataType(interfaceType, _dataProviderContext.ProviderName);
 
                     Log.LogError(LogTitle, "Failed initialization for the datatype {0}", dataTypeDescriptor.TypeManagerTypeName);
@@ -292,22 +293,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         private bool ValidateTable(Type interfaceType, string tableName, StringBuilder errors)
         {
-            ISqlTableInformation sqlTableInformation;
-
-            try
-            {
-                sqlTableInformation = SqlTableInformationStore.GetTableInformation(_connectionString, tableName);
-            }
-            catch (SqlException sqlException)
-            {
-                Log.LogCritical(LogTitle, sqlException);
-                throw;
-            }
-            catch (Exception ex)
-            {
-                errors.AppendLine(ex.ToString());
-                return false;
-            }
+            ISqlTableInformation sqlTableInformation = SqlTableInformationStore.GetTableInformation(_connectionString, tableName);
 
             if (sqlTableInformation == null)
             {

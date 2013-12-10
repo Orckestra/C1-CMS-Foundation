@@ -17,6 +17,8 @@ namespace Composite.Data.Foundation
 
         void AddNewDataType(Type interaceType, string providerName, bool isWritableProvider = true);
         void AddKnownDataType(Type interaceType, string providerName);
+        void RegisterDataTypeInitializationError(Type interfaceType, Exception exception);
+        void CheckInitializationErrors(Type interfaceType);
         void InitializeDataTypes();
         void Flush();
     }

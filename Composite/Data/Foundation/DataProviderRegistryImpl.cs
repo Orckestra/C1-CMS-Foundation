@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Composite.Core;
+using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Runtime;
@@ -15,20 +17,21 @@ namespace Composite.Data.Foundation
 {
     internal sealed class DataProviderRegistryImpl : IDataProviderRegistry
     {
-        private string _defaultDynamicTypeDataProviderName = null;
-        private List<string> _dataProviderNames = null;
-        private Dictionary<Type, List<string>> _interfaceTypeToReadableProviderNamesDictionary = null;
-        private Dictionary<Type, List<string>> _interfaceTypeToWriteableProviderNamesDictionary = null;
-        private Dictionary<Type, List<string>> _knownInterfaceTypeToDynamicProviderNamesDictionary = null;
-        private List<Type> _generatedInterfaceTypes = null;
+        private string _defaultDynamicTypeDataProviderName;
+        private List<string> _dataProviderNames;
+        private Dictionary<Type, List<string>> _interfaceTypeToReadableProviderNamesDictionary;
+        private Dictionary<Type, List<string>> _interfaceTypeToWriteableProviderNamesDictionary;
+        private Dictionary<Type, List<string>> _knownInterfaceTypeToDynamicProviderNamesDictionary;
+        private List<Type> _generatedInterfaceTypes;
+
+        private Hashtable<Type, Exception> _initializationErrors;
 
 
         public string DefaultDynamicTypeDataProviderName
         {
             get
             {
-                if ((_defaultDynamicTypeDataProviderName == null) ||
-                    (_dataProviderNames.Contains(_defaultDynamicTypeDataProviderName) == false))
+                if (_defaultDynamicTypeDataProviderName == null || !_dataProviderNames.Contains(_defaultDynamicTypeDataProviderName))
                 {
                     throw new InvalidOperationException("Failed to locate the default provider name for dynamic types. Please check the configuration.");
                 }
@@ -117,16 +120,13 @@ namespace Composite.Data.Foundation
 
         public List<string> GetWriteableDataProviderNamesByInterfaceType(Type interfaceType)
         {
-            if (_interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(interfaceType))
-            {
-                return _interfaceTypeToWriteableProviderNamesDictionary[interfaceType];
-            }
-            else
+            if (!_interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(interfaceType))
             {
                 return new List<string>();
             }
+            
+            return _interfaceTypeToWriteableProviderNamesDictionary[interfaceType];
         }
-
 
 
         public void AddNewDataType(Type interaceType, string providerName, bool isWritableProvider = true)
@@ -149,6 +149,19 @@ namespace Composite.Data.Foundation
         }
 
 
+        public void RegisterDataTypeInitializationError(Type interfaceType, Exception exception)
+        {
+            _initializationErrors[interfaceType] = exception;
+        }
+
+        public void CheckInitializationErrors(Type interfaceType)
+        {
+            if (_initializationErrors.ContainsKey(interfaceType))
+            {
+                var ex = _initializationErrors[interfaceType];
+                throw new InvalidOperationException("Failed to initialize data type '{0}'".FormatWith(interfaceType.FullName), ex);
+            }
+        }
 
         public void InitializeDataTypes()
         {
@@ -158,6 +171,7 @@ namespace Composite.Data.Foundation
                 _interfaceTypeToReadableProviderNamesDictionary = new Dictionary<Type, List<string>>();
                 _interfaceTypeToWriteableProviderNamesDictionary = new Dictionary<Type, List<string>>();
                 _knownInterfaceTypeToDynamicProviderNamesDictionary = new Dictionary<Type, List<string>>();
+                _initializationErrors = new Hashtable<Type, Exception>();
                 _generatedInterfaceTypes = new List<Type>();
 
                 if (DataProviderPluginFacade.HasConfiguration())
@@ -190,12 +204,12 @@ namespace Composite.Data.Foundation
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (false == typeToAdd.IsInterface)
+                if (!typeToAdd.IsInterface)
                 {
                     throw new InvalidOperationException(string.Format("The data provider {0} returned an non-interface ({1})", providerName, typeToAdd));
                 }
 
-                if (false == typeof(IData).IsAssignableFrom(typeToAdd))
+                if (!typeof(IData).IsAssignableFrom(typeToAdd))
                 {
                     throw new InvalidOperationException(string.Format("The data provider {0} returned an non IData interface ({1})", providerName, typeToAdd));
                 }
@@ -218,12 +232,12 @@ namespace Composite.Data.Foundation
                 }
 
 
-                if (false == _interfaceTypeToReadableProviderNamesDictionary.ContainsKey(typeToAdd))
+                if (!_interfaceTypeToReadableProviderNamesDictionary.ContainsKey(typeToAdd))
                 {
                     _interfaceTypeToReadableProviderNamesDictionary.Add(typeToAdd, new List<string>());
                 }
 
-                if (false == _interfaceTypeToReadableProviderNamesDictionary[typeToAdd].Contains(providerName))
+                if (!_interfaceTypeToReadableProviderNamesDictionary[typeToAdd].Contains(providerName))
                 {
                     _interfaceTypeToReadableProviderNamesDictionary[typeToAdd].Add(providerName);
                 }
@@ -231,12 +245,12 @@ namespace Composite.Data.Foundation
 
                 if (writeableProvider)
                 {
-                    if (false == _interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(typeToAdd))
+                    if (!_interfaceTypeToWriteableProviderNamesDictionary.ContainsKey(typeToAdd))
                     {
                         _interfaceTypeToWriteableProviderNamesDictionary.Add(typeToAdd, new List<string>());
                     }
 
-                    if (false == _interfaceTypeToWriteableProviderNamesDictionary[typeToAdd].Contains(providerName))
+                    if (!_interfaceTypeToWriteableProviderNamesDictionary[typeToAdd].Contains(providerName))
                     {
                         _interfaceTypeToWriteableProviderNamesDictionary[typeToAdd].Add(providerName);
                     }
@@ -248,7 +262,7 @@ namespace Composite.Data.Foundation
 
         private void BuildDataProviderNames()
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 DataProviderSettings dataProviderSettings = ConfigurationServices.ConfigurationSource.GetSection(DataProviderSettings.SectionName) as DataProviderSettings;
 
@@ -260,7 +274,6 @@ namespace Composite.Data.Foundation
                 }
             }
         }
-
 
 
         private void BuildDictionaries()
@@ -307,11 +320,11 @@ namespace Composite.Data.Foundation
 
                         foreach (Type knownType in knownTypes)
                         {
-                            if (_interfaceTypeToReadableProviderNamesDictionary.Keys.Contains(knownType) == false)
+                            if (!_interfaceTypeToReadableProviderNamesDictionary.Keys.Contains(knownType))
                             {
                                 List<string> providerNames;
 
-                                if (_knownInterfaceTypeToDynamicProviderNamesDictionary.TryGetValue(knownType, out providerNames) == false)
+                                if (!_knownInterfaceTypeToDynamicProviderNamesDictionary.TryGetValue(knownType, out providerNames))
                                 {
                                     providerNames = new List<string>();
 
