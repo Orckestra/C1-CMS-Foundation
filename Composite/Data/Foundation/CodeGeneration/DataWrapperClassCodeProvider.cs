@@ -13,7 +13,7 @@ namespace Composite.Data.Foundation.CodeGeneration
             {
                 if (!dataTypeDescriptor.ValidateRuntimeType())
                 {
-                    Log.LogError("DataWrapperClassCodeProvider", string.Format("The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.BuildNewHandlerTypeName));
+                    Log.LogError("DataWrapperClassCodeProvider", string.Format("The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor));
                     continue;
                 }
 

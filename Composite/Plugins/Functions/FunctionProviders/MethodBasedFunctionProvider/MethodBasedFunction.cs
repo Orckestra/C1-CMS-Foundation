@@ -46,16 +46,13 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 // Skipping error log while package installation, the type/method may be available after restart
                 if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
                 {
-                    Log.LogError(LogTitle, errorMessage);
+                    Log.LogError(LogTitle, GetErrorMessage(info) + errorMessage);
                 }
 
                 return new NotLoadedMethodBasedFunction(info, errorMessage);
             }
 
-            MethodInfo methodInfo =
-                (from mi in type.GetMethods()
-                 where mi.Name == info.MethodName
-                 select mi).FirstOrDefault();
+            MethodInfo methodInfo = type.GetMethods().FirstOrDefault(mi => mi.Name == info.MethodName);
 
             if (methodInfo == null)
             {
@@ -64,7 +61,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                 // Skipping error log while package installation, the type/method may be available after restart
                 if (!HostingEnvironment.ApplicationHost.ShutdownInitiated())
                 {
-                    Log.LogError(LogTitle, errorMessage);
+                    Log.LogError(LogTitle, GetErrorMessage(info) + errorMessage);
                 }
 
                 return new NotLoadedMethodBasedFunction(info, errorMessage);
@@ -73,6 +70,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             return new MethodBasedFunction(info, type, methodInfo);
         }
 
+
+        private static string GetErrorMessage(IMethodBasedFunctionInfo info)
+        {
+            return "Failed to initialize function '{0}.{1}'. ".FormatWith(info.Namespace, info.UserMethodName);
+        }
 
         public object Execute(ParameterList parameters, FunctionContextContainer context)
         {
@@ -148,11 +150,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
         {
             ParameterInfo[] parameterInfos = this.MethodInfo.GetParameters();
 
-            Dictionary<string, object> defaultValues = new Dictionary<string, object>();
-            Dictionary<string, string> labels = new Dictionary<string, string>();
-            Dictionary<string, string> helpTexts = new Dictionary<string, string>();
-            Dictionary<string, WidgetFunctionProvider> widgetProviders =
-                new Dictionary<string, WidgetFunctionProvider>();
+            var defaultValues = new Dictionary<string, object>();
+            var labels = new Dictionary<string, string>();
+            var helpTexts = new Dictionary<string, string>();
+            var widgetProviders = new Dictionary<string, WidgetFunctionProvider>();
+
             foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof (MethodBasedDefaultValueAttribute), true))
             {
                 MethodBasedDefaultValueAttribute attribute = (MethodBasedDefaultValueAttribute) obj;

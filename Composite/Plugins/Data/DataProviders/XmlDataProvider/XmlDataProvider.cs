@@ -113,7 +113,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
                 if (!dataTypeDescriptor.ValidateRuntimeType())
                 {
-                    Log.LogError(LogTitle, "The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor.TypeManagerTypeName);
+                    Log.LogError(LogTitle, "The non code generated interface type '{0}' was not found, skipping code generation for that type", dataTypeDescriptor);
                     continue;
                 }
 
