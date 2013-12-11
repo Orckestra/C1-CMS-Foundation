@@ -17,74 +17,73 @@ ui|fields {
 
 ui|fieldgroup {
 	display: block;
-	padding-top: 7px;
 	overflow: visible;
-	margin-top: 24px !important;
+	margin-top: 34px !important;
+	padding-top: 7px;
+	border-left:  2px groove #F0F0F0;
+	border-right:  2px groove #F0F0F0;
+	border-bottom:  2px groove #F0F0F0;
+	border-radius: 0 0 5px 5px;
+	position: relative;
+	padding: 18px 2px 18px 2px;
+
 }
 ui|fieldgroup.first {
-	margin-top: 0 !important;	
+	margin-top: 10px !important;
 }
+
 #region vista
 	ui|dialogpage ui|fieldgroup,
 	ui|wizardpage ui|fieldgroup {
-		border-bottom: 5px solid transparent; /* strange flex bug */
+		margin-bottom: 5px; /* strange flex bug */
 	}
 #endregion
-table.fieldgroupmatrix td {
-	width: 4px;
-	height: 4px;
-	padding: 0;
-}
-table.fieldgroupmatrix td.group-n,
-table.fieldgroupmatrix td.group-s {
-	width: auto;
-}
-table.fieldgroupmatrix td.group-e,
-table.fieldgroupmatrix td.group-w {
-	height: auto;
-}
-table.fieldgroupmatrix td.group-c {
-	width: auto;
-	height: auto;
-	padding: 5px 0 16px 0;
-	width: 400px;
-}
-table.fieldgroupmatrix td.group-nw,
-table.fieldgroupmatrix td.group-ne,
-table.fieldgroupmatrix td.group-n {
-	height: 16px;
-}
-table.fieldgroupmatrix td.group-n div {
-	height: 4px;
-	overflow: hidden;
-}
-table.fieldgroupmatrix td.group-n div.group-label1 {
-	float: left;
-	width: 9px;
-}
+
 ui|labelbox.fieldgrouplabel {
-	padding: 0 6px 0 1px;
-	position: relative;
-	top: -7px;
-}
-ui|labelbox.fieldgrouplabel ui|labeltext {
-	#region default
-		color: $(color:activecaption);
-	#endregion
-}
-ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-nw,
-ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-ne,
-ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n {
-	height: 4px;
-}
-ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-c {
-	padding-top: 18px;
-}
-ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n div.group-label1,
-ui|fieldgroup.nolabel table.fieldgroupmatrix td.group-n div.group-label2 {
-	display: none;	
+	top: -10px;
+	left: -2px;
+	right: -2px;
+	position:absolute;
 }
 
+
+ui|labelbox.fieldgrouplabel ui|labeltext {
+	padding-right: 5px;
+	#region default
+			color: $(color:activecaption);
+	#endregion
+}
+
+
+ui|fieldgroup.nolabel {
+	border:  2px groove #F0F0F0;
+	border-radius: 5px;
+}
+
+ui|labelbox.fieldgrouplabel ui|labelbody:before {
+	content:"";
+	display: block;
+	height: 16px;
+	width: 12px;
+	float: left;
+	border-top:  2px groove #F0F0F0;
+	border-left:  2px groove #F0F0F0;
+	border-radius: 5px 0 0 0;
+	margin-top: 7px;
+}
+
+ui|labelbox.fieldgrouplabel ui|labelbody {
+	float:left;
+}
+
+ui|labelbox.fieldgrouplabel > div {
+	border-top:  2px groove #F0F0F0;
+	border-right:  2px groove #F0F0F0;
+	border-radius: 0 5px 0 0;
+	margin-top: 7px;
+	height: 16px;
+	overflow: hidden;
+}
 
 /* FIELDS ......................................... */
 
