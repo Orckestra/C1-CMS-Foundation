@@ -15,21 +15,28 @@ namespace Composite.Data.ProcessControlled.ProcessControllers.GenericLocalizePro
             ILocalizedControlled localizedData = data as ILocalizedControlled;
             if (localizedData != null)
             {
-                CultureInfo cultureInfo = null;
-
-                if (UserValidationFacade.IsLoggedIn())
+                if (!LocalizationScopeManager.IsEmpty)
                 {
-                    cultureInfo = UserSettings.ActiveLocaleCultureInfo;
+                    localizedData.SourceCultureName = LocalizationScopeManager.CurrentLocalizationScope.Name;
                 }
-
-                if (cultureInfo == null)
+                else
                 {
-                    cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
-                }
+                    CultureInfo cultureInfo = null;
 
-                if (cultureInfo != null)
-                {
-                    localizedData.SourceCultureName = cultureInfo.Name;
+                    if (UserValidationFacade.IsLoggedIn())
+                    {
+                        cultureInfo = UserSettings.ActiveLocaleCultureInfo;
+                    }
+
+                    if (cultureInfo == null)
+                    {
+                        cultureInfo = DataLocalizationFacade.DefaultLocalizationCulture;
+                    }
+
+                    if (cultureInfo != null)
+                    {
+                        localizedData.SourceCultureName = cultureInfo.Name;
+                    }
                 }
             }
 

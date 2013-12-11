@@ -6,10 +6,8 @@ using System.Reflection;
 using System.Transactions;
 using Composite.Core.Caching;
 using Composite.Data.Foundation;
-using Composite.Data.ProcessControlled.ProcessControllers.DummyProcessControllers;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 using Composite.Core.Linq;
@@ -28,12 +26,10 @@ namespace Composite.Data.ProcessControlled
         private static Dictionary<Type, IProcessController> _processControllers;
         private static Dictionary<Type, List<IPublishControlledAuxiliary>> _publishControlledAuxiliaries = new Dictionary<Type, List<IPublishControlledAuxiliary>>();
 
-        private static object _lock = new object();
-
 
         static ProcessControllerFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
 
             _controlledTypes.Add(typeof(IPublishControlled), typeof(IPublishProcessController));
             _controlledTypes.Add(typeof(ILocalizedControlled), typeof(ILocalizeProcessController));
@@ -50,11 +46,11 @@ namespace Composite.Data.ProcessControlled
         {
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                using (DataScope adminDataScope = new DataScope(DataScopeIdentifier.Administrated))
+                using (new DataScope(DataScopeIdentifier.Administrated))
                 {
                     if (data is IPublishControlled)
                     {
-                        using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                        using (new DataScope(DataScopeIdentifier.Public))
                         {                        
                             IEnumerable<IData> datasDelete = DataFacade.GetDataFromOtherScope(data, DataScopeIdentifier.Public).Evaluate();
                         
@@ -313,13 +309,6 @@ namespace Composite.Data.ProcessControlled
 
 
 
-        private static Type MapProcessControlledTypeToProcessControllerType(Type processControlledType)
-        {
-            return _controlledTypes[processControlledType];
-        }
-
-
-
         internal static void Initialize_PostDataTypes()
         {
             if (RuntimeInformation.IsDebugBuild)
@@ -343,13 +332,7 @@ namespace Composite.Data.ProcessControlled
                 _processControllers.Add(processControllerType, processController);
             }
 
-
-            foreach (Type interfaceType in ProcessControllerRegistry.DataTypesWithProcessControllers)
-            {
-                Dictionary<Type, Type> processControllerTypes = ProcessControllerRegistry.GetProcessControllerTypes(interfaceType);
-            }
-
-            if (RuntimeInformation.IsUnittest == false)
+            if (!RuntimeInformation.IsUnittest)
             {
                 foreach (Type dataType in DataFacade.GetAllInterfaces())
                 {
@@ -359,7 +342,7 @@ namespace Composite.Data.ProcessControlled
                     {
                         if (kvp.Key.IsAssignableFrom(dataType))
                         {
-                            if (processControllerTypes.ContainsKey(kvp.Value) == false)
+                            if (!processControllerTypes.ContainsKey(kvp.Value))
                             {
                                 throw new InvalidOperationException(string.Format("The data type {0} is inheriting the interface {1} but has not been assigned a {2} process controller", dataType, kvp.Key, kvp.Value));
                             }
@@ -382,27 +365,6 @@ namespace Composite.Data.ProcessControlled
 
 
 
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
-
-
-        private static void PushProcessControllers()
-        {
-            ProcessControllersCounter.Counter++;
-        }
-
-
-
-        private static void PopProcessControllers()
-        {
-            ProcessControllersCounter.Counter--;
-        }
-
-
-
         private static int GetProcessControllersCounter()
         {
             return ProcessControllersCounter.Counter;
@@ -414,12 +376,12 @@ namespace Composite.Data.ProcessControlled
         {
             public NoProcessControllersDisposable()
             {
-                ProcessControllerFacade.PushProcessControllers();
+                ProcessControllersCounter.Counter++;
             }
 
             public void Dispose()
             {
-                ProcessControllerFacade.PopProcessControllers();
+                ProcessControllersCounter.Counter--;
             }
         }
 
