@@ -120,7 +120,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                         // supressing error messages while in offline mode - we are installing stuff here.
                         if (ApplicationOnlineHandlerFacade.IsApplicationOnline && !HostingEnvironment.ApplicationHost.ShutdownInitiated())
                         {
-                            Log.LogError(LogTitle, "Error instantiating {0} function", name);
+                            Log.LogError(LogTitle, "Error instantiating function {0} ", @namespace + "." + name);
                             Log.LogError(LogTitle, ex);
                         }
 
