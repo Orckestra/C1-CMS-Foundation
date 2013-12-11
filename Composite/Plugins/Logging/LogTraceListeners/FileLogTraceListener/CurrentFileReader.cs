@@ -57,17 +57,13 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             if (timeFrom < _fileLogger.StartupTime)
             {
-                foreach (var str in _fileLogger._fileConnection.OldEntries)
+                var parserEnumerable = PlainFileReader.ParseLogLines(_fileLogger._fileConnection.OldEntries);
+                foreach (var logEntry in parserEnumerable)
                 {
-                    var oldEntry = LogEntry.Parse(str);
-                    if (oldEntry != null)
-                    {
-                        yield return oldEntry;
-                    }
+                    yield return logEntry;
                 }
             }
-
-
+            
             LogEntry[] newEntries = null;
 
             lock (_fileLogger._syncRoot)

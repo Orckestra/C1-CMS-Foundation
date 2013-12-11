@@ -6,6 +6,7 @@ using Composite.Core;
 using Composite.Core.Types;
 using System.Xml.Linq;
 using Composite.Core.Xml;
+using Composite.Plugins.PageTemplates.MasterPages.Controls.Functions;
 
 
 namespace Composite.Functions
@@ -139,8 +140,7 @@ namespace Composite.Functions
                 return false;
             }
 
-            Log.LogError(logTitle, "Failed to execute function: " + functionName);
-            Log.LogError(logTitle, exception);
+            Log.LogError("Function: " + functionName, exception);
 
             errorBoxHtml = XhtmlErrorFormatter.GetErrorDescriptionHtmlElement(exception, functionName);
 

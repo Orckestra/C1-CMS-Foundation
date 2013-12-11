@@ -88,8 +88,8 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         tableHeader.Add(
                 new XElement("th", " "),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.DateLabel")),
+                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management", "ServerLog.LogEntry.TitleLabel")),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.MessageLabel")),
-                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.TitleLabel")),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.EventTypeLabel"))
             );
 
@@ -113,9 +113,9 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
                                {
                                    new Tuple<TraceEventType, string>(TraceEventType.Information, "lime"),
                                    new Tuple<TraceEventType, string>(TraceEventType.Verbose, "white"),
-                                   new Tuple<TraceEventType, string>(TraceEventType.Warning, "yellow"),
-                                   new Tuple<TraceEventType, string>(TraceEventType.Error, "orange"),
-                                   new Tuple<TraceEventType, string>(TraceEventType.Critical, "red")
+                                   new Tuple<TraceEventType, string>(TraceEventType.Warning, "orange"),
+                                   new Tuple<TraceEventType, string>(TraceEventType.Error, "red"),
+                                   new Tuple<TraceEventType, string>(TraceEventType.Critical, "darkred")
                                };
 
             string colorName = colors.Where(c => c.Item1 == eventType).Select(c => c.Item2).FirstOrDefault() ?? "orange";
@@ -127,8 +127,8 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
             row.Add(
                 new XElement("td", color, " "),
                 new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
-                new XElement("td", new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))),
                 new XElement("td", EncodeXml10InvalidCharacters(logEntry.Title)),
+                new XElement("td", new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))),
                 new XElement("td", logEntry.Severity)
             );
 
