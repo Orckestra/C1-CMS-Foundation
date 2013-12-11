@@ -254,14 +254,14 @@ namespace Composite.C1Console.Workflow
 
                 _manualWorkflowSchedulerService.RunWorkflow(instanceId);
 
+                int managedThreadId = Thread.CurrentThread.ManagedThreadId;
+
                 Exception exception;
-                if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(Thread.CurrentThread.ManagedThreadId, out exception))
+                if (_resourceLocker.Resources.ExceptionFromWorkflow.TryGetValue(managedThreadId, out exception))
                 {
-                    _resourceLocker.Resources.ExceptionFromWorkflow.Remove(Thread.CurrentThread.ManagedThreadId);
+                    _resourceLocker.Resources.ExceptionFromWorkflow.Remove(managedThreadId);
 
-                    Log.LogCritical(LogTitle, exception);
-
-                    throw exception;
+                    throw new InvalidOperationException("Error executing workflow " + instanceId, exception);
                 }
             }
         }
