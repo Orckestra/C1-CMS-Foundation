@@ -88,13 +88,13 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         tableHeader.Add(
                 new XElement("th", " "),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.DateLabel")),
-                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management", "ServerLog.LogEntry.TitleLabel")),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.MessageLabel")),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.EventTypeLabel"))
             );
 
         table.Add(tableHeader);
 
+        int index = 0;
         foreach (LogEntry logEntry in entries.Reverse())
         {
             TraceEventType eventType;
@@ -127,8 +127,7 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
             row.Add(
                 new XElement("td", color, " "),
                 new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
-                new XElement("td", EncodeXml10InvalidCharacters(logEntry.Title)),
-                new XElement("td", new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))),
+                new XElement("td", TitleAndMessageMarkup(logEntry, index++)),
                 new XElement("td", logEntry.Severity)
             );
 
@@ -136,6 +135,56 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         }
 
         LogHolder.Controls.Add(new LiteralControl(table.ToString()));
+    }
+
+    public object[] TitleAndMessageMarkup(LogEntry logEntry, int index)
+    {
+        string encodedTitle = EncodeXml10InvalidCharacters(logEntry.Title);
+
+        if (!logEntry.Message.Contains("\n"))
+        {
+            string encodedMessage = EncodeXml10InvalidCharacters(logEntry.Message);
+            return new object[] { encodedTitle + ": " + encodedMessage };
+        }
+
+        string[] lines = EncodeXml10InvalidCharacters(logEntry.Message).Trim().Split('\n');
+
+        if (lines.Length < 7)
+        {
+            return new object[]
+            {
+                encodedTitle,
+                new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))
+            };
+        }
+
+        return new object[]
+        {
+            encodedTitle,
+            PreTag(lines, 0, 2),
+            new XElement("a", 
+                new XAttribute("id", "a" + index),
+                new XAttribute("href", "#"),
+                new XAttribute("onclick", string.Format("document.getElementById('log{0}').style.display = 'block';document.getElementById('a{0}').style.display = 'none'", index)),
+                new XAttribute("class", "expandCode"),
+                ". . ."),
+            PreTag(lines, 2, lines.Length - 4, 
+                new XAttribute("id", "log" + index),
+                new XAttribute("style", "display:none;")),
+            PreTag(lines, lines.Length - 2, 2)
+        };
+    }
+
+    private XElement PreTag(string[] lines, int startIndex, int count, params object[] content)
+    {
+        var text = string.Join("\n", lines.Skip(startIndex).Take(count));
+        var result = new XElement("pre", text);
+        if (content != null)
+        {
+            result.Add(content);
+        }
+
+        return result;
     }
 
 

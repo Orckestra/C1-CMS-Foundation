@@ -54,4 +54,16 @@ div.left {
     float: left;
 }
             
-            
+a.expandCode {
+    display: block;
+    width: 200px;
+    font-weight: bold;
+    text-align: center; 
+    border: 1px solid #777;
+    color: #777;
+    margin-left: 20px;
+}            
+
+a.expandCode:hover {
+    background-color: #EEE;
+}

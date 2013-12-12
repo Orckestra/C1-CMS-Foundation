@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
@@ -33,6 +33,7 @@ namespace Composite.Core.Logging
         private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize);
         private static readonly string BeginOfInnerExceptionMarker;
         private static readonly string EndOfInnerExceptionMarker;
+        private static readonly MethodInfo ExceptionToStringInternal_MethodInfo;
 
         /// <exclude />
         static LoggingService()
@@ -44,6 +45,8 @@ namespace Composite.Core.Logging
             BeginOfInnerExceptionMarker = "---> ";
             EndOfInnerExceptionMarker = Environment.NewLine +  "   " + 
                 (string) getRuntimeResourceStringMethodInfo.Invoke(null, new object[] { "Exception_EndOfInnerExceptionStack" });
+
+            ExceptionToStringInternal_MethodInfo = typeof (Exception).GetMethod("ToString", BindingFlags.Instance | BindingFlags.NonPublic);
 
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
         }
@@ -121,21 +124,8 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogError(string title, Exception e)
         {
-            string serializedException = e.ToString();
-
-            if (e.InnerException != null)
-            {
-                serializedException = ExcludeInnerExceptionInformation(serializedException, e.InnerException);
-            }
-
-            LogEntry(title, serializedException, Category.General, System.Diagnostics.TraceEventType.Error);
-
-            if (e.InnerException != null)
-            {
-                LogError(title + " | INNER", e.InnerException);
-            }
+            LogEntry(title, PrettyExceptionCallStack(e), Category.General, System.Diagnostics.TraceEventType.Error);
         }
-
 
 
         /// <exclude />
@@ -169,15 +159,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogCritical(string title, Exception e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(e.ToString());
-
-            LogEntry(title, sb.ToString(), Category.General, System.Diagnostics.TraceEventType.Critical);
-
-            if (e.InnerException != null)
-            {
-                LogCritical(title + " | INNER", e.InnerException);
-            }
+            LogEntry(title, PrettyExceptionCallStack(e), Category.General, System.Diagnostics.TraceEventType.Critical);
         }
 
 
@@ -251,15 +233,7 @@ namespace Composite.Core.Logging
         /// <exclude />
         static public void LogWarning(string title, Exception e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(e.ToString());
-
-            LogEntry(title, sb.ToString(), Category.General, System.Diagnostics.TraceEventType.Warning);
-
-            if (e.InnerException != null)
-            {
-                LogWarning(title + " | INNER", e.InnerException);
-            }
+            LogEntry(title, PrettyExceptionCallStack(e), Category.General, System.Diagnostics.TraceEventType.Warning);
         }
 
 
@@ -274,18 +248,41 @@ namespace Composite.Core.Logging
             Flush();
         }
 
-        private static string ExcludeInnerExceptionInformation(string serializedException, Exception innerException)
+        static string PrettyExceptionCallStack(Exception ex)
         {
+            string serializedException = ex.ToString();
 
-            string innerExceptionText = BeginOfInnerExceptionMarker + innerException.ToString() + EndOfInnerExceptionMarker;
+            string cleanException;
 
-            int offset = serializedException.IndexOf(innerExceptionText);
-            if(offset < 0)
+            if (ex.InnerException != null && ExcludeInnerExceptionInformation(ex, serializedException, out cleanException))
             {
-                return serializedException;
+                return PrettyExceptionCallStack(ex.InnerException) + Environment.NewLine + cleanException;
             }
 
-            return serializedException.Substring(0, offset) + serializedException.Substring(offset + innerExceptionText.Length);
+            return serializedException;
+        }
+
+
+        private static bool ExcludeInnerExceptionInformation(Exception exception, string serializedException, out string clearedSerializedException)
+        {
+            string innerExceptionText = exception is ExternalException
+                ? BeginOfInnerExceptionMarker + InnerExceptionToString(exception.InnerException)
+                : BeginOfInnerExceptionMarker + InnerExceptionToString(exception.InnerException) + EndOfInnerExceptionMarker;
+
+            int offset = serializedException.IndexOf(innerExceptionText, StringComparison.InvariantCulture);
+            if(offset < 0)
+            {
+                clearedSerializedException = null;
+                return false;
+            }
+
+            clearedSerializedException = serializedException.Substring(0, offset) + serializedException.Substring(offset + innerExceptionText.Length);
+            return true;
+        }
+
+        private static string InnerExceptionToString(Exception exception)
+        {
+            return (string) ExceptionToStringInternal_MethodInfo.Invoke(exception, new object[] { true, true });
         }
 
         private sealed class Resources
