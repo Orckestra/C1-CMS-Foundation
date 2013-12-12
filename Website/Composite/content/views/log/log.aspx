@@ -8,7 +8,7 @@
 	<head>
 		<title>Composite.Management.ServerLog</title>
 		<control:styleloader runat="server" />
-		<control:scriptloader type="sub" runat="server" />
+		<control:scriptloader type="sub" runat="server" updateManagerDisabled="True"/>
 		<link rel="stylesheet" type="text/css" href="log.css.aspx" />
 		<script type="text/javascript">
 		    DocumentManager.isDocumentSelectable = true;

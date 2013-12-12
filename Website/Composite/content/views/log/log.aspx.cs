@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI;
 using System.Xml.Linq;
@@ -56,16 +57,33 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         }
 
         selectedDate = selectedDate.Date;
-        LogEntry[] logEntries = LogManager.GetLogEntries(selectedDate, selectedDate.AddDays(1.0), includeVerbose, 0);
 
+        var logEntries = new List<LogEntry>();
 
-        logEntries = logEntries.Where(entry => (includeVerbose && entry.Severity == "Verbose")
-                                              || (includeInformation && entry.Severity == "Information")
-                                              || (includeWarning && entry.Severity == "Warning")
-                                              || (includeError && entry.Severity == "Error")
-                                              || (includeCritical && entry.Severity == "Critical")).ToArray();
+        DateTime fromDate = selectedDate;
 
-        if (logEntries.Length > 0)
+        const int bulkSize = 5000;
+
+        while (true)
+        {
+            LogEntry[] entriesPart = LogManager.GetLogEntries(fromDate, selectedDate.AddDays(1.0), includeVerbose, bulkSize);
+
+            logEntries.AddRange(entriesPart.Where(entry => (includeVerbose && entry.Severity == "Verbose")
+                                                          || (includeInformation && entry.Severity == "Information")
+                                                          || (includeWarning && entry.Severity == "Warning")
+                                                          || (includeError && entry.Severity == "Error")
+                                                          || (includeCritical && entry.Severity == "Critical")));
+
+            if (entriesPart.Length < bulkSize)
+            {
+                break;
+            }
+
+            fromDate = entriesPart[entriesPart.Length - 1].TimeStamp.AddMilliseconds(0.5);
+        }
+        
+
+        if (logEntries.Count > 0)
         {
             BuildLogTable(logEntries);
             
@@ -80,7 +98,7 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
     }
 
 
-    private void BuildLogTable(LogEntry[] entries)
+    private void BuildLogTable(IEnumerable<LogEntry> entries)
     {
         XElement table = new XElement("table");
 

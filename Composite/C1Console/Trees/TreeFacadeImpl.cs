@@ -257,7 +257,7 @@ namespace Composite.C1Console.Trees
 
                         Tree tree = LoadTreeFromFile(treeId);
 
-                        if (tree.BuildResult.ValidationErrors.Count() > 0)
+                        if (tree.BuildResult.ValidationErrors.Any())
                         {
                             StringBuilder sb = new StringBuilder();
                             Log.LogError("TreeFacade", string.Format("Tree {0} was not loaded due to the following validation errors", treeId));
@@ -278,14 +278,16 @@ namespace Composite.C1Console.Trees
                             _resourceLocker.Resources.Trees.Add(treeId, tree);
                         }
 
-                        int t2 = Environment.TickCount;
+                        int msElapsed = Environment.TickCount - t1;
 
-                        Log.LogVerbose("TreeFacade", "Time spend on loading the tree: " + (t2 - t1) + "ms, file: " + filename);
+                        if (msElapsed > 20)
+                        {
+                            Log.LogVerbose("TreeFacade", "Time spend on loading the tree: " + msElapsed + "ms, file: " + filename);
+                        }
                     }
                     catch (Exception ex)
                     {
-                        Log.LogError("TreeFacade", string.Format("Failed to load the tree {0}", treeId));
-                        Log.LogError("TreeFacade", ex);
+                        Log.LogError("TreeFacade: Failed to load the tree " + treeId, ex);
 
                         //Tree errorTree = CreateErrorTree(treeId, ex.Message);
                         //if (_resourceLocker.Resources.Trees.ContainsKey(errorTree.TreeId) == false)

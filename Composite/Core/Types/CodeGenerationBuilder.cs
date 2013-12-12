@@ -1,7 +1,6 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 
@@ -125,10 +124,6 @@ namespace Composite.Core.Types
                     if (!alreadyExists)
                     {
                         codeNamespace.Types.Add(newCodeTypeDeclaration);
-                    }
-                    else
-                    {
-                        Log.LogVerbose(CodeGenerationManager.LogTitle, string.Format("The type '{0}.{1}' has already been added, skipping this one", namespaceName, newCodeTypeDeclaration.Name));
                     }
                 }
             }
