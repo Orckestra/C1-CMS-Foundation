@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Linq;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +15,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
+using Composite.Data.ProcessControlled;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
@@ -301,10 +303,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 return false;
             }
 
-            int primaryKeyCount =
-                (from column in sqlTableInformation.ColumnInformations
-                 where column.IsPrimaryKey 
-                 select column).Count();
+            int primaryKeyCount = sqlTableInformation.ColumnInformations.Count(column => column.IsPrimaryKey);
 
             if (primaryKeyCount == 0)
             {
@@ -314,24 +313,49 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
             List<SqlColumnInformation> columns = new List<SqlColumnInformation>(sqlTableInformation.ColumnInformations);
-            foreach (PropertyInfo property in interfaceType.GetPropertiesRecursively())
+            var properties = interfaceType.GetPropertiesRecursively();
+
+            foreach (PropertyInfo property in properties)
             {
                 if (property.Name == "DataSourceId") continue;
 
                 SqlColumnInformation column = columns.Find(col => col.ColumnName == property.Name);
-                if (null == column)
+                if (column == null)
                 {
                     errors.AppendLine(string.Format("The interface property named '{0}' does not exist in the table '{1}' as a column", property.Name, sqlTableInformation.TableName));
                     return false;
                 }
 
-                if ((column.IsNullable == false) || (column.Type == typeof(string)))
+                if (!column.IsNullable || column.Type == typeof(string))
                 {
                     if (column.Type != property.PropertyType)
                     {
                         errors.AppendLine(string.Format("Type mismatch. The interface type '{0}' does not match the database type '{1}'", property.PropertyType, column.Type));
                         return false;
                     }
+                }
+            }
+
+            // Updating schema from C1 4.1, to be removed in future versions.
+            if (typeof (ILocalizedControlled).IsAssignableFrom(interfaceType)
+                && !properties.Any(p => p.Name == "CultureName")
+                && columns.Any(c => c.ColumnName == "CultureName"))
+            {
+                Log.LogInformation(LogTitle, "Removing obsolete 'CultureName' column from table '{0}'", tableName);
+
+                var conn = SqlConnectionManager.GetConnection(_connectionString);
+                string sql =
+                @"IF (OBJECT_ID('DF_{0}_CultureName', 'D') IS NOT NULL)
+                  BEGIN
+                    ALTER TABLE [{0}] DROP CONSTRAINT [DF_{0}_CultureName]
+                  END
+
+                  ALTER TABLE [{0}] DROP COLUMN [CultureName]".FormatWith(tableName);
+                Log.LogInformation(LogTitle, sql);
+
+                using (var cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.ExecuteNonQuery();
                 }
             }
 
@@ -568,7 +592,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         private Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> BuildAllExistingDataTypeStoreDataScopes()
         {
-            Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes = new Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>>();
+            var allSqlDataTypeStoreDataScopes = new Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>>();
 
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
