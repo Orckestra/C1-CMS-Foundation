@@ -420,15 +420,13 @@ margin-right: 0;
 margin-left: 0;
 }
 ui|dialogtoolbar ui|clickbutton.focusable {
-padding: 2px;
-margin: 0 !important;
+margin: 2px !important;
 }
 ui|dialogtoolbar ui|clickbutton.focused {
 border: 1px solid $(color:threedshadow);
 #region osx
 border: 1px solid -moz-mac-focusring;
 #endregion
-padding: 1px;	
 }
 
 /* STANDARD DIALOGS ................................................................*/
@@ -662,17 +660,23 @@ float: left;
 margin-right: 2px;
 overflow: hidden !important; /* contain added stuff */
 }
-ui|clickbutton table.matrix td.c {
-padding: 3px 6px 2px 6px; /*5px 8px 4px 8px;*/
-#moz: padding-bottom: 3px;
-#region vista
-padding: 3px 6px 4px 6px;
-_padding: 3px 6px 2px 6px;
-#endregion
+ui|clickbutton {
+padding: 6px 9px 6px 10px;
+
 }
-ui|toolbar ui|clickbutton table.matrix td.c {
-padding: 0 2px 0 2px;
+
+ui|clickbutton ui|labelbox{
+padding: 0px;
 }
+
+ui|toolbar ui|clickbutton {
+padding: 3px 2px 3px 3px;
+}
+
+ui|toolbar ui|selector ui|clickbutton {
+padding: 3px 24px 3px 3px;
+}
+
 ui|checkbutton {
 margin-top: 2px;
 }
@@ -745,6 +749,10 @@ ui|control {
 display: block;
 float: left;
 }
+
+.dialogcontrol {
+padding: 0;
+}
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
@@ -753,6 +761,9 @@ float: left;
 ui|toolbar ui|selector {
 margin-right: 2px;
 float: left;
+}
+ui|toolbarbutton {
+padding: 3px;
 }
 ui|toolbarbutton ui|labeltext,
 ui|clickbutton ui|labeltext,
@@ -1647,36 +1658,17 @@ ui|selector ui|clickbutton {
 float: none;
 margin: 0;
 }
-ui|selector ui|clickbutton table.matrix td.c {
-padding: 0;
+ui|selector ui|clickbutton {
+padding: 4px;
 padding-right: 20px;
 }
-ui|fields ui|selector ui|clickbutton table.matrix td.c,
-ui|fields ui|multiselector ui|clickbutton table.matrix td.c {
-padding: 2px;
-padding-top: 1px;
-padding-bottom: 0;
-#moz padding-bottom: 1px;
-width: 204px;
-#region vista
-padding-top: 0px;
-padding-bottom: 2px;
-_padding-top: 0;
-_padding-bottom: 1px;
-#endregion
-}
-#region vista
-ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox {
-_margin-bottom: -2px;
-}
-#endregion
-ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c {
-width: 174px;
+
+ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
 overflow: hidden;
+float:none;
+margin-right:5px;
 }
-ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
-width: 132px;
-}
+
 ui|selector img.selectorindicatorimage {
 position: absolute;
 z-index: 1;
@@ -1873,8 +1865,8 @@ position: absolute;
 width: 26px;
 height: 26px;
 }
-ui|clickbutton.fieldhelp table.matrix td.c {
-padding: 1px
+ui|clickbutton.fieldhelp {
+padding: 4px;
 }
 ui|popup.fieldhelppopup {
 #moz min-width: 220px;
