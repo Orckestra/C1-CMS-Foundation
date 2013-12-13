@@ -10,3 +10,7 @@ ui|control {
 	display: block;
 	float: left;
 }
+
+.dialogcontrol {
+	padding: 0;
+}

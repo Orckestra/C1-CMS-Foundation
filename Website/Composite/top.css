@@ -229,8 +229,17 @@ ui|uncover {
 
 
 /* HOVER */
-	
-.splash ui|clickbutton.hover table.matrix td.c,
+
+.splash ui|clickbutton.hover,
+.splash ui|clickbutton.focused {
+	background: #D63548;
+	margin: 0;
+	border: 0;
+	border-radius: 7px;
+	box-shadow: none;
+}
+
+/*.splash ui|clickbutton.hover table.matrix td.c,
 .splash ui|clickbutton.focused table.matrix td.c,
 .splash ui|clickbutton.hover table.matrix td.n,
 .splash ui|clickbutton.focused table.matrix td.n,
@@ -257,7 +266,7 @@ ui|clickbutton.focused table.matrix td.se {
 ui|clickbutton.hover table.matrix td.sw,
 ui|clickbutton.focused table.matrix td.sw {
 	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-sw.png");
-}
+}*/
 
 
 /* ACTIVE */
@@ -284,8 +293,18 @@ ui|clickbutton.active table.matrix td.sw {
 
 
 /* DEFAULT and DISABLED */
+ui|clickbutton,
+ui|clickbutton.isdisabled {
+	background: #CC071E;
+	margin: 0;
+	border: 0;
+	border-radius: 7px;
+	box-shadow: none;
 
-ui|clickbutton table.matrix td.c,
+}
+
+
+/*ui|clickbutton table.matrix td.c,
 ui|clickbutton.isdisabled table.matrix td.c {
 	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
 }
@@ -320,4 +339,4 @@ ui|clickbutton.isdisabled table.matrix td.se {
 ui|clickbutton table.matrix td.sw,
 ui|clickbutton.isdisabled table.matrix td.sw {
 	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-sw.png");
-}
+}*/

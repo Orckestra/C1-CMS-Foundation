@@ -4,7 +4,9 @@ ui|explorersplitter,
 ui|explorertoolbarbutton {
 	border-bottom: 1px solid $(color:threedshadow);
 }
-ui|explorertoolbarbutton table.matrix {
+ui|explorertoolbarbutton {
+	float: left;
+	padding: 4px;
 	width: 100%;
 	#region default
 		#alphabackdrop: url("${skin}/explorer/button.png");
@@ -60,6 +62,13 @@ ui|explorertoolbar ui|toolbargroup {
 }
 ui|explorermenu ui|toolbar {
 	border: none;
+}
+
+
+ui|explorertoolbarbutton.active {
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2FjYzJlOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iIzkzYWZkYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjMzJSIgc3RvcC1jb2xvcj0iIzc2OWFkMyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM5YmI1ZGYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	background: linear-gradient(to bottom, #acc2e8 0%,#93afdc 33%,#769ad3 33%,#9bb5df 100%); /* W3C */
 }
 #region vista
 	ui|explorertoolbarbutton.active table.matrix td.c,

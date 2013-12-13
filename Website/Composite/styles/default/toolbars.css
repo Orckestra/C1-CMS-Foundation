@@ -7,6 +7,9 @@ ui|toolbar ui|selector {
 	margin-right: 2px;
 	float: left;
 }
+ui|toolbarbutton {
+	padding: 3px;
+}
 ui|toolbarbutton ui|labeltext,
 ui|clickbutton ui|labeltext,
 ui|toolbarlabel ui|labeltext {

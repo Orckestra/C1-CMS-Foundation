@@ -1,6 +1,15 @@
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
 /* HOVER */
+ui|toolbarbutton {
+	border: 1px solid transparent;
+}
+
+ui|toolbarbutton.hover {
+	border: 1px solid #9398A5;
+	border-radius: 4px;
+	box-shadow: inset 0px 0px 0px 1px #F3F3F3;
+}
 
 ui|toolbarbutton.hover table.matrix td.c {
 	#region default
@@ -78,7 +87,13 @@ ui|toolbarbutton.hover table.matrix td.sw {
 
 /* ACTIVE */
 
-#region osx
+ui|toolbarbutton.active {
+	border: 1px solid #9398A5;
+	border-radius: 4px;
+	box-shadow: inset 1px 1px 1px 0px rgba(0,0,0,0.75);
+}
+
+/*#region osx
 	ui|toolbarbutton.active {
 		background-color: rgba(0,0,0,0.05);
 		-vendor-border-radius: 4px;
@@ -139,4 +154,4 @@ ui|toolbarbutton.active table.matrix td.sw {
 	#region vista
 		#alphabackdrop: url("${skin}/toolbars/vista/toolbarbutton-active-sw.png");
 	#endregion
-}
+}*/

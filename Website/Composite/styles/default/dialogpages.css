@@ -29,15 +29,13 @@ ui|dialogtoolbar {
 	margin-left: 0;
 }
 ui|dialogtoolbar ui|clickbutton.focusable {
-	padding: 2px;
-	margin: 0 !important;
+	margin: 2px !important;
 }
 ui|dialogtoolbar ui|clickbutton.focused {
 	border: 1px solid $(color:threedshadow);
 	#region osx
 		border: 1px solid -moz-mac-focusring;
 	#endregion
-	padding: 1px;	
 }
 
 /* STANDARD DIALOGS ................................................................*/

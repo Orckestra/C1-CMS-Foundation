@@ -15,17 +15,23 @@ ui|toolbarlabel {
 	margin-right: 2px;
 	overflow: hidden !important; /* contain added stuff */
 }
-ui|clickbutton table.matrix td.c {
-	padding: 3px 6px 2px 6px; /*5px 8px 4px 8px;*/
-	#moz: padding-bottom: 3px;
-	#region vista
-		padding: 3px 6px 4px 6px;
-		_padding: 3px 6px 2px 6px;
-	#endregion
+ui|clickbutton {
+	padding: 6px 9px 6px 10px;
+	
 }
-ui|toolbar ui|clickbutton table.matrix td.c {
-	padding: 0 2px 0 2px;
+
+ui|clickbutton ui|labelbox{
+	padding: 0px;
 }
+
+ui|toolbar ui|clickbutton {
+	padding: 3px 2px 3px 3px;
+}
+
+ui|toolbar ui|selector ui|clickbutton {
+	padding: 3px 24px 3px 3px;
+}
+
 ui|checkbutton {
     margin-top: 2px;
 }

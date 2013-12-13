@@ -59,9 +59,9 @@ ui|toolbar#toolbar.imagesizexlarge ui|labelbody {
 	height: 32px;
 	padding-left: 32px; /* hack - overwrites labels.css */
 }
-ui|toolbar#toolbar ui|toolbarbutton table.matrix td.c,
-ui|toolbar#toolbar ui|clickbutton table.matrix td.c {
-	padding: 2px;
+ui|toolbar#toolbar ui|toolbarbutton,
+ui|toolbar#toolbar ui|clickbutton {
+	padding: 5px;
 }
 ui|toolbarbody#moreactionstoolbargroup ui|toolbarbutton ui|labeltext {
 	font-weight: bold;	
