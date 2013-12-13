@@ -183,6 +183,8 @@
     <Compile Include="Core\WebClient\ScriptLoader.cs" />
     <Compile Include="Core\WebClient\StyleLoader.cs" />
     <Compile Include="Data\DynamicTypes\DataFieldTreeOrderingProfile.cs" />
+    <Compile Include="Data\DynamicTypes\Foundation\DynamicTypesCustomFormFacade.cs" />
+    <Compile Include="Data\DynamicTypes\ParseDefinitionFileException.cs" />
     <Compile Include="Data\TreeOrderingProfileAttribute.cs" />
     <Compile Include="Data\Foundation\ProcessControllerSettings.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />

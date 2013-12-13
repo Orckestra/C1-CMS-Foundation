@@ -1035,7 +1035,7 @@ namespace Composite.C1Console.Workflow
 
 
         [DebuggerHidden]
-        private void LogWorkflowChange(string change, WorkflowEventArgs args, bool logUserName, bool workflowDefinitionAvailable)
+        private void LogWorkflowChange(string change, WorkflowEventArgs args, bool logUserName, bool workflowDefinitionAvailable, bool error)
         {
             WorkflowInstance instance = null;
 
@@ -1080,7 +1080,14 @@ namespace Composite.C1Console.Workflow
                 message.Append(", User = " + identity);
             }
 
-            Log.LogVerbose(LogTitle, message.ToString());
+            if (!error)
+            {
+                Log.LogVerbose(LogTitle, message.ToString());
+            }
+            else
+            {
+                Log.LogError(LogTitle, message.ToString());
+            }
         }
 
 
@@ -1088,10 +1095,10 @@ namespace Composite.C1Console.Workflow
         private void AddWorkflowLoggingEvents(WorkflowRuntime workflowRuntime)
         {
 
-            workflowRuntime.WorkflowCreated += (sender, args) => LogWorkflowChange("created", args, true, true);
-            workflowRuntime.WorkflowLoaded += (sender, args) => LogWorkflowChange("loaded", args, true, true);
-            workflowRuntime.WorkflowPersisted += (sender, args) => LogWorkflowChange("persisted", args, false, false);
-            workflowRuntime.WorkflowAborted += (sender, args) => LogWorkflowChange("aborted", args, false, true);
+            workflowRuntime.WorkflowCreated += (sender, args) => LogWorkflowChange("created", args, true, true, false);
+            workflowRuntime.WorkflowLoaded += (sender, args) => LogWorkflowChange("loaded", args, true, true, false);
+            workflowRuntime.WorkflowPersisted += (sender, args) => LogWorkflowChange("persisted", args, false, false, false);
+            workflowRuntime.WorkflowAborted += (sender, args) => LogWorkflowChange("aborted", args, false, false, true);
 
             workflowRuntime.WorkflowTerminated += (sender, args) =>
             {

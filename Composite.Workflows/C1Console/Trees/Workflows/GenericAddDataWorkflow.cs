@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Runtime;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Workflow;
-using Composite.Core.IO;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Composite.Data;
@@ -107,9 +107,10 @@ namespace Composite.C1Console.Trees.Workflows
                     GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForiegnKeyEditing = true };
 
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
-                    if (string.IsNullOrEmpty(CustomFormMarkupPath) == false)
+                    if (!string.IsNullOrEmpty(CustomFormMarkupPath))
                     {
-                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(CustomFormMarkupPath);
+                        _dataTypeDescriptorFormsHelper.CustomFormDefinition = 
+                            XDocument.Load(CustomFormMarkupPath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
                     }
                     _dataTypeDescriptorFormsHelper.LayoutIconHandle = IconResourceName;
                     _dataTypeDescriptorFormsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);

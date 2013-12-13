@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Workflow.Runtime;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Foundation;
-using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Serialization;
 using Composite.Data;
@@ -23,14 +23,14 @@ namespace Composite.C1Console.Trees.Workflows
     public sealed partial class GenericEditDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
         [NonSerialized]
-        private bool _doPublish = false;
+        private bool _doPublish;
 
 
         [NonSerialized]
-        private DataTypeDescriptorFormsHelper _dataTypeDescriptorFormsHelper = null;
+        private DataTypeDescriptorFormsHelper _dataTypeDescriptorFormsHelper;
 
         [NonSerialized]
-        private string _typeName = null;
+        private string _typeName;
 
 
         private DataTypeDescriptorFormsHelper FormsHelper
@@ -68,9 +68,10 @@ namespace Composite.C1Console.Trees.Workflows
                     GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor) { AllowForiegnKeyEditing = true };
 
                     _dataTypeDescriptorFormsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, this.EntityToken);
-                    if (string.IsNullOrEmpty(customFormMarkupPath) == false)
+                    if (!string.IsNullOrEmpty(customFormMarkupPath))
                     {
-                        _dataTypeDescriptorFormsHelper.AlternateFormDefinition = C1File.ReadAllText(customFormMarkupPath);
+                        _dataTypeDescriptorFormsHelper.CustomFormDefinition =
+                            XDocument.Load(customFormMarkupPath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
                     }
                     _dataTypeDescriptorFormsHelper.LayoutIconHandle = iconResourceName;
                     _dataTypeDescriptorFormsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);

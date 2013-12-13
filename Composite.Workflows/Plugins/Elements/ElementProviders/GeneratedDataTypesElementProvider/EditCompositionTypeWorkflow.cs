@@ -163,7 +163,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
                 specificTreeRefresher.PostRefreshMesseges(rootEntityToken);
 
-                IFile markupFile = DynamicTypesAlternateFormFacade.GetAlternateFormMarkupFile(typeNamespace, typeName);
+                IFile markupFile = DynamicTypesCustomFormFacade.GetCustomFormMarkupFile(typeNamespace, typeName);
                 if (markupFile != null)
                 {
                     ShowMessage(DialogType.Message,

@@ -16,7 +16,6 @@ using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
 using Composite.Functions.Foundation;
-
 using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_GeneratedDataTypesElementProvider;
 
 namespace Composite.Data.DynamicTypes
@@ -32,8 +31,9 @@ namespace Composite.Data.DynamicTypes
         private readonly bool _showPublicationStatusSelector;
         private readonly string _bindingNamesPrefix;
 
-        private string _alternateFormDefinition;
-        private bool _alternateFormDefinitionInitialized;
+        private XDocument _customFormDefinition;
+        private string _customFormDefinitionFilePath;
+        private bool _customFormDefinitionInitialized;
         private string _generatedForm;
         private XElement _bindingsXml;
         private XElement _panelXml;
@@ -100,26 +100,25 @@ namespace Composite.Data.DynamicTypes
 
 
         /// <exclude />
-        public string AlternateFormDefinition
+        public XDocument CustomFormDefinition
         {
             get
             {
-                if (_alternateFormDefinitionInitialized == false)
+                if (!_customFormDefinitionInitialized)
                 {
-                    _alternateFormDefinition = DynamicTypesAlternateFormFacade.GetAlternateFormMarkup(_dataTypeDescriptor);
+                    _customFormDefinition = DynamicTypesCustomFormFacade.GetCustomFormMarkup(_dataTypeDescriptor);
 
-                    _alternateFormDefinitionInitialized = true;
+                    _customFormDefinitionInitialized = true;
                 }
 
-                return _alternateFormDefinition;
+                return _customFormDefinition;
             }
             set
             {
-                _alternateFormDefinition = value;
-                _alternateFormDefinitionInitialized = true;
+                _customFormDefinition = value;
+                _customFormDefinitionInitialized = true;
             }
         }
-
 
         /// <exclude />
         public void AddReadOnlyField(string fieldName)
@@ -618,18 +617,18 @@ namespace Composite.Data.DynamicTypes
             _bindingsXml = new XElement(_cmsBindingsElementTemplate);
             XElement layout = new XElement(_cmsLayoutElementTemplate);
 
-            if (string.IsNullOrEmpty(this.LayoutIconHandle) == false)
+            if (!string.IsNullOrEmpty(this.LayoutIconHandle))
             {
                 layout.Add(new XAttribute("iconhandle", this.LayoutIconHandle));
             }
 
             // Add a read binding as the layout label
-            if (string.IsNullOrEmpty(this.LayoutLabel) == false)
+            if (!string.IsNullOrEmpty(this.LayoutLabel))
             {
                 XAttribute labelAttribute = new XAttribute("label", this.LayoutLabel);
                 layout.Add(labelAttribute);
             }
-            else if (string.IsNullOrEmpty(_dataTypeDescriptor.LabelFieldName) == false)
+            else if (!string.IsNullOrEmpty(_dataTypeDescriptor.LabelFieldName))
             {
 
                 layout.Add((new XElement(CmsNamespace + "layout.label", new XElement(CmsNamespace + "read", new XAttribute("source", _dataTypeDescriptor.LabelFieldName)))));
@@ -637,7 +636,7 @@ namespace Composite.Data.DynamicTypes
 
 
             _panelXml = new XElement(MainNamespace + "FieldGroup");
-            if (string.IsNullOrEmpty(this.FieldGroupLabel) == false)
+            if (!string.IsNullOrEmpty(this.FieldGroupLabel))
             {
                 _panelXml.Add(new XAttribute("Label", this.FieldGroupLabel));
             }
@@ -768,29 +767,38 @@ namespace Composite.Data.DynamicTypes
             formDefinition.Add(layout);
 
 
-            if (this.AlternateFormDefinition == null)
+            if (this.CustomFormDefinition == null)
             {
                 _generatedForm = formDefinition.ToString();
             }
             else
             {
-                XElement formDefinitionElement = XElement.Parse(this.AlternateFormDefinition);
+                
 
-                var bindingNameAttributes =
-                    formDefinitionElement.Descendants(CmsNamespace + "binding").Attributes("name").Concat(
-                        formDefinitionElement.Descendants(CmsNamespace + "bind").Attributes("source").Concat(
-                            formDefinitionElement.Descendants(CmsNamespace + "read").Attributes("source")));
+                Func<XElement, IEnumerable<XAttribute>> getBindingsFunc =
+                    doc => doc.Descendants(CmsNamespace + "binding").Attributes("name")
+                           .Concat(doc.Descendants(CmsNamespace + "bind").Attributes("source"))
+                           .Concat(doc.Descendants(CmsNamespace + "read").Attributes("source"));
 
-                foreach (XAttribute bindingNameAttribute in bindingNameAttributes)
+                // Validation
+                foreach (XAttribute bindingNameAttribute in getBindingsFunc(CustomFormDefinition.Root))
                 {
-                    var bindingName = bindingNameAttribute.Value;
+                    string bindingName = bindingNameAttribute.Value;
 
-                    Verify.That(fieldNameToBindingNameMapper.ContainsKey(bindingName), "Incorrect binding '{0}'", bindingName);
-
-                    bindingNameAttribute.Value = fieldNameToBindingNameMapper[bindingName];
+                    if (!fieldNameToBindingNameMapper.ContainsKey(bindingName))
+                    {
+                        throw new ParseDefinitionFileException("Invalid binding name '{0}'".FormatWith(bindingName), bindingNameAttribute);
+                    }
                 }
 
-                if (string.IsNullOrEmpty(this.FieldGroupLabel) == false)
+                XElement formDefinitionElement = new XElement(this.CustomFormDefinition.Root);
+
+                foreach (XAttribute bindingNameAttribute in getBindingsFunc(formDefinitionElement))
+                {
+                    bindingNameAttribute.Value = fieldNameToBindingNameMapper[bindingNameAttribute.Value];
+                }
+
+                if (!string.IsNullOrEmpty(this.FieldGroupLabel))
                 {
                     foreach (XElement fieldGroupElement in formDefinitionElement.Descendants(MainNamespace + "FieldGroup"))
                     {
@@ -845,16 +853,18 @@ namespace Composite.Data.DynamicTypes
 
         internal bool BindingIsOptional(string bindingName)
         {
-            XElement bindingsXml;
-            string formDefinition = AlternateFormDefinition ?? _generatedForm;
+            XElement bindingsXml = CustomFormDefinition.Root;
 
-            if (!formDefinition.IsNullOrEmpty())
+            if (bindingsXml == null)
             {
-                bindingsXml = XElement.Parse(formDefinition);
-            }
-            else
-            {
-                bindingsXml = BindingXml;
+                if (!_generatedForm.IsNullOrEmpty())
+                {
+                    bindingsXml = XElement.Parse(_generatedForm);
+                }
+                else
+                {
+                    bindingsXml = BindingXml;
+                }
             }
 
             var binding = bindingsXml

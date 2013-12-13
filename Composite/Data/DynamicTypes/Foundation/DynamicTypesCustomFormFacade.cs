@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Data.Types;
+using Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation;
 
 
 namespace Composite.Data.DynamicTypes.Foundation
@@ -10,22 +11,30 @@ namespace Composite.Data.DynamicTypes.Foundation
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-    [Obsolete("User DynamicTypesCustomFormFacade instead")]
-    public static class DynamicTypesAlternateFormFacade
+    public static class DynamicTypesCustomFormFacade
     {
-        
         /// <summary>
-        /// Returns null if no alternate form exists.
+        /// Returns custom form markup. 
         /// </summary>
-        /// <exclude />
-        public static string GetAlternateFormMarkup(DataTypeDescriptor dataTypeDescriptor)
+        /// <param name="dataTypeDescriptor">A data type descriptor</param>
+        // /// <param name="markupFilePath">The file path that markup originated from.</param>
+        /// <returns></returns>
+        public static XDocument GetCustomFormMarkup(DataTypeDescriptor dataTypeDescriptor/*, out string markupFilePath*/)
         {
-            var file = GetAlternateFormMarkupFile(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
+            var file = GetCustomFormMarkupFile(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
 
-            return file != null ? file.ReadAllText() : null;
+            if (file == null)
+            {
+                //markupFilePath = null;
+                return null;
+            }
+
+            var markupFilePath = (file as FileSystemFile).SystemPath;
+
+            return XDocument.Load(markupFilePath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
         }
 
-        internal static IFile GetAlternateFormMarkupFile(string @namespace, string typeName)
+        internal static IFile GetCustomFormMarkupFile(string @namespace, string typeName)
         {
             string dynamicDataFormFolderPath = GetFolderPath(@namespace);
             string dynamicDataFormFileName = GetFilename(typeName);
@@ -41,7 +50,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
 
         /// <exclude />
-        public static void SetAlternateForm(DataTypeDescriptor dataTypeDescriptor, string newFormMarkup)
+        public static void SetCustomForm(DataTypeDescriptor dataTypeDescriptor, string newFormMarkup)
         {
             string dynamicDataFormFolderPath = GetFolderPath(dataTypeDescriptor.Namespace);
             string dynamicDataFormFileName = GetFilename(dataTypeDescriptor.Name);

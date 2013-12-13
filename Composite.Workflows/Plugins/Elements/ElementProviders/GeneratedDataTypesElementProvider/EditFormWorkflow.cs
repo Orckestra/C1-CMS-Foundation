@@ -1,11 +1,11 @@
 using System;
 using System.Workflow.Runtime;
+using System.Xml.Linq;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
-using Composite.Data.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Core.Types;
 using Composite.C1Console.Workflow;
@@ -27,11 +27,18 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
-            string formMarkup = DynamicTypesAlternateFormFacade.GetAlternateFormMarkup(dataTypeDescriptor);
+            string formMarkup;
 
-            if (formMarkup == null)
+            XDocument formMarkupDocument = DynamicTypesCustomFormFacade.GetCustomFormMarkup(dataTypeDescriptor);
+
+
+            if (formMarkupDocument != null)
             {
-                DataTypeDescriptorFormsHelper formsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
+                formMarkup = formMarkupDocument.ToString();
+            }
+            else
+            {
+                var formsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
 
                 GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
                 formsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
