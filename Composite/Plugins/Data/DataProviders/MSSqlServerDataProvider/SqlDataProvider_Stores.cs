@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.Linq;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -343,26 +343,61 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 Log.LogInformation(LogTitle, "Removing obsolete 'CultureName' column from table '{0}'", tableName);
 
-                var conn = SqlConnectionManager.GetConnection(_connectionString);
-                string sql =
-                @"IF (OBJECT_ID('DF_{0}_CultureName', 'D') IS NOT NULL)
-                  BEGIN
-                    ALTER TABLE [{0}] DROP CONSTRAINT [DF_{0}_CultureName]
-                  END
 
-                  ALTER TABLE [{0}] DROP COLUMN [CultureName]".FormatWith(tableName);
-                Log.LogInformation(LogTitle, sql);
+                string selectConstraintName = string.Format(
+                    @"SELECT df.name 'ConstraintName'
+                    FROM sys.default_constraints df
+                    INNER JOIN sys.tables t ON df.parent_object_id = t.object_id
+                    INNER JOIN sys.columns c ON df.parent_object_id = c.object_id AND df.parent_column_id = c.column_id
+                    where t.name = '{0}'
+                    and c.name = 'CultureName'", tableName);
 
-                using (var cmd = new SqlCommand(sql, conn))
+
+                var dt = ExecuteReader(selectConstraintName);
+                List<string> constraints = (from DataRow dr in dt.Rows select dr["ConstraintName"].ToString()).ToList();
+
+                foreach (var constrainName in constraints)
                 {
-                    cmd.ExecuteNonQuery();
+                    ExecuteSql("ALTER TABLE [{0}] DROP CONSTRAINT [{1}]".FormatWith(tableName, constrainName));
                 }
+
+                string sql = "ALTER TABLE [{0}] DROP COLUMN [CultureName]".FormatWith(tableName);
+
+                ExecuteSql(sql);
             }
 
             return true;
         }
 
 
+        private void ExecuteSql(string sql)
+        {
+            var conn = SqlConnectionManager.GetConnection(_connectionString);
+
+            Log.LogInformation(LogTitle, sql);
+
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private DataTable ExecuteReader(string commandText)
+        {
+            var conn = SqlConnectionManager.GetConnection(_connectionString);
+
+            using (var cmd = new SqlCommand(commandText, conn))
+            {
+                using (var dt = new DataTable())
+                {
+                    using (var rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr != null) dt.Load(rdr);
+                        return dt;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Checks that tables related to specified data type included in current DataContext class, if not - compiles a new version of DataContext that contains them
