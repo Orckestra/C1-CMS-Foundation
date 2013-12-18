@@ -6,6 +6,7 @@ ui|labelbox {
 	float: left;
 	white-space: nowrap;
 	-vendor-user-select: none; /* See notes in DocumentManager.js */
+	max-width: 100%;
 }
 ui|labelbox.toolbartext {
 	margin-top: 4px;	
@@ -15,6 +16,7 @@ ui|labelbody {
 	display: block;
 	float: left;
 	margin-left: auto !important;
+	max-width: 100%;
 }
 ui|labelbox.flipped ui|labelbody {
 	background-position: 100% 0;
@@ -57,6 +59,7 @@ ui|labeltext {
 	display: block;
 	float: left;
 	#ie text-overflow: ellipsis;
+	max-width: 100%;
 }
 ui|*.textonly ui|labeltext,
 ui|labelbox.textonly ui|labeltext {

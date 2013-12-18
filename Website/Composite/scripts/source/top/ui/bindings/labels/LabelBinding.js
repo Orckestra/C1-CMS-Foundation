@@ -9,7 +9,6 @@ LabelBinding.superclass = Binding.prototype;
 LabelBinding.DIALOG_INDECATOR_SUFFIX = String.fromCharCode ( 8230 ); // "…".charCodeAt ( 0 );
 LabelBinding.DEFAULT_IMAGE = "${root}/images/blank.png";
 LabelBinding.EXPLORER_IMAGE_FILTER = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='${url}',sizingMethod='crop');"
-LabelBinding.CLASSNAME_TEXTOVERFLOW = "textoverflow";
 LabelBinding.CLASSNAME_GRAYTEXT = "graytext";
 LabelBinding.CLASSNAME_FLIPPED = "flipped";
 
@@ -275,10 +274,6 @@ LabelBinding.prototype.buildLabel = function () {
  */
 LabelBinding.prototype.buildClassName = function () {
 	
-	if ( Client.isMozilla ) {
-		//this._buildOverflowClassName (); TODO: VERY SLOW - ENABLE FOR SELECTORS ONLY!
-	}
-	
 	var class1 = "textonly";
 	var class2 = "imageonly";
 	var class3 = "both";
@@ -295,21 +290,6 @@ LabelBinding.prototype.buildClassName = function () {
 		this.detachClassName ( class3 );	
 		this.detachClassName ( class1 );	
 		this.attachClassName ( class2 );
-	}
-}
-
-/**
- * This will help us emulate text-overflow: ellipsis in Mozilladrengen.
- */
-LabelBinding.prototype._buildOverflowClassName = function () {
-	
-	if ( Client.isMozilla && this.isAttached && this.getLabel ()) {
-		if ( this.isAttached && this.shadowTree.labelText ) {
-			this.detachClassName ( LabelBinding.CLASSNAME_TEXTOVERFLOW );
-			if ( this.shadowTree.labelText.offsetWidth > this.shadowTree.labelBody.offsetWidth ) {
-				this.attachClassName ( LabelBinding.CLASSNAME_TEXTOVERFLOW );
-			}
-		}
 	}
 }
 

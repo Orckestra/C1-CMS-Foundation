@@ -20,10 +20,6 @@ ui|fieldgroup {
 	overflow: visible;
 	margin-top: 34px !important;
 	padding-top: 7px;
-	border-left:  2px groove #F0F0F0;
-	border-right:  2px groove #F0F0F0;
-	border-bottom:  2px groove #F0F0F0;
-	border-radius: 0 0 5px 5px;
 	position: relative;
 	padding: 18px 2px 18px 2px;
 
@@ -44,6 +40,7 @@ ui|labelbox.fieldgrouplabel {
 	left: -2px;
 	right: -2px;
 	position:absolute;
+	max-width: 200%;
 }
 
 
@@ -54,36 +51,11 @@ ui|labelbox.fieldgrouplabel ui|labeltext {
 	#endregion
 }
 
-
-ui|fieldgroup.nolabel {
-	border:  2px groove #F0F0F0;
-	border-radius: 5px;
-}
-
-ui|labelbox.fieldgrouplabel ui|labelbody:before {
-	content:"";
-	display: block;
-	height: 16px;
-	width: 12px;
-	float: left;
-	border-top:  2px groove #F0F0F0;
-	border-left:  2px groove #F0F0F0;
-	border-radius: 5px 0 0 0;
-	margin-top: 7px;
-}
-
 ui|labelbox.fieldgrouplabel ui|labelbody {
 	float:left;
 }
 
-ui|labelbox.fieldgrouplabel > div {
-	border-top:  2px groove #F0F0F0;
-	border-right:  2px groove #F0F0F0;
-	border-radius: 0 5px 0 0;
-	margin-top: 7px;
-	height: 16px;
-	overflow: hidden;
-}
+
 
 /* FIELDS ......................................... */
 
@@ -260,10 +232,7 @@ ui|selector input {
 ui|selector ui|clickbutton {
 	float: none;
 	margin: 0;
-}
-ui|selector ui|clickbutton {
-	padding: 4px;
-	padding-right: 20px;
+	padding: 3px 20px 5px 5px;
 }
 
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
@@ -580,17 +549,12 @@ ui|postbackdialog ui|clickbutton,
 ui|htmldatadialog ui|clickbutton {
 	float: none;
 	margin: 0;
+	padding: 3px 5px 5px 5px;
 }
 ui|datadialog input,
 ui|postbackdialog input,
 ui|htmldatadialog input {
 	display: none;
-}
-ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox,
-ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox,
-ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox {
-	margin-left: auto;
-	margin-right: auto;
 }
 img.dialogindicatorimage {
 	position: absolute;
@@ -598,34 +562,6 @@ img.dialogindicatorimage {
 	right: 7px;
 	top: 5px;
 	-vendor-user-select: none;
-}
-ui|fields ui|datadialog ui|clickbutton table.matrix td.c,
-ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c,
-ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c {
-	padding: 2px;
-	padding-top: 1px;
-	padding-bottom: 0px;
-	#moz padding-bottom: 1px;
-	width: 204px;
-	#region vista
-		padding-top: 0px;
-		padding-bottom: 2px;
-		_padding-top: 0;
-		_padding-bottom: 1px;
-	#endregion
-}
-#region vista
-	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox,
-	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox,
-	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox {
-		_margin-bottom: -2px;
-	}
-#endregion
-ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c,
-ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c,
-ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c,
-ui|fields ui|field.fieldhelp ui|filepicker ui|clickbutton table.matrix td.c {
-	width: 174px;
 }
 
 /* FILEPICKER ......................................................... */
@@ -656,17 +592,7 @@ ui|filepicker ui|clickbutton {
 	position: relative;
 	top: 2px;
 	left: 2px;
-}
-ui|filepicker ui|clickbutton table.matrix td.c {
-	padding: 2px;
-	padding-top: 1px;
-	padding-bottom: 0px;
-	#moz padding-bottom: 1px;
-	width: 204px;
-	#region vista
-		padding-top: 1px;
-		padding-bottom: 1px;
-	#endregion
+	padding: 4px 5px;
 }
 
 /* CALENDAR ........................................................... */
@@ -734,77 +660,13 @@ ui|toolbar ui|fielddata select {
 	width: 100px;
 }
 
-/* OVERFLOW SPECIALS (NOW DISABLED IN SCRIPT!) ................................................... */
-
-#region ie
-	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
-		width: 162px;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labeltext {
-		width: 132px;
-	}
-#endregion
-
-#region moz {
-	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
-		width: 180px;
-		overflow: hidden;
-	}
-	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
-		width: 142px;
-		overflow: hidden;
-	}
-	ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|field.fieldhelp ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbody,
-	ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbody {
-		width: 150px;
-	}
-	ui|fields ui|field.fieldhelp ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext,
-	ui|fields ui|field.fieldhelp ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labeltext {
-		width: 112px;
-	}
-	ui|fields ui|datadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-	ui|fields ui|postbackdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-	ui|fields ui|htmldatadialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-	ui|fields ui|datainputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-	ui|fields ui|datainputbutton ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-	ui|fields ui|urlinputdialog ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after,
-	ui|fields ui|selector ui|clickbutton table.matrix td.c ui|labelbox.textoverflow ui|labelbody:after {
-		content: "...";
-	}
-#endregion
+ui|fields ui|datadialog ui|clickbutton ui|labeltext,
+ui|fields ui|postbackdialog ui|clickbutton ui|labeltext,
+ui|fields ui|htmldatadialog ui|clickbutton ui|labeltext,
+ui|fields ui|datainputdialog ui|clickbutton ui|labeltext,
+ui|fields ui|datainputbutton ui|clickbutton ui|labeltext,
+ui|fields ui|urlinputdialog ui|clickbutton ui|labeltext,
+ui|fields ui|selector ui|clickbutton ui|labeltext {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

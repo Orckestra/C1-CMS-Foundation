@@ -10,217 +10,24 @@ ui|clickbutton.default{
 	box-shadow: inset 0px 0px 0px 1px #3AD6FD;
 }
 
-
-/*ui|clickbutton.focused table.matrix,
-ui|clickbutton.default table.matrix {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
-	background-repeat: repeat-x;
-	background-position: 0 50%;
-}
-
-ui|clickbutton.focused table.matrix td.n,
-ui|clickbutton.default table.matrix td.n {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-n.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-n.png");	
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.s,
-ui|clickbutton.default table.matrix td.s {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-s.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-s.png");
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.e,
-ui|clickbutton.default table.matrix td.e {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-e.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-e.png");	
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.w,
-ui|clickbutton.default table.matrix td.w {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-w.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-w.png");
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.ne,
-ui|clickbutton.default table.matrix td.ne {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-ne.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-ne.png");
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.nw,
-ui|clickbutton.default table.matrix td.nw {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-nw.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-nw.png");
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.se,
-ui|clickbutton.default table.matrix td.se {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-se.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-se.png");	
-	#endregion
-}
-ui|clickbutton.focused table.matrix td.sw,
-ui|clickbutton.default table.matrix td.sw {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-sw.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-focus-sw.png");	
-	#endregion
-}*/
-
-
-
-
 /* ACTIVE */
 
 ui|clickbutton.active {
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2U2ZTZlNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2NlY2VjZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkZGRkZGQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2UyZTJlMiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2U2ZTZlNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2NlY2VjZSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNkZGRkZGQiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 	background: linear-gradient(to bottom, rgba(226,226,226,1) 0%,rgba(230,230,230,1) 50%,rgba(206,206,206,1) 50%,rgba(221,221,221,1) 100%); /* W3C */
 	box-shadow: none;
 }
-
-/*ui|clickbutton.active table.matrix td.c {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-c.png");
-}
-ui|clickbutton.active table.matrix td.n {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-n.png");
-}
-ui|clickbutton.active table.matrix td.s {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-s.png");
-}
-ui|clickbutton.active table.matrix td.e {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-e.png");
-}
-ui|clickbutton.active table.matrix td.w {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-w.png");
-}
-ui|clickbutton.active table.matrix td.ne {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-ne.png");
-}
-ui|clickbutton.active table.matrix td.nw {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-nw.png");
-}
-ui|clickbutton.active table.matrix td.se {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-se.png");
-}
-ui|clickbutton.active table.matrix td.sw {
-	#alphabackdrop: url("${skin}/buttons/clickbutton-active-sw.png");
-}*/
-
 
 /* DEFAULT and DISABLED */
 
 ui|clickbutton,
 ui|clickbutton.isdisabled {
-	/*#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-backdrop.png");*/
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDklIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuOTgiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZDZkNmQ2IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y3ZjdmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
+	#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjEiLz4KICAgIDxzdG9wIG9mZnNldD0iNDklIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuOTgiLz4KICAgIDxzdG9wIG9mZnNldD0iNTAlIiBzdG9wLWNvbG9yPSIjZDZkNmQ2IiBzdG9wLW9wYWNpdHk9IjEiLz4KICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y3ZjdmNyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
 	background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%,rgba(255,255,255,0.5) 49%,rgba(214,214,214,1) 50%,rgba(247,247,247,1) 100%); /* W3C */
-	/*background-repeat: repeat-x;
-	background-position: 0 50%;*/
 	border: 1px solid #707070;
 	border-radius: 4px;
 	box-shadow: inset 0px 0px 0px 1px #F3F3F3;
 }
-
-
-/*#region vista
-	ui|clickbutton table.matrix,
-	ui|clickbutton.isdisabled table.matrix {
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-backdrop.png");
-		background-repeat: repeat-x;
-		background-position: 0 50%;
-	}
-#endregion
-#region osx
-	ui|clickbutton table.matrix,
-	ui|clickbutton.isdisabled table.matrix {
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-backdrop.png");
-		background-repeat: repeat-x;
-		background-position: 0 50%;
-	}
-#endregion*/
-
-/*ui|clickbutton table.matrix td.c,
-ui|clickbutton.isdisabled table.matrix td.c {
-	/*
-	#alphabackdrop: url("${skin}/buttons/clickbutton-default-c.png");
-	#region vista
-		filter: none;
-		background-image: none;
-	#endregion
-	#region osx
-		background-image: none;
-	#endregion
-	*
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-c.png");
-	#endregion
-}
-ui|clickbutton table.matrix td.n,
-ui|clickbutton.isdisabled table.matrix td.n {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-n.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-n.png");
-	#endregion
-	
-}
-ui|clickbutton table.matrix td.s,
-ui|clickbutton.isdisabled table.matrix td.s {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-s.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-s.png");	
-	#endregion
-}
-ui|clickbutton table.matrix td.e,
-ui|clickbutton.isdisabled table.matrix td.e {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-e.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-e.png");
-	#endregion
-}
-ui|clickbutton table.matrix td.w,
-ui|clickbutton.isdisabled table.matrix td.w {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-w.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-w.png");
-	#endregion
-}
-ui|clickbutton table.matrix td.ne,
-ui|clickbutton.isdisabled table.matrix td.ne {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-ne.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-ne.png");
-	#endregion
-}
-ui|clickbutton table.matrix td.nw,
-ui|clickbutton.isdisabled table.matrix td.nw {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-nw.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-nw.png");
-	#endregion
-}
-ui|clickbutton table.matrix td.se,
-ui|clickbutton.isdisabled table.matrix td.se {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-se.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-se.png");	
-	#endregion
-}
-ui|clickbutton table.matrix td.sw,
-ui|clickbutton.isdisabled table.matrix td.sw {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-default-sw.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-default-sw.png");	
-	#endregion
-}*/
-
 
 /* HOVER */
 
@@ -229,123 +36,16 @@ ui|clickbutton.hover {
 	box-shadow: inset 0px 0px 0px 1px #3AD6FD;
 }
 
-/*#region vista
-	ui|clickbutton.hover table.matrix {
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
-		background-repeat: repeat-x;
-		background-position: 0 50%;
-	}
-#endregion
-
-#region osx
-	ui|clickbutton.hover table.matrix {
-		#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-backdrop.png");
-		background-repeat: repeat-x;
-		background-position: 0 50%;
-	}
-#endregion*/
-
-/*ui|clickbutton.hover table.matrix td.n {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-n.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-n.png");
-	#endregion
-		
-}
-ui|clickbutton.hover table.matrix td.s {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-s.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-s.png");
-	#endregion
-}
-ui|clickbutton.hover table.matrix td.e {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-e.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-e.png");
-	#endregion
-}
-ui|clickbutton.hover table.matrix td.w {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-w.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-w.png");
-	#endregion
-}
-ui|clickbutton.hover table.matrix td.ne {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-ne.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-ne.png");
-	#endregion
-}
-ui|clickbutton.hover table.matrix td.nw {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-nw.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-nw.png");
-	#endregion
-}
-ui|clickbutton.hover table.matrix td.se {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-se.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-se.png");	
-	#endregion
-}
-ui|clickbutton.hover table.matrix td.sw {
-	#alphabackdrop: url("${skin}/buttons/vista/clickbutton-focus-sw.png");
-	#region default
-		#alphabackdrop: url("${skin}/buttons/clickbutton-hover-sw.png");
-	#endregion
-}*/
-
-
-
 /* TOOLBAR CLICKBUTTONS ..............................................*/
 ui|toolbar ui|clickbutton,
 ui|toolbar ui|clickbutton.isdisabled{
-	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5ZjlmOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZiZmJmYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VjZWNlYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZWVlZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+	#ie background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5ZjlmOSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2ZiZmJmYiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iI2VjZWNlYyIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjgwJSIgc3RvcC1jb2xvcj0iI2Y2ZjZmNiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlZWVlZWUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
 	background: linear-gradient(to bottom, rgba(249,249,249,1) 0%,rgba(251,251,251,1) 50%,rgba(236,236,236,1) 50%,rgba(246,246,246,1) 80%,rgba(238,238,238,1) 100%); /* W3C */
 	border: 1px solid #CECFC4;
 	border-radius: 3px;
 	box-shadow: inset -1px -1px 1px 0px #CECFC4;
-	
 }
 
 ui|toolbar ui|clickbutton.active {
 	border: 1px solid #707070;
 }
-
-
-/*ui|toolbar ui|clickbutton table.matrix td.c,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.c {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-c.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.n,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.n {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-n.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.s,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.s {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-s.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.e,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.e {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-e.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.w,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.w {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-w.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.ne,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.ne {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-ne.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.nw,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.nw {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-nw.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.se,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.se {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-se.png");
-}
-ui|toolbar ui|clickbutton table.matrix td.sw,
-ui|toolbar ui|clickbutton.isdisabled table.matrix td.sw {
-	#alphabackdrop: url("${skin}/toolbars/toolbarbutton-sw.png");
-}*/
