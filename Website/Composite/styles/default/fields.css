@@ -229,16 +229,18 @@ ui|selection,
 ui|selector input {
 	display: none;	
 }
-ui|selector ui|clickbutton {
+ui|selector ui|clickbutton{
 	float: none;
 	margin: 0;
+}
+ui|selector ui|clickbutton ui|labelbox {
 	padding: 3px 20px 5px 5px;
 }
+
 
 ui|fields ui|field.fieldhelp ui|selector ui|clickbutton ui|labelbox {
 	overflow: hidden;
 	float:none;
-	margin-right:5px;
 }
 
 ui|selector img.selectorindicatorimage {
@@ -437,7 +439,7 @@ ui|clickbutton.fieldhelp { /* width and height needed for explorer vanishing dys
 	width: 26px;
 	height: 26px;
 }
-ui|clickbutton.fieldhelp {
+ui|clickbutton.fieldhelp ui|labelbox {
 	padding: 4px;
 }
 ui|popup.fieldhelppopup {
@@ -592,6 +594,9 @@ ui|filepicker ui|clickbutton {
 	position: relative;
 	top: 2px;
 	left: 2px;
+}
+
+ui|filepicker ui|clickbutton ui|labelbox {
 	padding: 4px 5px;
 }
 

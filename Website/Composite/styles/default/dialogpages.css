@@ -33,7 +33,8 @@ ui|dialogtoolbar ui|clickbutton.focusable {
 }
 ui|dialogtoolbar ui|clickbutton.focused {
 	outline: 1px solid $(color:threedshadow);
-	outline-offset: 1px;
+	margin: 1px !important;
+	padding: 1px;
 }
 
 /* STANDARD DIALOGS ................................................................*/

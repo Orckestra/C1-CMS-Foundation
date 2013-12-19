@@ -782,8 +782,8 @@ ButtonBinding.prototype.getEqualSizeWidth = function () {
 
 	var result = null;
 	if ( this.isAttached == true ) {
-		this.labelBinding.bindingElement.style.marginLeft = "0";
-		this.labelBinding.bindingElement.style.marginRight = "0";
+		this.labelBinding.shadowTree.labelBody.style.marginLeft = "0";
+		this.labelBinding.shadowTree.labelBody.style.marginRight = "0";
 		result = this.labelBinding.bindingElement.offsetWidth;
 	} else {
 		throw "ButtonBinding: getEqualSizeWidth failed for non-attached button.";
@@ -805,8 +805,8 @@ ButtonBinding.prototype.setEqualSizeWidth = function ( goal ) {
 		if ( goal > width ) {
 			var diff = goal - width;
 			var marg = Math.floor ( diff * 0.5 );
-			this.labelBinding.bindingElement.style.marginLeft = marg + "px";
-			this.labelBinding.bindingElement.style.marginRight = marg + "px";
+			this.labelBinding.shadowTree.labelBody.style.marginLeft = marg + "px";
+			this.labelBinding.shadowTree.labelBody.style.marginRight = marg + "px";
 		}
 	}
 }

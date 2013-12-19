@@ -324,7 +324,7 @@ SelectorBinding.prototype.buildIndicator = function () {
 	var img = this.bindingDocument.createElement ( "img" );
 	img.src = SelectorBinding.INDICATOR_IMAGE;
 	img.className = "selectorindicatorimage";
-	this._buttonBinding.bindingElement.appendChild ( img );
+	this._buttonBinding.labelBinding.bindingElement.appendChild(img);
 	this.shadowTree.selectorindicatorimage = img;
 }
 

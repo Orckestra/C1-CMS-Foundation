@@ -16,15 +16,15 @@ ui|toolbarlabel {
 	overflow: hidden !important; /* contain added stuff */
 }
 ui|clickbutton {
-	padding: 6px 9px;
+	padding: 0;
 	
 }
 
-ui|clickbutton ui|labelbox{
-	padding: 0px;
+ui|clickbutton ui|labelbox {
+	padding: 6px 9px;
 }
 
-ui|toolbar ui|clickbutton {
+ui|toolbar ui|clickbutton ui|labelbox {
 	padding: 3px 5px;
 }
 
@@ -35,17 +35,3 @@ ui|toolbar ui|selector ui|clickbutton {
 ui|checkbutton {
     margin-top: 2px;
 }
-
-/*
-produce a pressed-down effect - unfortunately, 
-this will crop images on small buttons!
-ui|toolbarbutton.active ui|labelbox,
-ui|clickbutton.active ui|labelbox {
-	position: relative;
-	top: 1px;
-	left: 1px;
-	#region osx
-		position: static;
-	#endregion
-}
-*/
