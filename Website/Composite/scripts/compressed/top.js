@@ -7380,7 +7380,6 @@ LabelBinding.superclass=Binding.prototype;
 LabelBinding.DIALOG_INDECATOR_SUFFIX=String.fromCharCode(8230);
 LabelBinding.DEFAULT_IMAGE="${root}/images/blank.png";
 LabelBinding.EXPLORER_IMAGE_FILTER="progid:DXImageTransform.Microsoft.AlphaImageLoader(src='${url}',sizingMethod='crop');";
-LabelBinding.CLASSNAME_TEXTOVERFLOW="textoverflow";
 LabelBinding.CLASSNAME_GRAYTEXT="graytext";
 LabelBinding.CLASSNAME_FLIPPED="flipped";
 function LabelBinding(){
@@ -7513,8 +7512,6 @@ this.hasLabel=true;
 }
 };
 LabelBinding.prototype.buildClassName=function(){
-if(Client.isMozilla){
-}
 var _630="textonly";
 var _631="imageonly";
 var _632="both";
@@ -7532,16 +7529,6 @@ if(this.hasImage){
 this.detachClassName(_632);
 this.detachClassName(_630);
 this.attachClassName(_631);
-}
-}
-}
-};
-LabelBinding.prototype._buildOverflowClassName=function(){
-if(Client.isMozilla&&this.isAttached&&this.getLabel()){
-if(this.isAttached&&this.shadowTree.labelText){
-this.detachClassName(LabelBinding.CLASSNAME_TEXTOVERFLOW);
-if(this.shadowTree.labelText.offsetWidth>this.shadowTree.labelBody.offsetWidth){
-this.attachClassName(LabelBinding.CLASSNAME_TEXTOVERFLOW);
 }
 }
 }
@@ -8084,8 +8071,8 @@ EventBroadcaster.broadcast(BroadcastMessages.MOUSEEVENT_MOUSEUP,this);
 ButtonBinding.prototype.getEqualSizeWidth=function(){
 var _674=null;
 if(this.isAttached==true){
-this.labelBinding.bindingElement.style.marginLeft="0";
-this.labelBinding.bindingElement.style.marginRight="0";
+this.labelBinding.shadowTree.labelBody.style.marginLeft="0";
+this.labelBinding.shadowTree.labelBody.style.marginRight="0";
 _674=this.labelBinding.bindingElement.offsetWidth;
 }else{
 throw "ButtonBinding: getEqualSizeWidth failed for non-attached button.";
@@ -8098,8 +8085,8 @@ var _676=this.getEqualSizeWidth();
 if(goal>_676){
 var diff=goal-_676;
 var marg=Math.floor(diff*0.5);
-this.labelBinding.bindingElement.style.marginLeft=marg+"px";
-this.labelBinding.bindingElement.style.marginRight=marg+"px";
+this.labelBinding.shadowTree.labelBody.style.marginLeft=marg+"px";
+this.labelBinding.shadowTree.labelBody.style.marginRight=marg+"px";
 }
 }
 };
@@ -11169,7 +11156,7 @@ this.fitContentWindow();
 WindowBinding.superclass.flex.call(this);
 };
 WindowBinding.prototype.fitContentWindow=function(){
-if(Client.isPad){
+if(Client.isPad&&0){
 var _7f8=this.getContentWindow();
 if(_7f8!=null&&_7f8.document!=null&&_7f8.document.body!=null){
 _7f8.document.body.style.height=this.bindingElement.offsetHeight+"px";
@@ -12379,7 +12366,7 @@ SelectorBinding.prototype.buildIndicator=function(){
 var img=this.bindingDocument.createElement("img");
 img.src=SelectorBinding.INDICATOR_IMAGE;
 img.className="selectorindicatorimage";
-this._buttonBinding.bindingElement.appendChild(img);
+this._buttonBinding.labelBinding.bindingElement.appendChild(img);
 this.shadowTree.selectorindicatorimage=img;
 };
 SelectorBinding.prototype.buildPopup=function(){
