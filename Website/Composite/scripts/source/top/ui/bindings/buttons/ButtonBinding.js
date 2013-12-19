@@ -805,8 +805,8 @@ ButtonBinding.prototype.setEqualSizeWidth = function ( goal ) {
 		if ( goal > width ) {
 			var diff = goal - width;
 			var marg = Math.floor ( diff * 0.5 );
-			this.labelBinding.shadowTree.labelBody.style.marginLeft = marg + "px";
-			this.labelBinding.shadowTree.labelBody.style.marginRight = marg + "px";
+			this.labelBinding.shadowTree.labelBody.style.setProperty("margin-left", marg + "px", "important");
+			this.labelBinding.shadowTree.labelBody.style.setProperty("margin-right", marg + "px", "important");
 		}
 	}
 }
