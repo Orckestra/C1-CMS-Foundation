@@ -15,14 +15,14 @@ ui|tabbox.boxed ui|labelbox.fieldgrouplabel {
 }
 
 ui|fieldgroup {
-	border-left:  2px groove #F0F0F0;
-	border-right:  2px groove #F0F0F0;
-	border-bottom:  2px groove #F0F0F0;
+	border-left:  2px groove #FFF;
+	border-right:  2px groove #FFF;
+	border-bottom:  2px groove #FFF;
 	border-radius: 0 0 5px 5px;
 }
 
 ui|fieldgroup.nolabel {
-	border:  2px groove #F0F0F0;
+	border:  2px groove #FFF;
 	border-radius: 5px;
 }
 
@@ -33,15 +33,15 @@ ui|labelbox.fieldgrouplabel ui|labelbody:before {
 	height: 16px;
 	width: 12px;
 	float: left;
-	border-top:  2px groove #F0F0F0;
-	border-left:  2px groove #F0F0F0;
+	border-top:  2px groove #FFF;
+	border-left:  2px groove #FFF;
 	border-radius: 5px 0 0 0;
 	margin-top: 7px;
 }
 
 ui|labelbox.fieldgrouplabel > div {
-	border-top:  2px groove #F0F0F0;
-	border-right:  2px groove #F0F0F0;
+	border-top:  2px groove #FFF;
+	border-right:  2px groove #FFF;
 	border-radius: 0 5px 0 0;
 	margin-top: 7px;
 	height: 16px;
