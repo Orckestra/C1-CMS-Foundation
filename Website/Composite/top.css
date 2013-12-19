@@ -192,24 +192,15 @@ div#offlinetext {
 ui|clickbutton {
 	float: right;
 }
-ui|clickbutton table.matrix td {
-	width: 7px;
-	height: 7px;
-}
 ui|clickbutton ui|labelbox {
-	padding: 0;
-	margin-bottom: -4px;
+	padding: 6px 7px 4px;
 	position: relative;
-	top: -1px;
 }
 ui|clickbutton ui|labeltext {
 	padding: 0 4px 1px 1px;
 	color: white;
 	text-transform: uppercase;
 	font-weight: bold;
-}
-ui|clickbutton table.matrix td.c {
-	padding: 0;
 }
 ui|cover#mastercover {
 	z-index: 1000;	
@@ -227,11 +218,10 @@ ui|uncover {
 	cursor: default;
 }
 
-
 /* HOVER */
 
-.splash ui|clickbutton.hover,
-.splash ui|clickbutton.focused {
+.splash ui|clickbutton.hover ui|labelbox,
+.splash ui|clickbutton.focused  ui|labelbox{
 	background: #D63548;
 	margin: 0;
 	border: 0;
@@ -239,62 +229,16 @@ ui|uncover {
 	box-shadow: none;
 }
 
-/*.splash ui|clickbutton.hover table.matrix td.c,
-.splash ui|clickbutton.focused table.matrix td.c,
-.splash ui|clickbutton.hover table.matrix td.n,
-.splash ui|clickbutton.focused table.matrix td.n,
-.splash ui|clickbutton.hover table.matrix td.s,
-.splash ui|clickbutton.focused table.matrix td.s,
-.splash ui|clickbutton.hover table.matrix td.e,
-.splash ui|clickbutton.focused table.matrix td.e,
-.splash ui|clickbutton.hover table.matrix td.w,
-.splash ui|clickbutton.focused table.matrix td.w {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover.png");
-}
-ui|clickbutton.hover table.matrix td.ne,
-ui|clickbutton.focused table.matrix td.ne {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-ne.png");
-}
-ui|clickbutton.hover table.matrix td.nw,
-ui|clickbutton.focused table.matrix td.nw {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-nw.png");
-}
-ui|clickbutton.hover table.matrix td.se,
-ui|clickbutton.focused table.matrix td.se {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-se.png");
-}
-ui|clickbutton.hover table.matrix td.sw,
-ui|clickbutton.focused table.matrix td.sw {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-hover-sw.png");
-}*/
-
-
 /* ACTIVE */
 
-ui|clickbutton.active table.matrix td.c,
-ui|clickbutton.active table.matrix td.n,
-ui|clickbutton.active table.matrix td.s,
-ui|clickbutton.active table.matrix td.e,
-ui|clickbutton.active table.matrix td.w {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active.png");
+ui|clickbutton.active ui|labelbox {
+	background: #A40618;
 }
-ui|clickbutton.active table.matrix td.ne {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-ne.png");
-}
-ui|clickbutton.active table.matrix td.nw {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-nw.png");
-}
-ui|clickbutton.active table.matrix td.se {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-se.png");
-}
-ui|clickbutton.active table.matrix td.sw {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-active-sw.png");
-}
-
 
 /* DEFAULT and DISABLED */
-ui|clickbutton,
-ui|clickbutton.isdisabled {
+
+ui|clickbutton ui|labelbox,
+ui|clickbutton.isdisabled ui|labelbox {
 	background: #CC071E;
 	margin: 0;
 	border: 0;
@@ -302,41 +246,3 @@ ui|clickbutton.isdisabled {
 	box-shadow: none;
 
 }
-
-
-/*ui|clickbutton table.matrix td.c,
-ui|clickbutton.isdisabled table.matrix td.c {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
-}
-ui|clickbutton table.matrix td.n,
-ui|clickbutton.isdisabled table.matrix td.n {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
-}
-ui|clickbutton table.matrix td.s,
-ui|clickbutton.isdisabled table.matrix td.s {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
-}
-ui|clickbutton table.matrix td.e,
-ui|clickbutton.isdisabled table.matrix td.e {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
-}
-ui|clickbutton table.matrix td.w,
-ui|clickbutton.isdisabled table.matrix td.w {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default.png");
-}
-ui|clickbutton table.matrix td.ne,
-ui|clickbutton.isdisabled table.matrix td.ne {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-ne.png");
-}
-ui|clickbutton table.matrix td.nw,
-ui|clickbutton.isdisabled table.matrix td.nw {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-nw.png");
-}
-ui|clickbutton table.matrix td.se,
-ui|clickbutton.isdisabled table.matrix td.se {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-se.png");
-}
-ui|clickbutton table.matrix td.sw,
-ui|clickbutton.isdisabled table.matrix td.sw {
-	#alphabackdrop: url("${root}/skins/system/splash/clickbutton-default-sw.png");
-}*/
