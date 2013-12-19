@@ -53,8 +53,7 @@ ui|menuitem {
 	clear: both;
 	position: relative;
 }
-ui|menuitem ui|menupopup,
-ui|menuitem ui|shadow {
+ui|menuitem ui|menupopup {
 	margin-top: -2px;
 	margin-left: -2px;
 }

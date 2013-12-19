@@ -32,10 +32,8 @@ ui|dialogtoolbar ui|clickbutton.focusable {
 	margin: 2px !important;
 }
 ui|dialogtoolbar ui|clickbutton.focused {
-	border: 1px solid $(color:threedshadow);
-	#region osx
-		border: 1px solid -moz-mac-focusring;
-	#endregion
+	outline: 1px solid $(color:threedshadow);
+	outline-offset: 1px;
 }
 
 /* STANDARD DIALOGS ................................................................*/
