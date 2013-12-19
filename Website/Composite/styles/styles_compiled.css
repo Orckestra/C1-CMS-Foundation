@@ -651,14 +651,16 @@ padding: 0;
 }
 
 ui|clickbutton ui|labelbox {
-padding: 6px 9px;
+float: none;
+overflow: hidden;
+padding: 6px 9px 7px;
 }
 
 ui|toolbar ui|clickbutton ui|labelbox {
 padding: 3px 5px;
 }
 
-ui|toolbar ui|selector ui|clickbutton {
+ui|toolbar ui|selector ui|clickbutton ui|labelbox{
 padding: 3px 24px 3px 3px;
 }
 

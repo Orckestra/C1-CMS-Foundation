@@ -8085,8 +8085,8 @@ var _676=this.getEqualSizeWidth();
 if(goal>_676){
 var diff=goal-_676;
 var marg=Math.floor(diff*0.5);
-this.labelBinding.shadowTree.labelBody.style.marginLeft=marg+"px";
-this.labelBinding.shadowTree.labelBody.style.marginRight=marg+"px";
+this.labelBinding.shadowTree.labelBody.style.setProperty("margin-left",marg+"px","important");
+this.labelBinding.shadowTree.labelBody.style.setProperty("margin-right",marg+"px","important");
 }
 }
 };
