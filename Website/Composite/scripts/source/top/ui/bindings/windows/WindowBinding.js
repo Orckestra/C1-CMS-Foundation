@@ -685,7 +685,7 @@ WindowBinding.prototype.flex = function () {
  * Fit ContentWindows to WindowBinding.
  */
 WindowBinding.prototype.fitContentWindow = function () {
-	if (Client.isPad && 0) {
+	if (Client.isPad) {
 		var contentWindow = this.getContentWindow();
 		if (contentWindow != null && contentWindow.document != null && contentWindow.document.body != null) {
 			contentWindow.document.body.style.height = this.bindingElement.offsetHeight + "px";
