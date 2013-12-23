@@ -763,11 +763,13 @@ TabBoxBinding.prototype.removeTab = function ( tabBinding ) {
 	tabPanelBinding.dispose ();
 	
 	if ( bestTab != null ){
-		this.select ( bestTab );
+		this.select ( bestTab, true);
 	}
 	
 	this.updateType = TabBoxBinding.UPDATE_DETACH;
 	this.dispatchAction ( TabBoxBinding.ACTION_UPDATED );
+
+	this.deActivate();
 }
 
 /**
