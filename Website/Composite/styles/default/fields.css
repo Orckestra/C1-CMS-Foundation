@@ -551,7 +551,12 @@ ui|postbackdialog ui|clickbutton,
 ui|htmldatadialog ui|clickbutton {
 	float: none;
 	margin: 0;
-	padding: 3px 5px 5px 5px;
+}
+
+ui|datadialog ui|clickbutton ui|labelbox,
+ui|postbackdialog ui|clickbutton ui|labelbox,
+ui|htmldatadialog ui|clickbutton ui|labelbox {
+	 padding: 3px 9px 5px;
 }
 ui|datadialog input,
 ui|postbackdialog input,

@@ -16,26 +16,6 @@ ui|fieldsbutton ui|clickbutton {
 	float: none;
 	margin: 0;
 }
-ui|fieldsbutton ui|clickbutton table.matrix td.c {
-	padding: 2px;
-	padding-top: 1px;
-	padding-bottom: 0px;
-	#moz padding-bottom: 1px;
-	width: 204px;
-	#region vista
-		padding-top: 0px;
-		padding-bottom: 2px;
-		_padding-top: 0;
-		_padding-bottom: 1px;
-	#endregion
+ui|fieldsbutton ui|clickbutton ui|labelbox {
+	padding: 3px 9px 5px;
 }
-
-/*
-ui|splitpanel#treepanel {
-	border-right: 1px solid $(color:threedlightshadow);	
-}
-ui|splitpanel#fieldspanel {
-	border-left: 1px solid $(color:threedhighlight);
-	border-top: 1px solid $(color:threedhighlight);
-}
-*/
