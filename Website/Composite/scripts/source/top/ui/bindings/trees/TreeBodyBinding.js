@@ -80,16 +80,16 @@ TreeBodyBinding.prototype.handleAction = function ( action ) {
  */
 TreeBodyBinding.prototype._scrollIntoView = function ( treenode ) {
 	
-	var a = this.boxObject.getDimension ().h;
-	var y = treenode.boxObject.getLocalPosition ().y;
-	var h = treenode.boxObject.getDimension ().h;
+	var label = treenode.labelBinding.bindingElement;
+	var a = this.bindingElement.clientHeight;
+	var y = label.offsetTop;
+	var h = label.offsetHeight;
 	var t = this.bindingElement.scrollTop;
 	var l = this.bindingElement.scrollLeft;
 	
 	/*
 	 * Scroll into view.
 	 */
-	var label = treenode.labelBinding.bindingElement;
 	if ( y - t < 0 ) {
 		label.scrollIntoView ( true );
 	} else if ( y - t + h > a ) {
