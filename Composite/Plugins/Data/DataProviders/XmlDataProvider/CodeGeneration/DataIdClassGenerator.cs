@@ -1,12 +1,12 @@
 using System;
-using System.Linq;
 using System.CodeDom;
 using System.ComponentModel;
 using System.Reflection;
 using System.Xml.Linq;
+using System.Collections.Generic;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
-using System.Collections.Generic;
+
 
 
 namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
@@ -109,14 +109,29 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 DataFieldDescriptor keyProperty = _dataTypeDescriptor.Fields[keyPropertyName];
 
                 string propertyFieldName = MakePropertyFieldName(keyProperty.Name);
+                string attributeVariableName = "attr" + keyProperty.Name;
+
+                // CODEGEN:
+                // XAttribute attr{fieldName} = element.Attribute(_{fieldName}XName);
+
+                constructor.Statements.Add(
+                    new CodeVariableDeclarationStatement(
+                        typeof(XAttribute), attributeVariableName,
+                        new CodeMethodInvokeExpression(
+                            new CodeVariableReferenceExpression("element"),
+                            "Attribute",
+                            new CodeFieldReferenceExpression(null, MakeXNameFieldName(keyPropertyName))
+                            )));
+
+
+                // CODEGEN:
+                // if(attr{fieldName} == null) {
+                //   throw new InvalidOperationException("Missing '{fieldName}' attribute in a data store file.");
+                // }
 
                 constructor.Statements.Add(new CodeConditionStatement(
                         new CodeBinaryOperatorExpression(
-                            new CodeMethodInvokeExpression(
-                                new CodeVariableReferenceExpression("element"),
-                                "Attribute",
-                                new CodePrimitiveExpression(keyProperty.Name)
-                            ),
+                            new CodeVariableReferenceExpression(attributeVariableName),
                             CodeBinaryOperatorType.IdentityEquality,
                             new CodePrimitiveExpression(null)
                         ),
@@ -126,7 +141,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                     typeof(InvalidOperationException),
                                     new CodeExpression[] {
                                         new CodePrimitiveExpression(
-                                            string.Format("The element tag {0} is missing from the xml file", keyProperty.Name)
+                                            string.Format("Missing '{0}' attribute in a data store file.", keyProperty.Name)
                                         )
                                     }
                                 )
@@ -134,16 +149,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                         }
                     ));
 
-                // Example: _propertyId = (Guid)element.Attribute("Id");
+                // CODEGEN: 
+                // _propertyId = (Guid) attrId;
+
                 constructor.Statements.Add(new CodeAssignStatement(
                         new CodeVariableReferenceExpression(propertyFieldName),
                         new CodeCastExpression(
                             keyProperty.InstanceType,
-                            new CodeMethodInvokeExpression(
-                                new CodeVariableReferenceExpression("element"),
-                                "Attribute",
-                                new CodePrimitiveExpression(keyProperty.Name)
-                            )
+                            new CodeVariableReferenceExpression(attributeVariableName)
                         )
                     ));
             }
@@ -155,6 +168,13 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         private static void AddProperty(CodeTypeDeclaration declaration, string name, Type type)
         {
+            // CODEGEN:
+            // public Guid Email
+            // {
+            //     get {  return this._propertyEmail;  }
+            //     set {  this._propertyEmail = value; }
+            // }
+            
             string propertyFieldName = MakePropertyFieldName(name);
 
             declaration.Members.Add(new CodeMemberField(type, propertyFieldName));
@@ -169,6 +189,16 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName), new CodeArgumentReferenceExpression("value")));
 
             declaration.Members.Add(property);
+
+            // CODEGEN:
+            // private static readonly XName _EmailXName = "Email";
+
+            var xNameField = new CodeMemberField();
+            xNameField.Name = MakeXNameFieldName(name);
+            xNameField.Type = new CodeTypeReference(typeof(XName));
+            xNameField.Attributes = MemberAttributes.Static | MemberAttributes.Private;
+            xNameField.InitExpression = new CodePrimitiveExpression(name);
+            declaration.Members.Add(xNameField);
         }
 
 
@@ -288,6 +318,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
         private static string MakePropertyFieldName(string name)
         {
             return string.Format("_property{0}", name);
+        }
+
+        private static string MakeXNameFieldName(string name)
+        {
+            return string.Format("_{0}XName", name);
         }
     }    
 }

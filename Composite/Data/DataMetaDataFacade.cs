@@ -26,20 +26,20 @@ namespace Composite.Data
     {
         private static readonly string LogTitle = "DataMetaDataFacade";
 
-        private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache = null;
-        private static Dictionary<Guid, string> _dataTypeDescriptorFilesnamesCache = null;
+        private static Dictionary<Guid, DataTypeDescriptor> _dataTypeDescriptorCache;
+        private static Dictionary<Guid, string> _dataTypeDescriptorFilesnamesCache;
         private static readonly object _lock = new object();
 
-        private static string _metaDataPath;
+        private static readonly string _metaDataPath;
 
 
 
         static DataMetaDataFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
 
             _metaDataPath = PathUtil.Resolve(GlobalSettingsFacade.DataMetaDataDirectory);
-            if (C1Directory.Exists(_metaDataPath) == false)
+            if (!C1Directory.Exists(_metaDataPath))
             {
                 C1Directory.CreateDirectory(_metaDataPath);
             }
@@ -80,9 +80,9 @@ namespace Composite.Data
 
         private static void UpdateFilenames()
         {
-            List<string> filepaths = C1Directory.GetFiles(_metaDataPath).ToList();
+            List<string> filepaths = C1Directory.GetFiles(_metaDataPath, "*.xml").ToList();
 
-            Dictionary<Guid, string> ids = new Dictionary<Guid, string>();
+            var ids = new Dictionary<Guid, string>();
             foreach (string filepath in filepaths)
             {
                 Guid id = GetGuidFromFilename(filepath);
@@ -92,7 +92,7 @@ namespace Composite.Data
                 }
                 else // This should never happen, but is here to be robust
                 {
-                    if (filepath.Contains('_') == false) // Old version of the file, delete it
+                    if (!filepath.Contains('_')) // Old version of the file, delete it
                     {
                         FileUtils.Delete(filepath);
                     }
@@ -107,7 +107,7 @@ namespace Composite.Data
             foreach (var kvp in ids)
             {
                 string filepath = kvp.Value;
-                if (Path.GetFileNameWithoutExtension(filepath).Contains('_') == false)
+                if (!Path.GetFileNameWithoutExtension(filepath).Contains('_'))
                 {
                     XDocument doc = XDocumentUtils.Load(filepath);
 
@@ -141,13 +141,7 @@ namespace Composite.Data
         {
             get
             {
-                foreach (DataTypeDescriptor dataTypeDescriptor in AllDataTypeDescriptors)
-                {
-                    if (dataTypeDescriptor.IsCodeGenerated)
-                    {
-                        yield return dataTypeDescriptor;
-                    }
-                }
+                return AllDataTypeDescriptors.Where(d => d.IsCodeGenerated);
             }
         }
 
@@ -178,7 +172,7 @@ namespace Composite.Data
             if (dataTypeDescriptor != null) return dataTypeDescriptor;
 
 
-            if (allowDataTypeCreation == false) return null;
+            if (!allowDataTypeCreation) return null;
 
 
             foreach (Assembly assembly in AssemblyFacade.GetLoadedAssembliesFromBin())
@@ -354,13 +348,6 @@ namespace Composite.Data
         {
             _dataTypeDescriptorCache = null;
             _dataTypeDescriptorFilesnamesCache = null;
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
         }
     }
 }

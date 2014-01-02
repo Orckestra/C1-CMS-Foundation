@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.ComponentModel;
-using System.Globalization;
 using Composite.Core.Types;
-using System.Reflection;
 using System.Linq.Expressions;
 
 
@@ -21,7 +16,6 @@ namespace Composite.Data
     {
         /// <exclude />
         public NullableDataReference()
-            : base()
         {
         }
 
@@ -42,7 +36,7 @@ namespace Composite.Data
     [DataReferenceConverter()]
     public class DataReference<T> : IDataReference where T : class, IData
     {
-        private object _keyValue;
+        private readonly object _keyValue;
 
 
         /// <summary>
@@ -64,9 +58,9 @@ namespace Composite.Data
             if (keyValue != null)
             {
                 Type realKeyType = typeof(T).GetKeyProperties().Single().PropertyType;
-                if (keyValue.GetType().Equals(realKeyType) == false)
+                if (!(keyValue.GetType() == realKeyType))
                 {
-                    _keyValue = Composite.Core.Types.ValueTypeConverter.Convert(keyValue, realKeyType);
+                    _keyValue = ValueTypeConverter.Convert(keyValue, realKeyType);
                 }
                 else
                 {
@@ -86,14 +80,7 @@ namespace Composite.Data
         /// <param name="data">The data item to reference.</param>
         public DataReference(T data)
         {
-            if (data == null)
-            {
-                _keyValue = null;
-            }
-            else
-            {
-                _keyValue = data.GetUniqueKey();
-            }
+            _keyValue = data == null ? null : data.GetUniqueKey();
         }
 
 
@@ -155,14 +142,12 @@ namespace Composite.Data
         {
             get
             {
-                if (this.IsSet == false)
+                if (!IsSet)
                 {
                     return default(T);
                 }
-                else
-                {
-                    return DataFacade.GetDataByUniqueKey<T>(_keyValue);
-                }
+                
+                return DataFacade.GetDataByUniqueKey<T>(_keyValue);
             }
         }
 
@@ -173,14 +158,12 @@ namespace Composite.Data
         /// <returns>Predicate for referenced data.</returns>
         public Expression<Func<T, bool>> GetPredicateExpression()
         {
-            if (this.IsSet == false)
+            if (!IsSet)
             {
                 return f => false;
             }
-            else
-            {
-                return DataFacade.GetPredicateExpressionByUniqueKey<T>(_keyValue);
-            }
+            
+            return DataFacade.GetPredicateExpressionByUniqueKey<T>(_keyValue);
         }
 
 
@@ -212,50 +195,37 @@ namespace Composite.Data
         /// <exclude />
         public override bool TryConvert(object value, Type targetType, out object targetValue)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            Verify.ArgumentNotNull(value, "value");
 
-            if (targetType == typeof(string) && value is IDataReference)
+            IDataReference valueCasted = value as IDataReference;
+            if (valueCasted != null)
             {
-                IDataReference valueCasted = (IDataReference)value;
-
-                if (valueCasted.IsSet)
-                {
-                    targetValue = ((IDataReference)value).KeyValue.ToString();
-                }
-                else
-                {
-                    targetValue = null;
-                }
-
-                return true;
-            }
-
-
-            if (value is IDataReference)
-            {
-                IDataReference valueCasted = (IDataReference)value;
-                
-                if (valueCasted.IsSet)
-                {
-                    if (targetType.IsAssignableFrom( ((IDataReference)value).KeyValue.GetType() ))
-                    {
-                        targetValue = ((IDataReference)value).KeyValue;
-                        return true;
-                    }
-                }
-                else
+                if (!valueCasted.IsSet)
                 {
                     targetValue = null;
                     return true;
                 }
+                
+                if (targetType == typeof (string))
+                {
+                    targetValue = valueCasted.KeyValue.ToString();
+                    return true;
+                }
 
+                if (targetType.IsInstanceOfType(valueCasted.KeyValue))
+                {
+                    targetValue = valueCasted.KeyValue;
+                    return true;
+                }
             }
 
 
             if (typeof(IDataReference).IsAssignableFrom(targetType))
             {
-                if (value is string && string.IsNullOrEmpty((string)value))
+                if (value is string && string.IsNullOrEmpty((string) value))
+                {
                     value = null;
+                }
 
                 object[] activationParameters = new object[1];
                 activationParameters[0] = value;
@@ -266,7 +236,6 @@ namespace Composite.Data
 
                 return true;
             }
-
 
 
             targetValue = null;
