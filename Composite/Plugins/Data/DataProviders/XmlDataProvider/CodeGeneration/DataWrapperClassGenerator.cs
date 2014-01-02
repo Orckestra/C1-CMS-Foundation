@@ -78,9 +78,9 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
         {
             const string parameterName = "element";
 
-            CodeConstructor constructor = new CodeConstructor();
-
-            constructor.Attributes = MemberAttributes.Public;
+            // CODEGEN:
+            // public .ctor(XElement element, DataSourceId dataSourceId) { ... }
+            var constructor = new CodeConstructor { Attributes = MemberAttributes.Public };
 
             constructor.Parameters.Add(new CodeParameterDeclarationExpression(
                     new CodeTypeReference(typeof(XElement)),
@@ -92,6 +92,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 "dataSourceId"
                 ));
 
+
+            // CODEGEN:
+            // this._element = element;
+
             constructor.Statements.Add(
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(
@@ -101,11 +105,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                         new CodeArgumentReferenceExpression(parameterName)
                     ));
 
+            // CODEGEN:
+            // this._dataSourceId = dataSourceId;
+
             constructor.Statements.Add(
                 new CodeAssignStatement(
                     new CodeFieldReferenceExpression(
                         new CodeThisReferenceExpression(),
-                        "_dataSourceId"
+                        DataSourceIdFieldName
                         ),
                     new CodeArgumentReferenceExpression("dataSourceId")
                     ));
@@ -118,12 +125,20 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         private void AddCommitDataMethod(CodeTypeDeclaration declaration)
         {
-            CodeMemberMethod method = new CodeMemberMethod();
+            // CODEGEN: 
+            // public void CommitData(XElement wrappedElement) { ... }
 
-            method.Name = "CommitData";
-            method.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-            method.ReturnType = new CodeTypeReference(typeof(void));
+            var method = new CodeMemberMethod
+            {
+                Name = "CommitData",
+                Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                ReturnType = new CodeTypeReference(typeof (void))
+            };
+            
             method.Parameters.Add(new CodeParameterDeclarationExpression(typeof(XElement), "wrappedElement"));
+
+            // CODEGEN:
+            // this._element = wrappedElement;
 
             method.Statements.Add(new CodeAssignStatement(
                     new CodeFieldReferenceExpression(
@@ -133,8 +148,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                     new CodeVariableReferenceExpression("wrappedElement")
                 ));
 
-
-            List<CodeStatement> statments = new List<CodeStatement>();
+            var statments = new List<CodeStatement>();
 
             foreach (DataFieldDescriptor dataFieldDescriptor in _dataTypeDescriptor.Fields)
             {
@@ -164,19 +178,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
         private static CodeStatement AddCommitDataMethodFinalHelper(DataFieldDescriptor dataFieldDescriptor, List<CodeStatement> statements)
         {
+            // CODEGEN:
+            // if(this._emailNullable != null) {
+            //     [statements]
+            // }
+
             string fieldName = CreateNullableFieldName(dataFieldDescriptor);
 
             return new CodeConditionStatement(
                     new CodeBinaryOperatorExpression(
-                        new CodePropertyReferenceExpression(
-                            new CodeFieldReferenceExpression(
-                                new CodeThisReferenceExpression(),
-                                fieldName
-                            ),
-                            "HasValue"
+                        new CodeFieldReferenceExpression(
+                            new CodeThisReferenceExpression(),
+                            fieldName
                         ),
-                        CodeBinaryOperatorType.IdentityEquality,
-                        new CodePrimitiveExpression(true)
+                        CodeBinaryOperatorType.IdentityInequality,
+                        new CodePrimitiveExpression(null)
                     ),
                     statements.ToArray()
                 );
@@ -316,17 +332,22 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
             {
                 string fieldName = CreateNullableFieldName(dataFieldDescriptor);
 
-                CodeMemberField field = new CodeMemberField();
+                // CODEGEN:
+                // private ExtendedNullable<string> _emailNullable;
+ 
+                var field = new CodeMemberField();
                 CodeTypeReference nullableType = new CodeTypeReference(
                         typeof(ExtendedNullable<>).FullName,
                         new [] { new CodeTypeReference(dataFieldDescriptor.InstanceType) }
                     );
                 field.Name = fieldName;
                 field.Type = nullableType;
-                field.InitExpression = new CodeObjectCreateExpression(nullableType, new CodeExpression[] { });
 
                 declaration.Members.Add(field);
 
+                // CODEGEN:
+                // private static XName _pointsXName = "Points";
+                
                 var xNameField = new CodeMemberField();
                 xNameField.Name = CreateXNameFieldName(dataFieldDescriptor);
                 xNameField.Type = new CodeTypeReference(typeof(XName));
@@ -334,45 +355,29 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                 xNameField.InitExpression = new CodePrimitiveExpression(dataFieldDescriptor.Name);
                 declaration.Members.Add(xNameField);
 
-                CodeMemberProperty property = new CodeMemberProperty();
+                // CODEGEN: 
+                // public string Email { get {...} set { ...} } 
+
+                var property = new CodeMemberProperty();
                 property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
                 property.Name = dataFieldDescriptor.Name;
                 property.HasGet = true;
                 property.HasSet = true;
                 property.Type = new CodeTypeReference(dataFieldDescriptor.InstanceType);
 
-                CodeStatement statement;
-                if ((dataFieldDescriptor.InstanceType == typeof(string)) ||
-                    ((dataFieldDescriptor.InstanceType.IsGenericType) && (dataFieldDescriptor.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>))))
-                {
-                    statement = new CodeMethodReturnStatement(new CodePrimitiveExpression(null));
-                }
-                else
-                {
-                    statement = new CodeThrowExceptionStatement(
-                                        new CodeObjectCreateExpression(
-                                            typeof(InvalidOperationException),
-                                            new CodeExpression[] {
-                                                new CodePrimitiveExpression(
-                                                    string.Format("The element attribute {0} is missing from the xml file", dataFieldDescriptor.Name)
-                                                )
-                                            }
-                                        )
-                                    );
-                }
-
+                // CODEGEN:
+                // if(this._emailNullable != null) {
+                //     return this._emailNullable.Value;
+                // }
                 property.GetStatements.Add(
                     new CodeConditionStatement(
                         new CodeBinaryOperatorExpression(
-                            new CodePropertyReferenceExpression(
-                                new CodeFieldReferenceExpression(
-                                    new CodeThisReferenceExpression(),
-                                    fieldName
-                                    ),
-                                "HasValue"
+                            new CodeFieldReferenceExpression(
+                                new CodeThisReferenceExpression(),
+                                fieldName
                                 ),
-                            CodeBinaryOperatorType.IdentityEquality,
-                            new CodePrimitiveExpression(true)
+                            CodeBinaryOperatorType.IdentityInequality,
+                            new CodePrimitiveExpression(null)
                             ),
                         new CodeMethodReturnStatement(
                             new CodePropertyReferenceExpression(
@@ -398,7 +403,39 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                             new CodeFieldReferenceExpression(null, CreateXNameFieldName(dataFieldDescriptor))
                             )));
 
-                // GEN: if (attribute == null) ...
+
+                // CODEGEN: 
+                // if (attribute == null) {
+                //    return null; 
+                // }
+                //
+                // or
+                //
+                // if (attribute == null) {
+                //    throw new InvalidOperationException("The element attribute 'Email' is missing from the xml file");
+                // }
+
+                CodeStatement noAttributeReturnStatement;
+                if (dataFieldDescriptor.InstanceType == typeof(string)
+                    || (dataFieldDescriptor.InstanceType.IsGenericType
+                        && dataFieldDescriptor.InstanceType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                {
+                    noAttributeReturnStatement = new CodeMethodReturnStatement(new CodePrimitiveExpression(null));
+                }
+                else
+                {
+                    noAttributeReturnStatement = new CodeThrowExceptionStatement(
+                                        new CodeObjectCreateExpression(
+                                            typeof(InvalidOperationException),
+                                            new CodeExpression[] {
+                                                new CodePrimitiveExpression(
+                                                    string.Format("The element attribute '{0}' is missing from the xml file", dataFieldDescriptor.Name)
+                                                )
+                                            }
+                                        )
+                                    );
+                }
+
                 property.GetStatements.Add(
                     new CodeConditionStatement(
                             new CodeBinaryOperatorExpression(
@@ -406,10 +443,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
                                 CodeBinaryOperatorType.IdentityEquality,
                                 new CodePrimitiveExpression(null)
                             ),
-                            new CodeStatement[] {
-                                statement
-                            }
+                            
+                            noAttributeReturnStatement
                         ));
+
 
                 CodeExpression resultExpression;
 
@@ -437,6 +474,31 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration
 
                 if (!dataFieldDescriptor.IsReadOnly)
                 {
+                    // CODEGEN:
+                    // if(this.[fieldName] == null) {
+                    //   this.[fieldName] = new ExtendedNullable<...>(); 
+                    // }
+
+                    property.SetStatements.Add(
+                       new CodeConditionStatement(
+                           new CodeBinaryOperatorExpression(
+                               new CodeFieldReferenceExpression(
+                                   new CodeThisReferenceExpression(),
+                                   fieldName
+                                   ),
+                               CodeBinaryOperatorType.IdentityEquality,
+                               new CodePrimitiveExpression(null)
+                               ),
+                           new CodeAssignStatement(
+                               new CodeFieldReferenceExpression(
+                                   new CodeThisReferenceExpression(),
+                                   fieldName
+                                   ),
+                               new CodeObjectCreateExpression(nullableType, new CodeExpression[] { }))));
+
+                    // CODEGEN:
+                    // this._emailNullable.Value = value;
+
                     property.SetStatements.Add(
                         new CodeAssignStatement(
                             new CodePropertyReferenceExpression(
