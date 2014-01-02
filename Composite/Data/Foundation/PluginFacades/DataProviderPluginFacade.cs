@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Plugins.DataProvider;
 using Composite.Data.Plugins.DataProvider.Runtime;
+using Composite.Data.Types;
 using Composite.C1Console.Events;
 using Composite.Core.Instrumentation;
-using Composite.Core.Logging;
-using Composite.Data.Types;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider;
 
 
 namespace Composite.Data.Foundation.PluginFacades
@@ -27,22 +28,22 @@ namespace Composite.Data.Foundation.PluginFacades
 
         static DataProviderPluginFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
 
         public static bool HasConfiguration()
         {
-            return (ConfigurationServices.ConfigurationSource != null) &&
-                   (ConfigurationServices.ConfigurationSource.GetSection(DataProviderSettings.SectionName) != null);
+            return ConfigurationServices.ConfigurationSource != null &&
+                   ConfigurationServices.ConfigurationSource.GetSection(DataProviderSettings.SectionName) != null;
         }
 
 
 
         public static IEnumerable<Type> GetSupportedInterfaces(string providerName)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler(providerName))
+            using (TimerProfilerFacade.CreateTimerProfiler(providerName))
             {
                 using (_resourceLocker.Locker)
                 {
@@ -54,20 +55,19 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static IEnumerable<Type> GetKnownInterfaces(string providerName)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDynamicDataProvider provider = GetDynamicDataProvider(providerName);
+                    var provider = GetDataProvider<IDynamicDataProvider>(providerName);
 
                     List<Type> knownInterfaces = provider.GetKnownInterfaces().ToList();
 
                     if (knownInterfaces.Contains(null))
                     {
-                        LoggingService.LogWarning("DataProviderPluginFacade", string.Format("Data Provider '{0}' returned (null) as a known interface type. Value is ignored.", providerName));
+                        Log.LogWarning("DataProviderPluginFacade", string.Format("Data Provider '{0}' returned (null) as a known interface type. Value is ignored.", providerName));
                         knownInterfaces.RemoveAll(f => f == null);
                     }
 
@@ -77,20 +77,18 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static IEnumerable<Type> GetGeneratedInterfaces(string providerName)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
                 {
-                    IGeneratedTypesDataProvider provider = GetGeneratedTypesDataProvider(providerName);
+                    var provider = GetDataProvider<IGeneratedTypesDataProvider>(providerName);
 
                     return provider.GetGeneratedInterfaces();
                 }
             }
         }
-
 
 
         public static IQueryable<T> GetData<T>(string providerName)
@@ -177,13 +175,13 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
-            {
-                if (null == typeDescriptor) throw new ArgumentNullException("typeDescriptor");
+            Verify.ArgumentNotNull(typeDescriptor, "typeDescriptor");
 
+            using (TimerProfilerFacade.CreateTimerProfiler())
+            {
                 using (_resourceLocker.Locker)
                 {
-                    IDynamicDataProvider provider = GetDynamicDataProvider(providerName);
+                    IDynamicDataProvider provider = GetDataProvider<IDynamicDataProvider>(providerName);
 
                     provider.CreateStore(typeDescriptor);
                 }
@@ -191,14 +189,13 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDynamicDataProvider provider = GetDynamicDataProvider(updateDataTypeDescriptor.ProviderName);
+                    var provider = GetDataProvider<IDynamicDataProvider>(updateDataTypeDescriptor.ProviderName);
 
                     provider.AlterStore(updateDataTypeDescriptor, forceCompile);
                 }
@@ -206,16 +203,15 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static void DropStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            Verify.ArgumentNotNull(typeDescriptor, "typeDescriptor");
+   
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
-                if (null == typeDescriptor) throw new ArgumentNullException("typeDescriptor");
-
                 using (_resourceLocker.Locker)
                 {
-                    IDynamicDataProvider provider = GetDynamicDataProvider(providerName);
+                    var provider = GetDataProvider<IDynamicDataProvider>(providerName);
 
                     provider.DropStore(typeDescriptor);
                 }
@@ -223,14 +219,13 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static void AddLocale(string providerName, CultureInfo cultureInfo)
         {
-            if (null == cultureInfo) throw new ArgumentNullException("cultureInfo");
+            Verify.ArgumentNotNull(cultureInfo, "cultureInfo");
 
             using (_resourceLocker.Locker)
             {
-                ILocalizedDataProvider provider = GetLocalizedDataProvider(providerName);
+                var provider = GetDataProvider<ILocalizedDataProvider>(providerName);
 
                 provider.AddLocale(cultureInfo);
             }
@@ -240,11 +235,11 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static void RemoveLocale(string providerName, CultureInfo cultureInfo)
         {
-            if (null == cultureInfo) throw new ArgumentNullException("cultureInfo");
+            Verify.ArgumentNotNull(cultureInfo, "cultureInfo");
 
             using (_resourceLocker.Locker)
             {
-                ILocalizedDataProvider provider = GetLocalizedDataProvider(providerName);
+                var provider = GetDataProvider<ILocalizedDataProvider>(providerName);
 
                 provider.RemoveLocale(cultureInfo);
             }
@@ -273,7 +268,7 @@ namespace Composite.Data.Foundation.PluginFacades
             Verify.That(provider is TProvider, "The data provider {0} does not implement the interface {1}", providerName, typeof(TProvider).FullName);
 
             // DDZ: hardcoded for now, to be fixed
-            bool syncDisabled = provider.GetType().Name == "SqlDataProvider";
+            bool syncDisabled = provider is SqlDataProvider;
 
             IDisposable scope = null;
             try
@@ -296,11 +291,11 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static bool IsWriteableProvider(string providerName)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDataProvider dataProvider = GetDataProvider(providerName);
+                    var dataProvider = GetDataProvider(providerName);
 
                     return (dataProvider is IWritableDataProvider);
                 }
@@ -308,14 +303,13 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static bool IsDynamicProvider(string providerName)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDataProvider dataProvider = GetDataProvider(providerName);
+                    var dataProvider = GetDataProvider(providerName);
 
                     return (dataProvider is IDynamicDataProvider);
                 }
@@ -323,20 +317,18 @@ namespace Composite.Data.Foundation.PluginFacades
         }
 
 
-
         public static bool IsGeneratedTypesProvider(string providerName)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDataProvider dataProvider = GetDataProvider(providerName);
+                    var dataProvider = GetDataProvider(providerName);
 
                     return (dataProvider is IGeneratedTypesDataProvider);
                 }
             }
         }
-
 
 
         public static bool IsLocalizedDataProvider(string providerName)
@@ -345,7 +337,7 @@ namespace Composite.Data.Foundation.PluginFacades
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDataProvider dataProvider = GetDataProvider(providerName);
+                    var dataProvider = GetDataProvider(providerName);
 
                     return (dataProvider is ILocalizedDataProvider);
                 }
@@ -358,79 +350,25 @@ namespace Composite.Data.Foundation.PluginFacades
         /// <returns></returns>
         public static bool AllowsResultsWrapping(string providerName)
         {
-            IDataProvider dataProvider = GetDataProvider(providerName);
+            var dataProvider = GetDataProvider(providerName);
 
-            return dataProvider != null && ((dataProvider is ISupportCachingDataProvider) == false
-                                               || (dataProvider as ISupportCachingDataProvider).AllowResultsWrapping);
+            return dataProvider != null 
+                && (!(dataProvider is ISupportCachingDataProvider)
+                     || (dataProvider as ISupportCachingDataProvider).AllowResultsWrapping);
         }
 
 
-        private static IDynamicDataProvider GetDynamicDataProvider(string providerName)
+        private static T GetDataProvider<T>(string providerName) where T: class, IDataProvider
         {
-            using (_resourceLocker.Locker)
+            var provider = GetDataProvider(providerName) as T;
+
+            if (provider == null)
             {
-                IDataProvider provider = GetDataProvider(providerName);
-
-                if (false == (provider is IDynamicDataProvider))
-                {
-                    throw new InvalidOperationException(string.Format("The data provider {0} does not implement the interface {1}", providerName, typeof(IDynamicDataProvider)));
-                }
-
-                return provider as IDynamicDataProvider;
+                throw new InvalidOperationException(string.Format("The data provider {0} does not implement the interface {1}", providerName, typeof(T)));
             }
+
+            return provider;
         }
-
-
-
-        private static IWritableDataProvider GetWritableDataProvider(string providerName)
-        {
-            using (_resourceLocker.Locker)
-            {
-                IDataProvider provider = GetDataProvider(providerName);
-
-                if (false == (provider is IWritableDataProvider))
-                {
-                    throw new InvalidOperationException(string.Format("The data provider {0} does not implement the interface {1}", providerName, typeof(IWritableDataProvider)));
-                }
-
-                return provider as IWritableDataProvider;
-            }
-        }
-
-
-
-        private static IGeneratedTypesDataProvider GetGeneratedTypesDataProvider(string providerName)
-        {
-            using (_resourceLocker.Locker)
-            {
-                IDataProvider provider = GetDataProvider(providerName);
-
-                if (false == (provider is IGeneratedTypesDataProvider))
-                {
-                    throw new InvalidOperationException(string.Format("The data provider {0} does not implement the interface {1}", providerName, typeof(IGeneratedTypesDataProvider)));
-                }
-
-                return provider as IGeneratedTypesDataProvider;
-            }
-        }
-
-
-
-        private static ILocalizedDataProvider GetLocalizedDataProvider(string providerName)
-        {
-            using (_resourceLocker.Locker)
-            {
-                IDataProvider provider = GetDataProvider(providerName);
-
-                if (false == (provider is ILocalizedDataProvider))
-                {
-                    throw new InvalidOperationException(string.Format("The data provider {0} does not implement the interface {1}", providerName, typeof(ILocalizedDataProvider)));
-                }
-
-                return provider as ILocalizedDataProvider;
-            }
-        }
-
 
 
         internal static IDataProvider GetDataProvider(string providerName)
@@ -478,14 +416,6 @@ namespace Composite.Data.Foundation.PluginFacades
         {
             _resourceLocker.ResetInitialization();
         }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
 
 
         private static void HandleConfigurationError(Exception ex)

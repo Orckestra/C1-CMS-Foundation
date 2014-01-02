@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 
 
 namespace Composite.Data.Caching.Foundation
@@ -17,7 +16,7 @@ namespace Composite.Data.Caching.Foundation
 
         static CachingQueryableCache()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -26,14 +25,11 @@ namespace Composite.Data.Caching.Foundation
         {
             MethodInfo methodInfo;
 
-            if (_cachingQueryableGetEnumeratorMethodInfoCache.TryGetValue(genericType, out methodInfo) == false)
+            if (!_cachingQueryableGetEnumeratorMethodInfoCache.TryGetValue(genericType, out methodInfo))
             {
                 Type type = typeof(CachingQueryable<>).MakeGenericType(new Type[] { genericType });
 
-                methodInfo =
-                    (from method in type.GetMethods()
-                     where method.Name == "GetEnumerator"
-                     select method).First();
+                methodInfo = type.GetMethods().First(method => method.Name == "GetEnumerator");
 
                 _cachingQueryableGetEnumeratorMethodInfoCache.Add(genericType, methodInfo);
             }
@@ -47,9 +43,9 @@ namespace Composite.Data.Caching.Foundation
         {
             Type type;
 
-            if (_cachingQueryableTypeCache.TryGetValue(elementType, out type) == false)
+            if (!_cachingQueryableTypeCache.TryGetValue(elementType, out type))
             {
-                type = typeof(CachingQueryable<>).MakeGenericType(new Type[] { elementType });
+                type = typeof(CachingQueryable<>).MakeGenericType(new [] { elementType });
 
                 _cachingQueryableTypeCache.Add(elementType, type);
             }
@@ -63,7 +59,7 @@ namespace Composite.Data.Caching.Foundation
         {
             Dictionary<Type, MethodInfo> methodInfoes;
 
-            if (_cachingQueryableExecuteMethodInfoCache.TryGetValue(genericType, out methodInfoes) == false)
+            if (!_cachingQueryableExecuteMethodInfoCache.TryGetValue(genericType, out methodInfoes))
             {
                 methodInfoes = new Dictionary<Type, MethodInfo>();
 
@@ -75,15 +71,11 @@ namespace Composite.Data.Caching.Foundation
 
             if (methodInfoes.TryGetValue(expressionType, out methodInfo) == false)
             {
-                Type type = typeof(CachingQueryable<>).MakeGenericType(new Type[] { genericType });
+                Type type = typeof(CachingQueryable<>).MakeGenericType(new [] { genericType });
 
-                methodInfo =
-                    (from method in type.GetMethods()
-                     where method.Name == "Execute" &&
-                           method.IsGenericMethod 
-                     select method).First();
+                methodInfo = type.GetMethods().First(method => method.Name == "Execute" && method.IsGenericMethod);
 
-                methodInfo = methodInfo.MakeGenericMethod(new Type[] { expressionType });
+                methodInfo = methodInfo.MakeGenericMethod(new [] { expressionType });
 
                 methodInfoes.Add(expressionType, methodInfo);
             }
@@ -98,13 +90,6 @@ namespace Composite.Data.Caching.Foundation
             _cachingQueryableGetEnumeratorMethodInfoCache = new Dictionary<Type, MethodInfo>();
             _cachingQueryableTypeCache = new Dictionary<Type, Type>();
             _cachingQueryableExecuteMethodInfoCache = new Dictionary<Type, Dictionary<Type, MethodInfo>>();
-        }
-
-
-
-        private static void OnFlush(FlushEventArgs args)
-        {
-            Flush();
         }
     }
 }

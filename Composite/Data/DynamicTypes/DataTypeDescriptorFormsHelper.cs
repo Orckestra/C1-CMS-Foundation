@@ -32,7 +32,6 @@ namespace Composite.Data.DynamicTypes
         private readonly string _bindingNamesPrefix;
 
         private XDocument _customFormDefinition;
-        private string _customFormDefinitionFilePath;
         private bool _customFormDefinitionInitialized;
         private string _generatedForm;
         private XElement _bindingsXml;

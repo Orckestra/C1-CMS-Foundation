@@ -6,7 +6,6 @@ using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
-using Composite.Core.Extensions;
 using Composite.Core.Types;
 
 
@@ -33,7 +32,7 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsAutoUpdateble(this IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
             return IsAutoUpdateble(data.DataSourceId.InterfaceType);
         }
@@ -43,11 +42,11 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsAutoUpdateble(this Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
             bool isAutoUpdateble;
 
-            if (_resourceLocker.Resources.InterfaceToAutoUpdatebleCache.TryGetValue(interfaceType, out isAutoUpdateble) == false)
+            if (!_resourceLocker.Resources.InterfaceToAutoUpdatebleCache.TryGetValue(interfaceType, out isAutoUpdateble))
             {
                 isAutoUpdateble = interfaceType.GetCustomInterfaceAttributes<AutoUpdatebleAttribute>().Any();
 
@@ -117,7 +116,7 @@ namespace Composite.Data
             Guid immutableTypeId;
 
         	bool success = TryGetImmutableTypeId(interfaceType, out immutableTypeId);
-			Verify.That(success, "No '{0}' defined on the type '{1}'".FormatWith(typeof(ImmutableTypeIdAttribute), interfaceType));
+			Verify.That(success, "No '{0}' defined on the type '{1}'", typeof(ImmutableTypeIdAttribute), interfaceType);
 
             return immutableTypeId;
         }

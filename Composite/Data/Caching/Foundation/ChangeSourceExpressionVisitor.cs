@@ -5,7 +5,7 @@ namespace Composite.Data.Caching.Foundation
 {
     internal sealed class ChangeSourceExpressionVisitor : ExpressionVisitor
     {
-        private Expression _newSourceExpression;
+        private readonly Expression _newSourceExpression;
 
         public ChangeSourceExpressionVisitor()
         {
@@ -23,21 +23,16 @@ namespace Composite.Data.Caching.Foundation
         {
             if (c.Value == null) return base.VisitConstant(c);
 
-            if (typeof(ICachingQueryable).IsAssignableFrom(c.Value.GetType()))
+            if (c.Value is ICachingQueryable)
             {
                 if (_newSourceExpression == null)
                 {
                     return ((ICachingQueryable)c.Value).Source.Expression;
                 }
-                else
-                {
-                    return _newSourceExpression;
-                }
+                return _newSourceExpression;
             }
-            else
-            {
-                return base.VisitConstant(c);
-            }
+
+            return base.VisitConstant(c);
         }
     }
 

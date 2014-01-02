@@ -57,7 +57,7 @@ namespace Composite.Data.Caching
         private readonly CachingEnumerable<T> _wrappedEnumerable;
         private readonly Func<IQueryable> _getQueryFunc;
 
-        private DataCachingFacade.CachedTable _cachedTable;
+        private readonly DataCachingFacade.CachedTable _cachedTable;
         private static readonly MethodInfo _wrappingMethodInfo;
 
         private IEnumerable<T> _innerEnumerable;
@@ -149,23 +149,17 @@ namespace Composite.Data.Caching
 
         public S Execute<S>(Expression expression)
         {
-            ChangeSourceExpressionVisitor visitor;
-
-            if (_source.ElementType == typeof(S))
-            {
-                IQueryable<S> newSouce = new CachingEnumerable<S>(_source.Cast<S>()).AsQueryable();
-
-                visitor = new ChangeSourceExpressionVisitor(newSouce.Expression);
-
-            }
-            else
-            {
-                visitor = new ChangeSourceExpressionVisitor();
-            }
+            var visitor = new ChangeSourceExpressionVisitor();
 
             Expression newExpression = visitor.Visit(expression);
 
-            return (S)_source.Provider.Execute(newExpression);
+            object result = _source.Provider.Execute(newExpression);
+
+            if (result != null && _source.ElementType == typeof(S))
+            {
+                result = (S) _wrappingMethodInfo.Invoke(null, new [] { result });
+            }
+            return (S) result;
         }
 
         #endregion

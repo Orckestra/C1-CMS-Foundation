@@ -9,6 +9,8 @@ using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Threading;
 using Composite.Data;
+using Composite.Data.Caching;
+using Composite.Data.Foundation;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
 
 
@@ -16,7 +18,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
     internal partial class XmlDataProvider
     {
-
         public IQueryable<T> GetData<T>()
             where T : class, IData
         {
@@ -30,15 +31,25 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             string cultureName = LocalizationScopeManager.MapByType(typeof(T)).Name;
             var dataTypeStoreScope = dataTypeStore.GetXmlDateTypeStoreDataScope(currentDataScope, cultureName);
 
-            IEnumerable<XElement> elements = XmlDataProviderDocumentCache.GetElements(dataTypeStoreScope.Filename,
-                                                                                      dataTypeStoreScope.ElementName,
-                                                                                      dataTypeStore.Helper);
+            var fileRecord = XmlDataProviderDocumentCache.GetFileRecord(
+                dataTypeStoreScope.Filename,
+                dataTypeStoreScope.ElementName, 
+                dataTypeStore.Helper.CreateDataId);
 
-            Func<XElement, T> fun = dataTypeStore.Helper.CreateSelectFunction<T>(_dataProviderContext.ProviderName);
+            if (fileRecord.CachedTable == null)
+            {
+                IEnumerable<XElement> elements = fileRecord.ReadOnlyElementsList;
 
-            IEnumerable<T> result = Enumerable.Select<XElement, T>(elements, fun).ToList();
+                Func<XElement, T> fun = dataTypeStore.Helper.CreateSelectFunction<T>(_dataProviderContext.ProviderName);
 
-            return Queryable.AsQueryable(result);
+                IEnumerable<T> list = elements.Select(fun).ToList();
+
+                var queryable = list.AsQueryable();
+
+                fileRecord.CachedTable = new DataCachingFacade.CachedTable(queryable);
+            }
+
+            return new CachingQueryable<T>(fileRecord.CachedTable, () => fileRecord.CachedTable.Queryable);
         }
 
 
@@ -81,8 +92,10 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 var validatedElements = new Dictionary<DataSourceId, XElement>();
 
                 // verify phase
-                foreach (IData data in dataset)
+                foreach (IData wrappedData in dataset)
                 {
+                    var data = DataWrappingFacade.UnWrap(wrappedData);
+
                     Verify.ArgumentCondition(data != null, "dataset", "Collection contains a null element.");
                     Verify.ArgumentCondition(data.DataSourceId != null, "dataset", "Collection contains a data item with DataSourceId null property.");
 

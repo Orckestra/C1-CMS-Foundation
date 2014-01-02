@@ -17,15 +17,13 @@ namespace Composite.Data.DynamicTypes.Foundation
         /// Returns custom form markup. 
         /// </summary>
         /// <param name="dataTypeDescriptor">A data type descriptor</param>
-        // /// <param name="markupFilePath">The file path that markup originated from.</param>
         /// <returns></returns>
-        public static XDocument GetCustomFormMarkup(DataTypeDescriptor dataTypeDescriptor/*, out string markupFilePath*/)
+        public static XDocument GetCustomFormMarkup(DataTypeDescriptor dataTypeDescriptor)
         {
             var file = GetCustomFormMarkupFile(dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
 
             if (file == null)
             {
-                //markupFilePath = null;
                 return null;
             }
 

@@ -138,6 +138,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         {
             fileRecord.LastModified = DateTime.Now;
             fileRecord.ReadOnlyElementsList = fileRecord.RecordSet.Index.GetValues().ToList();
+            fileRecord.CachedTable = null;
             fileRecord.Dirty = false;
 
             XmlDataProviderDocumentWriter.Save(fileRecord);
