@@ -11156,7 +11156,7 @@ this.fitContentWindow();
 WindowBinding.superclass.flex.call(this);
 };
 WindowBinding.prototype.fitContentWindow=function(){
-if(Client.isPad&&0){
+if(Client.isPad){
 var _7f8=this.getContentWindow();
 if(_7f8!=null&&_7f8.document!=null&&_7f8.document.body!=null){
 _7f8.document.body.style.height=this.bindingElement.offsetHeight+"px";
@@ -16625,10 +16625,11 @@ this.unRegisterTabBoxPair(_ac8.bindingElement);
 _ac8.dispose();
 _aca.dispose();
 if(_ac9!=null){
-this.select(_ac9);
+this.select(_ac9,true);
 }
 this.updateType=TabBoxBinding.UPDATE_DETACH;
 this.dispatchAction(TabBoxBinding.ACTION_UPDATED);
+this.deActivate();
 };
 TabBoxBinding.prototype.dismissTabBinding=function(_acb){
 if(_acb.isSelected){
@@ -19235,17 +19236,17 @@ break;
 }
 };
 TreeBodyBinding.prototype._scrollIntoView=function(_c45){
-var a=this.boxObject.getDimension().h;
-var y=_c45.boxObject.getLocalPosition().y;
-var h=_c45.boxObject.getDimension().h;
+var _c46=_c45.labelBinding.bindingElement;
+var a=this.bindingElement.clientHeight;
+var y=_c46.offsetTop;
+var h=_c46.offsetHeight;
 var t=this.bindingElement.scrollTop;
 var l=this.bindingElement.scrollLeft;
-var _c4b=_c45.labelBinding.bindingElement;
 if(y-t<0){
-_c4b.scrollIntoView(true);
+_c46.scrollIntoView(true);
 }else{
 if(y-t+h>a){
-_c4b.scrollIntoView(false);
+_c46.scrollIntoView(false);
 }
 }
 try{
