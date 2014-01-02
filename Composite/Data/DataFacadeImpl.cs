@@ -64,9 +64,18 @@ namespace Composite.Data
                         queryables.Add(queryable);
                     }
 
-                    DataFacadeQueryable<T> multipleSourceQueryable = new DataFacadeQueryable<T>(queryables);
+                    bool resultIsCached = queryables.Count == 1 && queryables[0] is ICachedQuery;
 
-                    resultQueryable = multipleSourceQueryable;
+                    if (resultIsCached)
+                    {
+                        resultQueryable = queryables[0];
+                    }
+                    else
+                    {
+                        var multipleSourceQueryable = new DataFacadeQueryable<T>(queryables);
+
+                        resultQueryable = multipleSourceQueryable;
+                    }
                 }
             }
             else

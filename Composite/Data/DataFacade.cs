@@ -197,7 +197,7 @@ namespace Composite.Data
         public static IQueryable<T> GetData<T>(Expression<Func<T, bool>> predicate)
             where T : class, IData
         {
-            if (predicate == null) throw new ArgumentNullException("predicate");
+            Verify.ArgumentNotNull(predicate, "predicate");
 
             IQueryable<T> result = GetData<T>(true, null);
 
@@ -517,8 +517,6 @@ namespace Composite.Data
         public static T TryGetDataByUniqueKey<T>(object dataKeyValue)
             where T : class, IData
         {
-            // TODO: cache check missing!!!111
-
             PropertyInfo propertyInfo = DataAttributeFacade.GetKeyProperties(typeof(T)).Single();
 
             DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
@@ -533,11 +531,18 @@ namespace Composite.Data
         public static T TryGetDataByUniqueKey<T>(DataKeyPropertyCollection dataKeyPropertyCollection)
             where T : class, IData
         {
-            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
+            Verify.ArgumentNotNull(dataKeyPropertyCollection, "dataKeyPropertyCollection");
+
+            IQueryable<T> query = GetData<T>();
+
+            if (query is CachingQueryable_CachedByKey && dataKeyPropertyCollection.Count == 1)
+            {
+                return (T) (query as CachingQueryable_CachedByKey).GetCachedValueByKey(dataKeyPropertyCollection.KeyProperties.Single().Value);
+            }
 
             Expression<Func<T, bool>> lambdaExpression = GetPredicateExpressionByUniqueKey<T>(dataKeyPropertyCollection);
 
-            return GetData<T>(lambdaExpression).SingleOrDefault();
+            return query.SingleOrDefault(lambdaExpression);
         }
 
 
