@@ -125,11 +125,14 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
         private static List<XElement> ExtractElements(XDocument xDocument)
         {
-            var result = new List<XElement>(xDocument.Root.Elements());
+            IEnumerable<XElement> elements = xDocument.Root.Elements();
+
+            var result = new List<XElement>(elements.Count());
+            result.AddRange(elements);
 
             xDocument.Root.RemoveNodes();
 
-            return result;
+            return result;  
         }
 
 
@@ -137,7 +140,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static void SaveChanges(FileRecord fileRecord)
         {
             fileRecord.LastModified = DateTime.Now;
-            fileRecord.ReadOnlyElementsList = fileRecord.RecordSet.Index.GetValues().ToList();
+            fileRecord.ReadOnlyElementsList = fileRecord.RecordSet.Index.GetValues();
             fileRecord.CachedTable = null;
             fileRecord.Dirty = false;
 

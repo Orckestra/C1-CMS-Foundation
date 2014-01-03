@@ -103,7 +103,7 @@ namespace Composite.Core.Collections.Generic
         /// <returns></returns>
         public ICollection<TKey> GetKeys()
         {
-            var result = new List<TKey>();
+            var result = new List<TKey>(_table.Count);
 
             foreach(object key in _table.Keys)
             {
@@ -116,7 +116,7 @@ namespace Composite.Core.Collections.Generic
         /// <exclude />
         public ICollection<TValue> GetValues()
         {
-            var result = new List<TValue>();
+            var result = new List<TValue>(_table.Count);
 
             foreach (object value in _table.Values)
             {

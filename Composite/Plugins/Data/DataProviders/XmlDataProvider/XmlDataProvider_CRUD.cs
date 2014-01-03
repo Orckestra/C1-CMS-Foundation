@@ -38,11 +38,12 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             if (fileRecord.CachedTable == null)
             {
-                IEnumerable<XElement> elements = fileRecord.ReadOnlyElementsList;
+                ICollection<XElement> elements = fileRecord.ReadOnlyElementsList;
 
                 Func<XElement, T> fun = dataTypeStore.Helper.CreateSelectFunction<T>(_dataProviderContext.ProviderName);
 
-                IEnumerable<T> list = elements.Select(fun).ToList();
+                var list = new List<T>(elements.Count);
+                list.AddRange(elements.Select(fun));
 
                 var queryable = list.AsQueryable();
 

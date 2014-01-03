@@ -22,7 +22,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         public string FilePath;
         public string ElementName;
         public RecordSet RecordSet;
-        public IEnumerable<XElement> ReadOnlyElementsList;
+        public ICollection<XElement> ReadOnlyElementsList;
         public DateTime LastModified;
         public DateTime FileModificationDate;
         public DataCachingFacade.CachedTable CachedTable;
