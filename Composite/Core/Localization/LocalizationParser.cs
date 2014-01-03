@@ -68,7 +68,7 @@ namespace Composite.Core.Localization
         private static void HandleSwitchElement(XElement element)
         {
             XElement defaultElement = element.Element(((XNamespace)LocalizationXmlConstants.XmlNamespace) + "default");
-            if (defaultElement == null) throw new InvalidOperationException(string.Format("Missing element named 'default' at {0}", element));
+            Verify.IsNotNull(defaultElement, "Missing attriubte named 'default' at {0}", element);
 
 
             XElement newValueParent = defaultElement;
@@ -77,10 +77,10 @@ namespace Composite.Core.Localization
             foreach (XElement whenElement in element.Elements(((XNamespace)LocalizationXmlConstants.XmlNamespace) + "when"))
             {
                 XAttribute cultureAttribute = whenElement.Attribute("culture");
-                if (cultureAttribute == null) throw new InvalidOperationException(string.Format("Missing attriubte named 'culture' at {0}", whenElement));
+                Verify.IsNotNull(cultureAttribute, "Missing attriubte named 'culture' at {0}", whenElement);
 
                 CultureInfo cultureInfo = new CultureInfo(cultureAttribute.Value);
-                if (currentCultureInfo.CompareInfo == cultureInfo.CompareInfo)
+                if (cultureInfo.Equals(currentCultureInfo))
                 {
                     newValueParent = whenElement;
                     break;
