@@ -305,7 +305,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             List<XElement> elements = ExtractElements(dataDocument);
 
-            var index = new Hashtable<IDataId, XElement>();
+            var index = new Hashtable<IDataId, XElement>(elements.Count);
             foreach (var element in elements)
             {
                 IDataId id = keyGetter(element);

@@ -68,7 +68,7 @@ namespace Composite.Core.Localization
         private static void HandleSwitchElement(XElement element)
         {
             XElement defaultElement = element.Element(((XNamespace)LocalizationXmlConstants.XmlNamespace) + "default");
-            Verify.IsNotNull(defaultElement, "Missing attriubte named 'default' at {0}", element);
+            Verify.IsNotNull(defaultElement, "Missing element named 'default' at {0}", element);
 
 
             XElement newValueParent = defaultElement;

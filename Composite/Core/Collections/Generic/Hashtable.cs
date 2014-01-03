@@ -10,10 +10,22 @@ namespace Composite.Core.Collections.Generic
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class Hashtable<TKey, TValue>//: Hashtable
 	{
-	    private readonly Hashtable _table = new Hashtable();
+	    private readonly Hashtable _table;
 
         private static readonly object NullValue = new object(); // A value which represents "null" value
 	    private static readonly bool IsValueType = typeof (TValue).IsValueType;
+
+        /// <exclude />
+        public Hashtable()
+        {
+            _table = new Hashtable();
+        }
+
+        /// <exclude />
+        public Hashtable(int capacity)
+        {
+            _table = new Hashtable(capacity);
+        }
 
 
         /// <exclude />
