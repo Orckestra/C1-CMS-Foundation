@@ -47,6 +47,11 @@ namespace Composite.Core.Instrumentation
                                       new XAttribute("persentFromTotal", persentTotal),
                                       new XAttribute("parallel", parallel.ToString().ToLowerInvariant()));
 
+            if (measurement.MemoryUsage != 0)
+            {
+                result.Add(new XAttribute("memoryUsageKb", measurement.MemoryUsage / 1024));
+            }
+
             int index = 0;
             foreach (var childNode in measurement.Nodes.OrderByDescending(c => c.TotalTime))
             {

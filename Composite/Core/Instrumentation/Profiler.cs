@@ -1,8 +1,9 @@
-﻿using System;
+﻿#define ProfileMemory
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Composite.Core.Threading;
-
 
 namespace Composite.Core.Instrumentation
 {
@@ -110,6 +111,9 @@ namespace Composite.Core.Instrumentation
             {
                 _stack = stack;
                 _node = new Measurement(name);
+#if ProfileMemory
+                _node.MemoryUsage = GC.GetTotalMemory(false);
+#endif
 
                 if (isInParralel)
                 {
@@ -133,6 +137,10 @@ namespace Composite.Core.Instrumentation
                 _stopwatch.Stop();
 
                 _node.TotalTime = (_stopwatch.ElapsedTicks*1000000) / Stopwatch.Frequency;
+
+#if ProfileMemory
+                _node.MemoryUsage = GC.GetTotalMemory(false) - _node.MemoryUsage;
+#endif
 
                 _stack.Pop();
             }

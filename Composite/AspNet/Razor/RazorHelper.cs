@@ -114,12 +114,12 @@ namespace Composite.AspNet.Razor
                 }
             }
 
-            string output = sb.ToString().Trim();
+            string output = sb.ToString();
             
 
 			if (resultType == typeof(XhtmlDocument))
 			{
-			    if (output == "") return new XhtmlDocument();
+			    if (string.IsNullOrWhiteSpace(output)) return new XhtmlDocument();
 
 				try
                 {

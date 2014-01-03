@@ -4,6 +4,8 @@
 >
 	<xsl:output method="html" indent="no"/>
 
+  <xsl:variable name="TimeMeasurementDefined" select="count(descendant::Measurement[@memoryUsageKb]) &gt; 0" />
+    
 	<xsl:template match="Measurements">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 			<head></head>
@@ -72,6 +74,7 @@
 				.__TraceOwn { text-align: right; padding-right: 5px; }
 				.__TraceTotalTime { text-align: right; padding-right: 5px;  }
 				.__TraceName { text-align: left; padding-right: 50px; background-repeat: no-repeat }
+        .__TraceMemoryUsage { text-align: right; padding-right: 5px;  }
 
 				.__ParallelColumn {text-align: center;}
 
@@ -188,6 +191,10 @@
 						<th>P</th>
 
 						<th style="width: 800px;">Function calls, ms</th>
+            
+            <xsl:if test="$TimeMeasurementDefined">
+              <th>Memory usage, kb</th>
+            </xsl:if>
 					</tr>
 				</thead>
 				<tbody>
@@ -281,6 +288,12 @@
 					<span class="__parallel">*</span>
 				</xsl:if -->
 			</td>
+      <xsl:if test="$TimeMeasurementDefined">
+        <td class="__TraceMemoryUsage">
+          <xsl:value-of select="@memoryUsageKb"/>
+        </td>
+      
+      </xsl:if>
 		</tr>
 
 		<xsl:apply-templates select="./Measurement">
