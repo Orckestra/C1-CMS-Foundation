@@ -24,6 +24,9 @@ namespace Composite.Core.Instrumentation
         public long TotalTime;
 
         /// <exclude />
+        public long MemoryUsage;
+
+        /// <exclude />
         public string Name { get; set; }
 
         /// <exclude />

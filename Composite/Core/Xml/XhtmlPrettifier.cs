@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -16,15 +17,15 @@ namespace Composite.Core.Xml
     public static class XhtmlPrettifier
     {
         private static string _ampersandWord = "C1AMPERSAND";
-        private static Regex _encodeCDataRegex = new Regex(@"<!\[CDATA\[((?:[^]]|\](?!\]>))*)\]\]>", RegexOptions.Compiled);
-        private static Regex _decodeCDataRegex = new Regex("C1CDATAREPLACE(?<counter>[0-9]*)", RegexOptions.Compiled);
-        private static Regex _encodeRegex = new Regex(@"&(?<tag>[^\;]+;)", RegexOptions.Compiled);
-        private static Regex _decodeRegex = new Regex(@"C1AMPERSAND(?<tag>[^\;]+;)", RegexOptions.Compiled);
+        private static readonly Regex _encodeCDataRegex = new Regex(@"<!\[CDATA\[((?:[^]]|\](?!\]>))*)\]\]>", RegexOptions.Compiled);
+        private static readonly Regex _decodeCDataRegex = new Regex("C1CDATAREPLACE(?<counter>[0-9]*)", RegexOptions.Compiled);
+        private static readonly Regex _encodeRegex = new Regex(@"&(?<tag>[^\;]+;)", RegexOptions.Compiled);
+        private static readonly Regex _decodeRegex = new Regex(@"C1AMPERSAND(?<tag>[^\;]+;)", RegexOptions.Compiled);
 
-        private static readonly char[] IncorrectEscapeSequenceCharacters = new [] { '\'', '\"', '<', '>', ' ' };
+        private static readonly char[] IncorrectEscapeSequenceCharacters = { '\'', '\"', '<', '>', ' ' };
         
 
-        private static readonly char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
+        private static readonly char[] WhitespaceChars = { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
         private static readonly HashSet<char> WhitespaceCharsLookup = new HashSet<char>(WhitespaceChars);
 
 
@@ -440,34 +441,27 @@ namespace Composite.Core.Xml
         }
 
 
-
+        private enum TriState
+        {
+            Undefined = -1,
+            False = 0,
+            True = 1
+        }
 
         [DebuggerDisplay("Type = {NodeType}, Name = {Name}, Value = {Value}")]
         private class XmlNode
         {
-            private XmlNode _firstNode = null;
-            private XmlNode _lastNode = null;
-            private List<XmlAttribute> _attributes = new List<XmlAttribute>();
-            private bool? _containsBlockElements;
-            private bool? _isBlockElement;
+            private static readonly List<XmlAttribute> EmptyAttributeList = new List<XmlAttribute>(0);
+
+            private XmlNode _firstNode;
+            private XmlNode _lastNode;
+            private List<XmlAttribute> _attributes;
+            private TriState _containsBlockElements = TriState.Undefined;
+            private TriState _isBlockElement = TriState.Undefined;
+            private NamespaceName _namespaceName;
 
             public XmlNodeType NodeType { get; internal set; }
             public string Name { get; internal set; }
-
-            public string LocalName { 
-                get
-                {
-                    // TODO: refactor
-                    string name = Name;
-                    int separatorIndex = name.IndexOf(":");
-                    if(separatorIndex < 0)
-                    {
-                        return name;
-                    }
-                    return name.Substring(separatorIndex + 1);
-                }
-            }
-
             public string Value { get; internal set; }
             public bool IsEmpty { get; internal set; }
             public string NamespaceURI { get; internal set; }
@@ -477,6 +471,14 @@ namespace Composite.Core.Xml
             public XmlNode PreviousNode { get; internal set; }
             public XmlNode NextNode { get; internal set; }
 
+            private NamespaceName GetNamespaceName()
+            {
+                if (_namespaceName == null)
+                {
+                    _namespaceName = new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetCustomNamespace() };
+                }
+                return _namespaceName;
+            }
 
 
             public void AddChild(XmlNode childNode)
@@ -500,6 +502,10 @@ namespace Composite.Core.Xml
 
             public void AddAttribute(XmlAttribute attribute)
             {
+                if (_attributes == null)
+                {
+                    _attributes = new List<XmlAttribute>();
+                }
                 _attributes.Add(attribute);
             }
 
@@ -524,7 +530,7 @@ namespace Composite.Core.Xml
             {
                 get
                 {
-                    return _attributes;
+                    return _attributes ?? EmptyAttributeList;
                 }
             }
 
@@ -534,12 +540,13 @@ namespace Composite.Core.Xml
             {
                 get
                 {
-                    if(_containsBlockElements == null)
+                    if(_containsBlockElements == TriState.Undefined)
                     {
-                        _containsBlockElements = ChildNodes.Any(node => node.IsBlockElement() || node.ContainsBlockElements);
+                        _containsBlockElements = ChildNodes.Any(node => node.IsBlockElement() || node.ContainsBlockElements)
+                            ? TriState.True : TriState.False;
                     }
 
-                    return _containsBlockElements.Value;
+                    return _containsBlockElements == TriState.True;
                 }
             }
 
@@ -547,9 +554,9 @@ namespace Composite.Core.Xml
 
             public string NamespaceByPrefix(string namespacePrefix)
             {
-                var defined = _attributes.Where(f => f.Name == namespacePrefix).FirstOrDefault();
+                var defined = _attributes == null ? null : _attributes.FirstOrDefault(f => f.Name == namespacePrefix);
 
-                if (defined!=null)
+                if (defined != null)
                 {
                     return defined.Value;
                 }
@@ -566,22 +573,22 @@ namespace Composite.Core.Xml
 
             public bool IsBlockElement()
             {
-                if(_isBlockElement == null)
+                if(_isBlockElement == TriState.Undefined)
                 {
                     _isBlockElement = this.NodeType == XmlNodeType.Element
-                                      && !InlineElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = GetCustomNamespace() });
+                                      && !InlineElements.Contains(GetNamespaceName())
+                                      ? TriState.True : TriState.False;;
                 }
 
-                return _isBlockElement.Value;
+                return _isBlockElement == TriState.True;
             }
-
-
+            
 
             public bool IsWhitespaceAware()
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                if (WhitespaceAwareElements.Contains(new NamespaceName { Name = this.LocalName.ToLowerInvariant(), Namespace = GetCustomNamespace() }) ) return true;
+                if (WhitespaceAwareElements.Contains(GetNamespaceName())) return true;
 
                 return false;
             }
@@ -592,11 +599,11 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                string customNamespace = GetCustomNamespace();
+                var @namespace = GetNamespaceName();
 
-                if (SelfClosingElements.Contains(new NamespaceName { Name = this.Name.ToLowerInvariant(), Namespace = customNamespace }) ) return true;
+                if (SelfClosingElements.Contains(@namespace)) return true;
 
-                return (customNamespace != "");
+                return @namespace.Namespace != "";
             }
 
 

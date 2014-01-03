@@ -16,7 +16,8 @@ namespace Composite.Core.Instrumentation
         {
             int index = 0;
 
-            var result = new XElement("Measurements");
+            var result = new XElement("Measurements", new XAttribute("MemoryUsageKb", measurement.MemoryUsage / 1024));
+
             foreach (var node in measurement.Nodes)
             {
                 result.Add(BuildReportXmlRec(node, node.TotalTime, node.TotalTime, false, index.ToString()));

@@ -204,6 +204,9 @@
 				<br />
 				<span class="__parallel">P</span> - code is executed in a parallel task
 			</xsl:if>
+      <br />
+      <br />
+      Allocated memory: <xsl:value-of select="@MemoryUsageKb"/> kb
 
 			<script language="javascript" type="text/javascript">
 				<![CDATA[ // <!--

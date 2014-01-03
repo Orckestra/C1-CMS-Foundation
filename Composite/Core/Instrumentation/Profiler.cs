@@ -26,7 +26,7 @@ namespace Composite.Core.Instrumentation
             Verify.That(!threadData.HasValue(ProfilerKey), "Profiler has already been initialized");
 
             var stack = new Stack<Measurement>();
-            stack.Push(new Measurement("Root"));
+            stack.Push(new Measurement("Root") { MemoryUsage = GC.GetTotalMemory(true) });
             threadData.SetValue(ProfilerKey,  stack);
         }
 
@@ -42,7 +42,11 @@ namespace Composite.Core.Instrumentation
 
             threadData.SetValue(ProfilerKey, null);
 
-            return stack.Pop();
+            var measurement = stack.Pop();
+
+            measurement.MemoryUsage = GC.GetTotalMemory(false) - measurement.MemoryUsage;
+
+            return measurement;
         }
 
 
