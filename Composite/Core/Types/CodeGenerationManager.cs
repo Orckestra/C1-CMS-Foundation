@@ -59,7 +59,9 @@ namespace Composite.Core.Types
                 }
             }
 
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
+
+            GlobalEventSystemFacade.SubscribeToShutDownEvent(args => ClearOldTempFiles());
         }
 
 
@@ -462,11 +464,22 @@ namespace Composite.Core.Types
             _dynamicallyAddedCodeProviders = new List<ICodeProvider>();
         }
 
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
+        private static void ClearOldTempFiles()
         {
-            Flush();
+            DateTime yeasterday = DateTime.Now.AddDays(-1);
+            var oldFiles = Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => File.GetCreationTime(filePath) < yeasterday).ToArray();
+
+            foreach (var file in oldFiles)
+            {
+                try
+                {
+                    C1File.Delete(file);
+                }
+                catch
+                {
+                    // Silent
+                }
+            }
         }
     }
 }
