@@ -17,7 +17,6 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Instrumentation;
-using Composite.Core.Logging;
 using Composite.Core.PackageSystem;
 using Composite.Core.Threading;
 using Composite.Core.Types;
@@ -40,15 +39,15 @@ namespace Composite
         private static readonly string LogTitle = "RGB(194, 252, 131)GlobalInitializerFacade";
         private static readonly string LogTitleNormal = "GlobalInitializerFacade";
 
-        private static bool _coreInitialized = false;
-        private static bool _initializing = false;
-        private static bool _typesAutoUpdated = false;
-        private static Exception _exceptionThrownDurringInitialization = null;
+        private static bool _coreInitialized;
+        private static bool _initializing;
+        private static bool _typesAutoUpdated;
+        private static Exception _exceptionThrownDurringInitialization;
         private static DateTime _exceptionThrownDurringInitializationTimeStamp;
         private static int _fatalErrorFlushCount = 0;
         private static readonly ReaderWriterLock _readerWriterLock = new ReaderWriterLock();
-        private static Thread _hookingFacadeThread = null; // This is used to wait on the the thread if a reinitialize is issued
-        private static Exception _hookingFacadeException = null; // This will hold the exception from the before the reinitialize was issued
+        private static Thread _hookingFacadeThread; // This is used to wait on the the thread if a reinitialize is issued
+        private static Exception _hookingFacadeException; // This will hold the exception from the before the reinitialize was issued
 
         private static readonly ThreadLockingInformation _threadLocking = new ThreadLockingInformation();
 
@@ -98,7 +97,7 @@ namespace Composite
                 TimeSpan timeSpan = DateTime.Now - _exceptionThrownDurringInitializationTimeStamp;
                 if (timeSpan < TimeSpan.FromMinutes(5.0))
                 {
-                    Log.LogCritical(LogTitleNormal, "Exception recorded:" + timeSpan.ToString() + " ago");
+                    Log.LogCritical(LogTitleNormal, "Exception recorded:" + timeSpan + " ago");
 
                     throw _exceptionThrownDurringInitialization;
                 }
@@ -125,6 +124,8 @@ namespace Composite
                             {
                                 DoInitialize();
                             }
+
+                            GC.Collect(); // Collecting generation 2 after initialization
 
                             _fatalErrorFlushCount = 0;
                         }
@@ -161,7 +162,7 @@ namespace Composite
 
             Guid installationId = InstallationInformationFacade.InstallationId;
 
-            LoggingService.LogVerbose(LogTitle, string.Format("Initializing the system core - installation id = ", installationId));
+            Log.LogVerbose(LogTitle, "Initializing the system core - installation id = " +  installationId);
 
             using (new LogExecutionTime(LogTitle, "Initialization of the static data types"))
             {
@@ -195,7 +196,7 @@ namespace Composite
 
                 if (dataStoresCreated)
                 {
-                    LoggingService.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
+                    Log.LogVerbose(LogTitle, "Initialization of the system was halted, performing a flush");
                     _initializing = false;
                     GlobalEventSystemFacade.FlushTheSystem();
                     return;
@@ -229,7 +230,7 @@ namespace Composite
             }
 
 
-            LoggingService.LogVerbose(LogTitle, "Starting initialization of administrative secondaries");
+            Log.LogVerbose(LogTitle, "Starting initialization of administrative secondaries");
 
 
             using (new LogExecutionTime(LogTitle, "Initializing workflow runtime"))
@@ -266,7 +267,7 @@ namespace Composite
 
             int executionTime = Environment.TickCount - startTime;
 
-            LoggingService.LogVerbose(LogTitle, "Done initializing of the system core. ({0} ms)".FormatWith(executionTime));
+            Log.LogVerbose(LogTitle, "Done initializing of the system core. ({0} ms)".FormatWith(executionTime));
         }
 
 

@@ -213,7 +213,10 @@
 			</xsl:if>
       <br />
       <br />
-      Allocated memory: <xsl:value-of select="@MemoryUsageKb"/> kb
+      Allocated memory: <strong><xsl:value-of select="@MemoryUsageKb"/></strong> kb. 
+      <br/>
+      Note that memory measurement may be affected by other work happening in the AppDomain at the same time. Possible negative values are caused by garbage collections. 
+      Run this in an isolated environment for getting precise data.
 
 			<script language="javascript" type="text/javascript">
 				<![CDATA[ // <!--
