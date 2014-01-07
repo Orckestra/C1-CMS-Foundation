@@ -35,14 +35,15 @@ namespace Composite.Core.WebClient.HttpModules
         private const string allowElementName = "allow";
         private const string allow_pathAttributeName = "path";
 
-        private const string c1ConsoleRequestsNotAllowedHtmlTemplate = @"<html>
+        private const string c1ConsoleRequestsNotAllowedHtmlTemplate = @"<!DOCTYPE html>
+<html lang='en'>
     <head>
         <title>Access Denied</title>
     </head>
     <body>
         <h1>Access Denied</h1>
         <p>Administrative access has been disabled on this site.</p>
-        <p style='display:none'>IE Padding: {0}</p>
+        <p style='display:none'>IE Padding, preventing it from showing a generic error page: {0}</p>
     </body>
 </html>";
 
@@ -201,8 +202,11 @@ namespace Composite.Core.WebClient.HttpModules
 
             string webauthorizationConfigPath = HostingEnvironment.MapPath(webauthorizationRelativeConfigPath);
 
-            Verify.That(C1File.Exists(webauthorizationConfigPath), "Missing file '{0}'.", webauthorizationRelativeConfigPath);
-
+            if (!C1File.Exists(webauthorizationConfigPath))
+            {
+                Log.LogInformation("AdministrativeAuthorizationHttpModule ", "File '{0}' not found - all access to the ~/Composite folder will be blocked", webauthorizationConfigPath);
+                return;
+            }
 
             XDocument webauthorizationConfigDocument = XDocumentUtils.Load(webauthorizationConfigPath);
 
