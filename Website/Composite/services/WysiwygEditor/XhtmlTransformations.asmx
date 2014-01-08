@@ -42,6 +42,7 @@ namespace Composite.Services
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
     public class XhtmlTransformations : System.Web.Services.WebService
     {
+		private const string _markupWysiwygRepresentationAlt = "\n\n\n\n\n\n                              "; // like this so IE will make loading images have some width and height
 
         [WebMethod]
         public XhtmlTransformationResult TinyContentToStructuredContent(string htmlFragment)
@@ -69,7 +70,7 @@ namespace Composite.Services
 
                 List<XElement> htmlWysiwygImages = structuredResult
                     .Descendants(Namespaces.Xhtml + "img")
-                    .Where(e => e.Attribute("alt") != null 
+                    .Where(e => e.Attribute("data-markup") != null 
                                 && e.Attribute("class") != null
                                 && e.Attribute("class").Value.Contains("compositeHtmlWysiwygRepresentation")).ToList();
 
@@ -77,7 +78,7 @@ namespace Composite.Services
                 {
                     try
                     {
-                        string html = htmlWysiwygImageElement.Attribute("alt").Value;
+                        string html = htmlWysiwygImageElement.Attribute("data-markup").Value;
                         XElement functionElement = XElement.Parse(html);
 
                         if (IsFunctionAloneInParagraph(htmlWysiwygImageElement))
@@ -101,7 +102,7 @@ namespace Composite.Services
                     structuredResult
                     .Descendants()
                     .Where(e => e.Name.LocalName == "img"
-                            && e.Attribute("alt") != null
+                            && e.Attribute("data-markup") != null
                            && e.Attribute("class") != null
                            && e.Attribute("class").Value.Contains("compositeFunctionWysiwygRepresentation")).ToList();
                 
@@ -123,7 +124,7 @@ namespace Composite.Services
                     // Replacing function call images with function markup
                     try
                     {
-                        string functionMarkup = functionImageElement.Attribute("alt").Value;
+                        string functionMarkup = functionImageElement.Attribute("data-markup").Value;
                         XElement functionElement = XElement.Parse(functionMarkup);
 
                         if (IsFunctionAloneInParagraph(functionImageElement))
@@ -151,7 +152,7 @@ namespace Composite.Services
                 {
                     try
                     {
-                        string[] parts = HttpUtility.UrlDecode(referenceImageElement.Attribute("alt").Value).Split('\\');
+                        string[] parts = HttpUtility.UrlDecode(referenceImageElement.Attribute("data-markup").Value).Split('\\');
                         string typeName = parts[0];
                         string fieldName = parts[1];
 
@@ -373,9 +374,10 @@ namespace Composite.Services
             string imageUrl = GetFunctionBoxImageUrl("html", title, description);
 
             return new XElement(Namespaces.Xhtml + "img",
+				new XAttribute("alt", _markupWysiwygRepresentationAlt),
                 new XAttribute("src", imageUrl),
                 new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
-                new XAttribute("alt", element.ToString())
+                new XAttribute("data-markup", element.ToString())
                 );
         }
 
@@ -445,9 +447,10 @@ namespace Composite.Services
             string imageUrl = GetFunctionBoxImageUrl("html", title, description.ToString());
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("src", imageUrl),
+				new XAttribute("alt", _markupWysiwygRepresentationAlt),
+				new XAttribute("src", imageUrl),
                 new XAttribute("class", "compositeHtmlWysiwygRepresentation"),
-                new XAttribute("alt", element.ToString())
+                new XAttribute("data-markup", element.ToString())
                 );
         }
 
@@ -482,9 +485,10 @@ namespace Composite.Services
 				HttpUtility.UrlEncode(typeName, Encoding.UTF8));
 
             return new XElement(Namespaces.Xhtml + "img",
-                new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
+				new XAttribute("alt", string.Format("{0}", fieldName)),
+				new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-				new XAttribute("alt", HttpUtility.UrlEncode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldName), Encoding.UTF8))
+				new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", uiFriendlyTypeName, fieldName), Encoding.UTF8))
                 );
         }
 
@@ -539,9 +543,10 @@ namespace Composite.Services
             string functionBoxUrl = GetFunctionBoxImageUrl(error ? "warning" : "function", title, description.ToString());
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
-                , new XAttribute("alt", compactMarkup)
+				, new XAttribute("alt", _markupWysiwygRepresentationAlt)
+				, new XAttribute("data-markup", compactMarkup)
                 , new XAttribute("src", functionBoxUrl)
-                , new XAttribute("class", "compositeFunctionWysiwygRepresentation")
+				, new XAttribute("class", "compositeFunctionWysiwygRepresentation")
                 );
 
             return imagetag;

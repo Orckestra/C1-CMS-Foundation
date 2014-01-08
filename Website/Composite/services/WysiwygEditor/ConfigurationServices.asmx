@@ -115,7 +115,7 @@ namespace Composite.Services
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-				new XAttribute("alt", HttpUtility.UrlEncode(string.Format("{0}\\{1}", TypeManager.SerializeType(dataType), fieldName), Encoding.UTF8)));
+				new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", TypeManager.SerializeType(dataType), fieldName), Encoding.UTF8)));
         }
 
 
@@ -126,7 +126,7 @@ namespace Composite.Services
             return new XElement(Namespaces.Xhtml + "img",
                 new XAttribute("src", Composite.Core.WebClient.UrlUtils.ResolveAdminUrl(imageUrl)),
                 new XAttribute("class", "compositeFieldReferenceWysiwygRepresentation"),
-				new XAttribute("alt", HttpUtility.UrlEncode(string.Format("{0}\\{1}", dataTypeDescriptor.TypeManagerTypeName, dataField.Name), Encoding.UTF8)));
+				new XAttribute("data-markup", HttpUtility.UrlEncode(string.Format("{0}\\{1}", dataTypeDescriptor.TypeManagerTypeName, dataField.Name), Encoding.UTF8)));
         }
 
 
