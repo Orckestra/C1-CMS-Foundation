@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Composite.Core;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
@@ -617,11 +617,16 @@ namespace Composite.Data.DynamicTypes
             if (element == null) throw new ArgumentNullException("element");
             if (element.Name != "DataTypeDescriptor") throw new ArgumentException("The xml is not correctly formattet");
 
-            XAttribute dataTypeIdAttribute = element.Attribute("dataTypeId");
-            XAttribute nameAttribute = element.Attribute("name");
-            XAttribute namespaceAttribute = element.Attribute("namespace");
-            XAttribute hasCustomPhysicalSortOrderAttribute = element.Attribute("hasCustomPhysicalSortOrder");
-            XAttribute isCodeGeneratedAttribute = element.Attribute("isCodeGenerated");
+            Func<string, XAttribute> requiredAttribute = aName => RequiredAttribute(element, aName);
+
+            Guid dataTypeId = (Guid) requiredAttribute("dataTypeId");
+            string name = (string)requiredAttribute("name");
+            string @namespace = (string)requiredAttribute("namespace");
+
+            // TODO: check why "hasCustomPhysicalSortOrder"  is not used
+            bool hasCustomPhysicalSortOrder = (bool)requiredAttribute("hasCustomPhysicalSortOrder");
+
+            bool isCodeGenerated = (bool)requiredAttribute("isCodeGenerated");
             XAttribute cachableAttribute = element.Attribute("cachable");
             XAttribute buildNewHandlerTypeNameAttribute = element.Attribute("buildNewHandlerTypeName");
             XElement dataAssociationsElement = element.Element("DataAssociations");
@@ -632,56 +637,41 @@ namespace Composite.Data.DynamicTypes
             XElement superInterfacesElement = element.Element("SuperInterfaces");
             XElement fieldsElement = element.Element("Fields");
 
-            if ((dataTypeIdAttribute == null) || (nameAttribute == null) || (namespaceAttribute == null) || (hasCustomPhysicalSortOrderAttribute == null) || (isCodeGeneratedAttribute == null) ||
-                (dataAssociationsElement == null) || (dataScopesElement == null) || (keyPropertyNamesElement == null) || (superInterfacesElement == null) || (fieldsElement == null)) throw new ArgumentException("The xml is not correctly formattet");
+            if (dataAssociationsElement == null || dataScopesElement == null || keyPropertyNamesElement == null || superInterfacesElement == null || fieldsElement == null) throw new ArgumentException("The xml is not correctly formattet");
 
             XAttribute titleAttribute = element.Attribute("title");
             XAttribute labelFieldNameAttribute = element.Attribute("labelFieldName");
-            XAttribute typeManagerTypeNameAttribute = element.Attribute("typeManagerTypeName");
+            string typeManagerTypeName = (string) element.Attribute("typeManagerTypeName");
 
-            Guid dataTypeId = (Guid)dataTypeIdAttribute;
-            string name = nameAttribute.Value;
-            string namespaceName = namespaceAttribute.Value;
-            bool isCodeGeneretaed = (bool)isCodeGeneratedAttribute;
-            bool cachable = false;
-            if (cachableAttribute != null)
-            {
-                cachable = (bool)cachableAttribute;
-            }
+            bool cachable = cachableAttribute != null && (bool)cachableAttribute;
+           
 
-            // TODO: check why "hasCustomPhysicalSortOrder"  is not used
-            bool hasCustomPhysicalSortOrder = (bool)hasCustomPhysicalSortOrderAttribute;
-
-            DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, namespaceName, name, isCodeGeneretaed);
+            DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, @namespace, name, isCodeGenerated);
             dataTypeDescriptor.Cachable = cachable;
 
             if (titleAttribute != null) dataTypeDescriptor.Title = titleAttribute.Value;
             if (labelFieldNameAttribute != null) dataTypeDescriptor.LabelFieldName = labelFieldNameAttribute.Value;
-            if (typeManagerTypeNameAttribute != null)
+            if (typeManagerTypeName != null)
             {
-                dataTypeDescriptor.TypeManagerTypeName = TypeManager.FixLegasyTypeName(typeManagerTypeNameAttribute.Value);
+                typeManagerTypeName = TypeManager.FixLegasyTypeName(typeManagerTypeName);
+                dataTypeDescriptor.TypeManagerTypeName = typeManagerTypeName;
             }
             if (buildNewHandlerTypeNameAttribute != null) dataTypeDescriptor.BuildNewHandlerTypeName = buildNewHandlerTypeNameAttribute.Value;
 
 
             foreach (XElement elm in dataAssociationsElement.Elements())
             {
-                DataTypeAssociationDescriptor dataTypeAssociationDescriptor = DataTypeAssociationDescriptor.FromXml(elm);
+                var dataTypeAssociationDescriptor = DataTypeAssociationDescriptor.FromXml(elm);
 
                 dataTypeDescriptor.DataAssociations.Add(dataTypeAssociationDescriptor);
             }
 
             foreach (XElement elm in dataScopesElement.Elements("DataScopeIdentifier"))
             {
-                XAttribute dataScopeIdentifierNameAttribute = elm.Attribute("name");
-
-                if (dataScopeIdentifierNameAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
-
-                string dataScopeName = dataScopeIdentifierNameAttribute.Value;
-
+                string dataScopeName = (string)RequiredAttribute(elm, "name");
                 if (DataScopeIdentifier.IsLegasyDataScope(dataScopeName))
                 {
-                    LoggingService.LogWarning("DataTypeDescriptor", "Ignored legacy data scope '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. The '{0}' data scope is no longer supported.".FormatWith(dataScopeName, namespaceName, name));
+                    Log.LogWarning("DataTypeDescriptor", "Ignored legacy data scope '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. The '{0}' data scope is no longer supported.".FormatWith(dataScopeName, @namespace, name));
                     continue;
                 }
 
@@ -692,19 +682,17 @@ namespace Composite.Data.DynamicTypes
 
             foreach (XElement elm in superInterfacesElement.Elements("SuperInterface"))
             {
-                XAttribute superInterfaceTypeAttribute = elm.Attribute("type");
+                string superInterfaceTypeName = (string) RequiredAttribute(elm, "type");
 
-                if (superInterfaceTypeAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
-
-                if (superInterfaceTypeAttribute.Value.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled") == false)
+                if (!superInterfaceTypeName.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled"))
                 {
-                    Type type = TypeManager.GetType(superInterfaceTypeAttribute.Value);
+                    Type superInterface = TypeManager.GetType(superInterfaceTypeName);
 
-                    dataTypeDescriptor.AddSuperInterface(type);
+                    dataTypeDescriptor.AddSuperInterface(superInterface);
                 }
                 else
                 {
-                    LoggingService.LogWarning("DataTypeDescriptor", string.Format("Ignored legacy super interface '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. This super interface is no longer supported.", superInterfaceTypeAttribute.Value, namespaceName, name));
+                    Log.LogWarning("DataTypeDescriptor", string.Format("Ignored legacy super interface '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. This super interface is no longer supported.", superInterfaceTypeName, @namespace, name));
                 }
             }
 
@@ -717,11 +705,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (XElement elm in keyPropertyNamesElement.Elements("KeyPropertyName"))
             {
-                XAttribute keyPropertyNameAttribute = elm.Attribute("name");
-
-                if (keyPropertyNameAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
-
-                string propertyName = keyPropertyNameAttribute.Value;
+                var propertyName = (string) RequiredAttribute(elm, "name");
 
                 bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Any(f => f.GetProperty(propertyName) != null);
                 if (!isDefinedOnSuperInterface)
@@ -730,10 +714,39 @@ namespace Composite.Data.DynamicTypes
                 }
             }
 
+            // Loading field rendering profiles for static data types
+            if (!isCodeGenerated && typeManagerTypeName != null)
+            {
+                Type type = Type.GetType(typeManagerTypeName);
+                if (type != null)
+                {
+                    foreach (var fieldDescriptor in dataTypeDescriptor.Fields)
+                    {
+                        var property = type.GetProperty(fieldDescriptor.Name);
+
+                        if (property != null)
+                        {
+                            var formRenderingProfile = DynamicTypeReflectionFacade.GetFormRenderingProfile(property);
+                            if (formRenderingProfile != null)
+                            {
+                                fieldDescriptor.FormRenderingProfile = formRenderingProfile;
+                            }
+                        }
+                    }
+                }
+            }
+            
+
             return dataTypeDescriptor;
         }
 
+        private static XAttribute RequiredAttribute(XElement element, XName attributeName)
+        {
+            var attr = element.Attribute(attributeName);
+            Verify.IsNotNull(attr, "Missing required attribute '{0}' on <'{1}'> element", attributeName.LocalName, element.Name.LocalName);
 
+            return attr;
+        } 
 
         /// <exclude />
         public override int GetHashCode()
@@ -769,7 +782,7 @@ namespace Composite.Data.DynamicTypes
                 return this.Name;
             }
 
-            return string.Format("{0}.{1}", this.Namespace, this.Name);
+            return this.Namespace + "." + this.Name;
         }
     }
 

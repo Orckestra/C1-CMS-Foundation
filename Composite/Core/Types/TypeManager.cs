@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Composite.C1Console.Events;
 
 
@@ -23,7 +22,11 @@ namespace Composite.Core.Types
 
 
 
-        /// <exclude />
+        /// <summary>
+        /// Gets a type by name, throws an exception if no type found.
+        /// </summary>
+        /// <param name="fullName">The full name of the type.</param>
+        /// <returns>A <see cref="System.Type"/> instance.</returns>
         public static Type GetType(string fullName)
         {
             return _implementation.GetType(fullName);

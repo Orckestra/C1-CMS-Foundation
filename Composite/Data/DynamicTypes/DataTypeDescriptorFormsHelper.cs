@@ -641,9 +641,6 @@ namespace Composite.Data.DynamicTypes
             }
             layout.Add(_panelXml);
 
-            bool widgetsDefined =_dataTypeDescriptor.Fields
-                                .Any(field => (field.FormRenderingProfile != null) && field.FormRenderingProfile.Label != null);
-
             foreach (DataFieldDescriptor fieldDescriptor in _dataTypeDescriptor.Fields)
             {
                 Type bindingType = GetFieldBindingType(fieldDescriptor);
@@ -668,19 +665,21 @@ namespace Composite.Data.DynamicTypes
                 if (!_readOnlyFields.Contains(fieldDescriptor.Name))
                 {
                     XElement widgetFunctionMarkup;
-                    string label;
-                    string helptext;
+                    string label = fieldDescriptor.FormRenderingProfile.Label;
+                    if (label.IsNullOrEmpty())
+                    {
+                        label = fieldDescriptor.Name;
+                    }
+
+                    string helptext = fieldDescriptor.FormRenderingProfile.HelpText ?? "";
 
                     if (!string.IsNullOrEmpty(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup))
                     {
                         widgetFunctionMarkup = XElement.Parse(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup);
-                        
-                        label = fieldDescriptor.FormRenderingProfile.Label;
-                        helptext = fieldDescriptor.FormRenderingProfile.HelpText;
                     }
-                    else if (!widgetsDefined)
+                    else if (!DataTypeDescriptor.IsCodeGenerated)
                     {
-                        // Auto generating a widget
+                        // Auto generating a widget for not code generated data types
                         Type fieldType;
 
                         if (!fieldDescriptor.ForeignKeyReferenceTypeName.IsNullOrEmpty())
@@ -700,8 +699,6 @@ namespace Composite.Data.DynamicTypes
                         if (widgetFunctionProvider != null)
                         {
                             widgetFunctionMarkup = widgetFunctionProvider.SerializedWidgetFunction;
-                            label = fieldDescriptor.Name;
-                            helptext = "";
                         }
                         else
                         {

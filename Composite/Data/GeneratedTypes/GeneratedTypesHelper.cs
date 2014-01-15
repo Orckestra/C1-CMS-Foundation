@@ -886,7 +886,7 @@ namespace Composite.Data.GeneratedTypes
 
         private DataFieldDescriptor CreateWeakReferenceDataFieldDescriptor(DataTypeDescriptor targetDataTypeDescriptor, DataFieldDescriptor targetDataFieldDescriptor, string fieldName)
         {
-            Type targetType = TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
+            TypeManager.GetType(targetDataTypeDescriptor.TypeManagerTypeName);
 
             DataFieldDescriptor dataFieldDescriptor = new DataFieldDescriptor(
                             Guid.NewGuid(),

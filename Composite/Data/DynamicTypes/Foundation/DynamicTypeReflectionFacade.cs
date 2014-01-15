@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using Composite.Core.Types;
 
 
@@ -42,69 +41,71 @@ namespace Composite.Data.DynamicTypes.Foundation
 
         public static StoreFieldType GetStoreFieldType(PropertyInfo fieldInfo)
         {
-            object[] storeFieldTypeAttributes = fieldInfo.GetCustomAttributes(typeof(StoreFieldTypeAttribute), true);
+            var storeFieldTypeAttribute = GetCustomAttribute<StoreFieldTypeAttribute>(fieldInfo);
 
-            if (storeFieldTypeAttributes.Length == 0) throw new InvalidOperationException(string.Format("Missing '{0}' on field '{1}'", typeof(StoreFieldTypeAttribute), fieldInfo.Name));
+            Verify.IsNotNull(storeFieldTypeAttribute, "Missing [{0}] on field '{1}.{2}'", typeof(StoreFieldTypeAttribute), fieldInfo.DeclaringType.FullName, fieldInfo.Name);
 
-            StoreFieldTypeAttribute storeAttribute = (StoreFieldTypeAttribute)storeFieldTypeAttributes[0];
-
-            return storeAttribute.StoreFieldType;
+            return storeFieldTypeAttribute.StoreFieldType;
         }
 
 
 
         public static bool TryGetFieldPosition(PropertyInfo fieldInfo, out int position)
         {
-            object[] fieldPotitionAttributes = fieldInfo.GetCustomAttributes(typeof(FieldPositionAttribute), true);
+            var fieldPotitionAttribute = GetCustomAttribute<FieldPositionAttribute>(fieldInfo);
 
-            if (fieldPotitionAttributes.Length == 0)
+            if (fieldPotitionAttribute == null)
             {
                 position = 0;
                 return false;
             }
-            else
-            {
-                FieldPositionAttribute fieldPotitionAttribute = (FieldPositionAttribute)fieldPotitionAttributes[0];
-                position = fieldPotitionAttribute.Position;
-                return true;
-            }
+            
+            position = fieldPotitionAttribute.Position;
+            return true;
         }
 
 
 
         public static int GetGroupByPriority(PropertyInfo fieldInfo)
         {
-            object[] groupByPriorityAttributes = fieldInfo.GetCustomAttributes(typeof(GroupByPriorityAttribute), true);
+            var groupByPriorityAttribute = GetCustomAttribute<GroupByPriorityAttribute>(fieldInfo);
 
-            if (groupByPriorityAttributes.Length == 1)
-            {
-                GroupByPriorityAttribute attribute = groupByPriorityAttributes[0] as GroupByPriorityAttribute;
-                return attribute.Priority;
-            }
-            else
-            {
-                return 0;
-            }
+            return groupByPriorityAttribute != null ? groupByPriorityAttribute.Priority : 0;
         }
-
 
 
         public static DataFieldTreeOrderingProfile GetTreeOrderingProfile(PropertyInfo fieldInfo)
         {
-            object[] treeOrderingProfileAttributes = fieldInfo.GetCustomAttributes(typeof(TreeOrderingAttribute), true);
+            var attribute = GetCustomAttribute<TreeOrderingAttribute>(fieldInfo);
 
-            if (treeOrderingProfileAttributes.Length == 1)
-            {
-                TreeOrderingAttribute attribute = treeOrderingProfileAttributes[0] as TreeOrderingAttribute;
-                return new DataFieldTreeOrderingProfile { OrderPriority = attribute.Priority, OrderDescending = attribute.Descending };
-            }
-            else
+            if (attribute == null)
             {
                 return new DataFieldTreeOrderingProfile { OrderPriority = null };
             }
+
+            return new DataFieldTreeOrderingProfile { OrderPriority = attribute.Priority, OrderDescending = attribute.Descending };
         }
 
+        public static DataFieldFormRenderingProfile GetFormRenderingProfile(PropertyInfo propertyInfo)
+        {
+            var attr = GetCustomAttribute<FormRenderingProfileAttribute>(propertyInfo);
 
+            return attr != null ? new DataFieldFormRenderingProfile
+                {
+                    Label = attr.Label, 
+                    HelpText = attr.HelpText, 
+                    WidgetFunctionMarkup = attr.WidgetFunctionMarkup
+                } : null;
+        }
+
+        private static T GetCustomAttribute<T>(PropertyInfo propertyInfo) where T: Attribute
+        {
+            object[] attributes = propertyInfo.GetCustomAttributes(typeof(T), true);
+
+            Verify.That(attributes.Length < 2, "Multiple [{0}] attributes defined on field {1}.{2}", typeof(T).Name, propertyInfo.DeclaringType.FullName, propertyInfo.Name);
+
+            return attributes.Length > 0 ? (T)attributes[0] : null;
+        }
 
         public static string GetTitle(Type type)
         {
@@ -214,13 +215,9 @@ namespace Composite.Data.DynamicTypes.Foundation
 
         public static string NewInstanceDefaultFieldValue(PropertyInfo propertyInfo)
         {
-            object[] attributes = propertyInfo.GetCustomAttributes(typeof(FunctionBasedNewInstanceDefaultFieldValueAttribute), false);
+            var attribute = GetCustomAttribute<FunctionBasedNewInstanceDefaultFieldValueAttribute>(propertyInfo);
 
-            if (attributes.Length == 0) return null;
-
-            FunctionBasedNewInstanceDefaultFieldValueAttribute attribute = (FunctionBasedNewInstanceDefaultFieldValueAttribute)attributes[0];
-
-            return attribute.FunctionDescription;
+            return attribute != null ? attribute.FunctionDescription : null;
         }
 
 
@@ -273,7 +270,7 @@ namespace Composite.Data.DynamicTypes.Foundation
         {
             IEnumerable<BuildNewHandlerAttribute> attributes = interfaceType.GetCustomAttributesRecursively<BuildNewHandlerAttribute>();
 
-            if (attributes.Count() == 0) return null;
+            if (!attributes.Any()) return null;
 
             if (attributes.Count() > 1) throw new InvalidOperationException(string.Format("Only one '{0}' allowed on the interface '{1}'", typeof(BuildNewHandlerAttribute).FullName, interfaceType.FullName));
 

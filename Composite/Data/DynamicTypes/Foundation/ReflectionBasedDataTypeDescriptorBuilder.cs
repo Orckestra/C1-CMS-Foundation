@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Composite.Core.Extensions;
-using Composite.Functions;
 using Composite.Core.Types;
 
 
@@ -127,6 +126,12 @@ namespace Composite.Data.DynamicTypes.Foundation
             fieldDescriptor.ForeignKeyReferenceTypeName = DynamicTypeReflectionFacade.ForeignKeyReferenceTypeName(propertyInfo);
             fieldDescriptor.GroupByPriority = DynamicTypeReflectionFacade.GetGroupByPriority(propertyInfo);
             fieldDescriptor.TreeOrderingProfile = DynamicTypeReflectionFacade.GetTreeOrderingProfile(propertyInfo);
+
+            var formRenderingProfile = DynamicTypeReflectionFacade.GetFormRenderingProfile(propertyInfo);
+            if (formRenderingProfile != null)
+            {
+                fieldDescriptor.FormRenderingProfile = formRenderingProfile;
+            }
 
             // These auto added widget functions does not work on a empty system.
             // This code could have added widgets for data types that does not have any widgets attached to them
