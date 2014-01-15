@@ -677,7 +677,7 @@ namespace Composite.Data.DynamicTypes
                     {
                         widgetFunctionMarkup = XElement.Parse(fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup);
                     }
-                    else if (!DataTypeDescriptor.IsCodeGenerated)
+                    else if (!DataTypeDescriptor.IsCodeGenerated && fieldDescriptor.FormRenderingProfile.WidgetFunctionMarkup == null)
                     {
                         // Auto generating a widget for not code generated data types
                         Type fieldType;
