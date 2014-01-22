@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using Composite.Core;
 using Composite.Core.Instrumentation;
-using Composite.Core.Logging;
 using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Plugins.DataProvider;
@@ -241,9 +241,9 @@ namespace Composite.Data.DynamicTypes
         public static void EnsureCreateStore(Type interfaceType, string providerName)
         {
             DataTypeDescriptor dataTypeDescriptor;
-            if (TryGetDataTypeDescriptor(interfaceType, out dataTypeDescriptor) == false)
+            if (!TryGetDataTypeDescriptor(interfaceType, out dataTypeDescriptor))
             {
-                dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
+                dataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
             }
 
             if (providerName == null)
@@ -251,7 +251,7 @@ namespace Composite.Data.DynamicTypes
                 providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
             }
 
-            IDynamicDataProvider dataProvider = (IDynamicDataProvider)DataProviderPluginFacade.GetDataProvider(providerName);
+            var dataProvider = (IDynamicDataProvider)DataProviderPluginFacade.GetDataProvider(providerName);
             if (!dataProvider.GetKnownInterfaces().Contains(interfaceType))
             {
                 CreateStore(providerName, dataTypeDescriptor, true);
@@ -264,15 +264,15 @@ namespace Composite.Data.DynamicTypes
         // Helper
         internal static bool IsEnsureUpdateStoreNeeded(Type interfaceType)
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 DataTypeDescriptor newDataTypeDescriptor;
-                if (DynamicTypeManager.TryGetDataTypeDescriptor(interfaceType, out newDataTypeDescriptor) == false)
+                if (!TryGetDataTypeDescriptor(interfaceType, out newDataTypeDescriptor))
                 {
-                    newDataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
+                    newDataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
                 }
 
-                DataTypeDescriptor oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);
+                var oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);
 
                 if (oldDataTypeDescriptor == null)
                 {
@@ -281,9 +281,12 @@ namespace Composite.Data.DynamicTypes
                     return false;
                 }
 
-                DataTypeChangeDescriptor dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
+                var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
 
-                if (dataTypeChangeDescriptor.AlteredTypeHasChanges == false) return false;
+                if (!dataTypeChangeDescriptor.AlteredTypeHasChanges)
+                {
+                    return false;
+                }
 
                 return dataTypeChangeDescriptor.AlteredTypeHasChanges;
             }
@@ -296,24 +299,22 @@ namespace Composite.Data.DynamicTypes
         {
             using (TimerProfilerFacade.CreateTimerProfiler(interfaceType.ToString()))
             {
-                DataTypeDescriptor newDataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
-                DataTypeDescriptor oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);
+                var newDataTypeDescriptor = BuildNewDataTypeDescriptor(interfaceType);
+                var oldDataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(newDataTypeDescriptor.DataTypeId);
 
                 if (oldDataTypeDescriptor == null)
                 {
                     DataMetaDataFacade.PersistMetaData(newDataTypeDescriptor);
-
                     return false;
                 }
 
-                DataTypeChangeDescriptor dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);                
+                var dataTypeChangeDescriptor = new DataTypeChangeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);                
 
-                if (dataTypeChangeDescriptor.AlteredTypeHasChanges == false) return false;
+                if (!dataTypeChangeDescriptor.AlteredTypeHasChanges) return false;
 
-                LoggingService.LogVerbose("DynamicTypeManager", string.Format("Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName));
+                Log.LogVerbose("DynamicTypeManager", "Updating the store for interface type '{0}' on the '{1}' data provider", interfaceType, providerName);
 
-                UpdateDataTypeDescriptor updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor);
-                updateDataTypeDescriptor.ProviderName = providerName;
+                var updateDataTypeDescriptor = new UpdateDataTypeDescriptor(oldDataTypeDescriptor, newDataTypeDescriptor, providerName);
 
                 AlterStore(updateDataTypeDescriptor, makeAFlush);
 

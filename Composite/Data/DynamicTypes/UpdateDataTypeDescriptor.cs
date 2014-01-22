@@ -36,7 +36,15 @@ namespace Composite.Data.DynamicTypes
                 : DataProviderRegistry.DefaultDynamicTypeDataProviderName;
         }
 
+        internal UpdateDataTypeDescriptor(DataTypeDescriptor oldDataTypeDescriptor,
+            DataTypeDescriptor newDataTypeDescriptor, 
+            string providerName)
+        {
+            OldDataTypeDescriptor = oldDataTypeDescriptor;
+            NewDataTypeDescriptor = newDataTypeDescriptor;
 
+            ProviderName = providerName;
+        }
 
         /// <summary>
         /// </summary>
