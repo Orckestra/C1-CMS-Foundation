@@ -39,7 +39,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
         public static ResourceHandle ChangeOwnPasswordIcon { get { return GetIconHandle("users-changeownpassword"); } }
         public static ResourceHandle ChangeOwnCultureIcon { get { return GetIconHandle("users-changeownculture"); } }
-        public static ResourceHandle ShowLogIcon { get { return GetIconHandle("log-showlog"); } }
         public static ResourceHandle SendMessageIcon { get { return GetIconHandle("balloon"); } }
         public static ResourceHandle RestartApplicationIcon { get { return GetIconHandle("restart-application"); } }
         public static ResourceHandle ManageSecurityIcon { get { return GetIconHandle("security-manage-permissions"); } }
@@ -213,25 +212,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                     Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SendMessageLabel"),
                     ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.SendMessageTooltip"),
                     Icon = VirtualElementProvider.SendMessageIcon,
-                    Disabled = false,
-                    ActionLocation = new ActionLocation
-                    {
-                        ActionType = ActionType.Other,
-                        IsInFolder = false,
-                        IsInToolbar = false,
-                        ActionGroup = PrimaryActionGroup
-                    }
-                }
-            });
-
-
-            element.AddAction(new ElementAction(new ActionHandle(new ViewLogActionToken()))
-            {
-                VisualData = new ActionVisualizedData
-                {
-                    Label = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel"),
-                    ToolTip = StringResourceSystemFacade.GetString("Composite.Management", "VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip"),
-                    Icon = VirtualElementProvider.ShowLogIcon,
                     Disabled = false,
                     ActionLocation = new ActionLocation
                     {
@@ -650,61 +630,6 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 
 
 
-
-
-
-    [ActionExecutor(typeof(ViewLogActionExecutor))]
-    internal sealed class ViewLogActionToken : ActionToken
-    {
-        private static IEnumerable<PermissionType> _permissionType = new PermissionType[] { PermissionType.Administrate };
-
-        public ViewLogActionToken()
-        {
-        }
-
-        public override IEnumerable<PermissionType> PermissionTypes
-        {
-            get { return _permissionType; }
-        }
-
-        public override string Serialize()
-        {
-            return "ViewLog";
-        }
-
-
-        public static ActionToken Deserialize(string serializedData)
-        {
-            return new ViewLogActionToken();
-        }
-    }
-
-
-
-    internal sealed class ViewLogActionExecutor : Composite.C1Console.Actions.IActionExecutor
-    {
-        public FlowToken Execute(EntityToken entityToken, ActionToken actionToken, FlowControllerServicesContainer flowControllerServicesContainer)
-        {
-            string url = UrlUtils.ResolveAdminUrl(string.Format("content/views/log/log.aspx"));
-
-            IManagementConsoleMessageService consoleServices = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
-            OpenViewMessageQueueItem openViewMsg = new OpenViewMessageQueueItem
-                {
-                    EntityToken = EntityTokenSerializer.Serialize(entityToken, true),
-                    ViewId = "ViewSystemLog",
-                    Label = "System log",
-                    Url = url,
-                    ViewType = ViewType.Main
-                };
-
-            ConsoleMessageQueueFacade.Enqueue(openViewMsg, consoleServices.CurrentConsoleId);
-
-            return null;
-        }
-    }
-
-
-    
     [ActionExecutor(typeof(RestartApplicationActionExecutor))]
     internal sealed class RestartApplicationActionToken : ActionToken
     {
