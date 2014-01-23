@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ElementStructure xmlns="http://www.composite.net/ns/management/trees/treemarkup/1.0" xmlns:f="http://www.composite.net/ns/function/1.0">
+
+  <ElementStructure.AutoAttachments>
+    <NamedParent Name="System" Position="Bottom" />
+  </ElementStructure.AutoAttachments>
+
+  <ElementRoot>
+    <Children>
+      <Element Label="${Composite.Management, ServerLog.Element.Label}" Id="system.server.log" ToolTip="${Composite.Management, ServerLog.Element.Tooltip}" Icon="log">
+        <Actions>
+          <CustomUrlAction Label="${Composite.Management, ServerLog.Element.View.Label}" ToolTip="${Composite.Management, ServerLog.Element.View.Tooltip}" Url="~/Composite/content/views/log/log.aspx" Icon="log-viewlog" /> 
+        </Actions>
+      </Element>
+    </Children>
+  </ElementRoot>
+
+</ElementStructure>

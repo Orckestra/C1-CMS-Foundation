@@ -2693,33 +2693,25 @@
 		<IconFile size="large" path="harmony\composite\users-del_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\composite\users-del_32.png" /> -->
 	</Icon>
-
-
 	<!-- End users stuff -->
 
 	<!-- Log stuff -->
-	<Icon name="log-perspective">
-		<IconFile size="normal" path="harmony\basic\hist_16.png" />
-		<IconFile size="large" path="harmony\basic\hist_24.png" />
-		<!-- <IconFile size="xlarge" path="harmony\basic\hist_32.png" /> -->
-	</Icon>
-	<Icon name="log-folder-closed">
-		<IconFile size="normal" path="harmony\database\copy_record_16.png" />
-		<IconFile size="large" path="harmony\database\copy_record_24.png" />
-		<!-- <IconFile size="xlarge" path="harmony\database\copy_record_32.png" /> -->
-	</Icon>
-	<Icon name="log-showlog">
+  <Icon name="log">
+    <IconFile size="normal" path="harmony\basic\hist_16.png" />
+    <IconFile size="large" path="harmony\basic\hist_24.png" />
+	</Icon>	
+  <Icon name="log-viewlog">
 		<IconFile size="normal" path="harmony\database\find_16.png" />
 		<IconFile size="large" path="harmony\database\find_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\database\find_32.png" /> -->
 	</Icon>
-	<Icon name="restart-application">
+  <!-- Log stuff end -->
+
+  <Icon name="restart-application">
 		<IconFile size="normal" path="harmony\basic\ref_16.png" />
 		<IconFile size="large" path="harmony\basic\ref_24.png" />
 		<!-- <IconFile size="xlarge" path="harmony\basic\ref_32.png" /> -->
 	</Icon>
-
-	<!-- Log stuff end -->
 
 
 	<!-- Security stuff -->

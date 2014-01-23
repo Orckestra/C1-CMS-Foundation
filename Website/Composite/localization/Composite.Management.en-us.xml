@@ -4,10 +4,6 @@
 	<string key="ManageUserPermissions.ManageUserPermissionsOnItemLabel" value="Edit Permissions" />
 	<string key="ManageUserPermissions.ManageGlobalUserPermissionsLabel" value="Global Permissions" />
 	<string key="ManageUserPermissions.ManageUserPermissionsToolTip" value="Manage user permissions" />
-	<string key="LogElementProvider.RootLabel" value="Log" />
-	<string key="LogElementProvider.RootLabelToolTip" value="System log" />
-	<string key="LogElementProvider.ShowLogLabel" value="Show the log" />
-	<string key="LogElementProvider.ShowLogToolTip" value="Show the system log" />
 	<string key="DataCompositionVisabilityFacade.DefaultContainerLabel" value="Metadata" />
 	<string key="Website.Forms.Administrative.DeleteUserStep1.LabelFieldGroup" value="Delete User?" />
 	<string key="Website.Forms.Administrative.DeleteUserStep1.Text" value="Delete the selected user?" />
@@ -268,8 +264,6 @@
 	<string key="VirtualElementProviderElementProvider.ReadOnlyWidgetFunctionPerspective" value="All Widget Functions" />
 	<string key="VirtualElementProviderElementProvider.SqlFunctionPerspective" value="SQL Functions" />
 	<string key="VirtualElementProviderElementProvider.XsltBasedFunctionPerspective" value="Xslt Based Functions" />
-	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel" value="Server Log" />
-	<string key="VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip" value="View recent server events" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageLabel" value="Broadcast Message" />
 	<string key="VirtualElementProviderElementProvider.RootActions.SendMessageTooltip" value="Send a message to all running consoles" />
 	<string key="VirtualElementProviderElementProvider.RootActions.RestartApplicationLabel" value="Restart server" />
@@ -424,7 +418,11 @@
 	<string key="Website.Content.Views.Search.Search.LabelNewSearch" value="New Search..." />
 	<string key="Website.Content.Views.ViewSource.LabelFormatted" value="Formatted" />
 	<string key="Website.Content.Views.ViewSource.LabelRaw" value="Raw" />
-	<string key="ServerLog.LabelTitle" value="Server Log" />
+  <string key="ServerLog.Element.Label" value="Server Log" />
+  <string key="ServerLog.Element.Tooltip" value="The server log contain security and system health related messages." />
+  <string key="ServerLog.Element.View.Label" value="View Server Log" />
+  <string key="ServerLog.Element.View.Tooltip" value="View recent server events" />
+  <string key="ServerLog.LabelTitle" value="Server Log" />
 	<string key="ServerLog.LabelButtonDeleteOld" value="Delete old" />
 	<string key="ServerLog.LabelButtonRefresh" value="Refresh" />
 	<string key="ServerLog.EmptyLabel" value="No log data available..." />

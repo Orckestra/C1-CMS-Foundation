@@ -141,3 +141,6 @@ Changes in 4.0
 
 Changes in 4.1
 - Added attribute imageQuality="80" to ConfigBasedGlobalSettingsProvider - this is the default lossy compression used for images. Higher is better.
+
+Changes in 4.2
+- Removed "LogElementProvider" element - hasn't been used for years

@@ -1538,10 +1538,6 @@
     <Compile Include="Data\ProcessControlled\ProcessControllers\GenericPublishProcessController\GenericPublishProcessControllerActionType.cs" />
     <Compile Include="Data\ProcessControlled\IActionTokenProvider.cs" />
     <Compile Include="Data\ProcessControlled\IgnoreActionAttribute.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\LogElementProvider\LogElementProvider.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\LogElementProvider\LogElementProviderActionExecutor.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\LogElementProvider\LogElementProviderEntityToken.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\LogElementProvider\ShowLogActionToken.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\MethodBasedFunctionProviderElementProvider\MethodBasedFunctionAttribute.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalOrdering\DisplayLocalOrderingActionExecutor.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\PageElementProvider\LocalOrdering\DisplayLocalOrderingActionToken.cs" />

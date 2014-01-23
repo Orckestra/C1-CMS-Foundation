@@ -31,7 +31,7 @@ namespace Composite.Plugins.Elements.ElementProviders.AllFunctionsElementProvide
                     EntityToken = EntityTokenSerializer.Serialize(entityToken, true),
                     ViewId = Guid.NewGuid().ToString(),
                     ViewType = ViewType.Main,
-                    Label = StringResourceSystemFacade.GetString("Composite.Management", "LogElementProvider.RootLabel")
+                    Label = "Documentation"
                 }, currentConsoleId);
 
             return null;
