@@ -34,17 +34,23 @@ namespace Composite.Core.Linq
     public static class IEnumerableExtensions
     {
         /// <summary>
-        /// Returns evaluated collection. It allows avoiding of multiple calculations for the same enumerator.
+        /// Returns an evaluated collection. It allows avoiding of multiple calculations for the same enumerator.
         /// </summary>
         /// <typeparam name="T">Element type.</typeparam>
         /// <param name="enumerable">Enumerable object to be evaluated.</param>
         /// <returns>Evaluated collection.</returns>
-        public static IEnumerable<T> Evaluate<T>(this IEnumerable<T> enumerable)
+        public static ICollection<T> Evaluate<T>(this IEnumerable<T> enumerable)
         {
-            if (enumerable is T[] || enumerable is List<T>)
+            if (enumerable is T[])
             {
-                return enumerable;
+                return enumerable as T[];
             }
+
+            if (enumerable is ICollection<T>)
+            {
+                return enumerable as ICollection<T>;
+            }
+
             return new List<T>(enumerable);
         }
 

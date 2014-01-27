@@ -184,10 +184,15 @@
     <Compile Include="Core\WebClient\Renderings\Template\PageTemplateFeatureFacade.cs" />
     <Compile Include="Core\WebClient\ScriptLoader.cs" />
     <Compile Include="Core\WebClient\StyleLoader.cs" />
+    <Compile Include="Data\DynamicTypes\Configuration\XmlConfigurationExtensionMethods.cs" />
+    <Compile Include="Data\DynamicTypes\Configuration\XmlConfigurationException.cs" />
     <Compile Include="Data\DynamicTypes\DataFieldTreeOrderingProfile.cs" />
+    <Compile Include="Data\DynamicTypes\DataTypeIndex.cs" />
     <Compile Include="Data\DynamicTypes\Foundation\DynamicTypesCustomFormFacade.cs" />
     <Compile Include="Data\DynamicTypes\ParseDefinitionFileException.cs" />
     <Compile Include="Data\FormRenderingProfileAttribute.cs" />
+    <Compile Include="Data\IndexAttribute.cs" />
+    <Compile Include="Data\IndexDirection.cs" />
     <Compile Include="Data\TreeOrderingProfileAttribute.cs" />
     <Compile Include="Data\Foundation\ProcessControllerSettings.cs" />
     <Compile Include="Data\StoreEventHandler.cs" />

@@ -8,6 +8,7 @@ using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
+using Composite.Data.DynamicTypes.Configuration;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
@@ -27,6 +28,7 @@ namespace Composite.Data.DynamicTypes
         private string _labelFieldName;
         private List<Type> _superInterfaces = new List<Type>();
         private List<DataTypeAssociationDescriptor> _dataTypeAssociationDescriptors = new List<DataTypeAssociationDescriptor>();
+        private IReadOnlyCollection<DataTypeIndex> _indexes = new DataTypeIndex[0];
 
 
         /// <summary>
@@ -162,8 +164,29 @@ namespace Composite.Data.DynamicTypes
             {
                 return this.KeyPropertyNames.Select(fieldName => this.Fields.Single(field => field.Name == fieldName));
             }
-        } 
+        }
 
+        /// <summary>
+        /// Indexes.
+        /// </summary>
+        public IReadOnlyCollection<DataTypeIndex> Indexes
+        {
+            get { return _indexes; }
+            set
+            {
+                Verify.That(value.Count(idx => idx.Clustered) < 2, "It is not allowed to have more than one clustered index");
+
+                _indexes = value;
+            }
+        }
+
+        internal bool PrimaryKeyIsClusteredIndex
+        {
+            get
+            {
+                return !HasCustomPhysicalSortOrder && !Indexes.Any(i => i.Clustered);
+            }
+        }
 
         /// <summary>The short name of the type, without namespace and assembly info</summary>
         public string Name
@@ -518,7 +541,7 @@ namespace Composite.Data.DynamicTypes
         /// <returns>A clone</returns>
         public DataTypeDescriptor Clone()
         {
-            DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(this.DataTypeId, this.Namespace, this.Name, this.TypeManagerTypeName, this.IsCodeGenerated);
+            var dataTypeDescriptor = new DataTypeDescriptor(this.DataTypeId, this.Namespace, this.Name, this.TypeManagerTypeName, this.IsCodeGenerated);
 
             foreach (DataTypeAssociationDescriptor dataTypeAssociationDescriptor in this.DataAssociations)
             {
@@ -600,7 +623,12 @@ namespace Composite.Data.DynamicTypes
             element.Add(new XElement("Fields",
                                      Fields
                                          .Where(f => f.Inherited == false)
-                                         .Select(dataFieldDescriptor => dataFieldDescriptor.ToXml())));
+                                         .Select(f => f.ToXml())));
+
+            if (Indexes.Any())
+            {
+                element.Add(new XElement("Indexes", Indexes.Select(i => i.ToXml())));   
+            }
 
             return element;
         }
@@ -614,30 +642,28 @@ namespace Composite.Data.DynamicTypes
         /// <returns>De-serialized data type descriptor</returns>
         public static DataTypeDescriptor FromXml(XElement element)
         {
-            if (element == null) throw new ArgumentNullException("element");
-            if (element.Name != "DataTypeDescriptor") throw new ArgumentException("The xml is not correctly formattet");
+            Verify.ArgumentNotNull(element, "element");
+            if (element.Name != "DataTypeDescriptor") throw new ArgumentException("The xml is not correctly formatted.");
 
-            Func<string, XAttribute> requiredAttribute = aName => RequiredAttribute(element, aName);
 
-            Guid dataTypeId = (Guid) requiredAttribute("dataTypeId");
-            string name = (string)requiredAttribute("name");
-            string @namespace = (string)requiredAttribute("namespace");
+            Guid dataTypeId = (Guid) element.GetRequiredAttribute("dataTypeId");
+            string name = element.GetRequiredAttributeValue("name");
+            string @namespace = element.GetRequiredAttributeValue("namespace");
 
             // TODO: check why "hasCustomPhysicalSortOrder"  is not used
-            bool hasCustomPhysicalSortOrder = (bool)requiredAttribute("hasCustomPhysicalSortOrder");
+            bool hasCustomPhysicalSortOrder = (bool) element.GetRequiredAttribute("hasCustomPhysicalSortOrder");
 
-            bool isCodeGenerated = (bool)requiredAttribute("isCodeGenerated");
+            bool isCodeGenerated = (bool) element.GetRequiredAttribute("isCodeGenerated");
             XAttribute cachableAttribute = element.Attribute("cachable");
             XAttribute buildNewHandlerTypeNameAttribute = element.Attribute("buildNewHandlerTypeName");
-            XElement dataAssociationsElement = element.Element("DataAssociations");
-            XElement dataScopesElement = element.Element("DataScopes");
-            XElement keyPropertyNamesElement = element.Element("KeyPropertyNames");
+            XElement dataAssociationsElement = element.GetRequiredElement("DataAssociations");
+            XElement dataScopesElement = element.GetRequiredElement("DataScopes");
+            XElement keyPropertyNamesElement = element.GetRequiredElement("KeyPropertyNames");
             // TODO: check why "superInterfaceKeyPropertyNamesElement" is not used
             // XElement superInterfaceKeyPropertyNamesElement = element.Element("SuperInterfaceKeyPropertyNames");
-            XElement superInterfacesElement = element.Element("SuperInterfaces");
-            XElement fieldsElement = element.Element("Fields");
-
-            if (dataAssociationsElement == null || dataScopesElement == null || keyPropertyNamesElement == null || superInterfacesElement == null || fieldsElement == null) throw new ArgumentException("The xml is not correctly formattet");
+            XElement superInterfacesElement = element.GetRequiredElement("SuperInterfaces");
+            XElement fieldsElement = element.GetRequiredElement("Fields");
+            XElement indexesElement = element.Element("Indexes");
 
             XAttribute titleAttribute = element.Attribute("title");
             XAttribute labelFieldNameAttribute = element.Attribute("labelFieldName");
@@ -668,7 +694,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (XElement elm in dataScopesElement.Elements("DataScopeIdentifier"))
             {
-                string dataScopeName = (string)RequiredAttribute(elm, "name");
+                string dataScopeName = elm.GetRequiredAttributeValue("name");
                 if (DataScopeIdentifier.IsLegasyDataScope(dataScopeName))
                 {
                     Log.LogWarning("DataTypeDescriptor", "Ignored legacy data scope '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. The '{0}' data scope is no longer supported.".FormatWith(dataScopeName, @namespace, name));
@@ -682,7 +708,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (XElement elm in superInterfacesElement.Elements("SuperInterface"))
             {
-                string superInterfaceTypeName = (string) RequiredAttribute(elm, "type");
+                string superInterfaceTypeName = elm.GetRequiredAttributeValue("type");
 
                 if (!superInterfaceTypeName.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled"))
                 {
@@ -705,13 +731,18 @@ namespace Composite.Data.DynamicTypes
 
             foreach (XElement elm in keyPropertyNamesElement.Elements("KeyPropertyName"))
             {
-                var propertyName = (string) RequiredAttribute(elm, "name");
+                var propertyName = elm.GetRequiredAttributeValue("name");
 
                 bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Any(f => f.GetProperty(propertyName) != null);
                 if (!isDefinedOnSuperInterface)
                 {
                     dataTypeDescriptor.KeyPropertyNames.Add(propertyName);
                 }
+            }
+
+            if (indexesElement != null)
+            {
+                dataTypeDescriptor.Indexes = indexesElement.Elements("Index").Select(DataTypeIndex.FromXml).ToList();
             }
 
             // Loading field rendering profiles for static data types
@@ -739,14 +770,6 @@ namespace Composite.Data.DynamicTypes
 
             return dataTypeDescriptor;
         }
-
-        private static XAttribute RequiredAttribute(XElement element, XName attributeName)
-        {
-            var attr = element.Attribute(attributeName);
-            Verify.IsNotNull(attr, "Missing required attribute '{0}' on <'{1}'> element", attributeName.LocalName, element.Name.LocalName);
-
-            return attr;
-        } 
 
         /// <exclude />
         public override int GetHashCode()

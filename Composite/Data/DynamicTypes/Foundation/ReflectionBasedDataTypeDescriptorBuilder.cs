@@ -83,6 +83,24 @@ namespace Composite.Data.DynamicTypes.Foundation
                 }
             }
 
+            var indexes = new List<DataTypeIndex>();
+            foreach (var indexAttribute in type.GetCustomAttributesRecursively<IndexAttribute>())
+            {
+                foreach (var field in indexAttribute.Fields)
+                {
+                    if (typeDescriptor.Fields[field.Item1] == null)
+                    {
+                        throw new InvalidOperationException(string.Format("Index field '{0}' is not defined", field.Item1));
+                    }
+                }
+
+                indexes.Add(new DataTypeIndex(indexAttribute.Fields) { Clustered = indexAttribute.Clustered });
+            }
+
+            indexes.Sort((a,b) => string.Compare(a.ToString(), b.ToString(), StringComparison.Ordinal));
+
+            typeDescriptor.Indexes = indexes;
+
             return typeDescriptor;
         }
 

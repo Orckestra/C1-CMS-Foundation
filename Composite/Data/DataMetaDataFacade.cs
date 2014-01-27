@@ -63,7 +63,7 @@ namespace Composite.Data
 
                 foreach (string filepath in filepaths)
                 {
-                    XDocument doc = XDocumentUtils.Load(filepath);
+                    XDocument doc = XDocumentUtils.Load(filepath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
 
                     DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
 
@@ -109,7 +109,7 @@ namespace Composite.Data
                 string filepath = kvp.Value;
                 if (!Path.GetFileNameWithoutExtension(filepath).Contains('_'))
                 {
-                    XDocument doc = XDocumentUtils.Load(filepath);
+                    XDocument doc = XDocumentUtils.Load(filepath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
 
                     DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
 

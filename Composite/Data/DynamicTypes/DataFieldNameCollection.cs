@@ -10,11 +10,11 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataFieldNameCollection : IEnumerable<string>
     {
-        private List<string> _dataFieldNames = new List<string>();
-        private DataFieldDescriptorCollection _validDataFieldDescriptions;
-        private bool _allowNullableFields;
-        private bool _allowListFields;
-        private bool _allowLargeStringFields;
+        private readonly List<string> _dataFieldNames = new List<string>();
+        private readonly DataFieldDescriptorCollection _validDataFieldDescriptions;
+        private readonly bool _allowNullableFields;
+        private readonly bool _allowListFields;
+        private readonly bool _allowLargeStringFields;
 
 
         internal DataFieldNameCollection(DataFieldDescriptorCollection validDataFieldDescriptions, bool allowNullableFields, bool allowListFields, bool allowLargeStringFields)

@@ -18,16 +18,27 @@ namespace Composite.Core.Xml
         /// <param name="inputUri">This could be a file or a url</param>
         public static XDocument Load(string inputUri)
         {
-            XDocument document;
-
-            using (Stream stream = UriResolver.GetStream(inputUri))
-            {
-                document = XDocument.Load(stream);
-            }
-
-            return document;
+            return Load(inputUri, LoadOptions.None);
         }
 
+
+        /// <summary>
+        /// This should be a part of the I/O layer
+        /// </summary>
+        /// <param name="loadOptions">Load options.</param>
+        /// <param name="inputUri">This could be a file or a url</param>
+        public static XDocument Load(string inputUri, LoadOptions loadOptions)
+        {
+            if (inputUri.Contains("://"))
+            {
+                using (Stream stream = UriResolver.GetStream(inputUri))
+                {
+                    return XDocument.Load(stream, loadOptions);
+                }
+            }
+
+            return XDocument.Load(inputUri, loadOptions);
+        }
 
 
         /// <summary>

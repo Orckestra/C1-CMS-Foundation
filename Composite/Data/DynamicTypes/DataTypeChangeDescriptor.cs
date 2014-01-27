@@ -12,8 +12,8 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataTypeChangeDescriptor
     {
-        private DataTypeDescriptor _original;
-        private DataTypeDescriptor _altered;
+        private readonly DataTypeDescriptor _original;
+        private readonly DataTypeDescriptor _altered;
         private bool _originalTypeDataExists = true;
 
 
@@ -57,6 +57,7 @@ namespace Composite.Data.DynamicTypes
                 alteredTypeHasChanges |= this.ExistingFields.Any(f => f.AlteredFieldHasChanges);
                 alteredTypeHasChanges |= this.AddedDataScopes.Any();
                 alteredTypeHasChanges |= this.DeletedDataScopes.Any();
+                alteredTypeHasChanges |= IndexesChanged;
                 return alteredTypeHasChanges;
             }
         }
@@ -210,6 +211,23 @@ namespace Composite.Data.DynamicTypes
             get
             {
                 return !GetKeyProperties_Orininal().SequenceEqual(GetKeyProperties_Altered(), new DataFieldIdEqualityComparer());
+            }
+        }
+
+        /// <summary>
+        /// Returns <value>true</value> is indexes have changed
+        /// </summary>
+        public bool IndexesChanged
+        {
+            get
+            {
+                var origninalIndexes = OriginalType.Indexes;
+                var newIndexes = AlteredType.Indexes;
+
+                Func<IReadOnlyCollection<DataTypeIndex>, string> serializeIndexes =
+                    indexes => string.Join("|", indexes.Select(i => i.ToString()).OrderBy(a => a));
+
+                return serializeIndexes(origninalIndexes) != serializeIndexes(newIndexes);
             }
         }
 
