@@ -9,16 +9,16 @@
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server"/>		
 		<script type="text/javascript">
-		function __doPostBack () {
-			// simulate dot net
-		}
+		//function __doPostBack () {
+		//	// simulate dot net
+		//}
 		</script>
 		
 	</head>
 	<body>
-		<form action="javascript://" method="get"> <!-- simulate dot net -->
+		<form runat="server" class="updateform updatezone"> <!-- simulate dot net -->
 			
-			<ui:editorpage label="Checkboxes">
+			<ui:editorpage label="Checkboxes" id="EditorPage">
 				<ui:broadcasterset>
 					<ui:broadcaster id="broadcasterCanSave" isdisabled="true"/>
 				</ui:broadcasterset>
@@ -26,7 +26,7 @@
 					<ui:toolbarbody>
 						<ui:toolbargroup>
 							<ui:toolbarbutton  
-								oncommand="this.dispatchAction(EditorPageBinding.ACTION_SAVE)"
+								oncommand="this.dispatchAction ( PageBinding.ACTION_DOPOSTBACK )"
 								id="savebutton" 
 								image="${icon:save}" 
 								image-disabled="${icon:save-disabled}" 

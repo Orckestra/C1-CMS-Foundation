@@ -8,15 +8,11 @@
 		<title>Composite.Management.Test.DataInputs</title>
 		<control:styleloader runat="server"/>
 		<control:scriptloader type="sub" runat="server"/>		
-		<script type="text/javascript">
-		function __doPostBack () {
-			// simulate dot net
-		}
-		</script>
+		
 		
 	</head>
 	<body>
-		<form action="javascript://" method="get"> <!-- simulate dot net -->
+		<form runat="server" class="updateform updatezone">
 			
 			<ui:editorpage label="Checkboxes">
 				<ui:broadcasterset>

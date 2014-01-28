@@ -56,26 +56,6 @@ RadioDataBinding.prototype.onBindingRegister = function () {
 	
 	RadioDataBinding.superclass.onBindingRegister.call ( this );
 	
-	/*
-	 * This may not always be enough, see below...
-	 */
-	this.propertyMethodMap [ "ischecked" ] = function ( isChecked ) {
-		if ( isChecked != this.isChecked ) {
-			this.setChecked ( isChecked, true );
-		}
-	};
-	
-	/*
-	 * To ensure maximum synchronizity with the server,  
-	 * we check for checkedness on ALL postback responses.
-	 */
-	this.propertyMethodMap [ "checksum" ] = function () {
-		var isChecked = this.getProperty ( "ischecked" );
-		if ( isChecked != this.isChecked ) {
-			this.setChecked ( isChecked, true );
-		}
-	};
-	
 	this._buttonBinding = this.add ( 
 		RadioButtonBinding.newInstance ( this.bindingDocument )
 	);
@@ -170,9 +150,6 @@ RadioDataBinding.prototype._hack = function () {
 		self.setProperty ( "ischecked", true );
 		self.isChecked = true;
 		self.relate ();
-		//if ( callbackid != null ) { TODO!
-			//alert ( self );
-		//}
 	}
 	
 	this._buttonBinding.uncheck = function ( isDisableCommand ) {
@@ -180,9 +157,6 @@ RadioDataBinding.prototype._hack = function () {
 		self.deleteProperty ( "ischecked" );
 		self.isChecked = false;
 		self.relate ();
-		//if ( callbackid != null ) { TODO!
-			//alert ( self );
-		//}
 	}
 	
 	this._buttonBinding.oncommand = function () {
@@ -323,3 +297,32 @@ RadioDataBinding.prototype.setLabel = function ( label ) {
 	}
 	this.setProperty ( "label", label );
 }
+
+
+/**
+ * Handle element update.
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#handleElement}
+ * @param {Element} element
+ * @return {boolean}
+ */
+RadioDataBinding.prototype.handleElement = function (element) {
+
+	return true;
+};
+
+/** 
+ * Update element.
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#updateElement}
+ * @param {Element} element
+ * @return {boolean}
+ */
+RadioDataBinding.prototype.updateElement = function (element) {
+
+	var ischecked = element.getAttribute("ischecked") === "true";
+	if (this.isChecked != ischecked) {
+		this.setChecked(ischecked, true);
+	}
+	return true;
+};

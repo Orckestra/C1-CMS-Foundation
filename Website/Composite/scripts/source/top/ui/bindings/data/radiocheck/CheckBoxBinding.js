@@ -73,26 +73,7 @@ CheckBoxBinding.prototype.onBindingRegister = function () {
 	CheckBoxBinding.superclass.onBindingRegister.call ( this );
 	DataBinding.prototype.onBindingRegister.call ( this );
 	this._buildButtonBinding ();
-	
-	/*
-	 * This may not always be enough, see below...
-	 */
-	this.propertyMethodMap [ "ischecked" ] = function ( isChecked ) {
-		if ( isChecked != this.isChecked ) {
-			this.setChecked ( isChecked, true );
-		}
-	};
-	
-	/*
-	 * To ensure maximum synchronizity with the server,  
-	 * we check for checkedness on ALL postback responses.
-	 */
-	this.propertyMethodMap [ "checksum" ] = function () {
-		var isChecked = this.getProperty ( "ischecked" );
-		if ( isChecked != this.isChecked ) {
-			this.setChecked ( isChecked, true );
-		}
-	};
+
 };
 
 /**
@@ -354,6 +335,26 @@ CheckBoxBinding.prototype.validate = function () {
 	}
 	return result
 }
+
+
+/**
+ * Handle element update.
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#handleElement}
+ * @param {Element} element
+ * @return {boolean}
+ */
+CheckBoxBinding.prototype.handleElement = RadioDataBinding.prototype.handleElement;
+
+
+/** 
+ * Update element.
+ * @implements {IUpdateHandler}
+ * @overwrites {Binding#updateElement}
+ * @param {Element} element
+ * @return {boolean}
+ */
+CheckBoxBinding.prototype.updateElement = RadioDataBinding.prototype.updateElement;
 
 /**
  * Manifest. This will write form elements into page DOM 
