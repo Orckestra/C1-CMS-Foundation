@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Xml;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
 using Composite.Core;
@@ -59,13 +61,11 @@ namespace Composite.Data
                 _dataTypeDescriptorFilesnamesCache = new Dictionary<Guid, string>();
 
 
-                List<string> filepaths = C1Directory.GetFiles(_metaDataPath).ToList();
+                string[] filepaths = C1Directory.GetFiles(_metaDataPath, "*.xml");
 
                 foreach (string filepath in filepaths)
                 {
-                    XDocument doc = XDocumentUtils.Load(filepath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
-
-                    DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
+                    var dataTypeDescriptor = LoadFromFile(filepath);
 
                     Verify.That(!_dataTypeDescriptorCache.ContainsKey(dataTypeDescriptor.DataTypeId),
                         "Data type with id '{0}' is already added. File: '{1}'", dataTypeDescriptor.DataTypeId, filepath);
@@ -77,6 +77,21 @@ namespace Composite.Data
         }
 
 
+        private static DataTypeDescriptor LoadFromFile(string filePath)
+        {
+            XDocument doc;
+
+            try
+            {
+                doc = XDocumentUtils.Load(filePath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+            }
+            catch (XmlException e)
+            {
+                throw new ConfigurationErrorsException("Error loading meta data file '{0}': {1}".FormatWith(filePath, e.Message), e, filePath, e.LineNumber);
+            }
+
+            return DataTypeDescriptor.FromXml(doc.Root);
+        }
 
         private static void UpdateFilenames()
         {
@@ -86,13 +101,13 @@ namespace Composite.Data
             foreach (string filepath in filepaths)
             {
                 Guid id = GetGuidFromFilename(filepath);
-                if (ids.ContainsKey(id) == false)
+                if (!ids.ContainsKey(id))
                 {
                     ids.Add(id, filepath);
                 }
                 else // This should never happen, but is here to be robust
                 {
-                    if (!filepath.Contains('_')) // Old version of the file, delete it
+                    if (!IsMetaDataFileName(Path.GetFileNameWithoutExtension(filepath))) // Old version of the file, delete it
                     {
                         FileUtils.Delete(filepath);
                     }
@@ -107,21 +122,23 @@ namespace Composite.Data
             foreach (var kvp in ids)
             {
                 string filepath = kvp.Value;
-                if (!Path.GetFileNameWithoutExtension(filepath).Contains('_'))
+                if (!IsMetaDataFileName(Path.GetFileNameWithoutExtension(filepath)))
                 {
-                    XDocument doc = XDocumentUtils.Load(filepath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
-
-                    DataTypeDescriptor dataTypeDescriptor = DataTypeDescriptor.FromXml(doc.Root);
-
-                    string newFilepath = CreateFilename(dataTypeDescriptor);
-
-                    FileUtils.RemoveReadOnly(filepath);
-                    C1File.Move(filepath, newFilepath);
+                    continue;
                 }
+
+                var dataTypeDescriptor = LoadFromFile(filepath);
+                string newFilepath = CreateFilename(dataTypeDescriptor);
+
+                FileUtils.RemoveReadOnly(filepath);
+                C1File.Move(filepath, newFilepath);
             }
         }
 
-
+        private static bool IsMetaDataFileName(string fileNameWithoutExtension)
+        {
+            return fileNameWithoutExtension.Contains("_") || fileNameWithoutExtension.Contains(" ");
+        }
 
         /// <exclude />
         public static IEnumerable<DataTypeDescriptor> AllDataTypeDescriptors
@@ -257,7 +274,7 @@ namespace Composite.Data
 
         private static string CreateFilename(DataTypeDescriptor dataTypeDescriptor)
         {
-            return Path.Combine(_metaDataPath, string.Format("{0}_{1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
+            return Path.Combine(_metaDataPath, string.Format("{0} {1}.xml", dataTypeDescriptor.Name, dataTypeDescriptor.DataTypeId));
         }
 
 
@@ -265,7 +282,7 @@ namespace Composite.Data
         private static Guid GetGuidFromFilename(string filepath)
         {
             string tmp = Path.GetFileNameWithoutExtension(filepath);
-            int index = tmp.LastIndexOf('_');
+            int index = Math.Max(tmp.LastIndexOf('_'), tmp.LastIndexOf(' '));
 
             if (index == -1)
             {
