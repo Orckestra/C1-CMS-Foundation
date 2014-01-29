@@ -28005,9 +28005,11 @@ _10f6.disable();
 }
 }
 if(_10f4){
+this.focus();
 this._codemirrorWindow.focus();
 }else{
 this._codemirrorWindow.blur();
+this.blur();
 }
 }
 };
