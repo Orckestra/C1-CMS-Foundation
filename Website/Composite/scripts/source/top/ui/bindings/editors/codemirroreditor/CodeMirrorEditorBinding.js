@@ -358,9 +358,11 @@ CodeMirrorEditorBinding.prototype._activateEditor = function (isActivate) {
 		* Update focus status.
 		*/
 		if (isActivate) {
-			this._codemirrorWindow.focus();
+			this.focus();//IE
+			this._codemirrorWindow.focus();//Webkit
 		} else {
-			this._codemirrorWindow.blur();
+			this._codemirrorWindow.blur();//Webkit
+			this.blur();//IE
 		}
 	}
 }
