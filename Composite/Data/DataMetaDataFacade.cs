@@ -131,7 +131,12 @@ namespace Composite.Data
                 string newFilepath = CreateFilename(dataTypeDescriptor);
 
                 FileUtils.RemoveReadOnly(filepath);
-                C1File.Move(filepath, newFilepath);
+
+                Func<string, string> normilizeFileName = f => f.Replace('_', ' ').ToLowerInvariant();
+                if (normilizeFileName(filepath) != normilizeFileName(newFilepath))
+                {
+                    C1File.Move(filepath, newFilepath);
+                }
             }
         }
 
