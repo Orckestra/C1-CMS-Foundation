@@ -27059,6 +27059,7 @@ _103a=soap.XhtmlFragment;
 if(_103a==null){
 _103a=new String("");
 }
+_103a=_103a.replace(/\s+<li>/g,"<li>");
 }
 WebServiceProxy.isFaultHandler=true;
 return _103a;
