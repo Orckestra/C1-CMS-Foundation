@@ -96,6 +96,11 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 		if ( result == null ) { // always return a string!
 			result = new String ( "" );
 		}
+
+		//whitespaces beatween li ignore TAB/Shift+TAB event
+		//TODO: check this at next version tinyMCE
+		//Delete spaces between LI
+		result = result.replace(/\s+<li>/g, '<li>');
 	}
 	WebServiceProxy.isFaultHandler = true;
 	return result;
