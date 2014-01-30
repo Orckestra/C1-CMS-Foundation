@@ -218,13 +218,6 @@ PopupBinding.prototype.buildDOMContent = function () {
 			).attach ();
 		}
 	}
-	
-	/*
-	 * Prepare CSS transition effects.
-	 */
-	if ( Client.hasTransitions ) {
-		this.bindingElement.style.opacity = "0";
-	}
 }
 
 /**
@@ -485,50 +478,13 @@ PopupBinding.prototype._makeVisible = function ( isVisible ) {
 	
 	var element = this.bindingElement;
 	
-	/*
-	 * CSS transitions on fadeout was abandoned since 
-	 * it may give the user time to press menuitems twice...
-	 * TODO: Refactor menus to allow this?
-	 */
 	if ( isVisible ) {
-		if ( Client.hasTransitions ) {
-			element.style.visibility = "visible";
-			element.style.opacity = "1";
-		} else {
-			element.style.visibility = "visible";
-		}
+		element.style.visibility = "visible";
+
 	} else {
 		element.style.visibility = "hidden";
 		element.style.display = "none";
-		if ( Client.hasTransitions ) {
-			element.style.opacity = "0";
-		}
 	}
-	
-	/*
-	if ( !Client.hasTransitions ) {
-		if ( isVisible ) {
-			element.style.visibility = "visible";
-		} else {
-			element.style.visibility = "hidden";
-			element.style.display = "none";
-		}
-	} else {
-		if ( isVisible ) {
-			element.style.visibility = "visible";
-			element.style.opacity = "1";
-		} else {
-			element.style.opacity = "0";
-			var self = this;
-			setTimeout ( function () {
-				if ( !self.isVisible ) {
-					element.style.visibility = "hidden";
-					element.style.display = "none";
-				}
-			}, Animation.DEFAULT_TIME );
-		}
-	}
-	*/
 	
 	this.isVisible = isVisible;
 }
