@@ -278,5 +278,45 @@ namespace Composite.Core.WebClient
                 return Encoding.UTF8.GetString(result.ToArray());                
             }
         }
+
+        /// <exclude />
+        public static string CompressGuid(Guid guid)
+        {
+            return Convert.ToBase64String(guid.ToByteArray())
+                    .Substring(0, 22)
+                    .Replace('+', '-')
+                    .Replace('/', '_');
+        }
+
+        /// <exclude />
+        public static bool TryExpandGuid(string urlPart, out Guid guid)
+        {
+            if (urlPart == null || urlPart.Length != 22 
+                || urlPart.Contains("/")
+                || urlPart.Contains("+"))
+            {
+                guid = Guid.Empty;
+                return false;
+            }
+
+            string base64 = urlPart
+                    .Replace('_', '/')
+                    .Replace('-', '+')
+                    + "==";
+
+            try
+            {
+                var bytes = Convert.FromBase64String(base64);
+                guid = new Guid(bytes);
+
+                return true;
+            }
+            catch
+            {
+                guid = Guid.Empty;
+                return false;
+            }
+        }
+
     }
 }

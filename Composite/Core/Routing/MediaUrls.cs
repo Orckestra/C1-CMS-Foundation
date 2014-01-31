@@ -76,14 +76,14 @@ namespace Composite.Core.Routing
                 return result;
             }
 
-            int minimumLengthOfPublicMediaUrl = MediaUrl_PublicPrefix.Length + 36; /* 36 - length of a guid */
+            int minimumLengthOfPublicMediaUrl = MediaUrl_PublicPrefix.Length + 22; /* 2 - length of a compressed guid */
             if (relativeUrl.Length >= minimumLengthOfPublicMediaUrl
                 && relativeUrl.StartsWith(MediaUrl_PublicPrefix))
             {
                 // Parsing urls like /<site root>/media/{MediaId}*
                 Guid mediaId;
 
-                if (Guid.TryParse(relativeUrl.Substring(MediaUrl_PublicPrefix.Length, 36), out mediaId))
+                if (TryExtractMediaId(relativeUrl, MediaUrl_PublicPrefix.Length, out mediaId))
                 {
                     NameValueCollection queryParams = new UrlBuilder(relativeUrl).GetQueryParameters();
 
@@ -98,8 +98,9 @@ namespace Composite.Core.Routing
 
                 // Parsing urls like /<site root>/media/<MediaArchive>/{MediaId}*
                 int slashOffset = relativeUrl.IndexOf('/', MediaUrl_PublicPrefix.Length + 1);
-                if (slashOffset > MediaUrl_PublicPrefix.Length + 1 && relativeUrl.Length >= slashOffset + 36
-                    && Guid.TryParse(relativeUrl.Substring(slashOffset + 1, 36), out mediaId))
+
+                if (slashOffset > MediaUrl_PublicPrefix.Length + 1 
+                    && TryExtractMediaId(relativeUrl, slashOffset + 1, out mediaId))
                 {
                     string mediaStore = relativeUrl.Substring(MediaUrl_PublicPrefix.Length, slashOffset - MediaUrl_PublicPrefix.Length);
 
@@ -116,6 +117,19 @@ namespace Composite.Core.Routing
             }
 
             return null;
+        }
+
+        private static bool TryExtractMediaId(string url, int offset, out Guid mediaId)
+        {
+            // Extracting a guid, which is kept in plain or compressed as base64 like form
+            if((url.Length >= offset + 36 && Guid.TryParse(url.Substring(offset, 36), out mediaId))
+                /*|| (url.Length >= offset + 22 && UrlUtils.TryExpandGuid(url.Substring(offset, 22), out mediaId))*/)
+            {
+                return true;
+            }
+
+            mediaId = Guid.Empty;
+            return false;
         }
 
         private static MediaUrlData ParseRenderUrl(string relativeUrl, out UrlKind urlKind)
@@ -284,11 +298,10 @@ namespace Composite.Core.Routing
             }
 
 
-            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + mediaUrlData.MediaId);
+            var url = new UrlBuilder(UrlUtils.PublicRootPath + "/media/" + mediaStore + /* UrlUtils.CompressGuid(*/ mediaUrlData.MediaId /*)*/);
 
             url.PathInfo = file.LastWriteTime != null
-                               ? "/" + file.LastWriteTime.Value.ToUniversalTime().ToString(CultureInfo.InvariantCulture).GetHashCode()
-                               : string.Empty;
+                               ? "/" + GetDateTimeHash(file.LastWriteTime.Value.ToUniversalTime()) : string.Empty;
 
             if (pathToFile.Length > 0)
             {
@@ -297,6 +310,12 @@ namespace Composite.Core.Routing
             url.AddQueryParameters(queryParams);
 
             return url.ToString();
+        }
+
+        private static string GetDateTimeHash(DateTime dateTime)
+        {
+            int hash = dateTime.GetHashCode();
+            return Convert.ToBase64String(BitConverter.GetBytes(hash)).Substring(0, 6);
         }
 
         private static string RemoveFilePathIllegalCharacters(string path)
