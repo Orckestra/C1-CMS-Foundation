@@ -9630,9 +9630,6 @@ this._bodyBinding=this.add(MenuBodyBinding.newInstance(this.bindingDocument)).at
 }
 }
 }
-if(Client.hasTransitions){
-this.bindingElement.style.opacity="0";
-}
 };
 PopupBinding.prototype.parseDOMProperties=function(){
 if(!this.position){
@@ -9766,18 +9763,10 @@ this._enableTab(true);
 PopupBinding.prototype._makeVisible=function(_71c){
 var _71d=this.bindingElement;
 if(_71c){
-if(Client.hasTransitions){
 _71d.style.visibility="visible";
-_71d.style.opacity="1";
-}else{
-_71d.style.visibility="visible";
-}
 }else{
 _71d.style.visibility="hidden";
 _71d.style.display="none";
-if(Client.hasTransitions){
-_71d.style.opacity="0";
-}
 }
 this.isVisible=_71c;
 };
