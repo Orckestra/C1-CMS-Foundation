@@ -28,8 +28,8 @@ ui|box.controls ui|clickbutton {
 ui|box.controls ui|clickbutton ui|labeltext {
 	font-family: "Courier New", monospace;
 }
-ui|box.controls ui|clickbutton table.matrix td.c {
-	padding: 1px 3px 2px 3px;
+ui|box.controls ui|clickbutton ui|labelbox{
+	padding: 4px 6px 5px;
 }
 ui|dialogpage {
 	padding: 0;	
