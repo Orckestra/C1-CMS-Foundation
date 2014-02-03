@@ -58,6 +58,10 @@ ui|treenode.closed ui|treecontent {
 ui|treenode ui|labelbox { 
 	padding-bottom: 3px;
 }
+
+ui|treenode ui|labelbody {
+	max-width: none;
+}
 ui|treenode ui|labeltext {
     line-height: 15px;
 	padding: 1px 4px 2px 4px;
