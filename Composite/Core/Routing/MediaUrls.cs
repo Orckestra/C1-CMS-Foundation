@@ -315,7 +315,7 @@ namespace Composite.Core.Routing
         private static string GetDateTimeHash(DateTime dateTime)
         {
             int hash = dateTime.GetHashCode();
-            return Convert.ToBase64String(BitConverter.GetBytes(hash)).Substring(0, 6);
+            return Convert.ToBase64String(BitConverter.GetBytes(hash)).Substring(0, 6).Replace('+', '-').Replace('/', '_');
         }
 
         private static string RemoveFilePathIllegalCharacters(string path)
