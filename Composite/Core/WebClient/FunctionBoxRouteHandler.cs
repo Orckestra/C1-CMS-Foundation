@@ -58,67 +58,118 @@ namespace Composite.Core.WebClient
                     "Query string argument 'boxtype' expected to be one of the following values: " + string.Join(", ", existingTemplateImages));
 
                 string description = context.Request["description"];
+                string encodedMarkup = context.Request["markup"];
 
-                List<string> lines = new List<string>();
-                if (!description.IsNullOrEmpty())
+                List<string> textLines = null;
+                if (description != null)
                 {
-                    description = UrlUtils.UnZipContent(description);
-
-                    foreach (string naturalLine in description.Split('\n'))
-                    {
-                        if (naturalLine.Length == 0) lines.Add("");
-
-                        string rest = naturalLine.Trim();
-
-                        while (rest.Length > _minCharsPerDescriptionLine && rest.IndexOf(' ') > -1)
-                        {
-                            int firstSpaceIndex = rest.LastIndexOf(' ', _minCharsPerDescriptionLine);
-
-                            if (firstSpaceIndex == -1) firstSpaceIndex = rest.IndexOf(' ');
-
-                            if (firstSpaceIndex > -1)
-                            {
-                                lines.Add(rest.Substring(0, firstSpaceIndex));
-                                rest = rest.Substring(firstSpaceIndex + 1).Trim();
-                            }
-                        }
-
-                        if (rest.Length > 0)
-                        {
-                            lines.Add(rest);
-                        }
-                    }
+                    textLines = GetDescriptionLines(description);
                 }
 
-                string filePath = context.Server.MapPath(UrlUtils.ResolveAdminUrl(string.Format("images/{0}box.png", boxtype)));
+
+                Bitmap previewImage = null;
+
+                try
+                {
+                    if (encodedMarkup != null)
+                    {
+                        var fileName = GetPreviewFunctionPreviewImageFile(context);
+
+                        previewImage = new Bitmap(fileName);
+                    }
 
 
+                    string filePath =
+                        context.Server.MapPath(UrlUtils.ResolveAdminUrl(string.Format("images/{0}box.png", boxtype)));
+                    using (Bitmap bitmap = (Bitmap) Bitmap.FromFile(filePath))
+                    {
+                        var imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(55, 40), new Point(176, 78));
 
-                Bitmap bitmap = (Bitmap)Bitmap.FromFile(filePath);
+                        imageCreator.MinHeight = 50;
 
-                ImageTemplatedBoxCreator imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(55, 40), new Point(176, 78));
+                        int textLeftPadding = (boxtype == "function" ? 30 : 36);
 
-                imageCreator.MinHeight = 50;
+                        imageCreator.SetTitle(title, new Size(textLeftPadding, 9), new Size(70, 15), Color.Black,
+                            "Tahoma", 8.0f, FontStyle.Bold);
 
-                int textLeftPadding = (boxtype == "function" ? 30 : 36);
+                        if (textLines != null)
+                        {
+                            imageCreator.SetTextLines(textLines, new Size(textLeftPadding, 0), new Size(100, 80),
+                                Color.Black, "Tahoma", 8.0f, FontStyle.Regular);
+                        }
 
-                imageCreator.SetTitle(title, new Point(textLeftPadding, 9), new Point(70, 15), Color.Black, "Tahoma", 8.0f, FontStyle.Bold);
-                imageCreator.SetTextLines(lines, new Point(textLeftPadding, 0), new Point(100, 80), Color.Black, "Tahoma", 8.0f, FontStyle.Regular);
+                        if (previewImage != null)
+                        {
+                            imageCreator.SetPreviewImage(previewImage, new Size(10, 32), new Size(10, 16));
+                        }
 
-                context.Response.ContentType = "image/png";
-                context.Response.Cache.SetExpires(DateTime.Now.AddDays(10));
+                        context.Response.ContentType = "image/png";
+                        context.Response.Cache.SetExpires(DateTime.Now.AddDays(10));
 
-                Bitmap boxBitmap = imageCreator.CreateBitmap();
-                MemoryStream ms = new MemoryStream();
-                boxBitmap.Save(ms, ImageFormat.Png);
+                        var ms = new MemoryStream();
 
-                ms.WriteTo(context.Response.OutputStream);
+                        using (Bitmap boxBitmap = imageCreator.CreateBitmap())
+                        {
+                            boxBitmap.Save(ms, ImageFormat.Png);
+                        }
+                        ms.WriteTo(context.Response.OutputStream);
+                    }
+                }
+                finally
+                {
+                    if (previewImage != null)
+                    {
+                        previewImage.Dispose();
+                    }
+                }
             }
             catch (Exception ex)
             {
                 Log.LogError(this.GetType().ToString(), ex.ToString());
                 throw;
             }
+        }
+
+        static string GetPreviewFunctionPreviewImageFile(HttpContext context)
+        {
+            string previewUrl = context.Request.Url.ToString().Replace("/FunctionBox?", "/FunctionPreview.ashx?");
+            return BrowserRender.RenderUrl(context, previewUrl);
+        }
+
+        private static List<string> GetDescriptionLines(string description)
+        {
+            List<string> lines = new List<string>();
+
+            if (!description.IsNullOrEmpty())
+            {
+                description = UrlUtils.UnZipContent(description);
+
+                foreach (string naturalLine in description.Split('\n'))
+                {
+                    if (naturalLine.Length == 0) lines.Add("");
+
+                    string rest = naturalLine.Trim();
+
+                    while (rest.Length > _minCharsPerDescriptionLine && rest.IndexOf(' ') > -1)
+                    {
+                        int firstSpaceIndex = rest.LastIndexOf(' ', _minCharsPerDescriptionLine);
+
+                        if (firstSpaceIndex == -1) firstSpaceIndex = rest.IndexOf(' ');
+
+                        if (firstSpaceIndex > -1)
+                        {
+                            lines.Add(rest.Substring(0, firstSpaceIndex));
+                            rest = rest.Substring(firstSpaceIndex + 1).Trim();
+                        }
+                    }
+
+                    if (rest.Length > 0)
+                    {
+                        lines.Add(rest);
+                    }
+                }
+            }
+            return lines;
         }
 
 

@@ -143,6 +143,9 @@
       <DependentUpon>DocumentExecutionContainer.ascx</DependentUpon>
     </Compile>
     <Content Include="App_Data\Composite\Configuration\C1ConsoleAccess.xml" />
+    <Content Include="App_Data\Composite\PhantomJs\phantomjs.exe" />
+    <Content Include="App_Data\Composite\PhantomJs\renderingServer.js" />
+    <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
     <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestrings.aspx" />
@@ -5859,7 +5862,6 @@
     <Content Include="Composite\updated.css" />
     <Content Include="Composite\updated.js" />
     <Content Include="Composite\help\help.ashx" />
-    <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="App_Data\Razor\web.config" />
     <Content Include="Composite\services\Media\Upload.ashx" />
     <None Include="Composite\content\misc\editors\visualeditor\includes\toolbaradvanced.inc" />
@@ -6012,6 +6014,7 @@
     </Content>
     <None Include="Composite\top.inc" />
     <None Include="Composite\welcome.inc" />
+    <Content Include="Renderers\FunctionPreview.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />

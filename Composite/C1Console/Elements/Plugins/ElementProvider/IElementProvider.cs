@@ -10,8 +10,8 @@ namespace Composite.C1Console.Elements.Plugins.ElementProvider
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    [Obsolete]
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete("Use interfaces IElementAttachingProvider and IAuxiliarySecurityAncestorProvider instead")]
     [CustomFactory(typeof(ElementProviderCustomFactory))]
     [ConfigurationNameMapper(typeof(ElementProviderDefaultNameRetriever))]
     public interface IElementProvider : IHooklessElementProvider

@@ -176,6 +176,7 @@
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectHttpHandler.cs" />
     <Compile Include="Core\Routing\Pages\SeoFriendlyRedirectRouteHandler.cs" />
     <Compile Include="Core\Threading\ThreadCultureScope.cs" />
+    <Compile Include="Core\WebClient\BrowserRender.cs" />
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\FunctionBoxRouteHandler.cs" />

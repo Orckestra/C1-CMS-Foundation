@@ -464,6 +464,16 @@ namespace Composite.Services
 
             return UrlUtils.ResolvePublicUrl(imageUrl);
         }
+
+        private static string GetFunctionBoxImageUrl_Markup(string type, string title, string markup)
+        {
+            string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&markup={2}".FormatWith(
+                HttpUtility.UrlEncode(type, Encoding.UTF8),
+                HttpUtility.UrlEncode(title, Encoding.UTF8),
+                UrlUtils.ZipContent(markup.Trim())); // ZIPping description as it may contain xml tags f.e. <iframe />
+
+            return UrlUtils.ResolvePublicUrl(imageUrl);
+        }
         
 
         private XElement GetImageTagForDynamicDataFieldReference(DataFieldDescriptor dataField, DataTypeDescriptor dataTypeDescriptor)
@@ -540,7 +550,8 @@ namespace Composite.Services
                 error = true;
             }
 
-            string functionBoxUrl = GetFunctionBoxImageUrl(error ? "warning" : "function", title, description.ToString());
+            string functionBoxUrl = error ? GetFunctionBoxImageUrl("warning", title, description.ToString())
+                                          : GetFunctionBoxImageUrl_Markup("function", title, functionElement.ToString());
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
 				, new XAttribute("alt", _markupWysiwygRepresentationAlt)
