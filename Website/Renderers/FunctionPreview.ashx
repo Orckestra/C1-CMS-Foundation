@@ -22,23 +22,33 @@ namespace Composite.Renderers
     {
         public void ProcessRequest(HttpContext context)
         {
-            // TODO: pass template id and a placeholder name
-
             if (!UserValidationFacade.IsLoggedIn())
             {
                 context.Response.StatusCode = 401; // "Unauthorized"
                 return;
             }
+
+            string templateIdStr = context.Request["t"];
+            string placeholderName = context.Request["p"];
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
 
             var functionElement = XElement.Parse(markup);
 
+            
             IPage page;
 
             using (var c = new DataConnection())
             {
-                page = c.Get<IPage>().FirstOrDefault();
+                Guid templateId;
+                if (!string.IsNullOrEmpty(templateIdStr) && Guid.TryParse(templateIdStr, out templateId))
+                {
+                    page = c.Get<IPage>().First(p => p.TemplateId == templateId);
+                }
+                else
+                {
+                    page = c.Get<IPage>().First();
+                }
             }
 
             var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
@@ -52,7 +62,7 @@ namespace Composite.Renderers
             var contents = new List<IPagePlaceholderContent>();
             var content = DataFacade.BuildNew<IPagePlaceholderContent>();
             content.PageId = page.Id;
-            content.PlaceHolderId = templateInfo.DefaultPlaceholderId;
+            content.PlaceHolderId = !string.IsNullOrEmpty(placeholderName) ? placeholderName : templateInfo.DefaultPlaceholderId;
             content.Content = placeholderDocument.ToString();
             contents.Add(content);
 

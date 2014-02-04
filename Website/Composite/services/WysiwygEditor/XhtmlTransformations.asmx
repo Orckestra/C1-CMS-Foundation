@@ -216,8 +216,8 @@ namespace Composite.Services
             {
                 string url = urlAttribute.Value;
                 string urlWithoutProtocol = url.Substring(url.IndexOf("//") + 2);
-                string urlHostWithPort = (urlWithoutProtocol.Contains("/") ? urlWithoutProtocol.Substring(0, urlWithoutProtocol.IndexOf("/")) : urlWithoutProtocol);
-                string urlHost = (urlHostWithPort.Contains(":") ? urlHostWithPort.Substring(0, urlHostWithPort.IndexOf(":")) : urlHostWithPort);
+                string urlHostWithPort = (urlWithoutProtocol.Contains("/") ? urlWithoutProtocol.Substring(0, urlWithoutProtocol.IndexOf('/')) : urlWithoutProtocol);
+                string urlHost = (urlHostWithPort.Contains(":") ? urlHostWithPort.Substring(0, urlHostWithPort.IndexOf(':')) : urlHostWithPort);
                 if (urlHost != HttpUtility.UrlDecode(urlHost))
                 {
                     urlAttribute.Value = urlAttribute.Value.Replace(urlHost, HttpUtility.UrlDecode(urlHost));
@@ -226,9 +226,15 @@ namespace Composite.Services
         }
 
 
-
         [WebMethod]
         public XhtmlTransformationResult StructuredContentToTinyContent(string htmlFragment)
+        {
+            return StructuredContentToTinyContent2(htmlFragment, Guid.Empty, null);
+        }
+        
+
+        [WebMethod]
+        public XhtmlTransformationResult StructuredContentToTinyContent2(string htmlFragment, Guid functionPreviewTemplateId, string functionPreviewPlaceholderName)
         {
             try
             {
@@ -245,7 +251,7 @@ namespace Composite.Services
 
                 foreach (var functionElement in functionRoots.ToList())
                 {
-                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement));
+                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, functionPreviewTemplateId, functionPreviewPlaceholderName));
                 }
 
                 IEnumerable<XElement> dataFieldReferences = xml.Descendants(Namespaces.DynamicData10 + "fieldreference");
@@ -302,6 +308,12 @@ namespace Composite.Services
         [WebMethod]
         public string GetImageTagForFunctionCall(string functionMarkup)
         {
+            return GetImageTagForFunctionCall2(functionMarkup, Guid.Empty, null);
+        }
+        
+        [WebMethod]
+        public string GetImageTagForFunctionCall2(string functionMarkup, Guid functionPreviewTemplateId, string functionPreviewPlaceholderName)
+        {
             XElement functionElement;
 
             try
@@ -313,7 +325,7 @@ namespace Composite.Services
                 throw new ArgumentException("Unable to parse functionMarkup as XML", ex);
             }
 
-            return GetImageTagForFunctionCall(functionElement).ToString(SaveOptions.DisableFormatting);
+            return GetImageTagForFunctionCall(functionElement, functionPreviewTemplateId, functionPreviewPlaceholderName).ToString(SaveOptions.DisableFormatting);
         }
 
 
@@ -465,12 +477,22 @@ namespace Composite.Services
             return UrlUtils.ResolvePublicUrl(imageUrl);
         }
 
-        private static string GetFunctionBoxImageUrl_Markup(string type, string title, string markup)
+        private static string GetFunctionBoxImageUrl_Markup(string type, string title, string markup, Guid functionPreviewTemplateId, string functionPreviewPlaceholderName)
         {
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&markup={2}".FormatWith(
                 HttpUtility.UrlEncode(type, Encoding.UTF8),
                 HttpUtility.UrlEncode(title, Encoding.UTF8),
                 UrlUtils.ZipContent(markup.Trim())); // ZIPping description as it may contain xml tags f.e. <iframe />
+
+            if (functionPreviewTemplateId != Guid.Empty)
+            {
+                imageUrl += "&t=" + functionPreviewTemplateId;
+            }
+
+            if (!string.IsNullOrEmpty(functionPreviewPlaceholderName))
+            {
+                imageUrl += "&p=" + functionPreviewPlaceholderName;
+            }
 
             return UrlUtils.ResolvePublicUrl(imageUrl);
         }
@@ -504,7 +526,7 @@ namespace Composite.Services
 
 
 
-        private XElement GetImageTagForFunctionCall(XElement functionElement)
+        private XElement GetImageTagForFunctionCall(XElement functionElement, Guid functionPreviewTemplateId, string functionPreviewPlaceholderName)
         {
             string title;
             StringBuilder description = new StringBuilder();
@@ -551,7 +573,7 @@ namespace Composite.Services
             }
 
             string functionBoxUrl = error ? GetFunctionBoxImageUrl("warning", title, description.ToString())
-                                          : GetFunctionBoxImageUrl_Markup("function", title, functionElement.ToString());
+                                          : GetFunctionBoxImageUrl_Markup("function", title, functionElement.ToString(), functionPreviewTemplateId, functionPreviewPlaceholderName);
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
 				, new XAttribute("alt", _markupWysiwygRepresentationAlt)
