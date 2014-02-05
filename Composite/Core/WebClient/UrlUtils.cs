@@ -1,11 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Collections.Generic;
 using Composite.Core.Extensions;
+using Composite.Core.WebClient.State;
+using Composite.Data;
 
 
 namespace Composite.Core.WebClient
@@ -20,6 +23,7 @@ namespace Composite.Core.WebClient
         private static readonly string _renderersFolderName = "Renderers";
         private static readonly string _applicationVirtualPath;
         private static readonly string[] UrlStartMarkers = new[] { "\"", "\'", "&#39;", "&#34;" };
+        private static readonly string SessionUrlPrefix = "Session_";
 
         static UrlUtils()
         {
@@ -255,14 +259,50 @@ namespace Composite.Core.WebClient
 
             string base64 = Convert.ToBase64String(newBytes);
 
-            string urlFriendlyBase64 = base64.Replace("+", "_").Replace("/", ".").Replace("=", "-");
-            return urlFriendlyBase64;
+            if (base64.Length <= 512)
+            {
+                string urlFriendlyBase64 = base64.Replace("+", "_").Replace("/", ".").Replace("=", "-");
+
+                return urlFriendlyBase64;
+            }
+
+            Guid stateId = GetMD5Hash(bytes);
+
+            using (new DataConnection())
+            {
+                SessionStateManager.DefaultProvider.SetState(stateId, text, DateTime.Now.AddHours(1.0));
+            }
+
+            return SessionUrlPrefix + stateId;
+        }
+
+        private static Guid GetMD5Hash(byte[] bytes)
+        {
+            using (MD5 md5 = MD5.Create())
+            {
+                return new Guid(md5.ComputeHash(bytes));
+            }
         }
 
         /// <exclude />
         public static string UnZipContent(string zippedContent)
         {
             if (zippedContent.IsNullOrEmpty()) return zippedContent;
+
+            if (zippedContent.StartsWith(SessionUrlPrefix))
+            {
+                Guid stateId = Guid.Parse(zippedContent.Substring(SessionUrlPrefix.Length));
+
+                using (new DataConnection())
+                {
+                    string urlFromSession;
+                    bool succeed = SessionStateManager.DefaultProvider.TryGetState(stateId, out urlFromSession);
+
+                    Verify.That(succeed, "Failed to extract a url part from session");
+
+                    return urlFromSession;
+                }
+            }
 
             string base64 = zippedContent.Replace("_", "+").Replace(".", "/").Replace("-", "=");
 
