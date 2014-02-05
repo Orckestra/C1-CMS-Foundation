@@ -36,12 +36,16 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 				        return document.getElementById(s).getBoundingClientRect();
 				    }, previewElementId);
 
+				    if (clientRect.height > 800) {
+				        clientRect.height = 800;
+				    }
+
 				    page.clipRect = clientRect;
 				} else {
 				    // Rendering an empty spot
 				    page.clipRect = { top: 0, left: 0, height: 1, width: 1 };
 				}
-			
+			    
 				page.render(output);
 				page.close();
 				
