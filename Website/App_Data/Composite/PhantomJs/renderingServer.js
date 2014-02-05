@@ -25,16 +25,21 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 			window.setTimeout(function () {
 				var previewElementId = "CompositeC1FunctionPreview";
 
-				var elementExists = page.evaluate(function(s){
-					return document.getElementById(s) != null;
+				var elementExists = page.evaluate(function (s) {
+				    var element = document.getElementById(s);
+
+				    return element != null && element.innerHTML != "";
 				}, previewElementId);
 				
-				if(elementExists) {
-					var clientRect = page.evaluate(function (s) { 
-						return document.getElementById(s).getBoundingClientRect();
-					}, previewElementId);
-					
-					page.clipRect = clientRect;
+				if (elementExists) {
+				    var clientRect = page.evaluate(function(s) {
+				        return document.getElementById(s).getBoundingClientRect();
+				    }, previewElementId);
+
+				    page.clipRect = clientRect;
+				} else {
+				    // Rendering an empty spot
+				    page.clipRect = { top: 0, left: 0, height: 1, width: 1 };
 				}
 			
 				page.render(output);

@@ -92,15 +92,17 @@ namespace Composite.Core.WebClient
                         imageCreator.SetTitle(title, new Size(textLeftPadding, 9), new Size(70, 15), Color.Black,
                             "Tahoma", 8.0f, FontStyle.Bold);
 
-                        if (textLines != null)
-                        {
-                            imageCreator.SetTextLines(textLines, new Size(textLeftPadding, 0), new Size(100, 80),
-                                Color.Black, "Tahoma", 8.0f, FontStyle.Regular);
-                        }
-
-                        if (previewImage != null)
+                        if (previewImage != null && previewImage.Width > 1 && previewImage.Height > 1)
                         {
                             imageCreator.SetPreviewImage(previewImage, new Size(10, 32), new Size(10, 16));
+                        }
+                        else
+                        {
+                            if (textLines != null)
+                            {
+                                imageCreator.SetTextLines(textLines, new Size(textLeftPadding, 0), new Size(100, 80),
+                                    Color.Black, "Tahoma", 8.0f, FontStyle.Regular);
+                            }
                         }
 
                         context.Response.ContentType = "image/png";
