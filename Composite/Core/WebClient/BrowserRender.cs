@@ -61,7 +61,7 @@ namespace Composite.Core.WebClient
                 {
                     if (_server.HasCrashed())
                     {
-                        _server.Dispose();
+                        Log.LogWarning("BrowserRenderer", "PhantomJs server crashed.");
                         _server = null;
                     }
 
@@ -143,11 +143,13 @@ namespace Composite.Core.WebClient
                     return;
                 }
 
+                string output;
                 string error;
 
                 if (!_process.HasExited)
                 {
                     _stdin.WriteLine("exit");
+                    output = _stdout.ReadToEnd();
                     error = _stderror.ReadToEnd();
 
                     _stdin.Close();
@@ -156,6 +158,7 @@ namespace Composite.Core.WebClient
                 }
                 else
                 {
+                    output = _stdout.ReadToEnd();
                     error = _stderror.ReadToEnd();
                 }
 
@@ -169,7 +172,7 @@ namespace Composite.Core.WebClient
 
                 if (exitCode != 0)
                 {
-                    throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, error: '{1}'".FormatWith(exitCode, error));
+                    throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, output: '{1}', error: '{2}'".FormatWith(exitCode, output, error));
                 }
             }
         }

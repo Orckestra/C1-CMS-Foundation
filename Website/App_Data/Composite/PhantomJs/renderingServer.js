@@ -1,7 +1,6 @@
 function BuildFunctionPreview(system, console, address, output, authCookie) {
-	var page = require('webpage').create(),
-		size;
-
+    var page = require('webpage').create();
+    
 	if(authCookie != null) {
 		phantom.deleteCookie(authCookie.name);
 		
@@ -13,6 +12,15 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 	}	
 		
 	page.viewportSize = { width: 1000, height: 600 };
+	page.settings.resourceTimeout = 5000;
+    
+	page.onResourceTimeout = function (request) {
+	    if (request.id == 1) {
+	        console.log('ERROR: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url));
+	        
+            phantom.exit();
+	    }
+	};
 	
 	page.open(address, function (status) {
 		
