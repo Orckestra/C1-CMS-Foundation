@@ -36,7 +36,12 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 				var elementExists = page.evaluate(function (s) {
 				    var element = document.getElementById(s);
 
-				    return element != null && element.innerHTML != "";
+				    if (element == null || element.innerHTML == "") {
+				        return false;
+				    }
+				    var clientRec = element.getBoundingClientRect();
+
+				    return clientRec.height > 0 && clientRec.width > 0;
 				}, previewElementId);
 				
 				if (elementExists) {
