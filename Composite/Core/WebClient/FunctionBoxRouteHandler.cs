@@ -73,9 +73,15 @@ namespace Composite.Core.WebClient
                 {
                     if (encodedMarkup != null)
                     {
-                        var fileName = GetPreviewFunctionPreviewImageFile(context);
-
-                        previewImage = new Bitmap(fileName);
+                        try
+                        {
+                            string fileName = GetPreviewFunctionPreviewImageFile(context);
+                            previewImage = new Bitmap(fileName);
+                        }
+                        catch (BrowserRenderException ex)
+                        {
+                            Log.LogError("Function preview", ex.Message);
+                        }
                     }
 
 

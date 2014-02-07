@@ -11,6 +11,14 @@ using Composite.Core.IO;
 
 namespace Composite.Core.WebClient
 {
+    internal class BrowserRenderException : InvalidOperationException
+    {
+        public BrowserRenderException(string message)
+            : base(message)
+        {
+        }
+    }
+
     internal static class BrowserRender
     {
         private static readonly string ImagesDropFolder = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
@@ -113,7 +121,7 @@ namespace Composite.Core.WebClient
 
                 if (!File.Exists(tempFilePath))
                 {
-                    throw new InvalidOperationException(output);
+                    throw new BrowserRenderException(output);
                 }
 
                 return tempFilePath;
