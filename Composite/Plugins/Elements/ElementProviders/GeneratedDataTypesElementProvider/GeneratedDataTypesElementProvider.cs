@@ -110,6 +110,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         public static ResourceHandle RootClosed { get { return GetIconHandle("generated-root-closed"); } }
 
         /// <exclude />
+        public static ResourceHandle DynamicDataTypeIcon { get { return GetIconHandle("generated-type-edit"); } }
+
+        /// <exclude />
         public static ResourceHandle InterfaceOpen { get { return GetIconHandle("generated-interface-open"); } }
 
         /// <exclude />
@@ -277,7 +280,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                         {
                             Label = Texts.GlobalDataFolderLabel,
                             ToolTip = Texts.GlobalDataFolderToolTip,
-                            HasChildren = GlobalDataTypeFacade.GetAllGlobalDataTypes().Any(),
+                            HasChildren = GlobalDataTypeFacade.GetAllGlobalDataTypes().Any() || DataFacade.GetAllKnownInterfaces().Any(t => t.IsStaticDataType()),
                             Icon = GeneratedDataTypesElementProvider.RootClosed,
                             OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
                         }
@@ -331,22 +334,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             if (!_websiteItemsView)
             {
-                bool staticDataTypesFolderHasChildren = DataFacade.GetAllKnownInterfaces().Any(t => t.IsStaticDataType());
-
-                Element staticDataTypesFolderElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId)))
-                {
-                    VisualData = new ElementVisualizedData
-                    {
-                        Label = Texts.StaticDataTypesFolderLabel,
-                        ToolTip = Texts.StaticDataTypesFolderToolTip, 
-                        HasChildren = staticDataTypesFolderHasChildren,
-                        Icon = GeneratedDataTypesElementProvider.RootClosed,
-                        OpenedIcon = GeneratedDataTypesElementProvider.RootOpen
-                    }
-                };
-
-                roots.Add(staticDataTypesFolderElement);
-
                 bool pageDataFolderHasChildren = PageFolderFacade.GetAllFolderTypes().Any();
 
                 Element pageDataFolderElement = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderRootEntityToken(_providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
@@ -504,11 +491,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)
             {
-                return GetGlobalDataTypesElements(searchToken, false).OrderBy(f => f.VisualData.Label).ToList();
-            }
-            if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId)
-            {
-                return GetGlobalDataTypesElements(searchToken, true).OrderBy(f => f.VisualData.Label).ToList();
+                return GetGlobalDataTypesElements(searchToken).OrderBy(f => f.VisualData.Label).ToList();
             }
             if (entityToken.Id == GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)
             {
@@ -524,31 +507,13 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
 
 
-        private List<Element> GetGlobalDataTypesElements(SearchToken searchToken, bool showStatic)
+        private List<Element> GetGlobalDataTypesElements(SearchToken searchToken)
         {
             List<Element> elements = new List<Element>();
 
-            IEnumerable<Type> interfaceList;
-            
-            if (_websiteItemsView)
-            {
-                // Showing both generated and custom static interfaces
-                interfaceList = DataFacade.GetAllInterfaces().Where(i => i.IsStaticDataType() || i.IsGenerated());
-            }
-            else
-            {
-                if (showStatic)
-                {
-                    interfaceList = DataFacade.GetAllInterfaces().Where(t => t.IsStaticDataType());
-                }
-                else
-                {
-                    interfaceList = DataFacade.GetGeneratedInterfaces();
-                }
-            }
+            IEnumerable<Type> interfaceList = DataFacade.GetAllInterfaces().Where(i => i.IsStaticDataType() || i.IsGenerated());
 
             interfaceList = interfaceList.OrderBy(t => t.FullName);
-
             interfaceList = interfaceList.Except(PageFolderFacade.GetAllFolderTypes());
             interfaceList = interfaceList.Except(PageMetaDataFacade.GetAllMetaDataTypes());
 
@@ -621,18 +586,22 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 }
 
                 bool failedToLoad = queryDataException != null;
+                bool isStaticType = type.IsStaticDataType();
+
+                var openIcon = _websiteItemsView || isStaticType ? InterfaceOpen : DynamicDataTypeIcon;
+                var closedIcon = _websiteItemsView ||isStaticType ? InterfaceClosed : DynamicDataTypeIcon;
 
                 Element element = new Element(_providerContext.CreateElementHandle(
                     new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName,
-                        showStatic ? GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId : GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
+                        GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
                         Label = label,
                         ToolTip = !failedToLoad ? label : GetNestedExceptionMessage(queryDataException),
                         HasChildren = hasChildren,
-                        Icon = !failedToLoad ? GeneratedDataTypesElementProvider.InterfaceClosed : ErrorIcon,
-                        OpenedIcon = !failedToLoad ? GeneratedDataTypesElementProvider.InterfaceOpen : ErrorIcon
+                        Icon = !failedToLoad ? openIcon : ErrorIcon,
+                        OpenedIcon = !failedToLoad ? closedIcon : ErrorIcon
                     }
                 };
 
@@ -865,17 +834,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 string typeName = TypeManager.SerializeType(type);
 
-                bool hasChildren = false;
-
                 Element element = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageDataFolderTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
                         Label = type.FullName,
                         ToolTip = type.FullName,
-                        HasChildren = hasChildren,
-                        Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
-                        OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
+                        HasChildren = false,
+                        Icon = isEditable ? DynamicDataTypeIcon : InterfaceClosed,
+                        OpenedIcon = isEditable ? DynamicDataTypeIcon : InterfaceOpen
                     }
                 };
 
@@ -969,17 +936,15 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 string typeName = TypeManager.SerializeType(type);
 
-                bool hasChildren = false;
-
                 Element element = new Element(_providerContext.CreateElementHandle(new GeneratedDataTypesElementProviderTypeEntityToken(typeName, _providerContext.ProviderName, GeneratedDataTypesElementProviderRootEntityToken.PageMetaDataTypeFolderId)))
                 {
                     VisualData = new ElementVisualizedData
                     {
                         Label = type.FullName,
                         ToolTip = type.FullName,
-                        HasChildren = hasChildren,
-                        Icon = GeneratedDataTypesElementProvider.InterfaceClosed,
-                        OpenedIcon = GeneratedDataTypesElementProvider.InterfaceOpen
+                        HasChildren = false,
+                        Icon = isEditable ? DynamicDataTypeIcon : InterfaceClosed,
+                        OpenedIcon = isEditable ? DynamicDataTypeIcon : InterfaceOpen
                     }
                 };
 
@@ -1221,9 +1186,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             IEnumerable<IGeneratedTypeWhiteList> whileList = DataFacade.GetData<IGeneratedTypeWhiteList>(true);
 
-            bool isWhiteListed = whileList.Where(f => f.TypeManagerTypeName == typeManagerTypeName).Any();
-
-            return isWhiteListed;
+            return whileList.Any(f => f.TypeManagerTypeName == typeManagerTypeName);
         }
 
 
@@ -1239,9 +1202,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 return new GeneratedDataTypesElementProviderTypeEntityToken(
                     TypeManager.SerializeType(type),
                     _providerContext.ProviderName,
-                    (_websiteItemsView || type.IsGenerated())
-                    ? GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
-                    : GeneratedDataTypesElementProviderRootEntityToken.StaticGlobalDataTypeFolderId
+                    GeneratedDataTypesElementProviderRootEntityToken.GlobalDataTypeFolderId
                 );
             }
 

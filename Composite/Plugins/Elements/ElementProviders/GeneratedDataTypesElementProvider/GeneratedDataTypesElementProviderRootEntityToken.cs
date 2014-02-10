@@ -1,3 +1,4 @@
+using System;
 using Composite.C1Console.Security;
 using Composite.C1Console.Security.SecurityAncestorProviders;
 
@@ -65,6 +66,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         public static string GlobalDataTypeFolderId { get { return "GlobalDataTypeFolder"; } }
 
         /// <exclude />
+        [Obsolete("Not used any more")]
         public static string StaticGlobalDataTypeFolderId { get { return "StaticGlobalDataTypeFolder"; } }
 
         /// <exclude />
