@@ -11,6 +11,7 @@
 		<asp:PlaceHolder ID="HeaderPlaceHolder" runat="server" />
 		<link rel="stylesheet" type="text/css" href="editFunctionCall.css.aspx"/> 
 		<script type="text/javascript" src="EditFunctionCallDialogPageBinding.js"></script>
+		<script type="text/javascript" src="EditFunctionCallTabBoxBinding.js"></script>
 		
 		<script type="text/javascript">
 		    /*
@@ -43,14 +44,31 @@
 				height="410" 
 				resizable="false"
 				label="<%= this.DialogLabel %>">
-				
-				<control1:FunctionCallDesigner ID="FunctionCallDesigner" runat="server" />
-				
+				<asp:HiddenField runat="server" ID="hdnActiveTab" Value="1"></asp:HiddenField>
+				<ui:tabbox id="maintabbox" selectedindex="<% =hdnActiveTab.Value %>" binding="EditFunctionCallTabBoxBinding">
+					<ui:tabs>
+						<ui:tab label="Basic" id="basictab"></ui:tab>
+						<ui:tab label="Advanced" id="advancedtab"></ui:tab>
+					</ui:tabs>
+					<ui:tabpanels>
+						<ui:tabpanel id="BasicTabPanel">
+							<asp:PlaceHolder ID="BasicPanel" runat="server">
+								<aspui:TextBox TextMode="MultiLine" runat="server" ID="BasicTextArea" Width="100%" Height="100%"/>
+							</asp:PlaceHolder>
+						</ui:tabpanel>
+						<ui:tabpanel id="AdvancedTabPanel">
+							<asp:PlaceHolder ID="AdvancedPanel" runat="server">
+								<control1:FunctionCallDesigner ID="FunctionCallDesigner" runat="server" />
+							</asp:PlaceHolder>
+
+						</ui:tabpanel>
+					</ui:tabpanels>
+				</ui:tabbox>
 				<ui:dialogtoolbar>
 					<ui:toolbarbody align="right" equalsize="true">
 						<ui:toolbargroup>
 							<ui:clickbutton label="${string:Website.Dialogs.LabelAccept}"
-								oncommand="bindingMap.renderingdialogpage.postframe ()"  
+								oncommand="bindingMap.renderingdialogpage.onOk ()"  
 								callbackid="buttonAccept" 
 								focusable="true"/>
 							<ui:clickbutton label="${string:Website.Dialogs.LabelCancel}" 

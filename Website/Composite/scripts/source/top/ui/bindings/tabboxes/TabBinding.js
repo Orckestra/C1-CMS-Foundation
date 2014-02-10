@@ -90,7 +90,7 @@ TabBinding.prototype.onBindingAttach = function () {
 	this.dispatchAction ( Binding.ACTION_ATTACHED );
 	
 	if ( this.getProperty ( "selected" ) == true ) {
-		this.containingTabBoxBinding.select ( this );
+		this.containingTabBoxBinding.select ( this, true );
 	}	
 }
 

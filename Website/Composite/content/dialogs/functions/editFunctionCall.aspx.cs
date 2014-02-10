@@ -16,168 +16,239 @@ using Composite.Core.ResourceSystem;
 
 namespace CompositeEditFunctionCall
 {
-    public partial class EditFunctionCall : Composite.Core.WebClient.XhtmlPage
-    {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            SetDesignerParameters();
+	public enum Tab
+	{
+		Basic = 0,
+		Advanced = 1
+	}
 
-            if (IsPostBack)
-            {
-                Ok_Click(null, null);
-            }
-        }
-
-        private void SetDesignerParameters()
-        {
-            if (!IsPostBack)
-            {
-                string typeName = Request.QueryString["type"];
-
-                if (typeName.IsNullOrEmpty())
-                {
-                    typeName = UrlUtils.UnZipContent(Request.QueryString["zip_type"]);
-                }
-
-                Type resultType = typeName == null ? typeof(object) : TypeManager.GetType(typeName);
+	public partial class EditFunctionCall : Composite.Core.WebClient.XhtmlPage
+	{
 
 
-                IsWidgetSelection = Request.QueryString["functiontype"] == "widget";
+		protected void Page_Load(object sender, EventArgs e)
+		{
+			SetDesignerParameters();
 
-                Guid stateId = Guid.NewGuid();
+			if (Request["__EVENTTARGET"] == "Basic")
+			{
+				ActiveTab = Tab.Basic;
+			}
+			else if (Request["__EVENTTARGET"] == "Advanced")
+			{
+				ActiveTab = ValidateAndSaveBasicTab() ? Tab.Advanced : Tab.Basic;
+			}
+			else if (Request["__EVENTTARGET"] == "buttonAccept")
+			{
+				if (ActiveTab == Tab.Basic && ValidateAndSaveBasicTab()||
+					ActiveTab == Tab.Advanced)
+				{
+					FunctionMarkup.Value = FunctionMarkupInState;
+					DialogDoAcceptPlaceHolder.Visible = true;
+				}
+			}
 
-                var state = new FunctionCallEditorStateSimple();
+			if (ActiveTab == Tab.Basic)
+			{
+				BasicTextArea.Text = FunctionMarkupInState;
+				BasicPanel.Visible = true;
+				AdvancedPanel.Visible = false;
+			}
+			else
+			{
+				BasicPanel.Visible = false;
+				AdvancedPanel.Visible = true;
+			}
+		}
 
-                IEnumerable<XElement> functionCalls = GetFunctionElementsFromQueryString();
-                if (IsWidgetSelection)
-                {
-                    functionCalls = ConvertToFunctions(functionCalls);
-                }
-                state.FunctionCallsXml = new XElement("functions", functionCalls.ToArray()).ToString();
-                state.MaxFunctionAllowed = MultiMode ? 1000 : 1;
-                state.AllowedResultTypes = new[] { resultType };
-                state.WidgetFunctionSelection = IsWidgetSelection;
-                state.ConsoleId = Request.QueryString["consoleid"] ?? string.Empty;
+		public Tab ActiveTab
+		{
+			get
+			{
+				Tab tab;
+				Enum.TryParse(hdnActiveTab.Value, out tab);
+				return tab;
+			}
+			set { hdnActiveTab.Value = ((int)value).ToString(); }
+		}
 
-                SessionStateManager.DefaultProvider.AddState<IFunctionCallEditorState>(stateId, state, DateTime.Now.AddDays(7.0));
+		private bool ValidateAndSaveBasicTab()
+		{
+			//Validate Basic Tab
+			var isValidBasicTab = false;
+			try
+			{
+				XElement.Parse(BasicTextArea.Text);
+				FunctionMarkupInState = BasicTextArea.Text;
+				isValidBasicTab = true;
+			}
+			catch
+			{
+			}
+			return isValidBasicTab;
+		}
 
-                FunctionCallDesigner.SessionStateProvider = SessionStateManager.DefaultProviderName;
-                FunctionCallDesigner.SessionStateId = stateId;
+		private void SetDesignerParameters()
+		{
+			if (!IsPostBack)
+			{
+				string typeName = Request.QueryString["type"];
 
-                SessionStateId = stateId;
-            }
+				if (typeName.IsNullOrEmpty())
+				{
+					typeName = UrlUtils.UnZipContent(Request.QueryString["zip_type"]);
+				}
 
-            FunctionCallDesigner.SessionStateProvider = SessionStateManager.DefaultProviderName;
-            FunctionCallDesigner.SessionStateId = SessionStateId;
-        }
+				Type resultType = typeName == null ? typeof(object) : TypeManager.GetType(typeName);
 
-        private IEnumerable<XElement> GetFunctionElementsFromQueryString()
-        {
-            string functionMarkup = this.Request.QueryString["functionMarkup"];
 
-            if (string.IsNullOrEmpty(functionMarkup))
-            {
-                functionMarkup = this.Request.Form["functionMarkup"];
-            }
+				IsWidgetSelection = Request.QueryString["functiontype"] == "widget";
 
-            const string ZipPrefix = "ZIP_";
-            if (functionMarkup != null && functionMarkup.StartsWith(ZipPrefix))
-            {
-                functionMarkup = UrlUtils.UnZipContent(functionMarkup.Substring(ZipPrefix.Length));
-            }
+				Guid stateId = Guid.NewGuid();
 
-            if (!string.IsNullOrEmpty(functionMarkup) && functionMarkup != "null")
-            {
-                XElement functionElement = XElement.Parse(functionMarkup);
+				var state = new FunctionCallEditorStateSimple();
 
-                if (functionElement.Name.Namespace == Namespaces.Function10)
-                {
-                    yield return functionElement;
-                }
-                else
-                {
-                    foreach (XElement multiFunctionElement in functionElement.Elements())
-                    {
-                        Verify.That(multiFunctionElement.Name.Namespace == Namespaces.Function10,
-                                    "Nested function elements does not belong to expected namespace");
+				IEnumerable<XElement> functionCalls = GetFunctionElementsFromQueryString();
+				if (IsWidgetSelection)
+				{
+					functionCalls = ConvertToFunctions(functionCalls);
+				}
+				state.FunctionCallsXml = new XElement("functions", functionCalls.ToArray()).ToString();
+				state.MaxFunctionAllowed = MultiMode ? 1000 : 1;
+				state.AllowedResultTypes = new[] { resultType };
+				state.WidgetFunctionSelection = IsWidgetSelection;
+				state.ConsoleId = Request.QueryString["consoleid"] ?? string.Empty;
 
-                        yield return multiFunctionElement;
-                    }
-                }
-            }
-        }
+				SessionStateManager.DefaultProvider.AddState<IFunctionCallEditorState>(stateId, state, DateTime.Now.AddDays(7.0));
 
-        protected string DialogLabel
-        {
-            get
-            {
-                return Request.QueryString["dialoglabel"] ?? StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", "DialogTitle");
-            }
-        }
+				FunctionCallDesigner.SessionStateProvider = SessionStateManager.DefaultProviderName;
+				FunctionCallDesigner.SessionStateId = stateId;
 
-        protected bool MultiMode
-        {
-            get
-            {
-                return bool.Parse(Request.QueryString["multimode"] ?? "false");
-            }
-        }
+				SessionStateId = stateId;
+			}
+		}
 
-        private bool IsWidgetSelection
-        {
-            get { return (bool)ViewState["IsWidgetSelection"]; }
-            set { ViewState["IsWidgetSelection"] = value; }
-        }
+		private IEnumerable<XElement> GetFunctionElementsFromQueryString()
+		{
+			string functionMarkup = this.Request.QueryString["functionMarkup"];
 
-        private Guid SessionStateId
-        {
-            get { return (Guid)ViewState["SessionStateId"]; }
-            set { ViewState["SessionStateId"] = value; }
-        }
+			if (string.IsNullOrEmpty(functionMarkup))
+			{
+				functionMarkup = this.Request.Form["functionMarkup"];
+			}
 
-        protected void Ok_Click(object sender, EventArgs e)
-        {
-            IFunctionCallEditorState state;
-            if (!SessionStateManager.DefaultProvider.TryGetState<IFunctionCallEditorState>(SessionStateId, out state))
-            {
-                throw new InvalidOperationException("Failed to get session state");
-            }
+			const string ZipPrefix = "ZIP_";
+			if (functionMarkup != null && functionMarkup.StartsWith(ZipPrefix))
+			{
+				functionMarkup = UrlUtils.UnZipContent(functionMarkup.Substring(ZipPrefix.Length));
+			}
 
-            string functionMarkup = "";
+			return GetFunctionElements(functionMarkup);
+		}
 
-            foreach (NamedFunctionCall functionCall in state.FunctionCalls)
-            {
-                XElement serializedFunctionCall = functionCall.FunctionCall.Serialize();
+		private IEnumerable<XElement> GetFunctionElements(string functionMarkup)
+		{
+			if (!string.IsNullOrEmpty(functionMarkup) && functionMarkup != "null")
+			{
+				XElement functionElement = XElement.Parse(functionMarkup);
 
-                var nestedFunctions = serializedFunctionCall.Descendants(Namespaces.Function10 + "function").Where(
-                    f => f.Parent.Name.Namespace != Namespaces.Function10 && f.Attribute(XNamespace.Xmlns + "f") == null).ToList();
+				if (functionElement.Name.Namespace == Namespaces.Function10)
+				{
+					yield return functionElement;
+				}
+				else
+				{
+					foreach (XElement multiFunctionElement in functionElement.Elements())
+					{
+						Verify.That(multiFunctionElement.Name.Namespace == Namespaces.Function10,
+									"Nested function elements does not belong to expected namespace");
 
-                foreach (var nestedFunction in nestedFunctions)
-                {
-                    nestedFunction.Add(new XAttribute(XNamespace.Xmlns + "f", Namespaces.Function10));
-                }
+						yield return multiFunctionElement;
+					}
+				}
+			}
+		}
 
-                functionMarkup += serializedFunctionCall.ToString();
+		protected string DialogLabel
+		{
+			get
+			{
+				return Request.QueryString["dialoglabel"] ?? StringResourceSystemFacade.GetString("Composite.Web.FormControl.FunctionCallsDesigner", "DialogTitle");
+			}
+		}
 
-                if (this.MultiMode == false) break;
-            }
+		protected bool MultiMode
+		{
+			get
+			{
+				return bool.Parse(Request.QueryString["multimode"] ?? "false");
+			}
+		}
 
-            if (this.MultiMode == true && string.IsNullOrEmpty(functionMarkup) == false)
-            {
-                functionMarkup = string.Format("<functions>{0}</functions>", functionMarkup);
-            }
+		private bool IsWidgetSelection
+		{
+			get { return (bool)ViewState["IsWidgetSelection"]; }
+			set { ViewState["IsWidgetSelection"] = value; }
+		}
 
-            this.FunctionMarkup.Value = functionMarkup;
+		private Guid SessionStateId
+		{
+			get { return (Guid)ViewState["SessionStateId"]; }
+			set { ViewState["SessionStateId"] = value; }
+		}
 
-            this.DialogDoAcceptPlaceHolder.Visible = true;
-        }
+		protected string FunctionMarkupInState
+		{
+			get
+			{
+				IFunctionCallEditorState state;
+				if (!SessionStateManager.DefaultProvider.TryGetState<IFunctionCallEditorState>(SessionStateId, out state))
+				{
+					throw new InvalidOperationException("Failed to get session state");
+				}
 
-        private IEnumerable<XElement> ConvertToFunctions(IEnumerable<XElement> functionCalls)
-        {
-            foreach (XElement element in functionCalls)
-            {
-                yield return element;
-            }
-        }
-    }
+				string functionMarkup = "";
+
+				foreach (NamedFunctionCall functionCall in state.FunctionCalls)
+				{
+					XElement serializedFunctionCall = functionCall.FunctionCall.Serialize();
+
+					var nestedFunctions = serializedFunctionCall.Descendants(Namespaces.Function10 + "function").Where(
+						f => f.Parent.Name.Namespace != Namespaces.Function10 && f.Attribute(XNamespace.Xmlns + "f") == null).ToList();
+
+					foreach (var nestedFunction in nestedFunctions)
+					{
+						nestedFunction.Add(new XAttribute(XNamespace.Xmlns + "f", Namespaces.Function10));
+					}
+
+					functionMarkup += serializedFunctionCall.ToString();
+
+					if (this.MultiMode == false) break;
+				}
+
+				if (this.MultiMode == true && string.IsNullOrEmpty(functionMarkup) == false)
+				{
+					functionMarkup = string.Format("<functions>{0}</functions>", functionMarkup);
+				}
+				return functionMarkup;
+			}
+			set
+			{
+				IFunctionCallEditorState state;
+				if (!SessionStateManager.DefaultProvider.TryGetState(SessionStateId, out state))
+				{
+					throw new InvalidOperationException("Failed to get session state");
+				}
+				(state as FunctionCallEditorStateSimple).FunctionCallsXml = new XElement("functions", GetFunctionElements(value)).ToString(); ;
+				SessionStateManager.DefaultProvider.SetState<IFunctionCallEditorState>(SessionStateId, state, DateTime.Now.AddDays(7.0));
+			}
+		}
+		private IEnumerable<XElement> ConvertToFunctions(IEnumerable<XElement> functionCalls)
+		{
+			foreach (XElement element in functionCalls)
+			{
+				yield return element;
+			}
+		}
+	}
 }

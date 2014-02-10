@@ -146,6 +146,7 @@
     <Content Include="App_Data\Composite\PhantomJs\phantomjs.exe" />
     <Content Include="App_Data\Composite\PhantomJs\renderingServer.js" />
     <Content Include="App_Data\PageTemplates\web.config" />
+    <Content Include="Composite\content\dialogs\functions\EditFunctionCallTabBoxBinding.js" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
     <Content Include="Composite\content\dialogs\postback\PostBackDialogPageBinding.js" />
     <Content Include="Composite\content\dialogs\util\comparestrings\comparestrings.aspx" />
