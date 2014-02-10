@@ -12,19 +12,19 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class UpdateTreeRefresher
     {
-        private RelationshipGraph _beforeGraph;
+        private readonly FlowControllerServicesContainer _flowControllerServicesContainer;
+        private readonly RelationshipGraph _beforeGraph;
         private RelationshipGraph _afterGraph;
-        private FlowControllerServicesContainer _flowControllerServicesContainer;
-        private bool _postRefreshMessegesCalled = false;
+        private bool _postRefreshMessegesCalled;
 
 
         /// <exclude />
         public UpdateTreeRefresher(EntityToken beforeUpdateEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            if (beforeUpdateEntityToken == null) throw new ArgumentNullException("beforeUpdateEntityToken");
-            if (flowControllerServicesContainer == null) throw new ArgumentNullException("flowControllerServicesContainer");
+            Verify.ArgumentNotNull(beforeUpdateEntityToken, "beforeUpdateEntityToken");
+            Verify.ArgumentNotNull(flowControllerServicesContainer, "flowControllerServicesContainer");
 
-            _beforeGraph = new RelationshipGraph(beforeUpdateEntityToken, RelationshipGraphSearchOption.Both);
+            _beforeGraph = new RelationshipGraph(beforeUpdateEntityToken, RelationshipGraphSearchOption.Both, false, false);
             _flowControllerServicesContainer = flowControllerServicesContainer;
         }
 
@@ -39,7 +39,7 @@ namespace Composite.C1Console.Actions
             
             _postRefreshMessegesCalled = true;
 
-            _afterGraph = new RelationshipGraph(afterUpdateEntityToken, RelationshipGraphSearchOption.Both);
+            _afterGraph = new RelationshipGraph(afterUpdateEntityToken, RelationshipGraphSearchOption.Both, false, false);
 
             IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 

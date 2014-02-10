@@ -1,6 +1,5 @@
-using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Composite.C1Console.Security
 {
@@ -8,17 +7,18 @@ namespace Composite.C1Console.Security
     {
         public static IEnumerable<EntityToken> FindEntityTokens(RelationshipGraph beforeGraph, RelationshipGraph afterGraph)
         {
-            if (beforeGraph == null) throw new ArgumentNullException("beforeGraph");
-            if (afterGraph == null) throw new ArgumentNullException("afterGraph");
+            Verify.ArgumentNotNull(beforeGraph, "beforeGraph");
+            Verify.ArgumentNotNull(afterGraph, "afterGraph");
 
-            List<RelationshipGraphNode> nodes = new List<RelationshipGraphNode>();
+            var nodes = new List<RelationshipGraphNode>();
 
             FindNodes(beforeGraph, afterGraph, nodes);
             FindNodes(afterGraph, beforeGraph, nodes);
 
             if (nodes.Count > 1)
             {
-                nodes = FilterNodes(nodes);
+                nodes = nodes.Where(n => n.ParentNodes.Any()).ToList(); // Ignoring root node
+                nodes = FilterNodes(nodes); 
             }
 
             foreach (RelationshipGraphNode node in nodes)
@@ -42,7 +42,7 @@ namespace Composite.C1Console.Security
 
                     if (foundNode != null)
                     {
-                        if ((currentNode == null) || (currentNode.Level > foundNode.Level))
+                        if (currentNode == null || currentNode.Level > foundNode.Level)
                         {
                             currentNode = foundNode;
                         }
@@ -51,7 +51,7 @@ namespace Composite.C1Console.Security
 
                 if (currentNode != null)
                 {
-                    if (foundNodes.Find(node => node.EntityToken.GetHashCode() == currentNode.EntityToken.GetHashCode()) == null)
+                    if (foundNodes.Find(node => node.EntityToken.Equals(currentNode.EntityToken)) == null)
                     {
                         foundNodes.Add(currentNode);
                     }
@@ -79,12 +79,12 @@ namespace Composite.C1Console.Security
             // rightNode -> A -> B -> C -> D 
             // Result: D;
 
-            if (leftNode.EntityToken.GetHashCode() != rightNode.EntityToken.GetHashCode())
+            if (!leftNode.EntityToken.Equals(rightNode.EntityToken))
             {
                 return lastLeftNode; 
             }
             
-            if ((leftNode.ChildNode != null) && (rightNode.ChildNode != null))
+            if (leftNode.ChildNode != null && rightNode.ChildNode != null)
             {
                 return FindNode(leftNode.ChildNode, rightNode.ChildNode, leftNode);
             }
@@ -94,24 +94,19 @@ namespace Composite.C1Console.Security
 
 
 
-        private static List<RelationshipGraphNode> FilterNodes(List<RelationshipGraphNode> nodesToFilter)
+        private static List<RelationshipGraphNode> FilterNodes(ICollection<RelationshipGraphNode> nodesToFilter)
         {
-            List<RelationshipGraphNode> resultNodes = new List<RelationshipGraphNode>();
+            var resultNodes = new List<RelationshipGraphNode>();
 
             foreach (RelationshipGraphNode nodeToFilter in nodesToFilter)
             {
-                foreach (RelationshipGraphNode node in nodesToFilter)
+                bool anyParentsInTheList =
+                    nodesToFilter.Any(node => !node.EntityToken.Equals(nodeToFilter.EntityToken)
+                                              && IsParent(nodeToFilter, node));
+
+                if (!anyParentsInTheList)
                 {
-                    if (node.EntityToken.GetHashCode() != nodeToFilter.EntityToken.GetHashCode())
-                    {
-                        if (resultNodes.Find(n => n.EntityToken.GetHashCode() == nodeToFilter.EntityToken.GetHashCode()) == null)
-                        {
-                            if (IsParent(nodeToFilter, node) == false)
-                            {
-                                resultNodes.Add(nodeToFilter);
-                            }
-                        }
-                    }
+                    resultNodes.Add(nodeToFilter);
                 }
             }
 
@@ -124,18 +119,10 @@ namespace Composite.C1Console.Security
         {
             foreach (RelationshipGraphNode parentNode in possibleChildNode.ParentNodes)
             {
-                if (parentNode.EntityToken.GetHashCode() == possibleParentNode.EntityToken.GetHashCode())
+                if (parentNode.EntityToken.Equals(possibleParentNode.EntityToken) 
+                    || IsParent(parentNode, possibleParentNode))
                 {
                     return true;
-                }
-                else
-                {
-                    bool result = IsParent(parentNode, possibleParentNode);
-
-                    if (result)
-                    {
-                        return true;
-                    }
                 }
             }
 

@@ -41,29 +41,29 @@ namespace Composite.C1Console.Security
             {
                 return;
             }
-            else if (count == 1)
+
+            if (count == 1)
             {
                 RelationshipOrientedGraphNode parentNode = node.Parents.Single();
-                if (processedNodes.Contains(parentNode) == false)
+                if (!processedNodes.Contains(parentNode))
                 {
                     currentPath.Add(parentNode.EntityToken);
 
                     GetAllPathsImpl(parentNode, currentPath, allPaths, processedNodes);
                 }
+                return;
             }
-            else
+            
+            allPaths.Remove(currentPath);
+            foreach (RelationshipOrientedGraphNode parentNode in node.Parents)
             {
-                allPaths.Remove(currentPath);
-                foreach (RelationshipOrientedGraphNode parentNode in node.Parents)
+                if (!processedNodes.Contains(parentNode))
                 {
-                    if (processedNodes.Contains(parentNode) == false)
-                    {
-                        List<EntityToken> newCurrentPath = new List<EntityToken>(currentPath);
-                        allPaths.Add(newCurrentPath);
-                        newCurrentPath.Add(parentNode.EntityToken);
+                    var newCurrentPath = new List<EntityToken>(currentPath);
+                    allPaths.Add(newCurrentPath);
+                    newCurrentPath.Add(parentNode.EntityToken);
 
-                        GetAllPathsImpl(parentNode, newCurrentPath, allPaths, new List<RelationshipOrientedGraphNode>(processedNodes));
-                    }
+                    GetAllPathsImpl(parentNode, newCurrentPath, allPaths, new List<RelationshipOrientedGraphNode>(processedNodes));
                 }
             }
         }
@@ -240,9 +240,7 @@ namespace Composite.C1Console.Security
 
         private RelationshipOrientedGraphNode CreateNewNode(EntityToken entityToken)
         {
-            RelationshipOrientedGraphNode node = new RelationshipOrientedGraphNode(entityToken, Expand);
-
-            return node;
+            return new RelationshipOrientedGraphNode(entityToken, Expand);
         }
     }
 
@@ -284,23 +282,32 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class RelationshipGraph
     {
-        private RelationshipGraphSearchOption _searchOption;
+        private readonly RelationshipGraphSearchOption _searchOption;
+        private readonly Dictionary<int, List<RelationshipGraphNode>> _levels = new Dictionary<int, List<RelationshipGraphNode>>();
+        private readonly HashSet<EntityToken> _visitedEntityTokens = new HashSet<EntityToken>();
+        private readonly bool _excludeReoccuringNodes;
 
-        private Dictionary<int, List<RelationshipGraphNode>> _levels = new Dictionary<int, List<RelationshipGraphNode>>();
-        private HashSet<EntityToken> _visitedEntityTokens = new HashSet<EntityToken>();
         private bool _moreLevelsToExpend;
 
         /// <exclude />
         public RelationshipGraph(EntityToken sourceEntityToken, RelationshipGraphSearchOption searchOption)
-            : this(sourceEntityToken, searchOption, false)
+            : this(sourceEntityToken, searchOption, false, true)
+        {
+        }
+
+        /// <exclude />
+        public RelationshipGraph(EntityToken sourceEntityToken, RelationshipGraphSearchOption searchOption, bool lazyEvaluation)
+            : this(sourceEntityToken, searchOption, lazyEvaluation, true)
         {
         }
 
 
         /// <exclude />
-        public RelationshipGraph(EntityToken sourceEntityToken, RelationshipGraphSearchOption searchOption, bool lazyEvaluation)
+        public RelationshipGraph(EntityToken sourceEntityToken, RelationshipGraphSearchOption searchOption, bool lazyEvaluation, bool excludeReoccuringNodes)
         {
-            if (sourceEntityToken == null) throw new ArgumentNullException("sourceEntityToken");
+            _excludeReoccuringNodes = excludeReoccuringNodes;
+
+            Verify.ArgumentNotNull(sourceEntityToken, "sourceEntityToken");
 
             _searchOption = searchOption;
 
@@ -338,6 +345,8 @@ namespace Composite.C1Console.Security
         {
             get
             {
+                Verify.That(!_excludeReoccuringNodes, "It is neccessary to set 'excludeReoccuringNodes' to 'false' to enable TopNodes calculation.");
+
                 foreach (List<RelationshipGraphNode> nodes in _levels.Values)
                 {
                     foreach (RelationshipGraphNode node in nodes)
@@ -376,7 +385,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             foreach (RelationshipGraphLevel level in this.Levels)
             {
@@ -442,10 +451,10 @@ namespace Composite.C1Console.Security
 
             foreach (RelationshipGraphNode node in nodes)
             {
-                if ((_searchOption == RelationshipGraphSearchOption.Native) || (_searchOption == RelationshipGraphSearchOption.Both))
+                if (_searchOption == RelationshipGraphSearchOption.Native || _searchOption == RelationshipGraphSearchOption.Both)
                 {
                     IEnumerable<EntityToken> parentEntityTokens;
-                    if (EntityTokenCacheFacade.GetCachedNativeParents(node.EntityToken, out parentEntityTokens, userName) == false)                    
+                    if (!EntityTokenCacheFacade.GetCachedNativeParents(node.EntityToken, out parentEntityTokens, userName))
                     {
                         parentEntityTokens = SecurityAncestorFacade.GetParents(node.EntityToken);
 
@@ -458,11 +467,11 @@ namespace Composite.C1Console.Security
                     }
                 }
 
-                if ((_searchOption == RelationshipGraphSearchOption.Hooked) || (_searchOption == RelationshipGraphSearchOption.Both))
+                if (_searchOption == RelationshipGraphSearchOption.Hooked || _searchOption == RelationshipGraphSearchOption.Both)
                 {
                     IEnumerable<EntityToken> parentEntityTokens;
 
-                    if (EntityTokenCacheFacade.GetCachedHookingParents(node.EntityToken, out parentEntityTokens, userName) == false)
+                    if (!EntityTokenCacheFacade.GetCachedHookingParents(node.EntityToken, out parentEntityTokens, userName))
                     {
                         IEnumerable<EntityToken> auxiliaryParentEntityTokens = AuxiliarySecurityAncestorFacade.GetParents(node.EntityToken);
                         IEnumerable<EntityToken> hookingParentEntityTokens = HookingFacade.GetHookies(node.EntityToken);
@@ -487,7 +496,7 @@ namespace Composite.C1Console.Security
             int newLevelNumber = levelNumber + 1;
 
             List<RelationshipGraphNode> levelNodes;
-            if (_levels.TryGetValue(newLevelNumber, out levelNodes) == false)
+            if (!_levels.TryGetValue(newLevelNumber, out levelNodes))
             {
                 levelNodes = new List<RelationshipGraphNode>();
                 _levels.Add(newLevelNumber, levelNodes);
@@ -501,10 +510,20 @@ namespace Composite.C1Console.Security
                     continue;
                 }
 
-                if (_visitedEntityTokens.Contains(parent)) continue; // We have already visisted this entity token, no new information here
-                _visitedEntityTokens.Add(parent);
-
-                RelationshipGraphNode parentNode = new RelationshipGraphNode(parent, newLevelNumber, nodeType);
+                if (_visitedEntityTokens.Contains(parent))
+                {
+                    if (_excludeReoccuringNodes)
+                    {
+                        continue; // We have already visisted this entity token, no new information here
+                    }
+                }
+                else
+                {
+                    _visitedEntityTokens.Add(parent);
+                }
+                
+            
+                var parentNode = new RelationshipGraphNode(parent, newLevelNumber, nodeType);
 
                 levelNodes.Add(parentNode);
 

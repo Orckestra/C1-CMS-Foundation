@@ -1,6 +1,6 @@
 using System;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
+using Composite.Core;
 using Composite.C1Console.Security;
 
 
@@ -12,19 +12,19 @@ namespace Composite.C1Console.Actions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class AddNewTreeRefresher
     {
-        private RelationshipGraph _beforeGraph;
+        private readonly FlowControllerServicesContainer _flowControllerServicesContainer;
+        private readonly RelationshipGraph _beforeGraph;
         private RelationshipGraph _afterGraph;
-        private FlowControllerServicesContainer _flowControllerServicesContainer;
-        private bool _postRefreshMessegesCalled = false;
+        private bool _postRefreshMessegesCalled;
 
 
         /// <exclude />
         public AddNewTreeRefresher(EntityToken parentEntityToken, FlowControllerServicesContainer flowControllerServicesContainer)
         {
-            if (parentEntityToken == null) throw new ArgumentNullException("parentEntityToken");
-            if (flowControllerServicesContainer == null) throw new ArgumentNullException("flowControllerServicesContainer");
+            Verify.ArgumentNotNull(parentEntityToken, "parentEntityToken");
+            Verify.ArgumentNotNull(flowControllerServicesContainer, "flowControllerServicesContainer");
 
-            _beforeGraph = new RelationshipGraph(parentEntityToken, RelationshipGraphSearchOption.Both);
+            _beforeGraph = new RelationshipGraph(parentEntityToken, RelationshipGraphSearchOption.Both, false, false);
             _flowControllerServicesContainer = flowControllerServicesContainer;
         }
 
@@ -33,23 +33,19 @@ namespace Composite.C1Console.Actions
         /// <exclude />
         public void PostRefreshMesseges(EntityToken newChildEntityToken)
         {
-            if (newChildEntityToken == null) throw new ArgumentNullException("newChildEntityToken");
-
-            if (_postRefreshMessegesCalled)
-            {
-                throw new InvalidOperationException("Only one PostRefreshMesseges call is allowed");
-            }
+            Verify.ArgumentNotNull(newChildEntityToken, "newChildEntityToken");
+            Verify.That(!_postRefreshMessegesCalled, "Only one PostRefreshMesseges call is allowed");
 
             _postRefreshMessegesCalled = true;
 
-            _afterGraph = new RelationshipGraph(newChildEntityToken, RelationshipGraphSearchOption.Both);
+            _afterGraph = new RelationshipGraph(newChildEntityToken, RelationshipGraphSearchOption.Both, false, false);
 
             IManagementConsoleMessageService messageService = _flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
             foreach (EntityToken entityToken in RefreshBeforeAfterEntityTokenFinder.FindEntityTokens(_beforeGraph, _afterGraph))
             {
                 messageService.RefreshTreeSection(entityToken);
-                LoggingService.LogVerbose("AddNewTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
+                Log.LogVerbose("AddNewTreeRefresher", string.Format("Refreshing EntityToken: Type = {0}, Source = {1}, Id = {2}, EntityTokenType = {3}", entityToken.Type, entityToken.Source, entityToken.Id, entityToken.GetType()));
             }
         }
     }
