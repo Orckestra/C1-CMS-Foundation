@@ -84,6 +84,11 @@ img.compositeFieldReferenceWysiwygRepresentation, img.compositeFunctionWysiwygRe
   margin: 0px; padding: 0px;
 }
 
+img.compositeFunctionWysiwygRepresentation:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 15px gray;
+}
+
 img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
     min-width:100px; 
     min-height:77px; 

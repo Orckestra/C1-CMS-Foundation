@@ -122,12 +122,14 @@ namespace Composite.C1Console.Drawing
                 if (_titleItem != null)
                 {
                     int counter = 0;
+
+                    using (var solidBrush = new SolidBrush(_titleItem.FontColor))
                     foreach (string line in _titleItem.Lines)
                     {
                         int x = _titleItem.TopLeftPadding.Width;
                         int y = _titleItem.TopLeftPadding.Height + counter * (this.LinePadding + _titleItem.LineHeight);
 
-                        graphics.DrawString(line, _titleItem.Font, new SolidBrush(_titleItem.FontColor), x, y);
+                        graphics.DrawString(line, _titleItem.Font, solidBrush, x, y);
 
                         counter++;
                     }
@@ -140,12 +142,14 @@ namespace Composite.C1Console.Drawing
                 if (_wrappedTextItem != null)
                 {
                     int counter = 0;
+
+                    using (var solidBrush = new SolidBrush(_wrappedTextItem.FontColor))
                     foreach (string line in _wrappedTextItem.Lines)
                     {
                         int x = _wrappedTextItem.TopLeftPadding.X;
                         int y = _wrappedTextItem.TopLeftPadding.Y + counter * (this.LinePadding + _wrappedTextItem.LineHeight) + titleHeightWidthPadding;
 
-                        graphics.DrawString(line, _wrappedTextItem.Font, new SolidBrush(_wrappedTextItem.FontColor), x, y);
+                        graphics.DrawString(line, _wrappedTextItem.Font, solidBrush, x, y);
 
                         counter++;
                     }
@@ -153,12 +157,13 @@ namespace Composite.C1Console.Drawing
                 else if (_textLinesItem != null)
                 {
                     int counter = 0;
+                    using (var solidBrush = new SolidBrush(_textLinesItem.FontColor))
                     foreach (string line in _textLinesItem.Lines)
                     {
                         int x = _textLinesItem.TopLeftPadding.Width;
                         int y = _textLinesItem.TopLeftPadding.Height + counter * (this.LinePadding + _textLinesItem.LineHeight) + titleHeightWidthPadding;
 
-                        graphics.DrawString(line, _textLinesItem.Font, new SolidBrush(_textLinesItem.FontColor), x, y);
+                        graphics.DrawString(line, _textLinesItem.Font, solidBrush, x, y);
 
                         counter++;
                     }
@@ -476,12 +481,10 @@ namespace Composite.C1Console.Drawing
         {
             Color color = _templateBitmap.GetPixel(originalOffsetX, originalOffsetY);
 
-            for (int x = 0; x < width; ++x)
+            using (Graphics g = Graphics.FromImage(_currentBitmap))            
+            using (var solidBrush = new SolidBrush(color))
             {
-                for (int y = 0; y < height; ++y)
-                {
-                    _currentBitmap.SetPixel(x + newOffsetX, y + newOffsetY, color);
-                }
+                g.FillRectangle(solidBrush, newOffsetX, newOffsetY, width, height);
             }
         }
 

@@ -28,8 +28,8 @@ namespace Composite.Renderers
                 return;
             }
 
-            string templateIdStr = context.Request["t"];
-            string placeholderName = context.Request["p"];
+            string pageIdStr = context.Request["page"];
+            string placeholderName = context.Request["ph"];
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
 
@@ -40,10 +40,10 @@ namespace Composite.Renderers
 
             using (var c = new DataConnection())
             {
-                Guid templateId;
-                if (!string.IsNullOrEmpty(templateIdStr) && Guid.TryParse(templateIdStr, out templateId))
+                Guid pageId;
+                if (!string.IsNullOrEmpty(pageIdStr) && Guid.TryParse(pageIdStr, out pageId))
                 {
-                    page = c.Get<IPage>().First(p => p.TemplateId == templateId);
+                    page = c.Get<IPage>().Single(p => p.Id == pageId);
                 }
                 else
                 {
