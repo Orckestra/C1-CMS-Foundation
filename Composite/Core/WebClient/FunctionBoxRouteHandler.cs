@@ -126,7 +126,7 @@ namespace Composite.Core.WebClient
 
                 Point titlePosition = new Point(25, (headerHeight - titleSize.Height) / 2);
 
-                int headerWidth = titlePosition.X + titleSize.Width + 20;
+                int headerWidth = titlePosition.X + titleSize.Width + 15;
 
                 Size totalSize = new Size(
                     Math.Max(headerWidth, previewImage.Width), 
@@ -153,7 +153,8 @@ namespace Composite.Core.WebClient
                         graphics.DrawString(functionTitle, font, solidBrush, titlePosition);
                     }
 
-                    Point prevewImageOffset = new Point(0, headerHeight);
+                    Point prevewImageOffset = new Point(
+                        (Math.Max(totalSize.Width - 10, previewImage.Width) - previewImage.Width) / 2, headerHeight);
 
                     // Preview image
                     graphics.DrawImage(previewImage, prevewImageOffset);
