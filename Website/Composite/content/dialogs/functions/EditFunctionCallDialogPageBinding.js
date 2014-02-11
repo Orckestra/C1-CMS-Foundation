@@ -55,8 +55,6 @@ EditFunctionCallDialogPageBinding.prototype.onBeforePageInitialize = function ()
 	var box = this.bindingDocument.getElementById(EditFunctionCallDialogPageBinding.ID_MAINTABBOX);
 	if (box != null) {
 		this._tabBoxBinding = UserInterface.getBinding(box);
-		this._tabBoxBinding.addActionListener(TabBoxBinding.ACTION_SELECTED, this);
-		this._tabBoxBinding.addActionListener(TabBoxBinding.ACTION_UNSELECTED, this);
 	}
 
 	EditorPageBinding.superclass.onBeforePageInitialize.call(this);
@@ -85,35 +83,6 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function (action) {
 		case ResponseBinding.ACTION_FAILURE:
 			this._successHandler = null;
 			break;
-
-		case TabBoxBinding.ACTION_SELECTED:
-			console.log("TabBoxBinding.ACTION_SELECTED");
-
-			if (binding == this._tabBoxBinding) {
-				var tab = binding.getSelectedTabBinding();
-				if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
-					this.bindingWindow.__doPostBack("Advanced");
-				}
-			}
-			action.consume();
-			break;
-
-		case TabBoxBinding.ACTION_UNSELECTED:
-			console.log("TabBoxBinding.ACTION_UNSELECTED");
-			if (binding == this._tabBoxBinding) {
-				var tab = binding.getSelectedTabBinding();
-				if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
-
-					if (this.validateAllDataBindings()) {
-
-						this.postframe(
-							 function () {
-							 	self.bindingWindow.__doPostBack("Basic");
-							 });
-					}
-				}
-			}
-			break;
 	}
 }
 
@@ -123,14 +92,16 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function (action) {
 EditFunctionCallDialogPageBinding.prototype.onOk = function () {
 
 	var tab = this._tabBoxBinding.getSelectedTabBinding();
-	if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
-		var self = this;
-		this.postframe(
-			function() {
-				self.bindingWindow.__doPostBack("buttonAccept");
-			});
-	} else {
-		this.bindingWindow.__doPostBack("buttonAccept");
+	if (this.validateAllDataBindings()) {
+		if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
+			var self = this;
+			this.postframe(
+				function () {
+					self.bindingWindow.__doPostBack("buttonAccept");
+				});
+		} else {
+			this.bindingWindow.__doPostBack("buttonAccept");
+		}
 	}
 }
 
