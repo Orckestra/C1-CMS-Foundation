@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
+using Composite.C1Console.Workflow;
 
 
 namespace Composite.C1Console.Trees
@@ -137,11 +138,19 @@ namespace Composite.C1Console.Trees
         {
             IEnumerable<Element> elements = OnGetElements(parentEntityToken, dynamicContext);
 
+            var localizeDataWorkflow = WorkflowFacade.GetWorkflowType("Composite.C1Console.Trees.Workflows.LocalizeDataWorkflow");
+
             foreach (Element element in elements)
             {
-                foreach (ActionNode actionNode in this.ActionNodes)
+                bool isForeignLocaleDataItem = element.Actions
+                        .Any(x => ((WorkflowActionToken)x.ActionHandle.ActionToken).WorkflowType == localizeDataWorkflow);
+
+                if (!isForeignLocaleDataItem)
                 {
-                    actionNode.AddAction(element.AddAction, element.ElementHandle.EntityToken, dynamicContext);
+                    foreach (ActionNode actionNode in this.ActionNodes)
+                    {
+                        actionNode.AddAction(element.AddAction, element.ElementHandle.EntityToken, dynamicContext);
+                    }
                 }
 
                 yield return element;
