@@ -39,6 +39,7 @@ EditFunctionCallTabBoxBinding.prototype.select = function (arg, isManaged) {
 
 	if (!isManaged) {
 		var tab = arg;
+		var self = this;
 		var page = this.bindingWindow.bindingMap.renderingdialogpage;
 		if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
 			if (page.validateAllDataBindings()) {
@@ -50,11 +51,11 @@ EditFunctionCallTabBoxBinding.prototype.select = function (arg, isManaged) {
 			if (page.validateAllDataBindings()) {
 				page.postframe(
 					function () {
+						self.select(tab, true);
 						page.bindingWindow.__doPostBack("Basic");
 					});
-			} else {
-				return;
 			}
+			return;
 		}
 	}
 	EditFunctionCallTabBoxBinding.superclass.select.call(this, arg, isManaged);
