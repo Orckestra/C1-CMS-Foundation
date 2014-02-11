@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Composite;
+using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.WebChannel;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
+using Composite.Core.WebClient.UiControlLib;
 using Composite.Functions;
 using Composite.Core.Types;
 using Composite.Core.WebClient.FunctionCallEditor;
@@ -27,8 +28,6 @@ namespace CompositeEditFunctionCall
 	public partial class EditFunctionCall : Composite.Core.WebClient.XhtmlPage
 	{
 	    private const string LogTitle = "EditFunctionCall";
-        private static readonly XName ParameterNodeXName = Namespaces.Function10 + "param";
-        private static readonly XName ParameterValueElementXName = Namespaces.Function10 + "paramelement";
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
@@ -74,7 +73,7 @@ namespace CompositeEditFunctionCall
 	        IFunction function = FunctionFacade.GetFunction(functionName);
 
             var bindings = new Dictionary<string, object>();
-            var parameterNodes = functionMarkup.Elements(ParameterNodeXName).ToDictionary(e => (string)e.Attribute("name"));
+            var parameterNodes = FunctionMarkupHelper.GetParameterNodes(functionMarkup);
 
             foreach (var parameterProfile in function.ParameterProfiles)
             {
@@ -84,7 +83,7 @@ namespace CompositeEditFunctionCall
 
 	            if (parameterNodes.TryGetValue(parameterProfile.Name, out parameterNode))
 	            {
-                    parameterValue = GetParameterValue(parameterNode, parameterProfile);
+                    parameterValue = FunctionMarkupHelper.GetParameterValue(parameterNode, parameterProfile);
 	            }
 	            else
 	            {
@@ -113,15 +112,13 @@ namespace CompositeEditFunctionCall
 	            return true;
 	        }
 	        
-	        webUiControl.BindStateToControlProperties();
-
 	        var validationErrors = formTreeCompiler.SaveAndValidateControlProperties();
 
 	        if (validationErrors.Any())
 	        {
 	            if (showValidationErrors)
 	            {
-	                // TODO: show validation errors
+	                ShowServerValidationErrors(formTreeCompiler, validationErrors);
 	            }
                 
 	            return false;
@@ -132,23 +129,9 @@ namespace CompositeEditFunctionCall
                 XElement parameterNode;
                 parameterNodes.TryGetValue(parameterProfile.Name, out parameterNode);
 
-	            object newValue = bindings[parameterProfile.Name];
+	            object value = bindings[parameterProfile.Name];
 
-	            bool newValueNotEmpty = newValue != null
-	                                    && (!(newValue is IList) || ((IList) newValue).Count > 0)
-	                                    && !(parameterProfile.IsRequired && newValue as string == string.Empty);
-
-	            if (parameterNode != null)
-	            {
-                    parameterNode.Remove();
-	            }
-
-	            if (newValueNotEmpty && newValue != parameterProfile.GetDefaultValue())
-	            {
-	                var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, newValue);
-
-	                functionMarkup.Add(newConstantParam.Serialize());
-	            }
+                FunctionMarkupHelper.SetParameterValue(functionMarkup, parameterProfile, value);
 	        }
 
 	        FunctionMarkupInState = functionMarkup.ToString();
@@ -156,47 +139,15 @@ namespace CompositeEditFunctionCall
             return true;
 	    }
 
-        private object GetParameterValue(XElement parameterNode, ParameterProfile parameterProfile)
+        private void ShowServerValidationErrors(FormTreeCompiler formTreeCompiler, Dictionary<string, Exception> serverValidationErrors)
         {
-            // TODO: merge with FunctionCallEditor's code
-
-            List<XElement> parameterElements = parameterNode.Elements(ParameterValueElementXName).ToList();
-            if (parameterElements.Any())
+            foreach (var serverValidationError in serverValidationErrors)
             {
-                return parameterElements.Select(element => element.Attribute("value").Value).ToList();
+                string controlId = formTreeCompiler.GetBindingToClientIDMapping()[serverValidationError.Key];
+                string message = StringResourceSystemFacade.ParseString(serverValidationError.Value.Message);
+
+                plhErrors.Controls.Add(new FieldMessage(controlId, message));
             }
-
-            var valueAttr = parameterNode.Attribute("value");
-            if (valueAttr != null)
-            {
-                try
-                {
-                    return ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(LogTitle, ex);
-
-                    return parameterProfile.GetDefaultValue();
-                }
-            }
-
-            if (parameterNode.Elements().Any())
-            {
-                Type paramType = parameterProfile.Type;
-
-                if (paramType.IsSubclassOf(typeof(XContainer))
-                    || (paramType.IsGenericType
-                        && paramType.GetGenericTypeDefinition() == typeof(Lazy<>)
-                        && paramType.GetGenericArguments()[0].IsSubclassOf(typeof(XContainer))))
-                {
-                    return ValueTypeConverter.Convert(parameterNode.Elements().First(), parameterProfile.Type);
-                }
-
-                throw new NotImplementedException("Not supported type of function parameter element node: '{0}'".FormatWith(paramType.FullName));
-            }
-
-            return parameterProfile.GetDefaultValue();
         }
 
 		public Tab ActiveTab

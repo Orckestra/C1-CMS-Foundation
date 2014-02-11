@@ -37,7 +37,6 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
     private static readonly XName ParameterNodeXName = Namespaces.Function10 + "param";
     private static readonly XName FunctionNodeXName = Namespaces.Function10 + "function";
     private static readonly XName WidgetFunctionNodeXName = Namespaces.Function10 + "widgetfunction";
-    private static readonly XName ParameterValueElementXName = Namespaces.Function10 + "paramelement";
 
     private static readonly string SessionStateProviderQueryKey = "StateProvider";
     private static readonly string StateIdQueryKey = "Handle";
@@ -1116,7 +1115,7 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         btnConstant.Attributes["isdisabled"] = "true";
         btnConstant.Attributes["image"] = "${icon:accept}";
 
-        object parameterValue = GetParameterValue(parameterNode, parameterProfile);
+        object parameterValue = FunctionMarkupHelper.GetParameterValue(parameterNode, parameterProfile);
 
         // Adding a widget
         var bindings = new Dictionary<string, object> { { parameterProfile.Name, parameterValue } };
@@ -1157,51 +1156,12 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
         WidgetIsShown = true;
     }
 
-    private object GetParameterValue(XElement parameterNode, ParameterProfile parameterProfile)
-    {
-        List<XElement> parameterElements = parameterNode.Elements(ParameterValueElementXName).ToList();
-        if (parameterElements.Any())
-        {
-            return parameterElements.Select(element => element.Attribute("value").Value).ToList();
-        }
-        
-        var valueAttr = parameterNode.Attribute("value");
-        if (valueAttr != null)
-        {
-            try
-            {
-                return ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
-            }
-            catch (Exception ex)
-            {
-                Log.LogError(LogTitle, ex);
-
-                return parameterProfile.GetDefaultValue();
-            }
-        }
-
-        if (parameterNode.Elements().Any())
-        {
-            Type paramType = parameterProfile.Type;
-                
-            if (paramType.IsSubclassOf(typeof (XContainer))
-                || (paramType.IsGenericType
-                    && paramType.GetGenericTypeDefinition() == typeof(Lazy<>)
-                    && paramType.GetGenericArguments()[0].IsSubclassOf(typeof(XContainer))))
-            {
-                return ValueTypeConverter.Convert(parameterNode.Elements().First(), parameterProfile.Type);
-            }
-            
-            throw new NotImplementedException("Not supported type of function parameter element node: '{0}'".FormatWith(paramType.FullName));
-        }
-
-        return parameterProfile.GetDefaultValue();
-    }
 
     private static bool FunctionIsOnTopLevel(XElement functionNode)
     {
         return functionNode.Parent.Name.LocalName == "functions";
     }
+
 
     private void ShowInputParameterSelector(ParameterProfile parameterProfile, XElement parameterName)
     {

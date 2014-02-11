@@ -56,6 +56,9 @@
 						        <asp:PlaceHolder ID="BasicPanel" runat="server">
 							    </asp:PlaceHolder>
 						    </div>
+                            <div id="errors" style="display: none" class="updatezone">
+                                <asp:PlaceHolder runat="server" ID="plhErrors"></asp:PlaceHolder>
+                            </div>
 						</ui:tabpanel>
 						<ui:tabpanel id="AdvancedTabPanel">
 							<asp:PlaceHolder ID="AdvancedPanel" runat="server">
