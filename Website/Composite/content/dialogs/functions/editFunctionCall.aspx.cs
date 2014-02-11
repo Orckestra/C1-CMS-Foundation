@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Xml.Linq;
 using Composite;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.WebClient;
 using Composite.Functions;
@@ -24,42 +26,178 @@ namespace CompositeEditFunctionCall
 
 	public partial class EditFunctionCall : Composite.Core.WebClient.XhtmlPage
 	{
-
+	    private const string LogTitle = "EditFunctionCall";
+        private static readonly XName ParameterNodeXName = Namespaces.Function10 + "param";
+        private static readonly XName ParameterValueElementXName = Namespaces.Function10 + "paramelement";
 
 		protected void Page_Load(object sender, EventArgs e)
 		{
 			SetDesignerParameters();
 
-			if (Request["__EVENTTARGET"] == "Basic")
+		    string eventTarget = Request["__EVENTTARGET"];
+
+            
+            if (eventTarget == "Basic")
 			{
 				ActiveTab = Tab.Basic;
+                ProcessWidgets(false);
 			}
-			else if (Request["__EVENTTARGET"] == "Advanced")
+            else if (eventTarget == "Advanced")
 			{
-				ActiveTab = ValidateAndSaveBasicTab() ? Tab.Advanced : Tab.Basic;
+                ActiveTab = ValidateAndSaveBasicTab() ? Tab.Advanced : Tab.Basic;
 			}
-			else if (Request["__EVENTTARGET"] == "buttonAccept")
-			{
-				if (ActiveTab == Tab.Basic && ValidateAndSaveBasicTab()||
-					ActiveTab == Tab.Advanced)
-				{
-					FunctionMarkup.Value = FunctionMarkupInState;
-					DialogDoAcceptPlaceHolder.Visible = true;
-				}
-			}
+            else if (eventTarget == "buttonAccept")
+            {
+                if (ActiveTab == Tab.Basic && ValidateAndSaveBasicTab() ||
+                    ActiveTab == Tab.Advanced)
+                {
+                    FunctionMarkup.Value = FunctionMarkupInState;
+                    DialogDoAcceptPlaceHolder.Visible = true;
+                }
+            }
+            else
+            {
+                ProcessWidgets(IsPostBack);
+            }
 
-			if (ActiveTab == Tab.Basic)
-			{
-				BasicTextArea.Text = FunctionMarkupInState;
-				BasicPanel.Visible = true;
-				AdvancedPanel.Visible = false;
-			}
-			else
-			{
-				BasicPanel.Visible = false;
-				AdvancedPanel.Visible = true;
-			}
+		    bool isBasicView = ActiveTab == Tab.Basic;
+
+            BasicPanel.Visible = isBasicView;
+            AdvancedPanel.Visible = !isBasicView;
 		}
+
+	    private bool ProcessWidgets(bool processPost, bool showValidationErrors = false)
+	    {
+            XElement functionMarkup = XElement.Parse(FunctionMarkupInState);
+
+	        string functionName = (string) functionMarkup.Attribute("name");
+	        IFunction function = FunctionFacade.GetFunction(functionName);
+
+            var bindings = new Dictionary<string, object>();
+            var parameterNodes = functionMarkup.Elements(ParameterNodeXName).ToDictionary(e => (string)e.Attribute("name"));
+
+            foreach (var parameterProfile in function.ParameterProfiles)
+            {
+                object parameterValue;
+
+                XElement parameterNode;
+
+	            if (parameterNodes.TryGetValue(parameterProfile.Name, out parameterNode))
+	            {
+                    parameterValue = GetParameterValue(parameterNode, parameterProfile);
+	            }
+	            else
+	            {
+	                parameterValue = parameterProfile.GetDefaultValue();
+	            }
+
+                bindings.Add(parameterProfile.Name, parameterValue);
+	        }
+            
+            var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
+                function.ParameterProfiles,
+                bindings,
+                "BasicView" ,
+                "",
+                WebManagementChannel.Identifier);
+
+            IWebUiControl webUiControl = (IWebUiControl)formTreeCompiler.UiControl;
+
+            var webControl = webUiControl.BuildWebControl();
+
+            BasicPanel.Controls.Add(webControl);
+
+            if (!processPost)
+	        {
+	            webUiControl.InitializeViewState();
+	            return true;
+	        }
+	        
+	        webUiControl.BindStateToControlProperties();
+
+	        var validationErrors = formTreeCompiler.SaveAndValidateControlProperties();
+
+	        if (validationErrors.Any())
+	        {
+	            if (showValidationErrors)
+	            {
+	                // TODO: show validation errors
+	            }
+                
+	            return false;
+	        }
+
+	        foreach (var parameterProfile in function.ParameterProfiles)
+	        {
+                XElement parameterNode;
+                parameterNodes.TryGetValue(parameterProfile.Name, out parameterNode);
+
+	            object newValue = bindings[parameterProfile.Name];
+
+	            bool newValueNotEmpty = newValue != null
+	                                    && (!(newValue is IList) || ((IList) newValue).Count > 0)
+	                                    && !(parameterProfile.IsRequired && newValue as string == string.Empty);
+
+	            if (parameterNode != null)
+	            {
+                    parameterNode.Remove();
+	            }
+
+	            if (newValueNotEmpty && newValue != parameterProfile.GetDefaultValue())
+	            {
+	                var newConstantParam = new ConstantObjectParameterRuntimeTreeNode(parameterProfile.Name, newValue);
+
+	                functionMarkup.Add(newConstantParam.Serialize());
+	            }
+	        }
+
+	        FunctionMarkupInState = functionMarkup.ToString();
+
+            return true;
+	    }
+
+        private object GetParameterValue(XElement parameterNode, ParameterProfile parameterProfile)
+        {
+            // TODO: merge with FunctionCallEditor's code
+
+            List<XElement> parameterElements = parameterNode.Elements(ParameterValueElementXName).ToList();
+            if (parameterElements.Any())
+            {
+                return parameterElements.Select(element => element.Attribute("value").Value).ToList();
+            }
+
+            var valueAttr = parameterNode.Attribute("value");
+            if (valueAttr != null)
+            {
+                try
+                {
+                    return ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+
+                    return parameterProfile.GetDefaultValue();
+                }
+            }
+
+            if (parameterNode.Elements().Any())
+            {
+                Type paramType = parameterProfile.Type;
+
+                if (paramType.IsSubclassOf(typeof(XContainer))
+                    || (paramType.IsGenericType
+                        && paramType.GetGenericTypeDefinition() == typeof(Lazy<>)
+                        && paramType.GetGenericArguments()[0].IsSubclassOf(typeof(XContainer))))
+                {
+                    return ValueTypeConverter.Convert(parameterNode.Elements().First(), parameterProfile.Type);
+                }
+
+                throw new NotImplementedException("Not supported type of function parameter element node: '{0}'".FormatWith(paramType.FullName));
+            }
+
+            return parameterProfile.GetDefaultValue();
+        }
 
 		public Tab ActiveTab
 		{
@@ -74,18 +212,7 @@ namespace CompositeEditFunctionCall
 
 		private bool ValidateAndSaveBasicTab()
 		{
-			//Validate Basic Tab
-			var isValidBasicTab = false;
-			try
-			{
-				XElement.Parse(BasicTextArea.Text);
-				FunctionMarkupInState = BasicTextArea.Text;
-				isValidBasicTab = true;
-			}
-			catch
-			{
-			}
-			return isValidBasicTab;
+		    return ProcessWidgets(true, true);
 		}
 
 		private void SetDesignerParameters()
@@ -223,10 +350,10 @@ namespace CompositeEditFunctionCall
 
 					functionMarkup += serializedFunctionCall.ToString();
 
-					if (this.MultiMode == false) break;
+					if (!this.MultiMode) break;
 				}
 
-				if (this.MultiMode == true && string.IsNullOrEmpty(functionMarkup) == false)
+				if (this.MultiMode && !string.IsNullOrEmpty(functionMarkup))
 				{
 					functionMarkup = string.Format("<functions>{0}</functions>", functionMarkup);
 				}

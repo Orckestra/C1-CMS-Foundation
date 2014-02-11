@@ -52,9 +52,10 @@
 					</ui:tabs>
 					<ui:tabpanels>
 						<ui:tabpanel id="BasicTabPanel">
-							<asp:PlaceHolder ID="BasicPanel" runat="server">
-								<aspui:TextBox TextMode="MultiLine" runat="server" ID="BasicTextArea" Width="100%" Height="100%"/>
-							</asp:PlaceHolder>
+						    <div class="padded">
+						        <asp:PlaceHolder ID="BasicPanel" runat="server">
+							    </asp:PlaceHolder>
+						    </div>
 						</ui:tabpanel>
 						<ui:tabpanel id="AdvancedTabPanel">
 							<asp:PlaceHolder ID="AdvancedPanel" runat="server">
