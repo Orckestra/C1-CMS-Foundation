@@ -44,9 +44,9 @@ EditFunctionCallTabBoxBinding.prototype.select = function (arg, isManaged) {
 		if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
 			if (page.validateAllDataBindings()) {
 				page.bindingWindow.__doPostBack("Advanced");
-			} else {
-				return;
-			}
+			} 
+			return;
+		
 		} else if (tab.getID() == EditFunctionCallDialogPageBinding.ID_BASICTAB) {
 			if (page.validateAllDataBindings()) {
 				page.postframe(
