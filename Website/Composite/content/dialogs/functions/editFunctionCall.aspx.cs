@@ -5,8 +5,8 @@ using System.Xml.Linq;
 using Composite;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.WebChannel;
-using Composite.Core;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.UiControlLib;
 using Composite.Functions;
@@ -56,7 +56,10 @@ namespace CompositeEditFunctionCall
             }
             else
             {
-                ProcessWidgets(IsPostBack);
+                if (BasicViewEnabled)
+                {
+                    ProcessWidgets(IsPostBack);
+                }
             }
 
 		    bool isBasicView = ActiveTab == Tab.Basic;
@@ -168,45 +171,56 @@ namespace CompositeEditFunctionCall
 
 		private void SetDesignerParameters()
 		{
-			if (!IsPostBack)
-			{
-				string typeName = Request.QueryString["type"];
+		    if (IsPostBack) return;
 
-				if (typeName.IsNullOrEmpty())
-				{
-					typeName = UrlUtils.UnZipContent(Request.QueryString["zip_type"]);
-				}
+		    string typeName = Request.QueryString["type"];
 
-				Type resultType = typeName == null ? typeof(object) : TypeManager.GetType(typeName);
+		    if (typeName.IsNullOrEmpty())
+		    {
+		        typeName = UrlUtils.UnZipContent(Request.QueryString["zip_type"]);
+		    }
+
+		    Type resultType = typeName == null ? typeof(object) : TypeManager.GetType(typeName);
 
 
-				IsWidgetSelection = Request.QueryString["functiontype"] == "widget";
+		    IsWidgetSelection = Request.QueryString["functiontype"] == "widget";
 
-				Guid stateId = Guid.NewGuid();
+		    Guid stateId = Guid.NewGuid();
 
-				var state = new FunctionCallEditorStateSimple();
+		    var state = new FunctionCallEditorStateSimple();
 
-				IEnumerable<XElement> functionCalls = GetFunctionElementsFromQueryString();
-				if (IsWidgetSelection)
-				{
-					functionCalls = ConvertToFunctions(functionCalls);
-				}
-				state.FunctionCallsXml = new XElement("functions", functionCalls.ToArray()).ToString();
-				state.MaxFunctionAllowed = MultiMode ? 1000 : 1;
-				state.AllowedResultTypes = new[] { resultType };
-				state.WidgetFunctionSelection = IsWidgetSelection;
-				state.ConsoleId = Request.QueryString["consoleid"] ?? string.Empty;
+		    IEnumerable<XElement> functionCalls = GetFunctionElementsFromQueryString();
+		    if (IsWidgetSelection)
+		    {
+		        functionCalls = ConvertToFunctions(functionCalls);
+		    }
 
-				SessionStateManager.DefaultProvider.AddState<IFunctionCallEditorState>(stateId, state, DateTime.Now.AddDays(7.0));
+		    var functionCallsEvaluated = functionCalls.Evaluate();
 
-				FunctionCallDesigner.SessionStateProvider = SessionStateManager.DefaultProviderName;
-				FunctionCallDesigner.SessionStateId = stateId;
+            state.FunctionCallsXml = new XElement("functions", functionCallsEvaluated).ToString();
+		    state.MaxFunctionAllowed = MultiMode ? 1000 : 1;
+		    state.AllowedResultTypes = new[] { resultType };
+		    state.WidgetFunctionSelection = IsWidgetSelection;
+		    state.ConsoleId = Request.QueryString["consoleid"] ?? string.Empty;
 
-				SessionStateId = stateId;
-			}
+		    SessionStateManager.DefaultProvider.AddState<IFunctionCallEditorState>(stateId, state, DateTime.Now.AddDays(7.0));
+
+		    FunctionCallDesigner.SessionStateProvider = SessionStateManager.DefaultProviderName;
+		    FunctionCallDesigner.SessionStateId = stateId;
+            
+		    SessionStateId = stateId;
+
+            // Basic view is enabled if there's no parameters defined as function calls
+            BasicViewEnabled = !MultiMode && !IsWidgetSelection
+                && functionCallsEvaluated.Count() == 1
+                && !functionCallsEvaluated.Single().Elements().Any(childElement => childElement.Elements().Any(e => e.Name.LocalName == "function"));
+
+            plhBasicTab.Visible = BasicViewEnabled;
+            plhBasicTabContent.Visible = BasicViewEnabled;
+            ActiveTab = BasicViewEnabled ? Tab.Basic : Tab.Advanced;
 		}
 
-		private IEnumerable<XElement> GetFunctionElementsFromQueryString()
+        private IEnumerable<XElement> GetFunctionElementsFromQueryString()
 		{
 			string functionMarkup = this.Request.QueryString["functionMarkup"];
 
@@ -274,6 +288,12 @@ namespace CompositeEditFunctionCall
 			get { return (Guid)ViewState["SessionStateId"]; }
 			set { ViewState["SessionStateId"] = value; }
 		}
+
+	    protected bool BasicViewEnabled
+        {
+            get { return (bool) ViewState["BasicViewEnabled"]; }
+            set { ViewState["BasicViewEnabled"] = value; }
+        }
 
 		protected string FunctionMarkupInState
 		{

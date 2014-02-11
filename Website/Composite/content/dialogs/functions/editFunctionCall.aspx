@@ -44,22 +44,26 @@
 				height="410" 
 				resizable="false"
 				label="<%= this.DialogLabel %>">
-				<asp:HiddenField runat="server" ID="hdnActiveTab" Value="1"></asp:HiddenField>
-				<ui:tabbox id="maintabbox" selectedindex="<% =hdnActiveTab.Value %>" binding="EditFunctionCallTabBoxBinding">
+				<asp:HiddenField runat="server" ID="hdnActiveTab" Value="<%# hdnActiveTab.Value %>"></asp:HiddenField>
+				<ui:tabbox id="maintabbox" selectedindex="<%= BasicViewEnabled ? hdnActiveTab.Value : "0" %>" binding="EditFunctionCallTabBoxBinding">
 					<ui:tabs>
-						<ui:tab label="Basic" id="basictab"></ui:tab>
+					    <asp:PlaceHolder runat="server" ID="plhBasicTab">
+					        <ui:tab label="Basic" id="basictab"></ui:tab>
+					    </asp:PlaceHolder>
 						<ui:tab label="Advanced" id="advancedtab"></ui:tab>
 					</ui:tabs>
 					<ui:tabpanels>
-						<ui:tabpanel id="BasicTabPanel">
-						    <div class="padded">
-						        <asp:PlaceHolder ID="BasicPanel" runat="server">
-							    </asp:PlaceHolder>
-						    </div>
-                            <div id="errors" style="display: none" class="updatezone">
-                                <asp:PlaceHolder runat="server" ID="plhErrors"></asp:PlaceHolder>
-                            </div>
-						</ui:tabpanel>
+					    <asp:PlaceHolder runat="server" ID="plhBasicTabContent">
+						    <ui:tabpanel id="BasicTabPanel">
+						        <div class="padded">
+						            <asp:PlaceHolder ID="BasicPanel" runat="server">
+							        </asp:PlaceHolder>
+						        </div>
+                                <div id="errors" style="display: none" class="updatezone">
+                                    <asp:PlaceHolder runat="server" ID="plhErrors"></asp:PlaceHolder>
+                                </div>
+						    </ui:tabpanel>
+                        </asp:PlaceHolder>
 						<ui:tabpanel id="AdvancedTabPanel">
 							<asp:PlaceHolder ID="AdvancedPanel" runat="server">
 								<control1:FunctionCallDesigner ID="FunctionCallDesigner" runat="server" />
