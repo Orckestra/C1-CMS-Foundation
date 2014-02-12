@@ -28,31 +28,46 @@ namespace Composite.Renderers
                 return;
             }
 
-            string pageIdStr = context.Request["p"];
-            string templateIdStr = context.Request["t"];
+            string pageIdStr = context.Request["p"] ?? "";
+            string templateIdStr = context.Request["t"] ?? "";
             string placeholderName = context.Request["ph"];
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
 
             var functionElement = XElement.Parse(markup);
 
+            Guid pageId;
+            Guid templateId;
+
+            Guid.TryParse(pageIdStr, out pageId);
+            Guid.TryParse(templateIdStr, out templateId);            
             
             IPage page;
             
             using (var c = new DataConnection())
             {
-                Guid pageId;
-                Guid templateId;
-                if (!string.IsNullOrEmpty(pageIdStr) && Guid.TryParse(pageIdStr, out pageId))
+                if (pageId != Guid.Empty)
                 {
                     page = c.Get<IPage>().Single(p => p.Id == pageId);
                 }
                 else
                 {
-                    page = c.Get<IPage>().First();
+                    page = null;
+
+                    if (templateId != Guid.Empty)
+                    {
+                        page = c.Get<IPage>().FirstOrDefault(p => p.TemplateId == templateId);
+                    }
+                    
+                    page = page ?? c.Get<IPage>().First();
                 }
             }
-
+            
+            if (templateId != Guid.Empty)
+            {
+                page.TemplateId = templateId;
+            }
+            
             var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
 
             var placeholderDocument = new XhtmlDocument();

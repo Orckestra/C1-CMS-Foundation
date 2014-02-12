@@ -11,7 +11,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 		}
 	}	
 		
-	page.viewportSize = { width: 1000, height: 600 };
+	page.viewportSize = { width: 1280, height: 600 };
 	page.settings.resourceTimeout = 5000;
     
 	page.onResourceTimeout = function (request) {
