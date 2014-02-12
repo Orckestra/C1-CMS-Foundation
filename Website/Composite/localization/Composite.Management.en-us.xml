@@ -543,7 +543,7 @@
 	<string key="Website.Forms.Administrative.AddNewMediaFile.Layout.Label" value="Add New Media File" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.FieldGroup.Label" value="Media Properties" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Label" value="Filename" />
-	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help" value="Select/enter the filename to upload" />
+	<string key="Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help" value="Select the file to upload" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Label" value="Allow overwrite" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Help" value="Replace existing file" />
 	<string key="Website.Forms.Administrative.AddNewMediaFile.FilenameTextBox.Label" value="Filename" />
