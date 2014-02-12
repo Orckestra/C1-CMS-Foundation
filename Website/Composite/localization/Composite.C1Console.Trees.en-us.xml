@@ -13,8 +13,8 @@
   <string key="TreeValidationError.Common.MissingProperty" value="The type '{0}' does not contain a property named '{1}'" />
   <string key="TreeValidationError.Common.UnkownInterfaceType" value="The type '{0}' could not be found" />
   <string key="TreeValidationError.Common.NotImplementingIData" value="The type '{0}' does not implement the interface '{1}'" />
-  <string key="TreeValidationError.Common.WrongPermissinValue" value="The value '{0} is not allowed as a permission type value" />
-  <string key="TreeValidationError.Common.WrongLocationValue" value="The value '{0} is not allowed as a location value" />
+  <string key="TreeValidationError.Common.WrongPermissinValue" value="The value '{0}' is not allowed as a permission type value" />
+  <string key="TreeValidationError.Common.WrongLocationValue" value="The value '{0}' is not allowed as a location value" />
   <string key="TreeValidationError.Common.MissingFunctionMarkup" value="No function markup provided as a child element" />
   <string key="TreeValidationError.Common.WrongFunctionMarkup" value="The function could not be created for the provided function markup" />
 
