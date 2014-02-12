@@ -28,7 +28,8 @@ namespace Composite.Renderers
                 return;
             }
 
-            string pageIdStr = context.Request["page"];
+            string pageIdStr = context.Request["p"];
+            string templateIdStr = context.Request["t"];
             string placeholderName = context.Request["ph"];
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
@@ -37,10 +38,11 @@ namespace Composite.Renderers
 
             
             IPage page;
-
+            
             using (var c = new DataConnection())
             {
                 Guid pageId;
+                Guid templateId;
                 if (!string.IsNullOrEmpty(pageIdStr) && Guid.TryParse(pageIdStr, out pageId))
                 {
                     page = c.Get<IPage>().Single(p => p.Id == pageId);

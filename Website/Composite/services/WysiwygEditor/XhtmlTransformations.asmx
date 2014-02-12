@@ -229,12 +229,12 @@ namespace Composite.Services
         [WebMethod]
         public XhtmlTransformationResult StructuredContentToTinyContent(string htmlFragment)
         {
-            return StructuredContentToTinyContentMultiTemplate(htmlFragment, Guid.Empty, null);
+            return StructuredContentToTinyContentMultiTemplate(htmlFragment, Guid.Empty, Guid.Empty, null);
         }
         
 
         [WebMethod]
-        public XhtmlTransformationResult StructuredContentToTinyContentMultiTemplate(string htmlFragment, Guid pageId, string functionPreviewPlaceholderName)
+        public XhtmlTransformationResult StructuredContentToTinyContentMultiTemplate(string htmlFragment, Guid pageId, Guid pageTemplateId, string functionPreviewPlaceholderName)
         {
             try
             {
@@ -251,7 +251,7 @@ namespace Composite.Services
 
                 foreach (var functionElement in functionRoots.ToList())
                 {
-                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, pageId, functionPreviewPlaceholderName));
+                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, pageId, pageTemplateId, functionPreviewPlaceholderName));
                 }
 
                 IEnumerable<XElement> dataFieldReferences = xml.Descendants(Namespaces.DynamicData10 + "fieldreference");
@@ -308,11 +308,11 @@ namespace Composite.Services
         [WebMethod]
         public string GetImageTagForFunctionCall(string functionMarkup)
         {
-            return GetImageTagForFunctionCall2(functionMarkup, Guid.Empty, null);
+            return GetImageTagForFunctionCall2(functionMarkup, Guid.Empty, Guid.Empty, null);
         }
         
         [WebMethod]
-        public string GetImageTagForFunctionCall2(string functionMarkup, Guid functionPreviewTemplateId, string functionPreviewPlaceholderName)
+        public string GetImageTagForFunctionCall2(string functionMarkup, Guid functionPreviewPageId, Guid functionPreviewTemplateId, string functionPreviewPlaceholderName)
         {
             XElement functionElement;
 
@@ -325,7 +325,7 @@ namespace Composite.Services
                 throw new ArgumentException("Unable to parse functionMarkup as XML", ex);
             }
 
-            return GetImageTagForFunctionCall(functionElement, functionPreviewTemplateId, functionPreviewPlaceholderName).ToString(SaveOptions.DisableFormatting);
+            return GetImageTagForFunctionCall(functionElement, functionPreviewPageId, functionPreviewTemplateId, functionPreviewPlaceholderName).ToString(SaveOptions.DisableFormatting);
         }
 
 
@@ -482,7 +482,8 @@ namespace Composite.Services
             string title, 
             string description,
             string markup,
-            Guid functionPreviewPageId, 
+            Guid functionPreviewPageId,
+            Guid functionPreviewTemplatePageId, 
             string functionPreviewPlaceholderName)
         {
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}".FormatWith(
@@ -493,7 +494,12 @@ namespace Composite.Services
 
             if (functionPreviewPageId != Guid.Empty)
             {
-                imageUrl += "&page=" + functionPreviewPageId;
+                imageUrl += "&p=" + functionPreviewPageId;
+            }
+
+            if (functionPreviewTemplatePageId != Guid.Empty)
+            {
+                imageUrl += "&t=" + functionPreviewTemplatePageId;
             }
 
             if (!string.IsNullOrEmpty(functionPreviewPlaceholderName))
@@ -533,7 +539,7 @@ namespace Composite.Services
 
 
 
-        private XElement GetImageTagForFunctionCall(XElement functionElement, Guid pageId, string functionPreviewPlaceholderName)
+        private XElement GetImageTagForFunctionCall(XElement functionElement, Guid pageId, Guid pageTemplateId, string functionPreviewPlaceholderName)
         {
             string title;
             StringBuilder description = new StringBuilder();
@@ -580,7 +586,7 @@ namespace Composite.Services
             }
 
             string functionBoxUrl = error ? GetFunctionBoxImageUrl("warning", title, description.ToString())
-                                          : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement.ToString(), pageId, functionPreviewPlaceholderName);
+                                          : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement.ToString(), pageId, pageTemplateId, functionPreviewPlaceholderName);
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
 				, new XAttribute("alt", _markupWysiwygRepresentationAlt)
