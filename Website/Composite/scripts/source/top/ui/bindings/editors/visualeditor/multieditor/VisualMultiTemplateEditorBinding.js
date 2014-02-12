@@ -280,7 +280,7 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
  @overloads {VisualEditorBinding#getSoapTinyContent}
  * @return {SOAP}
  */
-VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
+VisualMultiTemplateEditorBinding.prototype.getSoapTinyContent = function (content) {
 	var pageId = this._pageId;
 	var placeholder = this._textareaname;
 	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
