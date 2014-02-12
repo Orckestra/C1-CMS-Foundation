@@ -143,7 +143,8 @@ namespace Composite.C1Console.Trees
             foreach (Element element in elements)
             {
                 bool isForeignLocaleDataItem = element.Actions
-                        .Any(x => ((WorkflowActionToken)x.ActionHandle.ActionToken).WorkflowType == localizeDataWorkflow);
+                        .Any(x => x.ActionHandle.ActionToken is WorkflowActionToken 
+                        && ((WorkflowActionToken)x.ActionHandle.ActionToken).WorkflowType == localizeDataWorkflow);
 
                 if (!isForeignLocaleDataItem)
                 {
