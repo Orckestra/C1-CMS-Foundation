@@ -30,6 +30,8 @@ EditFunctionCallTabBoxBinding.prototype.onBindingAttach = function () {
 
 	EditFunctionCallTabBoxBinding.superclass.onBindingAttach.call(this);
 
+	this.setFlexibility(false);
+
 }
 
 /**

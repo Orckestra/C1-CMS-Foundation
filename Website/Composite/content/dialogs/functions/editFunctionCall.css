@@ -8,16 +8,6 @@ ui|dialogtoolbar {
 	border-top: 1px solid $(color:threedhighlight) !important;
 }
 
-/*
-ui|dialogpage {
-	padding: 0 0 0 0;
+#maintabbox ui|tabpanel {
+	min-height: 397px;
 }
-ui|functioneditor {
-	border-bottom: 1px solid $(color:threedshadow);
-}
-ui|dialogtoolbar {
-	padding-right: 14px;
-	padding-bottom: 14px;
-	border-top: 1px solid $(color:threedhighlight) !important;
-}
-*/
