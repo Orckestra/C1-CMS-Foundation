@@ -41,6 +41,9 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
         }
 
         /// <exclude />
+        public Guid PageId { get; set; }
+
+        /// <exclude />
         public Guid TemplateId { get; set; }
 
         /// <exclude />
@@ -58,6 +61,10 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
 
     internal sealed class TemplatedPageContentEditorUiControl : UiControl, IWebUiControl
     {
+        [FormsProperty()]
+        [BindableProperty()]
+        public Guid PageId { get; set; }
+
         [FormsProperty()]
         [BindableProperty()]
         public Guid TemplateId { get; set; }
@@ -107,6 +114,7 @@ namespace Composite.Plugins.Forms.WebChannel.CustomUiControls
             _userControl.SelectableTemplateIds = this.SelectableTemplateIds;
             _userControl.NamedXhtmlFragments = this.NamedXhtmlFragments;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
+			_userControl.PageId = this.PageId;
 
             return _userControl;
         }

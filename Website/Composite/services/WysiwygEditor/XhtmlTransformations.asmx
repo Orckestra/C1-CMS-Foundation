@@ -229,12 +229,12 @@ namespace Composite.Services
         [WebMethod]
         public XhtmlTransformationResult StructuredContentToTinyContent(string htmlFragment)
         {
-            return StructuredContentToTinyContent2(htmlFragment, Guid.Empty, null);
+            return StructuredContentToTinyContentMultiTemplate(htmlFragment, Guid.Empty, null);
         }
         
 
         [WebMethod]
-        public XhtmlTransformationResult StructuredContentToTinyContent2(string htmlFragment, Guid pageId, string functionPreviewPlaceholderName)
+        public XhtmlTransformationResult StructuredContentToTinyContentMultiTemplate(string htmlFragment, Guid pageId, string functionPreviewPlaceholderName)
         {
             try
             {

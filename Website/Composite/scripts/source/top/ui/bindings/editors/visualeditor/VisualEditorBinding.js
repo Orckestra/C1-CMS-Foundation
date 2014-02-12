@@ -74,7 +74,7 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 	 * a dialog will be presented and null will be returned.
 	 */
 	WebServiceProxy.isFaultHandler = false;
-	var soap = XhtmlTransformationsService.StructuredContentToTinyContent ( content );
+	var soap = binding.getSoapTinyContent ( content );
 	if ( soap instanceof SOAPFault ) {
 		var dialogArgument = soap;
 		var dialogHandler = {
@@ -105,7 +105,6 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 	WebServiceProxy.isFaultHandler = true;
 	return result;
 };
-
 
 /**
  * Is image?
@@ -400,7 +399,7 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				* Inject BODY markup into TinyMCE. From now on, injection  
 				* is handled by the VisualEditorPageBinding.
 				*/
-				arg.tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent), { format: 'raw' });
+				arg.tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent, this), { format: 'raw' });
 
 
 
@@ -730,6 +729,15 @@ VisualEditorBinding.prototype.clean = function () {
 	if ( this._pageBinding != null ) {
 		this._pageBinding.clean ();
 	}
+}
+
+/**
+ * Convert structured content to tiny content on server.
+ * @param {string} content Structured markup
+ * @return {SOAP}
+ */
+VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
+	return XhtmlTransformationsService.StructuredContentToTinyContent(content);
 }
 
 

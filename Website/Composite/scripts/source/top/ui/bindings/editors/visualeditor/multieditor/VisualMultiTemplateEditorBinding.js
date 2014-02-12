@@ -18,6 +18,12 @@ function VisualMultiTemplateEditorBinding () {
 	 * @type {Map<string><string>}
 	 */
 	this._oldtextareas = null;
+
+	/**
+	 * Page id.
+	 * @type {Guid}
+	 */
+	this.pageId = null;
 	
 	/*
 	 * Returnable.
@@ -41,6 +47,9 @@ VisualMultiTemplateEditorBinding.prototype.onBindingAttach = function () {
 	
 	VisualMultiTemplateEditorBinding.superclass.onBindingAttach.call ( this );
 	this._oldtextareas = new Map ();
+
+	if (this.getProperty("pageid"))
+		this.pageId = this.getProperty("pageid");
 }
 
 
@@ -265,4 +274,12 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 	}
 	
 	return VisualMultiTemplateEditorBinding.superclass.updateElement.call ( this, newelement, oldelement );
+}
+
+/**
+ @overloads {VisualEditorBinding#getSoapTinyContent}
+ * @return {SOAP}
+ */
+VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
+	return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, this.pageId, "");
 }

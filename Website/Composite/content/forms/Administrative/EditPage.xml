@@ -105,7 +105,10 @@
 			</PlaceHolder>
       
 			<internal:PageContentEditor Label="${Composite.Plugins.PageElementProvider, EditPage.LabelContent}">
-        <internal:PageContentEditor.TemplateId>
+				<internal:PageContentEditor.PageId>
+					<cms:bind source="SelectedPage.Id" />
+				</internal:PageContentEditor.PageId>
+				<internal:PageContentEditor.TemplateId>
           <cms:bind source="SelectedPage.TemplateId" />
         </internal:PageContentEditor.TemplateId>
         <internal:PageContentEditor.SelectableTemplateIds>
