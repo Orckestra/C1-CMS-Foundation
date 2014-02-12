@@ -55,10 +55,10 @@
 					<ui:tabpanels>
 					    <asp:PlaceHolder runat="server" ID="plhBasicTabContent">
 						    <ui:tabpanel id="BasicTabPanel">
-						        <div class="padded">
+						        <ui:scrollbox class="padded">
 						            <asp:PlaceHolder ID="BasicPanel" runat="server">
 							        </asp:PlaceHolder>
-						        </div>
+						        </ui:scrollbox>
                                 <div id="errors" style="display: none" class="updatezone">
                                     <asp:PlaceHolder runat="server" ID="plhErrors"></asp:PlaceHolder>
                                 </div>

@@ -54,7 +54,7 @@ namespace Composite.Renderers
             var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
 
             var placeholderDocument = new XhtmlDocument();
-            placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "div", 
+            placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "functionpreview", 
                 new XAttribute("id", "CompositeC1FunctionPreview"), 
                 new XAttribute("style", "display:inline-block;"),
                 functionElement));
