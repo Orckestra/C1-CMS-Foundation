@@ -10,10 +10,10 @@ using Composite.Core.IO;
 using Composite.Core.IO.Zip;
 using Composite.Core.Logging;
 using Composite.Core.PackageSystem.Foundation;
+using Composite.Core.PackageSystem.PackageFragmentInstallers;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 using Composite.Data.Transactions;
-using System.Reflection;
 
 
 namespace Composite.Core.PackageSystem
@@ -36,6 +36,9 @@ namespace Composite.Core.PackageSystem
         private string PackageInstallDirectory { get; set; }
         private string TempDirectory { get; set; }
         private PackageInformation PackageInformation { get; set; }
+
+        /// <exclude />
+        internal static event Action OnPackageInstallation;
 
 
         /// <exclude />
@@ -105,12 +108,18 @@ namespace Composite.Core.PackageSystem
             {
                 using (GlobalInitializerFacade.CoreLockScope)
                 {
-                    if ((systemLockingType == SystemLockingType.None) || (ApplicationOnlineHandlerFacade.IsApplicationOnline == false))
+                    var onPackageInstallation = OnPackageInstallation;
+                    if (onPackageInstallation != null)
+                    {
+                        onPackageInstallation();
+                    }
+
+                    if (systemLockingType == SystemLockingType.None || !ApplicationOnlineHandlerFacade.IsApplicationOnline)
                     {
                         return DoInstall();
                     }
 
-                    bool isSoftSystemLocking = (systemLockingType == SystemLockingType.Soft);
+                    bool isSoftSystemLocking = systemLockingType == SystemLockingType.Soft;
 
                     string errorMessage;
                     if(!ApplicationOnlineHandlerFacade.CanPutApplicationOffline(isSoftSystemLocking, out errorMessage))
@@ -284,7 +293,7 @@ namespace Composite.Core.PackageSystem
             XElement packageFragmentInstallersElement = installElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallersElementName));
             if (packageFragmentInstallersElement == null) return new PackageFragmentValidationResult[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The {0} file is wrongly formattet", PackageSystemSettings.InstallFilename)) };
 
-            List<PackageFragmentValidationResult> result2 = LoadPackageFragmentInstallers(packageFragmentInstallersElement).ToList();
+            var result2 = LoadPackageFragmentInstallers(packageFragmentInstallersElement);
             if (result2.Count > 0) return result2;
 
             return new PackageFragmentValidationResult[] { };
@@ -346,78 +355,93 @@ namespace Composite.Core.PackageSystem
 
 
 
-        private IEnumerable<PackageFragmentValidationResult> LoadPackageFragmentInstallers(XElement packageFragmentInstallersElement)
+        private IList<PackageFragmentValidationResult> LoadPackageFragmentInstallers(XElement packageFragmentInstallersElement)
         {
-            Exception exception = null;
-            foreach (XElement element in packageFragmentInstallersElement.Elements(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallersAddElementName)))
+            var result = new List<PackageFragmentValidationResult>();
+
+            XName packageInstallerXName = XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallersAddElementName);
+            foreach (XElement element in packageFragmentInstallersElement.Elements(packageInstallerXName))
             {
                 XAttribute installerTypeAttribute = element.Attribute(PackageSystemSettings.InstallerTypeAttributeName);
-                if (installerTypeAttribute == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Missing attribute '{0}'", PackageSystemSettings.InstallerTypeAttributeName), element); continue; }
+                if (installerTypeAttribute == null)
+                {
+                    result.AddFatal(string.Format("Missing attribute '{0}'", PackageSystemSettings.InstallerTypeAttributeName), element);
+                    continue;
+                }
 
                 Type installerType = TypeManager.TryGetType(installerTypeAttribute.Value);
-                if (installerType == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Could not find install fragment type '{0}'", installerTypeAttribute.Value), installerTypeAttribute); continue; }
+                if (installerType == null)
+                {
+                    result.AddFatal(string.Format("Could not find install fragment type '{0}'", installerTypeAttribute.Value), installerTypeAttribute);
+                    continue;
+                }
 
-                exception = null;
-                IPackageFragmentInstaller packageFragmentInstaller = null;
+                IPackageFragmentInstaller packageFragmentInstaller;
                 try
                 {
                     packageFragmentInstaller = Activator.CreateInstance(installerType) as IPackageFragmentInstaller;                    
                 }
                 catch (Exception ex)
                 {
-                    exception = ex;
-                }
-                if (exception != null)
-                {
-                    yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception);
+                    result.AddFatal(ex);
                     continue;
                 }
-                if (packageFragmentInstaller == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The type '{0}' does not implement {1}", installerTypeAttribute.Value, typeof(IPackageFragmentInstaller)), installerTypeAttribute); continue; }
+
+                if (packageFragmentInstaller == null)
+                {
+                    result.AddFatal(string.Format("The type '{0}' does not implement {1}", installerTypeAttribute.Value, typeof(IPackageFragmentInstaller)), installerTypeAttribute); 
+                    continue;
+                }
 
                 Type uninstallerType = null;
                 if (this.CanBeUninstalled)
                 {
                     XAttribute uninstallerTypeAttribute = element.Attribute(PackageSystemSettings.UninstallerTypeAttributeName);
-                    if (uninstallerTypeAttribute == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Missing attribute '{0}'", PackageSystemSettings.UninstallerTypeAttributeName), element); continue; }
+                    if (uninstallerTypeAttribute == null)
+                    {
+                        result.AddFatal(string.Format("Missing attribute '{0}'", PackageSystemSettings.UninstallerTypeAttributeName), element); 
+                        continue;
+                    }
 
                     uninstallerType = TypeManager.TryGetType(uninstallerTypeAttribute.Value);
-                    if (uninstallerType == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("Could not find uninstall fragment type '{0}'", uninstallerTypeAttribute.Value), uninstallerTypeAttribute); continue; }
+                    if (uninstallerType == null)
+                    {
+                        result.AddFatal(string.Format("Could not find uninstall fragment type '{0}'", uninstallerTypeAttribute.Value), uninstallerTypeAttribute); 
+                        continue; 
+                    }
 
-                    exception = null;
-                    IPackageFragmentUninstaller packageFragmentUninstaller = null;
+                    IPackageFragmentUninstaller packageFragmentUninstaller;
                     try
                     {
                         packageFragmentUninstaller = Activator.CreateInstance(uninstallerType) as IPackageFragmentUninstaller;                        
                     }
                     catch (Exception ex)
                     {
-                        exception = ex;
-                    }
-                    if (exception != null)
-                    {
-                        yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception);
+                        result.AddFatal(ex);
                         continue;
                     }
-                    if (packageFragmentUninstaller == null) { yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The type '{0}' does not implement {1}", uninstallerTypeAttribute.Value, typeof(IPackageFragmentUninstaller)), uninstallerTypeAttribute); continue; }
+
+                    if (packageFragmentUninstaller == null)
+                    {
+                        result.AddFatal(string.Format("The type '{0}' does not implement {1}", uninstallerTypeAttribute.Value, typeof(IPackageFragmentUninstaller)), uninstallerTypeAttribute); 
+                        continue;
+                    }
                 }
 
-                exception = null;
                 try
                 {
                     packageFragmentInstaller.Initialize(_packageInstallerContex, element.Descendants(), element);
                 }
                 catch (Exception ex)
                 {
-                    exception = ex;
-                }
-                if (exception != null)
-                {
-                    yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception);
+                    result.AddFatal(ex);
                     continue;
                 }
 
                 _packageFramentInstallers.Add(packageFragmentInstaller, uninstallerType);
             }
+
+            return result;
         }
     }
 }

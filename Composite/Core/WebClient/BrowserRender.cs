@@ -1,13 +1,18 @@
-﻿using System;
+﻿//#define BrowserRender_NoCache
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 using Composite.C1Console.Events;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.PackageSystem;
+using Timer = System.Timers.Timer;
 
 namespace Composite.Core.WebClient
 {
@@ -25,21 +30,17 @@ namespace Composite.Core.WebClient
 
         static BrowserRender()
         {
-            GlobalEventSystemFacade.SubscribeToShutDownEvent(a =>
-            {
-                lock (_syncRoot)
-                {
-                    if (_server != null)
-                    {
-                        _server.Dispose();
-                        _server = null;
-                    }
-                }
-            });
+            GlobalEventSystemFacade.SubscribeToShutDownEvent(a => RecyclePhantomJsExe());
+            PackageInstaller.OnPackageInstallation += RecyclePhantomJsExe;
         }
 
         private static readonly object _syncRoot = new object();
         private static PhantomServer _server;
+        private static Timer _recycleTimer;
+        private static DateTime _lastUsageDate = DateTime.MinValue;
+        private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromMinutes(10.0);
+        private const int RecycleTimerInterval_ms = 10000;
+
 
         public static string RenderUrl(HttpContext context, string url)
         {
@@ -48,7 +49,11 @@ namespace Composite.Core.WebClient
 
             if (File.Exists(tempFilePath))
             {
+#if BrowserRender_NoCache
+                File.Delete(tempFileName);
+#else
                 return tempFilePath;
+#endif
             }
 
 
@@ -59,7 +64,10 @@ namespace Composite.Core.WebClient
                 if (_server == null)
                 {
                     _server = new PhantomServer();
+                    SetupRecycleTimer();
                 }
+
+                _lastUsageDate = DateTime.Now;
 
                 try
                 {
@@ -77,6 +85,58 @@ namespace Composite.Core.WebClient
                 }
             }
         }
+
+
+        private static void RecyclePhantomJsExe()
+        {
+            lock (_syncRoot)
+            {
+                if (_server != null)
+                {
+                    _server.Dispose();
+                    _server = null;
+                }
+            }
+        }
+
+        private static void SetupRecycleTimer()
+        {
+            if (_recycleTimer != null) return;
+
+            var timer = new Timer(RecycleTimerInterval_ms);
+            timer.AutoReset = true;
+            timer.Elapsed += (a, b) => RecycleIfNotUsed();
+            timer.Start();
+
+            _recycleTimer = timer;
+        }
+
+        private static void RecycleIfNotUsed()
+        {
+            if (_server == null || DateTime.Now - _lastUsageDate < RecycleOnIdleInterval)
+            {
+                return;
+            }
+
+            bool lockTaken = false;
+            try
+            {
+                Monitor.TryEnter(_syncRoot, 0, ref lockTaken);
+
+                if (lockTaken)
+                {
+                    RecyclePhantomJsExe();
+                }
+            }
+            finally
+            {
+                if (lockTaken)
+                {
+                    Monitor.Exit(_syncRoot);
+                }
+            }
+        }
+
 
         private class PhantomServer : IDisposable
         {
