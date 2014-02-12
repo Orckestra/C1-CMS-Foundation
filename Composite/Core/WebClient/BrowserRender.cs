@@ -175,12 +175,19 @@ namespace Composite.Core.WebClient
                 string cookieDomain = new Uri(url).Host;
                 string cookieInfo = authenticationCookie.Name + "," + authenticationCookie.Value + "," + cookieDomain;
 
-                _stdin.WriteLine(cookieInfo + "|" + url + "|" + tempFilePath);
+                string requestLine = cookieInfo + "|" + url + "|" + tempFilePath;
+
+                _stdin.WriteLine(requestLine);
 
                 string output = _stdout.ReadLine();
 
                 if (!File.Exists(tempFilePath))
                 {
+                    if (output == null)
+                    {
+                        output = _stderror.ReadToEnd();
+                    }
+
                     throw new BrowserRenderException(output);
                 }
 

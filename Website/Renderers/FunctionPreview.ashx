@@ -68,8 +68,11 @@ namespace Composite.Renderers
 
             string output = PagePreviewBuilder.RenderPreview(page, contents);
 
-            context.Response.ContentType = "text/html";
-            context.Response.WriteFile(output);
+            if (output != String.Empty)
+            {
+                context.Response.ContentType = "text/html";
+                context.Response.Write(output);
+            }
         }
     
         public bool IsReusable

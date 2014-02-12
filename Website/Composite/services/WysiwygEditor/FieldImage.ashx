@@ -29,7 +29,7 @@ public class YellowBox : IHttpHandler
             ImageTemplatedBoxCreator imageCreator = new ImageTemplatedBoxCreator(bitmap, new Point(30, 13), new Point(43, 0));
 
             imageCreator.MinHeight = 26;
-            imageCreator.SetTitle(label, new Point(26, 6), new Point(38, 1), Color.Black, "Tahoma", 8.0f, FontStyle.Bold);
+            imageCreator.SetTitle(label, new Size(26, 6), new Size(38, 1), Color.Black, "Tahoma", 8.0f, FontStyle.Bold);
 
             context.Response.ContentType = "image/png";
 
