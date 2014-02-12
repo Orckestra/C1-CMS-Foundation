@@ -281,5 +281,5 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
  * @return {SOAP}
  */
 VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
-	return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, this._pageId, this._placeholdername);
+	return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, this._pageId, this._textareaname);
 }
