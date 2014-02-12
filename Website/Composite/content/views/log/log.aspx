@@ -16,7 +16,7 @@
 	</head>
 	<body>
 		<form id="Form1" runat="server">
-			<ui:page label="${string:ServerLog.LabelTitle}" image="${icon:log-showlog}">
+			<ui:page label="${string:ServerLog.LabelTitle}" image="${icon:log-viewlog}">
 				<ui:toolbar id="toolbar">
 					<ui:toolbarbody>
 						<ui:toolbargroup>
