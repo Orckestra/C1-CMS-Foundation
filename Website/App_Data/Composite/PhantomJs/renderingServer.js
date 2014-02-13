@@ -33,22 +33,57 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 			window.setTimeout(function () {
 				var previewElementId = "CompositeC1FunctionPreview";
 
-				var elementExists = page.evaluate(function (s) {
+				var clientRect = page.evaluate(function (s) {
 				    var element = document.getElementById(s);
 
 				    if (element == null || element.innerHTML == "") {
-				        return false;
+				        return null;
 				    }
-				    var clientRec = element.getBoundingClientRect();
+				    
+				    var childNodes = element.children;
+				    if (childNodes.lenght == 0) {
+				        return null;
+				    }
 
-				    return clientRec.height > 0 && clientRec.width > 0;
+				    var top, right, bottom, left, sizeSet = false;
+				    for (i = 0; i < childNodes.length; i++) {
+				        var childNode = childNodes[i];
+
+				        var rect = childNode.getBoundingClientRect();
+				        if (rect.width == 0 || rect.height == 0) {
+				            continue;
+				        }
+				        
+                        if (!sizeSet) {
+                            top = rect.top;
+                            right = rect.right;
+                            bottom = rect.bottom;
+                            left = rect.left;
+
+                            sizeSet = true;
+                        } else {
+                            top = top < rect.top ? top : rect.top;
+                            bottom = bottom > rect.bottom ? bottom : rect.bottom;
+                            left = left < rect.left ? left : rect.left;
+                            right = right > rect.right ? right : rect.right;
+                        }
+				    }
+
+                    if (!sizeSet) {
+                        return null;
+                    }
+
+				    return {
+				        left: left,
+				        top: top,
+				        height: bottom - top,
+				        width: right - left
+				    };
 				}, previewElementId);
 				
-				if (elementExists) {
-				    var clientRect = page.evaluate(function(s) {
-				        return document.getElementById(s).getBoundingClientRect();
-				    }, previewElementId);
-
+				if (clientRect != null && clientRect.height > 1 && clientRect.width > 1) {
+				    
+                    // Limiting image height
 				    if (clientRect.height > 800) {
 				        clientRect.height = 800;
 				    }

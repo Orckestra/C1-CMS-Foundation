@@ -44,7 +44,7 @@ namespace Composite.Renderers
             
             IPage page;
             
-            using (var c = new DataConnection())
+            using (var c = new DataConnection(PublicationScope.Unpublished))
             {
                 if (pageId != Guid.Empty)
                 {
@@ -73,7 +73,6 @@ namespace Composite.Renderers
             var placeholderDocument = new XhtmlDocument();
             placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "functionpreview", 
                 new XAttribute("id", "CompositeC1FunctionPreview"), 
-                new XAttribute("style", "display:inline-block;"),
                 functionElement));
             
             var contents = new List<IPagePlaceholderContent>();
