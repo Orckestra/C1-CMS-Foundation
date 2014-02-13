@@ -143,7 +143,10 @@ namespace Composite.Core.WebClient.Renderings
             }
             catch
             {
-                Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cachedUrl ?? String.Empty));
+                if (!PreviewMode)
+                {
+                    Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cachedUrl ?? "undefined"));
+                }
             }
 
             return xhtml;

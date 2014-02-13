@@ -12,6 +12,7 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PackageSystem;
+using Composite.Data.Plugins.DataProvider.Streams;
 using Timer = System.Timers.Timer;
 
 namespace Composite.Core.WebClient
@@ -32,6 +33,8 @@ namespace Composite.Core.WebClient
         {
             GlobalEventSystemFacade.SubscribeToShutDownEvent(a => RecyclePhantomJsExe());
             PackageInstaller.OnPackageInstallation += RecyclePhantomJsExe;
+
+            FileChangeNotificator.Subscribe(PhantomServer.ScriptFilePath, (a, b)  => RecyclePhantomJsExe());
         }
 
         private static readonly object _syncRoot = new object();
@@ -140,8 +143,10 @@ namespace Composite.Core.WebClient
 
         private class PhantomServer : IDisposable
         {
+            const string ScriptFileName = "renderingServer.js";
             static readonly string _phantomJsFolder = HostingEnvironment.MapPath("~/App_Data/Composite/PhantomJs");
             static readonly string _phantomJsPath = Path.Combine(_phantomJsFolder, "phantomjs.exe");
+            
 
             private readonly StreamWriter _stdin;
             private readonly StreamReader _stdout;
@@ -154,7 +159,7 @@ namespace Composite.Core.WebClient
                 _process = new Process();
                 _process.StartInfo.WorkingDirectory = _phantomJsFolder;
                 _process.StartInfo.FileName = "\"" + _phantomJsPath + "\"";
-                _process.StartInfo.Arguments = "renderingServer.js";
+                _process.StartInfo.Arguments = ScriptFileName;
                 _process.StartInfo.RedirectStandardOutput = true;
                 _process.StartInfo.RedirectStandardError = true;
                 _process.StartInfo.RedirectStandardInput = true;
@@ -196,7 +201,12 @@ namespace Composite.Core.WebClient
 
             public bool HasCrashed()
             {
-                return !_process.HasExited;
+                return _process.HasExited;
+            }
+
+            public static string ScriptFilePath
+            {
+                get { return Path.Combine(_phantomJsFolder, ScriptFileName); }
             }
 
             public void Dispose()

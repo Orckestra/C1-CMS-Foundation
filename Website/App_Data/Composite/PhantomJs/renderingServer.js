@@ -40,14 +40,14 @@ function BuildFunctionPreview(system, console, address, output, authCookie) {
 				        return null;
 				    }
 				    
-				    var childNodes = element.children;
+				    var childNodes = element.getElementsByTagName('*');
 				    if (childNodes.lenght == 0) {
 				        return null;
 				    }
 
 				    var top, right, bottom, left, sizeSet = false;
 				    for (i = 0; i < childNodes.length; i++) {
-				        var childNode = childNodes[i];
+				        var childNode = childNodes[i]; 
 
 				        var rect = childNode.getBoundingClientRect();
 				        if (rect.width == 0 || rect.height == 0) {
