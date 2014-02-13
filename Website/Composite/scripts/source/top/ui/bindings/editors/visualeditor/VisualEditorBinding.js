@@ -740,6 +740,15 @@ VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
 	return XhtmlTransformationsService.StructuredContentToTinyContent(content);
 }
 
+/**
+ * Convert structured content to tiny content on server.
+ * @param {string} content Structured markup
+ * @return {SOAP}
+ */
+VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
+	return XhtmlTransformationsService.GetImageTagForFunctionCall(markup);
+}
+
 
 /**
 * Focus

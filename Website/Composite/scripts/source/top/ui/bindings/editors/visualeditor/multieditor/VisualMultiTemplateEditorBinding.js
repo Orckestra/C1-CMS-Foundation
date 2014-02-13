@@ -277,7 +277,7 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 }
 
 /**
- @overloads {VisualEditorBinding#getSoapTinyContent}
+ * @overloads {VisualEditorBinding#getSoapTinyContent}
  * @return {SOAP}
  */
 VisualMultiTemplateEditorBinding.prototype.getSoapTinyContent = function (content) {
@@ -285,4 +285,16 @@ VisualMultiTemplateEditorBinding.prototype.getSoapTinyContent = function (conten
 	var placeholder = this._textareaname;
 	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
 	return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, pageId, templateId, placeholder);
+}
+
+/**
+ * @overloads {VisualEditorBinding#getImageTagForFunctionCall}
+ * @return {SOAP}
+ */
+
+VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
+	var pageId = this._pageId;
+	var placeholder = this._textareaname;
+	var templateId = this.getDescendantBindingByLocalName("selector").getValue();
+	return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, pageId, templateId, placeholder);
 }
