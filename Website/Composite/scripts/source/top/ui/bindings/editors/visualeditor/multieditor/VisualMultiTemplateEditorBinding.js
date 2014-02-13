@@ -292,7 +292,7 @@ VisualMultiTemplateEditorBinding.prototype.getSoapTinyContent = function (conten
  * @return {SOAP}
  */
 
-VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
+VisualMultiTemplateEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
 	var pageId = this._pageId;
 	var placeholder = this._textareaname;
 	var templateId = this.getDescendantBindingByLocalName("selector").getValue();
