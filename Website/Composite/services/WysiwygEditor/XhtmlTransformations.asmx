@@ -251,7 +251,9 @@ namespace Composite.Services
 
                 foreach (var functionElement in functionRoots.ToList())
                 {
-                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, pageId, pageTemplateId, functionPreviewPlaceholderName));
+                    string cssSelecor = BuildAncestorCssSelector(functionElement);
+
+                    functionElement.ReplaceWith(GetImageTagForFunctionCall(functionElement, pageId, pageTemplateId, functionPreviewPlaceholderName, cssSelecor));
                 }
 
                 IEnumerable<XElement> dataFieldReferences = xml.Descendants(Namespaces.DynamicData10 + "fieldreference");
@@ -305,6 +307,31 @@ namespace Composite.Services
             }
         }
 
+        private string BuildAncestorCssSelector(XElement element)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var ancestor in element.Ancestors().Reverse())
+            {
+                if(ancestor.Name.LocalName == "html" || ancestor.Name.LocalName == "body") continue;
+
+                if (sb.Length > 0)
+                {
+                    sb.Append(" ");
+                }
+
+                sb.Append(ancestor.Name.LocalName);
+                string cssClasses = (string) ancestor.Attribute("class") ?? "";
+
+                foreach (var cssClass in cssClasses.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    sb.Append(".").Append(cssClass);
+                }
+            }
+
+            return sb.ToString();
+        }
+
         [WebMethod]
         public string GetImageTagForFunctionCall(string functionMarkup)
         {
@@ -325,7 +352,8 @@ namespace Composite.Services
                 throw new ArgumentException("Unable to parse functionMarkup as XML", ex);
             }
 
-            return GetImageTagForFunctionCall(functionElement, functionPreviewPageId, functionPreviewTemplateId, functionPreviewPlaceholderName).ToString(SaveOptions.DisableFormatting);
+            return GetImageTagForFunctionCall(functionElement, functionPreviewPageId, functionPreviewTemplateId, functionPreviewPlaceholderName, null)
+                  .ToString(SaveOptions.DisableFormatting);
         }
 
 
@@ -484,7 +512,8 @@ namespace Composite.Services
             string markup,
             Guid functionPreviewPageId,
             Guid functionPreviewTemplatePageId, 
-            string functionPreviewPlaceholderName)
+            string functionPreviewPlaceholderName,
+            string functionPreviewCssSelector)
         {
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}".FormatWith(
                 HttpUtility.UrlEncode(type, Encoding.UTF8),
@@ -505,6 +534,11 @@ namespace Composite.Services
             if (!string.IsNullOrEmpty(functionPreviewPlaceholderName))
             {
                 imageUrl += "&ph=" + functionPreviewPlaceholderName;
+            }
+
+            if (!string.IsNullOrEmpty(functionPreviewCssSelector))
+            {
+                imageUrl += "&css=" + functionPreviewCssSelector;
             }
 
             return UrlUtils.ResolvePublicUrl(imageUrl);
@@ -539,7 +573,12 @@ namespace Composite.Services
 
 
 
-        private XElement GetImageTagForFunctionCall(XElement functionElement, Guid pageId, Guid pageTemplateId, string functionPreviewPlaceholderName)
+        private XElement GetImageTagForFunctionCall(
+            XElement functionElement, 
+            Guid pageId, 
+            Guid pageTemplateId, 
+            string functionPreviewPlaceholderName,
+            string functionPreviewCssSelector)
         {
             string title;
             StringBuilder description = new StringBuilder();
@@ -586,7 +625,8 @@ namespace Composite.Services
             }
 
             string functionBoxUrl = error ? GetFunctionBoxImageUrl("warning", title, description.ToString())
-                                          : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement.ToString(), pageId, pageTemplateId, functionPreviewPlaceholderName);
+                                          : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement.ToString(), 
+                                                                           pageId, pageTemplateId, functionPreviewPlaceholderName, functionPreviewCssSelector);
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
 				, new XAttribute("alt", _markupWysiwygRepresentationAlt)

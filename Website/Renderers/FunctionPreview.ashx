@@ -31,6 +31,7 @@ namespace Composite.Renderers
             string pageIdStr = context.Request["p"] ?? "";
             string templateIdStr = context.Request["t"] ?? "";
             string placeholderName = context.Request["ph"];
+            string cssSelector = context.Request["css"];
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
 
@@ -72,8 +73,8 @@ namespace Composite.Renderers
 
             var placeholderDocument = new XhtmlDocument();
             placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "functionpreview", 
-                new XAttribute("id", "CompositeC1FunctionPreview"), 
-                functionElement));
+                new XAttribute("id", "CompositeC1FunctionPreview"),
+                BuildContainerFromCssSelector(cssSelector, functionElement)));
             
             var contents = new List<IPagePlaceholderContent>();
             var content = DataFacade.BuildNew<IPagePlaceholderContent>();
@@ -90,7 +91,39 @@ namespace Composite.Renderers
                 context.Response.Write(output);
             }
         }
-    
+
+        private XElement BuildContainerFromCssSelector(string cssSelector, XElement innerElement)
+        {
+            XElement currentElement = null;
+
+            foreach (var cssSelectorPart in cssSelector.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string[] parts = cssSelectorPart.Split('.');
+                string elementName = parts[0];
+
+                var newElement = new XElement(Namespaces.Xhtml + elementName);
+                if (parts.Length > 1)
+                {
+                    newElement.Add(new XAttribute("class", string.Join(" ", parts.Skip(1))));
+                }
+
+                if (currentElement != null)
+                {
+                    currentElement.Add(newElement);
+                }
+                currentElement = newElement;
+            }
+            
+            if (currentElement == null)
+            {
+                return innerElement;
+            }
+            
+            currentElement.Add(innerElement);
+            
+            return innerElement.Ancestors().Last();
+        }
+
         public bool IsReusable
         {
             get { return true; }
