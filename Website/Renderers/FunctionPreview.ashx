@@ -31,7 +31,7 @@ namespace Composite.Renderers
             string pageIdStr = context.Request["p"] ?? "";
             string templateIdStr = context.Request["t"] ?? "";
             string placeholderName = context.Request["ph"];
-            string cssSelector = context.Request["css"];
+            string cssSelector = context.Request["css"] ?? "";
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
 
