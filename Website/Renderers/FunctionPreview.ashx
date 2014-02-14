@@ -72,9 +72,11 @@ namespace Composite.Renderers
             var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
 
             var placeholderDocument = new XhtmlDocument();
-            placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "functionpreview", 
-                new XAttribute("id", "CompositeC1FunctionPreview"),
-                BuildContainerFromCssSelector(cssSelector, functionElement)));
+            placeholderDocument.Body.Add(
+                BuildContainerFromCssSelector(
+				cssSelector, new XElement(Namespaces.Xhtml + "functionpreview",
+					                      new XAttribute("id", "CompositeC1FunctionPreview"), 
+										  functionElement)));
             
             var contents = new List<IPagePlaceholderContent>();
             var content = DataFacade.BuildNew<IPagePlaceholderContent>();
