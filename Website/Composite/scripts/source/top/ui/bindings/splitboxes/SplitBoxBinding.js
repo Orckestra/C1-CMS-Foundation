@@ -81,7 +81,9 @@ SplitBoxBinding.prototype.onBindingAttach = function () {
  * as attributes on descendant splitpanels.
  */
 SplitBoxBinding.prototype._initializeLayout = function () {
-	
+
+	this.isLayoutInitialized = false;
+
 	var splitPanels = this.getSplitPanelElements ();
 	if ( splitPanels.hasEntries ()) { 
 		var ratios = new List ( 

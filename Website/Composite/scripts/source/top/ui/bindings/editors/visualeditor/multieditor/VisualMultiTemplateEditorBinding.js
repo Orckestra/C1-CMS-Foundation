@@ -52,6 +52,30 @@ VisualMultiTemplateEditorBinding.prototype.onBindingAttach = function () {
 		this._pageId = this.getProperty("pageid");
 }
 
+/**
+ * @overloads {VisualEditorBinding#_onPageInitialize}
+ * @return
+ */
+VisualMultiTemplateEditorBinding.prototype._onPageInitialize = function ( binding ) {
+
+	VisualMultiTemplateEditorBinding.superclass._onPageInitialize.call(this, binding);
+
+	// Fit right splitpanel to template selector width
+	// Hack, TODO
+	var self = this;
+	setTimeout(function (){
+		var templateSelectorWidth = self.getContentWindow().bindingMap.templateselector.bindingElement.offsetWidth + 15;
+		var width = self.bindingElement.offsetWidth;
+		if (templateSelectorWidth > 0 ) {
+			var ratio = Math.ceil(width / templateSelectorWidth);
+			if (ratio > 4) {
+				self.getContentWindow().bindingMap.visualeditorsplitbox.setLayout("" + (ratio - 1) + ":1");
+			}
+		}
+	}, 0 );
+}
+
+
 
 /**
  * @overloads {VisualMultiEditorBinding#_initialize}
