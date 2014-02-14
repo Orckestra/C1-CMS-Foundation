@@ -105,3 +105,10 @@ img.compositeFunctionWysiwygRepresentation:-moz-loading, img.compositeHtmlWysiwy
 img.compositeFunctionWysiwygRepresentation:not(:-moz-loadedg), img.compositeHtmlWysiwygRepresentation:not(:-moz-loading) {
     background-image:none; 
 }
+
+
+img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepresentation.loaded {
+    background-image:none; 
+    min-width: 0; 
+    min-height: 0; 
+}

@@ -592,6 +592,7 @@ namespace Composite.Services
 				, new XAttribute("alt", _markupWysiwygRepresentationAlt)
 				, new XAttribute("data-markup", compactMarkup)
                 , new XAttribute("src", functionBoxUrl)
+                , new XAttribute("onload", "this.className += ' loaded';")
 				, new XAttribute("class", "compositeFunctionWysiwygRepresentation")
                 );
 
