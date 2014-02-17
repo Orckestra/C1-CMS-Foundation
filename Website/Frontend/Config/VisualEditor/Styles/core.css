@@ -14,8 +14,7 @@ body {
 	box-sizing: border-box;
 }
 body {
-	padding: 22px 10% 30px 26px;
-	padding-right: 10%;
+	padding: 22px 26px 30px 26px;
 	line-height: 20px;
 }
 h1:first-child,

@@ -78,7 +78,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	    page.viewportSize = { width: 1280 * zoom, height: 600 };
 	    page.zoomFactor = zoom;
 	} else {
-	    page.viewportSize = { width: 1280, height: 600 };
+	    page.viewportSize = { width: 1920, height: 600 };
 	}
 
 	page.settings.resourceTimeout = 5000;

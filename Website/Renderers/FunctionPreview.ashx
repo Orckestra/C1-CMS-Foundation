@@ -75,7 +75,8 @@ namespace Composite.Renderers
             placeholderDocument.Body.Add(
                 BuildContainerFromCssSelector(
 				cssSelector, new XElement(Namespaces.Xhtml + "functionpreview",
-					                      new XAttribute("id", "CompositeC1FunctionPreview"), 
+					                      new XAttribute("id", "CompositeC1FunctionPreview"),
+										  new XAttribute("style", "max-width:1024px; display:block;"),
 										  functionElement)));
             
             var contents = new List<IPagePlaceholderContent>();
