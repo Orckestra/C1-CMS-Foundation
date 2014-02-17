@@ -179,12 +179,14 @@
     <Compile Include="Core\WebClient\BrowserRender.cs" />
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
+    <Compile Include="Core\WebClient\TemplatePreviewRouteHandler.cs" />
     <Compile Include="Core\WebClient\FunctionBoxRouteHandler.cs" />
     <Compile Include="Core\WebClient\FunctionCallEditor\FunctionMarkupHelper.cs" />
     <Compile Include="Core\WebClient\Media\ImageSizeReader.cs" />
     <Compile Include="Core\WebClient\Presentation\ViewServices.cs" />
     <Compile Include="Core\WebClient\Renderings\Template\PageTemplateFeatureFacade.cs" />
     <Compile Include="Core\WebClient\ScriptLoader.cs" />
+    <Compile Include="Core\WebClient\Services\WysiwygEditor\PageTemplatePreview.cs" />
     <Compile Include="Core\WebClient\StyleLoader.cs" />
     <Compile Include="Data\DynamicTypes\Configuration\XmlConfigurationExtensionMethods.cs" />
     <Compile Include="Data\DynamicTypes\Configuration\XmlConfigurationException.cs" />

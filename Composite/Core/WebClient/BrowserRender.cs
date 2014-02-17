@@ -45,21 +45,41 @@ namespace Composite.Core.WebClient
         private const int RecycleTimerInterval_ms = 10000;
 
 
-        public static string RenderUrl(HttpContext context, string url)
+        /// <summary>
+        /// Renders a url and return a full path to a rendered image
+        /// </summary>
+        public static string RenderUrl(HttpContext context, string url, string mode, out string output)
         {
-            string tempFileName = "functionPreview" + url.GetHashCode() + ".png";
-            string tempFilePath = Path.Combine(ImagesDropFolder, tempFileName);
+            string outputImageFileName = Path.Combine(ImagesDropFolder, mode + url.GetHashCode() + ".png");
+            string outputFileName = Path.Combine(ImagesDropFolder, mode + url.GetHashCode() + ".output");
 
-            if (File.Exists(tempFilePath))
+            if (C1File.Exists(outputImageFileName) || C1File.Exists(outputFileName))
             {
 #if BrowserRender_NoCache
-                File.Delete(tempFileName);
+                File.Delete(outputFileName);
 #else
-                return tempFilePath;
+                if (C1File.Exists(outputFileName))
+                {
+                    output = C1File.ReadAllText(outputFileName);
+                }
+                else
+                {
+                    output = null;
+                }
+                
+                return outputImageFileName;
 #endif
             }
 
+            MakePreviewRequest(context, url, outputImageFileName, mode, out output);
 
+            C1File.WriteAllText(outputFileName, output);
+
+            return outputImageFileName;
+        }
+
+        private static void MakePreviewRequest(HttpContext context, string url, string outputFileName, string mode, out string output)
+        {
             HttpCookie authenticationCookie = context.Request.Cookies[CookieHandler.GetApplicationSpecificCookieName(".CMSAUTH")];
 
             lock (_syncRoot)
@@ -74,7 +94,7 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    return _server.RenderUrl(authenticationCookie, url, tempFilePath);
+                    _server.RenderUrl(authenticationCookie, url, outputFileName, mode, out output);
                 }
                 catch (Exception)
                 {
@@ -175,16 +195,16 @@ namespace Composite.Core.WebClient
                 _stdin.AutoFlush = true;
             }
 
-            public string RenderUrl(HttpCookie authenticationCookie, string url, string tempFilePath)
+            public void RenderUrl(HttpCookie authenticationCookie, string url, string tempFilePath, string mode, out string output)
             {
                 string cookieDomain = new Uri(url).Host;
                 string cookieInfo = authenticationCookie.Name + "," + authenticationCookie.Value + "," + cookieDomain;
 
-                string requestLine = cookieInfo + "|" + url + "|" + tempFilePath;
+                string requestLine = cookieInfo + "|" + url + "|" + tempFilePath + "|" + mode;
 
                 _stdin.WriteLine(requestLine);
 
-                string output = _stdout.ReadLine();
+                output = _stdout.ReadLine();
 
                 if (!File.Exists(tempFilePath))
                 {
@@ -195,8 +215,6 @@ namespace Composite.Core.WebClient
 
                     throw new BrowserRenderException(output);
                 }
-
-                return tempFilePath;
             }
 
             public bool HasCrashed()

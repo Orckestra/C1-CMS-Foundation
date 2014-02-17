@@ -68,7 +68,7 @@ namespace Composite.Core.Routing
         private static void AddFunctionBoxRoute(RouteCollection routes)
         {
             routes.Add("c1 function image", new FunctionBoxRoute());
-            
+            routes.Add("c1 template preview", new TemplatePreviewRoute());
         }
 
         /// <summary>

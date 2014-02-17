@@ -216,7 +216,9 @@ namespace Composite.Core.WebClient
         static string GetPreviewFunctionPreviewImageFile(HttpContext context)
         {
             string previewUrl = context.Request.Url.ToString().Replace("/FunctionBox?", "/FunctionPreview.ashx?");
-            return BrowserRender.RenderUrl(context, previewUrl);
+            string output;
+
+            return BrowserRender.RenderUrl(context, previewUrl, "functionPreview", out output);
         }
 
         private static List<string> GetDescriptionLines(string description)

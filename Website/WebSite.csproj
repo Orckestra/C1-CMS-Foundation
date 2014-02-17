@@ -129,6 +129,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
+      <DependentUpon>editFunctionCall.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Composite\content\misc\editors\functioncalleditor\functioncalleditor.aspx.designer.cs">
       <DependentUpon>functioncalleditor.aspx</DependentUpon>
     </Compile>
@@ -226,9 +229,6 @@
     <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.cs">
       <DependentUpon>editFunctionCall.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Composite\content\dialogs\functions\editFunctionCall.aspx.designer.cs">
-      <DependentUpon>editFunctionCall.aspx</DependentUpon>
     </Compile>
     <Compile Include="Composite\content\flow\FlowUi.aspx.cs">
       <DependentUpon>FlowUi.aspx</DependentUpon>
@@ -478,6 +478,7 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\images\function.png" />
     <Content Include="Composite\scripts\source\top\proxies\FunctionService.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\pages\ResponsePageBinding.js" />
     <Content Include="Composite\services\WysiwygEditor\FunctionService.asmx" />
@@ -5955,6 +5956,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Composite\services\WysiwygEditor\getconfig.ashx" />
+    <Content Include="Composite\services\WysiwygEditor\PageTemplate.asmx" />
     <None Include="Composite\skins\system\docks\vista\Thumbs.db" />
     <Content Include="Composite\web.config">
       <SubType>Designer</SubType>
@@ -6016,6 +6018,7 @@
     <None Include="Composite\top.inc" />
     <None Include="Composite\welcome.inc" />
     <Content Include="Renderers\FunctionPreview.ashx" />
+    <Content Include="Renderers\TemplatePreview.ashx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Composite\DynamicTypeForms\" />
