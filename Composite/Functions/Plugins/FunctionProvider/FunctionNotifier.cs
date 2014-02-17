@@ -1,4 +1,5 @@
-﻿using Composite.Functions.Foundation;
+﻿using Composite.Core.WebClient.Renderings;
+using Composite.Functions.Foundation;
 
 
 namespace Composite.Functions.Plugins.FunctionProvider
@@ -21,6 +22,7 @@ namespace Composite.Functions.Plugins.FunctionProvider
         /// <exclude />
         public void FunctionsUpdated()
         {
+            FunctionPreview.ClearCache();
             MetaFunctionProviderRegistry.ReinitializeFunctionFromProvider(this.ProviderName);
         }
 

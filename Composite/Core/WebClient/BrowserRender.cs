@@ -27,7 +27,7 @@ namespace Composite.Core.WebClient
 
     internal static class BrowserRender
     {
-        private static readonly string ImagesDropFolder = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
+        private static readonly string TempImagesFolder = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
 
         static BrowserRender()
         {
@@ -45,13 +45,26 @@ namespace Composite.Core.WebClient
         private const int RecycleTimerInterval_ms = 10000;
 
 
+        public static string GetCacheFolder(string mode)
+        {
+            return TempImagesFolder + "/" + mode;
+        }
+
         /// <summary>
         /// Renders a url and return a full path to a rendered image
         /// </summary>
         public static string RenderUrl(HttpContext context, string url, string mode, out string output)
         {
-            string outputImageFileName = Path.Combine(ImagesDropFolder, mode + url.GetHashCode() + ".png");
-            string outputFileName = Path.Combine(ImagesDropFolder, mode + url.GetHashCode() + ".output");
+            string dropFolder = GetCacheFolder(mode);
+
+            if (!C1Directory.Exists(dropFolder))
+            {
+                C1Directory.CreateDirectory(dropFolder);
+            }
+            string urlHash = Convert.ToBase64String(BitConverter.GetBytes(url.GetHashCode())).Substring(0, 6).Replace('+', '-').Replace('/', '_');
+
+            string outputImageFileName = Path.Combine(dropFolder, urlHash + ".png");
+            string outputFileName = Path.Combine(dropFolder, urlHash + ".output");
 
             if (C1File.Exists(outputImageFileName) || C1File.Exists(outputFileName))
             {
@@ -213,7 +226,7 @@ namespace Composite.Core.WebClient
                         output = _stderror.ReadToEnd();
                     }
 
-                    throw new BrowserRenderException(output);
+                    throw new BrowserRenderException(output + Environment.NewLine + "Request: " + requestLine);
                 }
             }
 

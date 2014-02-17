@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Composite.C1Console.Drawing;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
+using Composite.Core.WebClient.Renderings;
 
 
 namespace Composite.Core.WebClient
@@ -77,7 +78,7 @@ namespace Composite.Core.WebClient
                     {
                         try
                         {
-                            string fileName = GetPreviewFunctionPreviewImageFile(context);
+                            string fileName = FunctionPreview.GetPreviewFunctionPreviewImageFile(context);
                             previewImage = new Bitmap(fileName);
 
                             if (previewImage.Width <= 1 && previewImage.Height <= 1)
@@ -213,13 +214,6 @@ namespace Composite.Core.WebClient
             }
         }
 
-        static string GetPreviewFunctionPreviewImageFile(HttpContext context)
-        {
-            string previewUrl = context.Request.Url.ToString().Replace("/FunctionBox?", "/FunctionPreview.ashx?");
-            string output;
-
-            return BrowserRender.RenderUrl(context, previewUrl, "functionPreview", out output);
-        }
 
         private static List<string> GetDescriptionLines(string description)
         {
