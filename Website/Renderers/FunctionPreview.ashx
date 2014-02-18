@@ -101,20 +101,23 @@ namespace Composite.Renderers
 
             foreach (var cssSelectorPart in cssSelector.Split(new [] {" "}, StringSplitOptions.RemoveEmptyEntries))
             {
-                string[] parts = cssSelectorPart.Split('.');
-                string elementName = parts[0];
+				if (cssSelectorPart != "p")
+				{
+					string[] parts = cssSelectorPart.Split('.');
+					string elementName = parts[0];
 
-                var newElement = new XElement(Namespaces.Xhtml + elementName);
-                if (parts.Length > 1)
-                {
-                    newElement.Add(new XAttribute("class", string.Join(" ", parts.Skip(1))));
-                }
+					var newElement = new XElement(Namespaces.Xhtml + elementName);
+					if (parts.Length > 1)
+					{
+						newElement.Add(new XAttribute("class", string.Join(" ", parts.Skip(1))));
+					}
 
-                if (currentElement != null)
-                {
-                    currentElement.Add(newElement);
-                }
-                currentElement = newElement;
+					if (currentElement != null)
+					{
+						currentElement.Add(newElement);
+					}
+					currentElement = newElement;
+				}
             }
             
             if (currentElement == null)
