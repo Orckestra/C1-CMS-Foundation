@@ -480,6 +480,7 @@
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
     <Content Include="Composite\images\function.png" />
     <Content Include="Composite\scripts\source\top\proxies\FunctionService.js" />
+    <Content Include="Composite\scripts\source\top\proxies\PageTemplateService.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\pages\ResponsePageBinding.js" />
     <Content Include="Composite\services\WysiwygEditor\FunctionService.asmx" />
     <Content Include="Composite\unsecure.js" />

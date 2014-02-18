@@ -356,6 +356,7 @@ _Application.prototype = {
 		TreeService					= WebServiceProxy.createProxy ( Constants.URL_WSDL_TREESERVICE );
 		SecurityService				= WebServiceProxy.createProxy ( Constants.URL_WSDL_SECURITYSERVICE );
 		XhtmlTransformationsService = WebServiceProxy.createProxy ( Constants.URL_WSDL_XHTMLTRANSFORM );
+		PageTemplateService			= WebServiceProxy.createProxy ( Constants.URL_WSDL_PAGETEMPLATE );
 		FunctionService				= WebServiceProxy.createProxy ( Constants.URL_WSDL_FUNCTIONSERVICE );
 		LocalizationService			= WebServiceProxy.createProxy ( Constants.URL_WSDL_LOCALIZATION );
 		SourceValidationService		= WebServiceProxy.createProxy ( Constants.URL_WSDL_SOURCEVALIDATION );

@@ -24,7 +24,13 @@ function VisualMultiTemplateEditorBinding () {
 	 * @type {Guid}
 	 */
 	this._pageId = null;
-	
+
+	/**
+	 * Template preview information.
+	 * @type {Object}
+	 */
+	this._templatePreview = null;
+
 	/*
 	 * Returnable.
 	 */
@@ -136,7 +142,9 @@ VisualMultiTemplateEditorBinding.prototype._onTemplateSelectionChanged = functio
  * Actually parse textareas into treenodes.
  * @param {List<DOMElement>}
  */
-VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function ( textareas ) {
+VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textareas) {
+
+	this.updateTemplatePreview();
 	
 	/*
 	 * Reset textareas Map but keep a copy of the old 
@@ -246,6 +254,17 @@ VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function ( texta
 	}
 };
 
+/** 
+ * @overloads {VisualMultiEditorBinding#_placeHolderSelected}
+ * @param {string} name
+ */
+VisualMultiTemplateEditorBinding.prototype._placeHolderSelected = function (name) {
+
+	VisualMultiTemplateEditorBinding.superclass._placeHolderSelected.call(this, name);
+
+	this.updatePlaceHoldeWidth(name);
+}
+
 /**
  * Some pretty hacked stuff going on here. Stuff like this should not be communicated 
  * through the page DOM, but via a dedicated service offering structured data. Oh well...
@@ -289,6 +308,31 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 	
 	return VisualMultiTemplateEditorBinding.superclass.updateElement.call ( this, newelement, oldelement );
 }
+
+
+/**
+ * Update template preview information
+ */
+VisualMultiTemplateEditorBinding.prototype.updatePlaceHoldeWidth = function (placeholderId) {
+	var self = this;
+	new List(this._templatePreview.Placeholders).each(function (placeholder) {
+		//TODO: replace to equeal, after fixing bug
+		if (placeholder.PlaceholderId.indexOf(placeholderId) > -1) {
+			self._tinyInstance.getBody().style.maxWidth = placeholder.ClientRectangle.Width + "px";
+			return false;
+		}
+	});
+}
+
+/**
+ * Update template preview information
+ */
+VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function () {
+	var pageId = this._pageId;
+	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
+	this._templatePreview =  PageTemplateService.GetTemplatePreviewInformation(pageId, templateId);
+}
+
 
 /**
  * @overloads {VisualEditorBinding#getSoapTinyContent}
