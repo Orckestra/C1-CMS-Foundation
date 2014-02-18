@@ -314,14 +314,20 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
  * Update template preview information
  */
 VisualMultiTemplateEditorBinding.prototype.updatePlaceHoldeWidth = function (placeholderId) {
+	if (placeholderId == undefined)
+	{
+		placeholderId = this._textareaname;
+	}
 	var self = this;
-	new List(this._templatePreview.Placeholders).each(function (placeholder) {
-		//TODO: replace to equeal, after fixing bug
-		if (placeholder.PlaceholderId.indexOf(placeholderId) > -1) {
-			self._tinyInstance.getBody().style.maxWidth = placeholder.ClientRectangle.Width + "px";
-			return false;
-		}
-	});
+	if (this._templatePreview) {
+		new List(this._templatePreview.Placeholders).each(function (placeholder) {
+			//TODO: replace to equeal, after fixing bug
+			if (placeholder.PlaceholderId.indexOf(placeholderId) > -1) {
+				self._tinyInstance.getBody().style.maxWidth = placeholder.ClientRectangle.Width + "px";
+				return false;
+			}
+		});
+	}
 }
 
 /**
@@ -330,7 +336,12 @@ VisualMultiTemplateEditorBinding.prototype.updatePlaceHoldeWidth = function (pla
 VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function () {
 	var pageId = this._pageId;
 	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
-	this._templatePreview =  PageTemplateService.GetTemplatePreviewInformation(pageId, templateId);
+	this._templatePreview = null;
+	var self = this;
+	PageTemplateService.GetTemplatePreviewInformation(pageId, templateId, function (result) {
+		self._templatePreview = result;
+		self.updatePlaceHoldeWidth();
+	});
 }
 
 
