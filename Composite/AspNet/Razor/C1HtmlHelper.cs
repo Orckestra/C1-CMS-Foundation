@@ -8,6 +8,7 @@ using System.Web.WebPages.Html;
 using System.Xml.Linq;
 using Composite.Core.Types;
 using Composite.Core.WebClient.Renderings.Template;
+using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
 
@@ -37,6 +38,16 @@ namespace Composite.AspNet.Razor
         public IHtmlString PageUrl(IPage page)
         {
             return PageUrl(page.Id.ToString());
+        }
+
+        /// <summary>
+        /// Returns a URL for a specific C1 page
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <returns></returns>
+        public IHtmlString PageUrl(DataReference<IPage> page)
+        {
+            return PageUrl(((Guid) page.KeyValue).ToString());
         }
 
         /// <summary>
@@ -76,6 +87,7 @@ namespace Composite.AspNet.Razor
         }
 
 
+
         /// <summary>
         /// Returns a URL for a specific C1 page
         /// </summary>
@@ -105,6 +117,60 @@ namespace Composite.AspNet.Razor
         {
             return MediaUrl(mediaFile.KeyPath);
         }
+
+
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="mediaFile">The media file.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(DataReference<IMediaFile> mediaFile) 
+        {
+            return MediaUrl((string) mediaFile.KeyValue);
+        }
+
+
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="mediaFile">The media file.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(NullableDataReference<IMediaFile> mediaFile)
+        {
+            if (!mediaFile.IsSet)
+            {
+                return null;
+            }
+
+            return MediaUrl((string) mediaFile.KeyValue);
+        }
+
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="image">The image file.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(DataReference<IImageFile> image)
+        {
+            return MediaUrl((string)image.KeyValue);
+        }
+
+
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="image">The image file.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(NullableDataReference<IImageFile> image)
+        {
+            if (!image.IsSet)
+            {
+                return null;
+            }
+
+            return MediaUrl((string)image.KeyValue);
+        }
+
 
 
         /// <summary>
