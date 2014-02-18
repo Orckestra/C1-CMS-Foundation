@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Xml;
 using System.Xml.Linq;
 using Composite.Core.Extensions;
@@ -37,7 +38,7 @@ namespace Composite.Data.DynamicTypes.Configuration
 
             if (string.IsNullOrEmpty(result))
             {
-                ThrowConfiguraitonError("Missing or empty required attribute '{0}'".FormatWith(attributeName), configurationElement);
+                ThrowConfiguraitonError("Required attribute '{0}' is missing or empty".FormatWith(attributeName), configurationElement);
             }
 
             return result;
@@ -48,10 +49,37 @@ namespace Composite.Data.DynamicTypes.Configuration
             var document = configurationXObject.Document;
             if (document != null && !string.IsNullOrEmpty(document.BaseUri) && (configurationXObject as IXmlLineInfo).HasLineInfo())
             {
-                throw new XmlConfigurationException(message, configurationXObject);
+                string fileName = GetFileName(document);
+                int lineNumber = (configurationXObject as IXmlLineInfo).LineNumber;
+
+                throw new ConfigurationErrorsException(message, fileName, lineNumber);
             }
 
             throw new InvalidOperationException(message);
+        }
+
+        public static void ThrowConfiguraitonError(string message, Exception innerException, XObject configurationXObject)
+        {
+            var document = configurationXObject.Document;
+            if (document != null && !string.IsNullOrEmpty(document.BaseUri) && (configurationXObject as IXmlLineInfo).HasLineInfo())
+            {
+                string fileName = GetFileName(document);
+                int lineNumber = (configurationXObject as IXmlLineInfo).LineNumber;
+
+                throw new ConfigurationErrorsException(message, innerException, fileName, lineNumber);
+            }
+
+            throw new InvalidOperationException(message, innerException);
+        }
+
+        private static string GetFileName(XDocument document)
+        {
+            const string fileUriPrefix = "file:///";
+            string baseUri = document.BaseUri;
+
+            return baseUri.StartsWith(fileUriPrefix, StringComparison.Ordinal)
+                ? baseUri.Substring(fileUriPrefix.Length)
+                : baseUri;
         }
     }
 }

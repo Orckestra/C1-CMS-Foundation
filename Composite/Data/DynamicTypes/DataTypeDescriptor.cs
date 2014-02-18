@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -724,9 +725,16 @@ namespace Composite.Data.DynamicTypes
 
             foreach (XElement elm in fieldsElement.Elements())
             {
-                DataFieldDescriptor dataFieldDescriptor = DataFieldDescriptor.FromXml(elm);
+                var dataFieldDescriptor = DataFieldDescriptor.FromXml(elm);
 
-                dataTypeDescriptor.Fields.Add(dataFieldDescriptor);
+                try
+                {
+                    dataTypeDescriptor.Fields.Add(dataFieldDescriptor);
+                }
+                catch (Exception ex)
+                {
+                    XmlConfigurationExtensionMethods.ThrowConfiguraitonError("Failed to add a data field: " + ex.Message, ex, elm);
+                }
             }
 
             foreach (XElement elm in keyPropertyNamesElement.Elements("KeyPropertyName"))

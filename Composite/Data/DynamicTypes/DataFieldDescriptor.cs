@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml.Linq;
 using Composite.Core.Types;
+using Composite.Data.DynamicTypes.Configuration;
 
 
 namespace Composite.Data.DynamicTypes
@@ -332,26 +333,20 @@ namespace Composite.Data.DynamicTypes
         {
             if (element.Name != "DataFieldDescriptor") throw new ArgumentException("The xml is not correctly formattet");
 
-            XAttribute idAttribute = element.Attribute("id");
-            XAttribute nameAttribute = element.Attribute("name");
-            XAttribute isNullableAttribute = element.Attribute("isNullable");
-            XAttribute positionAttribute = element.Attribute("position");
+            Guid id = (Guid)element.GetRequiredAttribute("id");
+            string name = element.GetRequiredAttributeValue("name");
+            bool isNullable = (bool)element.GetRequiredAttribute("isNullable");
+            int position = (int)element.GetRequiredAttribute("position");
+            bool inherited = (bool)element.GetRequiredAttribute("inherited");
             XAttribute groupByPriorityAttribute = element.Attribute("groupByPriority");
-            XAttribute inheritedAttribute = element.Attribute("inherited");
-            XAttribute instanceTypeAttribute = element.Attribute("instanceType");
-            XAttribute storeTypeAttribute = element.Attribute("storeType");
+            XAttribute instanceTypeAttribute = element.GetRequiredAttribute("instanceType");
+            XAttribute storeTypeAttribute = element.GetRequiredAttribute("storeType");
             XAttribute isReadOnlyAttribute = element.Attribute("isReadOnly");
             XAttribute newInstanceDefaultFieldValueAttribute = element.Attribute("newInstanceDefaultFieldValue");
 
-            if (groupByPriorityAttribute==null) groupByPriorityAttribute = new XAttribute("groupByPriority", "0" );
 
-            if ((idAttribute == null) || (nameAttribute == null) || (isNullableAttribute == null) || (positionAttribute == null) || (inheritedAttribute == null) || (instanceTypeAttribute == null) || (storeTypeAttribute == null)) throw new ArgumentException("The xml is not correctly formattet");
-
-            if (isReadOnlyAttribute == null)
-            {
-                // For 3.0 backward compatibility. Future packages should contain this
-                isReadOnlyAttribute = new XAttribute("isReadOnly", false);
-            }
+            bool isReadOnly = isReadOnlyAttribute != null && (bool) isReadOnlyAttribute;
+            int groupByPriority = groupByPriorityAttribute != null ? (int)groupByPriorityAttribute : 0;
 
             XAttribute defaultValueAttribute = element.Attribute("defaultValue");
             XAttribute foreignKeyReferenceTypeNameAttribute = element.Attribute("foreignKeyReferenceTypeName");
@@ -359,20 +354,19 @@ namespace Composite.Data.DynamicTypes
             XElement treeOrderingProfileElement = element.Element("TreeOrderingProfile");
             XElement validationFunctionMarkupsElement = element.Element("ValidationFunctionMarkups");
 
-            Guid id = (Guid)idAttribute;
-            string name = nameAttribute.Value;
-            bool isNullable = (bool)isNullableAttribute;
-            int position = (int)positionAttribute;
-            int groupByPriority = (int)groupByPriorityAttribute;
-            bool inherited = (bool)inheritedAttribute;
+            
+            
+            
             Type instanceType = TypeManager.GetType(instanceTypeAttribute.Value);
             StoreFieldType storeType = StoreFieldType.Deserialize(storeTypeAttribute.Value);
 
-            DataFieldDescriptor dataFieldDescriptor = new DataFieldDescriptor(id, name, storeType, instanceType, inherited);
-            dataFieldDescriptor.IsNullable = isNullable;
-            dataFieldDescriptor.Position = position;
-            dataFieldDescriptor.GroupByPriority = groupByPriority;
-            dataFieldDescriptor.IsReadOnly = (bool)isReadOnlyAttribute;
+            var dataFieldDescriptor = new DataFieldDescriptor(id, name, storeType, instanceType, inherited)
+            {
+                IsNullable = isNullable,
+                Position = position,
+                GroupByPriority = groupByPriority,
+                IsReadOnly = isReadOnly
+            };
 
             if (newInstanceDefaultFieldValueAttribute != null)
             {
@@ -400,7 +394,7 @@ namespace Composite.Data.DynamicTypes
                 XAttribute helpTextAttribute = formRenderingProfileElement.Attribute("helpText");
                 XAttribute widgetFunctionMarkupAttribute = formRenderingProfileElement.Attribute("widgetFunctionMarkup");
 
-                DataFieldFormRenderingProfile dataFieldFormRenderingProfile = new DataFieldFormRenderingProfile();
+                var dataFieldFormRenderingProfile = new DataFieldFormRenderingProfile();
 
                 if (labelAttribute != null)
                 {
@@ -426,9 +420,11 @@ namespace Composite.Data.DynamicTypes
                 int? orderPriority = (int?)treeOrderingProfileElement.Attribute("orderPriority");
                 bool orderDescending = (bool)treeOrderingProfileElement.Attribute("orderDescending");
 
-                DataFieldTreeOrderingProfile dataFieldTreeOrderingProfile = new DataFieldTreeOrderingProfile { OrderPriority = orderPriority, OrderDescending = orderDescending };
-
-                dataFieldDescriptor.TreeOrderingProfile = dataFieldTreeOrderingProfile;
+                dataFieldDescriptor.TreeOrderingProfile = new DataFieldTreeOrderingProfile
+                {
+                    OrderPriority = orderPriority, 
+                    OrderDescending = orderDescending
+                };
             }
 
             dataFieldDescriptor.ValidationFunctionMarkup = new List<string>();
@@ -436,11 +432,9 @@ namespace Composite.Data.DynamicTypes
             {                
                 foreach (XElement validationFunctionMarkupElement in validationFunctionMarkupsElement.Elements("ValidationFunctionMarkup"))
                 {
-                    XAttribute markupAttribute = validationFunctionMarkupElement.Attribute("markup");
+                    string markup = validationFunctionMarkupElement.GetRequiredAttributeValue("markup");
 
-                    if (markupAttribute == null) throw new ArgumentException("The xml is not correctly formattet");
-
-                    dataFieldDescriptor.ValidationFunctionMarkup.Add(markupAttribute.Value);
+                    dataFieldDescriptor.ValidationFunctionMarkup.Add(markup);
                 }
             }
 

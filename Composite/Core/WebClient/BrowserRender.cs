@@ -45,7 +45,7 @@ namespace Composite.Core.WebClient
         private const int RecycleTimerInterval_ms = 10000;
 
 
-        public static string GetCacheFolder(string mode)
+        private static string GetCacheFolder(string mode)
         {
             return TempImagesFolder + "/" + mode;
         }
@@ -132,6 +132,31 @@ namespace Composite.Core.WebClient
                     _server.Dispose();
                     _server = null;
                 }
+            }
+        }
+
+        public static void ClearCache(string renderingMode)
+        {
+            var folder = GetCacheFolder(renderingMode);
+
+            if (C1Directory.Exists(folder))
+            {
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    lock (_syncRoot)
+                    {
+                        foreach (var file in C1Directory.GetFiles(folder, "*.*"))
+                        {
+                            try
+                            {
+                                C1File.Delete(file);
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                });
             }
         }
 

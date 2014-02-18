@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Web;
+using Composite.Core.IO;
 
 namespace Composite.Core.WebClient.Services.WysiwygEditor
 {
@@ -9,6 +10,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageTemplatePreview
     {
+        private const string RenderingMode = "templatePreview";
+
         /// <exclude />
         public class PlaceholderInformation
         {
@@ -28,7 +31,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId;
 
             string output;
-            imageFilePath = BrowserRender.RenderUrl(context, requestUrl, "templatePreview", out output);
+            imageFilePath = BrowserRender.RenderUrl(context, requestUrl, RenderingMode, out output);
 
             var pList = new List<PlaceholderInformation>();
 
@@ -64,5 +67,10 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             placeholders = pList.ToArray();
         }
 
+        /// <exclude />
+        public static void ClearCache()
+        {
+            BrowserRender.ClearCache(RenderingMode);
+        }
     }
 }

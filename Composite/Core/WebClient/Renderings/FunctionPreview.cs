@@ -1,14 +1,14 @@
-﻿using System;
-using System.Web;
-using Composite.Core.IO;
+﻿using System.Web;
 
 namespace Composite.Core.WebClient.Renderings
 {
-    internal static class FunctionPreview
+    /// <exclude />
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    public static class FunctionPreview
     {
         private const string RenderingMode = "functionPreview";
 
-        public static string GetPreviewFunctionPreviewImageFile(HttpContext context)
+        internal static string GetPreviewFunctionPreviewImageFile(HttpContext context)
         {
             string previewUrl = context.Request.Url.ToString().Replace("/FunctionBox?", "/FunctionPreview.ashx?");
             string output;
@@ -16,23 +16,10 @@ namespace Composite.Core.WebClient.Renderings
             return BrowserRender.RenderUrl(context, previewUrl, RenderingMode, out output);
         }
 
+        /// <exclude />
         public static void ClearCache()
         {
-            var folder = BrowserRender.GetCacheFolder(RenderingMode);
-
-            if (C1Directory.Exists(folder))
-            {
-                foreach (var file in C1Directory.GetFiles(folder, "*.*"))
-                {
-                    try
-                    {
-                        C1File.Delete(file);
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
+            BrowserRender.ClearCache(RenderingMode);
         }
     }
 }

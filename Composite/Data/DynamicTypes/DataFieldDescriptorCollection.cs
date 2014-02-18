@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.Core.Extensions;
 
 
 namespace Composite.Data.DynamicTypes
@@ -28,14 +29,24 @@ namespace Composite.Data.DynamicTypes
             get { return _descriptors.Count; }
         }
 
-
         /// <exclude />
         public void Add(DataFieldDescriptor descriptor)
         {
-            if (descriptor == null) throw new ArgumentNullException("descriptor");
-            if (_descriptors.Contains(descriptor)) throw new ArgumentException("The specied DataFieldDescriptor has already been added. Developers should ensure that the Immutable Field Id is unique on all fields.");
-            if (this[descriptor.Name] != null) throw new ArgumentException("The specified Name is in use by another DataFieldDescriptor");
-            if (this[descriptor.Id] != null) throw new ArgumentException("The specified Id is in use by another DataFieldDescriptor");
+            Verify.ArgumentNotNull(descriptor, "descriptor");
+
+            if (_descriptors.Contains(descriptor))
+            {
+                throw new ArgumentException("The specied DataFieldDescriptor has already been added. Developers should ensure that the Immutable Field Id is unique on all fields.");
+            }
+
+            if (this[descriptor.Name] != null)
+            {
+                throw new InvalidOperationException("The specified field name '{0}' is in use by another DataFieldDescriptor".FormatWith(descriptor.Name));
+            }
+            if (this[descriptor.Id] != null)
+            {
+                throw new InvalidOperationException("The specified field Id '{0}' is in use by another DataFieldDescriptor".FormatWith(descriptor.Id));
+            }
 
             _descriptors.Add(descriptor);
         }
@@ -44,10 +55,19 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void Insert(int index, DataFieldDescriptor descriptor)
         {
-            if (descriptor == null) throw new ArgumentNullException("descriptor");
+            Verify.ArgumentNotNull(descriptor, "descriptor");
+
             if (_descriptors.Contains(descriptor)) throw new ArgumentException("The specied DataFieldDescriptor has already been added");
-            if (this[descriptor.Name] != null) throw new ArgumentException("The specified Name is in use by another DataFieldDescriptor");
-            if (this[descriptor.Id] != null) throw new ArgumentException("The specified Id is in use by another DataFieldDescriptor");
+
+            if (this[descriptor.Name] != null)
+            {
+                throw new InvalidOperationException("The specified field name '{0}' is in use by another DataFieldDescriptor".FormatWith(descriptor.Name));
+            }
+
+            if (this[descriptor.Id] != null)
+            {
+                throw new InvalidOperationException("The specified field Id '{0}' is in use by another DataFieldDescriptor".FormatWith(descriptor.Id));
+            }
 
             _descriptors.Insert(index, descriptor);
         }
