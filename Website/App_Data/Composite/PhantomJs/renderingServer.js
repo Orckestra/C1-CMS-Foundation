@@ -5,14 +5,14 @@ function getFunctionPreviewClientRect(previewElementId) {
         return null;
     }
 				    
-    var childNodes = element.getElementsByTagName('*');
-    if (childNodes.lenght == 0) {
+    var children = element.getElementsByTagName('*');
+    if (children.lenght == 0) {
         return null;
     }
 
     var top, right, bottom, left, sizeSet = false;
-    for (i = 0; i < childNodes.length; i++) {
-        var childNode = childNodes[i]; 
+    for (i = 0; i < children.length; i++) {
+        var childNode = children[i]; 
 
         var rect = childNode.getBoundingClientRect();
         if (rect.width == 0 || rect.height == 0) {
@@ -31,6 +31,31 @@ function getFunctionPreviewClientRect(previewElementId) {
             bottom = bottom > rect.bottom ? bottom : rect.bottom;
             left = left < rect.left ? left : rect.left;
             right = right > rect.right ? right : rect.right;
+        }
+    }
+
+    // Checking is there's a child node that is a text node
+    var childNodes = element.childNodes;
+    for (var i = 0; childNode = childNodes[i]; i++)
+    {
+        if (childNode.toString() == '[object Text]') {
+            rect = element.getBoundingClientRect();
+
+            if (!sizeSet) {
+                top = rect.top;
+                right = rect.right;
+                bottom = rect.bottom;
+                left = rect.left;
+
+                sizeSet = true;
+            } else {
+                top = top < rect.top ? top : rect.top;
+                bottom = bottom > rect.bottom ? bottom : rect.bottom;
+                left = left < rect.left ? left : rect.left;
+                right = right > rect.right ? right : rect.right;
+            }
+
+            break;
         }
     }
 
