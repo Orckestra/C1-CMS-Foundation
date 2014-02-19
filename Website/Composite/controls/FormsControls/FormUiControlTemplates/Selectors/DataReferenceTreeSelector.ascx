@@ -80,12 +80,16 @@
 
         string label = null;
         bool brokenReference = false;
+
+        bool valueSet = false;
         
         if (!_value.IsNullOrEmpty())
         {
             IDataReference reference = BuildReference(_value);
 
-            if (reference != null && reference.IsSet)
+            valueSet = reference != null && reference.IsSet;
+            
+            if (valueSet)
             {
                 try
                 {
@@ -100,6 +104,11 @@
             }
         }
 
+        if (!this.NullValueAllowed && !valueSet)
+        {
+            ctlSelectorDialog.Attributes["required"] = "true";
+        }        
+
         if (label == null)
         {
             ctlSelectorDialog.Attributes["label"] = StringResourceSystemFacade.GetString("Composite.Management", "AspNetUiControl.Selector.NoSelection");
@@ -109,7 +118,7 @@
 
         if (!brokenReference && IsMediaReference())
         {
-            int fileNameIndex = label.LastIndexOf("/");
+            int fileNameIndex = label.LastIndexOf('/');
             if(fileNameIndex > 0 && label.Length > fileNameIndex + 1) 
             {
                 label = label.Substring(fileNameIndex + 1);

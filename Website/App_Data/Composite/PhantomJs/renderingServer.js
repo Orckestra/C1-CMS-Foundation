@@ -77,7 +77,7 @@ function getPlaceholdersLocationInfo(placeholderElementName) {
     var placeholders = document.getElementsByTagName(placeholderElementName);
     for (i = 0; pl = placeholders[i]; i++) {
         var clientRect = pl.getBoundingClientRect();
-        var placeholderInfoParts = [pl.id, clientRect.left, clientRect.top, clientRect.width, clientRect.height];
+        var placeholderInfoParts = [pl.id.substring(3), clientRect.left, clientRect.top, clientRect.width, clientRect.height];
         ret.push(placeholderInfoParts.join(','));
     }
     return ret.join('|');

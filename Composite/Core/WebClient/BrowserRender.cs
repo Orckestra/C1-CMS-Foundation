@@ -47,7 +47,7 @@ namespace Composite.Core.WebClient
 
         private static string GetCacheFolder(string mode)
         {
-            return TempImagesFolder + "/" + mode;
+            return TempImagesFolder + "\\" + mode;
         }
 
         /// <summary>

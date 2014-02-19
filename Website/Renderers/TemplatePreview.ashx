@@ -71,7 +71,7 @@ namespace Composite.Renderers
             {
                 var placeholderDocument = new XhtmlDocument();
                 placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "placeholderpreview",
-                    new XAttribute("id", "pp_" + placeholder.Id),
+                    new XAttribute("id", "ph_" + placeholder.Id),
                     new XAttribute("style", string.Format("background-color: lightgray; display: block; width: 100%; min-height: {0}px; height: 100%",
                         placeholder.Id == templateInfo.DefaultPlaceholderId ? 600 : 300)),
                     new XElement(Namespaces.Xhtml + "h1", placeholder.Title)));
