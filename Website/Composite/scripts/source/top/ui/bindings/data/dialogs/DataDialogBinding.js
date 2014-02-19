@@ -48,6 +48,16 @@ function DataDialogBinding () {
 	 * @type {boolean}
 	 */
 	this._hasFocus = false;
+
+    /**
+     * @type {boolean}
+     */
+	this.isRequired = false;
+
+    /**
+	 * @type {boolean}
+	 */
+	this._isValid = true;
 }
 
 /**
@@ -71,14 +81,27 @@ DataDialogBinding.prototype.onBindingRegister = function () {
 }
 
 /**
+ * Parse DOM properties.
+ */
+DataDialogBinding.prototype.parseDOMProperties = function () {
+
+    var isRequired = this.getProperty("required") == true;
+    if (isRequired) {
+        this.isRequired = true;
+    }
+}
+
+
+/**
  * Overloads {@link Binding#onBindingAttach}
  */
 DataDialogBinding.prototype.onBindingAttach = function () {
 	
 	DataDialogBinding.superclass.onBindingAttach.call ( this );
 	
-	Binding.imageProfile ( this );
-	this._buildButton ();
+	Binding.imageProfile(this);
+	this._buildButton();
+	this.parseDOMProperties();
 	
 	if ( this.getProperty ( "handle" ) != null || this.getProperty ( "url" )) {
 		this._buildIndicator ();
@@ -384,7 +407,27 @@ DataDialogBinding.prototype._releaseKeyboard = function () {
  */
 DataDialogBinding.prototype.validate = function () {
 	
-	return true;
+    var isValid = true;
+    if (this.isRequired == true) {
+        var value = this.getValue();
+
+        if (value == null || value == "") {
+            isValid = false;
+        }
+
+        if (isValid != this._isValid) {
+            if (isValid) {
+                this.dispatchAction(Binding.ACTION_VALID);
+                this.detachClassName(DataBinding.CLASSNAME_INVALID);
+            } else {
+                this.dispatchAction(Binding.ACTION_INVALID);
+                this.attachClassName(DataBinding.CLASSNAME_INVALID);
+                this._buttonBinding.setLabel(DataBinding.warnings["required"]);
+            }
+        }
+        this._isValid = isValid;
+    }
+    return isValid;
 }
 
 /**
