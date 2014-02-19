@@ -261,7 +261,25 @@ function VisualEditorBinding () {
 	 * @type {string}
 	 */
 	this._xhtml = null;
+
+    /**
+	 * Preview page id.
+	 * @type {string}
+	 */
+	this._previewPageId = null;
+
+    /**
+	 * Preview template id.
+	 * @type {string}
+	 */
+	this._previewTemplateId = null;
 	
+    /**
+	 * Preview placeholder.
+	 * @type {string}
+	 */
+    this._previewPlaceholder = null;
+
 	/*
 	 * Returnable.
 	 */
@@ -302,6 +320,18 @@ VisualEditorBinding.prototype.onBindingAttach = function () {
 		this._url += "?config=" + config;
 	}
 	
+	this._previewPageId = this.getProperty ("previewpageid");
+	if (this._previewPageId == null) {
+	    this._previewPageId = '00000000-0000-0000-0000-000000000000';
+	}
+
+	this._previewTemplateId = this.getProperty("previewtemplateid");
+	if (this._previewTemplateId == null) {
+	    this._previewTemplateId = '00000000-0000-0000-0000-000000000000';
+	}
+
+	this._previewPlaceholder = this.getProperty("previewplaceholder");
+
 	VisualEditorBinding.superclass.onBindingAttach.call ( this );
 	
 	this.subscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
@@ -737,7 +767,7 @@ VisualEditorBinding.prototype.clean = function () {
  * @return {SOAP}
  */
 VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
-	return XhtmlTransformationsService.StructuredContentToTinyContent(content);
+    return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, this._previewPageId, this._previewTemplateId, this._previewPlaceholder);
 }
 
 /**
@@ -746,7 +776,7 @@ VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
  * @return {SOAP}
  */
 VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
-	return XhtmlTransformationsService.GetImageTagForFunctionCall(markup);
+    return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, this._previewPageId, this._previewTemplateId, this._previewPlaceholder);
 }
 
 

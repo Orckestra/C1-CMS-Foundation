@@ -51,7 +51,10 @@ HTMLDataDialogBinding.prototype.fireCommand = function () {
 			"elementclassconfiguration"	: this.getProperty ( "elementclassconfiguration" ),
 			"configurationstylesheet" 	: this.getProperty ( "configurationstylesheet" ),
 			"presentationstylesheet" 	: this.getProperty ( "presentationstylesheet" ),
-			"embedablefieldstypenames"	: this.getProperty ( "embedablefieldstypenames" )
+			"embedablefieldstypenames"  : this.getProperty ( "embedablefieldstypenames"),
+            "previewtemplateid"	        : this.getProperty ( "previewtemplateid" ),
+            "previewplaceholder"	    : this.getProperty ( "previewplaceholder" ),
+            "previewpageid"	            : this.getProperty ( "previewpageid" )
 		}
 	}
 	
