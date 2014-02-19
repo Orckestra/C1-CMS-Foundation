@@ -49,7 +49,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                     int width = Int32.Parse(parts[3]);
                     int height = Int32.Parse(parts[4]);
 
-                    var zoom = 0.2;
+                    var zoom = 1.0;
 
                     pList.Add(new PlaceholderInformation
                     {

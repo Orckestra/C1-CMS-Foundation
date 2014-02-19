@@ -99,9 +99,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
 
 	if (mode == "templatePreview") {
-	    var zoom = 0.2;
-	    page.viewportSize = { width: 1280 * zoom, height: 600 };
-	    page.zoomFactor = zoom;
+	    page.viewportSize = { width: 1280, height: 600 };
 	} else {
 	    page.viewportSize = { width: 1920, height: 600 };
 	}
