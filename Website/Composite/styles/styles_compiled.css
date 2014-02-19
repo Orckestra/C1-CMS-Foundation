@@ -1507,6 +1507,7 @@ height: 104px;
 }
 ui|datainputselector.invalid ui|box,
 ui|datainputdialog.invalid ui|box,
+ui|postbackdialog.invalid ui|labelbox,
 ui|datainputbutton.invalid ui|box,
 ui|urlinputdialog.invalid ui|box,
 ui|datainput.invalid ui|box,
@@ -1896,6 +1897,8 @@ ui|checkboxgroup ui|labelbox.invalid,
 ui|checkboxgroup ui|labelbox.invalid * {
 float: none;
 }
+
+ui|postbackdialog.invalid ui|labeltext,
 ui|checkboxgroup ui|labelbox.invalid ui|labeltext,
 ui|selector.invalid ui|clickbutton ui|labeltext {
 font-weight: bold;
