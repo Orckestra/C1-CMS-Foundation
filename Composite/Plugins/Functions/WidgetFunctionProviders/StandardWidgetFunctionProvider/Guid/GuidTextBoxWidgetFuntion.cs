@@ -1,13 +1,12 @@
 using System;
 using System.Xml.Linq;
-using System.Collections.Generic;
 
 using Composite.Functions;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 using Composite.C1Console.Forms.CoreUiControls;
 
 
-namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid
+namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.GuidWidgetFunctions
 {
 	internal sealed class GuidTextBoxWidgetFuntion : CompositeWidgetFunctionBase
     {
@@ -16,10 +15,9 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
 
         public GuidTextBoxWidgetFuntion(EntityTokenFactory entityTokenFactory)
-            : base(CompositeName, typeof(System.Guid), entityTokenFactory)
+            : base(CompositeName, typeof(Guid), entityTokenFactory)
         {
         }
-
 
 
         public override XElement GetWidgetMarkup(ParameterList parameters, string label, HelpDefinition help, string bindingSourceName)

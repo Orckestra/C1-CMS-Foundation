@@ -10,7 +10,7 @@ using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunction
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Date;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Decimal;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
-using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Guid;
+using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.GuidWidgetFunctions;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Integer;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Utils;

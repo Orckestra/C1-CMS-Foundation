@@ -63,11 +63,20 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         public string ClassConfigurationName { get; set; }
 
 
+        /// <exclude />
+        public Guid PreviewPageId { get; set; }
+
+        /// <exclude />
+        public Guid PreviewTemplateId { get; set; }
+
+        /// <exclude />
+        public string PreviewPlaceholder { get; set; }
+
     }
 
     internal sealed class TemplatedXhtmlEditorUiControl : XhtmlEditorUiControl, IWebUiControl
     {
-        private Type _userControlType;
+        private readonly Type _userControlType;
         private XhtmlEditorTemplateUserControlBase _userControl;
 
         internal TemplatedXhtmlEditorUiControl(Type userControlType)
@@ -95,6 +104,9 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
             _userControl.Xhtml = this.Xhtml;
             _userControl.EmbedableFieldsTypes = this.EmbedableFieldsTypes;
             _userControl.ClassConfigurationName = this.ClassConfigurationName;
+            _userControl.PreviewPageId = PreviewPageId;
+            _userControl.PreviewTemplateId = PreviewTemplateId;
+            _userControl.PreviewPlaceholder = PreviewPlaceholder;
 
             return _userControl;
         }

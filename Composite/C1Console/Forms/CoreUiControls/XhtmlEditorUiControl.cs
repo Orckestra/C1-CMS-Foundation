@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using System.ComponentModel;
-
-
 using Composite.C1Console.Forms.Foundation;
 using System.Collections.Generic;
 
@@ -13,19 +9,29 @@ namespace Composite.C1Console.Forms.CoreUiControls
     {
         private string _xhtml = "";
 
-        [BindableProperty()]
-        [FormsProperty()]
+        [BindableProperty]
+        [FormsProperty]
         public string Xhtml
         {
             get { return _xhtml; }
             set { _xhtml = value; }
         }
 
-        [FormsProperty()]
+        [FormsProperty]
         public string ClassConfigurationName { get; set; }
 
-        [FormsProperty()]
+        [FormsProperty]
         public IEnumerable<Type> EmbedableFieldsTypes { get; set; }
+
+
+        [FormsProperty]
+        public Guid PreviewPageId { get; set; }
+
+        [FormsProperty]
+        public Guid PreviewTemplateId { get; set; }
+
+        [FormsProperty]
+        public string PreviewPlaceholder { get; set; }
     }
 
 }

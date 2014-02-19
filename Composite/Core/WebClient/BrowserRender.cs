@@ -235,6 +235,8 @@ namespace Composite.Core.WebClient
 
             public void RenderUrl(HttpCookie authenticationCookie, string url, string tempFilePath, string mode, out string output)
             {
+                Verify.ArgumentNotNull(authenticationCookie, "authenticationCookie");
+
                 string cookieDomain = new Uri(url).Host;
                 string cookieInfo = authenticationCookie.Name + "," + authenticationCookie.Value + "," + cookieDomain;
 

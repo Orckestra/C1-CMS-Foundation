@@ -69,4 +69,8 @@
 	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
 	presentationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"   
 	name="<%= this.UniqueID %>"
-	callbackid="<%= this.UniqueID %>"/>
+	callbackid="<%= this.UniqueID %>"
+    previewpageid="<%= PreviewPageId %>"
+    previewtemplateid="<%= PreviewTemplateId %>"
+    previewplaceholder="<%= PreviewPlaceholder %>"
+    />

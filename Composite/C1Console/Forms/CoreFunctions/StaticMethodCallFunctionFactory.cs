@@ -37,7 +37,7 @@ namespace Composite.C1Console.Forms.CoreFunctions
 
             try
             {
-                methodToCall = this.Type.GetMethod(this.Method);
+                methodToCall = this.Type.GetMethod(this.Method, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
                 if (methodToCall == null) throw new InvalidOperationException("No such method found");
             }

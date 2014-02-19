@@ -26,6 +26,10 @@ namespace Composite.Core.Types
             return GetMethodInfo(expression.Body as MethodCallExpression);
         }
 
+        public static MethodInfo GetMethodInfo<T>(Expression<Func<T>> expression)
+        {
+            return GetMethodInfo(expression.Body as MethodCallExpression);
+        }
 
         public static MethodInfo GetMethodInfo(Expression expression)
         {
