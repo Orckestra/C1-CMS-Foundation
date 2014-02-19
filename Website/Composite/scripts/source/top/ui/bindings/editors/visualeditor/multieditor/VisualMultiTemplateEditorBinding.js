@@ -321,8 +321,7 @@ VisualMultiTemplateEditorBinding.prototype.updatePlaceHoldeWidth = function (pla
 	var self = this;
 	if (this._templatePreview) {
 		new List(this._templatePreview.Placeholders).each(function (placeholder) {
-			//TODO: replace to equeal, after fixing bug
-			if (placeholder.PlaceholderId.indexOf(placeholderId) > -1) {
+			if (placeholder.PlaceholderId = placeholderId) {
 				self._tinyInstance.getBody().style.maxWidth = placeholder.ClientRectangle.Width + "px";
 				return false;
 			}
