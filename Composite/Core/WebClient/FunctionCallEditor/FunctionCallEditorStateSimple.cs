@@ -45,7 +45,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
                         XAttribute localNameAttr = functionElement.Attribute("localname");
                         localname = localNameAttr != null ? localNameAttr.Value : string.Empty;
 
-                        var functionDefinition = (BaseFunctionRuntimeTreeNode) FunctionTreeBuilder.Build(functionElement);
+                        var functionDefinition = (BaseFunctionRuntimeTreeNode) FunctionTreeBuilder.Build(functionElement, true);
 
                         functionList.Add(new NamedFunctionCall(localname, functionDefinition));
                     }
