@@ -134,16 +134,36 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 				this._editorBinding.deleteBookmark();
 			} else {
 
-			    this.selectCurrentBlocks();
+				var superstart = this._tinyInstance.selection.getStart();
+				var superend = this._tinyInstance.selection.getEnd();
+				var start = superstart;
+				var end = superend;
+				if (start.nodeName.toLowerCase() != "body" && end.nodeName.toLowerCase() != "body") {
+					while (start.parentNode != null && start.parentNode.nodeName.toLowerCase() != "body") {
+						start = start.parentNode;
+					}
+					while (end.parentNode != null && end.parentNode.nodeName.toLowerCase() != "body") {
+						end = end.parentNode;
+					}
+					if (start == superstart && start == end) {
+
+					} else if (start == end) {
+						this._tinyInstance.selection.select(start);
+					} else {
+						var rng = this._tinyInstance.selection.getRng();
+						rng.setStartBefore(start);
+						rng.setEndAfter(end);
+						this._tinyInstance.selection.setRng(rng);
+					}
+				} else if (start.nodeName.toLowerCase() != "body") {
+					this._tinyInstance.selection.select(start);
+				}
 			}
 
 			var value = this.getValue();
 			if (value != BlockSelectorBinding.VALUE_DEFAULT) {
 				this._tinyInstance.formatter.apply(value);
 			}
-
-			this.selectCurrentBlocks();
-
 
 			this.selections.each(function (selection) {
 				var id = selection.value;
@@ -161,35 +181,6 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 			break;
 	}
 };
-
-
-BlockSelectorBinding.prototype.selectCurrentBlocks = function()
-{
-    var superstart = this._tinyInstance.selection.getStart();
-    var superend = this._tinyInstance.selection.getEnd();
-    var start = superstart;
-    var end = superend;
-    if (start.nodeName.toLowerCase() != "body" && end.nodeName.toLowerCase() != "body") {
-        while (start.parentNode != null && start.parentNode.nodeName.toLowerCase() != "body") {
-            start = start.parentNode;
-        }
-        while (end.parentNode != null && end.parentNode.nodeName.toLowerCase() != "body") {
-            end = end.parentNode;
-        }
-        if (start == superstart && start == end) {
-
-        } else if (start == end) {
-            this._tinyInstance.selection.select(start);
-        } else {
-            var rng = this._tinyInstance.selection.getRng();
-            rng.setStartBefore(start);
-            rng.setEndAfter(end);
-            this._tinyInstance.selection.setRng(rng);
-        }
-    } else if (start.nodeName.toLowerCase() != "body") {
-        this._tinyInstance.selection.select(start);
-    }
-}
 
 /**
 * Handle node change.
