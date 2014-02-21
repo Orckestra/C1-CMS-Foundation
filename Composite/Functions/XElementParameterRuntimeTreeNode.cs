@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Web;
 using System.Xml.Linq;
 using System.Linq;
-using Composite.Data;
 using Composite.Functions.Foundation;
-using Composite.Core.Parallelization;
-using Composite.Core.Types;
 using Composite.Core.Xml;
 
 
@@ -41,21 +35,21 @@ namespace Composite.Functions
 
                 var functionCallResults = new object[evaluatedListOfInnerFunctions.Count];
 
-                ParallelFacade.For("Functions. Executing nested function calls",
-                    0, evaluatedListOfInnerFunctions.Count, i =>
-                    {
-                        XElement functionCallDefinition = evaluatedListOfInnerFunctions[i];
+                
+                for(int i=0; i<evaluatedListOfInnerFunctions.Count; i++)
+                {
+                    XElement functionCallDefinition = evaluatedListOfInnerFunctions[i];
 
-                        BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
+                    BaseRuntimeTreeNode runtimeTreeNode = FunctionTreeBuilder.Build(functionCallDefinition);
 
-                        functionCallResults[i] = runtimeTreeNode.GetValue(contextContainer);
-                    });
+                    functionCallResults[i] = runtimeTreeNode.GetValue(contextContainer);
+                };
 
                 for (int i = 0; i < evaluatedListOfInnerFunctions.Count; i++)
                 {
                     object embedableResult = contextContainer.MakeXEmbedable(functionCallResults[i]);
 
-                    if (embedableResult != null && embedableResult is XAttribute)
+                    if (embedableResult is XAttribute)
                     {
                         evaluatedListOfInnerFunctions[i].Parent.Add(embedableResult);
                         evaluatedListOfInnerFunctions[i].Remove();

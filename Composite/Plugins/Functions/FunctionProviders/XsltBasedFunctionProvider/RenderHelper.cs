@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using Composite.Core.Extensions;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
-using Composite.Core.Parallelization;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Core.Logging;
@@ -59,10 +58,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
             List<string> parameterNames = parameterList.AllParameterNames.ToList();
             object[] paramaterValues = new object[parameterNames.Count];
 
-            ParallelFacade.For("XsltBasedFunction. Parameters evaluation", 0, parameterNames.Count, i =>
+            for(int i=0; i<parameterNames.Count; i++)
             {
                 paramaterValues[i] = parameterList.GetParameter(parameterNames[i]);
-            });
+            };
 
             for (int i = 0; i < parameterNames.Count; i++)
             {
@@ -158,8 +157,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
                 var functionCallResults = new object[namedFunctions.Count];
                 var functionCallExecutionTimes = new long[namedFunctions.Count];
 
-                // Executing function calls in parallel
-                ParallelFacade.For("XsltBasedFunction. Function calls evaluation", 0, namedFunctions.Count, i =>
+                for(int i=0; i<namedFunctions.Count; i++)
                 {
                     FunctionContextContainer functionContextContainer = new FunctionContextContainer(inputParameters);
 
@@ -179,7 +177,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
                     functionCallResults[i] = result;
                     functionCallExecutionTimes[i] = executionStopwatch.ElapsedMilliseconds;
-                });
+                };
 
                 
                 for (int i=0; i<namedFunctions.Count; i++)
