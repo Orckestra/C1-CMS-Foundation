@@ -462,6 +462,11 @@ StageDialogBinding.prototype._parsePageBinding = function ( pageBinding ) {
 		}
 		nev.h = ( height != null && height != "auto" ) ? height : old.h; // never set height on autoheight dialogs!
 				
+		if (this._isResizable) {
+		    nev.h = (nev.h < this.bindingWindow.innerHeight) ? nev.h : this.bindingWindow.innerHeight;
+		    nev.w = (nev.w < this.bindingWindow.innerWidth) ? nev.w : this.bindingWindow.innerWidth;
+		}
+
 		this.setDimension ( nev );
 	}
 	if ( controls ) {

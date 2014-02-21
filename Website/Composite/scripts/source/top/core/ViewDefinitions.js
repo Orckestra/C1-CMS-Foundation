@@ -182,7 +182,7 @@ var ViewDefinitions = {
 		handle 		: "Composite.Management.VisualEditorDialog",
 		position 	: Dialog.MODAL,
 		url 		: "${root}/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx",
-		width		: 600, // height : 500,
+		width		: 1024, // height : 500,
 		argument	: {
 			"formattingconfiguration"	: null,
 			"elementclassconfiguration"	: null,
