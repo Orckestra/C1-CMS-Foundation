@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Web;
 using System.Web.WebPages;
+using System.Web.WebPages.Scope;
 
 namespace Composite.AspNet.Razor
 {
@@ -30,25 +32,38 @@ namespace Composite.AspNet.Razor
         private class FixedItemsCollection : Hashtable, IEnumerable
         {
             private readonly IDictionary _innerDictionary;
-            private static readonly object _webPageStackKey;
 
-            private object _templateStack;
+            private static readonly HashSet<object> _privateKeys;
+            private readonly IDictionary _privateValues = new Hashtable(); 
 
             static FixedItemsCollection()
             {
-                _webPageStackKey = typeof (TemplateStack).GetField("_contextKey", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+                Func<Type, string, object> getPrivateStaticField = (type, fieldName) =>
+                    type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+
+                object webPageStackKey = getPrivateStaticField(typeof (TemplateStack), "_contextKey");
+                object sourceFilesKey = getPrivateStaticField(typeof (WebPageContext), "_sourceFileKey");
+                object pageScopeKey = getPrivateStaticField(typeof(AspNetRequestScopeStorageProvider), "_pageScopeKey");
+                object requestScopeKey = getPrivateStaticField(typeof(AspNetRequestScopeStorageProvider), "_requestScopeKey");
+
+                _privateKeys = new HashSet<object> { webPageStackKey, sourceFilesKey, pageScopeKey, requestScopeKey }; 
             }
 
             public FixedItemsCollection(IDictionary innerDictionary)
             {
+                if (innerDictionary is Hashtable)
+                {
+                    innerDictionary = (IDictionary) (innerDictionary as Hashtable).Clone();
+                }
+
                 _innerDictionary = innerDictionary;
             }
 
             override public void Add(object key, object value)
             {
-                if (key == _webPageStackKey)
+                if (_privateKeys.Contains(key))
                 {
-                    _templateStack = value;
+                    _privateValues.Add(key, value);
                     return;
                 }
 
@@ -62,9 +77,9 @@ namespace Composite.AspNet.Razor
 
             override public bool Contains(object key)
             {
-                if (key == _webPageStackKey)
+                if (_privateKeys.Contains(key))
                 {
-                    return _templateStack != null;
+                    return _privateValues.Contains(key);
                 }
 
                 return _innerDictionary.Contains(key);
@@ -92,13 +107,13 @@ namespace Composite.AspNet.Razor
 
             override public void Remove(object key)
             {
-                if (key == _webPageStackKey)
+                if (_privateKeys.Contains(key))
                 {
-                    _templateStack = null;
+                    _privateValues.Remove(key);
                     return;
                 }
 
-                _innerDictionary.Remove(_templateStack);
+                _innerDictionary.Remove(key);
             }
 
             override public ICollection Values
@@ -110,18 +125,18 @@ namespace Composite.AspNet.Razor
             {
                 get
                 {
-                    if (key == _webPageStackKey)
+                    if (_privateKeys.Contains(key))
                     {
-                        return _templateStack;
+                        return _privateValues[key];
                     }
 
                     return _innerDictionary[key];
                 }
                 set
                 {
-                    if (key == _webPageStackKey)
+                    if (_privateKeys.Contains(key))
                     {
-                        _templateStack = value;
+                        _privateValues[key] = value;
                         return;
                     }
 
