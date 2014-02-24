@@ -107,7 +107,7 @@ namespace CompositeEditFunctionCall
 
             var webControl = webUiControl.BuildWebControl();
 
-            BasicPanel.Controls.Add(webControl);
+            BasicContentPanel.Controls.Add(webControl);
 
             if (!processPost)
 	        {
@@ -215,8 +215,8 @@ namespace CompositeEditFunctionCall
                 && functionCallsEvaluated.Count() == 1
                 && !functionCallsEvaluated.Single().Elements().Any(childElement => childElement.Elements().Any(e => e.Name.LocalName == "function"));
 
-            plhBasicTab.Visible = BasicViewEnabled;
-            plhBasicTabContent.Visible = BasicViewEnabled;
+//            plhBasicTab.Visible = BasicViewEnabled;
+//            plhBasicTabContent.Visible = BasicViewEnabled;
             ActiveTab = BasicViewEnabled ? Tab.Basic : Tab.Advanced;
 		}
 

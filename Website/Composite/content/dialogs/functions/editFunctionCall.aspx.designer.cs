@@ -76,13 +76,13 @@ namespace CompositeEditFunctionCall {
         protected global::System.Web.UI.WebControls.PlaceHolder plhBasicTabContent;
         
         /// <summary>
-        /// BasicPanel control.
+        /// BasicContentPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder BasicPanel;
+        protected global::System.Web.UI.WebControls.PlaceHolder BasicContentPanel;
         
         /// <summary>
         /// plhErrors control.

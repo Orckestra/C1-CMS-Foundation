@@ -83,6 +83,28 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function (action) {
 		case ResponseBinding.ACTION_FAILURE:
 			this._successHandler = null;
 			break;
+			
+		case ButtonBinding.ACTION_COMMAND:
+			var button = action.target;
+			var page = this.bindingWindow.bindingMap.renderingdialogpage;
+			switch (button.getID()) {
+				case "advancedbutton":
+					if (page.validateAllDataBindings()) {
+						page.bindingWindow.__doPostBack("Advanced");
+					}
+					break;
+				case "basicbutton":
+					if (page.validateAllDataBindings()) {
+						page.postframe(
+							function () {
+								page.bindingWindow.__doPostBack("Basic");
+							});
+					}
+					break;
+			}
+			break;
+			break;
+			
 	}
 }
 
@@ -91,9 +113,9 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function (action) {
  */
 EditFunctionCallDialogPageBinding.prototype.onOk = function () {
 
-	var tab = this._tabBoxBinding.getSelectedTabBinding();
+	var advancedbutton = this.bindingWindow.bindingMap.advancedbutton;
 	if (this.validateAllDataBindings()) {
-		if (tab.getID() == EditFunctionCallDialogPageBinding.ID_ADVANCEDTAB) {
+		if (advancedbutton == undefined) {
 			var self = this;
 			this.postframe(
 				function () {
