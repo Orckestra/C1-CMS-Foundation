@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Web;
-using Composite.Core.IO;
+using Composite.C1Console.Events;
 
 namespace Composite.Core.WebClient.Services.WysiwygEditor
 {
@@ -12,12 +12,18 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     {
         private const string RenderingMode = "templatePreview";
 
+        static PageTemplatePreview()
+        {
+            GlobalEventSystemFacade.OnDesignChange += () => BrowserRender.ClearCache(RenderingMode);
+        }
+
         /// <exclude />
         public class PlaceholderInformation
         {
             /// <exclude />
             public string PlaceholderId { get; set; }
 
+            /// <exclude />
             public Rectangle ClientRectangle { get; set; }
 
             /// <exclude />
@@ -65,12 +71,6 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
 
             placeholders = pList.ToArray();
-        }
-
-        /// <exclude />
-        public static void ClearCache()
-        {
-            BrowserRender.ClearCache(RenderingMode);
         }
     }
 }

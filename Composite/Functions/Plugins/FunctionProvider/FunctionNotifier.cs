@@ -1,4 +1,4 @@
-﻿using Composite.Core.WebClient.Renderings;
+﻿using Composite.C1Console.Events;
 using Composite.Functions.Foundation;
 
 
@@ -22,8 +22,9 @@ namespace Composite.Functions.Plugins.FunctionProvider
         /// <exclude />
         public void FunctionsUpdated()
         {
-            FunctionPreview.ClearCache();
             MetaFunctionProviderRegistry.ReinitializeFunctionFromProvider(this.ProviderName);
+
+            GlobalEventSystemFacade.FireDesignChangeEvent();
         }
 
 

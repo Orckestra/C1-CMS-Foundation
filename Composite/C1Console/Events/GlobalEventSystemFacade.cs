@@ -1,5 +1,5 @@
 using System;
-using Composite.Core.Logging;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Events
@@ -50,6 +50,8 @@ namespace Composite.C1Console.Events
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class GlobalEventSystemFacade
     {
+        private static readonly string LogTitle = "RGB(255, 128, 255)GlobalEventSystemFacade";
+
         /// <exclude />
         public delegate void FlushEventDelegate(FlushEventArgs args);
 
@@ -61,13 +63,20 @@ namespace Composite.C1Console.Events
 
         /// <exclude />
         public delegate void PrepareForShutDownEventDelegate(PrepareForShutDownEventArgs args);
-      
 
+        /// <exclude />
+        public delegate void DesignChangeEventDelegate();
 
         private static event FlushEventDelegate _flushEvent;
         private static event PostFlushEventDelegate _postFlushEvent;
         private static event ShutDownEventDelegate _shutDownEvent;
         private static event PrepareForShutDownEventDelegate _prepareForShutDownEvent;
+
+
+        /// <summary>
+        /// Occurs when elements related to frontend appearance have changed. F.e. css styling changed, or function's rendering changed.
+        /// </summary>
+        public static event DesignChangeEventDelegate OnDesignChange;
 
 
         /// <summary>
@@ -120,7 +129,7 @@ namespace Composite.C1Console.Events
         {
             if (_flushEvent != null)
             {
-                LoggingService.LogVerbose("RGB(255, 128, 255)GlobalEventSystemFacade", "----------========== Firing Flush Events ==========----------");
+                Log.LogVerbose(LogTitle, "----------========== Firing Flush Events ==========----------");
                 int startTime = Environment.TickCount;
 
                 FlushEventDelegate flushEvent = _flushEvent;
@@ -128,7 +137,7 @@ namespace Composite.C1Console.Events
                 flushEvent(new FlushEventArgs());
 
                 int endTime = Environment.TickCount;
-                LoggingService.LogVerbose("RGB(255, 128, 255)GlobalEventSystemFacade", string.Format("----------========== Done firing Flush Events ({0} ms ) ==========----------", endTime - startTime));
+                Log.LogVerbose(LogTitle, string.Format("----------========== Done firing Flush Events ({0} ms ) ==========----------", endTime - startTime));
             }
         }
 
@@ -137,7 +146,7 @@ namespace Composite.C1Console.Events
         {
             if (_postFlushEvent != null)
             {
-                LoggingService.LogVerbose("RGB(255, 128, 255)GlobalEventSystemFacade", "----------========== Firing Post Flush Events ==========----------");
+                Log.LogVerbose(LogTitle, "----------========== Firing Post Flush Events ==========----------");
                 int startTime = Environment.TickCount;
 
                 PostFlushEventDelegate postFlushEvent = _postFlushEvent;
@@ -145,7 +154,7 @@ namespace Composite.C1Console.Events
                 postFlushEvent(new PostFlushEventArgs());
 
                 int endTime = Environment.TickCount;
-                LoggingService.LogVerbose("RGB(255, 128, 255)GlobalEventSystemFacade", string.Format("----------========== Done firing Post Flush Events ({0} ms ) ==========----------", endTime - startTime));
+                Log.LogVerbose(LogTitle, string.Format("----------========== Done firing Post Flush Events ({0} ms ) ==========----------", endTime - startTime));
             }
         }
 
@@ -200,7 +209,7 @@ namespace Composite.C1Console.Events
         {
             if (_shutDownEvent != null)
             {
-                LoggingService.LogVerbose("RGB(255, 128, 255)GlobalEventSystemFacade", "----------========== Firing Shut Down Events ==========----------");
+                Log.LogVerbose(LogTitle, "----------========== Firing Shut Down Events ==========----------");
                 int startTime = Environment.TickCount;
 
                 ShutDownEventDelegate shutDownEvent = _shutDownEvent;
@@ -208,9 +217,19 @@ namespace Composite.C1Console.Events
                 shutDownEvent(new ShutDownEventArgs());
 
                 int endTime = Environment.TickCount;
-                LoggingService.LogVerbose("RGB(255, 128, 255)GlobalEventSystemFacade", string.Format("----------========== Done firing Shut Down Events ({0} ms ) ==========----------", endTime - startTime));
+                Log.LogVerbose(LogTitle, string.Format("----------========== Done firing Shut Down Events ({0} ms ) ==========----------", endTime - startTime));
             }
         }
 
+        /// <exclude />
+        public static void FireDesignChangeEvent()
+        {
+            var handler = OnDesignChange;
+
+            if (handler != null)
+            {
+                handler();
+            }
+        }
     }
 }
