@@ -598,7 +598,11 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
 
             private FormData GetFormData()
             {
-                return WorkflowFacade.GetFormData(WorkflowId);
+                var formData = WorkflowFacade.GetFormData(WorkflowId);
+
+                Verify.IsNotNull(formData, "Failed to get form data, workflow may have been aborted!");
+
+                return formData;
             }
 
             #region IFunctionCallEditorState Members
