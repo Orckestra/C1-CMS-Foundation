@@ -58,22 +58,13 @@ namespace CompositeEditFunctionCall {
         protected global::System.Web.UI.WebControls.HiddenField hdnActiveTab;
         
         /// <summary>
-        /// plhBasicTab control.
+        /// BasicPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder plhBasicTab;
-        
-        /// <summary>
-        /// plhBasicTabContent control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder plhBasicTabContent;
+        protected global::System.Web.UI.WebControls.PlaceHolder BasicPanel;
         
         /// <summary>
         /// BasicContentPanel control.
