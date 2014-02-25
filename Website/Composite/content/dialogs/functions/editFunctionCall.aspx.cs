@@ -38,8 +38,14 @@ namespace CompositeEditFunctionCall
             
             if (eventTarget == "Basic")
 			{
-				ActiveTab = Tab.Basic;
-                ProcessWidgets(false);
+				var functionCallsEvaluated = new List<XElement>() { XElement.Parse(FunctionMarkupInState) };
+				CheckBasicView(functionCallsEvaluated);
+				if (BasicViewEnabled)
+				{
+
+					ActiveTab = Tab.Basic;
+					ProcessWidgets(false);
+				}
 			}
             else if (eventTarget == "Advanced")
 			{
@@ -64,6 +70,7 @@ namespace CompositeEditFunctionCall
 
 		    bool isBasicView = ActiveTab == Tab.Basic;
 
+			FunctionCallDesigner.HasBasic = BasicViewEnabled;
             BasicPanel.Visible = isBasicView;
             AdvancedPanel.Visible = !isBasicView;
 		}
@@ -169,6 +176,15 @@ namespace CompositeEditFunctionCall
 		    return ProcessWidgets(true, true);
 		}
 
+		private void CheckBasicView(IEnumerable<XElement> functionCallsEvaluated)
+		{
+			// Basic view is enabled if there's no parameters defined as function calls
+			BasicViewEnabled = !MultiMode && !IsWidgetSelection
+				&& functionCallsEvaluated.Count() == 1
+				&& !functionCallsEvaluated.Single().Elements().Any(childElement => childElement.Elements().Any(e => e.Name.LocalName == "function"));
+
+		}
+
 		private void SetDesignerParameters()
 		{
 		    if (IsPostBack) return;
@@ -210,10 +226,7 @@ namespace CompositeEditFunctionCall
             
 		    SessionStateId = stateId;
 
-            // Basic view is enabled if there's no parameters defined as function calls
-            BasicViewEnabled = !MultiMode && !IsWidgetSelection
-                && functionCallsEvaluated.Count() == 1
-                && !functionCallsEvaluated.Single().Elements().Any(childElement => childElement.Elements().Any(e => e.Name.LocalName == "function"));
+			CheckBasicView(functionCallsEvaluated);
 
 //            plhBasicTab.Visible = BasicViewEnabled;
 //            plhBasicTabContent.Visible = BasicViewEnabled;

@@ -16,5 +16,7 @@ namespace CompositeFunctionCallsDesigner
             get { return (Guid)ViewState["SessionStateId"]; }
             set { ViewState["SessionStateId"] = value; }
         }
+
+	    public bool HasBasic { get; set; }
     }
 }
