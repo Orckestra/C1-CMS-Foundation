@@ -41,7 +41,7 @@
 			binding="EditFunctionCallDialogPageBinding"
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
-			width="879"
+			width="400"
 			height="410"
 			resizable="false"
 			label="<%= this.DialogLabel %>">
@@ -51,7 +51,7 @@
 					<ui:toolbarbody />
 					<ui:toolbarbody id="switchtoolbargroup" class="alignright">
 						<ui:toolbargroup>
-							<ui:toolbarbutton id="advancedbutton" label="Advanced" image="${icon:advanced}" flip="true" />
+							<ui:toolbarbutton id="advancedbutton" label="Advanced view" image="${icon:advanced}" flip="true" />
 						</ui:toolbargroup>
 					</ui:toolbarbody>
 				</ui:toolbar>

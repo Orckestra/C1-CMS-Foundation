@@ -89,7 +89,11 @@
 										flip="true"
                                         />
 								</ui:toolbargroup>
+								<ui:toolbargroup>
+									<ui:toolbarbutton id="basicbutton" label="Basic view" image="${icon:editor-plainedit}" flip="true" />
+									</ui:toolbargroup>
 							</ui:toolbarbody>
+							
 							
 						</ui:toolbar>
 						
