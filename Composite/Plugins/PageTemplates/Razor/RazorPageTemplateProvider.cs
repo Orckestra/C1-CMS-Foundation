@@ -16,6 +16,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
+using Composite.Core.WebClient.Services.WysiwygEditor;
 using Composite.Plugins.PageTemplates.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Composite.AspNet.Razor;
@@ -172,7 +173,7 @@ namespace Composite.Plugins.PageTemplates.Razor
                     continue;
                 }
 
-                if (webPage == null || !(webPage is RazorPageTemplate))
+                if (!(webPage is RazorPageTemplate))
                 {
                     sharedFiles.Add(new SharedRazorFile(virtualPath));
 
@@ -311,6 +312,7 @@ namespace Composite.Plugins.PageTemplates.Razor
             }
 
             PageTemplateProviderRegistry.FlushTemplates();
+            PageTemplatePreview.ClearCache();
         }
 
 

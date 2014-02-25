@@ -17,6 +17,7 @@ using Composite.Core.IO;
 using Composite.Core.PageTemplates;
 using Composite.Core.PageTemplates.Foundation;
 using Composite.Core.WebClient;
+using Composite.Core.WebClient.Services.WysiwygEditor;
 using Composite.Plugins.PageTemplates.Common;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 
@@ -144,7 +145,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 string virtualPath = ConvertToVirtualPath(filePath);
                 string codeBehindFilePath = GetCodebehindFilePath(filePath);
 
-                string[] cacheRelatedFiles = new [] { filePath, codeBehindFilePath };
+                string[] cacheRelatedFiles = { filePath, codeBehindFilePath };
 
                 CachedTemplateInformation cachedTemplateInformation;
 
@@ -256,7 +257,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
                 return false;
             }
 
-            if (masterPage == null || !(masterPage is MasterPagePageTemplate))
+            if (!(masterPage is MasterPagePageTemplate))
             {
                 pageTemplateDescriptor = null;
                 renderingInfo = null;
@@ -365,6 +366,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages
             }
 
             PageTemplateProviderRegistry.FlushTemplates();
+            PageTemplatePreview.ClearCache();
         }
 
         public void FlushTemplates()

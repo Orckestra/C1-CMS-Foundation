@@ -14,7 +14,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
         static PageTemplatePreview()
         {
-            GlobalEventSystemFacade.OnDesignChange += () => BrowserRender.ClearCache(RenderingMode);
+            GlobalEventSystemFacade.OnDesignChange += ClearCache;
         }
 
         /// <exclude />
@@ -71,6 +71,12 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
 
             placeholders = pList.ToArray();
+        }
+
+        /// <exclude />
+        public static void ClearCache()
+        {
+            BrowserRender.ClearCache(RenderingMode);
         }
     }
 }
