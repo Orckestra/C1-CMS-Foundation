@@ -166,6 +166,20 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
 
+        /// <summary>
+        /// Returns <value>true</value> if the page is rendered in a "Preview" mode
+        /// </summary>
+        public static RenderingReason RenderingReason
+        {
+            get
+            {
+                return  RequestLifetimeCache.TryGet<RenderingReason>("PageRenderer.RenderingReason");
+            }
+            set
+            {
+                RequestLifetimeCache.Add("PageRenderer.RenderingReason", value);
+            }
+        }
 
         /// <exclude />
         public static IPage CurrentPage

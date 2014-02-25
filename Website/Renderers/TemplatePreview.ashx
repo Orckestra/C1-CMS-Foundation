@@ -85,7 +85,7 @@ namespace Composite.Renderers
             }
             
 
-            string output = PagePreviewBuilder.RenderPreview(page, contents);
+            string output = PagePreviewBuilder.RenderPreview(page, contents, RenderingReason.ScreenshotGeneration);
 
             if (output != String.Empty)
             {

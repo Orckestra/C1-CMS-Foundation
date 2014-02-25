@@ -201,6 +201,8 @@ namespace Composite.Core.WebClient.Renderings
             {
                 Page = (IPage)HttpRuntime.Cache.Get(_previewKey + "_SelectedPage");
                 C1PageRoute.PageUrlData = new PageUrlData(Page);
+
+                PageRenderer.RenderingReason = (RenderingReason) HttpRuntime.Cache.Get(_previewKey + "_RenderingReason");
             }
             else
             {
@@ -208,6 +210,10 @@ namespace Composite.Core.WebClient.Renderings
                 Page = pageUrl.GetPage();
 
                 _cachedUrl = request.Url.PathAndQuery;
+
+                PageRenderer.RenderingReason = new UrlSpace(httpContext).ForceRelativeUrls 
+                    ? RenderingReason.C1ConsoleBrowserPageView 
+                    : RenderingReason.PageView;
             }
 
             ValidateViewUnpublishedRequest(httpContext);

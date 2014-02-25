@@ -86,7 +86,7 @@ namespace Composite.Renderers
             content.Content = placeholderDocument.ToString();
             contents.Add(content);
 
-            string output = PagePreviewBuilder.RenderPreview(page, contents);
+            string output = PagePreviewBuilder.RenderPreview(page, contents, RenderingReason.ScreenshotGeneration);
 
             if (output != String.Empty)
             {

@@ -179,6 +179,7 @@
     <Compile Include="Core\WebClient\BuildManagerHelper.cs" />
     <Compile Include="Core\WebClient\Captcha\CaptchaConfiguration.cs" />
     <Compile Include="Core\WebClient\Renderings\FunctionPreview.cs" />
+    <Compile Include="Core\WebClient\Renderings\Page\RenderingReason.cs" />
     <Compile Include="Core\WebClient\TemplatePreviewRouteHandler.cs" />
     <Compile Include="Core\WebClient\FunctionBoxRouteHandler.cs" />
     <Compile Include="Core\WebClient\FunctionCallEditor\FunctionMarkupHelper.cs" />

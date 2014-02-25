@@ -19,6 +19,8 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
+        public static readonly TimeSpan PreviewExpirationTimeSpan = new TimeSpan(0, 20, 0);
+
         /// <summary>
         /// Execute an 'im mem' preview request of the provided page and content. The execution depends on the hosting environment.
         /// Then running in pipeline mode the current HttpContext is 
@@ -28,12 +30,26 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// <returns>The page html as a string when running in classic mode. In Pipeline mode the content is written directly to the HttpContext and an empty string is returned.</returns>
         public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents)
         {
+            return RenderPreview(selectedPage, contents, RenderingReason.PreviewUnsavedChanges);
+        }
+
+        /// <summary>
+        /// Execute an 'im mem' preview request of the provided page and content. The execution depends on the hosting environment.
+        /// Then running in pipeline mode the current HttpContext is 
+        /// </summary>
+        /// <param name="selectedPage">Page to render. Functionality reading the rendered page ID will get the ID from this object.</param>
+        /// <param name="contents">Content to render on the page</param>
+        /// <param name="renderingReason">The rendering reason</param>
+        /// <returns>The page html as a string when running in classic mode. In Pipeline mode the content is written directly to the HttpContext and an empty string is returned.</returns>
+        public static string RenderPreview(IPage selectedPage, IList<IPagePlaceholderContent> contents, RenderingReason renderingReason)
+        {
             HttpContext ctx = HttpContext.Current;
             string key = Guid.NewGuid().ToString();
             string query = "previewKey=" + key;
 
-            ctx.Cache.Add(key + "_SelectedPage", selectedPage, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 20, 0), CacheItemPriority.NotRemovable, null);
-            ctx.Cache.Add(key + "_SelectedContents", contents, null, Cache.NoAbsoluteExpiration, new TimeSpan(0, 20, 0), CacheItemPriority.NotRemovable, null);
+            ctx.Cache.Add(key + "_SelectedPage", selectedPage, null, Cache.NoAbsoluteExpiration, PreviewExpirationTimeSpan, CacheItemPriority.NotRemovable, null);
+            ctx.Cache.Add(key + "_SelectedContents", contents, null, Cache.NoAbsoluteExpiration, PreviewExpirationTimeSpan, CacheItemPriority.NotRemovable, null);
+            ctx.Cache.Add(key + "_RenderingReason", renderingReason, null, Cache.NoAbsoluteExpiration, PreviewExpirationTimeSpan, CacheItemPriority.NotRemovable, null);
 
             if (HttpRuntime.UsingIntegratedPipeline)
             {
