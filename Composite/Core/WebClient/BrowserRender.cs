@@ -8,6 +8,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 using Composite.C1Console.Events;
+using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
@@ -211,6 +212,7 @@ namespace Composite.Core.WebClient
             private readonly StreamReader _stderror;
 
             private readonly Process _process;
+            private readonly Job _job;
 
             public PhantomServer()
             {
@@ -231,6 +233,9 @@ namespace Composite.Core.WebClient
                 _stdout = _process.StandardOutput;
                 _stderror = _process.StandardError;
                 _stdin.AutoFlush = true;
+
+                _job = new Job();
+                _job.AddProcess(_process.Handle);
             }
 
             public void RenderUrl(HttpCookie authenticationCookie, string url, string tempFilePath, string mode, out string output)
@@ -312,6 +317,7 @@ namespace Composite.Core.WebClient
                 int exitCode = _process.ExitCode;
 
                 _process.Dispose();
+                _job.Dispose();
 
                 if (exitCode != 0)
                 {
