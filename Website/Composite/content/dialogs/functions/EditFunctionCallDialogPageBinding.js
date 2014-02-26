@@ -57,6 +57,13 @@ EditFunctionCallDialogPageBinding.prototype.onBeforePageInitialize = function ()
 		this._tabBoxBinding = UserInterface.getBinding(box);
 	}
 
+
+	var dialog = this.getAncestorBindingByType(DialogBinding, true);
+	console.log(dialog);
+	var dim = dialog.getDimension();
+	dim.w = this.getProperty("width");
+	dialog.setDimension(dim);
+
 	EditorPageBinding.superclass.onBeforePageInitialize.call(this);
 }
 
@@ -102,7 +109,6 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function (action) {
 					}
 					break;
 			}
-			break;
 			break;
 			
 	}

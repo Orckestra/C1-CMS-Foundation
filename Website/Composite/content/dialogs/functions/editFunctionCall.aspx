@@ -2,6 +2,8 @@
 
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="CompositeEditFunctionCall.EditFunctionCall" EnableEventValidation="false" ValidateRequest="false" CodeFile="editFunctionCall.aspx.cs" %>
 
+<%@ Import Namespace="CompositeEditFunctionCall" %>
+
 <%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
 <%@ Register TagPrefix="control1" Src="~/Composite/controls/FormsControls/FormUiControlTemplates/DeveloperTools/FunctionCallsDesigner.ascx" TagName="FunctionCallDesigner" %>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://www.w3.org/1999/xhtml">
@@ -36,12 +38,11 @@
 				<ui:binding onattach="exit()" />
 			</asp:PlaceHolder>
 		</div>
-
 		<ui:dialogpage
 			binding="EditFunctionCallDialogPageBinding"
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
-			width="400"
+			width="<% =ActiveTab == Tab.Basic? "500" : "880" %>"
 			height="410"
 			resizable="false"
 			label="<%= this.DialogLabel %>">
