@@ -27892,7 +27892,7 @@ var self=this;
 if(this._templatePreview){
 new List(this._templatePreview.Placeholders).each(function(_10ec){
 if(_10ec.PlaceholderId==_10ea){
-self._tinyInstance.getBody().style.maxWidth=_10ec.ClientRectangle.Width+"px";
+self._tinyInstance.getBody().style.maxWidth=(_10ec.ClientRectangle.Width+52)+"px";
 return false;
 }
 });
