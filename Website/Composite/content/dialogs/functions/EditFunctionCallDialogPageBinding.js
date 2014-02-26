@@ -57,15 +57,29 @@ EditFunctionCallDialogPageBinding.prototype.onBeforePageInitialize = function ()
 		this._tabBoxBinding = UserInterface.getBinding(box);
 	}
 
+	EditFunctionCallDialogPageBinding.superclass.onBeforePageInitialize.call(this);
+}
 
+
+/**
+ * @overwrites {PageBinding#onAfterPageInitialize}
+ */
+EditFunctionCallDialogPageBinding.prototype.onAfterPageInitialize = function () {
+
+	EditFunctionCallDialogPageBinding.superclass.onAfterPageInitialize.call(this);
+	
 	var dialog = this.getAncestorBindingByType(DialogBinding, true);
-	console.log(dialog);
+	
+	//Fit height
+	dialog._fit(true);
+	
+
 	var dim = dialog.getDimension();
 	dim.w = this.getProperty("width");
 	dialog.setDimension(dim);
-
-	EditorPageBinding.superclass.onBeforePageInitialize.call(this);
 }
+
+
 
 /**
  * @overloads {DialogPageBinding#handleAction}
