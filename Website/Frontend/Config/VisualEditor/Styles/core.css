@@ -107,7 +107,22 @@ img.compositeFunctionWysiwygRepresentation:not(:-moz-loadedg), img.compositeHtml
 
 
 img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepresentation.loaded {
-    background-image:none; 
+    background-image:url('../../../../Composite/images/functionheaderbackground.png');
+    background-size: 1600px 40px;
+    background-repeat: no-repeat;
+    background-position: top right;
     min-width: 0; 
-    min-height: 0; 
+    min-height: 0;
+    cursor: default;
+}
+
+img.compositeFunctionWysiwygRepresentation.loaded:hover, 
+img.compositeHtmlWysiwygRepresentation.loaded:hover {
+    background-position: right -500px top;
+}
+
+img.compositeFunctionWysiwygRepresentation.loaded.editHover,
+img.compositeHtmlWysiwygRepresentation.loaded.editHover {
+    background-position: top left;
+    cursor: pointer;
 }
