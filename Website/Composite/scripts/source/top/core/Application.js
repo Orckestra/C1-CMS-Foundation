@@ -253,13 +253,13 @@ _Application.prototype = {
 		EventBroadcaster.subscribe ( BroadcastMessages.STAGE_INITIALIZED, {
 			handleBroadcast : function () {
 				
-				/*
-				 * Launching system developer panels.
-				 */
-				if (Application.isDeveloperMode && !Client.isPad) {
-					StageBinding.handleViewPresentation ( "Composite.Management.SystemLog" );
-					StageBinding.handleViewPresentation ( "Composite.Management.Developer" );
-				}
+				///*
+				// * Launching system developer panels.
+				// */
+				//if (Application.isDeveloperMode && !Client.isPad) {
+				//	StageBinding.handleViewPresentation ( "Composite.Management.SystemLog" );
+				//	StageBinding.handleViewPresentation ( "Composite.Management.Developer" );
+				//}
 				
 				setTimeout ( function () {
 					ProgressBarBinding.notch ( 4 );
