@@ -1,7 +1,7 @@
 function getFunctionPreviewClientRect(previewElementId) {
     var element = document.getElementById(previewElementId);
 
-    if (element == null || element.innerHTML == "") {
+    if (element == null || element.innerHTML == '') {
         return null;
     }
 				    
@@ -134,7 +134,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 		                if (clientRect.height > 800) {
 		                    clientRect.height = 800;
 		                }
-
 		                page.clipRect = clientRect;
 		            } else {
 		                // Rendering an empty spot
