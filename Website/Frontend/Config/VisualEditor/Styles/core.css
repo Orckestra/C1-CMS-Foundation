@@ -108,7 +108,7 @@ img.compositeFunctionWysiwygRepresentation:not(:-moz-loadedg), img.compositeHtml
 
 img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepresentation.loaded {
     background-image:url('../../../../Composite/images/functionheaderbackground.png');
-    background-size: 1600px 40px;
+    background-size: 2400px 40px;
     background-repeat: no-repeat;
     background-position: top right;
     min-width: 0; 

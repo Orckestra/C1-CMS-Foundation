@@ -322,7 +322,7 @@ VisualMultiTemplateEditorBinding.prototype.updatePlaceHoldeWidth = function (pla
 	if (this._templatePreview) {
 		new List(this._templatePreview.Placeholders).each(function (placeholder) {
 			if (placeholder.PlaceholderId == placeholderId) {
-				self._tinyInstance.getBody().style.maxWidth = placeholder.ClientRectangle.Width + "px";
+				self._tinyInstance.getBody().style.maxWidth = (placeholder.ClientRectangle.Width + 52) + "px";
 				return false;
 			}
 		});
