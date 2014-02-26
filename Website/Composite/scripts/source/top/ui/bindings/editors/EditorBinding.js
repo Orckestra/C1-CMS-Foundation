@@ -52,7 +52,7 @@ EditorBinding.invokeFunctionEditorDialog = function (markup, handler, type )
 
     var def = ViewDefinitions["Composite.Management.PostBackDialog"];
     if (!settings) {
-        def.width = 880; //760;
+        def.width = 500;
         def.height = 520;
     } else {
         var dim = top.WindowManager.getWindowDimensions();
