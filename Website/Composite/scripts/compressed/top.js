@@ -3427,10 +3427,6 @@ EventBroadcaster.subscribe(BroadcastMessages.SYSTEMLOG_CLOSED,{handleBroadcast:f
 SystemLogger.suspend();
 }});
 EventBroadcaster.subscribe(BroadcastMessages.STAGE_INITIALIZED,{handleBroadcast:function(){
-if(Application.isDeveloperMode&&!Client.isPad){
-StageBinding.handleViewPresentation("Composite.Management.SystemLog");
-StageBinding.handleViewPresentation("Composite.Management.Developer");
-}
 setTimeout(function(){
 ProgressBarBinding.notch(4);
 Application.isOperational=true;
@@ -26274,7 +26270,7 @@ type=type?type:"";
 var _fc8=FunctionService.GetCustomEditorSettingsByMarkup(_fc5);
 var def=ViewDefinitions["Composite.Management.PostBackDialog"];
 if(!_fc8){
-def.width=880;
+def.width=500;
 def.height=520;
 }else{
 var dim=top.WindowManager.getWindowDimensions();
