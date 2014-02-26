@@ -58,7 +58,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
             object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(changeDescriptor.OriginalType);
 
             var oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
-            var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(changeDescriptor.AlteredType);
+            var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(changeDescriptor.AlteredType, oldConfigurationElement);
 
             XmlDataProviderStoreManipulator.AlterStore(updateDataTypeDescriptor, oldConfigurationElement, newConfigurationElement);
 
@@ -97,20 +97,24 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
             foreach (Type type in interfaceTypes)
             {
-                if (DataLocalizationFacade.IsLocalized(type))
+                if (!DataLocalizationFacade.IsLocalized(type))
                 {
-                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
+                    continue;
+                }
 
-                    object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
-                    var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, cultureInfo, null);
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
 
-                    xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
-                    xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
+                object key = xmlDataProviderConfiguration.Section.Interfaces.GetKey(dataTypeDescriptor);
 
-                    foreach (Dictionary<string, DataScopeConfigurationElement> filesByCulture in newConfigurationElement.DataScopes.Values)
-                    {
-                        XmlDataProviderStoreManipulator.CreateStore(providerName, filesByCulture[cultureInfo.Name]);
-                    }
+                var oldConfigurationElement = xmlDataProviderConfiguration.Section.Interfaces.Get(key);
+                var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, cultureInfo, null, oldConfigurationElement);
+
+                xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
+                xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
+
+                foreach (Dictionary<string, DataScopeConfigurationElement> filesByCulture in newConfigurationElement.DataScopes.Values)
+                {
+                    XmlDataProviderStoreManipulator.CreateStore(providerName, filesByCulture[cultureInfo.Name]);
                 }
             }
 
@@ -145,7 +149,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (configurationChanged)
                     {
-                        var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, null, cultureInfo);
+                        var newConfigurationElement = BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, null, cultureInfo, oldConfigurationElement);
 
                         xmlDataProviderConfiguration.Section.Interfaces.Remove(key);
                         xmlDataProviderConfiguration.Section.Interfaces.Add(newConfigurationElement);
@@ -158,15 +162,21 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
 
 
-        private static XmlProviderInterfaceConfigurationElement BuildXmlProviderInterfaceConfigurationElement(DataTypeDescriptor dataTypeDescriptor)
+        private static XmlProviderInterfaceConfigurationElement BuildXmlProviderInterfaceConfigurationElement(
+            DataTypeDescriptor dataTypeDescriptor,
+            XmlProviderInterfaceConfigurationElement existingElement = null)
         {
-            return BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, null, null);
+            return BuildXmlProviderInterfaceConfigurationElement(dataTypeDescriptor, null, null, existingElement);
         }
 
 
-        private static XmlProviderInterfaceConfigurationElement BuildXmlProviderInterfaceConfigurationElement(DataTypeDescriptor dataTypeDescriptor, CultureInfo addedCultureInfo, CultureInfo removedCultureInfo)
+        private static XmlProviderInterfaceConfigurationElement BuildXmlProviderInterfaceConfigurationElement(
+            DataTypeDescriptor dataTypeDescriptor, 
+            CultureInfo addedCultureInfo, 
+            CultureInfo removedCultureInfo,
+            XmlProviderInterfaceConfigurationElement existingElement)
         {
-            XmlProviderInterfaceConfigurationElement configurationElement = new XmlProviderInterfaceConfigurationElement();
+            var configurationElement = new XmlProviderInterfaceConfigurationElement();
             configurationElement.DataTypeId = dataTypeDescriptor.DataTypeId;
             configurationElement.IsGeneratedType = dataTypeDescriptor.IsCodeGenerated;
 
@@ -191,12 +201,28 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         if (removedCultureInfo != null && removedCultureInfo.Name == cultureName) continue;
 
+                        string existingFileName = null;
+                        string existingElementName = null;
+
+                        if (existingElement != null)
+                        {
+                            foreach (DataScopeConfigurationElement store in existingElement.ConfigurationStores)
+                            {
+                                if (store.DataScope == dataScopeIdentifier.Name && store.CultureName == cultureName)
+                                {
+                                    existingFileName = store.Filename;
+                                    existingElementName = store.ElementName;
+                                    break;
+                                }
+                            }
+                        }
+
                         configurationElement.ConfigurationStores.Add(new DataScopeConfigurationElement
                             {
                                 DataScope = dataScopeIdentifier.Name,
                                 CultureName = cultureName,
-                                Filename = NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, cultureName),
-                                ElementName = NamesCreator.MakeElementName(dataTypeDescriptor)
+                                Filename = existingFileName ?? NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, cultureName),
+                                ElementName = existingElementName ?? NamesCreator.MakeElementName(dataTypeDescriptor)
                             });
                     }
 

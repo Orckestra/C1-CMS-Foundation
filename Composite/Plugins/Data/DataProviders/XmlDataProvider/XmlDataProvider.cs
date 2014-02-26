@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -484,7 +485,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
 
 
-    internal sealed class DataScopeConfigurationElementCollection : System.Configuration.ConfigurationElementCollection
+    internal sealed class DataScopeConfigurationElementCollection : System.Configuration.ConfigurationElementCollection, IEnumerable<DataScopeConfigurationElement>
     {
         internal void Add(DataScopeConfigurationElement element)
         {
@@ -500,6 +501,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             DataScopeConfigurationElement castedElement = (DataScopeConfigurationElement)element;
             return string.Format("{0}.{1}", castedElement.DataScope, castedElement.CultureName);
+        }
+
+        IEnumerator<DataScopeConfigurationElement> IEnumerable<DataScopeConfigurationElement>.GetEnumerator()
+        {
+            return this.OfType<DataScopeConfigurationElement>().GetEnumerator();
         }
     }
 }
