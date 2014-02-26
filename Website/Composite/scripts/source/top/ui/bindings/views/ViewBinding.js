@@ -927,6 +927,5 @@ ViewBinding.newInstance = function ( ownerDocument ) {
 	var element = DOMUtil.createElementNS ( Constants.NS_UI, "ui:view", ownerDocument );
 	var binding = UserInterface.registerBinding ( element, ViewBinding );
 	binding.windowBinding = binding.add ( WindowBinding.newInstance ( ownerDocument ));
-	binding.windowBinding.isFlexible = false;
 	return binding;
 }
