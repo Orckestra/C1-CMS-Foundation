@@ -76,7 +76,7 @@ namespace Composite.Renderers
                 BuildContainerFromCssSelector(
 				cssSelector, new XElement(Namespaces.Xhtml + "functionpreview",
 					                      new XAttribute("id", "CompositeC1FunctionPreview"),
-										  new XAttribute("style", "max-width:1024px; "),
+										  new XAttribute("style", "max-width:1024px; display: block;"),
 										  functionElement)));
 			bool isDebug = context.Request["debug"] == "1";
 			
@@ -208,7 +208,7 @@ function getFunctionPreviewClientRect(previewElementId) {
     var childNodes = element.childNodes;
     for (var i = 0; childNode = childNodes[i]; i++)
     {
-        if (childNode.toString() == '[object Text]') {
+        if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
             rect = element.getBoundingClientRect();
 
             if (!sizeSet) {

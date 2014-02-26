@@ -95,6 +95,7 @@ img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentati
     background-repeat:no-repeat; 
     background-size:68px 68px;
     background-image:url('../../../../Composite/images/loading.svg.ashx'); 
+    vertical-align: top;
 }
 
 img.compositeFunctionWysiwygRepresentation:-moz-loading, img.compositeHtmlWysiwygRepresentation:-moz-loading {

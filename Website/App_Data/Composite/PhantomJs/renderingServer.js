@@ -38,7 +38,7 @@ function getFunctionPreviewClientRect(previewElementId) {
     var childNodes = element.childNodes;
     for (var i = 0; childNode = childNodes[i]; i++)
     {
-        if (childNode.toString() == '[object Text]') {
+        if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
             rect = element.getBoundingClientRect();
 
             if (!sizeSet) {
