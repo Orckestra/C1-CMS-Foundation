@@ -144,7 +144,7 @@ namespace Composite.C1Console.Drawing
             private readonly int _headerWidth;
             private readonly Font _font;
             private readonly string _title;
-            readonly string _editLabel = LocalizationFiles.Composite_Web_SourceEditor.Function_Edit;
+            readonly string _editLabel = LocalizationFiles.Composite_Web_VisualEditor.Function_Edit;
             private readonly Point _titlePosition;
 
             private Size _titleSize;

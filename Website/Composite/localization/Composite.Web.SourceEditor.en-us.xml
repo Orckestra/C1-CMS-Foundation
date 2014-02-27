@@ -36,6 +36,4 @@
 	<string key="Insert.MediaURL.Label" value="Media URL"/>
 	<string key="Insert.FrontendURL.Label" value="Frontend URL"/>
 	<string key="Insert.FunctionMarkup.Label" value="Function Markup"/>
-  
-  <string key="Function.Edit" value="Edit" />
 </strings>

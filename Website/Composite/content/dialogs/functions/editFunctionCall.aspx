@@ -52,7 +52,7 @@
 					<ui:toolbarbody />
 					<ui:toolbarbody id="switchtoolbargroup" class="alignright">
 						<ui:toolbargroup>
-							<ui:toolbarbutton id="advancedbutton" label="Advanced view" image="${icon:advanced}" flip="true" />
+							<ui:toolbarbutton id="advancedbutton" label="${string:Website.Dialogs.EditFunction.AdvancedView}" image="${icon:advanced}" flip="true" />
 						</ui:toolbargroup>
 					</ui:toolbarbody>
 				</ui:toolbar>

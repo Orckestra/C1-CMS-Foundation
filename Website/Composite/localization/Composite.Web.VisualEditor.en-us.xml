@@ -181,4 +181,5 @@
   <string key="SpellCheck.InfoCaption" value="How to spell check in the Visual Editor" />
   <string key="SpellCheck.InfoText" value="To get suggestions for a misspelled word, press your SHIFT key down when you invoke the context menu." />
 
+  <string key="Function.Edit" value="Edit" />
 </strings>

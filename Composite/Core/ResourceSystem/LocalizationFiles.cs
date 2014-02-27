@@ -6033,8 +6033,6 @@ namespace Composite.Core.ResourceSystem
  public static string Insert_FrontendURL_Label { get { return T("Insert.FrontendURL.Label"); } } 
  /// <summary>&quot;Function Markup&quot;</summary> 
  public static string Insert_FunctionMarkup_Label { get { return T("Insert.FunctionMarkup.Label"); } } 
- /// <summary>&quot;Edit&quot;</summary> 
- public static string Function_Edit { get { return T("Function.Edit"); } } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);
@@ -6439,6 +6437,8 @@ namespace Composite.Core.ResourceSystem
  public static string SpellCheck_InfoCaption { get { return T("SpellCheck.InfoCaption"); } } 
  /// <summary>&quot;To get suggestions for a misspelled word, press your SHIFT key down when you invoke the context menu.&quot;</summary> 
  public static string SpellCheck_InfoText { get { return T("SpellCheck.InfoText"); } } 
+ /// <summary>&quot;Edit&quot;</summary> 
+ public static string Function_Edit { get { return T("Function.Edit"); } } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);

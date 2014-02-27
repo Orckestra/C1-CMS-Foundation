@@ -372,6 +372,8 @@
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelPosition" value="Position" />
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertBefore" value="Insert before" />
 	<string key="Website.Dialogs.SystemTree.DetailedPaste.LabelInsertAfter" value="Insert after" />
+  <string key="Website.Dialogs.EditFunction.BasicView" value="Basic view" />
+  <string key="Website.Dialogs.EditFunction.AdvancedView" value="Advanced view" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTitle" value="Edit image" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelFile" value="File" />
 	<string key="Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelSave" value="Save" />
