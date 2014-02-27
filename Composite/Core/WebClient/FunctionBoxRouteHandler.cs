@@ -97,10 +97,14 @@ namespace Composite.Core.WebClient
                         }
                         else
                         {
-                            FunctionPresentation.GenerateFunctionBoxWithText(context, title, textLines, context.Response.OutputStream);
+                            FunctionPresentation.GenerateFunctionBoxWithText(context, title, false, textLines, context.Response.OutputStream);
                         }
                     }
-                    else
+                    else if (boxtype == "warning")
+                    {
+                        FunctionPresentation.GenerateFunctionBoxWithText(context, title, true, textLines, context.Response.OutputStream);
+                    }
+                    else 
                     {
                         GenerateBoxImage(context, boxtype, title, previewImage, textLines);
                     }

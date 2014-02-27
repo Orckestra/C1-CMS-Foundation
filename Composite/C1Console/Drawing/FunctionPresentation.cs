@@ -9,7 +9,6 @@ using System.Web;
 using System.Web.Hosting;
 using System.Windows.Forms;
 using Composite.Core.WebClient;
-using Composite.Core.WebClient.Renderings;
 
 namespace Composite.C1Console.Drawing
 {
@@ -17,7 +16,7 @@ namespace Composite.C1Console.Drawing
     {
         public static void GenerateFunctionBoxWithPreview(HttpContext context, string functionTitle, Bitmap previewImage, Stream outputStream)
         {
-            using (var header = new FunctionHeader(functionTitle))
+            using (var header = new FunctionHeader(functionTitle, false))
             {
                 var headerSize = header.HeaderSize;
 
@@ -50,19 +49,19 @@ namespace Composite.C1Console.Drawing
             }
         }
 
-        public static void GenerateFunctionBoxWithText(HttpContext context, string functionTitle, ICollection<string> lines, Stream outputStream)
+        public static void GenerateFunctionBoxWithText(HttpContext context, string functionTitle, bool isWarning, ICollection<string> lines, Stream outputStream)
         {
-            using (var header = new FunctionHeader(functionTitle))
+            using (var header = new FunctionHeader(functionTitle, isWarning))
             {
                 var headerSize = header.HeaderSize;
 
-                int minTextAreaWidth = 250;
+                int minTextAreaWidth = 350;
 
                 int leftPadding = 14, rightPadding = 10, topPadding = 12, bottomPadding = 10;
 
                 var linesTrimmed = lines.Take(20).ToList();
 
-                using (var textFont = new Font("Tahoma", 15.0f, FontStyle.Regular))
+                using (var textFont = new Font("Tahoma", 10.0f, FontStyle.Regular))
                 {
                     int lineHeight = TextRenderer.MeasureText("Text", textFont).Height;
 
@@ -90,7 +89,7 @@ namespace Composite.C1Console.Drawing
                         }
 
                         // Text outline
-                        using (var pen = new Pen(Color.Gray))
+                        using (var pen = new Pen(isWarning ? Color.Red : Color.Gray))
                         {
                             graphics.DrawRectangle(pen, new Rectangle(0, headerSize.Height,
                                 totalSize.Width - 1, totalSize.Height - headerSize.Height - 1));
@@ -115,7 +114,7 @@ namespace Composite.C1Console.Drawing
                 line = line.Substring(250);
             }
 
-            return line.Substring(line.Length - 5) + "...";
+            return CropLineToFitMaxWidth(line.Substring(0, line.Length - 5) + "...", textFont, maxLineWidth);
         }
 
         private static void MakeBlackTransparent(Bitmap bitmap, Rectangle rect)
@@ -149,8 +148,20 @@ namespace Composite.C1Console.Drawing
 
             private Size _titleSize;
             private Size _editLabelSize;
+            private readonly Image _functionIcon;
 
-            public FunctionHeader(string title)
+            private readonly bool _isWarning;
+
+            private static readonly string FunctionIconPath = GetIconPath("images/function.png");
+            private static readonly string EditFunctionIconPath = GetIconPath("images/editfunction.png");
+            private static readonly string WarninigIconPath = GetIconPath("images/icons/harmony/composite/warning_16.png");
+
+            private static string GetIconPath(string relativePath)
+            {
+                return HostingEnvironment.MapPath(UrlUtils.ResolveAdminUrl(relativePath));
+            }
+
+            public FunctionHeader(string title, bool isWarning)
             {
                 _title = title;
 
@@ -159,8 +170,10 @@ namespace Composite.C1Console.Drawing
                 _titleSize = TextRenderer.MeasureText(_title, _font);
                 _editLabelSize = TextRenderer.MeasureText(_editLabel, _font);
 
-                _titlePosition = new Point(25, (_headerHeight - _titleSize.Height) / 2);
+                _isWarning = isWarning;
+                _functionIcon = Bitmap.FromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
 
+                _titlePosition = new Point(20 + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
                 _headerWidth = _titlePosition.X + _titleSize.Width + 45 + _editLabelSize.Width + 20;
             }
 
@@ -174,14 +187,10 @@ namespace Composite.C1Console.Drawing
                 }
 
                 // Function icon
-                string functionIconPath = HostingEnvironment.MapPath(UrlUtils.ResolveAdminUrl(string.Format("images/function.png")));
-                using (var functionIcon = Bitmap.FromFile(functionIconPath))
-                {
-                    graphics.DrawImage(functionIcon, 10, (_headerHeight - functionIcon.Height) / 2);
-                }
+                graphics.DrawImage(_functionIcon, 10, (_headerHeight - _functionIcon.Height) / 2 + (_isWarning ? -2 : 0));
 
                 // Title
-                using (var solidBrush = new SolidBrush(Color.Black))
+                using (var solidBrush = new SolidBrush(_isWarning ? Color.Red : Color.Black))
                 {
                     graphics.DrawString(_title, _font, solidBrush, _titlePosition);
                 }
@@ -195,11 +204,14 @@ namespace Composite.C1Console.Drawing
                     graphics.DrawString(_editLabel, _font, solidBrush, editLabelPosition);
                 }
 
+                int editFunctionIconY;
+                Size editFunctionIconSize;
+
                 // Edit function "pen" icon
-                string editFunctionIconPath = HostingEnvironment.MapPath(UrlUtils.ResolveAdminUrl(string.Format("images/editfunction.png")));
-                using (var icon = (Bitmap)Image.FromFile(editFunctionIconPath))
+                using (var icon = (Bitmap)Image.FromFile(EditFunctionIconPath))
                 {
-                    int editFunctionIconY = (_headerHeight - icon.Height) / 2;
+                    editFunctionIconSize = icon.Size;
+                    editFunctionIconY = (_headerHeight - icon.Height) / 2;
 
                     graphics.DrawImage(icon, editLabelPosition.X - icon.Width, editFunctionIconY);
 
@@ -227,17 +239,24 @@ namespace Composite.C1Console.Drawing
                     }
                 }
 
-                /*                    var editFuncRect = new Rectangle(editLabelPosition.X - editFunctionIconSize.Width,
-                                        editFunctionIconY, editFunctionIconSize.Width + editLabelSize.Width + 5, editFunctionIconSize.Height);
+                if (_isWarning)
+                {
+                    // Making only the "Edit" button transparent
+                    var editFuncRect = new Rectangle(editLabelPosition.X - editFunctionIconSize.Width, editFunctionIconY,
+                        editFunctionIconSize.Width + _editLabelSize.Width + 5, editFunctionIconSize.Height);
 
-                                    MakeBlackTransparent(bitmap, editFuncRect);*/
-
-                MakeBlackTransparent(bitmap, new Rectangle(0, 0, bitmapWidth, _headerHeight));
+                    MakeBlackTransparent(bitmap, editFuncRect);
+                }
+                else
+                {
+                    MakeBlackTransparent(bitmap, new Rectangle(0, 0, bitmapWidth, _headerHeight));
+                }
             }
 
             public void Dispose()
             {
                 _font.Dispose();
+                _functionIcon.Dispose();
             }
         }
     }
