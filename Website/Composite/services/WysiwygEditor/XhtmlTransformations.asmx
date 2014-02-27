@@ -5,10 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
+using Composite.C1Console.Security;
 using Composite.Core.Extensions;
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
@@ -497,10 +499,11 @@ namespace Composite.Services
 
         private static string GetFunctionBoxImageUrl(string type, string title, string description)
         {
-            string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}".FormatWith(
+            string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&lang={3}".FormatWith(
 				HttpUtility.UrlEncode(type, Encoding.UTF8),
 				HttpUtility.UrlEncode(title, Encoding.UTF8),
-                UrlUtils.ZipContent(description.Trim())); // ZIPping description as it may contain xml tags f.e. <iframe />
+                UrlUtils.ZipContent(description.Trim()),
+                Thread.CurrentThread.CurrentUICulture.Name); // ZIPping description as it may contain xml tags f.e. <iframe />
 
             return UrlUtils.ResolvePublicUrl(imageUrl);
         }
@@ -515,11 +518,12 @@ namespace Composite.Services
             string functionPreviewPlaceholderName,
             string functionPreviewCssSelector)
         {
-            string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}".FormatWith(
+            string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}&lang={4}".FormatWith(
                 HttpUtility.UrlEncode(type, Encoding.UTF8),
                 HttpUtility.UrlEncode(title, Encoding.UTF8),
-                UrlUtils.ZipContent(description.Trim()),
-                UrlUtils.ZipContent(markup.Trim())); // ZIPping description as it may contain xml tags f.e. <iframe />
+                UrlUtils.ZipContent(description.Trim()), // ZIPping description as it may contain xml tags f.e. <iframe />
+                UrlUtils.ZipContent(markup.Trim()),
+                Thread.CurrentThread.CurrentUICulture.Name); 
 
             if (functionPreviewPageId != Guid.Empty)
             {

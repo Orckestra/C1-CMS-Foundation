@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Routing;
 using Composite.C1Console.Drawing;
@@ -59,6 +61,13 @@ namespace Composite.Core.WebClient
 
                 string description = context.Request["description"];
                 string encodedMarkup = context.Request["markup"];
+
+                string language = context.Request["lang"];
+
+                if (!string.IsNullOrEmpty(language))
+                {
+                    Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(language);
+                }
 
                 List<string> textLines = null;
                 if (description != null)

@@ -67,9 +67,9 @@ namespace Composite.Core.ResourceSystem
  public static string TreeValidationError_Common_UnkownInterfaceType(string parameter0) { return string.Format(T("TreeValidationError.Common.UnkownInterfaceType"), parameter0); } 
  /// <summary>&quot;The type &apos;{0}&apos; does not implement the interface &apos;{1}&apos;&quot;</summary> 
  public static string TreeValidationError_Common_NotImplementingIData(string parameter0,string parameter1) { return string.Format(T("TreeValidationError.Common.NotImplementingIData"), parameter0,parameter1); } 
- /// <summary>&quot;The value &apos;{0} is not allowed as a permission type value&quot;</summary> 
+ /// <summary>&quot;The value &apos;{0}&apos; is not allowed as a permission type value&quot;</summary> 
  public static string TreeValidationError_Common_WrongPermissinValue(string parameter0) { return string.Format(T("TreeValidationError.Common.WrongPermissinValue"), parameter0); } 
- /// <summary>&quot;The value &apos;{0} is not allowed as a location value&quot;</summary> 
+ /// <summary>&quot;The value &apos;{0}&apos; is not allowed as a location value&quot;</summary> 
  public static string TreeValidationError_Common_WrongLocationValue(string parameter0) { return string.Format(T("TreeValidationError.Common.WrongLocationValue"), parameter0); } 
  /// <summary>&quot;No function markup provided as a child element&quot;</summary> 
  public static string TreeValidationError_Common_MissingFunctionMarkup { get { return T("TreeValidationError.Common.MissingFunctionMarkup"); } } 
@@ -445,7 +445,7 @@ namespace Composite.Core.ResourceSystem
  public static string DataPackageFragmentUninstaller_OnlyOneElement { get { return T("DataPackageFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
  public static string DataPackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("DataPackageFragmentUninstaller.MissingAttribute"), parameter0); } 
- /// <summary>&quot;The data type &apos;{0}&apos; does not contain a key property named &apos;{1}&quot;</summary> 
+ /// <summary>&quot;The data type &apos;{0}&apos; does not contain a key property named &apos;{1}&apos;&quot;</summary> 
  public static string DataPackageFragmentUninstaller_MissingKeyProperty(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentUninstaller.MissingKeyProperty"), parameter0,parameter1); } 
  /// <summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
  public static string DataTypePackageFragmentInstaller_OnlyOneElement { get { return T("DataTypePackageFragmentInstaller.OnlyOneElement"); } } 
@@ -1073,14 +1073,6 @@ namespace Composite.Core.ResourceSystem
  public static string ManageUserPermissions_ManageGlobalUserPermissionsLabel { get { return T("ManageUserPermissions.ManageGlobalUserPermissionsLabel"); } } 
  /// <summary>&quot;Manage user permissions&quot;</summary> 
  public static string ManageUserPermissions_ManageUserPermissionsToolTip { get { return T("ManageUserPermissions.ManageUserPermissionsToolTip"); } } 
- /// <summary>&quot;Log&quot;</summary> 
- public static string LogElementProvider_RootLabel { get { return T("LogElementProvider.RootLabel"); } } 
- /// <summary>&quot;System log&quot;</summary> 
- public static string LogElementProvider_RootLabelToolTip { get { return T("LogElementProvider.RootLabelToolTip"); } } 
- /// <summary>&quot;Show the log&quot;</summary> 
- public static string LogElementProvider_ShowLogLabel { get { return T("LogElementProvider.ShowLogLabel"); } } 
- /// <summary>&quot;Show the system log&quot;</summary> 
- public static string LogElementProvider_ShowLogToolTip { get { return T("LogElementProvider.ShowLogToolTip"); } } 
  /// <summary>&quot;Metadata&quot;</summary> 
  public static string DataCompositionVisabilityFacade_DefaultContainerLabel { get { return T("DataCompositionVisabilityFacade.DefaultContainerLabel"); } } 
  /// <summary>&quot;Delete User?&quot;</summary> 
@@ -1595,10 +1587,6 @@ namespace Composite.Core.ResourceSystem
  public static string VirtualElementProviderElementProvider_SqlFunctionPerspective { get { return T("VirtualElementProviderElementProvider.SqlFunctionPerspective"); } } 
  /// <summary>&quot;Xslt Based Functions&quot;</summary> 
  public static string VirtualElementProviderElementProvider_XsltBasedFunctionPerspective { get { return T("VirtualElementProviderElementProvider.XsltBasedFunctionPerspective"); } } 
- /// <summary>&quot;Server Log&quot;</summary> 
- public static string VirtualElementProviderElementProvider_RootActions_ViewSystemLogLabel { get { return T("VirtualElementProviderElementProvider.RootActions.ViewSystemLogLabel"); } } 
- /// <summary>&quot;View recent server events&quot;</summary> 
- public static string VirtualElementProviderElementProvider_RootActions_ViewSystemLogTooltip { get { return T("VirtualElementProviderElementProvider.RootActions.ViewSystemLogTooltip"); } } 
  /// <summary>&quot;Broadcast Message&quot;</summary> 
  public static string VirtualElementProviderElementProvider_RootActions_SendMessageLabel { get { return T("VirtualElementProviderElementProvider.RootActions.SendMessageLabel"); } } 
  /// <summary>&quot;Send a message to all running consoles&quot;</summary> 
@@ -1904,6 +1892,14 @@ namespace Composite.Core.ResourceSystem
  /// <summary>&quot;Raw&quot;</summary> 
  public static string Website_Content_Views_ViewSource_LabelRaw { get { return T("Website.Content.Views.ViewSource.LabelRaw"); } } 
  /// <summary>&quot;Server Log&quot;</summary> 
+ public static string ServerLog_Element_Label { get { return T("ServerLog.Element.Label"); } } 
+ /// <summary>&quot;The server log contain security and system health related messages.&quot;</summary> 
+ public static string ServerLog_Element_Tooltip { get { return T("ServerLog.Element.Tooltip"); } } 
+ /// <summary>&quot;View Server Log&quot;</summary> 
+ public static string ServerLog_Element_View_Label { get { return T("ServerLog.Element.View.Label"); } } 
+ /// <summary>&quot;View recent server events&quot;</summary> 
+ public static string ServerLog_Element_View_Tooltip { get { return T("ServerLog.Element.View.Tooltip"); } } 
+ /// <summary>&quot;Server Log&quot;</summary> 
  public static string ServerLog_LabelTitle { get { return T("ServerLog.LabelTitle"); } } 
  /// <summary>&quot;Delete old&quot;</summary> 
  public static string ServerLog_LabelButtonDeleteOld { get { return T("ServerLog.LabelButtonDeleteOld"); } } 
@@ -2145,7 +2141,7 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_AddNewMediaFile_FieldGroup_Label { get { return T("Website.Forms.Administrative.AddNewMediaFile.FieldGroup.Label"); } } 
  /// <summary>&quot;Filename&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewMediaFile_FileUpload_Label { get { return T("Website.Forms.Administrative.AddNewMediaFile.FileUpload.Label"); } } 
- /// <summary>&quot;Select/enter the filename to upload&quot;</summary> 
+ /// <summary>&quot;Select the file to upload&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewMediaFile_FileUpload_Help { get { return T("Website.Forms.Administrative.AddNewMediaFile.FileUpload.Help"); } } 
  /// <summary>&quot;Allow overwrite&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewMediaFile_OverwriteCheckBox_Label { get { return T("Website.Forms.Administrative.AddNewMediaFile.OverwriteCheckBox.Label"); } } 
@@ -2477,10 +2473,6 @@ namespace Composite.Core.ResourceSystem
  public static string GlobalDataFolderLabel_OnlyGlobalData { get { return T("GlobalDataFolderLabel_OnlyGlobalData"); } } 
  /// <summary>&quot;Website Items (Data)&quot;</summary> 
  public static string GlobalDataFolderToolTip_OnlyGlobalData { get { return T("GlobalDataFolderToolTip_OnlyGlobalData"); } } 
- /// <summary>&quot;Static Datatypes&quot;</summary> 
- public static string StaticDataTypesFolderLabel { get { return T("StaticDataTypesFolderLabel"); } } 
- /// <summary>&quot;Custom defined interfaces&quot;</summary> 
- public static string StaticDataTypesFolderToolTip { get { return T("StaticDataTypesFolderToolTip"); } } 
  /// <summary>&quot;Page Datafolders&quot;</summary> 
  public static string PageDataFolderDataFolderLabel { get { return T("PageDataFolderDataFolderLabel"); } } 
  /// <summary>&quot;Page datafolders&quot;</summary> 
@@ -6041,6 +6033,8 @@ namespace Composite.Core.ResourceSystem
  public static string Insert_FrontendURL_Label { get { return T("Insert.FrontendURL.Label"); } } 
  /// <summary>&quot;Function Markup&quot;</summary> 
  public static string Insert_FunctionMarkup_Label { get { return T("Insert.FunctionMarkup.Label"); } } 
+ /// <summary>&quot;Edit&quot;</summary> 
+ public static string Function_Edit { get { return T("Function.Edit"); } } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Web.SourceEditor", key);

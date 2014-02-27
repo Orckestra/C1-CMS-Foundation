@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Hosting;
 using System.Windows.Forms;
+using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient;
 
 namespace Composite.C1Console.Drawing
@@ -143,7 +144,7 @@ namespace Composite.C1Console.Drawing
             private readonly int _headerWidth;
             private readonly Font _font;
             private readonly string _title;
-            readonly string _editLabel = "Edit";
+            readonly string _editLabel = LocalizationFiles.Composite_Web_SourceEditor.Function_Edit;
             private readonly Point _titlePosition;
 
             private Size _titleSize;
