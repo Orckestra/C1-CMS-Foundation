@@ -33,7 +33,7 @@ namespace Composite.Renderers
             string placeholderName = context.Request["ph"];
             string cssSelector = context.Request["css"] ?? "";
             int maxWidth = Int32.Parse(context.Request["width"] ?? "1024");
-
+            
             if (maxWidth < 256) maxWidth = 256;
             if (maxWidth > 1920) maxWidth = 1920;
             
@@ -77,13 +77,13 @@ namespace Composite.Renderers
             var placeholderDocument = new XhtmlDocument();
 			bool isDebug = context.Request["debug"] == "1";
 
-			placeholderDocument.Body.Add(
+            placeholderDocument.Body.Add(
                 BuildContainerFromCssSelector(
 				cssSelector, new XElement(Namespaces.Xhtml + "functionpreview",
 					                      new XAttribute("id", "CompositeC1FunctionPreview"),
 										  new XAttribute("style", string.Format("max-width:{0}px; display: block;", maxWidth)),
 										  functionElement)));
-
+			
 			placeholderDocument.Body.AddFirst(XElement.Parse(
                 previewStagingJs.Replace("{$OPACITY}", isDebug ? "0.4" : "0")
                                 .Replace("{$MAXWIDTH}", maxWidth.ToString()))
@@ -162,7 +162,7 @@ namespace Composite.Renderers
 		const string previewStagingJs = @"
 <script xmlns='http://www.w3.org/1999/xhtml'>    //<!--
     window.addEventListener('load', function () {
-        var element = document.getElementById('CompositeC1FunctionPreview');
+	var element = document.getElementById('CompositeC1FunctionPreview');
 
         setMaxWidthOnOverflows(element, '{$MAXWIDTH}');
 
@@ -177,11 +177,11 @@ namespace Composite.Renderers
     *  Change opacity on sibling elements, making the core rendering stand out
     */
     function changeSiblingOpacity(element, opacityString) {
-        sibling = element.parentNode.firstChild;
+		sibling = element.parentNode.firstChild;
         while (sibling != null) {
             if (sibling != element && sibling.nodeType === 1 && sibling.className != 'DEVELOPERWARNING') sibling.style.opacity = opacityString;
-            sibling = sibling.nextElementSibling || sibling.nextSibling
-        }
+			sibling = sibling.nextElementSibling || sibling.nextSibling
+		}
     }
 
     /*
@@ -235,38 +235,63 @@ namespace Composite.Renderers
                 childNode.style.width = 'auto';
             }
         }
-    }
+	}
 
-    // -->
+// -->
 </script>
 ";
-
+				
 // debug js - adding &debug=1 will show stuff		
 		
 		const string debugElement = @"
 <div xmlns='http://www.w3.org/1999/xhtml' id='previewMarker' style='border:10px dashed pink; position: absolute; z-index:9999; opacity:0.7'></div>
 ";
 
-		const string debugJs = @"
+	const string debugJs = @"
 <script xmlns='http://www.w3.org/1999/xhtml'>    //<!--
-    function getFunctionPreviewClientRect(previewElementId) {
-        var element = document.getElementById(previewElementId);
+function getFunctionPreviewClientRect(previewElementId) {
+    var element = document.getElementById(previewElementId);
 
-        if (element == null || element.innerHTML == '') {
-            return null;
+    if (element == null || element.innerHTML == '') {
+        return null;
+    }
+				    
+    var children = element.getElementsByTagName('*');
+    if (children.lenght == 0) {
+        return null;
+    }
+
+    var top, right, bottom, left, sizeSet = false;
+    for (i = 0; i < children.length; i++) {
+        var childNode = children[i]; 
+
+        var rect = childNode.getBoundingClientRect();
+        if (rect.width == 0 || rect.height == 0 || rect.bottom <= 0 || rect.right <= 0) {
+            continue;
         }
+				        
+        if (!sizeSet) {
+            top = rect.top;
+            right = rect.right;
+            bottom = rect.bottom;
+            left = rect.left;
 
-        var children = element.getElementsByTagName('*');
-        if (children.lenght == 0) {
-            return null;
+            sizeSet = true;
+        } else {
+            top = top < rect.top ? top : rect.top;
+            bottom = bottom > rect.bottom ? bottom : rect.bottom;
+            left = left < rect.left ? left : rect.left;
+            right = right > rect.right ? right : rect.right;
         }
+    }
 
-        var top, right, bottom, left, sizeSet = false;
-        for (i = 0; i < children.length; i++) {
-            var childNode = children[i];
+    // Checking is there's a child node that is a text node
+    var childNodes = element.childNodes;
+        for (var i = 0; childNode = childNodes[i]; i++) {
+        if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
+            rect = element.getBoundingClientRect();
 
-            var rect = childNode.getBoundingClientRect();
-            if (rect.width == 0 || rect.height == 0) {
+            if (rect.width == 0 || rect.height == 0 || rect.bottom <= 0 || rect.right <= 0) {
                 continue;
             }
 
@@ -283,56 +308,35 @@ namespace Composite.Renderers
                 left = left < rect.left ? left : rect.left;
                 right = right > rect.right ? right : rect.right;
             }
+
+            break;
         }
-
-        // Checking is there's a child node that is a text node
-        var childNodes = element.childNodes;
-        for (var i = 0; childNode = childNodes[i]; i++) {
-            if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
-                rect = element.getBoundingClientRect();
-
-                if (!sizeSet) {
-                    top = rect.top;
-                    right = rect.right;
-                    bottom = rect.bottom;
-                    left = rect.left;
-
-                    sizeSet = true;
-                } else {
-                    top = top < rect.top ? top : rect.top;
-                    bottom = bottom > rect.bottom ? bottom : rect.bottom;
-                    left = left < rect.left ? left : rect.left;
-                    right = right > rect.right ? right : rect.right;
-                }
-
-                break;
-            }
-        }
-
-        if (!sizeSet) {
-            return null;
-        }
-
-        return {
-            left: left,
-            top: top,
-            height: bottom - top,
-            width: right - left
-        };
     }
 
+    if (!sizeSet) {
+        return null;
+    }
+
+    return {
+        left: left,
+        top: top,
+        height: bottom - top,
+        width: right - left
+    };
+}
+
     window.addEventListener('load', function () {
-        var bounds = getFunctionPreviewClientRect('CompositeC1FunctionPreview');
-        var previewMarkerElement = document.getElementById('previewMarker');
+	var bounds = getFunctionPreviewClientRect('CompositeC1FunctionPreview');
+	var previewMarkerElement = document.getElementById('previewMarker');
         document.body.insertBefore(previewMarkerElement, document.body.firstChild);
 
-        previewMarkerElement.style.left = bounds.left + 'px';
-        previewMarkerElement.style.top = bounds.top + 'px';
-        previewMarkerElement.style.width = bounds.width + 'px';
-        previewMarkerElement.style.height = bounds.height + 'px';
-        previewMarkerElement.style.opacity = 0.5;
-    });
-    // -->
+	previewMarkerElement.style.left = bounds.left + 'px';
+	previewMarkerElement.style.top = bounds.top + 'px';
+	previewMarkerElement.style.width = bounds.width + 'px';
+	previewMarkerElement.style.height = bounds.height + 'px';
+	previewMarkerElement.style.opacity = 0.5;
+});
+// -->
 </script>
 ";
 	}

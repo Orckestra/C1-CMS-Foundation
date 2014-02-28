@@ -15,7 +15,7 @@ function getFunctionPreviewClientRect(previewElementId) {
         var childNode = children[i]; 
 
         var rect = childNode.getBoundingClientRect();
-        if (rect.width == 0 || rect.height == 0) {
+        if (rect.width == 0 || rect.height == 0 || rect.bottom <= 0 || rect.right <= 0) {
             continue;
         }
 				        
@@ -40,6 +40,10 @@ function getFunctionPreviewClientRect(previewElementId) {
     {
         if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
             rect = element.getBoundingClientRect();
+
+            if (rect.width == 0 || rect.height == 0 || rect.bottom <= 0 || rect.right <= 0) {
+                continue;
+            }
 
             if (!sizeSet) {
                 top = rect.top;

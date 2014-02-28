@@ -155,7 +155,7 @@ namespace Composite.C1Console.Drawing
 
             private static readonly string FunctionIconPath = GetIconPath("images/function.png");
             private static readonly string EditFunctionIconPath = GetIconPath("images/editfunction.png");
-            private static readonly string WarninigIconPath = GetIconPath("images/icons/harmony/composite/error_16.png");
+            private static readonly string WarninigIconPath = GetIconPath("images/icons/harmony/composite/warning_24.png");
 
             private static string GetIconPath(string relativePath)
             {
@@ -174,7 +174,7 @@ namespace Composite.C1Console.Drawing
                 _isWarning = isWarning;
                 _functionIcon = Bitmap.FromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
 
-                _titlePosition = new Point(20 + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
+                _titlePosition = new Point(15 + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
                 _headerWidth = _titlePosition.X + _titleSize.Width + 45 + _editLabelSize.Width + 20;
             }
 
@@ -188,7 +188,8 @@ namespace Composite.C1Console.Drawing
                 }
 
                 // Function icon
-                graphics.DrawImage(_functionIcon, 10, (_headerHeight - _functionIcon.Height) / 2 + (_isWarning ? -2 : 0));
+                graphics.DrawImage(_functionIcon, 10, (_headerHeight - _functionIcon.Height) / 2,
+                    _functionIcon.Width, _functionIcon.Height);
 
                 // Title
                 using (var solidBrush = new SolidBrush(_isWarning ? Color.Red : Color.Black))

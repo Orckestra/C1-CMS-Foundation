@@ -699,16 +699,15 @@ namespace Composite.Services
                     paramValue = "[error]";
                 }
 
-                if (!paramValue.IsNullOrEmpty() && paramValue.Length > 35)
+                Guid tempGuid;
+                if (!paramValue.IsNullOrEmpty() && Guid.TryParse(paramValue, out tempGuid))
                 {
-                    if (paramValue.IndexOf(' ') == -1)
-                    {
-                        paramValue = "...";
-                    }
-                    else
-                    {
-                        paramValue = paramValue.Substring(0, 35) + "...";
-                    }
+                    paramValue = "...";
+                }
+                
+                if(paramValue.Length > 45)
+                {
+                    paramValue = paramValue.Substring(0, 42) + "...";
                 }
                         
                 description.AppendLine("{0} = {1}".FormatWith(paramLabel, paramValue));
