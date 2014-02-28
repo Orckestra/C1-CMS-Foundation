@@ -32,6 +32,10 @@ namespace Composite.Renderers
             string templateIdStr = context.Request["t"] ?? "";
             string placeholderName = context.Request["ph"];
             string cssSelector = context.Request["css"] ?? "";
+            int maxWidth = Int32.Parse(context.Request["width"] ?? "1024");
+
+            if (maxWidth < 256) maxWidth = 256;
+            if (maxWidth > 1920) maxWidth = 1920;
             
             string markup = UrlUtils.UnZipContent(context.Request["markup"]);
 
@@ -70,17 +74,20 @@ namespace Composite.Renderers
             }
             
             var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
-
             var placeholderDocument = new XhtmlDocument();
-            placeholderDocument.Body.Add(
+			bool isDebug = context.Request["debug"] == "1";
+
+			placeholderDocument.Body.Add(
                 BuildContainerFromCssSelector(
 				cssSelector, new XElement(Namespaces.Xhtml + "functionpreview",
 					                      new XAttribute("id", "CompositeC1FunctionPreview"),
-										  new XAttribute("style", "max-width:1024px; display: block;"),
+										  new XAttribute("style", string.Format("max-width:{0}px; display: block;", maxWidth)),
 										  functionElement)));
-			bool isDebug = context.Request["debug"] == "1";
-			
-			placeholderDocument.Body.AddFirst(XElement.Parse(opacityFixJs.Replace("{$OPACITY}", isDebug ? "0.4" : "0")));
+
+			placeholderDocument.Body.AddFirst(XElement.Parse(
+                previewStagingJs.Replace("{$OPACITY}", isDebug ? "0.4" : "0")
+                                .Replace("{$MAXWIDTH}", maxWidth.ToString()))
+            );
 			
 			if (isDebug)
 			{
@@ -144,72 +151,124 @@ namespace Composite.Renderers
         {
             get { return true; }
         }
+
+
+
+
+		// this script block will 
+        //  - make all 'other' elements get opacity: 0;
+        //  - fix max-width on elements wider than the max width in effect;
+		//  - make elements inside a 'column-count = (n)' css block become straightened out (eliminate column flow)
+		const string previewStagingJs = @"
+<script xmlns='http://www.w3.org/1999/xhtml'>    //<!--
+    window.addEventListener('load', function () {
+        var element = document.getElementById('CompositeC1FunctionPreview');
+
+        setMaxWidthOnOverflows(element, '{$MAXWIDTH}');
+
+        while (element != null && element != document.body) {
+            strainghtenCssColumns(element);
+            changeSiblingOpacity(element, '{$OPACITY}');  // the {$OPACITY} is replaced by c# at run time
+            element = element.parentNode;
+        }
+    });
+
+    /*
+    *  Change opacity on sibling elements, making the core rendering stand out
+    */
+    function changeSiblingOpacity(element, opacityString) {
+        sibling = element.parentNode.firstChild;
+        while (sibling != null) {
+            if (sibling != element && sibling.nodeType === 1 && sibling.className != 'DEVELOPERWARNING') sibling.style.opacity = opacityString;
+            sibling = sibling.nextElementSibling || sibling.nextSibling
+        }
+    }
+
+    /*
+    *  If an element is inside a 'column-count: (n)' zone this code with prevent column layout and make one single long slim column
+    */
+    function strainghtenCssColumns(element) {
+        if (window.getMatchedCSSRules == null) {
+            var alarmAlarm = document.createElement('h1');
+            alarmAlarm.className = 'DEVELOPERWARNING';
+            alarmAlarm.style.color = 'pink';
+            alarmAlarm.textContent = 'Yo debugging developer - CSS column-count detection/fix not applied - run this in Chrome/WebKit to get this feature.';
+            document.body.appendChild(alarmAlarm);
+            return;
+        }
+        var inColumns = false;
+        var cssRules = window.getMatchedCSSRules(element);
+        for (i = 0; i < cssRules.length; i++)
+            inColumns = inColumns || (cssRules[i].cssText.indexOf('column-count') != -1);
+
+        if (inColumns) {
+            var newContainer = document.createElement('div');
+            newContainer.style.display = 'inline-block';
+            newContainer.style.width = '100%';
+            while (element.childNodes.length > 0) {
+                newContainer.appendChild(element.childNodes[0]);
+            }
+            element.appendChild(newContainer);
+        }
+    }
+
+
+    /*
+    *  If an element has a width that exceed our maximum this function will set an explicit maximum width
+    */
+    function setMaxWidthOnOverflows(element, maxWidth) {
+        if (element == null || element.innerHTML == '') {
+            return null;
+        }
+
+        var children = element.getElementsByTagName('*');
+        if (children.lenght == 0) {
+            return null;
+        }
+
+        for (i = 0; i < children.length; i++) {
+            var childNode = children[i];
+
+            var rect = childNode.getBoundingClientRect();
+            if (rect.width > maxWidth) {
+                childNode.style.maxWidth = maxWidth + 'px';
+                childNode.style.width = 'auto';
+            }
+        }
+    }
+
+    // -->
+</script>
+";
+
+// debug js - adding &debug=1 will show stuff		
+		
 		const string debugElement = @"
 <div xmlns='http://www.w3.org/1999/xhtml' id='previewMarker' style='border:10px dashed pink; position: absolute; z-index:9999; opacity:0.7'></div>
 ";
 
-		// this script block will make all 'other' elements get opacity: 0;
-		const string opacityFixJs = @"
-<script xmlns='http://www.w3.org/1999/xhtml'>//<!--
-window.addEventListener('load', function() { 
-	var element = document.getElementById('CompositeC1FunctionPreview');
-	while (element!=null && element != document.body) {
-		sibling = element.parentNode.firstChild;
-		while (sibling != null ) {
-			if (sibling!=element && sibling.nodeType === 1 ) sibling.style.opacity = {$OPACITY};
-			sibling = sibling.nextElementSibling || sibling.nextSibling
-		}
-		element = element.parentNode;		
-	}
-});
-// -->
-</script>
-";
-				
-	const string debugJs = @"
-<script xmlns='http://www.w3.org/1999/xhtml'>//<!--
-function getFunctionPreviewClientRect(previewElementId) {
-    var element = document.getElementById(previewElementId);
+		const string debugJs = @"
+<script xmlns='http://www.w3.org/1999/xhtml'>    //<!--
+    function getFunctionPreviewClientRect(previewElementId) {
+        var element = document.getElementById(previewElementId);
 
-    if (element == null || element.innerHTML == '') {
-        return null;
-    }
-				    
-    var children = element.getElementsByTagName('*');
-    if (children.lenght == 0) {
-        return null;
-    }
-
-    var top, right, bottom, left, sizeSet = false;
-    for (i = 0; i < children.length; i++) {
-        var childNode = children[i]; 
-
-        var rect = childNode.getBoundingClientRect();
-        if (rect.width == 0 || rect.height == 0) {
-            continue;
+        if (element == null || element.innerHTML == '') {
+            return null;
         }
-				        
-        if (!sizeSet) {
-            top = rect.top;
-            right = rect.right;
-            bottom = rect.bottom;
-            left = rect.left;
 
-            sizeSet = true;
-        } else {
-            top = top < rect.top ? top : rect.top;
-            bottom = bottom > rect.bottom ? bottom : rect.bottom;
-            left = left < rect.left ? left : rect.left;
-            right = right > rect.right ? right : rect.right;
+        var children = element.getElementsByTagName('*');
+        if (children.lenght == 0) {
+            return null;
         }
-    }
 
-    // Checking is there's a child node that is a text node
-    var childNodes = element.childNodes;
-    for (var i = 0; childNode = childNodes[i]; i++)
-    {
-        if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
-            rect = element.getBoundingClientRect();
+        var top, right, bottom, left, sizeSet = false;
+        for (i = 0; i < children.length; i++) {
+            var childNode = children[i];
+
+            var rect = childNode.getBoundingClientRect();
+            if (rect.width == 0 || rect.height == 0) {
+                continue;
+            }
 
             if (!sizeSet) {
                 top = rect.top;
@@ -224,35 +283,56 @@ function getFunctionPreviewClientRect(previewElementId) {
                 left = left < rect.left ? left : rect.left;
                 right = right > rect.right ? right : rect.right;
             }
-
-            break;
         }
+
+        // Checking is there's a child node that is a text node
+        var childNodes = element.childNodes;
+        for (var i = 0; childNode = childNodes[i]; i++) {
+            if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
+                rect = element.getBoundingClientRect();
+
+                if (!sizeSet) {
+                    top = rect.top;
+                    right = rect.right;
+                    bottom = rect.bottom;
+                    left = rect.left;
+
+                    sizeSet = true;
+                } else {
+                    top = top < rect.top ? top : rect.top;
+                    bottom = bottom > rect.bottom ? bottom : rect.bottom;
+                    left = left < rect.left ? left : rect.left;
+                    right = right > rect.right ? right : rect.right;
+                }
+
+                break;
+            }
+        }
+
+        if (!sizeSet) {
+            return null;
+        }
+
+        return {
+            left: left,
+            top: top,
+            height: bottom - top,
+            width: right - left
+        };
     }
 
-    if (!sizeSet) {
-        return null;
-    }
+    window.addEventListener('load', function () {
+        var bounds = getFunctionPreviewClientRect('CompositeC1FunctionPreview');
+        var previewMarkerElement = document.getElementById('previewMarker');
+        document.body.insertBefore(previewMarkerElement, document.body.firstChild);
 
-    return {
-        left: left,
-        top: top,
-        height: bottom - top,
-        width: right - left
-    };
-}
-
-window.addEventListener('load', function() { 
-	var bounds = getFunctionPreviewClientRect('CompositeC1FunctionPreview');
-	var previewMarkerElement = document.getElementById('previewMarker');
-	document.body.insertBefore(previewMarkerElement,document.body.firstChild);
-
-	previewMarkerElement.style.left = bounds.left + 'px';
-	previewMarkerElement.style.top = bounds.top + 'px';
-	previewMarkerElement.style.width = bounds.width + 'px';
-	previewMarkerElement.style.height = bounds.height + 'px';
-	previewMarkerElement.style.opacity = 0.5;
-});
-// -->
+        previewMarkerElement.style.left = bounds.left + 'px';
+        previewMarkerElement.style.top = bounds.top + 'px';
+        previewMarkerElement.style.width = bounds.width + 'px';
+        previewMarkerElement.style.height = bounds.height + 'px';
+        previewMarkerElement.style.opacity = 0.5;
+    });
+    // -->
 </script>
 ";
 	}
