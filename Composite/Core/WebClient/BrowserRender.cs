@@ -275,7 +275,14 @@ namespace Composite.Core.WebClient
 
             public bool HasCrashed()
             {
-                return _process.HasExited;
+                try
+                {
+                    return _process.HasExited;
+                }
+                catch (Exception)
+                {
+                    return true;                
+                }
             }
 
             public static string ScriptFilePath
