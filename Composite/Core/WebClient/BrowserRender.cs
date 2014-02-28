@@ -66,6 +66,7 @@ namespace Composite.Core.WebClient
 
             string outputImageFileName = Path.Combine(dropFolder, urlHash + ".png");
             string outputFileName = Path.Combine(dropFolder, urlHash + ".output");
+            string errorFileName = Path.Combine(dropFolder, urlHash + ".error");
 
             if (C1File.Exists(outputImageFileName) || C1File.Exists(outputFileName))
             {
@@ -85,7 +86,17 @@ namespace Composite.Core.WebClient
 #endif
             }
 
-            MakePreviewRequest(context, url, outputImageFileName, mode, out output);
+            try
+            {
+                MakePreviewRequest(context, url, outputImageFileName, mode, out output);
+            }
+            catch (BrowserRenderException ex)
+            {
+                C1File.WriteAllText(errorFileName, ex.Message);
+
+                throw;
+            }
+            
 
             C1File.WriteAllText(outputFileName, output);
 
@@ -219,7 +230,7 @@ namespace Composite.Core.WebClient
                 _process = new Process();
                 _process.StartInfo.WorkingDirectory = _phantomJsFolder;
                 _process.StartInfo.FileName = "\"" + _phantomJsPath + "\"";
-                _process.StartInfo.Arguments = ScriptFileName;
+                _process.StartInfo.Arguments = "--local-to-remote-url-access=true " + ScriptFileName;
                 _process.StartInfo.RedirectStandardOutput = true;
                 _process.StartInfo.RedirectStandardError = true;
                 _process.StartInfo.RedirectStandardInput = true;
