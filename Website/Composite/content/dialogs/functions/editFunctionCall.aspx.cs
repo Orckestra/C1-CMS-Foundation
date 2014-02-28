@@ -82,6 +82,12 @@ namespace CompositeEditFunctionCall
 	        string functionName = (string) functionMarkup.Attribute("name");
 	        IFunction function = FunctionFacade.GetFunction(functionName);
 
+	        if (!function.ParameterProfiles.Any())
+	        {
+	            plhNoParameters.Visible = true;
+                return true;
+	        }
+
             var bindings = new Dictionary<string, object>();
             var parameterNodes = FunctionMarkupHelper.GetParameterNodes(functionMarkup);
 

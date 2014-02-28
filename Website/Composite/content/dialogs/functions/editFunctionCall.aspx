@@ -2,6 +2,7 @@
 
 <%@ Page Language="C#" AutoEventWireup="true" Inherits="CompositeEditFunctionCall.EditFunctionCall" EnableEventValidation="false" ValidateRequest="false" CodeFile="editFunctionCall.aspx.cs" %>
 
+<%@ Import Namespace="Composite.Core.ResourceSystem" %>
 <%@ Import Namespace="CompositeEditFunctionCall" %>
 
 <%@ Register TagPrefix="aspui" Namespace="Composite.Core.WebClient.UiControlLib" Assembly="Composite" %>
@@ -58,6 +59,11 @@
 				</ui:toolbar>
 				<ui:scrollbox class="padded">
 					<asp:PlaceHolder ID="BasicContentPanel" runat="server"></asp:PlaceHolder>
+                    <asp:PlaceHolder ID="plhNoParameters" runat="server" Visible="false">
+                        <label>
+                            <%= StringResourceSystemFacade.GetString("Composite.Management", "Website.Dialogs.EditFunction.BasicView.NoParameters") %>
+                        </label>
+                    </asp:PlaceHolder>
 				</ui:scrollbox>
 				<div id="errors" style="display: none" class="updatezone">
 					<asp:PlaceHolder runat="server" ID="plhErrors"></asp:PlaceHolder>

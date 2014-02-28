@@ -76,6 +76,15 @@ namespace CompositeEditFunctionCall {
         protected global::System.Web.UI.WebControls.PlaceHolder BasicContentPanel;
         
         /// <summary>
+        /// plhNoParameters control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder plhNoParameters;
+        
+        /// <summary>
         /// plhErrors control.
         /// </summary>
         /// <remarks>
