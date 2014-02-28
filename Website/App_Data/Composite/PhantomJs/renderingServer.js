@@ -1,80 +1,3 @@
-function getFunctionPreviewClientRect(previewElementId) {
-    var element = document.getElementById(previewElementId);
-
-    if (element == null || element.innerHTML == '') {
-        return null;
-    }
-				    
-    var children = element.getElementsByTagName('*');
-    if (children.lenght == 0) {
-        return null;
-    }
-
-    var top, right, bottom, left, sizeSet = false;
-    for (i = 0; i < children.length; i++) {
-        var childNode = children[i]; 
-
-        var rect = childNode.getBoundingClientRect();
-        if (rect.width == 0 || rect.height == 0 || rect.bottom <= 0 || rect.right <= 0) {
-            continue;
-        }
-				        
-        if (!sizeSet) {
-            top = rect.top;
-            right = rect.right;
-            bottom = rect.bottom;
-            left = rect.left;
-
-            sizeSet = true;
-        } else {
-            top = top < rect.top ? top : rect.top;
-            bottom = bottom > rect.bottom ? bottom : rect.bottom;
-            left = left < rect.left ? left : rect.left;
-            right = right > rect.right ? right : rect.right;
-        }
-    }
-
-    // Checking is there's a child node that is a text node
-    var childNodes = element.childNodes;
-    for (var i = 0; childNode = childNodes[i]; i++)
-    {
-        if (childNode.toString() == '[object Text]' && childNode.nodeValue.trim() != '') {
-            rect = element.getBoundingClientRect();
-
-            if (rect.width == 0 || rect.height == 0 || rect.bottom <= 0 || rect.right <= 0) {
-                continue;
-            }
-
-            if (!sizeSet) {
-                top = rect.top;
-                right = rect.right;
-                bottom = rect.bottom;
-                left = rect.left;
-
-                sizeSet = true;
-            } else {
-                top = top < rect.top ? top : rect.top;
-                bottom = bottom > rect.bottom ? bottom : rect.bottom;
-                left = left < rect.left ? left : rect.left;
-                right = right > rect.right ? right : rect.right;
-            }
-
-            break;
-        }
-    }
-
-    if (!sizeSet) {
-        return null;
-    }
-
-    return {
-        left: left,
-        top: top,
-        height: bottom - top,
-        width: right - left
-    };
-}
-
 function getPlaceholdersLocationInfo(placeholderElementName) {
     var ret = [];
 
@@ -100,8 +23,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 		}
 	}	
 		
-
-
 	if (mode == "templatePreview") {
 	    page.viewportSize = { width: 1280, height: 600 };
 	} else {
@@ -117,51 +38,49 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
             phantom.exit();
 	    }
 	};
-	
+
+	page.onCallback = function (data) {
+	    if (mode == "functionPreview") {
+	        var previewElementId = "CompositeC1FunctionPreview";
+
+	        var clientRect = page.evaluate("getFunctionPreviewClientRect", previewElementId);
+
+	        if (clientRect != null && clientRect.height > 1 && clientRect.width > 1) {
+
+	            // Limiting image height
+	            if (clientRect.height > 800) {
+	                clientRect.height = 800;
+	            }
+	            page.clipRect = clientRect;
+	        } else {
+	            // Rendering an empty spot
+	            page.clipRect = { top: 0, left: 0, height: 1, width: 1 };
+	        }
+
+	        page.render(output);
+	        page.close();
+
+	        console.log('SUCCESS: ' + address);
+	    } else {
+	        // Template preview:
+	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');
+
+	        page.render(output);
+	        page.close();
+
+	        console.log('templateInfo:' + placeholdersInfo);
+	    }
+
+	    WaitForInput(system, console);
+	};
+
+
 	page.open(address, function (status) {
-		
-		if (status !== 'success') {
-			console.log('ERROR: ' + status);
-			page.close();
-			WaitForInput(system, console);
-		} else {
-		    // console.log('SUCCESS: Address loaded:' + address); // remove
-		    window.setTimeout(function () {
-		        if (mode == "functionPreview") {
-		            var previewElementId = "CompositeC1FunctionPreview";
-
-		            var clientRect = page.evaluate(getFunctionPreviewClientRect, previewElementId);
-
-		            if (clientRect != null && clientRect.height > 1 && clientRect.width > 1) {
-
-		                // Limiting image height
-		                if (clientRect.height > 800) {
-		                    clientRect.height = 800;
-		                }
-		                page.clipRect = clientRect;
-		            } else {
-		                // Rendering an empty spot
-		                page.clipRect = { top: 0, left: 0, height: 1, width: 1 };
-		            }
-
-		            page.render(output);
-		            page.close();
-
-		            console.log('SUCCESS: ' + address);
-		        } else {
-		            // Template preview:
-		            var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');
-                    
-		            page.render(output);
-		            page.close();
-
-		            console.log('templateInfo:' + placeholdersInfo);
-		        }
-				
-				
-				WaitForInput(system, console);
-			}, 200);
-		}
+	    if (status !== 'success') {
+	        console.log('ERROR: ' + status);
+	        page.close();
+	        WaitForInput(system, console);
+	    } 
 	});
 }
 
