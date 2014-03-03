@@ -351,8 +351,9 @@ VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function () {
 VisualMultiTemplateEditorBinding.prototype.getSoapTinyContent = function (content) {
 	var pageId = this._pageId;
 	var placeholder = this._textareaname;
-	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
-	return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, pageId, templateId, placeholder);
+	var templateId = this.getDescendantBindingByLocalName("selector").getValue();
+	var width = this.getEffectiveWidth();
+	return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, pageId, templateId, placeholder, width);
 }
 
 /**
@@ -364,5 +365,6 @@ VisualMultiTemplateEditorBinding.prototype.getImageTagForFunctionCall = function
 	var pageId = this._pageId;
 	var placeholder = this._textareaname;
 	var templateId = this.getDescendantBindingByLocalName("selector").getValue();
-	return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, pageId, templateId, placeholder);
+	var width = this.getEffectiveWidth();
+	return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, pageId, templateId, placeholder, width);
 }

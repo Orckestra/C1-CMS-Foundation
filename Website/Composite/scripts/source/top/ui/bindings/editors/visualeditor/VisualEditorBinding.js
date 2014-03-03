@@ -410,29 +410,6 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 					this._tinyInstance
 				);
 
-				/*
-				* Some kind of devilry going on with the server...
-				*/
-				if (this._startContent == " ") {
-					this._startContent = VisualEditorBinding.DEFAULT_CONTENT;
-				}
-
-				/*
-				* Normalize start content and extract HEAD and BODY section before we 
-				* feed it to TinyMCE. Normalization is required while old solutions 
-				* are upgraded to the new setup (with HEAD and BODY sections). 
-				*/
-				this._startContent = this.normalizeToDocument(this._startContent);
-				this._startContent = this.extractBody(this._startContent);
-
-				/*
-				* Inject BODY markup into TinyMCE. From now on, injection  
-				* is handled by the VisualEditorPageBinding.
-				*/
-				arg.tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent, this), { format: 'raw' });
-
-
-
 				this.initializeEditorComponents ( windowBinding );
 				this._initialize ();
 				
@@ -464,7 +441,29 @@ VisualEditorBinding.prototype.initializeEditorComponent = function ( binding ) {
 VisualEditorBinding.prototype._finalize = function () {
 	
 	VisualEditorBinding.superclass._finalize.call ( this );
-	this._maybeShowEditor ();
+	this._maybeShowEditor();
+
+	/*
+	* Some kind of devilry going on with the server...
+	*/
+	if (this._startContent == " ") {
+		this._startContent = VisualEditorBinding.DEFAULT_CONTENT;
+	}
+
+	/*
+	* Normalize start content and extract HEAD and BODY section before we 
+	* feed it to TinyMCE. Normalization is required while old solutions 
+	* are upgraded to the new setup (with HEAD and BODY sections). 
+	*/
+	this._startContent = this.normalizeToDocument(this._startContent);
+	this._startContent = this.extractBody(this._startContent);
+
+	/*
+	* Inject BODY markup into TinyMCE. From now on, injection  
+	* is handled by the VisualEditorPageBinding.
+	*/
+	this._tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent, this), { format: 'raw' });
+
 };
 
 /**
@@ -767,7 +766,8 @@ VisualEditorBinding.prototype.clean = function () {
  * @return {SOAP}
  */
 VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
-    return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, this._previewPageId, this._previewTemplateId, this._previewPlaceholder);
+	var width = this.getEffectiveWidth();
+    return XhtmlTransformationsService.StructuredContentToTinyContentMultiTemplate(content, this._previewPageId, this._previewTemplateId, this._previewPlaceholder, width);
 }
 
 /**
@@ -776,7 +776,15 @@ VisualEditorBinding.prototype.getSoapTinyContent = function (content) {
  * @return {SOAP}
  */
 VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
-    return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, this._previewPageId, this._previewTemplateId, this._previewPlaceholder);
+	var width = this.getEffectiveWidth();
+	return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, this._previewPageId, this._previewTemplateId, this._previewPlaceholder, width);
+}
+
+VisualEditorBinding.prototype.getEffectiveWidth = function () {
+	var body = this._tinyInstance.getBody();
+	var padding = CSSComputer.getPadding(body);
+	var width = body.offsetWidth - padding.right - padding.left
+	return Math.floor(width / 32) * 32;
 }
 
 
