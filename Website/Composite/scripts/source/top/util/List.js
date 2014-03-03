@@ -45,7 +45,7 @@ List.prototype.init = function ( list ) {
 		this._array = list;
 	} else {
 		var i = 0, entry;
-		while (( entry = list [ i++ ]) != null ) {
+		while ((entry = list[i++]) !== undefined) {
 			this._array.push ( entry );
 		}
 	}
