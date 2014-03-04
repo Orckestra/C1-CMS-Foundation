@@ -69,6 +69,14 @@ VisualMultiTemplateEditorBinding.prototype._onPageInitialize = function ( bindin
 	if (this.bindingElement.offsetWidth > 1000) {
 		this.getContentWindow().bindingMap.visualeditorsplitbox.setLayout("4:1");
 	}
+
+	var self = this;
+	this.getContentWindow().bindingMap.visualeditorsplitbox.addActionListener(SplitterBinding.ACTION_DRAGGED,
+		{
+			handleAction: function () {
+				self.handleCommand("CompositeUpdateLayout", false, null);
+			}
+		});
 }
 
 
