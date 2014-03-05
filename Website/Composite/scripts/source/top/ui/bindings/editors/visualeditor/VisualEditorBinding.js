@@ -783,7 +783,8 @@ VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
 VisualEditorBinding.prototype.getEffectiveWidth = function () {
 	var body = this._tinyInstance.getBody();
 	var padding = CSSComputer.getPadding(body);
-	var width = body.offsetWidth - padding.right - padding.left
+	var editorsplitpanel = this.getContentWindow().bindingMap.editorsplitpanel;
+	var width = editorsplitpanel.bindingElement.offsetWidth - padding.right - padding.left;
 	return Math.floor(width / 32) * 32;
 }
 
