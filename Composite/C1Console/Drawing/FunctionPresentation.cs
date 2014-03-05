@@ -21,7 +21,9 @@ namespace Composite.C1Console.Drawing
             {
                 var headerSize = header.HeaderSize;
 
-                Size totalSize = new Size(Math.Max(headerSize.Width, previewImage.Width), headerSize.Height + previewImage.Height);
+#warning making functions wider than they are suck - but so does the heading when this happen. we need to keep original width - so what is the fix?
+//                Size totalSize = new Size(Math.Max(headerSize.Width, previewImage.Width), headerSize.Height + previewImage.Height);
+                Size totalSize = new Size(previewImage.Width, headerSize.Height + previewImage.Height);
 
                 using (var bitmap = new Bitmap(totalSize.Width, totalSize.Height))
                 using (var graphics = Graphics.FromImage(bitmap))

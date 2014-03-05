@@ -1,4 +1,4 @@
-﻿#define BrowserRender_NoCache
+﻿// #define BrowserRender_NoCache
 
 using System;
 using System.Diagnostics;
@@ -262,7 +262,7 @@ namespace Composite.Core.WebClient
                 _stdin.WriteLine(requestLine);
 
                 Task<string> readerTask = Task.Factory.StartNew<String>(() => _stdout.ReadLine());
-                readerTask.Wait(TimeSpan.FromSeconds(15));
+                readerTask.Wait(TimeSpan.FromSeconds(6));
                 switch (readerTask.Status)
                 {
                     case TaskStatus.RanToCompletion:
@@ -324,7 +324,18 @@ namespace Composite.Core.WebClient
                 string output;
                 string error;
 
-                if (!_process.HasExited)
+                bool proccessHasExited = true;
+
+                try
+                {
+                    proccessHasExited = _process.HasExited;
+                }
+                catch (Exception)
+                {
+                    proccessHasExited = true;
+                }
+
+                if (!proccessHasExited)
                 {
                     _stdin.WriteLine("exit");
                     output = _stdout.ReadToEnd();

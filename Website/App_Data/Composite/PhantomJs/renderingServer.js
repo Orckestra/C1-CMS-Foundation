@@ -25,7 +25,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	}	
 		
 	if (mode == "templatePreview") {
-	    page.viewportSize = { width: 1280, height: 600 };
+	    page.viewportSize = { width: 1920, height: 600 };
 	} else {
 	    page.viewportSize = { width: 1920, height: 600 };
 	}
@@ -38,12 +38,26 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	            clearTimeout(globalTimeout);
 	            globalTimeout = null;
 	        }
-	        console.log('ERROR: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url));
+	        console.log('ERROR, page.onResourceTimeout: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url));
 	        
             phantom.exit();
 	    }
 	};
 
+    // if js errors happen on the page 
+	page.onError = function (msg, trace) {
+        // ignore in page js errors - some dev writing sloppy js, should not affect us
+	}
+
+    // redirects ...
+	page.onResourceReceived = function (resource) {
+	    if (resource.status == 301 || resource.status == 302) {
+	        console.log('REDIRECT: ' + resource);
+	        phantom.exit();
+	    }
+	}
+
+    // called by our custom js injected in the rendered page
 	page.onCallback = function (data) {
 	    if (globalTimeout != null) {
 	        clearTimeout(globalTimeout);
@@ -90,18 +104,18 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
                     clearTimeout(globalTimeout);
                     globalTimeout = null;
                 }
-                console.log('ERROR: ' + status);
+                console.log('ERROR, page.open: ' + status);
                 page.close();
                 WaitForInput(system, console);
             }
         });
     } finally {
-        //globalTimeout = setTimeout(function () {
-        //    console.log("Max execution time - 10 seconds - exceeded");
-        //    globalTimeout = null;
-        //    page.close();
-        //    WaitForInput(system, console);
-        //}, 10000);
+        globalTimeout = setTimeout(function () {
+            console.log("Max execution time - 10 seconds - exceeded");
+            globalTimeout = null;
+            page.close();
+            WaitForInput(system, console);
+        }, 10000);
     }
 }
 
