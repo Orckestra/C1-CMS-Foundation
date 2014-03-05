@@ -177,9 +177,8 @@ namespace Composite.Renderers
 			window.setTimeout( function() {
 				finalize();
 			}, (gotIframes ? 1000 : 0));
-		}, 100);
+		}, 200);
     });
-
 
 	function finalize()
 	{

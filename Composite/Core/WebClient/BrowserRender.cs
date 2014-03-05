@@ -1,4 +1,4 @@
-﻿//#define BrowserRender_NoCache
+﻿#define BrowserRender_NoCache
 
 using System;
 using System.Diagnostics;
@@ -15,6 +15,7 @@ using Composite.Core.IO;
 using Composite.Core.PackageSystem;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Timer = System.Timers.Timer;
+using System.Threading.Tasks;
 
 namespace Composite.Core.WebClient
 {
@@ -260,7 +261,18 @@ namespace Composite.Core.WebClient
 
                 _stdin.WriteLine(requestLine);
 
-                output = _stdout.ReadLine();
+                Task<string> readerTask = Task.Factory.StartNew<String>(() => _stdout.ReadLine());
+                readerTask.Wait(TimeSpan.FromSeconds(15));
+                switch (readerTask.Status)
+                {
+                    case TaskStatus.RanToCompletion:
+                        output = readerTask.Result;
+                        break;
+                    default:
+                        // nuke the exe process here - stuff is likely fucked up.
+                        throw new BrowserRenderException(Environment.NewLine + "Request failed to complete within expected time: " + requestLine);
+                }
+
 
                 if (!File.Exists(tempFilePath))
                 {

@@ -67,6 +67,8 @@ namespace Composite.Renderers
 
             var contents = new List<IPagePlaceholderContent>();
 
+			bool previewStagingJsAppended = false;
+
             foreach (var placeholder in templateInfo.PlaceholderDescriptions)
             {
                 var placeholderDocument = new XhtmlDocument();
@@ -76,6 +78,11 @@ namespace Composite.Renderers
                         placeholder.Id == templateInfo.DefaultPlaceholderId ? 600 : 300)),
                     new XElement(Namespaces.Xhtml + "h1", placeholder.Title)));
 
+				if (!previewStagingJsAppended)
+				{
+					placeholderDocument.Body.Add(XElement.Parse(previewStagingJs));
+					previewStagingJsAppended = true;
+				}
 
                 var content = DataFacade.BuildNew<IPagePlaceholderContent>();
                 content.PageId = page.Id;
@@ -83,20 +90,48 @@ namespace Composite.Renderers
                 content.Content = placeholderDocument.ToString();
                 contents.Add(content);
             }
-            
 
+
+			
             string output = PagePreviewBuilder.RenderPreview(page, contents, RenderingReason.ScreenshotGeneration);
 
             if (output != String.Empty)
             {
                 context.Response.ContentType = "text/html";
                 context.Response.Write(output);
-            }
+				if (!previewStagingJsAppended)
+				{
+					context.Response.Write(previewStagingJs);
+					previewStagingJsAppended = true;
+				}
+
+			}
         }
 
         public bool IsReusable
         {
             get { return true; }
         }
+
+		// this script block will 
+		//  - finalize (call phantom)
+		const string previewStagingJs = @"
+<script xmlns='http://www.w3.org/1999/xhtml'>    //<!--
+    window.addEventListener('load', function () {
+		window.setTimeout( function() {
+				finalize();
+		}, 200);
+    });
+
+	function finalize()
+	{
+		if (window.callPhantom!=null)
+			window.callPhantom('load');
+	}
+
+// -->
+</script>
+";
+		
     }
 }

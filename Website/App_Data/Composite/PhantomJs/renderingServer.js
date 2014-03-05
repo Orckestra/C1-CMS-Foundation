@@ -12,6 +12,7 @@ function getPlaceholdersLocationInfo(placeholderElementName) {
 
 function BuildFunctionPreview(system, console, address, output, authCookie, mode) {
     var page = require('webpage').create();
+    var globalTimeout = null;
     
 	if(authCookie != null) {
 		phantom.deleteCookie(authCookie.name);
@@ -33,6 +34,10 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
     
 	page.onResourceTimeout = function (request) {
 	    if (request.id == 1) {
+	        if (globalTimeout != null) {
+	            clearTimeout(globalTimeout);
+	            globalTimeout = null;
+	        }
 	        console.log('ERROR: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url));
 	        
             phantom.exit();
@@ -40,6 +45,10 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	};
 
 	page.onCallback = function (data) {
+	    if (globalTimeout != null) {
+	        clearTimeout(globalTimeout);
+	        globalTimeout = null;
+	    }
 	    if (mode == "functionPreview") {
 	        var previewElementId = "CompositeC1FunctionPreview";
 
@@ -74,14 +83,26 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	    WaitForInput(system, console);
 	};
 
-
-	page.open(address, function (status) {
-	    if (status !== 'success') {
-	        console.log('ERROR: ' + status);
-	        page.close();
-	        WaitForInput(system, console);
-	    } 
-	});
+    try {
+        page.open(address, function (status) {
+            if (status !== 'success') {
+                if (globalTimeout != null) {
+                    clearTimeout(globalTimeout);
+                    globalTimeout = null;
+                }
+                console.log('ERROR: ' + status);
+                page.close();
+                WaitForInput(system, console);
+            }
+        });
+    } finally {
+        //globalTimeout = setTimeout(function () {
+        //    console.log("Max execution time - 10 seconds - exceeded");
+        //    globalTimeout = null;
+        //    page.close();
+        //    WaitForInput(system, console);
+        //}, 10000);
+    }
 }
 
 var system = require('system');
