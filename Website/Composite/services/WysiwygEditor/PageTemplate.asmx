@@ -1,8 +1,11 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Services.PageTemplateService" %>
 
 using System;
+using System.Activities.Statements;
+using System.Threading;
 using System.Web.Services;
 using System.Web.Services.Protocols;
+using Composite.Core;
 using Composite.Core.WebClient;
 using Composite.Core.WebClient.Services.WysiwygEditor;
 
@@ -25,7 +28,19 @@ namespace Composite.Services
             string _imagePath;
             PageTemplatePreview.PlaceholderInformation[] _placeholders;
 
-            PageTemplatePreview.GetPreviewInformation(Context, pageId, templateId, out _imagePath, out _placeholders);
+            try
+            {
+                PageTemplatePreview.GetPreviewInformation(Context, pageId, templateId, out _imagePath, out _placeholders);
+            }
+            catch (ThreadAbortException)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Log.LogError("PageTemplateService", ex);
+                return new TemplatePreviewInformation { PreviewImageUrl = "", Placeholders = new PageTemplatePreview.PlaceholderInformation[0] };
+            }
 
             string previewUrl = UrlUtils.RenderersRootPath + "/TemplatePreviewImage?p=" + pageId + "&t=" + templateId;
 
