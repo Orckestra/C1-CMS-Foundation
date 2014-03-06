@@ -147,6 +147,7 @@
     </Compile>
     <Content Include="App_Data\Composite\Configuration\C1ConsoleAccess.xml" />
     <Content Include="App_Data\Composite\PhantomJs\phantomjs.exe" />
+    <Content Include="App_Data\Composite\PhantomJs\preview.js" />
     <Content Include="App_Data\Composite\PhantomJs\renderingServer.js" />
     <Content Include="App_Data\PageTemplates\web.config" />
     <Content Include="Composite\content\dialogs\postback\postbackdialog.aspx" />
@@ -477,7 +478,9 @@
       <DependentUpon>GenerateDynamicSchemas.aspx</DependentUpon>
     </Compile>
     <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\Selectors\UrlComboBox.ascx" />
+    <Content Include="Composite\images\editfunction.png" />
     <Content Include="Composite\images\function.png" />
+    <Content Include="Composite\images\functionheaderbackground.png" />
     <Content Include="Composite\scripts\source\top\proxies\FunctionService.js" />
     <Content Include="Composite\scripts\source\top\proxies\PageTemplateService.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\pages\ResponsePageBinding.js" />
@@ -5508,8 +5511,12 @@
     <Content Include="Composite\images\unfortunateerror.png" />
     <Content Include="Composite\localization\Composite.Plugins.UserGroupElementProvider.en-us.xml" />
     <Content Include="Composite\localization\Composite.Web.PageBrowser.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Web.SourceEditor.en-us.xml" />
-    <Content Include="Composite\localization\Composite.Web.VisualEditor.en-us.xml" />
+    <Content Include="Composite\localization\Composite.Web.SourceEditor.en-us.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Composite\localization\Composite.Web.VisualEditor.en-us.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Composite\localization\Composite.C1Console.Trees.en-us.xml">
       <SubType>Designer</SubType>
     </Content>
