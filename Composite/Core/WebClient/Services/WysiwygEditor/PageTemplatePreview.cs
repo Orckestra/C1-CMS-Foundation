@@ -10,7 +10,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class PageTemplatePreview
     {
-        private const string RenderingMode = "templatePreview";
+        private const string RenderingMode = "template";
 
         static PageTemplatePreview()
         {
@@ -34,7 +34,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         public static void GetPreviewInformation(HttpContext context, Guid pageId, Guid templateId, out string imageFilePath, out PlaceholderInformation[] placeholders)
         {
             string serviceUrl = UrlUtils.ResolvePublicUrl("~/Renderers/TemplatePreview.ashx");
-            string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId;
+            int updateHash = BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
+            string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
 
             string output;
             imageFilePath = BrowserRender.RenderUrl(context, requestUrl, RenderingMode, out output);

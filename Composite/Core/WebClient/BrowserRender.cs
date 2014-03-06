@@ -29,7 +29,7 @@ namespace Composite.Core.WebClient
 
     internal static class BrowserRender
     {
-        private static readonly string TempImagesFolder = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
+        private static readonly string CacheImagesFolder = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory), "PreviewImages");
 
         static BrowserRender()
         {
@@ -49,7 +49,19 @@ namespace Composite.Core.WebClient
 
         private static string GetCacheFolder(string mode)
         {
-            return TempImagesFolder + "\\" + mode;
+            return CacheImagesFolder + "\\" + mode;
+        }
+
+        public static DateTime GetLastCacheUpdateTime(string mode)
+        {
+            string folderPath = GetCacheFolder(mode);
+
+            if (!C1Directory.Exists(folderPath))
+            {
+                C1Directory.CreateDirectory(folderPath);
+            }
+
+            return C1Directory.GetCreationTime(mode);
         }
 
         /// <summary>
@@ -154,7 +166,7 @@ namespace Composite.Core.WebClient
 
             if (C1Directory.Exists(folder))
             {
-                System.Threading.Tasks.Task.Run(() =>
+                Task.Run(() =>
                 {
                     lock (_syncRoot)
                     {
@@ -168,6 +180,8 @@ namespace Composite.Core.WebClient
                             {
                             }
                         }
+
+                        Directory.SetCreationTime(folder, DateTime.Now);
                     }
                 });
             }

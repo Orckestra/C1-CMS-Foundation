@@ -3,9 +3,10 @@ using Composite.C1Console.Events;
 
 namespace Composite.Core.WebClient.Renderings
 {
-    internal static class FunctionPreview
+    /// <exclude />
+    public static class FunctionPreview
     {
-        private const string RenderingMode = "functionPreview";
+        private const string RenderingMode = "function";
 
         static FunctionPreview()
         {
@@ -18,6 +19,12 @@ namespace Composite.Core.WebClient.Renderings
             string output;
 
             return BrowserRender.RenderUrl(context, previewUrl, RenderingMode, out output);
+        }
+
+        /// <exclude />
+        public static int GetFunctionPreviewHash()
+        {
+            return BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
         }
     }
 }

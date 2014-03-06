@@ -63,7 +63,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        clearTimeout(globalTimeout);
 	        globalTimeout = null;
 	    }
-	    if (mode == "functionPreview") {
+	    if (mode == "function") {
 	        var previewElementId = "CompositeC1FunctionPreview";
 
 	        var clientRect = page.evaluate("getFunctionPreviewClientRect", previewElementId);
