@@ -7,7 +7,7 @@ var config = {
 	elements : "editor",
 	theme : "composite",
 	browsers : "msie,gecko",
-	plugins: "autolink,composite,compositelink,table,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositespellcheck,compositeimageresize,paste,lists",
+	plugins: "autolink,composite,compositelink,table,compositetable,compositeimage,compositerendering,compositecharmap,compositefield,compositetext,compositespellcheck,compositeimageresize,paste,lists,noneditable",
 	entity_encoding : "raw",
 	convert_fonts_to_spans : false,
 	apply_source_formatting : false,
@@ -21,6 +21,7 @@ var config = {
 	object_resizing: Client.isExplorer,
 	auto_reset_designmode : true,
 	list_outdent_on_enter: true,
+	noneditable_leave_contenteditable: true,
 	init_instance_callback 	: onInstanceInitialize
 };
 
@@ -86,7 +87,7 @@ config.plugins = loadedPlugins.join(",");
 /*
  * Preload theme
  */
-window.tinyMCE.ThemeManager.load(plugin, sitepath + "/Composite/content/misc/editors/visualeditor/tinymce/themes/" + config.theme + "/theme.min.js?c1=" + Installation.versionString);
+window.tinyMCE.ThemeManager.load(config.theme, sitepath + "/Composite/content/misc/editors/visualeditor/tinymce/themes/" + config.theme + "/theme.min.js?c1=" + Installation.versionString);
 config.theme = "-" + config.theme;
 
 
