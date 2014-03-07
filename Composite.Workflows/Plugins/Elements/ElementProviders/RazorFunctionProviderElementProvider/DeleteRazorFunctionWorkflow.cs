@@ -27,11 +27,11 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
 
             GetProviderAndFunction(functionEntityToken, out provider, out function);
 
-            string markupFilePath = PathUtil.Resolve(function.VirtualPath);
-            string codeFilePath = markupFilePath + ".cs";
+            string cshtmlFilePath = PathUtil.Resolve(function.VirtualPath);
 
-            C1File.Delete(markupFilePath);
-            C1File.Delete(codeFilePath);
+            C1File.Delete(cshtmlFilePath);
+
+            DeleteEmptyAncestorFolders(cshtmlFilePath);
 
             provider.ReloadFunctions();
 

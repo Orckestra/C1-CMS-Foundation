@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Composite.AspNet.Security;
 using Composite.C1Console.Actions;
@@ -6,6 +7,7 @@ using Composite.C1Console.Elements.Foundation.PluginFacades;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Workflow.Activities;
 using Composite.Core.Configuration;
+using Composite.Core.IO;
 using Composite.Functions;
 using Composite.Functions.Foundation.PluginFacades;
 using Composite.Functions.Plugins.FunctionProvider;
@@ -87,6 +89,18 @@ namespace Composite.Plugins.Elements.ElementProviders.Common
             }
 
             function = (FileBasedFunction<FunctionType>) func;
+        }
+
+        internal static void DeleteEmptyAncestorFolders(string filePath)
+        {
+            string folder = Path.GetDirectoryName(filePath);
+
+            while (!C1Directory.GetFiles(folder).Any() && !C1Directory.GetDirectories(folder).Any())
+            {
+                C1Directory.Delete(folder);
+
+                folder = folder.Substring(0, folder.LastIndexOf('\\'));
+            }
         }
     }
 }

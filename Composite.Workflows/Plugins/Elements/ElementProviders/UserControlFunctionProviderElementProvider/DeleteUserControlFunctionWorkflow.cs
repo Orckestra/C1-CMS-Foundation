@@ -33,6 +33,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserControlFunctionProvide
             C1File.Delete(markupFilePath);
             C1File.Delete(codeFilePath);
 
+            DeleteEmptyAncestorFolders(markupFilePath);
+
             provider.ReloadFunctions();
 
             RefreshFunctionTree();
