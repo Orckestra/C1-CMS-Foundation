@@ -64,7 +64,7 @@ namespace Composite.C1Console.Drawing
 
                 var linesTrimmed = lines.Take(20).ToList();
 
-                using (var textFont = new Font("Tahoma", 10.0f, FontStyle.Regular))
+                using (var textFont = new Font("Helvetica", 5.0f, FontStyle.Regular))
                 {
                     int lineHeight = TextRenderer.MeasureText("Text", textFont).Height;
 
@@ -142,9 +142,10 @@ namespace Composite.C1Console.Drawing
 
         private class FunctionHeader: IDisposable
         {
-            const int _headerHeight = 40;
+            const int _headerHeight = 60;
             private readonly int _headerWidth;
-            private readonly Font _font;
+            private readonly Font _titleFont;
+            private readonly Font _buttonFont;
             private readonly string _title;
             readonly string _editLabel = LocalizationFiles.Composite_Web_VisualEditor.Function_Edit;
             private readonly Point _titlePosition;
@@ -168,10 +169,11 @@ namespace Composite.C1Console.Drawing
             {
                 _title = title;
 
-                _font = new Font("Tahoma", 15.0f, FontStyle.Regular);
+                _titleFont = new Font("Helvetica", 12.0f, FontStyle.Regular);
+                _buttonFont = new Font("Helvetica", 9.0f, FontStyle.Bold);
 
-                _titleSize = TextRenderer.MeasureText(_title, _font);
-                _editLabelSize = TextRenderer.MeasureText(_editLabel, _font);
+                _titleSize = TextRenderer.MeasureText(_title, _titleFont);
+                _editLabelSize = TextRenderer.MeasureText(_editLabel, _buttonFont);
 
                 _isWarning = isWarning;
                 _functionIcon = Bitmap.FromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
@@ -196,16 +198,16 @@ namespace Composite.C1Console.Drawing
                 // Title
                 using (var solidBrush = new SolidBrush(_isWarning ? Color.Red : Color.Black))
                 {
-                    graphics.DrawString(_title, _font, solidBrush, _titlePosition);
+                    graphics.DrawString(_title, _titleFont, solidBrush, _titlePosition);
                 }
 
                 // "Edit" label 
-                Point editLabelPosition = new Point(bitmapWidth - 5 - _editLabelSize.Width,
+                Point editLabelPosition = new Point(bitmapWidth - 25 - _editLabelSize.Width,
                     (_headerHeight - _editLabelSize.Height) / 2);
 
                 using (var solidBrush = new SolidBrush(Color.Black))
                 {
-                    graphics.DrawString(_editLabel, _font, solidBrush, editLabelPosition);
+                    graphics.DrawString(_editLabel, _buttonFont, solidBrush, editLabelPosition);
                 }
 
                 int editFunctionIconY;
@@ -220,12 +222,12 @@ namespace Composite.C1Console.Drawing
                     graphics.DrawImage(icon, editLabelPosition.X - icon.Width, editFunctionIconY);
 
                     // Mirroring 5 px of the "pen" icon
-                    for (int x = 0; x < 5; x++)
+                    for (int x = 0; x < 15; x++)
                     {
                         for (int y = 0; y < icon.Height; y++)
                         {
                             bitmap.SetPixel(editLabelPosition.X + _editLabelSize.Width + x, editFunctionIconY + y,
-                                icon.GetPixel(4 - x, y));
+                                icon.GetPixel(14 - x, y));
                         }
                     }
 
@@ -259,7 +261,8 @@ namespace Composite.C1Console.Drawing
 
             public void Dispose()
             {
-                _font.Dispose();
+                _titleFont.Dispose();
+                _buttonFont.Dispose();
                 _functionIcon.Dispose();
             }
         }

@@ -80,23 +80,28 @@ abbr, html\:abbr {
 }
 
 img.compositeFieldReferenceWysiwygRepresentation, img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
-	margin: 0px; padding: 0px;
+  margin: 0px; padding: 0px;
+  outline: none;
+}
 
+img.compositeFieldReferenceWysiwygRepresentation.mceC1Focused, img.compositeHtmlWysiwygRepresentation.mceC1Focused {
+  outline: none;
+}
+img .compositeFunctionWysiwygRepresentation .mceC1Focused {
+    box-shadow: 0px 0px 15px black;
+}
+
+img.compositeFunctionWysiwygRepresentation {
+    margin-bottom: 40px;
 }
 
 img.compositeFunctionWysiwygRepresentation:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 15px gray;
-}
-
-img.compositeFunctionWysiwygRepresentation[data-mce-selected] {
-	outline: none !important;
-	box-shadow:  0px 0px 0px 1px #000;
-}
-
-img.compositeFunctionWysiwygRepresentation[data-mce-selected]:hover {
-    cursor: pointer;
-    box-shadow: 0px 0px 0px 1px #000, 0px 0px 15px gray;
+	border: 1px solid #49AD6C;
+    margin: -1px -1px 39px -1px;
+    box-shadow: 0px 0px 8px rgba(73,173,108,0.5);
+    position:relative;
+    z-index: 999;
 }
 
 img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
@@ -120,7 +125,7 @@ img.compositeFunctionWysiwygRepresentation:not(:-moz-loadedg), img.compositeHtml
 
 img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepresentation.loaded {
     background-image:url('../../../../Composite/images/functionheaderbackground.png');
-    background-size: 2400px 40px;
+    background-size: 2400px 60px;
     background-repeat: no-repeat;
     background-position: top right;
     min-width: 0; 
