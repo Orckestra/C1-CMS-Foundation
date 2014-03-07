@@ -80,12 +80,23 @@ abbr, html\:abbr {
 }
 
 img.compositeFieldReferenceWysiwygRepresentation, img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
-  margin: 0px; padding: 0px;
+	margin: 0px; padding: 0px;
+
 }
 
 img.compositeFunctionWysiwygRepresentation:hover {
     cursor: pointer;
     box-shadow: 0px 0px 15px gray;
+}
+
+img.compositeFunctionWysiwygRepresentation[data-mce-selected] {
+	outline: none !important;
+	box-shadow:  0px 0px 0px 1px #000;
+}
+
+img.compositeFunctionWysiwygRepresentation[data-mce-selected]:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 0px 1px #000, 0px 0px 15px gray;
 }
 
 img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
