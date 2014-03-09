@@ -64,7 +64,7 @@ namespace Composite.C1Console.Drawing
 
                 var linesTrimmed = lines.Take(20).ToList();
 
-                using (var textFont = new Font("Helvetica", 5.0f, FontStyle.Regular))
+                using (var textFont = new Font("Helvetica", 9.5f, FontStyle.Regular))
                 {
                     int lineHeight = TextRenderer.MeasureText("Text", textFont).Height;
 

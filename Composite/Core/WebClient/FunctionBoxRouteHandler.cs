@@ -36,7 +36,7 @@ namespace Composite.Core.WebClient
     /// </summary>
     internal class FunctionBoxHttpHandler : IHttpHandler
     {
-        private const int _minCharsPerDescriptionLine = 50;
+        private const int _minCharsPerDescriptionLine = 55;
 
 
         public void ProcessRequest(HttpContext context)
