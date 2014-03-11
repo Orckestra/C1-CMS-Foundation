@@ -44,9 +44,10 @@ List.prototype.init = function ( list ) {
 	if ( isArray ) {
 		this._array = list;
 	} else {
-		var i = 0, entry;
-		while ((entry = list[i++]) !== undefined) {
-			this._array.push ( entry );
+		var i = 0;
+		for(var i = 0; i < list.length; i++)
+		{
+			this._array.push(list[i]);
 		}
 	}
 	this.reset ();
