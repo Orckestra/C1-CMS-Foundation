@@ -50,8 +50,10 @@ function strainghtenCssColumns(element) {
     }
     var inColumns = false;
     var cssRules = window.getMatchedCSSRules(element);
-    for (i = 0; i < cssRules.length; i++)
-        inColumns = inColumns || (cssRules[i].cssText.indexOf('column-count') != -1);
+    if (cssRules!=null) {
+        for (i = 0; i < cssRules.length; i++)
+            inColumns = inColumns || (cssRules[i].cssText.indexOf('column-count') != -1);
+    }
 
     if (inColumns) {
         var newContainer = document.createElement('div');
