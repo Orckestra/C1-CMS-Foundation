@@ -105,13 +105,18 @@ img.compositeFunctionWysiwygRepresentation:hover {
 }
 
 img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
-    min-width:100px; 
-    min-height:77px; 
+    display:block;
+    /*min-width:100px;*/ 
+    min-width: 100%;
+    min-height:250px; 
     background-position: center center; 
     background-repeat:no-repeat; 
     background-size:68px 68px;
     background-image:url('../../../../Composite/images/loading.svg.ashx'); 
+    background-color: #fafafa;
     vertical-align: top;
+    opacity: 0.5;
+    cursor: wait;
 }
 
 img.compositeFunctionWysiwygRepresentation:-moz-loading, img.compositeHtmlWysiwygRepresentation:-moz-loading {
@@ -128,8 +133,10 @@ img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepre
     background-size: 2400px 60px;
     background-repeat: no-repeat;
     background-position: top right;
+    background-color: none;
     min-width: 0; 
     min-height: 0;
+    opacity: 1;
     cursor: default;
 }
 
