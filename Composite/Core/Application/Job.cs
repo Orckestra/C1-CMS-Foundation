@@ -63,8 +63,8 @@ namespace Composite.Core.Application
     /// </summary>
     internal class Job: IDisposable
     {
-        [DllImport("kernel32.dll", CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl)]
-        static extern IntPtr CreateJobObject(object a, string lpName);
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        static extern IntPtr CreateJobObject(IntPtr a, string lpName);
 
         [DllImport("kernel32.dll", SetLastError = true)]
         static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
@@ -80,7 +80,7 @@ namespace Composite.Core.Application
 
         public Job()
         {
-            m_handle = CreateJobObject(null, null);
+            m_handle = CreateJobObject(IntPtr.Zero, null);
 
             var info = new JOBOBJECT_BASIC_LIMIT_INFORMATION { LimitFlags = 0x2000 };
 
