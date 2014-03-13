@@ -143,8 +143,8 @@ namespace Composite.Data.DynamicTypes
             StringBuilder sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "ValueType", this.ValueType.ToString());
-
-            if (this.Value != null)
+            
+            if (!IsDynamicValue && this.Value != null)
             {
                 StringConversionServices.SerializeKeyValuePair(sb, "Value", SerializeDefaultValue(ValueType, this.Value));
             }
@@ -392,6 +392,10 @@ namespace Composite.Data.DynamicTypes
             throw new ArgumentException("Provided value type can not be constructed using this constructor. Use other constructor.");
         }
 
+        private bool IsDynamicValue
+        {
+            get { return ValueType == DefaultValueType.DateTimeNow || ValueType == DefaultValueType.NewGuid; }
+        }
 
 
         /// <exclude />
