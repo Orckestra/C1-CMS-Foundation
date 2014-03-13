@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Composite.Core.Serialization;
 using System.Xml.Linq;
 
@@ -42,7 +40,7 @@ namespace Composite.Data.DynamicTypes
 
             if (serializedObject.Name.LocalName != "DataFieldDescriptor") return false;
 
-            if (serializedObject.Elements().Count() == 0)
+            if (!serializedObject.Elements().Any())
             {
                 deserializedObject = null;
             }

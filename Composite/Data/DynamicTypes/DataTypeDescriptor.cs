@@ -293,62 +293,75 @@ namespace Composite.Data.DynamicTypes
             set;
         }
 
-
         /// <summary>
         /// Adds an interface the data type should inherit from
         /// </summary>
         /// <param name="interfaceType"></param>
         public void AddSuperInterface(Type interfaceType)
         {
-            if ((_superInterfaces.Contains(interfaceType) == false) && (interfaceType != typeof(IData)))
-            {
-                _superInterfaces.Add(interfaceType);
+            AddSuperInterface(interfaceType, true);
+        }
 
+        /// <summary>
+        /// Adds an interface the data type should inherit from
+        /// </summary>
+        /// <param name="interfaceType"></param>
+        /// <param name="addInheritedFields"></param>
+        internal void AddSuperInterface(Type interfaceType, bool addInheritedFields)
+        {
+            if (_superInterfaces.Contains(interfaceType) || interfaceType == typeof (IData))
+            {
+                return;
+            }
+
+            _superInterfaces.Add(interfaceType);
+
+            if (addInheritedFields)
+            {
                 foreach (PropertyInfo propertyInfo in interfaceType.GetProperties())
                 {
                     DataFieldDescriptor dataFieldDescriptor = ReflectionBasedDescriptorBuilder.BuildFieldDescriptor(propertyInfo, true);
 
                     this.Fields.Add(dataFieldDescriptor);
                 }
+            }
 
+            foreach (string propertyName in interfaceType.GetKeyPropertyNames())
+            {
+                if (KeyPropertyNames.Contains(propertyName)) continue;
 
-                foreach (string propertyName in interfaceType.GetKeyPropertyNames())
+                PropertyInfo property = interfaceType.GetProperty(propertyName);
+                if (property == null)
                 {
-                    if (KeyPropertyNames.Contains(propertyName)) continue;
+                    List<Type> superInterfaces = interfaceType.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
 
-                    PropertyInfo property = interfaceType.GetProperty(propertyName);
-                    if (property == null)
+                    foreach (Type superInterface in superInterfaces)
                     {
-                        List<Type> superInterfaces = interfaceType.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
-
-                        foreach (Type superInterface in superInterfaces)
-                        {
-                            property = superInterface.GetProperty(propertyName);
-                            if (property != null) break;
-                        }
-                    }
-
-                    Verify.IsNotNull(property, "Missing property '{0}' on type '{1}' or one of its interfaces".FormatWith(propertyName, interfaceType));
-
-                    if (DynamicTypeReflectionFacade.IsKeyField(property))
-                    {
-                        this.KeyPropertyNames.Add(propertyName, false);
+                        property = superInterface.GetProperty(propertyName);
+                        if (property != null) break;
                     }
                 }
 
-                foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
+                Verify.IsNotNull(property, "Missing property '{0}' on type '{1}' or one of its interfaces".FormatWith(propertyName, interfaceType));
+
+                if (DynamicTypeReflectionFacade.IsKeyField(property))
                 {
-                    if (this.DataScopes.Contains(dataScopeIdentifier) == false)
-                    {
-                        this.DataScopes.Add(dataScopeIdentifier);
-                    }
+                    this.KeyPropertyNames.Add(propertyName, false);
                 }
+            }
+
+            foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(interfaceType))
+            {
+                if (!this.DataScopes.Contains(dataScopeIdentifier))
+                {
+                    this.DataScopes.Add(dataScopeIdentifier);
+                }
+            }
 
 
-                foreach (Type superSuperInterfaceType in interfaceType.GetInterfaces().Where(t => typeof(IData).IsAssignableFrom(t)))
-                {
-                    AddSuperInterface(superSuperInterfaceType);
-                }
+            foreach (Type superSuperInterfaceType in interfaceType.GetInterfaces().Where(t => typeof(IData).IsAssignableFrom(t)))
+            {
+                AddSuperInterface(superSuperInterfaceType, addInheritedFields);
             }
         }
 
@@ -621,10 +634,7 @@ namespace Composite.Data.DynamicTypes
                                      SuperInterfaces.Select(su => new XElement("SuperInterface", new XAttribute("type", TypeManager.SerializeType(su))))));
 
 
-            element.Add(new XElement("Fields",
-                                     Fields
-                                         .Where(f => f.Inherited == false)
-                                         .Select(f => f.ToXml())));
+            element.Add(new XElement("Fields", Fields.Select(f => f.ToXml())));
 
             if (Indexes.Any())
             {
@@ -671,7 +681,6 @@ namespace Composite.Data.DynamicTypes
             string typeManagerTypeName = (string) element.Attribute("typeManagerTypeName");
 
             bool cachable = cachableAttribute != null && (bool)cachableAttribute;
-           
 
             DataTypeDescriptor dataTypeDescriptor = new DataTypeDescriptor(dataTypeId, @namespace, name, isCodeGenerated);
             dataTypeDescriptor.Cachable = cachable;
@@ -715,7 +724,7 @@ namespace Composite.Data.DynamicTypes
                 {
                     Type superInterface = TypeManager.GetType(superInterfaceTypeName);
 
-                    dataTypeDescriptor.AddSuperInterface(superInterface);
+                    dataTypeDescriptor.AddSuperInterface(superInterface, false);
                 }
                 else
                 {
