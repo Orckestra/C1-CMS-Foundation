@@ -44,7 +44,7 @@
 			id="renderingdialogpage"
 			image="${icon:parameter_overloaded}"
 			width="<% =ActiveTab == Tab.Basic? "500" : "880" %>"
-			height="410"
+			height="<% =ActiveTab == Tab.Basic? "100" : "410" %>"
 			resizable="false"
 			label="<%= this.DialogLabel %>">
 			<asp:HiddenField runat="server" ID="hdnActiveTab" Value="<%# hdnActiveTab.Value %>"></asp:HiddenField>
