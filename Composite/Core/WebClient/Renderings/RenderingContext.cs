@@ -246,7 +246,7 @@ namespace Composite.Core.WebClient.Renderings
 
         private void ValidateViewUnpublishedRequest(HttpContext httpContext)
         {
-            bool isPreviewingUrl = httpContext.Request.Url.OriginalString.Contains(PageUrlBuilder.UrlMarker_RelativeUrl);
+            bool isPreviewingUrl = httpContext.Request.Url.OriginalString.Contains(DefaultPageUrlProvider.UrlMarker_RelativeUrl);
             bool isUnpublishedPage = Page != null && Page.DataSourceId.PublicationScope != PublicationScope.Published;
 
             if ((isUnpublishedPage || isPreviewingUrl)

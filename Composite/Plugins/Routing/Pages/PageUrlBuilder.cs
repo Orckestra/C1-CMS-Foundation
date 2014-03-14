@@ -13,11 +13,9 @@ using Composite.Data.Types;
 
 namespace Composite.Plugins.Routing.Pages
 {
+    [Obsolete]
     internal class PageUrlBuilder: IPageUrlBuilder
     {
-        public static readonly string UrlMarker_RelativeUrl = "/c1mode(relative)";
-        public static readonly string UrlMarker_Unpublished = "/c1mode(unpublished)";
-
         private static readonly string LogTitle = typeof (PageUrlBuilder).FullName;
 
         private readonly Hashtable<Guid, string> _folderPaths = new Hashtable<Guid, string>();
@@ -210,12 +208,12 @@ namespace Composite.Plugins.Routing.Pages
 
             if(_forceRelativeUrls)
             {
-                url = UrlUtils.Combine(url, UrlMarker_RelativeUrl);
+                url = UrlUtils.Combine(url, DefaultPageUrlProvider.UrlMarker_RelativeUrl);
             }
 
             if (dataScopeIdentifier.Name == DataScopeIdentifier.AdministratedName)
             {
-                url = UrlUtils.Combine(url, UrlMarker_Unpublished);
+                url = UrlUtils.Combine(url, DefaultPageUrlProvider.UrlMarker_Unpublished);
             }
 
             var pageUrls = new PageUrlSet { PublicUrl = url };
@@ -258,6 +256,7 @@ namespace Composite.Plugins.Routing.Pages
 
         private string GetRootPageBaseUrl(Guid pageId, CultureInfo cultureInfo, out IHostnameBinding appliedHostnameBinding)
         {
+            // TODO: merge with DefaultPageUrlProvider logic
             string cultureUrlMapping = DataLocalizationFacade.GetUrlMappingName(cultureInfo);
 
             if (!_forceRelativeUrls && _hostnameBindings.Any())
@@ -297,9 +296,9 @@ namespace Composite.Plugins.Routing.Pages
             appliedHostnameBinding = _hostnameBinding;
 
             if (cultureUrlMapping != ""
-                && (_hostnameBinding == null
-                    || _hostnameBinding.IncludeCultureInUrl
-                    || _hostnameBinding.Culture != cultureInfo.Name))
+                && (appliedHostnameBinding == null
+                    || appliedHostnameBinding.IncludeCultureInUrl
+                    || appliedHostnameBinding.Culture != cultureInfo.Name))
             {
                 return UrlUtils.PublicRootPath + "/" + cultureUrlMapping;
             }

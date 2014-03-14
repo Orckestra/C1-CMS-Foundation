@@ -6,7 +6,8 @@ namespace Composite.Core.Routing.Plugins.PageUrlsProviders
     /// <summary>    
     /// </summary>
     /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    [Obsolete]
     public interface IPageUrlBuilder
     {
         /// <summary>

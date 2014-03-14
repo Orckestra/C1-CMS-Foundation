@@ -331,6 +331,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             return GetMap().LowerCaseUrlToIdLookup;
         }
 
+        [Obsolete()]
         /// <exclude />
         public static IPageUrlBuilder GetPageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {

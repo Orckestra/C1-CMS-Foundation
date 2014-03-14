@@ -66,7 +66,7 @@ namespace Composite.Core.Routing
 
         private void Initialize(string hostname, string relativeUrl)
         {
-            ForceRelativeUrls = HttpUtility.UrlDecode(relativeUrl).Contains(PageUrlBuilder.UrlMarker_RelativeUrl);
+            ForceRelativeUrls = HttpUtility.UrlDecode(relativeUrl).Contains(DefaultPageUrlProvider.UrlMarker_RelativeUrl);
 
             if (!ForceRelativeUrls)
             {

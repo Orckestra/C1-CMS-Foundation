@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using Composite.Core.Routing.Plugins.PageUrlsProviders.Runtime;
 using Composite.Data;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -19,6 +20,7 @@ namespace Composite.Core.Routing.Plugins.PageUrlsProviders
         /// <param name="localizationScope">The localization scope.</param>
         /// <param name="urlSpace">The URL space. Is used for providing different urls for f.e. different hostnames, etc.</param>
         /// <returns></returns>
+        [Obsolete]
         IPageUrlBuilder CreateUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace);
 
         /// <exclude />
