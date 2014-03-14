@@ -190,7 +190,6 @@
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\composite\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\compositeimageresize\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\lists\plugin.min.js" />
-    <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\noneditable\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\paste\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\plugins\table\plugin.min.js" />
     <Content Include="Composite\content\misc\editors\visualeditor\tinymce\skins\lightgray\content.inline.min.css" />
