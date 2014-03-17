@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -645,13 +644,17 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
         /// <summary>
         /// Deserialized a data type descriptor
         /// </summary>
         /// <param name="element">A serialized (XML) data type descriptor</param>
         /// <returns>De-serialized data type descriptor</returns>
         public static DataTypeDescriptor FromXml(XElement element)
+        {
+            return FromXml(element, true);
+        }
+
+        internal static DataTypeDescriptor FromXml(XElement element, bool inheritedFieldsIncluded)
         {
             Verify.ArgumentNotNull(element, "element");
             if (element.Name != "DataTypeDescriptor") throw new ArgumentException("The xml is not correctly formatted.");
@@ -724,7 +727,7 @@ namespace Composite.Data.DynamicTypes
                 {
                     Type superInterface = TypeManager.GetType(superInterfaceTypeName);
 
-                    dataTypeDescriptor.AddSuperInterface(superInterface, false);
+                    dataTypeDescriptor.AddSuperInterface(superInterface, !inheritedFieldsIncluded);
                 }
                 else
                 {
