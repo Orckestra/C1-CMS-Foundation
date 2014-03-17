@@ -24802,6 +24802,7 @@ _f22=dim.w;
 _f23=_f20.bindingElement.offsetHeight;
 _f23+=this._titlebar.bindingElement.offsetHeight;
 _f23+=4;
+_f23+=4;
 if(_f23<dim.h){
 _f23=dim.h;
 }
