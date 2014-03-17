@@ -7,6 +7,7 @@ using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
 using Composite.Core.Caching;
 using Composite.Core.Extensions;
+using Composite.Core.Routing;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Functions;
@@ -55,9 +56,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
-                string url;
-
-                PageStructureInfo.TryGetPageUrl(page.Id, out url);
+                string url = PageUrls.BuildUrl(page);
 
                 using (TimerProfilerFacade.CreateTimerProfiler(url ?? "(no url)"))
                 {

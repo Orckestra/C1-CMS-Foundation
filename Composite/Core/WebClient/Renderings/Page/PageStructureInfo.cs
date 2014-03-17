@@ -102,6 +102,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static IEnumerable<XElement> GetSiteMap()
         {
             return GetMap().RootPagesLookup;
@@ -293,6 +294,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         }
 
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static bool TryGetPageUrl(Guid guid, out string pageUrl)
         {
             return GetMap().IdToUrlLookup.TryGetValue(guid, out pageUrl);
@@ -348,6 +350,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static Dictionary<Guid, string> GetIdToUrlLookup(string dataScopeIdentifier, CultureInfo culture)
         {
             using (new DataScope(DataScopeIdentifier.Deserialize(dataScopeIdentifier), culture))

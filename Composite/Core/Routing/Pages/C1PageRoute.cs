@@ -150,8 +150,9 @@ namespace Composite.Core.Routing.Pages
                     return GetRedirectRoute(urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace));
                 }
 
-                // Checking casing in url, so the same page will appear as a few pages by a crawler
+                // Checking casing in url, so the same page will not appear as a few pages by a crawler
                 string correctUrl = urlProvider.BuildUrl(pageUrlData, UrlKind.Public, urlSpace);
+                Verify.IsNotNull(correctUrl, "Failed to rebuild a public url from url '{0}'", currentUrl);
 
                 string originalFilePath = new UrlBuilder(currentUrl).RelativeFilePath;
                 string correctFilePath = new UrlBuilder(correctUrl).RelativeFilePath;

@@ -1,4 +1,5 @@
 ﻿<%@ Control Language="C#" Inherits="Composite.Plugins.Forms.WebChannel.UiControlFactories.PageReferenceSelectorTemplateUserControlBase" %>
+<%@ Import Namespace="Composite.Core.Routing" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Data.Types" %>
 
@@ -47,18 +48,20 @@
         }
         
         Guid pageId = (Guid) reference.KeyValue;
-        string pageTitle = DataFacade.GetData<IPage>(f => f.Id == pageId).Select(f => f.Title).FirstOrDefault();
-        if (string.IsNullOrEmpty(pageTitle) == false)
+        IPage page = DataFacade.GetData<IPage>(f => f.Id == pageId).FirstOrDefault();
+        string pageTitle = page != null ? page.Title : null;
+        if (!string.IsNullOrEmpty(pageTitle))
         {
             pageSelectorDialog.Value = pageId.ToString();
             pageSelectorDialog.Attributes["label"] = pageTitle;
 
-            string pageUrl;
-            if (Composite.Core.WebClient.Renderings.Page.PageStructureInfo.TryGetPageUrl(pageId, out pageUrl))
+            string pageUrl = PageUrls.BuildUrl(page);
+            if (pageUrl != null)
             {
-                if (pageUrl.IndexOf(".aspx") > -1)
+                int aspxOffset = pageUrl.IndexOf(".aspx");
+                if (aspxOffset > -1)
                 {
-                    pageUrl = pageUrl.Substring(0, pageUrl.IndexOf(".aspx"));
+                    pageUrl = pageUrl.Substring(0, aspxOffset);
                 }
                 pageSelectorDialog.Attributes["tooltip"] = pageUrl;
             }

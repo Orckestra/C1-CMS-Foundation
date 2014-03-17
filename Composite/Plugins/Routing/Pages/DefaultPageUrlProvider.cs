@@ -382,7 +382,7 @@ namespace Composite.Plugins.Routing.Pages
                 }
                 else
                 {
-                    canBePublicUrl = false;
+                    canBePublicUrl = pagePath == "/"; // Only root page may not have a UrlSuffix
                 }
             }
 
@@ -390,7 +390,7 @@ namespace Composite.Plugins.Routing.Pages
             {
                 Guid? pageId = TryGetPageByUrlTitlePath(pagePath, pathInfoExctracted, hostnameBinding, ref pathInfo);
 
-                if (pageId != null)
+                if (pageId != null && pageId != Guid.Empty)
                 {
                     return new PageUrlData(pageId.Value, publicationScope, locale) { PathInfo = pathInfo};
                 }
@@ -442,9 +442,18 @@ namespace Composite.Plugins.Routing.Pages
 
             if (firstPageId == null)
             {
-                // Searching the first pageId among root pages
-                firstPageId = FindMatchingPage(Guid.Empty, firstUrlTitle);
+                IPage defaultRootPage = rootPages.FirstOrDefault(p => string.IsNullOrEmpty(p.UrlTitle));
+                if (defaultRootPage != null)
+                {
+                    firstPageId = FindMatchingPage(defaultRootPage.Id, firstUrlTitle);
+                }
 
+                if (firstPageId == null)
+                {
+                    // Searching the first pageId among root pages
+                    firstPageId = FindMatchingPage(Guid.Empty, firstUrlTitle);
+                }
+                
                 if (firstPageId == null) return null;
             }
 
