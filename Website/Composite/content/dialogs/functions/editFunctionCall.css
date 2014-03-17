@@ -11,3 +11,7 @@ ui|dialogtoolbar {
 #maintabbox ui|tabpanel {
 	min-height: 397px;
 }
+
+ui|fields {
+	overflow: hidden;
+}

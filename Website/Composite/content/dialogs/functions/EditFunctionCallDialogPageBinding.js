@@ -16,6 +16,12 @@ function EditFunctionCallDialogPageBinding () {
 	 */
 	this.logger = SystemLogger.getLogger("EditFunctionCallDialogPageBinding");
 
+	/**
+	  * Enable flexbox behavior.
+	  * @type {boolean}
+	  */
+	this.isFlexible = true;
+
 	/** The main tabbox!
 	 * @type {TabBoxBinding}
 	 */
@@ -80,15 +86,24 @@ EditFunctionCallDialogPageBinding.prototype.onAfterPageInitialize = function () 
 		//Fit height
 		dialog._fit(true);
 
+		//Flex height
+		newdim = dialog.getDimension();
+		if (newdim.h > top.window.innerHeight) {
+			newdim.h = top.window.innerHeight;
+			dialog.setDimension(newdim);
+			dialog.reflex(true);
+		}
+
+
 		//Fit position
 		pos.x = pos.x + (dim.w - newdim.w) / 2;
 		pos.x = (pos.x + newdim.w > top.window.innerWidth) ? top.window.innerWidth - newdim.w : pos.x;
 		pos.x = pos.x < 0 ? 0 : pos.x;
-
 		pos.y = (pos.y + newdim.h > top.window.innerHeight) ? top.window.innerHeight - newdim.h : pos.y;
 		pos.y = pos.y < 0 ? 0 : pos.y;
-
 		dialog.setPosition(pos);
+
+
 	}
 
 }
