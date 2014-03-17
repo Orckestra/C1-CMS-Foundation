@@ -8,7 +8,6 @@
     <cms:binding name="FunctionCalls" type="System.Collections.Generic.IEnumerable`1[[Composite.Functions.NamedFunctionCall, Composite]]"/>
     <cms:binding name="PreviewEventHandler" type="System.EventHandler" optional="false"/>
     <cms:binding name="PageId" type="System.Guid" optional="true"/>
-    <cms:binding name="PageList" type="System.Collections.IEnumerable" optional="true"/>
     <cms:binding name="PageDataScopeName" type="System.String" optional="true"/>
     <cms:binding name="PageDataScopeList" type="System.Collections.IEnumerable" optional="true"/>
     <cms:binding name="ActiveCultureName" type="System.String" optional="true"/>

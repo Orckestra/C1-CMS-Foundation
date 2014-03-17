@@ -125,18 +125,7 @@ namespace Composite.Plugins.Elements.ElementProviders.XsltBasedFunctionProviderE
             }
 
             this.Bindings.Add("FunctionCalls", FunctionCalls);
-
-            List<KeyValuePair<Guid, string>> pages = PageStructureInfo.PageListInDocumentOrder().ToList();
-            if (pages.Count > 0)
-            {
-                this.Bindings.Add("PageId", pages.First().Key);
-            }
-            else
-            {
-                this.Bindings.Add("PageId", Guid.Empty);
-            }
-
-            this.Bindings.Add("PageList", pages);
+            this.Bindings.Add("PageId", PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault());
 
             if (UserSettings.ActiveLocaleCultureInfo != null)
             {

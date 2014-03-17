@@ -40,7 +40,9 @@ namespace Composite.Core.WebClient.Renderings.Page
             public Dictionary<string, Guid> UrlToIdLookup;
             public Dictionary<string, Guid> LowerCaseUrlToIdLookup;
             public Dictionary<Guid, string> IdToUrlLookup;
+#pragma warning disable 612
             public IPageUrlBuilder PageUrlBuilder;
+#pragma warning restore 612
         }
 
         private static readonly Hashtable<MapKey, Map> _generatedMaps = new Hashtable<MapKey, Map>();
@@ -48,7 +50,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly object _updatingLock = new object();
         private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
 
-        private static XName PageElementName = "Page";
+        private static readonly XName PageElementName = "Page";
 
         private static readonly string LogTitle = "PageStructureInfo";
 
@@ -67,6 +69,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         /// The items in the list is returned in document order and the labels are indented with one space for each depth level
         /// of the page.
         /// </summary>
+        [Obsolete]
         public static IEnumerable<KeyValuePair<Guid, string>> PageListInDocumentOrder()
         {
             return PageListInDocumentOrder(GetSiteMap(), 0);
@@ -102,7 +105,6 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
-        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static IEnumerable<XElement> GetSiteMap()
         {
             return GetMap().RootPagesLookup;
@@ -165,7 +167,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                     yield return pageId;
                     break;
                 case SitemapScope.All:
+#pragma warning disable 618
                     foreach (Guid id in GetIdToUrlLookup().Keys)
+#pragma warning restore 618
                     {
                         yield return id;
                     }
@@ -190,7 +194,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 case SitemapScope.Level3AndSiblings:
                 case SitemapScope.Level4AndSiblings:
                     string pageIdString = pageId.ToString();
-                    XAttribute idMatchAttrib = sitemaps.DescendantsAndSelf().Attributes("Id").Where(id => id.Value == pageIdString).FirstOrDefault();
+                    XAttribute idMatchAttrib = sitemaps.DescendantsAndSelf().Attributes("Id").FirstOrDefault(id => id.Value == pageIdString);
                     if (idMatchAttrib != null)
                     {
                         XElement currentPageElement = idMatchAttrib.Parent;
@@ -206,7 +210,6 @@ namespace Composite.Core.WebClient.Renderings.Page
                     throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope);
             }
         }
-
 
         private static Map GetMap()
         {
@@ -333,8 +336,8 @@ namespace Composite.Core.WebClient.Renderings.Page
             return GetMap().LowerCaseUrlToIdLookup;
         }
 
-        [Obsolete()]
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static IPageUrlBuilder GetPageUrlBuilder(PublicationScope publicationScope, CultureInfo localizationScope, UrlSpace urlSpace)
         {
             return GetMap(publicationScope, localizationScope, urlSpace).PageUrlBuilder;
@@ -342,6 +345,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
 
         /// <exclude />
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         public static Dictionary<Guid, string> GetIdToUrlLookup()
         {
             return GetIdToUrlLookup(DataScopeManager.CurrentDataScope.Name, LocalizationScopeManager.CurrentLocalizationScope);
@@ -508,10 +512,10 @@ namespace Composite.Core.WebClient.Renderings.Page
                 var publicationScope = DataScopeManager.CurrentDataScope.ToPublicationScope();
                 var localizationScope = LocalizationScopeManager.CurrentLocalizationScope;
 
-                LoggingService.LogVerbose(LogTitle, string.Format("Building page structure in the publication scope '{0}' with the localization scope '{1}'", publicationScope, localizationScope));
+                Log.LogVerbose(LogTitle, string.Format("Building page structure in the publication scope '{0}' with the localization scope '{1}'", publicationScope, localizationScope));
 
-                Dictionary<string, Guid> urlToIdLookup = new Dictionary<string, Guid>();
-                Dictionary<Guid, string> idToUrlLookup = new Dictionary<Guid, string>();
+                var urlToIdLookup = new Dictionary<string, Guid>();
+                var idToUrlLookup = new Dictionary<Guid, string>();
 
                 var pagesData = new SitemapBuildingData();
 
@@ -522,7 +526,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     if (pageStructure == null)
                     {
-                        LoggingService.LogWarning(LogTitle, "Failed to find PageStructure data. Page ID is '{0}'".FormatWith(page.Id));
+                        Log.LogWarning(LogTitle, "Failed to find PageStructure data. Page ID is '{0}'".FormatWith(page.Id));
                         continue;
                     }
 
@@ -557,8 +561,10 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 BuildXmlStructure(root, Guid.Empty, pageToToChildElementsTable, 100);
 
+#pragma warning disable 612
                 var pageUrlBuilder = PageUrls.UrlProvider.CreateUrlBuilder(publicationScope, localizationScope, urlSpace);
                 BuildFolderPaths(pagesData, root.Elements(), pageUrlBuilder, urlToIdLookup);
+#pragma warning restore 612
 
                 foreach (var urlLookupEntry in urlToIdLookup)
                 {
@@ -573,7 +579,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     if (lowerCaseUrlToIdLookup.ContainsKey(loweredUrl))
                     {
-                        LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(loweredUrl, keyValuePair.Value));
+                        Log.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(loweredUrl, keyValuePair.Value));
                         continue;
                     }
 
@@ -609,11 +615,13 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> roots, IPageUrlBuilder pageUrlBuilder, IDictionary<string, Guid> urlToIdLookup)
         {
             BuildFolderPaths(pagesData, roots, urlToIdLookup, pageUrlBuilder);
         }
 
+        [Obsolete("Use Composite.Core.Routing namespace to work with URLs")]
         private static void BuildFolderPaths(SitemapBuildingData pagesData, IEnumerable<XElement> elements, IDictionary<string, Guid> urlToIdLookup, IPageUrlBuilder builder)
         {
             foreach (XElement element in elements)

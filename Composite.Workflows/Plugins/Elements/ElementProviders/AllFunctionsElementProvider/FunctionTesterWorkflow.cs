@@ -56,20 +56,7 @@ namespace Composite.Workflows.Plugins.Elements.ElementProviders.AllFunctionsElem
 
             this.Bindings.Add("FunctionCalls", namedFunctionCalls);
             this.Bindings.Add("Parameters", new List<ManagedParameterDefinition>());
-
-
-            List<KeyValuePair<Guid, string>> pages = PageStructureInfo.PageListInDocumentOrder().ToList();
-            if (pages.Count > 0)
-            {
-                this.Bindings.Add("PageId", pages.First().Key);
-            }
-            else
-            {
-                this.Bindings.Add("PageId", Guid.Empty);
-            }
-
-            this.Bindings.Add("PageList", pages);
-
+            this.Bindings.Add("PageId", PageManager.GetChildrenIDs(Guid.Empty).FirstOrDefault());
 
             if (UserSettings.ActiveLocaleCultureInfo != null)
             {

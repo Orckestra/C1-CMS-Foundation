@@ -26,7 +26,10 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
             switch (t.FullName)
             {
                 case "Composite.Data.Types.IPage":
+
+#pragma warning disable 612
                     foreach (KeyValuePair<System.Guid, string> pageItem in PageStructureInfo.PageListInDocumentOrder())
+#pragma warning restore 612
                     {
                         yield return new { Key = pageItem.Key, Label = pageItem.Value };
                     }
