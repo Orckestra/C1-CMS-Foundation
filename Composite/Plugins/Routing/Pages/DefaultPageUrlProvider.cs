@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.Collections.Specialized;
 using System.Text;
 using System.Web;
 using Composite.Core;
+using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Plugins.PageUrlsProviders;
@@ -16,6 +18,7 @@ using Composite.Data;
 using Composite.Data.Types;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
+
 
 namespace Composite.Plugins.Routing.Pages
 {
@@ -28,7 +31,16 @@ namespace Composite.Plugins.Routing.Pages
         private static readonly string InternalUrlPrefix = "~/page(";
         private static readonly string InternalUrlPrefixResolved = UrlUtils.PublicRootPath + "/page(";
 
+         private static readonly ConcurrentDictionary<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>> _friendlyUrls
+            = new ConcurrentDictionary<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>>();
+
         public string UrlSuffix { get; private set;}
+
+        static DefaultPageUrlProvider()
+        {
+            DataEvents<IPage>.OnAfterAdd += (a, b) => UpdateFriendlyUrl((IPage) b.Data);
+            DataEvents<IPage>.OnAfterUpdate += (a, b) => UpdateFriendlyUrl((IPage) b.Data);
+        }
 
         public DefaultPageUrlProvider()
         {
@@ -322,7 +334,7 @@ namespace Composite.Plugins.Routing.Pages
                     }
                 }
 
-                Guid friendlyUrlPageId = ParseFrendryUrlPath(pathWithoutLanguageCode);
+                Guid friendlyUrlPageId = ParseFriendlyUrlPath(pathWithoutLanguageCode);
                 if (friendlyUrlPageId != Guid.Empty)
                 {
                     urlKind = UrlKind.Friendly;
@@ -334,23 +346,66 @@ namespace Composite.Plugins.Routing.Pages
             return null;
         }
 
-        private Guid ParseFrendryUrlPath(string pathWithoutLanguageCode)
+        private Guid ParseFriendlyUrlPath(string pathWithoutLanguageCode)
         {
             if (pathWithoutLanguageCode.Length <= 1)
             {
                 return Guid.Empty;
             }
 
-            string friendlyUrl1 = "~" + pathWithoutLanguageCode;
-            string friendlyUrl2 = pathWithoutLanguageCode.Substring(1);
+            var map = GetFriendlyUrlsMap();
 
-            return DataFacade.GetData<IPage>()
-                .Where(p => p.FriendlyUrl != null 
-                    &&  string.Equals(p.FriendlyUrl, pathWithoutLanguageCode)
-                    || string.Equals(p.FriendlyUrl, friendlyUrl1)
-                    || string.Equals(p.FriendlyUrl, friendlyUrl2))
-                .Select(p => p.Id)
-                .FirstOrDefault();
+            string friendlyUrl1 = pathWithoutLanguageCode.ToLowerInvariant();
+            string friendlyUrl2 = "~" + friendlyUrl1;
+            string friendlyUrl3 = friendlyUrl1.Substring(1);
+
+            Guid pageId;
+
+            if (map.TryGetValue(friendlyUrl1, out pageId)
+                || map.TryGetValue(friendlyUrl2, out pageId)
+                || map.TryGetValue(friendlyUrl3, out pageId))
+            {
+                return pageId;
+            }
+
+            return Guid.Empty;
+        }
+
+        private static Hashtable<string, Guid> GetFriendlyUrlsMap()
+        {
+            var scopeKey = new Tuple<DataScopeIdentifier, string>(DataScopeManager.CurrentDataScope, LocalizationScopeManager.CurrentLocalizationScope.Name);
+
+            return _friendlyUrls.GetOrAdd(scopeKey, a =>
+            {
+                var result = new Hashtable<string, Guid>();
+                foreach (var pair in DataFacade.GetData<IPage>().Where(p => !string.IsNullOrEmpty(p.FriendlyUrl))
+                    .Select(p => new {p.Id, p.FriendlyUrl}))
+                {
+                    result[pair.FriendlyUrl.ToLowerInvariant()] = pair.Id;
+                }
+                return result;
+            });
+        }
+
+        private static void UpdateFriendlyUrl(IPage page)
+        {
+            if (string.IsNullOrEmpty(page.FriendlyUrl))
+            {
+                return;
+            }
+
+            var scopeKey = new Tuple<DataScopeIdentifier, string>(page.DataSourceId.DataScopeIdentifier, page.DataSourceId.LocaleScope.Name);
+
+            Hashtable<string, Guid> friendlyUrlsMap;
+            if(!_friendlyUrls.TryGetValue(scopeKey, out friendlyUrlsMap))
+            {
+                return;
+            }
+
+            lock (friendlyUrlsMap)
+            {
+                friendlyUrlsMap[page.FriendlyUrl.ToLowerInvariant()] = page.Id;
+            }
         }
 
         private PageUrlData ParsePagePath(string pagePath, PublicationScope publicationScope, CultureInfo locale, IHostnameBinding hostnameBinding)
