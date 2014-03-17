@@ -18,8 +18,8 @@ namespace Composite.Core.Implementation
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "Sitemap", Justification = "We have decided to use Sitemap, not SiteMap")]
     public class SitemapNavigatorImplementation
     {
-        private List<XElement> _sitemap;
-        private DataConnection _connection;
+        private readonly Lazy<List<XElement>> _sitemap;
+        private readonly DataConnection _connection;
 
 
 
@@ -39,10 +39,14 @@ namespace Composite.Core.Implementation
         /// <param name="connection"></param>
         public SitemapNavigatorImplementation(DataConnection connection)
         {
-            using (new DataScope(connection.CurrentPublicationScope, connection.CurrentLocale))
+            _sitemap = new Lazy<List<XElement>>(() =>
             {
-                _sitemap = PageStructureInfo.GetSiteMap().ToList();
-            }
+                using (new DataScope(connection.CurrentPublicationScope, connection.CurrentLocale))
+                {
+                    return PageStructureInfo.GetSiteMap().ToList();
+                }
+            });
+            
             _connection = connection;
         }
 
@@ -55,16 +59,14 @@ namespace Composite.Core.Implementation
         /// <returns></returns>
         public virtual PageNode GetPageNodeById(Guid id)
         {
-            Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
+            var page = PageManager.GetPageById(id);
 
-            XElement pageXElement = GetElementByPageId(id);
-
-            if (pageXElement == null)
+            if (page == null)
             {
                 return null;
             }
 
-            return new PageNode(pageXElement);
+            return new PageNode(page, this);
         }
 
 
@@ -77,9 +79,7 @@ namespace Composite.Core.Implementation
         {
             get
             {
-                Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
-
-                return _sitemap.Select(homepageElement => new PageNode(homepageElement));
+                return HomePageIds.Select(GetPageNodeById).Where(p => p != null);
             }
         }
 
@@ -93,9 +93,7 @@ namespace Composite.Core.Implementation
         {
             get
             {
-                Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
-
-                return _sitemap.Select(homepageElement => Guid.Parse(homepageElement.Attribute("Id").Value));
+                return PageManager.GetChildrenIDs(Guid.Empty);
             }
         }
 
@@ -125,7 +123,6 @@ namespace Composite.Core.Implementation
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1702:CompoundWordsShouldBeCasedCorrectly", MessageId = "hostname")]
         public virtual PageNode GetPageNodeByHostname(string hostname)
         {
-            XElement homepageElement = null;
             Guid pageId = Guid.Empty;
             hostname = hostname.ToUpperInvariant();
 
@@ -144,19 +141,10 @@ namespace Composite.Core.Implementation
 
             if (pageId == Guid.Empty)
             {
-                homepageElement = _sitemap.FirstOrDefault();
-            }
-            else
-            {
-                homepageElement = this.GetElementByPageId(pageId);
+                pageId = HomePageIds.FirstOrDefault();
             }
 
-            if (homepageElement == null)
-            {
-                return null;
-            }
-            
-            return new PageNode( homepageElement );
+            return GetPageNodeById(pageId);
         }
 
 
@@ -169,21 +157,13 @@ namespace Composite.Core.Implementation
         {
             get
             {
-                Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
-
-                if (PageRenderer.CurrentPageId == Guid.Empty)
+                var homePageId = CurrentHomePageId;
+                if (homePageId == Guid.Empty)
                 {
                     return null;
                 }
 
-                XElement pageXElement = GetElementByPageId(PageRenderer.CurrentPageId);
-
-                while ((pageXElement.Parent != null) && (pageXElement.Parent.Name.LocalName == "Page"))
-                {
-                    pageXElement = pageXElement.Parent;
-                }
-
-                return new PageNode(pageXElement);
+                return GetPageNodeById(homePageId);
             }
         }
 
@@ -197,9 +177,7 @@ namespace Composite.Core.Implementation
         {
             get
             {
-                Verify.IsNotNull(_sitemap, "Missing sitemap. This class may have invalid state due to wrong construction.");
-
-                return _sitemap.AsReadOnly();
+                return _sitemap.Value.AsReadOnly();
             }
         }
 
@@ -252,21 +230,24 @@ namespace Composite.Core.Implementation
             {
                 Guid pageId = this.CurrentPageId;
 
-                while (pageId != Guid.Empty && PageManager.GetParentId(pageId) != Guid.Empty)
+                while (true)
                 {
-                    pageId = PageManager.GetParentId(pageId);
+                    Guid parentId = PageManager.GetParentId(pageId);
+                    if (parentId == Guid.Empty)
+                    {
+                        return pageId;
+                    }
+                    pageId = parentId;
                 }
-
-                return pageId;
             }
         }
 
 
-        private XElement GetElementByPageId(Guid id)
+        internal XElement GetElementByPageId(Guid id)
         {
             string idString = id.ToString();
 
-            XAttribute matchAttribute = _sitemap.DescendantsAndSelf("Page").Attributes("Id").Where(f => f.Value == idString).FirstOrDefault();
+            XAttribute matchAttribute = _sitemap.Value.DescendantsAndSelf("Page").Attributes("Id").FirstOrDefault(f => f.Value == idString);
 
             if (matchAttribute == null)
             {

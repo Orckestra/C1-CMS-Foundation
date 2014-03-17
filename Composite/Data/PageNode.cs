@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
+using Composite.Core.Implementation;
+using Composite.Core.Routing;
 using Composite.Core.WebClient.Renderings.Page;
+using Composite.Data.Types;
 
 
 namespace Composite.Data
@@ -12,16 +15,17 @@ namespace Composite.Data
     /// </summary>
     public class PageNode
     {
+        private readonly IPage _page;
+        private readonly SitemapNavigatorImplementation _sitemapNavigator;
+
         private XElement _pageElement;
 
-        /// <summary>
-        /// Create a new PageNode based on a XElement from the sitemap
-        /// </summary>
-        /// <param name="sitemapElement">The sitemap element.</param>
-        internal PageNode(XElement sitemapElement) 
+        internal PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
         {
-            Verify.That(sitemapElement.Name == "Page", "Expected element named 'Page', got '{0}'", sitemapElement.Name);
-            _pageElement = sitemapElement;
+            Verify.ArgumentNotNull(page, "page");
+
+            _page = page;
+            _sitemapNavigator = sitemapNavigator;
         }
 
 
@@ -32,7 +36,7 @@ namespace Composite.Data
         {
             get
             {
-                return Guid.Parse(_pageElement.Attribute("Id").Value);
+                return _page.Id;
             }
         }
 
@@ -44,7 +48,7 @@ namespace Composite.Data
         {
             get
             {
-                return _pageElement.Attribute("Title").Value;
+                return _page.Title;
             }
         }
 
@@ -56,9 +60,7 @@ namespace Composite.Data
         {
             get
             {
-                XAttribute menuTitle = _pageElement.Attribute("MenuTitle");
-
-                return menuTitle != null ? menuTitle.Value : null;
+                return _page.MenuTitle;
             }
         }
 
@@ -70,7 +72,7 @@ namespace Composite.Data
         {
             get
             {
-                return (DateTime)_pageElement.Attribute("ChangedDate");
+                return _page.ChangeDate;
             }
         }
 
@@ -82,7 +84,7 @@ namespace Composite.Data
         {
             get
             {
-                return _pageElement.Attribute("Description").Value;
+                return _page.Description;
             }
         }
 
@@ -95,8 +97,7 @@ namespace Composite.Data
         {
             get
             {
-                var attr = _pageElement.Attribute("URL");
-                return attr != null ? attr.Value : null;
+                return PageUrls.BuildUrl(_page);
             }
         }
 
@@ -108,7 +109,7 @@ namespace Composite.Data
         {
             get
             {
-                var depthAttr = _pageElement.Attribute("Depth");
+                var depthAttr = SitemapXml.Attribute("Depth");
                 // Attribute can be null if a page isn't accessable, f.e. in a case of url collision
                 return depthAttr != null ? Int32.Parse(depthAttr.Value, CultureInfo.InvariantCulture) : -1;
             }
@@ -122,12 +123,13 @@ namespace Composite.Data
         {
             get
             {
-                if (_pageElement.Parent == null || _pageElement.Parent.Name != "Page")
-                {
-                    return null;
-                }
+                var parentPageId = PageManager.GetParentId(_page.Id);
 
-                return new PageNode(_pageElement.Parent);
+                if (parentPageId == Guid.Empty) return null;
+
+                var page = PageManager.GetPageById(parentPageId);
+
+                return page != null ? new PageNode(page, _sitemapNavigator) : null;
             }
         }
 
@@ -139,9 +141,14 @@ namespace Composite.Data
         {
             get
             {
-                foreach (XElement childElement in _pageElement.Elements("Page"))
+                foreach (Guid childId in PageManager.GetChildrenIDs(_page.Id))
                 {
-                    yield return new PageNode(childElement);
+                    var page = PageManager.GetPageById(childId);
+
+                    if (page != null)
+                    {
+                        yield return new PageNode(page, _sitemapNavigator);
+                    }
                 }
             }
         }
@@ -154,11 +161,13 @@ namespace Composite.Data
         /// <returns></returns>
         public IEnumerable<PageNode> GetPageNodes(SitemapScope scope) 
         {
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+            if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
-            foreach (XElement pageElement in PageStructureInfo.GetPageElementsByScope(scope,_pageElement))
+            foreach (Guid pageId in GetPageIds(scope))
 	        {
-                yield return new PageNode(pageElement);
+                var page = PageManager.GetPageById(pageId);
+
+                yield return new PageNode(page, _sitemapNavigator);
 	        }
         }
 
@@ -170,9 +179,9 @@ namespace Composite.Data
         /// <returns></returns>
         public IEnumerable<Guid> GetPageIds(SitemapScope scope) 
         {
-            if ((scope < SitemapScope.Current) || (scope > SitemapScope.SiblingsAndSelf)) throw new ArgumentOutOfRangeException("scope");
+            if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
-            XElement sitemapRoot = _pageElement;
+            XElement sitemapRoot = SitemapXml;
             while (sitemapRoot.Parent!=null)
             {
                 sitemapRoot = sitemapRoot.Parent;
@@ -189,6 +198,11 @@ namespace Composite.Data
         {
             get
             {
+                if (_pageElement == null)
+                {
+                    _pageElement = _sitemapNavigator.GetElementByPageId(_page.Id);
+                }
+
                 return _pageElement;
             }
         }
