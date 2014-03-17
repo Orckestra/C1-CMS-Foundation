@@ -69,25 +69,27 @@ EditFunctionCallDialogPageBinding.prototype.onAfterPageInitialize = function () 
 	EditFunctionCallDialogPageBinding.superclass.onAfterPageInitialize.call(this);
 	
 	var dialog = this.getAncestorBindingByType(DialogBinding, true);
-	var dim = dialog.getDimension();
-	var pos = dialog.getPosition();
-	var newdim = dialog.getDimension();
-	newdim.w = this.getProperty("width");
-	newdim.h = this.getProperty("height");
-	dialog.setDimension(newdim);
+	if (dialog != null) {
+		var dim = dialog.getDimension();
+		var pos = dialog.getPosition();
+		var newdim = dialog.getDimension();
+		newdim.w = this.getProperty("width");
+		newdim.h = this.getProperty("height");
+		dialog.setDimension(newdim);
 
-	//Fit height
-	dialog._fit(true);
+		//Fit height
+		dialog._fit(true);
 
-	//Fit position
-	pos.x = pos.x + (dim.w - newdim.w) / 2;
-	pos.x = (pos.x + newdim.w > top.window.innerWidth) ? top.window.innerWidth - newdim.w : pos.x;
-	pos.x = pos.x < 0 ? 0 : pos.x;
+		//Fit position
+		pos.x = pos.x + (dim.w - newdim.w) / 2;
+		pos.x = (pos.x + newdim.w > top.window.innerWidth) ? top.window.innerWidth - newdim.w : pos.x;
+		pos.x = pos.x < 0 ? 0 : pos.x;
 
-	pos.y = (pos.y + newdim.h > top.window.innerHeight) ? top.window.innerHeight - newdim.h : pos.y;
-	pos.y = pos.y < 0 ? 0 : pos.y;
+		pos.y = (pos.y + newdim.h > top.window.innerHeight) ? top.window.innerHeight - newdim.h : pos.y;
+		pos.y = pos.y < 0 ? 0 : pos.y;
 
-	dialog.setPosition(pos);
+		dialog.setPosition(pos);
+	}
 
 }
 
