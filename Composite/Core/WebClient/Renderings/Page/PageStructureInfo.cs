@@ -148,15 +148,118 @@ namespace Composite.Core.WebClient.Renderings.Page
             }
         }
 
+        private static IEnumerable<Guid> GetDescendants(Guid pageId)
+        {
+            foreach (var childId in PageManager.GetChildrenIDs(pageId))
+            {
+                foreach (var descendantOrSelf in GetDescendantsAndSelf(childId))
+                {
+                    yield return descendantOrSelf;
+                }
+            }
+        }
 
+        private static IEnumerable<Guid> GetDescendantsAndSelf(Guid pageId)
+        {
+            yield return pageId;
+
+            foreach (var childId in PageManager.GetChildrenIDs(pageId))
+            {
+                foreach (var descendantOrSelf in GetDescendantsAndSelf(childId))
+                {
+                    yield return descendantOrSelf;
+                }
+            }
+        }
+
+        private static List<Guid> GetAncestors(Guid pageId, bool andSelf)
+        {
+            var result = new List<Guid>();
+
+            if (andSelf)
+            {
+                result.Add(pageId);
+            }
+
+            pageId = PageManager.GetParentId(pageId);
+
+            while (pageId != Guid.Empty)
+            {
+                result.Add(pageId);
+
+                pageId = PageManager.GetParentId(pageId);
+            }
+        }
 
         /// <exclude />
         public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, SitemapScope associationScope)
         {
-            return GetAssociatedPageIds(pageId, associationScope, PageStructureInfo.GetSiteMap());
+            switch (associationScope)
+            {
+                case SitemapScope.Current:
+                    return new[] {pageId};
+                case SitemapScope.All:
+                    return DataFacade.GetData<IPage>().Select(p => p.Id).ToList();
+                case SitemapScope.Descendants:
+                    return GetDescendants(pageId);
+                case SitemapScope.DescendantsAndCurrent:
+                    return GetDescendantsAndSelf(pageId);
+                case SitemapScope.Children:
+                    return PageManager.GetChildrenIDs(pageId);
+                case SitemapScope.Siblings:
+                    Guid parentId = PageManager.GetParentId(pageId);
+                    return PageManager.GetChildrenIDs(parentId);
+                case SitemapScope.Ancestors:
+                    return GetAncestors(pageId, false);
+                case SitemapScope.AncestorsAndCurrent:
+                    return GetAncestors(pageId, true);
+                case SitemapScope.Parent:
+                    parentId = PageManager.GetParentId(pageId);
+                    return parentId != Guid.Empty ? new[] {parentId} : new Guid[0];
+                case SitemapScope.Level1:
+                case SitemapScope.Level2:
+                case SitemapScope.Level3:
+                case SitemapScope.Level4:
+                case SitemapScope.Level1AndDescendants:
+                case SitemapScope.Level2AndDescendants:
+                case SitemapScope.Level3AndDescendants:
+                case SitemapScope.Level4AndDescendants:
+                case SitemapScope.Level1AndSiblings:
+                case SitemapScope.Level2AndSiblings:
+                case SitemapScope.Level3AndSiblings:
+                case SitemapScope.Level4AndSiblings:
+                    int level = int.Parse(associationScope.ToString().Substring(5, 1));
+
+                    var ancestors = GetAncestors(pageId, true);
+
+                    if (ancestors.Count < level)
+                    {
+                        return new Guid[0];
+                    }
+
+                    ancestors.Reverse();
+
+                    Guid levelPageId = ancestors[level - 1];
+
+                    bool andDescendants = associationScope.ToString().EndsWith("AndDescendants");
+                    if (andDescendants)
+                    {
+                        return GetDescendantsAndSelf(levelPageId);
+                    }
+
+                    bool andSiblings = associationScope.ToString().EndsWith("AndSiblings");
+                    if (andSiblings)
+                    {
+                        Guid parentPageId = level == 1 ? Guid.Empty : ancestors[level - 1];
+                        return GetAssociatedPageIds(parentPageId, SitemapScope.Children);
+                    }
+
+                    return new[] {levelPageId};
+                default:
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope);
+            }
         }
-
-
+        
 
         /// <exclude />
         public static IEnumerable<Guid> GetAssociatedPageIds(Guid pageId, SitemapScope associationScope, IEnumerable<XElement> sitemaps)

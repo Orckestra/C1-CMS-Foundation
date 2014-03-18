@@ -181,12 +181,7 @@ namespace Composite.Data
         {
             if (scope < SitemapScope.Current || scope > SitemapScope.SiblingsAndSelf) throw new ArgumentOutOfRangeException("scope");
 
-            XElement sitemapRoot = SitemapXml;
-            while (sitemapRoot.Parent!=null)
-            {
-                sitemapRoot = sitemapRoot.Parent;
-            }
-            return PageStructureInfo.GetAssociatedPageIds(this.Id, scope, sitemapRoot.Elements());
+            return PageStructureInfo.GetAssociatedPageIds(_page.Id, scope);
         }
 
 
