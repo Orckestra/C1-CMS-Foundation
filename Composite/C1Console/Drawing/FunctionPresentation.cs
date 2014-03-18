@@ -202,8 +202,12 @@ namespace Composite.C1Console.Drawing
                 }
 
                 // "Edit" label 
-                Point editLabelPosition = new Point(bitmapWidth - 25 - _editLabelSize.Width,
-                    (_headerHeight - _editLabelSize.Height) / 2);
+                Point editLabelPosition = new Point(bitmapWidth - 25 - _editLabelSize.Width, (_headerHeight - _editLabelSize.Height) / 2);
+
+                using (var whiteBrush = new SolidBrush(Color.White))
+                {
+                    graphics.FillRectangle(whiteBrush, editLabelPosition.X - 50, 0, bitmapWidth - editLabelPosition.X + 50, _headerHeight);
+                }
 
                 using (var solidBrush = new SolidBrush(Color.Black))
                 {
@@ -212,6 +216,8 @@ namespace Composite.C1Console.Drawing
 
                 int editFunctionIconY;
                 Size editFunctionIconSize;
+
+                const int labelRightPadding = 5;
 
                 // Edit function "pen" icon
                 using (var icon = (Bitmap)Image.FromFile(EditFunctionIconPath))
@@ -222,12 +228,12 @@ namespace Composite.C1Console.Drawing
                     graphics.DrawImage(icon, editLabelPosition.X - icon.Width, editFunctionIconY);
 
                     // Mirroring 5 px of the "pen" icon
-                    for (int x = 0; x < 15; x++)
+                    for (int x = 0; x < 5; x++)
                     {
                         for (int y = 0; y < icon.Height; y++)
                         {
-                            bitmap.SetPixel(editLabelPosition.X + _editLabelSize.Width + x, editFunctionIconY + y,
-                                icon.GetPixel(14 - x, y));
+                            bitmap.SetPixel(editLabelPosition.X + _editLabelSize.Width + labelRightPadding + x, editFunctionIconY + y,
+                                icon.GetPixel(4 - x, y));
                         }
                     }
 
@@ -236,12 +242,13 @@ namespace Composite.C1Console.Drawing
                     using (var pen = new Pen(borderColor))
                     {
                         // Top line for edit function link
-                        graphics.DrawLine(pen, editLabelPosition.X, editFunctionIconY, editLabelPosition.X + _editLabelSize.Width, editFunctionIconY);
+                        graphics.DrawLine(pen, editLabelPosition.X, editFunctionIconY, 
+                                               editLabelPosition.X + _editLabelSize.Width + labelRightPadding, editFunctionIconY);
 
                         // Bottom line for edit function link
                         int bottomLineY = editFunctionIconY + icon.Height - 1;
                         graphics.DrawLine(pen, editLabelPosition.X, bottomLineY,
-                                               editLabelPosition.X + _editLabelSize.Width, bottomLineY);
+                                               editLabelPosition.X + _editLabelSize.Width + labelRightPadding, bottomLineY);
                     }
                 }
 
@@ -249,7 +256,7 @@ namespace Composite.C1Console.Drawing
                 {
                     // Making only the "Edit" button transparent
                     var editFuncRect = new Rectangle(editLabelPosition.X - editFunctionIconSize.Width, editFunctionIconY,
-                        editFunctionIconSize.Width + _editLabelSize.Width + 5, editFunctionIconSize.Height);
+                        editFunctionIconSize.Width + _editLabelSize.Width + labelRightPadding + 5, editFunctionIconSize.Height);
 
                     MakeBlackTransparent(bitmap, editFuncRect);
                 }
