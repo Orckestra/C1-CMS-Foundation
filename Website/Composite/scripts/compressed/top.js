@@ -27329,7 +27329,7 @@ VisualEditorBinding.prototype.getEffectiveWidth=function(){
 var body=this._tinyInstance.getBody();
 var _1065=CSSComputer.getPadding(body);
 var _1066=this.getContentWindow().bindingMap.editorsplitpanel;
-var width=_1066.bindingElement.offsetWidth-_1065.right-_1065.left;
+var width=_1066.bindingElement.offsetWidth-52;
 return Math.floor(width/32)*32;
 };
 VisualEditorBinding.prototype.focus=function(){
