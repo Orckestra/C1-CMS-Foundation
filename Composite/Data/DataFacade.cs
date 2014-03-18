@@ -1674,9 +1674,9 @@ namespace Composite.Data
         {
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
 
-            IEnumerable<DataScopeIdentifier> supportedDataScope = interfaceType.GetSupportedDataScopes();
+            IReadOnlyCollection<DataScopeIdentifier> supportedDataScope = interfaceType.GetSupportedDataScopes();
 
-            if (!supportedDataScope.Any())
+            if (supportedDataScope.Count == 0)
             {
                 throw new InvalidOperationException(string.Format("The data type '{0}' does not support any data scopes, use the '{1}' attribute", interfaceType, typeof(DataScopeAttribute)));
             }

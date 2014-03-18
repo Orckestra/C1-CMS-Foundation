@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +18,9 @@ namespace Composite.Data
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class IDataExtensions
     {
+        private static ConcurrentDictionary<Type, IReadOnlyCollection<DataScopeIdentifier>> _supportedDataScopes
+            = new ConcurrentDictionary<Type, IReadOnlyCollection<DataScopeIdentifier>>();
+
         /// <summary>
         /// Copies all changed properties from sourceData to targetData.
         /// </summary>
@@ -222,30 +226,33 @@ namespace Composite.Data
         /// <returns></returns>        
         internal static bool HasAncestor(this IData child, IData parent, int maxLevels)
         {
-            if (child == null) throw new ArgumentNullException("child");
-            if (parent == null) throw new ArgumentNullException("parent");
-            if (maxLevels < 0) return false;
+            Verify.ArgumentNotNull(child, "child");
+            Verify.ArgumentNotNull(parent, "parent");
 
+            if (maxLevels < 0) return false;
             if (child.KeyEquals(parent))
             {
                 return true;
             }
-            else
-            {
-                IData childParent = child.GetParent();
+            
+            IData childParent = child.GetParent();
 
-                if (childParent == null) return false;
+            if (childParent == null) return false;
 
-                return HasAncestor(childParent, parent, maxLevels - 1);
-            }
+            return HasAncestor(childParent, parent, maxLevels - 1);
         }
 
 
-        internal static IEnumerable<DataScopeIdentifier> GetSupportedDataScopes(this Type interfaceType)
+        internal static IReadOnlyCollection<DataScopeIdentifier> GetSupportedDataScopes(this Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}'", typeof(IData)), "interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException(string.Format("The specified type must inherit from '{0}'", typeof(IData)), "interfaceType");
 
+            return _supportedDataScopes.GetOrAdd(interfaceType, GetSupportedDataScopesInt);
+        }
+
+        private static IReadOnlyCollection<DataScopeIdentifier> GetSupportedDataScopesInt(Type interfaceType)
+        {
             var dataScopes = new List<DataScopeIdentifier>();
             IEnumerable<DataScopeAttribute> attributes = interfaceType.GetCustomInterfaceAttributes<DataScopeAttribute>();
 
@@ -254,10 +261,8 @@ namespace Composite.Data
                 dataScopes.Add(attribute.Identifier);
             }
 
-            return dataScopes.Distinct();
+            return dataScopes.Distinct().ToList();
         }
-
-
 
         /// <summary>    
         /// </summary>
