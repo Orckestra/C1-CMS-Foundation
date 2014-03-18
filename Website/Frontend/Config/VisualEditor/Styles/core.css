@@ -106,7 +106,6 @@ img.compositeFunctionWysiwygRepresentation:hover {
 
 img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
     display:block;
-    /*min-width:100px;*/ 
     min-width: 100%;
     min-height:250px; 
     background-position: center center; 
