@@ -36,9 +36,14 @@ namespace Composite.Functions
             return provider.WidgetFunctionCompositeName;
         }
 
-
         /// <exclude />
         public static WidgetFunctionProvider GetDefaultWidgetFunctionProviderByType(Type type)
+        {
+            return GetDefaultWidgetFunctionProviderByType(type, true);
+        }
+
+        /// <exclude />
+        public static WidgetFunctionProvider GetDefaultWidgetFunctionProviderByType(Type type, bool required)
         {
             if (type == typeof(string)) return StandardWidgetFunctions.TextBoxWidget;
             if (type == typeof(int) || type == typeof(int?)) return StandardWidgetFunctions.IntegerTextBoxWidget;
@@ -47,9 +52,9 @@ namespace Composite.Functions
             if (type == typeof(Guid) || type == typeof(Guid?)) return StandardWidgetFunctions.GuidTextBoxWidget;
             if (type == typeof(bool) || type == typeof(bool?)) return StandardWidgetFunctions.CheckBoxWidget;
 
-            if (type == typeof(DataReference<IImageFile>)) return StandardWidgetFunctions.GetImageSelectorWidget(true);
+            if (type == typeof(DataReference<IImageFile>)) return StandardWidgetFunctions.GetImageSelectorWidget(required);
             if (type == typeof(NullableDataReference<IImageFile>)) return StandardWidgetFunctions.GetImageSelectorWidget(false);
-            if (type == typeof(DataReference<IMediaFile>)) return StandardWidgetFunctions.GetMediaFileSelectorWidget(true);
+            if (type == typeof(DataReference<IMediaFile>)) return StandardWidgetFunctions.GetMediaFileSelectorWidget(required);
             if (type == typeof(NullableDataReference<IMediaFile>)) return StandardWidgetFunctions.GetMediaFileSelectorWidget(false);
 
             if (type == typeof(XhtmlDocument)) return StandardWidgetFunctions.VisualXhtmlDocumentEditorWidget;
@@ -59,6 +64,16 @@ namespace Composite.Functions
             {
                 IWidgetFunction widgetFunction = FunctionFacade.GetWidgetFunction(functionName);
                 bool sameType = widgetFunction.ReturnType == type;
+
+                if (!sameType 
+                    && !required 
+                    && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(DataReference<>)
+                    && type.IsAssignableFrom(widgetFunction.ReturnType)
+                    && widgetFunction.ReturnType == typeof(NullableDataReference<>).MakeGenericType(type.GetGenericArguments()))
+                {
+                    sameType = true;
+                }
+
                 if (sameType && !widgetFunction.ParameterProfiles.Any(p => p.IsRequired))
                 {
                     return new WidgetFunctionProvider(widgetFunction);

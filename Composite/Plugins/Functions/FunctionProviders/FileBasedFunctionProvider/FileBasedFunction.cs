@@ -86,7 +86,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 			        if (widgetProvider == null)
 			        {
-			            widgetProvider = StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(param.Type);
+			            widgetProvider = StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(param.Type, isRequired);
 			        }
 
 			        yield return new ParameterProfile(param.Name, param.Type, isRequired, defaultValueProvider, widgetProvider, label,
