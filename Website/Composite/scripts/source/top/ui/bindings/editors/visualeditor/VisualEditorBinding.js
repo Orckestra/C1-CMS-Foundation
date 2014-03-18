@@ -784,7 +784,7 @@ VisualEditorBinding.prototype.getEffectiveWidth = function () {
 	var body = this._tinyInstance.getBody();
 	var padding = CSSComputer.getPadding(body);
 	var editorsplitpanel = this.getContentWindow().bindingMap.editorsplitpanel;
-	var width = editorsplitpanel.bindingElement.offsetWidth - padding.right - padding.left;
+	var width = editorsplitpanel.bindingElement.offsetWidth - 52; //Hack for "- padding.right - padding.left";
 	return Math.floor(width / 32) * 32;
 }
 
