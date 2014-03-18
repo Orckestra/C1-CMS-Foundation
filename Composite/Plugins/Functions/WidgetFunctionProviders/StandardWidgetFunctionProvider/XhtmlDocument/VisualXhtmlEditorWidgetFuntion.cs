@@ -1,12 +1,13 @@
 using System;
 using System.Xml.Linq;
 using System.Collections.Generic;
-
+using Composite.Core.Extensions;
 using Composite.Functions;
 using Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.Foundation;
 using Composite.Core.Types;
 using Composite.Core.Xml;
 
+using StringSelector = Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.String.VisualXhtmlEditorFuntion;
 
 namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunctionProvider.XhtmlDocument
 {
@@ -37,7 +38,26 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
         {
             XElement element = base.BuildBasicWidgetMarkup("InlineXhtmlEditor", "Xhtml", label, help, bindingSourceName);
             element.Add(new XAttribute("ClassConfigurationName", parameters.GetParameter<string>(VisualXhtmlEditorFuntion.ClassConfigurationNameParameterName)));
-            
+
+            var pageId = parameters.GetParameter<Guid>(StringSelector.PreviewPageIdParameterName);
+            var templateId = parameters.GetParameter<Guid>(StringSelector.PreviewTemplateIdParameterName);
+            string placeholderName = parameters.GetParameter<string>(StringSelector.PreviewPlaceholderParameterName);
+
+            if (pageId != Guid.Empty)
+            {
+                element.Add(new XAttribute("PreviewPageId", pageId));
+            }
+
+            if (templateId != Guid.Empty)
+            {
+                element.Add(new XAttribute("PreviewTemplateId", templateId));
+            }
+
+            if (!string.IsNullOrEmpty(placeholderName))
+            {
+                element.Add(new XAttribute("PreviewPlaceholder", placeholderName));
+            }
+
             Type embedableFieldType = parameters.GetParameter<Type>(VisualXhtmlEditorFuntion.EmbedableFieldTypeParameterName);
             if (embedableFieldType!=null)
             {
@@ -74,7 +94,7 @@ namespace Composite.Plugins.Functions.WidgetFunctionProviders.StandardWidgetFunc
 
             base.AddParameterProfile(typeNamePP);
 
+            StringSelector.BuildInlineXhtmlEditorParameters().ForEach(AddParameterProfile);
         }
-
     }
 }
