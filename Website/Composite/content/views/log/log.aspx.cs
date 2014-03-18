@@ -107,6 +107,7 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
                 new XElement("th", " "),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.DateLabel")),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.MessageLabel")),
+                new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.TitleLabel")),
                 new XElement("th", StringResourceSystemFacade.GetString("Composite.Management","ServerLog.LogEntry.EventTypeLabel"))
             );
 
@@ -145,7 +146,8 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
             row.Add(
                 new XElement("td", color, " "),
                 new XElement("td", logEntry.TimeStamp.ToString(View_DateTimeFormat)),
-                new XElement("td", TitleAndMessageMarkup(logEntry, index++)),
+                new XElement("td", MessageMarkup(logEntry, index++)),
+                new XElement("td", EncodeXml10InvalidCharacters(logEntry.Title)),
                 new XElement("td", logEntry.Severity)
             );
 
@@ -155,14 +157,12 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         LogHolder.Controls.Add(new LiteralControl(table.ToString()));
     }
 
-    public object[] TitleAndMessageMarkup(LogEntry logEntry, int index)
+    public object[] MessageMarkup(LogEntry logEntry, int index)
     {
-        string encodedTitle = EncodeXml10InvalidCharacters(logEntry.Title);
-
         if (!logEntry.Message.Contains("\n"))
         {
             string encodedMessage = EncodeXml10InvalidCharacters(logEntry.Message);
-            return new object[] { encodedTitle + ": " + encodedMessage };
+            return new object[] { encodedMessage };
         }
 
         string[] lines = EncodeXml10InvalidCharacters(logEntry.Message).Trim().Split('\n');
@@ -171,14 +171,12 @@ public partial class Composite_content_views_log_log : System.Web.UI.Page
         {
             return new object[]
             {
-                encodedTitle,
                 new XElement("pre", EncodeXml10InvalidCharacters(logEntry.Message.Replace("\n", "")))
             };
         }
 
         return new object[]
         {
-            encodedTitle,
             PreTag(lines, 0, 2),
             new XElement("a", 
                 new XAttribute("id", "a" + index),
