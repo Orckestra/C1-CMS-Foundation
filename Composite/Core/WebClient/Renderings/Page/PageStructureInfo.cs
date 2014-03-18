@@ -189,6 +189,8 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                 pageId = PageManager.GetParentId(pageId);
             }
+
+            return result;
         }
 
         /// <exclude />
@@ -208,6 +210,9 @@ namespace Composite.Core.WebClient.Renderings.Page
                     return PageManager.GetChildrenIDs(pageId);
                 case SitemapScope.Siblings:
                     Guid parentId = PageManager.GetParentId(pageId);
+                    return PageManager.GetChildrenIDs(parentId).Where(i => i != pageId);
+                case SitemapScope.SiblingsAndSelf:
+                    parentId = PageManager.GetParentId(pageId);
                     return PageManager.GetChildrenIDs(parentId);
                 case SitemapScope.Ancestors:
                     return GetAncestors(pageId, false);
