@@ -237,12 +237,24 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     var ancestors = GetAncestors(pageId, true);
 
+                    ancestors.Reverse();
+
+                    bool andSiblings = associationScope.ToString().EndsWith("AndSiblings");
+                    if (andSiblings)
+                    {
+                        if (ancestors.Count < level - 1)
+                        {
+                            return new Guid[0];
+                        }
+
+                        Guid parentPageId = level == 1 ? Guid.Empty : ancestors[level - 2];
+                        return GetAssociatedPageIds(parentPageId, SitemapScope.Children);
+                    }
+
                     if (ancestors.Count < level)
                     {
                         return new Guid[0];
                     }
-
-                    ancestors.Reverse();
 
                     Guid levelPageId = ancestors[level - 1];
 
@@ -252,12 +264,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                         return GetDescendantsAndSelf(levelPageId);
                     }
 
-                    bool andSiblings = associationScope.ToString().EndsWith("AndSiblings");
-                    if (andSiblings)
-                    {
-                        Guid parentPageId = level == 1 ? Guid.Empty : ancestors[level - 1];
-                        return GetAssociatedPageIds(parentPageId, SitemapScope.Children);
-                    }
+                    
 
                     return new[] {levelPageId};
                 default:

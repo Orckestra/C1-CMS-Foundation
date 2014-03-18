@@ -167,7 +167,10 @@ namespace Composite.Data
 	        {
                 var page = PageManager.GetPageById(pageId);
 
-                yield return new PageNode(page, _sitemapNavigator);
+	            if (page != null)
+	            {
+                    yield return new PageNode(page, _sitemapNavigator);
+	            }
 	        }
         }
 
