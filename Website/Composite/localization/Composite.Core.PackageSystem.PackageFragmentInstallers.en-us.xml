@@ -37,6 +37,8 @@
   <string key="DataPackageFragmentUninstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
   <string key="DataPackageFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
   <string key="DataPackageFragmentUninstaller.MissingKeyProperty" value="The data type '{0}' does not contain a key property named '{1}'" />
+  <string key="DataPackageFragmentUninstaller.DataIsReferenced" value="Data item '{0}' of type {1} is referenced from a data item '{2}' of type '{3}'" />
+  <string key="DataPackageFragmentUninstaller.PageTypeIsReferenced" value="Page type '{0}' is referenced by page '{1}'" />
   <string key="DataTypePackageFragmentInstaller.OnlyOneElement" value="Only one 'Types' element allowed" />
   <string key="DataTypePackageFragmentInstaller.MissingElement" value="Missing 'Types' element" />
   <string key="DataTypePackageFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />

@@ -8,7 +8,8 @@ using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Core.Types;
-
+using Composite.Data.Types;
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
@@ -29,7 +30,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
-                validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.OnlyOneElement"));
+                validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_OnlyOneElement);
                 return validationResult;
             }
 
@@ -45,24 +46,24 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute dataScopeIdentifierAttribute = typeElement.Attribute("dataScopeIdentifier");
 
                     if (typeAttribute == null) 
-                    { 
-                        validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("type"), typeElement); 
+                    {
+                        validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_MissingAttribute("type"), typeElement); 
                         continue; 
                     }
 
                     if (dataScopeIdentifierAttribute == null) 
-                    { 
-                        validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("dataScopeIdentifier"), typeElement); 
+                    {
+                        validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_MissingAttribute("dataScopeIdentifier"), typeElement); 
                         continue; 
                     }
 
                     Type type = TypeManager.TryGetType(typeAttribute.Value);
                     if (type == null) continue;
 
-                    if (DataFacade.GetAllInterfaces().Contains(type) == false) continue;
+                    if (!DataFacade.GetAllInterfaces().Contains(type)) continue;
 
 
-                    DataScopeIdentifier dataScopeIdentifier = null;
+                    DataScopeIdentifier dataScopeIdentifier;
                     try
                     {
                         dataScopeIdentifier = DataScopeIdentifier.Deserialize(dataScopeIdentifierAttribute.Value);
@@ -87,7 +88,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         foreach (XElement keysElement in datasElement.Elements("Keys"))
                         {
                             bool allKeyPropertiesValidated = true;
-                            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+                            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
                             foreach (XElement keyElement in keysElement.Elements("Key"))
                             {
@@ -95,7 +96,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                 XAttribute keyValueAttribute = keyElement.Attribute("value");
 
 
-                                if ((keyNameAttribute == null) || (keyValueAttribute == null))
+                                if (keyNameAttribute == null || keyValueAttribute == null)
                                 {
                                     if (keyNameAttribute == null) validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("name"), keyElement);
                                     if (keyValueAttribute == null) validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("value"), keyElement);
@@ -141,10 +142,32 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                     bool addToDelete = true;
                                     foreach (IData referee in referees)
                                     {
-                                        if (this.UninstallerContext.IsPendingForDeletionData(referee) == false)
+                                        if (!this.UninstallerContext.IsPendingForDeletionData(referee))
                                         {
                                             addToDelete = false;
-                                            Log.LogWarning("DataPackageFragmentUninstaller", "Could not uninstall the data of the type '{0}'".FormatWith(type));
+
+                                            if (referee is IPage && data is IPageType)
+                                            {
+                                                string pathToPage;
+
+                                                using (new DataScope(referee.DataSourceId.PublicationScope, referee.DataSourceId.LocaleScope))
+                                                {
+                                                    pathToPage = GetPathToPage(referee as IPage);
+                                                }
+
+                                                validationResult.AddFatal(
+                                                    Texts.DataPackageFragmentUninstaller_PageTypeIsReferenced(data.GetLabel(), pathToPage));
+                                            }
+                                            else
+                                            {
+                                                var refereeType = referee.DataSourceId.InterfaceType;
+
+                                                validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_DataIsReferenced(
+                                                    data.GetLabel(),
+                                                    type.FullName,
+                                                    referee.GetLabel(),
+                                                    refereeType.FullName));
+                                            }
                                         }
                                     }
 
@@ -167,7 +190,22 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return validationResult;
         }
 
+        private static string GetPathToPage(IPage page)
+        {
+            var parentPageId = PageManager.GetParentId(page.Id);
 
+            if (parentPageId != Guid.Empty)
+            {
+                var parentPage = PageManager.GetPageById(parentPageId);
+
+                if (parentPage != null)
+                {
+                    return GetPathToPage(parentPage) + "/" + page.Title;
+                }
+            }
+
+            return page.Title;
+        }
 
         /// <exclude />
         public override void Uninstall()

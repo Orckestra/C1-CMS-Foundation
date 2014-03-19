@@ -447,6 +447,10 @@ namespace Composite.Core.ResourceSystem
  public static string DataPackageFragmentUninstaller_MissingAttribute(string parameter0) { return string.Format(T("DataPackageFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>&quot;The data type &apos;{0}&apos; does not contain a key property named &apos;{1}&apos;&quot;</summary> 
  public static string DataPackageFragmentUninstaller_MissingKeyProperty(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentUninstaller.MissingKeyProperty"), parameter0,parameter1); } 
+ /// <summary>&quot;Data item &apos;{0}&apos; of type {1} is referenced from a data item &apos;{2}&apos; of type &apos;{3}&apos;&quot;</summary> 
+ public static string DataPackageFragmentUninstaller_DataIsReferenced(string parameter0,string parameter1,string parameter2,string parameter3) { return string.Format(T("DataPackageFragmentUninstaller.DataIsReferenced"), parameter0,parameter1,parameter2,parameter3); } 
+ /// <summary>&quot;Page type &apos;{0}&apos; is referenced by page &apos;{1}&apos;&quot;</summary> 
+ public static string DataPackageFragmentUninstaller_PageTypeIsReferenced(string parameter0,string parameter1) { return string.Format(T("DataPackageFragmentUninstaller.PageTypeIsReferenced"), parameter0,parameter1); } 
  /// <summary>&quot;Only one &apos;Types&apos; element allowed&quot;</summary> 
  public static string DataTypePackageFragmentInstaller_OnlyOneElement { get { return T("DataTypePackageFragmentInstaller.OnlyOneElement"); } } 
  /// <summary>&quot;Missing &apos;Types&apos; element&quot;</summary> 
@@ -1799,6 +1803,12 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Dialogs_SystemTree_DetailedPaste_LabelInsertBefore { get { return T("Website.Dialogs.SystemTree.DetailedPaste.LabelInsertBefore"); } } 
  /// <summary>&quot;Insert after&quot;</summary> 
  public static string Website_Dialogs_SystemTree_DetailedPaste_LabelInsertAfter { get { return T("Website.Dialogs.SystemTree.DetailedPaste.LabelInsertAfter"); } } 
+ /// <summary>&quot;Basic view&quot;</summary> 
+ public static string Website_Dialogs_EditFunction_BasicView { get { return T("Website.Dialogs.EditFunction.BasicView"); } } 
+ /// <summary>&quot;Advanced view&quot;</summary> 
+ public static string Website_Dialogs_EditFunction_AdvancedView { get { return T("Website.Dialogs.EditFunction.AdvancedView"); } } 
+ /// <summary>&quot;This function has no parameters&quot;</summary> 
+ public static string Website_Dialogs_EditFunction_BasicView_NoParameters { get { return T("Website.Dialogs.EditFunction.BasicView.NoParameters"); } } 
  /// <summary>&quot;Edit image&quot;</summary> 
  public static string Website_Content_Views_Editors_ImageEditor_ImageEditor_LabelTitle { get { return T("Website.Content.Views.Editors.ImageEditor.ImageEditor.LabelTitle"); } } 
  /// <summary>&quot;File&quot;</summary> 
