@@ -17,9 +17,9 @@ namespace Composite.Core.Application
     [StructLayout(LayoutKind.Sequential)]
     struct SECURITY_ATTRIBUTES
     {
-        public int nLength;
+        public UInt32 nLength;
         public IntPtr lpSecurityDescriptor;
-        public int bInheritHandle;
+        public Int32 bInheritHandle;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -27,13 +27,13 @@ namespace Composite.Core.Application
     {
         public Int64 PerProcessUserTimeLimit;
         public Int64 PerJobUserTimeLimit;
-        public Int16 LimitFlags;
-        public UInt32 MinimumWorkingSetSize;
-        public UInt32 MaximumWorkingSetSize;
-        public Int16 ActiveProcessLimit;
-        public Int64 Affinity;
-        public Int16 PriorityClass;
-        public Int16 SchedulingClass;
+        public UInt32 LimitFlags;
+        public UIntPtr MinimumWorkingSetSize;
+        public UIntPtr MaximumWorkingSetSize;
+        public UInt32 ActiveProcessLimit;
+        public UIntPtr Affinity;
+        public UInt32 PriorityClass;
+        public UInt32 SchedulingClass;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -52,10 +52,10 @@ namespace Composite.Core.Application
     {
         public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
         public IO_COUNTERS IoInfo;
-        public UInt32 ProcessMemoryLimit;
-        public UInt32 JobMemoryLimit;
-        public UInt32 PeakProcessMemoryUsed;
-        public UInt32 PeakJobMemoryUsed;
+        public UIntPtr ProcessMemoryLimit;
+        public UIntPtr JobMemoryLimit;
+        public UIntPtr PeakProcessMemoryUsed;
+        public UIntPtr PeakJobMemoryUsed;
     }
 
     /// <summary>
