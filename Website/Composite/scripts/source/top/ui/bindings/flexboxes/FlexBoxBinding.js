@@ -268,9 +268,7 @@ FlexBoxBinding.prototype.flex = function ( ) {
 			var height = this._getSiblingsSpan ();
 			height = this._getCalculatedHeight () - height;
 			if ( !isNaN ( height ) && height >= 0 ) {
-				if ( height != this.bindingElement.offsetHeight ) {
-					this.bindingElement.style.height = String ( height ) + "px";
-				}
+				this.bindingElement.style.height = String ( height ) + "px";
 			}
 		}
 	}
