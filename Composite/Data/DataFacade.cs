@@ -542,7 +542,7 @@ namespace Composite.Data
 
             Expression<Func<T, bool>> lambdaExpression = GetPredicateExpressionByUniqueKey<T>(dataKeyPropertyCollection);
 
-            return query.SingleOrDefault(lambdaExpression);
+            return query.FirstOrDefault(lambdaExpression);
         }
 
 

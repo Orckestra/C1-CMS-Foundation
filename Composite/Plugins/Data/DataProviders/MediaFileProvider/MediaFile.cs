@@ -12,6 +12,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 	{
         private DataSourceId _dataSourceId;
         private IMediaFileData _innerFile;
+        private string _keyPath;
 
         // Loading values of "CreationTime and LastWrite time appears to be very slow, and therefore we have a lazy initialization for them
         private bool _creationTimeInitialized = false;
@@ -49,7 +50,14 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         public string KeyPath
         {
-            get { return this.GetKeyPath(); }
+            get
+            {
+                if (_keyPath == null)
+                {
+                    _keyPath = this.GetKeyPath();
+                }
+                return _keyPath;
+            }
         }
 
         public string CompositePath
