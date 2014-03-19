@@ -7314,9 +7314,7 @@ if(this.isFlexible==true){
 var _617=this._getSiblingsSpan();
 _617=this._getCalculatedHeight()-_617;
 if(!isNaN(_617)&&_617>=0){
-if(_617!=this.bindingElement.offsetHeight){
 this.bindingElement.style.height=String(_617)+"px";
-}
 }
 }
 }
