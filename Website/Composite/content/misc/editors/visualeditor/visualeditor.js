@@ -22,36 +22,7 @@ var config = {
 	auto_reset_designmode : true,
 	list_outdent_on_enter: true,
 	noneditable_leave_contenteditable: true,
-	init_instance_callback: onInstanceInitialize,
-	setup: function (editor) {
-		editor.on('PreInit', function (e) {
-			var ed = e.target;
-			var blockElementsMap = ed.schema.getBlockElements();
-			ed.dom.isBlock = function (node) {
-				// Fix for #5446
-				if (!node) {
-					return false;
-				}
-
-				if (node.nodeName.toLowerCase() == "img" && ed.dom.hasClass(node, "compositeFunctionWysiwygRepresentation")) {
-					return true;
-				}
-
-				// This function is called in module pattern style since it might be executed with the wrong this scope
-				var type = node.nodeType;
-
-				// If it's a node then check the type and use the nodeName
-				if (type) {
-					return !!(type === 1 && blockElementsMap[node.nodeName]);
-				}
-
-
-				return !!blockElementsMap[node];
-			};
-			//ReInit Formatter with our isBlock;
-			ed.formatter = new tinyMCE.Formatter(ed);
-		});
-	}
+	init_instance_callback 	: onInstanceInitialize
 };
 
 /*
