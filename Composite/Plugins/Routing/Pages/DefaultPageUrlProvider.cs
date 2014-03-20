@@ -721,10 +721,13 @@ namespace Composite.Plugins.Routing.Pages
         {
             var bindings = GetHostnameBindings();
 
+            bool knownHostname = urlSpace.Hostname != null 
+                                 && _hostnameBindings.Any(b => b.Hostname == urlSpace.Hostname);
+
             IHostnameBinding hostnameBinding = null;
 
             // Searching for a hostname binding matching either the root page, or current hostname/UrlSpace
-            if (!urlSpace.ForceRelativeUrls && bindings.Count > 0)
+            if (!urlSpace.ForceRelativeUrls && knownHostname)
             {
                 hostnameBinding = _hostnameBindings.FirstOrDefault(b => b.HomePageId == rootPage.Id && b.Culture == cultureInfo.Name)
                                   ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == rootPage.Id);
