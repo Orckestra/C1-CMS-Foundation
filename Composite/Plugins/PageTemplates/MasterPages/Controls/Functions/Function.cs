@@ -48,28 +48,13 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
         {
             Type returnType;
             object result;
-            string functionName = null;
+            string functionName = Name;
 
             var functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
 
             try
             {
-                functionName = Name;
-
-                IFunction function;
-
-                if (!FunctionFacade.TryGetFunction(out function, functionName))
-                {
-                    throw new InvalidOperationException("Invalid function name '{0}'".FormatWith(functionName));
-                }
-
-                returnType = function.ReturnType;
-
-                IDictionary<string, object> parameters = parseParameters();
-
-                VerifyParameterMatch(function, parameters);
-
-                result = ExecuteFunction(function, parameters, functionContextContainer);
+                result = GetValue(functionContextContainer, out returnType);
             }
             catch (Exception ex)
             {
@@ -144,6 +129,26 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             base.OnInit(e);
         }
 
+        private object GetValue(FunctionContextContainer functionContextContainer, out Type returnType)
+        {
+            string functionName = Name;
+
+            IFunction function;
+
+            if (!FunctionFacade.TryGetFunction(out function, functionName))
+            {
+                throw new InvalidOperationException("Invalid function name '{0}'".FormatWith(functionName));
+            }
+
+            returnType = function.ReturnType;
+
+            IDictionary<string, object> parameters = parseParameters(functionContextContainer);
+
+            VerifyParameterMatch(function, parameters);
+
+            return ExecuteFunction(function, parameters, functionContextContainer);
+        }
+
         /// <summary>
         /// Executes the function. Note that all the XhtmlParameters will have all the nested &gt;f:function /&lt; lazily evaluated
         /// </summary>
@@ -156,7 +161,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
                 foreach (KeyValuePair<string, object> kvp in parameters)
                 {
                     var value = kvp.Value;
-                    if (value != null && value is XhtmlDocument)
+                    if (value is XhtmlDocument)
                     {
                         parameterNodes.Add(new LazyParameterRuntimeTreeNode(kvp.Key,
                             () => ExecuteNestedFunctions(value as XhtmlDocument, functionContextContainer)));
@@ -193,7 +198,7 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             }
         }
 
-        private IDictionary<string, object> parseParameters()
+        private IDictionary<string, object> parseParameters(FunctionContextContainer functionContextContainer)
         {
             var result = new Dictionary<string, object>();
 
@@ -201,7 +206,21 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
             {
                 param.DataBind();
 
-                result.Add(param.Name, param.Value);
+                object value;
+
+                if (param.Controls.Count == 1 && param.Controls[0] is Function)
+                {
+                    var nestedFunction = param.Controls[0] as Function;
+
+                    Type returnType;
+                    value = nestedFunction.GetValue(functionContextContainer, out returnType);
+                }
+                else
+                {
+                    value = param.Value;
+                }
+
+                result.Add(param.Name, value);
             }
 
             return result;
