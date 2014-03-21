@@ -125,24 +125,24 @@ namespace Composite.Core.WebClient.Media
 
         private static Size DecodeJfif(BinaryReader binaryReader)
         {
-            while (binaryReader.ReadByte() == 0xff)
+            while (binaryReader.ReadByte() == byte.MaxValue)
             {
                 byte marker = binaryReader.ReadByte();
-                short chunkLength = binaryReader.ReadLittleEndianInt16();
+                ushort chunkLength = (ushort)binaryReader.ReadLittleEndianInt16();
 
-                if (marker == 0xc0)
+                if (marker == 0xc0 || marker == 0xc2)
                 {
                     binaryReader.ReadByte();
 
-                    int height = binaryReader.ReadLittleEndianInt16();
-                    int width = binaryReader.ReadLittleEndianInt16();
+                    short height = binaryReader.ReadLittleEndianInt16();
+                    short width = binaryReader.ReadLittleEndianInt16();
+
                     return new Size(width, height);
                 }
-
                 binaryReader.ReadBytes(chunkLength - 2);
             }
 
-            throw new ArgumentException(errorMessage);
+            throw new ArgumentException("Could not recognise image format.");
         }
     }
 }
