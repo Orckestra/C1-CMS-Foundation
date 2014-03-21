@@ -12,7 +12,6 @@ using Composite.Data.DynamicTypes;
 using Composite.C1Console.Users;
 using Composite.Core.Logging;
 using Composite.Data.Validation.ClientValidationRules;
-using Composite.Core.ResourceSystem;
 using Composite.Data.Types;
 
 
@@ -229,6 +228,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             SpecificTreeRefresher specificTreeRefresher = this.CreateSpecificTreeRefresher();
             specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+
+            var folderEntityToken = new AssociatedDataElementProviderHelperEntityToken(
+                TypeManager.SerializeType(typeof (IPage)),
+                "PageElementProvider",
+                page.Id.ToString(),
+                TypeManager.SerializeType(type));
+
+            SelectElement(folderEntityToken);
         }
 
 
