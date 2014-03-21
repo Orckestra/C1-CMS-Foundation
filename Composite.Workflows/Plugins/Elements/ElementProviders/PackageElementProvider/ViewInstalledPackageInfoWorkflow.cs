@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Composite.C1Console.Users;
+using Composite.Core.Configuration;
 using Composite.Core.PackageSystem;
 using Composite.Core.PackageSystem.Workflow;
 using Composite.C1Console.Forms.DataServices;
@@ -21,9 +23,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void viewStateCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            PackageElementProviderInstalledPackageItemEntityToken castedToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
+            var castedToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
 
-            if (this.BindingExist("InstalledPackageInformation") == false)
+            if (!this.BindingExist("InstalledPackageInformation"))
             {                
                 InstalledPackageInformation installedAddOnInformation =
                     (from info in PackageManager.GetInstalledPackages()
@@ -44,6 +46,25 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                 this.Bindings.Add("IsTrial", isTrial);
 
                 this.Bindings.Add("ShowPurchaseThisButton", isTrial && !string.IsNullOrWhiteSpace(licenseInfo.PurchaseUrl));
+
+                PackageDescription packageDescription = null;
+                try
+                {
+                    Guid packageId = new Guid(castedToken.Id);
+
+                    var allPackages = PackageServerFacade.GetAllPackageDescriptions(InstallationInformationFacade.InstallationId,
+                            UserSettings.CultureInfo);
+
+                    packageDescription = allPackages.FirstOrDefault(p => p.Id == packageId);
+                }
+                catch
+                {
+                }
+
+                if (packageDescription != null && !string.IsNullOrEmpty(packageDescription.ReadMoreUrl))
+                {
+                    this.Bindings.Add("ReadMoreUrl", packageDescription.ReadMoreUrl);
+                }
 
                 if (isTrial)
                 {
@@ -68,7 +89,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private void uninstallCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            PackageElementProviderInstalledPackageItemEntityToken castedToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
+            var castedToken = (PackageElementProviderInstalledPackageItemEntityToken)this.EntityToken;
 
             InstalledPackageInformation installedAddOnInformation =
                 (from info in PackageManager.GetInstalledPackages()

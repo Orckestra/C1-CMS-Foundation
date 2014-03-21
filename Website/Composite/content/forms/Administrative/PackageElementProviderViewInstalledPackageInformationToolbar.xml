@@ -4,6 +4,7 @@
 		<cms:binding name="CustomEvent01Handler" type="System.EventHandler" />
     <cms:binding name="ShowPurchaseThisButton" type="System.Boolean" />
     <cms:binding name="TrialPurchaseUrl" type="System.String" optional="true" />
+    <cms:binding name="ReadMoreUrl" type="System.String" optional="true" />
   </cms:bindings>
 	<cms:layout>
 		<PlaceHolder>
@@ -26,6 +27,18 @@
         </f:BooleanCheck.WhenTrue>
       </f:BooleanCheck>
 
+      <f:NullCheck>
+        <f:NullCheck.CheckValue>
+          <cms:read source="ReadMoreUrl" />
+        </f:NullCheck.CheckValue>
+        <f:NullCheck.WhenNotNull>
+          <ToolbarButton Label="${Composite.Plugins.PackageElementProvider, ViewAvailableInformation.Toolbar.ReadMoreLabel}" IconHandle="package-installer-readmore">
+            <ToolbarButton.LaunchUrl>
+              <cms:read source="ReadMoreUrl" />
+            </ToolbarButton.LaunchUrl>
+          </ToolbarButton>
+        </f:NullCheck.WhenNotNull>
+      </f:NullCheck>
     </PlaceHolder>
 	</cms:layout>
 </cms:formdefinition>
