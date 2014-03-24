@@ -12,6 +12,7 @@ using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Core.WebClient.Renderings;
 using Composite.Data.DynamicTypes;
 using Composite.Functions;
@@ -218,7 +219,7 @@ namespace Composite.Services
             foreach (XAttribute urlAttribute in urlAttributes)
             {
                 string url = urlAttribute.Value;
-                string urlWithoutProtocol = url.Substring(url.IndexOf("//") + 2);
+                string urlWithoutProtocol = url.Substring(url.IndexOf("//", StringComparison.Ordinal) + 2);
                 string urlHostWithPort = (urlWithoutProtocol.Contains("/") ? urlWithoutProtocol.Substring(0, urlWithoutProtocol.IndexOf('/')) : urlWithoutProtocol);
                 string urlHost = (urlHostWithPort.Contains(":") ? urlHostWithPort.Substring(0, urlHostWithPort.IndexOf(':')) : urlHostWithPort);
                 if (urlHost != HttpUtility.UrlDecode(urlHost))
@@ -519,7 +520,8 @@ namespace Composite.Services
             Guid functionPreviewTemplatePageId, 
             string functionPreviewPlaceholderName,
             string functionPreviewCssSelector,
-			int width)
+			int viewWidth,
+            bool editable)
         {
             string imageUrl = "~/Renderers/FunctionBox?type={0}&title={1}&description={2}&markup={3}&lang={4}&hash={5}".FormatWith(
                 HttpUtility.UrlEncode(type, Encoding.UTF8),
@@ -548,10 +550,15 @@ namespace Composite.Services
             {
                 imageUrl += "&css=" + functionPreviewCssSelector;
             }
-			if (width > 0)
+			if (viewWidth > 0)
 			{
-				imageUrl += "&width=" + width;
+				imageUrl += "&width=" + viewWidth;
 			}
+
+            if (editable)
+            {
+                imageUrl += "&editable=true";
+            }
 
             return UrlUtils.ResolvePublicUrl(imageUrl);
         }
@@ -591,14 +598,15 @@ namespace Composite.Services
             Guid pageTemplateId, 
             string functionPreviewPlaceholderName,
             string functionPreviewCssSelector,
-			int width)
+			int viewWidth)
         {
             string title;
             StringBuilder description = new StringBuilder();
             string compactMarkup = functionElement.ToString(SaveOptions.DisableFormatting);
 
             bool error = false;
-
+            bool hasParameters = false;
+            
             try
             {
                 FunctionRuntimeTreeNode functionNode = (FunctionRuntimeTreeNode)FunctionFacade.BuildTree(functionElement);
@@ -617,13 +625,15 @@ namespace Composite.Services
                 var setParams = functionNode.GetSetParameters().ToList();
                 if (setParams.Any()) description.Append("\n");
 
-                IEnumerable<ParameterProfile> parameterProfiles = FunctionFacade.GetFunction(functionName).ParameterProfiles;
+                ICollection<ParameterProfile> parameterProfiles = FunctionFacade.GetFunction(functionName).ParameterProfiles.Evaluate();
 
                 foreach (var setParam in setParams.Take(10))
                 {
                     AddParameterInformation(description, setParam, parameterProfiles);
                 }
-                
+
+                hasParameters = parameterProfiles.Any();
+                    
                 if (setParams.Count > 10)
                 {
                     description.AppendLine("....");
@@ -639,14 +649,19 @@ namespace Composite.Services
 
             string functionBoxUrl = error ? GetFunctionBoxImageUrl("warning", title, description.ToString())
                                           : GetFunctionBoxImageUrl_Markup("function", title, description.ToString(), functionElement.ToString(), 
-                                                                           pageId, pageTemplateId, functionPreviewPlaceholderName, functionPreviewCssSelector, width);
+                                                                           pageId, 
+                                                                           pageTemplateId, 
+                                                                           functionPreviewPlaceholderName, 
+                                                                           functionPreviewCssSelector, 
+                                                                           viewWidth,
+                                                                           hasParameters);
 
             XElement imagetag = new XElement(Namespaces.Xhtml + "img"
 				, new XAttribute("alt", _markupWysiwygRepresentationAlt)
 				, new XAttribute("data-markup", compactMarkup)
                 , new XAttribute("src", functionBoxUrl)
                 , new XAttribute("onload", "this.className += ' loaded';")
-				, new XAttribute("class", "compositeFunctionWysiwygRepresentation")
+				, new XAttribute("class", "compositeFunctionWysiwygRepresentation" + (hasParameters ? " editable" : ""))
                 );
 
             return imagetag;

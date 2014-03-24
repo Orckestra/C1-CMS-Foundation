@@ -15,15 +15,18 @@ namespace Composite.C1Console.Drawing
 {
     internal static class FunctionPresentation
     {
-        public static void GenerateFunctionBoxWithPreview(HttpContext context, string functionTitle, Bitmap previewImage, Stream outputStream)
+        public static void GenerateFunctionBoxWithPreview(
+            HttpContext context, 
+            string functionTitle, 
+            Bitmap previewImage,
+            bool showEditButton, 
+            Stream outputStream)
         {
-            using (var header = new FunctionHeader(functionTitle, false))
+            using (var header = new FunctionHeader(functionTitle, false, showEditButton))
             {
                 var headerSize = header.HeaderSize;
 
-#warning making functions wider than they are suck - but so does the heading when this happen. we need to keep original width - so what is the fix?
-//                Size totalSize = new Size(Math.Max(headerSize.Width, previewImage.Width), headerSize.Height + previewImage.Height);
-                Size totalSize = new Size(previewImage.Width, headerSize.Height + previewImage.Height);
+                Size totalSize = new Size(Math.Max(header.MinimumWidth, previewImage.Width), headerSize.Height + previewImage.Height);
 
                 using (var bitmap = new Bitmap(totalSize.Width, totalSize.Height))
                 using (var graphics = Graphics.FromImage(bitmap))
@@ -52,9 +55,15 @@ namespace Composite.C1Console.Drawing
             }
         }
 
-        public static void GenerateFunctionBoxWithText(HttpContext context, string functionTitle, bool isWarning, ICollection<string> lines, Stream outputStream)
+        public static void GenerateFunctionBoxWithText(
+            HttpContext context, 
+            string functionTitle, 
+            bool isWarning, 
+            bool showEditButton,
+            ICollection<string> lines, 
+            Stream outputStream)
         {
-            using (var header = new FunctionHeader(functionTitle, isWarning))
+            using (var header = new FunctionHeader(functionTitle, isWarning, showEditButton))
             {
                 var headerSize = header.HeaderSize;
 
@@ -155,6 +164,7 @@ namespace Composite.C1Console.Drawing
             private readonly Image _functionIcon;
 
             private readonly bool _isWarning;
+            private readonly bool _showEditButton;
 
             private static readonly string FunctionIconPath = GetIconPath("images/function.png");
             private static readonly string EditFunctionIconPath = GetIconPath("images/editfunction.png");
@@ -165,22 +175,35 @@ namespace Composite.C1Console.Drawing
                 return HostingEnvironment.MapPath(UrlUtils.ResolveAdminUrl(relativePath));
             }
 
-            public FunctionHeader(string title, bool isWarning)
+            public FunctionHeader(string title, bool isWarning, bool showEditButton)
             {
                 _title = title;
+                _showEditButton = showEditButton;
 
                 _titleFont = new Font("Helvetica", 12.0f, FontStyle.Regular);
                 _buttonFont = new Font("Helvetica", 9.0f, FontStyle.Bold);
 
                 _titleSize = TextRenderer.MeasureText(_title, _titleFont);
-                _editLabelSize = TextRenderer.MeasureText(_editLabel, _buttonFont);
 
                 _isWarning = isWarning;
                 _functionIcon = Bitmap.FromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
 
-                _titlePosition = new Point(15 + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
-                _headerWidth = _titlePosition.X + _titleSize.Width + 45 + _editLabelSize.Width + 20;
+                int leftPadding = 15;
+                _titlePosition = new Point(leftPadding + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
+
+                int editButtonSizeWithPaddings = 0;
+                if (showEditButton)
+                {
+                    _editLabelSize = TextRenderer.MeasureText(_editLabel, _buttonFont);
+                    editButtonSizeWithPaddings = _editLabelSize.Width + 45;
+                }
+
+                _headerWidth = _titlePosition.X + _titleSize.Width + editButtonSizeWithPaddings + 20;
+
+                MinimumWidth = _titlePosition.X + editButtonSizeWithPaddings;
             }
+
+            public int MinimumWidth { get; private set; }
 
             public Size HeaderSize { get { return new Size(_headerWidth, _headerHeight); } }
 
@@ -202,65 +225,69 @@ namespace Composite.C1Console.Drawing
                 }
 
                 // "Edit" label 
-                Point editLabelPosition = new Point(bitmapWidth - 25 - _editLabelSize.Width, (_headerHeight - _editLabelSize.Height) / 2);
-
-                using (var whiteBrush = new SolidBrush(Color.White))
+                if (_showEditButton)
                 {
-                    graphics.FillRectangle(whiteBrush, editLabelPosition.X - 50, 0, bitmapWidth - editLabelPosition.X + 50, _headerHeight);
-                }
-
-                using (var solidBrush = new SolidBrush(Color.Black))
-                {
-                    graphics.DrawString(_editLabel, _buttonFont, solidBrush, editLabelPosition);
-                }
-
-                int editFunctionIconY;
-                Size editFunctionIconSize;
-
-                const int labelRightPadding = 5;
-
-                // Edit function "pen" icon
-                using (var icon = (Bitmap)Image.FromFile(EditFunctionIconPath))
-                {
-                    editFunctionIconSize = icon.Size;
-                    editFunctionIconY = (_headerHeight - icon.Height) / 2;
-
-                    graphics.DrawImage(icon, editLabelPosition.X - icon.Width, editFunctionIconY);
-
-                    // Mirroring 5 px of the "pen" icon
-                    for (int x = 0; x < 5; x++)
+                    Point editLabelPosition = new Point(bitmapWidth - 25 - _editLabelSize.Width, (_headerHeight - _editLabelSize.Height) / 2);
+                
+                    using (var whiteBrush = new SolidBrush(Color.White))
                     {
-                        for (int y = 0; y < icon.Height; y++)
+                        graphics.FillRectangle(whiteBrush, editLabelPosition.X - 50, 0, bitmapWidth - editLabelPosition.X + 50, _headerHeight);
+                    }
+
+                    using (var solidBrush = new SolidBrush(Color.Black))
+                    {
+                        graphics.DrawString(_editLabel, _buttonFont, solidBrush, editLabelPosition);
+                    }
+
+                    int editFunctionIconY;
+                    Size editFunctionIconSize;
+
+                    const int labelRightPadding = 5;
+
+                    // Edit function "pen" icon
+                    using (var icon = (Bitmap)Image.FromFile(EditFunctionIconPath))
+                    {
+                        editFunctionIconSize = icon.Size;
+                        editFunctionIconY = (_headerHeight - icon.Height) / 2;
+
+                        graphics.DrawImage(icon, editLabelPosition.X - icon.Width, editFunctionIconY);
+
+                        // Mirroring 5 px of the "pen" icon
+                        for (int x = 0; x < 5; x++)
                         {
-                            bitmap.SetPixel(editLabelPosition.X + _editLabelSize.Width + labelRightPadding + x, editFunctionIconY + y,
-                                icon.GetPixel(4 - x, y));
+                            for (int y = 0; y < icon.Height; y++)
+                            {
+                                bitmap.SetPixel(editLabelPosition.X + _editLabelSize.Width + labelRightPadding + x, editFunctionIconY + y,
+                                    icon.GetPixel(4 - x, y));
+                            }
+                        }
+
+                        var borderColor = icon.GetPixel(10, 0);
+
+                        using (var pen = new Pen(borderColor))
+                        {
+                            // Top line for edit function link
+                            graphics.DrawLine(pen, editLabelPosition.X, editFunctionIconY, 
+                                                   editLabelPosition.X + _editLabelSize.Width + labelRightPadding, editFunctionIconY);
+
+                            // Bottom line for edit function link
+                            int bottomLineY = editFunctionIconY + icon.Height - 1;
+                            graphics.DrawLine(pen, editLabelPosition.X, bottomLineY,
+                                                   editLabelPosition.X + _editLabelSize.Width + labelRightPadding, bottomLineY);
                         }
                     }
 
-                    var borderColor = icon.GetPixel(10, 0);
-
-                    using (var pen = new Pen(borderColor))
+                    if (_isWarning)
                     {
-                        // Top line for edit function link
-                        graphics.DrawLine(pen, editLabelPosition.X, editFunctionIconY, 
-                                               editLabelPosition.X + _editLabelSize.Width + labelRightPadding, editFunctionIconY);
+                        // Making only the "Edit" button transparent
+                        var editFuncRect = new Rectangle(editLabelPosition.X - editFunctionIconSize.Width, editFunctionIconY,
+                            editFunctionIconSize.Width + _editLabelSize.Width + labelRightPadding + 5, editFunctionIconSize.Height);
 
-                        // Bottom line for edit function link
-                        int bottomLineY = editFunctionIconY + icon.Height - 1;
-                        graphics.DrawLine(pen, editLabelPosition.X, bottomLineY,
-                                               editLabelPosition.X + _editLabelSize.Width + labelRightPadding, bottomLineY);
+                        MakeBlackTransparent(bitmap, editFuncRect);
                     }
                 }
 
-                if (_isWarning)
-                {
-                    // Making only the "Edit" button transparent
-                    var editFuncRect = new Rectangle(editLabelPosition.X - editFunctionIconSize.Width, editFunctionIconY,
-                        editFunctionIconSize.Width + _editLabelSize.Width + labelRightPadding + 5, editFunctionIconSize.Height);
-
-                    MakeBlackTransparent(bitmap, editFuncRect);
-                }
-                else
+                if (!_isWarning)
                 {
                     MakeBlackTransparent(bitmap, new Rectangle(0, 0, bitmapWidth, _headerHeight));
                 }

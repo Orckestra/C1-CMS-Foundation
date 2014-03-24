@@ -49,6 +49,7 @@ namespace Composite.Core.WebClient
             try
             {
                 string title = context.Request["title"];
+                bool editable = context.Request["editable"] == "true";
 
                 Verify.That(!title.IsNullOrEmpty(), "Missing query string argument 'title'");
 
@@ -102,16 +103,16 @@ namespace Composite.Core.WebClient
                     {
                         if (previewImage != null)
                         {
-                            FunctionPresentation.GenerateFunctionBoxWithPreview(context, title, previewImage, context.Response.OutputStream);
+                            FunctionPresentation.GenerateFunctionBoxWithPreview(context, title, previewImage, editable, context.Response.OutputStream);
                         }
                         else
                         {
-                            FunctionPresentation.GenerateFunctionBoxWithText(context, title, false, textLines, context.Response.OutputStream);
+                            FunctionPresentation.GenerateFunctionBoxWithText(context, title, false, editable, textLines, context.Response.OutputStream);
                         }
                     }
                     else if (boxtype == "warning")
                     {
-                        FunctionPresentation.GenerateFunctionBoxWithText(context, title, true, textLines, context.Response.OutputStream);
+                        FunctionPresentation.GenerateFunctionBoxWithText(context, title, true, editable, textLines, context.Response.OutputStream);
                     }
                     else 
                     {
