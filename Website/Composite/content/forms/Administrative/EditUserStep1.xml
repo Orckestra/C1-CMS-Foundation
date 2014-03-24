@@ -28,6 +28,11 @@
               <cms:bind source="User.EncryptedPassword" />
             </TextBox.Text>
           </TextBox>
+          <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.NameLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.NameHelp}">
+            <TextBox.Text>
+              <cms:bind source="User.Name" />
+            </TextBox.Text>
+          </TextBox>
           <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.EmailLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.EmailHelp}">
             <TextBox.Text>
               <cms:bind source="User.Email" />

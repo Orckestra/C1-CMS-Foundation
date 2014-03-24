@@ -35,15 +35,20 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
-        [NotNullValidator()]
-        [Composite.Data.Validation.Validators.PasswordValidator()]
+        [NotNullValidator]
+        [PasswordValidator]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [ImmutableFieldId("{C0230DEB-5394-4819-BE18-A60CF5FA69F0}")]
         string EncryptedPassword { get; set; }
 
 
         /// <exclude />
-        // Field added in [C1 1.2 SP2 Patch 1]
+        [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]
+        [ImmutableFieldId("{20F756AD-F03D-453E-B464-D2C13051A647}")]
+        string Name { get; set; }
+
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]
         [ImmutableFieldId("{C0929E14-3FB8-4CE5-8374-997A7508DF80}")]
         string Email { get; set; }

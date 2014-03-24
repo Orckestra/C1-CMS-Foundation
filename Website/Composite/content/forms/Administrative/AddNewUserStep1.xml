@@ -19,6 +19,11 @@
 					<cms:bind source="NewUser.EncryptedPassword" />
 				</TextBox.Text>
 			</TextBox>
+      <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.NameLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.NameHelp}">
+        <TextBox.Text>
+          <cms:bind source="NewUser.Name" />
+        </TextBox.Text>
+      </TextBox>
       <TextBox Label="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.EmailLabel}" Help="${Composite.Management, Website.Forms.Administrative.AddNewUserStep1.EmailHelp}">
         <TextBox.Text>
           <cms:bind source="NewUser.Email" />

@@ -27,6 +27,8 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.UserNameHelp" value="User names can not be changed. This is a 'read only' field." />
 	<string key="Website.Forms.Administrative.EditUserStep1.PasswordLabel" value="Password" />
 	<string key="Website.Forms.Administrative.EditUserStep1.PasswordHelp" value="The password has to be more than 6 characters long." />
+  <string key="Website.Forms.Administrative.EditUserStep1.NameLabel" value="Name" />
+  <string key="Website.Forms.Administrative.EditUserStep1.NameHelp" value="The full name of the person using this account." />
 	<string key="Website.Forms.Administrative.EditUserStep1.EmailLabel" value="Email" />
 	<string key="Website.Forms.Administrative.EditUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
 	<string key="Website.Forms.Administrative.EditUserStep1.GroupLabel" value="Folder" />
@@ -72,10 +74,12 @@
 	<string key="AddNewUserWorkflow.UsernameDuplicateError" value="A user with the same name already exists" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup" value="Add New User" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameLabel" value="User name" />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameHelp" value="When you have created a new user the username cannot be changed" />
+	<string key="Website.Forms.Administrative.AddNewUserStep1.UserNameHelp" value="When you have created a new user the username cannot be changed." />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.PasswordLabel" value="Password" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.PasswordHelp" value="The password has to be more than 6 characters long." />
-	<string key="Website.Forms.Administrative.AddNewUserStep1.EmailLabel" value="Email address" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.NameLabel" value="Name" />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.NameHelp" value="The full name of the person using this account." />
+  <string key="Website.Forms.Administrative.AddNewUserStep1.EmailLabel" value="Email address" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.EmailHelp" value="The e-mail address of the user (optional)." />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupLabel" value="Folder" />
 	<string key="Website.Forms.Administrative.AddNewUserStep1.GroupHelp" value="If you enter a folder name that does not already exist a new folder will be created." />
