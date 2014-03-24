@@ -31,6 +31,13 @@ StageBinding.treeSelector = null;
 
 
 /**
+* The current placeholder width
+* @type {SystemTreeBinding}
+*/
+StageBinding.placeholderWidth = null;
+
+
+/**
  * Hide OR show a ViewDefinition on stage (dependant on its current status).
  * @param {string} handle
  */

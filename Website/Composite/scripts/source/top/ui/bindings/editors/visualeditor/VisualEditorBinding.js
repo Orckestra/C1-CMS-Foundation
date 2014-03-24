@@ -464,6 +464,8 @@ VisualEditorBinding.prototype._finalize = function () {
 	*/
 	this._tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent, this), { format: 'raw' });
 
+	this.updateBodyWidth();
+
 };
 
 /**
@@ -780,6 +782,11 @@ VisualEditorBinding.prototype.getImageTagForFunctionCall = function (markup) {
 	return XhtmlTransformationsService.GetImageTagForFunctionCall2(markup, this._previewPageId, this._previewTemplateId, this._previewPlaceholder, width);
 }
 
+/**
+ * Get effective width 
+ * @return {int}
+ */
+
 VisualEditorBinding.prototype.getEffectiveWidth = function () {
 	var body = this._tinyInstance.getBody();
 	var padding = CSSComputer.getPadding(body);
@@ -788,6 +795,28 @@ VisualEditorBinding.prototype.getEffectiveWidth = function () {
 	return Math.floor(width / 32) * 32;
 }
 
+/**
+ * Get placeholder width 
+ * @return {int}
+ */
+VisualEditorBinding.prototype.getPlaceholderWidth = function () {
+	
+	return StageBinding.placeholderWidth;
+}
+
+/**
+ * Update TinyMCE body width
+ * @param {int} content Structured markup
+  */
+VisualEditorBinding.prototype.updateBodyWidth = function (width) {
+
+	if (width == undefined) {
+		width = this.getPlaceholderWidth();
+	}
+	if (width) {
+		this._tinyInstance.getBody().style.maxWidth = (width + 52) + "px";
+	}
+}
 
 /**
 * Focus

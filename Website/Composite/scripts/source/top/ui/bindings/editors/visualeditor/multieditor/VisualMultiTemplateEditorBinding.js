@@ -270,7 +270,7 @@ VisualMultiTemplateEditorBinding.prototype._placeHolderSelected = function (name
 
 	VisualMultiTemplateEditorBinding.superclass._placeHolderSelected.call(this, name);
 
-	this.updatePlaceHoldeWidth(name);
+	this.updateBodyWidth();
 }
 
 /**
@@ -317,25 +317,47 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 	return VisualMultiTemplateEditorBinding.superclass.updateElement.call ( this, newelement, oldelement );
 }
 
+/**
+ @overloads {EditorBinding#updateElement}
+ */
+VisualMultiTemplateEditorBinding.prototype.enableDialogMode = function () {
+
+	StageBinding.placeholderWidth = this.getPlaceholderWidth();
+
+	VisualMultiTemplateEditorBinding.superclass.enableDialogMode.call(this);
+}
 
 /**
- * Update template preview information
+ @overloads {EditorBinding#disableDialogMode}
  */
-VisualMultiTemplateEditorBinding.prototype.updatePlaceHoldeWidth = function (placeholderId) {
-	if (placeholderId == undefined)
-	{
+VisualMultiTemplateEditorBinding.prototype.disableDialogMode = function () {
+
+	StageBinding.placeholderWidth = null;
+
+	VisualMultiTemplateEditorBinding.superclass.enableDialogMode.call(this);
+}
+
+/**
+ * Get placeholder width 
+ * @return {int}
+ */
+VisualMultiTemplateEditorBinding.prototype.getPlaceholderWidth = function (placeholderId) {
+	var placeholderWidth = null;
+	if (placeholderId == undefined) {
 		placeholderId = this._textareaname;
 	}
 	var self = this;
 	if (this._templatePreview) {
 		new List(this._templatePreview.Placeholders).each(function (placeholder) {
 			if (placeholder.PlaceholderId == placeholderId) {
-				self._tinyInstance.getBody().style.maxWidth = (placeholder.ClientRectangle.Width + 52) + "px";
+				placeholderWidth = placeholder.ClientRectangle.Width;
 				return false;
 			}
 		});
 	}
+	return placeholderWidth;
 }
+
 
 /**
  * Update template preview information
@@ -347,7 +369,7 @@ VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function () {
 	var self = this;
 	PageTemplateService.GetTemplatePreviewInformation(pageId, templateId, function (result) {
 		self._templatePreview = result;
-		self.updatePlaceHoldeWidth();
+		self.updateBodyWidth();
 	});
 }
 
