@@ -11,7 +11,7 @@ namespace Composite.Data.Caching.Foundation
     {
         private static readonly ConcurrentDictionary<Type, MethodInfo> _getEnumeratorMethodInfoCache = new ConcurrentDictionary<Type, MethodInfo>();
         private static readonly ConcurrentDictionary<Type, Type> _queryableTypeCache = new ConcurrentDictionary<Type, Type>();
-        private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<Type, MethodInfo>> _executeMethodInfoCache = new ConcurrentDictionary<Type, ConcurrentDictionary<Type, MethodInfo>>();
+        private static readonly ConcurrentDictionary<Tuple<Type, Type>, MethodInfo> _executeMethodInfoCache = new ConcurrentDictionary<Tuple<Type, Type>, MethodInfo>();
 
 
         static CachingQueryableCache()
@@ -41,15 +41,13 @@ namespace Composite.Data.Caching.Foundation
 
         public static MethodInfo GetCachingQueryableExecuteMethodInfo(Type genericType, Type expressionType)
         {
-            var methodInfos = _executeMethodInfoCache.GetOrAdd(genericType, t => new ConcurrentDictionary<Type, MethodInfo>());
-
-            return methodInfos.GetOrAdd(expressionType, eType =>
+            return _executeMethodInfoCache.GetOrAdd(new Tuple<Type, Type>(genericType, expressionType), pair =>
             {
-                Type type = typeof(CachingQueryable<>).MakeGenericType(new[] { genericType });
+                Type type = typeof(CachingQueryable<>).MakeGenericType(new[] { pair.Item1 });
 
                 var genericMethodInfo = type.GetMethods().First(method => method.Name == "Execute" && method.IsGenericMethod);
 
-                return genericMethodInfo.MakeGenericMethod(new[] { eType });
+                return genericMethodInfo.MakeGenericMethod(new[] { pair.Item2 });
             });
         }
 
