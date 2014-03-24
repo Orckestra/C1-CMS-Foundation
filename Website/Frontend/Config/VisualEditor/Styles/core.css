@@ -84,7 +84,7 @@ img.compositeFieldReferenceWysiwygRepresentation, img.compositeFunctionWysiwygRe
   outline: none;
 }
 
-img.compositeFieldReferenceWysiwygRepresentation.mceC1Focused, img.compositeHtmlWysiwygRepresentation.mceC1Focused {
+img.compositeFieldReferenceWysiwygRepresentation.mceC1Focused {
   outline: none;
 }
 img .compositeFunctionWysiwygRepresentation .mceC1Focused {
@@ -104,7 +104,7 @@ img.compositeFunctionWysiwygRepresentation:hover {
     z-index: 999;
 }
 
-img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentation {
+img.compositeFunctionWysiwygRepresentation {
     display:block;
     min-width: 100%;
     min-height:250px; 
@@ -118,16 +118,8 @@ img.compositeFunctionWysiwygRepresentation, img.compositeHtmlWysiwygRepresentati
     cursor: wait;
 }
 
-img.compositeFunctionWysiwygRepresentation:-moz-loading, img.compositeHtmlWysiwygRepresentation:-moz-loading {
-    width:100px; height:77px; 
 
-}
-img.compositeFunctionWysiwygRepresentation:not(:-moz-loadedg), img.compositeHtmlWysiwygRepresentation:not(:-moz-loading) {
-    background-image:none; 
-}
-
-
-img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepresentation.loaded {
+img.compositeFunctionWysiwygRepresentation.loaded{
     background-image:url('../../../../Composite/images/functionheaderbackground.png');
     background-size: 2400px 60px;
     background-repeat: no-repeat;
@@ -139,13 +131,11 @@ img.compositeFunctionWysiwygRepresentation.loaded, img.compositeHtmlWysiwygRepre
     cursor: default;
 }
 
-img.compositeFunctionWysiwygRepresentation.loaded:hover, 
-img.compositeHtmlWysiwygRepresentation.loaded:hover {
+img.compositeFunctionWysiwygRepresentation.loaded:hover {
     background-position: right -1100px top;
 }
 
-img.compositeFunctionWysiwygRepresentation.loaded.editHover,
-img.compositeHtmlWysiwygRepresentation.loaded.editHover {
+img.compositeFunctionWysiwygRepresentation.loaded.editHover {
     background-position: top left;
     cursor: pointer;
 }
