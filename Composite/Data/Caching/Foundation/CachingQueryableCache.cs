@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using Composite.C1Console.Events;
@@ -9,9 +9,9 @@ namespace Composite.Data.Caching.Foundation
 {
     internal static class CachingQueryableCache
     {
-        private static Dictionary<Type, MethodInfo> _cachingQueryableGetEnumeratorMethodInfoCache = new Dictionary<Type, MethodInfo>();
-        private static Dictionary<Type, Type> _cachingQueryableTypeCache = new Dictionary<Type, Type>();
-        private static Dictionary<Type, Dictionary<Type, MethodInfo>> _cachingQueryableExecuteMethodInfoCache = new Dictionary<Type, Dictionary<Type, MethodInfo>>();
+        private static readonly ConcurrentDictionary<Type, MethodInfo> _getEnumeratorMethodInfoCache = new ConcurrentDictionary<Type, MethodInfo>();
+        private static readonly ConcurrentDictionary<Type, Type> _queryableTypeCache = new ConcurrentDictionary<Type, Type>();
+        private static readonly ConcurrentDictionary<Type, ConcurrentDictionary<Type, MethodInfo>> _executeMethodInfoCache = new ConcurrentDictionary<Type, ConcurrentDictionary<Type, MethodInfo>>();
 
 
         static CachingQueryableCache()
@@ -23,73 +23,42 @@ namespace Composite.Data.Caching.Foundation
 
         public static MethodInfo GetCachingQueryableGetEnumeratorMethodInfo(Type genericType)
         {
-            MethodInfo methodInfo;
-
-            if (!_cachingQueryableGetEnumeratorMethodInfoCache.TryGetValue(genericType, out methodInfo))
+            return _getEnumeratorMethodInfoCache.GetOrAdd(genericType, genType =>
             {
-                Type type = typeof(CachingQueryable<>).MakeGenericType(new Type[] { genericType });
+                Type type = typeof (CachingQueryable<>).MakeGenericType(new[] {genType});
 
-                methodInfo = type.GetMethods().First(method => method.Name == "GetEnumerator");
-
-                _cachingQueryableGetEnumeratorMethodInfoCache.Add(genericType, methodInfo);
-            }
-
-            return methodInfo;
+                return type.GetMethods().First(method => method.Name == "GetEnumerator");
+            });
         }
 
 
 
         public static Type GetCachingQueryableType(Type elementType)
         {
-            Type type;
-
-            if (!_cachingQueryableTypeCache.TryGetValue(elementType, out type))
-            {
-                type = typeof(CachingQueryable<>).MakeGenericType(new [] { elementType });
-
-                _cachingQueryableTypeCache.Add(elementType, type);
-            }
-
-            return type;
+            return _queryableTypeCache.GetOrAdd(elementType, eType => typeof(CachingQueryable<>).MakeGenericType(new[] { eType }));
         }
-
-
+        
 
         public static MethodInfo GetCachingQueryableExecuteMethodInfo(Type genericType, Type expressionType)
         {
-            Dictionary<Type, MethodInfo> methodInfoes;
+            var methodInfos = _executeMethodInfoCache.GetOrAdd(genericType, t => new ConcurrentDictionary<Type, MethodInfo>());
 
-            if (!_cachingQueryableExecuteMethodInfoCache.TryGetValue(genericType, out methodInfoes))
+            return methodInfos.GetOrAdd(expressionType, eType =>
             {
-                methodInfoes = new Dictionary<Type, MethodInfo>();
+                Type type = typeof(CachingQueryable<>).MakeGenericType(new[] { genericType });
 
-                _cachingQueryableExecuteMethodInfoCache.Add(genericType, methodInfoes);
-            }
+                var genericMethodInfo = type.GetMethods().First(method => method.Name == "Execute" && method.IsGenericMethod);
 
-
-            MethodInfo methodInfo;
-
-            if (methodInfoes.TryGetValue(expressionType, out methodInfo) == false)
-            {
-                Type type = typeof(CachingQueryable<>).MakeGenericType(new [] { genericType });
-
-                methodInfo = type.GetMethods().First(method => method.Name == "Execute" && method.IsGenericMethod);
-
-                methodInfo = methodInfo.MakeGenericMethod(new [] { expressionType });
-
-                methodInfoes.Add(expressionType, methodInfo);
-            }
-
-            return methodInfo;
+                return genericMethodInfo.MakeGenericMethod(new[] { eType });
+            });
         }
-
 
 
         private static void Flush()
         {
-            _cachingQueryableGetEnumeratorMethodInfoCache = new Dictionary<Type, MethodInfo>();
-            _cachingQueryableTypeCache = new Dictionary<Type, Type>();
-            _cachingQueryableExecuteMethodInfoCache = new Dictionary<Type, Dictionary<Type, MethodInfo>>();
+            _getEnumeratorMethodInfoCache.Clear();
+            _queryableTypeCache.Clear();
+            _executeMethodInfoCache.Clear();
         }
     }
 }
