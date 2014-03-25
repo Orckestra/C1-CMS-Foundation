@@ -61,7 +61,7 @@ namespace Composite.Core.WebClient
                 C1Directory.CreateDirectory(folderPath);
             }
 
-            return C1Directory.GetCreationTime(mode);
+            return C1Directory.GetCreationTime(folderPath);
         }
 
         /// <summary>
