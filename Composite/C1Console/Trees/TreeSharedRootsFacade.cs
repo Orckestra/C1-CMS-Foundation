@@ -96,7 +96,7 @@ namespace Composite.C1Console.Trees
         {
             var sharedRootFolders = new Dictionary<string, CustomTreePerspectiveInfo>();
 
-            TreeNodeDynamicContext treeNodeDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down);
+            var treeNodeDynamicContext = new TreeNodeDynamicContext(TreeNodeDynamicContextDirection.Down);
             treeNodeDynamicContext.Piggybag = new Dictionary<string, string>();
 
             foreach (var tree in TreeFacade.AllTrees)
@@ -142,7 +142,11 @@ namespace Composite.C1Console.Trees
 
                     sharedRootFolders.Add(childTreeNode.Id, new CustomTreePerspectiveInfo
                     {
-                        AttachmentPoint = new NamedAttachmentPoint { AttachingPoint = new AttachingPoint(namedAttachmentPoint.AttachingPoint) },
+                        AttachmentPoint = new NamedAttachmentPoint
+                        {
+                            AttachingPoint = new AttachingPoint(namedAttachmentPoint.AttachingPoint),
+                            Position = namedAttachmentPoint.Position
+                        },
                         Element = element,
                         Trees = new List<Tree> { tree }
                     });

@@ -15,12 +15,12 @@ namespace Composite.C1Console.Elements.Plugins.ElementAttachingProvider
         /// <summary>
         /// At the top
         /// </summary>
-        Top,
+        Top = 0,
 
         /// <summary>
         /// At the bottom
         /// </summary>
-        Bottom
+        Bottom = 1
     }
 
 
