@@ -762,7 +762,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             }
                         }
                     });
-                    
+
+
+                    bool pageIsPublished;
+                    using (new DataScope(PublicationScope.Published))
+                    {
+                        pageIsPublished = PageManager.GetPageById(page.Id) != null;
+                    }
 
                     element.AddAction(new ElementAction(new ActionHandle(new ViewPublicActionToken()))
                     {
@@ -770,8 +776,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         {
                             Label = viewPublicPageLabel,
                             ToolTip = viewPublicPageToolTip,
-                            Icon = PageElementProvider.PageViewPublicScope,// (page.MajorVersionNumber == 0 ? PageElementProvider.PageViewPublicScopeDisabled : PageElementProvider.PageViewPublicScope),
-                            Disabled = false, //(page.MajorVersionNumber == 0),
+                            Icon = pageIsPublished ? PageViewPublicScope : PageViewPublicScopeDisabled,
+                            Disabled = !pageIsPublished,
                             ActionLocation = new ActionLocation
                             {
                                 ActionType = ActionType.Other,
