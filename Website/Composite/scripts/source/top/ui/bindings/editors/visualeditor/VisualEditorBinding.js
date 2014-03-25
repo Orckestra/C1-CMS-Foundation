@@ -335,8 +335,8 @@ VisualEditorBinding.prototype.onBindingAttach = function () {
 	VisualEditorBinding.superclass.onBindingAttach.call ( this );
 	
 	this.subscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
-	
-	// this._parseDOMProperties ();
+	this.subscribe ( this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST);
+
 };
 
 /**
@@ -415,6 +415,10 @@ VisualEditorBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 				
 				this.unsubscribe ( BroadcastMessages.TINYMCE_INITIALIZED );
 			}
+			break;
+
+		case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
+			this.handleCommand("CompositeUpdateLayout", false, null);
 			break;
 	}
 };
