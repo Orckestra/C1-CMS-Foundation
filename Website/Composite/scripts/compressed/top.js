@@ -27162,6 +27162,7 @@ this._previewTemplateId="00000000-0000-0000-0000-000000000000";
 this._previewPlaceholder=this.getProperty("previewplaceholder");
 VisualEditorBinding.superclass.onBindingAttach.call(this);
 this.subscribe(BroadcastMessages.TINYMCE_INITIALIZED);
+this.subscribe(this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST);
 };
 VisualEditorBinding.prototype.toString=function(){
 return "[VisualEditorBinding]";
@@ -27181,6 +27182,9 @@ this.initializeEditorComponents(_104c);
 this._initialize();
 this.unsubscribe(BroadcastMessages.TINYMCE_INITIALIZED);
 }
+break;
+case this.bindingWindow.WindowManager.WINDOW_RESIZED_BROADCAST:
+this.handleCommand("CompositeUpdateLayout",false,null);
 break;
 }
 };
