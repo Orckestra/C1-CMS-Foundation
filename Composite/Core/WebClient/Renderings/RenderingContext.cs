@@ -94,7 +94,7 @@ namespace Composite.Core.WebClient.Renderings
                 {
                     if (responseHandling.RedirectRequesterTo != null)
                     {
-                        response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
+                        response.Redirect(responseHandling.RedirectRequesterTo.ToString(), false);
                     }
 
                     httpContext.ApplicationInstance.CompleteRequest();

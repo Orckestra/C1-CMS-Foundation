@@ -89,7 +89,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
 
             if (redirecting)
             {
-                context.Response.Redirect(responseHandling.RedirectRequesterTo.AbsoluteUri, false);
+                context.Response.Redirect(responseHandling.RedirectRequesterTo.ToString(), false);
             }
 
             if (redirecting || responseHandling.EndRequest)
