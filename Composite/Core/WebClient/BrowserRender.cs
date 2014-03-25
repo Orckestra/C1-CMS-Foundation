@@ -43,7 +43,7 @@ namespace Composite.Core.WebClient
         private static PhantomServer _server;
         private static Timer _recycleTimer;
         private static DateTime _lastUsageDate = DateTime.MinValue;
-        private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromMinutes(10.0);
+        private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromMinutes(9.75);
         private const int RecycleTimerInterval_ms = 10000;
 
 
