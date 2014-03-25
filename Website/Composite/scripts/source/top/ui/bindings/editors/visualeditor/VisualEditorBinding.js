@@ -65,7 +65,7 @@ VisualEditorBinding.getTinyContent = function ( content, binding ) {
 	/*
 	 * Some content seems to be needed for the webservice to return valid fragment.
 	 */
-	if ( content == null || content == "" ) {
+	if (content == null || !content.replace(/\s*/gm, '').length) {
 		content = VisualEditorBinding.DEFAULT_CONTENT;
 	}
 	
@@ -444,13 +444,6 @@ VisualEditorBinding.prototype._finalize = function () {
 	this._maybeShowEditor();
 
 	/*
-	* Some kind of devilry going on with the server...
-	*/
-	if (this._startContent == " ") {
-		this._startContent = VisualEditorBinding.DEFAULT_CONTENT;
-	}
-
-	/*
 	* Normalize start content and extract HEAD and BODY section before we 
 	* feed it to TinyMCE. Normalization is required while old solutions 
 	* are upgraded to the new setup (with HEAD and BODY sections). 
@@ -462,7 +455,13 @@ VisualEditorBinding.prototype._finalize = function () {
 	* Inject BODY markup into TinyMCE. From now on, injection  
 	* is handled by the VisualEditorPageBinding.
 	*/
-	this._tinyInstance.setContent(VisualEditorBinding.getTinyContent(this._startContent, this), { format: 'raw' });
+	var tinyContent = VisualEditorBinding.getTinyContent(this._startContent, this);
+	if (tinyContent.replace(/\s*/gm, '').length == 0)
+	{
+		tinyContent = VisualEditorBinding.DEFAULT_CONTENT;
+	}
+
+	this._tinyInstance.setContent(tinyContent, { format: 'raw' });
 
 	this.updateBodyWidth();
 
