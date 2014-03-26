@@ -528,19 +528,13 @@ window.MessageQueue = new function () {
 		if (method == "question") {
 			throw "Not supported!";
 		} else {
-			// some problem with focusing in Chrome
-			if (Client.isWebKit) {
-				alert(params.Title + "\n" + params.Message);
-			}
-			else {
-				Dialog[method](params.Title, params.Message, null, {
-					handleDialogResponse: function () {
-						setTimeout(function () {
-							MessageQueue._nextAction();
-						}, 250);
-					}
-				});
-			}
+			Dialog[method](params.Title, params.Message, null, {
+				handleDialogResponse: function () {
+					setTimeout(function () {
+						MessageQueue._nextAction();
+					}, 250);
+				}
+			});
 		}
 	}
 
