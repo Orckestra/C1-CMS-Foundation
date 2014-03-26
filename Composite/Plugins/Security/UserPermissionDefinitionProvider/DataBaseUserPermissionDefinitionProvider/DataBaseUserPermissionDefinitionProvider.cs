@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Transactions;
-using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Data.Types;
@@ -116,20 +115,30 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
         public void RemoveUserPermissionDefinition(UserToken userToken, string serializedEntityToken)
         {
             string username = userToken.Username;
+
             var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
-                var userPermissionDefinitionsToDelete =
-                    DataFacade.GetData<IUserPermissionDefinition>()
+                IList<IUserPermissionDefinition> toDelete;
+                if (entityToken.IsValid())
+                {
+                    toDelete = DataFacade.GetData<IUserPermissionDefinition>()
                         .Where(upd => upd.Username == username)
                         .ToList()
                         .Where(d => entityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
                         .ToList();
-
-                if (userPermissionDefinitionsToDelete.Any())
+                }
+                else
                 {
-                    DataFacade.Delete<IUserPermissionDefinition>(userPermissionDefinitionsToDelete);
+                    toDelete = DataFacade.GetData<IUserPermissionDefinition>()
+                        .Where(upd => upd.Username == username && upd.SerializedEntityToken == serializedEntityToken)
+                        .ToList();
+                }
+
+                if (toDelete.Count > 0)
+                {
+                    DataFacade.Delete<IUserPermissionDefinition>(toDelete);
                 }
 
                 transactionScope.Complete();

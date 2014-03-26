@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Transactions;
-using Composite.Core.Collections.Generic;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Data.Types;
@@ -127,18 +126,27 @@ namespace Composite.Plugins.Security.UserGroupPermissionDefinitionProvider.DataB
         {
             var entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
-                var userGroupPermissionDefinitionsToDelete =
-                    DataFacade.GetData<IUserGroupPermissionDefinition>()
+                IList<IUserGroupPermissionDefinition> toDelete;
+
+                if (entityToken.IsValid())
+                {
+                    toDelete = DataFacade.GetData<IUserGroupPermissionDefinition>()
                         .Where(ugpd => ugpd.UserGroupId == userGroupId)
                         .ToList()
                         .Where(d => entityToken.Equals(DeserializeSilent(d.SerializedEntityToken)))
                         .ToList();
-
-                if (userGroupPermissionDefinitionsToDelete.Any())
+                }
+                else
                 {
-                    DataFacade.Delete<IUserGroupPermissionDefinition>(userGroupPermissionDefinitionsToDelete);
+                    toDelete = DataFacade.GetData<IUserGroupPermissionDefinition>()
+                        .Where(ugpd => ugpd.UserGroupId == userGroupId && ugpd.SerializedEntityToken == serializedEntityToken).ToList();
+                }
+
+                if (toDelete.Any())
+                {
+                    DataFacade.Delete<IUserGroupPermissionDefinition>(toDelete);
                 }
 
                 transactionScope.Complete();
