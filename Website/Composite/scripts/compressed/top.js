@@ -30329,15 +30329,11 @@ var _12a6=_12a5.DialogType.toLowerCase();
 if(_12a6=="question"){
 throw "Not supported!";
 }else{
-if(Client.isWebKit){
-alert(_12a5.Title+"\n"+_12a5.Message);
-}else{
 Dialog[_12a6](_12a5.Title,_12a5.Message,null,{handleDialogResponse:function(){
 setTimeout(function(){
 MessageQueue._nextAction();
 },250);
 }});
-}
 }
 }
 function openViewDefinition(_12a7){
