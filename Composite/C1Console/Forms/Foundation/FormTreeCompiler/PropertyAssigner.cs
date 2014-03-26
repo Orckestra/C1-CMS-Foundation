@@ -60,7 +60,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         {
             if (property.XmlSourceNodeInformation.TagName.Contains(":"))
             {
-                
+
             }
 
             if ((property.InclosingProducerName != "") && (element.XmlSourceNodeInformation.Name != property.InclosingProducerName)) throw new FormCompileException(string.Format("The inclosing tag does not match the embedded property tag name {0}", propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
@@ -68,10 +68,10 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             Type producerType = element.Producer.GetType();
 
             PropertyInfo propertyInfo = producerType.GetProperty(propertyName);
-            if (null == propertyInfo) 
+            if (null == propertyInfo)
             {
                 if (property.IsNamespaceDeclaration) return; // Ignore it
-                
+
                 throw new FormCompileException(string.Format("The producer {0} does not have property named {1}", producerType.ToString(), propertyName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
             }
 
@@ -141,8 +141,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                             if (!listAddParmInfo[0].ParameterType.IsInstanceOfType(value))
                             {
                                 throw new FormCompileException(string.Format(
-                                    "The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}", 
-                                    listAddParmInfo[0].ParameterType, propertyName, property.Value.GetType()), 
+                                    "The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}",
+                                    listAddParmInfo[0].ParameterType, propertyName, property.Value.GetType()),
                                     element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
                             }
 
@@ -157,8 +157,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                             if (!listAddParmInfo[0].ParameterType.IsInstanceOfType(property.Value))
                             {
                                 throw new FormCompileException(string.Format(
-                                    "The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}", 
-                                    listAddParmInfo[0].ParameterType, propertyName, property.Value.GetType()), 
+                                    "The parameter type {0} for the method 'Add' on the return type of the property {1} does not match the value type {2}",
+                                    listAddParmInfo[0].ParameterType, propertyName, property.Value.GetType()),
                                     element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
                             }
 
@@ -222,7 +222,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                         {
                             parm = property.Value;
                         }
-                    }                    
+                    }
                     else
                     {
                         parm = ValueTypeConverter.Convert(property.Value, getMethodInfo.ReturnType);
@@ -331,7 +331,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             if (bindingObject != null)
             {
                 Type bindingObjectType = bindingObject.GetType();
-                if (bindType.IsAssignableFrom(bindingObjectType) == false) throw new FormCompileException(string.Format("The binding object named '{0}' from the input dictionary is not of expected type '{1}', but '{2}'", bindSourceName, bindType.FullName, bindingObjectType.FullName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
+                if (!bindType.IsAssignableOrLazyFrom(bindingObjectType)) throw new FormCompileException(string.Format("The binding object named '{0}' from the input dictionary is not of expected type '{1}', but '{2}'", bindSourceName, bindType.FullName, bindingObjectType.FullName), element.XmlSourceNodeInformation, property.XmlSourceNodeInformation);
             }
 
             if (makeBinding)

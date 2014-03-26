@@ -106,6 +106,11 @@ namespace CompositeEditFunctionCall
 	                parameterValue = parameterProfile.GetDefaultValue();
 	            }
 
+                if (parameterProfile.Type.IsLazyGenericType() && parameterValue != null)
+                {
+                    parameterValue = parameterProfile.Type.GetProperty("Value").GetGetMethod().Invoke(parameterValue, null);
+                }
+
                 bindings.Add(parameterProfile.Name, parameterValue);
 	        }
             

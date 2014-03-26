@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Composite.C1Console.Forms;
-using Composite.Functions;
-using System.Xml.Linq;
-using Composite.Core.Xml;
-using System.Xml;
-using Composite.C1Console.Forms.WebChannel;
 using System.Web.UI;
+using System.Xml;
+using System.Xml.Linq;
+
+using Composite.C1Console.Forms;
+using Composite.C1Console.Forms.WebChannel;
+using Composite.Core.Types;
+using Composite.Core.Xml;
 using Composite.Data.Validation.ClientValidationRules;
+using Composite.Functions;
+
 
 namespace Composite.Core.WebClient
 {
@@ -46,14 +48,16 @@ namespace Composite.Core.WebClient
 
             foreach (ParameterProfile parameterProfile in parameterProfiles.Where(f=>f.WidgetFunction!=null))
             {
+                IWidgetFunction widgetFunction = parameterProfile.WidgetFunction;
+
+                Type bindingType = widgetFunction != null && parameterProfile.Type.IsLazyGenericType() ? 
+                                    widgetFunction.ReturnType : parameterProfile.Type;
+
                 bindingsDeclaration.Add(
                     new XElement(Namespaces.BindingForms10 + "binding",
                         new XAttribute("optional", true),
                         new XAttribute("name", parameterProfile.Name),
-                        new XAttribute("type", parameterProfile.Type.AssemblyQualifiedName)));
-//                        new XAttribute("type", typeof(object).AssemblyQualifiedName)));
-
-                IWidgetFunction widgetFunction = parameterProfile.WidgetFunction;
+                        new XAttribute("type", bindingType.AssemblyQualifiedName)));
 
                 FunctionContextContainer context = new FunctionContextContainer();
                 XElement uiMarkup = FunctionFacade.GetWidgetMarkup(widgetFunction, parameterProfile.Type, parameterProfile.WidgetFunctionParameters, parameterProfile.Label, parameterProfile.HelpDefinition, parameterProfile.Name, context);

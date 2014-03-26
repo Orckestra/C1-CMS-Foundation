@@ -80,6 +80,19 @@ namespace Composite.Functions
                 }
             }
 
+            if (type.IsLazyGenericType())
+            {
+                var lazyType = type.GetGenericArguments().First();
+
+                var provider = GetDefaultWidgetFunctionProviderByType(lazyType, required);
+
+                if (provider!=null)
+                {
+                    return provider;
+                }
+            }
+
+
             return null;
         }
 
@@ -451,7 +464,7 @@ namespace Composite.Functions
 
             public Type ReturnType
             {
-                get { throw new NotImplementedException(); }
+                get { return typeof(object); }
             }
 
             public IEnumerable<ParameterProfile> ParameterProfiles

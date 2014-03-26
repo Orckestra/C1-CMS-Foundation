@@ -51,8 +51,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
                 Type paramType = parameterProfile.Type;
 
                 if (paramType.IsSubclassOf(typeof(XContainer))
-                    || (paramType.IsGenericType
-                        && paramType.GetGenericTypeDefinition() == typeof(Lazy<>)
+                    || (paramType.IsLazyGenericType()
                         && paramType.GetGenericArguments()[0].IsSubclassOf(typeof(XContainer))))
                 {
                     return ValueTypeConverter.Convert(parameterNode.Elements().First(), parameterProfile.Type);

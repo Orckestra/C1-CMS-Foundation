@@ -52,7 +52,7 @@ namespace Composite.Core.Types
                 return value;
             }
 
-            if (IsLazy(targetType) && !IsLazy(value.GetType()))
+            if (targetType.IsLazyGenericType() && !value.GetType().IsLazyGenericType())
             {
                 Type genericArgument = targetType.GetGenericArguments()[0];
 
@@ -242,11 +242,6 @@ namespace Composite.Core.Types
         private static Lazy<T> NewLazyObject<T>(Func<object> func)
         {
             return new Lazy<T>(() => (T)func(), true);
-        }
-
-        private static bool IsLazy(Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>);
         }
 
         private static bool IsOneOfTheHandledValueTypes(Type type)

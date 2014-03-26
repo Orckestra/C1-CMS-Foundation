@@ -1119,6 +1119,11 @@ public partial class functioneditor : Composite.Core.WebClient.XhtmlPage
 
         object parameterValue = FunctionMarkupHelper.GetParameterValue(parameterNode, parameterProfile);
 
+        if (parameterProfile.Type.IsLazyGenericType() && parameterValue != null)
+        {
+            parameterValue = parameterProfile.Type.GetProperty("Value").GetGetMethod().Invoke(parameterValue, null);
+        }
+
         // Adding a widget
         var bindings = new Dictionary<string, object> { { parameterProfile.Name, parameterValue } };
 
