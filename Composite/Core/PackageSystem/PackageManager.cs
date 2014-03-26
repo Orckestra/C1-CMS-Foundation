@@ -27,14 +27,14 @@ namespace Composite.Core.PackageSystem
         {
             string baseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory);
 
-            if (C1Directory.Exists(baseDirectory) == false) yield break;
+            if (!C1Directory.Exists(baseDirectory)) yield break;
 
             string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
-            foreach (string packageDirecoty in packageDirectories)
+            foreach (string packageDirectory in packageDirectories)
             {
-                if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)))
+                if (C1File.Exists(Path.Combine(packageDirectory, PackageSystemSettings.InstalledFilename)))
                 {
-                    string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
+                    string filename = Path.Combine(packageDirectory, PackageSystemSettings.PackageInformationFilename);
 
                     if (C1File.Exists(filename))
                     {
@@ -63,15 +63,21 @@ namespace Composite.Core.PackageSystem
                         SystemLockingType systemLockingType;
                         if (systemLockingAttribute.TryDeserialize(out systemLockingType) == false) throw new InvalidOperationException("The systemLocking attibute value is wrong");
 
-                        string path = packageDirecoty.Remove(0, baseDirectory.Length);
+                        string path = packageDirectory.Remove(0, baseDirectory.Length);
                         if (path.StartsWith("\\"))
                         {
                             path = path.Remove(0, 1);
                         }
 
+                        Guid packageId;
+                        if (!Guid.TryParse(path, out packageId))
+                        {
+                            continue;
+                        }
+
                         yield return new InstalledPackageInformation
                         {
-                            Id = new Guid(path),
+                            Id = packageId,
                             Name = nameAttribute.Value,
                             GroupName = groupNameAttribute.Value,
                             Version = versionAttribute.Value,
@@ -86,7 +92,7 @@ namespace Composite.Core.PackageSystem
                             ReloadConsoleOnCompletion = (bool)reloadConsoleOnCompletionAttribute,
                             SystemLockingType = systemLockingType,
                             PackageServerAddress = packageServerAddressAttribute != null ? packageServerAddressAttribute.Value : null,
-                            PackageInstallPath = packageDirecoty
+                            PackageInstallPath = packageDirectory
                         };
                     }
                     else
@@ -184,6 +190,7 @@ namespace Composite.Core.PackageSystem
                             GetText("PackageManager.CompositeVersionMisMatch")) }, zipFilename);
                 }
 
+                bool updatingInstalledPackage = false;
                 if (IsInstalled(packageInformation.Id))
                 {
                     string currentVersionString = GetCurrentVersion(packageInformation.Id);
@@ -203,9 +210,19 @@ namespace Composite.Core.PackageSystem
                                     new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, validationError)
                                 }, zipFilename);
                     }
+
+                    updatingInstalledPackage = true;
                 }
 
+                string originalInstallDirectory = null;
                 string packageInstallDirectory = CreatePackageDirectoryName(packageInformation);
+
+                if (updatingInstalledPackage)
+                {
+                    originalInstallDirectory = packageInstallDirectory;
+                    packageInstallDirectory += "-" + packageInformation.Version;
+                }
+
                 C1Directory.CreateDirectory(packageInstallDirectory);
 
                 string packageZipFilename = Path.Combine(packageInstallDirectory, Path.GetFileName(zipFilename));
@@ -245,7 +262,14 @@ namespace Composite.Core.PackageSystem
 
                 var packageInstaller = new PackageInstaller(new PackageInstallerUninstallerFactory(), packageZipFilename, packageInstallDirectory, TempDirectoryFacade.CreateTempDirectory(), packageInformation);
 
-                return new PackageManagerInstallProcess(packageInstaller, packageInformation.SystemLockingType, zipFilename, packageInstallDirectory, packageInformation.Name, packageInformation.Id);
+                return new PackageManagerInstallProcess(
+                    packageInstaller, 
+                    packageInformation.SystemLockingType, 
+                    zipFilename, 
+                    packageInstallDirectory, 
+                    packageInformation.Name, 
+                    packageInformation.Id,
+                    originalInstallDirectory);
             }
             catch (Exception ex)
             {

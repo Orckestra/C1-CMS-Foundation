@@ -275,13 +275,13 @@ namespace Composite.Core.PackageSystem
             {
                 exception = ex;
             }
-            if (exception != null) return new PackageFragmentValidationResult[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception) };
+            if (exception != null) return new [] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, exception) };
 
             PackageAssemblyHandler.ClearAssemblyList();
 
             XElement installElement;
             PackageFragmentValidationResult packageFragmentValidationResult = XmlHelper.LoadInstallXml(this.ZipFilename, out installElement);
-            if (packageFragmentValidationResult != null) return new PackageFragmentValidationResult[] { packageFragmentValidationResult };
+            if (packageFragmentValidationResult != null) return new [] { packageFragmentValidationResult };
 
             XElement packageFragmentInstallerBinariesElement = installElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallerBinariesElementName));
             if (packageFragmentInstallerBinariesElement != null)
@@ -291,7 +291,7 @@ namespace Composite.Core.PackageSystem
             }
 
             XElement packageFragmentInstallersElement = installElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallersElementName));
-            if (packageFragmentInstallersElement == null) return new PackageFragmentValidationResult[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The {0} file is wrongly formattet", PackageSystemSettings.InstallFilename)) };
+            if (packageFragmentInstallersElement == null) return new [] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The {0} file is wrongly formatted", PackageSystemSettings.InstallFilename)) };
 
             var result2 = LoadPackageFragmentInstallers(packageFragmentInstallersElement);
             if (result2.Count > 0) return result2;
@@ -303,14 +303,24 @@ namespace Composite.Core.PackageSystem
 
         private IEnumerable<PackageFragmentValidationResult> LoadPackageFragmentInstallerBinaries(XElement packageFragmentInstallerBinariesElement)
         {
+            var binaryElements = packageFragmentInstallerBinariesElement.Elements(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace,
+                                        PackageSystemSettings.PackageFragmentInstallerBinariesAddElementName)).ToList();
+
+            if (!binaryElements.Any())
+            {
+                return new PackageFragmentValidationResult[0];
+            }
+
             string binariesDirectory = Path.Combine(this.PackageInstallDirectory, PackageSystemSettings.BinariesDirectoryName);
 
-            if (C1Directory.Exists(binariesDirectory) == false)
+            if (!C1Directory.Exists(binariesDirectory))
             {
                 C1Directory.CreateDirectory(binariesDirectory);
             }
 
-            foreach (XElement element in packageFragmentInstallerBinariesElement.Elements(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentInstallerBinariesAddElementName)))
+            var result = new List<PackageFragmentValidationResult>();
+
+            foreach (XElement element in binaryElements)
             {
                 XAttribute pathAttribute = element.Attribute(PackageSystemSettings.PathAttributeName);
 
@@ -318,9 +328,9 @@ namespace Composite.Core.PackageSystem
                 string targetFilename = Path.Combine(binariesDirectory, Path.GetFileName(sourceFilename));
 
                 ZipFileSystem zipFileSystem = new ZipFileSystem(this.ZipFilename);
-                if (zipFileSystem.ContainsFile(sourceFilename) == false)
+                if (!zipFileSystem.ContainsFile(sourceFilename))
                 {
-                    yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The file '{0}' is missing from the zipfile", sourceFilename)); 
+                    result.AddFatal(string.Format("The file '{0}' is missing from the zipfile", sourceFilename));
                     continue;
                 }
 
@@ -337,7 +347,7 @@ namespace Composite.Core.PackageSystem
 
                     if(!success)
                     {
-                        yield return new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, "Access denied to file '{0}'".FormatWith(targetFilename)); 
+                        result.AddFatal("Access denied to file '{0}'".FormatWith(targetFilename));
                         continue;
                     }
                 }
@@ -347,10 +357,12 @@ namespace Composite.Core.PackageSystem
                 string newTargetFilename = Path.Combine(this.TempDirectory, Path.GetFileName(targetFilename));
                 C1File.Copy(targetFilename, newTargetFilename);
 
-                LoggingService.LogVerbose("PackageInstaller", string.Format("Loading package uninstaller fragment assembly '{0}'", newTargetFilename));
+                Log.LogVerbose("PackageInstaller", "Loading package uninstaller fragment assembly '{0}'", newTargetFilename);
 
                 PackageAssemblyHandler.AddAssembly(newTargetFilename);
             }
+
+            return result;
         }
 
 

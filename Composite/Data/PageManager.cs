@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Composite.Core.Collections.Generic;
+using Composite.Core;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
-using Composite.Core.Logging;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
 using NullableGuid = Composite.Core.Types.ExtendedNullable<System.Guid>;
@@ -183,8 +182,7 @@ namespace Composite.Data
 
             if (result == null)
             {
-                LoggingService.LogWarning(LogTitle,
-                    "No IPageStructure entries found for Page with Id '{0}'".FormatWith(pageId));
+                Log.LogWarning(LogTitle, "No IPageStructure entries found for Page with Id '{0}'".FormatWith(pageId));
             }
 
             _pageStructureCache.Add(cacheKey, result);
