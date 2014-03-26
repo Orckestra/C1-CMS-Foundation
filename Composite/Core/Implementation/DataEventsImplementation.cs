@@ -1,5 +1,7 @@
-﻿using Composite.Data;
+﻿using System;
+using System.Globalization;
 
+using Composite.Data;
 
 
 namespace Composite.Core.Implementation
@@ -133,6 +135,15 @@ namespace Composite.Core.Implementation
             {
                 DataEventSystemFacade.UnsubscribeToDataAfterBuildNew(typeof(TData), value);
             }
+        }
+
+
+        /// <summary>
+        /// Implementation pending
+        /// </summary>
+        public virtual void FireExternalStoreChangeEvent(PublicationScope publicationScope, CultureInfo locale)
+        {
+            DataEventSystemFacade.FireExternalStoreChangedEvent(typeof(TData), publicationScope, locale);
         }
     }    
 }

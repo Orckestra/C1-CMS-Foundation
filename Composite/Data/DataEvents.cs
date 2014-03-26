@@ -1,4 +1,6 @@
 ﻿using Composite.Core.Implementation;
+using System;
+using System.Globalization;
 
 
 namespace Composite.Data
@@ -348,6 +350,38 @@ namespace Composite.Data
             {
                 ImplementationFactory.CurrentFactory.CreateStatelessDataEvents<TData>().OnNew -= value;
             }
+        }
+
+
+
+        /// <summary>
+        /// Fire the event that signals that data in an external store has changed. 
+        /// </summary>
+        /// <remarks>
+        /// You should NOT fire this event if you do data changes through the Composite C1 data API since events will already be handled for you in this case.
+        /// 
+        /// Use this method if you are responsible for flushing cached data originating from a store not fully managed by the local website process.
+        /// 
+        /// This could be data stored in a central database, where updates happened on another webserver and you wish to signal update events to other webservers running 
+        /// in a farm. This could also be a situation where you have a custom data provider reading data from some 3rd party system or data store.
+        /// 
+        /// Calling this event will result in cache invalidation on all data of this particular type. 
+        /// 
+        /// Handlers listening to the <see cref="Composite.Data.DataEvents&lt;TData&gt;.OnStoreChanged"/> event will be called with a <see cref="Composite.Data.StoreEventArgs"/> 
+        /// instance indicating that data events has not been fired. This signals that detail cache management is not possible and a complete cache flush is required on structures 
+        /// depending on this data type.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// void MyMethod()
+        /// {
+        ///    DataEvents&lt;IMyDataType&gt;.FireExternalStoreChangeEvent(PublicationScope.Published, new CultureInfo("da-DK"));
+        /// }
+        /// </code>
+        /// </example>
+        public static void FireExternalStoreChangeEvent(PublicationScope publicationScope, CultureInfo locale)
+        {
+            ImplementationFactory.CurrentFactory.CreateStatelessDataEvents<TData>().FireExternalStoreChangeEvent(publicationScope, locale);
         }
     }
 }
