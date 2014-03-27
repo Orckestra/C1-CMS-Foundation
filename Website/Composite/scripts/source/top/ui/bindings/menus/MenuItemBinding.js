@@ -340,7 +340,7 @@ MenuItemBinding.prototype.setImage = function ( url ) {
 	this.setProperty ( "image", url );
 	if ( this.isAttached ) {
 		this.labelBinding.setImage ( 
-			Resolver.resolve ( url )
+			url
 		);
 	}
 }

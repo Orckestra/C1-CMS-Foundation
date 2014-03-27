@@ -26,7 +26,7 @@ function LabelBinding () {
 	 * @type {boolean}
 	 */
 	this.hasImage = false;
-	
+
 	/**
 	 * @type {boolean}
 	 */
@@ -146,21 +146,42 @@ LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 	
 	if ( url != false ) {
 		url = url ? url : LabelBinding.DEFAULT_IMAGE;
-		this.setAlphaTransparentBackdrop ( 
-			Resolver.resolve ( url )
-		);
+		var resolverUrl = Resolver.resolve(url);
+		if (resolverUrl.classes) {
+			this.setAlphaTransparentBackdrop(false);
+			this.setImageClasses(resolverUrl.classes);
+		}
+		else {
+			this.setImageClasses();
+			this.setAlphaTransparentBackdrop(
+				resolverUrl
+			);
+		}
 		this.setProperty ( "image", url );
 		this.hasImage = true;
 		if ( !isNotBuildingClassName ) {
 			this.buildClassName ();
 		}
 	} else {
-		this.setAlphaTransparentBackdrop ( false );
+		this.setAlphaTransparentBackdrop(false);
+		this.setImageClasses();
 		this.deleteProperty ( "image" );
 		this.hasImage = false;
 		this.buildClassName ();
 	}
 }
+
+/**
+ * Set image class.
+ * @param {string} url
+ */
+LabelBinding.prototype.setImageClasses = function (classes) {
+
+	if (this.shadowTree.labelBody) {
+		this.shadowTree.labelBody.className = classes;
+	}
+}
+
 
 /**
  * Set image.

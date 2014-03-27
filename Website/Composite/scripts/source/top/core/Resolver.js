@@ -30,6 +30,9 @@ _Resolver.prototype = {
 			if ( string.indexOf ( "${icon:" ) >-1 ) {
 				string = this._resolveImage ( string );
 			}
+			else if (string.indexOf("${class:") > -1) {
+				string = this._resolveClasses(string);
+			}
 			else if ( string.indexOf ( "${string:" ) >-1 ) {
 				string = this._resolveString ( string );
 			}
@@ -109,6 +112,21 @@ _Resolver.prototype = {
 			ResourceName : resource
 		}, size );
 		
+		return result;
+	},
+
+	/**
+	 * Resolve class of syntax ${class:class1 class2 ...}
+	 * where ProviderName and size are optional and will default.
+	 * Example: "${class:class1 class2}"
+	 * @param {string} string
+	 * @return {string}
+	 */
+	_resolveClasses : function ( string ) {
+		
+		var result = {};
+		resource = string.split("${class:")[1].split("}")[0];
+		result.classes = resource;
 		return result;
 	}
 }

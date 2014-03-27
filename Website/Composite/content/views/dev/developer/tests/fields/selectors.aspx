@@ -725,6 +725,19 @@
 								</ui:fielddata>
 							</ui:field>
 							<ui:field>
+								<ui:fielddesc>selector with class</ui:fielddesc>
+								<ui:fielddata>
+									<ui:selector name="selector3" label="(vg farve)" type="integer">
+										<ui:selection image="${icon:delete}" label="Icon" value="1" />
+										<ui:selection image="${class:fonticon fonticon-asterisk}" label="ClassName asterisk" value="2" />
+										<ui:selection image="${class:fonticon fonticon-cloud}" label="ClassName cloud" value="3" />
+										<ui:selection image="${class:fonticon fonticon-envelope}" label="ClassName envelope" value="4" />
+										<ui:selection image="${class:fonticon fonticon-pencil}" label="ClassName pencil" value="5" />
+									</ui:selector>
+								</ui:fielddata>
+							</ui:field>
+
+							<%--<ui:field>
 								<ui:fielddesc>datainputselector</ui:fielddesc>
 								<ui:fielddata>
 									<ui:datainputselector name="datainputselector1" value="1" type="integer">
@@ -746,7 +759,7 @@
 										<ui:selection value="5" />
 									</ui:datainputselector>
 								</ui:fielddata>
-							</ui:field>
+							</ui:field>--%>
 						</ui:fieldgroup>
 
 					</ui:fields>
