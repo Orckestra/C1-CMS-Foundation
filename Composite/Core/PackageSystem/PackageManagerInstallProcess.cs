@@ -61,8 +61,15 @@ namespace Composite.Core.PackageSystem
             string zipFilename = StringConversionServices.DeserializeValueString(dic["ZipFileName"]);
             string packageInstallDirectory = StringConversionServices.DeserializeValueString(dic["PackageInstallDirectory"]);
             bool hasBeenValidated = StringConversionServices.DeserializeValueBool(dic["HasBeenValidated"]);
-            string originalPackageInstallDirectory = StringConversionServices.DeserializeValueString(dic["OriginalPackageInstallDirectory"]);
 
+            string originalPackageInstallDirectory = null;
+            string serializedValue;
+
+            if (dic.TryGetValue("OriginalPackageInstallDirectory", out serializedValue))
+            {
+                originalPackageInstallDirectory = StringConversionServices.DeserializeValueString(serializedValue);
+            }
+            
             if (C1File.Exists(zipFilename))
             {
                 XElement installContent;

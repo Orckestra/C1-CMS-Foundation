@@ -1161,17 +1161,19 @@ namespace Composite.C1Console.Workflow
                             FormsWorkflowBindingCache.Bindings.Add(id, formData.Bindings);
                         }
                     }
-                    catch (DataSerilizationException)
+                    catch (DataSerilizationException ex)
                     {
                         Log.LogWarning(LogTitle, "The workflow {0} contained one or more bindings where data was deleted or data type changed", id);
+                        Log.LogWarning(LogTitle, ex);
 
                         //AbortWorkflow(id);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         if (id != Guid.Empty)
                         {
-                            Log.LogCritical("WorkflowFacade", "Could not deserialize form data for the workflow {0}", id);
+                            Log.LogCritical(LogTitle, "Could not deserialize form data for the workflow {0}", id);
+                            Log.LogCritical(LogTitle, ex);
                             AbortWorkflow(id);
                         }
                     }
