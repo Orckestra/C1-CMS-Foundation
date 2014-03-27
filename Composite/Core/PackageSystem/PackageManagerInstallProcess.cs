@@ -20,6 +20,8 @@ namespace Composite.Core.PackageSystem
     [SerializerHandler(typeof(PackageManagerInstallProcess))]
     public sealed class PackageManagerInstallProcess : ISerializerHandler
     {
+        private static readonly string LogTitle = typeof(PackageManagerInstallProcess).Name;
+
         private readonly IPackageInstaller _packageInstaller;
         private readonly SystemLockingType _systemLockingType;
         private readonly string _zipFilename;
@@ -210,7 +212,7 @@ namespace Composite.Core.PackageSystem
             if (_validationResult.Count > 0) throw new InvalidOperationException("Installation did not validate");
             Verify.IsNull(_installationResult, "Install may only be called once");
 
-            Log.LogVerbose("PackageManager", "Installing package: {0}, Id = {1}", _packageName, _packageId);
+            Log.LogInformation(LogTitle, "Installing package: {0}, Id = {1}", _packageName, _packageId);
 
             PackageFragmentValidationResult result = _packageInstaller.Install(_systemLockingType);
 
@@ -268,6 +270,8 @@ namespace Composite.Core.PackageSystem
 
                 if(!installationFailed && install)
                 {
+                    Log.LogInformation(LogTitle, "Package successfully installed");
+
                     C1File.WriteAllText(Path.Combine(_packageInstallDirectory, PackageSystemSettings.InstalledFilename), "");
 
                     // Moving package files to a proper location, if an newer version of an already installed package is installed
