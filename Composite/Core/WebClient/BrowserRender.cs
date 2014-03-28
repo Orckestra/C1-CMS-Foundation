@@ -245,7 +245,7 @@ namespace Composite.Core.WebClient
                 _process = new Process();
                 _process.StartInfo.WorkingDirectory = _phantomJsFolder;
                 _process.StartInfo.FileName = "\"" + _phantomJsPath + "\"";
-                _process.StartInfo.Arguments = "--local-to-remote-url-access=true " + ScriptFileName;
+                _process.StartInfo.Arguments = "--local-to-remote-url-access=true --ignore-ssl-errors=yes " + ScriptFileName;
                 _process.StartInfo.RedirectStandardOutput = true;
                 _process.StartInfo.RedirectStandardError = true;
                 _process.StartInfo.RedirectStandardInput = true;
