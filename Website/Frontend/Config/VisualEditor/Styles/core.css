@@ -106,7 +106,7 @@ img.compositeFunctionWysiwygRepresentation:hover {
 
 img.compositeFunctionWysiwygRepresentation {
     display:block;
-    min-width: 100%;
+    width: 100%;
     min-height:250px; 
     background-position: center center; 
     background-repeat:no-repeat; 
@@ -125,7 +125,7 @@ img.compositeFunctionWysiwygRepresentation.loaded{
     background-repeat: no-repeat;
     background-position: top right;
     background-color: none;
-    min-width: 0; 
+    width: auto; 
     min-height: 0;
     opacity: 1;
     cursor: default;
