@@ -334,7 +334,7 @@ VisualMultiTemplateEditorBinding.prototype.disableDialogMode = function () {
 
 	StageBinding.placeholderWidth = null;
 
-	VisualMultiTemplateEditorBinding.superclass.enableDialogMode.call(this);
+	VisualMultiTemplateEditorBinding.superclass.disableDialogMode.call(this);
 }
 
 /**
