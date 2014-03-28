@@ -190,12 +190,22 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
                 IList list = getMethodInfo.Invoke(element.Producer, null) as IList;
 
                 object bindingObject;
-                Type bindingType;
+                
 
                 string source = (property.Value as ReadProducer).source;
 
-                // TODO: support for multipart source!
-                EvaluateBindingObject(element, property, compileContext, source, out bindingObject, out bindingType);
+                if (source.Contains("."))
+                {
+                    string[] parts = source.Split('.');
+
+                    ResolvePropertyBinding(element, property, compileContext, parts[0], parts.Skip(1).ToArray(), out bindingObject);
+                }
+                else
+                {
+                    Type bindingType;
+
+                    ResolveBindingObject(element, property, compileContext, source, out bindingObject, out bindingType);
+                }
 
                 list.Add(new ConstantObjectParameterRuntimeTreeNode("BindedValue", bindingObject));
 
@@ -205,7 +215,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             CheckForMultiblePropertyAdds(element, propertyName, property);
 
             MethodInfo setMethodInfo = propertyInfo.GetSetMethod();
-            if (null == setMethodInfo) throw new FormCompileException(string.Format("The producer {0} does not have a public set for the property named {1}", producerType.ToString(), propertyName), element, property);
+            if (null == setMethodInfo) throw new FormCompileException(string.Format("The producer {0} does not have a public set for the property named {1}", producerType, propertyName), element, property);
 
             object parm;
             if (null != property.Value)
@@ -303,25 +313,26 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         private static void EvaluteBinding(ElementCompileTreeNode element, string source, PropertyCompileTreeNode property, CompileContext compileContext, MethodInfo sourceGetMethodInfo, bool makeBinding)
         {
-            string[] splittedSource = source.Split('.');
-
-            if (splittedSource.Length == 1)
+            if (source.Contains("."))
             {
-                EvaluteObjectBinding(element, property, compileContext, sourceGetMethodInfo, splittedSource[0], makeBinding);
+                string[] parts = source.Split('.');
+
+                EvalutePropertyBinding(element, property, compileContext, sourceGetMethodInfo, parts[0], parts.Skip(1).ToArray(), makeBinding);
             }
-            else if (splittedSource.Length > 1)
+            else
             {
-                string[] propertyPath = new string[splittedSource.Length - 1];
-                Array.Copy(splittedSource, 1, propertyPath, 0, splittedSource.Length - 1);
-
-                EvalutePropertyBinding(element, property, compileContext, sourceGetMethodInfo, splittedSource[0], propertyPath, makeBinding);
+                EvaluteObjectBinding(element, property, compileContext, sourceGetMethodInfo, source, makeBinding);
             }
 
-            if (makeBinding && element.Producer is IUiControl)
+            IUiControl uiControl; 
+            if (makeBinding && (uiControl = element.Producer as IUiControl) != null)
             {
-                if (((IUiControl)element.Producer).SourceBindingPaths == null)
-                    ((IUiControl)element.Producer).SourceBindingPaths = new List<string>();
-                ((IUiControl)element.Producer).SourceBindingPaths.Add(source);
+                if (uiControl.SourceBindingPaths == null)
+                {
+                    uiControl.SourceBindingPaths = new List<string>();
+                }
+
+                uiControl.SourceBindingPaths.Add(source);
             }
         }
 
@@ -339,7 +350,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             object bindingObject;
             Type bindType;
 
-            EvaluateBindingObject(element, property, compileContext, bindSourceName, out bindingObject, out bindType);
+            ResolveBindingObject(element, property, compileContext, bindSourceName, out bindingObject, out bindType);
 
             if (makeBinding)
             {
@@ -356,7 +367,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         }
 
 
-        private static void EvaluateBindingObject(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, string bindSourceName,
+        private static void ResolveBindingObject(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, string bindSourceName,
             out object bindingObject, out Type bindType)
         {
             string typeName = ((BindingsProducer)compileContext.BindingsProducer).GetTypeNameByName(bindSourceName);
@@ -389,6 +400,80 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             }
         }
 
+        private static void ResolvePropertyBinding(
+            ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext,
+            string bindSourceName, string[] propertyPath,
+            out object value 
+            )
+        {
+            Type type;
+            object propertyOwner;
+            string propertyName;
+            MethodInfo getMethodInfo, setMethodInfo;
+
+            ResolvePropertyBinding(element, property, compileContext, bindSourceName, propertyPath, out value, 
+                out type, out propertyOwner, out propertyName, out getMethodInfo, out setMethodInfo);
+        }
+
+
+        private static void ResolvePropertyBinding(
+            ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, string bindSourceName, string[] propertyPath,
+                out object value, out Type type, out object propertyOwner, out string propertyName, out MethodInfo getMethodInfo, out MethodInfo setMethodInfo
+            )
+        {
+            string typeName = ((BindingsProducer)compileContext.BindingsProducer).GetTypeNameByName(bindSourceName);
+            if (typeName == null)
+            {
+                throw new FormCompileException(string.Format("{1} binds to an undeclared binding name '{0}'. All binding names must be declared in /cms:formdefinition/cms:bindings", bindSourceName, element.XmlSourceNodeInformation.XPath), element, property);
+            }
+
+            Type bindType = TypeManager.TryGetType(typeName);
+            if (bindType == null)
+            {
+                throw new FormCompileException(string.Format("The form binding '{0}' is declared as an unknown type '{1}'", bindSourceName, typeName), element, property);
+            }
+
+            object bindingObject = compileContext.GetBindingObject(bindSourceName);
+            if (bindingObject == null)
+            {
+                throw new FormCompileException(string.Format("The binding object named '{0}' not found in the input dictionary", bindSourceName), element, property);
+            }
+
+            Type bindingObjectType = bindingObject.GetType();
+            if (!bindType.IsAssignableFrom(bindingObjectType)) throw new FormCompileException(string.Format("The binding object named '{0}' from the input dictionary is not of expected type '{1}', but '{2}'", bindSourceName, bindType.FullName, bindingObjectType.FullName), element, property);
+
+
+            propertyName = null;
+            getMethodInfo = setMethodInfo = null;
+            type = bindType;
+            propertyOwner = value = bindingObject;
+
+            for (int i = 0; i < propertyPath.Length; ++i)
+            {
+                string name = propertyName = propertyPath[i];
+
+                PropertyInfo propertyInfo = type.GetPropertiesRecursively(x => x.Name == name).FirstOrDefault();
+
+                if (propertyInfo == null)
+                {
+                    throw new FormCompileException(string.Format("The type {0} does not have a property named {1}", type, propertyName), element, property);
+                }
+
+                getMethodInfo = propertyInfo.GetGetMethod();
+                if (getMethodInfo == null)
+                {
+                    throw new FormCompileException(string.Format("The type {0} does not have a get property named {1}", type, propertyName), element, property);
+                }
+
+                setMethodInfo = propertyInfo.GetSetMethod();
+
+                propertyOwner = value;
+
+                type = getMethodInfo.ReturnType;
+                value = getMethodInfo.Invoke(propertyOwner, null);
+            }
+        }
+
 
         private static void EvalutePropertyBinding(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext, MethodInfo sourceGetMethodInfo, string bindSourceName, string[] propertyPath, bool makeBinding)
         {
@@ -400,84 +485,53 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
                 if (compileContext.IsUniqueSourceObjectBinding(bindSourceName)) throw new FormCompileException(string.Format("{0} binds to {1} which is already object bound. Property bindings to a source object which is object bound is not allowed.", element.XmlSourceNodeInformation.XPath, bindSourceName), element, property);
 
-                StringBuilder uniquePropertyName = new StringBuilder();
+                var uniquePropertyName = new StringBuilder();
                 for (int i = 0; i < propertyPath.Length; ++i)
                 {
                     uniquePropertyName.Append(propertyPath[i]);
                 }
-                if (compileContext.RegisterUniqueSourcePropertyBinding(bindSourceName, uniquePropertyName.ToString()) == false) throw new FormCompileException(string.Format("{0} binds to {1} which is already bound. Multiple bindings to the same source object property is not allowed.", element.XmlSourceNodeInformation.XPath, uniquePropertyName), element, property);
+                if (!compileContext.RegisterUniqueSourcePropertyBinding(bindSourceName, uniquePropertyName.ToString())) throw new FormCompileException(string.Format("{0} binds to {1} which is already bound. Multiple bindings to the same source object property is not allowed.", element.XmlSourceNodeInformation.XPath, uniquePropertyName), element, property);
             }
 
-            string typeName = ((BindingsProducer)compileContext.BindingsProducer).GetTypeNameByName(bindSourceName);
-            if (null == typeName) throw new FormCompileException(string.Format("{1} binds to an undeclared binding name '{0}'. All binding names must be declared in /cms:formdefinition/cms:bindings", bindSourceName, element.XmlSourceNodeInformation.XPath), element, property);
 
-            Type bindType = TypeManager.TryGetType(typeName);
-            if (null == bindType) throw new FormCompileException(string.Format("The form binding '{0}' is declared as an unknown type '{1}'", bindSourceName, typeName), element, property);
-
-            object bindingObject = compileContext.GetBindingObject(bindSourceName);
-            if (null == bindingObject) throw new FormCompileException(string.Format("The binding object named '{0}' not found in the input dictionary", bindSourceName), element, property);
-
-            Type bindingObjectType = bindingObject.GetType();
-            if (bindType.IsAssignableFrom(bindingObjectType) == false) throw new FormCompileException(string.Format("The binding object named '{0}' from the input dictionary is not of expected type '{1}', but '{2}'", bindSourceName, bindType.FullName, bindingObjectType.FullName), element, property);
-
-
-            MethodInfo currentGetMethodInfo = null;
-            MethodInfo currentSetMethodInfo = null;
-            Type currentType = bindType;
-            object currentObject = bindingObject;
-            object currentObjectPropertyOwner = bindingObject;
-            string currentPropertyName = null;
-            for (int i = 0; i < propertyPath.Length; ++i)
-            {
-                currentPropertyName = propertyPath[i];
-
-                PropertyInfo propertyInfo = currentType.GetPropertiesRecursively(x => x.Name == currentPropertyName).FirstOrDefault();
-                if (propertyInfo == null) throw new FormCompileException(string.Format("The type {0} does not have a property named {1}", currentType, currentPropertyName), element, property);
-
-                currentGetMethodInfo = propertyInfo.GetGetMethod();
-                if (currentGetMethodInfo == null) throw new FormCompileException(string.Format("The type {0} does not have a get property named {1}", currentType, currentPropertyName), element, property);
-
-                currentSetMethodInfo = propertyInfo.GetSetMethod();
-
-                currentObjectPropertyOwner = currentObject;
-
-                currentType = currentGetMethodInfo.ReturnType;
-                currentObject = currentGetMethodInfo.Invoke(currentObjectPropertyOwner, null);
-            }
-
+            object value, propertyOwner;
+            MethodInfo getMethodInfo, setMethodInfo;
+            string propertyName;
+            Type type;
+            ResolvePropertyBinding(element, property, compileContext, bindSourceName, propertyPath, 
+                                   out value, out type, out propertyOwner, out propertyName, out getMethodInfo, out setMethodInfo);
 
             if (makeBinding)
             {
-                if (currentSetMethodInfo == null) throw new FormCompileException(string.Format("The type {0} does not have a set property named {1}", currentType, currentPropertyName), element, property);
-
+                if (setMethodInfo == null) throw new FormCompileException(string.Format("The type {0} does not have a set property named {1}", type, propertyName), element, property);
 
                 compileContext.Rebindings.Add(new CompileContext.PropertyRebinding(
                     element.Producer,
                     sourceGetMethodInfo,
-                    currentObjectPropertyOwner,
-                    currentSetMethodInfo,
-                    currentGetMethodInfo.ReturnType,
+                    propertyOwner,
+                    setMethodInfo,
+                    getMethodInfo.ReturnType,
                     bindSourceName,
-                    currentPropertyName));
+                    propertyName));
             }
 
-            property.Value = currentObject;
+            property.Value = value;
 
             IUiControl uiControl = element.Producer as IUiControl;
 
             if (uiControl != null)
             {
-                uiControl.ClientValidationRules = ClientValidationRuleFacade.GetClientValidationRules(currentObjectPropertyOwner, currentPropertyName);
+                uiControl.ClientValidationRules = ClientValidationRuleFacade.GetClientValidationRules(propertyOwner, propertyName);
             }
         }
 
 
-        private static void SetDefaultPropertyOnProducer(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext)
-        {
-            string propertyName = GetDefaultPropertyNameOnProducer(element);
+        //private static void SetDefaultPropertyOnProducer(ElementCompileTreeNode element, PropertyCompileTreeNode property, CompileContext compileContext)
+        //{
+        //    string propertyName = GetDefaultPropertyNameOnProducer(element);
 
-            SetPropertyOnProducer(element, propertyName, property, compileContext);
-        }
+        //    SetPropertyOnProducer(element, propertyName, property, compileContext);
+        //}
 
 
 
