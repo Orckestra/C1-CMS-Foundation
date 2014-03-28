@@ -22,7 +22,7 @@ namespace Composite.Functions.Forms
         public object value { get; set; }
 
 
-        [FormsProperty()]
+        [FormsProperty]
         public List<BaseRuntimeTreeNode> Producers { get; private set; }
 
 
@@ -35,29 +35,37 @@ namespace Composite.Functions.Forms
                 {
                     return new FunctionParameterRuntimeTreeNode(this.name, this.value as FunctionRuntimeTreeNode);
                 }
-                else if (this.value is string)
+                if (this.value is string)
                 {
                     return new ConstantParameterRuntimeTreeNode(this.name, this.value as string);
                 }
-                else
+
+                throw new NotImplementedException();
+            }
+
+            if (Producers.Count == 1)
+            {
+                var functionNode = Producers[0] as FunctionRuntimeTreeNode;
+                if (functionNode != null)
                 {
-                    throw new NotImplementedException();
+                    return new FunctionParameterRuntimeTreeNode(this.name, functionNode);
+                }
+
+                var constantObjectNode = Producers[0] as ConstantObjectParameterRuntimeTreeNode;
+                if (constantObjectNode != null)
+                {
+                    return new ConstantObjectParameterRuntimeTreeNode(this.name, constantObjectNode.GetValue());
                 }
             }
-            else if ((Producers.Count == 1) && (Producers[0] is FunctionRuntimeTreeNode))
-            {
-                return new FunctionParameterRuntimeTreeNode(this.name, Producers[0] as FunctionRuntimeTreeNode);
-            }
-            else if (Producers.OfType<ConstantParameterRuntimeTreeNode>().Count() == Producers.Count)
+
+            if (Producers.All(p => p is ConstantParameterRuntimeTreeNode))
             {
                 IEnumerable<string> values = Producers.OfType<ConstantParameterRuntimeTreeNode>().Select(f => (string)f.GetValue());
 
                 return new ConstantParameterRuntimeTreeNode(this.name, values);                
             }
-            else
-            {
-                throw new NotImplementedException();
-            }            
+
+            throw new NotImplementedException();
         }
 	}
 }

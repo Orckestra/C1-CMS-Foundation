@@ -7,9 +7,9 @@ namespace Composite.C1Console.Forms
 {
     internal class FormCompileException : ApplicationException
     {
-        private XmlSourceNodeInformation _xmlInformation = null;
-        private XmlSourceNodeInformation _propertyXmlInformation = null;
-        private XmlSourceNodeInformation _extraPropertyXmlInformation = null;
+        private readonly XmlSourceNodeInformation _xmlInformation;
+        private readonly XmlSourceNodeInformation _propertyXmlInformation;
+        private readonly XmlSourceNodeInformation _extraPropertyXmlInformation;
 
         public FormCompileException(string message, XmlSourceNodeInformation xmlInformation)
             : base(message)
@@ -22,6 +22,11 @@ namespace Composite.C1Console.Forms
         {
             _xmlInformation = xmlInformation;
             _propertyXmlInformation = propertyXmlInformation;
+        }
+
+        public FormCompileException(string message, CompileTreeNode treeNode, CompileTreeNode propertyTreeNode)
+            : this(message, treeNode.XmlSourceNodeInformation, propertyTreeNode.XmlSourceNodeInformation)
+        {
         }
 
         public FormCompileException(string message, XmlSourceNodeInformation xmlInformation, XmlSourceNodeInformation propertyXmlInformation, XmlSourceNodeInformation extraPropertyXmlInformation)
