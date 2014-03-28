@@ -276,7 +276,10 @@ namespace Composite.Core.WebClient
                 _stdin.WriteLine(requestLine);
 
                 Task<string> readerTask = Task.Factory.StartNew<String>(() => _stdout.ReadLine());
-                readerTask.Wait(TimeSpan.FromSeconds(6));
+
+                double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 60 ? 30 : 6;
+
+                readerTask.Wait(TimeSpan.FromSeconds(timeout));
                 switch (readerTask.Status)
                 {
                     case TaskStatus.RanToCompletion:
