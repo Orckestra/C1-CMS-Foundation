@@ -82,8 +82,6 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
 	        page.render(output);
 	        page.close();
-
-	        console.log('SUCCESS: ' + address);
 	    } else {
 	        // Template preview:
 	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');
