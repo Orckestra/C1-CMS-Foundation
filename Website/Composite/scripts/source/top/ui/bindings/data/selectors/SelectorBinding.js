@@ -32,7 +32,12 @@ function SelectorBinding () {
 	 * @type {PopupBinding}
 	 */
 	this._popupBinding = null;
-	
+
+	/**
+	 * @type {bool}
+	 */
+	this._isLocal = false;
+
 	/**
 	 * @type {MenuBodyBinding}
 	 */
@@ -223,6 +228,7 @@ SelectorBinding.prototype.parseDOMProperties = function () {
 	var width 			= this.getProperty ( "width" );
 	var onchange		= this.getProperty ( "onchange" );
 	var isRequired		= this.getProperty ( "required" ) == true;
+	var isLocal = this.getProperty("local");
 	
 	if ( !this.type && type ) {
 		this.type = type;
@@ -238,6 +244,9 @@ SelectorBinding.prototype.parseDOMProperties = function () {
 	}
 	if ( isRequired ) {
 		this.isRequired = true;
+	}
+	if ( isLocal ) {
+		this._isLocal = true;
 	}
 	if ( onchange ) {
 		this.onValueChange = function () {
@@ -336,7 +345,22 @@ SelectorBinding.prototype.buildPopup = function () {
 	/*
 	 * Build the popup.
 	 */
-	var popupSetBinding = top.app.bindingMap.selectorpopupset;
+	var popupSetBinding;
+	if (this._isLocal) {
+		if (!this.bindingWindow.bindingMap.selectorpopupset) {
+
+			var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:popupset", this.bindingDocument);
+			element.id = "selectorpopupset";
+			popupSetBinding = UserInterface.registerBinding(element, PopupSetBinding);
+
+			this.bindingDocument.body.appendChild(popupSetBinding.bindingElement);
+		} else {
+			popupSetBinding = this.bindingWindow.bindingMap.selectorpopupset;
+		}
+	}
+	else {
+		popupSetBinding = top.app.bindingMap.selectorpopupset
+	};
 	var doc = popupSetBinding.bindingDocument;
 	var popupBinding = popupSetBinding.add (
 		PopupBinding.newInstance ( doc )

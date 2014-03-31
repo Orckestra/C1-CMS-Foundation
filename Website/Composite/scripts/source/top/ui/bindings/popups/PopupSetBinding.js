@@ -32,3 +32,14 @@ PopupSetBinding.prototype.toString = function () {
 
 	return "[PopupSetBinding]";
 }
+
+/**
+ * PopupSetBinding factory.
+ * @param {DOMDocument} ownerDocument
+ * @return {PopupSetBinding}
+ */
+PopupSetBinding.newInstance = function (ownerDocument) {
+
+	var element = DOMUtil.createElementNS(Constants.NS_UI, "ui:popup", ownerDocument);
+	return UserInterface.registerBinding(element, PopupSetBinding);
+}
