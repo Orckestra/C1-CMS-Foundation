@@ -38,6 +38,8 @@ table {
 td {
 	padding: 2px 5px 3px 5px;
 	vertical-align: top;
+    min-width:8px;
+    min-height:8px;
 }
 a {
 	color: blue;
