@@ -168,7 +168,7 @@ namespace Composite.C1Console.Drawing
 
             private static readonly string FunctionIconPath = GetIconPath("images/function.png");
             private static readonly string EditFunctionIconPath = GetIconPath("images/editfunction.png");
-            private static readonly string WarninigIconPath = GetIconPath("images/icons/harmony/composite/warning_24.png");
+            private static readonly string WarninigIconPath = GetIconPath("images/warning.png");
 
             private static string GetIconPath(string relativePath)
             {

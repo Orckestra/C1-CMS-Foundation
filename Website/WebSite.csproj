@@ -482,6 +482,7 @@
     <Content Include="Composite\images\editfunction.png" />
     <Content Include="Composite\images\function.png" />
     <Content Include="Composite\images\functionheaderbackground.png" />
+    <Content Include="Composite\images\warning.png" />
     <Content Include="Composite\scripts\source\top\proxies\FunctionService.js" />
     <Content Include="Composite\scripts\source\top\proxies\PageTemplateService.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\pages\ResponsePageBinding.js" />
@@ -493,7 +494,6 @@
     <Content Include="Composite\images\loading.svg">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Composite\images\warningbox.png" />
     <Content Include="Composite\localization\Composite.Plugins.PageTemplateFeatureElementProvider.en-us.xml" />
     <Content Include="Composite\skins\system\toolbars\osx\backdrop.png" />
     <Content Include="Composite\templates\PageTemplates\XmlPageTemplate.xml" />
@@ -1586,7 +1586,6 @@
     <Content Include="Composite\images\blank.png" />
     <Content Include="Composite\images\box.png" />
     <Content Include="Composite\images\fieldbox.png" />
-    <Content Include="Composite\images\functionbox.png" />
     <Content Include="Composite\images\icons\branding\16x16CompositeS.png" />
     <Content Include="Composite\images\icons\branding\24x24CompositeS.png" />
     <Content Include="Composite\images\icons\branding\32x32CompositeS.png" />
