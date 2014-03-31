@@ -170,7 +170,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
                     messageBuilder.AppendLine(message.ToString());
             }
 
-            List<string> badNamespacePrefixes = badNamespacePrefixedElementNames.Select(n => n.Substring(0, n.IndexOf(':'))).Union(LocateAttributeNamespacePrefixes(xhtml)).Distinct().ToList();
+            List<string> badNamespacePrefixes = badNamespacePrefixedElementNames.Select(n => n.Substring(0, n.IndexOf(':'))).Union(LocateAttributeNamespacePrefixes(xhtml)).Distinct().Where(f => IsValidXmlName(f)).ToList();
 
             XDocument outputResult;
             if (badNamespacePrefixedElementNames.Any())
@@ -498,6 +498,22 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
             return prefixToUri;
         }
+
+
+
+
+        private static bool IsValidXmlName(string name)
+        {
+            try
+            {
+                return name == XmlConvert.VerifyName(name);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
 
     }
 }
