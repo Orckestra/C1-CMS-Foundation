@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <strings>
   <string key="SEOAssistant" value="SEO Assistant" />
+  <string key="SEOAssistant.ToolTip" value="Search engine optimization" />
   <string key="IntroText" value="Generate a page preview to compute the SEO indication." />
   <string key="TabResult" value="Result" />
   <string key="TabKeywords" value="Keywords" />

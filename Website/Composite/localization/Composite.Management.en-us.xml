@@ -658,4 +658,7 @@
   <string key="Validation.Decimal.SymbolsAfterPointAllowed" value="Only {0} digit(s) after decimal point allowed" />
 	<string key="Validation.Decimal.SymbolsBeforePointAllowed" value="Only {0} digit(s) before decimal point allowed" />
 	<string key="Validation.Int32.Overflow" value="The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647" />
+
+  <string key="Browser.Label" value="Page Browser" />
+  <string key="Browser.ToolTip" value="Browse unpublished pages" />
 </strings>

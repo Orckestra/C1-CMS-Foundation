@@ -222,9 +222,9 @@ var ViewDefinitions = {
 		handle 		: "Composite.Management.Browser",
 		position	: DockBinding.MAIN,
 		perspective	: ExplorerBinding.PERSPECTIVE_CONTENT,
-		label		: "Page Browser",
+		label       : "${string:Composite.Management:Browser.Label}",
 		image		: "${icon:page-view-administrated-scope}",
-		toolTip		: "Browse unpublished pages",
+		toolTip     : "${string:Composite.Management:Browser.ToolTip}",
 		url			: "${root}/content/views/browser/browser.aspx",
 		argument	: { "URL" : null }
 	}),
@@ -239,7 +239,7 @@ var ViewDefinitions = {
 		url			: "${root}/content/views/seoassist/seoassist.aspx",
 		label		: "${string:Composite.Web.SEOAssistant:SEOAssistant}",
 		image		: "${icon:seoassistant}",
-		toolTip		: "Search engine optimization"
+		toolTip		: "${string:Composite.Web.SEOAssistant:SEOAssistant.ToolTip}"
 	}),
 	
 	/*
