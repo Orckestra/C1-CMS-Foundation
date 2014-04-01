@@ -684,7 +684,16 @@ namespace Composite.Data.DynamicTypes
 
                         if (!fieldDescriptor.ForeignKeyReferenceTypeName.IsNullOrEmpty())
                         {
-                            Type foreignKeyType = Type.GetType(fieldDescriptor.ForeignKeyReferenceTypeName, true);
+                            Type foreignKeyType;
+
+                            try
+                            {
+                                foreignKeyType = Type.GetType(fieldDescriptor.ForeignKeyReferenceTypeName, true);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new InvalidOperationException("Failed to get referenced foreign key type '{0}'".FormatWith(fieldDescriptor.ForeignKeyReferenceTypeName), ex);
+                            } 
 
                             var referenceTemplateType = fieldDescriptor.IsNullable ? typeof(NullableDataReference<>) : typeof(DataReference<>);
 

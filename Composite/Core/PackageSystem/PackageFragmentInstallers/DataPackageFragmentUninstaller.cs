@@ -127,6 +127,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                 }
                             }
 
+                            var pagesReferencingPageTypes = new HashSet<string>();
+
                             if (allKeyPropertiesValidated)
                             {
                                 IData data;
@@ -155,8 +157,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                                                     pathToPage = GetPathToPage(referee as IPage);
                                                 }
 
-                                                validationResult.AddFatal(
-                                                    Texts.DataPackageFragmentUninstaller_PageTypeIsReferenced(data.GetLabel(), pathToPage));
+                                                if (!pagesReferencingPageTypes.Contains(pathToPage))
+                                                {
+                                                    validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_PageTypeIsReferenced(data.GetLabel(), pathToPage));
+                                                    pagesReferencingPageTypes.Add(pathToPage);
+                                                }
                                             }
                                             else
                                             {
