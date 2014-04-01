@@ -1,6 +1,7 @@
 ﻿// #define BrowserRender_NoCache
 
 using System;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -13,6 +14,7 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PackageSystem;
+using Composite.Core.Parallelization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Timer = System.Timers.Timer;
 using System.Threading.Tasks;
@@ -39,13 +41,20 @@ namespace Composite.Core.WebClient
             FileChangeNotificator.Subscribe(PhantomServer.ScriptFilePath, (a, b)  => RecyclePhantomJsExe());
         }
 
-        private static readonly object _syncRoot = new object();
+        private static readonly AsyncLock _requestAsyncLock = new AsyncLock();
+        private static readonly ConcurrentDictionary<string, object> _clearCacheSyncRoots = new ConcurrentDictionary<string, object>();
         private static PhantomServer _server;
         private static Timer _recycleTimer;
         private static DateTime _lastUsageDate = DateTime.MinValue;
         private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromMinutes(9.75);
         private const int RecycleTimerInterval_ms = 10000;
 
+
+        public class RenderingResult
+        {
+            public string FilePath { get; set; }
+            public string Output { get; set; }
+        }
 
         private static string GetCacheFolder(string mode)
         {
@@ -67,7 +76,7 @@ namespace Composite.Core.WebClient
         /// <summary>
         /// Renders a url and return a full path to a rendered image
         /// </summary>
-        public static string RenderUrl(HttpContext context, string url, string mode, out string output)
+        public static async Task<RenderingResult> RenderUrl(HttpContext context, string url, string mode)
         {
             string dropFolder = GetCacheFolder(mode);
 
@@ -80,6 +89,7 @@ namespace Composite.Core.WebClient
             string outputImageFileName = Path.Combine(dropFolder, urlHash + ".png");
             string outputFileName = Path.Combine(dropFolder, urlHash + ".output");
             string errorFileName = Path.Combine(dropFolder, urlHash + ".error");
+            string output;
 
             if (C1File.Exists(outputImageFileName) || C1File.Exists(outputFileName))
             {
@@ -95,13 +105,13 @@ namespace Composite.Core.WebClient
                     output = null;
                 }
                 
-                return outputImageFileName;
+                return new RenderingResult { FilePath = outputImageFileName, Output = output};
 #endif
             }
 
             try
             {
-                MakePreviewRequest(context, url, outputImageFileName, mode, out output);
+                output = await MakePreviewRequest(context, url, outputImageFileName, mode);
             }
             catch (BrowserRenderException ex)
             {
@@ -113,19 +123,36 @@ namespace Composite.Core.WebClient
 
             C1File.WriteAllText(outputFileName, output);
 
-            return outputImageFileName;
+            return new RenderingResult { FilePath = outputImageFileName, Output = output };
         }
 
-        private static void MakePreviewRequest(HttpContext context, string url, string outputFileName, string mode, out string output)
+        private static async Task<string> MakePreviewRequest(HttpContext context, string url, string outputFileName, string mode)
         {
             HttpCookie authenticationCookie = context.Request.Cookies[CookieHandler.GetApplicationSpecificCookieName(".CMSAUTH")];
 
-            lock (_syncRoot)
+            string output;
+
+            using(await _requestAsyncLock.LockAsync())
             {
                 if (_server == null)
                 {
                     _server = new PhantomServer();
                     SetupRecycleTimer();
+                }
+                else
+                {
+                    // Recycling PhantomJS if it isn't available for 15 seconds
+                    bool available = await _server.OutputLock.WaitAsync(15 * 1000);
+                    if (available)
+                    {
+                        _server.OutputLock.Release();
+                    }
+                    else
+                    {
+                        _server.Dispose();
+                        _server = null;
+                        _server = new PhantomServer();
+                    }
                 }
 
                 _lastUsageDate = DateTime.Now;
@@ -145,18 +172,25 @@ namespace Composite.Core.WebClient
                     throw;
                 }
             }
+
+            return output;
         }
 
 
         private static void RecyclePhantomJsExe()
         {
-            lock (_syncRoot)
+            using (_requestAsyncLock.Lock())
             {
-                if (_server != null)
-                {
-                    _server.Dispose();
-                    _server = null;
-                }
+                RecyclePhantomJsExeNoLock();
+            }
+        }
+
+        private static void RecyclePhantomJsExeNoLock()
+        {
+            if (_server != null)
+            {
+                _server.Dispose();
+                _server = null;
             }
         }
 
@@ -166,24 +200,46 @@ namespace Composite.Core.WebClient
 
             if (C1Directory.Exists(folder))
             {
-                Task.Run(() =>
-                {
-                    lock (_syncRoot)
-                    {
-                        foreach (var file in C1Directory.GetFiles(folder, "*.*"))
-                        {
-                            try
-                            {
-                                C1File.Delete(file);
-                            }
-                            catch
-                            {
-                            }
-                        }
+                Task.Run(() => ClearCacheInt(folder));
+            }
+        }
 
-                        Directory.SetCreationTime(folder, DateTime.Now);
+        private static void ClearCacheInt(string folder)
+        {
+            object syncRoot = _clearCacheSyncRoots.GetOrAdd(folder, _ => new object());
+
+            bool entered = false;
+
+            try
+            {
+                Monitor.TryEnter(syncRoot, 0, ref entered);
+                if (!entered)
+                {
+                    return;
+                }
+
+                using (_requestAsyncLock.Lock())
+                {
+                    foreach (var file in C1Directory.GetFiles(folder, "*.*"))
+                    {
+                        try
+                        {
+                            C1File.Delete(file);
+                        }
+                        catch
+                        {
+                        }
                     }
-                });
+
+                    Directory.SetCreationTime(folder, DateTime.Now);
+                }
+            }
+            finally
+            {
+                if (entered)
+                {
+                    Monitor.Exit(syncRoot);
+                }
             }
         }
 
@@ -209,18 +265,18 @@ namespace Composite.Core.WebClient
             bool lockTaken = false;
             try
             {
-                Monitor.TryEnter(_syncRoot, 0, ref lockTaken);
+                lockTaken = _requestAsyncLock.Wait(0);
 
                 if (lockTaken)
                 {
-                    RecyclePhantomJsExe();
+                    RecyclePhantomJsExeNoLock();
                 }
             }
             finally
             {
                 if (lockTaken)
                 {
-                    Monitor.Exit(_syncRoot);
+                    _requestAsyncLock.Release();
                 }
             }
         }
@@ -239,6 +295,8 @@ namespace Composite.Core.WebClient
 
             private readonly Process _process;
             private readonly Job _job;
+
+            public readonly AsyncLock OutputLock = new AsyncLock();
 
             public PhantomServer()
             {
@@ -275,7 +333,13 @@ namespace Composite.Core.WebClient
 
                 _stdin.WriteLine(requestLine);
 
-                Task<string> readerTask = Task.Factory.StartNew<String>(() => _stdout.ReadLine());
+                Task<string> readerTask = Task.Factory.StartNew(() =>
+                {
+                    using (OutputLock.Lock())
+                    {
+                        return _stdout.ReadLine();
+                    }
+                });
 
                 double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 60 ? 30 : 6;
 

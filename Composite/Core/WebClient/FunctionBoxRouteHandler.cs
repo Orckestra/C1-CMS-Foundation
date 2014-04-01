@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 using Composite.C1Console.Drawing;
@@ -34,12 +35,11 @@ namespace Composite.Core.WebClient
     /// <summary>
     /// Renders image that shows information about a function information in Visual Editor
     /// </summary>
-    internal class FunctionBoxHttpHandler : IHttpHandler
+    internal class FunctionBoxHttpHandler : HttpTaskAsyncHandler
     {
         private const int _minCharsPerDescriptionLine = 55;
 
-
-        public void ProcessRequest(HttpContext context)
+        public override async Task ProcessRequestAsync(HttpContext context)
         {
             if (!UserValidationFacade.IsLoggedIn())
             {
@@ -85,7 +85,7 @@ namespace Composite.Core.WebClient
                     {
                         try
                         {
-                            string fileName = FunctionPreview.GetPreviewFunctionPreviewImageFile(context);
+                            string fileName = await FunctionPreview.GetPreviewFunctionPreviewImageFile(context);
                             previewImage = new Bitmap(fileName);
 
                             if (previewImage.Width <= 1 && previewImage.Height <= 1)
@@ -217,6 +217,5 @@ namespace Composite.Core.WebClient
         {
             get { return true; }
         }
-
     }
 }

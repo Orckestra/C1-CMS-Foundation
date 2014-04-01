@@ -168,6 +168,7 @@
     <Compile Include="Core\Instrumentation\LogExecutionTime.cs" />
     <Compile Include="Core\PageTemplates\ISharedCodePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
+    <Compile Include="Core\Parallelization\AsyncLock.cs" />
     <Compile Include="Core\ResourceSystem\LocalizationFiles.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

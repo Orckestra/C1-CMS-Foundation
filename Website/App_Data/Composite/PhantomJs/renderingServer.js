@@ -40,7 +40,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        }
 	        console.log('ERROR, page.onResourceTimeout: ' + JSON.stringify(request.errorString) + ', URL: ' + JSON.stringify(request.url));
 	        
-            phantom.exit();
+            phantom.exit(); // TODO: optimize, no exit needed
 	    }
 	};
 
@@ -50,10 +50,10 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	}
 
     // redirects ...
-	page.onResourceReceived = function (resource) {
-	    if (resource.status == 301 || resource.status == 302) {
-	        console.log('REDIRECT: ' + resource);
-	        phantom.exit();
+	page.onResourceReceived = function (response) {
+	    if (response.id == 1 && (response.status == 301 || response.status == 302)) {
+	        console.log('REDIRECT: ' + response.url);
+	        phantom.exit(); // TODO: optimize, no exit needed
 	    }
 	}
 
@@ -82,6 +82,8 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 
 	        page.render(output);
 	        page.close();
+
+	        console.log('SUCCESS: ' + address);
 	    } else {
 	        // Template preview:
 	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');

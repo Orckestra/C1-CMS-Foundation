@@ -37,8 +37,9 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             int updateHash = BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
             string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
 
-            string output;
-            imageFilePath = BrowserRender.RenderUrl(context, requestUrl, RenderingMode, out output);
+            var result = BrowserRender.RenderUrl(context, requestUrl, RenderingMode).GetAwaiter().GetResult();
+            imageFilePath = result.FilePath;
+            string output = result.Output;
 
             var pList = new List<PlaceholderInformation>();
 
