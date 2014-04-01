@@ -818,6 +818,8 @@ VisualEditorBinding.prototype.updateBodyWidth = function (width) {
 	}
 	if (width) {
 		this._tinyInstance.getBody().style.maxWidth = (width + 52) + "px";
+	} else {
+		this._tinyInstance.getBody().style.maxWidth = "";
 	}
 }
 
