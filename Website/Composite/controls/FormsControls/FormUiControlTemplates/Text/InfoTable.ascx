@@ -18,7 +18,7 @@
             foreach (List<string> row in this.Rows)
             {
             	foreach (string columnText in row) {
-	                result += "<br/><br/>" + columnText;
+	                result += "<br/><br/>" + Server.HtmlEncode(columnText);
 	            }
             }
         }
