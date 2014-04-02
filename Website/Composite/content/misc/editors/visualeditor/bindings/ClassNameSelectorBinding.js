@@ -100,16 +100,16 @@ ClassNameSelectorBinding.prototype.handleAction = function (action) {
 
             this._isUpdating = true;
             var value = this.getValue();
-            this.selections.each(function (selection) {
-                var id = selection.value;
-                if (id != null) {
-                    if (this._tinyInstance.formatter.match(id)) {
-                        this._tinyInstance.formatter.remove(id);
-                        result = false;
-                    }
-                }
-                return result;
-            }, this);
+            for (var i = this.selections.getLength() - 1; i >= 0; i--) {
+            	selection = this.selections.get(i);
+            	var id = selection.value;
+            	if (id != null) {
+            		if (this._tinyInstance.formatter.match(id)) {
+            			this._tinyInstance.formatter.remove(id);
+            			break;
+            		}
+            	}
+            }
 
             if (value != null) {
                 
