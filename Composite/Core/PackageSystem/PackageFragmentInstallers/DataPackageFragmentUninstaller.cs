@@ -19,14 +19,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataPackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
-        private List<DataType> _datasToDelete = null;
+        private List<DataType> _datasToDelete;
 
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
             if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
@@ -38,154 +38,115 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             XElement typesElement = this.Configuration.SingleOrDefault(f => f.Name == "Types");
 
-            if (typesElement != null)
+            if (typesElement == null)
             {
-                foreach (XElement typeElement in typesElement.Elements("Type").Reverse())
+                return validationResult;
+            }
+
+            foreach (XElement typeElement in typesElement.Elements("Type").Reverse())
+            {
+                XAttribute typeAttribute = typeElement.Attribute("type");
+                XAttribute dataScopeIdentifierAttribute = typeElement.Attribute("dataScopeIdentifier");
+
+                if (typeAttribute == null) 
                 {
-                    XAttribute typeAttribute = typeElement.Attribute("type");
-                    XAttribute dataScopeIdentifierAttribute = typeElement.Attribute("dataScopeIdentifier");
+                    validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_MissingAttribute("type"), typeElement); 
+                    continue; 
+                }
 
-                    if (typeAttribute == null) 
+                if (dataScopeIdentifierAttribute == null) 
+                {
+                    validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_MissingAttribute("dataScopeIdentifier"), typeElement); 
+                    continue; 
+                }
+
+                Type type = TypeManager.TryGetType(typeAttribute.Value);
+                if (type == null) continue;
+
+                if (!DataFacade.GetAllInterfaces().Contains(type)) continue;
+
+
+                DataScopeIdentifier dataScopeIdentifier;
+                try
+                {
+                    dataScopeIdentifier = DataScopeIdentifier.Deserialize(dataScopeIdentifierAttribute.Value);
+                }
+                catch (Exception)
+                {
+                    validationResult.AddFatal("Wrong DataScopeIdentifier ({0}) name in the configuration".FormatWith(dataScopeIdentifierAttribute.Value), dataScopeIdentifierAttribute);
+                    continue;
+                }
+
+
+                foreach (XElement datasElement in typeElement.Elements("Datas").Reverse())
+                {
+                    CultureInfo locale = null;
+
+                    XAttribute localeAttribute = datasElement.Attribute("locale");
+                    if (localeAttribute != null)
                     {
-                        validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_MissingAttribute("type"), typeElement); 
-                        continue; 
+                        locale = CultureInfo.CreateSpecificCulture(localeAttribute.Value);
                     }
 
-                    if (dataScopeIdentifierAttribute == null) 
+                    foreach (XElement keysElement in datasElement.Elements("Keys"))
                     {
-                        validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_MissingAttribute("dataScopeIdentifier"), typeElement); 
-                        continue; 
-                    }
+                        bool allKeyPropertiesValidated = true;
+                        var dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
-                    Type type = TypeManager.TryGetType(typeAttribute.Value);
-                    if (type == null) continue;
-
-                    if (!DataFacade.GetAllInterfaces().Contains(type)) continue;
-
-
-                    DataScopeIdentifier dataScopeIdentifier;
-                    try
-                    {
-                        dataScopeIdentifier = DataScopeIdentifier.Deserialize(dataScopeIdentifierAttribute.Value);
-                    }
-                    catch (Exception)
-                    {
-                        validationResult.AddFatal("Wrong DataScopeIdentifier ({0}) name in the configuration".FormatWith(dataScopeIdentifierAttribute.Value), dataScopeIdentifierAttribute);
-                        continue;
-                    }
-
-
-                    foreach (XElement datasElement in typeElement.Elements("Datas").Reverse())
-                    {
-                        CultureInfo locale = null;
-
-                        XAttribute localeAttribute = datasElement.Attribute("locale");
-                        if (localeAttribute != null)
+                        foreach (XElement keyElement in keysElement.Elements("Key"))
                         {
-                            locale = CultureInfo.CreateSpecificCulture(localeAttribute.Value);
-                        }
+                            XAttribute keyNameAttribute = keyElement.Attribute("name");
+                            XAttribute keyValueAttribute = keyElement.Attribute("value");
 
-                        foreach (XElement keysElement in datasElement.Elements("Keys"))
-                        {
-                            bool allKeyPropertiesValidated = true;
-                            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
-                            foreach (XElement keyElement in keysElement.Elements("Key"))
+                            if (keyNameAttribute == null || keyValueAttribute == null)
                             {
-                                XAttribute keyNameAttribute = keyElement.Attribute("name");
-                                XAttribute keyValueAttribute = keyElement.Attribute("value");
+                                if (keyNameAttribute == null) validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("name"), keyElement);
+                                if (keyValueAttribute == null) validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("value"), keyElement);
 
-
-                                if (keyNameAttribute == null || keyValueAttribute == null)
-                                {
-                                    if (keyNameAttribute == null) validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("name"), keyElement);
-                                    if (keyValueAttribute == null) validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingAttribute").FormatWith("value"), keyElement);
-
-                                    allKeyPropertiesValidated = false;
-                                    continue;
-                                }
+                                allKeyPropertiesValidated = false;
+                                continue;
+                            }
                                 
-                                string keyName = keyNameAttribute.Value;
-                                PropertyInfo keyPropertyInfo = type.GetPropertiesRecursively().SingleOrDefault(f => f.Name == keyName);
-                                if (keyPropertyInfo == null)
+                            string keyName = keyNameAttribute.Value;
+                            PropertyInfo keyPropertyInfo = type.GetPropertiesRecursively().SingleOrDefault(f => f.Name == keyName);
+                            if (keyPropertyInfo == null)
+                            {
+                                validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingKeyProperty").FormatWith(type, keyName));
+                                allKeyPropertiesValidated = false;
+                            }
+                            else
+                            {
+                                try
                                 {
-                                    validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.MissingKeyProperty").FormatWith(type, keyName));
-                                    allKeyPropertiesValidated = false;
+                                    object keyValue = ValueTypeConverter.Convert(keyValueAttribute.Value, keyPropertyInfo.PropertyType);
+                                    dataKeyPropertyCollection.AddKeyProperty(keyName, keyValue);
                                 }
-                                else
+                                catch (Exception)
                                 {
-                                    try
-                                    {
-                                        object keyValue = ValueTypeConverter.Convert(keyValueAttribute.Value, keyPropertyInfo.PropertyType);
-                                        dataKeyPropertyCollection.AddKeyProperty(keyName, keyValue);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        allKeyPropertiesValidated = false;
-                                        validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.DataPackageFragmentUninstaller").FormatWith(keyValueAttribute.Value, keyPropertyInfo.PropertyType));
-                                    }
+                                    allKeyPropertiesValidated = false;
+                                    validationResult.AddFatal(GetText("DataPackageFragmentUninstaller.DataPackageFragmentUninstaller").FormatWith(keyValueAttribute.Value, keyPropertyInfo.PropertyType));
                                 }
                             }
+                        }
 
-                            var pagesReferencingPageTypes = new HashSet<string>();
-
-                            if (allKeyPropertiesValidated)
+                        if (allKeyPropertiesValidated)
+                        {
+                            IData data;
+                            using (new DataScope(dataScopeIdentifier, locale))
                             {
-                                IData data;
-                                using (new DataScope(dataScopeIdentifier, locale))
-                                {
-                                    data = DataFacade.TryGetDataByUniqueKey(type, dataKeyPropertyCollection);
-                                }
+                                data = DataFacade.TryGetDataByUniqueKey(type, dataKeyPropertyCollection);
+                            }
 
-                                if (data != null)
-                                {
-                                    List<IData> referees = data.GetReferees();
-
-                                    bool addToDelete = true;
-                                    foreach (IData referee in referees)
-                                    {
-                                        if (!this.UninstallerContext.IsPendingForDeletionData(referee))
-                                        {
-                                            addToDelete = false;
-
-                                            if (referee is IPage && data is IPageType)
-                                            {
-                                                string pathToPage;
-
-                                                using (new DataScope(referee.DataSourceId.PublicationScope, referee.DataSourceId.LocaleScope))
-                                                {
-                                                    pathToPage = GetPathToPage(referee as IPage);
-                                                }
-
-                                                if (!pagesReferencingPageTypes.Contains(pathToPage))
-                                                {
-                                                    validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_PageTypeIsReferenced(data.GetLabel(), pathToPage));
-                                                    pagesReferencingPageTypes.Add(pathToPage);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                var refereeType = referee.DataSourceId.InterfaceType;
-
-                                                validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_DataIsReferenced(
-                                                    data.GetLabel(),
-                                                    type.FullName,
-                                                    referee.GetLabel(),
-                                                    refereeType.FullName));
-                                            }
-                                        }
-                                    }
-
-                                    if (addToDelete)
-                                    {
-                                        AddDataToDelete(type, dataScopeIdentifier, locale, dataKeyPropertyCollection);
-                                    }
-                                }
+                            if (data != null)
+                            {
+                                CheckForPotentialBrokenReferences(data, validationResult, type, dataScopeIdentifier, locale, dataKeyPropertyCollection);
                             }
                         }
                     }
                 }
             }
+            
 
             if (validationResult.Count > 0)
             {
@@ -193,6 +154,66 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             }
 
             return validationResult;
+        }
+
+        private void CheckForPotentialBrokenReferences(IData data, List<PackageFragmentValidationResult> validationResult, 
+            Type type, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
+        {
+            var pagesReferencingPageTypes = new HashSet<string>();
+            var dataReferencingDataToBeUninstalled = new HashSet<string>();
+
+            List<IData> referees = data.GetReferees();
+
+            bool addToDelete = true;
+            foreach (IData referee in referees)
+            {
+                if (this.UninstallerContext.IsPendingForDeletionData(referee))
+                {
+                    continue;
+                }
+
+                addToDelete = false;
+
+                if (referee is IPage && data is IPageType)
+                {
+                    string pathToPage;
+
+                    using (new DataScope(referee.DataSourceId.PublicationScope, referee.DataSourceId.LocaleScope))
+                    {
+                        pathToPage = GetPathToPage(referee as IPage);
+                    }
+
+                    if (!pagesReferencingPageTypes.Contains(pathToPage))
+                    {
+                        validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_PageTypeIsReferenced(
+                            data.GetLabel(), pathToPage));
+                        pagesReferencingPageTypes.Add(pathToPage);
+                    }
+                }
+                else
+                {
+                    var refereeType = referee.DataSourceId.InterfaceType;
+
+                    string label = referee.GetLabel();
+                    string key = label + refereeType.FullName;
+
+                    if (!dataReferencingDataToBeUninstalled.Contains(key))
+                    {
+                        validationResult.AddFatal(Texts.DataPackageFragmentUninstaller_DataIsReferenced(
+                            data.GetLabel(),
+                            type.FullName,
+                            label,
+                            refereeType.FullName));
+
+                        dataReferencingDataToBeUninstalled.Add(key);
+                    }
+                }
+            }
+
+            if (addToDelete)
+            {
+                AddDataToDelete(type, dataScopeIdentifier, locale, dataKeyPropertyCollection);
+            }
         }
 
         private static string GetPathToPage(IPage page)
@@ -240,12 +261,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private void AddDataToDelete(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
-            DataType dataType =
-                (from dt in _datasToDelete
-                 where dt.InterfaceType == interfaceType &&
-                       dt.DataScopeIdentifier.Equals(dataScopeIdentifier) &&
-                       (((dt.Locale == null) && (locale == null)) || (dt.Locale.Equals(locale)))
-                 select dt).SingleOrDefault();
+            DataType dataType = _datasToDelete.SingleOrDefault(dt => 
+                        dt.InterfaceType == interfaceType
+                        && dt.DataScopeIdentifier.Equals(dataScopeIdentifier) &&
+                        ((dt.Locale == null && locale == null) || (dt.Locale != null && dt.Locale.Equals(locale))));
 
             if (dataType == null)
             {

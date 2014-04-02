@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.Core.IO.Zip;
 
@@ -13,12 +14,15 @@ namespace Composite.Core.PackageSystem
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PackageUninstallerContext
     {
-        private Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>> _dataPendingForDeletion = new Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>>();
+        private readonly Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>> _dataPendingForDeletion 
+            = new Dictionary<Type, Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>>();
 
+
+        private readonly HashSet<Type> _typesToBeDeleted = new HashSet<Type>();
 
         internal PackageUninstallerContext(IZipFileSystem zipFileSystem, PackageInformation packageInformation)
         {
-            if (zipFileSystem == null) throw new ArgumentNullException("zipFileSystem");
+            Verify.ArgumentNotNull(zipFileSystem, "zipFileSystem");
 
             this.ZipFileSystem = zipFileSystem;
             this.PackageInformation = packageInformation;
@@ -35,11 +39,11 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public void AddPendingForDeletionData(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (dataScopeIdentifier == null) throw new ArgumentNullException("dataScopeIdentifier");
-            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentNotNull(dataScopeIdentifier, "dataScopeIdentifier");
+            Verify.ArgumentNotNull(dataKeyPropertyCollection, "dataKeyPropertyCollection");
 
-            List<DataKeyPropertyCollection> dataKeyPropertyCollections = GetDataKeyPropertyCollections(interfaceType, dataScopeIdentifier, locale);
+            List<DataKeyPropertyCollection> dataKeyPropertyCollections = GetDataKeyPropertyCollection(interfaceType, dataScopeIdentifier, locale);
 
             if (dataKeyPropertyCollections.Contains(dataKeyPropertyCollection))
             {
@@ -54,7 +58,12 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public bool IsPendingForDeletionData(IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
+
+            if (_dataPendingForDeletion.ContainsKey(data.DataSourceId.InterfaceType))
+            {
+                return true;
+            }
 
             DataKeyPropertyCollection dataKeyPropertyCollection = data.CreateDataKeyPropertyCollection();
 
@@ -66,46 +75,33 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public bool IsPendingForDeletionData(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (dataScopeIdentifier == null) throw new ArgumentNullException("dataScopeIdentifier");
-            if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
+            Verify.ArgumentNotNull(dataScopeIdentifier, "dataScopeIdentifier");
+            Verify.ArgumentNotNull(dataKeyPropertyCollection, "dataKeyPropertyCollection");
 
-            List<DataKeyPropertyCollection> dataKeyPropertyCollections = GetDataKeyPropertyCollections(interfaceType, dataScopeIdentifier, locale);
+            List<DataKeyPropertyCollection> dataKeyPropertyCollections = GetDataKeyPropertyCollection(interfaceType, dataScopeIdentifier, locale);
 
             return dataKeyPropertyCollections.Contains(dataKeyPropertyCollection);
         }
 
 
 
-        private List<DataKeyPropertyCollection> GetDataKeyPropertyCollections(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale)
+        private List<DataKeyPropertyCollection> GetDataKeyPropertyCollection(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale)
         {
-            Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>> dataKeyPropertyCollectionDataScopes;
-            if (_dataPendingForDeletion.TryGetValue(interfaceType, out dataKeyPropertyCollectionDataScopes) == false)
-            {
-                dataKeyPropertyCollectionDataScopes = new Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>();
-                _dataPendingForDeletion.Add(interfaceType, dataKeyPropertyCollectionDataScopes);
-            }
-
-            Dictionary<CultureInfo, List<DataKeyPropertyCollection>> dataKeyPropertyCollectionsLoclaes;
-            if (dataKeyPropertyCollectionDataScopes.TryGetValue(dataScopeIdentifier, out dataKeyPropertyCollectionsLoclaes) == false)
-            {
-                dataKeyPropertyCollectionsLoclaes = new Dictionary<CultureInfo, List<DataKeyPropertyCollection>>();
-                dataKeyPropertyCollectionDataScopes.Add(dataScopeIdentifier, dataKeyPropertyCollectionsLoclaes);
-            }
-
             if (locale == null)
             {
                 locale = CultureInfo.InvariantCulture;
             }
 
-            List<DataKeyPropertyCollection> dataKeyPropertyCollections;
-            if (dataKeyPropertyCollectionsLoclaes.TryGetValue(locale, out dataKeyPropertyCollections) == false)
-            {
-                dataKeyPropertyCollections = new List<DataKeyPropertyCollection>();
-                dataKeyPropertyCollectionsLoclaes.Add(locale, dataKeyPropertyCollections);
-            }
+            return _dataPendingForDeletion
+                .GetOrAdd(interfaceType, () => new Dictionary<DataScopeIdentifier, Dictionary<CultureInfo, List<DataKeyPropertyCollection>>>())
+                .GetOrAdd(dataScopeIdentifier, () => new Dictionary<CultureInfo, List<DataKeyPropertyCollection>>())
+                .GetOrAdd(locale, () => new List<DataKeyPropertyCollection>());
+        }
 
-            return dataKeyPropertyCollections;
+        internal void AddPendingForDeletionDataType(Type intefaceType)
+        {
+            _typesToBeDeleted.Add(intefaceType);
         }
     }
 }

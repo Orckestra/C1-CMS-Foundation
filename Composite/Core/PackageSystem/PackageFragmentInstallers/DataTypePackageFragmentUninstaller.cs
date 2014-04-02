@@ -4,8 +4,6 @@ using System.Linq;
 using System.Xml.Linq;
 using Composite.C1Console.Events;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
-using Composite.Core.ResourceSystem;
 using Composite.Core.Xml;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -20,8 +18,8 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataTypePackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
-        private List<DataTypeDescriptor> _dataTypeDescriptorsToDelete = null;
-        private List<PackageFragmentValidationResult> _validationResult = null;
+        private List<DataTypeDescriptor> _dataTypeDescriptorsToDelete;
+        private List<PackageFragmentValidationResult> _validationResult;
 
 
         /// <exclude />
@@ -29,13 +27,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {            
             _validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Types").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Types") > 1)
             {
                 _validationResult.AddFatal(GetText("DataTypePackageFragmentUninstaller.OnlyOneElement"));
                 return _validationResult;
             }
 
-            XElement typesElement = this.Configuration.Where(f => f.Name == "Types").SingleOrDefault();
+            XElement typesElement = this.Configuration.SingleOrDefault(f => f.Name == "Types");
 
             _dataTypeDescriptorsToDelete = new List<DataTypeDescriptor>();
 
@@ -51,25 +49,33 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
                     Guid typeId;
-                    if (typeIdAttribute.TryGetGuidValue(out typeId) == false)
+                    if (!typeIdAttribute.TryGetGuidValue(out typeId))
                     {
                         _validationResult.AddFatal(GetText("DataTypePackageFragmentUninstaller.WrongAttributeFormat"), typeIdAttribute);
                         continue;
                     }
 
-                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeId);
-                    if (dataTypeDescriptor != null)
+                    var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(typeId);
+                    if (dataTypeDescriptor == null)
                     {
-                        _dataTypeDescriptorsToDelete.Add(dataTypeDescriptor);
-
-                        var foreignRefereeTypes = DataReferenceFacade.GetRefereeTypes(dataTypeDescriptor.GetInterfaceType()).Where(f => _dataTypeDescriptorsToDelete.Any(g => g.GetInterfaceType().Equals(f)) == false);
-                        foreach (Type foreignRefereeType in foreignRefereeTypes)
-                        {
-                            _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
-                                string.Format("Data type '{0}' has references to type '{1}' about to be uninstalled. References must be removed before the package can be uninstalled.", 
-                                foreignRefereeType, dataTypeDescriptor.TypeManagerTypeName), typeIdAttribute));
-                        }
+                        continue;
                     }
+
+                    _dataTypeDescriptorsToDelete.Add(dataTypeDescriptor);
+
+                    Type intefaceType = dataTypeDescriptor.GetInterfaceType();
+
+                    var foreignRefereeTypes = DataReferenceFacade.GetRefereeTypes(intefaceType)
+                        .Where(f => !_dataTypeDescriptorsToDelete.Any(g => g.GetInterfaceType() == f));
+
+                    foreach (Type foreignRefereeType in foreignRefereeTypes)
+                    {
+                        _validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
+                            string.Format("Data type '{0}' has references to type '{1}' about to be uninstalled. References must be removed before the package can be uninstalled.", 
+                                foreignRefereeType, dataTypeDescriptor.TypeManagerTypeName), typeIdAttribute));
+                    }
+
+                    UninstallerContext.AddPendingForDeletionDataType(intefaceType);
                 }
             }
 
@@ -86,12 +92,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override void Uninstall()
         {
-            if (_dataTypeDescriptorsToDelete == null) throw new InvalidOperationException("DataTypePackageFragmentUninstaller has not been validated");
+            Verify.IsNotNull(_dataTypeDescriptorsToDelete, "DataTypePackageFragmentUninstaller has not been validated");
 
             bool flushTheSystem = false;
             foreach (DataTypeDescriptor dataTypeDescriptor in _dataTypeDescriptorsToDelete)
             {
-                LoggingService.LogVerbose("DataTypePackageFragmentUninstaller", string.Format("Uninstalling the type '{0}'", dataTypeDescriptor));
+                Log.LogVerbose(this.GetType().Name, "Uninstalling the type '{0}'", dataTypeDescriptor);
                 
                 GeneratedTypesFacade.DeleteType(dataTypeDescriptor, false);
                 flushTheSystem = true;
