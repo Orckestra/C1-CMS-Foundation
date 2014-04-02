@@ -136,7 +136,9 @@ BlockSelectorBinding.prototype.handleAction = function (action) {
 
 			var value = this.getValue();
 			if (value != BlockSelectorBinding.VALUE_DEFAULT) {
+				this._tinyInstance.formatter.functionIsBlock = true;
 				this._tinyInstance.formatter.apply(value);
+				this._tinyInstance.formatter.functionIsBlock = false;
 			}
 
 			this.selections.each(function (selection) {
