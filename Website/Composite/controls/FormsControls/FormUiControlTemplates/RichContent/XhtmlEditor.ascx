@@ -23,7 +23,7 @@
         }
         else
         {
-            _currentStringValue = "<html xmlns='http://www.w3.org/1999/xhtml'>\n\t<head></head>\n\t<body>\n\t</body>\n</html>";
+            _currentStringValue = "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\t<head></head>\n\t<body>\n\t</body>\n</html>";
         }
 		_currentStringValue = HttpContext.Current.Server.UrlEncode(_currentStringValue).Replace("+", "%20");
     }
