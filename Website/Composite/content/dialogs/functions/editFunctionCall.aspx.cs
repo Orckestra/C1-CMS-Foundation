@@ -152,6 +152,21 @@ namespace CompositeEditFunctionCall
 
 	            object value = bindings[parameterProfile.Name];
 
+	            if (!parameterProfile.IsRequired)
+	            {
+	                object defaultValue = parameterProfile.GetDefaultValue();
+                    if(value == defaultValue 
+                       || (value != null && (value.Equals(defaultValue)))
+                       || (value is XNode && defaultValue is XNode && XElement.DeepEquals(value as XNode, defaultValue as XNode)))
+	                {
+	                    if (parameterNode != null)
+	                    {
+                            parameterNode.Remove();
+	                    }
+	                    continue;
+	                }
+	            }
+
                 FunctionMarkupHelper.SetParameterValue(functionMarkup, parameterProfile, value);
 	        }
 
@@ -239,8 +254,6 @@ namespace CompositeEditFunctionCall
 
 			CheckBasicView(functionCallsEvaluated);
 
-//            plhBasicTab.Visible = BasicViewEnabled;
-//            plhBasicTabContent.Visible = BasicViewEnabled;
             ActiveTab = BasicViewEnabled ? Tab.Basic : Tab.Advanced;
 		}
 
