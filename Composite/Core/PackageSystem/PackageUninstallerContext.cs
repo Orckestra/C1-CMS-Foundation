@@ -60,7 +60,7 @@ namespace Composite.Core.PackageSystem
         {
             Verify.ArgumentNotNull(data, "data");
 
-            if (_dataPendingForDeletion.ContainsKey(data.DataSourceId.InterfaceType))
+            if (_typesToBeDeleted.Contains(data.DataSourceId.InterfaceType))
             {
                 return true;
             }

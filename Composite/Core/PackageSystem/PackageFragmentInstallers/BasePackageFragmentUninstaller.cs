@@ -39,6 +39,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         protected XElement ConfigurationParent { get; set; }
 
         /// <exclude />
+        public virtual bool ValidateFirst { get { return false; } }
+
+        /// <exclude />
         protected PackageUninstallerContext UninstallerContext { get; private set; }
 
         internal static string GetResourceString(string key)

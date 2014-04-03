@@ -9,5 +9,6 @@ namespace Composite.Core.PackageSystem
         void Initialize(PackageUninstallerContext packageUninstallerContext, IEnumerable<XElement> configuration, XElement configurationParent);
         IEnumerable<PackageFragmentValidationResult> Validate();
         void Uninstall();
+        bool ValidateFirst { get; }
     }
 }
