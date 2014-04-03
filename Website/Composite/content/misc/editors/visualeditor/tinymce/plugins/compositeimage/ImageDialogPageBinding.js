@@ -133,13 +133,18 @@ ImageDialogPageBinding.prototype.handleAction = function (action) {
 ImageDialogPageBinding.prototype._configureFields = function () {
 	var manager = this.bindingWindow.DataManager;
 	var src = manager.getDataBinding("src");
+	var maxwidth = manager.getDataBinding("maxwidth");
+	var maxheight = manager.getDataBinding("maxheight");
 
-	if (src.compositeUrl != null && src.compositeUrl.isMedia) {
-		manager.getDataBinding("maxwidth").setReadOnly(false);
-		manager.getDataBinding("maxheight").setReadOnly(false);
-	} else {
-		manager.getDataBinding("maxwidth").setReadOnly(true);
-		manager.getDataBinding("maxheight").setReadOnly(true);
+	if (maxwidth && maxheight) {
+
+		if (src.compositeUrl != null && src.compositeUrl.isMedia) {
+			maxwidth.setReadOnly(false);
+			maxheight.setReadOnly(false);
+		} else {
+			maxwidth.setReadOnly(true);
+			maxheight.setReadOnly(true);
+		}
 	}
 
 }
