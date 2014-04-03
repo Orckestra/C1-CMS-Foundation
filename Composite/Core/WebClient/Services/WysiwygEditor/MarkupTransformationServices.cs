@@ -34,7 +34,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class MarkupTransformationServices
     {
-        static readonly Regex _duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>""|')([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>""|')([^>]*?)(\k<quote2>)([^>]*?)>", RegexOptions.Compiled);
+        static readonly Regex _duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>"")([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>"")([^>]*?)(\k<quote2>)([^>]*?)>", RegexOptions.Compiled);
         static readonly Regex _namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)([^>]*?)(/?)>", RegexOptions.Multiline | RegexOptions.Compiled);
         static readonly Regex _elementWithNamespaceDeclaration = new Regex(@"<(.*?) xmlns:([a-zA-Z0-9\._]*)=""(.*?)""(.*?)(/?)>", RegexOptions.Compiled);
         static readonly Regex _elementsWithPrefixedAttributes = new Regex(@"<[^>]*? ([\w]):.*?>", RegexOptions.Compiled);
