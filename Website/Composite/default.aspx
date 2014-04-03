@@ -1,8 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html>
 <%@ Page Language="C#" %>
+<%@ Import Namespace="Composite.Core.WebClient" %>
 <%
-    if (Composite.RuntimeInformation.IsDebugBuild == true && (Request.UrlReferrer == null || Request.UrlReferrer.AbsolutePath == "/"))
+    if (Composite.RuntimeInformation.IsDebugBuild 
+        && (Request.UrlReferrer == null || Request.UrlReferrer.AbsolutePath == "/")
+        && ScriptLoader.UnbundledScriptsAvailable())
     {
         Response.Redirect("develop.aspx");
     }

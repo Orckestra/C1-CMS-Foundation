@@ -5,6 +5,7 @@
 
 <%@ Import Namespace="Composite" %>
 <%@ Import Namespace="Composite.Core.Routing" %>
+<%@ Import Namespace="Composite.Core.WebClient" %>
 <%@ Import Namespace="Composite.Data" %>
 <%@ Import Namespace="Composite.Core.Configuration" %>
 <%@ Import Namespace="Composite.Data.Types" %>
@@ -15,9 +16,9 @@
     <script runat="server">
         void Page_Init(object sender, EventArgs e)
         {
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
-                Response.Redirect(string.Format("Composite/top.aspx{0}", RuntimeInformation.IsDebugBuild ? "?mode=develop" : ""));
+                Response.Redirect("Composite/top.aspx" + (RuntimeInformation.IsDebugBuild && ScriptLoader.UnbundledScriptsAvailable() ? "?mode=develop" : ""));
             }
 
             using (var conn = new DataConnection(DataLocalizationFacade.DefaultLocalizationCulture))

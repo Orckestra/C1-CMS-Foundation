@@ -8,7 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Xml.Linq;
+using Composite.Core.IO;
 using Composite.Core.Xml;
 
 namespace Composite.Core.WebClient
@@ -222,6 +224,14 @@ namespace Composite.Core.WebClient
             }
             catch (Exception) { }
             return result;
+        }
+
+        /// <exclude />
+        public static bool UnbundledScriptsAvailable()
+        {
+            var filePath = HostingEnvironment.MapPath(UrlUtils.AdminRootPath + "/scripts/source/top/interfaces/IAcceptable.js");
+
+            return C1File.Exists(filePath);
         }
 
         [DebuggerStepThrough]
