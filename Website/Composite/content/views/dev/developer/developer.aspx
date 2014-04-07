@@ -54,6 +54,7 @@
 										<ui:treenode label="Focus" oncommand="Developer.load('test-focus')"/>
 										<ui:treenode label="Buttons" oncommand="Developer.load('test-buttons')"/>
 										<ui:treenode label="Splitboxes" oncommand="Developer.load('test-splitboxes')"/>
+										<ui:treenode label="Styles" oncommand="Developer.load('test-style')"/>
 									</ui:treenode>
 									<ui:treenode label="Binding features" open="false">
 										<ui:treenode label="Memory" oncommand="Developer.load('test-memory')"/>

@@ -55,6 +55,7 @@ var Developer = new function () {
 			"test-menus" 					: "${root}/content/views/dev/developer/tests/ui/menus.aspx",
 			"test-focus" 					: "${root}/content/views/dev/developer/tests/ui/focus.aspx",
 			"test-special" 					: "${root}/content/views/dev/developer/tests/ui/special.aspx",
+			"test-style"					: "${root}/content/views/dev/developer/tests/ui/style.aspx",
 			"test-nulltreeselect"			: "${root}/content/views/dev/developer/tests/fields/nulltreeselector.aspx",
 			"test-nonframework"				: "${root}/content/views/dev/developer/tests/fields/nonframework.aspx",
 			

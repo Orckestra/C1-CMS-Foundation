@@ -140,6 +140,7 @@
 			<Script filename="${root}/scripts/source/top/ui/bindings/Binding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/data/DataBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/roots/RootBinding.js"/>
+			<Script filename="${root}/scripts/source/top/ui/bindings/roots/StyleBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/matrixes/MatrixBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/flexboxes/FlexBoxBinding.js"/>
 			<Script filename="${root}/scripts/source/top/ui/bindings/flexboxes/ScrollBoxBinding.js"/>
