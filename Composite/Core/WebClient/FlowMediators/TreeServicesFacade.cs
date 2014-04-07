@@ -292,29 +292,27 @@ namespace Composite.Core.WebClient.FlowMediators
                     continue;
                 }
 
-                List<string> ancestorEntityTokens = ancestorChain.Select(token => EntityTokenSerializer.Serialize(token, true)).ToList();
+                List<EntityToken> ancestorEntityTokens = ancestorChain.ToList();
 
                 int lastAlreadyOpenedNodeIndex = 0;
                 while (lastAlreadyOpenedNodeIndex + 1 < ancestorChain.Count
-                       && openedNodes.Any(node => node.EntityToken == ancestorEntityTokens[lastAlreadyOpenedNodeIndex + 1]))
+                       && openedNodes.Any(node => EntityTokenSerializer.Deserialize(node.EntityToken).Equals(ancestorEntityTokens[lastAlreadyOpenedNodeIndex + 1])))
                 {
                     lastAlreadyOpenedNodeIndex++;
                 }
 
-                var openNode = openedNodes
-                       .Where(node => node.EntityToken == ancestorEntityTokens[lastAlreadyOpenedNodeIndex])
-                       .FirstOrDefault();
+                var openNode = openedNodes.FirstOrDefault(node => EntityTokenSerializer.Deserialize(node.EntityToken).Equals(ancestorEntityTokens[lastAlreadyOpenedNodeIndex]));
                 if (openNode == null)
                 {
                     return null;
                 }
 
                 // Expanding all the nodes under the root
-                var nodesToBeExpanded = new List<string>();
+                var nodesToBeExpanded = new List<EntityToken>();
                 nodesToBeExpanded.AddRange(ancestorEntityTokens.Skip(lastAlreadyOpenedNodeIndex));
                 nodesToBeExpanded.RemoveAt(nodesToBeExpanded.Count - 1);
                 // Last node is a target one, so doesn't have to be expanded
-                nodesToBeExpanded.AddRange(openedNodes.Select(node => node.EntityToken));
+                nodesToBeExpanded.AddRange(openedNodes.Select(s => EntityTokenSerializer.Deserialize(s.EntityToken)));
 
                 var result = new List<RefreshChildrenInfo>();
                 // Expanding all the nodes, and checking if all of the nodes in the ancestor chain is marked 
@@ -345,7 +343,8 @@ namespace Composite.Core.WebClient.FlowMediators
         /// <param name="resultList"></param>
         /// <param name="keyNodes"></param>
         /// <returns>Returns false, if there's a key node, that has [element.TreeLockBehavior == None]</returns>
-        private static bool ExpandNodesRec(string entityToken, string elementProviderName, string piggybag, List<string> entityTokensToBeExpanded, List<RefreshChildrenInfo> resultList, List<string> keyNodes)
+        private static bool ExpandNodesRec(string entityToken, string elementProviderName, string piggybag, 
+            List<EntityToken> entityTokensToBeExpanded, List<RefreshChildrenInfo> resultList, List<EntityToken> keyNodes)
         {
             if (resultList.Count > 1000) // Preventing an infinite loop
             {
@@ -362,13 +361,15 @@ namespace Composite.Core.WebClient.FlowMediators
 
             foreach (ClientElement child in children)
             {
+                var childEntityToken = EntityTokenSerializer.Deserialize(child.EntityToken);
+
                 if (!child.TreeLockEnabled
-                    && keyNodes.Contains(child.EntityToken))
+                    && keyNodes.Contains(childEntityToken))
                 {
                     return false;
                 }
 
-                if (entityTokensToBeExpanded.Contains(child.EntityToken))
+                if (entityTokensToBeExpanded.Contains(childEntityToken))
                 {
                     if (ExpandNodesRec(child.EntityToken, 
                                        child.ProviderName, 
@@ -382,7 +383,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 }
                 else
                 {
-                    if (keyNodes.Contains(child.EntityToken))
+                    if (keyNodes.Contains(childEntityToken))
                     {
                         return true;
                     }

@@ -20,7 +20,10 @@ namespace Composite.Data.Hierarchy.DataAncestorProviders
                 return null;
             }
 
-            return PageManager.GetPageById(parentId);
+            using (new DataScope(data.DataSourceId.LocaleScope))
+            {
+                return PageManager.GetPageById(parentId);
+            }
         }
     }
 }

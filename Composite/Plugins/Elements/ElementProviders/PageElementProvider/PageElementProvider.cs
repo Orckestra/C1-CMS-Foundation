@@ -379,12 +379,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 Type type = dataEntityToken.InterfaceType;
                 if (type != typeof(IPage)) continue;
 
-                IPage page = dataEntityToken.Data as IPage;
-                if (page.GetParentId() != Guid.Empty) continue;
+                Guid pageId = (Guid) dataEntityToken.DataSourceId.GetKeyValue();
+                Guid parentPageId = PageManager.GetParentId(pageId);
 
-                PageElementProviderEntityToken newEntityToken = new PageElementProviderEntityToken(_context.ProviderName);
+                if (parentPageId != Guid.Empty) continue;
 
-                result.Add(entityToken, new EntityToken[] { newEntityToken });
+                result.Add(entityToken, new EntityToken[] { new PageElementProviderEntityToken(_context.ProviderName) });
             }
 
             return result;
