@@ -602,12 +602,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
-        public DateTime? PublishDate 
+        private DateTime? PublishDate 
         {
             get { return this.GetBinding<DateTime?>("PublishDate"); }
         }
 
-        public DateTime? UnpublishDate
+        private DateTime? UnpublishDate
         {
             get { return this.GetBinding<DateTime?>("UnpublishDate"); }
         }
