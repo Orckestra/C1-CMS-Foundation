@@ -141,8 +141,9 @@ namespace Composite.Core.WebClient.Setup
         [WebMethod]
         public bool SetUp(string setupDescriptionXML, string username, string email, string password, string language, string consolelanguage, bool newsletter)
         {
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized == true) return true;
+            if (SystemSetupFacade.IsSystemFirstTimeInitialized) return true;
 
+            SystemSetupFacade.SetupIsRunning = true;
             SystemSetupFacade.IsSystemFirstTimeInitialized = true;
 
             try

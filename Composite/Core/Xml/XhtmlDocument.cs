@@ -1,5 +1,4 @@
 ﻿using System.Xml.Linq;
-using Composite.Core.Xml;
 using System;
 using Composite.Core.Types;
 using System.Linq;
@@ -15,16 +14,20 @@ namespace Composite.Core.Xml
     /// can be nested within each other. The Composite C1 core will normalize such a nested structure when rendering a page, ensuring head elementsa flow to the top level
     /// document and body content is left, ultimately yielding one complete and correctly structured xhtml page.
     /// </summary>
-    [XhtmlDocumentConverter()]
+    [XhtmlDocumentConverter]
     public sealed class XhtmlDocument : XDocument
     {
+        private static readonly XName _html_XName = Namespaces.Xhtml + "html";
+        private static readonly XName _head_XName = Namespaces.Xhtml + "head";
+        private static readonly XName _body_XName = Namespaces.Xhtml + "body";
+
         /// <summary>
         /// Constructs an empty XhtmlDocument
         /// </summary>
         public XhtmlDocument()
-            : base(new XElement(Namespaces.Xhtml + "html",
-                new XElement(Namespaces.Xhtml + "head"),
-                new XElement(Namespaces.Xhtml + "body")))
+            : base(new XElement(_html_XName,
+                new XElement(_head_XName),
+                new XElement(_body_XName)))
         { }
 
 
@@ -60,7 +63,7 @@ namespace Composite.Core.Xml
         {
             get
             {
-                return this.Root.Element(Namespaces.Xhtml + "head");
+                return this.Root.Element(_head_XName);
             }
         }
 
@@ -73,7 +76,7 @@ namespace Composite.Core.Xml
         {
             get
             {
-                return this.Root.Element(Namespaces.Xhtml + "body");
+                return this.Root.Element(_body_XName);
             }
         }
 
@@ -101,7 +104,7 @@ namespace Composite.Core.Xml
         /// <returns>XhtmlDocument representing the supplied string</returns>
         public new static XhtmlDocument Parse(string xhtml)
         {
-            XhtmlDocument doc = new XhtmlDocument(XDocument.Parse(xhtml));
+            var doc = new XhtmlDocument(XDocument.Parse(xhtml));
 
             List<XElement> sourceWhitespaceSensitiveElements = GetWhitespaceSensitiveElements(doc);
 
@@ -140,9 +143,9 @@ namespace Composite.Core.Xml
         {
             if (this.Root != null)
             {
-                if (this.Root.Name != Namespaces.Xhtml + "html") throw new ArgumentException(string.Format("Supplied XDocument must have a root named html belonging to the namespace '{0}'", Namespaces.Xhtml));
-                if (this.Head == null) throw new InvalidOperationException("XHTML document is missing <head /> element");
-                if (this.Body == null) throw new InvalidOperationException("XHTML document is missing <body /> element");
+                Verify.That(this.Root.Name == _html_XName, "Supplied XDocument must have a root named html belonging to the namespace xmlns=\"{0}\"", Namespaces.Xhtml);
+                Verify.IsNotNull(this.Head, "XHTML document is missing <head /> element");
+                Verify.IsNotNull(this.Body, "XHTML document is missing <body /> element");
             }
         }
 
@@ -160,7 +163,7 @@ namespace Composite.Core.Xml
     {
         public override bool TryConvert(object value, Type targetType, out object targetValue)
         {
-            if (value == null) throw new ArgumentNullException("value");
+            Verify.ArgumentNotNull(value, "value");
 
             if (targetType == typeof(XhtmlDocument) && value is XElement)
             {

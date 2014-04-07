@@ -2178,7 +2178,6 @@
     <Compile Include="Core\Linq\ExpressionVisitors\FindFirstParameterExpressionVisitor.cs" />
     <Compile Include="Core\Linq\Extensions.cs" />
     <Compile Include="Core\Linq\TypeHelpers.cs" />
-    <Compile Include="Compare.cs" />
     <Compile Include="Core\WebClient\Renderings\Page\PageRenderer.cs" />
     <Compile Include="Core\ResourceSystem\IconResourceSystemFacadeImpl.cs" />
     <Compile Include="Core\ResourceSystem\Icons\CommonCommandIcons.cs" />

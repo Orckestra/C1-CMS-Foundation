@@ -15,9 +15,8 @@ namespace Composite.Core.Configuration
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class SystemSetupFacade
     {
-        private static object _lock = new object();
-        private static bool _isSystemFirstTimeInitializedInitialized = false;
-        private static bool _isSystemFirstTimeInitializedValue = false;
+        private static readonly object _lock = new object();
+        private static bool? _isSystemFirstTimeInitialized;
 
         /// <exclude />
         static SystemSetupFacade()
@@ -30,46 +29,45 @@ namespace Composite.Core.Configuration
         {
             get
             {
-                if (_isSystemFirstTimeInitializedInitialized == false)
+                if (_isSystemFirstTimeInitialized == null)
                 {
                     try
                     {
-                        _isSystemFirstTimeInitializedValue = C1File.Exists(SystemInitializedFilePath);
+                        _isSystemFirstTimeInitialized = C1File.Exists(SystemInitializedFilePath);
                     }
                     catch (Exception)
                     {
+                        _isSystemFirstTimeInitialized = false;
                     }
-
-                    _isSystemFirstTimeInitializedInitialized = true;
                 }
 
-                return _isSystemFirstTimeInitializedValue;
+                return _isSystemFirstTimeInitialized.Value;
             }
             set
             {
+                Verify.IsTrue(value, "Only 'true' value is expected");
+
                 lock (_lock)
                 {
-                    if (C1File.Exists(SystemInitializedFilePath) == false)
+                    if (!C1File.Exists(SystemInitializedFilePath))
                     {
                         string directory = Path.GetDirectoryName(SystemInitializedFilePath);
-                        if (C1Directory.Exists(directory) == false)
-                        {
-                            C1Directory.CreateDirectory(directory);
-                        }
+                        C1Directory.CreateDirectory(directory);
 
-                        XDocument doc = new XDocument(
+                        var doc = new XDocument(
                             new XElement("Root", new XAttribute("Status", true))
                         );
 
                         doc.SaveToFile(SystemInitializedFilePath);
                     }
 
-                    _isSystemFirstTimeInitializedValue = true;
+                    _isSystemFirstTimeInitialized = true;
                 }
             }
         }
 
-
+        /// <exclude />
+        public static bool SetupIsRunning { get; set; }
 
         private static string SystemInitializedFilePath
         {
@@ -87,17 +85,15 @@ namespace Composite.Core.Configuration
         /// </summary>
         public static void SetFirstTimeStart()
         {
-            if (C1File.Exists(FirstTimeStartFilePath) == false)
+            if (!C1File.Exists(FirstTimeStartFilePath))
             {
                 string directory = Path.GetDirectoryName(FirstTimeStartFilePath);
-                if (C1Directory.Exists(directory) == false)
+                if (!C1Directory.Exists(directory))
                 {
                     C1Directory.CreateDirectory(directory);
                 }
 
-                XDocument doc = new XDocument(
-                    new XElement("Root", new XAttribute("time", DateTime.Now))
-                );
+                var doc = new XDocument(new XElement("Root", new XAttribute("time", DateTime.Now)));
 
                 doc.SaveToFile(FirstTimeStartFilePath);
             }
@@ -112,9 +108,9 @@ namespace Composite.Core.Configuration
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is intended")]
         public static DateTime GetFirstTimeStart()
         {
-            if (File.Exists(FirstTimeStartFilePath) == false) throw new InvalidOperationException(FirstTimeStartFilePath + " is missing");
+            Verify.That(File.Exists(FirstTimeStartFilePath), "File '{0}' is missing", FirstTimeStartFilePath);
 
-            XDocument doc = XDocumentUtils.Load(FirstTimeStartFilePath);
+            var doc = XDocumentUtils.Load(FirstTimeStartFilePath);
 
             return (DateTime)doc.Element("Root").Attribute("time");
         }
