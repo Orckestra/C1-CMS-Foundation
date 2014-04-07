@@ -127,6 +127,10 @@ namespace Composite.Core.WebClient.Setup
                 {
                     Log.LogVerbose(VerboseLogTitle, "Installing package: " + packageUrls[i]);
                     InstallPackage(packageUrls[i], packages[i]);
+
+                    // Releasing a reference to reduce memory usage
+                    packages[i].Dispose();
+                    packages[i] = null;
                 }
 
                 bool translationExists = InstallLanguagePackage(userCulture);

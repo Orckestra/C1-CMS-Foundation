@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Transactions;
 using System.Xml.Linq;
 using Composite.Core.Application;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.IO.Zip;
@@ -114,7 +114,9 @@ namespace Composite.Core.PackageSystem
                         onPackageInstallation();
                     }
 
-                    if (systemLockingType == SystemLockingType.None || !ApplicationOnlineHandlerFacade.IsApplicationOnline)
+                    if (systemLockingType == SystemLockingType.None 
+                        || !ApplicationOnlineHandlerFacade.IsApplicationOnline
+                        || SystemSetupFacade.SetupIsRunning)
                     {
                         return DoInstall();
                     }
@@ -144,7 +146,7 @@ namespace Composite.Core.PackageSystem
 
         private PackageFragmentValidationResult DoInstall()
         {
-            using (TransactionScope transactionScope = TransactionsFacade.Create(true, TimeSpan.FromMinutes(30.0)))
+            using (var transactionScope = TransactionsFacade.Create(true, TimeSpan.FromMinutes(30.0)))
             {
                 string uninstallFilename = Path.Combine(this.PackageInstallDirectory,
                                                         PackageSystemSettings.UninstallFilename);
