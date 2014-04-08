@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
@@ -12,6 +11,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security;
+using Composite.C1Console.Users;
 using Composite.Core;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
@@ -43,7 +43,7 @@ namespace Composite.Services
             foreach (ClientElement clientElement in listToClean)
             {
                 clientElement.Actions.RemoveAll(f => knownActionKeys.Contains(f.ActionKey));
-                knownActionKeys.AddRange(clientElement.ActionKeys.Where(f => knownActionKeys.Contains(f) == false));
+                knownActionKeys.AddRange(clientElement.ActionKeys.Where(f => !knownActionKeys.Contains(f)));
             }
         }
 
@@ -136,18 +136,17 @@ namespace Composite.Services
         {
             VerifyClientElement(clientElement);
 
-            if ((clientElement == null) || (string.IsNullOrEmpty(clientElement.ProviderName) == true))
+            if (clientElement == null || string.IsNullOrEmpty(clientElement.ProviderName))
             {
                 List<ClientElement> root = new List<ClientElement>();
                 root.Add(TreeServicesFacade.GetRoot());
                 return root;
             }
-            else
-            {
-                List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
-                RemoveDuplicateActions(clientElements);
-                return clientElements;
-            }
+            
+            List<ClientElement> clientElements = TreeServicesFacade.GetChildren(clientElement.ProviderName, clientElement.EntityToken, clientElement.Piggybag, serializedSearchToken);
+            RemoveDuplicateActions(clientElements);
+            return clientElements;
+            
         }
 
 
@@ -285,7 +284,7 @@ namespace Composite.Services
         {
             if (clientElement == null) return;
 
-            if (HashSigner.ValidateSignedHash(clientElement.Piggybag, HashValue.Deserialize(clientElement.PiggybagHash)) == false)
+            if (!HashSigner.ValidateSignedHash(clientElement.Piggybag, HashValue.Deserialize(clientElement.PiggybagHash)))
             {
                 throw new System.Security.SecurityException("Data has been tampered");
             }
@@ -333,12 +332,18 @@ namespace Composite.Services
 						var dataItem = (entityToken as DataEntityToken).Data;
 						if (dataItem is ILocalizedControlled)
 						{
-							var dataItemFromTheotherLocale =
-								DataFacade.GetDataFromOtherLocale(dataItem, Composite.C1Console.Users.UserSettings.ActiveLocaleCultureInfo).ToList();
+							var dataItemFromTheotherLocale = DataFacade.GetDataFromOtherLocale(dataItem, UserSettings.ActiveLocaleCultureInfo).ToList();
+
+                            if (!dataItemFromTheotherLocale.Any() && UserSettings.ForeignLocaleCultureInfo != null)
+						    {
+                                dataItemFromTheotherLocale = DataFacade.GetDataFromOtherLocale(dataItem, UserSettings.ForeignLocaleCultureInfo).ToList();
+						    }
+                            
 							if (dataItemFromTheotherLocale.Count == 1)
 							{
-								currentLocaleEntityTokens.Add(EntityTokenSerializer.Serialize(
-									dataItemFromTheotherLocale[0].GetDataEntityToken(), true));
+							    var foreignEntityToken = dataItemFromTheotherLocale[0].GetDataEntityToken();
+
+                                currentLocaleEntityTokens.Add(EntityTokenSerializer.Serialize(foreignEntityToken, true));
 								continue;
 							}
 						}
@@ -374,14 +379,14 @@ namespace Composite.Services
 			var relativePath = Regex.Replace(path, @"^http://[\w\.\d:]+/", "/");
 			var mediaUrlData = MediaUrls.ParseUrl(relativePath);
 
-			using (var connection = new DataConnection())
+			using (var conn = new DataConnection())
 			{
 				if (mediaUrlData != null)
 				{
 					var mediaId = mediaUrlData.MediaId;
 					var store = mediaUrlData.MediaStore;
 
-					var matchingMedia = connection.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
+					var matchingMedia = conn.Get<IMediaFile>().FirstOrDefault(media => media.Id == mediaId && media.StoreId == store);
 
 					if (matchingMedia != null)
 					{
@@ -393,7 +398,7 @@ namespace Composite.Services
 				var pageUrlData = PageUrls.ParseUrl(relativePath);
 				if (pageUrlData != null)
 				{
-					var pageNode = connection.SitemapNavigator.GetPageNodeById(pageUrlData.PageId);
+					var pageNode = conn.SitemapNavigator.GetPageNodeById(pageUrlData.PageId);
 
 					if (pageNode != null)
 					{
