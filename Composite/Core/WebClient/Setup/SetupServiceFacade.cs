@@ -133,9 +133,9 @@ namespace Composite.Core.WebClient.Setup
                     packages[i] = null;
                 }
 
-                bool translationExists = InstallLanguagePackage(userCulture);
+                CultureInfo installedLanguagePackageCulture = InstallLanguagePackage(userCulture);
 
-                UserSettings.SetUserC1ConsoleUiLanguage(username, (translationExists ? userCulture : StringResourceSystemFacade.GetDefaultStringCulture()));
+                UserSettings.SetUserC1ConsoleUiLanguage(username, (installedLanguagePackageCulture != null ? installedLanguagePackageCulture : StringResourceSystemFacade.GetDefaultStringCulture()));
 
                 RegisterSetup(setupRegisrtatoinDescription.ToString(), "");
 
@@ -195,13 +195,13 @@ namespace Composite.Core.WebClient.Setup
 
 
         /// <exclude />
-        public static XElement GetLanguagePackages()
+        public static Dictionary<CultureInfo, string> GetLanguagePackages()
         {
             SetupSoapClient client = CreateClient();
 
             XElement xml = client.GetLanguagePackages(RuntimeInformation.ProductVersion.ToString(), InstallationInformationFacade.InstallationId.ToString());
 
-            return xml;
+            return xml.Descendants("Language").ToDictionary(f => new CultureInfo(f.Attribute("key").Value), f =>f.Attribute("url").Value);
         }
 
 
@@ -232,32 +232,28 @@ namespace Composite.Core.WebClient.Setup
 
 
 
-        private static bool InstallLanguagePackage(CultureInfo userCulture)
+        private static CultureInfo InstallLanguagePackage(CultureInfo userCulture)
         {
-            string userCultureString = userCulture.Name;
+            Dictionary<CultureInfo, string> languagePackages = GetLanguagePackages();
 
-            XElement languagePackagesXml = GetLanguagePackages();
+            CultureInfo installLanguagePackageCulture = 
+                languagePackages.ContainsKey(userCulture) ? 
+                userCulture : 
+                languagePackages.Keys.Where(f => f.TwoLetterISOLanguageName == userCulture.TwoLetterISOLanguageName).FirstOrDefault();
 
-            string url = languagePackagesXml.
-                Descendants("Language").
-                Where(f => f.Attribute("key") != null && f.Attribute("key").Value == userCultureString).
-                Select(f => f.Attribute("url").Value).
-                FirstOrDefault();
-
-
-            if (url == null)
+            if (installLanguagePackageCulture != null)
             {
-                return false;
+                string url = languagePackages[installLanguagePackageCulture];
+
+                string packageUrl = string.Format(PackageUrlFormat, PackageServerUrl, url);
+
+                Log.LogVerbose(VerboseLogTitle, "Installing package: " + packageUrl);
+
+                var packageStream = DownloadPackage(packageUrl);
+                InstallPackage(packageUrl, packageStream);
             }
 
-            string packageUrl = string.Format(PackageUrlFormat, PackageServerUrl, url);
-
-            Log.LogVerbose(VerboseLogTitle, "Installing package: " + packageUrl);
-
-            var packageStream = DownloadPackage(packageUrl);
-            InstallPackage(packageUrl, packageStream);
-
-            return true;
+            return installLanguagePackageCulture;
         }
 
 
