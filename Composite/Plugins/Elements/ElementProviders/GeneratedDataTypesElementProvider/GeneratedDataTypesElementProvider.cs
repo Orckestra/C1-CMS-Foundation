@@ -523,7 +523,25 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             }
 
 
-            Dictionary<Type, DataTypeDescriptor> interfaces = interfaceList.ToDictionary(f => f, DynamicTypeManager.GetDataTypeDescriptor);
+            var interfaces = new Dictionary<Type, DataTypeDescriptor>();
+            foreach (var type in interfaceList)
+            {
+                DataTypeDescriptor dataTypeDescriptor;
+                try
+                {
+                    dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type);
+                }
+                catch (Exception ex)
+                {
+                    Log.LogError(LogTitle, ex);
+                    continue;
+                }
+
+                if (dataTypeDescriptor != null)
+                {
+                    interfaces.Add(type, dataTypeDescriptor);
+                }
+            }
 
             IEnumerable<KeyValuePair<Type, DataTypeDescriptor>> sortedInterfaces = interfaces;
             if (_websiteItemsView)
