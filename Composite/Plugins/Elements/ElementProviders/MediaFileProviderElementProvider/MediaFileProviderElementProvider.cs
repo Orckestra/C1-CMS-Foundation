@@ -20,6 +20,7 @@ using Composite.Core.ResourceSystem;
 using Composite.Core.ResourceSystem.Icons;
 using Composite.Core.WebClient;
 using Composite.Data;
+using Composite.Data.Foundation.PluginFacades;
 using Composite.Data.Types;
 using Composite.Data.Types.StoreIdFilter;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -694,9 +695,11 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 }
             };
 
-            // Drag and drop buggy - temporaily removed until fixed - see bug 779
-            element.MovabilityInfo.DragType = typeof(IMediaFile);
-            element.MovabilityInfo.DragSubType = file.StoreId;
+            if (DataProviderPluginFacade.IsWriteableProvider(file.DataSourceId.ProviderName))
+            {
+                element.MovabilityInfo.DragType = typeof(IMediaFile);
+                element.MovabilityInfo.DragSubType = file.StoreId;
+            }
 
             element.PropertyBag.Add("ElementId", file.StoreId + ":" + file.FolderPath.Combine(file.FileName, '/'));
 
@@ -746,7 +749,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
             Element element = new Element(_context.CreateElementHandle(folder.GetDataEntityToken()))
             {
-                VisualData = new ElementVisualizedData()
+                VisualData = new ElementVisualizedData
                 {
                     Label = folder.Path.GetFolderName('/'),
                     ToolTip = GetResourceString("MediaFileProviderElementProvider.OrganizedFilesAndFoldersToolTip"),
@@ -756,11 +759,13 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 },
             };
 
-            // Drag and drop buggy - temporaily removed until fixed - see bug 779
-            element.MovabilityInfo.AddDropType(typeof(IMediaFileFolder), folder.StoreId);
-            element.MovabilityInfo.AddDropType(typeof(IMediaFile), folder.StoreId);
-            element.MovabilityInfo.DragType = typeof(IMediaFileFolder);
-            element.MovabilityInfo.DragSubType = folder.StoreId;
+            if (DataProviderPluginFacade.IsWriteableProvider(folder.DataSourceId.ProviderName))
+            {
+                element.MovabilityInfo.AddDropType(typeof(IMediaFileFolder), folder.StoreId);
+                element.MovabilityInfo.AddDropType(typeof(IMediaFile), folder.StoreId);
+                element.MovabilityInfo.DragType = typeof(IMediaFileFolder);
+                element.MovabilityInfo.DragSubType = folder.StoreId;
+            }
 
             element.PropertyBag.Add("ReadOnly", folder.IsReadOnly.ToString());
             element.PropertyBag.Add("ElementId", folder.StoreId + ":" + folder.Path);
