@@ -35,11 +35,15 @@ h1,
 table {
 	margin: 0 0 20px 0;
 }
-table tr td {
+table {
+	cursor:default
+}
+table tr td, table tr th {
 	padding: 2px 5px 3px 5px;
 	vertical-align: top;
     min-width:8px;
     min-height:8px;
+	cursor:text
 }
 a {
 	color: blue;
@@ -55,12 +59,6 @@ body.mceForceColors {
 
 img {
 	border:0;
-}
-table {
-	cursor:default
-}
-table td, table th {
-	cursor:text
 }
 ins {
 	border-bottom:1px solid green;
