@@ -113,6 +113,29 @@ namespace Composite.Core.Routing
             return DataFacade.GetData<IHostnameBinding>().AsEnumerable().FirstOrDefault(b => b.Hostname == host);
         }
 
+        internal static IHostnameBinding GetAliasBinding(HttpContext httpContext)
+        {
+            if (httpContext == null)
+            {
+                return null;
+            }
+
+            string hostname = HttpContext.Current.Request.Url.Host.ToLowerInvariant();
+
+            foreach (var hostnameBinding in DataFacade.GetData<IHostnameBinding>(true).AsEnumerable())
+            {
+                string[] aliases = hostnameBinding.Aliases.Split(new[] {"\r\n", "\n"},
+                    StringSplitOptions.RemoveEmptyEntries);
+
+                if (aliases.Any(a => a == hostname))
+                {
+                    return hostnameBinding;
+                }
+            }
+
+            return null;
+        }
+
         internal static bool IsPageNotFoundRequest()
         {
             HttpContext context = HttpContext.Current;

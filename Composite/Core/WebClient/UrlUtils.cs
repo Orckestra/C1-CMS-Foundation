@@ -116,6 +116,18 @@ namespace Composite.Core.WebClient
         }
 
         /// <summary>
+        /// Determines whether currect request is a renderer request. 
+        /// (Requests to [/virtual path]/Composite/*)
+        /// </summary>
+        internal static bool IsRendererRequest(HttpContext httpContext)
+        {
+            string requestPath = httpContext.Request.Path;
+
+            return string.Compare(requestPath, RenderersRootPath, StringComparison.OrdinalIgnoreCase) == 0
+                   || requestPath.StartsWith(RenderersRootPath + "/", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
         /// Determines whether currect request is administration console request. 
         /// (Requests to [/virtual path]/Composite/*)
         /// </summary>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
+using System.Web;
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
@@ -1009,8 +1010,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             PageUrlData pageUrlData = new PageUrlData(previewPage);
 
+            var httpContext = HttpContext.Current;
+
             var urlSpace = new UrlSpace();
-            if(HostnameBindingsFacade.GetBindingForCurrentRequest() != null)
+            if(HostnameBindingsFacade.GetBindingForCurrentRequest() != null
+                || HostnameBindingsFacade.GetAliasBinding(httpContext) != null)
             {
                 urlSpace.ForceRelativeUrls = true;
             }

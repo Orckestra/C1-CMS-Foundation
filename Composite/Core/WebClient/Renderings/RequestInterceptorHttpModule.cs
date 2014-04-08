@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using System.Linq;
 using System.Web;
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
 using Composite.Core.Routing.Pages;
 using Composite.Core.Threading;
 using Composite.Core.Configuration;
-using Composite.Data;
 using Composite.Data.Types;
 
 
@@ -23,7 +21,7 @@ namespace Composite.Core.WebClient.Renderings
 
         void context_BeginRequest(object sender, EventArgs e)
         {
-            if (SystemSetupFacade.IsSystemFirstTimeInitialized == false) return;
+            if (!SystemSetupFacade.IsSystemFirstTimeInitialized) return;
 
             ThreadDataManager.InitializeThroughHttpContext(true);
 
@@ -158,32 +156,29 @@ namespace Composite.Core.WebClient.Renderings
 
         static bool CheckForHostnameAliasRedirect(HttpContext httpContext)
         {
-            if (UrlUtils.IsAdminConsoleRequest(httpContext))
+            if (UrlUtils.IsAdminConsoleRequest(httpContext) 
+                || UrlUtils.IsRendererRequest(httpContext)  
+                || new UrlSpace(httpContext).ForceRelativeUrls)
+            {
+                return false;
+            }
+
+            var hostnameBinding = HostnameBindingsFacade.GetAliasBinding(httpContext);
+
+            if (hostnameBinding == null)
             {
                 return false;
             }
 
             string hostname = httpContext.Request.Url.Host.ToLowerInvariant();
 
-            foreach (var hostnameBinding in DataFacade.GetData<IHostnameBinding>(true).AsEnumerable())
-            {
-                string[] aliases = hostnameBinding.Aliases.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var request = httpContext.Request;
 
-                if (!aliases.Any(a => a == hostname))
-                {
-                    continue;
-                }
-                var request = httpContext.Request;
+            string newUrl = request.Url.AbsoluteUri.Replace("://" + hostname, "://" + hostnameBinding.Hostname);
 
-                // TODO: refactor
-                string newUrl = request.Url.AbsoluteUri.Replace("://" + hostname, "://" + hostnameBinding.Hostname);
-
-                httpContext.Response.Redirect(newUrl, false);
-                httpContext.ApplicationInstance.CompleteRequest();
-                return true;
-            }
-
-            return false;
+            httpContext.Response.Redirect(newUrl, false);
+            httpContext.ApplicationInstance.CompleteRequest();
+            return true;
         }
     }
 }
