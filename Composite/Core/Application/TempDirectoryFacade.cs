@@ -2,6 +2,7 @@
 using System.IO;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
+using Composite.Core.WebClient;
 
 
 namespace Composite.Core.Application
@@ -12,10 +13,12 @@ namespace Composite.Core.Application
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class TempDirectoryFacade
     {
+        private static TimeSpan TemporaryFileExpirationTimeSpan = TimeSpan.FromHours(24.0);
+
         /// <exclude />
         public static string CreateTempDirectory()
         {
-            string directory = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.TempDirectory), Guid.NewGuid().ToString());
+            string directory = Path.Combine(TempDirectoryPath, UrlUtils.CompressGuid(Guid.NewGuid()));
 
             C1Directory.CreateDirectory(directory);
 
@@ -23,10 +26,15 @@ namespace Composite.Core.Application
         }
 
 
+        internal static string GetTempFileName(string extension)
+        {
+            return Path.Combine(TempDirectoryPath, UrlUtils.CompressGuid(Guid.NewGuid()).Substring(0, 8)) + (extension ?? "");
+        }
+
         /// <exclude />
         public static void OnApplicationStart()
         {
-            string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
+            string tempDirectoryName = TempDirectoryPath;
 
             if (!C1Directory.Exists(tempDirectoryName))
             {
@@ -38,21 +46,21 @@ namespace Composite.Core.Application
         /// <exclude />
         public static void OnApplicationEnd()
         {
-            // Deleting everything this is older than 24 hours
-            string tempDirectoryName = PathUtil.Resolve(GlobalSettingsFacade.TempDirectory);
+            // Deleting everything that is older than 24 hours
+            string tempDirectoryName = TempDirectoryPath;
 
             if (!C1Directory.Exists(tempDirectoryName))
             {
                 return;
             }
 
-            var temporaryFileExpirationSpan = TimeSpan.FromHours(24.0);
+            
 
             foreach (string filename in C1Directory.GetFiles(tempDirectoryName))
             {
                 try
                 {
-                    if (DateTime.Now > C1File.GetLastWriteTime(filename) + temporaryFileExpirationSpan)
+                    if (DateTime.Now > C1File.GetLastWriteTime(filename) + TemporaryFileExpirationTimeSpan)
                     {
                         C1File.Delete(filename);
                     }
@@ -66,7 +74,7 @@ namespace Composite.Core.Application
             {
                 try
                 {
-                    if (DateTime.Now > C1Directory.GetCreationTime(directoryPath) + temporaryFileExpirationSpan)
+                    if (DateTime.Now > C1Directory.GetCreationTime(directoryPath) + TemporaryFileExpirationTimeSpan)
                     {
                         C1Directory.Delete(directoryPath, true);
                     }
@@ -75,6 +83,11 @@ namespace Composite.Core.Application
                 {
                 }
             }
+        }
+
+        internal static string TempDirectoryPath
+        {
+            get { return PathUtil.Resolve(GlobalSettingsFacade.TempDirectory); }
         }
     }
 }

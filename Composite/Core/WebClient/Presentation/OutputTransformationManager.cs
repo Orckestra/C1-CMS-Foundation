@@ -7,9 +7,9 @@ using System.Web.Caching;
 using System.Web.Hosting;
 using System.Xml;
 using System.Xml.Xsl;
+using Composite.Core.Application;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 
 
 namespace Composite.Core.WebClient.Presentation
@@ -94,12 +94,12 @@ namespace Composite.Core.WebClient.Presentation
 
             public static MemoryStream Transform(MemoryStream buffer, String mode, String browser, String platform)
             {
-                XmlReaderSettings readerSettings = new XmlReaderSettings();
+                var readerSettings = new XmlReaderSettings();
                 readerSettings.XmlResolver = null;
                 readerSettings.DtdProcessing = DtdProcessing.Parse;
                 readerSettings.CheckCharacters = false;
 
-                List<string> xsltFilePaths = OutputTransformationManager.GetTransformationsInPriority().ToList();
+                List<string> xsltFilePaths = GetTransformationsInPriority().ToList();
 
                 if (xsltFilePaths.Count == 0)
                 {
@@ -131,31 +131,9 @@ namespace Composite.Core.WebClient.Presentation
                         * TODO: parametersetup in webcontrol markup!
                         */
 
-                    string transformationCacheKey = "Compiled" + xsltFilePath;
-                    var cache = HostingEnvironment.Cache;
+                    var transformer = GetCachedTransformation(xsltFilePath);
 
-                    XslCompiledTransform transformer = cache[transformationCacheKey] as XslCompiledTransform;
-                    if(transformer == null) 
-                    {
-                        lock (typeof(XslTransformationStream)) 
-                        {
-                            transformer = cache[transformationCacheKey] as XslCompiledTransform;
-                            if(transformer == null) 
-                            {
-                                transformer = XsltServices.GetCompiledXsltTransform(xsltFilePath);
-                                cache.Add(transformationCacheKey, 
-                                    transformer, 
-                                    new CacheDependency(xsltFilePath), 
-                                    DateTime.MaxValue, 
-                                    TimeSpan.FromDays(1.0),
-                                    CacheItemPriority.Default,
-                                    null);
-                            }
-                        }
-                    }
-                        
-                        
-                    XsltArgumentList argList = new XsltArgumentList();
+                    var argList = new XsltArgumentList();
                     if ( !string.IsNullOrEmpty ( mode )) {
 	                    argList.AddParam("mode", "", mode );
 	                }
@@ -170,12 +148,58 @@ namespace Composite.Core.WebClient.Presentation
                     argList.AddParam("doctype", "", doctype.ToString());
                     argList.AddParam("appVirtualPath", "", GetAppRootPath());
 
-                    transformer.Transform(XmlReader.Create(inputStream, readerSettings), argList, XmlWriter.Create(outputStream, transformer.OutputSettings));
+                    var reader = XmlReader.Create(inputStream, readerSettings);
+                    var writer = XmlWriter.Create(outputStream, transformer.OutputSettings);
+                    
+                    try
+                    {
+                        transformer.Transform(reader, argList, writer);
+                    }
+                    catch (XmlException xmlException)
+                    {
+                        string tempFilePath = TempDirectoryFacade.GetTempFileName(".xml");
+
+                        inputStream.Position = 0;
+                        string markup = new C1StreamReader(inputStream).ReadToEnd();
+                        
+                        C1File.WriteAllText(tempFilePath, markup); 
+
+                        throw new InvalidOperationException(
+                            "Incorrect xml markup, source saved in '{0}'".FormatWith(tempFilePath), 
+                            xmlException);
+                    }
                 }
 
                 Verify.That(outputStream != null, "NullRef");
 
                 return outputStream;
+            }
+
+            private static XslCompiledTransform GetCachedTransformation(string xsltFilePath)
+            {
+                string transformationCacheKey = "Compiled" + xsltFilePath;
+                var cache = HostingEnvironment.Cache;
+
+                XslCompiledTransform transformer = cache[transformationCacheKey] as XslCompiledTransform;
+                if (transformer == null)
+                {
+                    lock (typeof (XslTransformationStream))
+                    {
+                        transformer = cache[transformationCacheKey] as XslCompiledTransform;
+                        if (transformer == null)
+                        {
+                            transformer = XsltServices.GetCompiledXsltTransform(xsltFilePath);
+                            cache.Add(transformationCacheKey,
+                                transformer,
+                                new CacheDependency(xsltFilePath),
+                                DateTime.MaxValue,
+                                TimeSpan.FromDays(1.0),
+                                CacheItemPriority.Default,
+                                null);
+                        }
+                    }
+                }
+                return transformer;
             }
 
 
@@ -222,7 +246,7 @@ namespace Composite.Core.WebClient.Presentation
 
                             if (!userAgent.IsNullOrEmpty())
                             {
-                                if (userAgent.IndexOf("Gecko") > -1 /*&& !userAgent.Contains("Trident")*/)
+                                if (userAgent.IndexOf("Gecko", StringComparison.Ordinal) > -1 /*&& !userAgent.Contains("Trident")*/)
                                 {
                                     browser = "mozilla";
                                 }
@@ -230,11 +254,11 @@ namespace Composite.Core.WebClient.Presentation
                                 {
                                     browser = "explorer";
                                 }
-                                if (userAgent.IndexOf("Windows NT") > -1)
+                                if (userAgent.IndexOf("Windows NT", StringComparison.Ordinal) > -1)
                                 {
                                     platform = "vista";
                                 }
-                                else if (userAgent.IndexOf("OS X") > -1)
+                                else if (userAgent.IndexOf("OS X", StringComparison.Ordinal) > -1)
                                 {
                                     platform = "osx";
                                 }
@@ -248,7 +272,7 @@ namespace Composite.Core.WebClient.Presentation
                         }
                         catch (Exception ex)
                         {
-                            LoggingService.LogCritical("AdministrativeOutputTransformationHttpModule", ex);
+                            Log.LogCritical("AdministrativeOutputTransformationHttpModule", ex);
                         }
                     }
 
