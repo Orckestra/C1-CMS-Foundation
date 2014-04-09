@@ -72,6 +72,7 @@ KeySetBinding.handleKey = function ( doc, e ) {
 		} else {
 			modifiers += code != KeyEventCodes.VK_CONTROL ? e.ctrlKey ? " control" : "" : "";
 		}
+		modifiers += code != KeyEventCodes.VK_ALT ? e.altKey ? " alt" : "" : "";
 		
 		var handler = handlers [ doc ][ code ][ modifiers ];
 		if ( handler == null ) {

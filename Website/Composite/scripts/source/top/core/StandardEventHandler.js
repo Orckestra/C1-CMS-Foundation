@@ -126,11 +126,11 @@ StandardEventHandler.prototype._addListeners = function () {
 			handleEvent : function ( e ) {
 				var s = 83;
 				if (Client.isMac) {
-					if (e.metaKey && e.keyCode == s) {
+					if (e.metaKey && e.keyCode == s && !e.altKey) {
 						e.preventDefault();
 					}
 				} else {
-					if (e.ctrlKey && e.keyCode == s) {
+					if (e.ctrlKey && e.keyCode == s && !e.altKey) {
 						e.preventDefault();
 					}
 				}

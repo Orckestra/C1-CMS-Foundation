@@ -29,7 +29,7 @@ window.KeyEventCodes = {
 	VK_ENTER					: 13,
 	VK_SHIFT					: 16,
 	VK_CONTROL					: 17,
-	VK_ALT						: null,
+	VK_ALT						: 18,
 	VK_ESCAPE					: 27,
 	VK_SPACE					: 32,
 	VK_PAGE_UP					: 33,
