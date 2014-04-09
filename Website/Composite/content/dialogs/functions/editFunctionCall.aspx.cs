@@ -156,8 +156,9 @@ namespace CompositeEditFunctionCall
 	            {
 	                object defaultValue = parameterProfile.GetDefaultValue();
                     if(value == defaultValue 
-                       || (value != null && (value.Equals(defaultValue)))
-                       || (value is XNode && defaultValue is XNode && XElement.DeepEquals(value as XNode, defaultValue as XNode)))
+                       || (value != null && value.Equals(defaultValue))
+                       || (value is XNode && defaultValue is XNode && XElement.DeepEquals(value as XNode, defaultValue as XNode))
+                       || parameterProfile.WidgetFunction == null)
 	                {
 	                    if (parameterNode != null)
 	                    {
