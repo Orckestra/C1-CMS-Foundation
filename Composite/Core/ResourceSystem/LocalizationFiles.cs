@@ -1117,6 +1117,10 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_EditUserStep1_PasswordLabel { get { return T("Website.Forms.Administrative.EditUserStep1.PasswordLabel"); } } 
  /// <summary>&quot;The password has to be more than 6 characters long.&quot;</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_PasswordHelp { get { return T("Website.Forms.Administrative.EditUserStep1.PasswordHelp"); } } 
+ /// <summary>&quot;Name&quot;</summary> 
+ public static string Website_Forms_Administrative_EditUserStep1_NameLabel { get { return T("Website.Forms.Administrative.EditUserStep1.NameLabel"); } } 
+ /// <summary>&quot;The full name of the person using this account.&quot;</summary> 
+ public static string Website_Forms_Administrative_EditUserStep1_NameHelp { get { return T("Website.Forms.Administrative.EditUserStep1.NameHelp"); } } 
  /// <summary>&quot;Email&quot;</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_EmailLabel { get { return T("Website.Forms.Administrative.EditUserStep1.EmailLabel"); } } 
  /// <summary>&quot;The e-mail address of the user (optional).&quot;</summary> 
@@ -1207,12 +1211,16 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_AddNewUserStep1_LabelFieldGroup { get { return T("Website.Forms.Administrative.AddNewUserStep1.LabelFieldGroup"); } } 
  /// <summary>&quot;User name&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewUserStep1_UserNameLabel { get { return T("Website.Forms.Administrative.AddNewUserStep1.UserNameLabel"); } } 
- /// <summary>&quot;When you have created a new user the username cannot be changed&quot;</summary> 
+ /// <summary>&quot;When you have created a new user the username cannot be changed.&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewUserStep1_UserNameHelp { get { return T("Website.Forms.Administrative.AddNewUserStep1.UserNameHelp"); } } 
  /// <summary>&quot;Password&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewUserStep1_PasswordLabel { get { return T("Website.Forms.Administrative.AddNewUserStep1.PasswordLabel"); } } 
  /// <summary>&quot;The password has to be more than 6 characters long.&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewUserStep1_PasswordHelp { get { return T("Website.Forms.Administrative.AddNewUserStep1.PasswordHelp"); } } 
+ /// <summary>&quot;Name&quot;</summary> 
+ public static string Website_Forms_Administrative_AddNewUserStep1_NameLabel { get { return T("Website.Forms.Administrative.AddNewUserStep1.NameLabel"); } } 
+ /// <summary>&quot;The full name of the person using this account.&quot;</summary> 
+ public static string Website_Forms_Administrative_AddNewUserStep1_NameHelp { get { return T("Website.Forms.Administrative.AddNewUserStep1.NameHelp"); } } 
  /// <summary>&quot;Email address&quot;</summary> 
  public static string Website_Forms_Administrative_AddNewUserStep1_EmailLabel { get { return T("Website.Forms.Administrative.AddNewUserStep1.EmailLabel"); } } 
  /// <summary>&quot;The e-mail address of the user (optional).&quot;</summary> 
@@ -2287,6 +2295,10 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_EditPage_AwaitingApprovalTransition { get { return T("Website.Forms.Administrative.EditPage.AwaitingApprovalTransition"); } } 
  /// <summary>&quot;Awaiting Publication&quot;</summary> 
  public static string Website_Forms_Administrative_EditPage_AwaitingPublicationTransition { get { return T("Website.Forms.Administrative.EditPage.AwaitingPublicationTransition"); } } 
+ /// <summary>&quot;Saved, but not published&quot;</summary> 
+ public static string Website_Forms_Administrative_EditPage_PublishDatePreventPublishTitle { get { return T("Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle"); } } 
+ /// <summary>&quot;Your page has been saved, but not published since you have a future publish date set on the &apos;Settings&apos; tab.&quot;</summary> 
+ public static string Website_Forms_Administrative_EditPage_PublishDatePreventPublish { get { return T("Website.Forms.Administrative.EditPage.PublishDatePreventPublish"); } } 
  /// <summary>&quot;Search&quot;</summary> 
  public static string Website_Forms_Administrative_ElementKeywordSearch_LabelFieldGroup { get { return T("Website.Forms.Administrative.ElementKeywordSearch.LabelFieldGroup"); } } 
  /// <summary>&quot;Keyword&quot;</summary> 
@@ -2363,8 +2375,16 @@ namespace Composite.Core.ResourceSystem
  public static string Validation_Decimal_SymbolsAfterPointAllowed(string parameter0) { return string.Format(T("Validation.Decimal.SymbolsAfterPointAllowed"), parameter0); } 
  /// <summary>&quot;Only {0} digit(s) before decimal point allowed&quot;</summary> 
  public static string Validation_Decimal_SymbolsBeforePointAllowed(string parameter0) { return string.Format(T("Validation.Decimal.SymbolsBeforePointAllowed"), parameter0); } 
+ /// <summary>&quot;Invalid date string: &apos;{0}&apos;. Use the format &apos;{1}&apos;.&quot;</summary> 
+ public static string Validation_DateTime_InvalidDateFormat(string parameter0,string parameter1) { return string.Format(T("Validation.DateTime.InvalidDateFormat"), parameter0,parameter1); } 
+ /// <summary>&quot;This field is required.&quot;</summary> 
+ public static string Validation_RequiredField { get { return T("Validation.RequiredField"); } } 
  /// <summary>&quot;The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647&quot;</summary> 
  public static string Validation_Int32_Overflow { get { return T("Validation.Int32.Overflow"); } } 
+ /// <summary>&quot;Page Browser&quot;</summary> 
+ public static string Browser_Label { get { return T("Browser.Label"); } } 
+ /// <summary>&quot;Browse unpublished pages&quot;</summary> 
+ public static string Browser_ToolTip { get { return T("Browser.ToolTip"); } } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Management", key);
@@ -5960,6 +5980,8 @@ namespace Composite.Core.ResourceSystem
 	   public static class Composite_Web_SEOAssistant {
  /// <summary>&quot;SEO Assistant&quot;</summary> 
  public static string SEOAssistant { get { return T("SEOAssistant"); } } 
+ /// <summary>&quot;Search engine optimization&quot;</summary> 
+ public static string SEOAssistant_ToolTip { get { return T("SEOAssistant.ToolTip"); } } 
  /// <summary>&quot;Generate a page preview to compute the SEO indication.&quot;</summary> 
  public static string IntroText { get { return T("IntroText"); } } 
  /// <summary>&quot;Result&quot;</summary> 

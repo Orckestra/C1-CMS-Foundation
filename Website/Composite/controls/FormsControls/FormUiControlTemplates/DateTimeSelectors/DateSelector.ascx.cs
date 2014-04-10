@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.UI.WebControls;
+using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient.UiControlLib;
 using Composite.Plugins.Forms.WebChannel.UiControlFactories;
 using System.Web.UI;
@@ -74,8 +75,8 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelect
             catch (Exception)
             {
                 this.IsValid = false;
-                this.ValidationError = string.Format("Invalid date string: '{0}'. Use the format '{1}'.",
-                                                        this.CurrentStringValue, SampleDateString);
+                this.ValidationError = string.Format(StringResourceSystemFacade.GetString("Composite.Management", "Validation.DateTime.InvalidDateFormat"),
+                                       this.CurrentStringValue, SampleDateString);
             }
         }
 

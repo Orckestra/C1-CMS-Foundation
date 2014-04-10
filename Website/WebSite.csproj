@@ -217,7 +217,7 @@
     <Content Include="Composite\content\views\dev\developer\tests\ui\style2.css" />
     <Content Include="Composite\content\views\generic\generic.aspx" />
     <Content Include="Composite\content\views\generic\GenericPageBinding.js" />
-    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.cs">
+    <Content Include="Composite\controls\FormsControls\FormUiControlTemplates\DateTimeSelectors\DateSelector.ascx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

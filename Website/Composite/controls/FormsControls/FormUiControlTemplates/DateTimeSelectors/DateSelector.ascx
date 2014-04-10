@@ -1,4 +1,4 @@
-<%@ Control Language="C#" Inherits="Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelectors.DateSelectorBase" Src="~/Composite/controls/FormsControls/FormUiControlTemplates/DateTimeSelectors/DateSelector.cs" %>
+<%@ Control Language="C#" Inherits="Composite.controls.FormsControls.FormUiControlTemplates.DateTimeSelectors.DateSelectorBase" Src="~/Composite/controls/FormsControls/FormUiControlTemplates/DateTimeSelectors/DateSelector.ascx.cs" %>
 
 <div id="updatezone<%= this.UniqueID %>A">
     <div>

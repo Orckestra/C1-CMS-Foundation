@@ -135,6 +135,18 @@ namespace CompositeEditFunctionCall
 	        
 	        var validationErrors = formTreeCompiler.SaveAndValidateControlProperties();
 
+            // Validating required parameters
+	        foreach (var parameterProfile in function.ParameterProfiles)
+	        {
+	            if (!validationErrors.ContainsKey(parameterProfile.Name)
+	                && parameterProfile.WidgetFunction != null
+	                && (!bindings.ContainsKey(parameterProfile.Name) || bindings[parameterProfile.Name] == null))
+	            {
+                    validationErrors.Add(parameterProfile.Name, new Exception(
+                        StringResourceSystemFacade.GetString("Composite.Management", "Validation.RequiredField")));
+	            }
+	        }
+
 	        if (validationErrors.Any())
 	        {
 	            if (showValidationErrors)

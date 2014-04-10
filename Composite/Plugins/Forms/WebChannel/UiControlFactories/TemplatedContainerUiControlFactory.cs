@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.UI;
-using Composite.Core.Extensions;
+using Composite.Core;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.CoreUiControls;
 using Composite.C1Console.Forms.Plugins.UiControlFactory;
 using Composite.C1Console.Forms.WebChannel;
-using Composite.Core.Logging;
 using Composite.Plugins.Forms.WebChannel.Foundation;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -25,8 +24,8 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class ContainerTemplateUserControlBase : UserControl
     {
-        private List<FormControlDefinition> _formControlDefinitions = new List<FormControlDefinition>();
-        private Dictionary<string, object> _settings = new Dictionary<string, object>();
+        private readonly List<FormControlDefinition> _formControlDefinitions = new List<FormControlDefinition>();
+        private readonly Dictionary<string, object> _settings = new Dictionary<string, object>();
 
         internal List<LazyLoadedContainerInfo> LazyLoadedChildControlIDs { get; set; }
 
@@ -56,7 +55,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             string toolTip = label;
 
-            FormControlDefinition definition = new FormControlDefinition(label, toolTip, formControl, help, isFullWidthControl);
+            var definition = new FormControlDefinition(label, toolTip, formControl, help, isFullWidthControl);
 
             _formControlDefinitions.Add(definition);
         }
@@ -88,7 +87,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
             internal FormControlDefinition(string label, string toolTip, Control formControl, string help, bool isFullWidthControl)
             {
-                _label = (label != null ? label : "");
+                _label = label ?? "";
                 _toolTip = toolTip;
                 _formControl = formControl;
                 _help = help;
@@ -187,7 +186,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
         {
             if (_userControl.LazyLoadedChildControlIDs != null)
             {
-                var lazyInfo = _userControl.LazyLoadedChildControlIDs.Where(f => f.ChildIndex == childIndex).FirstOrDefault();
+                var lazyInfo = _userControl.LazyLoadedChildControlIDs.FirstOrDefault(f => f.ChildIndex == childIndex);
 
                 if (lazyInfo != null)
                 {
@@ -199,7 +198,7 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
 
                     if (lazyContainerActivated != "true")
                     {
-                        LoggingService.LogWarning("UiControlContainer", string.Format("Posibility of data corruption detected. Unexpected lazy bound state information from client. Expected 'true' or 'false', got '{0}' for post back field '{1}'. Will try to bind on child controls.", lazyContainerActivated, lazyInfo.PostBackName));
+                        Log.LogWarning("UiControlContainer", "Posibility of data corruption detected. Unexpected lazy bound state information from client. Expected 'true' or 'false', got '{0}' for post back field '{1}'. Will try to bind on child controls.", lazyContainerActivated, lazyInfo.PostBackName);
                     }
                 }
             }
