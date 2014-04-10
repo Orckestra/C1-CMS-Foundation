@@ -729,8 +729,15 @@ namespace Composite.Plugins.Routing.Pages
             // Searching for a hostname binding matching either the root page, or current hostname/UrlSpace
             if (!urlSpace.ForceRelativeUrls && knownHostname)
             {
-                hostnameBinding = _hostnameBindings.FirstOrDefault(b => b.HomePageId == rootPage.Id && b.Culture == cultureInfo.Name)
-                                  ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == rootPage.Id);
+                Guid pageId = rootPage.Id;
+                string host = urlSpace.Hostname;
+                string cultureName = cultureInfo.Name;
+
+                hostnameBinding =
+                    _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Hostname == host && b.Culture == cultureName)
+                    ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Culture == cultureName)
+                    ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Hostname == host)
+                    ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId);
 
                 if (hostnameBinding != null)
                 {
