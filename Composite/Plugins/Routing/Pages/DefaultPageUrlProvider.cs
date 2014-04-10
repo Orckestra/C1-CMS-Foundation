@@ -40,6 +40,10 @@ namespace Composite.Plugins.Routing.Pages
         {
             DataEvents<IPage>.OnAfterAdd += (a, b) => UpdateFriendlyUrl((IPage) b.Data);
             DataEvents<IPage>.OnAfterUpdate += (a, b) => UpdateFriendlyUrl((IPage) b.Data);
+
+            DataEvents<IHostnameBinding>.OnAfterAdd += (a, b) => _hostnameBindings = null;
+            DataEvents<IHostnameBinding>.OnAfterUpdate += (a, b) => _hostnameBindings = null;
+            DataEvents<IHostnameBinding>.OnDeleted += (a, b) => _hostnameBindings = null;
         }
 
         public DefaultPageUrlProvider()
@@ -53,22 +57,27 @@ namespace Composite.Plugins.Routing.Pages
             return new PageUrlBuilder(publicationScope, localizationScope, urlSpace);
         }
 
-        private IReadOnlyCollection<IHostnameBinding> _hostnameBindings;
+        private static IReadOnlyCollection<IHostnameBinding> _hostnameBindings;
+        private static readonly object _hostnameBindingsSyncRoot = new object();
 
-        private IReadOnlyCollection<IHostnameBinding> GetHostnameBindings()
+        private static IReadOnlyCollection<IHostnameBinding> GetHostnameBindings()
         {
-            if (_hostnameBindings == null)
+            var result = _hostnameBindings;
+            if (result == null)
             {
-                lock (this)
+                lock (_hostnameBindingsSyncRoot)
                 {
-                    if (_hostnameBindings == null)
+                    result = _hostnameBindings;
+
+                    if (result == null)
                     {
-                        _hostnameBindings = new ReadOnlyCollection<IHostnameBinding>(DataFacade.GetData<IHostnameBinding>().ToList());
+                        _hostnameBindings = result = new ReadOnlyCollection<IHostnameBinding>(
+                            DataFacade.GetData<IHostnameBinding>().ToList());
                     }
                 }
             }
 
-            return _hostnameBindings;
+            return result;
         }
 
         public bool IsInternalUrl(string relativeUrl)
@@ -721,8 +730,8 @@ namespace Composite.Plugins.Routing.Pages
         {
             var bindings = GetHostnameBindings();
 
-            bool knownHostname = urlSpace.Hostname != null 
-                                 && _hostnameBindings.Any(b => b.Hostname == urlSpace.Hostname);
+            bool knownHostname = urlSpace.Hostname != null
+                                 && bindings.Any(b => b.Hostname == urlSpace.Hostname);
 
             IHostnameBinding hostnameBinding = null;
 
@@ -734,10 +743,10 @@ namespace Composite.Plugins.Routing.Pages
                 string cultureName = cultureInfo.Name;
 
                 hostnameBinding =
-                    _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Hostname == host && b.Culture == cultureName)
-                    ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Culture == cultureName)
-                    ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId && b.Hostname == host)
-                    ?? _hostnameBindings.FirstOrDefault(b => b.HomePageId == pageId);
+                    bindings.FirstOrDefault(b => b.HomePageId == pageId && b.Hostname == host && b.Culture == cultureName)
+                    ?? bindings.FirstOrDefault(b => b.HomePageId == pageId && b.Culture == cultureName)
+                    ?? bindings.FirstOrDefault(b => b.HomePageId == pageId && b.Hostname == host)
+                    ?? bindings.FirstOrDefault(b => b.HomePageId == pageId);
 
                 if (hostnameBinding != null)
                 {
