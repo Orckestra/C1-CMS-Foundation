@@ -2377,8 +2377,6 @@ namespace Composite.Core.ResourceSystem
  public static string Validation_Decimal_SymbolsBeforePointAllowed(string parameter0) { return string.Format(T("Validation.Decimal.SymbolsBeforePointAllowed"), parameter0); } 
  /// <summary>&quot;Invalid date string: &apos;{0}&apos;. Use the format &apos;{1}&apos;.&quot;</summary> 
  public static string Validation_DateTime_InvalidDateFormat(string parameter0,string parameter1) { return string.Format(T("Validation.DateTime.InvalidDateFormat"), parameter0,parameter1); } 
- /// <summary>&quot;This field is required.&quot;</summary> 
- public static string Validation_RequiredField { get { return T("Validation.RequiredField"); } } 
  /// <summary>&quot;The specified value is either too big or too small. The acceptable range is from -2,147,483,648 to 2,147,483,647&quot;</summary> 
  public static string Validation_Int32_Overflow { get { return T("Validation.Int32.Overflow"); } } 
  /// <summary>&quot;Page Browser&quot;</summary> 

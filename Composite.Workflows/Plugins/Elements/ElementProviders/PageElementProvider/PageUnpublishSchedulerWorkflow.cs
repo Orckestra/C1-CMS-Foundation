@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
@@ -67,10 +66,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DelayActivity delayActivity = (DelayActivity)this.GetActivityByName("waitDelayActivity");
+            var delayActivity = (DelayActivity)this.GetActivityByName("waitDelayActivity");
 
             DateTime now = DateTime.Now;
-            Log.LogVerbose(LogTitle, string.Format("Current time: {0}, Publish time: {1}", this.UnpublishDate, now));
+            Log.LogVerbose(LogTitle, "Current time: {0}, Publish time: {1}", this.UnpublishDate, now);
 
             if (this.UnpublishDate > now)
             {
@@ -90,64 +89,65 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             using (ThreadDataManager.Initialize())
             {
-                IPage page;
-
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
                 {
-                    IPageUnpublishSchedule pageUnpublishSchedule =
-                        (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
-                            where ps.PageId == this.PageId &&
-                                ps.LocaleCultureName == this.LocaleName
-                            select ps).Single();
+                    IPage page;
 
-                    DataFacade.Delete<IPageUnpublishSchedule>(pageUnpublishSchedule);
-
-
-                    bool deletePublished = false;
-
-
-                    page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
-
-                    IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
-
-                    if (transitions.Contains(GenericPublishProcessController.Draft))
+                    using (var transaction = TransactionsFacade.CreateNewScope())
                     {
-                        page.PublicationStatus = GenericPublishProcessController.Draft;
+                        IPageUnpublishSchedule pageUnpublishSchedule =
+                            (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
+                                where ps.PageId == this.PageId &&
+                                    ps.LocaleCultureName == this.LocaleName
+                                select ps).Single();
 
-                        DataFacade.Update(page);
-
-                        deletePublished = true;
-                    }
-                    else
-                    {
-                        Log.LogWarning(LogTitle, string.Format("Scheduled unpublishing of page with title '{0}' could not be done because the page is not in a unpublisheble state", page.Title));
-                    }
+                        DataFacade.Delete(pageUnpublishSchedule);
 
 
-                    if (deletePublished)
-                    {
-                        using (new DataScope(DataScopeIdentifier.Public))
+                        bool deletePublished = false;
+
+
+                        page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
+
+                        IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
+
+                        if (transitions.Contains(GenericPublishProcessController.Draft))
                         {
-                            IPage deletePage = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
+                            page.PublicationStatus = GenericPublishProcessController.Draft;
 
-                            if (deletePage != null)
+                            DataFacade.Update(page);
+
+                            deletePublished = true;
+                        }
+                        else
+                        {
+                            Log.LogWarning(LogTitle, "Scheduled unpublishing of page with title '{0}' could not be done because the page is not in a unpublisheble state", page.Title);
+                        }
+
+
+                        if (deletePublished)
+                        {
+                            using (new DataScope(DataScopeIdentifier.Public))
                             {
-                                IEnumerable<IData> metaDataSet = deletePage.GetMetaData(DataScopeIdentifier.Public).Evaluate();
+                                IPage deletePage = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
 
-                                DataFacade.Delete(deletePage, CascadeDeleteType.Disable);
-                                DataFacade.Delete(metaDataSet, CascadeDeleteType.Disable);
+                                if (deletePage != null)
+                                {
+                                    IEnumerable<IData> metaDataSet = deletePage.GetMetaData(DataScopeIdentifier.Public).Evaluate();
 
-                                Log.LogVerbose(LogTitle, string.Format("Scheduled unpublishing of page with title '{0}' is complete", deletePage.Title));
+                                    DataFacade.Delete(deletePage, CascadeDeleteType.Disable);
+                                    DataFacade.Delete(metaDataSet, CascadeDeleteType.Disable);
+
+                                    Log.LogVerbose(LogTitle, "Scheduled unpublishing of page with title '{0}' is complete", deletePage.Title);
+                                }
                             }
                         }
+
+                        transaction.Complete();
                     }
-                    
 
-                    transactionScope.Complete();
+                    ReloadPageElementInConsole(page);
                 }
-
-                ReloadPageElementInConsole(page);
             }
         }
 

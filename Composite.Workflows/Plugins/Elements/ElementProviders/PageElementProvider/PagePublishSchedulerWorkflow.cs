@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
 using Composite.Core;
-using Composite.Core.Extensions;
 using Composite.Core.Threading;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
@@ -67,7 +65,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DelayActivity delayActivity = (DelayActivity)this.GetActivityByName("waitDelayActivity");
+            var delayActivity = (DelayActivity)this.GetActivityByName("waitDelayActivity");
 
             DateTime now = DateTime.Now;
             Log.LogVerbose(LogTitle, string.Format("Current time: {0}, Publish time: {1}", this.PublishDate, now));
@@ -93,40 +91,42 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 IPage page;
 
                 using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
                 {
-                    IPagePublishSchedule pagePublishSchedule =
-                        (from ps in DataFacade.GetData<IPagePublishSchedule>()
-                         where ps.PageId == this.PageId &&
-                               ps.LocaleCultureName == this.LocaleName
-                         select ps).Single();
-
-                    DataFacade.Delete(pagePublishSchedule);
-
-                    page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
-
-
-                    Verify.IsNotNull(page, "The page with the id {0} does not exist", PageId);
-
-                    IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
-
-                    if (transitions.Contains(GenericPublishProcessController.Published))
+                    using (var transaction = TransactionsFacade.CreateNewScope())
                     {
-                        page.PublicationStatus = GenericPublishProcessController.Published;
+                        IPagePublishSchedule pagePublishSchedule =
+                            (from ps in DataFacade.GetData<IPagePublishSchedule>()
+                             where ps.PageId == this.PageId &&
+                                   ps.LocaleCultureName == this.LocaleName
+                             select ps).Single();
 
-                        DataFacade.Update(page);
+                        DataFacade.Delete(pagePublishSchedule);
 
-                        Log.LogVerbose(LogTitle, "Scheduled publishing of page with title '{0}' is complete".FormatWith(page.Title));
+                        page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
+
+
+                        Verify.IsNotNull(page, "The page with the id {0} does not exist", PageId);
+
+                        IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
+
+                        if (transitions.Contains(GenericPublishProcessController.Published))
+                        {
+                            page.PublicationStatus = GenericPublishProcessController.Published;
+
+                            DataFacade.Update(page);
+
+                            Log.LogVerbose(LogTitle, "Scheduled publishing of page with title '{0}' is complete", page.Title);
+                        }
+                        else
+                        {
+                            Log.LogWarning(LogTitle, "Scheduled publishing of page with title '{0}' could not be done because the page is not in a publisheble state", page.Title);
+                        }
+
+                        transaction.Complete();
                     }
-                    else
-                    {
-                        Log.LogWarning(LogTitle, "Scheduled publishing of page with title '{0}' could not be done because the page is not in a publisheble state".FormatWith(page.Title));
-                    }
 
-                    transactionScope.Complete();
+                    ReloadPageElementInConsole(page);
                 }
-
-                ReloadPageElementInConsole(page);
             }
         }
 
