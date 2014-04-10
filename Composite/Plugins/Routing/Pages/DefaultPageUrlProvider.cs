@@ -283,12 +283,12 @@ namespace Composite.Plugins.Routing.Pages
 
         public PageUrlData ParseUrl(string relativeUrl, UrlSpace urlSpace, out UrlKind urlKind)
         {
-            var urlBuilder = new UrlBuilder(relativeUrl);
-
-            if (IsInternalUrl(urlBuilder.FilePath))
+            if (IsInternalUrl(relativeUrl))
             {
                 return ParseInternalUrl(relativeUrl, out urlKind);
             }
+
+            var urlBuilder = new UrlBuilder(relativeUrl);
 
             // Structure of a public url:
             // http://<hostname>[/ApplicationVitrualPath]{/languageCode}[/Path to a page][/c1mode(unpublished)][/c1mode(relative)][UrlSuffix]{/PathInfo}
@@ -308,7 +308,7 @@ namespace Composite.Plugins.Routing.Pages
                 return null;
             }
 
-            PublicationScope publicationScope = PublicationScope.Published;
+            var publicationScope = PublicationScope.Published;
 
             if (filePathAndPathInfo.Contains(UrlMarker_Unpublished))
             {
@@ -327,6 +327,7 @@ namespace Composite.Plugins.Routing.Pages
                 if (data != null)
                 {
                     urlKind = UrlKind.Public;
+                    data.QueryParameters = urlBuilder.GetQueryParameters();
                     return data;
                 }
 
@@ -339,6 +340,7 @@ namespace Composite.Plugins.Routing.Pages
                     if (data != null)
                     {
                         urlKind = UrlKind.Redirect;
+                        data.QueryParameters = urlBuilder.GetQueryParameters();
                         return data;
                     }
                 }
@@ -347,7 +349,7 @@ namespace Composite.Plugins.Routing.Pages
                 if (friendlyUrlPageId != Guid.Empty)
                 {
                     urlKind = UrlKind.Friendly;
-                    return new PageUrlData(friendlyUrlPageId, publicationScope, locale);
+                    return new PageUrlData(friendlyUrlPageId, publicationScope, locale) {QueryParameters = urlBuilder.GetQueryParameters()};
                 }
             }
 
