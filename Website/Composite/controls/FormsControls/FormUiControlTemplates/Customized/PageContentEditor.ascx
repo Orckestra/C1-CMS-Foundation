@@ -8,11 +8,8 @@
 <%@ Import Namespace="Composite.Core.Types" %>
 
 <ui:visualmultitemplateeditor
-	formattingconfiguration="common"
-	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
+	formattingconfiguration="<%= this.ClassConfigurationName %>"
     embedablefieldstypenames=""
-	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
-	presentationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
 	pageid="<%= this.PageId %>"
 	id="<%= this.UniqueID %>">
 	<div class="visualmultitemplateeditor_placeholders">

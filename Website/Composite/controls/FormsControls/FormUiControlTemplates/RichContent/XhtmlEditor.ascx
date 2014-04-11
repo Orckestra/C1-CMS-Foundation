@@ -56,10 +56,7 @@
 
 <ui:visualeditor 
 	formattingconfiguration="<%= this.ClassConfigurationName %>"
-	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
-	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
-	presentationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
 	value="<%= _currentStringValue %>"
 	id="<%= this.UniqueID %>"
 	name="<%= this.UniqueID %>"

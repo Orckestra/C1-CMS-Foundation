@@ -320,7 +320,7 @@
 									</ui:scrollbox>
 								</ui:tabpanel>
 								<ui:tabpanel id="ctl00_/AdministrativeTemplates/Document.xml_repeater_ctl01_UiControl8_repeater_ctl00_UiControl0_tabpanel1">
-									<ui:wysiwygeditor type="pageeditor" elementclassconfiguration="common" configurationstylesheet="/website/Frontend/Styles/VisualEditor/VisualEditor.Config.css" presentationstylesheet="/website/styles/VisualEditor/VisualEditor.Default.css">
+									<ui:wysiwygeditor type="pageeditor">
 										<ui:selector name="ctl00$/AdministrativeTemplates/Document.xml$repeater$ctl01$UiControl8$repeater$ctl00$UiControl0$tabpanelRepeater$ctl01$UiControl14$TemplateSelector" callbackid="ctl00_/AdministrativeTemplates/Document.xml_repeater_ctl01_UiControl8_repeater_ctl00_UiControl0_tabpanelRepeater_ctl01_UiControl14_TemplateSelector">
 											<ui:selection selected="true" label="StandardTemplate" value="967f7fd3-13c1-4952-af48-14cec814c824" tooltip="StandardTemplate" />
 										</ui:selector>

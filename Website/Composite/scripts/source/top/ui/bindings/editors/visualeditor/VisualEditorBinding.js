@@ -229,34 +229,6 @@ function VisualEditorBinding () {
 	this.embedableFieldConfiguration = null;
 
 	/**
-	 * OLD STUFF HERE!
-	 * 
-	 * 
-	 * @type {VisualEditorFormattingConfiguration}
-	 *
-	this.formattingConfiguration = null;
-	*/
-	
-	/**
-	 * TinyMCE internal stylesheet. Externalized  
-	 * so that an TinyMCE upgrade won't overwrite.
-	 *
-	this.defaultStylesheet = VisualEditorBinding.DEFAULT_STYLESHEET;
-	
-	/**
-	 * Editor configuration stylesheet URL.
-	 * @type {string}
-	 *
-	this.configurationStylesheet = null;
-	
-	/**
-	 * Editor presentation stylesheet URL.
-	 * @type {string}
-	 *
-	this.presentationStylesheet = null;
-	*/
-	
-	/**
 	 * Stores xhtml without body.
 	 * @type {string}
 	 */
@@ -346,38 +318,6 @@ VisualEditorBinding.prototype.toString = function () {
 
 	return "[VisualEditorBinding]";
 };
-
-/**
- * Parse DOM properties.
- *
-VisualEditorBinding.prototype._parseDOMProperties = function () {
-
-	var presentation = this.getProperty ( "presentationstylesheet" );
-	if ( presentation != null ) {
-		this.presentationStylesheet = presentation;
-	}
-	
-	var configuration = this.getProperty ( "configurationstylesheet" );
-	if ( configuration != null ) {
-		this.configurationStylesheet = configuration;
-	}
-	
-	var classconfig = this.getProperty ( "elementclassconfiguration" );
-	if ( classconfig != null ) {
-		this.elementClassConfiguration = VisualEditorElementClassConfiguration.getConfiguration ( classconfig );
-	}
-	
-	var formatconfig = this.getProperty ( "formattingconfiguration" );
-	if ( formatconfig != null ) {
-		this.formattingConfiguration = VisualEditorFormattingConfiguration.getConfiguration ( formatconfig );
-	}
-
-	var fieldsconfig = this.getProperty ( "embedablefieldstypenames" );
-	if ( fieldsconfig != null ) {
-		this.embedableFieldConfiguration = VisualEditorFieldGroupConfiguration.getConfiguration ( fieldsconfig );
-	}
-};
-*/
 
 /**
  * @implements {IBroadcastListener}

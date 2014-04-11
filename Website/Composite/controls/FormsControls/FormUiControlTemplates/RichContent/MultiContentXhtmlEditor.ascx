@@ -28,10 +28,7 @@
 
 <ui:visualmultieditor 
 	formattingconfiguration="common"
-	elementclassconfiguration="<%= this.ClassConfigurationName %>" 
-    embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
-	configurationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Config.css" ) %>"  
-	presentationstylesheet="<%= Composite.Core.WebClient.UrlUtils.ResolvePublicUrl( "Frontend/Styles/VisualEditor/VisualEditor.Default.css" ) %>"
+	embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
 	id="<%= this.UniqueID %>">
     <!-- THIS CAN NOW BE REMOVED (INCLUDING CODEBEHIND SUPPORT!) -->
    	<aspui:Selector SimpleSelectorMode="false" ID="TemplateSelector" runat="server">

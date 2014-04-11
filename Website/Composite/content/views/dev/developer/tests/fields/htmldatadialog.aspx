@@ -32,10 +32,7 @@
 									<ui:htmldatadialog 
 										callbackid="fisgerloegsovs" 
 										name="htmldatadialog" 
-										formattingconfiguration="common" 
-										elementclassconfiguration="common" 
-										configurationstylesheet="/Frontend/Styles/VisualEditor/VisualEditor.Config.css" 
-										presentationstylesheet="/Frontend/Styles/VisualEditor/VisualEditor.Default.css">
+										formattingconfiguration="common">
 										<input name="alarm" value="Fisterloegsovs!"/>
 									</ui:htmldatadialog>
 								</ui:fielddata>

@@ -185,9 +185,6 @@ var ViewDefinitions = {
 		width		: 1280, height : 800,
 		argument	: {
 			"formattingconfiguration"	: null,
-			"elementclassconfiguration"	: null,
-			"configurationstylesheet" 	: null,
-			"presentationstylesheet" 	: null,
 			"embedablefieldstypenames"	: null
 		}
 	}),

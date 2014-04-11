@@ -46,10 +46,7 @@
 					<ui:tabpanels>
 						<ui:tabpanel>
 							<ui:visualeditor 
-								formattingconfiguration="common" 
-								elementclassconfiguration="common"  
-								configurationstylesheet="/Frontend/Styles/VisualEditor/VisualEditor.Config.css"  
-								presentationstylesheet="/Frontend/Styles/VisualEditor/VisualEditor.Default.css">
+								formattingconfiguration="common">
 								<textarea name="FlowUI$Document$DocumentBody$TabPanels$PageContentEditor13$contentplaceholder" rows="2" cols="20" id="FlowUI_Document_DocumentBody_TabPanels_PageContentEditor13_contentplaceholder" placeholderid="contentplaceholder" placeholdername="Content" selected="true">&lt;html xmlns="http://www.w3.org/1999/xhtml"&gt;
 	&lt;head&gt;&lt;/head&gt;
 	&lt;body&gt;	

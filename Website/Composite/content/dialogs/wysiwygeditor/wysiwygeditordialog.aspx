@@ -21,16 +21,6 @@
 			resizable="true">
 			
 			<ui:visualeditor id="visualeditor">
-				<!-- 
-				Injected by PageBinding#setPageArgument:
-				"formattingconfiguration="common"
-				elementclassconfiguration="common" 
-				configurationstylesheet="/website/Frontend/Styles/VisualEditor/VisualEditor.Config.css" 
-				presentationstylesheet="/website/Frontend/styles/VisualEditor/VisualEditor.Default.css">
-				-->
-				<!-- deprecated
-				<textarea name="visualeditor" id="visualeditortextarea" rows="2" cols="20"></textarea>
-				-->
 			</ui:visualeditor>
 			
 			<ui:dialogtoolbar>

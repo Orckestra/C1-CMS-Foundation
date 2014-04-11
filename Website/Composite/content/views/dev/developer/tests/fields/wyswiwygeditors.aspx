@@ -50,7 +50,7 @@
 						</ui:tabpanel>
 						<ui:tabpanel id="testlazystuff">
 							
-							<ui:wysiwygeditor type="pageeditor" elementclassconfiguration="common" embedablefieldstypenames="" configurationstylesheet="/website/styles/WysiwygEditor.Config.css" presentationstylesheet="/website/styles/WysiwygEditor.Default.css">
+							<ui:wysiwygeditor type="pageeditor" embedablefieldstypenames="">
 								<ui:selector name="selector">
 									<ui:selection label="Template1" value="tempalteID1"/>
 									<ui:selection label="Template2" value="tempalteID2" selected="true"/>
