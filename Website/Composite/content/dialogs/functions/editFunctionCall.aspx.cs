@@ -139,7 +139,8 @@ namespace CompositeEditFunctionCall
 	        foreach (var parameterProfile in function.ParameterProfiles)
 	        {
 	            if (!validationErrors.ContainsKey(parameterProfile.Name)
-	                && parameterProfile.WidgetFunction != null
+                    && parameterProfile.IsRequired
+                    && parameterProfile.WidgetFunction != null
 	                && (!bindings.ContainsKey(parameterProfile.Name) || bindings[parameterProfile.Name] == null))
 	            {
                     validationErrors.Add(parameterProfile.Name, new Exception(
