@@ -11,9 +11,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
-            if (entityToken == null) throw new ArgumentNullException("entityToken");
+            var castedToken = (PackageElementProviderAvailablePackagesItemEntityToken) entityToken;
 
-            yield return new PackageElementProviderRootEntityToken();
+            yield return new PackageElementProviderAvailablePackagesGroupFolderEntityToken(castedToken.GroupName);
         }
     }
 
@@ -27,7 +27,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
     [SecurityAncestorProvider(typeof(PackageElementProviderAvailablePackagesItemEntityTokenAncestorProvider))]
     public sealed class PackageElementProviderAvailablePackagesItemEntityToken : EntityToken
     {
-        private string _id;
+        private readonly string _id;
 
         /// <exclude />
         public PackageElementProviderAvailablePackagesItemEntityToken(string id, string groupName)
@@ -63,7 +63,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         /// <exclude />
         public override string Serialize()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "_GroupName_", this.GroupName);
 
@@ -80,7 +80,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
 
-            if (dic.ContainsKey("_GroupName_") == false) throw new ArgumentException("serializedEntityToken is of wrong format");
+            if (!dic.ContainsKey("_GroupName_")) throw new ArgumentException("serializedEntityToken is of wrong format");
 
             string groupName = StringConversionServices.DeserializeValueString(dic["_GroupName_"]);
 

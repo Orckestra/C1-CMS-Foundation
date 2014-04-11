@@ -13,9 +13,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         {
             if (entityToken == null) throw new ArgumentNullException("entityToken");
 
-            PackageElementProviderInstalledPackageItemEntityToken castedEntityToken = (PackageElementProviderInstalledPackageItemEntityToken)entityToken;
+            var castedEntityToken = (PackageElementProviderInstalledPackageItemEntityToken)entityToken;
 
-            yield return new PackageElementProviderInstalledPackageGroupFolderEntityToken(castedEntityToken.GroupName);
+            if (castedEntityToken.IsLocalInstalled)
+            {
+                yield return new PackageElementProviderInstalledPackageLocalPackagesFolderEntityToken();
+            }
+            else
+            {
+                yield return new PackageElementProviderInstalledPackageGroupFolderEntityToken(castedEntityToken.GroupName);
+            }
         }
     }
 
@@ -79,7 +86,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
             StringBuilder sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "_GroupName_", this.GroupName);
-            StringConversionServices.SerializeKeyValuePair(sb, "_IsLocalInstalled_", this.CanBeUninstalled);
+            StringConversionServices.SerializeKeyValuePair(sb, "_IsLocalInstalled_", this.IsLocalInstalled);
             StringConversionServices.SerializeKeyValuePair(sb, "_CanBeUninstalled_", this.CanBeUninstalled);
 
             DoSerialize(sb);
@@ -96,7 +103,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
             DoDeserialize(serializedEntityToken, out type, out source, out id, out dic);
 
-            if ((dic.ContainsKey("_GroupName_") == false) || (dic.ContainsKey("_IsLocalInstalled_") == false) || (dic.ContainsKey("_CanBeUninstalled_") == false)) throw new ArgumentException("serializedEntityToken is of wrong format");
+            if (!dic.ContainsKey("_GroupName_")
+                || !dic.ContainsKey("_IsLocalInstalled_")
+                || !dic.ContainsKey("_CanBeUninstalled_"))
+            {
+                throw new ArgumentException("serializedEntityToken is of wrong format");
+            }
 
             string groupName = StringConversionServices.DeserializeValueString(dic["_GroupName_"]);
             bool isLocalInstalled = StringConversionServices.DeserializeValueBool(dic["_IsLocalInstalled_"]);
