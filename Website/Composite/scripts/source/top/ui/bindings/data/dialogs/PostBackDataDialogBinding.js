@@ -50,7 +50,8 @@ PostBackDataDialogBinding.prototype._onDialogAccept = function ( result ) {
 	result = new String ( result );
 	
 	this.dirty ();
-	this.setValue ( encodeURIComponent ( result ));
+	this.setValue(encodeURIComponent(result));
+	this.validate(true);
 	
 	var self = this;
     setTimeout ( function () { // close dialog first!
