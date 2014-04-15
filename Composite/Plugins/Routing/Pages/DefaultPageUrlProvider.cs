@@ -673,32 +673,39 @@ namespace Composite.Plugins.Routing.Pages
                 }
             }
 
-            var publicUrl = new UrlBuilder(pageUrlPath.ToString());
             if (publicationScope == PublicationScope.Unpublished)
             {
-                publicUrl.FilePath = UrlUtils.Combine(publicUrl.FilePath, UrlMarker_Unpublished);
+                AppendUrlPart(pageUrlPath, UrlMarker_Unpublished);
             }
 
             if (urlSpace.ForceRelativeUrls)
             {
-                publicUrl.FilePath = UrlUtils.Combine(publicUrl.FilePath, UrlMarker_RelativeUrl);
+                AppendUrlPart(pageUrlPath, UrlMarker_RelativeUrl);
             }
 
-            string pathInfo = pageUrlData.PathInfo;
-            if (pathInfo != null
-                && pathInfo.StartsWith("/")
-                && publicUrl.FilePath.EndsWith("/"))
+            if (!string.IsNullOrEmpty(UrlSuffix) 
+                && pageUrlPath[pageUrlPath.Length - 1] != '/')
             {
-                pathInfo = pathInfo.Substring(1);
+                pageUrlPath.Append(UrlSuffix);
             }
 
-            publicUrl.PathInfo = pathInfo;
+            if (!string.IsNullOrEmpty(pageUrlData.PathInfo))
+            {
+                AppendUrlPart(pageUrlPath, pageUrlData.PathInfo);
+            }
+
+
+            string url = pageUrlPath.ToString();
+
             if (pageUrlData.QueryParameters != null)
             {
-                publicUrl.AddQueryParameters(pageUrlData.QueryParameters);
+                var urlWithQuery = new UrlBuilder(url);
+                urlWithQuery.AddQueryParameters(pageUrlData.QueryParameters);
+
+                return urlWithQuery;
             }
 
-            return publicUrl;
+            return url;
         }
 
         private bool BuildPageUrlPath(Guid pageId, CultureInfo culture, UrlSpace urlSpace, StringBuilder result)
@@ -796,6 +803,24 @@ namespace Composite.Plugins.Routing.Pages
             }
 
             return sb;
+        }
+
+        private static StringBuilder AppendUrlPart(StringBuilder sb, string urlPart)
+        {
+            bool endsWithSlash = sb.Length != 0 && sb[sb.Length - 1] == '/';
+            bool startsWithSlash = urlPart.StartsWith("/", StringComparison.Ordinal);
+
+            if (endsWithSlash != startsWithSlash)
+            {
+                return sb.Append(urlPart);
+            }
+
+            if (endsWithSlash)
+            {
+                return sb.Append(urlPart, 1, urlPart.Length - 1);
+            }
+
+            return sb.Append('/').Append(urlPart);
         }
 
         private static string BuildRenderUrl(PageUrlData pageUrlData)
