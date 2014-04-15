@@ -442,7 +442,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                         if (dataContextFieldInfo == null)
                         {
-                            Log.LogWarning(LogTitle, "Data context class is missing field '{0}'", dataContextFieldName);
+                            if (RuntimeInformation.IsDebugBuild)
+                            {
+                                Log.LogInformation(LogTitle, "Missing classes will be compiled for data context's field '{0}'", dataContextFieldName);
+                            }
                         }
                     }
 
