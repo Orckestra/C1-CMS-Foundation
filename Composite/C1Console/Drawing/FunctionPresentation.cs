@@ -75,7 +75,7 @@ namespace Composite.C1Console.Drawing
 
                 using (var textFont = new Font("Helvetica", 9.5f, FontStyle.Regular))
                 {
-                    int lineHeight = TextRenderer.MeasureText("Text", textFont).Height;
+                    int lineHeight = MeasureText("Text", textFont).Height;
 
                     Size totalSize = new Size(Math.Max(headerSize.Width, minTextAreaWidth),
                         headerSize.Height + topPadding + lineHeight * linesTrimmed.Count + bottomPadding);
@@ -117,9 +117,19 @@ namespace Composite.C1Console.Drawing
             }
         }
 
+        public static Size MeasureText(string text, Font font)
+        {
+            using (var b = new Bitmap(1, 1))
+            using (var g = Graphics.FromImage(b))
+            {
+                SizeF sizeF = g.MeasureString(text, font);
+                return new Size((int)Math.Ceiling(sizeF.Width), (int)Math.Ceiling(sizeF.Height));
+            }
+        }
+
         private static string CropLineToFitMaxWidth(string line, Font textFont, int maxLineWidth)
         {
-            if (line.Length <= 10 || TextRenderer.MeasureText(line, textFont).Width <= maxLineWidth) return line;
+            if (line.Length <= 10 || MeasureText(line, textFont).Width <= maxLineWidth) return line;
 
             if (line.Length > 250)
             {
@@ -183,7 +193,7 @@ namespace Composite.C1Console.Drawing
                 _titleFont = new Font("Helvetica", 12.0f, FontStyle.Regular);
                 _buttonFont = new Font("Helvetica", 9.0f, FontStyle.Bold);
 
-                _titleSize = TextRenderer.MeasureText(_title, _titleFont);
+                _titleSize = MeasureText(_title, _titleFont);
 
                 _isWarning = isWarning;
                 _functionIcon = Bitmap.FromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
@@ -194,7 +204,7 @@ namespace Composite.C1Console.Drawing
                 int editButtonSizeWithPaddings = 0;
                 if (showEditButton)
                 {
-                    _editLabelSize = TextRenderer.MeasureText(_editLabel, _buttonFont);
+                    _editLabelSize = MeasureText(_editLabel, _buttonFont);
                     editButtonSizeWithPaddings = _editLabelSize.Width + 45;
                 }
 
