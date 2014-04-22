@@ -35,8 +35,8 @@ namespace Composite.Core.WebClient
 
         static BrowserRender()
         {
-            GlobalEventSystemFacade.SubscribeToShutDownEvent(a => RecyclePhantomJsExe());
-            PackageInstaller.OnPackageInstallation += RecyclePhantomJsExe;
+            GlobalEventSystemFacade.SubscribeToShutDownEvent(a => RecyclePhantomJsExe_Silent());
+            PackageInstaller.OnPackageInstallation += RecyclePhantomJsExe_Silent;
 
             FileChangeNotificator.Subscribe(PhantomServer.ScriptFilePath, (a, b)  => RecyclePhantomJsExe());
         }
@@ -176,6 +176,17 @@ namespace Composite.Core.WebClient
             return output;
         }
 
+
+        private static void RecyclePhantomJsExe_Silent()
+        {
+            try
+            {
+                RecyclePhantomJsExe();
+            }
+            catch
+            {
+            }
+        }
 
         private static void RecyclePhantomJsExe()
         {
