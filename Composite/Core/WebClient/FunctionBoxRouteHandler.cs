@@ -25,7 +25,7 @@ namespace Composite.Core.WebClient
     
     internal class FunctionBoxRouteHandler : IRouteHandler
     {
-        public System.Web.IHttpHandler GetHttpHandler(RequestContext requestContext)
+        public IHttpHandler GetHttpHandler(RequestContext requestContext)
         {
             return new FunctionBoxHttpHandler();
         }
@@ -86,11 +86,15 @@ namespace Composite.Core.WebClient
                         try
                         {
                             string fileName = await FunctionPreview.GetPreviewFunctionPreviewImageFile(context);
-                            previewImage = new Bitmap(fileName);
 
-                            if (previewImage.Width <= 1 && previewImage.Height <= 1)
+                            if (fileName != null)
                             {
-                                previewImage = null;
+                                previewImage = new Bitmap(fileName);
+
+                                if (previewImage.Width <= 1 && previewImage.Height <= 1)
+                                {
+                                    previewImage = null;
+                                }
                             }
                         }
                         catch (BrowserRenderException ex)

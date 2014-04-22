@@ -35,8 +35,8 @@ namespace Composite.Core.WebClient
 
         static BrowserRender()
         {
-            GlobalEventSystemFacade.SubscribeToShutDownEvent(a => RecyclePhantomJsExe_Silent());
-            PackageInstaller.OnPackageInstallation += RecyclePhantomJsExe_Silent;
+            GlobalEventSystemFacade.SubscribeToShutDownEvent(a => ShutdownPhantomJsExeSilent());
+            PackageInstaller.OnPackageInstallation += ShutdownPhantomJsExeSilent;
 
             FileChangeNotificator.Subscribe(PhantomServer.ScriptFilePath, (a, b)  => RecyclePhantomJsExe());
         }
@@ -49,6 +49,8 @@ namespace Composite.Core.WebClient
         private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromMinutes(9.75);
         private const int RecycleTimerInterval_ms = 10000;
 
+        private static volatile bool Enabled = true;
+        private static volatile bool ServerAvailabilityChecked;
 
         public class RenderingResult
         {
@@ -109,6 +111,11 @@ namespace Composite.Core.WebClient
 #endif
             }
 
+            if (!Enabled)
+            {
+                return null;
+            }
+
             try
             {
                 output = await MakePreviewRequest(context, url, outputImageFileName, mode);
@@ -119,8 +126,12 @@ namespace Composite.Core.WebClient
 
                 throw;
             }
-            
 
+            if (!Enabled && output == null)
+            {
+                return null;
+            }
+            
             C1File.WriteAllText(outputFileName, output);
 
             return new RenderingResult { FilePath = outputImageFileName, Output = output };
@@ -134,6 +145,13 @@ namespace Composite.Core.WebClient
 
             using(await _requestAsyncLock.LockAsync())
             {
+                CheckServerAvailability(context, authenticationCookie);
+
+                if (!Enabled)
+                {
+                    return null;
+                }
+
                 if (_server == null)
                 {
                     _server = new PhantomServer();
@@ -176,9 +194,50 @@ namespace Composite.Core.WebClient
             return output;
         }
 
-
-        private static void RecyclePhantomJsExe_Silent()
+        private static void CheckServerAvailability(HttpContext context, HttpCookie authenticationCookie)
         {
+            if (ServerAvailabilityChecked) return;
+
+            try
+            {
+                string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
+
+                _server = new PhantomServer();
+                SetupRecycleTimer();
+
+                string output;
+                string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
+
+                _server.RenderUrl(authenticationCookie, testUrl, outputFileName, "test", out output);
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning("BrowserRender", "PhantomJs server unavailable. " + ex);
+                Enabled = false;
+
+                if (_server != null)
+                {
+                    try
+                    {
+                        _server.Dispose();
+                    }
+                    catch
+                    {
+                    }
+                
+                    _server = null;
+                }
+            }
+            finally
+            {
+                ServerAvailabilityChecked = true;
+            }
+        }
+
+
+        private static void ShutdownPhantomJsExeSilent()
+        {
+            Enabled = false;
             try
             {
                 RecyclePhantomJsExe();

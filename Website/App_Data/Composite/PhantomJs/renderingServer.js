@@ -24,13 +24,13 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 		}
 	}	
 		
-	if (mode == "templatePreview") {
+	if (mode == "template") {
 	    page.viewportSize = { width: 1920, height: 600 };
 	} else {
 	    page.viewportSize = { width: 1920, height: 600 };
 	}
 
-	page.settings.resourceTimeout = 5000;
+    page.settings.resourceTimeout = (mode == "test") ? 2000 : 5000;
     
 	page.onResourceTimeout = function (request) {
 	    if (request.id == 1) {
@@ -84,7 +84,7 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        page.close();
 
 	        console.log('SUCCESS: ' + address);
-	    } else {
+	    } else if (mode == "template") {
 	        // Template preview:
 	        var placeholdersInfo = page.evaluate(getPlaceholdersLocationInfo, 'placeholderpreview');
 
@@ -92,6 +92,11 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        page.close();
 
 	        console.log('templateInfo:' + placeholdersInfo);
+	    } else {
+	        page.render(output);
+	        page.close();
+
+	        console.log('SUCCESS');
 	    }
 
 	    WaitForInput(system, console);
@@ -107,6 +112,19 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
                 console.log('ERROR, page.open: ' + status);
                 page.close();
                 WaitForInput(system, console);
+            } else {
+                if (mode == "test") {
+                    if (globalTimeout != null) {
+                        clearTimeout(globalTimeout);
+                        globalTimeout = null;
+                    }
+
+                    page.render(output);
+                    page.close();
+                    console.log('SUCCESS');
+
+                    WaitForInput(system, console);
+                }
             }
         });
     } finally {

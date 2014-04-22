@@ -30,7 +30,11 @@ namespace Composite.Services
 
             try
             {
-                PageTemplatePreview.GetPreviewInformation(Context, pageId, templateId, out _imagePath, out _placeholders);
+                bool success = PageTemplatePreview.GetPreviewInformation(Context, pageId, templateId, out _imagePath, out _placeholders);
+                if (!success)
+                {
+                    return new TemplatePreviewInformation { PreviewImageUrl = "", Placeholders = new PageTemplatePreview.PlaceholderInformation[0] };
+                }
             }
             catch (ThreadAbortException)
             {

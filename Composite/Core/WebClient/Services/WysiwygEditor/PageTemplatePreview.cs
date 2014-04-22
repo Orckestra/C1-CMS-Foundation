@@ -31,13 +31,21 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
         }
 
         /// <exclude />
-        public static void GetPreviewInformation(HttpContext context, Guid pageId, Guid templateId, out string imageFilePath, out PlaceholderInformation[] placeholders)
+        public static bool GetPreviewInformation(HttpContext context, Guid pageId, Guid templateId, out string imageFilePath, out PlaceholderInformation[] placeholders)
         {
             string serviceUrl = UrlUtils.ResolvePublicUrl("~/Renderers/TemplatePreview.ashx");
             int updateHash = BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
             string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
 
             var result = BrowserRender.RenderUrl(context, requestUrl, RenderingMode).GetAwaiter().GetResult();
+
+            if (result == null)
+            {
+                imageFilePath = null;
+                placeholders = null;
+                return false;
+            }
+
             imageFilePath = result.FilePath;
             string output = result.Output;
 
@@ -73,6 +81,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             }
 
             placeholders = pList.ToArray();
+            return true;
         }
 
         /// <exclude />

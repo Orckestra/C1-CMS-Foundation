@@ -18,7 +18,9 @@ namespace Composite.Core.WebClient.Renderings
         {
             string previewUrl = context.Request.Url.ToString().Replace("/FunctionBox?", "/FunctionPreview.ashx?");
 
-            return (await BrowserRender.RenderUrl(context, previewUrl, RenderingMode)).FilePath;
+            var renderingResult = await BrowserRender.RenderUrl(context, previewUrl, RenderingMode);
+
+            return renderingResult != null ? renderingResult.FilePath : null;
         }
 
         /// <exclude />
