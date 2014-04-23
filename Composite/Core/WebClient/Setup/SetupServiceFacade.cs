@@ -78,7 +78,7 @@ namespace Composite.Core.WebClient.Setup
 
 
         /// <exclude />
-        public static void SetUp(string setupDescriptionXml, string username, string password, string email, string language, string consoleLanguage, bool newsletter)
+        public static bool SetUp(string setupDescriptionXml, string username, string password, string email, string language, string consoleLanguage, bool newsletter)
         {
             ApplicationOnlineHandlerFacade.TurnApplicationOffline(false);
 
@@ -92,6 +92,8 @@ namespace Composite.Core.WebClient.Setup
                 new XElement("user_consolelanguage", consoleLanguage),
                 new XElement("user_websitelanguage", language),
                 setupDescription);
+
+            bool success = false;
 
             try
             {
@@ -125,8 +127,8 @@ namespace Composite.Core.WebClient.Setup
 
                 for (int i = 0; i < packageUrls.Length; i++)
                 {
-                    Log.LogInformation(VerboseLogTitle, "Installing package: " + packageUrls[i]);
-                    InstallPackage(packageUrls[i], packages[i]);
+                    Log.LogVerbose(VerboseLogTitle, "Installing package from url " + packageUrls[i]);
+                    bool packageValidationSucceded = InstallPackage(packageUrls[i], packages[i]);
 
                     // Releasing a reference to reduce memory usage
                     packages[i].Dispose();
@@ -140,6 +142,8 @@ namespace Composite.Core.WebClient.Setup
                 RegisterSetup(setupRegisrtatoinDescription.ToString(), "");
 
                 Log.LogInformation(VerboseLogTitle, "Done setting up the system for the first time! Enjoy!");
+
+                success = true;
             }
             catch (Exception ex)
             {
@@ -156,6 +160,7 @@ namespace Composite.Core.WebClient.Setup
             }
 
             ApplicationOnlineHandlerFacade.TurnApplicationOnline();
+            return success;
         }
 
 
@@ -350,12 +355,9 @@ namespace Composite.Core.WebClient.Setup
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
-            string url = PackageServerUrl;
             if (PackageServerUrl.StartsWith("https://"))
             {
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
-
-                url = url.Remove(0, 8);
             }           
 
             SetupSoapClient client = new SetupSoapClient(basicHttpBinding, new EndpointAddress(string.Format(SetupServiceUrl, PackageServerUrl)));

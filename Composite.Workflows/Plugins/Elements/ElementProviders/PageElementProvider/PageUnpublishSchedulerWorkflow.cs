@@ -23,7 +23,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
     public sealed partial class PageUnpublishSchedulerWorkflow : StateMachineWorkflowActivity
     {
-        private static readonly string LogTitle = typeof(PagePublishSchedulerWorkflow).Name;
+        private static readonly string LogTitle = typeof(PageUnpublishSchedulerWorkflow).Name;
 
         private DateTime _unpublishDate;
         private Guid _pageId;
