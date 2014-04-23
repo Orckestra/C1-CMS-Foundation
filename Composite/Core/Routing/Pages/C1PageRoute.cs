@@ -157,8 +157,9 @@ namespace Composite.Core.Routing.Pages
                 string originalFilePath = new UrlBuilder(currentUrl).RelativeFilePath;
                 string correctFilePath = new UrlBuilder(correctUrl).RelativeFilePath;
 
-                if (string.Compare(originalFilePath, correctFilePath, false, CultureInfo.InvariantCulture) != 0 &&
-                    string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0)
+                if (!urlSpace.ForceRelativeUrls && originalFilePath.Length != correctFilePath.Length ||
+                    (string.Compare(originalFilePath, correctFilePath, false, CultureInfo.InvariantCulture) != 0 
+                    && string.Compare(originalFilePath, correctFilePath, true, CultureInfo.InvariantCulture) == 0))
                 {
                     // redirect to a url with right casing
                     return GetRedirectRoute(correctUrl);
