@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -31,8 +30,8 @@ namespace Composite.Plugins.Routing.Pages
         private static readonly string InternalUrlPrefix = "~/page(";
         private static readonly string InternalUrlPrefixResolved = UrlUtils.PublicRootPath + "/page(";
 
-         private static readonly ConcurrentDictionary<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>> _friendlyUrls
-            = new ConcurrentDictionary<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>>();
+         private static readonly Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>> _friendlyUrls
+            = new Hashtable<Tuple<DataScopeIdentifier, string>, Hashtable<string, Guid>>();
 
         public string UrlSuffix { get; private set;}
 
@@ -386,7 +385,7 @@ namespace Composite.Plugins.Routing.Pages
         {
             var scopeKey = new Tuple<DataScopeIdentifier, string>(DataScopeManager.CurrentDataScope, LocalizationScopeManager.CurrentLocalizationScope.Name);
 
-            return _friendlyUrls.GetOrAdd(scopeKey, a =>
+            return _friendlyUrls.GetOrAddSync(scopeKey, a =>
             {
                 var result = new Hashtable<string, Guid>();
                 foreach (var pair in DataFacade.GetData<IPage>().Where(p => !string.IsNullOrEmpty(p.FriendlyUrl))
