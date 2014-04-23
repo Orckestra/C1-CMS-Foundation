@@ -21,6 +21,8 @@
 						<p>powered by<br/><a href="http://tinymce.moxiecode.com/" title="Visit Moxicode" target="_blank">TinyMCE</a></p>
 						<h2>Source Editor</h2>
 						<p>powered by<br/><a href="http://codemirror.net/" title="Visit CodeMirror" target="_blank">CodeMirror</a></p>
+						<h2>Function Previews</h2>
+						<p>powered by<br/><a href="http://phantomjs.org/" title="Visit PhantomJS" target="_blank">PhantomJS</a></p>
 						<div id="names"/>
 						<div class="logo" id="logo2"/>
 					</div>

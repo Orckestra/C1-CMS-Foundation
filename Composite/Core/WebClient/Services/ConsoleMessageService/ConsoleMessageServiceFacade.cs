@@ -412,7 +412,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
             if (lastKnownChangeNumber > result.CurrentSequenceNumber)
             {
-                LoggingService.LogWarning("ConsoleMessageServiceFacade", string.Format("Console '{0}' has a last known change numer of {1}, but server current number is {2}.", consoleId, lastKnownChangeNumber, result.CurrentSequenceNumber));
+                LoggingService.LogInformation("ConsoleMessageServiceFacade", string.Format("Console '{0}' has a last known change numer of {1}, but server current number is {2}.", consoleId, lastKnownChangeNumber, result.CurrentSequenceNumber));
             }
 
             if (messageQueueElements.Any() && DateTime.Now.Subtract(messageQueueElements.Min(f => f.EnqueueTime)).TotalSeconds > maxSecondsExpected)
