@@ -60,7 +60,7 @@ namespace Composite.Data
         {
             get
             {
-                return _page.MenuTitle;
+                return string.IsNullOrEmpty(_page.MenuTitle) ? null : _page.MenuTitle;
             }
         }
 
