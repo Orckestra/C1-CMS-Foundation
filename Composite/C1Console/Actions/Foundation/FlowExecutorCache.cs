@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using Composite.C1Console.Events;
 
 
@@ -7,7 +7,7 @@ namespace Composite.C1Console.Actions.Foundation
 {
     internal static class FlowControllerCache
     {
-        private static Dictionary<Type, IFlowController> _flowControllerCache = new Dictionary<Type, IFlowController>();
+        private static readonly ConcurrentDictionary<Type, IFlowController> _flowControllerCache = new ConcurrentDictionary<Type, IFlowController>();
 
 
         static FlowControllerCache()
@@ -20,30 +20,28 @@ namespace Composite.C1Console.Actions.Foundation
         {
             Verify.ArgumentNotNull(flowToken, "flowToken");
 
-            IFlowController flowController;
+            Type flowTokenType = flowToken.GetType();
 
-            if (!_flowControllerCache.TryGetValue(flowToken.GetType(), out flowController))
+            return _flowControllerCache.GetOrAdd(flowTokenType, type =>
             {
-                object[] attributes = flowToken.GetType().GetCustomAttributes(typeof(FlowControllerAttribute), true);
-                Verify.That(attributes.Length > 0, "Missing '{0}' attribute on the flow token '{1}'", typeof(FlowControllerAttribute), flowToken.GetType());
+                object[] attributes = type.GetCustomAttributes(typeof(FlowControllerAttribute), true);
+                Verify.That(attributes.Length > 0, "Missing '{0}' attribute on the flow token '{1}'", typeof(FlowControllerAttribute), type);
 
-                FlowControllerAttribute attribute = (FlowControllerAttribute)attributes[0];
-                Verify.IsNotNull(attribute.FlowControllerType, "Flow controller type can not be null on the action token '{0}'", flowToken.GetType());
+                FlowControllerAttribute attribute = (FlowControllerAttribute) attributes[0];
+                Verify.IsNotNull(attribute.FlowControllerType, "Flow controller type can not be null on the action token '{0}'", type);
                 Verify.That(typeof(IFlowController).IsAssignableFrom(attribute.FlowControllerType), "Flow controller '{0}' should implement the interface '{1}'", attribute.FlowControllerType, typeof(IFlowController));
 
-                flowController = (IFlowController)Activator.CreateInstance(attribute.FlowControllerType);
+                var flowController = (IFlowController) Activator.CreateInstance(attribute.FlowControllerType);
                 flowController.ServicesContainer = flowControllerServicesContainer;
 
-                _flowControllerCache.Add(flowToken.GetType(), flowController);
-            }
-
-            return flowController;
+                return flowController;
+            });
         }
 
 
         private static void Flush()
         {
-            _flowControllerCache = new Dictionary<Type, IFlowController>();
+            _flowControllerCache.Clear();
         }
     }
 }
