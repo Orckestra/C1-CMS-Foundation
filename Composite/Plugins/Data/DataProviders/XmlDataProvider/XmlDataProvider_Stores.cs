@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using Composite.Core;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -85,6 +86,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             XmlDataProviderDocumentCache.ClearCache();
 
             InterfaceConfigurationManipulator.Remove(_dataProviderContext.ProviderName, typeDescriptor);
+
+            _dataTypeConfigurationElements = _dataTypeConfigurationElements.Where(s => s.DataTypeId != typeDescriptor.DataTypeId).Evaluate();
         }
 
 

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -33,7 +32,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         private static readonly string LogTitle = typeof(XmlDataProvider).Name;
 
         private readonly string _fileStoreDirectory;
-        private readonly IEnumerable<XmlProviderInterfaceConfigurationElement> _dataTypeConfigurationElements;
+        private IEnumerable<XmlProviderInterfaceConfigurationElement> _dataTypeConfigurationElements;
         private XmlDataTypeStoresContainer _xmlDataTypeStoresContainer;
         private DataProviderContext _dataProviderContext;        
         private readonly object _lock = new object();

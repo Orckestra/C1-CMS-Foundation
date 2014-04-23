@@ -15,6 +15,8 @@ namespace Composite.Core.PackageSystem
     [SerializerHandler(typeof(PackageManagerUninstallProcessSerializerHandler))]
     public sealed class PackageManagerUninstallProcess
     {
+        private static readonly string LogTitle = typeof (PackageManagerUninstallProcess).Name;
+
         private readonly IPackageUninstaller _packageUninstaller;
         private readonly string _packageInstallDirectory;
         private readonly SystemLockingType _systemLockingType;
@@ -50,7 +52,7 @@ namespace Composite.Core.PackageSystem
         {
             get
             {
-                if (_packageUninstaller == null) throw new InvalidOperationException("Pre installation did not validate");
+                Verify.IsNotNull(_packageUninstaller, "Pre un-installation did not validate");
 
                 return _packageUninstaller.FlushOnCompletion;
             }
@@ -63,7 +65,7 @@ namespace Composite.Core.PackageSystem
         {
             get
             {
-                if (_packageUninstaller == null) throw new InvalidOperationException("Pre installation did not validate");
+                Verify.IsNotNull(_packageUninstaller, "Pre un-installation did not validate");
 
                 return _packageUninstaller.ReloadConsoleOnCompletion;
             }
@@ -85,7 +87,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public List<PackageFragmentValidationResult> Validate()
         {
-            if (_packageUninstaller == null) throw new InvalidOperationException("Pre uninstallation did not validate");
+            Verify.IsNotNull(_packageUninstaller, "Pre un-installation did not validate");
             if (_validationResult != null) throw new InvalidOperationException("Validate may only be called once");
 
             _validationResult = _packageUninstaller.Validate().ToList();
@@ -98,7 +100,7 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public List<PackageFragmentValidationResult> Uninstall()
         {
-            if (_packageUninstaller == null) throw new InvalidOperationException("Pre installation did not validate");
+            Verify.IsNotNull(_packageUninstaller, "Pre un-installation did not validate");
             if (_validationResult == null) throw new InvalidOperationException("Call validation first");
             if (_validationResult.Count > 0) throw new InvalidOperationException("Installation did not validate");
             if (_uninstallationResult != null) throw new InvalidOperationException("Install may only be called onece");
@@ -134,6 +136,8 @@ namespace Composite.Core.PackageSystem
                     {
                         C1Directory.Delete(_packageInstallDirectory, true);
                     }
+
+                    Log.LogInformation(LogTitle, "Package successfully uninstalled");
                 }
 
                 return new List<PackageFragmentValidationResult>();
