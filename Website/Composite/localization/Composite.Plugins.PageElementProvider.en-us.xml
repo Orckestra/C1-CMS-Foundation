@@ -85,11 +85,11 @@
   <string key="PageElementProvider.DisplayLocalOrderingToolTip" value="Show page local orderings" />
   <string key="PageElementProvider.DisabledPage" value="Not yet approved or published" />
   <string key="PageElementProvider.MissingTemplateTitle" value="Website Template required" />
-  <string key="PageElementProvider.MissingTemplateMessage" value="To create a page, a Website Template is required, but none has been created yet. You can create one under the Layout perspective." />
+  <string key="PageElementProvider.MissingTemplateMessage" value="You should create a 'Page Template' first. Go to the 'Layout' perspective and create one." />
   <string key="PageElementProvider.MissingActiveLanguageTitle" value="Language required" />
   <string key="PageElementProvider.MissingActiveLanguageMessage" value="To add a page, you should firstly add at least one language. It can be done in the 'System' perspective." />
   <string key="PageElementProvider.NoPageTypesAvailableTitle" value="No page type available" />
-  <string key="PageElementProvider.NoPageTypesAvailableMessage" value="You should create at least one page type first" />
+  <string key="PageElementProvider.NoPageTypesAvailableMessage" value="You should create a 'Page Type' first. Go to the 'Layout' perspective and create one." />
   <string key="PageElementProvider.MissingPageTypeTitle" value="Page type required" />
   <string key="PageElementProvider.MissingPageTypeHomepageMessage" value="To create a homepage, a page type without the &quot;only subpages&quot; restriction is required, but none have been added yet. You can add one under the Layout perspective." />
   <string key="PageElementProvider.MissingPageTypeSubpageMessage" value="To create a subpage, a page type without the the only homepages restriction is required, but none have been added yet. You can add one under the Layout perspective." />  
