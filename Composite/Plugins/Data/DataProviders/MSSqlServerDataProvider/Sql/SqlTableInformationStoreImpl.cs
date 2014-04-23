@@ -64,7 +64,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
                             INFORMATION_SCHEMA.TABLE_CONSTRAINTS tc
   	                 ON tc.TABLE_NAME = kcu.TABLE_NAME AND tc.CONSTRAINT_NAME = kcu.CONSTRAINT_NAME AND tc.CONSTRAINT_TYPE = 'PRIMARY KEY')
                   ON obj.name = kcu.TABLE_NAME AND col.name = kcu.COLUMN_NAME
-                  where obj.xtype = 'U'
+                  where obj.xtype = 'U' AND exists(select * from INFORMATION_SCHEMA.TABLES t where t.TABLE_NAME = obj.name AND t.TABLE_SCHEMA = SCHEMA_NAME()) 
                   ORDER BY col.colorder";
 
                 using (var command = new SqlCommand(queryString, connection))
