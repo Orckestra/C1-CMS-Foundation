@@ -628,7 +628,7 @@ ButtonBinding.prototype._check = function ( isStateManager ) {
 ButtonBinding.prototype.uncheck = function ( isDisableCommand ) {
 
 	if (( this.isCheckButton || this.isRadioButton ) && this.isChecked ) {
-		if ( this.isAttached == true ) {
+		if (this.isAttached == true && !this.isDisposed) {
 			this._uncheck ();
 			if ( !isDisableCommand == true ) {
 				this.fireCommand ();
