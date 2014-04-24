@@ -132,7 +132,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         SourceFilename = sourceFilename,
                         TargetRelativeFilePath = targetFilenameAttribute.Value,
                         TargetFilePath = targetFilename,
-                        AllowOverwrite = allowOverwrite
+                        Overwrite = allowOverwrite || onlyUpdate
                     };
 
                     _filesToCopy.Add(fileToCopy);
@@ -236,7 +236,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             SourceFilename = sourceFilename,
                             TargetRelativeFilePath = Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
                             TargetFilePath = targetFilename,
-                            AllowOverwrite = allowOverwrite
+                            Overwrite = allowOverwrite
                         };
                         _filesToCopy.Add(fileToCopy);
                     }
@@ -289,20 +289,23 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 string backupFileName = null;
 
-                if (C1File.Exists(fileToCopy.TargetFilePath) && fileToCopy.AllowOverwrite)
+                if (C1File.Exists(fileToCopy.TargetFilePath) && fileToCopy.Overwrite)
                 {
                     if ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0)
                     {
                         FileUtils.RemoveReadOnly(fileToCopy.TargetFilePath);
                     }
 
-                    backupFileName = GetBackupFileName(fileToCopy.TargetFilePath);
+                    if (InstallerContext.PackageInformation.CanBeUninstalled)
+                    {
+                        backupFileName = GetBackupFileName(fileToCopy.TargetFilePath);
 
-                    string backupFilesFolder = this.InstallerContext.PackageDirectory + "\\FileBackup";
+                        string backupFilesFolder = this.InstallerContext.PackageDirectory + "\\FileBackup";
 
-                    C1Directory.CreateDirectory(backupFilesFolder);
+                        C1Directory.CreateDirectory(backupFilesFolder);
 
-                    C1File.Copy(fileToCopy.TargetFilePath, backupFilesFolder + "\\"+ backupFileName);
+                        C1File.Copy(fileToCopy.TargetFilePath, backupFilesFolder + "\\" + backupFileName);
+                    }
                 }
 
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
@@ -316,7 +319,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 var fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
 
-                fileElement.Add(new XAttribute("allowOverwrite", fileToCopy.AllowOverwrite));
                 if (backupFileName != null)
                 {
                     fileElement.Add(new XAttribute("backupFile", backupFileName));
@@ -343,7 +345,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             public string SourceFilename { get; set; }
             public string TargetRelativeFilePath { get; set; }
             public string TargetFilePath { get; set; }
-            public bool AllowOverwrite { get; set; }
+            public bool Overwrite { get; set; }
         }
     }
 }
