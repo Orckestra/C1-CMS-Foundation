@@ -75,6 +75,11 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         private static void SetPropertyOnProducer2(ElementCompileTreeNode element, string propertyName, PropertyCompileTreeNode property, CompileContext compileContext)
         {
+            if (property.Value is BaseFunctionRuntimeTreeNode && !(element.Producer is FunctionParameterProducer))
+            {
+                property.Value = ((BaseFunctionRuntimeTreeNode)property.Value).GetValue();
+            }
+
             if (property.InclosingProducerName != "" &&
                 element.XmlSourceNodeInformation.Name != property.InclosingProducerName)
             {
