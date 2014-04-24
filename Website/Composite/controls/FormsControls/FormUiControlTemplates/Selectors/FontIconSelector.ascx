@@ -34,7 +34,7 @@
 	<% 
 		foreach (var icon in this.ClassNameOptions)
 		{ %>
-			<ui:selection image="${class:<%= this.ClassNamePrefix+icon.Key %>}" label="<%=icon.Value %>" value="<%=icon.Key %>" <%=(icon.Key==_currentStringValue)?"selected=\"true\"":"" %>/>
+			<ui:selection image="${class:<%= this.ClassNamePrefix+HttpUtility.HtmlAttributeEncode(icon.Key) %>}" label="<%=HttpUtility.HtmlAttributeEncode(icon.Value) %>" value="<%=HttpUtility.HtmlAttributeEncode(icon.Key) %>" <%=(icon.Key==_currentStringValue)?"selected=\"true\"":"" %>/>
 	<%  } %>
 </ui:selector>
 
