@@ -19,13 +19,14 @@ namespace Composite.Core.PackageSystem
         private readonly List<CultureInfo> _pendingLocales = new List<CultureInfo>();
 
 
-        internal PackageInstallerContext(IZipFileSystem zipFileSystem, string tempDirectory, PackageInformation packageInformation)
+        internal PackageInstallerContext(IZipFileSystem zipFileSystem, string packageDirectory, string tempDirectory, PackageInformation packageInformation)
         {
             Verify.ArgumentNotNull(zipFileSystem, "zipFileSystem");
             Verify.ArgumentNotNullOrEmpty(tempDirectory, "tempDirectory");
             Verify.ArgumentNotNull(packageInformation, "packageInformation");
 
             this.ZipFileSystem = zipFileSystem;
+            this.PackageDirectory = packageDirectory;
             this.TempDirectory = tempDirectory;
             this.PackageInformation = packageInformation;
         }
@@ -35,6 +36,9 @@ namespace Composite.Core.PackageSystem
         /// <exclude />
         public IZipFileSystem ZipFileSystem { get; private set; }
 
+        /// <exclude />
+        public string PackageDirectory { get; private set; }
+        
         /// <exclude />
         public string TempDirectory { get; private set; }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
-using Composite.Core.Logging;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
@@ -14,24 +16,28 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FilePackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
+        private static readonly string LogTitle = typeof (FilePackageFragmentUninstaller).Name;
+
         private List<string> _filesToDelete;
+        private List<Tuple<string, string>> _filesToCopy;
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Files").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Files") > 1)
             {
-                validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("FilePackageFragmentUninstaller.OnlyOneFilesElement")));
+                validationResult.AddFatal(Texts.FilePackageFragmentUninstaller_OnlyOneFilesElement, ConfigurationParent);
                 return validationResult;
             }
 
-            XElement filesElement = this.Configuration.Where(f => f.Name == "Files").SingleOrDefault();
+            XElement filesElement = this.Configuration.SingleOrDefault(f => f.Name == "Files");
             
 
             _filesToDelete = new List<string>();
+            _filesToCopy = new List<Tuple<string, string>>();
 
             //  NOTE: Packages, that were installed on version earlier than C1 1.2 SP3 have absolute file path references, f.e.:
             //  <File filename="C:\inetpub\docs\Frontend\Composite\Forms\Renderer\CaptchaImageCreator.ashx" />
@@ -46,19 +52,35 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute filenameAttribute = fileElement.Attribute("filename");
                     if (filenameAttribute == null)
                     {
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format(GetResourceString("FilePackageFragmentInstaller.MissingAttribute"), "filename"), fileElement));
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_MissingAttribute("filename"), fileElement);
                         continue;
                     }
 
                     string filePath = filenameAttribute.Value;
-                    if (!filePath.Contains(":\\"))
+                    if (filePath.Contains(":\\"))
                     {
-                        filePath = PathUtil.Resolve(filePath);
-                        _filesToDelete.Add(filePath);
+                        absoluteReferences.Add(filePath);
+                        continue;
+                    }
+                    
+                    filePath = PathUtil.Resolve(filePath);
+
+                    string backupFile = (string) fileElement.Attribute("backupFile");
+
+                    if (backupFile != null)
+                    {
+                        var backupFilePath = Path.Combine(UninstallerContext.PackageDirectory, "FileBackup", backupFile);
+                        if (!C1File.Exists(backupFilePath))
+                        {
+                            validationResult.AddFatal("Missing backup file '{0}'".FormatWith(backupFilePath), fileElement);
+                            continue;
+                        }
+
+                        _filesToCopy.Add(new Tuple<string, string>(backupFilePath, filePath));
                     }
                     else
                     {
-                        absoluteReferences.Add(filePath);
+                        _filesToDelete.Add(filePath);
                     }
                 }
             }
@@ -149,7 +171,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if(!fileExists)
                     {
                         // Showing a message if we don't have a match
-                        validationResult.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, GetResourceString("FilePackageFragmentInstaller.WrongBasePath")));
+                        validationResult.AddFatal(GetResourceString("FilePackageFragmentInstaller.WrongBasePath"));
                     }
                     else
                     {
@@ -161,6 +183,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             if (validationResult.Count > 0)
             {
                 _filesToDelete = null;
+                _filesToCopy = null;
             }
 
             return validationResult;
@@ -188,13 +211,27 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override void Uninstall()
         {
-            if (_filesToDelete == null) throw new InvalidOperationException("FilePackageFragmentUninstaller has not been validated");
+            Verify.IsNotNull(_filesToDelete as object ?? _filesToCopy, "FilePackageFragmentUninstaller has not been validated");
 
             foreach (string filename in _filesToDelete)
             {
-                LoggingService.LogVerbose("FilePackageFragmentUninstaller", string.Format("Uninstalling the file '{0}'", filename));
+                Log.LogVerbose(LogTitle, "Uninstalling the file '{0}'", filename);
 
                 FileUtils.Delete(filename);
+            }
+
+            foreach (var fileToCopy in _filesToCopy)
+            {
+                string targetFile = fileToCopy.Item2;
+
+                Log.LogVerbose(LogTitle, "Restoring file from a backup copy'{0}'", targetFile);
+
+                if ((C1File.GetAttributes(targetFile) & FileAttributes.ReadOnly) > 0)
+                {
+                    FileUtils.RemoveReadOnly(targetFile);
+                }
+
+                C1File.Copy(fileToCopy.Item1, targetFile, true);
             }
         }
     }

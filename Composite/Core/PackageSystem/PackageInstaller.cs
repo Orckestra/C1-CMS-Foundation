@@ -271,7 +271,7 @@ namespace Composite.Core.PackageSystem
             Exception exception = null;
             try
             {
-                _packageInstallerContex = new PackageInstallerContext(new ZipFileSystem(this.ZipFilename), this.TempDirectory, this.PackageInformation);
+                _packageInstallerContex = new PackageInstallerContext(new ZipFileSystem(this.ZipFilename), this.PackageInstallDirectory, this.TempDirectory, this.PackageInformation);
             }
             catch (Exception ex)
             {

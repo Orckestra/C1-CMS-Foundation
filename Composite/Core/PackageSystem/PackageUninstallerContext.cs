@@ -20,17 +20,21 @@ namespace Composite.Core.PackageSystem
 
         private readonly HashSet<Type> _typesToBeDeleted = new HashSet<Type>();
 
-        internal PackageUninstallerContext(IZipFileSystem zipFileSystem, PackageInformation packageInformation)
+        internal PackageUninstallerContext(IZipFileSystem zipFileSystem, string packageDirectory, PackageInformation packageInformation)
         {
             Verify.ArgumentNotNull(zipFileSystem, "zipFileSystem");
 
             this.ZipFileSystem = zipFileSystem;
+            this.PackageDirectory = packageDirectory;
             this.PackageInformation = packageInformation;
         }
 
 
         /// <exclude />
         public IZipFileSystem ZipFileSystem { get; private set; }
+
+        /// <exclude />
+        public string PackageDirectory { get; private set; }
 
         /// <exclude />
         public PackageInformation PackageInformation { get; private set; }

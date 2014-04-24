@@ -169,10 +169,13 @@ namespace Composite.Core.PackageSystem
             }
 
             XElement packageFragmentUninstallersElement = uninstallElement.Element(XmlUtils.GetXName(PackageSystemSettings.XmlNamespace, PackageSystemSettings.PackageFragmentUninstallersElementName));
-            if (packageFragmentUninstallersElement == null) return new[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The {0} file is wrongly formatted", this.UninstallFilename)) };
-
+            if (packageFragmentUninstallersElement == null)
+            {
+                return new[] { new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, string.Format("The '{0}' file is wrongly formatted", this.UninstallFilename)) };
+            }
+            
             List<PackageFragmentValidationResult> result2 = LoadPackageFramentUninstallers(packageFragmentUninstallersElement).ToList();
-            if (result2.Count > 0) return result2;
+            if (result2.Any()) return result2;
 
             _packageFramentUninstallers.Reverse();
 
@@ -223,7 +226,9 @@ namespace Composite.Core.PackageSystem
             Exception exception = null;
             try
             {
-                packageUninstallerContext = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename), this.PackageInformation);
+                string packageDirectory = Path.GetDirectoryName(ZipFilename);
+
+                packageUninstallerContext = new PackageUninstallerContext(new ZipFileSystem(this.ZipFilename), packageDirectory, this.PackageInformation);
             }
             catch (Exception ex)
             {

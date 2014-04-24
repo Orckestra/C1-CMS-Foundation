@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Xml;
 using Composite.Data;
@@ -19,14 +18,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class FilePackageFragmentInstaller : BasePackageFragmentInstaller
     {
-        private List<FileToCopy> _filesToCopy = null;
-        private List<string> _directoriesToDelete = null;
+        private List<FileToCopy> _filesToCopy;
+        private List<string> _directoriesToDelete;
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
             if (this.Configuration.Count(f => f.Name == "Files") > 1)
             {
@@ -232,7 +231,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
 
-                        FileToCopy fileToCopy = new FileToCopy
+                        var fileToCopy = new FileToCopy
                         {
                             SourceFilename = sourceFilename,
                             TargetRelativeFilePath = Path.Combine(targetDirectoryAttribute.Value, resolvedSourceFilename),
@@ -288,11 +287,22 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     Directory.CreateDirectory(targetDirectory);
                 }
 
-                if (C1File.Exists(fileToCopy.TargetFilePath)
-                    && fileToCopy.AllowOverwrite
-                    && ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0))
+                string backupFileName = null;
+
+                if (C1File.Exists(fileToCopy.TargetFilePath) && fileToCopy.AllowOverwrite)
                 {
-                    FileUtils.RemoveReadOnly(fileToCopy.TargetFilePath);
+                    if ((C1File.GetAttributes(fileToCopy.TargetFilePath) & FileAttributes.ReadOnly) > 0)
+                    {
+                        FileUtils.RemoveReadOnly(fileToCopy.TargetFilePath);
+                    }
+
+                    backupFileName = GetBackupFileName(fileToCopy.TargetFilePath);
+
+                    string backupFilesFolder = this.InstallerContext.PackageDirectory + "\\FileBackup";
+
+                    C1Directory.CreateDirectory(backupFilesFolder);
+
+                    C1File.Copy(fileToCopy.TargetFilePath, backupFilesFolder + "\\"+ backupFileName);
                 }
 
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
@@ -304,12 +314,27 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     DataTypeTypesManager.AddNewAssembly(assembly);
                 }
 
-                XElement fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
+                var fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
+
+                fileElement.Add(new XAttribute("allowOverwrite", fileToCopy.AllowOverwrite));
+                if (backupFileName != null)
+                {
+                    fileElement.Add(new XAttribute("backupFile", backupFileName));
+                }
 
                 fileElements.Add(fileElement);
             }
 
             yield return new XElement("Files", fileElements);
+        }
+
+        private string GetBackupFileName(string targetFilePath)
+        {
+            string fileName = Path.GetFileName(targetFilePath);
+            string directory = targetFilePath.Substring(0, targetFilePath.Length - fileName.Length);
+
+
+            return directory.GetHashCode() + "_" + fileName;
         }
 
 
