@@ -452,22 +452,20 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
                 Type type = TypeManager.TryGetType(typeManagerName);
 
-                if (type != null)
+                if (type == null)
                 {
-                    // These are never shown in the tree
-                    if (typeof(IPageMetaData).IsAssignableFrom(type))
-                    {
-                        return new List<Element>();
-                    }
-
-                    IEnumerable<Element> elements = _dataGroupingProviderHelper.GetRootGroupFolders(type, entityToken, showForeignChildren);
-
-                    return elements.ToList();
+                    return null;
                 }
 
-                Log.LogWarning("GeneratedDataTypesElementProvider", "Can not get children for unknown type '{0}'".FormatWith(typeManagerName));
+                // These are never shown in the tree
+                if (typeof(IPageMetaData).IsAssignableFrom(type))
+                {
+                    return new List<Element>();
+                }
 
-                return null;
+                IEnumerable<Element> elements = _dataGroupingProviderHelper.GetRootGroupFolders(type, entityToken, showForeignChildren);
+
+                return elements.ToList();
             }
 
             if (entityToken is DataGroupingProviderHelperEntityToken)
