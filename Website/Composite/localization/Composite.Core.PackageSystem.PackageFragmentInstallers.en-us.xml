@@ -93,6 +93,8 @@
   <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
   <string key="PackageLicenseFragmentInstaller.MissingPublicKeyElement" value="A public RSA key is missing in the package configuration" />
 
+  <string key="FileModifyPackageFragmentInstaller.FileDoesNotExist" value="File '{0}' does not exist." />
+
   <string key="License.InvalidKeyTitle" value="Invalid license key" />
   <string key="License.InvalidKeyMessage" value="The license key is invalid. You need to obtain a valid license key." />
   <string key="License.ExpiredTitle" value="Trial period has expired" />

@@ -555,6 +555,8 @@ namespace Composite.Core.ResourceSystem
  public static string PackageVersionBumberFragmentUninstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"); } } 
  /// <summary>&quot;A public RSA key is missing in the package configuration&quot;</summary> 
  public static string PackageLicenseFragmentInstaller_MissingPublicKeyElement { get { return T("PackageLicenseFragmentInstaller.MissingPublicKeyElement"); } } 
+ /// <summary>&quot;File &apos;{0}&apos; does not exist.&quot;</summary> 
+ public static string FileModifyPackageFragmentInstaller_FileDoesNotExist(string parameter0) { return string.Format(T("FileModifyPackageFragmentInstaller.FileDoesNotExist"), parameter0); } 
  /// <summary>&quot;Invalid license key&quot;</summary> 
  public static string License_InvalidKeyTitle { get { return T("License.InvalidKeyTitle"); } } 
  /// <summary>&quot;The license key is invalid. You need to obtain a valid license key.&quot;</summary> 
@@ -3525,7 +3527,7 @@ namespace Composite.Core.ResourceSystem
  public static string PageElementProvider_DisabledPage { get { return T("PageElementProvider.DisabledPage"); } } 
  /// <summary>&quot;Website Template required&quot;</summary> 
  public static string PageElementProvider_MissingTemplateTitle { get { return T("PageElementProvider.MissingTemplateTitle"); } } 
- /// <summary>&quot;To create a page, a Website Template is required, but none has been created yet. You can create one under the Layout perspective.&quot;</summary> 
+ /// <summary>&quot;You should create a &apos;Page Template&apos; first. Go to the &apos;Layout&apos; perspective and create one.&quot;</summary> 
  public static string PageElementProvider_MissingTemplateMessage { get { return T("PageElementProvider.MissingTemplateMessage"); } } 
  /// <summary>&quot;Language required&quot;</summary> 
  public static string PageElementProvider_MissingActiveLanguageTitle { get { return T("PageElementProvider.MissingActiveLanguageTitle"); } } 
@@ -3533,7 +3535,7 @@ namespace Composite.Core.ResourceSystem
  public static string PageElementProvider_MissingActiveLanguageMessage { get { return T("PageElementProvider.MissingActiveLanguageMessage"); } } 
  /// <summary>&quot;No page type available&quot;</summary> 
  public static string PageElementProvider_NoPageTypesAvailableTitle { get { return T("PageElementProvider.NoPageTypesAvailableTitle"); } } 
- /// <summary>&quot;You should create at least one page type first&quot;</summary> 
+ /// <summary>&quot;You should create a &apos;Page Type&apos; first. Go to the &apos;Layout&apos; perspective and create one.&quot;</summary> 
  public static string PageElementProvider_NoPageTypesAvailableMessage { get { return T("PageElementProvider.NoPageTypesAvailableMessage"); } } 
  /// <summary>&quot;Page type required&quot;</summary> 
  public static string PageElementProvider_MissingPageTypeTitle { get { return T("PageElementProvider.MissingPageTypeTitle"); } } 
