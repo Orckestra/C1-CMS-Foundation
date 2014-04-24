@@ -161,6 +161,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="C1Console\Drawing\FunctionPresentation.cs" />
+    <Compile Include="C1Console\Forms\CoreUiControls\FontIconSelectorUiControl.cs" />
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\Application\Job.cs" />
     <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
@@ -225,6 +226,9 @@
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\AttachProviderVirtualElement.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\SimpleVirtualElement.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementConfigurationElement.cs" />
+    <Compile Include="Plugins\Forms\WebChannel\UiControlFactories\TemplatedFontIconSelectorUiControlFactory.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FileBasedFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionBasedFunctionProviderHelper.cs" />

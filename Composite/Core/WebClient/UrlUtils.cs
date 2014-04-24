@@ -72,7 +72,7 @@ namespace Composite.Core.WebClient
 
             if (publicRelativePath.StartsWith("/"))
             {
-                throw new ArgumentException("The relative URL may not be rooted or contain '~'");
+                throw new ArgumentException("The relative URL may not be rooted. It should be either relative to root or start with ~/");
             }
 
             if (publicRelativePath.StartsWith("~/"))
