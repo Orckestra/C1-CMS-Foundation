@@ -36,7 +36,7 @@ namespace Composite.Core.WebClient.FunctionCallEditor
             {
                 try
                 {
-                    return ValueTypeConverter.Convert(valueAttr.Value, parameterProfile.Type);
+                    return XmlSerializationHelper.Deserialize(valueAttr, parameterProfile.Type);
                 }
                 catch (Exception ex)
                 {

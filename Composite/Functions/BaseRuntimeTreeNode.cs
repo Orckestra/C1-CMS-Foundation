@@ -35,22 +35,26 @@ namespace Composite.Functions
 
 
         /// <exclude />
-        public virtual T GetValue<T>(FunctionContextContainer contextContainer)
+        public virtual object GetValue(FunctionContextContainer contextContainer, Type type)
         {
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            Verify.ArgumentNotNull(contextContainer, "contextContainer");
 
             object value = this.GetValue(contextContainer);
 
-            if (value == null || value is T)
+            if (value == null || type.IsInstanceOfType(value))
             {
-                return (T)value;
+                return value;
             }
-            else
-            {
-                return ValueTypeConverter.Convert<T>(value);
-            }
+            
+            return ValueTypeConverter.Convert(value, type);
         }
 
+
+        /// <exclude />
+        public T GetValue<T>(FunctionContextContainer contextContainer)
+        {
+            return (T) GetValue(contextContainer, typeof(T));
+        }
 
         /// <exclude />
         public object GetCachedValue()

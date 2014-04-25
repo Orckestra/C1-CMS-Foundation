@@ -1,22 +1,29 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using Composite.Functions.Foundation;
 using Composite.Core.Types;
-
+using Composite.Core.Xml;
+using Composite.Functions.Foundation;
 
 namespace Composite.Functions
 {
     internal sealed class ConstantParameterRuntimeTreeNode : BaseParameterRuntimeTreeNode
     {
-        private object _constantValue;
-        private bool _isEnumerable = false;
+        private readonly object _constantValue;
+        private readonly bool _isEnumerable;
+        private readonly XAttribute _attribute;
 
 
         public ConstantParameterRuntimeTreeNode(string name, string constantValue)
             : base(name)
         {
             _constantValue = constantValue;
+        }
+
+        public ConstantParameterRuntimeTreeNode(string name, XAttribute valueAttribute)
+            : base(name)
+        {
+            _attribute = valueAttribute;
         }
 
 
@@ -31,9 +38,22 @@ namespace Composite.Functions
 
         public override object GetValue(FunctionContextContainer contextContainer)
         {
-            if (contextContainer == null) throw new ArgumentNullException("contextContainer");
+            Verify.ArgumentNotNull(contextContainer, "contextContainer");
 
-            return _constantValue;
+            return _attribute != null ? _attribute.Value : _constantValue;
+        }
+
+        public override object GetValue(FunctionContextContainer contextContainer, Type type)
+        {
+            Verify.ArgumentNotNull(contextContainer, "contextContainer");
+            Verify.ArgumentNotNull(type, "type");
+
+            if (_attribute != null)
+            {
+                return XmlSerializationHelper.Deserialize(_attribute, type);
+            }
+
+            return ValueTypeConverter.Convert(_constantValue, type);
         }
 
 
@@ -55,47 +75,32 @@ namespace Composite.Functions
 
         public override XElement Serialize()
         {
+            var element = new XElement(FunctionTreeConfigurationNames.ParamTag,
+                        new XAttribute(FunctionTreeConfigurationNames.NameAttribute, this.Name));
+
             if (_isEnumerable)
             {
-                XElement element = 
-                    new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
-                        new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name)
-                    );
-
-                IEnumerable<string> strings = (IEnumerable<string>)_constantValue;
+                var strings = (IEnumerable<string>) _constantValue;
                 foreach (string s in strings)
                 {
-                    element.Add(new XElement(
-                            XName.Get(FunctionTreeConfigurationNames.ParamElementTagName, FunctionTreeConfigurationNames.NamespaceName),
-                            new XAttribute(FunctionTreeConfigurationNames.ValueAttributeName, s)                            
-                        ));
+                    element.Add(new XElement(FunctionTreeConfigurationNames.ParamElementTag,
+                            new XAttribute(FunctionTreeConfigurationNames.ValueAttribute, s)));
                 }
 
                 return element;
             }
-            else
+
+            if (_attribute != null)
             {
-                if (_constantValue != null)
-                {
-                    XElement element =
-                        new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
-                            new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name),
-                            new XAttribute(FunctionTreeConfigurationNames.ValueAttributeName, _constantValue)
-                        );
-
-                    return element;
-                }
-                else
-                {
-                    XElement element =
-                        new XElement(XName.Get(FunctionTreeConfigurationNames.ParamTagName, FunctionTreeConfigurationNames.NamespaceName),
-                            new XAttribute(FunctionTreeConfigurationNames.NameAttributeName, this.Name)
-                        );
-
-                    return element;
-                }
-
+                element.Add(new XAttribute(FunctionTreeConfigurationNames.ValueAttribute, _attribute.Value));
             }
+
+            if (_constantValue != null)
+            {
+                element.Add(new XAttribute(FunctionTreeConfigurationNames.ValueAttribute, _constantValue));
+            }
+
+            return element;
         }
     }
 }

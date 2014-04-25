@@ -174,7 +174,7 @@ namespace Composite.Functions
         {
             if (node is BaseRuntimeTreeNode)
             {
-                node = ((BaseRuntimeTreeNode)node).GetValue(functionContextContainer);
+                node = ((BaseRuntimeTreeNode)node).GetValue(functionContextContainer, type);
             }
 
             if (node != null && !type.IsInstanceOfType(node))

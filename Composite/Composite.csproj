@@ -194,6 +194,7 @@
     <Compile Include="Core\WebClient\ScriptLoader.cs" />
     <Compile Include="Core\WebClient\Services\WysiwygEditor\PageTemplatePreview.cs" />
     <Compile Include="Core\WebClient\StyleLoader.cs" />
+    <Compile Include="Core\Xml\XmlSerializationHelper.cs" />
     <Compile Include="Data\DynamicTypes\Configuration\XmlConfigurationExtensionMethods.cs" />
     <Compile Include="Data\DynamicTypes\DataFieldTreeOrderingProfile.cs" />
     <Compile Include="Data\DynamicTypes\DataTypeIndex.cs" />
