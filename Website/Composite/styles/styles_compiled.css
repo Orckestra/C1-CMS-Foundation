@@ -252,6 +252,17 @@ ui|labelbox.textonly ui|labelbody {
 padding-left: 0 !important;
 background-position: -200px -200px; /* huh? */
 }
+
+ui|labelbox ui|labelbody ui|icon {
+float: left;
+width: 16px;
+height: 16px;
+margin-left: -16px;
+font-size: 16px;
+text-align: center;
+color: #333;
+}
+
 ui|labeltext {
 display: block;
 float: left;
@@ -574,10 +585,8 @@ color: $(color:graytext);
 }
 ui|menuitem ui|labelbox,
 ui|menuitem ui|labelbody,
-ui|menuitem ui|labeltext,
 ui|menubody ui|labelbox,
-ui|menubody ui|labelbody,
-ui|menubody ui|labeltext
+ui|menubody ui|labelbody
 {
 float: none;
 clear: both;
