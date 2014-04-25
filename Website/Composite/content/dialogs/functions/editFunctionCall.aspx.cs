@@ -216,14 +216,42 @@ namespace CompositeEditFunctionCall
 		    return ProcessWidgets(true, true);
 		}
 
-		private void CheckBasicView(IEnumerable<XElement> functionCallsEvaluated)
+		private void CheckBasicView(ICollection<XElement> functionCallsEvaluated)
 		{
-			// Basic view is enabled if there's no parameters defined as function calls
-			BasicViewEnabled = !MultiMode && !IsWidgetSelection
-				&& functionCallsEvaluated.Count() == 1
-				&& !functionCallsEvaluated.Single().Elements().Any(childElement => childElement.Elements().Any(e => e.Name.LocalName == "function"));
-
+            BasicViewEnabled = BasicViewApplicable(functionCallsEvaluated);
 		}
+
+        private bool BasicViewApplicable(ICollection<XElement> functionCallsEvaluated)
+	    {
+            // Basic view is enabled if 
+            // - Only one function is being edited
+            // - here's no parameters defined as function calls
+            // - And there no required parameters without widgets
+
+            if (MultiMode || IsWidgetSelection && functionCallsEvaluated.Count != 1)
+            {
+                return false;
+            }
+
+            var functionMarkup = functionCallsEvaluated.Single();
+
+            if (functionMarkup
+                 .Elements()
+                 .Any(childElement => childElement.Elements().Any(e => e.Name.LocalName == "function")))
+            {
+                return false;
+            }
+
+            string functionName = (string)functionMarkup.Attribute("name");
+            var function = FunctionFacade.GetFunction(functionName);
+
+            if (function == null)
+            {
+                return false;
+            }
+
+            return !function.ParameterProfiles.Any(p => p.IsRequired && p.WidgetFunction == null);
+	    }
 
 		private void SetDesignerParameters()
 		{
