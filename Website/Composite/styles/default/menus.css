@@ -63,10 +63,8 @@ ui|menu ui|menu.isdisabled {
 }
 ui|menuitem ui|labelbox,
 ui|menuitem ui|labelbody,
-ui|menuitem ui|labeltext,
 ui|menubody ui|labelbox,
-ui|menubody ui|labelbody,
-ui|menubody ui|labeltext
+ui|menubody ui|labelbody
 {
 	float: none;
 	clear: both;

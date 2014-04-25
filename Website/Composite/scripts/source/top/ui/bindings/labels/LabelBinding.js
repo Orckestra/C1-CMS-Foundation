@@ -178,7 +178,21 @@ LabelBinding.prototype.setImage = function ( url, isNotBuildingClassName ) {
 LabelBinding.prototype.setImageClasses = function (classes) {
 
 	if (this.shadowTree.labelBody) {
-		this.shadowTree.labelBody.className = classes;
+		if (!classes) {
+			if (this.shadowTree.icon) {
+				this.shadowTree.labelBody.removeChild(this.shadowTree.icon);
+				this.shadowTree.icon = null;
+			}
+		} else {
+			if (!this.shadowTree.icon) {
+				this.shadowTree.icon = DOMUtil.createElementNS(
+					Constants.NS_UI, "ui:icon", this.bindingDocument
+				);
+
+				this.shadowTree.labelBody.insertBefore(this.shadowTree.icon, this.shadowTree.labelBody.firstChild);
+			}
+			this.shadowTree.icon.className = classes;
+		}
 	}
 }
 

@@ -55,6 +55,17 @@ ui|labelbox.textonly ui|labelbody {
 	padding-left: 0 !important;
 	background-position: -200px -200px; /* huh? */
 }
+
+ui|labelbox ui|labelbody ui|icon {
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-left: -16px;
+	font-size: 16px;
+	text-align: center;
+	color: #333;
+}
+
 ui|labeltext {
 	display: block;
 	float: left;
