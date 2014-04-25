@@ -48,8 +48,10 @@ namespace CompositeEditFunctionCall
 				}
 			}
             else if (eventTarget == "Advanced")
-			{
-                ActiveTab = ValidateAndSaveBasicTab() ? Tab.Advanced : Tab.Basic;
+            {
+                ProcessWidgets(true, false, true);
+
+                ActiveTab = Tab.Advanced;
 			}
             else if (eventTarget == "buttonAccept")
             {
@@ -75,7 +77,7 @@ namespace CompositeEditFunctionCall
             AdvancedPanel.Visible = !isBasicView;
 		}
 
-	    private bool ProcessWidgets(bool processPost, bool showValidationErrors = false)
+	    private bool ProcessWidgets(bool processPost, bool showValidationErrors = false, bool ignoreValidationErrors = false)
 	    {
             XElement functionMarkup = XElement.Parse(FunctionMarkupInState);
 
@@ -132,30 +134,35 @@ namespace CompositeEditFunctionCall
 	            webUiControl.InitializeViewState();
 	            return true;
 	        }
-	        
+
+
 	        var validationErrors = formTreeCompiler.SaveAndValidateControlProperties();
 
-            // Validating required parameters
-	        foreach (var parameterProfile in function.ParameterProfiles)
+	        if (!ignoreValidationErrors)
 	        {
-	            if (!validationErrors.ContainsKey(parameterProfile.Name)
-                    && parameterProfile.IsRequired
-                    && parameterProfile.WidgetFunction != null
-	                && (!bindings.ContainsKey(parameterProfile.Name) || bindings[parameterProfile.Name] == null))
+                // Validating required parameters
+	            foreach (var parameterProfile in function.ParameterProfiles)
 	            {
-                    validationErrors.Add(parameterProfile.Name, new Exception(
-                        StringResourceSystemFacade.GetString("Composite.Management", "Validation.RequiredField")));
+	                if (!validationErrors.ContainsKey(parameterProfile.Name)
+	                    && parameterProfile.IsRequired
+	                    && parameterProfile.WidgetFunction != null
+	                    && (!bindings.ContainsKey(parameterProfile.Name) || bindings[parameterProfile.Name] == null))
+	                {
+	                    validationErrors.Add(parameterProfile.Name, new Exception(
+	                        StringResourceSystemFacade.GetString("Composite.Management", "Validation.RequiredField")));
+	                }
 	            }
-	        }
 
-	        if (validationErrors.Any())
-	        {
-	            if (showValidationErrors)
+
+	            if (validationErrors.Any())
 	            {
-	                ShowServerValidationErrors(formTreeCompiler, validationErrors);
+	                if (showValidationErrors)
+	                {
+	                    ShowServerValidationErrors(formTreeCompiler, validationErrors);
+	                }
+
+	                return false;
 	            }
-                
-	            return false;
 	        }
 
 	        foreach (var parameterProfile in function.ParameterProfiles)
