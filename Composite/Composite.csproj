@@ -706,6 +706,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProviderAssembler.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\UserControlFunctionProvider\UserControlFunctionProviderData.cs" />
+    <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\FontIconSelectorWidgetFuntion.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\String\UrlComboBoxWidgetFunction.cs" />
     <Compile Include="Plugins\Functions\WidgetFunctionProviders\StandardWidgetFunctionProvider\Utils\FormMarkupWidgetFuntion.cs" />
     <Compile Include="Plugins\Logging\LogTraceListeners\FileLogTraceListener\CurrentFileReader.cs" />

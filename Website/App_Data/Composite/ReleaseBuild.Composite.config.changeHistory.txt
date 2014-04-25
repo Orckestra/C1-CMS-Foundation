@@ -144,3 +144,5 @@ Changes in 4.1
 
 Changes in 4.2
 - Removed "LogElementProvider" element - hasn't been used for years
+- Added <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/Selectors/FontIconSelector.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedFontIconSelectorUiControlFactory, Composite" name="FontIconSelector" />
+ 
