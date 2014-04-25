@@ -139,9 +139,9 @@ EditFunctionCallDialogPageBinding.prototype.handleAction = function (action) {
 			var page = this.bindingWindow.bindingMap.renderingdialogpage;
 			switch (button.getID()) {
 				case "advancedbutton":
-					if (page.validateAllDataBindings()) {
+					//if (page.validateAllDataBindings()) {
 						page.bindingWindow.__doPostBack("Advanced");
-					}
+					//}
 					break;
 				case "basicbutton":
 					if (page.validateAllDataBindings()) {
