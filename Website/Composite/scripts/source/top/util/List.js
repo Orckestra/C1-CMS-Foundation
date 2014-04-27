@@ -43,11 +43,15 @@ List.prototype.init = function ( list ) {
 	
 	if ( isArray ) {
 		this._array = list;
-	} else {
+	} else if (list.length) {
 		var i = 0;
-		for(var i = 0; i < list.length; i++)
-		{
+		for (var i = 0; i < list.length; i++) {
 			this._array.push(list[i]);
+		}
+	} else {
+		var i = 0, entry;
+		while ((entry = list[i++]) != null) {
+			this._array.push(entry);
 		}
 	}
 	this.reset ();
