@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 #if !InternalBuild
-[assembly: AssemblyTitle("Composite C1 4.2 Beta 2")] 
+[assembly: AssemblyTitle("Composite C1 4.2 Beta 3")] 
 #else
 [assembly: AssemblyTitle("Composite C1 4.2 (Internal build)")]
 #endif
