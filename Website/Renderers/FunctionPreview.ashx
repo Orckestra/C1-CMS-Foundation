@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -34,6 +35,7 @@ namespace Composite.Renderers
             string templateIdStr = context.Request["t"] ?? "";
             string placeholderName = context.Request["ph"];
             string cssSelector = context.Request["css"] ?? "";
+            string cultureName = context.Request["lang"];
             int maxWidth = Int32.Parse(context.Request["width"] ?? "1024");
             
             if (maxWidth < 256) maxWidth = 256;
@@ -47,11 +49,15 @@ namespace Composite.Renderers
             Guid templateId;
 
             Guid.TryParse(pageIdStr, out pageId);
-            Guid.TryParse(templateIdStr, out templateId);            
+            Guid.TryParse(templateIdStr, out templateId);
+
+            CultureInfo culture = cultureName != null
+                ? new CultureInfo(cultureName)
+                : DataLocalizationFacade.DefaultLocalizationCulture;
             
             IPage page;
-            
-            using (var c = new DataConnection(PublicationScope.Unpublished))
+
+            using (var c = new DataConnection(PublicationScope.Unpublished, culture))
             {
                 if (pageId != Guid.Empty)
                 {

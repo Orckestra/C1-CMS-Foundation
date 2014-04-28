@@ -11,6 +11,7 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using System.Xml.Linq;
 using Composite.C1Console.Security;
+using Composite.C1Console.Users;
 using Composite.Core.Extensions;
 using Composite.Core.Linq;
 using Composite.Core.WebClient.Renderings;
@@ -528,7 +529,7 @@ namespace Composite.Services
                 HttpUtility.UrlEncode(title, Encoding.UTF8),
                 UrlUtils.ZipContent(description.Trim()), // ZIPping description as it may contain xml tags f.e. <iframe />
                 UrlUtils.ZipContent(markup.Trim()),
-                Thread.CurrentThread.CurrentUICulture.Name,
+                UserSettings.GetCurrentActiveLocaleCultureInfo(UserValidationFacade.GetUsername()),
                 FunctionPreview.GetFunctionPreviewHash()); 
 
             if (functionPreviewPageId != Guid.Empty)
