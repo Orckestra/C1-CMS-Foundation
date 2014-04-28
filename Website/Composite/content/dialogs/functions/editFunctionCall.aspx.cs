@@ -235,7 +235,7 @@ namespace CompositeEditFunctionCall
             // - here's no parameters defined as function calls
             // - And there no required parameters without widgets
 
-            if (MultiMode || IsWidgetSelection && functionCallsEvaluated.Count != 1)
+            if (MultiMode || IsWidgetSelection || functionCallsEvaluated.Count != 1)
             {
                 return false;
             }
