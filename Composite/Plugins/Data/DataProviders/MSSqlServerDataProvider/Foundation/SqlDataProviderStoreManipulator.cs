@@ -524,24 +524,26 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
         {
             string tableName = GetConfiguredTableName(dataTypeDescriptor, dataScope, cultureInfo.Name);
 
+            if (string.IsNullOrEmpty(tableName))
+            {
+                return;
+            }
+
             try
             {
-                if (!string.IsNullOrEmpty(tableName))
-                {
-                    var tables = GetTablesList();
+                var tables = GetTablesList();
 
-                    if (tables.Contains(tableName))
-                    {
-                        ExecuteNonQuery(string.Format("DROP TABLE [{0}];", tableName));
-                    }
+                if (tables.Contains(tableName))
+                {
+                    ExecuteNonQuery(string.Format("DROP TABLE [{0}];", tableName));
+
+                    SqlTableInformationStore.ClearCache(tableName);
                 }
             }
             catch (Exception ex)
             {
                 throw MakeVerboseException(ex);
             }
-
-            SqlTableInformationStore.ClearCache(tableName);
         }
 
         private void ImplementFieldChanges(string tableName, IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> existingFieldDescription)
