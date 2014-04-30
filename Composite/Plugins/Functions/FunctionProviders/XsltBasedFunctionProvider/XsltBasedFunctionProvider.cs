@@ -23,6 +23,7 @@ using Composite.Functions.Plugins.FunctionProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Composite.Core;
+using Composite.Core.Configuration;
 
 
 namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvider
@@ -94,7 +95,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.XsltBasedFunctionProvide
 
         private void OnDataChanged(object sender, StoreEventArgs storeEventArgs)
         {
-            _functionNotifier.FunctionsUpdated();
+            if (!SystemSetupFacade.SetupIsRunning)
+            {
+                _functionNotifier.FunctionsUpdated();
+            }
         }
 
 
