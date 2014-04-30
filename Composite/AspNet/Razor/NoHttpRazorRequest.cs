@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.Web;
+using System.Web.Hosting;
 
 namespace Composite.AspNet.Razor
 {
@@ -12,6 +13,16 @@ namespace Composite.AspNet.Razor
         private NameValueCollection _params;
         private NameValueCollection _serverVariables;
         private HttpCookieCollection _cookies;
+
+        public override string ApplicationPath
+        {
+            get { return HostingEnvironment.ApplicationVirtualPath; }
+        }
+
+        public override string PhysicalApplicationPath
+        {
+            get { return HostingEnvironment.ApplicationPhysicalPath; }
+        }
 
         public override HttpCookieCollection Cookies
         {

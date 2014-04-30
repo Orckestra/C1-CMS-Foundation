@@ -31,7 +31,12 @@ namespace Composite.AspNet.Razor
             get { throw new NotSupportedException("Usage of 'Server' isn't supported without HttpContext. Use System.Web.HttpUtility for [html|url] [encoding|decoding]"); }
         }
 
-		public NoHttpRazorContext()
+        public override object GetService(Type serviceType)
+        {
+            return null;
+        }
+
+        public NoHttpRazorContext()
 		{
 			ScopeStorage.CurrentProvider = new StaticScopeStorageProvider();
 		}

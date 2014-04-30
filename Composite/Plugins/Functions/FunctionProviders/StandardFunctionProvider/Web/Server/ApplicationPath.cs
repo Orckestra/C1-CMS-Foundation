@@ -16,19 +16,19 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         public override object Execute(ParameterList parameters, FunctionContextContainer context)
         {
-            if (HttpContext.Current != null && HttpContext.Current.Request != null)
-            {
-                string appPath = HttpContext.Current.Request.ApplicationPath;
-                if (appPath.EndsWith("/"))
-                {
-                    appPath = appPath.Substring(0, appPath.Length - 1);
-                }
-                return appPath;
-            }
-            else
+            var httpContext = HttpContext.Current;
+            if (httpContext == null || httpContext.Request == null)
             {
                 throw new InvalidOperationException("Unable to access 'HttpContext.Current.Request' - object is null");
             }
+
+            string appPath = httpContext.Request.ApplicationPath;
+            if (appPath.EndsWith("/"))
+            {
+                appPath = appPath.Substring(0, appPath.Length - 1);
+            }
+            return appPath;
+            
         }
     }
 }
