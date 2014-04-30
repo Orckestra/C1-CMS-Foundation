@@ -24,9 +24,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
         private readonly Dictionary<Type, SqlDataTypeStore> _sqlDataTypeStores = new Dictionary<Type, SqlDataTypeStore>();
-        private readonly List<Type> _supportedInterface = new List<Type>();
+        private readonly List<Type> _supportedInterfaces = new List<Type>();
         private readonly List<Type> _knownInterfaces = new List<Type>();
-        private readonly List<Type> _generatedInterface = new List<Type>();
+        private readonly List<Type> _generatedInterfaces = new List<Type>();
 
 
         private readonly string _providerName;
@@ -49,7 +49,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <summary>
         /// All working data types 
         /// </summary>
-        public IEnumerable<Type> SupportedInterface { get { return _supportedInterface; } }
+        public IEnumerable<Type> SupportedInterfaces { get { return _supportedInterfaces; } }
 
 
 
@@ -63,7 +63,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <summary>
         /// All working generated data types
         /// </summary>
-        public IEnumerable<Type> GeneratedInterfaces { get { return _generatedInterface; } }
+        public IEnumerable<Type> GeneratedInterfaces { get { return _generatedInterfaces; } }
 
 
 
@@ -89,12 +89,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             _sqlDataTypeStores.Add(interfaceType, sqlDataTypeStore);
 
-            _supportedInterface.Add(interfaceType);
+            _supportedInterfaces.Add(interfaceType);
             AddKnownInterface(interfaceType);
 
             if (sqlDataTypeStore.IsGeneretedDataType)
             {
-                _generatedInterface.Add(interfaceType);
+                _generatedInterfaces.Add(interfaceType);
             }
         }
 

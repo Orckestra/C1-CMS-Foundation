@@ -63,7 +63,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         public IEnumerable<Type> GetSupportedInterfaces()
         {
-            return _sqlDataTypeStoresContainer.SupportedInterface;
+            return _sqlDataTypeStoresContainer.SupportedInterfaces;
         }
 
 

@@ -11,6 +11,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 {
     internal static class DataContextAssembler
     {
+        private static int VersionNumber;
+
         public static Type EmitDataContextClass(IEnumerable<SqlDataProvider.StoreTypeInfo> fields)
         {
             return EmitDataContextClass(fields.Select(f => new Tuple<string, Type>(f.FieldName, f.FieldType)));
@@ -23,7 +25,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
             var aBuilder = appDomain.DefineDynamicAssembly(aName, AssemblyBuilderAccess.Run);
             var module = aBuilder.DefineDynamicModule(aName.Name);
 
-            TypeBuilder type = module.DefineType("DynamicDataContext", 
+            TypeBuilder type = module.DefineType("DynamicDataContext" + (VersionNumber++), 
                 TypeAttributes.Public, typeof(DataContextBase), new []{ typeof(ISqlDataContext) } );
 
             FieldInfo helperClassFieldInfo = BuildField_sqlDataContextHelperClass(type);
