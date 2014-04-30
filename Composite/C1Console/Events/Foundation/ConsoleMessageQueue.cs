@@ -21,6 +21,7 @@ namespace Composite.C1Console.Events.Foundation
         private readonly TimeSpan _timeInterval;
         private List<ConsoleMessageQueueElement> _elements = new List<ConsoleMessageQueueElement>();
         private string MessageQueueFilePath { get; set; }
+        private readonly Timer _timer;
 
 
         public ConsoleMessageQueue(int secondsForItemToLive)
@@ -34,7 +35,7 @@ namespace Composite.C1Console.Events.Foundation
 
             DeserializeMessagesFromFileSystem();
 
-            Timer timer = new Timer(OnWeed, null, new TimeSpan(0, 0, 0), _timeInterval);
+            _timer = new Timer(OnWeed, null, new TimeSpan(0, 0, 0), _timeInterval);
         }
 
 
@@ -52,7 +53,7 @@ namespace Composite.C1Console.Events.Foundation
 
             lock (_lock)
             {
-                ConsoleMessageQueueElement queueElement = new ConsoleMessageQueueElement
+                var queueElement = new ConsoleMessageQueueElement
                    {
                        ReceiverConsoleId = receiverConsoleId,
                        QueueItemNumber = ++_queueItemCounter,
