@@ -222,6 +222,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         private InitializeStoreResult EmbedDataContextInfo(InterfaceGeneratedClassesInfo initInfo, Type dataContextType)
         {
             var result = new InitializeStoreResult();
+
+            if (initInfo.InterfaceType == null)
+            {
+                return result;
+            }
+
             result.InterfaceType = initInfo.InterfaceType;
 
             var sqlDataTypeStoreTables = new Dictionary<SqlDataTypeStoreTableKey, SqlDataTypeStoreTable>();
@@ -381,25 +387,26 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         private void AddDataTypeStore(InitializeStoreResult initializeStoreResult, bool doValidate = true)
         {
-            if (initializeStoreResult.SqlDataTypeStore != null)
+            if (initializeStoreResult.InterfaceType == null)
             {
-                bool isValid = true;
-                if (doValidate) isValid = ValidateTables(initializeStoreResult);
-
-                if (isValid)
-                {
-                    _sqlDataTypeStoresContainer.AddSupportedDataTypeStore(initializeStoreResult.InterfaceType, initializeStoreResult.SqlDataTypeStore);
-                    DataProviderRegistry.AddNewDataType(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
-                }
-                else
-                {
-                    _sqlDataTypeStoresContainer.AddKnownInterface(initializeStoreResult.InterfaceType);
-                }
+                return;
             }
-            else if (initializeStoreResult.InterfaceType != null)
+
+            bool isValid = initializeStoreResult.SqlDataTypeStore != null;
+
+            if (isValid && doValidate)
+            {
+                isValid = ValidateTables(initializeStoreResult);
+            }
+
+            if (!isValid)
             {
                 _sqlDataTypeStoresContainer.AddKnownInterface(initializeStoreResult.InterfaceType);
+                return;
             }
+
+            _sqlDataTypeStoresContainer.AddSupportedDataTypeStore(initializeStoreResult.InterfaceType, initializeStoreResult.SqlDataTypeStore);
+            DataProviderRegistry.AddNewDataType(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
         }
 
 
