@@ -13,6 +13,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
 
 
 namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation
@@ -116,6 +117,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 CreateIndex(tableName, index);
             }
+
+            SqlTableInformationStore.ClearCache(tableName);
         }
 
         internal List<string> GetTablesList()
@@ -478,6 +481,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     createIndex.Item2();
                 }
+
+                SqlTableInformationStore.ClearCache(originalTableName);
+                SqlTableInformationStore.ClearCache(alteredTableName);
             }
             catch (Exception ex)
             {
@@ -534,6 +540,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             {
                 throw MakeVerboseException(ex);
             }
+
+            SqlTableInformationStore.ClearCache(tableName);
         }
 
         private void ImplementFieldChanges(string tableName, IEnumerable<DataTypeChangeDescriptor.ExistingFieldInfo> existingFieldDescription)

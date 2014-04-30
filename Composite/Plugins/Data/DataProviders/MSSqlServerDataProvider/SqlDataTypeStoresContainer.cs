@@ -25,7 +25,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         private readonly Dictionary<Type, SqlDataTypeStore> _sqlDataTypeStores = new Dictionary<Type, SqlDataTypeStore>();
         private readonly List<Type> _supportedInterface = new List<Type>();
-        private readonly List<Type> _knownInterface = new List<Type>();
+        private readonly List<Type> _knownInterfaces = new List<Type>();
         private readonly List<Type> _generatedInterface = new List<Type>();
 
 
@@ -56,7 +56,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <summary>
         /// All data types, including non working due to config error or something else
         /// </summary>
-        public IEnumerable<Type> KnownInterfaces { get { return _knownInterface; } }
+        public IEnumerable<Type> KnownInterfaces { get { return _knownInterfaces; } }
 
 
 
@@ -67,7 +67,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        internal Type DataContextType { get; set; }
+        internal Type DataContextClass { get; set; }
 
 
 
@@ -102,9 +102,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         internal void AddKnownInterface(Type interfaceType)
         {
-            _knownInterface.Add(interfaceType);
+            _knownInterfaces.Add(interfaceType);
         }
 
+
+        internal void RemoveKnownInterface(Type interfaceType)
+        {
+            _knownInterfaces.Remove(interfaceType);
+        }
 
 
         #region CRUD methos
@@ -303,7 +308,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 DataContext result = Verify.ResultNotNull(threadData[threadDataKey] as DataContext);
 
                 // In a result of a flush, data context type can be changed
-               if(result.GetType().GUID == DataContextType.GUID)
+               if(result.GetType().GUID == DataContextClass.GUID)
                {
                    return result;
                }
@@ -330,7 +335,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         {
             IDbConnection connection = SqlConnectionManager.GetConnection(ConnectionString);
 
-            DataContext dataContext = (DataContext)Activator.CreateInstance(DataContextType, connection);
+            DataContext dataContext = (DataContext)Activator.CreateInstance(DataContextClass, connection);
 
             if (_sqlLoggingContext.Enabled)
             {

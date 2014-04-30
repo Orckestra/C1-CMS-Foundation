@@ -214,6 +214,7 @@
     <Compile Include="Functions\DynamicMethodHelper.cs" />
     <Compile Include="Functions\FunctionCallEditorManager.cs" />
     <Compile Include="Functions\FunctionCallEditorSettings.cs" />
+    <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\DataContextAssembler.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryable.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryableVisitor.cs" />
     <Compile Include="Plugins\Data\DataProviders\XmlDataProvider\Foundation\FileRecord.cs" />

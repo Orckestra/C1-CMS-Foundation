@@ -80,7 +80,10 @@ namespace Composite.Core.WebClient
         /// <exclude />
         public static void Application_End(object sender, EventArgs e)
         {
-            Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} ended at {1} in process {2}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"), Process.GetCurrentProcess().Id);
+            if (RuntimeInformation.IsDebugBuild)
+            {
+                Log.LogInformation(_verboseLogEntryTitle, "AppDomain {0} ended at {1} in process {2}", AppDomain.CurrentDomain.Id, DateTime.Now.ToString("HH:mm:ss:ff"), Process.GetCurrentProcess().Id);
+            }
 
             if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
             {

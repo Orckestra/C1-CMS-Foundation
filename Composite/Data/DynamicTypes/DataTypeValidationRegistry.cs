@@ -14,16 +14,14 @@ namespace Composite.Data.DynamicTypes
     [EditorBrowsable(EditorBrowsableState.Never)]
     internal static class DataTypeValidationRegistry
     {
-        private static ConcurrentDictionary<Type, string> _typeSpecificValidations = new ConcurrentDictionary<Type, string>();
-        private static ConcurrentDictionary<Type, ConcurrentDictionary<string, string>> _providerSpecificValidations = new ConcurrentDictionary<Type, ConcurrentDictionary<string, string>>();
+        private static readonly ConcurrentDictionary<Type, string> _typeSpecificValidations = new ConcurrentDictionary<Type, string>();
+        private static readonly ConcurrentDictionary<string, ConcurrentDictionary<Type, string>> _providerSpecificValidations = new ConcurrentDictionary<string, ConcurrentDictionary<Type, string>>();
 
 
         static DataTypeValidationRegistry()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
-
-
 
         /// <summary>
         /// 
@@ -69,7 +67,7 @@ namespace Composite.Data.DynamicTypes
 
                     if (isValid) return null;
 
-                    StringBuilder sb = new StringBuilder();
+                    var sb = new StringBuilder();
                     sb.AppendLine(string.Format("The data type interface '{0}' did not validate and can't be used at the moment.", interfaceType));
                     sb.AppendLine(message);
 
@@ -82,58 +80,47 @@ namespace Composite.Data.DynamicTypes
 
 
 
-        public static bool IsValidateForProvider(Type interfaceType, string providerName, out string errorMessage)
+        public static bool IsValidForProvider(Type interfaceType, string providerName)
         {
-            ConcurrentDictionary<string, string> dic;
-            if (_providerSpecificValidations.TryGetValue(interfaceType, out dic))
-            {
-                string error;
-                if (dic.TryGetValue(providerName, out error))
-                {
-                    errorMessage = error;
-                    return false;
-                }
-            }
+            string errorMessage;
 
-            errorMessage = null;
-            return true;
+            return IsValidForProvider(interfaceType, providerName, out errorMessage);
         }
 
+        public static bool IsValidForProvider(Type interfaceType, string providerName, out string errorMessage)
+        {
+            return !_providerSpecificValidations
+                .GetOrAdd(providerName, s => new ConcurrentDictionary<Type, string>())
+                .TryGetValue(interfaceType, out errorMessage);
+        }
+
+
+        public static void ClearValidationError(Type interfaceType, string providerName)
+        {
+            ConcurrentDictionary<Type, string> cd;
+            if (!_providerSpecificValidations.TryGetValue(providerName, out cd))
+            {
+                return;
+            }
+
+            string error;
+            cd.TryRemove(interfaceType, out error);
+        }
 
 
         public static void AddValidationError(Type interfaceType, string providerName, string errorMessage)
         {
-            Func<Type, ConcurrentDictionary<string, string>> adder =
-                t =>
-                {
-                    ConcurrentDictionary<string, string> dic = new ConcurrentDictionary<string, string>();
-                    dic.TryAdd(providerName, errorMessage);
-                    return dic;
-                };
+            var providerErrors = _providerSpecificValidations
+                .GetOrAdd(providerName, s => new ConcurrentDictionary<Type, string>());
 
-            Func<Type, ConcurrentDictionary<string, string>, ConcurrentDictionary<string, string>> updater =
-                (t, d) =>
-                {
-                    d.AddOrUpdate(providerName, errorMessage, (p, s) => s + errorMessage);
-                    return d;
-                };
-
-            _providerSpecificValidations.AddOrUpdate(interfaceType, adder, updater);
+            providerErrors.AddOrUpdate(interfaceType, t => errorMessage, (type, s) => s + errorMessage);
         }
-
 
 
         private static void Flush()
         {
-            _typeSpecificValidations = new ConcurrentDictionary<Type, string>();
-            _providerSpecificValidations = new ConcurrentDictionary<Type, ConcurrentDictionary<string, string>>();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
+            _typeSpecificValidations.Clear();
+            _providerSpecificValidations.Clear();
         }
     }
 }

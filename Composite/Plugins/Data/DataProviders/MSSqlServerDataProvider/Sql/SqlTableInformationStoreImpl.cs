@@ -40,6 +40,12 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             _columnsInformationCache = null;
         }
 
+        public void ClearCache(string tableName)
+        {
+            _tableInformationCache.Remove(tableName);
+            _columnsInformationCache = null;
+        }
+
         private static Dictionary<string, ColumnInfo> GetColumnsInfo(SqlConnection connection, string tableName)
         {
             var columnsCache = _columnsInformationCache;

@@ -21,9 +21,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         public void GetCodeToCompile(CodeGenerationBuilder builder)
         {
-            SqlDataProvider xmlDataProvider = (SqlDataProvider)DataProviderPluginFacade.GetDataProvider(ProviderName);
+            var sqlDataProvider = (SqlDataProvider)DataProviderPluginFacade.GetDataProvider(ProviderName);
 
-            xmlDataProvider.BuildAllCode(builder);
+            sqlDataProvider.BuildAllCode(builder);
         }
     }
 }

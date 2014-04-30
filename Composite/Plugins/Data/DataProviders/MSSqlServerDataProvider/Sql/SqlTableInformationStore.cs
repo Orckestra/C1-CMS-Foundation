@@ -16,7 +16,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
         static SqlTableInformationStore()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -28,15 +28,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
         }
 
 
-
-        internal static void Flush()
+        /// <exclude />
+        public static void ClearCache(string tableName)
         {
-            _implementation.OnFlush();
+            _implementation.ClearCache(tableName);
         }
 
 
-
-        private static void OnFlush(FlushEventArgs flushEventArgs)
+        internal static void Flush()
         {
             _implementation.OnFlush();
         }
