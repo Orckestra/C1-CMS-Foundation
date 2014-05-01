@@ -21,9 +21,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             Verify.ArgumentNotNullOrEmpty(connectionString, "connectionString");
             Verify.ArgumentNotNullOrEmpty(tableName, "tableName)");
 
-            string key = tableName + " " + connectionString.GetHashCode();
+            string key = GetTableCacheKey(connectionString, tableName);
 
-            if (false == _tableInformationCache.ContainsKey(key))
+            if (!_tableInformationCache.ContainsKey(key))
             {
                 SqlTableInformation sqlTableInformation = CreateSqlTableInformation(connectionString, tableName);
                 _tableInformationCache.Add(key, sqlTableInformation);
@@ -40,10 +40,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
             _columnsInformationCache = null;
         }
 
-        public void ClearCache(string tableName)
+        public void ClearCache(string connectionString, string tableName)
         {
-            _tableInformationCache.Remove(tableName);
+            _tableInformationCache.Remove(GetTableCacheKey(connectionString, tableName));
             _columnsInformationCache = null;
+        }
+
+        private static string GetTableCacheKey(string connectionString, string tableName)
+        {
+            return tableName + " " + connectionString.GetHashCode();
         }
 
         private static Dictionary<string, ColumnInfo> GetColumnsInfo(SqlConnection connection, string tableName)

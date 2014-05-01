@@ -29,9 +29,9 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
 
         /// <exclude />
-        public static void ClearCache(string tableName)
+        public static void ClearCache(string connectionString, string tableName)
         {
-            _implementation.ClearCache(tableName);
+            _implementation.ClearCache(connectionString, tableName);
         }
 
 

@@ -118,7 +118,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 CreateIndex(tableName, index);
             }
 
-            SqlTableInformationStore.ClearCache(tableName);
+            SqlTableInformationStore.ClearCache(_connectionString, tableName);
         }
 
         internal List<string> GetTablesList()
@@ -482,8 +482,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                     createIndex.Item2();
                 }
 
-                SqlTableInformationStore.ClearCache(originalTableName);
-                SqlTableInformationStore.ClearCache(alteredTableName);
+                SqlTableInformationStore.ClearCache(_connectionString, originalTableName);
+                SqlTableInformationStore.ClearCache(_connectionString, alteredTableName);
             }
             catch (Exception ex)
             {
@@ -537,7 +537,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     ExecuteNonQuery(string.Format("DROP TABLE [{0}];", tableName));
 
-                    SqlTableInformationStore.ClearCache(tableName);
+                    SqlTableInformationStore.ClearCache(_connectionString, tableName);
                 }
             }
             catch (Exception ex)
