@@ -16,6 +16,7 @@ namespace Composite.Core.PackageSystem
 {
     internal sealed class PackageUninstaller : IPackageUninstaller
     {
+        public static readonly string LogTitle = typeof (PackageUninstaller).Name;
         private bool _isInitialized;
         private readonly List<IPackageFragmentUninstaller> _packageFramentUninstallers = new List<IPackageFragmentUninstaller>();
 
@@ -138,10 +139,14 @@ namespace Composite.Core.PackageSystem
 
         private void DoUninstallWithoutTransaction()
         {
+            Log.LogInformation(LogTitle, "Uninstalling package '{0}', Id = {1}", PackageInformation.Name, PackageInformation.Id);
+
             foreach (IPackageFragmentUninstaller packageFragmentUninstaller in _packageFramentUninstallers)
             {
                 packageFragmentUninstaller.Uninstall();
             }
+
+            Log.LogInformation(LogTitle, "Package uninstalled successfully.");
         }
 
 

@@ -34,7 +34,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             _generatedInterfaces = generatedInterfaces;
         }
 
-        internal void CreateStoresForType(DataTypeDescriptor typeDescriptor)
+        internal void CreateStoresForType(DataTypeDescriptor typeDescriptor, Action<string> existingTablesValidator)
         {
             lock (_lock)
             {
@@ -42,7 +42,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 {
                     foreach (var culture in GetCultures(typeDescriptor))
                     {
-                        CreateStore(typeDescriptor, dataScope, culture);
+                        CreateStore(typeDescriptor, dataScope, culture, existingTablesValidator);
                     }
                 }
             }
@@ -87,15 +87,21 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
             }
         }
 
-        internal void CreateStore(DataTypeDescriptor typeDescriptor, DataScopeIdentifier dataScope, CultureInfo cultureInfo)
+        internal void CreateStore(DataTypeDescriptor typeDescriptor, DataScopeIdentifier dataScope, CultureInfo cultureInfo,
+                                  Action<string> existingTablesValidator = null)
         {
             string tableName = DynamicTypesCommon.GenerateTableName(typeDescriptor, dataScope, cultureInfo);
             var tables = GetTablesList();
 
             if (tables.Contains(tableName))
             {
-                throw new InvalidOperationException(
-                    "Database already contains a table named {0}".FormatWith(tableName));
+                if (existingTablesValidator != null)
+                {
+                    existingTablesValidator(tableName);
+                    return;
+                }
+
+                throw new InvalidOperationException("Database already contains a table named {0}".FormatWith(tableName));
             }
 
             var sql = new StringBuilder();

@@ -43,7 +43,17 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     throw new InvalidOperationException(string.Format("SqlDataProvider configuration already contains a interface named '{0}'. Remove it from the configuration and restart the application.", dataTypeDescriptor.TypeManagerTypeName));
                 }
 
-                SqlStoreManipulator.CreateStoresForType(dataTypeDescriptor);
+                Action<string> existingTablesValidator = tableName =>
+                {
+                    var errors = new StringBuilder();
+                    var interfaceType = dataTypeDescriptor.GetInterfaceType();
+                    if (!ValidateTable(interfaceType, tableName, errors))
+                    {
+                        throw new InvalidOperationException("Table '{0}' already exist but isn't valid: {1}".FormatWith(tableName, errors.ToString()));
+                    }
+                };
+
+                SqlStoreManipulator.CreateStoresForType(dataTypeDescriptor, existingTablesValidator);
 
                 InterfaceConfigurationElement element = InterfaceConfigurationManipulator.AddNew(_dataProviderContext.ProviderName, dataTypeDescriptor);
                 _interfaceConfigurationElements.Add(element);
