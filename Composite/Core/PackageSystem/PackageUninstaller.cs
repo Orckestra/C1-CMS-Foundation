@@ -141,9 +141,18 @@ namespace Composite.Core.PackageSystem
         {
             Log.LogInformation(LogTitle, "Uninstalling package '{0}', Id = {1}", PackageInformation.Name, PackageInformation.Id);
 
-            foreach (IPackageFragmentUninstaller packageFragmentUninstaller in _packageFramentUninstallers)
+
+            try
             {
-                packageFragmentUninstaller.Uninstall();
+                foreach (IPackageFragmentUninstaller packageFragmentUninstaller in _packageFramentUninstallers)
+                {
+                    packageFragmentUninstaller.Uninstall();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(LogTitle, ex);
+                throw;
             }
 
             Log.LogInformation(LogTitle, "Package uninstalled successfully.");
