@@ -135,7 +135,7 @@ namespace Composite.Core.WebClient
             catch (Exception ex)
             {
                 Log.LogError(this.GetType().ToString(), ex.ToString());
-                throw;
+                context.Response.Redirect(UrlUtils.AdminRootPath + "/images/function.png", false);
             }
         }
 
