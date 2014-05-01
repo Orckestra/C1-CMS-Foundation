@@ -16,7 +16,7 @@
 			<div id="about">
 				<div id="credits">
 					<div id="roll">
-						<div class="logo" id="logo1"/>
+						<a href="http://www.composite.net/" target="wwwcompositenet"><div class="logo" id="logo1"/></a>
 						<h2>Visual Editor</h2>
 						<p>powered by<br/><a href="http://tinymce.moxiecode.com/" title="Visit Moxicode" target="_blank">TinyMCE</a></p>
 						<h2>Source Editor</h2>

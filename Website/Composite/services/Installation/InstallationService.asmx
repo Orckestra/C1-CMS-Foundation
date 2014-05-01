@@ -59,12 +59,12 @@ namespace Composite.Services
 
             KeyValuePair pair = new KeyValuePair();
             pair.Key = "Core Development";
-			pair.Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi;Poul Kjeldager Sørensen";
+			pair.Value = "Marcus Wendt;Dmitry Dzygin;Taras Nakonechnyi";
             list.Add(pair);
 
             pair = new KeyValuePair();
-            pair.Key = "QA, Packages & Documentaion";
-            pair.Value = "Vitaly Vysotskyi;Inna Boitsun";
+            pair.Key = "QA, Packages, Documentaion & Support";
+			pair.Value = "Vitaly Vysotskyi;Inna Boitsun;Pavlo Kuzminskiy";
 
             list.Add(pair);
 
@@ -77,7 +77,7 @@ namespace Composite.Services
             
             pair = new KeyValuePair();
             pair.Key = "Special Thanks To";
-			pair.Value = "Martin Jensen for a solid codebase;Jesper Moth for the C1 Console;@thorstenh for German translation;huangpin@eov.cn for Chinese translation;@C1er for Russian & Ukrainian translations;Emelie Mikaelsson (Invinn AB) for Swedish translation;Erik Paquet for French translation;Volodymyr Muzyka for building our Kiev team;@burningice for ConpositeC1Contrib;HolisticWare team for contributions;@nufaqtz for awesome packages and inspiration;Our community for help and cheering us on;Our paying customers which make this possible";
+			pair.Value = "Martin Jensen for a solid codebase;Jesper Moth for the C1 Console;Poul Kjeldager Sørensen for the Windows Azure support;@thorstenh for German translation;huangpin@eov.cn for Chinese translation;@C1er for Russian & Ukrainian translations;Emelie Mikaelsson (Invinn AB) for Swedish translation;Erik Paquet for French translation;Volodymyr Muzyka for building our Kiev team;@burningice for ConpositeC1Contrib;HolisticWare team for contributions;@nufaqtz for awesome packages and inspiration;Our community for help and cheering us on;Our paying customers which make this possible";
             list.Add(pair);
 
             return list.ToArray();

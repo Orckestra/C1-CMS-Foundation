@@ -62,6 +62,7 @@ ui|toolbargroup {
 	#ie padding-top: 326px;	
 }
 div.logo {
+    cursor: pointer;
 	width: 203px;
 	height: 59px;
 	background: white url("${root}/images/composite.png") no-repeat 0 0;
