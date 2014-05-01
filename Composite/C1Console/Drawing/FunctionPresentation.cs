@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Hosting;
-using System.Windows.Forms;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient;
 
@@ -50,7 +49,21 @@ namespace Composite.C1Console.Drawing
                     context.Response.ContentType = "image/png";
                     context.Response.Cache.SetExpires(DateTime.Now.AddDays(10));
 
-                    bitmap.Save(outputStream, ImageFormat.Png);
+                    string tempFileName = Path.GetTempFileName();
+
+                    try
+                    {
+                        // Saving to a temporary file, as Image.Save() sometimes on a not seekable stream throws
+                        // an "A generic error occurred in GDI+." exception
+                        bitmap.Save(tempFileName, ImageFormat.Png);
+
+                        context.Response.WriteFile(tempFileName);
+                        context.Response.Flush();
+                    }
+                    finally
+                    {
+                        File.Delete(tempFileName);
+                    }
                 }
             }
         }
