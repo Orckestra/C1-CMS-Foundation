@@ -150,6 +150,11 @@ namespace Composite.Data.Foundation
             _dataProviderRegistry.AddKnownDataType(interaceType, providerName);
         }
 
+        public static void UnregisterDataType(Type interfaceType, string providerName)
+        {
+            _dataProviderRegistry.UnregisterDataType(interfaceType, providerName);
+        }
+
 
         public static void RegisterDataTypeInitializationError(Type interfaceType, Exception exception)
         {

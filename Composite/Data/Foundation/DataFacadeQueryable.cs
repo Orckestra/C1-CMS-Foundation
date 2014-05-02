@@ -167,15 +167,14 @@ namespace Composite.Data.Foundation
 
 
 
-        public IEnumerable<IQueryable> Sources
+        public ICollection<IQueryable> Sources
         {
-            get
-            {
-                foreach (IQueryable queryable in _sources)
-                {
-                    yield return queryable;
-                }
-            }
+            get { return _sources; }
+        }
+
+        public Type InterfaceType
+        {
+            get { return typeof (T); }
         }
 
 

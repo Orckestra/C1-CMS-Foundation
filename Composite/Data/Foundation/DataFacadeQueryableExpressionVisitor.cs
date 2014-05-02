@@ -96,8 +96,8 @@ namespace Composite.Data.Foundation
         {
             if (m.Method.DeclaringType == typeof (DataFacade))
             {
-                if ((m.Method.IsGenericMethod) &&
-                     (m.Method.GetGenericMethodDefinition() == _dataFacadeGetDataMethodInfo))
+                if (m.Method.IsGenericMethod &&
+                    m.Method.GetGenericMethodDefinition() == _dataFacadeGetDataMethodInfo)
                 {
                     object result = m.Method.Invoke(null, null);
 
@@ -459,6 +459,11 @@ namespace Composite.Data.Foundation
         {
             Type elementType = GetElementType(sources);
 
+            return LoadToMemory(elementType, sources, predicates);
+        }
+
+        private static IQueryable LoadToMemory(Type elementType, IQueryable[] sources, IEnumerable<Expression> predicates = null)
+        {
             MethodInfo addRangeToListMethodInfo = DataFacadeReflectionCache.List_AddRangeMethodInfo(elementType);
             MethodInfo toListMethodInfo = DataFacadeReflectionCache.Enumerable_ToList(elementType);
 
@@ -478,10 +483,12 @@ namespace Composite.Data.Foundation
             object listedDataAsQueryable = asQueryableMethodInfo.Invoke(null, new object[] { list });
 
 
-            // TODO: remove before release
-            if (list.Count > 500)
+            if (RuntimeInformation.IsDebugBuild)
             {
-                Log.LogInformation("DataFacadeQuery", list.Count + " rows in a single query. Element type:" + elementType.FullName);
+                if (list.Count > 500)
+                {
+                    Log.LogInformation("DataFacadeQuery", list.Count + " rows in a single query. Element type:" + elementType.FullName);
+                }
             }
 
             return (IQueryable)listedDataAsQueryable;
@@ -545,7 +552,7 @@ namespace Composite.Data.Foundation
 
             IQueryable queryable;
 
-            if (!_pullAllToMemory && multipleSourceQueryable.Sources.Count() == 1)
+            if (!_pullAllToMemory && multipleSourceQueryable.Sources.Count == 1)
             {
                 queryable = multipleSourceQueryable.Sources.First();
             }
@@ -553,7 +560,7 @@ namespace Composite.Data.Foundation
             {
                 IQueryable[] sources = multipleSourceQueryable.Sources.ToArray();
 
-                queryable = LoadToMemory(sources);
+                queryable = LoadToMemory(multipleSourceQueryable.InterfaceType, sources);
             }
 
             if (_queryable == null)

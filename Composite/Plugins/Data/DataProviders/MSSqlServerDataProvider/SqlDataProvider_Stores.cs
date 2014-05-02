@@ -128,6 +128,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 {
                     _interfaceConfigurationElements.Remove(oldElement);
                 }
+
+                Guid dataTypeId = dataTypeDescriptor.DataTypeId;
+                int storesRemoved = _createdSqlDataTypeStoreTables.RemoveAll(item => item.DataTypeId == dataTypeId);
+
+                if (storesRemoved > 0)
+                {
+                    Type interfaceType = dataTypeDescriptor.GetInterfaceType();
+
+                    _sqlDataTypeStoresContainer.ForgetInterface(interfaceType);
+                }
             }
         }
 

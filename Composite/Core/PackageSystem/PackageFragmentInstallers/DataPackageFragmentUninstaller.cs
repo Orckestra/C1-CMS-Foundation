@@ -19,7 +19,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataPackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
-        private List<DataType> _datasToDelete;
+        private List<DataType> _dataToDelete;
 
 
 
@@ -34,7 +34,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return validationResult;
             }
 
-            _datasToDelete = new List<DataType>();
+            _dataToDelete = new List<DataType>();
 
             XElement typesElement = this.Configuration.SingleOrDefault(f => f.Name == "Types");
 
@@ -150,7 +150,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (validationResult.Count > 0)
             {
-                _datasToDelete = null;
+                _dataToDelete = null;
             }
 
             return validationResult;
@@ -236,17 +236,21 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override void Uninstall()
         {
-            if (_datasToDelete == null) throw new InvalidOperationException("DataPackageFragmentUninstaller has not been validated");
+            Verify.IsNotNull(_dataToDelete, "DataPackageFragmentUninstaller has not been validated");
 
-            foreach (DataType dataType in _datasToDelete)
+            foreach (DataType dataType in _dataToDelete)
             {
                 using (new DataScope(dataType.DataScopeIdentifier, dataType.Locale))
                 {
-                    Log.LogVerbose("DataPackageFragmentUninstaller", string.Format("Uninstalling data for the type '{0}'", dataType.InterfaceType));
+                    Log.LogVerbose("DataPackageFragmentUninstaller", "Uninstalling data for the type '{0}'", dataType.InterfaceType);
 
                     foreach (DataKeyPropertyCollection dataKeyPropertyCollection in dataType.DataKeys)
                     {
                         IData data = DataFacade.TryGetDataByUniqueKey(dataType.InterfaceType, dataKeyPropertyCollection);
+                        if (data == null)
+                        {
+                            continue;
+                        }
 
                         using (ProcessControllerFacade.NoProcessControllers)
                         {
@@ -261,7 +265,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private void AddDataToDelete(Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo locale, DataKeyPropertyCollection dataKeyPropertyCollection)
         {
-            DataType dataType = _datasToDelete.SingleOrDefault(dt => 
+            DataType dataType = _dataToDelete.SingleOrDefault(dt => 
                         dt.InterfaceType == interfaceType
                         && dt.DataScopeIdentifier.Equals(dataScopeIdentifier) &&
                         ((dt.Locale == null && locale == null) || (dt.Locale != null && dt.Locale.Equals(locale))));
@@ -269,7 +273,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             if (dataType == null)
             {
                 dataType = new DataType { InterfaceType = interfaceType, DataScopeIdentifier = dataScopeIdentifier, Locale = locale };
-                _datasToDelete.Add(dataType);
+                _dataToDelete.Add(dataType);
             }
 
             dataType.DataKeys.Add(dataKeyPropertyCollection);

@@ -180,6 +180,12 @@ namespace Composite.Data.DynamicTypes
             }
 
             _dynamicTypeManager.DropStore(providerName, typeDescriptor, makeAFlush);
+
+            var interfaceType = typeDescriptor.GetInterfaceType();
+            if (interfaceType != null)
+            {
+                DataProviderRegistry.UnregisterDataType(interfaceType, providerName);
+            }
         }
 
 

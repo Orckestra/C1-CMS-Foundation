@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Transactions;
 using Composite.Data.DynamicTypes.Foundation;
-using Composite.Data.Foundation;
 using Composite.Data.Foundation.PluginFacades;
 using Composite.C1Console.Events;
 using Composite.Data.Transactions;
@@ -107,7 +106,7 @@ namespace Composite.Data.DynamicTypes
 
             typeDescriptor.Validate();
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 DataProviderPluginFacade.DropStore(providerName, typeDescriptor);
                 DataMetaDataFacade.DeleteMetaData(typeDescriptor.DataTypeId);
@@ -128,7 +127,7 @@ namespace Composite.Data.DynamicTypes
             if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 DataProviderPluginFacade.AddLocale(providerName, cultureInfo);
                 transactionScope.Complete();
@@ -145,7 +144,7 @@ namespace Composite.Data.DynamicTypes
             if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException("providerName");
             if (cultureInfo == null) throw new ArgumentNullException("cultureInfo");
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 DataProviderPluginFacade.RemoveLocale(providerName, cultureInfo);
                 transactionScope.Complete();

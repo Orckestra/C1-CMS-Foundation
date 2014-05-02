@@ -5,8 +5,8 @@ using System.Data;
 using System.Data.Linq;
 using System.Data.SqlTypes;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Extensions;
-using Composite.Core.Logging;
 using Composite.Core.Sql;
 using Composite.Core.Threading;
 using Composite.Data;
@@ -73,9 +73,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         public SqlDataTypeStore GetDataTypeStore(Type interfaceType)
         {
-            if (!_sqlDataTypeStores.ContainsKey(interfaceType)) throw new InvalidOperationException();
+            SqlDataTypeStore store;
+            if (!_sqlDataTypeStores.TryGetValue(interfaceType, out store))
+            {
+                throw new InvalidOperationException("Interface '{0}' is not supported".FormatWith(interfaceType));
+            }
             
-            return _sqlDataTypeStores[interfaceType];
+            return store;
         }
 
 
@@ -355,10 +359,16 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
             catch (Exception ex)
             {
-                LoggingService.LogWarning("SqlDataProviderCodeGeneratorResult", ex);
+                Log.LogWarning("SqlDataProviderCodeGeneratorResult", ex);
 
                 throw;
             }
-        }        
+        }
+
+
+        public void ForgetInterface(Type interfaceType)
+        {
+            _sqlDataTypeStores.Remove(interfaceType);
+        }
     }
 }
