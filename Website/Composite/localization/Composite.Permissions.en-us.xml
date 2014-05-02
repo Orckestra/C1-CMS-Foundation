@@ -6,7 +6,8 @@
 	<string key="DeleteLabel" value="Delete" />
 	<string key="ApproveLabel" value="Approve" />
 	<string key="PublishLabel" value="Publish" />
-	<string key="AdministrateLabel" value="Administrate" />
+  <string key="ConfigureLabel" value="Configure" />
+  <string key="AdministrateLabel" value="Administrate" />
 	<string key="ClearPermissionsLabel" value="ClearPermissions" />
 	<string key="AdminLockoutMessage" value="This operation would remove your administrative permissions from this entity. You can not remove your own administrative permissions." />
 </strings>

@@ -505,6 +505,7 @@ namespace Composite.C1Console.Security
                 yield return PermissionType.Read;
                 yield return PermissionType.Approve;
                 yield return PermissionType.Publish;
+                yield return PermissionType.Configure;
                 yield return PermissionType.Administrate;
             }
         }

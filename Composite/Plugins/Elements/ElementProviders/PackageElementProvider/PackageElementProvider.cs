@@ -47,6 +47,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
         private static ResourceHandle InstallLocalPackageIcon = GetIconHandle("package-install-local-package");
         private static ResourceHandle AddPackageSourceIcon = GetIconHandle("package-add-source");
         private static ResourceHandle DeletePackageSourceIcon = GetIconHandle("package-delete-source");
+
+        private static PermissionType[] ActionPermissions = new PermissionType[] { PermissionType.Administrate, PermissionType.Configure };
         
 
         private static readonly ActionGroup PrimaryActionGroup = new ActionGroup(ActionGroupPriority.PrimaryHigh);
@@ -86,7 +88,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
 
         private static void AddInstallLocalPackageAction(Element element)
         {
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.InstallLocalPackageWorkflow"), ActionPermissions)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -292,7 +294,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     Icon = packageIcon,
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewAvailablePackageInfoWorkflowWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewAvailablePackageInfoWorkflowWorkflow"), ActionPermissions)))
                 {
                     VisualData = new ActionVisualizedData
                     {
@@ -430,7 +432,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     Icon = GetIconForPackageItem(installedPackageInformation.Id),
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), ActionPermissions)))
                 {
                     VisualData = new ActionVisualizedData
                     {
@@ -491,7 +493,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PackageElementProvider
                     Icon = GetIconForPackageItem(installedPackageInformation.Id),
                 };
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), new PermissionType[] { PermissionType.Administrate })))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PackageElementProvider.ViewInstalledPackageInfoWorkflow"), ActionPermissions)))
                 {
                     VisualData = new ActionVisualizedData
                     {

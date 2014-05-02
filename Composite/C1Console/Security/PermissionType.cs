@@ -6,34 +6,52 @@ using System.Text;
 namespace Composite.C1Console.Security
 {
     /// <summary>    
+    /// Permission types that can be attached to actions in the C1 Console
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public enum PermissionType
     {
-        /// <exclude />
-        Read,
+        /// <summary>
+        /// User may read/view the element
+        /// </summary>
+        Read = 0,
+
+        /// <summary>
+        /// User may edit the element
+        /// </summary>
+        Edit = 1,
+
+        /// <summary>
+        /// User may add items below this element
+        /// </summary>
+        Add = 2,
+
+        /// <summary>
+        /// User may delete the element
+        /// </summary>
+        Delete = 3,
+
+        /// <summary>
+        /// User may approve the element as part of a workflow
+        /// </summary>
+        Approve = 4,
+
+        /// <summary>
+        /// User may publish the element as part of a workflow
+        /// </summary>
+        Publish = 5,
+
+        /// <summary>
+        /// User may do administrative tasks on the element
+        /// </summary>
+        Administrate = 6,
 
         /// <exclude />
-        Edit,
+        ClearPermissions = 7,
 
-        /// <exclude />
-        Add,
-
-        /// <exclude />
-        Delete,
-
-        /// <exclude />
-        Approve,
-
-        /// <exclude />
-        Publish,
-
-        /// <exclude />
-        Administrate,
-
-        /// <exclude />
-        ClearPermissions
+        /// <summary>
+        /// User may do configuration tasks on the element - super user actions.
+        /// </summary>
+        Configure = 8
     }
 
 
@@ -87,7 +105,7 @@ namespace Composite.C1Console.Security
         {
             if (serializedPermissionTypes == null) throw new ArgumentNullException("serializedPermissionTypes");
 
-            string[] split = serializedPermissionTypes.Split(new [] {'·'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] split = serializedPermissionTypes.Split(new[] { '·' }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string s in split)
             {

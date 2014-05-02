@@ -23,7 +23,7 @@
   <string key="EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives the user gets access to view" />
   <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel" value="Global permissions"/>
   <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions"/>
-  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks."/>
+  <string key="EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.  The Configure permission grants access to super user tasks."/>
 
 
   

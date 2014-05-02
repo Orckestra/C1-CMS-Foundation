@@ -68,5 +68,11 @@ namespace Composite.C1Console.Elements
         /// Default is <value>ElementActionActivePosition.NavigatorTree</value> only.
         /// </summary>
         public ElementActionActivePosition ActivePositions { get; set; }
+
+
+        public override string ToString()
+        {
+            return Label;
+        }
     }
 }

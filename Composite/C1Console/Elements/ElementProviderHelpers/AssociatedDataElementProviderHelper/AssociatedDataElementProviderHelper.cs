@@ -47,9 +47,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
         public static readonly Dictionary<string, ResourceHandle> DataIconLookup;
 
-        private static readonly PermissionType[] _addAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] _editAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Edit };
-        private static readonly PermissionType[] _removeAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Delete };
+        internal static readonly PermissionType[] AddAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Configure, PermissionType.Administrate };
+        internal static readonly PermissionType[] EditAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Configure, PermissionType.Administrate };
+        internal static readonly PermissionType[] RemoveAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Configure, PermissionType.Administrate };
         private static readonly PermissionType[] _addAssociatedDataPermissionTypes = new PermissionType[] { PermissionType.Add };
         private static readonly PermissionType[] _editAssociatedDataPermissionTypes = new PermissionType[] { PermissionType.Edit };
         private static readonly PermissionType[] _deleteAssociatedDataPermissionTypes = new PermissionType[] { PermissionType.Delete };
@@ -159,7 +159,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
         /// <param name="data">Null is allowed</param>
         public void AttachElementActions(Element associatedDataElement, T data)
         {
-            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddDataFolderExWorkflow"), _addAssociatedTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(T)), DoIgnoreEntityTokenLocking = true }))
+            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddDataFolderExWorkflow"), AddAssociatedTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(T)), DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -178,7 +178,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             });
 
 
-            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), _addAssociatedTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(T)), DoIgnoreEntityTokenLocking = true }))
+            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), AddAssociatedTypePermissionTypes) { Payload = TypeManager.SerializeType(typeof(T)), DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -197,7 +197,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             });
 
 
-            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), _editAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), EditAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -216,7 +216,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             });
 
 
-            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), _removeAssociatedTypePermissionTypes)))
+            associatedDataElement.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), RemoveAssociatedTypePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -275,7 +275,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                 };
 
 
-                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow"), _removeAssociatedTypePermissionTypes)))
+                element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteDataFolderWorkflow"), RemoveAssociatedTypePermissionTypes)))
                 {
                     VisualData = new ActionVisualizedData
                     {

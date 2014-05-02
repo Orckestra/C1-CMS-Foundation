@@ -43,7 +43,7 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp" value="Select which perspectives should be visible when the user starts the C1 Console." />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel" value="Global permissions" />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel" value="Global permissions" />
-	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user access to manage user permissions and execute other administrative tasks." />
+	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp" value="The Administrate permission grants the user access to manage user permissions and execute other administrative tasks. The Configure permission grants access to super user tasks." />
 	<string key="Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval" value="The removal of your own administrative permission has been ignored. You still have administrative privileges." />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel" value="Data language access" />
 	<string key="Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel" value="Data Languages" />

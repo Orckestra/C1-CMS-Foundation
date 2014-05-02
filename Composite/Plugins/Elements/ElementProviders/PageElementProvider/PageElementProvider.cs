@@ -66,13 +66,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private static readonly ActionGroup ViewActionGroup = new ActionGroup("View", ActionGroupPriority.PrimaryLow);
         private static readonly ActionGroup AppendedActionGroup = new ActionGroup("Common tasks", ActionGroupPriority.GeneralAppendMedium);
         private static readonly ActionGroup MetaDataAppendedActionGroup = new ActionGroup("Associated data", ActionGroupPriority.PrimaryMedium);
+        internal static readonly List<PermissionType> AddWebsitePermissionTypes = new List<PermissionType> { PermissionType.Configure, PermissionType.Administrate };
         internal static readonly List<PermissionType> EditPermissionTypes = new List<PermissionType> { PermissionType.Edit };
         internal static readonly List<PermissionType> LocalizePermissionTypes = new List<PermissionType> { PermissionType.Edit };
         internal static readonly List<PermissionType> AddPermissionTypes = new List<PermissionType> { PermissionType.Add };
         internal static readonly List<PermissionType> DeletePermissionTypes = new List<PermissionType> { PermissionType.Delete };
-        private static readonly PermissionType[] AddAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Add };
-        private static readonly PermissionType[] RemoveAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Delete };
-        private static readonly PermissionType[] EditAssociatedTypePermissionTypes = new PermissionType[] { PermissionType.Edit };
 
 
         private static ResourceHandle GetIconHandle(string name)
@@ -139,7 +137,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 }
             };
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddPermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.Plugins.Elements.ElementProviders.PageElementProvider.AddNewPageWorkflow"), AddWebsitePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -179,7 +177,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), AddAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.AddMetaDataWorkflow"), AssociatedDataElementProviderHelper<IPage>.AddAssociatedTypePermissionTypes) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -198,7 +196,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), EditAssociatedTypePermissionTypes)))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.EditMetaDataWorkflow"), AssociatedDataElementProviderHelper<IPage>.EditAssociatedTypePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
@@ -217,7 +215,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             });
 
 
-            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), RemoveAssociatedTypePermissionTypes)))
+            element.AddAction(new ElementAction(new ActionHandle(new WorkflowActionToken(WorkflowFacade.GetWorkflowType("Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper.DeleteMetaDataWorkflow"), AssociatedDataElementProviderHelper<IPage>.RemoveAssociatedTypePermissionTypes)))
             {
                 VisualData = new ActionVisualizedData
                 {
