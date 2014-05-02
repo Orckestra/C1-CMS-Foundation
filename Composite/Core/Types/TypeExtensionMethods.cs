@@ -358,12 +358,14 @@ namespace Composite.Core.Types
         }
 
 
+        /// <exclude />
         public static bool IsLazyGenericType(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Lazy<>);
         }
 
 
+        /// <exclude />
         public static bool IsAssignableOrLazyFrom(this Type currentType, Type possibleSubType)
         {
             if (currentType.IsAssignableFrom(possibleSubType))

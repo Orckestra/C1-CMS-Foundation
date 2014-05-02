@@ -70,6 +70,7 @@ namespace Composite.C1Console.Elements
         public ElementActionActivePosition ActivePositions { get; set; }
 
 
+        /// <exclude />
         public override string ToString()
         {
             return Label;

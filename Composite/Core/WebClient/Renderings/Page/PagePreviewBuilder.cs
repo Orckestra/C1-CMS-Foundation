@@ -19,7 +19,7 @@ namespace Composite.Core.WebClient.Renderings.Page
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public class PagePreviewBuilder
     {
-        public static readonly TimeSpan PreviewExpirationTimeSpan = new TimeSpan(0, 20, 0);
+        private static readonly TimeSpan PreviewExpirationTimeSpan = new TimeSpan(0, 20, 0);
 
         /// <summary>
         /// Execute an 'im mem' preview request of the provided page and content. The execution depends on the hosting environment.

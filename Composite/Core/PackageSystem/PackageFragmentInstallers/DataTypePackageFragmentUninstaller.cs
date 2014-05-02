@@ -22,6 +22,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         private List<PackageFragmentValidationResult> _validationResult;
 
 
+        /// <exclude />
         public override bool ValidateFirst { get { return true; } }
 
         /// <exclude />

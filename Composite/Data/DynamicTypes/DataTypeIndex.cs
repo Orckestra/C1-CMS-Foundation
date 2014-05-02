@@ -32,6 +32,7 @@ namespace Composite.Data.DynamicTypes
         /// </summary>
         public bool Clustered { get; set; }
 
+        /// <exclude />
         public override string ToString()
         {
             if (_toString == null)

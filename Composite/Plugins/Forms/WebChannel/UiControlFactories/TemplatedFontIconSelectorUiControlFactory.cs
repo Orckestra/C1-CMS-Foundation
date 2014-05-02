@@ -22,9 +22,6 @@ namespace Composite.Plugins.Forms.WebChannel.UiControlFactories
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public abstract class FontIconSelectorTemplateUserControlBase : UserControl
     {
-        private string _formControlLabel;
-        private string _selectedClassName;
-
         /// <exclude />
         protected abstract void BindStateToProperties();
 

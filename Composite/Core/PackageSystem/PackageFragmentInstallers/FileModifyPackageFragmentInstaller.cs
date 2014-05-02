@@ -18,7 +18,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 	///     Line 3
 	///     &lt;/AppendText&gt;
     ///&lt;/mi:Add&gt;
- 
     /// </example>
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public class FileModifyPackageFragmentInstaller : BasePackageFragmentInstaller

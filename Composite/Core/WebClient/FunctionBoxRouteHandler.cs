@@ -217,7 +217,8 @@ namespace Composite.Core.WebClient
         }
 
 
-        public bool IsReusable
+        /// <exclude />
+        public override bool IsReusable
         {
             get { return true; }
         }
