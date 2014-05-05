@@ -41,14 +41,6 @@ FieldGroupBinding.prototype.onBindingRegister = function () {
  */
 FieldGroupBinding.prototype._buildDOMContent = function () {
 
-	//this.shadowTree.fieldset = DOMUtil.createElementNS(Constants.NS_XHTML, "fieldset", this.bindingDocument);
-	//this.shadowTree.legend = DOMUtil.createElementNS(Constants.NS_XHTML, "legend", this.bindingDocument);
-	//this.shadowTree.fieldset.appendChild(this.shadowTree.legend);
-	//while (this.bindingElement.firstChild) {
-	//	this.shadowTree.fieldset.appendChild(this.bindingElement.firstChild);
-	//}
-	//this.bindingElement.appendChild(this.shadowTree.fieldset);
-
 	var label = this.getProperty ( "label" );
 	if ( label ) {
 		this.setLabel ( label );
@@ -89,29 +81,4 @@ FieldGroupBinding.prototype.setLabel = function ( label ) {
 FieldGroupBinding.prototype.getLabel = function () {
 	
 	return this.getProperty ( "label" );
-}
-
-/**
- * Make sure that added content is placed in matrix center.
- * @overwrites {Binding#add}  
- * @param {Binding} binding
- * @return {Binding}
- */
-FieldGroupBinding.prototype.add = function ( binding ) {
-
-	this.shadowTree [ FieldGroupBinding.CENTER ].appendChild ( binding.bindingElement );
-	return binding;
-}
-
-/**
- * Make sure that added content is placed in matrix center.
- * @overwrites {Binding#addFirst}
- * @param {Binding} binding
- * @return {Binding}
- */
-FieldGroupBinding.prototype.addFirst = function ( binding ) {
-	
-	var centerCell = this.shadowTree [ FieldGroupBinding.CENTER ];
-	centerCell.insertBefore ( binding.bindingElement, centerCell.firstChild );
-	return binding;
 }
