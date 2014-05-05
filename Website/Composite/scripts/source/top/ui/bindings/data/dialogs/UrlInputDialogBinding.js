@@ -53,7 +53,6 @@ UrlInputDialogBinding.prototype._buildDOMContent = function () {
 
 	UrlInputDialogBinding.superclass._buildDOMContent.call(this);
 
-	this.buildButtonAndLabel();
 }
 
 
@@ -150,6 +149,9 @@ UrlInputDialogBinding.prototype.setValue = function (value) {
 * @overloads {DataInputBinding#setValue}
 */
 UrlInputDialogBinding.prototype.setLabel = function (label) {
+
+	this.buildButtonAndLabel();
+
 	if (this.shadowTree.labelInput) {
 		if (label) {
 			this.setReadOnly(true);
