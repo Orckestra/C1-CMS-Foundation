@@ -1189,7 +1189,7 @@ Dialog.error("Source Invalid",_116);
 var Validator=new _Validator();
 function _DOMEvents(){
 }
-_DOMEvents.prototype={_logger:SystemLogger.getLogger("DOMEvents"),MOUSEDOWN:"mousedown",MOUSEUP:"mouseup",MOUSEOVER:"mouseover",MOUSEOUT:"mouseout",MOUSEMOVE:"mousemove",CLICK:"click",DOUBLECLICK:"dblclick",KEYPRESS:"keypress",KEYDOWN:"keydown",KEYUP:"keyup",CONTEXTMENU:"contextmenu",SCROLL:"scroll",LOAD:"load",BEFOREUNLOAD:"beforeunload",UNLOAD:"unload",RESIZE:"resize",FOCUS:"focus",BLUR:"blur",SUBMIT:"submit",CUT:"cut",COPY:"copy",PASTE:"paste",DOM:"DOMContentLoaded",DRAGOVER:"dragover",DROP:"drop",ACTIVATE:"activate",DEACTIVATE:"deactivate",MOUSEENTER:"mouseenter",MOUSELEAVE:"mouseleave",SELECTSTART:"selectstart",FOCUSIN:"focusin",FOCUSOUT:"focusout",HELP:"help",BEFOREUPDATE:"beforeupdate",AFTERUPDATE:"afterupdate",ERRORUPDATE:"errorupdate",_count:0,addEventListener:function(_117,_118,_119,_11a){
+_DOMEvents.prototype={_logger:SystemLogger.getLogger("DOMEvents"),MOUSEDOWN:"mousedown",MOUSEUP:"mouseup",MOUSEOVER:"mouseover",MOUSEOUT:"mouseout",MOUSEMOVE:"mousemove",CLICK:"click",DOUBLECLICK:"dblclick",KEYPRESS:"keypress",KEYDOWN:"keydown",KEYUP:"keyup",CONTEXTMENU:"contextmenu",SCROLL:"scroll",LOAD:"load",BEFOREUNLOAD:"beforeunload",UNLOAD:"unload",RESIZE:"resize",FOCUS:"focus",BLUR:"blur",SUBMIT:"submit",CUT:"cut",COPY:"copy",PASTE:"paste",DOM:"DOMContentLoaded",DRAGOVER:"dragover",DROP:"drop",TOUCHEND:"touchend",ACTIVATE:"activate",DEACTIVATE:"deactivate",MOUSEENTER:"mouseenter",MOUSELEAVE:"mouseleave",SELECTSTART:"selectstart",FOCUSIN:"focusin",FOCUSOUT:"focusout",HELP:"help",BEFOREUPDATE:"beforeupdate",AFTERUPDATE:"afterupdate",ERRORUPDATE:"errorupdate",_count:0,addEventListener:function(_117,_118,_119,_11a){
 this._count++;
 this._eventListener(true,_117,_118,_119,_11a);
 if(!Client.isExplorer&&!Client.isExplorer11){
@@ -28811,6 +28811,7 @@ function CoverBinding(){
 this.logger=SystemLogger.getLogger("CoverBinding");
 this._isBusy=true;
 this._isTransparent=false;
+this.lastTouch=null;
 this._position=null;
 return this;
 }
@@ -28825,6 +28826,9 @@ this.addEventListener(DOMEvents.MOUSEUP);
 this.addEventListener(DOMEvents.MOUSEMOVE);
 this.addEventListener(DOMEvents.CLICK);
 this.addEventListener(DOMEvents.DOUBLECLICK);
+}
+if(this.getProperty("doubletouchunlock")){
+this.addEventListener(DOMEvents.TOUCHEND);
 }
 if(this.getProperty("transparent")==true){
 this.setTransparent(true);
@@ -28855,6 +28859,13 @@ DOMEvents.stopPropagation(e);
 switch(e.type){
 case DOMEvents.MOUSEMOVE:
 this._position=DOMUtil.getUniversalMousePosition(e);
+case DOMEvents.TOUCHEND:
+if(this.lastTouch&&Date.now()-this.lastTouch<300){
+if(Application.isLocked){
+Application.unlock(Application,true);
+}
+}
+this.lastTouch=Date.now();
 break;
 }
 };
