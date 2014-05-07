@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Hosting;
+using Composite.Core.IO;
 using Composite.Core.ResourceSystem;
 using Composite.Core.WebClient;
 
@@ -62,7 +63,7 @@ namespace Composite.C1Console.Drawing
                     }
                     finally
                     {
-                        File.Delete(tempFileName);
+                        C1File.Delete(tempFileName);
                     }
                 }
             }

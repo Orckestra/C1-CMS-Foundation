@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.Linq;
+using Composite.Core.Xml;
 using Composite.Data.Types;
 using Composite.Plugins.Data.DataProviders.FileSystemDataProvider.Foundation;
 
@@ -29,7 +30,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             var markupFilePath = (file as FileSystemFile).SystemPath;
 
-            return XDocument.Load(markupFilePath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
+            return XDocumentUtils.Load(markupFilePath, LoadOptions.SetBaseUri | LoadOptions.SetLineInfo);
         }
 
         internal static IFile GetCustomFormMarkupFile(string @namespace, string typeName)

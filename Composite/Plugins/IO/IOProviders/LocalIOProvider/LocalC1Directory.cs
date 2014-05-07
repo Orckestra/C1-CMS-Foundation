@@ -145,5 +145,17 @@ namespace Composite.Plugins.IO.IOProviders.LocalIOProvider
         {
             return Directory.GetCreationTimeUtc(path);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
+        public void SetCreationTime(string path, DateTime creationTime)
+        {
+            Directory.SetCreationTime(path, creationTime);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseDirectoryClass:DoNotUseDirectoryClass")]
+        public void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
+        {
+            Directory.SetCreationTimeUtc(path, creationTimeUtc);
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
 using System.Web;
 using System.Web.Routing;
 using Composite.C1Console.Security;
 using Composite.Core.Extensions;
+using Composite.Core.IO;
 using Composite.Core.WebClient.Services.WysiwygEditor;
 
 
@@ -54,7 +54,7 @@ namespace Composite.Core.WebClient
                 PageTemplatePreview.PlaceholderInformation[] placeholders;
                 PageTemplatePreview.GetPreviewInformation(context, pageId, templateId, out filePath, out placeholders);
 
-                Verify.That(File.Exists(filePath), "Preview file missing");
+                Verify.That(C1File.Exists(filePath), "Preview file missing");
                 context.Response.ContentType = "image/png";
                 context.Response.WriteFile(filePath);
             }

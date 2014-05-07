@@ -148,5 +148,19 @@ namespace Composite.Core.IO.Plugins.IOProvider
         /// <param name="path">Path of directory.</param>
         /// <returns>Creation date and time of the given directory.</returns>
         DateTime GetCreationTimeUtc(string path);
+
+        /// <summary>
+        /// Sets the creation date and time for the specified file or directory.
+        /// </summary>
+        /// <param name="path">The file or directory for which to set the creation date and time information. </param>
+        /// <param name="creationTime">An object that contains the value to set for the creation date and time of path. This value is expressed in local time. </param>
+        void SetCreationTime(string path, DateTime creationTime);
+
+        /// <summary>
+        /// Sets the creation date and time, in Coordinated Universal Time (UTC) format, for the specified file or directory.
+        /// </summary>
+        /// <param name="path">The file or directory for which to set the creation date and time information.</param>
+        /// <param name="creationTimeUtc">An object that contains the value to set for the creation date and time of path. This value is expressed in UTC time.</param>
+        void SetCreationTimeUtc(string path, DateTime creationTimeUtc);
     }
 }

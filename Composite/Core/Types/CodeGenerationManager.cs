@@ -467,7 +467,7 @@ namespace Composite.Core.Types
         private static void ClearOldTempFiles()
         {
             DateTime yeasterday = DateTime.Now.AddDays(-1);
-            var oldFiles = Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => File.GetCreationTime(filePath) < yeasterday).ToArray();
+            var oldFiles = C1Directory.GetFiles(TempAssemblyFolderPath, "*.*").Where(filePath => C1File.GetCreationTime(filePath) < yeasterday).ToArray();
 
             foreach (var file in oldFiles)
             {

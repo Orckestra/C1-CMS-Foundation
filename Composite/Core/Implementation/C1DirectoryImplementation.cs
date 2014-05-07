@@ -322,18 +322,19 @@ namespace Composite.Core.Implementation
         //}
 
 
+        /// <exclude />
+        public virtual void SetCreationTime(string path, DateTime creationTime)
+        {
+            IOFacade.C1Directory.SetCreationTime(path, creationTime);
+            
+        }
 
-        //public virtual void SetCreationTime(string path, DateTime creationTime)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
-
-
-        //public virtual void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
-        //{ 
-        //    throw new NotImplementedException(); 
-        //}
+        /// <exclude />
+        public virtual void SetCreationTimeUtc(string path, DateTime creationTimeUtc)
+        {
+            IOFacade.C1Directory.SetCreationTimeUtc(path, creationTimeUtc);
+        }
 
 
 

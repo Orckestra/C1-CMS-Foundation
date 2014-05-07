@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -301,7 +302,7 @@ namespace Composite.Core.WebClient
                         }
                     }
 
-                    Directory.SetCreationTime(folder, DateTime.Now);
+                    C1Directory.SetCreationTime(folder, DateTime.Now);
                 }
             }
             finally
@@ -368,6 +369,7 @@ namespace Composite.Core.WebClient
 
             public readonly AsyncLock OutputLock = new AsyncLock();
 
+            [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
             public PhantomServer()
             {
                 _process = new Process();
@@ -425,7 +427,7 @@ namespace Composite.Core.WebClient
                 }
 
 
-                if (!File.Exists(tempFilePath))
+                if (!C1File.Exists(tempFilePath))
                 {
                     if (output == null)
                     {
