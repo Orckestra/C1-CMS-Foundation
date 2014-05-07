@@ -27,7 +27,7 @@ namespace Composite.Data.GeneratedTypes
 
         static InterfaceCodeGenerator()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -52,9 +52,9 @@ namespace Composite.Data.GeneratedTypes
         /// <param name="dataTypeDescriptor">Data type descriptor to convert into source code</param>
         public static void AddInterfaceTypeCode(CodeGenerationBuilder codeGenerationBuilder, DataTypeDescriptor dataTypeDescriptor)
         {
-            CodeTypeDeclaration codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor);
+            var codeTypeDeclaration = CreateCodeTypeDeclaration(dataTypeDescriptor);
 
-            CodeNamespace codeNamespace = new CodeNamespace(dataTypeDescriptor.Namespace);
+            var codeNamespace = new CodeNamespace(dataTypeDescriptor.Namespace);
             codeNamespace.Types.Add(codeTypeDeclaration);
             codeGenerationBuilder.AddNamespace(codeNamespace);
         }
@@ -77,7 +77,7 @@ namespace Composite.Data.GeneratedTypes
         {
             try
             {
-                CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration(dataTypeDescriptor.Name);
+                var codeTypeDeclaration = new CodeTypeDeclaration(dataTypeDescriptor.Name);
 
                 codeTypeDeclaration.IsInterface = true;
 
@@ -181,7 +181,7 @@ namespace Composite.Data.GeneratedTypes
 
             foreach (string keyFieldName in dataTypeDescriptor.KeyPropertyNames)
             {
-                bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Where(f => f.GetProperty(keyFieldName) != null).Any();
+                bool isDefinedOnSuperInterface = dataTypeDescriptor.SuperInterfaces.Any(f => f.GetProperty(keyFieldName) != null);
 
                 if (!isDefinedOnSuperInterface)
                 {
@@ -379,14 +379,17 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
 
-            if (dataFieldDescriptor.IsNullable == false)
+            if (!dataFieldDescriptor.IsNullable)
             {
-                CodeAttributeDeclaration notNullAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
-                codeMemberProperty.CustomAttributes.Add(notNullAttribute);
+                if (!dataFieldDescriptor.InstanceType.IsValueType)
+                {
+                    var notNullAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.NotNullValidatorAttribute)));
+                    codeMemberProperty.CustomAttributes.Add(notNullAttribute);
+                }
 
                 if (dataFieldDescriptor.StoreType.IsDateTime)
                 {
-                    CodeAttributeDeclaration dateRangeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.DateTimeRangeValidatorAttribute)));
+                    var dateRangeAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Microsoft.Practices.EnterpriseLibrary.Validation.Validators.DateTimeRangeValidatorAttribute)));
 
                     // 1753 is what sql server has as minimum date...
                     dateRangeAttribute.Arguments.Add(new CodeAttributeArgument(new CodePrimitiveExpression("1753-01-01T00:00:00")));
@@ -402,7 +405,7 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.Position < 1000) // Hmm, 1000 is kinda random
             {
-                CodeAttributeDeclaration fieldPositionAttribute = new CodeAttributeDeclaration(
+                var fieldPositionAttribute = new CodeAttributeDeclaration(
                     new CodeTypeReference(typeof(FieldPositionAttribute)),
                     new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.Position))
                 );
@@ -414,7 +417,7 @@ namespace Composite.Data.GeneratedTypes
             if (dataFieldDescriptor.StoreType.IsString && dataFieldDescriptor.StoreType.IsLargeString == false)
             {
                 CodeAttributeDeclaration stringLengthAttribute;
-                if (dataFieldDescriptor.IsNullable == false)
+                if (!dataFieldDescriptor.IsNullable)
                 {
                     stringLengthAttribute = new CodeAttributeDeclaration(new CodeTypeReference(typeof(Composite.Data.Validation.Validators.StringSizeValidatorAttribute)));
                 }
@@ -469,7 +472,7 @@ namespace Composite.Data.GeneratedTypes
                     new CodeAttributeArgument("AllowCascadeDeletes", new CodePrimitiveExpression(true))
                 };
 
-                if (dataFieldDescriptor.IsNullable == false)
+                if (!dataFieldDescriptor.IsNullable)
                 {
                     if (dataFieldDescriptor.InstanceType == typeof(Guid))
                     {
@@ -503,9 +506,9 @@ namespace Composite.Data.GeneratedTypes
 
             if (dataFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
             {
-                List<CodeAttributeArgument> args = new List<CodeAttributeArgument> {
-                                new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.TreeOrderingProfile.OrderPriority))
-                            };
+                var args = new List<CodeAttributeArgument> {
+                    new CodeAttributeArgument(new CodePrimitiveExpression(dataFieldDescriptor.TreeOrderingProfile.OrderPriority))
+                };
 
                 if (dataFieldDescriptor.TreeOrderingProfile.OrderDescending)
                 {
@@ -539,14 +542,6 @@ namespace Composite.Data.GeneratedTypes
         {
             ResourceLocker.ResetInitialization();
         }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
-        }
-
 
 
         private sealed class Resources
