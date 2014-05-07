@@ -93,6 +93,11 @@ function CoverBinding () {
 	 * @type {boolean}
 	 */
 	this._isTransparent = false;
+
+	/**
+	 * @type {DateTime}
+	 */
+	this.lastTouch = null;
 	
 	/**
 	 * Stores the mouse position in a panicked attempt 
@@ -132,6 +137,12 @@ CoverBinding.prototype.onBindingRegister = function () {
 		this.addEventListener ( DOMEvents.MOUSEMOVE );
 		this.addEventListener ( DOMEvents.CLICK );
 		this.addEventListener ( DOMEvents.DOUBLECLICK );
+
+
+	}
+
+	if (this.getProperty("doubletouchunlock")) {
+		this.addEventListener(DOMEvents.TOUCHEND);
 	}
 	
 	if ( this.getProperty ( "transparent" ) == true ) {
@@ -145,6 +156,8 @@ CoverBinding.prototype.onBindingRegister = function () {
 	if ( this._isBusy ) {
 		this.bindingElement.style.cursor = "wait";
 	}
+
+
 }
 
 /**
@@ -185,7 +198,16 @@ CoverBinding.prototype.handleEvent = function ( e ) {
 	
 	switch ( e.type ) {
 		case DOMEvents.MOUSEMOVE :
-			this._position = DOMUtil.getUniversalMousePosition ( e );
+			this._position = DOMUtil.getUniversalMousePosition(e);
+		case DOMEvents.TOUCHEND:
+			//Check double tap
+			if (this.lastTouch && Date.now() - this.lastTouch < 300)
+			{
+				if (Application.isLocked) {
+					Application.unlock(Application, true);
+				}
+			}
+			this.lastTouch = Date.now();
 			break;
 	}
 }

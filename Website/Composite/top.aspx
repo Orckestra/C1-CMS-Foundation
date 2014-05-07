@@ -46,7 +46,7 @@
 	</head>
 	<body id="top">
 	
-		<ui:cover id="mastercover" transparent="true" busy="true" blockevents="true"/>
+		<ui:cover id="mastercover" transparent="true" busy="true" blockevents="true" doubletouchunlock="true"/>
 		<ui:cover id="logoutcover" busy="false" blockevents="true" hidden="true"/>
 		<ui:uncover id="uncover"/>
 		

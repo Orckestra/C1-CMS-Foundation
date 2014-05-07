@@ -38,6 +38,8 @@ _DOMEvents.prototype = {
 	DRAGOVER: "dragover",
 	DROP: "drop",
 
+	TOUCHEND: "touchend",
+
 	/*
 	* Explorer specific events. Note that "mouseenter" and 
 	* "mouseleave" pseudosupport has been hacked into Mozilla.
