@@ -124,7 +124,21 @@ namespace Composite.C1Console.Drawing
                         context.Response.ContentType = "image/png";
                         context.Response.Cache.SetExpires(DateTime.Now.AddDays(10));
 
-                        bitmap.Save(outputStream, ImageFormat.Png);
+                        string tempFileName = Path.GetTempFileName();
+
+                        try
+                        {
+                            // Saving to a temporary file, as Image.Save() sometimes on a not seekable stream throws
+                            // an "A generic error occurred in GDI+." exception
+                            bitmap.Save(tempFileName, ImageFormat.Png);
+
+                            context.Response.WriteFile(tempFileName);
+                            context.Response.Flush();
+                        }
+                        finally
+                        {
+                            C1File.Delete(tempFileName);
+                        }
                     }
 
                 }
