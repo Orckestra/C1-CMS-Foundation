@@ -226,14 +226,17 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 dataProviderHelperType = TypeManager.TryGetType(dataProviderHelperClassFullName);
                 dataIdClassType = TypeManager.TryGetType(dataIdClassFullName);
 
-                bool isRecompileNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { dataProviderHelperType, dataIdClassType });
-
-                if (isRecompileNeeded || forceCompile)
+                if (!forceCompile)
                 {
-                    CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":" + dataTypeDescriptor.Name);
+                    forceCompile = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { dataProviderHelperType, dataIdClassType });
+                }
+
+                if (forceCompile)
+                {
+                    var codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":" + dataTypeDescriptor.Name);
 
                     // XmlDataProvider types                
-                    XmlDataProviderCodeBuilder codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
+                    var codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
                     codeBuilder.AddDataType(dataTypeDescriptor);
 
 
