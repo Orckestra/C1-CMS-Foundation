@@ -172,7 +172,7 @@ namespace Composite.Core.Xml
 
                     if ((node.IsEmpty == false) && (isSelfClosingAndEmpty == false))
                     {
-                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && node.ContainsBlockElements)
+                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsBlockElement()))
                         {
                             stringBuilder.AppendLine().AddIndent(node.Level, indentString);
                         }
