@@ -136,7 +136,7 @@ namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
                 new WorkflowActionToken(
                     WorkflowFacade.GetWorkflowType("Composite.C1Console.Users.Workflows.ChangeOwnPasswordWorkflow"),
                     new PermissionType[] {  }
-                )))
+                ) { DoIgnoreEntityTokenLocking = true }))
             {
                 VisualData = new ActionVisualizedData
                 {
