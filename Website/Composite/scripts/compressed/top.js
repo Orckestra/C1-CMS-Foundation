@@ -11227,7 +11227,7 @@ WindowBinding.superclass.flex.call(this);
 WindowBinding.prototype.fitContentWindow=function(){
 if(Client.isPad){
 var _801=this.getContentWindow();
-if(_801!=null&&_801.document!=null&&_801.document.body!=null){
+if(_801!=null&&_801.document!=null&&_801.document.body!=null&&this.bindingElement.offsetHeight){
 _801.document.body.style.height=this.bindingElement.offsetHeight+"px";
 }
 }
