@@ -240,7 +240,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (_externalFileChangeActions.Any(f => f.Key == filePath))
                     {
-                        foreach (var action in _externalFileChangeActions.Where(f => f.Key == filePath).Select(f => f.Value))
+                        var actions = _externalFileChangeActions.Where(f => f.Key == filePath).Select(f => f.Value).ToList();
+                        foreach (var action in actions)
                         {
                             action.Invoke();
                         }
