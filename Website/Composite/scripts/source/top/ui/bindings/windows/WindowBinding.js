@@ -688,10 +688,13 @@ WindowBinding.prototype.fitContentWindow = function () {
 	if (Client.isPad) {
 		var contentWindow = this.getContentWindow();
 		if (contentWindow != null && contentWindow.document != null
-			&& contentWindow.document.body != null
-			&& this.bindingElement.offsetHeight
-			) {
-			contentWindow.document.body.style.height = this.bindingElement.offsetHeight + "px";
+			&& contentWindow.document.body != null)
+		{
+			if(this.bindingElement.offsetHeight)
+				contentWindow.document.body.style.height = this.bindingElement.offsetHeight + "px";
+			if (this.bindingElement.offsetWidth)
+				contentWindow.document.body.style.width = this.bindingElement.offsetWidth + "px";
+
 		}
 	}
 }
