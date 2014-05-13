@@ -361,14 +361,13 @@ VisualMultiEditorBinding.prototype.manifest = function () {
  * @param {Element} oldelement
  * @return {boolean}
  */
-VisualMultiEditorBinding.prototype.updateElement = function ( newelement, oldelement ) {
+VisualMultiEditorBinding.prototype.updateElement = function (newelement, oldelement, hasChanges) {
 	
 	var newdiv = newelement.getElementsByTagName ( "div" ).item ( 0 );
 	var olddiv = oldelement.getElementsByTagName ( "div" ).item ( 0 );
 	var newareas = new List ( newdiv.getElementsByTagName ( "textarea" ));
 	var oldareas = new List ( olddiv.getElementsByTagName ( "textarea" ));
 	
-	var hasChanges = false;
 	if ( newareas.getLength () != oldareas.getLength ()) {
 		hasChanges = true;
 	} else {

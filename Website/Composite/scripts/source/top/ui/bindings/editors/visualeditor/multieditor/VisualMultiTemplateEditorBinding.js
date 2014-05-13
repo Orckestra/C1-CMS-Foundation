@@ -152,8 +152,6 @@ VisualMultiTemplateEditorBinding.prototype._onTemplateSelectionChanged = functio
  */
 VisualMultiTemplateEditorBinding.prototype._parsePlaceHolders = function (textareas) {
 
-	this.updateTemplatePreview();
-	
 	/*
 	 * Reset textareas Map but keep a copy of the old 
 	 * map content in order to persist content changes. 
@@ -284,14 +282,14 @@ VisualMultiTemplateEditorBinding.prototype._placeHolderSelected = function (name
  */
 VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement, oldelement ) {
 	
-	var newselector = newelement.getElementsByTagName ( "ui:selector" ).item ( 0 );
-	var oldselector = oldelement.getElementsByTagName ( "ui:selector" ).item ( 0 );
+	var newselector = newelement.getElementsByTagName ( "selector" ).item ( 0 );
+	var oldselector = oldelement.getElementsByTagName ( "selector" ).item ( 0 );
 	
 	var hasChanges = false;
 	
 	if ( newselector != null && oldselector != null ) {
-		var newselections = new List ( newselector.getElementsByTagName ( "ui:selection" )); 
-		var oldselections = new List ( oldselector.getElementsByTagName ( "ui:selection" ));
+		var newselections = new List ( newselector.getElementsByTagName ( "selection" )); 
+		var oldselections = new List ( oldselector.getElementsByTagName ( "selection" ));
 		if ( newselections.getLength () != oldselections.getLength ()) {
 			hasChanges = true;
 		} else {
@@ -313,8 +311,32 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 		this.bindingWindow.DocumentManager.attachBindings ( div );
 		this._populateTemplateSelector ();
 	}
+
+	var templateChanged = false;
+	if (newselector != null && oldselector != null) {
+		var newselections = new List(newselector.getElementsByTagName("selection"));
+		var oldselections = new List(oldselector.getElementsByTagName("selection"));
+		if (newselections.getLength() != oldselections.getLength()) {
+			templateChanged = true;
+		} else {
+			newselections.each(function (element, index) {
+				var newselected = element.getAttribute("selected");
+				var oldselected = oldselections.get(index).getAttribute("selected");
+				if (newselected != oldselected) {
+					templateChanged = true;
+				}
+				return !templateChanged;
+			});
+		}
+	}
+	if (templateChanged) {
+		this.updateTemplatePreview();
+	}
+
 	
-	return VisualMultiTemplateEditorBinding.superclass.updateElement.call ( this, newelement, oldelement );
+	return VisualMultiTemplateEditorBinding.superclass.updateElement.call(this, newelement, oldelement, templateChanged);
+
+
 }
 
 /**
@@ -362,15 +384,15 @@ VisualMultiTemplateEditorBinding.prototype.getPlaceholderWidth = function (place
 /**
  * Update template preview information
  */
-VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function () {
+VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function (sync) {
 	var pageId = this._pageId;
 	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
 	this._templatePreview = null;
 	var self = this;
-	PageTemplateService.GetTemplatePreviewInformation(pageId, templateId, function (result) {
-		self._templatePreview = result;
-		self.updateBodyWidth();
-	});
+	var result = PageTemplateService.GetTemplatePreviewInformation(pageId, templateId);
+	self._templatePreview = result;
+	self.updateBodyWidth();
+	
 }
 
 
