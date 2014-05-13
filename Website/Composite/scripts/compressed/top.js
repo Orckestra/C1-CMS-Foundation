@@ -7296,6 +7296,9 @@ this.isFlexible=false;
 }
 if(this.isFlexible){
 this.attachClassName(FlexBoxBinding.CLASSNAME);
+if(Client.isPad){
+this.bindingElement.style.overflow="auto";
+}
 }
 };
 FlexBoxBinding.prototype.onBindingAttach=function(){
@@ -7357,9 +7360,15 @@ FlexBoxBinding.prototype.setFlexibility=function(_61c){
 if(_61c!=this.isFlexible){
 if(_61c){
 this.attachClassName(FlexBoxBinding.CLASSNAME);
+if(Client.isPad){
+this.bindingElement.style.overflow="auto";
+}
 this.deleteProperty("flex");
 }else{
 this.detachClassName(FlexBoxBinding.CLASSNAME);
+if(Client.isPad){
+this.bindingElement.style.removeProperty("overflow");
+}
 this.setProperty("flex",false);
 }
 this.isFlexible=_61c;
@@ -11227,8 +11236,13 @@ WindowBinding.superclass.flex.call(this);
 WindowBinding.prototype.fitContentWindow=function(){
 if(Client.isPad){
 var _801=this.getContentWindow();
-if(_801!=null&&_801.document!=null&&_801.document.body!=null&&this.bindingElement.offsetHeight){
+if(_801!=null&&_801.document!=null&&_801.document.body!=null){
+if(this.bindingElement.offsetHeight){
 _801.document.body.style.height=this.bindingElement.offsetHeight+"px";
+}
+if(this.bindingElement.offsetWidth){
+_801.document.body.style.width=this.bindingElement.offsetWidth+"px";
+}
 }
 }
 };
