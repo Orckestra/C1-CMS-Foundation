@@ -215,11 +215,6 @@ function onInstanceInitialize ( inst ) {
 		tinyInstance.getBody().lang = Localization.currentLang();
 	}
 
-	//Add ipad class
-	if (Client.isPad) {
-		CSSUtil.attachClassName(document.body, "ipad");
-	}
-
 	/*
 	 * Hacking!!! See notes below...
 	 */
