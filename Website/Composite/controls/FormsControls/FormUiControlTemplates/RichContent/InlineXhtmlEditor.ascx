@@ -61,7 +61,8 @@
     }
 </script>
 
-<ui:htmldatadialog 
+<ui:htmldatadialog
+	label="<%= HttpUtility.HtmlAttributeEncode(String.Format( Composite.Core.ResourceSystem.StringResourceSystemFacade.GetString("Composite.Web.VisualEditor","LaunchButton.Label"), FormControlLabel)) %>" 
 	value="<%= _currentStringValue %>" 
 	formattingconfiguration="<%= this.ClassConfigurationName %>"
     embedablefieldstypenames="<%= HttpUtility.HtmlAttributeEncode(this.EmbedableFieldsTypesString) %>"
