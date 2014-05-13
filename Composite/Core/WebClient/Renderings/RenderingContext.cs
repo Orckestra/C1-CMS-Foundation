@@ -49,6 +49,9 @@ namespace Composite.Core.WebClient.Renderings
 
         private static readonly string ProfilerXslPath = UrlUtils.AdminRootPath + "/Transformations/page_profiler.xslt";
 
+        private static List<string> PrettifyErrorUrls = new List<string>();
+        private static int PrettifyErrorCount = 0;
+
         private string _previewKey;
         private IDisposable _pagePerfMeasuring;
         private string _cachedUrl;
@@ -145,7 +148,20 @@ namespace Composite.Core.WebClient.Renderings
             {
                 if (!PreviewMode)
                 {
-                    Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml. Url: " + (_cachedUrl ?? "undefined"));
+                    lock (PrettifyErrorUrls)
+                    {
+                        int maxWarningToShow = 3;
+                        if (!PrettifyErrorUrls.Contains(_cachedUrl) && PrettifyErrorCount < maxWarningToShow)
+                        {
+                            PrettifyErrorUrls.Add(_cachedUrl);
+                            PrettifyErrorCount++;
+                            Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml in a pretty way - your page output is likely not strict xml. Url: " + (HttpUtility.UrlDecode(_cachedUrl) ?? "undefined"));
+                            if (maxWarningToShow == PrettifyErrorCount)
+                            {
+                                Log.LogInformation("/Renderers/Page.aspx", "{0} xhtml format errors logged since startup. No more will be logged untill next startup.", maxWarningToShow);
+                            }
+                        }
+                    }
                 }
             }
 
