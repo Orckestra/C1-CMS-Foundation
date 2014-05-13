@@ -131,7 +131,9 @@ FlexBoxBinding.prototype.onBindingRegister = function () {
 	}
 
 	if ( this.isFlexible ) {
-		this.attachClassName ( FlexBoxBinding.CLASSNAME );
+		this.attachClassName(FlexBoxBinding.CLASSNAME);
+		if (Client.isPad)
+			this.bindingElement.style.overflow = "auto";
 	}
 
 }
@@ -247,9 +249,13 @@ FlexBoxBinding.prototype.setFlexibility = function ( isFlexible ) {
 	if ( isFlexible != this.isFlexible ) {
 		if ( isFlexible ) {
 			this.attachClassName ( FlexBoxBinding.CLASSNAME );
+			if (Client.isPad)
+				this.bindingElement.style.overflow = "auto";
 			this.deleteProperty ( "flex" );
 		} else {
 			this.detachClassName ( FlexBoxBinding.CLASSNAME );
+			if (Client.isPad)
+				this.bindingElement.style.removeProperty("overflow");
 			this.setProperty ( "flex", false );
 		}
 		this.isFlexible = isFlexible;
