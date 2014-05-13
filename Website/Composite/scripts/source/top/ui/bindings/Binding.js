@@ -1173,6 +1173,27 @@ Binding.prototype.unObserve = function ( broadcaster, properties ) {
  * selection, it should implement the handleAction method.
  * @param {object} arg
  */
+Binding.prototype.handleContextEvent = function (e) {
+	var self = this;
+	var menu = this.contextMenuBinding;
+	if (Interfaces.isImplemented(IActionListener, self) == true) {
+		var actionHandler = {
+			handleAction: function () {
+				menu.removeActionListener(MenuItemBinding.ACTION_COMMAND, self);
+				menu.removeActionListener(PopupBinding.ACTION_HIDE, actionHandler);
+			}
+		}
+		menu.addActionListener(MenuItemBinding.ACTION_COMMAND, self);
+		menu.addActionListener(PopupBinding.ACTION_HIDE, actionHandler);
+	}
+	menu.snapToMouse(e);
+}
+
+/**
+ * Setup the contextmenu. For binding to handle contextmenu 
+ * selection, it should implement the handleAction method.
+ * @param {object} arg
+ */
 Binding.prototype.setContextMenu = function ( arg ) {
 	
 	this.contextMenuBinding = this.getBindingForArgument ( arg );
@@ -1180,23 +1201,43 @@ Binding.prototype.setContextMenu = function ( arg ) {
 	if ( this.contextMenuBinding ) {
 		
 		var self = this;
-		var menu = this.contextMenuBinding;
 		
-		this.addEventListener ( DOMEvents.CONTEXTMENU, {
-			handleEvent : function ( e ) {
-				if ( Interfaces.isImplemented ( IActionListener, self ) == true ) {
-					var actionHandler = {
-						handleAction : function () {
-							menu.removeActionListener ( MenuItemBinding.ACTION_COMMAND, self );
-							menu.removeActionListener ( PopupBinding.ACTION_HIDE, actionHandler );
-						}
-					}
-					menu.addActionListener ( MenuItemBinding.ACTION_COMMAND, self );
-					menu.addActionListener ( PopupBinding.ACTION_HIDE, actionHandler );
+		if (Client.isPad) {
+			var touchStart = false;
+			var touchTimeout = false;
+			this.addEventListener(DOMEvents.TOUCHSTART, {
+				handleEvent: function (e) {
+					touchTimeout = setTimeout(function () {
+						self.handleContextEvent(e);
+					}, 800);
+					touchStart = true;
 				}
-				menu.snapToMouse ( e );
-			}
-		});
+			});
+			this.addEventListener(DOMEvents.TOUCHMOVE, {
+				handleEvent: function (e) {
+					if (touchStart) {
+						clearTimeout(touchTimeout);
+						touchStart = false;
+					}
+
+				}
+			});
+			this.addEventListener(DOMEvents.TOUCHEND, {
+				handleEvent: function (e) {
+					if (touchStart) {
+						clearTimeout(touchTimeout);
+						touchStart = false;
+					}
+				}
+			});
+		}
+		else {
+			this.addEventListener(DOMEvents.CONTEXTMENU, {
+				handleEvent: function (e) {
+					self.handleContextEvent(e);
+				}
+			});
+		}
 		
 	} else {
 		throw "No such contextmenu: " + arg;
