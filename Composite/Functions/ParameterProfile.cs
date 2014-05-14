@@ -15,11 +15,25 @@ namespace Composite.Functions
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public sealed class ParameterProfile
 	{
-        private WidgetFunctionProvider _widgetFuntionProvider;
-        private Dictionary<string, object> _widgetFunctionRuntimeParameters = new Dictionary<string,object>();
+        private readonly WidgetFunctionProvider _widgetFuntionProvider;
+        private Dictionary<string, object> _widgetFunctionRuntimeParameters;
 
         /// <exclude />
         public ParameterProfile(string name, Type type, bool isRequired, BaseValueProvider fallbackValueProvider, WidgetFunctionProvider widgetFunctionProvider, string label, HelpDefinition helpDefinition)
+            : this(name, type, isRequired, fallbackValueProvider, widgetFunctionProvider, label, helpDefinition, false)
+        {
+        }
+
+        /// <exclude />
+        public ParameterProfile(
+            string name, 
+            Type type, 
+            bool isRequired, 
+            BaseValueProvider fallbackValueProvider, 
+            WidgetFunctionProvider widgetFunctionProvider, 
+            string label, 
+            HelpDefinition helpDefinition, 
+            bool hideInSimpleView)
         {
             Verify.ArgumentNotNull(name, "name");
             Verify.ArgumentNotNull(type, "type");
@@ -34,6 +48,7 @@ namespace Composite.Functions
             _widgetFuntionProvider = widgetFunctionProvider;
             this.Label = label;
             this.HelpDefinition = helpDefinition;
+            this.HideInSimpleView = hideInSimpleView;
         }
 
 
@@ -60,14 +75,15 @@ namespace Composite.Functions
         /// <exclude />
         public BaseValueProvider FallbackValueProvider { get; private set; }
 
+        /// <exclude />
+        public bool HideInSimpleView { get; internal set; }
 
         /// <exclude />
         public IWidgetFunction WidgetFunction 
         {
             get
             {
-                if (_widgetFuntionProvider == null) return null;
-                return _widgetFuntionProvider.WidgetFunction;
+                return _widgetFuntionProvider != null ? _widgetFuntionProvider.WidgetFunction : null;
             }
         }
 
@@ -148,14 +164,7 @@ namespace Composite.Functions
         {
             get
             {
-                if (this.Label.StartsWith("${"))
-                {
-                    return StringResourceSystemFacade.ParseString(this.Label);
-                }
-                else
-                {
-                    return this.Label;
-                }
+                return this.Label.StartsWith("${") ? StringResourceSystemFacade.ParseString(this.Label) : this.Label;
             }
         }
 	}

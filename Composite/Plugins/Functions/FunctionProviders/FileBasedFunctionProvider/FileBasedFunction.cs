@@ -62,6 +62,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			        string label = param.Name;
 			        bool isRequired = true;
 			        string helpText = String.Empty;
+			        bool hideInSimpleView = false;
 
 			        if (param.Attribute != null)
 			        {
@@ -82,6 +83,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			            }
 
 			            widgetProvider = param.WidgetProvider;
+
+			            hideInSimpleView = param.Attribute.HideInSimpleView;
 			        }
 
 			        if (widgetProvider == null)
@@ -90,7 +93,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 			        }
 
 			        yield return new ParameterProfile(param.Name, param.Type, isRequired, defaultValueProvider, widgetProvider, label,
-                        new HelpDefinition(helpText));
+                        new HelpDefinition(helpText),
+                        hideInSimpleView);
 			        
 			    }
 			}

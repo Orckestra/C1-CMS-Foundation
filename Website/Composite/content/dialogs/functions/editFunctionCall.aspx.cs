@@ -38,7 +38,7 @@ namespace CompositeEditFunctionCall
             
             if (eventTarget == "Basic")
 			{
-				var functionCallsEvaluated = new List<XElement>() { XElement.Parse(FunctionMarkupInState) };
+				var functionCallsEvaluated = new List<XElement> { XElement.Parse(FunctionMarkupInState) };
 				CheckBasicView(functionCallsEvaluated);
 				if (BasicViewEnabled)
 				{
@@ -117,7 +117,8 @@ namespace CompositeEditFunctionCall
 	        }
             
             var formTreeCompiler = FunctionUiHelper.BuildWidgetForParameters(
-                function.ParameterProfiles,
+                function.ParameterProfiles.Where(p => !p.HideInSimpleView 
+                    || (p.IsRequired && (!bindings.ContainsKey(p.Name) || bindings[p.Name] == null))),
                 bindings,
                 "BasicView" ,
                 "",
@@ -256,7 +257,7 @@ namespace CompositeEditFunctionCall
             {
                 return false;
             }
-
+            
             return !function.ParameterProfiles.Any(p => p.IsRequired && p.WidgetFunction == null);
 	    }
 

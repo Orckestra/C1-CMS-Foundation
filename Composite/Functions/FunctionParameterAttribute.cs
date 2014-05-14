@@ -40,7 +40,7 @@ namespace Composite.Functions
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, AllowMultiple = true)]
 	public sealed class FunctionParameterAttribute : Attribute
 	{
-        private object _defaultValue = null;
+        private object _defaultValue;
 
         /// <summary>
         /// Describe a function parameter for use in the C1 Function system. 
@@ -147,6 +147,11 @@ namespace Composite.Functions
                 HasDefaultValue = true;
             }
         }
+
+        /// <summary>
+        /// Allows to hide the parameter in the "simple view" mode of function call editing.
+        /// </summary>
+        public bool HideInSimpleView { get; set; }
 
 
         /// <summary>

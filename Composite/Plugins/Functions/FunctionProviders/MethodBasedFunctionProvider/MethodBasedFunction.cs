@@ -154,6 +154,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             var labels = new Dictionary<string, string>();
             var helpTexts = new Dictionary<string, string>();
             var widgetProviders = new Dictionary<string, WidgetFunctionProvider>();
+            var parametersToHideInSimpleView = new HashSet<string>();
 
             foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof (MethodBasedDefaultValueAttribute), true))
             {
@@ -178,34 +179,41 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
             // Run trhough new and improved FunctionParameterAttribute. Many may exist for one parameter.
             foreach (object obj in this.MethodInfo.GetCustomAttributes(typeof (FunctionParameterAttribute), true))
             {
-                FunctionParameterAttribute attribute = (FunctionParameterAttribute) obj;
+                var attribute = (FunctionParameterAttribute) obj;
 
                 Verify.That(attribute.HasName,
                             "All [FunctionParameter(...)] definitions on the method '{0}' must have 'Name' specified.",
                             this.MethodInfo.Name);
 
-                if (attribute.HasDefaultValue && !defaultValues.ContainsKey(attribute.Name))
-                    defaultValues.Add(attribute.Name, attribute.DefaultValue);
+                string parameterName = attribute.Name;
 
-                if (attribute.HasLabel && !labels.ContainsKey(attribute.Name))
-                    labels.Add(attribute.Name, attribute.Label);
+                if (attribute.HasDefaultValue && !defaultValues.ContainsKey(parameterName))
+                    defaultValues.Add(parameterName, attribute.DefaultValue);
 
-                if (attribute.HasHelp && !helpTexts.ContainsKey(attribute.Name))
-                    helpTexts.Add(attribute.Name, attribute.Help);
+                if (attribute.HasLabel && !labels.ContainsKey(parameterName))
+                    labels.Add(parameterName, attribute.Label);
 
-                if (attribute.HasWidgetMarkup && !widgetProviders.ContainsKey(attribute.Name))
+                if (attribute.HasHelp && !helpTexts.ContainsKey(parameterName))
+                    helpTexts.Add(parameterName, attribute.Help);
+
+                if (attribute.HasWidgetMarkup && !widgetProviders.ContainsKey(parameterName))
                 {
                     try
                     {
                         var widgetFunctionProvider = attribute.GetWidgetFunctionProvider(null, null);
-                        widgetProviders.Add(attribute.Name, widgetFunctionProvider);
+                        widgetProviders.Add(parameterName, widgetFunctionProvider);
                     }
                     catch (Exception ex)
                     {
                         string errText = "Failed to set Widget Markup for parameter '{0}' on method '{1}'. {2}"
-                            .FormatWith(attribute.Name, this.MethodInfo.Name, ex.Message);
+                            .FormatWith(parameterName, this.MethodInfo.Name, ex.Message);
                         throw new InvalidOperationException(errText);
                     }
+                }
+
+                if (attribute.HideInSimpleView)
+                {
+                    parametersToHideInSimpleView.Add(parameterName);
                 }
             }
 
@@ -213,9 +221,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
 
             foreach (ParameterInfo parameterInfo in parameterInfos)
             {
+                string parameterName = parameterInfo.Name;
+
                 BaseValueProvider valueProvider;
                 object defaultValue = null;
-                if (defaultValues.TryGetValue(parameterInfo.Name, out defaultValue))
+                if (defaultValues.TryGetValue(parameterName, out defaultValue))
                 {
                     valueProvider = new ConstantValueProvider(defaultValue);
                 }
@@ -224,23 +234,25 @@ namespace Composite.Plugins.Functions.FunctionProviders.MethodBasedFunctionProvi
                     valueProvider = new NoValueValueProvider();
                 }
 
-                bool isRequired = !defaultValues.ContainsKey(parameterInfo.Name);
+                bool isRequired = !defaultValues.ContainsKey(parameterName);
 
                 string parameterLabel = parameterInfo.Name;
-                if (labels.ContainsKey(parameterInfo.Name)) parameterLabel = labels[parameterInfo.Name];
+                if (labels.ContainsKey(parameterName)) parameterLabel = labels[parameterName];
 
                 string parameterHelpText = "";
-                if (helpTexts.ContainsKey(parameterInfo.Name)) parameterHelpText = helpTexts[parameterInfo.Name];
+                if (helpTexts.ContainsKey(parameterName)) parameterHelpText = helpTexts[parameterName];
 
                 WidgetFunctionProvider widgetFunctionProvider =
-                    (widgetProviders.ContainsKey(parameterInfo.Name)
-                         ? widgetProviders[parameterInfo.Name]
+                    (widgetProviders.ContainsKey(parameterName)
+                         ? widgetProviders[parameterName]
                          : StandardWidgetFunctions.GetDefaultWidgetFunctionProviderByType(parameterInfo.ParameterType));
 
-                result.Add(new ParameterProfile(parameterInfo.Name, parameterInfo.ParameterType, isRequired,
-                                             valueProvider, widgetFunctionProvider, parameterLabel,
-                                             new HelpDefinition(parameterHelpText)));
+                bool hideInSimpleView = parametersToHideInSimpleView.Contains(parameterName);
 
+                result.Add(new ParameterProfile(parameterName, parameterInfo.ParameterType, isRequired,
+                                             valueProvider, widgetFunctionProvider, parameterLabel,
+                                             new HelpDefinition(parameterHelpText),
+                                             hideInSimpleView));
             }
 
             return result;
