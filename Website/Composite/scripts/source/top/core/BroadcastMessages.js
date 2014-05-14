@@ -39,6 +39,8 @@ _BroadcastMessages.prototype = {
 	MOUSEEVENT_MOUSEDOWN 				: "mouseevent mousedown",
 	MOUSEEVENT_MOUSEUP 					: "mouseevent mouseup",
 	MOUSEEVENT_MOUSEMOVE 				: "mouseevent mousemove",
+
+	TOUCHEVENT_TOUCHSTART				: "touchevent touchstart",
 	
 	/*
 	 * WindowManager keys

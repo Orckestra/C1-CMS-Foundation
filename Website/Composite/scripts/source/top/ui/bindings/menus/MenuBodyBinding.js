@@ -134,6 +134,7 @@ MenuBodyBinding.prototype.onBindingAttach = function () {
 	this.addEventListener ( DOMEvents.MOUSEOUT );
 	this.addEventListener ( DOMEvents.MOUSEUP );
 	this.addEventListener ( DOMEvents.KEYDOWN );
+	this.addEventListener ( DOMEvents.TOUCHSTART );
 	
 	/*
 	 * Grab keyboard when left-right arrow key was 
@@ -204,7 +205,8 @@ MenuBodyBinding.prototype.handleEvent = function ( e ) {
 		case DOMEvents.MOUSEDOWN :
 		case DOMEvents.MOUSEOVER :
 		case DOMEvents.MOUSEOUT :
-		case DOMEvents.MOUSEUP :
+		case DOMEvents.MOUSEUP:
+		case DOMEvents.TOUCHSTART:
 			DOMEvents.stopPropagation ( e );
 			break;
 		case DOMEvents.KEYDOWN:

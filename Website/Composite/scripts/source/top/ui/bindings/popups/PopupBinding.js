@@ -46,7 +46,8 @@ PopupBinding.hasActiveInstances = function () {
 PopupBinding.handleBroadcast = function ( broadcast, arg ) {
 	
 	switch ( broadcast ) {
-		case BroadcastMessages.MOUSEEVENT_MOUSEDOWN :
+		case BroadcastMessages.MOUSEEVENT_MOUSEDOWN:
+		case BroadcastMessages.TOUCHEVENT_TOUCHSTART:
 			if ( PopupBinding.activeInstances.hasEntries ()) {
 				var list = new List ();
 				PopupBinding.activeInstances.each ( function ( key ) {
@@ -75,7 +76,8 @@ PopupBinding.handleBroadcast = function ( broadcast, arg ) {
 /*
  * Subscribing straight up.
  */
-EventBroadcaster.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN, PopupBinding );
+EventBroadcaster.subscribe ( BroadcastMessages.MOUSEEVENT_MOUSEDOWN, PopupBinding);
+EventBroadcaster.subscribe ( BroadcastMessages.TOUCHEVENT_TOUCHSTART, PopupBinding);
 EventBroadcaster.subscribe ( BroadcastMessages.KEY_ESCAPE, PopupBinding );
 
 /**
