@@ -150,6 +150,7 @@ namespace Composite.Functions
 
         /// <summary>
         /// Allows to hide the parameter in the "simple view" mode of function call editing.
+        /// Will be ignored is the field is requires and does not have a value or a default value.
         /// </summary>
         public bool HideInSimpleView { get; set; }
 
