@@ -8,13 +8,10 @@ namespace Composite.C1Console.Forms.Flows
 {
     internal class FormFlowRenderingService : IFormFlowRenderingService
     {
-        private Dictionary<string, string> _bindingPathedMessages = null;
+        private Dictionary<string, string> _bindingPathedMessages;
 
         public void RerenderView()
         {
-            //StackTrace st = new StackTrace();
-            //LoggingService.LogVerbose( "FormFlowRenderingService", "RerenderRequest from \n"+ st.ToString() );
-
             this.RerenderViewRequested = true;
         }
 
@@ -49,8 +46,8 @@ namespace Composite.C1Console.Forms.Flows
 
         public void ShowFieldMessage(string fieldBindingPath, string message)
         {
-            if (string.IsNullOrEmpty(fieldBindingPath)) throw new ArgumentException("Field binding path can not be null or an empty string", "fieldBindingPath");
-            if (string.IsNullOrEmpty(message)) throw new ArgumentException("Field message can not be null or an empty string", "message");
+            Verify.ArgumentNotNullOrEmpty(fieldBindingPath, "fieldBindingPath");
+            Verify.ArgumentNotNullOrEmpty(message, "message");
 
             if (_bindingPathedMessages == null)
             {

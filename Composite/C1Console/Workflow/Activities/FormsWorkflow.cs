@@ -11,6 +11,7 @@ using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Users;
 using Composite.Core;
+using Composite.Core.Extensions;
 using Composite.Data;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Forms.Flows;
@@ -851,11 +852,18 @@ namespace Composite.C1Console.Workflow.Activities
 
             bool isValid = true;
 
-            if (validationResults.IsValid == false)
+            if (!validationResults.IsValid)
             {
                 foreach (ValidationResult result in validationResults)
                 {
-                    this.ShowFieldMessage(result.Key, result.Message);
+                    if (!result.Key.IsNullOrEmpty())
+                    {
+                        this.ShowFieldMessage(result.Key, result.Message);
+                    }
+                    else
+                    {
+                        this.ShowMessage(DialogType.Error, "Validation error", result.Message);
+                    }
 
                     isValid = false;
                 }

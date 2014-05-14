@@ -6,7 +6,6 @@ using System.Reflection;
 using Composite.Data;
 using Composite.Core.Linq;
 using Composite.C1Console.Security;
-using Composite.C1Console.Trees.Foundation;
 using Composite.C1Console.Trees.Foundation.AttachmentPoints;
 using Composite.Core.Types;
 
@@ -54,7 +53,7 @@ namespace Composite.C1Console.Trees
             TreeNode searchTreeNode = treeNode.ParentNode;
             while (searchTreeNode != null)
             {
-                DataElementsTreeNode node = searchTreeNode as DataElementsTreeNode;
+                var node = searchTreeNode as DataElementsTreeNode;
                 if (node != null)
                 {
                     if (node.InterfaceType == this.OwnerNode.InterfaceType)
@@ -62,10 +61,8 @@ namespace Composite.C1Console.Trees
                         // Found in parent tree.
                         return true;
                     }
-                    else
-                    {
-                        searchTreeNode = searchTreeNode.ParentNode;
-                    }
+
+                    searchTreeNode = searchTreeNode.ParentNode;
                 }
                 else
                 {
@@ -197,9 +194,14 @@ namespace Composite.C1Console.Trees
             // To do this we need the parent entity token or our own entity token
             object parentFieldValue = FindParentKeyValue(dynamicContext);
 
-            Expression expression = Expression.Equal(ExpressionHelper.CreatePropertyExpression(this.KeyPropertyInfo.Name, parameterExpression), Expression.Constant(parentFieldValue, this.ReferencePropertyInfo.PropertyType));
+            var constantType = this.ReferencePropertyInfo.PropertyType;
+            if (constantType.IsGenericType && constantType.GetGenericTypeDefinition() == typeof (Nullable<>))
+            {
+                constantType = constantType.GetGenericArguments()[0];
+            }
 
-            return expression;
+            return Expression.Equal(ExpressionHelper.CreatePropertyExpression(this.KeyPropertyInfo.Name, parameterExpression), 
+                                    Expression.Constant(parentFieldValue, constantType)); 
         }
 
 
@@ -210,7 +212,7 @@ namespace Composite.C1Console.Trees
             {
                 DataElementsTreeNode dataElementsTreeNode = treeNode as DataElementsTreeNode;
 
-                if ((dataElementsTreeNode != null) && (dataElementsTreeNode.InterfaceType == this.ParentFilterType))
+                if (dataElementsTreeNode != null && dataElementsTreeNode.InterfaceType == this.ParentFilterType)
                 {
                     this.ParentFilterTypeTreeNode = dataElementsTreeNode;
                     break;
@@ -221,7 +223,7 @@ namespace Composite.C1Console.Trees
                 this.OwnerNode.Tree.AttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == this.ParentFilterType)
                 || this.OwnerNode.Tree.PossibleAttachmentPoints.OfType<IDataItemAttachmentPoint>().Any(f => f.InterfaceType == this.ParentFilterType);
 
-            if ((this.ParentFilterTypeTreeNode != null) || (dataItemAttachmentPointExists))
+            if (this.ParentFilterTypeTreeNode != null || dataItemAttachmentPointExists)
             {
                 this.KeyPropertyInfo = this.ParentFilterType.GetKeyProperties()[0];
             }
@@ -231,9 +233,12 @@ namespace Composite.C1Console.Trees
                 AddValidationError("TreeValidationError.ParentIdFilterNode.TypeIsNotInParentTree", this.ParentFilterType);
             }
 
-            this.ReferencePropertyInfo = this.OwnerNode.InterfaceType.GetPropertiesRecursively().Where(f => f.Name == this.ReferenceFieldName).SingleOrDefault();
+            this.ReferencePropertyInfo = this.OwnerNode.InterfaceType.GetPropertiesRecursively().SingleOrDefault(f => f.Name == this.ReferenceFieldName);
 
-            if (this.ReferencePropertyInfo == null) AddValidationError("TreeValidationError.Common.MissingProperty", this.OwnerNode.InterfaceType, this.ReferenceFieldName);
+            if (this.ReferencePropertyInfo == null)
+            {
+                AddValidationError("TreeValidationError.Common.MissingProperty", this.OwnerNode.InterfaceType, this.ReferenceFieldName);
+            }
         }
 
 
@@ -256,7 +261,8 @@ namespace Composite.C1Console.Trees
             {
                 return currentTreeNode;
             }
-            else if (this.OwnerNode.Id != currentTreeNode.Id) // Is child
+
+            if (this.OwnerNode.Id != currentTreeNode.Id) // Is child
             {
                 IEnumerable<ParentIdFilterNode> parentIdFilterNodes = currentTreeNode.FilterNodes.OfType<ParentIdFilterNode>();
 
