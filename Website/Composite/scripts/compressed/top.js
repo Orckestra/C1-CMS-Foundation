@@ -19413,14 +19413,6 @@ if(y-t+h>a){
 _c5a.scrollIntoView(false);
 }
 }
-try{
-top.document.documentElement.scrollTop=0;
-top.document.body.scrollTop=0;
-top.app.document.documentElement.scrollTop=0;
-top.app.document.body.scrollTop=0;
-}
-catch(exception){
-}
 if(Client.isExplorer){
 this.bindingElement.scrollLeft=l;
 }
