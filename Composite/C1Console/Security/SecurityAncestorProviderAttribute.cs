@@ -10,7 +10,7 @@ namespace Composite.C1Console.Security
     [AttributeUsageAttribute(AttributeTargets.Class, Inherited = true, AllowMultiple = false)]
     public sealed class SecurityAncestorProviderAttribute : Attribute
     {
-        private Type _securityAncestorProviderType;
+        private readonly Type _securityAncestorProviderType;
 
 
         /// <exclude />

@@ -18,7 +18,7 @@ namespace Composite.Data.Hierarchy.Foundation
 
         static DataAncestorProviderCache()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlush);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -68,11 +68,6 @@ namespace Composite.Data.Hierarchy.Foundation
         private static void Flush()
         {
             _dataAncestorProviderCache = new Hashtable<Type, IDataAncestorProvider>();
-        }
-
-        private static void OnFlush(FlushEventArgs args)
-        {
-            Flush();
         }
     }
 }

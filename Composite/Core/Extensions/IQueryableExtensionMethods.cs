@@ -87,14 +87,10 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static IOrderedQueryable OrderBy(this IQueryable source, Type dataType, string property, bool descending)
         {
-            if (descending)
-            {
-                return ApplyOrder(source, dataType, property, "OrderByDescending");
-            }
-            else
-            {
-                return ApplyOrder(source, dataType, property, "OrderBy");
-            }
+            string methodName = descending ? "OrderByDescending" : "OrderBy";
+
+            return ApplyOrder(source, dataType, property, methodName);
+            
         }
 
 
@@ -115,14 +111,9 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static IOrderedQueryable ThenBy(this IOrderedQueryable source, Type dataType, string property, bool descending)
         {
-            if (descending)
-            {
-                return ApplyOrder(source, dataType, property, "ThenByDescending");
-            }
-            else
-            {
-                return ApplyOrder(source, dataType, property, "ThenBy");
-            }
+            string methodName = descending ? "ThenByDescending" : "ThenBy";
+
+            return ApplyOrder(source, dataType, property, methodName);
         }
 
 

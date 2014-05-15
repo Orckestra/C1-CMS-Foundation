@@ -158,6 +158,7 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="C1Console\Drawing\FunctionPresentation.cs" />
+    <Compile Include="C1Console\Elements\ElementProviderHelpers\DataGroupingProviderHelper\ElipsisEntityToken.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\FontIconSelectorUiControl.cs" />
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\Application\Job.cs" />

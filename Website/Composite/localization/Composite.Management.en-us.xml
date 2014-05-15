@@ -531,6 +531,7 @@
 	<string key="Website.App.LabelCopy" value="Copy" />
 	<string key="Website.App.LabelPaste" value="Paste" />
 	<string key="Website.App.LabelRefresh" value="Refresh" />
+  <string key="Website.App.LimitedElementsShown" value="Only first {0} elements are shown in the tree." />
 	<string key="Website.App.LabelLoading" value="Loading..." />
 	<string key="Website.App.LabelLoaded" value="Loaded" />
 	<string key="Website.App.LabelSaved" value="Saved" />

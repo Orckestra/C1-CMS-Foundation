@@ -17,6 +17,9 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 {
     internal sealed class DataGroupingProviderHelper : IAuxiliarySecurityAncestorProvider
     {
+        private const int MaxElementsToShow = 1000;
+
+
         private readonly ElementProviderContext _elementProviderContext;
         private readonly string _undefinedLableValue;
 
@@ -206,6 +209,8 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
                     List<Element> elements = GetRootGroupFoldersFoldersLeafs(interfaceType, filter, false).ToList();
 
+                    bool listingLimitReached = elements.Count == MaxElementsToShow;
+
                     var labelFieldDescriptor = dataTypeDescriptor.Fields.FirstOrDefault(f => f.Name == dataTypeDescriptor.LabelFieldName);
                     if (labelFieldDescriptor != null && labelFieldDescriptor.ForeignKeyReferenceTypeName != null && labelFieldDescriptor.TreeOrderingProfile.OrderPriority.HasValue)
                     {
@@ -214,15 +219,22 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                             elements.OrderBy(f => f.VisualData.Label)).ToList();
                     }
 
-                    if (includeForeignFolders)
+                    if (!listingLimitReached && includeForeignFolders)
                     {
                         using (new DataScope(UserSettings.ForeignLocaleCultureInfo))
                         {
                             elements.AddRange(GetRootGroupFoldersFoldersLeafs(interfaceType, filter, true));
                         }
+
+                        elements = elements.Distinct().Take(MaxElementsToShow).ToList();
                     }
 
-                    return elements.Distinct();
+                    if (elements.Count == MaxElementsToShow)
+                    {
+                        elements.Add(GetElipsisElement(parentEntityToken, MaxElementsToShow));
+                    }
+
+                    return elements;
                 }
             }
         }
@@ -256,7 +268,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
         private IQueryable OrderData(IQueryable source, Type interfaceType)
         {
-            DataTypeDescriptor typeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
+            var typeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
 
             List<DataFieldDescriptor> orderFields = typeDescriptor.Fields.Where(f => f.TreeOrderingProfile.OrderPriority.HasValue).OrderBy(f => f.TreeOrderingProfile.OrderPriority).ToList();
 
@@ -287,11 +299,17 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
 
             IQueryable source = DataFacade.GetData(interfaceType);
 
-            List<IData> data = OrderData(source, interfaceType).ToDataList();
+            IQueryable orderedData = OrderData(source, interfaceType);
 
-            if (filter != null)
+            List<IData> data;
+
+            if (filter == null)
             {
-                data = data.Where(filter).ToList();
+                data = ((IQueryable<IData>) orderedData).Take(MaxElementsToShow).ToList();
+            }
+            else
+            {
+                data = ((IQueryable<IData>) orderedData).Evaluate().Where(filter).ToList();
             }
 
             foreach (IData item in data)
@@ -305,6 +323,24 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         }
 
 
+        private Element GetElipsisElement(EntityToken parentEntityToken, int elementsShown)
+        {
+            var element =
+                new Element(new ElementHandle(_elementProviderContext.ProviderName, new ElipsisEntityToken(parentEntityToken)))
+                {
+                    VisualData = new ElementVisualizedData
+                    {
+                        Label = LocalizationFiles.Composite_Management.Website_App_LimitedElementsShown(elementsShown.ToString()),
+                        ToolTip = "",
+                        Icon = GetIconHandle("warning"),
+                        OpenedIcon = null,
+                        HasChildren = false
+                    }
+                };
+
+            return element;
+        }
+
 
         public IEnumerable<Element> GetGroupChildren(DataGroupingProviderHelperEntityToken groupEntityToken)
         {
@@ -317,14 +353,14 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
         {            
             Type interfaceType = TypeManager.GetType(groupEntityToken.Type);
 
-            PropertyInfoValueCollection propertyInfoValueCollection = new PropertyInfoValueCollection();
+            var propertyInfoValueCollection = new PropertyInfoValueCollection();
             foreach (var kvp in groupEntityToken.GroupingValues)
             {
                 PropertyInfo propertyInfo = interfaceType.GetPropertiesRecursively().Single(f => f.Name == kvp.Key);
                 propertyInfoValueCollection.AddPropertyValue(propertyInfo, kvp.Value);
             }
 
-            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(interfaceType);
 
             DataFieldDescriptor groupingDataFieldDescriptor =
                 (from dfd in dataTypeDescriptor.Fields
@@ -416,10 +452,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProvid
                 Distinct().
                 CreateQuery();
 
-            foreach (Element element in CreateGroupFolderElements(interfaceType, groupingDataFieldDescriptor, resultQueryable, groupEntityToken, propertyInfoValueCollection))
-            {
-                yield return element;
-            }
+            return CreateGroupFolderElements(interfaceType, groupingDataFieldDescriptor, resultQueryable, groupEntityToken, propertyInfoValueCollection);
         }
         
 

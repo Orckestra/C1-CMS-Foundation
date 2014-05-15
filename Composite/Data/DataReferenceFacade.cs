@@ -592,14 +592,14 @@ namespace Composite.Data
 
 
         /// <exclude />
-        public static IData GetReferenced(this IData refereeData, string foreignKeyProrptyName)
+        public static IData GetReferenced(this IData refereeData, string foreignKeyPropertyName)
         {
-            if (refereeData == null) throw new ArgumentNullException("refereeData");
-            if (string.IsNullOrEmpty(foreignKeyProrptyName)) throw new ArgumentNullException("foreignKeyProrptyName");
+            Verify.ArgumentNotNull(refereeData, "refereeData");
+            Verify.ArgumentNotNullOrEmpty(foreignKeyPropertyName, "foreignKeyPropertyName");
 
             ForeignPropertyInfo foreignPropertyInfo =
                 (from fkpi in DataReferenceRegistry.GetForeignKeyProperties(refereeData.DataSourceId.InterfaceType)
-                 where fkpi.SourcePropertyName == foreignKeyProrptyName
+                 where fkpi.SourcePropertyName == foreignKeyPropertyName
                  select fkpi).Single();
 
             object sourceKeyValue = foreignPropertyInfo.SourcePropertyInfo.GetValue(refereeData, null);
@@ -678,7 +678,10 @@ namespace Composite.Data
             }
             else
             {
-                if (DataReferenceRegistry.GetRefereeTypes(referencedData.DataSourceId.InterfaceType).Contains(refereeType) == false) throw new ArgumentException(string.Format("The referencedData of type '{0}' is not referenced by the given refereeType '{1}'", referencedData.DataSourceId.InterfaceType, refereeType));
+                if (!DataReferenceRegistry.GetRefereeTypes(referencedData.DataSourceId.InterfaceType).Contains(refereeType))
+                {
+                    throw new ArgumentException(string.Format("The referencedData of type '{0}' is not referenced by the given refereeType '{1}'", referencedData.DataSourceId.InterfaceType, refereeType));
+                }
 
                 refereeTypes = new List<Type> { refereeType };
             }

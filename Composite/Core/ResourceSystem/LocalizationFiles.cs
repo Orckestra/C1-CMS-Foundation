@@ -1151,7 +1151,7 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_EditUserStep1_GlobalPermissionsFieldLabel { get { return T("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsFieldLabel"); } } 
  /// <summary>&quot;Global permissions&quot;</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_GlobalPermissionsMultiSelectLabel { get { return T("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectLabel"); } } 
- /// <summary>&quot;The Administrate permission grants the user access to manage user permissions and execute other administrative tasks.&quot;</summary> 
+ /// <summary>&quot;The Administrate permission grants the user access to manage user permissions and execute other administrative tasks. The Configure permission grants access to super user tasks.&quot;</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_GlobalPermissionsMultiSelectHelp { get { return T("Website.Forms.Administrative.EditUserStep1.GlobalPermissionsMultiSelectHelp"); } } 
  /// <summary>&quot;The removal of your own administrative permission has been ignored. You still have administrative privileges.&quot;</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_GlobalPermissions_IgnoredOwnAdministrativeRemoval { get { return T("Website.Forms.Administrative.EditUserStep1.GlobalPermissions.IgnoredOwnAdministrativeRemoval"); } } 
@@ -2123,6 +2123,8 @@ namespace Composite.Core.ResourceSystem
  public static string Website_App_LabelPaste { get { return T("Website.App.LabelPaste"); } } 
  /// <summary>&quot;Refresh&quot;</summary> 
  public static string Website_App_LabelRefresh { get { return T("Website.App.LabelRefresh"); } } 
+ /// <summary>&quot;Only first {0} elements are shown in the tree.&quot;</summary> 
+ public static string Website_App_LimitedElementsShown(string parameter0) { return string.Format(T("Website.App.LimitedElementsShown"), parameter0); } 
  /// <summary>&quot;Loading...&quot;</summary> 
  public static string Website_App_LabelLoading { get { return T("Website.App.LabelLoading"); } } 
  /// <summary>&quot;Loaded&quot;</summary> 
@@ -2425,6 +2427,8 @@ namespace Composite.Core.ResourceSystem
  public static string ApproveLabel { get { return T("ApproveLabel"); } } 
  /// <summary>&quot;Publish&quot;</summary> 
  public static string PublishLabel { get { return T("PublishLabel"); } } 
+ /// <summary>&quot;Configure&quot;</summary> 
+ public static string ConfigureLabel { get { return T("ConfigureLabel"); } } 
  /// <summary>&quot;Administrate&quot;</summary> 
  public static string AdministrateLabel { get { return T("AdministrateLabel"); } } 
  /// <summary>&quot;ClearPermissions&quot;</summary> 
@@ -5222,7 +5226,7 @@ namespace Composite.Core.ResourceSystem
  public static string EditUserGroup_EditUserGroupStep1_GlobalPermissionsFieldLabel { get { return T("EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel"); } } 
  /// <summary>&quot;Global permissions&quot;</summary> 
  public static string EditUserGroup_EditUserGroupStep1_GlobalPermissionsMultiSelectLabel { get { return T("EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel"); } } 
- /// <summary>&quot;The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.&quot;</summary> 
+ /// <summary>&quot;The Administrate permission grants the user group access to manage user group permissions and execute other administrative tasks.  The Configure permission grants access to super user tasks.&quot;</summary> 
  public static string EditUserGroup_EditUserGroupStep1_GlobalPermissionsMultiSelectHelp { get { return T("EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp"); } } 
  /// <summary>&quot;User Group Has Users&quot;</summary> 
  public static string DeleteUserGroup_DeleteUserGroupInitialStep_UserGroupHasUsersTitle { get { return T("DeleteUserGroup.DeleteUserGroupInitialStep.UserGroupHasUsersTitle"); } } 
@@ -6471,6 +6475,8 @@ namespace Composite.Core.ResourceSystem
  public static string SpellCheck_InfoText { get { return T("SpellCheck.InfoText"); } } 
  /// <summary>&quot;Edit&quot;</summary> 
  public static string Function_Edit { get { return T("Function.Edit"); } } 
+ /// <summary>&quot;Edit {0}&quot;</summary> 
+ public static string LaunchButton_Label(string parameter0) { return string.Format(T("LaunchButton.Label"), parameter0); } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.Web.VisualEditor", key);
