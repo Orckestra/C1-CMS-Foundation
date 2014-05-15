@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Workflow.Activities;
@@ -19,6 +20,8 @@ namespace Composite.C1Console.Workflow
     public static class WorkflowFacade
     {
         private static IWorkflowFacade _workflowFacade = new WorkflowFacadeImpl();
+
+        private static readonly ConcurrentDictionary<string, Type> _workflowTypeLookupCache = new ConcurrentDictionary<string, Type>();
 
 
         static WorkflowFacade()
@@ -58,22 +61,25 @@ namespace Composite.C1Console.Workflow
         /// <exclude />
         public static Type GetWorkflowType(string typeName)
         {
-            Type type = TypeManager.TryGetType(typeName);
-            if (type != null) return type;
+            Type type = _workflowTypeLookupCache.GetOrAdd(typeName, GetWorkflowTypeInternal);
 
-            string fullname = typeName;
+            Verify.IsNotNull(type, "Could not find the workflow type: {0}", typeName);
 
-            if (typeName.Contains(",") == false)
-            {
-                fullname = typeName + ", Composite.Workflows";
-
-                type = TypeManager.TryGetType(fullname);
-                if (type != null) return type;
-            }
-
-            throw new InvalidOperationException(string.Format("Could not find the workflow type: {0}", fullname));
+            return type;
         }
 
+        private static Type GetWorkflowTypeInternal(string typeName)
+        {
+            Type type = TypeManager.TryGetType(typeName);
+            if (type == null && !typeName.Contains(","))
+            {
+                string fullname = typeName + ", Composite.Workflows";
+
+                type = TypeManager.TryGetType(fullname);
+            }
+
+            return type;
+        }
 
 
         /// <summary>

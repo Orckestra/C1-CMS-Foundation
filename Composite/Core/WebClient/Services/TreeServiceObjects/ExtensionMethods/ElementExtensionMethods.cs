@@ -15,7 +15,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         /// <exclude />
         public static ClientElement GetClientElement(this Element element)
         {
-            if (element.VisualData.Icon == null || element.Actions.Where(a => a.VisualData.Icon == null).Any())
+            if (element.VisualData.Icon == null || element.Actions.Any(a => a.VisualData.Icon == null))
             {
                 throw new InvalidOperationException(string.Format("Unable to create ClientElement from Element with entity token '{0}'. The element or one of its actions is missing an icon definition.", element.ElementHandle.EntityToken.Serialize()));
             }
@@ -24,7 +24,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
 
             string piggyBag = element.ElementHandle.SerializedPiggyback;
             
-            ClientElement clientElement = new ClientElement
+            var clientElement = new ClientElement
                    {
                        ElementKey = string.Format("{0}{1}{2}", element.ElementHandle.ProviderName, entityToken, piggyBag), 
                        ProviderName = element.ElementHandle.ProviderName,
@@ -40,7 +40,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
                        Actions = element.Actions.ToClientActionList(),
                        PropertyBag = element.PropertyBag.ToClientPropertyBag(),
                        TagValue = element.TagValue,
-                       ContainsTaggedActions = element.Actions.Where(f => f.TagValue != null).Any(),
+                       ContainsTaggedActions = element.Actions.Any(f => f.TagValue != null),
                        TreeLockEnabled = element.TreeLockBehavior == TreeLockBehavior.Normal
                    };
 
@@ -66,7 +66,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         /// <exclude />
         public static List<ClientElement> ToClientElementList(this List<Element> elements)
         {
-            List<ClientElement> list = new List<ClientElement>();
+            var list = new List<ClientElement>(elements.Count);
 
             foreach (Element element in elements)
             {
@@ -83,7 +83,7 @@ namespace Composite.Core.WebClient.Services.TreeServiceObjects.ExtensionMethods
         {
             if (propertyBag == null || propertyBag.Count == 0) return null;
 
-            List<KeyValuePair> result = new List<KeyValuePair>();
+            var result = new List<KeyValuePair>();
 
             foreach (KeyValuePair<string, string> kvp in propertyBag)
             {
