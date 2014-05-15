@@ -528,7 +528,7 @@ VisualEditorPageBinding.prototype.getCheckSum = function (checksum) {
 		//delete mceC1Focused from checksum to prevent unexpected dirty
 		checksum = checksum.replace(/\s*mceC1Focused\s*/g, "");
 
-		checksum = checksum.replace(/class="[^"]*compositeFunctionWysiwygRepresentation[^"]*"/g, "");
+		checksum = checksum.replace(/<img[^<]*data-markup="([^"]*)"[^<]*>/g, "$1");
 		checksum = checksum.replace(/\sdata-mce-selected="[^"]*"/g, "");
 		
 
