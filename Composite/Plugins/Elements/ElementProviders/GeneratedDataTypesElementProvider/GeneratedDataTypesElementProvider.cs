@@ -509,7 +509,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             List<Element> elements = new List<Element>();
 
-            IEnumerable<Type> interfaceList = DataFacade.GetAllInterfaces().Where(i => i.IsStaticDataType() || i.IsGenerated());
+            IEnumerable<Type> interfaceList = DataFacade.GetAllInterfaces(UserType.Developer).Where(i => i.IsStaticDataType() || i.IsGenerated());
 
             interfaceList = interfaceList.OrderBy(t => t.FullName);
             interfaceList = interfaceList.Except(PageFolderFacade.GetAllFolderTypes());
