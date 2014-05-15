@@ -76,6 +76,7 @@ namespace Composite.Core.Xml
                 new NamespaceName { Name = "script", Namespace = "" }, 
                 new NamespaceName { Name = "pre", Namespace = "" }, 
                 new NamespaceName { Name = "textarea", Namespace = "" },
+                new NamespaceName { Name = "title", Namespace = "" }, 
                 new NamespaceName { Name = "variable", Namespace = "http://www.w3.org/1999/xsl/transform" }
             });
 
