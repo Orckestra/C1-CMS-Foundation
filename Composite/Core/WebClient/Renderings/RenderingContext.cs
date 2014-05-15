@@ -49,8 +49,8 @@ namespace Composite.Core.WebClient.Renderings
 
         private static readonly string ProfilerXslPath = UrlUtils.AdminRootPath + "/Transformations/page_profiler.xslt";
 
-        private static List<string> PrettifyErrorUrls = new List<string>();
-        private static int PrettifyErrorCount = 0;
+        private static readonly List<string> _prettifyErrorUrls = new List<string>();
+        private static int _prettifyErrorCount;
 
         private string _previewKey;
         private IDisposable _pagePerfMeasuring;
@@ -148,17 +148,21 @@ namespace Composite.Core.WebClient.Renderings
             {
                 if (!PreviewMode)
                 {
-                    lock (PrettifyErrorUrls)
+                    const int maxWarningsToShow = 3;
+
+                    if (_prettifyErrorCount < maxWarningsToShow)
                     {
-                        int maxWarningToShow = 3;
-                        if (!PrettifyErrorUrls.Contains(_cachedUrl) && PrettifyErrorCount < maxWarningToShow)
+                        lock (_prettifyErrorUrls)
                         {
-                            PrettifyErrorUrls.Add(_cachedUrl);
-                            PrettifyErrorCount++;
-                            Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml in a pretty way - your page output is likely not strict xml. Url: " + (HttpUtility.UrlDecode(_cachedUrl) ?? "undefined"));
-                            if (maxWarningToShow == PrettifyErrorCount)
+                            if (!_prettifyErrorUrls.Contains(_cachedUrl) && _prettifyErrorCount < maxWarningsToShow)
                             {
-                                Log.LogInformation("/Renderers/Page.aspx", "{0} xhtml format errors logged since startup. No more will be logged untill next startup.", maxWarningToShow);
+                                _prettifyErrorUrls.Add(_cachedUrl);
+                                _prettifyErrorCount++;
+                                Log.LogWarning("/Renderers/Page.aspx", "Failed to format output xhtml in a pretty way - your page output is likely not strict xml. Url: " + (HttpUtility.UrlDecode(_cachedUrl) ?? "undefined"));
+                                if (maxWarningsToShow == _prettifyErrorCount)
+                                {
+                                    Log.LogInformation("/Renderers/Page.aspx", "{0} xhtml format errors logged since startup. No more will be logged untill next startup.", maxWarningsToShow);
+                                }
                             }
                         }
                     }
