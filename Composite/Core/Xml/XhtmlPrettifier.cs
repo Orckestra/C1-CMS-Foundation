@@ -28,6 +28,10 @@ namespace Composite.Core.Xml
         private static readonly char[] WhitespaceChars = { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
         private static readonly HashSet<char> WhitespaceCharsLookup = new HashSet<char>(WhitespaceChars);
 
+        private static readonly HashSet<NamespaceName> CompactElements = new HashSet<NamespaceName>(new []
+        {
+            new NamespaceName { Name = "title", Namespace = "" }
+        });
 
         private static readonly HashSet<NamespaceName> InlineElements = new HashSet<NamespaceName>(new []
         {
@@ -76,7 +80,6 @@ namespace Composite.Core.Xml
                 new NamespaceName { Name = "script", Namespace = "" }, 
                 new NamespaceName { Name = "pre", Namespace = "" }, 
                 new NamespaceName { Name = "textarea", Namespace = "" },
-                new NamespaceName { Name = "title", Namespace = "" }, 
                 new NamespaceName { Name = "variable", Namespace = "http://www.w3.org/1999/xsl/transform" }
             });
 
@@ -173,7 +176,7 @@ namespace Composite.Core.Xml
 
                     if ((node.IsEmpty == false) && (isSelfClosingAndEmpty == false))
                     {
-                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsBlockElement()))
+                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsBlockElement()) && !node.IsCompactElement())
                         {
                             stringBuilder.AppendLine().AddIndent(node.Level, indentString);
                         }
@@ -196,8 +199,8 @@ namespace Composite.Core.Xml
 
                         if (startsWithWhitespace )
                         {
-                            if ((node.PreviousNode != null && !node.PreviousNode.IsBlockElement()) 
-                                || (node.ParentNode != null && !node.ParentNode.IsBlockElement()))
+                            if ((node.PreviousNode != null && !node.PreviousNode.IsBlockElement())
+                                || (node.ParentNode != null && !node.ParentNode.IsBlockElement() && !node.ParentNode.IsCompactElement()))
                             {
                                 addSpaceToBegin = true;
                             }
@@ -205,8 +208,8 @@ namespace Composite.Core.Xml
 
                         if (endsWithWhitespace )
                         {
-                            if ((node.NextNode != null && !node.NextNode.IsBlockElement()) 
-                                || (node.ParentNode != null && !node.ParentNode.IsBlockElement()))
+                            if ((node.NextNode != null && !node.NextNode.IsBlockElement())
+                                || (node.ParentNode != null && !node.ParentNode.IsBlockElement() && !node.ParentNode.IsCompactElement()))
                             {
                                 addSpaceToEnd = true;
                             }
@@ -474,6 +477,7 @@ namespace Composite.Core.Xml
             private List<XmlAttribute> _attributes;
             private TriState _containsBlockElements = TriState.Undefined;
             private TriState _isBlockElement = TriState.Undefined;
+            private TriState _isCompactElement = TriState.Undefined;
             private NamespaceName _namespaceName;
 
             public XmlNodeType NodeType { get; internal set; }
@@ -586,6 +590,17 @@ namespace Composite.Core.Xml
             }
 
 
+            public bool IsCompactElement()
+            {
+                if (_isCompactElement == TriState.Undefined)
+                {
+                    _isCompactElement = this.NodeType == XmlNodeType.Element
+                                      && CompactElements.Contains(GetNamespaceName())
+                                      ? TriState.True : TriState.False; ;
+                }
+
+                return _isCompactElement == TriState.True;
+            }
 
             public bool IsBlockElement()
             {
@@ -593,7 +608,8 @@ namespace Composite.Core.Xml
                 {
                     _isBlockElement = this.NodeType == XmlNodeType.Element
                                       && !InlineElements.Contains(GetNamespaceName())
-                                      ? TriState.True : TriState.False;;
+                                      && !CompactElements.Contains(GetNamespaceName())
+                                      ? TriState.True : TriState.False; ;
                 }
 
                 return _isBlockElement == TriState.True;
