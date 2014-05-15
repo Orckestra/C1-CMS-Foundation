@@ -32,8 +32,8 @@ namespace Composite.Core.IO
 
         private static List<string> _textMimeTypes =
             new List<string> { MimeTypeInfo.Css, MimeTypeInfo.Js, MimeTypeInfo.Xml, MimeTypeInfo.Text, MimeTypeInfo.Html, MimeTypeInfo.Sass,
-                               MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Asmx, MimeTypeInfo.Aspx, MimeTypeInfo.CSharp, MimeTypeInfo.Resx, 
-                               MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
+                               MimeTypeInfo.Ascx, MimeTypeInfo.Ashx, MimeTypeInfo.Asmx, MimeTypeInfo.Aspx, MimeTypeInfo.Asax, MimeTypeInfo.CSharp, 
+                               MimeTypeInfo.Resx, MimeTypeInfo.MasterPage, MimeTypeInfo.CsHtml, MimeTypeInfo.Svg };
 
         // file types we don't expect IIS to block
         private static List<string> _iisServableTypes = new List<string>();
@@ -189,6 +189,12 @@ namespace Composite.Core.IO
         }
 
         /// <exclude />
+        public static string Asax
+        {
+            get { return "application/x-asax"; }
+        }
+
+        /// <exclude />
         public static string Ashx
         {
             get { return "application/x-ashx"; }
@@ -288,6 +294,7 @@ namespace Composite.Core.IO
             // .Cs and asp.net files
             RegisterMimeType(MimeTypeInfo.Ascx, "ascx", "mimetype-ascx");
             RegisterMimeType(MimeTypeInfo.Aspx, "aspx", "mimetype-aspx");
+            RegisterMimeType(MimeTypeInfo.Asax, "asax", "mimetype-asax");
             RegisterMimeType(MimeTypeInfo.Ashx, "ashx");
             RegisterMimeType(MimeTypeInfo.Asmx, "asmx");
             RegisterMimeType(MimeTypeInfo.MasterPage, "master");
