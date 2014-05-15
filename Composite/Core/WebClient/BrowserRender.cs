@@ -213,7 +213,7 @@ namespace Composite.Core.WebClient
             }
             catch (Exception ex)
             {
-                Log.LogWarning("BrowserRender", "PhantomJs server unavailable. " + ex);
+                Log.LogWarning("BrowserRender", "PhantomJs server unable to complete HTTP requests, preventing C1 Function preview images from being generated. " + Environment.NewLine + ex);
                 Enabled = false;
 
                 if (_server != null)
