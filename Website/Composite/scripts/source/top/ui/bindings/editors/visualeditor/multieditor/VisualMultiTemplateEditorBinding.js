@@ -271,6 +271,24 @@ VisualMultiTemplateEditorBinding.prototype._placeHolderSelected = function (name
 	this.updateBodyWidth();
 }
 
+
+/**
+	 * Get elements by tagname in IXMLDOMElement
+	 * @param {DOMNode} node
+	 * @param {string} tagname
+	 * @return {NodeList} this would be an simple array in explorer...
+	 */
+VisualMultiTemplateEditorBinding.prototype._getElementsByTagName = function (node, tagname) {
+	var result = null;
+	if (Client.isWebKit || Client.isExplorer) {
+		result = node.getElementsByTagName(tagname);
+	} else {
+		result = node.getElementsByTagName("ui:" + tagname);
+	}
+	return result;
+}
+
+
 /**
  * Some pretty hacked stuff going on here. Stuff like this should not be communicated 
  * through the page DOM, but via a dedicated service offering structured data. Oh well...
@@ -282,16 +300,18 @@ VisualMultiTemplateEditorBinding.prototype._placeHolderSelected = function (name
  */
 VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement, oldelement ) {
 	
-	var newselector = newelement.getElementsByTagName ( "selector" ).item ( 0 );
-	var oldselector = oldelement.getElementsByTagName ( "selector" ).item ( 0 );
+	var newselector = this._getElementsByTagName(newelement, "selector" ).item ( 0 );
+	var oldselector = this._getElementsByTagName(oldelement, "selector" ).item ( 0 );
 	
 	var hasChanges = false;
+	var templateChanged = false;
 	
 	if ( newselector != null && oldselector != null ) {
-		var newselections = new List ( newselector.getElementsByTagName ( "selection" )); 
-		var oldselections = new List ( oldselector.getElementsByTagName ( "selection" ));
+		var newselections = new List ( this._getElementsByTagName(newselector, "selection" )); 
+		var oldselections = new List ( this._getElementsByTagName(oldselector, "selection" ));
 		if ( newselections.getLength () != oldselections.getLength ()) {
 			hasChanges = true;
+			templateChanged = true;
 		} else {
 			newselections.each ( function ( element, index ) {
 				var newvalue = element.getAttribute ( "value" );
@@ -300,6 +320,14 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 					hasChanges = true;
 				}
 				return !hasChanges;
+			});
+			newselections.each(function (element, index) {
+				var newselected = element.getAttribute("selected");
+				var oldselected = oldselections.get(index).getAttribute("selected");
+				if (newselected != oldselected) {
+					templateChanged = true;
+				}
+				return !templateChanged;
 			});
 		}
 	}
@@ -312,23 +340,6 @@ VisualMultiTemplateEditorBinding.prototype.updateElement = function ( newelement
 		this._populateTemplateSelector ();
 	}
 
-	var templateChanged = false;
-	if (newselector != null && oldselector != null) {
-		var newselections = new List(newselector.getElementsByTagName("selection"));
-		var oldselections = new List(oldselector.getElementsByTagName("selection"));
-		if (newselections.getLength() != oldselections.getLength()) {
-			templateChanged = true;
-		} else {
-			newselections.each(function (element, index) {
-				var newselected = element.getAttribute("selected");
-				var oldselected = oldselections.get(index).getAttribute("selected");
-				if (newselected != oldselected) {
-					templateChanged = true;
-				}
-				return !templateChanged;
-			});
-		}
-	}
 	if (templateChanged) {
 		this.updateTemplatePreview();
 	}
