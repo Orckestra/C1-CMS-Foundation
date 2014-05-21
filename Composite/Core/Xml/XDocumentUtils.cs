@@ -29,10 +29,15 @@ namespace Composite.Core.Xml
         /// <param name="inputUri">This could be a file or a url</param>
         public static XDocument Load(string inputUri, LoadOptions loadOptions)
         {
-            using (Stream stream = UriResolver.GetStream(inputUri))
+            if (inputUri.Contains("://"))
             {
-                return XDocument.Load(stream, loadOptions);
+                using (Stream stream = UriResolver.GetStream(inputUri))
+                {
+                    return XDocument.Load(stream, loadOptions);
+                }
             }
+
+            return XDocument.Load(inputUri, loadOptions);
         }
 
 

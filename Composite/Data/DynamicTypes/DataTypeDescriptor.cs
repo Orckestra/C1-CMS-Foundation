@@ -723,16 +723,24 @@ namespace Composite.Data.DynamicTypes
             {
                 string superInterfaceTypeName = elm.GetRequiredAttributeValue("type");
 
-                if (!superInterfaceTypeName.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled"))
-                {
-                    Type superInterface = TypeManager.GetType(superInterfaceTypeName);
-
-                    dataTypeDescriptor.AddSuperInterface(superInterface, !inheritedFieldsIncluded);
-                }
-                else
+                if (superInterfaceTypeName.StartsWith("Composite.Data.ProcessControlled.IDeleteControlled"))
                 {
                     Log.LogWarning("DataTypeDescriptor", string.Format("Ignored legacy super interface '{0}' on type '{1}.{2}' while deserializing DataTypeDescriptor. This super interface is no longer supported.", superInterfaceTypeName, @namespace, name));
+                    continue;
                 }
+                
+                Type superInterface;
+
+                try
+                {
+                    superInterface = TypeManager.GetType(superInterfaceTypeName);
+                }
+                catch (Exception ex)
+                {
+                    throw XmlConfigurationExtensionMethods.GetConfigurationException("Failed to load super interface '{0}'".FormatWith(superInterfaceTypeName), ex, elm);
+                }
+
+                dataTypeDescriptor.AddSuperInterface(superInterface, !inheritedFieldsIncluded);
             }
 
             foreach (XElement elm in fieldsElement.Elements())
@@ -745,7 +753,7 @@ namespace Composite.Data.DynamicTypes
                 }
                 catch (Exception ex)
                 {
-                    XmlConfigurationExtensionMethods.ThrowConfiguraitonError("Failed to add a data field: " + ex.Message, ex, elm);
+                    throw XmlConfigurationExtensionMethods.GetConfigurationException("Failed to add a data field: " + ex.Message, ex, elm);
                 }
             }
 

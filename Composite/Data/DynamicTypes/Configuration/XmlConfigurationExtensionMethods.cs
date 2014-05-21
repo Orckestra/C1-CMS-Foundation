@@ -58,7 +58,7 @@ namespace Composite.Data.DynamicTypes.Configuration
             throw new InvalidOperationException(message);
         }
 
-        public static void ThrowConfiguraitonError(string message, Exception innerException, XObject configurationXObject)
+        public static Exception GetConfigurationException(string message, Exception innerException, XObject configurationXObject)
         {
             var document = configurationXObject.Document;
             if (document != null && !string.IsNullOrEmpty(document.BaseUri) && (configurationXObject as IXmlLineInfo).HasLineInfo())
