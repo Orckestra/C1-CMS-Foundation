@@ -296,14 +296,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
 
-                    if (this.InstallerContext.ZipFileSystem.ContainsFile(dataFilenameAttribute.Value) == false)
+                    if (!this.InstallerContext.ZipFileSystem.ContainsFile(dataFilenameAttribute.Value))
                     {
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingFile").FormatWith(dataFilenameAttribute.Value), dataFilenameAttribute);
                         continue;
                     }
 
 
-                    XDocument doc = null;
+                    XDocument doc;
                     try
                     {
                         using (C1StreamReader sr = new C1StreamReader(this.InstallerContext.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
@@ -382,7 +382,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (XElement addElement in dataType.Dataset)
             {
-                DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+                var dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
                 bool propertyValidationPassed = true;
                 var assignedPropertyNames = new List<string>();
@@ -404,7 +404,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    if (propertyInfo.CanWrite == false)
+                    if (!propertyInfo.CanWrite)
                     {
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingWritableProperty").FormatWith(dataType.InterfaceType, attribute.Name));
                         propertyValidationPassed = false;
@@ -542,6 +542,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             return typeof(ILocalizedControlled).IsAssignableFrom(dataType.InterfaceType) && fieldName == "CultureName";
         }
 
+        private static bool IsObsoleteField(DataTypeDescriptor dataTypeDescriptor, string fieldName)
+        {
+            return dataTypeDescriptor.SuperInterfaces.Any(type => type == typeof(ILocalizedControlled)) 
+                    && fieldName == "CultureName";
+        }
+
         private void MapReference(Type type, string propertyName, object key, out Type referenceType, out string keyPropertyName, out object referenceKey)
         {
             if ((type == typeof(IImageFile) || type == typeof(IMediaFile))
@@ -604,17 +610,19 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             {
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
+                    string fieldName = attribute.Name.LocalName;
+
                     // A compatibility fix
-                    if (IsObsoleteField(dataType, attribute.Name.LocalName))
+                    if (IsObsoleteField(dataTypeDescriptor, fieldName))
                     {
                         continue;
                     }
 
-                    DataFieldDescriptor dataFieldDescriptor = dataTypeDescriptor.Fields[attribute.Name.LocalName];
+                    DataFieldDescriptor dataFieldDescriptor = dataTypeDescriptor.Fields[fieldName];
 
                     if (dataFieldDescriptor == null)
                     {
-                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataTypeDescriptor, attribute.Name));
+                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataTypeDescriptor, fieldName));
                     }
                     else
                     {
