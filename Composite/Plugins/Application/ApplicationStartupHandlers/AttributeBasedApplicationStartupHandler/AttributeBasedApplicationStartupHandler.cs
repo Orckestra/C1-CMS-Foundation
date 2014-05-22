@@ -69,7 +69,7 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
 
         private readonly List<MethodInfo> _onBeforeInitializeMethods = new List<MethodInfo>();
         private readonly List<MethodInfo> _onInitializedMethods = new List<MethodInfo>();
-        private static readonly string[] AssembliesToIgnore = new[]
+        private static readonly string[] AssembliesToIgnore =
             {
                 "Composite", 
                 "Composite.Workflows", 
@@ -77,7 +77,8 @@ namespace Composite.Plugins.Application.ApplicationStartupHandlers.AttributeBase
                 "ICSharpCode.SharpZipLib", 
                 "TidyNet",
                 "System.",
-                "Microsoft."
+                "Microsoft.",
+                "Newtonsoft.Json"
             };
         private static XmlSerializer _xmlSerializer;
 

@@ -127,7 +127,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue; // Target file does not, so skip this
                     }
 
-                    FileToCopy fileToCopy = new FileToCopy
+                    var fileToCopy = new FileToCopy
                     {
                         SourceFilename = sourceFilename,
                         TargetRelativeFilePath = targetFilenameAttribute.Value,
@@ -310,11 +310,28 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
 
+                // Searching for static IData interfaces
                 if (fileToCopy.TargetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase)
                     && fileToCopy.TargetFilePath.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    Assembly assembly = Assembly.LoadFrom(fileToCopy.TargetFilePath);
-                    DataTypeTypesManager.AddNewAssembly(assembly);
+                    string fileName = Path.GetFileName(fileToCopy.TargetFilePath);
+
+                    if (!fileName.StartsWith("System.") && !fileName.StartsWith("Microsoft."))
+                    {
+                        Assembly assembly;
+
+                        try
+                        {
+                            assembly = Assembly.LoadFrom(fileToCopy.TargetFilePath);
+                        }
+                        catch (Exception)
+                        {
+                            continue;
+                        }
+
+                        DataTypeTypesManager.AddNewAssembly(assembly);
+                    }
+                    
                 }
 
                 var fileElement = new XElement("File", new XAttribute("filename", fileToCopy.TargetRelativeFilePath));
