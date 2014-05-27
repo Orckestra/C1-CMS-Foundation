@@ -198,14 +198,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (var kvp in newBindigns)
             {
-                if (bindings.ContainsKey(kvp.Key) == false)
-                {
-                    bindings.Add(kvp.Key, kvp.Value);
-                }
-                else
-                {
-                    bindings[kvp.Key] = kvp.Value;
-                }
+                bindings[kvp.Key] = kvp.Value;
             }
         }
 
@@ -291,14 +284,7 @@ namespace Composite.Data.DynamicTypes
 
             foreach (var kvp in newBindigns)
             {
-                if (bindings.ContainsKey(kvp.Key) == false)
-                {
-                    bindings.Add(kvp.Key, kvp.Value);
-                }
-                else
-                {
-                    bindings[kvp.Key] = kvp.Value;
-                }
+                bindings[kvp.Key] = kvp.Value;
             }
         }
 
@@ -327,7 +313,7 @@ namespace Composite.Data.DynamicTypes
                 {
                     object value = propertyInfo.GetGetMethod().Invoke(dataObject, null);
 
-                    if (value == null && fieldDescriptor.IsNullable == false)
+                    if (value == null && !fieldDescriptor.IsNullable)
                     {
                         if (fieldDescriptor.IsNullable)
                         {
@@ -496,7 +482,7 @@ namespace Composite.Data.DynamicTypes
                     {
                         object newValue = propertyInfo.GetValue(dataObject, null);
 
-                        if ((newValue == null) && (fieldDescriptor.IsNullable == false))
+                        if (newValue == null && !fieldDescriptor.IsNullable)
                         {
                             Type fieldType = fieldDescriptor.InstanceType;
 
@@ -648,17 +634,14 @@ namespace Composite.Data.DynamicTypes
 
                 fieldNameToBindingNameMapper.Add(fieldDescriptor.Name, bindingName);
 
-                XElement binding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
+                var binding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                     new XAttribute("name", bindingName),
                     new XAttribute("type", bindingType));
 
-                binding.Add(new XAttribute("optional", "true"));
-                // Line above is a (lame?) fix for bug 1173 - old code below. Prb: NULL user input gets stored in bindings. At next from rendering run, NULL user input clash with rules
-
-                //if (fieldDescriptor.IsNullable)
-                //{
-                //    binding.Add(new XAttribute("optional", "true"));
-                //}
+                if (fieldDescriptor.IsNullable)
+                {
+                    binding.Add(new XAttribute("optional", "true"));
+                }
 
                 _bindingsXml.Add(binding);
 
@@ -858,20 +841,23 @@ namespace Composite.Data.DynamicTypes
 
         internal bool BindingIsOptional(string bindingName)
         {
-            XElement bindingsXml = CustomFormDefinition.Root;
+            XDocument customFormDefinition = CustomFormDefinition;
 
-            if (bindingsXml == null)
+            XElement bindingsXml;
+
+            if (customFormDefinition != null && customFormDefinition.Root != null)
             {
-                if (!_generatedForm.IsNullOrEmpty())
-                {
-                    bindingsXml = XElement.Parse(_generatedForm);
-                }
-                else
-                {
-                    bindingsXml = BindingXml;
-                }
+                bindingsXml = customFormDefinition.Root;
             }
-
+            else if (!_generatedForm.IsNullOrEmpty())
+            {
+                bindingsXml = XElement.Parse(_generatedForm);
+            }
+            else
+            {
+                bindingsXml = BindingXml;
+            }
+            
             var binding = bindingsXml
                 .Descendants(CmsNamespace + "binding")
                 .FirstOrDefault(e => (string) e.Attribute("name") == bindingName);
