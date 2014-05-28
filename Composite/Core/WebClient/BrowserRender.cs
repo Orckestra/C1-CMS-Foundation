@@ -355,6 +355,7 @@ namespace Composite.Core.WebClient
 
         private class PhantomServer : IDisposable
         {
+            const string ConfigFileName = "config.json";
             const string ScriptFileName = "renderingServer.js";
             static readonly string _phantomJsFolder = HostingEnvironment.MapPath("~/App_Data/Composite/PhantomJs");
             static readonly string _phantomJsPath = Path.Combine(_phantomJsFolder, "phantomjs.exe");
@@ -375,7 +376,7 @@ namespace Composite.Core.WebClient
                 _process = new Process();
                 _process.StartInfo.WorkingDirectory = _phantomJsFolder;
                 _process.StartInfo.FileName = "\"" + _phantomJsPath + "\"";
-                _process.StartInfo.Arguments = "--local-to-remote-url-access=true --ignore-ssl-errors=yes " + ScriptFileName;
+                _process.StartInfo.Arguments = string.Format("--config={0} {1}", ConfigFileName, ScriptFileName);
                 _process.StartInfo.RedirectStandardOutput = true;
                 _process.StartInfo.RedirectStandardError = true;
                 _process.StartInfo.RedirectStandardInput = true;
