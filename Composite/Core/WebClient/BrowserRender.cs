@@ -374,17 +374,6 @@ namespace Composite.Core.WebClient
             public PhantomServer()
             {
                 _process = new Process();
-                //_process.StartInfo.EnvironmentVariables["LOCALAPPDATA"] = _phantomJsFolder;
-                //_process.StartInfo.EnvironmentVariables["LOCALAPPDATA"] = _phantomJsFolder;
-                //_process.StartInfo.EnvironmentVariables["LOCALAPPDATA"] = @"C:\Users\local\AppData\Local";
-                //_process.StartInfo.EnvironmentVariables["APPDATA"] = @"C:\Users\local\AppData\Local";
-                //_process.StartInfo.EnvironmentVariables["APPDATA"] = _phantomJsFolder;
-
-                //string appData = @"C:\Users\local\AppData\local";
-                //_process.StartInfo.EnvironmentVariables["LOCALAPPDATA"] = appData;
-                //_process.StartInfo.EnvironmentVariables["APPDATA"] = appData;
-                //_process.StartInfo.EnvironmentVariables["USERPROFILE"] = appData;
-                //_process.StartInfo.EnvironmentVariables["SystemDrive"] = appData;
 
                 _process.StartInfo.WorkingDirectory = _phantomJsFolder;
                 _process.StartInfo.FileName = "\"" + _phantomJsPath + "\"";

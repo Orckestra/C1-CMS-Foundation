@@ -236,7 +236,7 @@ namespace Composite.Core.WebClient.Renderings
                     : RenderingReason.PageView;
             }
 
-            //ValidateViewUnpublishedRequest(httpContext);
+            ValidateViewUnpublishedRequest(httpContext);
 
             if (Page == null)
             {

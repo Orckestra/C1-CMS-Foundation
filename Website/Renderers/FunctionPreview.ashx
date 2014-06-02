@@ -25,11 +25,11 @@ namespace Composite.Renderers
     {
         public void ProcessRequest(HttpContext context)
         {
-            /*if (!UserValidationFacade.IsLoggedIn())
+            if (!UserValidationFacade.IsLoggedIn())
             {
                 context.Response.StatusCode = 401; // "Unauthorized"
                 return;
-            }*/
+            }
 
             string pageIdStr = context.Request["p"] ?? "";
             string templateIdStr = context.Request["t"] ?? "";
