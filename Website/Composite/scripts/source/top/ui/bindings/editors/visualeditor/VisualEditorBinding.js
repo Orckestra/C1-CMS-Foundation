@@ -387,25 +387,8 @@ VisualEditorBinding.prototype._finalize = function () {
 	VisualEditorBinding.superclass._finalize.call ( this );
 	this._maybeShowEditor();
 
-	/*
-	* Normalize start content and extract HEAD and BODY section before we 
-	* feed it to TinyMCE. Normalization is required while old solutions 
-	* are upgraded to the new setup (with HEAD and BODY sections). 
-	*/
 	this._startContent = this.normalizeToDocument(this._startContent);
-	this._startContent = this.extractBody(this._startContent);
-
-	/*
-	* Inject BODY markup into TinyMCE. From now on, injection  
-	* is handled by the VisualEditorPageBinding.
-	*/
-	var tinyContent = VisualEditorBinding.getTinyContent(this._startContent, this);
-	if (tinyContent.replace(/\s*/gm, '').length == 0)
-	{
-		tinyContent = VisualEditorBinding.DEFAULT_CONTENT;
-	}
-
-	this._tinyInstance.setContent(tinyContent, { format: 'raw' });
+	this._pageBinding.setContent(this._startContent);
 
 	this.updateBodyWidth();
 
