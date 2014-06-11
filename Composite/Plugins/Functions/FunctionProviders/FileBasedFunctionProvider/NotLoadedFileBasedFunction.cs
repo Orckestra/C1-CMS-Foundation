@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Hosting;
+using Composite.Core.Extensions;
 using Composite.Functions;
 
 namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvider
@@ -44,7 +45,7 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 EmbedSourceCodeInformation(_exception as HttpException);
             }
 
-            throw _exception;
+            throw new InvalidOperationException("Failed to load function '{0}'".FormatWith(this.CompositeName()), _exception);
         }
 
         Type IMetaFunction.ReturnType
