@@ -281,24 +281,30 @@ namespace Composite.Data.ProcessControlled
 
             if (_publishControlledAuxiliaries.TryGetValue(dataType, out publishControlledAuxiliaries) == false)
             {
-                List<PublishControlledAuxiliaryAttribute> attributes = dataType.GetCustomAttributesRecursively<PublishControlledAuxiliaryAttribute>().ToList();
-
-                publishControlledAuxiliaries = new List<IPublishControlledAuxiliary>();
-
-                foreach (PublishControlledAuxiliaryAttribute attribute in attributes)
+                lock (_publishControlledAuxiliaries)
                 {
-                    if (attribute.PublishControlledAuxiliaryType == null) throw new InvalidOperationException(string.Format("The PublishControlledAuxiliaryType may not be null on the {0}", typeof(PublishControlledAuxiliaryAttribute)));
-                    if (typeof(IPublishControlledAuxiliary).IsAssignableFrom(attribute.PublishControlledAuxiliaryType) == false) throw new InvalidOperationException(string.Format("The {0} does not inheret the interface {1} the {2}", attribute.PublishControlledAuxiliaryType, typeof(IPublishControlledAuxiliary), typeof(PublishControlledAuxiliaryAttribute)));
+                    if (_publishControlledAuxiliaries.TryGetValue(dataType, out publishControlledAuxiliaries) == false)
+                    {
+                        List<PublishControlledAuxiliaryAttribute> attributes = dataType.GetCustomAttributesRecursively<PublishControlledAuxiliaryAttribute>().ToList();
 
-                    ConstructorInfo constructorInfo = attribute.PublishControlledAuxiliaryType.GetConstructor(new Type[] { });
-                    if (constructorInfo == null) throw new InvalidOperationException(string.Format("The type {0} used by the {1} does not have a default contructor", attribute.PublishControlledAuxiliaryType, typeof(PublishControlledAuxiliaryAttribute)));
+                        publishControlledAuxiliaries = new List<IPublishControlledAuxiliary>();
 
-                    IPublishControlledAuxiliary publishControlledAuxiliary = (IPublishControlledAuxiliary)Activator.CreateInstance(attribute.PublishControlledAuxiliaryType, new object[] { });
+                        foreach (PublishControlledAuxiliaryAttribute attribute in attributes)
+                        {
+                            if (attribute.PublishControlledAuxiliaryType == null) throw new InvalidOperationException(string.Format("The PublishControlledAuxiliaryType may not be null on the {0}", typeof(PublishControlledAuxiliaryAttribute)));
+                            if (typeof(IPublishControlledAuxiliary).IsAssignableFrom(attribute.PublishControlledAuxiliaryType) == false) throw new InvalidOperationException(string.Format("The {0} does not inheret the interface {1} the {2}", attribute.PublishControlledAuxiliaryType, typeof(IPublishControlledAuxiliary), typeof(PublishControlledAuxiliaryAttribute)));
 
-                    publishControlledAuxiliaries.Add(publishControlledAuxiliary);
+                            ConstructorInfo constructorInfo = attribute.PublishControlledAuxiliaryType.GetConstructor(new Type[] { });
+                            if (constructorInfo == null) throw new InvalidOperationException(string.Format("The type {0} used by the {1} does not have a default contructor", attribute.PublishControlledAuxiliaryType, typeof(PublishControlledAuxiliaryAttribute)));
+
+                            IPublishControlledAuxiliary publishControlledAuxiliary = (IPublishControlledAuxiliary)Activator.CreateInstance(attribute.PublishControlledAuxiliaryType, new object[] { });
+
+                            publishControlledAuxiliaries.Add(publishControlledAuxiliary);
+                        }
+
+                        _publishControlledAuxiliaries.Add(dataType, publishControlledAuxiliaries);
+                    }
                 }
-
-                _publishControlledAuxiliaries.Add(dataType, publishControlledAuxiliaries);
             }
 
             foreach (IPublishControlledAuxiliary publishControlledAuxiliary in publishControlledAuxiliaries)
