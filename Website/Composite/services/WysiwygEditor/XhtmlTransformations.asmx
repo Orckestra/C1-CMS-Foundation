@@ -745,6 +745,7 @@ namespace Composite.Services
 
         private string WrapInnerBody(string innerBodyMarkup)
         {
+			innerBodyMarkup = XmlUtils.RemoveXmlDeclaration(innerBodyMarkup);
             if (innerBodyMarkup.StartsWith("<html") && innerBodyMarkup.Contains(Namespaces.Xhtml.NamespaceName))
             {
                 return innerBodyMarkup;

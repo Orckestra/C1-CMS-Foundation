@@ -114,6 +114,7 @@ namespace Composite.Core.Xml
         /// <exclude />
         public static string Prettify(string xmlString, string indentString)
         {
+            xmlString = XmlUtils.RemoveXmlDeclaration(xmlString);
             CDataMatchHandler cdataMatchHandler;
 
             IEnumerable<XmlNode> tree = BuildTree(xmlString, out cdataMatchHandler);
