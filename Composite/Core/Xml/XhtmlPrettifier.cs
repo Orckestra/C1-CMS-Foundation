@@ -47,12 +47,15 @@ namespace Composite.Core.Xml
             new NamespaceName { Name = "code", Namespace = "" }, 
             new NamespaceName { Name = "dfn", Namespace = "" }, 
             new NamespaceName { Name = "em", Namespace = "" }, 
+            new NamespaceName { Name = "fieldreference", Namespace = Namespaces.DynamicData10.NamespaceName },
             new NamespaceName { Name = "font", Namespace = "" }, 
             new NamespaceName { Name = "i", Namespace = "" }, 
             new NamespaceName { Name = "img", Namespace = "" }, 
             new NamespaceName { Name = "input", Namespace = "" }, 
             new NamespaceName { Name = "kbd", Namespace = "" }, 
             new NamespaceName { Name = "label", Namespace = "" }, 
+            new NamespaceName { Name = "page.description", Namespace = Namespaces.Rendering10.NamespaceName },
+            new NamespaceName { Name = "page.title", Namespace = Namespaces.Rendering10.NamespaceName },
             new NamespaceName { Name = "q", Namespace = "" }, 
             new NamespaceName { Name = "s", Namespace = "" }, 
             new NamespaceName { Name = "samp", Namespace = "" }, 
@@ -67,9 +70,6 @@ namespace Composite.Core.Xml
             new NamespaceName { Name = "tt", Namespace = "" }, 
             new NamespaceName { Name = "u", Namespace = "" }, 
             new NamespaceName { Name = "var", Namespace = "" },
-            new NamespaceName { Name = "fieldreference", Namespace = Namespaces.DynamicData10.NamespaceName },
-            new NamespaceName { Name = "page.title", Namespace = Namespaces.Rendering10.NamespaceName },
-            new NamespaceName { Name = "page.description", Namespace = Namespaces.Rendering10.NamespaceName },
         });
 
 
@@ -177,7 +177,7 @@ namespace Composite.Core.Xml
 
                     if ((node.IsEmpty == false) && (isSelfClosingAndEmpty == false))
                     {
-                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsBlockElement()) && !node.IsCompactElement())
+                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements) && !node.IsCompactElement())
                         {
                             stringBuilder.AppendLine().AddIndent(node.Level, indentString);
                         }
@@ -609,7 +609,6 @@ namespace Composite.Core.Xml
                 {
                     _isBlockElement = this.NodeType == XmlNodeType.Element
                                       && !InlineElements.Contains(GetNamespaceName())
-                                      && !CompactElements.Contains(GetNamespaceName())
                                       ? TriState.True : TriState.False; ;
                 }
 
