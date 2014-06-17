@@ -112,11 +112,14 @@ VisualMultiTemplateEditorBinding.prototype._initialize = function () {
 	 * Show the template toolbar.
 	 */
 	this.getContentWindow ().bindingMap.templatetoolbar.show ();
-	
+
 	/*
 	 * Invoke super method.
 	 */
-	VisualMultiTemplateEditorBinding.superclass._initialize.call ( this );
+	VisualMultiTemplateEditorBinding.superclass._initialize.call(this);
+
+	this.updateTemplatePreview();
+
 };
 
 /**
