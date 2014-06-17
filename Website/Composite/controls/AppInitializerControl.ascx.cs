@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using Composite;
+using Composite.Core.Configuration;
 using Composite.Core.WebClient;
 
 /**
@@ -37,7 +38,8 @@ public partial class AppInitializerControl : System.Web.UI.UserControl
             string oldversion = CookieHandler.Get("CompositeVersionString");
             if (nowversion != oldversion)
             {
-                isUpdated = true;
+                var installationAge = DateTime.Now - SystemSetupFacade.GetFirstTimeStart();
+                isUpdated = installationAge.TotalMinutes > 5;
             }
         }
 
