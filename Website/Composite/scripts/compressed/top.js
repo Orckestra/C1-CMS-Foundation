@@ -27946,6 +27946,7 @@ self._onTemplateSelectionChanged();
 }});
 this.getContentWindow().bindingMap.templatetoolbar.show();
 VisualMultiTemplateEditorBinding.superclass._initialize.call(this);
+this.updateTemplatePreview();
 };
 VisualMultiTemplateEditorBinding.prototype._populateTemplateSelector=function(){
 var _10db=this.getDescendantBindingByLocalName("selector");
