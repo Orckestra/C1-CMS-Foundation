@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using JetBrains.Annotations;
 
 
 namespace Composite.Core.Extensions
@@ -13,6 +14,7 @@ namespace Composite.Core.Extensions
     public static class StringExtensionMethods
     {
         /// <exclude />
+        [StringFormatMethod("format")]
         public static string FormatWith(this string format, params object[] args)
         {
             Verify.ArgumentNotNull(format, "format");
