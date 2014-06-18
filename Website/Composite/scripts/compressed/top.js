@@ -28108,9 +28108,10 @@ var _1110=this._pageId;
 var _1111=this.getDescendantBindingByLocalName("selector").getValue();
 this._templatePreview=null;
 var self=this;
-var _1113=PageTemplateService.GetTemplatePreviewInformation(_1110,_1111);
+PageTemplateService.GetTemplatePreviewInformation(_1110,_1111,function(_1113){
 self._templatePreview=_1113;
 self.updateBodyWidth();
+});
 };
 VisualMultiTemplateEditorBinding.prototype.getSoapTinyContent=function(_1114){
 var _1115=this._pageId;
