@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Security
@@ -10,7 +11,8 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class UserGroupPermissionDefinition
 	{
-        private EntityToken _entityToken = null;
+        private EntityToken _entityToken;
+        private bool _entityTokenInitialized;
 
         /// <exclude />
         public abstract Guid UserGroupId { get; }
@@ -26,9 +28,21 @@ namespace Composite.C1Console.Security
         {
             get
             {
-                if (_entityToken == null)
+                if (!_entityTokenInitialized)
                 {
-                    _entityToken = EntityTokenSerializer.Deserialize(this.SerializedEntityToken, false);
+                    try
+                    {
+                        _entityToken = EntityTokenSerializer.Deserialize(this.SerializedEntityToken, false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogWarning("UserPermissionDefinition", "Failed to deserialize an entity token: '{0}'", SerializedEntityToken);
+                        Log.LogWarning("UserPermissionDefinition", ex);
+                    }
+                    finally
+                    {
+                        _entityTokenInitialized = true;
+                    }
                 }
 
                 return _entityToken;

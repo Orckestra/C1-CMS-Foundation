@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Composite.Core.Implementation;
+using JetBrains.Annotations;
 
 
 namespace Composite.Core
@@ -28,6 +29,7 @@ namespace Composite.Core
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
         /// <param name="args">Arguments to put into the message</param>
+        [StringFormatMethod("messageFormat")]
         public static void LogInformation(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogInformation(title, messageFormat, args);
@@ -78,6 +80,7 @@ namespace Composite.Core
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
         /// <param name="args">Arguments to put into the message</param>
+        [StringFormatMethod("messageFormat")]
         public static void LogWarning(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogWarning(title, messageFormat, args);
@@ -115,6 +118,7 @@ namespace Composite.Core
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
         /// <param name="args">Arguments to put into the message</param>
+        [StringFormatMethod("messageFormat")]
         public static void LogError(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogError(title, messageFormat, args);
@@ -152,6 +156,7 @@ namespace Composite.Core
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
         /// <param name="args">Arguments to put into the message</param>
+        [StringFormatMethod("messageFormat")]
         public static void LogCritical(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogCritical(title, messageFormat, args);

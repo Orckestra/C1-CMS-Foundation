@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
-using Composite.Core.Logging;
+using Composite.Core;
 
 
 namespace Composite.C1Console.Security
@@ -11,8 +11,8 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
 	public abstract class UserPermissionDefinition
 	{
-        private EntityToken _entityToken = null;
-        private bool _entityTokenInitialized = false;
+        private EntityToken _entityToken;
+        private bool _entityTokenInitialized;
 
         /// <exclude />
         public abstract string Username { get; }
@@ -28,7 +28,7 @@ namespace Composite.C1Console.Security
         {
             get
             {
-                if (_entityTokenInitialized==false)
+                if (!_entityTokenInitialized)
                 {
                     try
                     {
@@ -36,7 +36,8 @@ namespace Composite.C1Console.Security
                     }
                     catch (Exception ex)
                     {
-                        LoggingService.LogError("UserPermissionDefinition", ex);
+                        Log.LogWarning("UserPermissionDefinition", "Failed to deserialize an entity token: '{0}'", SerializedEntityToken);
+                        Log.LogWarning("UserPermissionDefinition", ex);
                     }
                     finally
                     {

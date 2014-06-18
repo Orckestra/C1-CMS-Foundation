@@ -20,21 +20,21 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        public static void SetCurrentPermissionTypes(UserToken userToken, EntityToken entityToken, List<PermissionType> permissionTypes)
+        public static void SetCurrentPermissionTypes(UserToken userToken, EntityToken entityToken, IReadOnlyCollection<PermissionType> permissionTypes)
         {
             SetToCache(userToken, entityToken, permissionTypes, CurrentPermissionTypeCachingKey);
         }
 
 
 
-        public static List<PermissionType> GetInheritedPermissionsTypes(UserToken userToken, EntityToken entityToken)
+        public static IReadOnlyCollection<PermissionType> GetInheritedPermissionsTypes(UserToken userToken, EntityToken entityToken)
         {
             return GetFromCache(userToken, entityToken, InheritedPermissionsTypeCachingKey);
         }
 
 
 
-        public static void SetInheritedPermissionsTypes(UserToken userToken, EntityToken entityToken, List<PermissionType> permissionTypes)
+        public static void SetInheritedPermissionsTypes(UserToken userToken, EntityToken entityToken, IReadOnlyCollection<PermissionType> permissionTypes)
         {
             SetToCache(userToken, entityToken, permissionTypes, InheritedPermissionsTypeCachingKey);
         }
@@ -48,7 +48,7 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        public static void SetUserPermissionTypes(UserToken userToken, EntityToken entityToken, List<PermissionType> permissionTypes)
+        public static void SetUserPermissionTypes(UserToken userToken, EntityToken entityToken, IReadOnlyCollection<PermissionType> permissionTypes)
         {
             SetToCache(userToken, entityToken, permissionTypes, UserPermissionTypeCachingKey);
         }
@@ -62,7 +62,7 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        public static void SetUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken, List<PermissionType> permissionTypes)
+        public static void SetUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken, IReadOnlyCollection<PermissionType> permissionTypes)
         {
             SetToCache(userToken, entityToken, permissionTypes, UserGroupPermissionTypeCachingKey);
         }
@@ -78,31 +78,31 @@ namespace Composite.C1Console.Security.Foundation
         }
 
 
-        private static void SetToCache(UserToken userToken, EntityToken entityToken, List<PermissionType> permissionTypes, object cachingKey)
+        private static void SetToCache(UserToken userToken, EntityToken entityToken, IReadOnlyCollection<PermissionType> permissionTypes, object cachingKey)
         {
             // Using RequestLifetimeCache and there for no thread locking /MRJ
 
-            Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>> permissionTypeCache;
+            Dictionary<UserToken, Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>> permissionTypeCache;
 
             if (RequestLifetimeCache.HasKey(cachingKey))
             {
-                permissionTypeCache = RequestLifetimeCache.TryGet<Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>>>(cachingKey);
+                permissionTypeCache = RequestLifetimeCache.TryGet<Dictionary<UserToken, Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>>>(cachingKey);
             }
             else
             {
-                permissionTypeCache = new Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>>();
+                permissionTypeCache = new Dictionary<UserToken, Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>>();
 
                 RequestLifetimeCache.Add(cachingKey, permissionTypeCache);
             }
 
-            Dictionary<EntityToken, List<PermissionType>> entityTokenPermissionTypes;
-            if (permissionTypeCache.TryGetValue(userToken, out entityTokenPermissionTypes) == false)
+            Dictionary<EntityToken, IReadOnlyCollection<PermissionType>> entityTokenPermissionTypes;
+            if (!permissionTypeCache.TryGetValue(userToken, out entityTokenPermissionTypes))
             {
-                entityTokenPermissionTypes = new Dictionary<EntityToken, List<PermissionType>>();
+                entityTokenPermissionTypes = new Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>();
                 permissionTypeCache.Add(userToken, entityTokenPermissionTypes);
             }
 
-            if (entityTokenPermissionTypes.ContainsKey(entityToken) == false)
+            if (!entityTokenPermissionTypes.ContainsKey(entityToken))
             {
                 entityTokenPermissionTypes.Add(entityToken, permissionTypes);
             }
@@ -114,31 +114,31 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        private static List<PermissionType> GetFromCache(UserToken userToken, EntityToken entityToken, object cachingKey)
+        private static IReadOnlyCollection<PermissionType> GetFromCache(UserToken userToken, EntityToken entityToken, object cachingKey)
         {
             // Using RequestLifetimeCache and there for no thread locking /MRJ
 
-            Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>> permissionTypeCache;
+            Dictionary<UserToken, Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>> permissionTypeCache;
 
             if (RequestLifetimeCache.HasKey(cachingKey))
             {
-                permissionTypeCache = RequestLifetimeCache.TryGet<Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>>>(cachingKey);
+                permissionTypeCache = RequestLifetimeCache.TryGet<Dictionary<UserToken, Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>>>(cachingKey);
             }
             else
             {
-                permissionTypeCache = new Dictionary<UserToken, Dictionary<EntityToken, List<PermissionType>>>();
+                permissionTypeCache = new Dictionary<UserToken, Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>>();
 
                 RequestLifetimeCache.Add(cachingKey, permissionTypeCache);
             }
 
-            Dictionary<EntityToken, List<PermissionType>> entityTokenPermissionTypes;
-            if (permissionTypeCache.TryGetValue(userToken, out entityTokenPermissionTypes) == false)
+            Dictionary<EntityToken, IReadOnlyCollection<PermissionType>> entityTokenPermissionTypes;
+            if (!permissionTypeCache.TryGetValue(userToken, out entityTokenPermissionTypes))
             {
-                entityTokenPermissionTypes = new Dictionary<EntityToken, List<PermissionType>>();
+                entityTokenPermissionTypes = new Dictionary<EntityToken, IReadOnlyCollection<PermissionType>>();
                 permissionTypeCache.Add(userToken, entityTokenPermissionTypes);
             }
 
-            List<PermissionType> permissionTypes = null;
+            IReadOnlyCollection<PermissionType> permissionTypes;
 
             entityTokenPermissionTypes.TryGetValue(entityToken, out permissionTypes);
 
