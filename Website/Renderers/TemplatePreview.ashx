@@ -15,103 +15,112 @@ using Composite.Data.Types;
 
 namespace Composite.Renderers
 {
-    /// <summary>
-    /// Summary description for Phantom
-    /// </summary>
-    public class Phantom : IHttpHandler
-    {
-        public void ProcessRequest(HttpContext context)
-        {
-            if (!UserValidationFacade.IsLoggedIn())
-            {
-                context.Response.StatusCode = 401; // "Unauthorized"
-                return;
-            }
+	/// <summary>
+	/// Summary description for Phantom
+	/// </summary>
+	public class Phantom : IHttpHandler
+	{
+		public void ProcessRequest(HttpContext context)
+		{
+			try
+			{
 
-            string pageIdStr = context.Request["p"] ?? "";
-            string templateIdStr = context.Request["t"] ?? "";
-            
-            Guid pageId;
-            Guid templateId;
-
-            Guid.TryParse(pageIdStr, out pageId);
-            Guid.TryParse(templateIdStr, out templateId);            
-            
-            IPage page;
-            
-            using (var c = new DataConnection(PublicationScope.Unpublished))
-            {
-                if (pageId != Guid.Empty)
-                {
-                    page = c.Get<IPage>().Single(p => p.Id == pageId);
-                }
-                else
-                {
-                    page = null;
-
-                    if (templateId != Guid.Empty)
-                    {
-                        page = c.Get<IPage>().FirstOrDefault(p => p.TemplateId == templateId);
-                    }
-                    
-                    page = page ?? c.Get<IPage>().First();
-                }
-            }
-            
-            if (templateId != Guid.Empty)
-            {
-                page.TemplateId = templateId;
-            }
-            
-            var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
-
-            var contents = new List<IPagePlaceholderContent>();
-
-			bool previewStagingJsAppended = false;
-
-            foreach (var placeholder in templateInfo.PlaceholderDescriptions)
-            {
-                var placeholderDocument = new XhtmlDocument();
-                placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "placeholderpreview",
-                    new XAttribute("id", "ph_" + placeholder.Id),
-                    new XAttribute("style", string.Format("background-color: lightgray; display: block; width: 100%; min-height: {0}px; height: 100%",
-                        placeholder.Id == templateInfo.DefaultPlaceholderId ? 600 : 300)),
-                    new XElement(Namespaces.Xhtml + "h1", placeholder.Title)));
-
-				if (!previewStagingJsAppended)
+				if (!UserValidationFacade.IsLoggedIn())
 				{
-					placeholderDocument.Body.Add(XElement.Parse(previewStagingJs));
-					previewStagingJsAppended = true;
+					context.Response.StatusCode = 401; // "Unauthorized"
+					return;
 				}
 
-                var content = DataFacade.BuildNew<IPagePlaceholderContent>();
-                content.PageId = page.Id;
-                content.PlaceHolderId = placeholder.Id;
-                content.Content = placeholderDocument.ToString();
-                contents.Add(content);
-            }
+				string pageIdStr = context.Request["p"] ?? "";
+				string templateIdStr = context.Request["t"] ?? "";
 
+				Guid pageId;
+				Guid templateId;
 
-			
-            string output = PagePreviewBuilder.RenderPreview(page, contents, RenderingReason.ScreenshotGeneration);
+				Guid.TryParse(pageIdStr, out pageId);
+				Guid.TryParse(templateIdStr, out templateId);
 
-            if (output != String.Empty)
-            {
-                context.Response.ContentType = "text/html";
-                context.Response.Write(output);
-				if (!previewStagingJsAppended)
+				IPage page;
+
+				using (var c = new DataConnection(PublicationScope.Unpublished))
 				{
-					context.Response.Write(previewStagingJs);
-					previewStagingJsAppended = true;
+					if (pageId != Guid.Empty)
+					{
+						page = c.Get<IPage>().Single(p => p.Id == pageId);
+					}
+					else
+					{
+						page = null;
+
+						if (templateId != Guid.Empty)
+						{
+							page = c.Get<IPage>().FirstOrDefault(p => p.TemplateId == templateId);
+						}
+
+						page = page ?? c.Get<IPage>().First();
+					}
 				}
 
+				if (templateId != Guid.Empty)
+				{
+					page.TemplateId = templateId;
+				}
+
+				var templateInfo = PageTemplateFacade.GetPageTemplate(page.TemplateId);
+
+				var contents = new List<IPagePlaceholderContent>();
+
+				bool previewStagingJsAppended = false;
+
+				foreach (var placeholder in templateInfo.PlaceholderDescriptions)
+				{
+					var placeholderDocument = new XhtmlDocument();
+					placeholderDocument.Body.Add(new XElement(Namespaces.Xhtml + "placeholderpreview",
+						new XAttribute("id", "ph_" + placeholder.Id),
+						new XAttribute("style", string.Format("background-color: lightgray; display: block; width: 100%; min-height: {0}px; height: 100%",
+							placeholder.Id == templateInfo.DefaultPlaceholderId ? 600 : 300)),
+						new XElement(Namespaces.Xhtml + "h1", placeholder.Title)));
+
+					if (!previewStagingJsAppended)
+					{
+						placeholderDocument.Body.Add(XElement.Parse(previewStagingJs));
+						previewStagingJsAppended = true;
+					}
+
+					var content = DataFacade.BuildNew<IPagePlaceholderContent>();
+					content.PageId = page.Id;
+					content.PlaceHolderId = placeholder.Id;
+					content.Content = placeholderDocument.ToString();
+					contents.Add(content);
+				}
+
+
+
+				string output = PagePreviewBuilder.RenderPreview(page, contents, RenderingReason.ScreenshotGeneration);
+
+				if (output != String.Empty)
+				{
+					context.Response.ContentType = "text/html";
+					context.Response.Write(output);
+					if (!previewStagingJsAppended)
+					{
+						context.Response.Write(previewStagingJs);
+						previewStagingJsAppended = true;
+					}
+
+				}
 			}
-        }
+			catch (Exception ex)
+			{
+				Composite.Core.Log.LogError("TemplatePreview", ex);
+				throw;
+			}
+		}
 
-        public bool IsReusable
-        {
-            get { return true; }
-        }
+		public bool IsReusable
+		{
+			get { return true; }
+		}
 
 		// this script block will 
 		//  - finalize (call phantom)
@@ -132,6 +141,6 @@ namespace Composite.Renderers
 // -->
 </script>
 ";
-		
-    }
+
+	}
 }

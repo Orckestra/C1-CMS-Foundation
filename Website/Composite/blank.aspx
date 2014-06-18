@@ -2,6 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:control="http://www.composite.net/ns/uicontrol">
     
 <%@ Page Language="C#" %>
+<%
+	Response.Cache.SetExpires(DateTime.Now.AddHours(1));
+	Response.Cache.SetCacheability(HttpCacheability.Private);
+%>
 
 	<control:httpheaders runat="server"/>
 	<head>
