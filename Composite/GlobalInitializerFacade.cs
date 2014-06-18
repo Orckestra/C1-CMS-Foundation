@@ -99,7 +99,7 @@ namespace Composite
                 {
                     Log.LogCritical(LogTitleNormal, "Exception recorded:" + timeSpan + " ago");
 
-                    throw _exceptionThrownDurringInitialization;
+                    throw new Exception("Failed to initialize the system", _exceptionThrownDurringInitialization);
                 }
 
                 _exceptionThrownDurringInitialization = null;

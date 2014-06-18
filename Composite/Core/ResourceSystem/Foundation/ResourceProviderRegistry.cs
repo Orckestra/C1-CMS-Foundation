@@ -19,7 +19,7 @@ namespace Composite.Core.ResourceSystem.Foundation
 
         static ResourceProviderRegistry()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent((a) => Flush());
+            GlobalEventSystemFacade.SubscribeToFlushEvent(a => Flush());
         }
 
 
@@ -80,35 +80,43 @@ namespace Composite.Core.ResourceSystem.Foundation
                 resources.StringResourceProviders = new List<string>();
                 resources.LocalizationProviders = new List<string>();
 
-                if ((ConfigurationServices.ConfigurationSource != null) &&
-                    (ConfigurationServices.ConfigurationSource.GetSection(ResourceProviderSettings.SectionName) != null))
+                var configurationSource = ConfigurationServices.ConfigurationSource;
+                if (configurationSource == null)
                 {
-                    ResourceProviderSettings configuration = (ResourceProviderSettings)ConfigurationServices.ConfigurationSource.GetSection(ResourceProviderSettings.SectionName);
+                    return;
+                }
 
-                    foreach (ResourceProviderData data in configuration.ResourceProviderPlugins)
+                var section = configurationSource.GetSection(ResourceProviderSettings.SectionName);
+                if (section == null)
+                {
+                    return;
+                }
+
+                var configuration = (ResourceProviderSettings)section;
+
+                foreach (ResourceProviderData data in configuration.ResourceProviderPlugins)
+                {
+                    Type type = ResourceProviderPluginFacade.GetProviderType(data.Name);
+
+                    if (typeof(IIconResourceProvider).IsAssignableFrom(type))
                     {
-                        Type type = ResourceProviderPluginFacade.GetProviderType(data.Name);
+                        resources.IconResourceProviders.Add(data.Name);
+                    }
+                    else if (typeof(IStringResourceProvider).IsAssignableFrom(type))
+                    {
+                        Log.LogVerbose(LogTitle, ("String resource provider '{0}' definition ignored." +
+                                                  "\nEither remove it from Composite.config, or move the provider definition under a provider of type '{1}' ")
+                                                  .FormatWith(data.Name, typeof(AggregationLocalizationProvider).FullName));
 
-                        if (typeof(IIconResourceProvider).IsAssignableFrom(type))
-                        {
-                            resources.IconResourceProviders.Add(data.Name);
-                        }
-                        else if (typeof(IStringResourceProvider).IsAssignableFrom(type))
-                        {
-                            Log.LogWarning(LogTitle, ("String resource provider '{0}' definition ignored." +
-                                                      "\nEither remove it from Composite.config, or move the provider definition under a provider of type '{1}' ")
-                                                      .FormatWith(data.Name, typeof(AggregationLocalizationProvider).FullName));
-
-                            resources.StringResourceProviders.Add(data.Name);
-                        }
-                        else if (typeof(ILocalizationProvider).IsAssignableFrom(type))
-                        {
-                            resources.LocalizationProviders.Add(data.Name);
-                        }
-                        else 
-                        {
-                            throw new NotSupportedException(string.Format("Unkown resource provider type '{0}'", type));
-                        }
+                        resources.StringResourceProviders.Add(data.Name);
+                    }
+                    else if (typeof(ILocalizationProvider).IsAssignableFrom(type))
+                    {
+                        resources.LocalizationProviders.Add(data.Name);
+                    }
+                    else 
+                    {
+                        throw new NotSupportedException(string.Format("Unkown resource provider type '{0}'", type));
                     }
                 }
             }

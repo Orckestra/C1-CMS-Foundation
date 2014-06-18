@@ -51,7 +51,7 @@ namespace Composite.Core.Collections.Generic
 
                 if (_initializationException != null)
                 {
-                    throw _initializationException;
+                    throw new InvalidOperationException("Error initializing resources", _initializationException);
                 }
 
                 return _resources;
