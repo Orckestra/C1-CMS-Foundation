@@ -37,7 +37,7 @@ namespace Composite.Core.Localization
         /// <returns></returns>
         public static bool IsLocaleInstalled(CultureInfo cultureInfo)
         {
-            return DataFacade.GetData<ISystemActiveLocale>().Where(f => f.CultureName == cultureInfo.Name).Any();
+            return DataFacade.GetData<ISystemActiveLocale>().Any(f => f.CultureName == cultureInfo.Name);
         }
 
 
@@ -77,7 +77,8 @@ namespace Composite.Core.Localization
         /// <returns></returns>
         public static bool IsUrlMappingNameInUse(string cultureNameToExclude, string urlMappingName)
         {
-            return DataFacade.GetData<ISystemActiveLocale>().Where(f => f.CultureName != cultureNameToExclude && f.UrlMappingName == urlMappingName).Any();
+            return DataFacade.GetData<ISystemActiveLocale>()
+                             .Any(f => f.CultureName != cultureNameToExclude && f.UrlMappingName == urlMappingName);
         }     
 
 
@@ -105,10 +106,10 @@ namespace Composite.Core.Localization
         /// <param name="newUrlMappingName"></param>
         public static void RenameUrlMappingNameForLocale(string cultureName, string newUrlMappingName)
         {
-            if (IsLocaleInstalled(cultureName) == false) throw new InvalidOperationException(string.Format("The locale '{0}' is not installed and the url mapping name can not be renamed", cultureName));
-            if (IsUrlMappingNameInUse(cultureName, newUrlMappingName)) throw new InvalidOperationException(string.Format("The url '{0}' is already used", newUrlMappingName));
+            Verify.That(IsLocaleInstalled(cultureName), "The locale '{0}' is not installed and the url mapping name can not be renamed", cultureName);
+            Verify.That(!IsUrlMappingNameInUse(cultureName, newUrlMappingName), "The url mapping '{0}' is already used", newUrlMappingName);
 
-            ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Where(f => f.CultureName != cultureName).Single();            
+            ISystemActiveLocale systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().Single(f => f.CultureName != cultureName);            
             systemActiveLocale.UrlMappingName = newUrlMappingName;
             DataFacade.Update(systemActiveLocale);
         }
@@ -131,7 +132,7 @@ namespace Composite.Core.Localization
                 if (IsLocaleInstalled(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' has already been added to the system", cultureInfo));
                 if (IsUrlMappingNameInUse(urlMappingName)) throw new InvalidOperationException(string.Format("The url mapping name '{0}' has already been used in the system", urlMappingName));
 
-                if (DataLocalizationFacade.ActiveLocalizationCultures.Count() == 0)
+                if (!DataLocalizationFacade.ActiveLocalizationCultures.Any())
                 {
                     addAccessToAllUsers = true;
                 }
@@ -180,10 +181,9 @@ namespace Composite.Core.Localization
         /// <returns></returns>
         public static bool SetDefaultLocale(CultureInfo cultureInfo)
         {
-            if (IsLocaleInstalled(cultureInfo) == false) throw new InvalidOperationException(string.Format("The locale '{0}' is not installed and can not be set as default", cultureInfo));
-
+            Verify.That(IsLocaleInstalled(cultureInfo), "The locale '{0}' is not installed and can not be set as default", cultureInfo);
             
-            if (IsDefaultLocale(cultureInfo) == false)
+            if (!IsDefaultLocale(cultureInfo))
             {
                 DataLocalizationFacade.DefaultLocalizationCulture = cultureInfo;
                 return true;
@@ -235,17 +235,8 @@ namespace Composite.Core.Localization
         /// <returns></returns>
         public static bool IsTypesUsingLocalization()
         {
-            foreach (Type type in DataFacade.GetAllInterfaces())
-            {
-                if (DataLocalizationFacade.IsLocalized(type))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return DataFacade.GetAllInterfaces().Any(DataLocalizationFacade.IsLocalized);
         }
-
 
 
         /// <summary>
@@ -277,7 +268,7 @@ namespace Composite.Core.Localization
             {
                 List<CultureInfo> activeLocales = UserSettings.GetActiveLocaleCultureInfos(username).ToList();
 
-                if ((activeLocales.Count == 1) && (activeLocales[0].Equals(cultureInfo)))
+                if (activeLocales.Count == 1 && activeLocales[0].Equals(cultureInfo))
                 {
                     return true;
                 }
@@ -307,19 +298,16 @@ namespace Composite.Core.Localization
         /// <param name="makeFlush"></param>
         public static void RemoveLocale(CultureInfo cultureInfo, bool makeFlush = true)
         {
-            if (LocalizationFacade.IsDefaultLocale(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the default locale and can not be removed", cultureInfo));
-            if (LocalizationFacade.IsOnlyActiveLocaleForSomeUsers(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the only locale for some user(s) and can not be removed", cultureInfo));
+            if (IsDefaultLocale(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the default locale and can not be removed", cultureInfo));
+            if (IsOnlyActiveLocaleForSomeUsers(cultureInfo)) throw new InvalidOperationException(string.Format("The locale '{0}' is the only locale for some user(s) and can not be removed", cultureInfo));
 
             using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
             {
                 string cultureName = cultureInfo.Name;
 
-                ISystemActiveLocale systemActiveLocale =
-                    DataFacade.GetData<ISystemActiveLocale>().
-                    Where(f => f.CultureName == cultureName).
-                    SingleOrDefault();
+                var systemActiveLocale = DataFacade.GetData<ISystemActiveLocale>().SingleOrDefault(f => f.CultureName == cultureName);
 
-                if (systemActiveLocale == null) throw new InvalidOperationException(string.Format("The locale '{0}' has not beed added and can not be removed", cultureInfo));
+                Verify.IsNotNull(systemActiveLocale, "The locale '{0}' has not beed added and can not be removed", cultureInfo);
 
                 List<string> usernames =
                     (from u in DataFacade.GetData<IUser>()
@@ -329,7 +317,7 @@ namespace Composite.Core.Localization
                 {
                     if (cultureInfo.Equals(UserSettings.GetCurrentActiveLocaleCultureInfo(username)))
                     {
-                        CultureInfo fallbackCultureInfo = UserSettings.GetActiveLocaleCultureInfos(username).Where(f => f.Equals(cultureInfo) == false).First();
+                        CultureInfo fallbackCultureInfo = UserSettings.GetActiveLocaleCultureInfos(username).First(f => !f.Equals(cultureInfo));
 
                         UserSettings.SetCurrentActiveLocaleCultureInfo(username, fallbackCultureInfo);
                     }

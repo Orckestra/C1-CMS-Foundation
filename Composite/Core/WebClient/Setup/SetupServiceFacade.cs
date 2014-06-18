@@ -20,6 +20,7 @@ using Composite.Core.WebClient.Setup.WebServiceClient;
 using Composite.Core.Xml;
 using Composite.C1Console.Users;
 using Composite.Core.ResourceSystem;
+using Composite.Data;
 
 
 namespace Composite.Core.WebClient.Setup
@@ -48,8 +49,7 @@ namespace Composite.Core.WebClient.Setup
         /// <exclude />
         public static string PackageServicePingUrlFormat = "{0}/C1.asmx";
 
-        private static string SetupServiceUrl = "{0}/Setup/Setup.asmx";
-        private static string PackageUrlFormat = "{0}{1}";
+        private static readonly string SetupServiceUrl = "{0}/Setup/Setup.asmx";
 
 
         private static string _packageServerUrl;
@@ -125,14 +125,17 @@ namespace Composite.Core.WebClient.Setup
 
                 UserSettings.SetUserCultureInfo(username, userCulture);
 
-                for (int i = 0; i < packageUrls.Length; i++)
+                using (new DataScope(locale))
                 {
-                    Log.LogVerbose(VerboseLogTitle, "Installing package from url " + packageUrls[i]);
-                    bool packageValidationSucceded = InstallPackage(packageUrls[i], packages[i]);
+                    for (int i = 0; i < packageUrls.Length; i++)
+                    {
+                        Log.LogVerbose(VerboseLogTitle, "Installing package from url " + packageUrls[i]);
+                        bool packageValidationSucceded = InstallPackage(packageUrls[i], packages[i]);
 
-                    // Releasing a reference to reduce memory usage
-                    packages[i].Dispose();
-                    packages[i] = null;
+                        // Releasing a reference to reduce memory usage
+                        packages[i].Dispose();
+                        packages[i] = null;
+                    }
                 }
 
                 CultureInfo installedLanguagePackageCulture = InstallLanguagePackage(userCulture);
@@ -156,7 +159,6 @@ namespace Composite.Core.WebClient.Setup
                     ApplicationOnlineHandlerFacade.TurnApplicationOnline();
                     throw;
                 }
-
             }
 
             ApplicationOnlineHandlerFacade.TurnApplicationOnline();
@@ -250,7 +252,7 @@ namespace Composite.Core.WebClient.Setup
             {
                 string url = languagePackages[installLanguagePackageCulture];
 
-                string packageUrl = string.Format(PackageUrlFormat, PackageServerUrl, url);
+                string packageUrl = ResolvePackageUrl(url);
 
                 Log.LogInformation(VerboseLogTitle, "Installing package: " + packageUrl);
 
@@ -337,32 +339,22 @@ namespace Composite.Core.WebClient.Setup
 
         private static SetupSoapClient CreateClient()
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-            if (RuntimeInformation.IsDebugBuild)
-            {
-                basicHttpBinding.CloseTimeout = TimeSpan.FromMinutes(2);
-                basicHttpBinding.OpenTimeout = TimeSpan.FromMinutes(2);
-                basicHttpBinding.ReceiveTimeout = TimeSpan.FromMinutes(2);
-                basicHttpBinding.SendTimeout = TimeSpan.FromMinutes(2);
-            }
-            else
-            {
-                basicHttpBinding.CloseTimeout = TimeSpan.FromMinutes(1);
-                basicHttpBinding.OpenTimeout = TimeSpan.FromMinutes(1);
-                basicHttpBinding.ReceiveTimeout = TimeSpan.FromMinutes(1);
-                basicHttpBinding.SendTimeout = TimeSpan.FromMinutes(1);
-            }
+            var basicHttpBinding = new BasicHttpBinding();
+            var timeout = TimeSpan.FromMinutes(RuntimeInformation.IsDebugBuild ? 2 : 1);
+
+            basicHttpBinding.CloseTimeout = timeout;
+            basicHttpBinding.OpenTimeout = timeout;
+            basicHttpBinding.ReceiveTimeout = timeout;
+            basicHttpBinding.SendTimeout = timeout;
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
             if (PackageServerUrl.StartsWith("https://"))
             {
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
-            }           
+            }
 
-            SetupSoapClient client = new SetupSoapClient(basicHttpBinding, new EndpointAddress(string.Format(SetupServiceUrl, PackageServerUrl)));
-
-            return client;
+            return new SetupSoapClient(basicHttpBinding, new EndpointAddress(string.Format(SetupServiceUrl, PackageServerUrl)));
         }
 
 
@@ -390,10 +382,19 @@ namespace Composite.Core.WebClient.Setup
                      where elm.Attribute(IdAttributeName).Value == idAttribute.Value
                      select elm.Attribute(UrlAttributeName).Value).SingleOrDefault();
 
-                yield return string.Format(PackageUrlFormat, PackageServerUrl, url);
+                yield return ResolvePackageUrl(url);
             }
         }
 
+        private static string ResolvePackageUrl(string url)
+        {
+            if (url.StartsWith("http://") || url.StartsWith("https://"))
+            {
+                return url;
+            }
+
+            return PackageServerUrl + url;
+        }
 
 
         private static void LogValidationResults(IEnumerable<PackageFragmentValidationResult> packageFragmentValidationResults)
