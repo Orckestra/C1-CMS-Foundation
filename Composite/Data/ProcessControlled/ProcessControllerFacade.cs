@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Transactions;
 using Composite.Core.Caching;
+using Composite.Core.Collections.Generic;
 using Composite.Data.Foundation;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Events;
@@ -21,10 +21,10 @@ namespace Composite.Data.ProcessControlled
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class ProcessControllerFacade
     {
-        private static Dictionary<Type, Type> _controlledTypes = new Dictionary<Type, Type>();
+        private static readonly Dictionary<Type, Type> _controlledTypes = new Dictionary<Type, Type>();
 
         private static Dictionary<Type, IProcessController> _processControllers;
-        private static Dictionary<Type, List<IPublishControlledAuxiliary>> _publishControlledAuxiliaries = new Dictionary<Type, List<IPublishControlledAuxiliary>>();
+        private static Hashtable<Type, List<IPublishControlledAuxiliary>> _publishControlledAuxiliaries = new Hashtable<Type, List<IPublishControlledAuxiliary>>();
 
 
         static ProcessControllerFacade()
@@ -44,7 +44,7 @@ namespace Composite.Data.ProcessControlled
         /// <param name="data"></param>
         public static void FullDelete(IData data)
         {
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 using (new DataScope(DataScopeIdentifier.Administrated))
                 {
@@ -85,9 +85,9 @@ namespace Composite.Data.ProcessControlled
             {
                 foreach (Type processControledType in _controlledTypes.Keys)
                 {
-                    if ((compatibleTypes.Contains(type) == false) &&
-                        (processControledType.IsAssignableFrom(targetType)) &&
-                        (processControledType.IsAssignableFrom(type)))
+                    if (!compatibleTypes.Contains(type) &&
+                        processControledType.IsAssignableFrom(targetType) &&
+                        processControledType.IsAssignableFrom(type))
                     {
                         compatibleTypes.Add(type);
                     }
@@ -106,7 +106,7 @@ namespace Composite.Data.ProcessControlled
             if (data == null) throw new ArgumentNullException("data");
             if (elementProviderType == null) throw new ArgumentNullException("elementProviderType");
 
-            List<ElementAction> actions = new List<ElementAction>();
+            var actions = new List<ElementAction>();
 
             Dictionary<Type, Type> processControllerTypes = ProcessControllerRegistry.GetProcessControllerTypes(data.DataSourceId.InterfaceType);
 
@@ -279,11 +279,11 @@ namespace Composite.Data.ProcessControlled
         {
             List<IPublishControlledAuxiliary> publishControlledAuxiliaries;
 
-            if (_publishControlledAuxiliaries.TryGetValue(dataType, out publishControlledAuxiliaries) == false)
+            if (!_publishControlledAuxiliaries.TryGetValue(dataType, out publishControlledAuxiliaries))
             {
                 lock (_publishControlledAuxiliaries)
                 {
-                    if (_publishControlledAuxiliaries.TryGetValue(dataType, out publishControlledAuxiliaries) == false)
+                    if (!_publishControlledAuxiliaries.TryGetValue(dataType, out publishControlledAuxiliaries))
                     {
                         List<PublishControlledAuxiliaryAttribute> attributes = dataType.GetCustomAttributesRecursively<PublishControlledAuxiliaryAttribute>().ToList();
 
@@ -366,7 +366,7 @@ namespace Composite.Data.ProcessControlled
         private static void Flush()
         {
             _processControllers = null;
-            _publishControlledAuxiliaries = new Dictionary<Type, List<IPublishControlledAuxiliary>>();
+            _publishControlledAuxiliaries = new Hashtable<Type, List<IPublishControlledAuxiliary>>();
         }
 
 
