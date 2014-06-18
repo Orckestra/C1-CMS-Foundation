@@ -33,6 +33,13 @@ namespace Composite.Core.Xml
             new NamespaceName { Name = "title", Namespace = "" }
         });
 
+        private static readonly HashSet<NamespaceName> AlwaysWrapElements = new HashSet<NamespaceName>(new[]
+        {
+            new NamespaceName { Name = "html", Namespace = "" },
+            new NamespaceName { Name = "head", Namespace = "" },
+            new NamespaceName { Name = "body", Namespace = "" }
+        });
+
         private static readonly HashSet<NamespaceName> InlineElements = new HashSet<NamespaceName>(new []
         {
             new NamespaceName { Name = "a", Namespace = "" }, 
@@ -175,9 +182,9 @@ namespace Composite.Core.Xml
                     NodeTreeToString(node.ChildNodes, stringBuilder, indentString, keepWhiteSpaces || nodeIsWhiteSpaceAware);
 
 
-                    if ((node.IsEmpty == false) && (isSelfClosingAndEmpty == false))
+                    if ((node.IsEmpty == false || node.IsAlwaysWrapElement()) && (isSelfClosingAndEmpty == false))
                     {
-                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements) && !node.IsCompactElement())
+                        if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsAlwaysWrapElement()) && !node.IsCompactElement())
                         {
                             stringBuilder.AppendLine().AddIndent(node.Level, indentString);
                         }
@@ -479,6 +486,7 @@ namespace Composite.Core.Xml
             private TriState _containsBlockElements = TriState.Undefined;
             private TriState _isBlockElement = TriState.Undefined;
             private TriState _isCompactElement = TriState.Undefined;
+            private TriState _isAlwaysWrapElement = TriState.Undefined;
             private NamespaceName _namespaceName;
 
             public XmlNodeType NodeType { get; internal set; }
@@ -602,6 +610,20 @@ namespace Composite.Core.Xml
 
                 return _isCompactElement == TriState.True;
             }
+
+
+            public bool IsAlwaysWrapElement()
+            {
+                if (_isAlwaysWrapElement == TriState.Undefined)
+                {
+                    _isAlwaysWrapElement = this.NodeType == XmlNodeType.Element
+                                      && AlwaysWrapElements.Contains(GetNamespaceName())
+                                      ? TriState.True : TriState.False; ;
+                }
+
+                return _isAlwaysWrapElement == TriState.True;
+            }
+            
 
             public bool IsBlockElement()
             {
