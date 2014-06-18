@@ -95,7 +95,7 @@ namespace Composite.C1Console.Security
                 return resultPermissionTypes;
             }
 
-            IEnumerable<PermissionType> userPermissionTypes = PermissionTypeFacadeCaching.GetUserPermissionTypes(userToken, entityToken);
+            IReadOnlyCollection<PermissionType> userPermissionTypes = PermissionTypeFacadeCaching.GetUserPermissionTypes(userToken, entityToken);
             if (userPermissionTypes == null)
             {
                 userPermissionTypes = RecursiveUpdateCurrentUserPermissionTypes(userToken, entityToken, userPermissionDefinitions, new HashSet<EntityTokenPair>());
@@ -103,7 +103,7 @@ namespace Composite.C1Console.Security
                 PermissionTypeFacadeCaching.SetUserPermissionTypes(userToken, entityToken, userPermissionTypes.ToList());
             }
 
-            IEnumerable<PermissionType> userGroupPermissionTypes = PermissionTypeFacadeCaching.GetUserGroupPermissionTypes(userToken, entityToken);
+            IReadOnlyCollection<PermissionType> userGroupPermissionTypes = PermissionTypeFacadeCaching.GetUserGroupPermissionTypes(userToken, entityToken);
             if (userGroupPermissionTypes == null)
             {
                 userGroupPermissionTypes = RecursiveUpdateCurrentUserGroupPermissionTypes(userToken, entityToken, userGroupPermissionDefinitions, new HashSet<EntityTokenPair>());
@@ -499,10 +499,10 @@ namespace Composite.C1Console.Security
         {
             get
             {
+                yield return PermissionType.Read;
                 yield return PermissionType.Add;
                 yield return PermissionType.Edit;
                 yield return PermissionType.Delete;
-                yield return PermissionType.Read;
                 yield return PermissionType.Approve;
                 yield return PermissionType.Publish;
                 yield return PermissionType.Configure;
@@ -540,9 +540,9 @@ namespace Composite.C1Console.Security
 
 
 
-        private static IEnumerable<PermissionType> RecursiveUpdateCurrentUserPermissionTypes(UserToken userToken, EntityToken entityToken, IEnumerable<UserPermissionDefinition> userPermissionDefinitions, HashSet<EntityTokenPair> alreadyProcessedTokens)
-        {            
-            IEnumerable<PermissionType> cached = PermissionTypeFacadeCaching.GetUserPermissionTypes(userToken, entityToken);
+        private static IReadOnlyCollection<PermissionType> RecursiveUpdateCurrentUserPermissionTypes(UserToken userToken, EntityToken entityToken, IEnumerable<UserPermissionDefinition> userPermissionDefinitions, HashSet<EntityTokenPair> alreadyProcessedTokens)
+        {
+            IReadOnlyCollection<PermissionType> cached = PermissionTypeFacadeCaching.GetUserPermissionTypes(userToken, entityToken);
             if (cached != null)
             {
                 return cached;
@@ -551,14 +551,14 @@ namespace Composite.C1Console.Security
             UserPermissionDefinition userPermissionDefinition = userPermissionDefinitions
                 .Where(f => entityToken.Equals(f.EntityToken)).SingleOrDefaultOrException("More then one UserPermissionDefinition for the same entity token");
 
-            List<PermissionType> thisPermisstionTypes = new List<PermissionType>();
+            var thisPermisstionTypes = new List<PermissionType>();
             if (userPermissionDefinition != null)
             {
                 thisPermisstionTypes.AddRange(userPermissionDefinition.PermissionTypes);
             }
 
 
-            if (thisPermisstionTypes.Count() > 0)
+            if (thisPermisstionTypes.Count > 0)
             {
                 thisPermisstionTypes = thisPermisstionTypes.Distinct().ToList();
 
@@ -601,9 +601,9 @@ namespace Composite.C1Console.Security
 
 
 
-        private static IEnumerable<PermissionType> RecursiveUpdateCurrentUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, HashSet<EntityTokenPair> alreadyProcessedTokens)
-        {            
-            IEnumerable<PermissionType> cached = PermissionTypeFacadeCaching.GetUserGroupPermissionTypes(userToken, entityToken);
+        private static IReadOnlyCollection<PermissionType> RecursiveUpdateCurrentUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken, IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions, HashSet<EntityTokenPair> alreadyProcessedTokens)
+        {
+            IReadOnlyCollection<PermissionType> cached = PermissionTypeFacadeCaching.GetUserGroupPermissionTypes(userToken, entityToken);
             if (cached != null)
             {
                 return cached;
@@ -619,7 +619,7 @@ namespace Composite.C1Console.Security
                 thisPermisstionTypes.AddRange(groupPermissionTypes);
             }
 
-            if (thisPermisstionTypes.Count() > 0)
+            if (thisPermisstionTypes.Count > 0)
             {
                 thisPermisstionTypes = thisPermisstionTypes.Distinct().ToList();
 

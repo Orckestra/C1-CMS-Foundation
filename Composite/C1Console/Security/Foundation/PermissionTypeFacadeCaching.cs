@@ -13,7 +13,7 @@ namespace Composite.C1Console.Security.Foundation
         private static readonly string UserGroupPermissionTypeCachingKey = "UserGroupPermissionTypeCachingKey_UserPermissionTypeCachingKey";
 
 
-        public static List<PermissionType> GetCurrentPermissionTypes(UserToken userToken, EntityToken entityToken)
+        public static IReadOnlyCollection<PermissionType> GetCurrentPermissionTypes(UserToken userToken, EntityToken entityToken)
         {
             return GetFromCache(userToken, entityToken, CurrentPermissionTypeCachingKey);
         }
@@ -41,7 +41,7 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        public static List<PermissionType> GetUserPermissionTypes(UserToken userToken, EntityToken entityToken)
+        public static IReadOnlyCollection<PermissionType> GetUserPermissionTypes(UserToken userToken, EntityToken entityToken)
         {
             return GetFromCache(userToken, entityToken, UserPermissionTypeCachingKey);
         }
@@ -55,7 +55,7 @@ namespace Composite.C1Console.Security.Foundation
 
 
 
-        public static List<PermissionType> GetUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken)
+        public static IReadOnlyCollection<PermissionType> GetUserGroupPermissionTypes(UserToken userToken, EntityToken entityToken)
         {
             return GetFromCache(userToken, entityToken, UserGroupPermissionTypeCachingKey);
         }
