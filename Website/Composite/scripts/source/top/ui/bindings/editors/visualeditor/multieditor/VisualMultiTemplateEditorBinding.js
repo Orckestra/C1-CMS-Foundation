@@ -403,9 +403,11 @@ VisualMultiTemplateEditorBinding.prototype.updateTemplatePreview = function (syn
 	var templateId = this.getDescendantBindingByLocalName ( "selector" ).getValue();
 	this._templatePreview = null;
 	var self = this;
-	var result = PageTemplateService.GetTemplatePreviewInformation(pageId, templateId);
-	self._templatePreview = result;
-	self.updateBodyWidth();
+	PageTemplateService.GetTemplatePreviewInformation(pageId, templateId,
+		function(result) {
+			self._templatePreview = result;
+			self.updateBodyWidth();
+		});
 	
 }
 
