@@ -34,16 +34,10 @@ namespace Composite.Core.WebClient.FlowMediators
                 {
                     // user with out any access logging in - return "empty root"
                     roots = ElementFacade.GetRootsWithNoSecurity().ToList();
-                    if (roots.Count == 0)
-                    {
-                        throw new InvalidOperationException("No roots specified");
-                    }
-                    else if (roots.Count > 1)
-                    {
-                        throw new InvalidOperationException("More than one root specified");
-                    }
+                    if (roots.Count == 0) throw new InvalidOperationException("No roots specified");
+                    if (roots.Count > 1) throw new InvalidOperationException("More than one root specified");
 
-                    Element emptyElement = new Element(new ElementHandle("nullRoot", new NullRootEntityToken()));
+                    var emptyElement = new Element(new ElementHandle("nullRoot", new NullRootEntityToken()));
                     emptyElement.VisualData = new ElementVisualizedData { HasChildren = false, Label = "nullroot", Icon = CommonElementIcons.Folder };
 
                     roots.Clear();
@@ -63,13 +57,13 @@ namespace Composite.Core.WebClient.FlowMediators
         public static List<ClientElement> GetRoots(string providerHandle, string serializedSearchToken)
         {
                 SearchToken searchToken = null;
-                if (string.IsNullOrEmpty(serializedSearchToken) == false)
+                if (!string.IsNullOrEmpty(serializedSearchToken))
                 {
                     searchToken = SearchToken.Deserialize(serializedSearchToken);
                 }
 
                 List<Element> roots;
-                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
+                if (UserSettings.ForeignLocaleCultureInfo == null || UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo))
                 {
                     roots = ElementFacade.GetRoots(new ElementProviderHandle(providerHandle), searchToken).ToList();
                 }
@@ -123,13 +117,13 @@ namespace Composite.Core.WebClient.FlowMediators
                 //int t2 = Environment.TickCount;
 
                 SearchToken searchToken = null;
-                if (string.IsNullOrEmpty(serializedSearchToken) == false)
+                if (!string.IsNullOrEmpty(serializedSearchToken))
                 {
                     searchToken = SearchToken.Deserialize(serializedSearchToken);
                 }
 
                 List<Element> childElements;
-                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
+                if (UserSettings.ForeignLocaleCultureInfo == null || UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo))
                 {
                     childElements = ElementFacade.GetChildren(elementHandle, searchToken).ToList();
                 }
@@ -177,15 +171,15 @@ namespace Composite.Core.WebClient.FlowMediators
                         continue;
                     }
                     
-                    ElementHandle elementHandle = new ElementHandle(node.ProviderName, entityToken, node.Piggybag);
+                    var elementHandle = new ElementHandle(node.ProviderName, entityToken, node.Piggybag);
                     SearchToken searchToken = null;
-                    if (string.IsNullOrEmpty(node.SearchToken) == false)
+                    if (!string.IsNullOrEmpty(node.SearchToken))
                     {
                         searchToken = SearchToken.Deserialize(node.SearchToken);
                     }
 
                     List<Element> childElements;
-                    if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
+                    if (UserSettings.ForeignLocaleCultureInfo == null || UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo))
                     {
                         childElements = ElementFacade.GetChildren(elementHandle, searchToken).ToList();
                     }
@@ -217,7 +211,7 @@ namespace Composite.Core.WebClient.FlowMediators
                 ElementHandle elementHandle = new ElementHandle(providerName, elementEntityToken, piggybag);
 
                 IEnumerable<LabeledProperty> labeledProperties;
-                if ((UserSettings.ForeignLocaleCultureInfo == null) || (UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo)))
+                if (UserSettings.ForeignLocaleCultureInfo == null || UserSettings.ForeignLocaleCultureInfo.Equals(UserSettings.ActiveLocaleCultureInfo))
                 {
                     labeledProperties = ElementFacade.GetLabeledProperties(elementHandle);
                 }
@@ -240,13 +234,13 @@ namespace Composite.Core.WebClient.FlowMediators
             using (DebugLoggingScope.MethodInfoScope)
             {
                 EntityToken entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
-                if (entityToken.IsValid() == false)
+                if (!entityToken.IsValid())
                 {
                     ShowInvalidEntityMessage(consoleId);
                     return;
                 }
 
-                ElementHandle elementHandle = new ElementHandle(providerName, entityToken, piggybag);
+                var elementHandle = new ElementHandle(providerName, entityToken, piggybag);
 
                 ActionToken actionToken = ActionTokenSerializer.Deserialize(serializedActionToken, true);
                 ActionHandle actionHandle = new ActionHandle(actionToken);

@@ -59,7 +59,7 @@ namespace Composite.C1Console.Security
 
 
         /// <summary>
-        /// The state of the EntityToken
+        /// The state of the EntityToken. Invalid entity tokens will be automatically removed from the system.
         /// </summary>
         /// <returns>The state of the EntityToken.</returns>
         public virtual bool IsValid() { return true; }

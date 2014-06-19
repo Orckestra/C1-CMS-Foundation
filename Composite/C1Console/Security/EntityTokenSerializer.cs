@@ -29,7 +29,7 @@ namespace Composite.C1Console.Security
         {
             Verify.ArgumentNotNull(entityToken, "entityToken");
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             StringConversionServices.SerializeKeyValuePair(sb, "entityTokenType", TypeManager.SerializeType(entityToken.GetType()));
             
@@ -67,9 +67,9 @@ namespace Composite.C1Console.Security
 
             Dictionary<string, string> dic = StringConversionServices.ParseKeyValueCollection(serialziedEntityToken);
 
-            if ((dic.ContainsKey("entityTokenType") == false) ||
-                (dic.ContainsKey("entityToken") == false) ||
-                ((includeHashValue) && (dic.ContainsKey("entityTokenHash") == false)))
+            if (!dic.ContainsKey("entityTokenType")  ||
+                !dic.ContainsKey("entityToken") ||
+                (includeHashValue && !dic.ContainsKey("entityTokenHash")))
             {
                 throw new ArgumentException("Failed to deserialize the value. Is has to be searized with EntityTokenSerializer.", "serialziedEntityToken");
             }
@@ -82,7 +82,7 @@ namespace Composite.C1Console.Security
                 string entityTokenHash = StringConversionServices.DeserializeValueString(dic["entityTokenHash"]);
 
                 HashValue hashValue = HashValue.Deserialize(entityTokenHash);
-                if (HashSigner.ValidateSignedHash(entityTokenString, hashValue) == false)
+                if (!HashSigner.ValidateSignedHash(entityTokenString, hashValue))
                 {
                     throw new SecurityException("Serialized entity token is tampered");
                 }
