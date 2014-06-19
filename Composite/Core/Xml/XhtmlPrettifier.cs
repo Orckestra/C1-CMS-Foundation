@@ -164,10 +164,12 @@ namespace Composite.Core.Xml
                     }
 
                     bool isSelfClosingAndEmpty = node.IsSelfClosingElement() &&
+                                                 !node.IsAlwaysWrapElement() &&
+                                                 node.IsEmpty &&
                                                  !node.ChildNodes.Any(f => f.NodeType == XmlNodeType.Element 
                                                                            || f.NodeType == XmlNodeType.Text);
 
-                    if (!node.IsEmpty && !isSelfClosingAndEmpty)
+                    if (!isSelfClosingAndEmpty)
                     {
                         stringBuilder.Append(">");
                     }
@@ -182,7 +184,7 @@ namespace Composite.Core.Xml
                     NodeTreeToString(node.ChildNodes, stringBuilder, indentString, keepWhiteSpaces || nodeIsWhiteSpaceAware);
 
 
-                    if ((node.IsEmpty == false || node.IsAlwaysWrapElement()) && (isSelfClosingAndEmpty == false))
+                    if (isSelfClosingAndEmpty == false)
                     {
                         if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsAlwaysWrapElement()) && !node.IsCompactElement())
                         {
