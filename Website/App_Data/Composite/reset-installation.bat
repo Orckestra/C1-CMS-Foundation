@@ -94,7 +94,7 @@ del TreeDefinitions\Composite.Community.Blog.Entries.xmll
 :: Razor package cleanup
 del ..\..\Bin\CompositeC1Contrib.RazorFunctions.dll
 del ..\..\Bin\Microsoft.Web.*.dll
-del ..\..\Bin\System.Web.*.dll
+:: del ..\..\Bin\System.Web.*.dll
 
 
 :: Extranet cleanup
@@ -108,7 +108,12 @@ del ..\..\Bin\Composite.Community.Newsletter.DataTypeBased.dll
 del ..\..\Bin\Composite.Community.Newsletter.FunctionBased.dll
 del ..\..\Newsletter.ashx
 del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.Newsletter.SubjectBased.xml
+rd /s /q ..\..\App_Data\NewsletterType
 del ..\..\App_GlobalResources\Composite\Community\Newsletter.resx
+
+
+:: package frontend files
+rd /s /q ..\..\Frontend\Composite
 
 
 :: Event calender cleanup
@@ -126,7 +131,11 @@ del ..\..\App_Data\Composite\TreeDefinitions\Composite.Community.ContactFrom.Ema
 
 :: Versioning cleanup
 del ..\..\Bin\Composite.Versioning.ContentVersioning.dll
+del TreeDefinitions\Composite.Versioning.ContentVersioning.xml
 
+:: Root webconfig reset
+tf undo ../../web.config /noprompt
+attrib -r ../../web.config
 
 :: Base site cleanup
 rd ..\..\Frontend\Composite\C1BaseSite /S /Q
@@ -148,11 +157,15 @@ del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Config.xml /F
 del ..\..\Frontend\Styles\VisualEditor\VisualEditor.Default.css /F
 
 
-
+:: XML Data Provider
+del Configuration\DynamicXmlDataProvider.config
 
 
 :: Omni corp cleanup
 del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
+
+:: LESS cleanup
+del ..\..\bin\Composite.Web.Css.Less.dll
 
 
 :: Package create cleanup
@@ -160,3 +173,26 @@ del ..\..\Frontend\Composite\Search\SimplePageSearch\Styles.css
 rd ..\..\Composite\content\forms\InstalledPackages\Composite.Tools.PackageCreator /S /Q
 del ..\..\Bin\Composite.Tools.PackageCreator.dll 
 del ..\..\Composite\InstalledPackages\localization\Composite.Tools.PackageCreator.en-us.xml
+rd /s /q ..\..\App_Data\PackageCreator
+
+:: Form builder
+del Configuration\Composite.Forms.FormBuilder.xml
+
+:: Image Crop
+del Configuration\Composite.Media.ImageCrop.xml
+
+:: Event
+rd /s /q ..\..\RSS
+rd /s /q ..\..\App_GlobalResources
+
+
+:: assemblies
+del ..\..\bin\Composite.Tools.*.*
+del ..\..\bin\Composite.Community.*.*
+del ..\..\bin\Composite.Web.*.*
+del ..\..\bin\Composite.Tools.*.*
+del ..\..\bin\Composite.Media.*.*
+del ..\..\bin\Composite.Forms.*.*
+del ..\..\bin\Composite.XmlSerializers.dll
+
+
