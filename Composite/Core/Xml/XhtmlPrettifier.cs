@@ -184,7 +184,7 @@ namespace Composite.Core.Xml
                     NodeTreeToString(node.ChildNodes, stringBuilder, indentString, keepWhiteSpaces || nodeIsWhiteSpaceAware);
 
 
-                    if (isSelfClosingAndEmpty == false)
+                    if (!isSelfClosingAndEmpty)
                     {
                         if (!keepWhiteSpaces && !nodeIsWhiteSpaceAware && (node.ContainsBlockElements || node.IsAlwaysWrapElement()) && !node.IsCompactElement())
                         {
@@ -455,7 +455,7 @@ namespace Composite.Core.Xml
 
                     if (node.NodeType == XmlNodeType.Element)
                     {
-                        if (node.IsEmpty == false)
+                        if (!node.IsEmpty)
                         {
                             foreach (XmlNode childNode in BuildTree(xmlReader, level + 1))
                             {
