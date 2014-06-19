@@ -195,19 +195,6 @@ VisualEditorPageBinding.prototype.validate = function () {
 	if ( this.isSourceMode == true ) {
 		result = this._sourceEditor.validate (); 
 	}
-	
-	/*
-	 * Validate more stuff.
-	 */
-	if ( result == true ) {
-		var test = VisualEditorBinding.getTinyContent ( 
-			this.getContent (), 
-			this._editorBinding 
-		);
-		if ( test == null ) {
-			result = false;
-		}
-	}
 	return result;
 }
 

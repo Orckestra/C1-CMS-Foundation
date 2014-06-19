@@ -99,11 +99,6 @@ VisualMultiEditorBinding.prototype._setup = function () {
 VisualMultiEditorBinding.prototype._initialize = function () {
 	
 	var self = this;
-		
-	/*
-	 * Rregister formally as DataBinding with random key.
-	 */
-	this._registerWithDataManager ( "generated" + KeyMaster.getUniqueKey ());
 
 	/*
 	 * Rig up the templates tree to update editor 
