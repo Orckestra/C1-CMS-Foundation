@@ -37,7 +37,8 @@ namespace Composite.Core.WebClient
     /// </summary>
     internal class FunctionBoxHttpHandler : HttpTaskAsyncHandler
     {
-        private const int _minCharsPerDescriptionLine = 55;
+        private const int MinCharsPerDescriptionLine = 55;
+        private static readonly string LogTitle = typeof (FunctionBoxHttpHandler).Name;
 
         public override async Task ProcessRequestAsync(HttpContext context)
         {
@@ -87,6 +88,11 @@ namespace Composite.Core.WebClient
                         {
                             string fileName = await FunctionPreview.GetPreviewFunctionPreviewImageFile(context);
 
+                            if (!context.Response.IsClientConnected)
+                            {
+                                return;
+                            }
+
                             if (fileName != null)
                             {
                                 previewImage = new Bitmap(fileName);
@@ -134,8 +140,24 @@ namespace Composite.Core.WebClient
             }
             catch (Exception ex)
             {
-                Log.LogError(this.GetType().ToString(), ex.ToString());
-                context.Response.Redirect(UrlUtils.AdminRootPath + "/images/function.png", false);
+                if (ex is HttpException && !context.Response.IsClientConnected)
+                {
+                    return;
+                }
+
+                Log.LogError(LogTitle, ex);
+
+                if (context.Response.IsClientConnected)
+                {
+                    try
+                    {
+                        context.Response.Redirect(UrlUtils.AdminRootPath + "/images/function.png", false);
+                    }
+                    catch (Exception redirectError)
+                    {
+                        Log.LogError(LogTitle, redirectError);
+                    }
+                }
             }
         }
 
@@ -182,7 +204,7 @@ namespace Composite.Core.WebClient
 
         private static List<string> GetDescriptionLines(string description)
         {
-            List<string> lines = new List<string>();
+            var lines = new List<string>();
 
             if (!description.IsNullOrEmpty())
             {
@@ -194,9 +216,9 @@ namespace Composite.Core.WebClient
 
                     string rest = naturalLine.Trim();
 
-                    while (rest.Length > _minCharsPerDescriptionLine && rest.IndexOf(' ') > -1)
+                    while (rest.Length > MinCharsPerDescriptionLine && rest.IndexOf(' ') > -1)
                     {
-                        int firstSpaceIndex = rest.LastIndexOf(' ', _minCharsPerDescriptionLine);
+                        int firstSpaceIndex = rest.LastIndexOf(' ', MinCharsPerDescriptionLine);
 
                         if (firstSpaceIndex == -1) firstSpaceIndex = rest.IndexOf(' ');
 

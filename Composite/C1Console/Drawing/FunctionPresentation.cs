@@ -81,9 +81,8 @@ namespace Composite.C1Console.Drawing
             {
                 var headerSize = header.HeaderSize;
 
-                int minTextAreaWidth = 350;
-
-                int leftPadding = 14, rightPadding = 10, topPadding = 12, bottomPadding = 10;
+                const int minTextAreaWidth = 350;
+                const int leftPadding = 14, rightPadding = 10, topPadding = 12, bottomPadding = 10;
 
                 var linesTrimmed = lines.Take(20).ToList();
 
