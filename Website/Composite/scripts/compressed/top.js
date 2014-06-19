@@ -27745,7 +27745,6 @@ this._startContent=VisualEditorBinding.DEFAULT_CONTENT;
 };
 VisualMultiEditorBinding.prototype._initialize=function(){
 var self=this;
-this._registerWithDataManager("generated"+KeyMaster.getUniqueKey());
 var _10a9=this.getContentWindow().bindingMap.templatetree;
 _10a9.addActionListener(TreeBinding.ACTION_SELECTIONCHANGED,{handleAction:function(_10aa){
 var _10ab=_10a9.getSelectedTreeNodeBindings().getFirst();
