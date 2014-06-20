@@ -223,9 +223,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (XElement typeElement in typesElement.Elements("Type"))
             {
-                string interfaceTypeName = null;
-
-
                 XAttribute typeAttribute = typeElement.Attribute("type");
                 if (typeAttribute == null)
                 {
@@ -233,7 +230,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     continue;
                 }
                 
-                interfaceTypeName = typeAttribute.Value;
+                string interfaceTypeName = typeAttribute.Value;
 
                 interfaceTypeName = TypeManager.FixLegasyTypeName(interfaceTypeName);
 
@@ -306,9 +303,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XDocument doc;
                     try
                     {
-                        using (C1StreamReader sr = new C1StreamReader(this.InstallerContext.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
+                        using (var reader = new C1StreamReader(this.InstallerContext.ZipFileSystem.GetFileStream(dataFilenameAttribute.Value)))
                         {
-                            doc = XDocument.Load(sr);
+                            doc = XDocument.Load(reader);
                         }
                     }
                     catch (Exception ex)
@@ -322,7 +319,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     bool isDynamicAdded = isDynamicAddedAttribute != null && (bool)isDynamicAddedAttribute;
 
-                    DataType dataType = new DataType()
+                    var dataType = new DataType
                     {
                         InterfaceTypeName = interfaceTypeName,
                         DataScopeIdentifier = dataScopeIdentifier,
@@ -744,27 +741,39 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 hashset.Add(keyValuePair);
             }
 
-            public bool KeyRegistered(DataType referencedDataType, KeyValuePair<string, object> keyValuePair)
+            public bool KeyRegistered(DataType refereeDataType, KeyValuePair<string, object> keyValuePair)
             {
-                var dataScopeIdentifier = referencedDataType.DataScopeIdentifier;
+                var dataScopeIdentifier = refereeDataType.DataScopeIdentifier;
 
                 if (!_isLocalized)
                 {
                     return KeyRegistered(dataScopeIdentifier, "", keyValuePair);
                 }
 
-                if (referencedDataType.Locale != null)
+                if (KeyRegistered(refereeDataType.DataScopeIdentifier, AllLocalesKey, keyValuePair))
                 {
-                    return KeyRegistered(referencedDataType.DataScopeIdentifier, referencedDataType.Locale.Name, keyValuePair);
+                    return true;
                 }
 
-                if (referencedDataType.AddToCurrentLocale)
+                if (refereeDataType.Locale != null)
                 {
-                    var currentLocale = LocalizationScopeManager.CurrentLocalizationScope;
-                    return KeyRegistered(referencedDataType.DataScopeIdentifier, currentLocale.Name, keyValuePair);
+                    return KeyRegistered(refereeDataType.DataScopeIdentifier, refereeDataType.Locale.Name, keyValuePair);
                 }
 
-                return KeyRegistered(referencedDataType.DataScopeIdentifier, AllLocalesKey, keyValuePair);
+                var currentLocale = LocalizationScopeManager.CurrentLocalizationScope;
+
+                if (refereeDataType.AddToCurrentLocale)
+                {
+                    return KeyRegistered(refereeDataType.DataScopeIdentifier, currentLocale.Name, keyValuePair);
+                }
+
+                if (DataLocalizationFacade.ActiveLocalizationCultures.Count() == 1
+                    && KeyRegistered(refereeDataType.DataScopeIdentifier, currentLocale.Name, keyValuePair))
+                {
+                    return true;
+                }
+
+                return false;
             }
 
             public bool KeyRegistered(DataScopeIdentifier publicationScope, string languageName, KeyValuePair<string, object> keyValuePair)
