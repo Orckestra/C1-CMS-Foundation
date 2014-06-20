@@ -329,7 +329,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                             continue;
                         }
 
-                        DataTypeTypesManager.AddNewAssembly(assembly);
+                        DataTypeTypesManager.AddNewAssembly(assembly, false);
                     }
                     
                 }

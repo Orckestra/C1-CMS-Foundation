@@ -93,32 +93,31 @@ namespace Composite.Data
 
 
 
+        public static void AddNewAssembly(Assembly assembly)
+        {
+            AddNewAssembly(assembly, true);
+        }
+
         /// <summary>
         /// Call this method whan a new assembly is load/added into the app domain.
-        /// 
         /// </summary>
         /// <param name="assembly"></param>
-        public static void AddNewAssembly(Assembly assembly)
+        /// <param name="logTypeLoadErrors"></param>
+        public static void AddNewAssembly(Assembly assembly, bool logTypeLoadErrors)
         {
             try
             {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    if (typeof(IData).IsAssignableFrom(type))
-                    {
-                        _LoadedDataTypes.Add(type);
-                    }
-                }
+                var types = assembly.GetTypes();
+
+                _LoadedDataTypes.AddRange(types.Where(typeof(IData).IsAssignableFrom));
             }
             catch (ReflectionTypeLoadException exception)
             {
-                if (exception.LoaderExceptions != null)
+                if (logTypeLoadErrors)
                 {
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception.LoaderExceptions.First()));
-                }
-                else
-                {
-                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exception));
+                    var exceptionToLog = exception.LoaderExceptions != null ? exception.LoaderExceptions.First() : exception;
+
+                    Log.LogError(LogTitle, new Exception("Failed to load assebmly '{0}'".FormatWith(assembly.FullName), exceptionToLog));
                 }
             }
         }
@@ -133,7 +132,7 @@ namespace Composite.Data
             if (assemblyPath.StartsWith(CodeGenerationManager.BinFolder, StringComparison.InvariantCultureIgnoreCase)) return true;
 
             string assemblyFileName = Path.GetFileName(assemblyPath);
-            bool locatedInBinFolder = C1Directory.GetFiles(CodeGenerationManager.BinFolder).Where(f => Path.GetFileName(f).Equals(assemblyFileName, StringComparison.InvariantCultureIgnoreCase)).Any();
+            bool locatedInBinFolder = C1Directory.GetFiles(CodeGenerationManager.BinFolder).Any(f => Path.GetFileName(f).Equals(assemblyFileName, StringComparison.InvariantCultureIgnoreCase));
             if (locatedInBinFolder) return true;
 
 
