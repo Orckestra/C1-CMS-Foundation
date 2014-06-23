@@ -69,10 +69,7 @@ namespace Composite.Core.Extensions
             {
                 return name;
             }
-            else
-            {
-                return string.Format("{0}{1}{2}", namespaceName, separator, name);
-            }
+            return string.Format("{0}{1}{2}", namespaceName, separator, name);
         }
 
 
@@ -92,7 +89,7 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static string GetNameFromNamespace(this string s)
         {
-            int index = s.LastIndexOf(".");
+            int index = s.LastIndexOf(".", StringComparison.Ordinal);
             if (index < 0)
             {
                 return s;
@@ -105,7 +102,7 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static string GetNamespace(this string s)
         {
-            int index = s.LastIndexOf(".");
+            int index = s.LastIndexOf(".", StringComparison.Ordinal);
             if (index <= 0)
             {
                 return string.Empty;
@@ -193,7 +190,7 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static string GetFolderName(this string s, char separator)
         {
-            if (s == separator.ToString())
+            if (s.Length == 1 && s[0] == separator)
             {
                 return null;
             }
@@ -211,15 +208,11 @@ namespace Composite.Core.Extensions
                 {
                     return foldernames[foldernames.Length - 2];
                 }
-                else
-                {
-                    throw new System.NotImplementedException();
-                }
+                
+                throw new System.NotImplementedException();
             }
-            else
-            {
-                return foldernames[foldernames.Length - 1];
-            }
+            
+            return foldernames[foldernames.Length - 1];
         }
 
 
@@ -241,6 +234,8 @@ namespace Composite.Core.Extensions
         /// <exclude />
         public static string GetDirectory(this string s, char separator)
         {
+            Verify.ArgumentNotNull(s, "s");
+
             int lastIndex = s.LastIndexOf(separator);
             if (lastIndex > 0)
             {
@@ -256,7 +251,7 @@ namespace Composite.Core.Extensions
                 return "";
             }
 
-            if (!s.Contains(separator.ToString()))
+            if (s.IndexOf(separator) == -1)
             {
                 return "";
             }
@@ -275,6 +270,9 @@ namespace Composite.Core.Extensions
         /// <returns></returns>
         public static string Combine(this string path, string otherPath, char separator)
         {
+            Verify.ArgumentNotNull(path, "path");
+            Verify.ArgumentNotNull(otherPath, "otherPath");
+
             string childPath = otherPath;
             if (otherPath.StartsWith("/"))
             {
@@ -285,7 +283,7 @@ namespace Composite.Core.Extensions
                 childPath = otherPath.Substring(0, otherPath.Length - 1);
             }
 
-            if (path == separator.ToString())
+            if (path.Length == 1 && path[0] == separator)
             {
                 return path + childPath;
             }
@@ -308,10 +306,16 @@ namespace Composite.Core.Extensions
         /// <returns></returns>
         public static string Replace(this string str, string oldValue, string newValue, StringComparison comparison)
         {
-            var sb = new StringBuilder();
+            int index = str.IndexOf(oldValue, comparison);
+
+            if (index == -1)
+            {
+                return str;
+            }
 
             int previousIndex = 0;
-            int index = str.IndexOf(oldValue, comparison);
+            var sb = new StringBuilder();
+
             while (index != -1)
             {
                 sb.Append(str.Substring(previousIndex, index - previousIndex));
