@@ -68,9 +68,17 @@ TextBoxBinding.prototype._buildDOMContent = function () {
  * Get input element. A textarea, in this case.
  * @return {HTMLInputElement}
  */
-TextBoxBinding.prototype._getInputElement = function () {
-	
-	var element = DOMUtil.createElementNS ( Constants.NS_XHTML, "textarea", this.bindingDocument );
+TextBoxBinding.prototype._getInputElement = function() {
+	var element;
+	// By default, explorer create textarea which convert \n to <br />
+	// This hack create normal textarea
+	if (Client.isExplorer || Client.isExplorer11) {
+		var div = this.bindingDocument.createElement("div");
+		div.innerHTML = "<textarea></textarea>";
+		element = div.firstChild;
+	} else {
+		element = DOMUtil.createElementNS(Constants.NS_XHTML, "textarea", this.bindingDocument);
+	}
 	element.tabIndex = -1;
 	return element;
 } 
