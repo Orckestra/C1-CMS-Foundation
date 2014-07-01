@@ -55,6 +55,11 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
 	        console.log('REDIRECT: ' + response.url);
 	        phantom.exit(); // TODO: optimize, no exit needed
 	    }
+
+	    if (response.id == 1 && response.status == 503) {
+	        console.log('503 Service Unavailable.');
+	        phantom.exit(); // TODO: optimize, no exit needed
+	    }
 	}
 
     // called by our custom js injected in the rendered page
