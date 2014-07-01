@@ -126,7 +126,7 @@ namespace Composite.Core.Xml
 
             IEnumerable<XmlNode> tree = BuildTree(xmlString, out cdataMatchHandler);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             NodeTreeToString(tree, sb, indentString, false);
 
             string result = sb.ToString();
@@ -351,6 +351,10 @@ namespace Composite.Core.Xml
         }
 
 
+        
+        /// <summary>
+        /// Merges sequences of white spaces
+        /// </summary>
         /// <exclude />
         public static string SuperTrim(string value)
         {
@@ -362,11 +366,20 @@ namespace Composite.Core.Xml
             int oldIndex = 0;
             while (index < value.Length)
             {
-                if (WhitespaceCharsLookup.Contains(value[index]) )
+                char ch = value[index];
+
+                // If there's just one space in a sequence, ignoring it
+                if (ch == ' ' && !WhitespaceCharsLookup.Contains(value[index + 1]))
+                {
+                    index += 2;
+                    continue;
+                }
+
+                if(WhitespaceCharsLookup.Contains(ch))
                 {
                     sb = sb ?? new StringBuilder();
 
-                    sb.Append(value.Substring(oldIndex, index - oldIndex));
+                    sb.Append(value, oldIndex, index - oldIndex);
                     sb.Append(" ");
 
                     do
@@ -385,7 +398,7 @@ namespace Composite.Core.Xml
                 return value;
             }
 
-            sb.Append(value.Substring(oldIndex, index - oldIndex));
+            sb.Append(value, oldIndex, index - oldIndex);
 
             return sb.ToString();
         }
