@@ -58,7 +58,6 @@ namespace Composite.Data
         {
             Verify.ArgumentNotNull(dataType, "dataType");
             Verify.ArgumentNotNull(publicationScope, "publicationScope");
-            Verify.ArgumentNotNull(locale, "locale");
 
             _dataType = dataType;
             _publicationScope = publicationScope;

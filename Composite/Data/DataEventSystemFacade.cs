@@ -482,7 +482,7 @@ namespace Composite.Data
             var args = new StoreEventArgs(dataType, publicationScope, locale, dataEventsFired);
 
             // switch to the scope where event is happening
-            using (DataConnection connection = new DataConnection(publicationScope, locale))
+            using (new DataConnection(publicationScope, locale))
             {
                 _storeChangedEventDictionary.Fire<StoreEventHandler>(dataType, callback => callback(null, args));
             }
@@ -569,7 +569,7 @@ namespace Composite.Data
 
         private static List<Type> GetTypesToFire(Type type)
         {
-            List<Type> types = new List<Type>();
+            var types = new List<Type>();
 
             types.Add(type);
 

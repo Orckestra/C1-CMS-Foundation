@@ -32,6 +32,13 @@ namespace Composite.Data.Caching
         {
             ReadSettings();
             GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            DataEvents<IData>.OnStoreChanged += (sender, args) =>
+            {
+                if (!args.DataEventsFired)
+                {
+                    ClearCache(args.DataType, args.PublicationScope);
+                }
+            };
         }
 
 
@@ -118,7 +125,7 @@ namespace Composite.Data.Caching
             {
                 using (_resourceLocker.Locker)
                 {
-                    if (cachedDataset.TryGetValue(typeof(T), out dataScopeData) == false)
+                    if (!cachedDataset.TryGetValue(typeof(T), out dataScopeData))
                     {
                         dataScopeData = new Hashtable<DataScopeIdentifier, Hashtable<CultureInfo, CachedTable>>();
 
@@ -128,11 +135,11 @@ namespace Composite.Data.Caching
             }
 
             Hashtable<CultureInfo, CachedTable> localizationScopeData;
-            if (dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData) == false)
+            if (!dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData))
             {
                 using (_resourceLocker.Locker)
                 {
-                    if (dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData) == false)
+                    if (!dataScopeData.TryGetValue(dataScopeIdentifier, out localizationScopeData))
                     {
                         localizationScopeData = new Hashtable<CultureInfo, CachedTable>();
                         dataScopeData.Add(dataScopeIdentifier, localizationScopeData);
@@ -141,7 +148,7 @@ namespace Composite.Data.Caching
             }
 
             CachedTable cachedTable;
-            if (localizationScopeData.TryGetValue(localizationScope, out cachedTable) == false)
+            if (!localizationScopeData.TryGetValue(localizationScope, out cachedTable))
             {
                 IQueryable wholeTable = DataFacade.GetData<T>(false, null);
 
@@ -171,7 +178,7 @@ namespace Composite.Data.Caching
 
                 using (_resourceLocker.Locker)
                 {
-                    if (localizationScopeData.ContainsKey(localizationScope) == false)
+                    if (!localizationScopeData.ContainsKey(localizationScope))
                     {
                         localizationScopeData.Add(localizationScope, cachedTable);
                     }
@@ -200,12 +207,7 @@ namespace Composite.Data.Caching
             var providerNames = DataProviderRegistry.GetDataProviderNamesByInterfaceType(T);
             Verify.IsNotNull(providerNames, "Failed to get data provider names list");
 
-            foreach(string providerName in providerNames)
-            {
-                if(!DataProviderPluginFacade.AllowsResultsWrapping(providerName)) return false;
-            }
-
-            return true;
+            return providerNames.All(DataProviderPluginFacade.AllowsResultsWrapping);
         }
 
 
@@ -220,6 +222,16 @@ namespace Composite.Data.Caching
         }
 
 
+        /// <summary>
+        /// Flush cached data for a data type in the specified data scope.
+        /// </summary>
+        /// <param name="interfaceType">The type of data to flush from the cache</param>
+        /// <param name="publicationScope">The publication scope to flush</param>
+        public static void ClearCache(Type interfaceType, PublicationScope publicationScope)
+        {
+            ClearCache(interfaceType,DataScopeIdentifier.FromPublicationScope(publicationScope));
+        }
+
 
         /// <summary>
         /// Flush cached data for a data type in the specified data scope.
@@ -230,21 +242,25 @@ namespace Composite.Data.Caching
         {
             using (_resourceLocker.Locker)
             {
-                if (_resourceLocker.Resources.CachedData.ContainsKey(interfaceType))
+                var cachedData = _resourceLocker.Resources.CachedData;
+
+                if (!cachedData.ContainsKey(interfaceType))
                 {
-                    if (dataScopeIdentifier == null)
-                    {
-                        dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
-                    }
+                    return;
+                }
 
-                    if (_resourceLocker.Resources.CachedData[interfaceType].ContainsKey(dataScopeIdentifier))
-                    {
-                        _resourceLocker.Resources.CachedData[interfaceType].Remove(dataScopeIdentifier);
+                if (dataScopeIdentifier == null)
+                {
+                    dataScopeIdentifier = DataScopeManager.MapByType(interfaceType);
+                }
 
-                        if (_resourceLocker.Resources.CachedData[interfaceType].Count == 0)
-                        {
-                            _resourceLocker.Resources.CachedData.Remove(interfaceType);
-                        }
+                if (cachedData[interfaceType].ContainsKey(dataScopeIdentifier))
+                {
+                    cachedData[interfaceType].Remove(dataScopeIdentifier);
+
+                    if (cachedData[interfaceType].Count == 0)
+                    {
+                        cachedData.Remove(interfaceType);
                     }
                 }
             }
