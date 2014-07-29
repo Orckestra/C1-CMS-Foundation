@@ -388,7 +388,7 @@ namespace Composite.Plugins.Routing.Pages
             return _friendlyUrls.GetOrAddSync(scopeKey, a =>
             {
                 var result = new Hashtable<string, Guid>();
-                foreach (var pair in DataFacade.GetData<IPage>().Where(p => !(p.FriendlyUrl == null && p.FriendlyUrl.Equals(string.Empty)))
+                foreach (var pair in DataFacade.GetData<IPage>().Where(p => !(p.FriendlyUrl == null || p.FriendlyUrl == string.Empty))
                     .Select(p => new {p.Id, p.FriendlyUrl}))
                 {
                     result[pair.FriendlyUrl.ToLowerInvariant()] = pair.Id;
