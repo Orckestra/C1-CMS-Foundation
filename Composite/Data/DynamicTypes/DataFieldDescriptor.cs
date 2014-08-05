@@ -11,16 +11,16 @@ namespace Composite.Data.DynamicTypes
     /// <summary>
     /// Describe a field on a <see cref="DataTypeDescriptor"/>.
     /// </summary>
-    [Serializable()]
+    [Serializable]
     [DebuggerDisplay("Name = {Name}, Inherited = {Inherited}")]
     public sealed class DataFieldDescriptor
     {
-        private bool _isNullable = false;
+        private bool _isNullable;
         private StoreFieldType _storeType;
         private DefaultValue _defaultValue;
         private string _name;
 
-        private Guid _id;
+        private readonly Guid _id;
 
 
         /// <summary>
@@ -147,7 +147,10 @@ namespace Composite.Data.DynamicTypes
             }
             set
             {
-                if ((value != null) && (value.IsAssignableTo(_storeType) == false)) throw new InvalidOperationException("The DefaultValue must be assignable to the StoreType");
+                if (value != null && !value.IsAssignableTo(_storeType))
+                {
+                    throw new InvalidOperationException("The DefaultValue must be assignable to the StoreType");
+                }
 
                 _defaultValue = value;
             }

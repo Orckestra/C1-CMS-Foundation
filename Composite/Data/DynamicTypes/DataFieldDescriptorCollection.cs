@@ -13,8 +13,8 @@ namespace Composite.Data.DynamicTypes
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DataFieldDescriptorCollection : IEnumerable<DataFieldDescriptor>
     {
-        private DataTypeDescriptor _parent;
-        private List<DataFieldDescriptor> _descriptors = new List<DataFieldDescriptor>();
+        private readonly DataTypeDescriptor _parent;
+        private readonly List<DataFieldDescriptor> _descriptors = new List<DataFieldDescriptor>();
 
 
         internal DataFieldDescriptorCollection(DataTypeDescriptor parent) 
@@ -36,7 +36,8 @@ namespace Composite.Data.DynamicTypes
 
             if (_descriptors.Contains(descriptor))
             {
-                throw new ArgumentException("The specied DataFieldDescriptor has already been added. Developers should ensure that the Immutable Field Id is unique on all fields.");
+                throw new ArgumentException("The specied DataFieldDescriptor with ID '{0}' has already been added. ".FormatWith(descriptor.Id) +
+                                            "Developers should ensure that the Immutable Field Id is unique on all fields.");
             }
 
             if (this[descriptor.Name] != null)
@@ -57,7 +58,7 @@ namespace Composite.Data.DynamicTypes
         {
             Verify.ArgumentNotNull(descriptor, "descriptor");
 
-            if (_descriptors.Contains(descriptor)) throw new ArgumentException("The specied DataFieldDescriptor has already been added");
+            if (_descriptors.Contains(descriptor)) throw new ArgumentException("The specified DataFieldDescriptor with ID '{0}' has already been added".FormatWith(descriptor.Id));
 
             if (this[descriptor.Name] != null)
             {
@@ -76,8 +77,8 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public void Remove(DataFieldDescriptor descriptor)
         {
-            if (descriptor == null) throw new ArgumentNullException("descriptor");
-            if (_descriptors.Contains(descriptor) == false) throw new ArgumentException("The specied DataFieldDescriptor was not found");
+            Verify.ArgumentNotNull(descriptor, "descriptor");
+            if (!_descriptors.Contains(descriptor)) throw new ArgumentException("The specified DataFieldDescriptor was not found");
             if (_parent.KeyPropertyNames.Contains(descriptor.Name)) throw new ArgumentException("The DataFieldDescriptor can not be removed while it is a member of the key field list.");
             if (_parent.StoreSortOrderFieldNames.Contains(descriptor.Name)) throw new ArgumentException("The DataFieldDescriptor can not be removed while it is a member of the physical sort order field list.");
 
@@ -88,7 +89,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public bool Contains(DataFieldDescriptor descriptor)
         {
-            if (descriptor == null) throw new ArgumentNullException("descriptor");
+            Verify.ArgumentNotNull(descriptor, "descriptor");
 
             return _descriptors.Contains(descriptor);
         }
@@ -111,7 +112,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public IEnumerator<DataFieldDescriptor> GetEnumerator()
         {
-            return _descriptors.OrderBy(f=>f.Position).GetEnumerator();
+            return _descriptors.OrderBy(f => f.Position).GetEnumerator();
         }
 
 

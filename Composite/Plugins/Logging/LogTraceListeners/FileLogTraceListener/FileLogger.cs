@@ -169,7 +169,22 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             return result.ToArray();
         }
 
-
+        internal void Flush()
+        {
+            lock (_syncRoot)
+            {
+                if (_fileConnection != null)
+                {
+                    try
+                    {
+                        _fileConnection.FileStream.Flush();
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+        }
 
         [DebuggerStepThrough]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass", Justification = "This is what we want, touch is used later on")]

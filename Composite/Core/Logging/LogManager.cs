@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Composite.C1Console.Events;
 using Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener;
 
 namespace Composite.Core.Logging
@@ -79,6 +80,16 @@ namespace Composite.Core.Logging
             }
 
             return updated;
+        }
+
+        internal static void Flush()
+        {
+            var logger = FileLogger;
+
+            if (logger != null)
+            {
+                logger.Flush();
+            }
         }
 
 
