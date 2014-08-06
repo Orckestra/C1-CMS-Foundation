@@ -191,7 +191,7 @@ namespace Composite
         }
 
         /// <exclude />
-        [StringFormatMethod("message")]
+        [StringFormatMethod("errorMessageOnNull")]
         public static T ResultNotNull<T>(T value, string errorMessageOnNull, params object[] formattingArgs) where T : class
         {
             if (value == null) ThrowInvalidOperationException(errorMessageOnNull.FormatWith(formattingArgs));
@@ -207,6 +207,7 @@ namespace Composite
 
         /// <exclude />
         [AssertionMethod]
+        [StringFormatMethod("errorMessageOnNull")]
         public static string StringNotIsNullOrWhiteSpace([AssertionConditionAttribute(AssertionConditionType.IS_NOT_NULL)] string value, string errorMessageOnNull, params object[] formattingArgs)
         {
             if (String.IsNullOrWhiteSpace(value)) ThrowInvalidOperationException(errorMessageOnNull.FormatWith(formattingArgs));

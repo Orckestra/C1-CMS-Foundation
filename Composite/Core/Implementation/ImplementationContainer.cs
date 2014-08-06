@@ -14,7 +14,7 @@ namespace Composite.Core.Implementation
     {
         private T _implementation = null;
         private bool _disposed = false;
-        private Func<T> _create;
+        private readonly Func<T> _create;
 
 
 

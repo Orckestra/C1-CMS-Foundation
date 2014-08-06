@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Composite.Core.Implementation;
 
 
@@ -11,7 +12,7 @@ namespace Composite.Core.IO
     /// See System.IO.FileSystemWatcher for more documentation on the methods of this class.
     /// See <see cref="Composite.Core.IO.Plugins.IOProvider.IC1FileStream"/>.
     /// </summary>
-    public class C1FileSystemWatcher : ImplementationContainer<C1FileSystemWatcherImplementation>
+    public class C1FileSystemWatcher : ImplementationContainer<C1FileSystemWatcherImplementation>, IDisposable
     {
         /// <summary>
         /// Creates a new file system watcher given the path.
@@ -247,6 +248,32 @@ namespace Composite.Core.IO
         public C1WaitForChangedResult WaitForChanged(WatcherChangeTypes changeType, int timeout)
         {
             return this.Implementation.WaitForChanged(changeType, timeout);
+        }
+
+        void IDisposable.Dispose()
+        {
+            Dispose(true);
+        }
+
+        /// <summary>
+        /// Desctructor.
+        /// </summary>
+        ~C1FileSystemWatcher()
+        {
+            Dispose(false);
+        }
+
+
+        /// <summary>
+        /// Disposes the stream.
+        /// </summary>
+        /// <param name="disposing">True if the stream is disposing.</param>
+        protected void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                DisposeImplementation();
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Composite.Data.Validation.Validators
         /// <summary>
         /// Number of digits after decimal point - normally you would call this scale.
         /// </summary>
-        [Obsolete("Use 'Sacle'")]
+        [Obsolete("Use 'Scale'")]
         public int Digits
         {
             get { return this.Scale; }
@@ -42,7 +42,7 @@ namespace Composite.Data.Validation.Validators
 
 
         /// <summary>
-        /// Number of digits in total
+        /// Number of digits after the separator
         /// </summary>
         public int Scale
         {

@@ -12,7 +12,7 @@ using System.IO;
 
 namespace Composite.Data.Plugins.DataProvider.Streams
 {
-	internal class FileChangeNotificator
+	internal static class FileChangeNotificator
 	{
         private static readonly object _syncRoot = new object();
         private static C1FileSystemWatcher _fileWatcher;

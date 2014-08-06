@@ -224,7 +224,7 @@ namespace Composite.Core.Routing
                     return BuildPublicUrl(mediaUrlData);
             }
 
-            throw new NotSupportedException("Not supported url kind. urlKind == '0'".FormatWith(urlKind));
+            throw new NotSupportedException("Not supported url kind. urlKind == '{0}'".FormatWith(urlKind));
         }
 
         private static string BuildInternalUrl(MediaUrlData mediaUrlData)
@@ -379,7 +379,7 @@ namespace Composite.Core.Routing
                 if (query.IsEnumerableQuery())
                 {
                     return (query as IEnumerable<IMediaFile>)
-                        .FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
+                        .FirstOrDefault(f => f.Id == fileId && f.StoreId == storeId);
                 }
 
                 return query

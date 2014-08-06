@@ -143,7 +143,7 @@ namespace Composite.Core.WebClient
                 if (query.IsEnumerableQuery())
                 {
                     return (query as IEnumerable<IMediaFile>)
-                        .FirstOrDefault(f => f.StoreId == storeId && f.Id == fileId);
+                        .FirstOrDefault(f => f.Id == fileId && f.StoreId == storeId);
                 }
 
                 return query
@@ -160,7 +160,7 @@ namespace Composite.Core.WebClient
                 if (query.IsEnumerableQuery())
                 {
                     return (query as IEnumerable<IMediaFile>)
-                        .FirstOrDefault(f => f.StoreId == storeId && f.CompositePath == compositePath);
+                        .FirstOrDefault(f => f.CompositePath == compositePath && f.StoreId == storeId);
                 }
 
                 return query

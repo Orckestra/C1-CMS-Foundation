@@ -31,7 +31,7 @@ namespace Composite.Data.Validation.Validators
                 return;
             }
 
-            decimal number = (decimal)objectToValidate;
+            var number = (decimal)objectToValidate;
 
             List<DecimalPrecisionValidatorAttribute> attributes = currentTarget.GetType().GetProperty(key).GetCustomAttributesRecursively<DecimalPrecisionValidatorAttribute>().ToList();
             var validatiorAttribute = attributes[0];
@@ -44,7 +44,7 @@ namespace Composite.Data.Validation.Validators
             }
 
             string str = number.ToString(CultureInfo.InvariantCulture);
-            int separatorIndex = str.IndexOf(".");
+            int separatorIndex = str.IndexOf('.');
             if(separatorIndex > 0)
             {
                 str = str.Substring(0, separatorIndex);
