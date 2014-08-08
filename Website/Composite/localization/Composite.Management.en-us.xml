@@ -599,14 +599,14 @@
 	<string key="Website.Forms.Administrative.DeleteMediaFolder.LabelFieldGroup" value="Delete This Folder?" />
 	<string key="Website.Forms.Administrative.DeleteMediaFolder.Text" value="Delete this folder?" />
 	<string key="Website.Forms.Administrative.DeleteMediaFolder.HasChildringText" value="This folder contains one or more files or subfolders. Deleting this folder will also delete all sub files and folders. Delete this folder?" />
-	<string key="Website.Forms.Administrative.EditMediaFile.LabelFieldGroup" value="Media Properties" />
-	<string key="Website.Forms.Administrative.EditMediaFile.LabelTitle" value="Title" />
-	<string key="Website.Forms.Administrative.EditMediaFile.HelpTitle" value="Use this field for an image title" />
-	<string key="Website.Forms.Administrative.EditMediaFile.LabelFileName" value="File Name" />
-	<string key="Website.Forms.Administrative.EditMediaFile.HelpFileName" value="The entry specified in this field is a part of the image ID" />
-	<string key="Website.Forms.Administrative.EditMediaFile.LabelDescription" value="Description" />
-	<string key="Website.Forms.Administrative.EditMediaFile.HelpDescription" value="Use this field for at short description of the image" />
-	<string key="Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
+  <string key="Website.Forms.Administrative.EditMediaFile.LabelFieldGroup" value="Media Properties" />
+  <string key="Website.Forms.Administrative.EditMediaFile.LabelTitle" value="Title" />
+  <string key="Website.Forms.Administrative.EditMediaFile.HelpTitle" value="A human friendly short text describing the content of the media file" />
+  <string key="Website.Forms.Administrative.EditMediaFile.LabelFileName" value="File Name" />
+  <string key="Website.Forms.Administrative.EditMediaFile.HelpFileName" value="The file name to use when the media file is downloaded." />
+  <string key="Website.Forms.Administrative.EditMediaFile.LabelDescription" value="Description" />
+  <string key="Website.Forms.Administrative.EditMediaFile.HelpDescription" value="A description of the media file content" />
+  <string key="Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message" value="The total length of the filename (folder and filename) is too long" />
   <string key="Website.Forms.Administrative.EditMediaFile.FileExists.Message" value="A file with the same name already exists in this folder." />
   <string key="Website.Forms.Administrative.EditMediaFolder.LabelFieldGroup" value="Folder Properties" />
 	<string key="Website.Forms.Administrative.EditMediaFolder.LabelFolderName" value="Folder Name" />
