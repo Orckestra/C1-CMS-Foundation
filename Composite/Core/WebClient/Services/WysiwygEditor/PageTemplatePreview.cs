@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Web;
 using Composite.C1Console.Events;
+using System.Threading.Tasks;
 
 namespace Composite.Core.WebClient.Services.WysiwygEditor
 {
@@ -37,7 +38,14 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
             int updateHash = BrowserRender.GetLastCacheUpdateTime(RenderingMode).GetHashCode();
             string requestUrl = new UrlBuilder(context.Request.Url.ToString()).ServerUrl + serviceUrl + "?p=" + pageId + "&t=" + templateId + "&hash=" + updateHash;
 
-            var result = BrowserRender.RenderUrl(context, requestUrl, RenderingMode).GetAwaiter().GetResult();
+            BrowserRender.RenderingResult result = null;
+
+            var renderTask = BrowserRender.RenderUrl(context, requestUrl, RenderingMode);
+            renderTask.Wait(10000);
+            if (renderTask.Status == TaskStatus.RanToCompletion)
+            {
+                result = renderTask.Result;
+            }
 
             if (result == null)
             {

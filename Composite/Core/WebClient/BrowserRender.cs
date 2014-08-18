@@ -180,6 +180,17 @@ namespace Composite.Core.WebClient
                 {
                     _server.RenderUrl(authenticationCookie, url, outputFileName, mode, out output);
                 }
+                catch (BrowserRenderException ex)
+                {
+                    if (!_server.HasCrashed())
+                    {
+                        _server.Dispose();
+                    }
+                    Log.LogWarning("BrowserRenderer", ex);
+
+                    _server = null;
+                    throw;
+                }    
                 catch (Exception)
                 {
                     if (_server.HasCrashed())
@@ -418,6 +429,7 @@ namespace Composite.Core.WebClient
                 double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 60 ? 30 : 6;
 
                 readerTask.Wait(TimeSpan.FromSeconds(timeout));
+
                 switch (readerTask.Status)
                 {
                     case TaskStatus.RanToCompletion:
@@ -476,10 +488,7 @@ namespace Composite.Core.WebClient
                     return;
                 }
 
-                string output;
-                string error;
-
-                bool proccessHasExited = true;
+                bool proccessHasExited;
 
                 try
                 {
@@ -493,31 +502,51 @@ namespace Composite.Core.WebClient
                 if (!proccessHasExited)
                 {
                     _stdin.WriteLine("exit");
-                    output = _stdout.ReadToEnd();
-                    error = _stderror.ReadToEnd();
+                }
 
+                Task<string> errorFeedbackTask = Task.Factory.StartNew(() =>
+                {
+                    try
+                    {
+                        string stdOut = _stdout.ReadToEnd();
+                        string stdError = _stderror.ReadToEnd();
+                        return string.Format("output: '{0}', error: '{1}'", stdOut, stdError);
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;        
+                    }
+                });
+
+                errorFeedbackTask.Wait(250);
+
+                string errorFeedback = errorFeedbackTask.Status==TaskStatus.RanToCompletion ? errorFeedbackTask.Result : "Process Hang";
+
+                int exitCode = -1;
+
+                if (!proccessHasExited)
+                {
                     _stdin.Close();
                     _stdout.Close();
                     _stderror.Close();
                 }
                 else
                 {
-                    output = _stdout.ReadToEnd();
-                    error = _stderror.ReadToEnd();
+                    exitCode = _process.ExitCode;
                 }
 
                 _stdin.Dispose();
                 _stdout.Dispose();
                 _stderror.Dispose();
 
-                int exitCode = _process.ExitCode;
 
                 _process.Dispose();
                 _job.Dispose();
 
-                if (exitCode != 0)
+                if (exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion)
                 {
-                    throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, output: '{1}', error: '{2}'".FormatWith(exitCode, output, error));
+                    Log.LogWarning("BrowserRenderer", "Error executing PhantomJs.exe. Exit code: {0}, {1}".FormatWith(exitCode, errorFeedback));
+                    throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, {1}".FormatWith(exitCode, errorFeedback));
                 }
             }
         }
