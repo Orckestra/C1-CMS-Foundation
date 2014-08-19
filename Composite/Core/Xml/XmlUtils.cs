@@ -3,6 +3,9 @@
 
 namespace Composite.Core.Xml
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	public static class XmlUtils
 	{
         /// <summary>
