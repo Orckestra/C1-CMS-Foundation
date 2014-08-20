@@ -128,7 +128,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         bool clientCaching = false;
 
 
-        if (UrlContainsTimestamp(context))
+        if (UrlContainsTimestamp(context, file))
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddDays(30));
             context.Response.Cache.SetCacheability(HttpCacheability.Public);
@@ -246,7 +246,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         }
     }
     
-    private static bool UrlContainsTimestamp(HttpContext context)
+    private static bool UrlContainsTimestamp(HttpContext context, IMediaFile file)
     {
         string url = context.Request.RawUrl;
 
@@ -255,13 +255,20 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         string[] urlParts = url.Substring(MediaUrl_PublicPrefix.Length).Split('/');
 
         Guid tempGuid;
-        int tempInt;
         
         return urlParts.Length >= 2 
             && Guid.TryParse(urlParts[0], out tempGuid)
-            && int.TryParse(urlParts[1], out tempInt);
+            && urlParts[1].Length == 6 
+            && urlParts[1] == GetTimeStampHash(file);
     }
 
+    
+    private static string GetTimeStampHash(IMediaFile file)
+    {
+        int hash = file.LastWriteTime.Value.ToUniversalTime().GetHashCode();
+        return Convert.ToBase64String(BitConverter.GetBytes(hash)).Substring(0, 6).Replace('+', '-').Replace('/', '_');
+    }
+    
     
     private static void OutputToResponse(HttpContext context, Stream inputStream) {
         var response = context.Response;
