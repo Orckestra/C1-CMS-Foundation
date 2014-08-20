@@ -1,12 +1,10 @@
 ﻿// #define BrowserRender_NoCache
 
 using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
-using System.Threading;
 using System.Web;
 using System.Web.Hosting;
 using Composite.C1Console.Events;
@@ -15,7 +13,6 @@ using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PackageSystem;
-using Composite.Core.Parallelization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Timer = System.Timers.Timer;
 using System.Threading.Tasks;
@@ -69,9 +66,9 @@ namespace Composite.Core.WebClient
         }
 
         /// <summary>
-        /// Renders a url and return a full path to a rendered image
+        /// Renders a url and return a full path to a rendered image, or <value>null</value> when rendering process is failing or inaccessable.
         /// </summary>
-        public static async Task<RenderingResult> RenderUrl(HttpContext context, string url, string mode)
+        public static async Task<RenderingResult> RenderUrlAsync(HttpContext context, string url, string mode)
         {
             string dropFolder = GetCacheFolder(mode);
 
@@ -275,8 +272,8 @@ namespace Composite.Core.WebClient
             private readonly Process _process;
             private readonly Job _job;
 
-            private static PhantomServer _instance = null;
-            private static object _instanceLock = new object();
+            private static PhantomServer _instance;
+            private static readonly object _instanceLock = new object();
 
             [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
             private PhantomServer()
@@ -307,7 +304,7 @@ namespace Composite.Core.WebClient
 
             public static void ShutDown()
             {
-                PhantomServer ps = null;
+                PhantomServer ps;
 
                 lock (_instanceLock)
                 {
@@ -329,33 +326,24 @@ namespace Composite.Core.WebClient
             {
                 get
                 {
-                    lock (_instanceLock)
-                    {
-                        if (_instance == null)
-                        {
-                            _instance = new PhantomServer();
-                        }
-                    }
-
-                    return _instance;
+                    return _instance ?? (_instance = new PhantomServer());
                 }
             }
 
 
             public static void RenderUrl(HttpCookie authenticationCookie, string url, string tempFilePath, string mode, out string output)
             {
-                try
+                lock (_instanceLock)
                 {
-                    lock (_instanceLock)
+                    try
                     {
                         Instance.RenderUrlImpl(authenticationCookie, url, tempFilePath, mode, out output);
                     }
-                }
-                catch (BrowserRenderException ex)
-                {
-                    PhantomServer.ShutDown();
-
-                    throw;
+                    catch (BrowserRenderException)
+                    {
+                        ShutDown();
+                        throw;
+                    }
                 }
             }
 
@@ -400,18 +388,6 @@ namespace Composite.Core.WebClient
                     }
 
                     throw new BrowserRenderException(output + Environment.NewLine + "Request: " + requestLine);
-                }
-            }
-
-            private bool HasCrashed()
-            {
-                try
-                {
-                    return _process.HasExited;
-                }
-                catch (Exception)
-                {
-                    return true;
                 }
             }
 

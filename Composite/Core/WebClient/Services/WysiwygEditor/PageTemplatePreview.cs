@@ -40,7 +40,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
             BrowserRender.RenderingResult result = null;
 
-            var renderTask = BrowserRender.RenderUrl(context, requestUrl, RenderingMode);
+            var renderTask = BrowserRender.RenderUrlAsync(context, requestUrl, RenderingMode);
             renderTask.Wait(10000);
             if (renderTask.Status == TaskStatus.RanToCompletion)
             {
