@@ -73,10 +73,21 @@ namespace Composite.AspNet
         /// <param name="node">The node.</param>
         /// <param name="data">The data.</param>
         public CompositeC1SiteMapNode(CompositeC1SiteMapProvider provider, PageNode node, DataConnection data)
+            : this(provider, node, data, node.Level)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeC1SiteMapNode"/> class.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="node">The node.</param>
+        /// <param name="data">The data.</param>
+        public CompositeC1SiteMapNode(CompositeC1SiteMapProvider provider, PageNode node, DataConnection data, int level)
             : base(provider, node.Id.ToString(), node.Url, node.MenuTitle, node.Description)
         {
             DocumentTitle = node.Title;
-            Depth = node.Level;
+            Depth = level;
             LastModified = node.ChangedDate;
             Priority = 5;
 

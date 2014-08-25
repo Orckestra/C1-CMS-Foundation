@@ -192,9 +192,13 @@ namespace Composite.Data
 
         private static string GetCacheKey<T>(Guid id)
         {
-            string localizationInfo = LocalizationScopeManager.MapByType(typeof(T)).ToString();
-            string dataScope = DataScopeManager.MapByType(typeof(T)).Name;
-            return id + dataScope + localizationInfo;
+            var cultureInfo = LocalizationScopeManager.MapByType(typeof (T));
+            Verify.IsNotNull(cultureInfo, "Localization culture is not set");
+
+            var dataScope = DataScopeManager.MapByType(typeof (T));
+            Verify.IsNotNull(dataScope, "Publication scope is not set");
+
+            return id + dataScope.Name + cultureInfo;
         }
 
         private static string GetCacheKey(Guid id, DataSourceId dataSourceId)

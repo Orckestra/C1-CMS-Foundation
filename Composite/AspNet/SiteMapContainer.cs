@@ -52,29 +52,29 @@ namespace Composite.AspNet
 
                     var container = new SiteMapContainer
                     {
-                        Root = new CompositeC1SiteMapNode(provider, rootPage, data)
+                        Root = new CompositeC1SiteMapNode(provider, rootPage, data, 1)
                     };
 
-                    LoadNodes(provider, rootPage, null, container, data);
+                    LoadNodes(provider, rootPage, null, container, data, 1);
 
                     return container;
                 }
             }
 
-            private static void LoadNodes(CompositeC1SiteMapProvider provider, PageNode pageNode, SiteMapNode parent, SiteMapContainer container, DataConnection data)
+            private static void LoadNodes(CompositeC1SiteMapProvider provider, PageNode pageNode, SiteMapNode parent, SiteMapContainer container, DataConnection data, int level)
             {
                 if (pageNode.Url == null)
                 {
                     return;
                 }
 
-                var node = new CompositeC1SiteMapNode(provider, pageNode, data);
+                var node = new CompositeC1SiteMapNode(provider, pageNode, data, level);
                 AddNode(node, parent, container);
 
                 var childs = pageNode.ChildPages;
                 foreach (var child in childs)
                 {
-                    LoadNodes(provider, child, node, container, data);
+                    LoadNodes(provider, child, node, container, data, level + 1);
                 }
             }
 
@@ -165,7 +165,7 @@ namespace Composite.AspNet
                     hostnameKey = host;
                 }
 
-                return _cachePrefix + hostnameKey + rootPageId.ToString() + culture.Name + PublicationScope;
+                return _cachePrefix + hostnameKey + rootPageId + culture.Name + PublicationScope;
             }
 
             private static PublicationScope PublicationScope
@@ -181,7 +181,7 @@ namespace Composite.AspNet
             {
                 get
                 {
-                    return PublicationScope == PublicationScope.Published;
+                    return true;
                 }
             }
 
