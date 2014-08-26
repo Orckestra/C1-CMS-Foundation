@@ -17,8 +17,9 @@ namespace Composite.Data
     {
         private readonly IPage _page;
         private readonly SitemapNavigatorImplementation _sitemapNavigator;
-
+        
         private XElement _pageElement;
+        private int? _level;
 
         internal PageNode(IPage page, SitemapNavigatorImplementation sitemapNavigator)
         {
@@ -109,9 +110,14 @@ namespace Composite.Data
         {
             get
             {
-                var depthAttr = SitemapXml.Attribute("Depth");
-                // Attribute can be null if a page isn't accessable, f.e. in a case of url collision
-                return depthAttr != null ? Int32.Parse(depthAttr.Value, CultureInfo.InvariantCulture) : -1;
+                if (_level == null)
+                {
+                    PageNode parent = ParentPage;
+
+                    _level = parent == null ? 1 : parent.Level + 1;
+                }
+
+                return _level.Value;
             }
         }
 

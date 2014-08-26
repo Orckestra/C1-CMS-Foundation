@@ -39,7 +39,9 @@ namespace Composite.Plugins.Routing.Pages
         private readonly CultureInfo _localizationScope;
 
         private readonly string _friendlyUrlPrefix;
-        private readonly string _friendlyUrlPrefixWithLanguageCode; 
+        private readonly string _friendlyUrlPrefixWithLanguageCode;
+
+        private static readonly HashSet<string> _knownNotUniqueUrls = new HashSet<string>();
 
         public string UrlSuffix { get; private set;}
         
@@ -144,7 +146,14 @@ namespace Composite.Plugins.Routing.Pages
 
             if (UrlToIdLookupLowerCased.ContainsKey(lookupUrlLowerCased))
             {
-                Log.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(lookupUrlLowerCased, page.Id));
+                if (!_knownNotUniqueUrls.Contains(lookupUrlLowerCased))
+                {
+                    lock (_knownNotUniqueUrls)
+                    {
+                        _knownNotUniqueUrls.Add(lookupUrlLowerCased);
+                    }
+                    Log.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(lookupUrlLowerCased, page.Id));
+                }
                 return null;
             }
 
