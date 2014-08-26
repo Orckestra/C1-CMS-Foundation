@@ -247,14 +247,11 @@ namespace Composite.Core.Implementation
         {
             string idString = id.ToString();
 
-            XAttribute matchAttribute = _sitemap.Value.DescendantsAndSelf("Page").Attributes("Id").FirstOrDefault(f => f.Value == idString);
+            XAttribute matchAttribute = _sitemap.Value.DescendantsAndSelf(PageStructureInfo.ElementNames.Page)
+                                                      .Attributes(PageStructureInfo.AttributeNames.Id)
+                                                      .FirstOrDefault(f => f.Value == idString);
 
-            if (matchAttribute == null)
-            {
-                return null;
-            }
-
-            return matchAttribute.Parent;
+            return matchAttribute != null ? matchAttribute.Parent : null ;
         }
     }
 }

@@ -26,6 +26,25 @@ namespace Composite.Core.WebClient.Renderings.Page
         [Obsolete("Now sitemap generates xml that belongs to empty namespace, so this constant shouldn't be used", true)]
         public const string SitemapNamespaceString = "";
 
+        internal static class AttributeNames
+        {
+            public static XName Id = "Id";
+            public static XName Title = "Title";
+            public static XName MenuTitle = "MenuTitle";
+            public static XName UrlTitle = "UrlTitle";
+            public static XName Description = "Description";
+            public static XName ChangedDate = "ChangedDate";
+            public static XName ChangedBy = "ChangedBy";
+            public static XName URL = "URL";
+            public static XName FriendlyUrl = "FriendlyUrl";
+            public static XName Depth = "Depth";
+        }
+
+        internal static class ElementNames
+        {
+            public static XName Page = "Page"; 
+        }
+
         private class Version
         {
             public int VersionNumber;
@@ -48,7 +67,9 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static readonly Hashtable<MapKey, Map> _generatedMaps = new Hashtable<MapKey, Map>();
         private static readonly Hashtable<MapKey, Version> _versions = new Hashtable<MapKey, Version>();
         private static readonly object _updatingLock = new object();
-        private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
+        //private static readonly object[] _buildingLock = new[] { new object(), new object() }; // Separated objects for 'Public' and 'Administrated' scopes
+
+        private static readonly HashSet<string> _knownNotUniqueUrls = new HashSet<string>();
 
         private static readonly XName PageElementName = "Page";
 
@@ -84,7 +105,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             foreach (XElement pageElement in pageElements)
             {
                 string label = GetLabelForPageElement(indentString, pageElement);
-                string id = pageElement.Attribute("Id").Value;
+                string id = pageElement.Attribute(AttributeNames.Id).Value;
                 yield return new KeyValuePair<Guid, string>(new Guid(id), label);
 
                 foreach (KeyValuePair<Guid, string> childOption in PageListInDocumentOrder(pageElement.Elements(), indentLevel + 1))
@@ -96,7 +117,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static string GetLabelForPageElement(string indentString, XElement pageElement)
         {
-            string labelText = (pageElement.Attribute("MenuTitle") ?? pageElement.Attribute("Title")).Value;
+            string labelText = (pageElement.Attribute(AttributeNames.MenuTitle) ?? pageElement.Attribute(AttributeNames.Title)).Value;
 
             return string.Format("{0}{1}", indentString, labelText);
         }
@@ -142,10 +163,7 @@ namespace Composite.Core.WebClient.Renderings.Page
             List<XElement> pageElements = GetSitemapByScopeUnannotated(associationScope, pageId).ToList();
             AnnotatePagesWithOpenAndCurrent(pageId, pageElements);
 
-            foreach (XElement pageElement in pageElements)
-            {
-                yield return pageElement;
-            }
+            return pageElements;
         }
 
         private static IEnumerable<Guid> GetDescendants(Guid pageId)
@@ -309,7 +327,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                 case SitemapScope.Level3AndSiblings:
                 case SitemapScope.Level4AndSiblings:
                     string pageIdString = pageId.ToString();
-                    XAttribute idMatchAttrib = sitemaps.DescendantsAndSelf().Attributes("Id").FirstOrDefault(id => id.Value == pageIdString);
+                    XAttribute idMatchAttrib = sitemaps.DescendantsAndSelf().Attributes(AttributeNames.Id).FirstOrDefault(id => id.Value == pageIdString);
                     if (idMatchAttrib != null)
                     {
                         XElement currentPageElement = idMatchAttrib.Parent;
@@ -317,7 +335,7 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                         foreach (XElement pageElement in scopeElements)
                         {
-                            yield return new Guid(pageElement.Attribute("Id").Value);
+                            yield return new Guid(pageElement.Attribute(AttributeNames.Id).Value);
                         }
                     }
                     break;
@@ -647,14 +665,14 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     int localOrdering = pageStructure.LocalOrdering;
 
-                    XElement pageElement = new XElement("Page",
-                         new XAttribute("Id", page.Id),
-                         new XAttribute("Title", page.Title),
-                         (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute("MenuTitle", page.MenuTitle)),
-                         new XAttribute("UrlTitle", page.UrlTitle),
-                         new XAttribute("Description", page.Description ?? string.Empty),
-                         new XAttribute("ChangedDate", page.ChangeDate),
-                         new XAttribute("ChangedBy", page.ChangedBy ?? string.Empty));
+                    var pageElement = new XElement(ElementNames.Page,
+                         new XAttribute(AttributeNames.Id, page.Id),
+                         new XAttribute(AttributeNames.Title, page.Title),
+                         (string.IsNullOrEmpty(page.MenuTitle) ? null : new XAttribute(AttributeNames.MenuTitle, page.MenuTitle)),
+                         new XAttribute(AttributeNames.UrlTitle, page.UrlTitle),
+                         new XAttribute(AttributeNames.Description, page.Description ?? string.Empty),
+                         new XAttribute(AttributeNames.ChangedDate, page.ChangeDate),
+                         new XAttribute(AttributeNames.ChangedBy, page.ChangedBy ?? string.Empty));
 
                     var list = pageToToChildElementsTable[pageStructure.ParentId];
 
@@ -672,7 +690,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     });
                 }
 
-                XElement root = new XElement("root");
+                var root = new XElement("root");
 
                 BuildXmlStructure(root, Guid.Empty, pageToToChildElementsTable, 100);
 
@@ -686,7 +704,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     idToUrlLookup.Add(urlLookupEntry.Value, urlLookupEntry.Key);
                 }
 
-                Dictionary<string, Guid> lowerCaseUrlToIdLookup = new Dictionary<string, Guid>();
+                var lowerCaseUrlToIdLookup = new Dictionary<string, Guid>();
 
                 foreach (KeyValuePair<string, Guid> keyValuePair in urlToIdLookup)
                 {
@@ -694,7 +712,15 @@ namespace Composite.Core.WebClient.Renderings.Page
 
                     if (lowerCaseUrlToIdLookup.ContainsKey(loweredUrl))
                     {
-                        Log.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(loweredUrl, keyValuePair.Value));
+                        if (!_knownNotUniqueUrls.Contains(loweredUrl))
+                        {
+                            lock (_knownNotUniqueUrls)
+                            {
+                                _knownNotUniqueUrls.Add(loweredUrl);
+                            }
+                            Log.LogError(LogTitle, "Multiple pages share the same path '{0}'. Page ID: '{1}'. Duplicates are ignored.".FormatWith(loweredUrl, keyValuePair.Value));
+                        }
+                        
                         continue;
                     }
 
@@ -741,7 +767,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             foreach (XElement element in elements)
             {
-                Guid pageId = new Guid(element.Attribute("Id").Value);
+                Guid pageId = new Guid(element.Attribute(AttributeNames.Id).Value);
 
                 IPage page = pagesData.PageById[pageId];
                 IPageStructure pageStructure = pagesData.StructureById[pageId];
@@ -758,24 +784,24 @@ namespace Composite.Core.WebClient.Renderings.Page
                     continue;
                 }
 
-                element.Add(new XAttribute("URL", pageUrls.PublicUrl));
+                element.Add(new XAttribute(AttributeNames.URL, pageUrls.PublicUrl));
 
                 string lookupUrl = pageUrls.PublicUrl;
 
                 if(pageUrls.FriendlyUrl != null)
                 {
-                    element.Add(new XAttribute("FriendlyUrl", pageUrls.FriendlyUrl));
+                    element.Add(new XAttribute(AttributeNames.FriendlyUrl, pageUrls.FriendlyUrl));
                 }
 
                 //// FolderPath isn't used any more
                 //element.Add(new XAttribute("FolderPath", builder.FolderPaths[pageId]));
 
-                element.Add(new XAttribute("Depth", 1 + element.Ancestors(PageElementName).Count()));
+                element.Add(new XAttribute(AttributeNames.Depth, 1 + element.Ancestors(PageElementName).Count()));
 
                 // NOTE: urlToIdLookup is obsolete, but old API needs it
                 if (urlToIdLookup.ContainsKey(lookupUrl))
                 {
-                    LoggingService.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrls.PublicUrl, pageId));
+                    Log.LogError(LogTitle, "Multiple pages share the same path '{0}', page ID: '{1}'. Duplicates are ignored.".FormatWith(pageUrls.PublicUrl, pageId));
                     continue;
                 }
 
@@ -830,16 +856,16 @@ namespace Composite.Core.WebClient.Renderings.Page
         private static void AnnotatePagesWithOpenAndCurrent(Guid pageId, List<XElement> pageElements)
         {
             string pageIdAsString = pageId.ToString();
-            XAttribute matchingPageIdAttrib = PageStructureInfo.GetSiteMap().DescendantsAndSelf().Attributes("Id").FirstOrDefault(f => f.Value == pageIdAsString);
+            XAttribute matchingPageIdAttrib = GetSiteMap().DescendantsAndSelf().Attributes(AttributeNames.Id).FirstOrDefault(f => f.Value == pageIdAsString);
 
             if (matchingPageIdAttrib != null)
             {
-                List<string> openPageIdList = matchingPageIdAttrib.Parent.AncestorsAndSelf(PageElementName).Attributes("Id").Select(f => f.Value).ToList();
+                List<string> openPageIdList = matchingPageIdAttrib.Parent.AncestorsAndSelf(PageElementName).Attributes(AttributeNames.Id).Select(f => f.Value).ToList();
 
-                foreach (XElement openPage in pageElements.DescendantsAndSelf(PageElementName).Where(f => openPageIdList.Contains(f.Attribute("Id").Value)))
+                foreach (XElement openPage in pageElements.DescendantsAndSelf(PageElementName).Where(f => openPageIdList.Contains(f.Attribute(AttributeNames.Id).Value)))
                 {
                     openPage.Add(new XAttribute("isopen", "true"));
-                    if (openPage.Attribute("Id").Value == pageIdAsString)
+                    if (openPage.Attribute(AttributeNames.Id).Value == pageIdAsString)
                     {
                         openPage.Add(new XAttribute("iscurrent", "true"));
                     }
@@ -853,7 +879,7 @@ namespace Composite.Core.WebClient.Renderings.Page
         {
             if (associationScope == SitemapScope.All)
             {
-                foreach (XElement homepage in PageStructureInfo.GetSiteMap())
+                foreach (XElement homepage in GetSiteMap())
                 {
                     yield return new XElement(homepage);
                 }
@@ -998,7 +1024,7 @@ namespace Composite.Core.WebClient.Renderings.Page
                     }
                     break;
                 default:
-                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope.ToString());
+                    throw new NotImplementedException("Unhandled SitemapScope type: " + associationScope);
             }
         }
 
@@ -1006,7 +1032,8 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static XElement GetPageCopyBySiteDepth(XElement associatedPageElement, int siteDepth, bool shallow)
         {
-            XElement match = associatedPageElement.AncestorsAndSelf(PageElementName).SingleOrDefault(f => f.Attribute("Depth").Value == siteDepth.ToString());
+            string siteDepthStr = siteDepth.ToString();
+            XElement match = associatedPageElement.AncestorsAndSelf(PageElementName).SingleOrDefault(f => f.Attribute(AttributeNames.Depth).Value == siteDepthStr);
 
             if (match == null)
             {
@@ -1024,17 +1051,17 @@ namespace Composite.Core.WebClient.Renderings.Page
 
         private static IEnumerable<XElement> GetSiblingsCopyBySiteDepth(XElement associatedPageElement, int siteDepth)
         {
-            int currentPageDepth = Int32.Parse(associatedPageElement.Attribute("Depth").Value);
+            int currentPageDepth = Int32.Parse(associatedPageElement.Attribute(AttributeNames.Depth).Value);
 
             IEnumerable<XElement> elementsToCopy = null;
 
             if (siteDepth == 1)
             {
-                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute("Depth").Value == "1");
+                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute(AttributeNames.Depth).Value == "1");
             }
             else if (currentPageDepth >= siteDepth)
             {
-                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute("Depth").Value == (siteDepth - 1).ToString()).Elements(PageElementName);
+                elementsToCopy = associatedPageElement.AncestorsAndSelf(PageElementName).Where(f => f.Attribute(AttributeNames.Depth).Value == (siteDepth - 1).ToString()).Elements(PageElementName);
             }
             else
             {

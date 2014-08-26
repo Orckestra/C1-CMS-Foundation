@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Caching;
 using System.Web; 
 using Composite.Core.Extensions;
 using Composite.Core.Routing;
@@ -159,7 +158,7 @@ namespace Composite.AspNet
 
             container.ParentNodesMap.TryGetValue(node.Key, out parentNode);
 
-            if ((parentNode == null) && (ParentProvider != null))
+            if (parentNode == null && ParentProvider != null)
             {
                 parentNode = ParentProvider.GetParentNode(node);
             }

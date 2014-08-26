@@ -16,7 +16,7 @@ namespace Composite.AspNet
         /// </summary>
         protected class SiteMapContainer
         {
-            private const string _cachePrefix = "sitemap";
+            private const string CachePrefix = "sitemap";
 
             /// <exclude />
             public SiteMapNode Root { get; set; }
@@ -43,6 +43,8 @@ namespace Composite.AspNet
             {
                 using (var data = new DataConnection(publicationScope, culture))
                 {
+                    PageManager.PreloadPageCaching();
+
                     var rootPage = data.SitemapNavigator.GetPageNodeById(rootPageId);
 
                     if (rootPage == null)
@@ -118,8 +120,6 @@ namespace Composite.AspNet
 
                 if (container == null)
                 {
-                    if (!CanCache) return null;
-
                     container = MemoryCache.Default.Get(key) as SiteMapContainer;
                     if (container != null)
                     {
@@ -145,27 +145,16 @@ namespace Composite.AspNet
                 var context = HttpContext.Current;
                 context.Items[key] = siteMap;
 
-                if (CanCache)
-                {
-                    MemoryCache.Default.Add(key, siteMap, ObjectCache.InfiniteAbsoluteExpiration);
-                }
+                MemoryCache.Default.Add(key, siteMap, ObjectCache.InfiniteAbsoluteExpiration);
             }
 
             private static string GetCacheKey(string host, CultureInfo culture, Guid rootPageId)
             {
-                string hostnameKey;
-
                 var urlSpace = new UrlSpace();
-                if (urlSpace.ForceRelativeUrls)
-                {
-                    hostnameKey = string.Empty;
-                }
-                else
-                {
-                    hostnameKey = host;
-                }
 
-                return _cachePrefix + hostnameKey + rootPageId + culture.Name + PublicationScope;
+                string hostnameKey = urlSpace.ForceRelativeUrls ? string.Empty : host;
+
+                return CachePrefix + hostnameKey + rootPageId + culture.Name + PublicationScope;
             }
 
             private static PublicationScope PublicationScope
@@ -176,18 +165,9 @@ namespace Composite.AspNet
                 }
             }
 
-            /// <exclude />
-            protected static bool CanCache
-            {
-                get
-                {
-                    return true;
-                }
-            }
-
             internal static void ClearCache()
             {
-                var keys = MemoryCache.Default.Where(o => o.Key.StartsWith(_cachePrefix)).Select(o => o.Key);
+                var keys = MemoryCache.Default.Where(o => o.Key.StartsWith(CachePrefix)).Select(o => o.Key);
                 foreach (var key in keys)
                 {
                     MemoryCache.Default.Remove(key);

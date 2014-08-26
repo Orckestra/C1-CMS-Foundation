@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Composite.Core;
+using Composite.Core.Linq;
 using Composite.Data.Caching;
 using Composite.Data.Foundation;
 using Composite.Core.Extensions;
@@ -24,6 +25,14 @@ namespace Composite.Data
 
         private class PageStructureRecord
         {
+            public PageStructureRecord() { }
+
+            public PageStructureRecord(IPageStructure ps)
+            {
+                ParentId = ps.ParentId;
+                LocalOrdering = ps.LocalOrdering;
+            } 
+
             public Guid ParentId { get; set; }
             public int LocalOrdering { get; set; }
         }
@@ -34,9 +43,14 @@ namespace Composite.Data
         private static readonly int PagePlaceholderCacheSize = 500;
 
         private static readonly Cache<string, ExtendedNullable<IPage>> _pageCache = new Cache<string, ExtendedNullable<IPage>>("Pages", PageCacheSize);
-        private static readonly Cache<string, ExtendedNullable<PageStructureRecord>> _pageStructureCache = new Cache<string, ExtendedNullable<PageStructureRecord>>("Page structure", PageStructureCacheSize);
-        private static readonly Cache<string, ReadOnlyCollection<Guid>> _childrenCache = new Cache<string, ReadOnlyCollection<Guid>>("Child pages", ChildrenCacheSize);
         private static readonly Cache<string, ReadOnlyCollection<IPagePlaceholderContent>> _placeholderCache = new Cache<string, ReadOnlyCollection<IPagePlaceholderContent>>("Page placeholders", PagePlaceholderCacheSize);
+        private static readonly Cache<Guid, ExtendedNullable<PageStructureRecord>> _pageStructureCache = new Cache<Guid, ExtendedNullable<PageStructureRecord>>("Page structure", PageStructureCacheSize);
+        private static readonly Cache<Guid, ReadOnlyCollection<Guid>> _childrenCache = new Cache<Guid, ReadOnlyCollection<Guid>>("Child pages", ChildrenCacheSize);
+
+        private static readonly object _preloadingSyncRoot = new object();
+        private static bool _pageStructurePreloaded;
+        private static readonly HashSet<string> _preloadedPageDataScopes = new HashSet<string>();
+        
 
         static PageManager()
         {
@@ -115,7 +129,7 @@ namespace Composite.Data
         /// <returns></returns>
         public static ReadOnlyCollection<Guid> GetChildrenIDs(Guid parentPageId)
         {
-            var cacheKey = GetCacheKey<IPageStructure>(parentPageId);
+            var cacheKey = parentPageId;
             var cachedValue = _childrenCache.Get(cacheKey);
 
             if (cachedValue != null)
@@ -123,6 +137,7 @@ namespace Composite.Data
                 return cachedValue;
             }
 
+            // TODO: put children's page structure records into cache
             List<Guid> children = (from ps in DataFacade.GetData<IPageStructure>()
                                    where ps.ParentId == parentPageId
                                    orderby ps.LocalOrdering
@@ -158,11 +173,59 @@ namespace Composite.Data
 
         #endregion Public
 
+        internal static void PreloadPageCaching()
+        {
+            string key = DataScopeManager.CurrentDataScope.ToString() + LocalizationScopeManager.CurrentLocalizationScope;
+
+            if (!_preloadedPageDataScopes.Contains(key))
+            {
+                lock (_preloadingSyncRoot)
+                {
+                    if (!_preloadedPageDataScopes.Contains(key))
+                    {
+                        var pages = DataFacade.GetData<IPage>().Evaluate();
+
+                        foreach (var page in pages)
+                        {
+                            string pageKey = GetCacheKey(page.Id, page.DataSourceId);
+                            _pageCache.Add(pageKey, new ExtendedNullable<IPage> { Value = page });
+                        }
+
+                        _preloadedPageDataScopes.Add(key);
+                    }
+                }
+            }
+
+            if (!_pageStructurePreloaded)
+            {
+                lock (_preloadingSyncRoot)
+                {
+                    if (!_pageStructurePreloaded)
+                    {
+                        var pageStructures = DataFacade.GetData<IPageStructure>().Evaluate();
+
+                        foreach (var str in pageStructures)
+                        {
+                            _pageStructureCache.Add(str.Id, new ExtendedNullable<PageStructureRecord> {Value = new PageStructureRecord(str)});
+                        }
+
+                        foreach (var pair in pageStructures.GroupBy(ps => ps.ParentId))
+                        {
+                            _childrenCache.Add(pair.Key, new ReadOnlyCollection<Guid>(pair.Select(v => v.Id).ToList()));
+                        }
+
+                        _pageStructurePreloaded = true;
+                    }
+                }
+            }
+        }
+
+
         #region Private
 
         private static PageStructureRecord GetPageStructureRecord(Guid pageId)
         {
-            string cacheKey = GetCacheKey<IPageStructure>(pageId);
+            var cacheKey = pageId;
             ExtendedNullable<PageStructureRecord> cachedValue = _pageStructureCache.Get(cacheKey);
 
             if (cachedValue != null)
@@ -213,6 +276,11 @@ namespace Composite.Data
             if (!storeEventArgs.DataEventsFired)
             {
                 _pageCache.Clear();
+
+                lock (_preloadingSyncRoot)
+                {
+                    _preloadedPageDataScopes.Clear();
+                }
             }
         }
 
@@ -254,6 +322,7 @@ namespace Composite.Data
             {
                 _pageStructureCache.Clear();
                 _childrenCache.Clear();
+                _pageStructurePreloaded = false;
             }
         }
 
@@ -265,8 +334,8 @@ namespace Composite.Data
                 return;
             }
 
-            _pageStructureCache.Remove(GetCacheKey(ps.Id, ps.DataSourceId));
-            _childrenCache.Remove(GetCacheKey(ps.ParentId, ps.DataSourceId));
+            _pageStructureCache.Remove(ps.Id);
+            _childrenCache.Remove(ps.ParentId);
         }
 
         private static IPage CreateWrapper(IPage page)
@@ -290,7 +359,6 @@ namespace Composite.Data
             DataEventSystemFacade.SubscribeToDataAfterUpdate<IPageStructure>(OnPageStructureChanged, true);
             DataEventSystemFacade.SubscribeToDataDeleted<IPageStructure>(OnPageStructureChanged, true);
             DataEventSystemFacade.SubscribeToStoreChanged<IPageStructure>(OnPageStructureStoreChanged, true);
-            
         }
 
         #endregion Private

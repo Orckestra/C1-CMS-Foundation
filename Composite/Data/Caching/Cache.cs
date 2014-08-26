@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Composite.C1Console.Events;
+using Composite.Core;
 using Composite.Core.Configuration;
 
 
@@ -127,8 +128,9 @@ namespace Composite.Data.Caching
 
             lock (_syncRoot)
             {
-                if(_table.Count > _maxSize)
+                if (_maxSize != -1 && _table.Count > _maxSize)
                 {
+                    Log.LogWarning("Cache", "Clearing cache '{0}' as it exceeded maximum size {1} elements. Edit configuration file to increase the cache size.", Name, _maxSize);
                     _table.Clear();
                 }
 
