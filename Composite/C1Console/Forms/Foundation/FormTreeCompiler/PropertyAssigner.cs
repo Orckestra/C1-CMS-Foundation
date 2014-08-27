@@ -390,7 +390,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
             bool? optional = ((BindingsProducer)compileContext.BindingsProducer).GetOptionalValueByName(bindSourceName);
             bindingObject = compileContext.GetBindingObject(bindSourceName);
 
-            if (!optional.Value && bindingObject == null)
+            if (!optional.Value && !compileContext.BindingObjectExists(bindSourceName))
             {
                 throw new FormCompileException(string.Format("The binding object named '{0}' not found in the input dictionary", bindSourceName), element, property);
             }

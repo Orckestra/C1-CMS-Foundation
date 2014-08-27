@@ -102,10 +102,14 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
 
         internal object GetBindingObject(string name)
         {
-            if (null == _bindingObjects) return null;
-            if (false == _bindingObjects.ContainsKey(name)) return null;
+            if (_bindingObjects == null || !_bindingObjects.ContainsKey(name)) return null;
 
             return _bindingObjects[name];
+        }
+
+        internal bool BindingObjectExists(string name)
+        {
+            return _bindingObjects != null && _bindingObjects.ContainsKey(name);
         }
 
 
@@ -113,7 +117,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         internal void SetBindingType(string name, Type type)
         {
             BindingInformation bindingInformation;
-            if (_bindingObjectsInformations.TryGetValue(name, out bindingInformation) == false)
+            if (!_bindingObjectsInformations.TryGetValue(name, out bindingInformation))
             {
                 bindingInformation = new BindingInformation();
                 _bindingObjectsInformations.Add(name, bindingInformation);
@@ -128,7 +132,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler
         {
             if (_bindingsValidationRules == null) return null;
 
-            List<ClientValidationRule> rules = null;
+            List<ClientValidationRule> rules;
 
             _bindingsValidationRules.TryGetValue(bindingName, out rules);
 

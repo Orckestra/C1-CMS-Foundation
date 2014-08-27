@@ -12,8 +12,8 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 {
     internal sealed class EvaluatePropertiesPhase
     {
-        private CompileContext _compileContext;
-        private bool _withDebug = false;
+        private readonly CompileContext _compileContext;
+        private readonly bool _withDebug = false;
 
 
 
@@ -41,15 +41,15 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
         public ElementCompileTreeNode Evaluate(ElementCompileTreeNode node, List<PropertyCompileTreeNode> newProperties, string defaultOverloadPropertyName = null)
         {
-            Dictionary<ElementCompileTreeNode, List<PropertyCompileTreeNode>> replacedNodes = new Dictionary<ElementCompileTreeNode, List<PropertyCompileTreeNode>>();
+            var replacedNodes = new Dictionary<ElementCompileTreeNode, List<PropertyCompileTreeNode>>();
 
             bool isIfProducer = node.Producer is IfProducer;
 
-            if (isIfProducer == false)
+            if (!isIfProducer)
             {
                 foreach (ElementCompileTreeNode child in node.Children)
                 {
-                    List<PropertyCompileTreeNode> newProps = new List<PropertyCompileTreeNode>();
+                    var newProps = new List<PropertyCompileTreeNode>();
 
 
                     string childDefaultOverloadPropertyName = null;
@@ -85,7 +85,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             }
 
 
-            if (isIfProducer == false)
+            if (!isIfProducer)
             {
                 foreach (ElementCompileTreeNode nodeToRemove in replacedNodes.Keys)
                 {
@@ -105,19 +105,15 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             {
                 return HandleEmbeddedProperty(element, newProperties);
             }
-            else if (null != element.Producer)
+
+            if (element.Producer == null) return element;
+
+            if (element.Producer is IfProducer)
             {
-                if (element.Producer is IfProducer)
-                {
-                    return HandleIfProducerElement(element, newProperties);
-                }
-                else
-                {
-                    return HandleProducerElement(element, newProperties, defaultOverloadPropertyName);
-                }
+                return HandleIfProducerElement(element, newProperties);
             }
 
-            return element;
+            return HandleProducerElement(element, newProperties, defaultOverloadPropertyName);
         }
 
 
@@ -132,9 +128,11 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
             foreach (PropertyCompileTreeNode property in element.DefaultProperties)
             {
-                PropertyCompileTreeNode replacingProperty = new PropertyCompileTreeNode(propertyName, element.XmlSourceNodeInformation);
-                replacingProperty.Value = property.Value;
-                replacingProperty.InclosingProducerName = producerName;
+                var replacingProperty = new PropertyCompileTreeNode(propertyName, element.XmlSourceNodeInformation)
+                {
+                    Value = property.Value,
+                    InclosingProducerName = producerName
+                };
 
                 newProperties.Add(replacingProperty);
             }
@@ -161,18 +159,18 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             if (whenTrueElement == null) throw new FormCompileException(string.Format("Missing when true tag ({0})", CompilerGlobals.IfWhenTrue_TagName), element.XmlSourceNodeInformation);
 
 
-            List<PropertyCompileTreeNode> newConditionProperties = new List<PropertyCompileTreeNode>();
+            var newConditionProperties = new List<PropertyCompileTreeNode>();
             Evaluate(conditionElement, newConditionProperties);
-            IfConditionProducer conditionProducer = (IfConditionProducer)newConditionProperties[0].Value;
+            var conditionProducer = (IfConditionProducer)newConditionProperties[0].Value;
 
 
             object value;
             if (conditionProducer.Condition)
             {
-                List<PropertyCompileTreeNode> newWhenTrueProperties = new List<PropertyCompileTreeNode>();
+                var newWhenTrueProperties = new List<PropertyCompileTreeNode>();
                 Evaluate(whenTrueElement, newWhenTrueProperties);
 
-                IfWhenTrueProducer whenTrueProducer = (IfWhenTrueProducer)newWhenTrueProperties[0].Value;
+                var whenTrueProducer = (IfWhenTrueProducer)newWhenTrueProperties[0].Value;
 
                 if (whenTrueProducer.Result.Count == 1)
                 {
@@ -185,10 +183,10 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
             }
             else if (whenFalseElement != null)
             {
-                List<PropertyCompileTreeNode> newWhenFalseProperties = new List<PropertyCompileTreeNode>();
+                var newWhenFalseProperties = new List<PropertyCompileTreeNode>();
                 Evaluate(whenFalseElement, newWhenFalseProperties);
 
-                IfWhenFalseProducer whenFalseProducer = (IfWhenFalseProducer)newWhenFalseProperties[0].Value;
+                var whenFalseProducer = (IfWhenFalseProducer)newWhenFalseProperties[0].Value;
 
                 if (whenFalseProducer.Result.Count == 1)
                 {
@@ -206,7 +204,7 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
 
 
 
-            PropertyCompileTreeNode replacingProperty = new PropertyCompileTreeNode(CompilerGlobals.DefaultPropertyName, element.XmlSourceNodeInformation);
+            var replacingProperty = new PropertyCompileTreeNode(CompilerGlobals.DefaultPropertyName, element.XmlSourceNodeInformation);
             replacingProperty.Value = value;
 
             newProperties.Add(replacingProperty);
@@ -226,27 +224,27 @@ namespace Composite.C1Console.Forms.Foundation.FormTreeCompiler.CompilePhases
                 replacingPropertyName = defaultOverloadPropertyName;
             }
 
-            PropertyCompileTreeNode replacingProperty = new PropertyCompileTreeNode(replacingPropertyName, element.XmlSourceNodeInformation);
+            var replacingProperty = new PropertyCompileTreeNode(replacingPropertyName, element.XmlSourceNodeInformation);
             object result = ProducerMediatorPluginFacade.EvaluateProducer(element.XmlSourceNodeInformation.NamespaceURI, element.Producer);
 
             if (result is BindingProducer)
             {
-                BindingProducer bindingProducer = (BindingProducer)result;
+                var bindingProducer = (BindingProducer)result;
 
                 if (string.IsNullOrEmpty(bindingProducer.name)) throw new FormCompileException("A binding declaraions is missing its name attribute", element.XmlSourceNodeInformation);
 
-                if (_compileContext.RegistarBindingName(bindingProducer.name) == false) throw new FormCompileException(string.Format("Name binding name {0} is used twice which is not allowed", bindingProducer.name), element.XmlSourceNodeInformation);
+                if (!_compileContext.RegistarBindingName(bindingProducer.name)) throw new FormCompileException(string.Format("Name binding name {0} is used twice which is not allowed", bindingProducer.name), element.XmlSourceNodeInformation);
 
-                if (_compileContext.GetBindingObject(bindingProducer.name) == null)
-                {
-                    if (bindingProducer.optional == false) throw new FormCompileException(string.Format("The non optional binding {0} is missing its binding value", bindingProducer.name), element.XmlSourceNodeInformation);
-                }
+                //if (_compileContext.GetBindingObject(bindingProducer.name) == null && !bindingProducer.optional)
+                //{
+                //    throw new FormCompileException(string.Format("The non optional binding {0} is missing its binding value", bindingProducer.name), element.XmlSourceNodeInformation);
+                //}
 
                 Type type = TypeManager.GetType(bindingProducer.type);
 
                 _compileContext.SetBindingType(bindingProducer.name, type);
             }
-            else if ((_withDebug) && (result is IUiControl))
+            else if (_withDebug && result is IUiControl)
             {
                 IUiControl uiControl = result as IUiControl;
 
