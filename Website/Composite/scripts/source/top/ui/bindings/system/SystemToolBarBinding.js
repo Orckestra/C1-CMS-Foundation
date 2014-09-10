@@ -284,6 +284,9 @@ SystemToolBarBinding.prototype._containAllButtons = function () {
 	var tools = this.bindingWindow.bindingMap.toolsbutton;
 	var mores = this.bindingWindow.bindingMap.moreactionstoolbargroup;
 	var avail = tools.bindingElement.offsetLeft - this._moreActionsWidth;
+	if (Localization.direction == "rtl") {
+		avail = this.bindingElement.offsetWidth - tools.bindingElement.offsetWidth - this._moreActionsWidth;
+	}
 	var total = 0;
 	var hides = new List ();
 	

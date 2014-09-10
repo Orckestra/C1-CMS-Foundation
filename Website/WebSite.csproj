@@ -492,6 +492,7 @@
     <Content Include="Composite\scripts\source\top\ui\bindings\pages\ResponsePageBinding.js" />
     <Content Include="Composite\scripts\source\top\ui\bindings\roots\StyleBinding.js" />
     <Content Include="Composite\services\WysiwygEditor\FunctionService.asmx" />
+    <Content Include="Composite\styles\default\rtl.css" />
     <Content Include="Composite\unsecure.js" />
     <Content Include="Composite\skins\system\dialogpages\unsecure_32.png" />
     <Content Include="Composite\unsecure.css" />

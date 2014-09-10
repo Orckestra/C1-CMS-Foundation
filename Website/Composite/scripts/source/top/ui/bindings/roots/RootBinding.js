@@ -88,6 +88,12 @@ RootBinding.prototype.onBindingRegister = function () {
 	this._activationawares = new List ();
 	this.isActivated = false;
 	this._setupActivationAwareness ( true );
+
+	if (Localization.direction == "rtl")
+	{
+		this.setProperty("direction", "rtl");
+		this.attachClassName("rtl");
+	}
 }
 
 /**

@@ -19,6 +19,7 @@
 @import url("default/pages.css");
 @import url("default/views.css");
 @import url("default/explorer.css");
+@import url("default/rtl.css");
 
 /*
 Explorer will reach af max amount of @import statements at 32: see

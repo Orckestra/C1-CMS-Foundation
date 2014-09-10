@@ -128,5 +128,11 @@ namespace Composite.Services
 
             return pageLocales;
         }
+
+		[WebMethod]
+		public string GetTextDirection(bool dummy)
+		{
+			return UserSettings.CultureInfo.TextInfo.IsRightToLeft ? "rtl" : "ltr";
+		}
     }
 }

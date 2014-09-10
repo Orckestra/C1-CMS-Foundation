@@ -64,6 +64,13 @@ SplitBoxBinding.prototype.serialize = function () {
  */
 SplitBoxBinding.prototype.onBindingAttach = function () {
 	
+	if (this.isHorizontalOrient() && Localization.direction == "rtl")
+	{
+		var i = this.bindingElement.childNodes.length;
+		while (i--)
+			this.bindingElement.appendChild(this.bindingElement.childNodes[i]);
+	}
+
 	SplitBoxBinding.superclass.onBindingAttach.call ( this );
 	
 	this.addActionListener ( SplitterBinding.ACTION_DRAGGED, this );	
@@ -461,8 +468,12 @@ SplitBoxBinding.prototype.isHorizontalOrient = function () {
  * @return {List<DOMElement>}
  */
 SplitBoxBinding.prototype.getSplitPanelElements = function () {
-
-	return this.getChildElementsByLocalName ( "splitpanel" );
+	var splitpanels = this.getChildElementsByLocalName("splitpanel")
+	if (this.isHorizontalOrient() && Localization.direction == "rtl")
+	{
+		splitpanels.reverse();
+	}
+	return splitpanels;
 }
 
 /**

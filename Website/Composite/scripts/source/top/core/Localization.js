@@ -35,6 +35,12 @@ _Localization.prototype = {
 	 * @type {string}
 	 */
 	target : null,
+
+	/**
+	 * TextDirection.
+	 * @type {string}
+	 */
+	direction: null,
 	
 	/**
 	 * @implements {IBroadcastListener}
@@ -50,6 +56,7 @@ _Localization.prototype = {
 			case BroadcastMessages.APPLICATION_LOGIN :
 			case BroadcastMessages.LANGUAGES_UPDATED:
 			case BroadcastMessages.TOLANGUAGE_UPDATED:
+				this.direction = LocalizationService.GetTextDirection( true );
 				var languages = LocalizationService.GetActiveLocales ( true );
 				if ( languages.length >= 1 ) {
 					this.languages = new List ( languages );
