@@ -34,19 +34,27 @@ namespace Composite.Plugins.Elements.ElementProviders.RazorFunctionProviderEleme
 @functions {
     public override string FunctionDescription
     {
-        get  { return ""A demo function that outputs a hello message.""; }
+        get  { return ""Shortly describe this function here""; }
     }
      
-    [FunctionParameter(DefaultValue = ""World"")]
-    public string Name { get; set; }
+    [FunctionParameter(Label = ""Heading label here..."", Help = ""Help text here..."", DefaultValue = ""Default value here..."")]
+    public string Heading { get; set; }
+
+    [FunctionParameter(Label = ""Article label here..."", Help = ""Help text here..."")]
+    public XhtmlDocument Article { get; set; }
+
+    [FunctionParameter(Label = ""Image label here..."", Help = ""Help text here..."")]
+    public DataReference<IImageFile> Image { get; set; }
 }
 
 <html xmlns=""http://www.w3.org/1999/xhtml"" xmlns:f=""" + Namespaces.Function10 + @""">
     <head>
     </head>
     <body>
+        <h1>@Heading</h1>
         <div>
-            Hello @Name!
+			<img src=""/media(@Image)"" style=""float:right"" />
+            @Html.Raw(@Article)
         </div>
     </body>
 </html>";
