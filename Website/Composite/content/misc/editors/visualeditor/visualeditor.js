@@ -26,6 +26,12 @@ var config = {
 	setup: function (editor) {
 		editor.on('PreInit', function (e) {
 			var ed = e.target;
+
+			if (Localization.isRtl)
+			{
+				ed.getBody().setAttribute("dir", "rtl");
+			}
+
 			var blockElementsMap = ed.schema.getBlockElements();
 			ed.dom.isBlock = function (node) {
 				// Fix for #5446

@@ -64,7 +64,7 @@ SplitBoxBinding.prototype.serialize = function () {
  */
 SplitBoxBinding.prototype.onBindingAttach = function () {
 	
-	if (this.isHorizontalOrient() && Localization.direction == "rtl")
+	if (this.isHorizontalOrient() && Localization.isRtl)
 	{
 		var i = this.bindingElement.childNodes.length;
 		while (i--)
@@ -469,7 +469,7 @@ SplitBoxBinding.prototype.isHorizontalOrient = function () {
  */
 SplitBoxBinding.prototype.getSplitPanelElements = function () {
 	var splitpanels = this.getChildElementsByLocalName("splitpanel")
-	if (this.isHorizontalOrient() && Localization.direction == "rtl")
+	if (this.isHorizontalOrient() && Localization.isRtl)
 	{
 		splitpanels.reverse();
 	}

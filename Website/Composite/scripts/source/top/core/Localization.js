@@ -37,10 +37,10 @@ _Localization.prototype = {
 	target : null,
 
 	/**
-	 * TextDirection.
-	 * @type {string}
+	 * Is RTL tDirection.
+	 * @type {Boolean}
 	 */
-	direction: null,
+	isRtl: false,
 	
 	/**
 	 * @implements {IBroadcastListener}
@@ -56,7 +56,7 @@ _Localization.prototype = {
 			case BroadcastMessages.APPLICATION_LOGIN :
 			case BroadcastMessages.LANGUAGES_UPDATED:
 			case BroadcastMessages.TOLANGUAGE_UPDATED:
-				this.direction = LocalizationService.GetTextDirection( true );
+				this.isRtl = LocalizationService.GetTextDirection(true) == "rtl";
 				var languages = LocalizationService.GetActiveLocales ( true );
 				if ( languages.length >= 1 ) {
 					this.languages = new List ( languages );

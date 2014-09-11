@@ -89,9 +89,9 @@ RootBinding.prototype.onBindingRegister = function () {
 	this.isActivated = false;
 	this._setupActivationAwareness ( true );
 
-	if (Localization.direction == "rtl")
+	if (Localization.isRtl)
 	{
-		this.setProperty("direction", "rtl");
+		this.setProperty("dir", "rtl");
 		this.attachClassName("rtl");
 	}
 }
