@@ -132,7 +132,7 @@ namespace Composite.Services
 		[WebMethod]
 		public string GetTextDirection(bool dummy)
 		{
-			return UserSettings.CultureInfo.TextInfo.IsRightToLeft ? "rtl" : "ltr";
+			return UserSettings.C1ConsoleUiLanguage.TextInfo.IsRightToLeft ? "rtl" : "ltr";
 		}
     }
 }

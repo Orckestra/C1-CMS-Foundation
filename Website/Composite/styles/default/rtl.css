@@ -42,10 +42,22 @@ body.rtl ui|selector ui|clickbutton
 	float: none;
 }
 
+body.rtl ui|datainputselector ui|toolbarbutton,
+body.rtl ui|datainputdialog ui|toolbarbutton,
+body.rtl ui|datainputbutton ui|toolbarbutton,
+body.rtl ui|urlinputdialog ui|toolbarbutton {
+	left: 3px;
+	right: auto;
+}
+
 body.rtl ui|toolbarbody.alignright,
 body.rtl ui|fieldhelp,
 body.rtl ui|fielddata{
 	float: left;
+}
+
+body.rtl fielddata input {
+	padding: 5px 7px 4px 0;
 }
 
 body.rtl ui|field.fieldhelp ui|fielddata {
