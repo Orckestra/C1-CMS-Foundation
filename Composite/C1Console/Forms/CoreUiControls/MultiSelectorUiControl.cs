@@ -4,6 +4,11 @@ namespace Composite.C1Console.Forms.CoreUiControls
 {
     internal class MultiSelectorUiControl : BaseSelectorUiControl
     {
+        public MultiSelectorUiControl() : base()
+        {
+            this.Required = false;
+        }
+
         [BindableProperty()]
         [FormsProperty()]
         public IEnumerable Selected { get; set; }
