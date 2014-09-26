@@ -1131,12 +1131,12 @@ EventBroadcaster.subscribe(BroadcastMessages.LANGUAGES_UPDATED,this);
 EventBroadcaster.subscribe(BroadcastMessages.FROMLANGUAGE_UPDATED,this);
 EventBroadcaster.subscribe(BroadcastMessages.TOLANGUAGE_UPDATED,this);
 }
-_Localization.prototype={languages:null,source:null,target:null,direction:null,handleBroadcast:function(_109,arg){
+_Localization.prototype={languages:null,source:null,target:null,isRtl:false,handleBroadcast:function(_109,arg){
 switch(_109){
 case BroadcastMessages.APPLICATION_LOGIN:
 case BroadcastMessages.LANGUAGES_UPDATED:
 case BroadcastMessages.TOLANGUAGE_UPDATED:
-this.direction=LocalizationService.GetTextDirection(true);
+this.isRtl=LocalizationService.GetTextDirection(true)=="rtl";
 var _10b=LocalizationService.GetActiveLocales(true);
 if(_10b.length>=1){
 this.languages=new List(_10b);
@@ -7060,8 +7060,8 @@ this.subscribe(this.bindingWindow.WindowManager.WINDOW_EVALUATED_BROADCAST);
 this._activationawares=new List();
 this.isActivated=false;
 this._setupActivationAwareness(true);
-if(Localization.direction=="rtl"){
-this.setProperty("direction","rtl");
+if(Localization.isRtl){
+this.setProperty("dir","rtl");
 this.attachClassName("rtl");
 }
 };
@@ -17368,7 +17368,7 @@ _b30.layout=this.getLayout();
 return _b30;
 };
 SplitBoxBinding.prototype.onBindingAttach=function(){
-if(this.isHorizontalOrient()&&Localization.direction=="rtl"){
+if(this.isHorizontalOrient()&&Localization.isRtl){
 var i=this.bindingElement.childNodes.length;
 while(i--){
 this.bindingElement.appendChild(this.bindingElement.childNodes[i]);
@@ -17613,7 +17613,7 @@ return this._orient==SplitBoxBinding.ORIENT_HORIZONTAL;
 };
 SplitBoxBinding.prototype.getSplitPanelElements=function(){
 var _b62=this.getChildElementsByLocalName("splitpanel");
-if(this.isHorizontalOrient()&&Localization.direction=="rtl"){
+if(this.isHorizontalOrient()&&Localization.isRtl){
 _b62.reverse();
 }
 return _b62;
@@ -22842,7 +22842,7 @@ SystemToolBarBinding.prototype._containAllButtons=function(){
 var _de3=this.bindingWindow.bindingMap.toolsbutton;
 var _de4=this.bindingWindow.bindingMap.moreactionstoolbargroup;
 var _de5=_de3.bindingElement.offsetLeft-this._moreActionsWidth;
-if(Localization.direction=="rtl"){
+if(Localization.isRtl){
 _de5=this.bindingElement.offsetWidth-_de3.bindingElement.offsetWidth-this._moreActionsWidth;
 }
 var _de6=0;
