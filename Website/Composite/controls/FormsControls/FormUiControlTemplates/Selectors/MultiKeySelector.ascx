@@ -5,6 +5,8 @@
 <%@ Import Namespace="System.Linq" %>
 
 <script runat="server">
+	private List<string> _selectedKeys = new List<string>();
+
     protected void Page_Init(object sender, EventArgs e)
     {
         if (!this.CompactMode)
@@ -33,6 +35,15 @@
             }
 
             var unselectedOptions = this.GetOptions().Where(o => selectedKeys.Contains(o.Key)==false);
+
+
+            //workarround
+            this._selectedKeys = selectedKeys;
+            string postBackName = this.ClientID;
+            if (!string.IsNullOrEmpty(Request.Form[postBackName]))
+            {
+                this._selectedKeys = new List<string>(Request.Form[postBackName].Split(','));
+            }
             
             optionsRepeater.DataSource = selectedOptions.Concat(unselectedOptions);
             optionsRepeater.DataBind();
@@ -119,7 +130,7 @@
     {
         string key = keyLabelPair.Key;
 
-        if (SelectedKeys.Contains(key))
+        if (_selectedKeys.Contains(key))
         {
             return "selected=\"true\"";
         }
