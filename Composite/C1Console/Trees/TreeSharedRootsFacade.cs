@@ -61,7 +61,7 @@ namespace Composite.C1Console.Trees
                 {
                     if (elementAttachingProviderName == null)
                     {
-                        foreach (string providerName in ElementActionProviderRegistry.ElementActionProviderNames)
+                        foreach (string providerName in ElementAttachingProviderRegistry.ElementAttachingProviderNames)
                         {
                             IElementAttachingProvider elementAttachingProvider = ElementAttachingProviderPluginFacade.GetElementAttachingProvider(providerName);
                             if (elementAttachingProvider is TreeElementAttachingProvider)
