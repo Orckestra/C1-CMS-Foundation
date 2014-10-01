@@ -22,6 +22,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
 	{
         static readonly TimeSpan HalfASecond = TimeSpan.FromMilliseconds(500);
         static readonly TimeSpan HalfAnHour = TimeSpan.FromMinutes(30);
+        private const int MaximumLoginAttempts = 30;
 
         private class FailedLoginInfo
         {
@@ -129,7 +130,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                     return false;
                 }
 
-                if (failedLoginInfo.LoginAttemptCount > 30)
+                if (failedLoginInfo.LoginAttemptCount > MaximumLoginAttempts)
                 {
                     if (now - failedLoginInfo.LastLoginAttempt < HalfAnHour)
                     {

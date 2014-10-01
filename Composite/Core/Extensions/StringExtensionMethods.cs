@@ -318,14 +318,14 @@ namespace Composite.Core.Extensions
 
             while (index != -1)
             {
-                sb.Append(str.Substring(previousIndex, index - previousIndex));
+                sb.Append(str, previousIndex, index - previousIndex);
                 sb.Append(newValue);
                 index += oldValue.Length;
 
                 previousIndex = index;
                 index = str.IndexOf(oldValue, index, comparison);
             }
-            sb.Append(str.Substring(previousIndex));
+            sb.Append(str, previousIndex, str.Length - previousIndex);
 
             return sb.ToString();
         }
