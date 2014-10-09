@@ -211,7 +211,10 @@ namespace Composite.Data
 
                         foreach (var pair in pageStructures.GroupBy(ps => ps.ParentId))
                         {
-                            _childrenCache.Add(pair.Key, new ReadOnlyCollection<Guid>(pair.Select(v => v.Id).ToList()));
+                            _childrenCache.Add(pair.Key, new ReadOnlyCollection<Guid>(
+                                pair
+                                .OrderBy(p => p.LocalOrdering)
+                                .Select(v => v.Id).ToList()));
                         }
 
                         _pageStructurePreloaded = true;
