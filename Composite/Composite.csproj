@@ -163,6 +163,7 @@
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\Application\Job.cs" />
     <Compile Include="Core\Caching\FileRelatedDataCache.cs" />
+    <Compile Include="Core\Extensions\StackTraceExtensionMethods.cs" />
     <Compile Include="Core\Instrumentation\LogExecutionTime.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FileModifyPackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FileModifyPackageFragmentUninstaller.cs" />
@@ -1036,7 +1037,6 @@
     <Compile Include="C1Console\Elements\Plugins\ElementProvider\ILocaleAwareElementProvider.cs" />
     <Compile Include="Core\Extensions\IEnumerableExtensionMethods.cs" />
     <Compile Include="Core\Extensions\MethodInfoExtensionMethods.cs" />
-    <Compile Include="Core\Extensions\StackFrameExtensionMethods.cs" />
     <Compile Include="Core\Linq\PropertyInfoValueCollectioncs.cs" />
     <Compile Include="Core\Localization\LocalizationParser.cs" />
     <Compile Include="Core\Localization\LocalizationXmlConstants.cs" />
@@ -1099,7 +1099,6 @@
     <Compile Include="Data\Types\IPackageServerSource.cs" />
     <Compile Include="C1Console\Elements\Plugins\ElementProvider\ElementProviderConfigurationServices.cs" />
     <Compile Include="Core\Extensions\ByteArrayExtensionMethods.cs" />
-    <Compile Include="Core\Extensions\StackTraceExtensionMethods.cs" />
     <Compile Include="C1Console\Forms\BindablePropertyAttribute.cs" />
     <Compile Include="C1Console\Forms\ControlVaulePropertyAttribute.cs" />
     <Compile Include="C1Console\Forms\CoreFunctions\BooleanCheckFunctionFactory.cs" />
@@ -1765,8 +1764,6 @@
     <Compile Include="Core\Xml\XhtmlDocument.cs" />
     <Compile Include="Functions\XElementParameterRuntimeTreeNode.cs" />
     <Compile Include="Core\Instrumentation\Foundation\NoopTimerProfiler.cs" />
-    <Compile Include="Core\Instrumentation\Foundation\XmlTimerProfiler.cs" />
-    <Compile Include="Core\Instrumentation\Foundation\XmlTimerProfilerFacade.cs" />
     <Compile Include="Core\Instrumentation\TimerProfiler.cs" />
     <Compile Include="Core\Instrumentation\TimerProfilerFacade.cs" />
     <Compile Include="Core\IO\MimeTypeInfo.cs" />

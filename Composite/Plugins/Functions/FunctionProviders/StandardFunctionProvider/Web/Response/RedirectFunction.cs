@@ -20,10 +20,10 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
         {
             get
             {
-                WidgetFunctionProvider textboxWidget = StandardWidgetFunctions.TextBoxWidget;
+                var urlComboBoxWidget = StandardWidgetFunctions.UrlComboBoxWidget;
 
                 yield return new StandardFunctionParameterProfile(
-                    "Url", typeof(string), true, new NoValueValueProvider(), textboxWidget);
+                    "Url", typeof(string), true, new NoValueValueProvider(), urlComboBoxWidget);
             }
         }
 

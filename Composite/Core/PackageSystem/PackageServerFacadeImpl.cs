@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.ServiceModel;
-using Composite.Core.Logging;
 using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.PackageSystem.WebServiceClient;
 
@@ -12,17 +11,17 @@ namespace Composite.Core.PackageSystem
 {
     internal sealed class PackageServerFacadeImpl : IPackageServerFacade
     {
-        private PackageServerFacadeImplCache _packageServerFacadeImplCache = new PackageServerFacadeImplCache();
+        private readonly PackageServerFacadeImplCache _packageServerFacadeImplCache = new PackageServerFacadeImplCache();
 
 
         public ServerUrlValidationResult ValidateServerUrl(string packageServerUrl)
         {
             try
             {
-                BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
+                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
                 basicHttpBinding.Security.Mode = BasicHttpSecurityMode.Transport;
-                basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
-                PackagesSoapClient client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("https://{0}", packageServerUrl)));
+
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("https://{0}", packageServerUrl)));
 
                 client.IsOperational();
                 return ServerUrlValidationResult.Https;
@@ -33,9 +32,8 @@ namespace Composite.Core.PackageSystem
 
             try
             {
-                BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
-                basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
-                PackagesSoapClient client = new PackagesSoapClient(new BasicHttpBinding(), new EndpointAddress(string.Format("http://{0}", packageServerUrl)));
+                var basicHttpBinding = new BasicHttpBinding { MaxReceivedMessageSize = int.MaxValue };
+                var client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(string.Format("http://{0}", packageServerUrl)));
 
                 client.IsOperational();
                 return ServerUrlValidationResult.Http;
@@ -63,7 +61,7 @@ namespace Composite.Core.PackageSystem
             }
             catch (Exception ex)
             {
-                LoggingService.LogError("PackageServerFacade", ex);
+                Log.LogError("PackageServerFacade", ex);
             }
 
             packageDescriptions = new List<PackageDescription>();
@@ -120,9 +118,9 @@ namespace Composite.Core.PackageSystem
 
         public Stream GetInstallFileStream(string packageFileDownloadUrl)
         {
-            LoggingService.LogVerbose("PackageServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
+            Log.LogVerbose("PackageServerFacade", string.Format("Downloading file: {0}", packageFileDownloadUrl));
 
-            System.Net.WebClient client = new System.Net.WebClient();
+            var client = new System.Net.WebClient();
             return client.OpenRead(packageFileDownloadUrl);
         }
 
@@ -165,35 +163,29 @@ namespace Composite.Core.PackageSystem
         private bool ValidatePackageDescriptor(PackageDescriptor packageDescriptor)
         {
             string newVersion;
-            if (VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion) == false)
+            if (!VersionStringHelper.ValidateVersion(packageDescriptor.PackageVersion, out newVersion))
             {
-                LoggingService.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
                 return false;
-            }
-            else
-            {
-                packageDescriptor.PackageVersion = newVersion;
             }
 
-            if (VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion) == false)
+            packageDescriptor.PackageVersion = newVersion;
+
+            if (!VersionStringHelper.ValidateVersion(packageDescriptor.MinCompositeVersionSupported, out newVersion))
             {
-                LoggingService.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
                 return false;
-            }
-            else
-            {
-                packageDescriptor.MinCompositeVersionSupported = newVersion;
             }
 
-            if (VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion) == false)
+            packageDescriptor.MinCompositeVersionSupported = newVersion;
+
+            if (!VersionStringHelper.ValidateVersion(packageDescriptor.MaxCompositeVersionSupported, out newVersion))
             {
-                LoggingService.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
+                Log.LogWarning("PackageServerFacade", string.Format("The package '{0}' ({1}) did not validate and is skipped", packageDescriptor.Name, packageDescriptor.Id));
                 return false;
             }
-            else
-            {
-                packageDescriptor.MaxCompositeVersionSupported = newVersion;
-            }
+
+            packageDescriptor.MaxCompositeVersionSupported = newVersion;
 
             return true;
         }
@@ -202,27 +194,15 @@ namespace Composite.Core.PackageSystem
 
         private PackagesSoapClient CreateClient(string packageServerUrl)
         {
-            BasicHttpBinding basicHttpBinding = new BasicHttpBinding();
+            var timeout = RuntimeInformation.IsDebugBuild ? TimeSpan.FromMinutes(2) : TimeSpan.FromSeconds(2);
 
-            if (RuntimeInformation.IsDebugBuild)
+            var basicHttpBinding = new BasicHttpBinding
             {
-                basicHttpBinding.CloseTimeout = TimeSpan.FromSeconds(1);
-                basicHttpBinding.OpenTimeout = TimeSpan.FromSeconds(1);
-                basicHttpBinding.ReceiveTimeout = TimeSpan.FromSeconds(1);
-                basicHttpBinding.SendTimeout = TimeSpan.FromSeconds(1);
-
-                basicHttpBinding.CloseTimeout = TimeSpan.FromMinutes(2);
-                basicHttpBinding.OpenTimeout = TimeSpan.FromMinutes(2);
-                basicHttpBinding.ReceiveTimeout = TimeSpan.FromMinutes(2);
-                basicHttpBinding.SendTimeout = TimeSpan.FromMinutes(2);
-            }
-            else
-            {
-                basicHttpBinding.CloseTimeout = TimeSpan.FromMinutes(1);
-                basicHttpBinding.OpenTimeout = TimeSpan.FromMinutes(1);
-                basicHttpBinding.ReceiveTimeout = TimeSpan.FromMinutes(1);
-                basicHttpBinding.SendTimeout = TimeSpan.FromMinutes(1);
-            }
+                CloseTimeout = timeout,
+                OpenTimeout = timeout,
+                ReceiveTimeout = timeout,
+                SendTimeout = timeout
+            };
 
             if (packageServerUrl.StartsWith("https"))
             {
@@ -231,9 +211,7 @@ namespace Composite.Core.PackageSystem
 
             basicHttpBinding.MaxReceivedMessageSize = int.MaxValue;
 
-            PackagesSoapClient client = new PackagesSoapClient(basicHttpBinding, new EndpointAddress(packageServerUrl));
-
-            return client;
+            return new PackagesSoapClient(basicHttpBinding, new EndpointAddress(packageServerUrl));
         }
     }
 }

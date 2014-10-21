@@ -86,7 +86,7 @@ namespace Composite.Core.WebClient.Setup
 
             XElement setupDescription = XElement.Parse(setupDescriptionXml);
 
-            XElement setupRegisrtatoinDescription = new XElement("registration",
+            XElement setupRegistrationDescription = new XElement("registration",
                 new XElement("user_email", email),
                 new XElement("user_newsletter", newsletter),
                 new XElement("user_consolelanguage", consoleLanguage),
@@ -142,7 +142,7 @@ namespace Composite.Core.WebClient.Setup
 
                 UserSettings.SetUserC1ConsoleUiLanguage(username, installedLanguagePackageCulture ?? StringResourceSystemFacade.GetDefaultStringCulture());
 
-                RegisterSetup(setupRegisrtatoinDescription.ToString(), "");
+                RegisterSetup(setupRegistrationDescription.ToString(), "");
 
                 Log.LogInformation(VerboseLogTitle, "Done setting up the system for the first time! Enjoy!");
 
@@ -152,7 +152,7 @@ namespace Composite.Core.WebClient.Setup
             {
                 Log.LogCritical(LogTitle, ex);
                 Log.LogWarning(LogTitle, "First time setup failed - could not download, install package or otherwise complete the setup.");
-                RegisterSetup(setupRegisrtatoinDescription.ToString(), ex.ToString());
+                RegisterSetup(setupRegistrationDescription.ToString(), ex.ToString());
 
                 if (RuntimeInformation.IsDebugBuild)
                 {
