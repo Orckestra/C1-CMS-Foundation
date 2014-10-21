@@ -21,7 +21,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
     {
         private static readonly string ContextKey = typeof(HttpContextBasedLoginSessionStore).FullName + "StoredUsername";
 
-        private const string _authCookieName = ".CMSAUTH";
+        private const string AuthCookieName = ".CMSAUTH";
 
         public bool CanPersistAcrossSessions
         {
@@ -36,15 +36,15 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
             int daysToLive = (persistAcrossSessions ? 365 : 2);
 
-            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(userName, persistAcrossSessions, (int)TimeSpan.FromDays(daysToLive).TotalMinutes);
+            var ticket = new FormsAuthenticationTicket(userName, persistAcrossSessions, (int)TimeSpan.FromDays(daysToLive).TotalMinutes);
             string encryptedTicket = FormsAuthentication.Encrypt(ticket);
+
+            var cookie = CookieHandler.SetCookieInternal(AuthCookieName, encryptedTicket);
+            cookie.HttpOnly = true;
+
             if (persistAcrossSessions)
             {
-                CookieHandler.Set(_authCookieName, encryptedTicket, DateTime.Now.AddDays(daysToLive));
-            }
-            else
-            {
-                CookieHandler.Set(_authCookieName, encryptedTicket);
+                cookie.Expires = DateTime.Now.AddDays(daysToLive);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
         {
             try
             {
-                string cookieValue = CookieHandler.Get(_authCookieName);
+                string cookieValue = CookieHandler.Get(AuthCookieName);
 
                 if (!string.IsNullOrEmpty(cookieValue))
                 {
@@ -109,7 +109,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
         public void FlushUsername()
         {
-            CookieHandler.Set(_authCookieName, "", DateTime.Now.AddYears(-10));
+            CookieHandler.Set(AuthCookieName, "", DateTime.Now.AddYears(-10));
 
             string key = typeof(HttpContextBasedLoginSessionStore) + "StoredUsername";
             if (RequestLifetimeCache.HasKey(key))

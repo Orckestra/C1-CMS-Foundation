@@ -46,8 +46,7 @@ namespace Composite.Core.WebClient
         /// </summary>
         public static void Set(string cookieName, string value)
         {
-            cookieName = GetApplicationSpecificCookieName(cookieName);
-            HttpContext.Current.Response.Cookies[cookieName].Value = value;
+            SetCookieInternal(cookieName, value);
         }
 
 
@@ -57,11 +56,17 @@ namespace Composite.Core.WebClient
         /// </summary>
         public static void Set(string cookieName, string value, DateTime expires)
         {
+            var cookie = SetCookieInternal(cookieName, value);
+            cookie.Expires = expires;
+        }
+
+        internal static HttpCookie SetCookieInternal(string cookieName, string value)
+        {
             cookieName = GetApplicationSpecificCookieName(cookieName);
             var cookie = HttpContext.Current.Response.Cookies[cookieName];
-            
-            cookie.Expires = expires;
             cookie.Value = value;
+
+            return cookie;
         }
 
         internal static string GetApplicationSpecificCookieName(string cookieName)
