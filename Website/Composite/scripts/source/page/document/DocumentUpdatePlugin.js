@@ -201,8 +201,8 @@ _DocumentUpdatePlugin.prototype = {
 			var buffer = this._elementsbuffer;
 			
 			if ( buffer.hasEntries ()) {
-				buffer.each ( function ( element ) {
-					DocumentManager.attachBindings ( element );
+				buffer.each(function (element) {
+					DocumentManager.attachBindings(element);
 				});
 			}
 			
@@ -251,7 +251,6 @@ _DocumentUpdatePlugin.prototype = {
 			switch ( target.__updateType ) {
 				case Update.TYPE_REPLACE :
 				case Update.TYPE_INSERT :
-					if( target.__isAttached !== false)
 						this._elementsbuffer.add ( target );
 					break;
 				case Update.TYPE_ATTRIBUTES :
