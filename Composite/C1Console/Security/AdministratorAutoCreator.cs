@@ -5,6 +5,7 @@ using System.Linq;
 using Composite.C1Console.Elements;
 using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.C1Console.Users;
+using Composite.Core;
 using Composite.Core.Configuration;
 using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
@@ -27,22 +28,11 @@ namespace Composite.C1Console.Security
 	{
         public static bool CanBeAutoCreated(string userName)
         {
-            if (string.IsNullOrEmpty(GlobalSettingsFacade.AutoCreatedAdministratorUserName)==true)
-            {
-                return false;
-            }
+            string defaultAdminUserName = GlobalSettingsFacade.AutoCreatedAdministratorUserName;
 
-            if (userName != GlobalSettingsFacade.AutoCreatedAdministratorUserName)
-            {
-                return false;
-            }
-
-            if (LoginProviderPluginFacade.UsersExists)
-            {
-                return false;
-            }
-
-            return true;
+            return !string.IsNullOrEmpty(defaultAdminUserName)
+                   && userName == defaultAdminUserName
+                   && !LoginProviderPluginFacade.UsersExists;
         }
 
         /// <summary>
@@ -54,19 +44,19 @@ namespace Composite.C1Console.Security
         /// <param name="email">THe users email.</param>
         /// <param name="validateAutoCreateUserName">When true only the username specified in Composite.config as auto createable (usually 'admin') is allowed. Set to false to use a different user name.</param>
         /// <returns>true if the user was auto created. Otherwise false.</returns>
-        public static void AutoCreatedAdministrator(string userName, string password, string email, bool validateAutoCreateUserName = true)
+        public static void AutoCreateAdministrator(string userName, string password, string email, bool validateAutoCreateUserName = true)
         {
-            if (validateAutoCreateUserName && AdministratorAutoCreator.CanBeAutoCreated(userName) == false)
+            if (validateAutoCreateUserName && !CanBeAutoCreated(userName))
             {
                 throw new InvalidOperationException("Unable to auto create account. Either the user name is not eligble for auto creation or other users exists in the system. This feature only works for a specific user name and when no users exists.");
             }
 
-            if (LoginProviderPluginFacade.CanAddNewUser == false)
+            if (!LoginProviderPluginFacade.CanAddNewUser)
             {
                 throw new InvalidOperationException("Unable to auto create account. The current login provider does not support adding users");
             }
 
-            if (PermissionTypeFacade.CanAlterDefinitions == false)
+            if (!PermissionTypeFacade.CanAlterDefinitions)
             {
                 throw new InvalidOperationException("Unable to auto create account. The current permission defintion provider does not support changes");
             }
@@ -83,11 +73,11 @@ namespace Composite.C1Console.Security
             string group = StringResourceSystemFacade.GetString("Composite.C1Console.Users", "AdministratorAutoCreator.DefaultGroupName");
 
             LoginProviderPluginFacade.FormAddNewUser(userName, password, group, email);
-            LoggingService.LogVerbose("AdministratorAutoCreator", String.Format("Auto Created Administrator with user name '{0}'.", userName), LoggingService.Category.Audit);
+            Log.LogVerbose("AdministratorAutoCreator", String.Format("Auto Created Administrator with user name '{0}'.", userName), LoggingService.Category.Audit);
 
             IUser user = DataFacade.GetData<IUser>().Where(f => f.Username == userName).SingleOrDefault();
             IUserGroup userGroup = DataFacade.GetData<IUserGroup>().Where(f => f.Name == "Administrator").SingleOrDefault();
-            if ((user != null) && (userGroup != null))
+            if (user != null && userGroup != null)
             {
                 IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
                 userUserGroupRelation.UserId = user.Id;
@@ -105,7 +95,7 @@ namespace Composite.C1Console.Security
                     PermissionTypeFacade.SetUserPermissionDefinition(userPermissionDefinition);
                 }
 
-                LoggingService.LogVerbose("AdministratorAutoCreator", string.Format("Activating all known perspectives for user '{0}'", userName));
+                Log.LogVerbose("AdministratorAutoCreator", string.Format("Activating all known perspectives for user '{0}'", userName));
                 IEnumerable<EntityToken> perspectiveEntityTokens = ElementFacade.GetPerspectiveElementsWithNoSecurity().Select(f => f.ElementHandle.EntityToken);
                 UserPerspectiveFacade.SetEntityTokens(userName, perspectiveEntityTokens);
             }

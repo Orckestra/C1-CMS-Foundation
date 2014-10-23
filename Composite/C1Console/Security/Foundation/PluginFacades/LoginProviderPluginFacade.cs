@@ -11,13 +11,13 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 {
     internal class LoginProviderPluginFacade
     {
-        private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
+        private static readonly ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.DoInitializeResources);
 
 
 
         static LoginProviderPluginFacade()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -113,13 +113,6 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         private static void Flush()
         {
             _resourceLocker.ResetInitialization();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
         }
 
 

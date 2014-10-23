@@ -15,7 +15,7 @@ namespace Composite.C1Console.Security
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class UserValidationFacade
     {
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
 
         /// <exclude />
@@ -40,7 +40,7 @@ namespace Composite.C1Console.Security
             {
                 return ValidationType.Form;
             }
-            else if (LoginProviderPluginFacade.CheckType<IWindowsLoginProvider>())
+            if (LoginProviderPluginFacade.CheckType<IWindowsLoginProvider>())
             {
                 return ValidationType.Windows;
             }
@@ -71,7 +71,7 @@ namespace Composite.C1Console.Security
 
 
         /// <summary>
-        /// Validates and persists a form based login
+        /// Validates and persists a form based login. If no users exist and the user name matches the default administrator user, that user will be created.
         /// </summary>
         /// <param name="userName"></param>
         /// <param name="password"></param>
@@ -80,20 +80,17 @@ namespace Composite.C1Console.Security
         {
             LoginResult loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
 
-            if (loginResult == LoginResult.UserDoesNotExist)
+            if (loginResult == LoginResult.UserDoesNotExist && AdministratorAutoCreator.CanBeAutoCreated(userName))
             {
                 lock (_lock)
                 {
                     loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
 
-                    if (loginResult == LoginResult.UserDoesNotExist)
+                    if (loginResult == LoginResult.UserDoesNotExist && AdministratorAutoCreator.CanBeAutoCreated(userName))
                     {
-                        if (AdministratorAutoCreator.CanBeAutoCreated(userName))
-                        {
-                            AdministratorAutoCreator.AutoCreatedAdministrator(userName, password, "");
+                        AdministratorAutoCreator.AutoCreateAdministrator(userName, password, "");
 
-                            loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
-                        }
+                        loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
                     }
                 }
             }
@@ -199,7 +196,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static bool IsLoggedIn()
         {
-            return (string.IsNullOrEmpty(LoginSessionStorePluginFacade.StoredUsername) == false);
+            return !string.IsNullOrEmpty(LoginSessionStorePluginFacade.StoredUsername);
         }
 
 
@@ -207,7 +204,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static UserToken GetUserToken()
         {
-            if (IsLoggedIn() == false) throw new InvalidOperationException("No user has been logged in");
+            Verify.That(IsLoggedIn(), "No user has been logged in");
 
             return new UserToken(LoginSessionStorePluginFacade.StoredUsername);
         }
@@ -217,7 +214,7 @@ namespace Composite.C1Console.Security
         /// <exclude />
         public static string GetUsername()
         {
-            if (IsLoggedIn() == false) throw new InvalidOperationException("No user has been logged in");
+            Verify.That(IsLoggedIn(), "No user has been logged in");
 
             return LoginSessionStorePluginFacade.StoredUsername;
         }

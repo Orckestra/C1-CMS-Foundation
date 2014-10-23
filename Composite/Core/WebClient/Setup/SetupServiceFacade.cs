@@ -120,7 +120,7 @@ namespace Composite.Core.WebClient.Setup
 
 
                 Log.LogInformation(VerboseLogTitle, "Creating first user: " + username);
-                AdministratorAutoCreator.AutoCreatedAdministrator(username, password, email, false);
+                AdministratorAutoCreator.AutoCreateAdministrator(username, password, email, false);
                 UserValidationFacade.FormValidateUser(username, password);
 
                 UserSettings.SetUserCultureInfo(username, userCulture);
