@@ -1,4 +1,5 @@
 ﻿using System;
+using Composite.C1Console.Security;
 using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
 using Composite.Data.Validation.Validators;
@@ -61,5 +62,22 @@ namespace Composite.Data.Types
         [ImmutableFieldId("{C7A7D63C-EA87-48ac-B009-5D4050A2F248}")]
         // This should be named Folder and have no relation to IUserGroup
         string Group { get; set; }
+
+        /// <summary>
+        /// Determines whether the user is locked
+        /// </summary>
+        [StoreFieldType(PhysicalStoreFieldType.Boolean)]
+        [DefaultFieldBoolValue(false)]
+        [ImmutableFieldId("{72BFFBDC-E4FF-4BD4-9BB1-B86FAEA39468}")]
+        bool IsLocked { get; set; }
+
+        /// <summary>
+        /// Contains a code describing lockout reason (f.e. locked by an administrator or automatically after X failed login attempts)
+        /// For possible values, see enumeration <see cref="UserLockoutReason"/>
+        /// </summary>
+        [StoreFieldType(PhysicalStoreFieldType.Integer)]
+        [DefaultFieldIntValue(0)]
+        [ImmutableFieldId("{39CBCCFA-CFB2-4E79-9204-C9596A3FC0E9}")]
+        int LockoutReason { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 using System.Configuration;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Composite.C1Console.Security.Plugins.LoginProvider;
 
 
 
@@ -27,6 +26,14 @@ namespace Composite.C1Console.Security.Plugins.LoginProvider.Runtime
         {
             get { return (string)base[_defaultLoginProviderPluginProperty]; }
             set { base[_defaultLoginProviderPluginProperty] = value; }
-        }        
+        }
+
+        private const string _maxLoginAttempts = "maxLoginAttempts";
+        [ConfigurationProperty(_maxLoginAttempts, IsRequired = false, DefaultValue = int.MaxValue)]
+        public int MaxLoginAttempts
+        {
+            get { return (int)base[_maxLoginAttempts]; }
+            set { base[_maxLoginAttempts] = value; }
+        }
     }
 }

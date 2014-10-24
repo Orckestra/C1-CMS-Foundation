@@ -72,7 +72,7 @@ public partial class Composite_Management_Login : System.Web.UI.Page
 
         if(isValid)
         {
-            if(UserValidationFacade.FormValidateUser(username, password))
+            if(UserValidationFacade.FormValidateUser(username, password) == LoginResult.Success)
             {
                 RedirectToReturnUrl();
                 return;

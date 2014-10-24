@@ -57,8 +57,12 @@
 	<string key="Website.Forms.Administrative.EditUserStep1.PerspectivesTabLabel" value="Perspectives" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel" value="User Groups" />
 	<string key="Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp" value="Select the user groups that the selected user should be a member of." />
+  <string key="Website.Forms.Administrative.EditUserStep1.IsLockedLabel" value="Is Locked" />
+  <string key="Website.Forms.Administrative.EditUserStep1.IsLockedItemLabel" value="User can not log in" />
+  <string key="Website.Forms.Administrative.EditUserStep1.IsLockedHelp" value="When checked the user will be forbidden from logging in." />
 	<string key="EditUserWorkflow.EditErrorTitle" value="Error" />
 	<string key="EditUserWorkflow.EditOwnAccessToSystemPerspective" value="You can not delete your own access rights to 'System' perspective." />
+  <string key="EditUserWorkflow.LockingOwnUserAccount" value="You can not lock your own account." />
 	<string key="UserElementProvider.RootLabel" value="Users" />
 	<string key="UserElementProvider.RootToolTip" value="Users" />
 	<string key="UserElementProvider.AddUserLabel" value="Add User..." />

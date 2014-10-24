@@ -245,7 +245,19 @@ var KickStart = new function () {
 		if ( result instanceof SOAPFault ) {
 			alert ( result.getFaultString ());
 		} else {
-			isAllowed = result;
+		    if (result == "lockedAfterMaxAttempts") {
+                // TODO: unhardcode
+		        alert("The account was locked after maximum login attempts. Please contact administrator.");
+		    }
+
+		    if (result == "lockedByAnAdministrator") {
+		        // TODO: unhardcode
+		        alert("The account was locked by an administrator.");
+		    }
+
+            if (result == "success") {
+                isAllowed = true;
+            }
 		}
 		
 		if ( isAllowed ) {

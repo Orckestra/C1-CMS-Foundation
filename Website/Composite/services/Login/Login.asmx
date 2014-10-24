@@ -1,31 +1,34 @@
 ﻿<%@ WebService Language="C#" Class="Composite.Services.Login" %>
 
 using System;
-using System.Collections;
 using System.Linq;
-using System.Web;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-using System.Xml.Linq;
 using Composite.C1Console.Security;
+using Composite.Core;
 
 namespace Composite.Services
 {
     [WebService(Namespace = "http://www.composite.net/ns/management")]
     [SoapDocumentService(RoutingStyle = SoapServiceRoutingStyle.RequestElement)]
-    public class Login : System.Web.Services.WebService
+    public class Login : WebService
     {
-
-        public Login()
-        {
-        }
-
         [WebMethod]
-        public bool ValidateAndLogin(string username, string password)
+        public string ValidateAndLogin(string username, string password)
         {
-            return UserValidationFacade.FormValidateUser(username, password);
-        }
+            var result = UserValidationFacade.FormValidateUser(username, password);
 
+            switch (result)
+            {
+                case LoginResult.Success:
+                    return "success";
+                case LoginResult.UserLockedAfterMaxLoginAttempts:
+                    return "lockedAfterMaxAttempts";
+                case LoginResult.UserLockedByAdministrator:
+                    return "lockedByAnAdministrator";
+            }
+            return "failed";
+        }
 
 
         [WebMethod]
@@ -37,14 +40,13 @@ namespace Composite.Services
 
 
 
-
         [WebMethod]
         public bool IsLoggedIn(bool dummy)
         {
-            if (UserValidationFacade.IsLoggedIn() == true
-                && UserValidationFacade.AllUsernames.Contains(UserValidationFacade.GetUsername()) == false)
+            if (UserValidationFacade.IsLoggedIn()
+                && !UserValidationFacade.AllUsernames.Contains(UserValidationFacade.GetUsername()))
             {
-                Composite.Core.Logging.LoggingService.LogInformation("Security", String.Format("Automatic logout executed. Username '{0}' not found in list of usernames", UserValidationFacade.GetUsername()));
+                Log.LogInformation("Security", String.Format("Automatic logout executed. Username '{0}' not found in list of usernames", UserValidationFacade.GetUsername()));
                 UserValidationFacade.Logout();
 
                 return false;
@@ -52,8 +54,5 @@ namespace Composite.Services
 
             return UserValidationFacade.IsLoggedIn();
         }
-
-
-
     }
 }

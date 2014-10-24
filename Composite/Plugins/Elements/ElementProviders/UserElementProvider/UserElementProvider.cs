@@ -25,6 +25,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         public static ResourceHandle GroupOpenIcon { get { return GetIconHandle("users-group-open"); } }
         public static ResourceHandle GroupClosedIcon { get { return GetIconHandle("users-group-closed"); } }
         public static ResourceHandle UserIcon { get { return GetIconHandle("users-user"); } }
+        public static ResourceHandle LockedUserIcon { get { return GetIconHandle("users-user-disabled"); } }
         public static ResourceHandle AddUserIcon { get { return GetIconHandle("users-adduser"); } }
         public static ResourceHandle EditUserIcon { get { return GetIconHandle("users-edituser"); } }
         public static ResourceHandle DeleteUserIcon { get { return GetIconHandle("users-deleteuser"); } }
@@ -95,21 +96,17 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             {
                 return GetGroupChildrenElements(seachToken);
             }
-            else if (entityToken is UserElementProviderGroupEntityToken)
+            if (entityToken is UserElementProviderGroupEntityToken)
             {
                 return GetUsersChildrenElements(entityToken.Id, seachToken);
             }
-            else
-            {
-                return new Element[] { };
-            }
+            return new Element[] { };
         }
-
 
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
-            Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
+            var result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
 
             foreach (EntityToken entityToken in entityTokens)
             {
@@ -120,7 +117,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
                 IUser user = dataEntityToken.Data as IUser;
 
-                UserElementProviderGroupEntityToken newEntityToken = new UserElementProviderGroupEntityToken(user.Group);
+                var newEntityToken = new UserElementProviderGroupEntityToken(user.Group);
 
                 result.Add(entityToken, new EntityToken[] { newEntityToken });
             }
@@ -218,18 +215,18 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                      select user).ToList();
             }
 
-            List<Element> children = new List<Element>();
+            var children = new List<Element>();
 
             foreach (IUser user in users)
             {
-                Element element = new Element(_elementProviderContext.CreateElementHandle(user.GetDataEntityToken()))
+                var element = new Element(_elementProviderContext.CreateElementHandle(user.GetDataEntityToken()))
                 {
                     VisualData = new ElementVisualizedData
                     {
                         Label = user.GetLabel(),
                         ToolTip = user.GetLabel(),
                         HasChildren = false,
-                        Icon = UserElementProvider.UserIcon,
+                        Icon = !user.IsLocked ? UserIcon : LockedUserIcon,
                     }
                 };
 

@@ -4,10 +4,12 @@ using System.Globalization;
 using System.Linq;
 using System.Transactions;
 using Composite.C1Console.Security;
+using Composite.C1Console.Security.Plugins.LoginProvider.Runtime;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Core.Logging;
 using Composite.C1Console.Security.Cryptography;
 using Composite.C1Console.Security.Plugins.LoginProvider;
 using Composite.Data.Transactions;
@@ -20,9 +22,19 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
     [ConfigurationElementType(typeof(DataBasedFormLoginProviderData))]
     internal sealed class DataBasedFormLoginProvider : IFormLoginProvider
 	{
-        static readonly TimeSpan HalfASecond = TimeSpan.FromMilliseconds(500);
+        static readonly TimeSpan MinimalTimeBetweenLoginAttempts = TimeSpan.FromMilliseconds(500);
         static readonly TimeSpan HalfAnHour = TimeSpan.FromMinutes(30);
-        private const int MaximumLoginAttempts = 30;
+        private const int BruteForcePrevention_MaximumLoginAttempts = 30;
+
+        private readonly int _maxLoginAttemptsBeforeLockout;
+
+        public DataBasedFormLoginProvider()
+        {
+            var settings = ConfigurationServices.ConfigurationSource.GetSection(LoginProviderSettings.SectionName) as LoginProviderSettings;
+            Verify.IsNotNull(settings, "Failed to load section '{0}'", LoginProviderSettings.SectionName);
+
+            _maxLoginAttemptsBeforeLockout = settings.MaxLoginAttempts;
+        }
 
         private class FailedLoginInfo
         {
@@ -68,8 +80,6 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 return LoginResult.PolicyViolated;
             }
 
-            string encryptedPasswrod = password.Encrypt();
-
             IUser user =
                 (from u in DataFacade.GetData<IUser>()
                  where string.Compare(u.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0
@@ -80,10 +90,38 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 return LoginResult.UserDoesNotExist;
             }
 
-            bool loginIsValid = user.EncryptedPassword == encryptedPasswrod;
-            UpdateLoginHistory(username, loginIsValid, failedLoginInfo);
+            bool passwordIsCorrect = PasswordMatch(user, password);
 
-            return loginIsValid ? LoginResult.Success : LoginResult.IncorrectPassword;
+            if (passwordIsCorrect && user.IsLocked)
+            {
+                if (user.LockoutReason == (int) UserLockoutReason.LockedByAdministrator)
+                {
+                    return LoginResult.UserLockedByAdministrator;
+                }
+
+                return LoginResult.UserLockedAfterMaxLoginAttempts;
+            }
+
+            UpdateLoginHistory(username, passwordIsCorrect, failedLoginInfo);
+
+            if (!passwordIsCorrect && failedLoginInfo != null && failedLoginInfo.LoginAttemptCount >= _maxLoginAttemptsBeforeLockout)
+            {
+                LockUser(user);
+            }
+
+            return passwordIsCorrect ? LoginResult.Success : LoginResult.IncorrectPassword;
+        }
+
+        private void LockUser(IUser user)
+        {
+            user.IsLocked = true;
+            user.LockoutReason = (int) UserLockoutReason.TooManyFailedLoginAttempts;
+            DataFacade.Update(user);
+        }
+
+        private static bool PasswordMatch(IUser user, string password)
+        {
+            return user.EncryptedPassword == password.Encrypt();
         }
 
         private static void UpdateLoginHistory(string username, bool loginIsValid, FailedLoginInfo failedLoginInfo)
@@ -125,12 +163,12 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             /* If user tries to login quicker that 500ms from previous attempt - it is failed automatically */
             lock (failedLoginInfo)
             {
-                if (now - failedLoginInfo.LastLoginAttempt < HalfASecond)
+                if (now - failedLoginInfo.LastLoginAttempt < MinimalTimeBetweenLoginAttempts)
                 {
                     return false;
                 }
 
-                if (failedLoginInfo.LoginAttemptCount > MaximumLoginAttempts)
+                if (failedLoginInfo.LoginAttemptCount > BruteForcePrevention_MaximumLoginAttempts)
                 {
                     if (now - failedLoginInfo.LastLoginAttempt < HalfAnHour)
                     {
@@ -177,7 +215,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
 
             DataFacade.AddNew<IUser>(user);
 
-            LoggingService.LogVerbose("DataBasedFormLoginProvider", string.Format("Added new user '{0}'", userName));
+            Log.LogVerbose("DataBasedFormLoginProvider", "Added new user '{0}'", userName);
         }
 
 

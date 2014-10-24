@@ -58,6 +58,11 @@
               </KeySelector>
             </f:NullCheck.WhenNotNull>
           </f:NullCheck>
+          <CheckBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.IsLockedLabel}" ItemLabel="${Composite.Management, Website.Forms.Administrative.EditUserStep1.IsLockedItemLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.IsLockedHelp}">
+            <CheckBox.Checked>
+              <cms:bind source="User.IsLocked" />
+            </CheckBox.Checked>
+          </CheckBox>
         </FieldGroup>
         <FieldGroup Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.LabelLocalizationFieldGroup}">
           <KeySelector OptionsKeyField="Key" OptionsLabelField="Value" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.CultureLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.CultureHelp}">

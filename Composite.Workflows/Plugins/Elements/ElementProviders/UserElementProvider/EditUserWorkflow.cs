@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Transactions;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
@@ -27,6 +26,7 @@ using Composite.Core.Xml;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Core.Logging;
 
+// using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
@@ -53,7 +53,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
+            var dataEntityToken = (DataEntityToken)this.EntityToken;
 
             IUser user = (IUser)dataEntityToken.Data;
 
@@ -79,7 +79,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                 this.Bindings.Add("ActiveLocaleList", DataLocalizationFacade.ActiveLocalizationCultures.ToDictionary(f => f.Name, DataLocalizationFacade.GetCultureTitle));
             }
 
-            Dictionary<string, List<ClientValidationRule>> clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
+            var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
             clientValidationRules.Add("Username", ClientValidationRuleFacade.GetClientValidationRules(user, "Username"));
             clientValidationRules.Add("EncryptedPassword", ClientValidationRuleFacade.GetClientValidationRules(user, "EncryptedPassword"));
             clientValidationRules.Add("Group", ClientValidationRuleFacade.GetClientValidationRules(user, "Group"));
@@ -98,7 +98,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             UpdateFormDefinitionWithActivePerspectives(user, bindingsElement, placeHolderElements[2]);
             //UpdateFormDefinitionWithGlobalPermissions(user, bindingsElement, placeHolderElements[1]);
 
-            if (DataLocalizationFacade.ActiveLocalizationCultures.Count() > 0)
+            if (DataLocalizationFacade.ActiveLocalizationCultures.Any())
             {
                 UpdateFormDefinitionWithActiveLocales(user, bindingsElement, placeHolderElements[1]);
             }
@@ -120,7 +120,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         {
             List<string> serializedEntityToken = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username).ToList();
 
-            ActivePerspectiveFormsHelper helper = new ActivePerspectiveFormsHelper(
+            var helper = new ActivePerspectiveFormsHelper(
                     GetText("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveFieldLabel"),
                     GetText("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectLabel"),
                     GetText("Website.Forms.Administrative.EditUserStep1.ActivePerspectiveMultiSelectHelp")
@@ -136,7 +136,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void UpdateFormDefinitionWithActiveLocales(IUser user, XElement bindingsElement, XElement placeHolderElement)
         {
-            ActiveLocalesFormsHelper helper = new ActiveLocalesFormsHelper(
+            var helper = new ActiveLocalesFormsHelper(
                     GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocalesFieldLabel"),
                     GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectLabel"),
                     GetText("Website.Forms.Administrative.EditUserStep1.ActiveLocalesMultiSelectHelp")
@@ -152,7 +152,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void UpdateFormDefinitionWithUserGroups(IUser user, XElement bindingsElement, XElement placeHolderElement)
         {
-            UserGroupsFormsHelper helper = new UserGroupsFormsHelper(
+            var helper = new UserGroupsFormsHelper(
                     GetText("Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel"),
                     GetText("Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp")
                 );
@@ -224,10 +224,21 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             List<Guid> newUserGroupIds = UserGroupsFormsHelper.GetSelectedUserGroupIds(this.Bindings);
             List<string> newSerializedEnitityTokens = ActivePerspectiveFormsHelper.GetSelectedSerializedEntityTokens(this.Bindings).ToList();
 
-            // Current user shouldn't be able to remove its own access to "System" perspective
+            
             if(string.Compare(user.Username, UserSettings.Username, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
-                HashSet<Guid> groupsWithAccessToSystemPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(systemPerspectiveEntityToken));
+                // Current user shouldn't be able to lock itself 
+                if (user.IsLocked)
+                {
+                    this.ShowMessage(DialogType.Message,
+                             GetText("EditUserWorkflow.EditErrorTitle"),
+                             GetText("EditUserWorkflow.LockingOwnUserAccount"));
+
+                    userValidated = false;
+                }
+
+                // Current user shouldn't be able to remove its own access to "System" perspective
+                var groupsWithAccessToSystemPerspective = new HashSet<Guid>(GetGroupsThatHasAccessToPerspective(systemPerspectiveEntityToken));
 
                if(!newSerializedEnitityTokens.Contains(systemPerspectiveEntityToken)
                    && !newUserGroupIds.Any(groupsWithAccessToSystemPerspective.Contains))
@@ -241,123 +252,139 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             }
 
 
-            if (userValidated)
+            if (!userValidated)
             {
-                UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+                return;
+            }
 
-                if (user.EncryptedPassword != NotPassword)
+            if (!user.IsLocked)
+            {
+                user.LockoutReason = (int) UserLockoutReason.Undefined;
+            }
+            else
+            {
+                bool wasLockedBefore = DataFacade.GetData<IUser>().First(f => f.Id == user.Id).IsLocked;
+
+                if (!wasLockedBefore)
                 {
-                    user.EncryptedPassword = user.EncryptedPassword.Encrypt();
+                    user.LockoutReason = (int) UserLockoutReason.LockedByAdministrator;
                 }
-                else
+            }
+
+            UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+
+            if (user.EncryptedPassword != NotPassword)
+            {
+                user.EncryptedPassword = user.EncryptedPassword.Encrypt();
+            }
+            else
+            {
+                using(var connection = new DataConnection())
                 {
-                    using(var connection = new DataConnection())
-                    {
-                        string currentPwdFromDataProvider = connection.Get<IUser>().First(f => f.Id == user.Id).EncryptedPassword;
-                        user.EncryptedPassword = currentPwdFromDataProvider;
-                    }
+                    string currentPwdFromDataProvider = connection.Get<IUser>().First(f => f.Id == user.Id).EncryptedPassword;
+                    user.EncryptedPassword = currentPwdFromDataProvider;
                 }
+            }
 
-                bool reloadUsersConsoles = false;
+            bool reloadUsersConsoles = false;
 
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
-                {
-                    DataFacade.Update(user);
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
+            {
+                DataFacade.Update(user);
 
-                    string cultureName = this.GetBinding<string>("CultureName");
-                    string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
+                string cultureName = this.GetBinding<string>("CultureName");
+                string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
 
-                    UserSettings.SetUserCultureInfo(user.Username, CultureInfo.CreateSpecificCulture(cultureName));
-                    UserSettings.SetUserC1ConsoleUiLanguage(user.Username, CultureInfo.CreateSpecificCulture(c1ConsoleUiLanguageName));
+                UserSettings.SetUserCultureInfo(user.Username, CultureInfo.CreateSpecificCulture(cultureName));
+                UserSettings.SetUserC1ConsoleUiLanguage(user.Username, CultureInfo.CreateSpecificCulture(c1ConsoleUiLanguageName));
 
 
                     
-                    List<string> existingSerializedEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username).ToList();
+                List<string> existingSerializedEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username).ToList();
 
-                    int intersectCount = existingSerializedEntityTokens.Intersect(newSerializedEnitityTokens).Count();
-                    if ((intersectCount != newSerializedEnitityTokens.Count) 
-                        || (intersectCount != existingSerializedEntityTokens.Count))
+                int intersectCount = existingSerializedEntityTokens.Intersect(newSerializedEnitityTokens).Count();
+                if ((intersectCount != newSerializedEnitityTokens.Count) 
+                    || (intersectCount != existingSerializedEntityTokens.Count))
+                {
+                    UserPerspectiveFacade.SetSerializedEntityTokens(user.Username, newSerializedEnitityTokens);
+
+                    if (UserSettings.Username == user.Username)
                     {
-                        UserPerspectiveFacade.SetSerializedEntityTokens(user.Username, newSerializedEnitityTokens);
+                        reloadUsersConsoles = true;
+                    }
+                }
 
-                        if (UserSettings.Username == user.Username)
+                if (DataLocalizationFacade.ActiveLocalizationCultures.Any())
+                {
+                    foreach (CultureInfo cultureInfo in newActiveLocales)
+                    {
+                        if (!currentActiveLocales.Contains(cultureInfo))
+                        {
+                            UserSettings.AddActiveLocaleCultureInfo(user.Username, cultureInfo);
+                        }
+                    }
+
+                    foreach (CultureInfo cultureInfo in currentActiveLocales)
+                    {
+                        if (!newActiveLocales.Contains(cultureInfo))
+                        {
+                            UserSettings.RemoveActiveLocaleCultureInfo(user.Username, cultureInfo);
+                        }
+                    }
+
+                    if (selectedActiveLocal != null)
+                    {
+                        if (!UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Equals(selectedActiveLocal))
                         {
                             reloadUsersConsoles = true;
                         }
-                    }
 
-                    if (DataLocalizationFacade.ActiveLocalizationCultures.Any())
+                        UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, selectedActiveLocal);
+                    }
+                    else if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Any())
                     {
-                        foreach (CultureInfo cultureInfo in newActiveLocales)
-                        {
-                            if (currentActiveLocales.Contains(cultureInfo) == false)
-                            {
-                                UserSettings.AddActiveLocaleCultureInfo(user.Username, cultureInfo);
-                            }
-                        }
-
-                        foreach (CultureInfo cultureInfo in currentActiveLocales)
-                        {
-                            if (newActiveLocales.Contains(cultureInfo) == false)
-                            {
-                                UserSettings.RemoveActiveLocaleCultureInfo(user.Username, cultureInfo);
-                            }
-                        }
-
-                        if (selectedActiveLocal != null)
-                        {
-                            if (UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Equals(selectedActiveLocal) == false)
-                            {
-                                reloadUsersConsoles = true;
-                            }
-
-                            UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, selectedActiveLocal);
-                        }
-                        else if (UserSettings.GetActiveLocaleCultureInfos(user.Username).Any())
-                        {
-                            UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, UserSettings.GetActiveLocaleCultureInfos(user.Username).First());
-                        }
+                        UserSettings.SetCurrentActiveLocaleCultureInfo(user.Username, UserSettings.GetActiveLocaleCultureInfos(user.Username).First());
                     }
-
-
-                    List<IUserUserGroupRelation> oldRelations = DataFacade.GetData<IUserUserGroupRelation>(f => f.UserId == user.Id).ToList();
-
-                    IEnumerable<IUserUserGroupRelation> deleteRelations =
-                        from r in oldRelations
-                        where newUserGroupIds.Contains(r.UserGroupId) == false
-                        select r;
-
-                    DataFacade.Delete(deleteRelations);
-
-
-                    foreach (Guid newUserGroupId in newUserGroupIds)
-                    {
-                        Guid groupId = newUserGroupId;
-                        if (oldRelations.Any(f => f.UserGroupId == groupId)) continue;
-
-                        IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
-                        userUserGroupRelation.UserId = user.Id;
-                        userUserGroupRelation.UserGroupId = newUserGroupId;
-
-                        DataFacade.AddNew(userUserGroupRelation);
-                    }
-
-                    LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
-
-                    transactionScope.Complete();
                 }
 
-                if (reloadUsersConsoles)
+
+                List<IUserUserGroupRelation> oldRelations = DataFacade.GetData<IUserUserGroupRelation>(f => f.UserId == user.Id).ToList();
+
+                IEnumerable<IUserUserGroupRelation> deleteRelations =
+                    from r in oldRelations
+                    where !newUserGroupIds.Contains(r.UserGroupId)
+                    select r;
+
+                DataFacade.Delete(deleteRelations);
+
+
+                foreach (Guid newUserGroupId in newUserGroupIds)
                 {
-                    foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
-                    {
-                        ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), consoleId);
-                    }
+                    Guid groupId = newUserGroupId;
+                    if (oldRelations.Any(f => f.UserGroupId == groupId)) continue;
+
+                    IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
+                    userUserGroupRelation.UserId = user.Id;
+                    userUserGroupRelation.UserGroupId = newUserGroupId;
+
+                    DataFacade.AddNew(userUserGroupRelation);
                 }
 
-                SetSaveStatus(true);
-                updateTreeRefresher.PostRefreshMesseges(user.GetDataEntityToken());
+                LoggingService.LogVerbose("UserManagement", String.Format("C1 Console user '{0}' updated by '{1}'.", user.Username, UserValidationFacade.GetUsername()), LoggingService.Category.Audit);
+
+                transactionScope.Complete();
             }
+
+            if (reloadUsersConsoles)
+            {
+                foreach (string consoleId in GetConsoleIdsOpenedByCurrentUser())
+                {
+                    ConsoleMessageQueueFacade.Enqueue(new RebootConsoleMessageQueueItem(), consoleId);
+                }
+            }
+
+            SetSaveStatus(true);
+            updateTreeRefresher.PostRefreshMesseges(user.GetDataEntityToken());
         }
 
         private List<Guid> GetGroupsThatHasAccessToPerspective(string usersPerspectiveEntityToken)
@@ -383,7 +410,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
                 if (UserSettings.GetCurrentActiveLocaleCultureInfo(user.Username).Equals(selectedActiveLocale) == false)
                 {
-                    e.Result = ConsoleFacade.GetConsoleIdsByUsername(user.Username).Count() > 0;
+                    e.Result = ConsoleFacade.GetConsoleIdsByUsername(user.Username).Any();
                     return;
                 }
             }

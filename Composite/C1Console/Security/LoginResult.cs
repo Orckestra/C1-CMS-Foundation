@@ -20,6 +20,15 @@
         /// <summary>
         /// Login policy violated
         /// </summary>
-        PolicyViolated = 3
+        PolicyViolated = 3,
+        /// <summary>
+        /// User is locked after maximum login attempts
+        /// </summary>
+        UserLockedAfterMaxLoginAttempts = 4,
+        /// <summary>
+        /// User is locked by administrator
+        /// </summary>
+        UserLockedByAdministrator = 5,
+
     }
 }

@@ -17,17 +17,15 @@ namespace Composite.C1Console.Security.Plugins.LoginProvider.Runtime
             {
                 return name;
             }
-            else
+            
+            var settings = configSource.GetSection(LoginProviderSettings.SectionName) as LoginProviderSettings;
+                
+            if (null == settings)
             {
-                LoginProviderSettings settings = configSource.GetSection(LoginProviderSettings.SectionName) as LoginProviderSettings;
-                
-                if (null == settings)
-                {
-                    throw new ConfigurationErrorsException(string.Format("Could not load configuration section {0}", LoginProviderSettings.SectionName));
-                }
-                
-                return settings.DefaultLoginProviderPlugin;
+                throw new ConfigurationErrorsException(string.Format("Could not load configuration section {0}", LoginProviderSettings.SectionName));
             }
+                
+            return settings.DefaultLoginProviderPlugin;
         }
     }
 }

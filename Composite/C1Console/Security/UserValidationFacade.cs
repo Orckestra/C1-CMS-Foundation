@@ -32,6 +32,15 @@ namespace Composite.C1Console.Security
         };
 
 
+        private static readonly Dictionary<LoginResult, string> LoginResultDescriptions = new Dictionary<LoginResult, string>
+        {
+            {LoginResult.IncorrectPassword, "Incorrect password."},
+            {LoginResult.UserDoesNotExist, "User does not exist."},
+            {LoginResult.PolicyViolated, "Login policy violated."},
+            {LoginResult.UserLockedByAdministrator, "User is locked by an administrator."},
+            {LoginResult.UserLockedAfterMaxLoginAttempts, "User locked after reaching maximum login attempts."}
+        };
+
 
         /// <exclude />
         public static ValidationType GetValidationType()
@@ -76,7 +85,7 @@ namespace Composite.C1Console.Security
         /// <param name="userName"></param>
         /// <param name="password"></param>
         /// <returns>True if the user was validated</returns>
-        public static bool FormValidateUser(string userName, string password)
+        public static LoginResult FormValidateUser(string userName, string password)
         {
             LoginResult loginResult = LoginProviderPluginFacade.FormValidateUser(userName, password);
 
@@ -100,20 +109,12 @@ namespace Composite.C1Console.Security
                 LoggingService.LogVerbose("UserValidation", String.Format("The user: [{0}], has been validated and accepted. {1}", userName, GetIpInformation()), LoggingService.Category.Audit);
                 PersistUsernameInSessionDataProvider(userName);
             }
-            else if(loginResult == LoginResult.IncorrectPassword)
+            else if (LoginResultDescriptions.ContainsKey(loginResult))
             {
-                LogLoginFailed(userName, "Incorrect password.");
-            }
-            else if (loginResult == LoginResult.UserDoesNotExist)
-            {
-                LogLoginFailed(userName, "User does not exist.");
-            }
-            else if (loginResult == LoginResult.PolicyViolated)
-            {
-                LogLoginFailed(userName, "Login policy violated.");
+                LogLoginFailed(userName, LoginResultDescriptions[loginResult]);
             }
 
-            return loginResult == LoginResult.Success;
+            return loginResult;
         }
 
         private static void LogLoginFailed(string userName, string message)
