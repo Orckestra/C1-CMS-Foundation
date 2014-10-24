@@ -5183,9 +5183,7 @@ this._logger.fine(UpdateManager.summary);
 switch(_477.__updateType){
 case Update.TYPE_REPLACE:
 case Update.TYPE_INSERT:
-if(_477.__isAttached!==false){
 this._elementsbuffer.add(_477);
-}
 break;
 case Update.TYPE_ATTRIBUTES:
 this._backupattributes(_477,true);
@@ -30807,7 +30805,15 @@ var _12ea=LoginService.ValidateAndLogin(_12e6,_12e7);
 if(_12ea instanceof SOAPFault){
 alert(_12ea.getFaultString());
 }else{
-_12e9=_12ea;
+if(_12ea=="lockedAfterMaxAttempts"){
+alert("The account was locked after maximum login attempts. Please contact administrator.");
+}
+if(_12ea=="lockedByAnAdministrator"){
+alert("The account was locked by an administrator.");
+}
+if(_12ea=="success"){
+_12e9=true;
+}
 }
 if(_12e9){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);

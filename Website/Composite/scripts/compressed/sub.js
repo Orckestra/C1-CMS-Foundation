@@ -1125,9 +1125,7 @@ this._logger.fine(UpdateManager.summary);
 switch(_f7.__updateType){
 case Update.TYPE_REPLACE:
 case Update.TYPE_INSERT:
-if(_f7.__isAttached!==false){
 this._elementsbuffer.add(_f7);
-}
 break;
 case Update.TYPE_ATTRIBUTES:
 this._backupattributes(_f7,true);
