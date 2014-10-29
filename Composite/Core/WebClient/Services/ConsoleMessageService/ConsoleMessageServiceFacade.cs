@@ -43,7 +43,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
             DocumentSuspectMessageRequests(consoleId, lastKnownChangeNumber, result, messageQueueElements);
 
             // Open views...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(OpenViewMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is OpenViewMessageQueueItem))
             {
                 OpenViewMessageQueueItem openViewItem = (OpenViewMessageQueueItem)queueElement.QueueItem;
 
@@ -80,7 +80,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Open view definitions...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(OpenHandledViewMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is OpenHandledViewMessageQueueItem))
             {
                 OpenHandledViewMessageQueueItem openViewDefItem = (OpenHandledViewMessageQueueItem)queueElement.QueueItem;
 
@@ -108,7 +108,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Open generic views...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(OpenGenericViewQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is OpenGenericViewQueueItem))
             {
                 OpenGenericViewQueueItem openGenericView = (OpenGenericViewQueueItem)queueElement.QueueItem;
 
@@ -139,17 +139,17 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
             }
 
             // Open external views...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(OpenExternalViewQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is OpenExternalViewQueueItem))
             {
-                OpenExternalViewQueueItem openExternalView = (OpenExternalViewQueueItem)queueElement.QueueItem;
+                var openExternalView = (OpenExternalViewQueueItem)queueElement.QueueItem;
 
-                List<KeyValuePair> arguments = new List<KeyValuePair>();
+                var arguments = new List<KeyValuePair>();
                 foreach (var entry in openExternalView.UrlPostArguments)
                 {
                     arguments.Add(new KeyValuePair(entry.Key, entry.Value));
                 }
 
-                OpenExternalViewParams openExternalViewParams = new OpenExternalViewParams
+                var openExternalViewParams = new OpenExternalViewParams
                 {
                     ViewId = openExternalView.ViewId,
                     EntityToken = openExternalView.EntityToken,
@@ -172,7 +172,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Download files...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(DownloadFileMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is DownloadFileMessageQueueItem))
             {
                 DownloadFileMessageQueueItem downloadFileItem = (DownloadFileMessageQueueItem)queueElement.QueueItem;
 
@@ -191,7 +191,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Close views...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(CloseViewMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is CloseViewMessageQueueItem))
             {
                 CloseViewMessageQueueItem closeViewItem = (CloseViewMessageQueueItem)queueElement.QueueItem;
 
@@ -207,14 +207,24 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
             }
 
 
-            // Refresh tree...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(RefreshTreeMessageQueueItem)))
+            // Refresh tree... Ignoring requests for the same entity tokens
+            var entityTokensToRefresh = new HashSet<string>();
+            var refreshMessages = new List<ConsoleAction>();
+
+            foreach (var queueElement in messageQueueElements.Where(f => f.QueueItem is RefreshTreeMessageQueueItem)
+                .OrderByDescending(f => f.QueueItemNumber))
             {
                 var refreshTreeItem = (RefreshTreeMessageQueueItem)queueElement.QueueItem;
 
                 string serializedEntityToken = EntityTokenSerializer.Serialize(refreshTreeItem.EntityToken, true);
+                if (entityTokensToRefresh.Contains(serializedEntityToken))
+                {
+                    continue;
+                }
 
-                newMessages.Add(new ConsoleAction
+                entityTokensToRefresh.Add(serializedEntityToken);
+
+                refreshMessages.Add(new ConsoleAction
                 {
                     SequenceNumber = queueElement.QueueItemNumber,
                     ActionType = ActionType.RefreshTree,
@@ -225,9 +235,11 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                 });
             }
 
+            refreshMessages.Reverse();
+            newMessages.AddRange(refreshMessages);
 
             // Send message boxes...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(MessageBoxMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is MessageBoxMessageQueueItem))
             {
                 MessageBoxMessageQueueItem messageBoxItem = (MessageBoxMessageQueueItem)queueElement.QueueItem;
 
@@ -268,9 +280,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Send log entries...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(LogEntryMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is LogEntryMessageQueueItem))
             {
-                LogEntryMessageQueueItem logEntryItem = (LogEntryMessageQueueItem)queueElement.QueueItem;
+                var logEntryItem = (LogEntryMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                                 {
@@ -288,9 +300,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Restart console application (like culture change)...
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(RebootConsoleMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is RebootConsoleMessageQueueItem))
             {
-                RebootConsoleMessageQueueItem rebootConsoleItem = (RebootConsoleMessageQueueItem)queueElement.QueueItem;
+                var rebootConsoleItem = (RebootConsoleMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -301,9 +313,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Collaps the tree and refresh
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(CollapseAndRefreshConsoleMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is CollapseAndRefreshConsoleMessageQueueItem))
             {
-                CollapseAndRefreshConsoleMessageQueueItem collapseAndRefreshConsoleMessageQueueItem = (CollapseAndRefreshConsoleMessageQueueItem)queueElement.QueueItem;
+                var collapseAndRefreshConsoleMessageQueueItem = (CollapseAndRefreshConsoleMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -314,9 +326,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Close all open views
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(CloseAllViewsMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is CloseAllViewsMessageQueueItem))
             {
-                CloseAllViewsMessageQueueItem closeAllViewsMessageQueueItem = (CloseAllViewsMessageQueueItem)queueElement.QueueItem;
+                var closeAllViewsMessageQueueItem = (CloseAllViewsMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -328,9 +340,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Lock the console application
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(LockSystemConsoleMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is LockSystemConsoleMessageQueueItem))
             {
-                LockSystemConsoleMessageQueueItem lockSystemConsoleMessageQueueItem = (LockSystemConsoleMessageQueueItem)queueElement.QueueItem;
+                var lockSystemConsoleMessageQueueItem = (LockSystemConsoleMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -341,9 +353,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // Lock the console application
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(BroadcastMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is BroadcastMessageQueueItem))
             {
-                BroadcastMessageQueueItem broadcastMessageQueueItem = (BroadcastMessageQueueItem)queueElement.QueueItem;
+                var broadcastMessageQueueItem = (BroadcastMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -359,9 +371,9 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
 
 
             // SaveStatus
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(SaveStatusConsoleMessageQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is SaveStatusConsoleMessageQueueItem))
             {
-                SaveStatusConsoleMessageQueueItem saveStatusConsoleMessageQueueItem = (SaveStatusConsoleMessageQueueItem)queueElement.QueueItem;
+                var saveStatusConsoleMessageQueueItem = (SaveStatusConsoleMessageQueueItem)queueElement.QueueItem;
 
                 newMessages.Add(new ConsoleAction
                 {
@@ -372,7 +384,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
             }
 
             // BindEntityToken
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(BindEntityTokenToViewQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is BindEntityTokenToViewQueueItem))
             {
                 var bindEntityTokenToViewQueueItem = (BindEntityTokenToViewQueueItem)queueElement.QueueItem;
                 newMessages.Add(new ConsoleAction
@@ -384,7 +396,7 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
             }
 
             // BindEntityToken
-            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem.GetType() == typeof(SelectElementQueueItem)))
+            foreach (ConsoleMessageQueueElement queueElement in messageQueueElements.Where(f => f.QueueItem is SelectElementQueueItem))
             {
                 var selectElementQueueItem = (SelectElementQueueItem)queueElement.QueueItem;
 

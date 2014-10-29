@@ -7,7 +7,7 @@ namespace Composite.C1Console.Events
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
-    public class BindEntityTokenToViewQueueItem : IConsoleMessageQueueItem
+    public sealed class BindEntityTokenToViewQueueItem : IConsoleMessageQueueItem
 	{
         /// <exclude />
         public string ViewId { get; set; }

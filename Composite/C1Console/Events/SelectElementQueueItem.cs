@@ -7,7 +7,7 @@ namespace Composite.C1Console.Events
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
-    public class SelectElementQueueItem : IConsoleMessageQueueItem
+    public sealed class SelectElementQueueItem : IConsoleMessageQueueItem
 	{
         /// <exclude />
         public string EntityToken { get; set; }

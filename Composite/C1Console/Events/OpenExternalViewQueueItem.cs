@@ -10,7 +10,7 @@ namespace Composite.C1Console.Events
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [Serializable]
-    public class OpenExternalViewQueueItem : IConsoleMessageQueueItem
+    public sealed class OpenExternalViewQueueItem : IConsoleMessageQueueItem
     {
         /// <exclude />
         public OpenExternalViewQueueItem(EntityToken entityToken)
