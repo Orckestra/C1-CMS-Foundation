@@ -42,6 +42,12 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
             var cookie = CookieHandler.SetCookieInternal(AuthCookieName, encryptedTicket);
             cookie.HttpOnly = true;
 
+            var context = HttpContext.Current;
+            if (context != null && context.Request.IsSecureConnection)
+            {
+                cookie.Secure = true;
+            }
+
             if (persistAcrossSessions)
             {
                 cookie.Expires = DateTime.Now.AddDays(daysToLive);
