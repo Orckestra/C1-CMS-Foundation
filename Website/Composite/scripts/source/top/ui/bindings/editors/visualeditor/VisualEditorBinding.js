@@ -524,7 +524,7 @@ VisualEditorBinding.prototype.handleCommand = function ( cmd, gui, val ) {
 	 */
 	if ( !isCommandHandled ) {
 		try {
-			this._tinyInstance.execCommand ( cmd, gui, val );
+			this._tinyInstance.execCommand(cmd, gui, val, { skip_focus: true });
 			this.checkForDirty ();
 		} catch ( e ) {
 			SystemDebug.stack ( arguments );
