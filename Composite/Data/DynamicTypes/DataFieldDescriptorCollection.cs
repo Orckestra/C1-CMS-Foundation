@@ -36,7 +36,7 @@ namespace Composite.Data.DynamicTypes
 
             if (_descriptors.Contains(descriptor))
             {
-                throw new ArgumentException("The specied DataFieldDescriptor with ID '{0}' has already been added. ".FormatWith(descriptor.Id) +
+                throw new ArgumentException("The specifed DataFieldDescriptor with ID '{0}' has already been added. ".FormatWith(descriptor.Id) +
                                             "Developers should ensure that the Immutable Field Id is unique on all fields.");
             }
 

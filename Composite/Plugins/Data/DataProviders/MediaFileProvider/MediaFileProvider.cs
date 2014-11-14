@@ -24,19 +24,21 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public sealed class MediaFileProvider : IWritableDataProvider
     {
+        private const int MediaType_Store = 3;
+        private const int MediaType_Folder = 2;
+        private const int MediaType_File = 1;
+
         private DataProviderContext _context;
         private IMediaFileStore _store;
-        private string _storeId;
-        private string _storeTitle;
-        private string _storeDescription;
-        internal static string _workingDirectory;
-        private static readonly int _storeType = 3;
-        private static readonly int _folderType = 2;
-        private static readonly int _fileType = 1;
+        private readonly string _storeId;
+        private readonly string _storeTitle;
+        private readonly string _storeDescription;
+        internal static string _workingDirectory; // NOTE: this field is accessed via reflection as well.
+
 
         private readonly object _syncRoot = new object();
-        private IQueryable<IMediaFile> _mediaFilesCachedQuery = null;
-        private IQueryable<IMediaFileFolder> _mediaFoldersCachedQuery = null;
+        private IQueryable<IMediaFile> _mediaFilesCachedQuery;
+        private IQueryable<IMediaFileFolder> _mediaFoldersCachedQuery;
 
         internal MediaFileProvider(string rootDirectory, string storeId, string storeDescription, string storeTitle)
         {
@@ -73,17 +75,14 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
 
         /// <exclude />
-        public void Update(IEnumerable<IData> datas)
+        public void Update(IEnumerable<IData> dataset)
         {
-            foreach (IData data in datas)
+            if (dataset.Any(data => data == null))
             {
-                if (data == null)
-                {
-                    throw new ArgumentException("Data in list to update must be non-null");
-                }
+                throw new ArgumentException("Data in list to update must be non-null");
             }
 
-            foreach (IData data in datas)
+            foreach (IData data in dataset)
             {
                 MediaDataId dataId = data.DataSourceId.DataId as MediaDataId;
                 if (dataId == null)
@@ -91,137 +90,160 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                     throw new ArgumentException("Invalid IData");
                 }
 
-                if (dataId.MediaType == _fileType)
+                if (dataId.MediaType == MediaType_File)
                 {
-                    IMediaFile updatedFile = (IMediaFile)data;
-                    IMediaFileData currentFileData = DataFacade.GetData<IMediaFileData>(x => x.Id == dataId.Id).First();
-                    if ((updatedFile.FolderPath != currentFileData.FolderPath) || (updatedFile.FileName != currentFileData.FileName))
-                    {
-                        ValidateMediaFileData(updatedFile);
-                    }
-                    CopyFileData(updatedFile, currentFileData);
-                    currentFileData.LastWriteTime = DateTime.Now;
-                    using (Stream stream = updatedFile.GetReadStream())
-                    {
-                        currentFileData.Length = (int)stream.Length;
-                    }
-                    TransactionFileSystemFileStreamManager.WriteFileToDisk(updatedFile);
-                    DataFacade.Update(currentFileData);
+                    UpdateMediaFile((IMediaFile) data);
+                }
+                else if (dataId.MediaType == MediaType_Folder)
+                {
+                    UpdateMediaFileFolder((IMediaFileFolder) data);
                 }
                 else
                 {
-                    IMediaFileFolder updatedFolder = (IMediaFileFolder)data;
-                    IMediaFolderData currentFolderData = DataFacade.GetData<IMediaFolderData>(x => x.Id == dataId.Id).First();
-
-                    if (updatedFolder.Path != currentFolderData.Path)
-                    {
-                        ValidateFolderData(updatedFolder);
-                    }
-
-                    string oldPath = currentFolderData.Path;
-                    string oldPathWithSlash = oldPath + "/";
-                    List<IMediaFolderData> foldersToUpdatePath =
-                        (from item in DataFacade.GetData<IMediaFolderData>()
-                         where item.Path.StartsWith(oldPathWithSlash) && item.Id != currentFolderData.Id
-                         select item).ToList();
-
-                    if (foldersToUpdatePath.Count > 0)
-                    {
-                        foreach (IMediaFolderData item in foldersToUpdatePath)
-                        {
-                            item.Path = updatedFolder.Path + item.Path.Substring(oldPath.Length);
-                        }
-
-                        DataFacade.Update(foldersToUpdatePath.Cast<IData>());
-                    }
-
-
-                    List<IMediaFileData> filesToUpdatePath =
-                        (from item in DataFacade.GetData<IMediaFileData>()
-                         where item.FolderPath == oldPath
-                            || item.FolderPath.StartsWith(oldPathWithSlash)
-                         select item).ToList();
-
-                    if (filesToUpdatePath.Count > 0)
-                    {
-                        foreach (IMediaFileData mediaFileData in filesToUpdatePath)
-                        {
-                            mediaFileData.FolderPath = updatedFolder.Path + mediaFileData.FolderPath.Substring(oldPath.Length);
-                        }
-                        DataFacade.Update(filesToUpdatePath.Cast<IData>());
-                    }
-
-
-                    CopyFolderData(updatedFolder, currentFolderData);
-                    DataFacade.Update(currentFolderData);
+                    throw new InvalidOperationException("Unexpected media type '{0}'".FormatWith(dataId.MediaType));
                 }
             }
         }
 
+        private void UpdateMediaFile(IMediaFile updatedFile)
+        {
+            Guid id = updatedFile.Id;
+
+            IMediaFileData currentFileData = DataFacade.GetData<IMediaFileData>(x => x.Id == id).First();
+            if (updatedFile.FolderPath != currentFileData.FolderPath || updatedFile.FileName != currentFileData.FileName)
+            {
+                ValidateMediaFileData(updatedFile);
+            }
+            CopyFileData(updatedFile, currentFileData);
+            currentFileData.LastWriteTime = DateTime.Now;
+            using (Stream stream = updatedFile.GetReadStream())
+            {
+                currentFileData.Length = (int)stream.Length;
+            }
+            TransactionFileSystemFileStreamManager.WriteFileToDisk(updatedFile);
+            DataFacade.Update(currentFileData);
+        }
+
+        private void UpdateMediaFileFolder(IMediaFileFolder updatedFolder)
+        {
+            Guid mediaFolderId = updatedFolder.Id;
+            IMediaFolderData currentFolderData = DataFacade.GetData<IMediaFolderData>(x => x.Id == mediaFolderId).First();
+
+            if (updatedFolder.Path != currentFolderData.Path)
+            {
+                ValidateFolderData(updatedFolder);
+            }
+
+            string oldPath = currentFolderData.Path;
+            string oldPathWithSlash = oldPath + "/";
+            List<IMediaFolderData> foldersToUpdatePath =
+                (from item in DataFacade.GetData<IMediaFolderData>()
+                 where item.Path.StartsWith(oldPathWithSlash) && item.Id != currentFolderData.Id
+                 select item).ToList();
+
+            if (foldersToUpdatePath.Count > 0)
+            {
+                foreach (IMediaFolderData item in foldersToUpdatePath)
+                {
+                    item.Path = updatedFolder.Path + item.Path.Substring(oldPath.Length);
+                }
+
+                DataFacade.Update(foldersToUpdatePath);
+            }
+
+
+            List<IMediaFileData> filesToUpdatePath =
+                (from item in DataFacade.GetData<IMediaFileData>()
+                 where item.FolderPath == oldPath
+                    || item.FolderPath.StartsWith(oldPathWithSlash)
+                 select item).ToList();
+
+            if (filesToUpdatePath.Count > 0)
+            {
+                foreach (IMediaFileData mediaFileData in filesToUpdatePath)
+                {
+                    mediaFileData.FolderPath = updatedFolder.Path + mediaFileData.FolderPath.Substring(oldPath.Length);
+                }
+                DataFacade.Update(filesToUpdatePath);
+            }
+
+
+            CopyFolderData(updatedFolder, currentFolderData);
+            DataFacade.Update(currentFolderData);
+        }
 
 
         /// <exclude />
-        public List<T> AddNew<T>(IEnumerable<T> datas) where T : class, IData
+        public List<T> AddNew<T>(IEnumerable<T> dataset) where T : class, IData
         {
-            List<T> result = new List<T>();
+            var result = new List<T>();
 
-            foreach (IData data in datas)
+            if (dataset.Any(data => data == null))
             {
-                if (data == null)
-                {
-                    throw new ArgumentException("Data in list to add must be non-null");
-                }
-                CheckInterface(typeof(T));
+                throw new ArgumentException("Data in list to add must be non-null");
             }
 
-            foreach (IData data in datas)
-            {
+            CheckInterface(typeof(T));
 
+            foreach (IData data in dataset)
+            {
                 if (typeof(T) == typeof(IMediaFile))
                 {
-                    IMediaFile mediaFile = (IMediaFile)data;
-                    ValidateMediaFileData(mediaFile);
-
-                    IMediaFileData fileData = DataFacade.BuildNew<IMediaFileData>();
-                    fileData.Id = Guid.NewGuid();
-                    CopyFileData(mediaFile, fileData);
-                    fileData.LastWriteTime = DateTime.Now;
-                    fileData.CreationTime = DateTime.Now;
-                    using (Stream stream = mediaFile.GetReadStream())
-                    {
-                        if (stream == null) throw new InvalidOperationException(string.Format("GetReadStream returned null for type '{0}'", mediaFile.GetType()));
-                        fileData.Length = (int)stream.Length;
-                    }
-
-                    string internalPath = Path.Combine(_workingDirectory, fileData.Id.ToString());
-                    IMediaFile internalMediaFile = new MediaFile(fileData, Store.Id, _context.CreateDataSourceId(new MediaDataId() { MediaType = _fileType, Id = fileData.Id }, typeof(IMediaFile)), internalPath);
-                    using (Stream readStream = mediaFile.GetReadStream())
-                    {
-                        using (Stream writeStream = internalMediaFile.GetNewWriteStream())
-                        {
-                            readStream.CopyTo(writeStream);
-                        }
-                    }
-                    TransactionFileSystemFileStreamManager.WriteFileToDisk(internalMediaFile);
-                    fileData = DataFacade.AddNew<IMediaFileData>(fileData);
-                    result.Add(internalMediaFile as T);
+                    result.Add(AddMediaFile((IMediaFile) data) as T);
                 }
                 else if (typeof(T) == typeof(IMediaFileFolder))
                 {
-                    IMediaFileFolder mediaFolder = (IMediaFileFolder)data;
-                    ValidateFolderData(mediaFolder);
-                    IMediaFolderData folderData = DataFacade.BuildNew<IMediaFolderData>();
-                    folderData.Id = Guid.NewGuid();
-                    CopyFolderData(mediaFolder, folderData);
-                    folderData = DataFacade.AddNew<IMediaFolderData>(folderData);
-
-                    result.Add(new MediaFileFolder(folderData, Store.Id, _context.CreateDataSourceId(new MediaDataId() { MediaType = _folderType, Id = folderData.Id }, typeof(IMediaFileFolder))) as T);
+                    result.Add(AddMediaFileFolder( (IMediaFileFolder)data) as T);
                 }
             }
             return result;
         }
 
 
+        private IMediaFile AddMediaFile(IMediaFile mediaFile)
+        {
+            ValidateMediaFileData(mediaFile);
+
+            IMediaFileData fileData = DataFacade.BuildNew<IMediaFileData>();
+            fileData.Id = Guid.NewGuid();
+            CopyFileData(mediaFile, fileData);
+            fileData.LastWriteTime = DateTime.Now;
+            fileData.CreationTime = DateTime.Now;
+
+            IMediaFile internalMediaFile;
+
+            using (Stream readStream = mediaFile.GetReadStream())
+            {
+                Verify.IsNotNull(readStream, "GetReadStream returned null for type '{0}'", mediaFile.GetType());
+                fileData.Length = (int)readStream.Length;
+            
+                string internalPath = Path.Combine(_workingDirectory, fileData.Id.ToString());
+                internalMediaFile = new MediaFile(fileData, Store.Id, _context.CreateDataSourceId(new MediaDataId { MediaType = MediaType_File, Id = fileData.Id }, typeof(IMediaFile)), internalPath);
+            
+                using (Stream writeStream = internalMediaFile.GetNewWriteStream())
+                {
+                    readStream.CopyTo(writeStream);
+                }
+            }
+            TransactionFileSystemFileStreamManager.WriteFileToDisk(internalMediaFile);
+            fileData = DataFacade.AddNew<IMediaFileData>(fileData);
+
+            return internalMediaFile;
+        }
+
+
+        private MediaFileFolder AddMediaFileFolder(IMediaFileFolder mediaFolder)
+        {
+            ValidateFolderData(mediaFolder);
+
+            var folderData = DataFacade.BuildNew<IMediaFolderData>();
+            folderData.Id = Guid.NewGuid();
+            CopyFolderData(mediaFolder, folderData);
+            folderData = DataFacade.AddNew<IMediaFolderData>(folderData);
+
+            return new MediaFileFolder(folderData, Store.Id, _context.CreateDataSourceId(new MediaDataId 
+                { MediaType = MediaType_Folder, Id = folderData.Id }, typeof(IMediaFileFolder)));
+        }
 
         /// <exclude />
         public void Delete(IEnumerable<DataSourceId> dataSourceIds)
@@ -231,37 +253,47 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             foreach (DataSourceId dataSourceId in dataSourceIds)
             {
                 MediaDataId dataId = dataSourceId.DataId as MediaDataId;
-                if (dataId.MediaType == _folderType)
+                if (dataId.MediaType == MediaType_Folder)
                 {
-                    IMediaFolderData folder = DataFacade.GetData<IMediaFolderData>(x => x.Id == dataId.Id).First();
-
-                    string innerElementsPathPrefix = string.Format("{0}/", folder.Path);
-
-                    var files = (from item in DataFacade.GetData<IMediaFileData>()
-                                 where item.FolderPath.StartsWith(innerElementsPathPrefix) || item.FolderPath == folder.Path
-                                 select item).ToList();
-
-                    DataFacade.Delete<IMediaFolderData>(x => x.Path.StartsWith(innerElementsPathPrefix));
-                    DataFacade.Delete(folder);
-
-                    foreach (IMediaFileData file in files)
-                    {
-                        DeleteMediaFile(file.Id);
-                    }
+                    DeleteMediaFolder(dataId.Id);
+                }
+                else if (dataId.MediaType == MediaType_File)
+                {
+                    DeleteMediaFile(dataId.Id);
                 }
                 else
                 {
-                    DeleteMediaFile(dataId.Id);
+                    throw new InvalidOperationException("Unexpected media type '{0}'".FormatWith(dataId.MediaType));
                 }
             }
         }
 
 
+        private void DeleteMediaFolder(Guid mediaFolderId)
+        {
+            IMediaFolderData folder = DataFacade.GetData<IMediaFolderData>(x => x.Id == mediaFolderId).First();
+
+            string folderPath = folder.Path;
+            string innerElementsPathPrefix = string.Format("{0}/", folderPath);
+
+            var files = (from item in DataFacade.GetData<IMediaFileData>()
+                         where item.FolderPath.StartsWith(innerElementsPathPrefix) || item.FolderPath == folderPath
+                         select item).ToList();
+
+            DataFacade.Delete<IMediaFolderData>(x => x.Path.StartsWith(innerElementsPathPrefix));
+            DataFacade.Delete(folder);
+
+            foreach (IMediaFileData file in files)
+            {
+                DeleteMediaFile(file.Id);
+            }
+        }
+
 
         /// <exclude />
         public IEnumerable<Type> GetSupportedInterfaces()
         {
-            return new List<Type>() { typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore) };
+            return new [] { typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore) };
         }
 
 
@@ -273,60 +305,13 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
             if (typeof(T) == typeof(IMediaFile))
             {
-                IQueryable<IMediaFile> mediaFilesQuery = _mediaFilesCachedQuery;
-                if (mediaFilesQuery == null)
-                {
-                    lock (_syncRoot)
-                    {
-                        if (_mediaFilesCachedQuery == null)
-                        {
-                            var fileItems = new List<IMediaFile>();
-
-                            IQueryable<IMediaFileData> files = DataFacade.GetData<IMediaFileData>();
-
-
-                            var publicDataScope = DataScopeIdentifier.Public;
-                            foreach (IMediaFileData file in files)
-                            {
-                                string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
-                                fileItems.Add(new MediaFile(file, Store.Id, _context.CreateDataSourceId(new MediaDataId { MediaType = _fileType, Id = file.Id }, typeof(IMediaFile), publicDataScope, CultureInfo.InvariantCulture), internalPath));
-                            }
-                            _mediaFilesCachedQuery = fileItems.AsQueryable();
-                        }
-                        mediaFilesQuery = _mediaFilesCachedQuery;
-                    }
-                }
-                return mediaFilesQuery as IQueryable<T>;
+                return GetMediaFiles() as IQueryable<T>;
             }
 
 
             if (typeof(T) == typeof(IMediaFileFolder))
             {
-                IQueryable<IMediaFileFolder> mediaFoldersQuery = _mediaFoldersCachedQuery;
-                if (mediaFoldersQuery == null)
-                {
-                    lock (_syncRoot)
-                    {
-                        if (_mediaFoldersCachedQuery == null)
-                        {
-                            var mediaFolderItems = new List<IMediaFileFolder>();
-
-                            IQueryable<IMediaFolderData> folders = DataFacade.GetData<IMediaFolderData>();
-
-                            var publicDataScope = DataScopeIdentifier.Public;
-                            foreach (IMediaFolderData folder in folders)
-                            {
-                                var dataId = new MediaDataId { MediaType = _folderType, Id = folder.Id };
-                                var dataSourceId = _context.CreateDataSourceId(dataId, typeof(IMediaFileFolder), publicDataScope, CultureInfo.InvariantCulture);
-                                mediaFolderItems.Add(new MediaFileFolder(folder, Store.Id, dataSourceId));
-                            }
-
-                            _mediaFoldersCachedQuery = mediaFolderItems.AsQueryable();
-                        }
-                        mediaFoldersQuery = _mediaFoldersCachedQuery;
-                    }
-                }
-                return mediaFoldersQuery as IQueryable<T>;
+                return GetMediaFileFolders() as IQueryable<T>;
             }
 
             // an IMediaFileStore query
@@ -334,6 +319,63 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         }
 
 
+        private IQueryable<IMediaFile> GetMediaFiles()
+        {
+            IQueryable<IMediaFile> mediaFilesQuery = _mediaFilesCachedQuery;
+            if (mediaFilesQuery == null)
+            {
+                lock (_syncRoot)
+                {
+                    if (_mediaFilesCachedQuery == null)
+                    {
+                        var fileItems = new List<IMediaFile>();
+
+                        IQueryable<IMediaFileData> files = DataFacade.GetData<IMediaFileData>();
+
+
+                        var publicDataScope = DataScopeIdentifier.Public;
+                        foreach (IMediaFileData file in files)
+                        {
+                            string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
+                            fileItems.Add(new MediaFile(file, Store.Id, _context.CreateDataSourceId(new MediaDataId { MediaType = MediaType_File, Id = file.Id }, typeof(IMediaFile), publicDataScope, CultureInfo.InvariantCulture), internalPath));
+                        }
+                        _mediaFilesCachedQuery = fileItems.AsQueryable();
+                    }
+                    mediaFilesQuery = _mediaFilesCachedQuery;
+                }
+            }
+            return mediaFilesQuery;
+        }
+
+        private IQueryable<IMediaFileFolder> GetMediaFileFolders()
+        {
+            IQueryable<IMediaFileFolder> mediaFoldersQuery = _mediaFoldersCachedQuery;
+            if (mediaFoldersQuery == null)
+            {
+                lock (_syncRoot)
+                {
+                    if (_mediaFoldersCachedQuery == null)
+                    {
+                        var mediaFolderItems = new List<IMediaFileFolder>();
+
+                        IQueryable<IMediaFolderData> folders = DataFacade.GetData<IMediaFolderData>();
+
+                        var publicDataScope = DataScopeIdentifier.Public;
+                        foreach (IMediaFolderData folder in folders)
+                        {
+                            var dataId = new MediaDataId { MediaType = MediaType_Folder, Id = folder.Id };
+                            var dataSourceId = _context.CreateDataSourceId(dataId, typeof(IMediaFileFolder), publicDataScope, CultureInfo.InvariantCulture);
+                            mediaFolderItems.Add(new MediaFileFolder(folder, Store.Id, dataSourceId));
+                        }
+
+                        _mediaFoldersCachedQuery = mediaFolderItems.AsQueryable();
+                    }
+                    mediaFoldersQuery = _mediaFoldersCachedQuery;
+                }
+            }
+
+            return mediaFoldersQuery;
+        }
 
         /// <exclude />
         public T GetData<T>(IDataId dataId) where T : class, IData
@@ -350,27 +392,28 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             }
 
 
-            if (mediaDataId.MediaType == _folderType)
+            if (mediaDataId.MediaType == MediaType_Folder)
             {
                 if (typeof(T) != typeof(IMediaFileFolder))
                 {
                     throw new ArgumentException("The dataId specifies a IMediaFileFolder, but the generic method was invoked with different type");
                 }
-                IMediaFolderData folder = DataFacade.GetData<IMediaFolderData>().Where(x => x.Id == mediaDataId.Id).FirstOrDefault();
+                IMediaFolderData folder = DataFacade.GetData<IMediaFolderData>().FirstOrDefault(x => x.Id == mediaDataId.Id);
                 if (folder == null)
                 {
                     return null;
                 }
                 return new MediaFileFolder(folder, Store.Id,
-                        _context.CreateDataSourceId(new MediaDataId() { MediaType = _folderType, Id = folder.Id }, typeof(IMediaFileFolder))) as T;
+                        _context.CreateDataSourceId(new MediaDataId { MediaType = MediaType_Folder, Id = folder.Id }, typeof(IMediaFileFolder))) as T;
             }
-            else if (mediaDataId.MediaType == _fileType)
+
+            if (mediaDataId.MediaType == MediaType_File)
             {
                 if (typeof(T) != typeof(IMediaFile))
                 {
                     throw new ArgumentException("The dataId specifies a IMediaFile, but the generic method was invoked with different type");
                 }
-                IMediaFileData file = DataFacade.GetData<IMediaFileData>().Where(x => x.Id == mediaDataId.Id).FirstOrDefault();
+                IMediaFileData file = DataFacade.GetData<IMediaFileData>().FirstOrDefault(x => x.Id == mediaDataId.Id);
                 if (file == null)
                 {
                     return null;
@@ -378,13 +421,11 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
                 string internalPath = Path.Combine(_workingDirectory, file.Id.ToString());
                 return new MediaFile(file, Store.Id,
-                       _context.CreateDataSourceId(new MediaDataId() { MediaType = _fileType, Id = file.Id }, typeof(IMediaFile)), internalPath) as T;
+                       _context.CreateDataSourceId(new MediaDataId { MediaType = MediaType_File, Id = file.Id }, typeof(IMediaFile)), internalPath) as T;
 
             }
-            else
-            {
-                return Store as T;
-            }
+            
+            return Store as T;
         }
 
 
@@ -395,7 +436,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             {
                 if (_store == null)
                 {
-                    _store = new MediaFileStore(_storeId, _storeTitle, _storeDescription, _context.CreateDataSourceId(new MediaDataId() { MediaType = _storeType }, typeof(IMediaFileStore)));
+                    _store = new MediaFileStore(_storeId, _storeTitle, _storeDescription, _context.CreateDataSourceId(new MediaDataId() { MediaType = MediaType_Store }, typeof(IMediaFileStore)));
                 }
                 return _store;
             }
@@ -405,9 +446,9 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         private void CheckInterface(Type interfaceType)
         {
-            if (typeof(IMediaFile).IsAssignableFrom(interfaceType) == false &&
-                typeof(IMediaFileFolder).IsAssignableFrom(interfaceType) == false &&
-                typeof(IMediaFileStore).IsAssignableFrom(interfaceType) == false)
+            if (!typeof(IMediaFile).IsAssignableFrom(interfaceType) &&
+                !typeof(IMediaFileFolder).IsAssignableFrom(interfaceType) &&
+                !typeof(IMediaFileStore).IsAssignableFrom(interfaceType))
             {
                 throw new ArgumentException(string.Format("Unexpected interface '{0}' - only '{1}, {2} and {3}' are supported", interfaceType, typeof(IMediaFile), typeof(IMediaFileFolder), typeof(IMediaFileStore)));
             }
@@ -435,28 +476,14 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
                 return true;
             }
 
-            var folder = (from item in GetData<IMediaFileFolder>()
-                          where item.Path == path
-                          select item).FirstOrDefault();
-            if (folder == null)
-            {
-                return false;
-            }
-            return true;
+            return GetData<IMediaFileFolder>().Any(item => item.Path == path);
         }
 
 
 
         private bool DoesFileExists(string path, string name)
         {
-            var file = (from item in GetData<IMediaFile>()
-                        where item.FolderPath == path && item.FileName == name
-                        select item).FirstOrDefault();
-            if (file == null)
-            {
-                return false;
-            }
-            return true;
+            return GetData<IMediaFile>().Any(item => item.FolderPath == path && item.FileName == name);
         }
 
 
@@ -536,7 +563,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         private sealed class MediaFileStore : IMediaFileStore
         {
-            private DataSourceId _dataSourceId;
+            private readonly DataSourceId _dataSourceId;
 
 
 
@@ -656,7 +683,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:ValidateArgumentsOfPublicMethods")]
         public IDataProvider Assemble(IBuilderContext context, DataProviderData objectConfiguration, IConfigurationSource configurationSource, ConfigurationReflectionCache reflectionCache)
         {
-            MediaFileDataProviderData configuration = objectConfiguration as MediaFileDataProviderData;
+            var configuration = objectConfiguration as MediaFileDataProviderData;
 
             if (configuration == null) throw new ArgumentException("Expected configuration to be of type MediaFileDataProviderData", "objectConfiguration");
 

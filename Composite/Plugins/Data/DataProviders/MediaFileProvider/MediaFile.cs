@@ -10,24 +10,15 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
     [FileStreamManager(typeof(FileSystemFileStreamManager))]
     internal class MediaFile : FileSystemFileBase, IMediaFile 
 	{
-        private DataSourceId _dataSourceId;
-        private IMediaFileData _innerFile;
+        private readonly DataSourceId _dataSourceId;
         private string _keyPath;
-
-        // Loading values of "CreationTime and LastWrite time appears to be very slow, and therefore we have a lazy initialization for them
-        private bool _creationTimeInitialized = false;
-        private bool _lastWriteTimeInitialized = false;
-
-        private DateTime? _creationTime;
-        private DateTime? _lastWriteTime;
 
         public MediaFile(IMediaFileData file, string storeId, DataSourceId dataSourceId, string filePath)
         {
             _dataSourceId = dataSourceId;
             StoreId = storeId;
-            Guid fileId = file.Id;
 
-            this.Id = fileId;
+            this.Id = file.Id;
             this.FileName = file.FileName;
             this.FolderPath = file.FolderPath;
             this.Title = file.Title;
@@ -36,10 +27,10 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             this.Length = file.Length;
             this.IsReadOnly = false;
             this.Culture = file.CultureInfo;
+            this.CreationTime = file.CreationTime;
+            this.LastWriteTime = file.LastWriteTime;
 
             this.SystemPath = filePath;
-
-            _innerFile = file;
         }
 
 
@@ -50,14 +41,7 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         public string KeyPath
         {
-            get
-            {
-                if (_keyPath == null)
-                {
-                    _keyPath = this.GetKeyPath();
-                }
-                return _keyPath;
-            }
+            get { return _keyPath ?? (_keyPath = this.GetKeyPath()); }
         }
 
         public string CompositePath
@@ -118,38 +102,14 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
 
         public DateTime? CreationTime
         {
-            get
-            {
-                if(!_creationTimeInitialized)
-                {
-                    _creationTime = _innerFile.CreationTime;
-                    _creationTimeInitialized = true;
-                }
-                return _creationTime;
-            }
-            set
-            {
-                _creationTimeInitialized = true;
-                _creationTime = value;
-            }
+            get;
+            set;
         }
 
         public DateTime? LastWriteTime
         {
-            get
-            {
-                if (!_lastWriteTimeInitialized)
-                {
-                    _lastWriteTime = _innerFile.LastWriteTime;
-                    _lastWriteTimeInitialized = true;
-                }
-                return _lastWriteTime;
-            }
-            set
-            {
-                _lastWriteTime = value;
-                _lastWriteTimeInitialized = true;
-            }
+            get;
+            set;
         }
 
         public bool IsReadOnly
