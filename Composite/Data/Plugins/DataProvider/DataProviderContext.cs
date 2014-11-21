@@ -42,7 +42,8 @@ namespace Composite.Data.Plugins.DataProvider
             return new DataSourceId(dataId, _providerName, interfaceType, DataScopeManager.MapByType(interfaceType), LocalizationScopeManager.MapByType(interfaceType));
         }
 
-        internal DataSourceId CreateDataSourceId(IDataId dataId, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo)
+        /// <exclude />
+        public DataSourceId CreateDataSourceId(IDataId dataId, Type interfaceType, DataScopeIdentifier dataScopeIdentifier, CultureInfo cultureInfo)
         {
             Verify.ArgumentNotNull(dataId, "dataId");
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
@@ -63,7 +64,7 @@ namespace Composite.Data.Plugins.DataProvider
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
             Verify.ArgumentCondition(typeof(IData).IsAssignableFrom(interfaceType), "interfaceType", "The interface type '{0}' does not inherit the interface '{1}'".FormatWith(interfaceType, typeof(IData)));
 
-            EmptyDataClassBase emptyDataClassBase = data as EmptyDataClassBase;
+            var emptyDataClassBase = data as EmptyDataClassBase;
             if (emptyDataClassBase == null)
             {
                 throw new InvalidOperationException("Updates on DataSourceIds can only be done on objects that are returned by the DataFacade.BuildNew<T>() method");
