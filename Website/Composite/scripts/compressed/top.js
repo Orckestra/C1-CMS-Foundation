@@ -27416,7 +27416,7 @@ VisualEditorBinding.prototype.handleCommand=function(cmd,gui,val){
 var _1071=VisualEditorBinding.superclass.handleCommand.call(this,cmd,gui,val);
 if(!_1071){
 try{
-this._tinyInstance.execCommand(cmd,gui,val);
+this._tinyInstance.execCommand(cmd,gui,val,{skip_focus:true});
 this.checkForDirty();
 }
 catch(e){
