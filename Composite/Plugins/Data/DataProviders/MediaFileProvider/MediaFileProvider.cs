@@ -207,8 +207,8 @@ namespace Composite.Plugins.Data.DataProviders.MediaFileProvider
             IMediaFileData fileData = DataFacade.BuildNew<IMediaFileData>();
             fileData.Id = Guid.NewGuid();
             CopyFileData(mediaFile, fileData);
-            fileData.LastWriteTime = DateTime.Now;
-            fileData.CreationTime = DateTime.Now;
+
+            fileData.LastWriteTime = fileData.CreationTime = DateTime.Now;
 
             IMediaFile internalMediaFile;
 

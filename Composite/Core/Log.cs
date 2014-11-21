@@ -55,6 +55,7 @@ namespace Composite.Core
         /// <param name="title">Title of log message</param>
         /// <param name="messageFormat">Message to log in a String.Format() style using {0} etc.</param>
         /// <param name="args">Arguments to put into the message</param>
+        [StringFormatMethod("messageFormat")]
         public static void LogVerbose(string title, string messageFormat, params object[] args)
         {
             ImplementationFactory.CurrentFactory.StatelessLog.LogVerbose(title, string.Format(CultureInfo.InvariantCulture, messageFormat, args));

@@ -38,7 +38,7 @@ namespace Composite.Data.Plugins.DataProvider.Streams
                 }
 
                 _fileWatcher = new C1FileSystemWatcher(AppDomain.CurrentDomain.BaseDirectory);
-                _fileWatcher.Created += FileWatcher_Created;
+                // _fileWatcher.Created += FileWatcher_Created;
                 _fileWatcher.Changed += FileWatcher_Changed;
                 _fileWatcher.Deleted += FileWatcher_Deleted;
 
@@ -63,10 +63,10 @@ namespace Composite.Data.Plugins.DataProvider.Streams
             FireFileChangedEvent(e.FullPath, changeType);
         }
 
-        static void FileWatcher_Created(object sender, FileSystemEventArgs e)
-        {
-            // Do nothing...
-        }
+        //static void FileWatcher_Created(object sender, FileSystemEventArgs e)
+        //{
+        //    // Do nothing...
+        //}
 
         private static void FireFileChangedEvent(string filePath, FileChangeType changeType)
         {
