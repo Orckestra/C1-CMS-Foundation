@@ -254,15 +254,28 @@ namespace Composite.Data.DynamicTypes
 
             if (providerName == null)
             {
+                // Checking if any of exising dynamic data providers already has a store for the specified interface type
+                if (DataProviderRegistry.DynamicDataProviderNames
+                    .Select(DataProviderPluginFacade.GetDataProvider)
+                    .Cast<IDynamicDataProvider>()
+                    .Any(dynamicDataProvider => dynamicDataProvider.GetKnownInterfaces().Contains(interfaceType)))
+                {
+                    return;
+                }
+
                 providerName = DataProviderRegistry.DefaultDynamicTypeDataProviderName;
             }
-
-            var dataProvider = (IDynamicDataProvider)DataProviderPluginFacade.GetDataProvider(providerName);
-            if (!dataProvider.GetKnownInterfaces().Contains(interfaceType))
+            else
             {
-                CreateStore(providerName, dataTypeDescriptor, true);
-                CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
+                var dataProvider = (IDynamicDataProvider) DataProviderPluginFacade.GetDataProvider(providerName);
+                if (dataProvider.GetKnownInterfaces().Contains(interfaceType))
+                {
+                    return;
+                }
             }
+
+            CreateStore(providerName, dataTypeDescriptor, true);
+            CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
         }
         
 
