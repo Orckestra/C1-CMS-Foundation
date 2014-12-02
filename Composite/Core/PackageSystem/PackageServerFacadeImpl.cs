@@ -194,7 +194,7 @@ namespace Composite.Core.PackageSystem
 
         private PackagesSoapClient CreateClient(string packageServerUrl)
         {
-            var timeout = RuntimeInformation.IsDebugBuild ? TimeSpan.FromMinutes(2) : TimeSpan.FromSeconds(2);
+            var timeout = TimeSpan.FromMinutes(RuntimeInformation.IsDebugBuild ? 2 : 1);
 
             var basicHttpBinding = new BasicHttpBinding
             {
