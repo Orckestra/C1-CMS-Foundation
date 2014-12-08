@@ -168,6 +168,8 @@
     <Compile Include="Core\Instrumentation\LogExecutionTime.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FileModifyPackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FileModifyPackageFragmentUninstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\DllPackageFragmentInstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\DllPackageFragmentUninstaller.cs" />
     <Compile Include="Core\PageTemplates\ISharedCodePageTemplateProvider.cs" />
     <Compile Include="Core\PageTemplates\SharedFile.cs" />
     <Compile Include="Core\Parallelization\AsyncLock.cs" />

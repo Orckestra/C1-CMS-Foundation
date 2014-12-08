@@ -16,7 +16,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class FilePackageFragmentUninstaller : BasePackageFragmentUninstaller
     {
-        private static readonly string LogTitle = typeof (FilePackageFragmentUninstaller).Name;
+        private string LogTitle { get { return this.GetType().Name; } }
 
         private List<string> _filesToDelete;
         private List<Tuple<string, string>> _filesToCopy;
@@ -125,7 +125,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 if(!longestCommonBegining.EndsWith("\\"))
                 {
-                    longestCommonBegining = longestCommonBegining.Substring(0, longestCommonBegining.LastIndexOf("\\") + 1);
+                    longestCommonBegining = longestCommonBegining.Substring(0, longestCommonBegining.LastIndexOf("\\", StringComparison.Ordinal) + 1);
                 }
 
                 string newRoot = PathUtil.BaseDirectory;
@@ -171,7 +171,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if(!fileExists)
                     {
                         // Showing a message if we don't have a match
-                        validationResult.AddFatal(GetResourceString("FilePackageFragmentInstaller.WrongBasePath"));
+                        validationResult.AddFatal(Texts.FilePackageFragmentInstaller_WrongBasePath);
                     }
                     else
                     {
@@ -211,7 +211,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override void Uninstall()
         {
-            Verify.IsNotNull(_filesToDelete as object ?? _filesToCopy, "FilePackageFragmentUninstaller has not been validated");
+            Verify.IsNotNull(_filesToDelete as object ?? _filesToCopy, "{0} has not been validated", this.GetType().Name);
 
             foreach (string filename in _filesToDelete)
             {
