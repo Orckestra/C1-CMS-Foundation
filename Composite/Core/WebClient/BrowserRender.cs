@@ -8,6 +8,7 @@ using Composite.Core.Application;
 using Composite.Core.Configuration;
 using Composite.Core.IO;
 using Composite.Core.PackageSystem;
+using Composite.Core.Parallelization;
 using Composite.Data.Plugins.DataProvider.Streams;
 using Timer = System.Timers.Timer;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace Composite.Core.WebClient
 
     internal static partial class BrowserRender
     {
+        private static readonly string LogTitle = typeof (BrowserRender).Name;
         private static readonly string CacheImagesFolder = Path.Combine(PathUtil.Resolve(GlobalSettingsFacade.CacheDirectory), "PreviewImages");
 
         static BrowserRender()
@@ -31,7 +33,7 @@ namespace Composite.Core.WebClient
             GlobalEventSystemFacade.SubscribeToShutDownEvent(a => ShutdownPhantomJsExeSilent());
             PackageInstaller.OnPackageInstallation += ShutdownPhantomJsExeSilent;
 
-            FileChangeNotificator.Subscribe(PhantomServer.ScriptFilePath, (a, b) => PhantomServer.ShutDown());
+            FileChangeNotificator.Subscribe(PhantomServer.ScriptFilePath, (a, b) => PhantomServer.ShutDown(false));
         }
 
         private static Timer _recycleTimer;
@@ -41,6 +43,7 @@ namespace Composite.Core.WebClient
 
         private static volatile bool Enabled = true;
         private static volatile bool ServerAvailabilityChecked;
+        private static readonly AsyncLock _serverAvailabilityCheckLock = new AsyncLock();
 
         public class RenderingResult
         {
@@ -103,7 +106,7 @@ namespace Composite.Core.WebClient
 
             try
             {
-                output = MakePreviewRequest(context, url, outputImageFileName, mode);
+                output =  await MakePreviewRequestAsync(context, url, outputImageFileName, mode);
             }
             catch (BrowserRenderException ex)
             {
@@ -140,13 +143,11 @@ namespace Composite.Core.WebClient
             return CacheImagesFolder + "\\" + mode;
         }
 
-        private static string MakePreviewRequest(HttpContext context, string url, string outputFileName, string mode)
+        private static async Task<string> MakePreviewRequestAsync(HttpContext context, string url, string outputFileName, string mode)
         {
             HttpCookie authenticationCookie = context.Request.Cookies[CookieHandler.GetApplicationSpecificCookieName(".CMSAUTH")];
 
-            string output;
-
-            CheckServerAvailability(context, authenticationCookie);
+            await CheckServerAvailabilityAsync(context, authenticationCookie);
 
             if (!Enabled)
             {
@@ -157,43 +158,44 @@ namespace Composite.Core.WebClient
 
             try
             {
-                PhantomServer.RenderUrl(authenticationCookie, url, outputFileName, mode, out output);
+                return await PhantomServer.RenderUrlAsync(authenticationCookie, url, outputFileName, mode);
             }
             catch (Exception ex)
             {
-                Log.LogWarning("BrowserRenderer", ex);
+                Log.LogWarning(LogTitle, ex);
                 throw;
             }
-
-            return output;
         }
 
-        private static void CheckServerAvailability(HttpContext context, HttpCookie authenticationCookie)
+        private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie authenticationCookie)
         {
             if (ServerAvailabilityChecked) return;
 
-            try
+            using (await _serverAvailabilityCheckLock.LockAsync())
             {
-                string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
+                if (ServerAvailabilityChecked) return;
 
+                try
+                {
+                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
 
-                SetupRecycleTimer();
+                    SetupRecycleTimer();
 
-                string output;
-                string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
+                    string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
 
-                PhantomServer.RenderUrl(authenticationCookie, testUrl, outputFileName, "test", out output);
-            }
-            catch (Exception ex)
-            {
-                Log.LogWarning("BrowserRender", "PhantomJs server unable to complete HTTP requests, preventing C1 Function preview images from being generated. " + Environment.NewLine + ex);
-                Enabled = false;
+                    await PhantomServer.RenderUrlAsync(authenticationCookie, testUrl, outputFileName, "test");
+                }
+                catch (Exception ex)
+                {
+                    Log.LogWarning(LogTitle, "PhantomJs server unable to complete HTTP requests, preventing C1 Function preview images from being generated. " + Environment.NewLine + ex);
+                    Enabled = false;
 
-                PhantomServer.ShutDown();
-            }
-            finally
-            {
-                ServerAvailabilityChecked = true;
+                    PhantomServer.ShutDown(false);
+                }
+                finally
+                {
+                    ServerAvailabilityChecked = true;
+                }
             }
         }
 
@@ -203,7 +205,7 @@ namespace Composite.Core.WebClient
             Enabled = false;
             try
             {
-                PhantomServer.ShutDown();
+                PhantomServer.ShutDown(false);
             }
             catch
             {
@@ -232,8 +234,7 @@ namespace Composite.Core.WebClient
         {
             if (_recycleTimer != null) return;
 
-            var timer = new Timer(RecycleTimerInterval_ms);
-            timer.AutoReset = true;
+            var timer = new Timer(RecycleTimerInterval_ms) {AutoReset = true};
             timer.Elapsed += (a, b) => RecycleIfNotUsed();
             timer.Start();
 
@@ -248,7 +249,7 @@ namespace Composite.Core.WebClient
                 return;
             }
 
-            PhantomServer.ShutDown();
+            PhantomServer.ShutDown(false);
         }
     }
 }

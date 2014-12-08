@@ -9,6 +9,7 @@ using System.Web.Hosting;
 using Composite.Core.Application;
 using Composite.Core.Extensions;
 using Composite.Core.IO;
+using Composite.Core.Parallelization;
 
 namespace Composite.Core.WebClient
 {
@@ -33,23 +34,28 @@ namespace Composite.Core.WebClient
             private readonly Job _job;
 
             private static PhantomServer _instance;
-            private static readonly object _instanceLock = new object();
+            private static readonly AsyncLock _instanceAsyncLock = new AsyncLock();
 
             [SuppressMessage("Composite.IO", "Composite.DotNotUseStreamWriterClass:DotNotUseStreamWriterClass")]
             private PhantomServer()
             {
-                _process = new Process();
+                _process = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = _phantomJsFolder,
+                        FileName = "\"" + _phantomJsPath + "\"",
+                        Arguments = string.Format("--config={0} {1}", ConfigFileName, ScriptFileName),
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        RedirectStandardInput = true,
+                        CreateNoWindow = true,
+                        StandardOutputEncoding = Encoding.UTF8,
+                        UseShellExecute = false,
+                        WindowStyle = ProcessWindowStyle.Hidden
+                    }
+                };
 
-                _process.StartInfo.WorkingDirectory = _phantomJsFolder;
-                _process.StartInfo.FileName = "\"" + _phantomJsPath + "\"";
-                _process.StartInfo.Arguments = string.Format("--config={0} {1}", ConfigFileName, ScriptFileName);
-                _process.StartInfo.RedirectStandardOutput = true;
-                _process.StartInfo.RedirectStandardError = true;
-                _process.StartInfo.RedirectStandardInput = true;
-                _process.StartInfo.CreateNoWindow = true;
-                _process.StartInfo.StandardOutputEncoding = Encoding.UTF8;
-                _process.StartInfo.UseShellExecute = false;
-                _process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 _process.Start();
 
                 _stdin = _process.StandardInput;
@@ -62,11 +68,11 @@ namespace Composite.Core.WebClient
             }
 
 
-            public static void ShutDown()
+            public static void ShutDown(bool alreadyLocked)
             {
                 PhantomServer ps;
 
-                lock (_instanceLock)
+                using (alreadyLocked ? null : _instanceAsyncLock.Lock())
                 {
                     if (_instance == null)
                     {
@@ -91,17 +97,19 @@ namespace Composite.Core.WebClient
             }
 
 
-            public static void RenderUrl(HttpCookie authenticationCookie, string url, string tempFilePath, string mode, out string output)
+            public static async Task<string> RenderUrlAsync(HttpCookie authenticationCookie, string url, string tempFilePath, string mode)
             {
-                lock (_instanceLock)
+                using (await _instanceAsyncLock.LockAsync())
                 {
                     try
                     {
+                        string output;
                         Instance.RenderUrlImpl(authenticationCookie, url, tempFilePath, mode, out output);
+                        return output;
                     }
                     catch (BrowserRenderException)
                     {
-                        ShutDown();
+                        ShutDown(true);
                         throw;
                     }
                 }

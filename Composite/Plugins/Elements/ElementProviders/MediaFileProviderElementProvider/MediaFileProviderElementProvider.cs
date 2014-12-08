@@ -229,7 +229,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         public Dictionary<EntityToken, IEnumerable<EntityToken>> GetParents(IEnumerable<EntityToken> entityTokens)
         {
-            Dictionary<EntityToken, IEnumerable<EntityToken>> result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
+            var result = new Dictionary<EntityToken, IEnumerable<EntityToken>>();
 
             foreach (EntityToken entityToken in entityTokens)
             {
@@ -256,7 +256,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                     storeId = mediaFileFolder.StoreId;
                 }
 
-                MediaRootFolderProviderEntityToken newEntityToken = new MediaRootFolderProviderEntityToken(storeId);
+                var newEntityToken = new MediaRootFolderProviderEntityToken(storeId);
 
                 result.Add(entityToken, new EntityToken[] { newEntityToken });
             }
@@ -268,14 +268,16 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private IEnumerable<LabeledProperty> GetFileProperties(IMediaFile file)
         {
-            LabeledPropertyList propertyList = new LabeledPropertyList();
+            var propertyList = new LabeledPropertyList
+            {
+                {"StoreId", "Store ID", file.StoreId},
+                {"FolderPath", "Folder path", file.FolderPath},
+                {"FileName", "File name", file.FileName},
+                {"Title", "Description", file.Title},
+                {"Description", "Description", file.Description},
+                {"IsReadOnly", "Read only", file.IsReadOnly}
+            };
 
-            propertyList.Add("StoreId", "Store ID", file.StoreId);
-            propertyList.Add("FolderPath", "Folder path", file.FolderPath);
-            propertyList.Add("FileName", "File name", file.FileName);
-            propertyList.Add("Title", "Description", file.Title);
-            propertyList.Add("Description", "Description", file.Description);
-            propertyList.Add("IsReadOnly", "Read only", file.IsReadOnly);
             if (file.Length.HasValue) propertyList.Add("Length", "Length (bytes)", file.Length.Value);
             if (file.LastWriteTime.HasValue) propertyList.Add("LastWriteTime", "Last write time", file.LastWriteTime.Value);
             if (file.CreationTime.HasValue) propertyList.Add("CreationTime", "Creation time", file.CreationTime.Value);
@@ -292,7 +294,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 {
                     using (Stream fileStream = file.GetReadStream())
                     {
-                        Bitmap bitmap = new Bitmap(fileStream);
+                        var bitmap = new Bitmap(fileStream);
                         propertyList.Add("ImageWidth", "Image width", bitmap.Width);
                         propertyList.Add("ImageHeight", "Image height", bitmap.Height);
 
@@ -302,12 +304,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                         if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Png.Guid) == 0) formatString = "png";
                         if (bitmap.RawFormat.Guid.CompareTo(ImageFormat.Tiff.Guid) == 0) formatString = "tiff";
                         if (formatString != null) propertyList.Add("ImageFormat", "Image format", formatString);
-
                     }
                 }
-
             }
-
 
             return propertyList;
         }
@@ -316,13 +315,14 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private IEnumerable<LabeledProperty> GetFolderProperties(IMediaFileFolder folder)
         {
-            LabeledPropertyList propertyList = new LabeledPropertyList();
-
-            propertyList.Add("StoreId", "Store ID", folder.StoreId);
-            propertyList.Add("Path", "Path", folder.Path);
-            propertyList.Add("Title", "Title", folder.Title);
-            propertyList.Add("Description", "Description", folder.Description);
-            propertyList.Add("IsReadOnly", "Read only", folder.IsReadOnly);
+            var propertyList = new LabeledPropertyList
+            {
+                {"StoreId", "Store ID", folder.StoreId},
+                {"Path", "Path", folder.Path},
+                {"Title", "Title", folder.Title},
+                {"Description", "Description", folder.Description},
+                {"IsReadOnly", "Read only", folder.IsReadOnly}
+            };
 
             return propertyList;
         }
@@ -683,9 +683,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
 
         private Element CreateFileElement(IMediaFile file)
         {
-            Element element = new Element(_context.CreateElementHandle(file.GetDataEntityToken()))
+            var element = new Element(_context.CreateElementHandle(file.GetDataEntityToken()))
             {
-                VisualData = new ElementVisualizedData()
+                VisualData = new ElementVisualizedData
                 {
                     Label = file.FileName,
                     ToolTip = GetResourceString("MediaFileProviderElementProvider.MediaFileItemToolTip"),
@@ -700,6 +700,9 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 element.MovabilityInfo.DragType = typeof(IMediaFile);
                 element.MovabilityInfo.DragSubType = file.StoreId;
             }
+            
+            Verify.IsNotNull(file.FileName, "file.FileName is null. Media ID: {0}", file.Id);
+            Verify.IsNotNull(file.FolderPath, "file.FolderPath is null. Media ID: {0}", file.Id);
 
             element.PropertyBag.Add("ElementId", file.StoreId + ":" + file.FolderPath.Combine(file.FileName, '/'));
 
@@ -707,10 +710,8 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
             element.PropertyBag.Add("ElementType", file.MimeType);
 
 
-            foreach (ElementAction action in GetFileActions(file))
-            {
-                element.AddAction(action);
-            }
+            GetFileActions(file).ForEach(element.AddAction);
+
             return element;
         }
 
