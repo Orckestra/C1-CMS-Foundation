@@ -168,17 +168,32 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
                 return;
             }
 
-			_watcher = new C1FileSystemWatcher(PhysicalPath, "*")
-			{
-				IncludeSubdirectories = true
-			};
+		    string folderToWatch = PhysicalPath;
 
-            _watcher.Created += Watcher_OnChanged;
-            _watcher.Deleted += Watcher_OnChanged;
-            _watcher.Changed += Watcher_OnChanged;
-            _watcher.Renamed += Watcher_OnChanged;
+		    try
+		    {
+		        if (ReparsePointUtils.DirectoryIsReparsePoint(folderToWatch))
+		        {
+                    folderToWatch = ReparsePointUtils.GetDirectoryReparsePointTarget(folderToWatch);
+		        }
 
-			_watcher.EnableRaisingEvents = true;
+		        _watcher = new C1FileSystemWatcher(folderToWatch, "*")
+		        {
+		            IncludeSubdirectories = true
+		        };
+
+		        _watcher.Created += Watcher_OnChanged;
+		        _watcher.Deleted += Watcher_OnChanged;
+		        _watcher.Changed += Watcher_OnChanged;
+		        _watcher.Renamed += Watcher_OnChanged;
+
+		        _watcher.EnableRaisingEvents = true;
+		    }
+		    catch (Exception ex)
+		    {
+		        Log.LogWarning(LogTitle, "Failed to create a file system watcher for path '{0}'", folderToWatch);
+		        Log.LogWarning(LogTitle, ex);
+		    }
 		}
 
         /// <summary>

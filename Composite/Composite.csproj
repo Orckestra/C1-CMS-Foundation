@@ -239,6 +239,7 @@
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionBasedFunctionProviderHelper.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\FunctionParameter.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\FileBasedFunctionProvider\NotLoadedFileBasedFunction.cs" />
+    <Compile Include="Core\IO\ReparsePointUtils.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorBasedFunction.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProvider.cs" />
     <Compile Include="Plugins\Functions\FunctionProviders\RazorFunctionProvider\RazorFunctionProviderAssembler.cs" />

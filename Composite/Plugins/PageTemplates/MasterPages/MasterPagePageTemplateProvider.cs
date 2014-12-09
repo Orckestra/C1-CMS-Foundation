@@ -68,17 +68,32 @@ namespace Composite.Plugins.PageTemplates.MasterPages
 
             Verify.That(C1Directory.Exists(_templatesDirectory), "Folder '{0}' does not exist", _templatesDirectory);
 
-            _watcher = new C1FileSystemWatcher(_templatesDirectory, FileWatcherMask)
+            string folderToWatch = _templatesDirectory;
+
+            try
             {
-                IncludeSubdirectories = true
-            };
+                if (ReparsePointUtils.DirectoryIsReparsePoint(folderToWatch))
+                {
+                    folderToWatch = ReparsePointUtils.GetDirectoryReparsePointTarget(folderToWatch);
+                }
 
-            _watcher.Created += Watcher_OnChanged;
-            _watcher.Deleted += Watcher_OnChanged;
-            _watcher.Changed += Watcher_OnChanged;
-            _watcher.Renamed += Watcher_OnChanged;
+                _watcher = new C1FileSystemWatcher(folderToWatch, FileWatcherMask)
+                {
+                    IncludeSubdirectories = true
+                };
 
-            _watcher.EnableRaisingEvents = true;
+                _watcher.Created += Watcher_OnChanged;
+                _watcher.Deleted += Watcher_OnChanged;
+                _watcher.Changed += Watcher_OnChanged;
+                _watcher.Renamed += Watcher_OnChanged;
+
+                _watcher.EnableRaisingEvents = true;
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning(LogTitle, "Failed to create a file system watcher for directory '{0}'. Provider: {1}", folderToWatch, name);
+                Log.LogWarning(LogTitle, ex);
+            }
         }
 
         public IEnumerable<PageTemplateDescriptor> GetPageTemplates()
