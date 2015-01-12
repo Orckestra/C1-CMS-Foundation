@@ -1,10 +1,63 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Composite.Core.IO;
 
 namespace Composite.Core.WebClient
 {
     internal static class BuildManagerHelper
     {
+        private static volatile bool _preloadingInitialed;
+
+        /// <summary>
+        /// Preloading (compiling) all the controls. Speeds up first time editing in console.
+        /// </summary>
+        public static void InitializeControlPreLoading()
+        {
+            if (!_preloadingInitialed)
+            {
+                Task.Factory.StartNew(LoadAllControls);
+            }
+        }
+
+        private static void LoadAllControls()
+        {
+            if (_preloadingInitialed)
+            {
+                return;
+            }
+            _preloadingInitialed = true;
+
+            try
+            {
+                var config = XDocument.Load(PathUtil.Resolve("~/App_Data/Composite/Composite.config"));
+
+                var controlPathes = (from element in config.Descendants()
+                    let userControlVirtualPath = (string) element.Attribute("userControlVirtualPath")
+                    where userControlVirtualPath != null
+                    select userControlVirtualPath).ToList();
+
+                var stopWatch = new Stopwatch();
+                stopWatch.Start();
+
+                foreach (var controlPath in controlPathes)
+                {
+                    BuildManagerHelper.GetCompiledType(controlPath);
+                }
+
+                stopWatch.Stop();
+
+                Log.LogVerbose("BuildManagerHelper", "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
+            }
+            catch (Exception ex)
+            {
+                Log.LogWarning("Controls preloading", ex);
+            }
+        }
+
         /// <summary>
         /// Gets a user control. Prevents an exception that appears in Visual Studio while debugging
         /// </summary>

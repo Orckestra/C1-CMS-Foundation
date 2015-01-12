@@ -27,9 +27,11 @@ namespace Composite.Core.WebClient.HttpModules
         {
             var httpContext = HttpContext.Current;
 
-            if (
-                (httpContext.Handler is Page || httpContext.Handler is WebPageHttpHandler)
-                && UrlUtils.IsAdminConsoleRequest(httpContext))
+            if (!UrlUtils.IsAdminConsoleRequest(httpContext)) return;
+
+            BuildManagerHelper.InitializeControlPreLoading();
+
+            if (httpContext.Handler is Page || httpContext.Handler is WebPageHttpHandler)
             {
                 httpContext.Response.Filter = new ReplacementStream(httpContext.Response.Filter);
             }
