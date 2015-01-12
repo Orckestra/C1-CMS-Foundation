@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 
 namespace Composite.Core.Linq
@@ -125,13 +126,14 @@ namespace Composite.Core.Linq
         }
 
         /// <summary>
-        /// Extends standard IQueryable<typeparamref name="T"/>.First() method, allows specifying exception text.
+        /// Extends standard IEnumerable<typeparamref name="T"/>.First() method, allows specifying exception text.
         /// </summary>
         /// <param name="query"></param>
         /// <param name="exceptionOnEmpty">Exception format for not a single row found</param>
         /// <param name="formatArgs">Format arguments</param>
         /// <returns></returns>
-        public static T FirstOrException<T>(this IQueryable<T> query, string exceptionOnEmpty, params object[] formatArgs) where T: class
+        [StringFormatMethod("formatArgs")]
+        public static T FirstOrException<T>(this IEnumerable<T> query, string exceptionOnEmpty, params object[] formatArgs) where T : class
         {
             var result = query.FirstOrDefault();
 

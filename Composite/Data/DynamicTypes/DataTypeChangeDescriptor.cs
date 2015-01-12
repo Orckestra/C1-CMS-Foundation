@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Composite.Core.Extensions;
+using Composite.Core.Linq;
 
 
 namespace Composite.Data.DynamicTypes
@@ -171,12 +171,15 @@ namespace Composite.Data.DynamicTypes
 
         IEnumerable<DataFieldDescriptor> GetKeyProperties_Orininal()
         {
-            return _original.KeyPropertyNames.Select(name => _original.Fields.First(fld => fld.Name == name)).ToList();
+            return _original.KeyPropertyNames
+                .Select(name => _original.Fields.Where(fld => fld.Name == name)
+                    .FirstOrException("Key property name {0} is not defined in the <Fields> section", name)).ToList();
         }
 
         IEnumerable<DataFieldDescriptor> GetKeyProperties_Altered()
         {
-            return _altered.KeyPropertyNames.Select(name => _altered.Fields.First(fld => fld.Name == name)).ToList();
+            return _altered.KeyPropertyNames.Select(name => _altered.Fields.Where(fld => fld.Name == name)
+                .FirstOrException("Key property name {0} is not defined in the <Fields> section", name)).ToList();
         }
 
 
