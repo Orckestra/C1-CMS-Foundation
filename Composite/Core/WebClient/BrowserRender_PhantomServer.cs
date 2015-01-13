@@ -87,6 +87,15 @@ namespace Composite.Core.WebClient
             }
 
 
+            // Ensures that an instance have been started
+            public async static Task StartAsync()
+            {
+                using (await _instanceAsyncLock.LockAsync())
+                {
+                    var instance = PhantomServer.Instance;
+                }
+            }
+
 
             private static PhantomServer Instance
             {
@@ -219,16 +228,25 @@ namespace Composite.Core.WebClient
 
                 int exitCode = -1;
 
+                try
+                {
+                    proccessHasExited = _process.HasExited;
+                }
+                catch (Exception)
+                {
+                    proccessHasExited = true;
+                }
+
                 if (!proccessHasExited)
                 {
                     _stdin.Close();
                     _stdout.Close();
                     _stderror.Close();
+                    _process.Kill();
+                    _process.WaitForExit(500);
                 }
-                else
-                {
-                    exitCode = _process.ExitCode;
-                }
+
+                exitCode = _process.ExitCode;
 
                 _stdin.Dispose();
                 _stdout.Dispose();

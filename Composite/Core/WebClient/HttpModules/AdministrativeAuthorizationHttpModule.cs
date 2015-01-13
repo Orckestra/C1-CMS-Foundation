@@ -128,6 +128,12 @@ namespace Composite.Core.WebClient.HttpModules
                     context.Response.Redirect(redirectUrl, true);
                 }
             }
+
+            // On authenticated request make sure these resources gets compiled / launched. 
+            BrowserRender.EnsureReadyness();
+            BuildManagerHelper.InitializeControlPreLoading();
+
+
         }
 
 

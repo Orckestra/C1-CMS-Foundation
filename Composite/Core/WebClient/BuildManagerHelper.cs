@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Composite.Core.IO;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Composite.Core.IO;
 
 namespace Composite.Core.WebClient
 {
@@ -52,9 +53,12 @@ namespace Composite.Core.WebClient
 
                 Log.LogVerbose("BuildManagerHelper", "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
             }
+            catch (ThreadAbortException)
+            {
+            }
             catch (Exception ex)
             {
-                Log.LogWarning("Controls preloading", ex);
+                Log.LogWarning("BuildManagerHelper", ex);
             }
         }
 

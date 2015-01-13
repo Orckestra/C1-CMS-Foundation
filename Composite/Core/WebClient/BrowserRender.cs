@@ -38,7 +38,7 @@ namespace Composite.Core.WebClient
 
         private static Timer _recycleTimer;
         private static DateTime _lastUsageDate = DateTime.MinValue;
-        private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromMinutes(9.75);
+        private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromSeconds(30); 
         private const int RecycleTimerInterval_ms = 10000;
 
         private static volatile bool Enabled = true;
@@ -50,6 +50,16 @@ namespace Composite.Core.WebClient
             public string FilePath { get; set; }
             public string Output { get; set; }
         }
+
+        /// <summary>
+        /// Ensures that the BrowserRenderer service is launched, without blocking the current thread
+        /// </summary>
+        public static void EnsureReadyness()
+        {
+            Task.Factory.StartNew(async () => await PhantomServer.StartAsync());
+            _lastUsageDate = DateTime.Now;
+        }
+
 
         public static DateTime GetLastCacheUpdateTime(string mode)
         {
