@@ -9,6 +9,7 @@ using System.Xml.Linq;
 using Composite.C1Console.Security;
 using Composite.Core.IO;
 using Composite.Core.Xml;
+using Composite.Core.Application;
 
 
 namespace Composite.Core.WebClient.HttpModules
@@ -130,10 +131,11 @@ namespace Composite.Core.WebClient.HttpModules
             }
 
             // On authenticated request make sure these resources gets compiled / launched. 
-            BrowserRender.EnsureReadyness();
-            BuildManagerHelper.InitializeControlPreLoading();
-
-
+            if (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized)
+            {
+                BrowserRender.EnsureReadyness();
+                BuildManagerHelper.InitializeControlPreLoading();
+            }
         }
 
 
