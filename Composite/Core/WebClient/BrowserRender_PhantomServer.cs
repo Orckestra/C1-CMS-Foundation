@@ -222,7 +222,7 @@ namespace Composite.Core.WebClient
                     }
                 });
 
-                errorFeedbackTask.Wait(250);
+                errorFeedbackTask.Wait(500);
 
                 string errorFeedback = errorFeedbackTask.Status == TaskStatus.RanToCompletion ? errorFeedbackTask.Result : "Process Hang";
 

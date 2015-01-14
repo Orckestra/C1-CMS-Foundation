@@ -46,7 +46,14 @@ namespace Composite.Core.WebClient
 
                 foreach (var controlPath in controlPathes)
                 {
-                    BuildManagerHelper.GetCompiledType(controlPath);
+                    try
+                    {
+                        BuildManagerHelper.GetCompiledType(controlPath);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogWarning("BuildManagerHelper", ex);
+                    }
                 }
 
                 stopWatch.Stop();
