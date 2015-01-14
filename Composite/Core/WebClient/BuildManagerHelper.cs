@@ -66,7 +66,9 @@ namespace Composite.Core.WebClient
                 Log.LogVerbose("BuildManagerHelper", "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
 
                 Func<string,bool> isAspNetPath = f => f == ".asmx" || f == ".aspx" || f == ".ashx";
-                var aspnetPaths = DirectoryUtils.GetFilesRecursively(PathUtil.Resolve("~/Composite")).Where(f => isAspNetPath(Path.GetExtension(f)));
+                var aspnetPaths = DirectoryUtils.GetFilesRecursively(PathUtil.Resolve("~/Renderers"))
+                    .Concat(DirectoryUtils.GetFilesRecursively(PathUtil.Resolve("~/Composite")))
+                    .Where(f => isAspNetPath(Path.GetExtension(f))).ToList();
 
                 stopWatch.Reset();
                 stopWatch.Start();
