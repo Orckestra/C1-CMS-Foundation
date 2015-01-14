@@ -1,6 +1,7 @@
 ﻿using Composite.Core.IO;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -61,8 +62,34 @@ namespace Composite.Core.WebClient
                 }
 
                 stopWatch.Stop();
-
+                
                 Log.LogVerbose("BuildManagerHelper", "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
+
+                Func<string,bool> isAspNetPath = f => f == ".asmx" || f == ".aspx" || f == ".ashx";
+                var aspnetPaths = DirectoryUtils.GetFilesRecursively(PathUtil.Resolve("~/Composite")).Where(f => isAspNetPath(Path.GetExtension(f)));
+
+                stopWatch.Reset();
+                stopWatch.Start();
+
+                foreach (var aspnetPath in aspnetPaths)
+                {
+                    try
+                    {
+                        BuildManagerHelper.GetCompiledType(PathUtil.GetWebsitePath(aspnetPath));
+                    }
+                    catch (ThreadAbortException)
+                    {
+                        // this exception is automatically rethrown after this catch
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.LogWarning("BuildManagerHelper", ex);
+                    }
+                }
+
+                stopWatch.Stop();
+
+                Log.LogVerbose("BuildManagerHelper", "Preloading all asp.net files: " + stopWatch.ElapsedMilliseconds + "ms");
             }
             catch (ThreadAbortException)
             {
