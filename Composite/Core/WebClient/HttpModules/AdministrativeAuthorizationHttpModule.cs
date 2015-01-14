@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Composite.C1Console.Security;
+using Composite.Core.Application;
+using Composite.Core.Configuration;
+using Composite.Core.IO;
+using Composite.Core.Xml;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,10 +11,6 @@ using System.Text;
 using System.Web;
 using System.Web.Hosting;
 using System.Xml.Linq;
-using Composite.C1Console.Security;
-using Composite.Core.IO;
-using Composite.Core.Xml;
-using Composite.Core.Application;
 
 
 namespace Composite.Core.WebClient.HttpModules
@@ -131,7 +132,7 @@ namespace Composite.Core.WebClient.HttpModules
             }
 
             // On authenticated request make sure these resources gets compiled / launched. 
-            if (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized)
+            if (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized && SystemSetupFacade.IsSystemFirstTimeInitialized)
             {
                 BrowserRender.EnsureReadyness();
                 BuildManagerHelper.InitializeControlPreLoading();
