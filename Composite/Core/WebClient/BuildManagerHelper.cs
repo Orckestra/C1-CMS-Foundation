@@ -50,6 +50,10 @@ namespace Composite.Core.WebClient
                     {
                         BuildManagerHelper.GetCompiledType(controlPath);
                     }
+                    catch (ThreadAbortException)
+                    {
+                        // this exception is automatically rethrown after this catch
+                    }
                     catch (Exception ex)
                     {
                         Log.LogWarning("BuildManagerHelper", ex);
