@@ -56,8 +56,12 @@ namespace Composite.Core.WebClient
         /// </summary>
         public static void EnsureReadyness()
         {
-            Task.Factory.StartNew(async () => await PhantomServer.StartAsync());
             _lastUsageDate = DateTime.Now;
+            if (ServerAvailabilityChecked) return;
+
+            HttpContext context = HttpContext.Current;
+            HttpCookie authenticationCookie = context.Request.Cookies[CookieHandler.GetApplicationSpecificCookieName(".CMSAUTH")];
+            Task.Factory.StartNew(async () => await CheckServerAvailabilityAsync(context, authenticationCookie));
         }
 
 
