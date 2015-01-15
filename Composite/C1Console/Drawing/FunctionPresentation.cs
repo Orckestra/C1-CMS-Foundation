@@ -212,6 +212,15 @@ namespace Composite.C1Console.Drawing
                 return HostingEnvironment.MapPath(UrlUtils.ResolveAdminUrl(relativePath));
             }
 
+            private Image SafeImageFromFile(string path) 
+            {
+                using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
+                    {
+                        var img = Bitmap.FromStream(fs);
+                        return img;
+                    }
+            }
+
             public FunctionHeader(string title, bool isWarning, bool showEditButton)
             {
                 _title = title;
@@ -223,7 +232,7 @@ namespace Composite.C1Console.Drawing
                 _titleSize = MeasureText(_title, _titleFont);
 
                 _isWarning = isWarning;
-                _functionIcon = Bitmap.FromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
+                _functionIcon = SafeImageFromFile(_isWarning ? WarninigIconPath : FunctionIconPath);
 
                 int leftPadding = 15;
                 _titlePosition = new Point(leftPadding + _functionIcon.Width, (_headerHeight - _titleSize.Height) / 2);
@@ -282,7 +291,7 @@ namespace Composite.C1Console.Drawing
                     const int labelRightPadding = 5;
 
                     // Edit function "pen" icon
-                    using (var icon = (Bitmap)Image.FromFile(EditFunctionIconPath))
+                    using (var icon = (Bitmap)SafeImageFromFile(EditFunctionIconPath))
                     {
                         editFunctionIconSize = icon.Size;
                         editFunctionIconY = (_headerHeight - icon.Height) / 2;

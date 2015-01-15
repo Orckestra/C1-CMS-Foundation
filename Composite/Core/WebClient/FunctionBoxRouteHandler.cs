@@ -103,7 +103,7 @@ namespace Composite.Core.WebClient
                                 }
                             }
                         }
-                        catch (BrowserRenderException ex)
+                        catch (Exception ex)
                         {
                             Log.LogError("Function preview", ex.Message);
                         }
