@@ -10,6 +10,7 @@ using System.Text;
 using System.Web;
 using System.Web.SessionState;
 using Composite;
+using Composite.C1Console.Security;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core;
@@ -57,24 +58,34 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 context.Response.StatusCode = 404;
                 context.Response.Write("File not found");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
+                if (UserValidationFacade.IsLoggedIn())
+                {
+                    throw;
+                }
+                
                 context.Response.StatusCode = 500;
-                context.Response.Write(ex.Message);
             }
 
-            if (file != null)
+            if (file == null)
             {
-                try
+                return;
+            }
+            
+            try
+            {
+                ValidateAndSend(context, file);
+            }
+            catch (Exception)
+            {
+                context.Response.ClearHeaders();
+                if (UserValidationFacade.IsLoggedIn())
                 {
-                    ValidateAndSend(context, file);
+                    throw;
                 }
-                catch (Exception ex)
-                {
-                    context.Response.ClearHeaders();
-                    context.Response.StatusCode = 500;
-                    context.Response.Write(ex.Message);
-                }
+
+                context.Response.StatusCode = 500;
             }
         }
     }
