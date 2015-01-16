@@ -61,7 +61,6 @@ namespace Composite.Core.WebClient
 
             HttpContext context = HttpContext.Current;
             HttpCookie authenticationCookie = context.Request.Cookies[CookieHandler.GetApplicationSpecificCookieName(".CMSAUTH")];
-
             Task.Factory.StartNew(async () => await CheckServerAvailabilityAsync(context, authenticationCookie));
         }
 
@@ -192,7 +191,7 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
+                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.PublicRootPath) + "/";
 
                     SetupRecycleTimer();
 
@@ -220,7 +219,6 @@ namespace Composite.Core.WebClient
             Enabled = false;
             try
             {
-                Log.LogInformation(LogTitle, "ShutdownPhantomJsExeSilent");
                 PhantomServer.ShutDown(false);
             }
             catch
@@ -264,7 +262,7 @@ namespace Composite.Core.WebClient
             {
                 return;
             }
-            Log.LogInformation(LogTitle, "Recycling PhantomJs due to inactivity");
+
             PhantomServer.ShutDown(false);
         }
     }

@@ -112,13 +112,13 @@ namespace Composite.Core.WebClient
                 {
                     try
                     {
+                        _lastUsageDate = DateTime.Now;
                         string output;
                         Instance.RenderUrlImpl(authenticationCookie, url, tempFilePath, mode, out output);
                         return output;
                     }
-                    catch (BrowserRenderException ex)
+                    catch (BrowserRenderException)
                     {
-                        Log.LogError(LogTitle, "Failed to render {0}\n{1}", url, ex);
                         ShutDown(true);
                         throw;
                     }
