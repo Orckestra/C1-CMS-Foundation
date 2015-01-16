@@ -116,8 +116,9 @@ namespace Composite.Core.WebClient
                         Instance.RenderUrlImpl(authenticationCookie, url, tempFilePath, mode, out output);
                         return output;
                     }
-                    catch (BrowserRenderException)
+                    catch (BrowserRenderException ex)
                     {
+                        Log.LogError(LogTitle, "Failed to render {0}\n{1}", url, ex);
                         ShutDown(true);
                         throw;
                     }
