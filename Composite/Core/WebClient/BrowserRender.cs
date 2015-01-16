@@ -183,7 +183,7 @@ namespace Composite.Core.WebClient
 
         private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie authenticationCookie)
         {
-            if (ServerAvailabilityChecked) return;
+            if (ServerAvailabilityChecked || authenticationCookie == null) return;
 
             using (await _serverAvailabilityCheckLock.LockAsync())
             {
@@ -191,7 +191,7 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.PublicRootPath);
+                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
 
                     SetupRecycleTimer();
 
