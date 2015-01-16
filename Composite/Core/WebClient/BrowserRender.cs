@@ -191,7 +191,7 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.PublicRootPath) + "/";
+                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
 
                     SetupRecycleTimer();
 

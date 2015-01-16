@@ -143,7 +143,7 @@ namespace Composite.Core.WebClient
                     return _stdout.ReadLine();
                 });
 
-                double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 20 ? 20 : 6;
+                double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 30 ? 30 : 15;
 
                 readerTask.Wait(TimeSpan.FromSeconds(timeout));
 
