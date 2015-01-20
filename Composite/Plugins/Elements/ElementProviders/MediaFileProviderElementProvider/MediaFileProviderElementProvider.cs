@@ -192,14 +192,28 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 return GetChildrenOnPath("/", entityToken.Id, searchToken);
             }
             
-            DataEntityToken token = (DataEntityToken)entityToken;
-            if (token.Data == null)
+            var dataEntityToken = (DataEntityToken)entityToken;
+            Verify.IsNotNull(dataEntityToken, "Unexpected entity token type '{0}'", entityToken.GetType());
+
+            if (dataEntityToken.InterfaceType == typeof (IMediaFile))
             {
-                return new List<Element>();
+                return null;
             }
 
-            IMediaFileFolder folder = (IMediaFileFolder)token.Data;
-            return GetChildrenOnPath(folder.Path, folder.StoreId, searchToken);
+
+            if (dataEntityToken.InterfaceType == typeof (IMediaFileFolder))
+            {
+                object data = dataEntityToken.Data;
+                if (data == null)
+                {
+                    return Enumerable.Empty<Element>();
+                }
+
+                var folder = (IMediaFileFolder)data;
+                return GetChildrenOnPath(folder.Path, folder.StoreId, searchToken);
+            }
+
+            throw new InvalidOperationException("Unexpected data entity token's interface type '{0}'".FormatWith(dataEntityToken.InterfaceType));
         }
 
 
@@ -211,7 +225,7 @@ namespace Composite.Plugins.Elements.ElementProviders.MediaFileProviderElementPr
                 throw new ArgumentException(string.Format("Got '{0}' expected '{1}'", typeof (EntityToken), typeof (DataEntityToken)));
             }
             
-            DataEntityToken token = (DataEntityToken) entityToken;
+            var token = (DataEntityToken) entityToken;
 
             if (token.Data is IMediaFileFolder)
             {
