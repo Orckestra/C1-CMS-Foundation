@@ -148,3 +148,4 @@ Changes in 4.2
  
  Changes in 4.2 Update 2 (or later)
   - Removed InlineFunctionCallsDesigner.ascx - <add userControlVirtualPath="~/Composite/controls/FormsControls/FormUiControlTemplates/DeveloperTools/InlineFunctionCallsDesigner.ascx" cacheCompiledUserControlType="true" type="Composite.Plugins.Forms.WebChannel.UiControlFactories.TemplatedFunctionCallsDesignerUiControlFactory, Composite" name="InlineFunctionCallsDesigner" />
+  - Added Composite.C1Console.Security.Plugins.PasswordPolicy section
