@@ -210,6 +210,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             user.Username = userName.Trim().ToLowerInvariant();
             user.Group = group;
             user.Email = email;
+            user.EncryptedPassword = "";
 
             user = DataFacade.AddNew<IUser>(user);
 
