@@ -15,7 +15,6 @@ using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
 using Composite.Core.ResourceSystem;
 using Composite.C1Console.Security;
-using Composite.C1Console.Security.Cryptography;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
@@ -23,6 +22,7 @@ using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 using Composite.Core.Xml;
+using Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Core.Logging;
 
@@ -275,7 +275,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             if (user.EncryptedPassword != NotPassword)
             {
-                user.EncryptedPassword = user.EncryptedPassword.Encrypt();
+                string newPassword = user.EncryptedPassword;
+                UserPasswordManager.SetPassword(user, newPassword);
             }
             else
             {

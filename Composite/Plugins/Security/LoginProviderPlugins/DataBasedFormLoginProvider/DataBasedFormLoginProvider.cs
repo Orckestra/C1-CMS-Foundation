@@ -10,7 +10,6 @@ using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.C1Console.Security.Cryptography;
 using Composite.C1Console.Security.Plugins.LoginProvider;
 using Composite.Data.Transactions;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -90,7 +89,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 return LoginResult.UserDoesNotExist;
             }
 
-            bool passwordIsCorrect = PasswordMatch(user, password);
+            bool passwordIsCorrect = UserPasswordManager.ValidatePassword(user, password);
 
             if (passwordIsCorrect && user.IsLocked)
             {
@@ -100,6 +99,13 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 }
 
                 return LoginResult.UserLockedAfterMaxLoginAttempts;
+            }
+
+            int passwordExpirationDays = PasswordPolicyFacade.PasswordExpirationTimeInDays;
+            if (passwordExpirationDays > 0 &&
+                DateTime.Now > user.LastPasswordChangeDate + TimeSpan.FromDays(passwordExpirationDays))
+            {
+                return LoginResult.PasswordUpdateRequired;
             }
 
             UpdateLoginHistory(username, passwordIsCorrect, failedLoginInfo);
@@ -117,11 +123,6 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             user.IsLocked = true;
             user.LockoutReason = (int) UserLockoutReason.TooManyFailedLoginAttempts;
             DataFacade.Update(user);
-        }
-
-        private static bool PasswordMatch(IUser user, string password)
-        {
-            return user.EncryptedPassword == password.Encrypt();
         }
 
         private static void UpdateLoginHistory(string username, bool loginIsValid, FailedLoginInfo failedLoginInfo)
@@ -194,9 +195,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
 
                 if (user == null) throw new InvalidOperationException(string.Format("The user '{0}' does not exists", username));
 
-                user.EncryptedPassword = password.Encrypt();
-
-                DataFacade.Update(user);
+                UserPasswordManager.SetPassword(user, password);
 
                 transactionScope.Complete();
             }
@@ -209,11 +208,12 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
 
             user.Id = Guid.NewGuid();
             user.Username = userName.Trim().ToLowerInvariant();
-            user.EncryptedPassword = password.Encrypt();
             user.Group = group;
             user.Email = email;
 
-            DataFacade.AddNew<IUser>(user);
+            user = DataFacade.AddNew<IUser>(user);
+
+            UserPasswordManager.SetPassword(user, password);
 
             Log.LogVerbose("DataBasedFormLoginProvider", "Added new user '{0}'", userName);
         }

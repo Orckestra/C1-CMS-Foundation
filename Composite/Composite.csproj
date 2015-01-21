@@ -160,6 +160,14 @@
     <Compile Include="C1Console\Drawing\FunctionPresentation.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\DataGroupingProviderHelper\ElipsisEntityToken.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\FontIconSelectorUiControl.cs" />
+    <Compile Include="C1Console\Security\Foundation\PluginFacades\PasswordRulePluginFacade.cs" />
+    <Compile Include="C1Console\Security\PasswordPolicyFacade.cs" />
+    <Compile Include="C1Console\Security\Plugins\PasswordPolicy\IPasswordRule.cs" />
+    <Compile Include="C1Console\Security\Plugins\PasswordPolicy\PasswordRuleData.cs" />
+    <Compile Include="C1Console\Security\Plugins\PasswordPolicy\NonConfigurablePasswordRule.cs" />
+    <Compile Include="C1Console\Security\Plugins\PasswordPolicy\Runtime\PasswordRuleCustomFactory.cs" />
+    <Compile Include="C1Console\Security\Plugins\PasswordPolicy\Runtime\PasswordRuleFactory.cs" />
+    <Compile Include="C1Console\Security\Plugins\PasswordPolicy\Runtime\PasswordPolicySettings.cs" />
     <Compile Include="C1Console\Security\UserLockoutReason.cs" />
     <Compile Include="C1Console\Trees\SortDirection.cs" />
     <Compile Include="Core\Application\Job.cs" />
@@ -965,6 +973,8 @@
     <Compile Include="Plugins\Routing\Pages\DefaultPageUrlProvider.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
+    <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserPasswordManager.cs" />
+    <Compile Include="Plugins\Security\PasswordRules\MinimumLength\MinimumLengthPasswordRule.cs" />
     <Compile Include="Plugins\Security\UserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider.cs" />
     <Compile Include="C1Console\Tasks\BaseTaskManager.cs" />
     <Compile Include="C1Console\Tasks\ITaskManager.cs" />

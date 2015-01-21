@@ -255,6 +255,11 @@ var KickStart = new function () {
 		        alert("The account was locked by an administrator.");
 		    }
 
+		    if (result == "passwordUpdateRequired") {
+		        // TODO: unhardcode
+		        alert("Password update required.");
+		    }
+
             if (result == "success") {
                 isAllowed = true;
             }

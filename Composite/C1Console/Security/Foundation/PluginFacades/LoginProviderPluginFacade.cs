@@ -60,7 +60,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
         public static LoginResult FormValidateUser(string userName, string password)
         {
-            IFormLoginProvider validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
+            var validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
 
             return validator.Validate(userName, password);
         }
@@ -68,7 +68,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
         public static void FormSetUserPassword(string userName, string password)
         {
-            IFormLoginProvider validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
+            var validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
 
             validator.SetUserPassword(userName, password);
         }
@@ -76,9 +76,9 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
         public static void FormAddNewUser(string userName, string password, string group, string email)
         {
-            IFormLoginProvider validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
+            var validator = _resourceLocker.Resources.Plugin as IFormLoginProvider;
 
-            if (validator.CanAddNewUser == false) throw new InvalidOperationException("Login provider does not support adding users");
+            Verify.That(validator.CanAddNewUser, "Login provider does not support adding users");
 
             validator.AddNewUser(userName, password, group, email);
         }
@@ -86,7 +86,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
         public static bool WindowsValidateUser(string userName, string domainName)
         {
-            IWindowsLoginProvider validator = _resourceLocker.Resources.Plugin as IWindowsLoginProvider;
+            var validator = _resourceLocker.Resources.Plugin as IWindowsLoginProvider;
 
             return validator.Validate(userName, domainName);
         }

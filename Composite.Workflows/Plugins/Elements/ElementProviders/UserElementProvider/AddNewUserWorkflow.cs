@@ -9,13 +9,12 @@ using Composite.C1Console.Actions;
 using Composite.Data;
 using Composite.Data.Types;
 using Composite.Core.ResourceSystem;
-using Composite.C1Console.Security.Cryptography;
 using Composite.Core.Types;
 using Composite.C1Console.Users;
 using Composite.Data.Validation;
 using Composite.C1Console.Workflow;
 using Composite.C1Console.Events;
-
+using Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Validation;
 using Composite.Core.Logging;
 using Composite.C1Console.Security;
@@ -89,7 +88,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             IUser newUser = DataFacade.BuildNew<IUser>();
             newUser.Id = Guid.NewGuid();
 
-            UserElementProviderGroupEntityToken groupEntityToken = this.EntityToken as UserElementProviderGroupEntityToken;
+            var groupEntityToken = this.EntityToken as UserElementProviderGroupEntityToken;
 
             if (groupEntityToken != null)
             {
@@ -145,8 +144,12 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             IUser newUser = this.GetBinding<IUser>(NewUserBindingName);
             NormalizeUsername(newUser);
 
-            newUser.EncryptedPassword = newUser.EncryptedPassword.Encrypt();
+            string password = newUser.EncryptedPassword;
+
+            newUser.EncryptedPassword = "";
             newUser = DataFacade.AddNew<IUser>(newUser);
+
+            UserPasswordManager.SetPassword(newUser, password);
 
             string cultureName = this.GetBinding<string>("CultureName");
             string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");

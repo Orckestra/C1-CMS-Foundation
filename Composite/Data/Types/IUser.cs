@@ -36,14 +36,6 @@ namespace Composite.Data.Types
 
 
         /// <exclude />
-        [NotNullValidator]
-        [PasswordValidator]
-        [StoreFieldType(PhysicalStoreFieldType.String, 256)]
-        [ImmutableFieldId("{C0230DEB-5394-4819-BE18-A60CF5FA69F0}")]
-        string EncryptedPassword { get; set; }
-
-
-        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.String, 128, IsNullable = true)]
         [ImmutableFieldId("{20F756AD-F03D-453E-B464-D2C13051A647}")]
         string Name { get; set; }
@@ -79,5 +71,18 @@ namespace Composite.Data.Types
         [DefaultFieldIntValue(0)]
         [ImmutableFieldId("{39CBCCFA-CFB2-4E79-9204-C9596A3FC0E9}")]
         int LockoutReason { get; set; }
+
+        /// <exclude />
+        [NotNullValidator]
+        [PasswordValidator]
+        [StoreFieldType(PhysicalStoreFieldType.String, 256)]
+        [ImmutableFieldId("{C0230DEB-5394-4819-BE18-A60CF5FA69F0}")]
+        string EncryptedPassword { get; set; }
+
+        /// <exclude />
+        [StoreFieldType(PhysicalStoreFieldType.DateTime)]
+        [ImmutableFieldId("{35457DA7-A13E-4A6C-9008-3D619A519F2B}")]
+        [DefaultFieldNowDateTimeValue]
+        DateTime LastPasswordChangeDate { get; set; }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
+using Composite.C1Console.Security.Foundation.PluginFacades;
 using Composite.Core.Logging;
 using Composite.C1Console.Security;
 using Composite.Data.Validation.ClientValidationRules;
@@ -10,7 +11,7 @@ using Composite.C1Console.Workflow;
 
 namespace Composite.C1Console.Users.Workflows
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class ChangeOwnPasswordWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -19,28 +20,34 @@ namespace Composite.C1Console.Users.Workflows
             InitializeComponent();
         }
 
+        private static class Fields
+        {
+            public const string OldPassword = "OldPassword";
+            public const string NewPassword = "NewPassword";
+            public const string NewPasswordConfirmed = "NewPasswordConfirmed";
+        }
 
         private void ChangePasswordWorkflow_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            this.Bindings.Add("OldPassword", "");
-            this.Bindings.Add("NewPassword", "");
-            this.Bindings.Add("NewPasswordConfirmed", "");
-            this.BindingsValidationRules.Add("OldPassword", new List<ClientValidationRule>{ new NotNullClientValidationRule() });
-            this.BindingsValidationRules.Add("NewPassword", new List<ClientValidationRule>{new NotNullClientValidationRule()});
-            this.BindingsValidationRules.Add("NewPasswordConfirmed", new List<ClientValidationRule>{new NotNullClientValidationRule()});
+            this.Bindings.Add(Fields.OldPassword, "");
+            this.Bindings.Add(Fields.NewPassword, "");
+            this.Bindings.Add(Fields.NewPasswordConfirmed, "");
+            this.BindingsValidationRules.Add(Fields.OldPassword, new List<ClientValidationRule>{ new NotNullClientValidationRule() });
+            this.BindingsValidationRules.Add(Fields.NewPassword, new List<ClientValidationRule>{new NotNullClientValidationRule()});
+            this.BindingsValidationRules.Add(Fields.NewPasswordConfirmed, new List<ClientValidationRule>{new NotNullClientValidationRule()});
         }
 
 
         private void stepFinalize_codeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            string oldPassword = this.GetBinding<string>("OldPassword");
-            string newPassword = this.GetBinding<string>("NewPassword");
-            string newPasswordConfirmed = this.GetBinding<string>("NewPasswordConfirmed");
+            string newPassword = this.GetBinding<string>(Fields.NewPassword);
 
             string currentUserName = UserValidationFacade.GetUsername();
             UserValidationFacade.FormSetUserPassword(currentUserName, newPassword);
 
-            LoggingService.LogVerbose("ChangeOwnPasswordWorkflow", string.Format("User '{0}' has changed password.", UserValidationFacade.GetUsername()));
+            LoggingService.LogVerbose("ChangeOwnPasswordWorkflow", 
+                string.Format("User '{0}' has changed password.", UserValidationFacade.GetUsername()),
+                LoggingService.Category.Audit);
         }
 
 
@@ -52,47 +59,63 @@ namespace Composite.C1Console.Users.Workflows
 
         private void ValidateSpecifiedPasswords(object sender, ConditionalEventArgs e)
         {
-            string oldPassword = this.GetBinding<string>("OldPassword");
-            string newPassword = this.GetBinding<string>("NewPassword");
-            string newPasswordConfirmed = this.GetBinding<string>("NewPasswordConfirmed");
+            string oldPassword = this.GetBinding<string>(Fields.OldPassword);
+            string newPassword = this.GetBinding<string>(Fields.NewPassword);
+            string newPasswordConfirmed = this.GetBinding<string>(Fields.NewPasswordConfirmed);
 
+            e.Result = ValidateSpecifiedPasswords(oldPassword, newPassword, newPasswordConfirmed);
+        }
+
+        private bool ValidateSpecifiedPasswords(string oldPassword, string newPassword, string newPasswordConfirmed)
+        {
             string currentUserName = UserValidationFacade.GetUsername();
 
-            bool oldPasswordOk = UserValidationFacade.FormValidateUserWithoutLogin(currentUserName, oldPassword);
+            bool oldPasswordCorrect = UserValidationFacade.FormValidateUserWithoutLogin(currentUserName, oldPassword);
 
-            if (oldPasswordOk == false)
+            // TODO: localize the messages
+
+            if (!oldPasswordCorrect)
             {
-                this.ShowFieldMessage("OldPassword", "The specified password is incorrect.");
-                e.Result = false;
+                this.ShowFieldMessage(Fields.OldPassword, "The specified password is incorrect.");
+                return false;
             }
-            else
+
+            if (newPassword != newPasswordConfirmed)
             {
-                if (newPassword != newPasswordConfirmed)
-                {
-                    this.ShowFieldMessage("NewPasswordConfirmed", "The new passwords you typed do not match.");
-                    e.Result = false;
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(newPassword)==true)
-                    {
-                        this.ShowFieldMessage("NewPassword", "The new password may not be an empty string.");
-                        e.Result = false;
-                    }
-                    else
-                    {
-                        if (newPassword.Length < 6)
-                        {
-                            this.ShowFieldMessage("NewPassword", "The new password must be at least 6 characters long.");
-                            e.Result = false;
-                        }
-                        else
-                        {
-                            e.Result = true;
-                        }
-                    }
-                }
+                this.ShowFieldMessage(Fields.NewPasswordConfirmed, "The new passwords you typed do not match.");
+                return false;
             }
+
+            if (newPassword == oldPassword)
+            {
+                this.ShowFieldMessage(Fields.NewPasswordConfirmed, "The old and the new passwords are the same.");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(newPassword))
+            {
+                this.ShowFieldMessage(Fields.NewPassword, "The new password may not be an empty string.");
+                return false;
+            }
+
+            IList<string> newPasswordValidationMessages;
+            if (!PasswordRulePluginFacade.ValidatePassword(newPassword, out newPasswordValidationMessages))
+            {
+                foreach (var message in newPasswordValidationMessages)
+                {
+                    this.ShowFieldMessage(Fields.NewPassword, message);
+                }
+                return false;
+            }
+            
+            // 6 character length is validated in javascript
+            if (newPassword.Length < 6)
+            {
+                this.ShowFieldMessage(Fields.NewPassword, "The new password must be at least 6 characters long.");
+                return false;
+            }
+
+            return true;
         }
 
         private void InitializeConditionsNotMetAlertActivity_ExecuteCode(object sender, EventArgs e)
