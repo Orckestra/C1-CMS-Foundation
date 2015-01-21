@@ -30811,6 +30811,9 @@ alert("The account was locked after maximum login attempts. Please contact admin
 if(_12ea=="lockedByAnAdministrator"){
 alert("The account was locked by an administrator.");
 }
+if(_12ea=="passwordUpdateRequired"){
+alert("Password update required.");
+}
 if(_12ea=="success"){
 _12e9=true;
 }
