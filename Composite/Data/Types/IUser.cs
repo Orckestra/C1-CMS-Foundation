@@ -74,7 +74,6 @@ namespace Composite.Data.Types
 
         /// <exclude />
         [NotNullValidator]
-        [PasswordValidator]
         [StoreFieldType(PhysicalStoreFieldType.String, 256)]
         [ImmutableFieldId("{C0230DEB-5394-4819-BE18-A60CF5FA69F0}")]
         string EncryptedPassword { get; set; }
