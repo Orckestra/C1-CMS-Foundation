@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
-using Composite.C1Console.Security.Foundation.PluginFacades;
+using Composite.Core.Linq;
 using Composite.Core.Logging;
 using Composite.C1Console.Security;
+using Composite.Data;
+using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 
@@ -88,7 +91,7 @@ namespace Composite.C1Console.Users.Workflows
 
             if (newPassword == oldPassword)
             {
-                this.ShowFieldMessage(Fields.NewPasswordConfirmed, "The old and the new passwords are the same.");
+                this.ShowFieldMessage(Fields.NewPassword, "The old and the new passwords are the same.");
                 return false;
             }
 
@@ -98,8 +101,13 @@ namespace Composite.C1Console.Users.Workflows
                 return false;
             }
 
+            string userName = UserValidationFacade.GetUsername();
+
+            var user = DataFacade.GetData<IUser>(u => string.Compare(u.Username, userName, StringComparison.InvariantCultureIgnoreCase) == 0)
+                .FirstOrException("No user found with name '{0}'", userName);
+
             IList<string> newPasswordValidationMessages;
-            if (!PasswordRulePluginFacade.ValidatePassword(newPassword, out newPasswordValidationMessages))
+            if (!PasswordPolicyFacade.ValidatePassword(user, newPassword, out newPasswordValidationMessages))
             {
                 foreach (var message in newPasswordValidationMessages)
                 {

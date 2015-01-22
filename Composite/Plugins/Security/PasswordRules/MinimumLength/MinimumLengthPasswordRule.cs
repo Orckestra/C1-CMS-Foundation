@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using Composite.C1Console.Security.Plugins.PasswordPolicy;
+using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 using Microsoft.Practices.ObjectBuilder;
@@ -17,7 +18,7 @@ namespace Composite.Plugins.Security.PasswordRules.MinimumLength
 
         private readonly int _minLength = 7;
 
-        public bool ValidatePassword(string password)
+        public bool ValidatePassword(IUser user, string password)
         {
             return password.Length >= _minLength;
         }

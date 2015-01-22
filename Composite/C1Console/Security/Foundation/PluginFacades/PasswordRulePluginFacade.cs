@@ -7,6 +7,7 @@ using Composite.C1Console.Security.Plugins.PasswordPolicy.Runtime;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.C1Console.Events;
+using Composite.Data.Types;
 
 
 namespace Composite.C1Console.Security.Foundation.PluginFacades
@@ -27,14 +28,14 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         /// <param name="password"></param>
         /// <param name="validationMessages"></param>
         /// <returns></returns>
-        public static bool ValidatePassword(string password, out IList<string> validationMessages)
+        public static bool ValidatePassword(IUser user, string password, out IList<string> validationMessages)
         {
             bool isValid = true;
             validationMessages = new List<string>();
 
             foreach (var rule in _resourceLocker.Resources.PasswordRules)
             {
-                if (!rule.ValidatePassword(password))
+                if (!rule.ValidatePassword(user, password))
                 {
                     isValid = false;
                     validationMessages.Add(rule.GetRuleDescription());
@@ -53,7 +54,15 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
             }
         }
 
-
+        public static int PasswordHistoryLength
+        {
+            get
+            {
+                var settings = GetSettings();
+                return settings != null ? settings.PasswordHistoryLength : 0;
+            }
+        }
+        
         private static PasswordPolicySettings GetSettings()
         {
             var configuration = ConfigurationServices.ConfigurationSource;

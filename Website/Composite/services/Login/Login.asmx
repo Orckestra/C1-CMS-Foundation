@@ -47,15 +47,15 @@ namespace Composite.Services
                 return new[]{ "The old and the new passwords are the same."}; // Should be validated on client as well.
             }
 
-            IList<string> errors;
-            if (!PasswordPolicyFacade.ValidatePassword(newPassword, out errors))
-            {
-                return errors.ToArray();
-            }
-             
             using (var c = new DataConnection())
             {
                 var user = c.Get<IUser>().Single(u => string.Compare(u.Name, username, StringComparison.InvariantCultureIgnoreCase) == 0);
+                
+                IList<string> errors;
+                if (!PasswordPolicyFacade.ValidatePassword(user, newPassword, out errors))
+                {
+                    return errors.ToArray();
+                }
                 
                 UserPasswordManager.SetPassword(user, newPassword);
             }

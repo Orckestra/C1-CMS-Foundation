@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Composite.C1Console.Security.Foundation.PluginFacades;
+using Composite.Data.Types;
 
 namespace Composite.C1Console.Security
 {
@@ -17,14 +18,24 @@ namespace Composite.C1Console.Security
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static int PasswordHistoryLength
+        {
+            get { return PasswordRulePluginFacade.PasswordHistoryLength; }
+        }
+        
+
+        /// <summary>
         /// Validates the password against the rules defined in the configuration.
         /// </summary>
-        /// <param name="password"></param>
-        /// <param name="validationMessages"></param>
+        /// <param name="user">The user information.</param>
+        /// <param name="password">The new password that has to be validated.</param>
+        /// <param name="validationMessages">The list of password rules that password did not satisfy.</param>
         /// <returns></returns>
-        public static bool ValidatePassword(string password, out IList<string> validationMessages)
+        public static bool ValidatePassword(IUser user, string password, out IList<string> validationMessages)
         {
-            return PasswordRulePluginFacade.ValidatePassword(password, out validationMessages);
+            return PasswordRulePluginFacade.ValidatePassword(user, password, out validationMessages);
         }
     }
 }

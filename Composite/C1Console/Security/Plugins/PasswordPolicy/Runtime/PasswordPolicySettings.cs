@@ -19,6 +19,19 @@ namespace Composite.C1Console.Security.Plugins.PasswordPolicy.Runtime
             set { base[_attr_passwordExpirationTimeInDays] = value; }
         }
 
+        /// <summary>
+        /// Number of old passwords to be preserved for every user.
+        /// </summary>
+        private const string _attr_passwordHistoryLength = "passwordHistoryLength";
+        [ConfigurationProperty(_attr_passwordHistoryLength, IsRequired = false, DefaultValue = 0)]
+        public int PasswordHistoryLength
+        {
+            get { return (int)base[_attr_passwordHistoryLength]; }
+            set { base[_attr_passwordHistoryLength] = value; }
+        }
+
+        
+
         private const string _elem_PasswordRules = "PasswordRules";
         [ConfigurationProperty(_elem_PasswordRules)]
         public NameTypeManagerTypeConfigurationElementCollection<PasswordRuleData> PasswordRules

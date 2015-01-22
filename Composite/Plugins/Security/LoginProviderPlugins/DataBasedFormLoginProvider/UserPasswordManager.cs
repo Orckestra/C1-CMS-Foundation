@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Composite.C1Console.Security;
 using Composite.C1Console.Security.Cryptography;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -32,7 +36,7 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
 
         private static void SavePasswordHistory(IUser user)
         {
-            if (string.IsNullOrEmpty(user.EncryptedPassword))
+            if (string.IsNullOrEmpty(user.EncryptedPassword) || PasswordPolicyFacade.PasswordHistoryLength <= 0)
             {
                 return;
             }
@@ -53,6 +57,17 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             passwordHistoryRecord.PasswordHash = user.EncryptedPassword;
 
             DataFacade.AddNew(passwordHistoryRecord);
+
+            // Cleaning up old history records
+            Guid userId = user.Id;
+            var passwordDataToBeRemoved = DataFacade.GetData<IUserPasswordHistory>()
+                .Where(uph => uph.UserId == userId)
+                .OrderByDescending(uph => uph.SetDate).Skip(PasswordPolicyFacade.PasswordHistoryLength).ToList();
+
+            if (passwordDataToBeRemoved.Any())
+            {
+                DataFacade.Delete((IEnumerable<IData>) passwordDataToBeRemoved);
+            }
         }
 
         private static void SetPasswordFieldsInt(IUser user, string password)
@@ -85,6 +100,31 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
             byte[] salt = Convert.FromBase64String(user.PasswordHashSalt);
 
             return user.EncryptedPassword == GeneratePasswordHash(password, salt);
+        }
+
+        /// <summary>
+        /// Checks whether the password appears in the user's password history.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="password">The password.</param>
+        /// <returns></returns>
+        public static bool PasswordFoundInHistory(IUser user, string password)
+        {
+            Guid userId = user.Id;
+
+            var allOldPasswords = DataFacade.GetData<IUserPasswordHistory>().Where(uph => uph.UserId == userId).Evaluate();
+
+            foreach (var pwdHistory in allOldPasswords)
+            {
+                byte[] salt = Convert.FromBase64String(pwdHistory.PasswordSalt);
+
+                if (pwdHistory.PasswordHash == GeneratePasswordHash(password, salt))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
