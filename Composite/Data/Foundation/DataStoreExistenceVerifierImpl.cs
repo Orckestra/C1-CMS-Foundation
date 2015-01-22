@@ -57,6 +57,7 @@ namespace Composite.Data.Foundation
                     typeof(ITaskItem),
                     typeof(IUrlConfiguration),
                     typeof(IUser),
+                    typeof(IUserPasswordHistory),
                     typeof(IUserActiveLocale),
                     typeof(IUserActivePerspective),
                     typeof(IUserConsoleInformation),

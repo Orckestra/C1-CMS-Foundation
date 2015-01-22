@@ -79,6 +79,11 @@ namespace Composite.Data.Types
         string EncryptedPassword { get; set; }
 
         /// <exclude />
+        [StoreFieldType(PhysicalStoreFieldType.String, 128)]
+        [ImmutableFieldId("{CA2CF6F8-489B-4D60-B3C3-AF46D1259647}")]
+        string PasswordHashSalt { get; set; }
+
+        /// <exclude />
         [StoreFieldType(PhysicalStoreFieldType.DateTime)]
         [ImmutableFieldId("{35457DA7-A13E-4A6C-9008-3D619A519F2B}")]
         [DefaultFieldNowDateTimeValue]
