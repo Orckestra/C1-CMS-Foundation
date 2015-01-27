@@ -124,7 +124,7 @@ namespace Composite.Core.ResourceSystem
 					string[] parametersReferences = new string[parametersCount];
 
 					for(int i=0; i<parametersCount; i++) {
-						parametersDefinitions[i] = "string parameter" + i;
+						parametersDefinitions[i] = "object parameter" + i;
 						parametersReferences[i] = "parameter" + i;
 					}
 

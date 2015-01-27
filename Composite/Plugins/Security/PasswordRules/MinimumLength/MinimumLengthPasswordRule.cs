@@ -1,6 +1,6 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using Composite.C1Console.Security.Plugins.PasswordPolicy;
+using Composite.Core.ResourceSystem;
 using Composite.Data.Types;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
@@ -25,8 +25,7 @@ namespace Composite.Plugins.Security.PasswordRules.MinimumLength
 
         public string GetRuleDescription()
         {
-            // TODO: localize
-            return string.Format("Password should be at least '{0}' characters long", _minLength);
+            return LocalizationFiles.Composite_C1Console_Users.PasswordRules_MinimumLength(_minLength);
         }
     }
 

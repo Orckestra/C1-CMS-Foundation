@@ -44,6 +44,8 @@
 	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Label" value="From-language"/>
 	<string key="ChangeForeignLocaleWorkflow.ForeignCultureSelector.Help" value="Pages written in the from-language will be indicated by globe icons in the Content tree. The associated &quot;Translate Page&quot; action imports the page into the current working language."/>
 
-
   <string key="ChangeOwnActiveLocaleWorkflow.CloseAllViews.Message" value="The active language has been changed"/>
+  
+  <string key="PasswordRules.MinimumLength" value="Password should be at least {0} characters long." />
+  <string key="PasswordRules.EnforcePasswordHistory" value="Password should not match any of the previously used {0} passwords." />
 </strings>

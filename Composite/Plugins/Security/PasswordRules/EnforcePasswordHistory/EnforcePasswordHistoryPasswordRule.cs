@@ -1,6 +1,6 @@
 ﻿using Composite.C1Console.Security;
 using Composite.C1Console.Security.Plugins.PasswordPolicy;
-using Composite.Core.Extensions;
+using Composite.Core.ResourceSystem;
 using Composite.Data.Types;
 using Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider;
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
@@ -19,8 +19,7 @@ namespace Composite.Plugins.Security.PasswordRules.EnforcePasswordHistory
 
         public string GetRuleDescription()
         {
-            // TODO: localize
-            return "Password should not match any of the previously used {0} passwords.".FormatWith(PasswordPolicyFacade.PasswordHistoryLength);
+            return LocalizationFiles.Composite_C1Console_Users.PasswordRules_EnforcePasswordHistory(PasswordPolicyFacade.PasswordHistoryLength);
         }
     }
 }
