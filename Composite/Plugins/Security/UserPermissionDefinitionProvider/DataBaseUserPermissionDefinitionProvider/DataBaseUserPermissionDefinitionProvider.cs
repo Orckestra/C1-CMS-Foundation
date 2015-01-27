@@ -18,9 +18,10 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
     [ConfigurationElementType(typeof(DataBaseUserPermissionDefinitionProviderData))]
     internal sealed class DataBaseUserPermissionDefinitionProvider : IUserPermissionDefinitionProvider
     {
-        private static readonly int PermissionCacheSize = 50;
+        private static readonly int PermissionCacheSize = 1000;
 
-        private static readonly Cache<string, ReadOnlyCollection<UserPermissionDefinition>> _permissionCache = new Cache<string, ReadOnlyCollection<UserPermissionDefinition>>("Security permissions", PermissionCacheSize);
+        private static readonly Cache<string, ReadOnlyCollection<UserPermissionDefinition>> _permissionCache 
+            = new Cache<string, ReadOnlyCollection<UserPermissionDefinition>>("Security permissions", PermissionCacheSize);
 
 
 
@@ -45,6 +46,8 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
         {
             get
             {
+                // DDZ: To be refactored - has O(N(IUserPermissionDefinition) * N(IUserPermissionDefinitionType)) compexity, which isn't acceplable
+                // for 100+ users. 
                 return
                     (from urd in DataFacade.GetData<IUserPermissionDefinition>()
                      select (UserPermissionDefinition)new DataUserPermissionDefinition(urd)).ToList();
@@ -155,10 +158,13 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
                 return cachedValue;
             }
 
+            var allPermissionTypes = DataFacade.GetData<IUserPermissionDefinitionPermissionType>()
+                .GroupBy(p => p.UserPermissionDefinitionId).ToDictionary(g => g.Key, g => g.ToList());
+
             var permissions = (from urd in DataFacade.GetData<IUserPermissionDefinition>()
                               where urd.Username == userName
-                              select (UserPermissionDefinition) new DataUserPermissionDefinition(urd)).ToList();
-
+                                    && allPermissionTypes.ContainsKey(urd.Id)
+                              select (UserPermissionDefinition) new DataUserPermissionDefinition(urd, allPermissionTypes[urd.Id])).ToList();
 
             _permissionCache.Add(userName, new ReadOnlyCollection<UserPermissionDefinition>(permissions));
             return permissions;
@@ -168,8 +174,8 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
 
         internal sealed class DataUserPermissionDefinition : UserPermissionDefinition
         {
-            private IUserPermissionDefinition _userPermissionDefinition;
-            private List<PermissionType> _permissionTypes;
+            private readonly IUserPermissionDefinition _userPermissionDefinition;
+            private readonly List<PermissionType> _permissionTypes;
 
 
             public DataUserPermissionDefinition(IUserPermissionDefinition userPermissionDefinition)
@@ -186,6 +192,16 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
                 _permissionTypes = permissionTypeNames.FromListOfStrings().ToList();
             }
 
+            public DataUserPermissionDefinition(IUserPermissionDefinition userPermissionDefinition, IEnumerable<IUserPermissionDefinitionPermissionType> permissionTypes)
+            {
+                _userPermissionDefinition = userPermissionDefinition;
+
+                var permissionTypeNames = permissionTypes.Select(pt => pt.PermissionTypeName);
+
+                _permissionTypes = permissionTypeNames.FromListOfStrings().ToList();
+            }
+
+
 
             public override string Username
             {
@@ -198,12 +214,9 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
 
             public override IEnumerable<PermissionType> PermissionTypes
             {
-                get
+                get 
                 {
-                    foreach (PermissionType permissionType in _permissionTypes)
-                    {
-                        yield return permissionType;
-                    }
+                    return _permissionTypes;
                 }
             }
 
