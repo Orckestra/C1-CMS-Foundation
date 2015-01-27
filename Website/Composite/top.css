@@ -117,6 +117,38 @@ ui|fields#loginfields ui|fielddata input {
 ui|fields#loginfields ui|datainput ui|box {
 	height: 23px;
 }
+ui|fields#passwordfields {
+	width: 200px !important;
+	padding: 0 !important;
+	position: absolute;
+	bottom: 30px;
+}
+ui|fields#passwordfields ui|field {
+	margin: 0;
+}
+ui|fields#passwordfields ui|fielddesc {
+	width: 110px;
+	white-space: nowrap;
+	overflow: hidden;
+	padding-left: 0;
+	padding-right: 0;
+	font-weight: bold;
+	padding-top: 7px;
+}
+ui|fields#passwordfields ui|fielddata {
+	width: 80px;
+}
+
+ui|fields#passwordfields ui|fielddata input {
+	width: 74px;
+	padding-top: 4px;
+	#ie height: 21px;
+}
+ui|fields#passwordfields ui|datainput ui|box {
+	height: 23px;
+}
+
+
 a#registrationlink,
 a#expirationlink {
 	text-decoration: underline;

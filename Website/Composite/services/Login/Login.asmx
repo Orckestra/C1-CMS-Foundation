@@ -49,7 +49,7 @@ namespace Composite.Services
 
             using (var c = new DataConnection())
             {
-                var user = c.Get<IUser>().Single(u => string.Compare(u.Name, username, StringComparison.InvariantCultureIgnoreCase) == 0);
+                var user = c.Get<IUser>().Single(u => string.Compare(u.Username, username, StringComparison.InvariantCultureIgnoreCase) == 0);
                 
                 IList<string> errors;
                 if (!PasswordPolicyFacade.ValidatePassword(user, newPassword, out errors))

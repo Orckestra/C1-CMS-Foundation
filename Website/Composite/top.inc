@@ -7,7 +7,7 @@
 				<div id="build"><ui:text label="Build ${build}"/></div>
 				<div><ui:text label="© 2014 Composite A/S"/></div>
 			</div>
-			<ui:fields id="loginfields">
+			<ui:fields id="loginfields" >
 				<div id="loginerror" class="errortext">
 					<ui:text label="Username or password incorrect!"/>
 				</div>
@@ -26,6 +26,39 @@
 			</ui:fields>
 			<ui:dialogtoolbar>
 				<ui:clickbutton label="Login" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.login()"/>
+			</ui:dialogtoolbar>
+		</ui:deck>
+		<ui:deck id="chnagepassworddeck" lazy="true">
+			<div class="buzzwords">
+				<div>
+					<ui:text label="Password expired"/>
+				</div>
+				<div >
+					<ui:text label="Plase change password"/>
+				</div>
+				<div>
+					<ui:text label=""/>
+				</div>
+			</div>
+			<ui:fields id="passwordfields">
+				<div id="passworderror" class="errortext">
+					<ui:text label="Password mismatch"/>
+				</div>
+				<ui:field>
+					<ui:fielddesc>New Password</ui:fielddesc>
+					<ui:fielddata>
+						<ui:datainput name="passwordnew" password="true" required="true" minlength="6" autoselect="true"/>
+					</ui:fielddata>
+				</ui:field>
+				<ui:field>
+					<ui:fielddesc>Confirm Password</ui:fielddesc>
+					<ui:fielddata>
+						<ui:datainput name="passwordnew2" password="true" required="true" minlength="6" autoselect="true"/>
+					</ui:fielddata>
+				</ui:field>
+			</ui:fields>
+			<ui:dialogtoolbar>
+				<ui:clickbutton label="Change password" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.changePassword()"/>
 			</ui:dialogtoolbar>
 		</ui:deck>
 		<ui:deck id="loadingdeck">

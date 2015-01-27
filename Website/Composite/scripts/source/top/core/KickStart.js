@@ -202,6 +202,43 @@ var KickStart = new function () {
 			Application.unlock ( KickStart );
 		}, PageBinding.TIMEOUT );
 	}
+
+
+	this.changePassword = function () {
+		if (bindingMap.toppage.validateAllDataBindings()) {
+
+			var username = DataManager.getDataBinding("username").getResult();
+			var oldpassword = DataManager.getDataBinding("password").getResult();
+			var newpassword = DataManager.getDataBinding("passwordnew").getResult();
+			var newpassword2 = DataManager.getDataBinding("passwordnew2").getResult();
+
+			var wasEnabled = WebServiceProxy.isLoggingEnabled;
+			WebServiceProxy.isLoggingEnabled = false;
+			WebServiceProxy.isFaultHandler = false;
+
+			var result = LoginService.ChangePassword(username, oldpassword, newpassword);
+
+			if (result instanceof SOAPFault) {
+				alert(result.getFaultString());
+			} else {
+				if (result.length == 0) {
+					setTimeout(function () {
+						top.window.location.reload(true);
+					}, 0);
+				} else {
+					alert(result);
+				}
+			}
+
+			WebServiceProxy.isFaultHandler = true;
+			if (wasEnabled) {
+				WebServiceProxy.isLoggingEnabled = true;
+			}
+		}
+
+	}
+
+
 	
 	/** 
 	 * Note that we disable SOAP debugging during login. 
@@ -228,7 +265,7 @@ var KickStart = new function () {
 			
 		}, 25 );
 	}
-	
+
 	/**
 	 * Isolated in order to be invoked by {@link Welcome}
 	 * @param {String} username
@@ -241,6 +278,7 @@ var KickStart = new function () {
 		WebServiceProxy.isFaultHandler = false;
 		
 		var isAllowed = false;
+		var isChangePasswordRequired = false;
 		var result = LoginService.ValidateAndLogin ( username, password );
 		if ( result instanceof SOAPFault ) {
 			alert ( result.getFaultString ());
@@ -256,16 +294,18 @@ var KickStart = new function () {
 		    }
 
 		    if (result == "passwordUpdateRequired") {
-		        // TODO: unhardcode
-		        alert("Password update required.");
+		    	isChangePasswordRequired = true;
+
 		    }
 
             if (result == "success") {
                 isAllowed = true;
             }
 		}
-		
-		if ( isAllowed ) {
+
+		if (isChangePasswordRequired) {
+			changePasswordRequired();
+		}else if ( isAllowed ) {
 			EventBroadcaster.unsubscribe ( BroadcastMessages.KEY_ENTER, KickStart );
 			accessGranted ();
 		} else {
@@ -293,6 +333,18 @@ var KickStart = new function () {
 				Application.login ();
 			}, 0 );
 		}, 0 );
+	}
+
+	/**
+	 * Change Password Required.
+	 */
+	function changePasswordRequired() {
+
+		setTimeout(function () {
+			if (bindingMap.decks != null) {
+				bindingMap.decks.select("chnagepassworddeck");
+			}
+		}, 0);
 	}
 	
 	/**
