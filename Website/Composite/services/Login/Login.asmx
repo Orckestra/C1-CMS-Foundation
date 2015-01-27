@@ -61,15 +61,13 @@ namespace Composite.Services
 
             return new string[0];
         }
-        
-        
+
+        [WebMethod]
         public bool Logout(bool dummy)
         {
             UserValidationFacade.Logout();
             return true;
         }
-
-
 
         [WebMethod]
         public bool IsLoggedIn(bool dummy)
