@@ -9,7 +9,6 @@ using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Data;
 using Composite.Data.Types;
-using Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProvider;
 
 namespace Composite.Services
 {
@@ -40,7 +39,7 @@ namespace Composite.Services
         public string[] ChangePassword(string username, string oldPassword, string newPassword)
         {
             var result = UserValidationFacade.FormValidateUser(username, oldPassword);
-            Verify.That(result == LoginResult.PasswordUpdateRequired, "Password update was to be required.");
+            Verify.That(result == LoginResult.PasswordUpdateRequired, "Password update has to be required.");
 
             if (newPassword == oldPassword)
             {
@@ -56,8 +55,8 @@ namespace Composite.Services
                 {
                     return errors.ToArray();
                 }
-                
-                UserPasswordManager.SetPassword(user, newPassword);
+
+                UserValidationFacade.FormSetUserPassword(user.Username, newPassword);
             }
 
             return new string[0];
