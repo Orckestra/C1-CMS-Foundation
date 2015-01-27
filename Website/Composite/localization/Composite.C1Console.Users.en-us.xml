@@ -11,8 +11,16 @@
 	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPassword.Help" value="The password specified in this field must match the confirmation below."/>
 	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPasswordConfirmed.Label" value="Confirm new password"/>
 	<string key="ChangeOwnPasswordWorkflow.Dialog.NewPasswordConfirmed.Help" value="The password specified in this field must match the one specified above."/>
+  <string key="ChangeOwnPasswordWorkflow.Dialog.Validation.IncorrectPassword" value="The specified password is incorrect."/>
+  <string key="ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordFieldsNotMatch" value="The new passwords you typed do not match."/>
+  <string key="ChangeOwnPasswordWorkflow.Dialog.Validation.PasswordsAreTheSame" value="The old and the new passwords are the same."/>
+  <string key="ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordIsEmpty" value="The new password may not be an empty string."/>
+  <string key="ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordTooShort" value="The new password must be at least {0} characters long."/>
+  <string key="ChangeOwnPasswordWorkflow.NotSupportedErrorLabel" value="Password change isn't supported."/>
+  <string key="ChangeOwnPasswordWorkflow.NotSupportedErrorText" value="Password change isn't supported in current configuration."/>
 
-	<!-- change culture -->
+
+  <!-- change culture -->
 	<string key="ChangeOwnCultureWorkflow.ElementActionLabel" value="Regional Settings..."/>
 	<string key="ChangeOwnCultureWorkflow.ElementActionToolTip" value="Set the C1 Console language and formatting of numbers, times and dates"/>
 	<string key="ChangeOwnCultureWorkflow.Dialog.Label" value="Regional Settings and Language"/>

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Workflow.Activities;
 using Composite.C1Console.Events;
 using Composite.Core.Linq;
@@ -11,6 +10,7 @@ using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_C1Console_Users;
 
 namespace Composite.C1Console.Users.Workflows
 {
@@ -75,29 +75,27 @@ namespace Composite.C1Console.Users.Workflows
 
             bool oldPasswordCorrect = UserValidationFacade.FormValidateUserWithoutLogin(currentUserName, oldPassword);
 
-            // TODO: localize the messages
-
             if (!oldPasswordCorrect)
             {
-                this.ShowFieldMessage(Fields.OldPassword, "The specified password is incorrect.");
+                this.ShowFieldMessage(Fields.OldPassword, Texts.ChangeOwnPasswordWorkflow_Dialog_Validation_IncorrectPassword);
                 return false;
             }
 
             if (newPassword != newPasswordConfirmed)
             {
-                this.ShowFieldMessage(Fields.NewPasswordConfirmed, "The new passwords you typed do not match.");
+                this.ShowFieldMessage(Fields.NewPasswordConfirmed, Texts.ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordFieldsNotMatch);
                 return false;
             }
 
             if (newPassword == oldPassword)
             {
-                this.ShowFieldMessage(Fields.NewPassword, "The old and the new passwords are the same.");
+                this.ShowFieldMessage(Fields.NewPassword, Texts.ChangeOwnPasswordWorkflow_Dialog_Validation_PasswordsAreTheSame);
                 return false;
             }
 
             if (string.IsNullOrEmpty(newPassword))
             {
-                this.ShowFieldMessage(Fields.NewPassword, "The new password may not be an empty string.");
+                this.ShowFieldMessage(Fields.NewPassword, Texts.ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordIsEmpty);
                 return false;
             }
 
@@ -117,9 +115,10 @@ namespace Composite.C1Console.Users.Workflows
             }
             
             // 6 character length is validated in javascript
-            if (newPassword.Length < 6)
+            const int minPasswordLength = 6;
+            if (newPassword.Length < minPasswordLength)
             {
-                this.ShowFieldMessage(Fields.NewPassword, "The new password must be at least 6 characters long.");
+                this.ShowFieldMessage(Fields.NewPassword, Texts.ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordTooShort(minPasswordLength.ToString()));
                 return false;
             }
 
@@ -128,7 +127,7 @@ namespace Composite.C1Console.Users.Workflows
 
         private void InitializeConditionsNotMetAlertActivity_ExecuteCode(object sender, EventArgs e)
         {
-            this.ShowMessage(DialogType.Error, "${Composite.C1Console.Users, ChangeOwnPasswordWorkflow.NotSupportedErrorLabel}", "${Composite.C1Console.Users, ChangeOwnPasswordWorkflow.NotSupportedErrorText}");
+            this.ShowMessage(DialogType.Error, Texts.ChangeOwnPasswordWorkflow_NotSupportedErrorLabel, Texts.ChangeOwnPasswordWorkflow_NotSupportedErrorText);
         }
     }
 }

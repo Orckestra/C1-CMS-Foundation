@@ -322,6 +322,20 @@ namespace Composite.Core.ResourceSystem
  public static string ChangeOwnPasswordWorkflow_Dialog_NewPasswordConfirmed_Label { get { return T("ChangeOwnPasswordWorkflow.Dialog.NewPasswordConfirmed.Label"); } } 
  /// <summary>&quot;The password specified in this field must match the one specified above.&quot;</summary> 
  public static string ChangeOwnPasswordWorkflow_Dialog_NewPasswordConfirmed_Help { get { return T("ChangeOwnPasswordWorkflow.Dialog.NewPasswordConfirmed.Help"); } } 
+ /// <summary>&quot;The specified password is incorrect.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_IncorrectPassword { get { return T("ChangeOwnPasswordWorkflow.Dialog.Validation.IncorrectPassword"); } } 
+ /// <summary>&quot;The new passwords you typed do not match.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordFieldsNotMatch { get { return T("ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordFieldsNotMatch"); } } 
+ /// <summary>&quot;The old and the new passwords are the same.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_PasswordsAreTheSame { get { return T("ChangeOwnPasswordWorkflow.Dialog.Validation.PasswordsAreTheSame"); } } 
+ /// <summary>&quot;The new password may not be an empty string.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordIsEmpty { get { return T("ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordIsEmpty"); } } 
+ /// <summary>&quot;The new password must be at least {0} characters long.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordTooShort(string parameter0) { return string.Format(T("ChangeOwnPasswordWorkflow.Dialog.Validation.NewPasswordTooShort"), parameter0); } 
+ /// <summary>&quot;Password change isn&apos;t supported.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_NotSupportedErrorLabel { get { return T("ChangeOwnPasswordWorkflow.NotSupportedErrorLabel"); } } 
+ /// <summary>&quot;Password change isn&apos;t supported by current configuration.&quot;</summary> 
+ public static string ChangeOwnPasswordWorkflow_NotSupportedErrorText { get { return T("ChangeOwnPasswordWorkflow.NotSupportedErrorText"); } } 
  /// <summary>&quot;Regional Settings...&quot;</summary> 
  public static string ChangeOwnCultureWorkflow_ElementActionLabel { get { return T("ChangeOwnCultureWorkflow.ElementActionLabel"); } } 
  /// <summary>&quot;Set the C1 Console language and formatting of numbers, times and dates&quot;</summary> 
@@ -1179,10 +1193,18 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_EditUserStep1_UserGroupsFieldLabel { get { return T("Website.Forms.Administrative.EditUserStep1.UserGroupsFieldLabel"); } } 
  /// <summary>&quot;Select the user groups that the selected user should be a member of.&quot;</summary> 
  public static string Website_Forms_Administrative_EditUserStep1_UserGroupsMultiSelectHelp { get { return T("Website.Forms.Administrative.EditUserStep1.UserGroupsMultiSelectHelp"); } } 
+ /// <summary>&quot;Is Locked&quot;</summary> 
+ public static string Website_Forms_Administrative_EditUserStep1_IsLockedLabel { get { return T("Website.Forms.Administrative.EditUserStep1.IsLockedLabel"); } } 
+ /// <summary>&quot;User can not log in&quot;</summary> 
+ public static string Website_Forms_Administrative_EditUserStep1_IsLockedItemLabel { get { return T("Website.Forms.Administrative.EditUserStep1.IsLockedItemLabel"); } } 
+ /// <summary>&quot;When checked the user will be forbidden from logging in.&quot;</summary> 
+ public static string Website_Forms_Administrative_EditUserStep1_IsLockedHelp { get { return T("Website.Forms.Administrative.EditUserStep1.IsLockedHelp"); } } 
  /// <summary>&quot;Error&quot;</summary> 
  public static string EditUserWorkflow_EditErrorTitle { get { return T("EditUserWorkflow.EditErrorTitle"); } } 
  /// <summary>&quot;You can not delete your own access rights to &apos;System&apos; perspective.&quot;</summary> 
  public static string EditUserWorkflow_EditOwnAccessToSystemPerspective { get { return T("EditUserWorkflow.EditOwnAccessToSystemPerspective"); } } 
+ /// <summary>&quot;You can not lock your own account.&quot;</summary> 
+ public static string EditUserWorkflow_LockingOwnUserAccount { get { return T("EditUserWorkflow.LockingOwnUserAccount"); } } 
  /// <summary>&quot;Users&quot;</summary> 
  public static string UserElementProvider_RootLabel { get { return T("UserElementProvider.RootLabel"); } } 
  /// <summary>&quot;Users&quot;</summary> 
@@ -2263,15 +2285,15 @@ namespace Composite.Core.ResourceSystem
  public static string Website_Forms_Administrative_EditMediaFile_LabelFieldGroup { get { return T("Website.Forms.Administrative.EditMediaFile.LabelFieldGroup"); } } 
  /// <summary>&quot;Title&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_LabelTitle { get { return T("Website.Forms.Administrative.EditMediaFile.LabelTitle"); } } 
- /// <summary>&quot;Use this field for an image title&quot;</summary> 
+ /// <summary>&quot;A human friendly short text describing the content of the media file&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_HelpTitle { get { return T("Website.Forms.Administrative.EditMediaFile.HelpTitle"); } } 
  /// <summary>&quot;File Name&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_LabelFileName { get { return T("Website.Forms.Administrative.EditMediaFile.LabelFileName"); } } 
- /// <summary>&quot;The entry specified in this field is a part of the image ID&quot;</summary> 
+ /// <summary>&quot;The file name to use when the media file is downloaded.&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_HelpFileName { get { return T("Website.Forms.Administrative.EditMediaFile.HelpFileName"); } } 
  /// <summary>&quot;Description&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_LabelDescription { get { return T("Website.Forms.Administrative.EditMediaFile.LabelDescription"); } } 
- /// <summary>&quot;Use this field for at short description of the image&quot;</summary> 
+ /// <summary>&quot;A description of the media file content&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_HelpDescription { get { return T("Website.Forms.Administrative.EditMediaFile.HelpDescription"); } } 
  /// <summary>&quot;The total length of the filename (folder and filename) is too long&quot;</summary> 
  public static string Website_Forms_Administrative_EditMediaFile_TotalFilenameToLong_Message { get { return T("Website.Forms.Administrative.EditMediaFile.TotalFilenameToLong.Message"); } } 
