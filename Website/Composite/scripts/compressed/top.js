@@ -30786,6 +30786,33 @@ fileEventBroadcasterSubscriptions(false);
 Application.unlock(KickStart);
 },PageBinding.TIMEOUT);
 }
+this.changePassword=function(){
+if(bindingMap.toppage.validateAllDataBindings()){
+var _12e6=DataManager.getDataBinding("username").getResult();
+var _12e7=DataManager.getDataBinding("password").getResult();
+var _12e8=DataManager.getDataBinding("passwordnew").getResult();
+var _12e9=DataManager.getDataBinding("passwordnew2").getResult();
+var _12ea=WebServiceProxy.isLoggingEnabled;
+WebServiceProxy.isLoggingEnabled=false;
+WebServiceProxy.isFaultHandler=false;
+var _12eb=LoginService.ChangePassword(_12e6,_12e7,_12e8);
+if(_12eb instanceof SOAPFault){
+alert(_12eb.getFaultString());
+}else{
+if(_12eb.length==0){
+setTimeout(function(){
+top.window.location.reload(true);
+},0);
+}else{
+alert(_12eb);
+}
+}
+WebServiceProxy.isFaultHandler=true;
+if(_12ea){
+WebServiceProxy.isLoggingEnabled=true;
+}
+}
+};
 this.login=function(){
 Application.lock(KickStart);
 setTimeout(function(){
@@ -30796,29 +30823,33 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_12e6,_12e7){
-var _12e8=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_12ec,_12ed){
+var _12ee=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12e9=false;
-var _12ea=LoginService.ValidateAndLogin(_12e6,_12e7);
-if(_12ea instanceof SOAPFault){
-alert(_12ea.getFaultString());
+var _12ef=false;
+var _12f0=false;
+var _12f1=LoginService.ValidateAndLogin(_12ec,_12ed);
+if(_12f1 instanceof SOAPFault){
+alert(_12f1.getFaultString());
 }else{
-if(_12ea=="lockedAfterMaxAttempts"){
+if(_12f1=="lockedAfterMaxAttempts"){
 alert("The account was locked after maximum login attempts. Please contact administrator.");
 }
-if(_12ea=="lockedByAnAdministrator"){
+if(_12f1=="lockedByAnAdministrator"){
 alert("The account was locked by an administrator.");
 }
-if(_12ea=="passwordUpdateRequired"){
-alert("Password update required.");
+if(_12f1=="passwordUpdateRequired"){
+_12f0=true;
 }
-if(_12ea=="success"){
-_12e9=true;
+if(_12f1=="success"){
+_12ef=true;
 }
 }
-if(_12e9){
+if(_12f0){
+changePasswordRequired();
+}else{
+if(_12ef){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -30827,8 +30858,9 @@ if(bindingMap.decks!=null){
 accesssDenied();
 }
 }
+}
 WebServiceProxy.isFaultHandler=true;
-if(_12e8){
+if(_12ee){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -30842,22 +30874,29 @@ Application.login();
 },0);
 },0);
 }
+function changePasswordRequired(){
+setTimeout(function(){
+if(bindingMap.decks!=null){
+bindingMap.decks.select("chnagepassworddeck");
+}
+},0);
+}
 function accesssDenied(){
-var _12eb=DataManager.getDataBinding("username");
-var _12ec=DataManager.getDataBinding("password");
-_12eb.blur();
-_12ec.blur();
-_12eb.setValue("");
-_12ec.setValue("");
-_12eb.clean();
-_12ec.clean();
-_12eb.focus();
+var _12f2=DataManager.getDataBinding("username");
+var _12f3=DataManager.getDataBinding("password");
+_12f2.blur();
+_12f3.blur();
+_12f2.setValue("");
+_12f3.setValue("");
+_12f2.clean();
+_12f3.clean();
+_12f2.focus();
 document.getElementById("loginerror").style.display="block";
-var _12ed={handleAction:function(_12ee){
+var _12f4={handleAction:function(_12f5){
 document.getElementById("loginerror").style.display="none";
-_12ee.target.removeActionListener(Binding.ACTION_DIRTY,_12ed);
+_12f5.target.removeActionListener(Binding.ACTION_DIRTY,_12f4);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12ed);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12f4);
 }
 WindowManager.fireOnLoad(this);
 if(!_12dc){
