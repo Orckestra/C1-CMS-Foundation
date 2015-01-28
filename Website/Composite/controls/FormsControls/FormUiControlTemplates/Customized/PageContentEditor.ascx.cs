@@ -35,7 +35,7 @@ namespace CompositePageContentEditor
         {
             this.TemplateId = this.SelectedTemplateId;
 
-            Dictionary<string, string> newNamedXhtmlFragments = new Dictionary<string, string>();
+            var newNamedXhtmlFragments = new Dictionary<string, string>();
             foreach (Control c in this.ContentsPlaceHolder.Controls)
             {
                 if (IsRealContent(((TextBox)c).Text))
@@ -55,6 +55,8 @@ namespace CompositePageContentEditor
             this.TemplateSelector.DataTextField= "Value";
             this.TemplateSelector.DataBind();
 
+            Verify.That(SelectableTemplateIds.Count > 0, "No page templates available for selection");
+
             this.TemplateSelector.SelectedValue = this.TemplateId.ToString();
 
             SetUpTextAreas(true);
@@ -68,17 +70,19 @@ namespace CompositePageContentEditor
 
         private void SetUpTextAreas(bool flush)
         {
-            PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(this.SelectedTemplateId);
+            Guid selectedTemplateId = this.SelectedTemplateId;
 
-            Verify.IsNotNull(pageTemplate, "Failed to get page template by id '{0}'", SelectedTemplateId);
+            PageTemplateDescriptor pageTemplate = PageTemplateFacade.GetPageTemplate(selectedTemplateId);
+
+            Verify.IsNotNull(pageTemplate, "Failed to get page template by id '{0}'", selectedTemplateId);
             if (!pageTemplate.IsValid)
             {
                 throw new InvalidOperationException(
-                    "Page template '{0}' contains errors. You can edit the template in the 'Layout' section".FormatWith(SelectedTemplateId),
+                    "Page template '{0}' contains errors. You can edit the template in the 'Layout' section".FormatWith(selectedTemplateId),
                     pageTemplate.LoadingException);
             }
 
-            List<string> handledIds = new List<string>();
+            var handledIds = new List<string>();
 
             ContentsPlaceHolder.Controls.Clear();
             foreach (var placeholderDescription in pageTemplate.PlaceholderDescriptions)
@@ -96,7 +100,7 @@ namespace CompositePageContentEditor
                     {
                         contentTextBox.Attributes.Add("selected", "true");
                     }
-                    if (flush == true)
+                    if (flush)
                     {
                         if (this.NamedXhtmlFragments.ContainsKey(placeholderId))
                         {
@@ -117,12 +121,13 @@ namespace CompositePageContentEditor
         private bool IsRealContent(string content)
         {
             if (content.Length > 50) return true;
-            string testContent = content.Replace("<p>", "");
-            testContent = testContent.Replace("</p>", "");
-            testContent = testContent.Replace("&nbsp;", "");
-            testContent = testContent.Replace("&#160;", "");
-            testContent = testContent.Replace(" ", "");
-            testContent = testContent.Replace("<br/>", "");
+
+            string testContent = content.Replace("<p>", "")
+                                        .Replace("</p>", "")
+                                        .Replace("&nbsp;", "")
+                                        .Replace("&#160;", "")
+                                        .Replace(" ", "")
+                                        .Replace("<br/>", "");
 
             return !string.IsNullOrEmpty(testContent);
         }
