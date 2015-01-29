@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Web.Services;
 using System.Web.Services.Protocols;
+using Composite.C1Console.Security;
 using Composite.Core.Types;
 
 namespace Composite.Services
@@ -48,6 +49,11 @@ namespace Composite.Services
             pair.Key = "InstallationId";
             pair.Value = Composite.Core.Configuration.InstallationInformationFacade.InstallationId.ToString();
             list.Add(pair);
+
+			pair = new KeyValuePair();
+			pair.Key = "PasswordExpirationTimeInDays";
+			pair.Value = PasswordPolicyFacade.PasswordExpirationTimeInDays.ToString();
+			list.Add(pair);
 
             return list.ToArray();
         }

@@ -143,7 +143,8 @@ var KickStart = new function () {
 		ver.firstChild.data = ver.firstChild.data.replace ( "${version}", Installation.versionPrettyString );
 		
 		var build = document.getElementById ( "build" );
-		build.firstChild.data = build.firstChild.data.replace ( "${build}", Installation.versionString );
+		build.firstChild.data = build.firstChild.data.replace("${build}", Installation.versionString);
+
 	}
 	
 	/*
@@ -165,6 +166,7 @@ var KickStart = new function () {
 		EventBroadcaster.subscribe ( BroadcastMessages.KEY_ENTER, KickStart );
 		Application.unlock ( KickStart );
 		bindingMap.decks.select ( "logindeck" );
+		
 		setTimeout ( function () {
 			if ( Application.isDeveloperMode && Application.isLocalHost ) {
 				DataManager.getDataBinding ( "username" ).setValue ( DEVUSERNAME );
@@ -205,37 +207,77 @@ var KickStart = new function () {
 
 
 	this.changePassword = function () {
+		
 		if (bindingMap.toppage.validateAllDataBindings()) {
 
 			var username = DataManager.getDataBinding("username").getResult();
-			var oldpassword = DataManager.getDataBinding("password").getResult();
+			var oldpassword = DataManager.getDataBinding("passwordold").getResult();
 			var newpassword = DataManager.getDataBinding("passwordnew").getResult();
 			var newpassword2 = DataManager.getDataBinding("passwordnew2").getResult();
 
-			var wasEnabled = WebServiceProxy.isLoggingEnabled;
-			WebServiceProxy.isLoggingEnabled = false;
-			WebServiceProxy.isFaultHandler = false;
 
-			var result = LoginService.ChangePassword(username, oldpassword, newpassword);
+			if (newpassword == newpassword2) {
+				var wasEnabled = WebServiceProxy.isLoggingEnabled;
+				WebServiceProxy.isLoggingEnabled = false;
+				WebServiceProxy.isFaultHandler = false;
 
-			if (result instanceof SOAPFault) {
-				alert(result.getFaultString());
-			} else {
-				if (result.length == 0) {
-					setTimeout(function () {
-						top.window.location.reload(true);
-					}, 0);
+				var result = LoginService.ChangePassword(username, oldpassword, newpassword);
+
+				if (result instanceof SOAPFault) {
+					alert(result.getFaultString());
 				} else {
-					alert(result);
+					if (result.length == 0) {
+						setTimeout(function() {
+							top.window.location.reload(true);
+						}, 0);
+					} else {
+						this.showPasswordErrors(result);
+					}
 				}
-			}
 
-			WebServiceProxy.isFaultHandler = true;
-			if (wasEnabled) {
-				WebServiceProxy.isLoggingEnabled = true;
+				WebServiceProxy.isFaultHandler = true;
+				if (wasEnabled) {
+					WebServiceProxy.isLoggingEnabled = true;
+				}
+			} else {
+				this.showPasswordErrors(["Confirmation password mismatch"]);
 			}
 		}
+	}
 
+	this.showPasswordErrors = function (errors) {
+		errors = new List(errors);
+		var errorsElement = document.getElementById("passworderror");
+		DocumentManager.detachBindings(errorsElement, true);
+		errorsElement.innerHTML = "";
+
+		errors.each(function() {
+			var errorBinding = TextBinding.newInstance(document);
+			errorBinding.setLabel(errors);
+			errorsElement.appendChild(errorBinding.bindingElement);
+			errorBinding.attach();
+		});
+		
+
+
+		errorsElement.style.display = "block";
+
+
+		var handler = {
+			handleAction: function (action) {
+				document.getElementById("passworderror").style.display = "none";
+				action.target.removeActionListener(
+						Binding.ACTION_DIRTY, handler
+				);
+			}
+		}
+		bindingMap.passwordfields.addActionListener(
+				Binding.ACTION_DIRTY, handler
+		);
+
+		DataManager.getDataBinding("passwordold").clean();
+		DataManager.getDataBinding("passwordnew").clean();
+		DataManager.getDataBinding("passwordnew2").clean();
 	}
 
 
@@ -343,6 +385,16 @@ var KickStart = new function () {
 		setTimeout(function () {
 			if (bindingMap.decks != null) {
 				bindingMap.decks.select("chnagepassworddeck");
+				bindingMap.cover.attachClassName("widesplash");
+
+				setTimeout(function () {
+					var passwordexpired = document.getElementById("passwordexpired");
+					passwordexpired.firstChild.data = passwordexpired.firstChild.data.replace("${days}", Installation.passwordExpirationTimeInDays);
+
+					DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("username").getResult());
+					DataManager.getDataBinding("passwordold").focus();
+				}, 0);
+
 			}
 		}, 0);
 	}

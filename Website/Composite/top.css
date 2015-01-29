@@ -118,9 +118,7 @@ ui|fields#loginfields ui|datainput ui|box {
 	height: 23px;
 }
 ui|fields#passwordfields {
-	width: 200px !important;
-	padding: 0 !important;
-	position: absolute;
+	width: 250px !important;
 	bottom: 30px;
 }
 ui|fields#passwordfields ui|field {
@@ -136,11 +134,11 @@ ui|fields#passwordfields ui|fielddesc {
 	padding-top: 7px;
 }
 ui|fields#passwordfields ui|fielddata {
-	width: 80px;
+	width: 130px;
 }
 
 ui|fields#passwordfields ui|fielddata input {
-	width: 74px;
+	width: 124px;
 	padding-top: 4px;
 	#ie height: 21px;
 }
@@ -277,4 +275,39 @@ ui|clickbutton.isdisabled ui|labelbox {
 	border-radius: 7px;
 	box-shadow: none;
 
+}
+
+ui|cover.widesplash div#backdrop{
+	background-image: url("/Composite/images/about.png") !important;
+	background-position: -10px -30px;
+	height: 120px;
+}
+
+ui|cover.widesplash ui|splash{
+	box-shadow: 0px 0px 20px 0px rgba(128, 128, 128, 0.75);
+	border-radius: 30px;
+	background: white;
+	height: auto;
+	min-height: 360px;
+	padding-bottom: 20px;
+	margin-top: -137px;
+}
+
+ui|cover.widesplash ui|splash ui|decks {
+	width: 250px;
+	margin-left: 33px;
+	height: auto;
+	margin-top: 110px;
+	position: relative;
+	z-index: 2;
+}
+
+ui|cover.widesplash ui|fields {
+	padding: 20px 0 60px 0;
+	position: inherit;
+	
+}
+ui|cover.widesplash div.errortext {
+	position: static;
+	padding-bottom: 10px;
 }

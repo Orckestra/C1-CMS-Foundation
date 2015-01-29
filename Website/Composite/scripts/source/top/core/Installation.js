@@ -25,6 +25,12 @@ _Installation.prototype = {
     */
     installationID: null,
 
+
+	/**
+	* @type {string}
+	*/
+    passwordExpirationTimeInDays: null,
+
     /**
     * Constructor action: Get installation info.
     * @return {_Installation}
@@ -45,6 +51,9 @@ _Installation.prototype = {
                         case "InstallationId":
                             this.installationID = entry.Value;
                             break;
+                    	case "PasswordExpirationTimeInDays":
+                    		this.passwordExpirationTimeInDays = entry.Value;
+                    		break;
                     }
                 }, this);
                 break;

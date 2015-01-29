@@ -30,20 +30,23 @@
 		</ui:deck>
 		<ui:deck id="chnagepassworddeck" lazy="true">
 			<div class="buzzwords">
-				<div>
-					<ui:text label="Password expired"/>
-				</div>
-				<div >
-					<ui:text label="Plase change password"/>
-				</div>
-				<div>
-					<ui:text label=""/>
-				</div>
+				<div id="passwordexpired"><ui:text label="Password is older than ${days} days. Please change your password."/></div>
 			</div>
 			<ui:fields id="passwordfields">
 				<div id="passworderror" class="errortext">
-					<ui:text label="Password mismatch"/>
 				</div>
+				<ui:field>
+					<ui:fielddesc>Username</ui:fielddesc>
+					<ui:fielddata>
+						<ui:datainput name="usernameold" required="true" readonly="true"/>
+					</ui:fielddata>
+				</ui:field>
+				<ui:field>
+					<ui:fielddesc>Old Password</ui:fielddesc>
+					<ui:fielddata>
+						<ui:datainput name="passwordold" password="true" required="true" minlength="6" autoselect="true"/>
+					</ui:fielddata>
+				</ui:field>
 				<ui:field>
 					<ui:fielddesc>New Password</ui:fielddesc>
 					<ui:fielddata>
