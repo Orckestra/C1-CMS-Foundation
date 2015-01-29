@@ -40,6 +40,7 @@ namespace Composite.Core.WebClient
         private static DateTime _lastUsageDate = DateTime.MinValue;
         private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromSeconds(30); 
         private const int RecycleTimerInterval_ms = 10000;
+        private const int EnsureReadinessDelay_ms = 3000;
 
         private static volatile bool Enabled = true;
         private static volatile bool ServerAvailabilityChecked;
@@ -61,7 +62,11 @@ namespace Composite.Core.WebClient
 
             HttpContext context = HttpContext.Current;
             HttpCookie authenticationCookie = context.Request.Cookies[CookieHandler.GetApplicationSpecificCookieName(".CMSAUTH")];
-            Task.Factory.StartNew(async () => await CheckServerAvailabilityAsync(context, authenticationCookie));
+            Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(EnsureReadinessDelay_ms);
+                await CheckServerAvailabilityAsync(context, authenticationCookie);
+            });
         }
 
 

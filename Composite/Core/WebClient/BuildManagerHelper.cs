@@ -12,14 +12,15 @@ namespace Composite.Core.WebClient
 {
     internal static class BuildManagerHelper
     {
-        private static volatile bool _preloadingInitialed;
+        private static readonly string LogTitle = typeof (BuildManagerHelper).Name;
+        private static int _preloadingInitiated;
 
         /// <summary>
         /// Preloading (compiling) all the controls. Speeds up first time editing in console.
         /// </summary>
         public static void InitializeControlPreLoading()
         {
-            if (!_preloadingInitialed)
+            if (_preloadingInitiated == 0 && Interlocked.Increment(ref _preloadingInitiated) == 1)
             {
                 Task.Factory.StartNew(LoadAllControls);
             }
@@ -27,12 +28,6 @@ namespace Composite.Core.WebClient
 
         private static void LoadAllControls()
         {
-            if (_preloadingInitialed)
-            {
-                return;
-            }
-            _preloadingInitialed = true;
-
             try
             {
                 var config = XDocument.Load(PathUtil.Resolve("~/App_Data/Composite/Composite.config"));
@@ -57,13 +52,13 @@ namespace Composite.Core.WebClient
                     }
                     catch (Exception ex)
                     {
-                        Log.LogWarning("BuildManagerHelper", ex);
+                        Log.LogWarning(LogTitle, ex);
                     }
                 }
 
                 stopWatch.Stop();
-                
-                Log.LogVerbose("BuildManagerHelper", "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
+
+                Log.LogVerbose(LogTitle, "Preloading all the contorls: " + stopWatch.ElapsedMilliseconds + "ms");
 
                 Func<string, bool> isAshxAsmxPath = f => f == ".ashx" || f == ".asmx";
                 Func<string, bool> isAspNetPath = f => f == ".aspx" || isAshxAsmxPath(f);
@@ -92,14 +87,14 @@ namespace Composite.Core.WebClient
 
                 stopWatch.Stop();
 
-                Log.LogVerbose("BuildManagerHelper", "Preloading all asp.net files: " + stopWatch.ElapsedMilliseconds + "ms");
+                Log.LogVerbose(LogTitle, "Preloading all asp.net files: " + stopWatch.ElapsedMilliseconds + "ms");
             }
             catch (ThreadAbortException)
             {
             }
             catch (Exception ex)
             {
-                Log.LogWarning("BuildManagerHelper", ex);
+                Log.LogWarning(LogTitle, ex);
             }
         }
 
