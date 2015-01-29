@@ -57,6 +57,9 @@ namespace Composite.Services
                 }
 
                 UserValidationFacade.FormSetUserPassword(user.Username, newPassword);
+
+                var loginResult = UserValidationFacade.FormValidateUser(username, newPassword);
+                Verify.That(loginResult == LoginResult.Success, "Unexpected login result value after a password change: " + loginResult);
             }
 
             return new string[0];
