@@ -309,5 +309,6 @@ ui|cover.widesplash ui|fields {
 }
 ui|cover.widesplash div.errortext {
 	position: static;
-	padding-bottom: 10px;
+	padding-bottom: 5px;
+	display: block;
 }

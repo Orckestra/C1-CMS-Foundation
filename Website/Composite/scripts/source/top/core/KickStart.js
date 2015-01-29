@@ -34,7 +34,8 @@ var KickStart = new function () {
 			SetupService = WebServiceProxy.createProxy ( Constants.URL_WSDL_SETUPSERVICE );
 			ReadyService = WebServiceProxy.createProxy ( Constants.URL_WSDL_READYSERVICE );
 			LoginService =  WebServiceProxy.createProxy ( Constants.URL_WSDL_LOGINSERVICE );
-			InstallationService = WebServiceProxy.createProxy ( Constants.URL_WSDL_INSTALLSERVICE );
+			InstallationService = WebServiceProxy.createProxy(Constants.URL_WSDL_INSTALLSERVICE);
+			StringService = WebServiceProxy.createProxy(Constants.URL_WSDL_STRINGSERVICE);
 
 			EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
 
@@ -248,14 +249,14 @@ var KickStart = new function () {
 	this.showPasswordErrors = function (errors) {
 		errors = new List(errors);
 		var errorsElement = document.getElementById("passworderror");
-		DocumentManager.detachBindings(errorsElement, true);
 		errorsElement.innerHTML = "";
 
-		errors.each(function() {
-			var errorBinding = TextBinding.newInstance(document);
-			errorBinding.setLabel(errors);
-			errorsElement.appendChild(errorBinding.bindingElement);
-			errorBinding.attach();
+		errors.each(function(error) {
+			var errorElement = document.createElement("div");
+			errorElement.innerText = error;
+			errorElement.className = "errortext";
+			errorsElement.appendChild(errorElement);
+
 		});
 		
 

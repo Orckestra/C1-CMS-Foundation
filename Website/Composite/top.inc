@@ -33,7 +33,7 @@
 				<div id="passwordexpired"><ui:text label="Password is older than ${days} days. Please change your password."/></div>
 			</div>
 			<ui:fields id="passwordfields">
-				<div id="passworderror" class="errortext">
+				<div id="passworderror">
 				</div>
 				<ui:field>
 					<ui:fielddesc>Username</ui:fielddesc>
