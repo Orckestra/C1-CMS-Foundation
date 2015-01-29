@@ -101,11 +101,14 @@ namespace Composite.Plugins.Security.LoginProviderPlugins.DataBasedFormLoginProv
                 return LoginResult.UserLockedAfterMaxLoginAttempts;
             }
 
-            int passwordExpirationDays = PasswordPolicyFacade.PasswordExpirationTimeInDays;
-            if (passwordExpirationDays > 0 &&
-                DateTime.Now > user.LastPasswordChangeDate + TimeSpan.FromDays(passwordExpirationDays))
+            if (passwordIsCorrect)
             {
-                return LoginResult.PasswordUpdateRequired;
+                int passwordExpirationDays = PasswordPolicyFacade.PasswordExpirationTimeInDays;
+                if (passwordExpirationDays > 0 &&
+                    DateTime.Now > user.LastPasswordChangeDate + TimeSpan.FromDays(passwordExpirationDays))
+                {
+                    return LoginResult.PasswordUpdateRequired;
+                }
             }
 
             UpdateLoginHistory(username, passwordIsCorrect, failedLoginInfo);
