@@ -30,38 +30,42 @@
 		</ui:deck>
 		<ui:deck id="chnagepassworddeck" lazy="true">
 			<div class="buzzwords">
-				<div id="passwordexpired"><ui:text label="Password is older than ${days} days. Please change your password."/></div>
+				<div id="passwordexpired"><ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.PasswordExpiredMessage}"/></div>
 			</div>
 			<ui:fields id="passwordfields">
 				<div id="passworderror">
 				</div>
 				<ui:field>
-					<ui:fielddesc>Username</ui:fielddesc>
+					<ui:fielddesc>
+						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.Username}" /></ui:fielddesc>
 					<ui:fielddata>
 						<ui:datainput name="usernameold" required="true" readonly="true"/>
 					</ui:fielddata>
 				</ui:field>
 				<ui:field>
-					<ui:fielddesc>Old Password</ui:fielddesc>
+					<ui:fielddesc>
+						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.OldPassword}" /></ui:fielddesc>
 					<ui:fielddata>
 						<ui:datainput name="passwordold" password="true" required="true" minlength="6" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 				<ui:field>
-					<ui:fielddesc>New Password</ui:fielddesc>
+					<ui:fielddesc>
+						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.NewPassword}" /></ui:fielddesc>
 					<ui:fielddata>
 						<ui:datainput name="passwordnew" password="true" required="true" minlength="6" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 				<ui:field>
-					<ui:fielddesc>Confirm Password</ui:fielddesc>
+					<ui:fielddesc>
+						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.ConfirmPassword}" /></ui:fielddesc>
 					<ui:fielddata>
 						<ui:datainput name="passwordnew2" password="true" required="true" minlength="6" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 			</ui:fields>
 			<ui:dialogtoolbar>
-				<ui:clickbutton label="Change password" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.changePassword()"/>
+				<ui:clickbutton label="${string:Composite.C1Console.Users:ChangePasswordForm.ChangePasswordButton}" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.changePassword()"/>
 			</ui:dialogtoolbar>
 		</ui:deck>
 		<ui:deck id="loadingdeck">

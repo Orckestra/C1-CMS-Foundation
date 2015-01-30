@@ -48,4 +48,13 @@
   
   <string key="PasswordRules.MinimumLength" value="Password should be at least {0} characters long." />
   <string key="PasswordRules.EnforcePasswordHistory" value="Password should not match any of the previously used {0} passwords." />
+
+	<string key="ChangePasswordForm.ConfirmationPasswordMimatch" value="Confirmation password mismatch" />
+	<string key="ChangePasswordForm.Username" value="Username" />
+	<string key="ChangePasswordForm.OldPassword" value="Old Password" />
+	<string key="ChangePasswordForm.NewPassword" value="NewPassword" />
+	<string key="ChangePasswordForm.ConfirmPassword" value="Confirm Password" />
+	<string key="ChangePasswordForm.ChangePasswordButton" value="Change Password" />
+	<string key="ChangePasswordForm.PasswordExpiredMessage" value="Password is older than {0} days. Please change your password." />
+
 </strings>

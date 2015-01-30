@@ -241,7 +241,9 @@ var KickStart = new function () {
 					WebServiceProxy.isLoggingEnabled = true;
 				}
 			} else {
-				this.showPasswordErrors(["Confirmation password mismatch"]);
+
+				
+				this.showPasswordErrors([Resolver.resolve("${string:Composite.C1Console.Users:ChangePasswordForm.ConfirmationPasswordMimatch}")]);
 			}
 		}
 	}
@@ -390,7 +392,7 @@ var KickStart = new function () {
 
 				setTimeout(function () {
 					var passwordexpired = document.getElementById("passwordexpired");
-					passwordexpired.firstChild.data = passwordexpired.firstChild.data.replace("${days}", Installation.passwordExpirationTimeInDays);
+					passwordexpired.firstChild.data = passwordexpired.firstChild.data.replace("{0}", Installation.passwordExpirationTimeInDays);
 
 					DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("username").getResult());
 					DataManager.getDataBinding("passwordold").focus();
