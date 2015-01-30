@@ -28,6 +28,12 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
         private static string NewUserBindingName { get { return "NewUser"; } }
 
 
+        private static class BindingNames
+        {
+            public const string Username = "NewUser.Username";
+            public const string EncryptedPassword = "NewUser.EncryptedPassword";
+        }
+
         public AddNewUserWorkflow()
         {
             InitializeComponent();
@@ -59,8 +65,19 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
                 if(usersWithTheSameName.Any())
                 {
-                    ShowFieldMessage(NewUserBindingName + ".Username",
+                    ShowFieldMessage(BindingNames.Username,
                         StringResourceSystemFacade.GetString("Composite.Management", "UserElementProvider.UserLoginIsAlreadyUsed"));
+
+                    isValid = false;
+                }
+
+                IList<string> validationMessages;
+                if (!PasswordPolicyFacade.ValidatePassword(newUser, newUser.EncryptedPassword, out validationMessages))
+                {
+                    foreach (var message in validationMessages)
+                    {
+                        this.ShowFieldMessage(BindingNames.EncryptedPassword, message);
+                    }
 
                     isValid = false;
                 }
@@ -131,7 +148,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             if (usersWithTheSameName.Any())
             {
-                this.ShowFieldMessage(string.Format("{0}.{1}", NewUserBindingName, "Username"), StringResourceSystemFacade.GetString("Composite.Management", "AddNewUserWorkflow.UsernameDuplicateError"));
+                this.ShowFieldMessage(BindingNames.Username, StringResourceSystemFacade.GetString("Composite.Management", "AddNewUserWorkflow.UsernameDuplicateError"));
             }
         }
 

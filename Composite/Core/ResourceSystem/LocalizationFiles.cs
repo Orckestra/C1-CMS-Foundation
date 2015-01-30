@@ -382,6 +382,10 @@ namespace Composite.Core.ResourceSystem
  public static string PasswordRules_MinimumLength(object parameter0) { return string.Format(T("PasswordRules.MinimumLength"), parameter0); } 
  /// <summary>&quot;Password should not match any of the previously used {0} passwords.&quot;</summary> 
  public static string PasswordRules_EnforcePasswordHistory(object parameter0) { return string.Format(T("PasswordRules.EnforcePasswordHistory"), parameter0); } 
+ /// <summary>&quot;Password should contain 3/4 of the following items: uppercase letters, lowercase letters, numbers, symbols.&quot;</summary> 
+ public static string PasswordRules_DifferentCharacterGroups { get { return T("PasswordRules.DifferentCharacterGroups"); } } 
+ /// <summary>&quot;Password should not be based on a user name.&quot;</summary> 
+ public static string PasswordRules_DoNotUseUserName { get { return T("PasswordRules.DoNotUseUserName"); } } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.C1Console.Users", key);

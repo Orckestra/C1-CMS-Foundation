@@ -19,7 +19,7 @@ namespace Composite.Plugins.Security.PasswordRules.EnforcePasswordHistory
 
         public string GetRuleDescription()
         {
-            return LocalizationFiles.Composite_C1Console_Users.PasswordRules_EnforcePasswordHistory(PasswordPolicyFacade.PasswordHistoryLength);
+            return LocalizationFiles.Composite_C1Console_Users.PasswordRules_EnforcePasswordHistory(PasswordPolicyFacade.PasswordHistoryLength + 1);
         }
     }
 }

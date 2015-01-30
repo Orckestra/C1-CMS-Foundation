@@ -7,6 +7,7 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 using Composite.C1Console.Security;
 using Composite.Core;
+using Composite.Core.ResourceSystem;
 using Composite.Data;
 using Composite.Data.Types;
 
@@ -39,6 +40,11 @@ namespace Composite.Services
         public string[] ChangePassword(string username, string oldPassword, string newPassword)
         {
             var result = UserValidationFacade.FormValidateUser(username, oldPassword);
+            if (result == LoginResult.IncorrectPassword)
+            {
+                return new[] {StringResourceSystemFacade.GetString("Composite.C1Console.Users", "ChangePasswordForm.IncorrectOldPassword")};
+            }
+            
             Verify.That(result == LoginResult.PasswordUpdateRequired, "Password update has to be required.");
 
             if (newPassword == oldPassword)

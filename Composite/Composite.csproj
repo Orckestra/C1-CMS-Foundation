@@ -975,6 +975,8 @@
     <Compile Include="Plugins\Routing\UrlFormatters\StringReplaceUrlFormatter.cs" />
     <Compile Include="Plugins\Routing\UrlFormatters\ToLowerCaseUrlFormatter.cs" />
     <Compile Include="Plugins\Security\LoginProviderPlugins\DataBasedFormLoginProvider\UserPasswordManager.cs" />
+    <Compile Include="Plugins\Security\PasswordRules\DifferentCharacterGroups\DifferentCharacterGroupsPasswordRule.cs" />
+    <Compile Include="Plugins\Security\PasswordRules\DoNotUseUserName\DoNotUseUserNamePasswordRule.cs" />
     <Compile Include="Plugins\Security\PasswordRules\EnforcePasswordHistory\EnforcePasswordHistoryPasswordRule.cs" />
     <Compile Include="Plugins\Security\PasswordRules\MinimumLength\MinimumLengthPasswordRule.cs" />
     <Compile Include="Plugins\Security\UserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider\DataBasedUserGroupPermissionDefinitionProvider.cs" />
