@@ -3756,7 +3756,7 @@ var Application=new _Application();
 function _Installation(){
 EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_KICKSTART,this);
 }
-_Installation.prototype={versionString:null,versionPrettyString:null,installationID:null,handleBroadcast:function(_36f){
+_Installation.prototype={versionString:null,versionPrettyString:null,installationID:null,passwordExpirationTimeInDays:null,handleBroadcast:function(_36f){
 switch(_36f){
 case BroadcastMessages.APPLICATION_KICKSTART:
 var list=new List(InstallationService.GetInstallationInfo(true));
@@ -3770,6 +3770,9 @@ this.versionPrettyString=_371.Value;
 break;
 case "InstallationId":
 this.installationID=_371.Value;
+break;
+case "PasswordExpirationTimeInDays":
+this.passwordExpirationTimeInDays=_371.Value;
 break;
 }
 },this);
@@ -30685,6 +30688,7 @@ SetupService=WebServiceProxy.createProxy(Constants.URL_WSDL_SETUPSERVICE);
 ReadyService=WebServiceProxy.createProxy(Constants.URL_WSDL_READYSERVICE);
 LoginService=WebServiceProxy.createProxy(Constants.URL_WSDL_LOGINSERVICE);
 InstallationService=WebServiceProxy.createProxy(Constants.URL_WSDL_INSTALLSERVICE);
+StringService=WebServiceProxy.createProxy(Constants.URL_WSDL_STRINGSERVICE);
 EventBroadcaster.broadcast(BroadcastMessages.APPLICATION_KICKSTART);
 setTimeout(function(){
 Persistance.initialize();
@@ -30789,9 +30793,10 @@ Application.unlock(KickStart);
 this.changePassword=function(){
 if(bindingMap.toppage.validateAllDataBindings()){
 var _12e6=DataManager.getDataBinding("username").getResult();
-var _12e7=DataManager.getDataBinding("password").getResult();
+var _12e7=DataManager.getDataBinding("passwordold").getResult();
 var _12e8=DataManager.getDataBinding("passwordnew").getResult();
 var _12e9=DataManager.getDataBinding("passwordnew2").getResult();
+if(_12e8==_12e9){
 var _12ea=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
@@ -30804,14 +30809,37 @@ setTimeout(function(){
 top.window.location.reload(true);
 },0);
 }else{
-alert(_12eb);
+this.showPasswordErrors(_12eb);
 }
 }
 WebServiceProxy.isFaultHandler=true;
 if(_12ea){
 WebServiceProxy.isLoggingEnabled=true;
 }
+}else{
+this.showPasswordErrors([Resolver.resolve("${string:Composite.C1Console.Users:ChangePasswordForm.ConfirmationPasswordMimatch}")]);
 }
+}
+};
+this.showPasswordErrors=function(_12ec){
+_12ec=new List(_12ec);
+var _12ed=document.getElementById("passworderror");
+_12ed.innerHTML="";
+_12ec.each(function(error){
+var _12ef=document.createElement("div");
+_12ef.innerText=error;
+_12ef.className="errortext";
+_12ed.appendChild(_12ef);
+});
+_12ed.style.display="block";
+var _12f0={handleAction:function(_12f1){
+document.getElementById("passworderror").style.display="none";
+_12f1.target.removeActionListener(Binding.ACTION_DIRTY,_12f0);
+}};
+bindingMap.passwordfields.addActionListener(Binding.ACTION_DIRTY,_12f0);
+DataManager.getDataBinding("passwordold").clean();
+DataManager.getDataBinding("passwordnew").clean();
+DataManager.getDataBinding("passwordnew2").clean();
 };
 this.login=function(){
 Application.lock(KickStart);
@@ -30823,33 +30851,33 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_12ec,_12ed){
-var _12ee=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_12f2,_12f3){
+var _12f4=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12ef=false;
-var _12f0=false;
-var _12f1=LoginService.ValidateAndLogin(_12ec,_12ed);
-if(_12f1 instanceof SOAPFault){
-alert(_12f1.getFaultString());
+var _12f5=false;
+var _12f6=false;
+var _12f7=LoginService.ValidateAndLogin(_12f2,_12f3);
+if(_12f7 instanceof SOAPFault){
+alert(_12f7.getFaultString());
 }else{
-if(_12f1=="lockedAfterMaxAttempts"){
+if(_12f7=="lockedAfterMaxAttempts"){
 alert("The account was locked after maximum login attempts. Please contact administrator.");
 }
-if(_12f1=="lockedByAnAdministrator"){
+if(_12f7=="lockedByAnAdministrator"){
 alert("The account was locked by an administrator.");
 }
-if(_12f1=="passwordUpdateRequired"){
-_12f0=true;
+if(_12f7=="passwordUpdateRequired"){
+_12f6=true;
 }
-if(_12f1=="success"){
-_12ef=true;
+if(_12f7=="success"){
+_12f5=true;
 }
 }
-if(_12f0){
+if(_12f6){
 changePasswordRequired();
 }else{
-if(_12ef){
+if(_12f5){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -30860,7 +30888,7 @@ accesssDenied();
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_12ee){
+if(_12f4){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -30878,25 +30906,32 @@ function changePasswordRequired(){
 setTimeout(function(){
 if(bindingMap.decks!=null){
 bindingMap.decks.select("chnagepassworddeck");
+bindingMap.cover.attachClassName("widesplash");
+setTimeout(function(){
+var _12f8=document.getElementById("passwordexpired");
+_12f8.firstChild.data=_12f8.firstChild.data.replace("{0}",Installation.passwordExpirationTimeInDays);
+DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("username").getResult());
+DataManager.getDataBinding("passwordold").focus();
+},0);
 }
 },0);
 }
 function accesssDenied(){
-var _12f2=DataManager.getDataBinding("username");
-var _12f3=DataManager.getDataBinding("password");
-_12f2.blur();
-_12f3.blur();
-_12f2.setValue("");
-_12f3.setValue("");
-_12f2.clean();
-_12f3.clean();
-_12f2.focus();
+var _12f9=DataManager.getDataBinding("username");
+var _12fa=DataManager.getDataBinding("password");
+_12f9.blur();
+_12fa.blur();
+_12f9.setValue("");
+_12fa.setValue("");
+_12f9.clean();
+_12fa.clean();
+_12f9.focus();
 document.getElementById("loginerror").style.display="block";
-var _12f4={handleAction:function(_12f5){
+var _12fb={handleAction:function(_12fc){
 document.getElementById("loginerror").style.display="none";
-_12f5.target.removeActionListener(Binding.ACTION_DIRTY,_12f4);
+_12fc.target.removeActionListener(Binding.ACTION_DIRTY,_12fb);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12f4);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12fb);
 }
 WindowManager.fireOnLoad(this);
 if(!_12dc){
