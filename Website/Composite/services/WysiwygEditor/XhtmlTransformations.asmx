@@ -670,7 +670,9 @@ namespace Composite.Services
 
         private void AddParameterInformation(StringBuilder description, BaseParameterRuntimeTreeNode parameter, IEnumerable<ParameterProfile> parameterProfiles)
         {
-            if (parameter.ContainsNestedFunctions || parameter is FunctionParameterRuntimeTreeNode)
+			ParameterProfile parameterProfile = parameterProfiles.FirstOrDefault(f => f.Name == parameter.Name);
+
+			if (parameter.ContainsNestedFunctions || parameter is FunctionParameterRuntimeTreeNode || parameterProfile.Type.IsLazyGenericType() || parameterProfile.Type.IsAssignableFrom(typeof(XhtmlDocument)))
             {
                 description.AppendLine("{0} = ....".FormatWith(parameter.Name));
                 return;
@@ -686,7 +688,6 @@ namespace Composite.Services
 
                 try
                 {
-                    ParameterProfile parameterProfile = parameterProfiles.FirstOrDefault(f => f.Name == parameter.Name);
                     if (parameterProfile != null)
                     {
                         paramLabel = parameterProfile.LabelLocalized;
