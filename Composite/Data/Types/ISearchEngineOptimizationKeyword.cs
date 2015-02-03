@@ -1,5 +1,6 @@
 ﻿using Composite.Data.Hierarchy;
 using Composite.Data.Hierarchy.DataAncestorProviders;
+using Composite.Data.ProcessControlled;
 using Composite.Data.Validation.Validators;
 using Microsoft.Practices.EnterpriseLibrary.Validation.Validators;
 
@@ -16,7 +17,7 @@ namespace Composite.Data.Types
     [DataScope(DataScopeIdentifier.PublicName)]
     [ImmutableTypeId("{895F967D-EEAA-437a-9463-E1F95C214ED6}")]
     [DataAncestorProvider(typeof(NoAncestorDataAncestorProvider))]
-    public interface ISearchEngineOptimizationKeyword : IData
+    public interface ISearchEngineOptimizationKeyword : IData, ILocalizedControlled
     {
         /// <exclude />
         [NotNullValidator()]
