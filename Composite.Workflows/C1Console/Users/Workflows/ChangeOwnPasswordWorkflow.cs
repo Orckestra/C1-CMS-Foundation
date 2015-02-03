@@ -113,14 +113,6 @@ namespace Composite.C1Console.Users.Workflows
                 }
                 return false;
             }
-            
-            // 6 character length is validated in javascript
-            const int minPasswordLength = 6;
-            if (newPassword.Length < minPasswordLength)
-            {
-                this.ShowFieldMessage(Fields.NewPassword, Texts.ChangeOwnPasswordWorkflow_Dialog_Validation_NewPasswordTooShort(minPasswordLength.ToString()));
-                return false;
-            }
 
             return true;
         }

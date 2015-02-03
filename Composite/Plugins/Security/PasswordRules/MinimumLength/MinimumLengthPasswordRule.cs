@@ -13,10 +13,12 @@ namespace Composite.Plugins.Security.PasswordRules.MinimumLength
     {
         public MinimumLengthPasswordRule(int minLength)
         {
+            Verify.That(minLength > 0, "The minimum length of a password should be at least 1 character.");
+
             _minLength = minLength;
         }
 
-        private readonly int _minLength = 7;
+        private readonly int _minLength;
 
         public bool ValidatePassword(IUser user, string password)
         {

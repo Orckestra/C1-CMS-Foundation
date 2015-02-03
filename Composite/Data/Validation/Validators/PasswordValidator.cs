@@ -1,8 +1,10 @@
-﻿using Microsoft.Practices.EnterpriseLibrary.Validation;
+﻿using System;
+using Microsoft.Practices.EnterpriseLibrary.Validation;
 
 
 namespace Composite.Data.Validation.Validators
 {
+    [Obsolete("No longer used")]
     internal class PasswordValidator : Validator
 	{
         public PasswordValidator()
@@ -25,7 +27,7 @@ namespace Composite.Data.Validation.Validators
             {
                 if (password.Length < 6)
                 {
-                    LogValidationResult(validationResults, "The password should have a minimum lengh of 6", currentTarget, key);
+                    LogValidationResult(validationResults, "The password should have a minimum length of 6", currentTarget, key);
                 }
             }
         }
