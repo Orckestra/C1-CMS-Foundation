@@ -20,7 +20,7 @@
 				<ui:field>
 					<ui:fielddesc>Password</ui:fielddesc>
 					<ui:fielddata>
-						<ui:datainput name="password" password="true" required="true" minlength="6" autoselect="true"/>
+						<ui:datainput name="password" password="true" required="true" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 			</ui:fields>
@@ -46,21 +46,21 @@
 					<ui:fielddesc>
 						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.OldPassword}" /></ui:fielddesc>
 					<ui:fielddata>
-						<ui:datainput name="passwordold" password="true" required="true" minlength="6" autoselect="true"/>
+						<ui:datainput name="passwordold" password="true" required="true" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 				<ui:field>
 					<ui:fielddesc>
 						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.NewPassword}" /></ui:fielddesc>
 					<ui:fielddata>
-						<ui:datainput name="passwordnew" password="true" required="true" minlength="6" autoselect="true"/>
+						<ui:datainput name="passwordnew" password="true" required="true" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 				<ui:field>
 					<ui:fielddesc>
 						<ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.ConfirmPassword}" /></ui:fielddesc>
 					<ui:fielddata>
-						<ui:datainput name="passwordnew2" password="true" required="true" minlength="6" autoselect="true"/>
+						<ui:datainput name="passwordnew2" password="true" required="true" autoselect="true"/>
 					</ui:fielddata>
 				</ui:field>
 			</ui:fields>

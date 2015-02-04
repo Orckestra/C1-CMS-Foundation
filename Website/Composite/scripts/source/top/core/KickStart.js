@@ -255,7 +255,7 @@ var KickStart = new function () {
 
 		errors.each(function(error) {
 			var errorElement = document.createElement("div");
-			errorElement.innerText = error;
+			errorElement.textContent = error;
 			errorElement.className = "errortext";
 			errorsElement.appendChild(errorElement);
 
