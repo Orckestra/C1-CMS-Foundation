@@ -30,11 +30,10 @@ using Composite.Core.Logging;
 
 namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditUserWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
-        private static string UserBindingName { get { return "User"; } }
         private static string NotPassword { get { return Uri.UnescapeDataString("%C9%AF%C7%9D%C9%A5%CA%87pu%C4%B1qo%CA%87s%C9%AF%C9%94%C7%9Duo"); } } // should be a very unlikely real life password
 
         public EditUserWorkflow()
@@ -45,7 +44,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private static class BindingNames
         {
-            public const string EncryptedPassword = "User.EncryptedPassword";
+            public const string User = "User";
+            public const string NewPassword = "NewPassword";
         }
 
         private void CheckActiveLanguagesExists(object sender, System.Workflow.Activities.ConditionalEventArgs e)
@@ -61,9 +61,8 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             IUser user = (IUser)dataEntityToken.Data;
 
-            user.EncryptedPassword = NotPassword;
-
-            this.Bindings.Add(UserBindingName, user);
+            this.Bindings.Add(BindingNames.User, user);
+            this.Bindings.Add(BindingNames.NewPassword, NotPassword);
 
             CultureInfo userCulture = UserSettings.GetUserCultureInfo(user.Username);
             CultureInfo c1ConsoleUiLanguage = UserSettings.GetUserC1ConsoleUiLanguage(user.Username);
@@ -86,7 +85,6 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
             var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>
             {
                 {"Username", ClientValidationRuleFacade.GetClientValidationRules(user, "Username")},
-                {"EncryptedPassword", ClientValidationRuleFacade.GetClientValidationRules(user, "EncryptedPassword")},
                 {"Group", ClientValidationRuleFacade.GetClientValidationRules(user, "Group")}
             };
 
@@ -175,7 +173,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
         private void saveCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            IUser user = this.GetBinding<IUser>(UserBindingName);
+            IUser user = this.GetBinding<IUser>(BindingNames.User);
 
             bool userValidated = true;
 
@@ -183,7 +181,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             foreach (ValidationResult result in validationResults)
             {
-                this.ShowFieldMessage(string.Format("{0}.{1}", UserBindingName, result.Key), result.Message);
+                this.ShowFieldMessage(string.Format("{0}.{1}", BindingNames.User, result.Key), result.Message);
                 userValidated = false;
             }
 
@@ -257,17 +255,19 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                 }
             }
 
-            string newPassword = null;
-            if (user.EncryptedPassword != NotPassword)
+            string newPassword = this.GetBinding<string>(BindingNames.NewPassword);
+            if (newPassword == NotPassword || UserPasswordManager.ValidatePassword(user, newPassword))
             {
-                newPassword = user.EncryptedPassword;
-
+                newPassword = null;
+            }
+            else
+            {
                 IList<string> validationMessages;
                 if (!PasswordPolicyFacade.ValidatePassword(user, newPassword, out validationMessages))
                 {
                     foreach (var message in validationMessages)
                     {
-                        this.ShowFieldMessage(BindingNames.EncryptedPassword, message);
+                        this.ShowFieldMessage(BindingNames.NewPassword, message);
                     }
 
                     userValidated = false;
@@ -295,32 +295,22 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
 
-            if (newPassword != null)
-            {
-                UserPasswordManager.SetPassword(user, newPassword);
-            }
-            else
-            {
-                using (var connection = new DataConnection())
-                {
-                    string currentPwdFromDataProvider = connection.Get<IUser>().First(f => f.Id == user.Id).EncryptedPassword;
-                    user.EncryptedPassword = currentPwdFromDataProvider;
-                }
-            }
-
             bool reloadUsersConsoles = false;
 
             using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 DataFacade.Update(user);
 
+                if (newPassword != null)
+                {
+                    UserPasswordManager.SetPassword(user, newPassword);
+                }
+
                 string cultureName = this.GetBinding<string>("CultureName");
                 string c1ConsoleUiLanguageName = this.GetBinding<string>("C1ConsoleUiLanguageName");
 
                 UserSettings.SetUserCultureInfo(user.Username, CultureInfo.CreateSpecificCulture(cultureName));
                 UserSettings.SetUserC1ConsoleUiLanguage(user.Username, CultureInfo.CreateSpecificCulture(c1ConsoleUiLanguageName));
-
-
 
                 List<string> existingSerializedEntityTokens = UserPerspectiveFacade.GetSerializedEntityTokens(user.Username).ToList();
 
@@ -385,7 +375,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
                     Guid groupId = newUserGroupId;
                     if (oldRelations.Any(f => f.UserGroupId == groupId)) continue;
 
-                    IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
+                    var userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
                     userUserGroupRelation.UserId = user.Id;
                     userUserGroupRelation.UserGroupId = newUserGroupId;
 

@@ -8,6 +8,7 @@
     <cms:binding name="AllCultures" type="System.Collections.IEnumerable" />
     <cms:binding name="ActiveLocaleName" type="System.String" optional="true"/>
     <cms:binding name="ActiveLocaleList" type="System.Collections.IEnumerable" optional="true"/>
+    <cms:binding name="NewPassword" type="System.String" optional="false"/>
   </cms:bindings>
   <cms:layout iconhandle="users-edituser">
     <cms:layout.label>
@@ -25,7 +26,7 @@
           </TextBox>
           <TextBox Type="Password" Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PasswordLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.PasswordHelp}">
             <TextBox.Text>
-              <cms:bind source="User.EncryptedPassword" />
+              <cms:bind source="NewPassword" />
             </TextBox.Text>
           </TextBox>
           <TextBox Label="${Composite.Management, Website.Forms.Administrative.EditUserStep1.NameLabel}" Help="${Composite.Management, Website.Forms.Administrative.EditUserStep1.NameHelp}">
