@@ -386,6 +386,7 @@ var KickStart = new function () {
 	function changePasswordRequired() {
 
 		setTimeout(function () {
+			Application.unlock(KickStart);
 			if (bindingMap.decks != null) {
 				bindingMap.decks.select("chnagepassworddeck");
 				bindingMap.cover.attachClassName("widesplash");
@@ -399,7 +400,7 @@ var KickStart = new function () {
 				}, 0);
 
 			}
-		}, 0);
+		}, 25);
 	}
 	
 	/**
