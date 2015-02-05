@@ -30827,7 +30827,7 @@ var _12ed=document.getElementById("passworderror");
 _12ed.innerHTML="";
 _12ec.each(function(error){
 var _12ef=document.createElement("div");
-_12ef.innerText=error;
+_12ef.textContent=error;
 _12ef.className="errortext";
 _12ed.appendChild(_12ef);
 });
@@ -30904,6 +30904,7 @@ Application.login();
 }
 function changePasswordRequired(){
 setTimeout(function(){
+Application.unlock(KickStart);
 if(bindingMap.decks!=null){
 bindingMap.decks.select("chnagepassworddeck");
 bindingMap.cover.attachClassName("widesplash");
@@ -30914,7 +30915,7 @@ DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("u
 DataManager.getDataBinding("passwordold").focus();
 },0);
 }
-},0);
+},25);
 }
 function accesssDenied(){
 var _12f9=DataManager.getDataBinding("username");
