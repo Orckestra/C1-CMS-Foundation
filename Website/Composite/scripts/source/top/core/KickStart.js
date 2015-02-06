@@ -62,8 +62,22 @@ var KickStart = new function () {
 				// doStartUp (); hmmmm....
 				break;
 				
-			case BroadcastMessages.KEY_ENTER :
-				this.login ();
+			case BroadcastMessages.KEY_ENTER:
+				if (bindingMap.decks != null) {
+					var selecteddeck = bindingMap.decks.getSelectedDeckBinding();
+					if (selecteddeck != null) {
+						switch (selecteddeck.getID()) {
+							case "logindeck":
+								this.login();
+								break;
+							case "chnagepassworddeck":
+								this.changePassword();
+								break;
+							default:
+						}
+					}
+					
+				}
 				break;
 				
 			case BroadcastMessages.APPLICATION_LOGIN :
