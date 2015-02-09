@@ -70,7 +70,7 @@ var KickStart = new function () {
 							case "logindeck":
 								this.login();
 								break;
-							case "chnagepassworddeck":
+						    case "changepassworddeck":
 								this.changePassword();
 								break;
 							default:
@@ -402,7 +402,7 @@ var KickStart = new function () {
 		setTimeout(function () {
 			Application.unlock(KickStart);
 			if (bindingMap.decks != null) {
-				bindingMap.decks.select("chnagepassworddeck");
+			    bindingMap.decks.select("changepassworddeck");
 				bindingMap.cover.attachClassName("widesplash");
 
 				setTimeout(function () {

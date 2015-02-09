@@ -28,7 +28,7 @@
 				<ui:clickbutton label="Login" image="${skin}/splash/button.png" focusable="true" oncommand="KickStart.login()"/>
 			</ui:dialogtoolbar>
 		</ui:deck>
-		<ui:deck id="chnagepassworddeck" lazy="true">
+		<ui:deck id="changepassworddeck" lazy="true">
 			<div class="buzzwords">
 				<div id="passwordexpired"><ui:text label="${string:Composite.C1Console.Users:ChangePasswordForm.PasswordExpiredMessage}"/></div>
 			</div>
