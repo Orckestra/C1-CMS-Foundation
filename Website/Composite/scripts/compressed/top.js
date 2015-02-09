@@ -30702,11 +30702,24 @@ break;
 case BroadcastMessages.APPLICATION_STARTUP:
 break;
 case BroadcastMessages.KEY_ENTER:
+if(bindingMap.decks!=null){
+var _12e0=bindingMap.decks.getSelectedDeckBinding();
+if(_12e0!=null){
+switch(_12e0.getID()){
+case "logindeck":
 this.login();
 break;
+case "changepassworddeck":
+this.changePassword();
+break;
+default:
+}
+}
+}
+break;
 case BroadcastMessages.APPLICATION_LOGIN:
-var _12e0=window.bindingMap.appwindow;
-_12e0.setURL("app.aspx");
+var _12e1=window.bindingMap.appwindow;
+_12e1.setURL("app.aspx");
 break;
 case BroadcastMessages.APPLICATION_OPERATIONAL:
 showWorkbench();
@@ -30719,17 +30732,17 @@ bindingMap.cover.show();
 break;
 }
 };
-function fileEventBroadcasterSubscriptions(_12e1){
-new List([BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_12e2){
-if(_12e1){
-EventBroadcaster.subscribe(_12e2,KickStart);
+function fileEventBroadcasterSubscriptions(_12e2){
+new List([BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_12e3){
+if(_12e2){
+EventBroadcaster.subscribe(_12e3,KickStart);
 }else{
-EventBroadcaster.unsubscribe(_12e2,KickStart);
+EventBroadcaster.unsubscribe(_12e3,KickStart);
 }
 });
 }
-function kickStart(_12e3){
-switch(_12e3){
+function kickStart(_12e4){
+switch(_12e4){
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
 _12d9=true;
 break;
@@ -30792,28 +30805,28 @@ Application.unlock(KickStart);
 }
 this.changePassword=function(){
 if(bindingMap.toppage.validateAllDataBindings()){
-var _12e6=DataManager.getDataBinding("username").getResult();
-var _12e7=DataManager.getDataBinding("passwordold").getResult();
-var _12e8=DataManager.getDataBinding("passwordnew").getResult();
-var _12e9=DataManager.getDataBinding("passwordnew2").getResult();
-if(_12e8==_12e9){
-var _12ea=WebServiceProxy.isLoggingEnabled;
+var _12e7=DataManager.getDataBinding("username").getResult();
+var _12e8=DataManager.getDataBinding("passwordold").getResult();
+var _12e9=DataManager.getDataBinding("passwordnew").getResult();
+var _12ea=DataManager.getDataBinding("passwordnew2").getResult();
+if(_12e9==_12ea){
+var _12eb=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12eb=LoginService.ChangePassword(_12e6,_12e7,_12e8);
-if(_12eb instanceof SOAPFault){
-alert(_12eb.getFaultString());
+var _12ec=LoginService.ChangePassword(_12e7,_12e8,_12e9);
+if(_12ec instanceof SOAPFault){
+alert(_12ec.getFaultString());
 }else{
-if(_12eb.length==0){
+if(_12ec.length==0){
 setTimeout(function(){
 top.window.location.reload(true);
 },0);
 }else{
-this.showPasswordErrors(_12eb);
+this.showPasswordErrors(_12ec);
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_12ea){
+if(_12eb){
 WebServiceProxy.isLoggingEnabled=true;
 }
 }else{
@@ -30821,22 +30834,22 @@ this.showPasswordErrors([Resolver.resolve("${string:Composite.C1Console.Users:Ch
 }
 }
 };
-this.showPasswordErrors=function(_12ec){
-_12ec=new List(_12ec);
-var _12ed=document.getElementById("passworderror");
-_12ed.innerHTML="";
-_12ec.each(function(error){
-var _12ef=document.createElement("div");
-_12ef.textContent=error;
-_12ef.className="errortext";
-_12ed.appendChild(_12ef);
+this.showPasswordErrors=function(_12ed){
+_12ed=new List(_12ed);
+var _12ee=document.getElementById("passworderror");
+_12ee.innerHTML="";
+_12ed.each(function(error){
+var _12f0=document.createElement("div");
+_12f0.textContent=error;
+_12f0.className="errortext";
+_12ee.appendChild(_12f0);
 });
-_12ed.style.display="block";
-var _12f0={handleAction:function(_12f1){
+_12ee.style.display="block";
+var _12f1={handleAction:function(_12f2){
 document.getElementById("passworderror").style.display="none";
-_12f1.target.removeActionListener(Binding.ACTION_DIRTY,_12f0);
+_12f2.target.removeActionListener(Binding.ACTION_DIRTY,_12f1);
 }};
-bindingMap.passwordfields.addActionListener(Binding.ACTION_DIRTY,_12f0);
+bindingMap.passwordfields.addActionListener(Binding.ACTION_DIRTY,_12f1);
 DataManager.getDataBinding("passwordold").clean();
 DataManager.getDataBinding("passwordnew").clean();
 DataManager.getDataBinding("passwordnew2").clean();
@@ -30851,33 +30864,33 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_12f2,_12f3){
-var _12f4=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_12f3,_12f4){
+var _12f5=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12f5=false;
 var _12f6=false;
-var _12f7=LoginService.ValidateAndLogin(_12f2,_12f3);
-if(_12f7 instanceof SOAPFault){
-alert(_12f7.getFaultString());
+var _12f7=false;
+var _12f8=LoginService.ValidateAndLogin(_12f3,_12f4);
+if(_12f8 instanceof SOAPFault){
+alert(_12f8.getFaultString());
 }else{
-if(_12f7=="lockedAfterMaxAttempts"){
+if(_12f8=="lockedAfterMaxAttempts"){
 alert("The account was locked after maximum login attempts. Please contact administrator.");
 }
-if(_12f7=="lockedByAnAdministrator"){
+if(_12f8=="lockedByAnAdministrator"){
 alert("The account was locked by an administrator.");
 }
-if(_12f7=="passwordUpdateRequired"){
+if(_12f8=="passwordUpdateRequired"){
+_12f7=true;
+}
+if(_12f8=="success"){
 _12f6=true;
 }
-if(_12f7=="success"){
-_12f5=true;
 }
-}
-if(_12f6){
+if(_12f7){
 changePasswordRequired();
 }else{
-if(_12f5){
+if(_12f6){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -30888,7 +30901,7 @@ accesssDenied();
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_12f4){
+if(_12f5){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -30906,11 +30919,11 @@ function changePasswordRequired(){
 setTimeout(function(){
 Application.unlock(KickStart);
 if(bindingMap.decks!=null){
-bindingMap.decks.select("chnagepassworddeck");
+bindingMap.decks.select("changepassworddeck");
 bindingMap.cover.attachClassName("widesplash");
 setTimeout(function(){
-var _12f8=document.getElementById("passwordexpired");
-_12f8.firstChild.data=_12f8.firstChild.data.replace("{0}",Installation.passwordExpirationTimeInDays);
+var _12f9=document.getElementById("passwordexpired");
+_12f9.firstChild.data=_12f9.firstChild.data.replace("{0}",Installation.passwordExpirationTimeInDays);
 DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("username").getResult());
 DataManager.getDataBinding("passwordold").focus();
 },0);
@@ -30918,21 +30931,21 @@ DataManager.getDataBinding("passwordold").focus();
 },25);
 }
 function accesssDenied(){
-var _12f9=DataManager.getDataBinding("username");
-var _12fa=DataManager.getDataBinding("password");
-_12f9.blur();
+var _12fa=DataManager.getDataBinding("username");
+var _12fb=DataManager.getDataBinding("password");
 _12fa.blur();
-_12f9.setValue("");
+_12fb.blur();
 _12fa.setValue("");
-_12f9.clean();
+_12fb.setValue("");
 _12fa.clean();
-_12f9.focus();
+_12fb.clean();
+_12fa.focus();
 document.getElementById("loginerror").style.display="block";
-var _12fb={handleAction:function(_12fc){
+var _12fc={handleAction:function(_12fd){
 document.getElementById("loginerror").style.display="none";
-_12fc.target.removeActionListener(Binding.ACTION_DIRTY,_12fb);
+_12fd.target.removeActionListener(Binding.ACTION_DIRTY,_12fc);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12fb);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12fc);
 }
 WindowManager.fireOnLoad(this);
 if(!_12dc){
