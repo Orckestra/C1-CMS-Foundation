@@ -134,11 +134,11 @@ function BuildFunctionPreview(system, console, address, output, authCookie, mode
         });
     } finally {
         globalTimeout = setTimeout(function () {
-            console.log("Max execution time - 10 seconds - exceeded");
+            console.log("Max execution time - 60 seconds - exceeded");
             globalTimeout = null;
             page.close();
             WaitForInput(system, console);
-        }, 10000);
+        }, 60000);
     }
 }
 
