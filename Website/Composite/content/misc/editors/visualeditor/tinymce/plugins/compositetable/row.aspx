@@ -74,7 +74,7 @@
 											<ui:selector name="action">
 												<ui:selection label="${string:Composite.Web.VisualEditor:Tables.Row.LabelCurrentRow}" value="row" selected="true"/>
 												<ui:selection label="${string:Composite.Web.VisualEditor:Tables.Row.LabelOddRows}" value="odd"/>
-												<ui:selection label="${string:Composite.Web.VisualEditor:Tables.Row.LabelEvenRows}" value="event"/>
+												<ui:selection label="${string:Composite.Web.VisualEditor:Tables.Row.LabelEvenRows}" value="even"/>
 												<ui:selection label="${string:Composite.Web.VisualEditor:Tables.Row.LabelAllRows}" value="all"/>
 											</ui:selector>
 										</ui:fielddata>
