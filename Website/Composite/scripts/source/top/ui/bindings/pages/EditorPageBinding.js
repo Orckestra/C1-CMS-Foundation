@@ -658,7 +658,7 @@ EditorPageBinding.prototype._updateStatusBar = function () {
  */
 EditorPageBinding.prototype._startPreview = function () {
 	
-	Application.lock ( this ); // unlocked when preview is loaded
+	//Application.lock ( this ); // unlocked when preview is loaded
 	this._isGeneratingPreview = true;
 	
 	if ( Client.isPrism ) {
@@ -674,9 +674,9 @@ EditorPageBinding.prototype._startPreview = function () {
 EditorPageBinding.prototype._stopPreview = function () {
 	
 	this._windowBinding.reset ();
-	if ( Application.isLocked ) { // occurs on rapid tabshift using keyboard
-		Application.unlock ( this );
-	}
+	//if ( Application.isLocked ) { // occurs on rapid tabshift using keyboard
+	//	Application.unlock ( this );
+	//}
 }
 
 /**
