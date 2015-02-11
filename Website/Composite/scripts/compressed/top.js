@@ -22461,7 +22461,6 @@ StatusBar.clear();
 }
 };
 EditorPageBinding.prototype._startPreview=function(){
-Application.lock(this);
 this._isGeneratingPreview=true;
 if(Client.isPrism){
 Prism.disableCache();
@@ -22470,9 +22469,6 @@ this._windowBinding.setURL(WindowBinding.POSTBACK_URL);
 };
 EditorPageBinding.prototype._stopPreview=function(){
 this._windowBinding.reset();
-if(Application.isLocked){
-Application.unlock(this);
-}
 };
 EditorPageBinding.prototype.enableSave=function(_dac){
 var _dad=this.bindingDocument.getElementById("broadcasterCanSave");
