@@ -40,7 +40,7 @@ namespace Composite.Core.WebClient
         private static DateTime _lastUsageDate = DateTime.MinValue;
         private static readonly TimeSpan RecycleOnIdleInterval = TimeSpan.FromSeconds(30); 
         private const int RecycleTimerInterval_ms = 10000;
-        private const int EnsureReadinessDelay_ms = 3000;
+        private const int EnsureReadinessDelay_ms = 500;
 
         private static volatile bool Enabled = true;
         private static volatile bool ServerAvailabilityChecked;
@@ -196,7 +196,8 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
+//                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
+                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.PublicRootPath);
 
                     SetupRecycleTimer();
 
