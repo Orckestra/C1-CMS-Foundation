@@ -69,6 +69,10 @@ del ..\..\App_Data\PageTemplates.web.config /f
 :: Starter site cleanup 
 del ..\..\favicon.ico
 del ..\..\Bin\dotless.Core.dll
+del ..\..\Bin\Antlr3.Runtime.dll
+del ..\..\Bin\WebGrease.dll
+del ..\..\Bin\System.Web.Optimization.dll
+
 rd /s /q ..\..\Frontend\Scripts
 rd /s /q ..\..\Frontend\Styles
 rd /s /q ..\..\Frontend\Images
