@@ -46,13 +46,13 @@ namespace Composite.C1Console.Workflow.Activities
 
 
         [NonSerialized]
-        private EntityToken _entityToken = null;
+        private EntityToken _entityToken;
 
         [NonSerialized]
-        private ActionToken _actionToken = null;
+        private ActionToken _actionToken;
 
         [NonSerialized]
-        private WorkflowActionToken _workflowActionToken = null;
+        private WorkflowActionToken _workflowActionToken;
 
         [NonSerialized]
         private Dictionary<string, object> _bindings = new Dictionary<string, object>();
@@ -74,9 +74,9 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected override void Initialize(IServiceProvider provider)
         {
-            _onWorkflowIdledEventHandler = new EventHandler<WorkflowEventArgs>(OnWorkflowIdled);
+            _onWorkflowIdledEventHandler = OnWorkflowIdled;
 
-            if (this.DesignMode == false)
+            if (!this.DesignMode)
             {
                 WorkflowFacade.WorkflowRuntime.WorkflowIdled += _onWorkflowIdledEventHandler;
             }
@@ -88,7 +88,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         protected override void Uninitialize(IServiceProvider provider)
         {
-            if (this.DesignMode == false)
+            if (!this.DesignMode)
             {
                 WorkflowFacade.WorkflowRuntime.WorkflowIdled -= _onWorkflowIdledEventHandler;
             }
@@ -162,7 +162,7 @@ namespace Composite.C1Console.Workflow.Activities
         {
             get
             {
-                if ((_entityToken == null) && (this.SerializedEntityToken != null))
+                if (_entityToken == null && this.SerializedEntityToken != null)
                 {
                     _entityToken = EntityTokenSerializer.Deserialize(this.SerializedEntityToken);
                 }
@@ -178,7 +178,7 @@ namespace Composite.C1Console.Workflow.Activities
         {
             get
             {
-                if ((_actionToken == null) && (this.SerializedActionToken != null))
+                if (_actionToken == null && this.SerializedActionToken != null)
                 {
                     _actionToken = ActionTokenSerializer.Deserialize(this.SerializedActionToken);
                 }
@@ -198,29 +198,19 @@ namespace Composite.C1Console.Workflow.Activities
                 if (_bindings == null)
                 {
                     // Workflows with WorkflowPersistingType.Never does not get their bindings persisted.
-                    if (FormsWorkflowBindingCache.Bindings.ContainsKey(InstanceId))
-                    {
-                        _bindings = FormsWorkflowBindingCache.Bindings[_instanceId];
-                    }
-                    else
+                    if (!FormsWorkflowBindingCache.Bindings.TryGetValue(_instanceId, out _bindings))
                     {
                         _bindings = new Dictionary<string, object>();
                     }
                 }
+
                 return _bindings;
             }
             set
             {
                 _bindings = value;
 
-                if (FormsWorkflowBindingCache.Bindings.ContainsKey(_instanceId) == false)
-                {
-                    FormsWorkflowBindingCache.Bindings.Add(_instanceId, _bindings);
-                }
-                else
-                {
-                    FormsWorkflowBindingCache.Bindings[_instanceId] = _bindings;
-                }
+                FormsWorkflowBindingCache.Bindings[_instanceId] = _bindings;
             }
         }
 
@@ -251,7 +241,7 @@ namespace Composite.C1Console.Workflow.Activities
         public T GetBinding<T>(string name)
         {
             object obj;
-            if (this.Bindings.TryGetValue(name, out obj) == false)
+            if (!Bindings.TryGetValue(name, out obj))
             {
                 throw new InvalidOperationException(string.Format("The binding named '{0}' was not found", name));
             }
@@ -270,11 +260,9 @@ namespace Composite.C1Console.Workflow.Activities
                 binding = (T)obj;
                 return true;
             }
-            else
-            {
-                binding = default(T);
-                return false;
-            }
+
+            binding = default(T);
+            return false;
         }
 
 
@@ -282,14 +270,7 @@ namespace Composite.C1Console.Workflow.Activities
         /// <exclude />
         public void UpdateBinding(string name, object value)
         {
-            if (BindingExist(name) == false)
-            {
-                this.Bindings.Add(name, value);
-            }
-            else
-            {
-                this.Bindings[name] = value;
-            }
+            this.Bindings[name] = value;
         }
 
 
@@ -299,14 +280,7 @@ namespace Composite.C1Console.Workflow.Activities
         {
             foreach (var kvp in bindings)
             {
-                if (this.BindingExist(kvp.Key))
-                {
-                    this.Bindings[kvp.Key] = kvp.Value;
-                }
-                else
-                {
-                    this.Bindings.Add(kvp.Key, kvp.Value);
-                }
+                this.Bindings[kvp.Key] = kvp.Value;
             }
         }
 
@@ -341,14 +315,7 @@ namespace Composite.C1Console.Workflow.Activities
                     _workflowActionToken = this.ActionToken as WorkflowActionToken;
                 }
 
-                if (_workflowActionToken == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return _workflowActionToken.Payload;
-                }
+                return _workflowActionToken == null ? null : _workflowActionToken.Payload;
             }
         }
 
@@ -364,14 +331,7 @@ namespace Composite.C1Console.Workflow.Activities
                     _workflowActionToken = this.ActionToken as WorkflowActionToken;
                 }
 
-                if (_workflowActionToken == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    return _workflowActionToken.ExtraPayload;
-                }
+                return _workflowActionToken == null ? null : _workflowActionToken.ExtraPayload;
             }
         }
 
@@ -551,9 +511,9 @@ namespace Composite.C1Console.Workflow.Activities
         {
             FlowControllerServicesContainer flowControllerServicesContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
-            IManagementConsoleMessageService managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
+            var managementConsoleMessageService = flowControllerServicesContainer.GetService<IManagementConsoleMessageService>();
 
-            if (managementConsoleMessageService.CloseCurrentViewRequested == false)
+            if (!managementConsoleMessageService.CloseCurrentViewRequested)
             {
                 managementConsoleMessageService.CloseCurrentView();
             }
@@ -807,14 +767,7 @@ namespace Composite.C1Console.Workflow.Activities
         {
             if (e.WorkflowInstance.InstanceId == _instanceId)
             {
-                if (FormsWorkflowBindingCache.Bindings.ContainsKey(_instanceId) == false)
-                {
-                    FormsWorkflowBindingCache.Bindings.Add(_instanceId, this.Bindings);
-                }
-                else
-                {
-                    FormsWorkflowBindingCache.Bindings[_instanceId] = this.Bindings;
-                }
+                FormsWorkflowBindingCache.Bindings[_instanceId] = this.Bindings;
             }
         }
 

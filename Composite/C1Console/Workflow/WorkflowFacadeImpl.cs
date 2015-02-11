@@ -1158,7 +1158,8 @@ namespace Composite.C1Console.Workflow
                         if (!_resourceLocker.Resources.FormData.ContainsKey(id))
                         {
                             _resourceLocker.Resources.FormData.Add(id, formData);
-                            FormsWorkflowBindingCache.Bindings.Add(id, formData.Bindings);
+
+                            FormsWorkflowBindingCache.Bindings.TryAdd(id, formData.Bindings);
                         }
                     }
                     catch (DataSerilizationException ex)
