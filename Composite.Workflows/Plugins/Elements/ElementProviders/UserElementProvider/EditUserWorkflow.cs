@@ -91,7 +91,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserElementProvider
 
             IFormMarkupProvider markupProvider = new FormDefinitionFileMarkupProvider(@"\Administrative\EditUserStep1.xml");
 
-            XDocument formDocument = XDocument.Load(markupProvider.GetReader());
+            XDocument formDocument;
+            using (var reader = markupProvider.GetReader())
+            {
+                formDocument = XDocument.Load(reader);
+            }
 
             XElement bindingsElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
             XElement layoutElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);

@@ -58,9 +58,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             string bindingPrefix = string.Format("{0}:{1}.{2}", pageMetaDataDefinition.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
 
-            DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, bindingPrefix);
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, bindingPrefix);
 
-            GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
+            var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
             helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
             helper.FieldGroupLabel = StringResourceSystemFacade.ParseString(pageMetaDataDefinition.Label);
@@ -169,8 +169,12 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             IFormMarkupProvider markupProvider = new FormDefinitionFileMarkupProvider(@"\Administrative\EditPage.xml");
 
-            XDocument formDocument = XDocument.Load(markupProvider.GetReader());
-
+            XDocument formDocument;
+            using (var reader = markupProvider.GetReader())
+            {
+                formDocument = XDocument.Load(reader);
+            }
+            
             XElement bindingsXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
             XElement layoutXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);
             XElement tabPanelsXElement = layoutXElement.Element(DataTypeDescriptorFormsHelper.MainNamespace + "TabPanels");
@@ -178,7 +182,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             IEnumerable<ICompositionContainer> compositionContainers = selectedPage.GetAllowedMetaDataContainers().Evaluate();
 
-            Dictionary<Guid, XElement> compositionTabs = new Dictionary<Guid, XElement>();
+            var compositionTabs = new Dictionary<Guid, XElement>();
 
             foreach (ICompositionContainer compositionContainer in compositionContainers)
             {
@@ -188,7 +192,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 compositionTabs.Add(compositionContainer.Id, element);
             }
 
-            Dictionary<string, List<ClientValidationRule>> clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
+            var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
 
             List<IPageMetaDataDefinition> pageMetaDataDefinitions = selectedPage.GetAllowedMetaDataDefinitions();
 

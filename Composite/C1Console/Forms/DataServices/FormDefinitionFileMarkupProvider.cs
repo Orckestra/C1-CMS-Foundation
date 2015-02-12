@@ -16,13 +16,14 @@ namespace Composite.C1Console.Forms.DataServices
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public class FormDefinitionFileMarkupProvider : IFormMarkupProvider
     {
-        private string _formPath;
+        private readonly string _formPath;
 
 
         /// <exclude />
         public FormDefinitionFileMarkupProvider(string formPath)
         {
-            if (string.IsNullOrEmpty(formPath)) throw new ArgumentException("Path can not be empty", formPath);
+            Verify.ArgumentNotNullOrEmpty(formPath, "formPath");
+
             _formPath = formPath;
         }
 

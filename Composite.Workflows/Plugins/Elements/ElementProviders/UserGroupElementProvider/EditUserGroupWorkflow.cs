@@ -50,7 +50,11 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
         {
             IFormMarkupProvider markupProvider = new FormDefinitionFileMarkupProvider(@"\Administrative\UserGroupElementProviderEditUserGroupStep1.xml");
 
-            XDocument formDocument = XDocument.Load(markupProvider.GetReader());
+            XDocument formDocument;
+            using (var reader = markupProvider.GetReader())
+            {
+                formDocument = XDocument.Load(reader);
+            }
 
             XElement bindingsElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
             XElement layoutElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);
@@ -62,7 +66,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
             UpdateFormDefinitionWithActivePerspectives(userGroup, bindingsElement, placeHolderElement);
             UpdateFormDefinitionWithGlobalPermissions(userGroup, bindingsElement, placeHolderElement);
 
-            Dictionary<string, List<ClientValidationRule>> clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
+            var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
             clientValidationRules.Add("Name", ClientValidationRuleFacade.GetClientValidationRules(userGroup, "Name"));
 
             string formDefinition = formDocument.GetDocumentAsString();
@@ -183,7 +187,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
         private void UpdateFormDefinitionWithGlobalPermissions(IUserGroup userGroup, XElement bindingsElement, XElement placeHolderElement)
         {
-            GlobalPermissionsFormsHelper helper = new GlobalPermissionsFormsHelper(
+            var helper = new GlobalPermissionsFormsHelper(
                     SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsFieldLabel"),
                     SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectLabel"),
                     SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.GlobalPermissionsMultiSelectHelp")
@@ -204,7 +208,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
         {
             List<string> serializedEntityToken = UserGroupPerspectiveFacade.GetSerializedEntityTokens(userGroup.Id).ToList();
 
-            ActivePerspectiveFormsHelper helper = new ActivePerspectiveFormsHelper(
+            var helper = new ActivePerspectiveFormsHelper(
                     SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveFieldLabel"),
                     SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectLabel"),
                     SR.GetString("Composite.Plugins.UserGroupElementProvider", "EditUserGroup.EditUserGroupStep1.ActivePerspectiveMultiSelectHelp")
@@ -222,11 +226,7 @@ namespace Composite.Plugins.Elements.ElementProviders.UserGroupElementProvider
 
             ValidationResults validationResults = ValidationFacade.Validate<IUserGroup>(userGroup);
             e.Result = validationResults.IsValid;
-            if (validationResults.IsValid)
-            {
-                return;
-            }
-            else
+            if (!validationResults.IsValid)
             {
                 this.ShowFieldMessage(
                     "UserGroup.Name",
