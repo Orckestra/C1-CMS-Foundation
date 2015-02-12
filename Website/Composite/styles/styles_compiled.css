@@ -1344,8 +1344,7 @@ cursor: n-resize;
 @namespace url("http://www.w3.org/1999/xhtml");
 @namespace ui url("http://www.w3.org/1999/xhtml");
 
-body.rtl,
-body.rtl * {
+body.rtl {
 direction: rtl;
 }
 
