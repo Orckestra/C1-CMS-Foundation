@@ -11,11 +11,11 @@ using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Parallelization;
 
-namespace Composite.Core.WebClient
+namespace Composite.Core.WebClient 
 {
     internal static partial class BrowserRender
     {
-        /// <summary>
+        /// <summary> 
         /// Contains information about currently running instance of a PhantomJS server
         /// </summary>
         private class PhantomServer : IDisposable
@@ -137,10 +137,10 @@ namespace Composite.Core.WebClient
 
 
 
-                Task<string> readerTask = Task.Factory.StartNew(() =>
+                Task<string> readerTask = Task.Run(async () =>
                 {
                     _stdin.WriteLine(requestLine);
-                    return _stdout.ReadLine();
+                    return await _stdout.ReadLineAsync();
                 });
 
                 double timeout = (DateTime.Now - _process.StartTime).TotalSeconds < 120 ? 65 : 30;
