@@ -305,7 +305,10 @@ DataInputBinding.prototype._buildDOMContent = function () {
 		this.shadowTree.input.setAttribute("spellcheck", "false");
 	}
 
-
+	if (Localization.isRtl !== Localization.isUIRtl)
+	{
+		this.shadowTree.input.setAttribute("dir", Localization.isRtl?"rtl":"ltr");
+	}
 	/*
 	* Setup ASP.NET identity.
 	*/

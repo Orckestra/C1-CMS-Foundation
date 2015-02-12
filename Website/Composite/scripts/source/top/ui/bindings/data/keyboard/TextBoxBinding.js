@@ -80,6 +80,7 @@ TextBoxBinding.prototype._getInputElement = function() {
 		element = DOMUtil.createElementNS(Constants.NS_XHTML, "textarea", this.bindingDocument);
 	}
 	element.tabIndex = -1;
+
 	return element;
 } 
 
