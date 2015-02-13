@@ -22,9 +22,11 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         public CodeTypeDeclaration CreateClass()
         {
-            CodeTypeDeclaration codeTypeDeclaration = new CodeTypeDeclaration(_dataIdClassName);
-            codeTypeDeclaration.IsClass = true;
-            codeTypeDeclaration.TypeAttributes = (TypeAttributes.Public | TypeAttributes.Sealed);
+            var codeTypeDeclaration = new CodeTypeDeclaration(_dataIdClassName)
+            {
+                IsClass = true,
+                TypeAttributes = (TypeAttributes.Public | TypeAttributes.Sealed)
+            };
             codeTypeDeclaration.BaseTypes.Add(typeof(IDataId));
 
             AddDefaultConstructor(codeTypeDeclaration);
@@ -38,9 +40,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private static void AddDefaultConstructor(CodeTypeDeclaration declaration)
         {
-            CodeConstructor defaultConstructor = new CodeConstructor();
-
-            defaultConstructor.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            var defaultConstructor = new CodeConstructor {Attributes = MemberAttributes.Public | MemberAttributes.Final};
 
             declaration.Members.Add(defaultConstructor);
         }
@@ -49,16 +49,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
         private void AddConstructor(CodeTypeDeclaration declaration)
         {
-            CodeConstructor constructor = new CodeConstructor();
-            constructor.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            var constructor = new CodeConstructor { Attributes = MemberAttributes.Public | MemberAttributes.Final };
 
-            foreach (string keyPropertyName in _dataTypeDescriptor.KeyPropertyNames)
+            foreach (var keyField in _dataTypeDescriptor.KeyFields)
             {
-                Type keyPropertyType = _dataTypeDescriptor.Fields[keyPropertyName].InstanceType;
+                Type keyPropertyType = keyField.InstanceType;
 
-                constructor.Parameters.Add(new CodeParameterDeclarationExpression(keyPropertyType, MakeParamName(keyPropertyName)));
+                constructor.Parameters.Add(new CodeParameterDeclarationExpression(keyPropertyType, MakeParamName(keyField.Name)));
 
-                AddAsignment(constructor, keyPropertyName);
+                AddAsignment(constructor, keyField.Name);
             }
 
             declaration.Members.Add(constructor);
@@ -75,12 +74,14 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGener
 
                 declaration.Members.Add(new CodeMemberField(keyPropertyType, propertyFieldName));
 
-                CodeMemberProperty property = new CodeMemberProperty();
-                property.Name = keyPropertyName;
-                property.Attributes = MemberAttributes.Public | MemberAttributes.Final;
-                property.HasSet = true;
-                property.HasGet = true;
-                property.Type = new CodeTypeReference(keyPropertyType);
+                var property = new CodeMemberProperty
+                {
+                    Name = keyPropertyName,
+                    Attributes = MemberAttributes.Public | MemberAttributes.Final,
+                    HasSet = true,
+                    HasGet = true,
+                    Type = new CodeTypeReference(keyPropertyType)
+                };
                 property.GetStatements.Add(new CodeMethodReturnStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName)));
                 property.SetStatements.Add(new CodeAssignStatement(new CodeFieldReferenceExpression(new CodeThisReferenceExpression(), propertyFieldName), new CodeArgumentReferenceExpression("value")));
 

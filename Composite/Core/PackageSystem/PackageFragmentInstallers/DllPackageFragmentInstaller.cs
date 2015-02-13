@@ -312,7 +312,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
 
 
-        public class AssemblyBindingConfiguration
+        private class AssemblyBindingConfiguration
         {
             private static readonly XNamespace AssemblyBindingXNamespace = "urn:schemas-microsoft-com:asm.v1";
 
@@ -343,7 +343,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 _assemblyBindingElement = assemblyBindingElement;
             }
 
-            public DependantAssembly[] GetDependantAssemblies()
+            private DependantAssembly[] GetDependantAssemblies()
             {
                 return
                     _assemblyBindingElement.Elements(AssemblyBindingXNamespace + "dependentAssembly")
@@ -428,7 +428,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 _changed = false;
             }
 
-            public class DependantAssembly
+            internal class DependantAssembly
             {
                 private readonly XElement _innerElement;
                 private XElement _assemblyIdentity;

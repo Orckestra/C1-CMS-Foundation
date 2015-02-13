@@ -25,6 +25,7 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
         /// <summary>
         /// Validates the password against the rules defined in the configuration.
         /// </summary>
+        /// <param name="user"></param>
         /// <param name="password"></param>
         /// <param name="validationMessages"></param>
         /// <returns></returns>

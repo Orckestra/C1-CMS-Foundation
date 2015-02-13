@@ -83,6 +83,7 @@ namespace Composite.AspNet
         /// <param name="provider">The provider.</param>
         /// <param name="node">The node.</param>
         /// <param name="data">The data.</param>
+        /// <param name="level">The level of the page.</param>
         public CompositeC1SiteMapNode(CompositeC1SiteMapProvider provider, PageNode node, DataConnection data, int level)
             : base(provider, node.Id.ToString(), node.Url, node.MenuTitle, node.Description)
         {

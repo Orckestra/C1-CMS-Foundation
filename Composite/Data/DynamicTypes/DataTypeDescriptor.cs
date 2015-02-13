@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using Composite.Core;
 using Composite.Core.Extensions;
+using Composite.Core.Linq;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes.Configuration;
 using Composite.Data.DynamicTypes.Foundation;
@@ -162,7 +163,8 @@ namespace Composite.Data.DynamicTypes
         {
             get
             {
-                return this.KeyPropertyNames.Select(fieldName => this.Fields.Single(field => field.Name == fieldName));
+                return this.KeyPropertyNames.Select(fieldName => this.Fields.Where(field => field.Name == fieldName)
+                    .SingleOrException("Missing a field '{0}'", "Multiple fields with name '{0}'", fieldName));
             }
         }
 
