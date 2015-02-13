@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Cannot_Resolve_Path">
+            <summary>
+              Looks up a localized string similar to File name &apos;{0}&apos; is empty, contains invalid characters, has a drive specification without an absolute path, or is too long..
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Cannot_Resolve_Reference">
+            <summary>
+              Looks up a localized string similar to Assembly reference &apos;{0}&apos; is invalid and cannot be resolved..
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Compilation_Arguments">
+            <summary>
+              Looks up a localized string similar to Compilation parameters:.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Compiler_Failed_To_Create_File">
+            <summary>
+              Looks up a localized string similar to Cannot create file: {0}. The error message is {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Compiler_Failed_To_Open_File">
+            <summary>
+              Looks up a localized string similar to Cannot open file: {0}. The error message is {1}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Copyright">
+            <summary>
+              Looks up a localized string similar to Copyright (C) Microsoft Corporation. All rights reserved..
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Internal_Compiler_Error">
+            <summary>
+              Looks up a localized string similar to Internal Compiler Error: {0}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.Res.Product_Name">
+            <summary>
+              Looks up a localized string similar to CodeDOM Providers for .NET Compiler Platform (“Roslyn”).
+            </summary>
+        </member>
+        <member name="T:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CommonCodeProvider">
+            <summary>
+            Provides a base class for CodeDomProvider implementations that use the .NET Compiler Platform. This class is abstract.
+            </summary>
+        </member>
+        <member name="M:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CommonCodeProvider.CreateGenerator">
+            <summary>
+            When overridden in a derived class, creates a new code generator.
+            </summary>
+        </member>
+        <member name="M:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CommonCodeProvider.GetConverter(System.Type)">
+            <summary>
+            Gets a <see ref="System.ComponentModel.TypeConverter" /> for the specified data type.
+            </summary>
+        </member>
+        <member name="P:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CommonCodeProvider.FileExtension">
+            <summary>
+            Gets the default file name extension to use for source code files in the current language.
+            </summary>
+        </member>
+        <member name="T:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider">
+            <summary>
+            Provides access to instances of the .NET Compiler Platform C# code generator and code compiler.
+            </summary>
+        </member>
+        <member name="M:Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider.CreateCompiler">
+            <summary>
+            Gets an instance of the .NET Compiler Platform C# code compiler.
+            </summary>
+            <returns>An instance of the .NET Compiler Platform C# code compiler</returns>
+        </member>
+    </members>
+</doc>
