@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web.Hosting;
 using System.Workflow.Activities;
 using System.Workflow.ComponentModel.Compiler;
 using System.Workflow.Runtime;
@@ -20,6 +21,7 @@ using Composite.C1Console.Workflow.Foundation.PluginFacades;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
+using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.Threading;
 using Composite.Core.Types;
@@ -86,7 +88,7 @@ namespace Composite.C1Console.Workflow
                                 return;
                             }
 
-                            if (_isShutDown)
+                            if (_isShutDown || HostingEnvironment.ApplicationHost.ShutdownInitiated())
                             {
                                 Log.LogVerbose(LogTitleColored, "System is shutting down, skipping delayed initialization");
                                 return;
@@ -94,9 +96,22 @@ namespace Composite.C1Console.Workflow
 
                             int endTime = Environment.TickCount;
 
-                            using (_resourceLocker.Locker)
+                            try
                             {
-                                DoInitialize(endTime - startTime);
+                                using (_resourceLocker.Locker)
+                                {
+                                    DoInitialize(endTime - startTime);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                if (_isShutDown || HostingEnvironment.ApplicationHost.ShutdownInitiated())
+                                {
+                                    Log.LogVerbose(LogTitleColored, "Delayed initialization has failed, but the exception is ignored as the website is shutting down");
+                                    return;
+                                }
+
+                                Log.LogCritical(LogTitle, ex);
                             }
                         }
                     };
