@@ -10,6 +10,8 @@ using Composite.Core.WebClient.Renderings.Template;
 using System.Xml.Linq;
 
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_PageTemplateFeatureElementProvider;
+
 namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
@@ -27,9 +29,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
             this.Bindings.Add("Name", "");
             this.Bindings.Add("EditorType", "html");
 
-            Dictionary<string, string> editorOptions = new Dictionary<string, string>();
-            editorOptions.Add("html", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "AddWorkflow.LabelTemplateFeatureEditorType.html"));
-            editorOptions.Add("xml", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "AddWorkflow.LabelTemplateFeatureEditorType.xml"));
+            var editorOptions = new Dictionary<string, string>
+            {
+                { "html", Texts.AddWorkflow_LabelTemplateFeatureEditorType_html },
+                { "xml", Texts.AddWorkflow_LabelTemplateFeatureEditorType_xml }
+            };
 
             this.Bindings.Add("EditorTypeOptions", editorOptions);
         }
@@ -43,8 +47,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
 
             string filename = PageTemplateFeatureFacade.GetNewPageTemplateFeaturePath(name, editorType);
 
-            XhtmlDocument template = new XhtmlDocument();
-            template.Root.Add(new XAttribute(XNamespace.Xmlns + "f", Namespaces.Function10));
+            var template = new XhtmlDocument();
             template.Head.Add("");
             template.Body.Add(new XElement(Namespaces.Xhtml + "p", ""));
 
@@ -88,7 +91,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageTemplateFeatureElement
 
             e.Result = !C1File.Exists(xmlFilename) && !C1File.Exists(htmlFilename);
 
-            if (e.Result == false)
+            if (!e.Result)
             {
                 this.ShowFieldMessage("Name", StringResourceSystemFacade.GetString("Composite.Plugins.PageTemplateFeatureElementProvider", "AddWorkflow.NameInUse"));
                 return;
