@@ -97,9 +97,9 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 bool hasCaching = this.GetBinding<bool>("HasCaching");
                 bool hasPublishing = this.GetBinding<bool>("HasPublishing");
                 string labelFieldName = this.GetBinding<string>("LabelFieldName");
-                List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
+                var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
 
-                GeneratedTypesHelper helper = new GeneratedTypesHelper(oldType);
+                var helper = new GeneratedTypesHelper(oldType);
 
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))

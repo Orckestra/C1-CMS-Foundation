@@ -8,6 +8,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.GeneratedTypes;
 using Composite.Core.Types;
+using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.C1Console.Workflow;
@@ -16,7 +17,7 @@ using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Plugins_
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditInterfaceTypeWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
     {
@@ -38,7 +39,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private Type GetTypeFromEntityToken()
         {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
+            var entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
             return TypeManager.GetType(entityToken.SerializedTypeName);
         }
 
@@ -47,23 +48,23 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
         {
             DataTypeDescriptor dataTypeDescriptor = GetDataTypeDescriptor();
 
-            Dictionary<string, object> bindings = new Dictionary<string, object>();
-
-            GeneratedTypesHelper helper = new GeneratedTypesHelper(dataTypeDescriptor);
+            var helper = new GeneratedTypesHelper(dataTypeDescriptor);
 
             List<DataFieldDescriptor> fieldDescriptors = helper.EditableOwnDataFields.ToList();
 
-            bindings.Add("TypeName", dataTypeDescriptor.Name);
-            bindings.Add("TypeNamespace", dataTypeDescriptor.Namespace);
-            bindings.Add("TypeTitle", dataTypeDescriptor.Title);
-            bindings.Add("LabelFieldName", dataTypeDescriptor.LabelFieldName);
-            bindings.Add("DataFieldDescriptors", fieldDescriptors);
-            bindings.Add("HasCaching", helper.IsCachable);
-            bindings.Add("HasPublishing", helper.IsPublishControlled);
-            bindings.Add("HasLocalization", helper.IsLocalizedControlled);
-            bindings.Add("EditProcessControlledAllowed", helper.IsEditProcessControlledAllowed);
-            bindings.Add("OldTypeName", dataTypeDescriptor.Name);
-            bindings.Add("OldTypeNamespace", dataTypeDescriptor.Namespace);
+            var bindings = new Dictionary<string, object>
+            {
+                {"TypeName", dataTypeDescriptor.Name},
+                {"TypeNamespace", dataTypeDescriptor.Namespace},
+                {"TypeTitle", dataTypeDescriptor.Title},
+                {"LabelFieldName", dataTypeDescriptor.LabelFieldName},
+                {"DataFieldDescriptors", fieldDescriptors},
+                {"HasCaching", helper.IsCachable},
+                {"HasPublishing", helper.IsPublishControlled},
+                {"EditProcessControlledAllowed", helper.IsEditProcessControlledAllowed},
+                {"OldTypeName", dataTypeDescriptor.Name},
+                {"OldTypeNamespace", dataTypeDescriptor.Namespace}
+            };
 
             this.UpdateBindings(bindings);
 
@@ -89,11 +90,11 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             string typeTitle = this.GetBinding<string>("TypeTitle");
             bool hasCaching = this.GetBinding<bool>("HasCaching");
             bool hasPublishing = this.GetBinding<bool>("HasPublishing");
-            bool hasLocalization = this.GetBinding<bool>("HasLocalization");
             string labelFieldName = this.GetBinding<string>("LabelFieldName");
-            List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
+            var dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
 
-            GeneratedTypesHelper helper = new GeneratedTypesHelper(oldType);
+            var helper = new GeneratedTypesHelper(oldType);
+            bool hasLocalization = typeof (ILocalizedControlled).IsAssignableFrom(oldType);
 
             string errorMessage;
             if (!helper.ValidateNewTypeName(typeName, out errorMessage))

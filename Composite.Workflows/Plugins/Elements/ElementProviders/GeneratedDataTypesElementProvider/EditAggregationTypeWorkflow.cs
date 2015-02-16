@@ -29,8 +29,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private string HasCachingBindingName { get { return "HasCaching"; } }
         private string HasPublishingBindingName { get { return "HasPublishing"; } }
-        private string HasLocalizationBindingName { get { return "HasLocalization"; } }
-
 
 
         public EditAggregationTypeWorkflow()
@@ -66,7 +64,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
             this.Bindings.Add("HasCaching", helper.IsCachable);
             this.Bindings.Add("HasPublishing", helper.IsPublishControlled);
-            this.Bindings.Add("HasLocalization", helper.IsLocalizedControlled);
 
             this.Bindings.Add("DataFieldDescriptors", fieldDescriptors);
 
@@ -98,11 +95,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 string typeTitle = this.GetBinding<string>("TypeTitle");
                 bool hasCaching = this.GetBinding<bool>("HasCaching");
                 bool hasPublishing = this.GetBinding<bool>("HasPublishing");
-                bool hasLocalization = this.GetBinding<bool>("HasLocalization");
                 string labelFieldName = this.GetBinding<string>("LabelFieldName");
                 List<DataFieldDescriptor> dataFieldDescriptors = this.GetBinding<List<DataFieldDescriptor>>("DataFieldDescriptors");
 
-                GeneratedTypesHelper helper = new GeneratedTypesHelper(oldType);
+                var helper = new GeneratedTypesHelper(oldType);
 
                 string errorMessage;
                 if (!helper.ValidateNewTypeName(typeName, out errorMessage))
@@ -136,6 +132,8 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 helper.SetNewTypeFullName(typeName, typeNamespace);
                 helper.SetNewTypeTitle(typeTitle);
                 helper.SetNewFieldDescriptors(dataFieldDescriptors, labelFieldName);
+
+                bool hasLocalization = DataLocalizationFacade.IsLocalized(oldType);
 
                 if (helper.IsEditProcessControlledAllowed)
                 {
