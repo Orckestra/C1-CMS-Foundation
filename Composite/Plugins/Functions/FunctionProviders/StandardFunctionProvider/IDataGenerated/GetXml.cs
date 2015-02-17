@@ -41,8 +41,8 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private static readonly Hashtable<string, QueryInfo> _queryInfoTable = new Hashtable<string, QueryInfo>();
 
-        private List<string> __propertyNames;
-        private List<PropertyInfo> __propertyInfos;
+        private List<string> _propertyNames;
+        private List<PropertyInfo> _propertyInfos;
         private object _lock = new object();
 
         public GetXml(EntityTokenFactory entityTokenFactory)
@@ -54,37 +54,42 @@ namespace Composite.Plugins.Functions.FunctionProviders.StandardFunctionProvider
 
         private List<PropertyInfo> GetPropertyInfos()
         {
-            lock (_lock)
+            if (_propertyInfos == null)
             {
-                if (__propertyInfos == null)
+                lock (_lock)
                 {
-                    __propertyInfos = typeof(T).GetKeyProperties();
-
-                    PropertyInfo labelPropertyInfo = typeof(T).GetLabelPropertyInfo();
-
-                    if (__propertyInfos.Any(f => f.Name == labelPropertyInfo.Name) == false)
+                    if (_propertyInfos == null)
                     {
-                        __propertyInfos.Add(labelPropertyInfo);
+                        var result = new List<PropertyInfo>(typeof (T).GetKeyProperties());
+
+                        PropertyInfo labelPropertyInfo = typeof (T).GetLabelPropertyInfo();
+
+                        if (!result.Any(f => f.Name == labelPropertyInfo.Name))
+                        {
+                            result.Add(labelPropertyInfo);
+                        }
+
+                        _propertyInfos = result;
                     }
                 }
-
-                return __propertyInfos;
             }
+
+            return _propertyInfos;
         }
 
         private List<string> GetPropertyNames()
         {
-            List<string> result = __propertyNames;
+            List<string> result = _propertyNames;
 
             if (result == null)
             {
                 lock (_lock)
                 {
-                    result = __propertyNames;
+                    result = _propertyNames;
                     if (result == null)
                     {
                         result = GetPropertyInfos().Select(f => f.Name).ToList();
-                        __propertyNames = result;
+                        _propertyNames = result;
                     }
                 }
             }

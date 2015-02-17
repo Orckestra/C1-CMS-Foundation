@@ -412,7 +412,7 @@ namespace Composite.Data
         {
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            List<PropertyInfo> keyPropertyInfos = DataAttributeFacade.GetKeyProperties(typeof(T));
+            var keyPropertyInfos = DataAttributeFacade.GetKeyProperties(typeof(T));
 
             ParameterExpression parameterExpression = Expression.Parameter(typeof(T), "data");
 
@@ -446,7 +446,7 @@ namespace Composite.Data
             if (interfaceType == null) throw new ArgumentNullException("interfaceType");
             if (dataKeyPropertyCollection == null) throw new ArgumentNullException("dataKeyPropertyCollection");
 
-            List<PropertyInfo> keyPropertyInfos = DataAttributeFacade.GetKeyProperties(interfaceType);
+            var keyPropertyInfos = DataAttributeFacade.GetKeyProperties(interfaceType);
 
             ParameterExpression parameterExpression = Expression.Parameter(interfaceType, "data");
 
@@ -478,7 +478,7 @@ namespace Composite.Data
 
 
         // Private helper
-        private static Expression GetPredicateExpressionByUniqueKeyFilterExpression(List<PropertyInfo> keyPropertyInfos, DataKeyPropertyCollection dataKeyPropertyCollection, ParameterExpression parameterExpression)
+        private static Expression GetPredicateExpressionByUniqueKeyFilterExpression(IReadOnlyList<PropertyInfo> keyPropertyInfos, DataKeyPropertyCollection dataKeyPropertyCollection, ParameterExpression parameterExpression)
         {
             if (keyPropertyInfos.Count != dataKeyPropertyCollection.Count) throw new ArgumentException("Missing og to many key propertyies");
 

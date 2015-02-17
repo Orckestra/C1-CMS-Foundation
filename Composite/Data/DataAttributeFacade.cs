@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.C1Console.Events;
-using Composite.Core.Logging;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Types;
 
@@ -19,7 +20,6 @@ namespace Composite.Data
     public static class DataAttributeFacade
     {
         private static ResourceLocker<Resources> _resourceLocker = new ResourceLocker<Resources>(new Resources(), Resources.Initialize, false);
-        private static Hashtable<Type, List<string>> _interfaceTypeToKeyPropertyNames = new Hashtable<Type, List<string>>(); 
 
 
         static DataAttributeFacade()
@@ -172,18 +172,11 @@ namespace Composite.Data
         /// <exclude />
         public static bool IsNotReferenceable(this Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            bool isNotReferenceable;
+            var map = _resourceLocker.Resources.InterfaceToNotReferenceableCache;
 
-            if (_resourceLocker.Resources.InterfaceToNotReferenceableCache.TryGetValue(interfaceType, out isNotReferenceable) == false)
-            {
-                isNotReferenceable = interfaceType.GetCustomInterfaceAttributes<NotReferenceableAttribute>().Any();
-
-                _resourceLocker.Resources.InterfaceToNotReferenceableCache.Add(interfaceType, isNotReferenceable);
-            }
-
-            return isNotReferenceable;
+            return map.GetOrAdd(interfaceType, type => type.GetCustomInterfaceAttributes<NotReferenceableAttribute>().Any());
         }
 
 
@@ -342,124 +335,106 @@ namespace Composite.Data
         /// <exclude />
         public static CachingType GetCachingType(Type interfaceType)
         {
-            CachingType cachingType;
+            var map = _resourceLocker.Resources.InterfaceTypeToCachingTypeCache;
 
-            var res = _resourceLocker;
-
-            if (!res.Resources.InterfaceTypeToCachingTypeCache.TryGetValue(interfaceType, out cachingType))
+            return map.GetOrAdd(interfaceType, type =>
             {
-                using (res.Locker)
-                {
-                    if (!res.Resources.InterfaceTypeToCachingTypeCache.TryGetValue(interfaceType, out cachingType))
-                    {
-                        List<CachingAttribute> list = interfaceType.GetCustomInterfaceAttributes<CachingAttribute>().ToList();
+                var list = type.GetCustomInterfaceAttributes<CachingAttribute>().ToList();
 
-                        cachingType = (list.Count == 0) ? CachingType.None : list[0].CachingType;
-
-                        res.Resources.InterfaceTypeToCachingTypeCache.Add(interfaceType, cachingType);
-                    }
-                }
-            }
-
-            return cachingType;
+                return (list.Count == 0) ? CachingType.None : list[0].CachingType;
+            });
         }
 
         /// <exclude />
         [Obsolete("Use GetDataReferenceProperties() instead ")]
         public static List<ForeignPropertyInfo> GetDataReferencePropertyInfoes(Type interfaceType)
         {
-            return GetDataReferenceProperties(interfaceType);
+            return new List<ForeignPropertyInfo>(GetDataReferenceProperties(interfaceType));
         }
 
 
         /// <exclude />
-        public static List<ForeignPropertyInfo> GetDataReferenceProperties(Type interfaceType)
+        public static IReadOnlyList<ForeignPropertyInfo> GetDataReferenceProperties(Type interfaceType)
         {
-            List<ForeignPropertyInfo> foreignKeyProperyInfos;
+            var map = _resourceLocker.Resources.InterfaceTypeToDataReferenceProperties;
 
-            using (_resourceLocker.Locker)
+            return map.GetOrAdd(interfaceType, type =>
             {
-                if (_resourceLocker.Resources.InterfaceTypeToDataReferenceProperties.TryGetValue(interfaceType, out foreignKeyProperyInfos) == false)
+                var foreignKeyProperies = new List<ForeignPropertyInfo>();
+
+                foreach (PropertyInfo propertyInfo in type.GetPropertiesRecursively())
                 {
-                    foreignKeyProperyInfos = new List<ForeignPropertyInfo>();
+                    var  attributes = propertyInfo.GetCustomAttributesRecursively<ForeignKeyAttribute>().ToList();
 
-                    foreach (PropertyInfo propertyInfo in interfaceType.GetPropertiesRecursively())
+                    Verify.That(attributes.Count <= 1, "More than one '{0}' specified for the property named '{1}'", typeof (ForeignKeyAttribute), propertyInfo.Name);
+
+                    if (attributes.Count == 1)
                     {
-                        List<ForeignKeyAttribute> attributes = propertyInfo.GetCustomAttributesRecursively<ForeignKeyAttribute>().ToList();
+                        var attr = attributes[0];
 
-                        if (attributes.Count > 1) throw new InvalidOperationException(string.Format("More than one '{0}' specified for the property named '{1}'", typeof(ForeignKeyAttribute), propertyInfo.Name));
-
-                        if (attributes.Count == 1)
+                        if (attr.IsValid)
                         {
-                            if (attributes[0].IsValid)
+                            if (attr.InterfaceType == null)
                             {
-                                if (attributes[0].InterfaceType == null) throw new InvalidOperationException(string.Format("Null argument is not allowed for the attribute '{0}' on the property '{1}'", typeof(ForeignKeyAttribute), propertyInfo));
-                                if (typeof(IData).IsAssignableFrom(attributes[0].InterfaceType) == false) throw new InvalidOperationException(string.Format("The argument should inherit the type '{0}' for the attribute '{1}' on the property '{2}'", typeof(IData), typeof(ForeignKeyAttribute), propertyInfo));                                
+                                throw new InvalidOperationException(string.Format("Null argument is not allowed for the attribute '{0}' on the property '{1}'", 
+                                    typeof(ForeignKeyAttribute), propertyInfo));
+                            }
+                                
 
-                                if (attributes[0].IsNullReferenceValueSet)
-                                {
-                                    foreignKeyProperyInfos.Add(new ForeignPropertyInfo(
-                                            propertyInfo,
-                                            attributes[0].InterfaceType,
-                                            attributes[0].KeyPropertyName,
-                                            attributes[0].AllowCascadeDeletes,
-                                            attributes[0].NullReferenceValue,
-                                            attributes[0].NullReferenceValueType,
-                                            attributes[0].NullableString
-                                        ));
-                                }
-                                else
-                                {
-                                    foreignKeyProperyInfos.Add(new ForeignPropertyInfo(
-                                            propertyInfo,
-                                            attributes[0].InterfaceType,
-                                            attributes[0].KeyPropertyName,
-                                            attributes[0].AllowCascadeDeletes,
-                                            attributes[0].NullableString
-                                        ));
-                                }
+                            if (!typeof (IData).IsAssignableFrom(attr.InterfaceType))
+                            {
+                                throw new InvalidOperationException(string.Format("The argument should inherit the type '{0}' for the attribute '{1}' on the property '{2}'", 
+                                    typeof(IData), typeof(ForeignKeyAttribute), propertyInfo));
+                            }
+                                
+
+                            if (attr.IsNullReferenceValueSet)
+                            {
+                                foreignKeyProperies.Add(new ForeignPropertyInfo(
+                                    propertyInfo,
+                                    attr.InterfaceType,
+                                    attr.KeyPropertyName,
+                                    attr.AllowCascadeDeletes,
+                                    attr.NullReferenceValue,
+                                    attr.NullReferenceValueType,
+                                    attr.NullableString
+                                    ));
                             }
                             else
                             {
-                                LoggingService.LogWarning("DataAttributeFacade", string.Format("Ignoring unknown foreign key reference from type '{0}' to type '{1}'. ", interfaceType.FullName, attributes[0].TypeManagerName));
+                                foreignKeyProperies.Add(new ForeignPropertyInfo(
+                                    propertyInfo,
+                                    attr.InterfaceType,
+                                    attr.KeyPropertyName,
+                                    attr.AllowCascadeDeletes,
+                                    attr.NullableString
+                                    ));
                             }
                         }
+                        else
+                        {
+                            Log.LogWarning("DataAttributeFacade", "Ignoring unknown foreign key reference from type '{0}' to type '{1}'. ",
+                                    type.FullName, attr.TypeManagerName);
+                        }
                     }
-
-                    _resourceLocker.Resources.InterfaceTypeToDataReferenceProperties.Add(interfaceType, foreignKeyProperyInfos);
                 }
-            }
 
-            return foreignKeyProperyInfos;
+                return foreignKeyProperies;
+            });
         }
 
 
 
         /// <exclude />
-        public static List<string> GetKeyPropertyNames(this Type interfaceType)
+        public static IReadOnlyList<string> GetKeyPropertyNames(this Type interfaceType)
         {
             Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            List<string> keyPropertyNames;
+            var map = _resourceLocker.Resources.InterfaceTypeToKeyPropertyNames;
 
-            var hashtable = _interfaceTypeToKeyPropertyNames;
-
-            if (!hashtable.TryGetValue(interfaceType, out keyPropertyNames))
-            {
-                keyPropertyNames = (from kpn in interfaceType.GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
-                                    orderby kpn.Index
-                                    select kpn.KeyPropertyName).ToList();
-
-                lock (hashtable)
-                {
-                    if (!hashtable.ContainsKey(interfaceType))
-                    {
-                        hashtable.Add(interfaceType, keyPropertyNames);
-                    }
-                }
-            }
-
-            return keyPropertyNames;
+            return map.GetOrAdd(interfaceType, type => (from kpn in type.GetCustomAttributesRecursively<KeyPropertyNameAttribute>()
+                                                        orderby kpn.Index
+                                                        select kpn.KeyPropertyName).ToList());
         }
 
 
@@ -467,12 +442,12 @@ namespace Composite.Data
         [Obsolete("Use GetKeyProperties() instead")]
         public static List<PropertyInfo> GetKeyPropertyInfoes(this IData data)
         {
-            return GetKeyProperties(data);
+            return new List<PropertyInfo>(GetKeyProperties(data));
         }
 
 
         /// <exclude />
-        public static List<PropertyInfo> GetKeyProperties(this IData data)
+        public static IReadOnlyCollection<PropertyInfo> GetKeyProperties(this IData data)
         {
             if (data == null) throw new ArgumentNullException("data");
 
@@ -484,42 +459,36 @@ namespace Composite.Data
         [Obsolete("Use GetKeyProperties() instead")]
         public static List<PropertyInfo> GetKeyPropertyInfoes(this Type interfaceType)
         {
-            return GetKeyProperties(interfaceType);
+            return new List<PropertyInfo>(GetKeyProperties(interfaceType)); 
         }
 
         /// <exclude />
-        public static List<PropertyInfo> GetKeyProperties(this Type interfaceType)
+        public static IReadOnlyList<PropertyInfo> GetKeyProperties(this Type interfaceType)
         {
-            if (interfaceType == null) throw new ArgumentNullException("interfaceType");
-            if (typeof(IData).IsAssignableFrom(interfaceType) == false) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));
+            Verify.ArgumentNotNull(interfaceType, "interfaceType");
 
-            List<PropertyInfo> keyProperties;
+            if (!typeof(IData).IsAssignableFrom(interfaceType)) throw new ArgumentException(string.Format("The specified type must inherit from '{0}", typeof(IData)));
 
-            using (_resourceLocker.Locker)
+            var map = _resourceLocker.Resources.InterfaceTypeToKeyPropertyInfo;
+
+            return map.GetOrAdd(interfaceType, type =>
             {
-                if (_resourceLocker.Resources.InterfaceTypeToKeyProeprtyInfoes.TryGetValue(interfaceType, out keyProperties) == false)
+                var keyProperties = new List<PropertyInfo>();
+
+                List<PropertyInfo> properties = type.GetPropertiesRecursively();
+
+                foreach (string name in GetKeyPropertyNames(type))
                 {
-                    keyProperties = new List<PropertyInfo>();
+                    PropertyInfo propertyInfo = properties.FirstOrDefault(pi => pi.Name == name);
 
-                    List<PropertyInfo> pis = interfaceType.GetPropertiesRecursively();
+                    Verify.IsNotNull(propertyInfo, "Type '{0}' declare (or inherit) a '{1}' with a name '{2}' that was not found as a property on the type.", type, typeof(KeyPropertyNameAttribute), name);
 
-                    foreach (string name in GetKeyPropertyNames(interfaceType))
-                    {
-                        PropertyInfo propertyInfo =
-                            (from pi in pis
-                             where pi.Name == name
-                             select pi).FirstOrDefault();
-
-                        if (propertyInfo == null) throw new InvalidOperationException(string.Format("Type '{0}' declare (or inherit) a '{1}' with a name '{2}' that was not found as a property on the type.", interfaceType, typeof(KeyPropertyNameAttribute), name));
-
-                        keyProperties.Add(propertyInfo);
-                    }
-
-                    _resourceLocker.Resources.InterfaceTypeToKeyProeprtyInfoes.Add(interfaceType, keyProperties);
+                    keyProperties.Add(propertyInfo);
                 }
-            }
 
-            return new List<PropertyInfo>(keyProperties);
+                return keyProperties;
+
+            });
         }
 
 
@@ -580,7 +549,6 @@ namespace Composite.Data
         private static void OnFlushEvent(FlushEventArgs args)
         {
             Flush();
-            _interfaceTypeToKeyPropertyNames = new Hashtable<Type, List<string>>();
         }
 
 
@@ -591,12 +559,13 @@ namespace Composite.Data
             public Dictionary<Type, bool> InterfaceToAutoUpdatebleCache { get; set; }
             public Dictionary<Type, bool> InterfaceToGeneratedCache { get; set; }
             public Hashtable<Type, Guid> InterfaceToImmutableTypeIdCache { get; set; }
-            public Dictionary<Type, bool> InterfaceToNotReferenceableCache { get; set; }
+            public ConcurrentDictionary<Type, bool> InterfaceToNotReferenceableCache { get; set; }
             public Dictionary<Type, KeyValuePair<MethodInfo, string>> InterfaceTypeToLabelMethodInfoCache { get; set; }
-            public Hashtable<Type, CachingType> InterfaceTypeToCachingTypeCache { get; set; }
-            public Dictionary<Type, List<ForeignPropertyInfo>> InterfaceTypeToDataReferenceProperties { get; set; }
-            public Dictionary<Type, List<PropertyInfo>> InterfaceTypeToKeyProeprtyInfoes { get; set; }
+            public ConcurrentDictionary<Type, CachingType> InterfaceTypeToCachingTypeCache { get; set; }
+            public ConcurrentDictionary<Type, IReadOnlyList<ForeignPropertyInfo>> InterfaceTypeToDataReferenceProperties { get; set; }
+            public ConcurrentDictionary<Type, IReadOnlyList<PropertyInfo>> InterfaceTypeToKeyPropertyInfo { get; set; }
             public Dictionary<Type, string> InterfaceTypeToTypeTitle { get; set; }
+            public ConcurrentDictionary<Type, IReadOnlyList<string>> InterfaceTypeToKeyPropertyNames { get; set; }
 
             public static void Initialize(Resources resources)
             {
@@ -605,12 +574,13 @@ namespace Composite.Data
                 resources.InterfaceToAutoUpdatebleCache = new Dictionary<Type, bool>();
                 resources.InterfaceToGeneratedCache = new Dictionary<Type, bool>();
                 resources.InterfaceToImmutableTypeIdCache = new Hashtable<Type, Guid>();
-                resources.InterfaceToNotReferenceableCache = new Dictionary<Type, bool>();
+                resources.InterfaceToNotReferenceableCache = new ConcurrentDictionary<Type, bool>();
                 resources.InterfaceTypeToLabelMethodInfoCache = new Dictionary<Type, KeyValuePair<MethodInfo, string>>();
-                resources.InterfaceTypeToCachingTypeCache = new Hashtable<Type, CachingType>();
-                resources.InterfaceTypeToDataReferenceProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
-                resources.InterfaceTypeToKeyProeprtyInfoes = new Dictionary<Type, List<PropertyInfo>>();
+                resources.InterfaceTypeToCachingTypeCache = new ConcurrentDictionary<Type, CachingType>();
+                resources.InterfaceTypeToDataReferenceProperties = new ConcurrentDictionary<Type, IReadOnlyList<ForeignPropertyInfo>>();
+                resources.InterfaceTypeToKeyPropertyInfo = new ConcurrentDictionary<Type, IReadOnlyList<PropertyInfo>>();
                 resources.InterfaceTypeToTypeTitle = new Dictionary<Type, string>();
+                resources.InterfaceTypeToKeyPropertyNames = new ConcurrentDictionary<Type, IReadOnlyList<string>>();
             }
         }
     }

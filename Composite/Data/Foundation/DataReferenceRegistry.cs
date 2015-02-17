@@ -15,13 +15,13 @@ namespace Composite.Data.Foundation
         private static readonly string LogTitle = "DataReferenceRegistry";
 
         private static Dictionary<Type, List<Type>> _referencedToReferees = new Dictionary<Type, List<Type>>();
-        private static Dictionary<Type, List<ForeignPropertyInfo>> _foreignKeyProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
+        private static Dictionary<Type, IReadOnlyList<ForeignPropertyInfo>> _foreignKeyProperties = new Dictionary<Type, IReadOnlyList<ForeignPropertyInfo>>();
 
 
 
         static DataReferenceRegistry()
         {
-            GlobalEventSystemFacade.SubscribeToFlushEvent(OnFlushEvent);
+            GlobalEventSystemFacade.SubscribeToFlushEvent(args => Flush());
         }
 
 
@@ -56,7 +56,7 @@ namespace Composite.Data.Foundation
         {
             Verify.ArgumentNotNull(refereeType, "refereeType");
 
-            List<ForeignPropertyInfo> foreignKeyProperyInfos;
+            IReadOnlyList<ForeignPropertyInfo> foreignKeyProperyInfos;
 
             using (GlobalInitializerFacade.CoreIsInitializedScope)
             {
@@ -66,7 +66,7 @@ namespace Composite.Data.Foundation
                 }
             }
 
-            return foreignKeyProperyInfos;
+            return new List<ForeignPropertyInfo>(foreignKeyProperyInfos);
         }
 
 
@@ -79,7 +79,7 @@ namespace Composite.Data.Foundation
             }
 
             _referencedToReferees = new Dictionary<Type, List<Type>>();
-            _foreignKeyProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
+            _foreignKeyProperties = new Dictionary<Type, IReadOnlyList<ForeignPropertyInfo>>();
 
             foreach (Type type in DataProviderRegistry.AllInterfaces)
             {
@@ -91,7 +91,7 @@ namespace Composite.Data.Foundation
 
         private static void AddNewType(Type interfaceType)
         {
-            List<ForeignPropertyInfo> foreignKeyProperties = DataAttributeFacade.GetDataReferenceProperties(interfaceType);
+            var foreignKeyProperties = DataAttributeFacade.GetDataReferenceProperties(interfaceType);
             
             foreach (ForeignPropertyInfo foreignKeyProperyInfo in foreignKeyProperties)
             {
@@ -152,14 +152,7 @@ namespace Composite.Data.Foundation
         private static void Flush()
         {
             _referencedToReferees = new Dictionary<Type, List<Type>>();
-            _foreignKeyProperties = new Dictionary<Type, List<ForeignPropertyInfo>>();
-        }
-
-
-
-        private static void OnFlushEvent(FlushEventArgs args)
-        {
-            Flush();
+            _foreignKeyProperties = new Dictionary<Type, IReadOnlyList<ForeignPropertyInfo>>();
         }
     }
 }
