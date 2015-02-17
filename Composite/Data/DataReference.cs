@@ -11,7 +11,7 @@ namespace Composite.Data
     /// that a data reference need not be set for this to be in a valid state.
     /// </summary>
     /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
-    [DataReferenceConverter()]
+    [DataReferenceConverter]
     public class NullableDataReference<T> : DataReference<T> where T : class, IData
     {
         /// <exclude />
@@ -33,12 +33,12 @@ namespace Composite.Data
     /// Represents a reference to a Composite C1 IData item. 
     /// </summary>
     /// <typeparam name="T">The C1 Data Type (<see cref="IData"/>) being referenced</typeparam>
-    [DataReferenceConverter()]
+    [DataReferenceConverter]
     public class DataReference<T> : IDataReference where T : class, IData
     {
         private readonly object _keyValue;
-
-
+        private T _cachedValue;
+            
         /// <summary>
         /// Constructs a 'empty' DataReference.
         /// </summary>
@@ -58,7 +58,7 @@ namespace Composite.Data
             if (keyValue != null)
             {
                 Type realKeyType = typeof(T).GetKeyProperties().Single().PropertyType;
-                if (!(keyValue.GetType() == realKeyType))
+                if (keyValue.GetType() != realKeyType)
                 {
                     _keyValue = ValueTypeConverter.Convert(keyValue, realKeyType);
                 }
@@ -146,8 +146,13 @@ namespace Composite.Data
                 {
                     return default(T);
                 }
-                
-                return DataFacade.GetDataByUniqueKey<T>(_keyValue);
+
+                if (_cachedValue != null)
+                {
+                    return _cachedValue;
+                }
+
+                return _cachedValue = DataFacade.GetDataByUniqueKey<T>(_keyValue);
             }
         }
 
