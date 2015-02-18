@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
-using Composite.Data;
 using Composite.C1Console.Forms;
 using Composite.Functions;
 using Composite.Functions.ManagedParameters;
@@ -267,7 +265,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             RepeaterCommandEventArgs repeaterEventArgs = (RepeaterCommandEventArgs)e;
             Guid FieldId = new Guid(repeaterEventArgs.CommandArgument.ToString());
 
-            if (ValidateSave() == true)
+            if (ValidateSave())
             {
                 switch (repeaterEventArgs.CommandName)
                 {
@@ -340,7 +338,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         private void Field_Select(Guid FieldId)
         {
-            if (ValidateSave() == true)
+            if (ValidateSave())
             {
                 if (this.CurrentlySelectedFieldId != Guid.Empty)
                 {
@@ -416,8 +414,9 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             get
             {
-                if (this.ViewState["Fields"] == null) throw new Exception("ViewState element 'Fields' does not exist");
-                return (List<ManagedParameterDefinition>)this.ViewState["Fields"];
+                var value = this.ViewState["Fields"];
+                if (value == null) throw new Exception("ViewState element 'Fields' does not exist");
+                return (List<ManagedParameterDefinition>)value;
             }
 
             set
@@ -425,24 +424,6 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
                 this.ViewState["Fields"] = value;
             }
         }
-
-
-
-        private Type GetInstanceTypeForReference( Type referencedType )
-        {
-            List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
-
-            if (keyProperties.Count == 1)
-            {
-                return keyProperties[0].PropertyType;
-            }
-            else
-            {
-                // with multi key tyoes we go with a string
-                return typeof(string);
-            }
-        }
-
 
 
         protected Type CurrentlySelectedWidgetReturnType
@@ -510,7 +491,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
         public void btnAddNew_Click()
         {
-            if (ValidateSave() == true)
+            if (ValidateSave())
             {
                 if (this.CurrentlySelectedFieldId != Guid.Empty)
                     Field_Save();
@@ -549,19 +530,19 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             if (this.CurrentlySelectedFieldId == Guid.Empty) return true;
 
-            if (this.NameField.Text.Contains(" ") == true)
+            if (this.NameField.Text.Contains(" "))
             {
                 Baloon(this.NameField, GetString("SpaceInNameError"));
                 return false;
             }
 
-            if (string.IsNullOrEmpty(this.NameField.Text) == true)
+            if (string.IsNullOrEmpty(this.NameField.Text))
             {
                 Baloon(this.NameField, GetString("NameEmptyError"));
                 return false;
             }
 
-            if (this.CurrentFields.Where(f=>f.Name == this.NameField.Text && f.Id != this.CurrentlySelectedFieldId ).Any() == true)
+            if (this.CurrentFields.Where(f=>f.Name == this.NameField.Text && f.Id != this.CurrentlySelectedFieldId ).Any())
             {
                 Baloon(this.NameField, GetString("NameAlreadyInUseError"));
                 return false;
@@ -798,7 +779,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         {
             if (this.CurrentlySelectedFieldId != Guid.Empty)
             {
-                if (ValidateSave() == true)
+                if (ValidateSave())
                 {
                     Field_Save();
                 }
@@ -813,7 +794,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
             // TODO: to be used
             if (this.CurrentlySelectedFieldId != Guid.Empty)
             {
-                if (ValidateSave() == true)
+                if (ValidateSave())
                 {
                     Field_Save();
                 }
@@ -823,7 +804,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
 
             foreach (var field in this.CurrentFields)
             {
-                if (string.IsNullOrEmpty(field.Label) == true)
+                if (string.IsNullOrEmpty(field.Label))
                 {
                     field.Label = field.Name;
                 }
@@ -838,7 +819,7 @@ namespace Composite.controls.FormsControls.FormUiControlTemplates.DeveloperTools
         // First time we run - we are attached to a parent System.Web.Control 
         protected void InitializeViewState()
         {
-            List<ManagedParameterDefinition> fields = new List<ManagedParameterDefinition>();
+            var fields = new List<ManagedParameterDefinition>();
             if (this.Parameters != null) fields.AddRange(this.Parameters);
 
             // ensure positioning is in place

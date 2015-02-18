@@ -700,17 +700,15 @@ namespace CompositeTypeFieldDesigner
 
         private Type GetInstanceTypeForReference(Type referencedType)
         {
-            List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
+            var keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
 
             if (keyProperties.Count == 1)
             {
                 return keyProperties[0].PropertyType;
             }
-            else
-            {
-                // with multi key tyoes we go with a string
-                return typeof(string);
-            }
+            
+            // with multi key types we go with a string
+            return typeof(string);
         }
 
 
@@ -909,7 +907,7 @@ namespace CompositeTypeFieldDesigner
                         return StoreFieldType.Guid;
                     case "Reference":
                         Type referencedType = TypeManager.GetType(this.CurrentForeignKeyReferenceTypeName);
-                        List<PropertyInfo> keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
+                        var keyProperties = DataAttributeFacade.GetKeyProperties(referencedType);
 
                         if (keyProperties.Count == 1)
                         {
@@ -918,16 +916,13 @@ namespace CompositeTypeFieldDesigner
                             {
                                 return ((StoreFieldTypeAttribute)storeFieldTypeAttributes[0]).StoreFieldType;
                             }
-                            else
-                            {
-                                throw new InvalidOperationException("Referenced types key field is missing an StoreFieldType attribute.");
-                            }
+                            
+                            throw new InvalidOperationException("Referenced types key field is missing an StoreFieldType attribute.");
+                            
                         }
-                        else
-                        {
-                            // with multi key tyoes we go with a string
-                            return StoreFieldType.LargeString;
-                        }
+                        
+                        // with multi key types we go with a string
+                        return StoreFieldType.LargeString;
                     default:
                         throw new InvalidOperationException("can not locate store type - unmapped type");
                 }
