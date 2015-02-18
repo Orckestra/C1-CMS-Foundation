@@ -61,6 +61,12 @@ namespace Composite.Plugins.Functions.FunctionProviders.UserControlFunctionProvi
                 Parameters[param].SetValue(userControl, value);
             }
 
+            var userControlFunction = userControl as UserControlFunction;
+            if (userControlFunction != null)
+            {
+                userControlFunction.FunctionContextContainer = context;
+            }
+
             return userControl;
         }
     }

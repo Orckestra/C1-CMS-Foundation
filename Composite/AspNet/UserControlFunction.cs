@@ -1,5 +1,5 @@
-﻿using System;
-using System.Web.UI;
+﻿using System.Web.UI;
+using Composite.Functions;
 
 namespace Composite.AspNet
 {
@@ -14,6 +14,15 @@ namespace Composite.AspNet
         public virtual string FunctionDescription
         {
             get { return string.Empty; }
+        }
+
+        /// <summary>
+        /// Gets or sets Function Context Container
+        /// </summary>
+        public FunctionContextContainer FunctionContextContainer
+        {
+            get; 
+            set;
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Xml.Linq;
-
+using Composite.AspNet;
 using Composite.Core.Localization;
 using Composite.Core.WebClient.Renderings.Page;
 using Composite.Core.Xml;
@@ -62,7 +61,17 @@ namespace Composite.Plugins.PageTemplates.MasterPages.Controls.Functions
 
             if (InnerContent != null)
             {
-                var functionContextContainer = _functionContextContainer ?? PageRenderer.GetPageRenderFunctionContextContainer();
+                var functionContextContainer = _functionContextContainer;
+                if (functionContextContainer == null && this.NamingContainer is UserControlFunction)
+                {
+                    var containerFunction = this.NamingContainer as UserControlFunction;
+                    functionContextContainer = containerFunction.FunctionContextContainer;
+                } 
+                
+                if (functionContextContainer == null)
+                {
+                    functionContextContainer = PageRenderer.GetPageRenderFunctionContextContainer();
+                } 
                 var controlMapper = (IXElementToControlMapper) functionContextContainer.XEmbedableMapper;
 
                 PageRenderer.ExecuteEmbeddedFunctions(InnerContent, functionContextContainer);
