@@ -165,18 +165,10 @@ namespace Composite.Core.Xml
 
                     bool isSelfClosingAndEmpty = node.IsSelfClosingElement() &&
                                                  !node.IsAlwaysWrapElement() &&
-                                                 node.IsEmpty &&
-                                                 !node.ChildNodes.Any(f => f.NodeType == XmlNodeType.Element 
-                                                                           || f.NodeType == XmlNodeType.Text);
+                                                 (node.IsEmpty 
+                                                  || !node.ChildNodes.Any(f => f.NodeType == XmlNodeType.Element || f.NodeType == XmlNodeType.Text));
 
-                    if (!isSelfClosingAndEmpty)
-                    {
-                        stringBuilder.Append(">");
-                    }
-                    else
-                    {
-                        stringBuilder.Append(" />");
-                    }
+                    stringBuilder.Append(isSelfClosingAndEmpty ? " />" : ">");
 
                     bool nodeIsWhiteSpaceAware = node.IsWhitespaceAware();
 
@@ -421,9 +413,7 @@ namespace Composite.Core.Xml
             });
 
 
-            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-            xmlReaderSettings.DtdProcessing = DtdProcessing.Parse;
-            xmlReaderSettings.XmlResolver = null;
+            var xmlReaderSettings = new XmlReaderSettings {DtdProcessing = DtdProcessing.Parse, XmlResolver = null};
 
             using (XmlReader xmlReader = XmlTextReader.Create(new StringReader(xmlString), xmlReaderSettings))
             {
@@ -444,24 +434,28 @@ namespace Composite.Core.Xml
             {
                 if (xmlReader.NodeType == XmlNodeType.EndElement) yield break;
 
-                XmlNode node = new XmlNode();
-                node.NodeType = xmlReader.NodeType;
-                node.Name = xmlReader.Name;
-                node.NamespaceURI = xmlReader.NamespaceURI ?? "";
-                node.Value = xmlReader.Value;
-                node.Level = level;
-                node.IsEmpty = xmlReader.IsEmptyElement;
+                var node = new XmlNode
+                {
+                    NodeType = xmlReader.NodeType,
+                    Name = xmlReader.Name,
+                    NamespaceURI = xmlReader.NamespaceURI ?? "",
+                    Value = xmlReader.Value,
+                    Level = level,
+                    IsEmpty = xmlReader.IsEmptyElement
+                };
 
-                if ((node.NodeType == XmlNodeType.Element) || (node.NodeType == XmlNodeType.DocumentType))
+                if (node.NodeType == XmlNodeType.Element || node.NodeType == XmlNodeType.DocumentType)
                 {
                     int attributeCount = xmlReader.AttributeCount;
                     for (int i = 0; i < attributeCount; i++)
                     {
                         xmlReader.MoveToAttribute(i);
 
-                        XmlAttribute attribute = new XmlAttribute();
-                        attribute.Name = xmlReader.Name;
-                        attribute.Value = xmlReader.Value;
+                        var attribute = new XmlAttribute
+                        {
+                            Name = xmlReader.Name, 
+                            Value = xmlReader.Value
+                        };
 
                         node.AddAttribute(attribute);
                     }
@@ -493,7 +487,7 @@ namespace Composite.Core.Xml
         [DebuggerDisplay("Type = {NodeType}, Name = {Name}, Value = {Value}")]
         private class XmlNode
         {
-            private static readonly List<XmlAttribute> EmptyAttributeList = new List<XmlAttribute>(0);
+            private static readonly IEnumerable<XmlAttribute> EmptyAttributeList = Enumerable.Empty<XmlAttribute>();
 
             private XmlNode _firstNode;
             private XmlNode _lastNode;
@@ -668,11 +662,11 @@ namespace Composite.Core.Xml
             {
                 if (this.NodeType != XmlNodeType.Element) return false;
 
-                var @namespace = GetNamespaceName();
+                var name = GetNamespaceName();
 
-                if (SelfClosingElements.Contains(@namespace)) return true;
+                if (SelfClosingElements.Contains(name)) return true;
 
-                return @namespace.Namespace != "";
+                return name.Namespace != "";
             }
 
 
