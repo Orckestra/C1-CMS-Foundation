@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.Linq;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
+using Composite.Core.Configuration;
 using Composite.Core.Extensions;
 using Composite.Core.Instrumentation;
 using Composite.Core.Linq;
@@ -16,11 +16,9 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
-using Composite.Data.ProcessControlled;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
-using System.Data.SqlClient;
 using System.Text;
 
 
@@ -180,7 +178,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             {
                 var store = EmbedDataContextInfo(typeInfo, dataContextClass);
 
-                AddDataTypeStore(store);
+                AddDataTypeStore(store, true, true);
             }
         }
 
@@ -405,7 +403,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         }
 
 
-        private void AddDataTypeStore(InitializeStoreResult initializeStoreResult, bool doValidate = true)
+        private void AddDataTypeStore(InitializeStoreResult initializeStoreResult, bool doValidate = true, bool isInitialization = false)
         {
             if (initializeStoreResult.InterfaceType == null)
             {
@@ -416,7 +414,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             if (isValid && doValidate)
             {
-                isValid = ValidateTables(initializeStoreResult);
+                isValid = ValidateTables(initializeStoreResult, isInitialization);
             }
 
             if (!isValid)
@@ -431,22 +429,39 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private bool ValidateTables(InitializeStoreResult initializeStoreResult)
+        private bool ValidateTables(InitializeStoreResult initializeStoreResult, bool isInitialization)
         {
             var errors = new StringBuilder();
 
             bool isValid = true;
+
+            var interfaceType = initializeStoreResult.InterfaceType;
             foreach (string tableName in initializeStoreResult.TableNames.Values)
             {
-                bool isTableValid = ValidateTable(initializeStoreResult.InterfaceType, tableName, errors);
+                bool isTableValid = ValidateTable(interfaceType, tableName, errors);
                 if (!isTableValid) isValid = false;
             }
 
             if (!isValid)
             {
                 DataTypeValidationRegistry.AddValidationError(initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName, errors.ToString());
-                Log.LogCritical(LogTitle, string.Format("The data interface '{0}' will not work for the SqlDataProvider '{1}'", initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName));
-                Log.LogCritical(LogTitle, errors.ToString());
+
+                if (isInitialization
+                    && GlobalSettingsFacade.EnableDataTypesAutoUpdate
+                    && interfaceType.IsAutoUpdateble()
+                    && !interfaceType.IsGenerated())
+                {
+                    Log.LogInformation(LogTitle, "Data schema for the data interface '{0}' on the SqlDataProvider '{1}' is not matching and will be updated.", 
+                                        initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
+                    Log.LogInformation(LogTitle, errors.ToString());
+                }
+                else
+                {
+                    Log.LogCritical(LogTitle, "The data interface '{0}' will not work for the SqlDataProvider '{1}'",
+                                     initializeStoreResult.InterfaceType, _dataProviderContext.ProviderName);
+                    Log.LogCritical(LogTitle, errors.ToString());
+                }
+                
             }
 
             return isValid;
@@ -473,7 +488,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
 
 
-            List<SqlColumnInformation> columns = new List<SqlColumnInformation>(sqlTableInformation.ColumnInformations);
+            var columns = new List<SqlColumnInformation>(sqlTableInformation.ColumnInformations);
             var properties = interfaceType.GetPropertiesRecursively();
 
             foreach (PropertyInfo property in properties)
@@ -498,67 +513,67 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             }
 
             // Updating schema from C1 4.1, to be removed in future versions.
-            if (typeof (ILocalizedControlled).IsAssignableFrom(interfaceType)
-                && !properties.Any(p => p.Name == "CultureName")
-                && columns.Any(c => c.ColumnName == "CultureName"))
-            {
-                Log.LogInformation(LogTitle, "Removing obsolete 'CultureName' column from table '{0}'", tableName);
+//            if (typeof (ILocalizedControlled).IsAssignableFrom(interfaceType)
+//                && !properties.Any(p => p.Name == "CultureName")
+//                && columns.Any(c => c.ColumnName == "CultureName"))
+//            {
+//                Log.LogInformation(LogTitle, "Removing obsolete 'CultureName' column from table '{0}'", tableName);
 
 
-                string selectConstraintName = string.Format(
-                    @"SELECT df.name 'ConstraintName'
-                    FROM sys.default_constraints df
-                    INNER JOIN sys.tables t ON df.parent_object_id = t.object_id
-                    INNER JOIN sys.columns c ON df.parent_object_id = c.object_id AND df.parent_column_id = c.column_id
-                    where t.name = '{0}'
-                    and c.name = 'CultureName'", tableName);
+//                string selectConstraintName = string.Format(
+//                    @"SELECT df.name 'ConstraintName'
+//                    FROM sys.default_constraints df
+//                    INNER JOIN sys.tables t ON df.parent_object_id = t.object_id
+//                    INNER JOIN sys.columns c ON df.parent_object_id = c.object_id AND df.parent_column_id = c.column_id
+//                    where t.name = '{0}'
+//                    and c.name = 'CultureName'", tableName);
 
 
-                var dt = ExecuteReader(selectConstraintName);
-                List<string> constraints = (from DataRow dr in dt.Rows select dr["ConstraintName"].ToString()).ToList();
+//                var dt = ExecuteReader(selectConstraintName);
+//                List<string> constraints = (from DataRow dr in dt.Rows select dr["ConstraintName"].ToString()).ToList();
 
-                foreach (var constrainName in constraints)
-                {
-                    ExecuteSql("ALTER TABLE [{0}] DROP CONSTRAINT [{1}]".FormatWith(tableName, constrainName));
-                }
+//                foreach (var constrainName in constraints)
+//                {
+//                    ExecuteSql("ALTER TABLE [{0}] DROP CONSTRAINT [{1}]".FormatWith(tableName, constrainName));
+//                }
 
-                string sql = "ALTER TABLE [{0}] DROP COLUMN [CultureName]".FormatWith(tableName);
+//                string sql = "ALTER TABLE [{0}] DROP COLUMN [CultureName]".FormatWith(tableName);
 
-                ExecuteSql(sql);
-            }
+//                ExecuteSql(sql);
+//            }
 
             return true;
         }
 
 
-        private void ExecuteSql(string sql)
-        {
-            var conn = SqlConnectionManager.GetConnection(_connectionString);
+        //private void ExecuteSql(string sql)
+        //{
+        //    var conn = SqlConnectionManager.GetConnection(_connectionString);
 
-            Log.LogInformation(LogTitle, sql);
+        //    Log.LogInformation(LogTitle, sql);
 
-            using (var cmd = new SqlCommand(sql, conn))
-            {
-                cmd.ExecuteNonQuery();
-            }
-        }
+        //    using (var cmd = new SqlCommand(sql, conn))
+        //    {
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
 
-        private DataTable ExecuteReader(string commandText)
-        {
-            var conn = SqlConnectionManager.GetConnection(_connectionString);
+        //private DataTable ExecuteReader(string commandText)
+        //{
+        //    var conn = SqlConnectionManager.GetConnection(_connectionString);
 
-            using (var cmd = new SqlCommand(commandText, conn))
-            {
-                using (var dt = new DataTable())
-                {
-                    using (var rdr = cmd.ExecuteReader())
-                    {
-                        if (rdr != null) dt.Load(rdr);
-                        return dt;
-                    }
-                }
-            }
-        }
+        //    using (var cmd = new SqlCommand(commandText, conn))
+        //    {
+        //        using (var dt = new DataTable())
+        //        {
+        //            using (var rdr = cmd.ExecuteReader())
+        //            {
+        //                if (rdr != null) dt.Load(rdr);
+        //                return dt;
+        //            }
+        //        }
+        //    }
+        //}
 
         internal class StoreTypeInfo
         {

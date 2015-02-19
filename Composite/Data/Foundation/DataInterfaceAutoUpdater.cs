@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using Composite.Core;
 using Composite.Data.DynamicTypes;
 using Composite.Core.Instrumentation;
-using Composite.Core.Logging;
 using Composite.Data.Types;
 
 
@@ -11,23 +10,27 @@ namespace Composite.Data.Foundation
 {
     internal static class DataInterfaceAutoUpdater
     {
+        private static readonly string LogTitle = typeof (DataInterfaceAutoUpdater).Name;
+
         internal static bool EnsureUpdateAllInterfaces()
         {
             using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 bool doFlush = false;
 
-                var knownInterafces = DataProviderRegistry.AllKnownInterfaces.ToList(); 
+                var knownInterfaces = DataProviderRegistry.AllKnownInterfaces.ToList(); 
 
-                if(!knownInterafces.Contains(typeof(IXmlPageTemplate)))
+                if(!knownInterfaces.Contains(typeof(IXmlPageTemplate)))
                 {
-                    knownInterafces.Insert(0, typeof(IXmlPageTemplate));
+                    knownInterfaces.Insert(0, typeof(IXmlPageTemplate));
                 }
 
-                foreach (Type interfaceType in knownInterafces)
+                foreach (Type interfaceType in knownInterfaces)
                 {
-                    if (!interfaceType.IsAutoUpdateble()) continue;
-                    if (interfaceType.IsGenerated()) continue;
+                    if (!interfaceType.IsAutoUpdateble() || interfaceType.IsGenerated())
+                    {
+                        continue;
+                    }
 
                     foreach (string providerName in DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType))
                     {
@@ -48,8 +51,8 @@ namespace Composite.Data.Foundation
                         }
                         catch (Exception ex)
                         {
-                            LoggingService.LogCritical("DataInterfaceAutoUpdater", string.Format("Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName));
-                            LoggingService.LogCritical("DataInterfaceAutoUpdater", ex);
+                            Log.LogCritical(LogTitle, "Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName);
+                            Log.LogCritical(LogTitle, ex);
                         }
                     }
                 }
@@ -62,12 +65,15 @@ namespace Composite.Data.Foundation
 
         internal static void TestEnsureUpdateAllInterfaces()
         {
-            using (TimerProfiler timerProfiler = TimerProfilerFacade.CreateTimerProfiler())
+            using (TimerProfilerFacade.CreateTimerProfiler())
             {
                 foreach (Type interfaceType in DataProviderRegistry.AllInterfaces)
                 {
-                    if (!interfaceType.IsAutoUpdateble()) continue;
-                    if (interfaceType.IsGenerated()) continue;
+                    if (!interfaceType.IsAutoUpdateble() || interfaceType.IsGenerated())
+                    {
+                        continue;
+                    }
+                    
 
                     foreach (string providerName in DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType))
                     {
@@ -75,13 +81,13 @@ namespace Composite.Data.Foundation
                         {
                             if (DynamicTypeManager.IsEnsureUpdateStoreNeeded(interfaceType))
                             {
-                                LoggingService.LogError("DataInterfaceAutoUpdater", string.Format("Autoupdating the data interface '{0}' on the '{1}' data provider failed!", interfaceType, providerName));
+                                Log.LogError(LogTitle, "Autoupdating the data interface '{0}' on the '{1}' data provider failed!", interfaceType, providerName);
                             }
                         }
                         catch (Exception ex)
                         {
-                            LoggingService.LogCritical("DataInterfaceAutoUpdater", string.Format("Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName));
-                            LoggingService.LogCritical("DataInterfaceAutoUpdater", ex);
+                            Log.LogCritical(LogTitle, "Update failed for the interface '{0}' on the '{1}' data provider", interfaceType, providerName);
+                            Log.LogCritical(LogTitle, ex);
                         }
                     }
                 }
