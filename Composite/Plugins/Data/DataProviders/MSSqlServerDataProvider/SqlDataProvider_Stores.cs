@@ -607,8 +607,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 // Getting the interface (ensuring that it exists)
                 Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
 
-                List<SqlDataTypeStoreDataScope> storeDataScopesToCompile = new List<SqlDataTypeStoreDataScope>();
-                List<SqlDataTypeStoreDataScope> storeDataScopesAlreadyCompiled = new List<SqlDataTypeStoreDataScope>();
+                var storeDataScopesToCompile = new List<SqlDataTypeStoreDataScope>();
+                var storeDataScopesAlreadyCompiled = new List<SqlDataTypeStoreDataScope>();
 
                 fields = new Dictionary<SqlDataTypeStoreTableKey, StoreTypeInfo>();
 
@@ -643,8 +643,8 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                         sqlDataProviderHelperClass = TryGetGeneratedType(sqlDataProviderHelperClassFullName);
                         entityClass = TryGetGeneratedType(entityClassName);
 
-                        forceCompile = forceCompile 
-                            || CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] {sqlDataProviderHelperClass});
+                        forceCompile = forceCompile
+                            || CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { sqlDataProviderHelperClass, entityClass });
                     }
                     catch (TypeLoadException)
                     {
@@ -653,8 +653,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                     if (!forceCompile)
                     {
-                        var storeTypeInfo = new StoreTypeInfo(dataContextFieldName, entityClass, sqlDataProviderHelperClass);
-                        storeTypeInfo.DataContextField = dataContextFieldInfo;
+                        var storeTypeInfo = new StoreTypeInfo(dataContextFieldName, entityClass, sqlDataProviderHelperClass)
+                        {
+                            DataContextField = dataContextFieldInfo
+                        };
 
                         fields.Add(new SqlDataTypeStoreTableKey(storeDataScope.DataScopeName, storeDataScope.CultureName), storeTypeInfo);
                     }
@@ -798,7 +800,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             if (_compositeGeneratedAssembly != null)
             {
-                Type result = _compositeGeneratedAssembly.GetType(typeName);
+                Type result = _compositeGeneratedAssembly.GetType(typeName, false);
                 if (result != null) return result;
             }
 
