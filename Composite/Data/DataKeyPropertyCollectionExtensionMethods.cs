@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 
 namespace Composite.Data
@@ -8,9 +7,9 @@ namespace Composite.Data
 	{
         public static DataKeyPropertyCollection CreateDataKeyPropertyCollection(this IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
-            DataKeyPropertyCollection dataKeyPropertyCollection = new DataKeyPropertyCollection();
+            var dataKeyPropertyCollection = new DataKeyPropertyCollection();
 
             foreach (PropertyInfo propertyInfo in data.GetKeyProperties())
             {

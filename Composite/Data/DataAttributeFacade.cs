@@ -442,16 +442,17 @@ namespace Composite.Data
         [Obsolete("Use GetKeyProperties() instead")]
         public static List<PropertyInfo> GetKeyPropertyInfoes(this IData data)
         {
-            return new List<PropertyInfo>(GetKeyProperties(data));
+            return GetKeyProperties(data);
         }
 
 
         /// <exclude />
-        public static IReadOnlyCollection<PropertyInfo> GetKeyProperties(this IData data)
+        public static List<PropertyInfo> GetKeyProperties(this IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
-            return GetKeyProperties(data.DataSourceId.InterfaceType);
+            // Return type is List<PropertyInfo> for backward compatibility with the PackageCreator package
+            return new List<PropertyInfo>(GetKeyProperties(data.DataSourceId.InterfaceType));
         }
 
 
