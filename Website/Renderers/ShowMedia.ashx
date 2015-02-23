@@ -136,20 +136,22 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
         context.Response.AddHeader("Content-Disposition", "{0};filename=\"{1}\"".FormatWith((download ? "attachment" : "inline"), encodedFileName));
 
 
-        bool clientCaching = false;
+        bool checkIfModifiedSince = false;
 
 
         if (UrlContainsTimestamp(context, file))
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddDays(30));
             context.Response.Cache.SetCacheability(HttpCacheability.Public);
+
+            checkIfModifiedSince = true;
         } 
-        else if (!Composite.C1Console.Security.UserValidationFacade.IsLoggedIn())
+        else if (!UserValidationFacade.IsLoggedIn())
         {
             context.Response.Cache.SetExpires(DateTime.Now.AddMinutes(60));
             context.Response.Cache.SetCacheability(HttpCacheability.Private);
 
-            clientCaching = true;
+            checkIfModifiedSince = true;
         }
 
         Stream inputStream = null;
@@ -184,7 +186,7 @@ public class ShowMedia : IHttpHandler, IReadOnlySessionState
                 context.Response.AddHeader("Accept-Ranges", "bytes");
             }            
             
-            if (clientCaching && file.LastWriteTime != null)
+            if (checkIfModifiedSince && file.LastWriteTime != null)
             {
                 var lastModified = file.LastWriteTime.Value;
 
