@@ -15,6 +15,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.Types;
 
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
@@ -361,7 +362,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return;
             }
 
-            int itemsAlreadePresentInDatabase = 0;
+            int itemsAlreadyPresentInDatabase = 0;
 
 
             DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(dataType.InterfaceType);
@@ -469,7 +470,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                         if (data != null)
                         {
-                            itemsAlreadePresentInDatabase++;
+                            itemsAlreadyPresentInDatabase++;
                         }
                     }
                 }
@@ -488,49 +489,49 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue;
                     }
 
-                    Type referenceType;
-                    string keyPropertyName;
-                    object referenceKey;
-                    
-                    MapReference(foreignKeyProperty.TargetType, foreignKeyProperty.TargetKeyPropertyName, propertyValue, out referenceType, out keyPropertyName, out referenceKey);
-
-                    // Checking key in the keys to be installed
-                    var keyValuePair = new KeyValuePair<string, object>(keyPropertyName, referenceKey);
-
-                    if (!_missingDataReferences.ContainsKey(dataType.InterfaceType) 
-                        || !_missingDataReferences[dataType.InterfaceType].Contains(keyValuePair))
-                    {
-                        if (_dataKeysToBeInstalled.ContainsKey(referenceType))
-                        {
-                            if (_dataKeysToBeInstalled[referenceType].KeyRegistered(dataType, keyValuePair))
-                            {
-                                continue;
-                            }
-                        }
-
-                        using (GetDataScopeFromDataTypeElement(dataType))
-                        {
-                            if (DataFacade.TryGetDataByUniqueKey(foreignKeyProperty.TargetType, propertyValue) == null)
-                            {
-                                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.ReferencedDataMissing")
-                                    .FormatWith(foreignKeyProperty.TargetType.FullName, foreignKeyProperty.TargetKeyPropertyName, propertyValue));
-
-                                if (!_missingDataReferences.ContainsKey(dataType.InterfaceType))
-                                {
-                                    _missingDataReferences.Add(dataType.InterfaceType, new HashSet<KeyValuePair<string, object>>());
-                                }
-
-                                _missingDataReferences[dataType.InterfaceType].Add(keyValuePair);
-                                continue;
-                            }
-                        }
-                    }
+                    CheckForBrokenReference(dataType, foreignKeyProperty.TargetType, foreignKeyProperty.TargetKeyPropertyName, propertyValue);
                 }
             }
 
-            if(itemsAlreadePresentInDatabase > 0)
+            if(itemsAlreadyPresentInDatabase > 0)
             {
-                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists").FormatWith(dataType.InterfaceType, itemsAlreadePresentInDatabase));
+                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.DataExists").FormatWith(dataType.InterfaceType, itemsAlreadyPresentInDatabase));
+            }
+        }
+
+        private void CheckForBrokenReference(DataType refereeType, Type type, string propertyName, object propertyValue)
+        {
+            Type referredType;
+            string keyPropertyName;
+            object referenceKey;
+
+            MapReference(type, propertyName, propertyValue, out referredType, out keyPropertyName, out referenceKey);
+
+            // Checking key in the keys to be installed
+            var keyValuePair = new KeyValuePair<string, object>(keyPropertyName, referenceKey);
+
+            if (_missingDataReferences.ContainsKey(referredType) && _missingDataReferences[referredType].Contains(keyValuePair))
+            {
+                return;
+            }
+
+            if (_dataKeysToBeInstalled.ContainsKey(referredType) && _dataKeysToBeInstalled[referredType].KeyRegistered(refereeType, keyValuePair))
+            {   
+                return;
+            }
+
+            using (GetDataScopeFromDataTypeElement(refereeType))
+            {
+                if (DataFacade.TryGetDataByUniqueKey(type, propertyValue) == null)
+                {
+                    _validationResult.AddFatal(Texts.DataPackageFragmentInstaller_ReferencedDataMissing(
+                        type.FullName, propertyName, propertyValue));
+
+                    var missingReferences = _missingDataReferences.GetOrAdd(referredType,
+                        () => new HashSet<KeyValuePair<string, object>>());
+
+                    missingReferences.Add(keyValuePair);
+                }
             }
         }
 
@@ -545,7 +546,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     && fieldName == "CultureName";
         }
 
-        private void MapReference(Type type, string propertyName, object key, out Type referenceType, out string keyPropertyName, out object referenceKey)
+        private static void MapReference(Type type, string propertyName, object key, out Type referenceType, out string keyPropertyName, out object referenceKey)
         {
             if ((type == typeof(IImageFile) || type == typeof(IMediaFile))
                 && ((string)key).StartsWith("MediaArchive:")
@@ -575,14 +576,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             if (dataKeyPropertyCollection.Count != 1) return;
 
-            if (!_dataKeysToBeInstalled.ContainsKey(dataType.InterfaceType))
-            {
-                _dataKeysToBeInstalled.Add(dataType.InterfaceType, new TypeKeyInstallationData(dataType.InterfaceType));
-            }
+
+            var typeKeyInstallationData = _dataKeysToBeInstalled.GetOrAdd(dataType.InterfaceType,
+                    () => new TypeKeyInstallationData(dataType.InterfaceType));
 
             var keyValuePair = dataKeyPropertyCollection.KeyProperties.First();
 
-            _dataKeysToBeInstalled[dataType.InterfaceType].RegisterKeyUsage(dataType, keyValuePair);
+            typeKeyInstallationData.RegisterKeyUsage(dataType, keyValuePair);
         }
 
 
@@ -605,6 +605,10 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             foreach (XElement addElement in dataType.Dataset)
             {
+                var dataKeyPropertyCollection = new DataKeyPropertyCollection();
+                bool propertyValidationPassed = true;
+                var fieldValues = new Dictionary<string, object>();
+
                 foreach (XAttribute attribute in addElement.Attributes())
                 {
                     string fieldName = attribute.Name.LocalName;
@@ -620,18 +624,63 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     if (dataFieldDescriptor == null)
                     {
                         _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.MissingProperty").FormatWith(dataTypeDescriptor, fieldName));
+                        propertyValidationPassed = false;
+                        continue;
                     }
-                    else
+
+                    object fieldValue;
+                    try
                     {
-                        try
-                        {
-                            ValueTypeConverter.Convert(attribute.Value, dataFieldDescriptor.InstanceType);
-                        }
-                        catch (Exception)
-                        {
-                            _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.ConversionFailed").FormatWith(attribute.Value, dataFieldDescriptor.InstanceType));
-                        }
+                        fieldValue = ValueTypeConverter.Convert(attribute.Value, dataFieldDescriptor.InstanceType);
                     }
+                    catch (Exception)
+                    {
+                        _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.ConversionFailed").FormatWith(attribute.Value, dataFieldDescriptor.InstanceType));
+                        propertyValidationPassed = false;
+                        continue;
+                    }
+
+                    if (dataTypeDescriptor.KeyPropertyNames.Contains(fieldName))
+                    {
+                        dataKeyPropertyCollection.AddKeyProperty(fieldName, fieldValue);
+                    }
+
+                    fieldValues.Add(fieldName, fieldValue);
+                }
+
+                if (!propertyValidationPassed)
+                {
+                    continue;
+                }
+
+                // TODO: implement check if the same key has already been added
+
+                // TODO: to be implemented for dynamic types
+                // RegisterKeyToBeAdded(dataType, dataKeyPropertyCollection);
+
+                // Checking foreign key references
+                foreach (var referenceField in dataTypeDescriptor.Fields.Where(f => f.ForeignKeyReferenceTypeName != null))
+                {
+                    object propertyValue;
+                    if (!fieldValues.TryGetValue(referenceField.Name, out propertyValue) 
+                        || propertyValue == null
+                        || (propertyValue is Guid && (Guid)propertyValue == Guid.Empty) 
+                        || propertyValue is string && (string)propertyValue == "")
+                    {
+                        continue;
+                    }
+
+                    string referredTypeName = referenceField.ForeignKeyReferenceTypeName;
+                    var referredType = TypeManager.TryGetType(referredTypeName);
+                    if (referredType == null)
+                    {
+                        // TODO: implement reference check for dynamic types as well
+                        continue;
+                    }
+
+                    string targetKeyPropertyName = referredType.GetKeyPropertyNames().SingleOrDefault();
+
+                    CheckForBrokenReference(dataType, referredType, targetKeyPropertyName, propertyValue);
                 }
             }
         }
@@ -640,21 +689,16 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             bool localeInfoSpecified = dataType.Locale != null || dataType.AddToAllLocales || dataType.AddToCurrentLocale;
 
-            if (dataTypeLocalized)
+            if (dataTypeLocalized && !localeInfoSpecified)
             {
-                if (!localeInfoSpecified)
-                {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType));
-                    return false;
-                }
+                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeLocalizedWithoutLocale").FormatWith(dataType.InterfaceType));
+                return false;
             }
-            else
+            
+            if (!dataTypeLocalized && localeInfoSpecified)
             {
-                if (localeInfoSpecified)
-                {
-                    _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType));
-                    return false;
-                }
+                _validationResult.AddFatal(GetText("DataPackageFragmentInstaller.TypeNonLocalizedWithLocale").FormatWith(dataType.InterfaceType));
+                return false;
             }
 
             return true;
@@ -776,7 +820,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 return false;
             }
 
-            public bool KeyRegistered(DataScopeIdentifier publicationScope, string languageName, KeyValuePair<string, object> keyValuePair)
+            private bool KeyRegistered(DataScopeIdentifier publicationScope, string languageName, KeyValuePair<string, object> keyValuePair)
             {
                 HashSet<KeyValuePair<string, object>> hashset;
 
