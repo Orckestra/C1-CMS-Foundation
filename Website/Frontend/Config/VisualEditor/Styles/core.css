@@ -9,11 +9,11 @@ body {
 	margin: 0;
 	padding: 0;
 	border: none;
-	background-color: #FFF;
 	height: 100%; 
 	box-sizing: border-box;
 }
 body {
+	background-color: #FFF;
 	padding: 22px 26px 30px 26px;
 	line-height: 20px;
 }
