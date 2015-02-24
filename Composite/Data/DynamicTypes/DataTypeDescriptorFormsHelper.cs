@@ -805,12 +805,11 @@ namespace Composite.Data.DynamicTypes
                     _bindingsXml.Add(publishDateBinding);
 
                     publishFieldsXml.Add(
-                        new XElement(MainNamespace + "DateSelector",
+                        new XElement(MainNamespace + "DateTimeSelector",
                             new XAttribute("Label", Texts.PublishDate_Label),
                             new XAttribute("Help", Texts.PublishDate_Help),
-                            new XElement(MainNamespace + "DateSelector.Date",
-                                new XElement(CmsNamespace + "bind",
-                                    new XAttribute("source", "PublishDate")))));
+                            new XElement(CmsNamespace + "bind",
+                                new XAttribute("source", "PublishDate"))));
 
                     var unpublishDateBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                         new XAttribute("name", "UnpublishDate"),
@@ -820,12 +819,11 @@ namespace Composite.Data.DynamicTypes
                     _bindingsXml.Add(unpublishDateBinding);
 
                     publishFieldsXml.Add(
-                        new XElement(MainNamespace + "DateSelector",
+                        new XElement(MainNamespace + "DateTimeSelector",
                             new XAttribute("Label", Texts.UnpublishDate_Label),
                             new XAttribute("Help", Texts.UnpublishDate_Help),
-                            new XElement(MainNamespace + "DateSelector.Date",
-                                new XElement(CmsNamespace + "bind",
-                                    new XAttribute("source", "UnpublishDate")))));
+                            new XElement(CmsNamespace + "bind",
+                                    new XAttribute("source", "UnpublishDate"))));
                 }
             }
 

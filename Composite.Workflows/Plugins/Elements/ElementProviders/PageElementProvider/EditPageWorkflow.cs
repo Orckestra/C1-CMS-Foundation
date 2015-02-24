@@ -40,7 +40,7 @@ using Composite.Data.Validation.ClientValidationRules;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
-    [EntityTokenLock()]
+    [EntityTokenLock]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
     public sealed partial class EditPageWorkflow : FormsWorkflow
     {
@@ -287,14 +287,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                                 ps.DataId == selectedPage.Id.ToString()
                              select ps).FirstOrDefault();
 
-            if (existingPagePublishSchedule != null)
-            {
-                UpdateBinding("PublishDate", existingPagePublishSchedule.PublishDate);
-            }
-            else
-            {
-                UpdateBinding("PublishDate", null);
-            }
+            UpdateBinding("PublishDate", existingPagePublishSchedule != null ? existingPagePublishSchedule.PublishDate : (object) null);
+
 
             var existingPageUnpublishSchedule =
                             (from ps in DataFacade.GetData<IUnpublishSchedule>()
@@ -302,14 +296,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                                 ps.DataId == selectedPage.Id.ToString()
                              select ps).FirstOrDefault();
 
-            if (existingPageUnpublishSchedule != null)
-            {
-                UpdateBinding("UnpublishDate", existingPageUnpublishSchedule.UnpublishDate);
-            }
-            else
-            {
-                UpdateBinding("UnpublishDate", null);
-            }
+
+            UpdateBinding("UnpublishDate", existingPageUnpublishSchedule != null ? existingPageUnpublishSchedule.UnpublishDate : (object) null);
 
             var formDefinition = formDocument.GetDocumentAsString();
 
