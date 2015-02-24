@@ -654,11 +654,13 @@ namespace Composite.Data.DynamicTypes
 
 
             _panelXml = new XElement(MainNamespace + "FieldGroup");
-            if (!string.IsNullOrEmpty(FieldGroupLabel))
-            {
-                _panelXml.Add(new XAttribute("Label", FieldGroupLabel));
-            }
 
+            string formLabel = !string.IsNullOrEmpty(FieldGroupLabel) ? FieldGroupLabel : _dataTypeDescriptor.Title;
+            if (!string.IsNullOrEmpty(formLabel))
+            {
+                _panelXml.Add(new XAttribute("Label", formLabel));
+            }
+            
             layout.Add(_panelXml);
 
             foreach (var fieldDescriptor in _dataTypeDescriptor.Fields)
@@ -754,40 +756,8 @@ namespace Composite.Data.DynamicTypes
                 placeholder.Add(_panelXml);
                 layout.Add(placeholder);
                 
-                var publishFieldsXml = new XElement(MainNamespace + "FieldGroup", new XAttribute("Label", "Publication settings")); // TODO: localize!
+                var publishFieldsXml = new XElement(MainNamespace + "FieldGroup", new XAttribute("Label", Texts.PublicationSettings_FieldGroupLabel));
                 placeholder.Add(publishFieldsXml);
-                
-
-                if (!_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)))
-                {
-                    var publishDateBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
-                        new XAttribute("name", "PublishDate"),
-                        new XAttribute("type", typeof(DateTime)),
-                        new XAttribute("optional", "true"));
-
-                    _bindingsXml.Add(publishDateBinding);
-
-                    publishFieldsXml.Add(
-                        new XElement(MainNamespace + "DateSelector",
-                            new XAttribute("Label", "Publish date"), // TODO: localize and add help text
-                            new XElement(MainNamespace + "DateSelector.Date",
-                                new XElement(CmsNamespace + "bind",
-                                    new XAttribute("source", "PublishDate")))));
-
-                    var unpublishDateBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
-                        new XAttribute("name", "UnpublishDate"),
-                        new XAttribute("type", typeof(DateTime)),
-                        new XAttribute("optional", "true"));
-
-                    _bindingsXml.Add(unpublishDateBinding);
-
-                    publishFieldsXml.Add(
-                        new XElement(MainNamespace + "DateSelector",
-                            new XAttribute("Label", "Unpublish date"), // TODO: localize and add help text
-                            new XElement(MainNamespace + "DateSelector.Date",
-                                new XElement(CmsNamespace + "bind",
-                                    new XAttribute("source", "UnpublishDate")))));
-                }
 
                 if (_showPublicationStatusSelector)
                 {
@@ -807,7 +777,8 @@ namespace Composite.Data.DynamicTypes
                         new XElement(MainNamespace + "KeySelector",
                             new XAttribute("OptionsKeyField", "Key"),
                             new XAttribute("OptionsLabelField", "Value"),
-                            new XAttribute("Label", "${Composite.Plugins.GeneratedDataTypesElementProvider, LabelPublicationState}"),
+                            new XAttribute("Label", Texts.PublicationStatus_Label),
+                            new XAttribute("Help", Texts.PublicationStatus_Help),
                             new XElement(MainNamespace + "KeySelector.Selected",
                                 new XElement(CmsNamespace + "bind",
                                     new XAttribute("source", PublicationStatusBindingName)
@@ -822,6 +793,39 @@ namespace Composite.Data.DynamicTypes
 
 
                     publishFieldsXml.Add(element);
+                }
+
+                if (!_dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData)))
+                {
+                    var publishDateBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
+                        new XAttribute("name", "PublishDate"),
+                        new XAttribute("type", typeof(DateTime)),
+                        new XAttribute("optional", "true"));
+
+                    _bindingsXml.Add(publishDateBinding);
+
+                    publishFieldsXml.Add(
+                        new XElement(MainNamespace + "DateSelector",
+                            new XAttribute("Label", Texts.PublishDate_Label),
+                            new XAttribute("Help", Texts.PublishDate_Help),
+                            new XElement(MainNamespace + "DateSelector.Date",
+                                new XElement(CmsNamespace + "bind",
+                                    new XAttribute("source", "PublishDate")))));
+
+                    var unpublishDateBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
+                        new XAttribute("name", "UnpublishDate"),
+                        new XAttribute("type", typeof(DateTime)),
+                        new XAttribute("optional", "true"));
+
+                    _bindingsXml.Add(unpublishDateBinding);
+
+                    publishFieldsXml.Add(
+                        new XElement(MainNamespace + "DateSelector",
+                            new XAttribute("Label", Texts.UnpublishDate_Label),
+                            new XAttribute("Help", Texts.UnpublishDate_Help),
+                            new XElement(MainNamespace + "DateSelector.Date",
+                                new XElement(CmsNamespace + "bind",
+                                    new XAttribute("source", "UnpublishDate")))));
                 }
             }
 

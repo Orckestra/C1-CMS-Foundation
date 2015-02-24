@@ -50,9 +50,15 @@
   <string key="DeleteDataToolTip" value="Delete selected data" />
   <string key="LocalizeData" value="Translate Data" />
   <string key="LocalizeDataToolTip" value="Translate selected data" />
-  <string key="LabelPublicationState" value="Publication State" />
   <string key="DraftTransition" value="Draft" />
   <string key="AwaitingApprovalTransition" value="Awaiting Approval" />
+  <string key="PublicationSettings.FieldGroupLabel" value="Publication settings" />
+  <string key="PublicationStatus.Label" value="Status" />
+  <string key="PublicationStatus.Help" value="Send the data to another publication status." />
+  <string key="PublishDate.Label" value="Publish date" />
+  <string key="PublishDate.Help" value="Specify at which date and time you want the data to be published automatically." />
+  <string key="UnpublishDate.Label" value="Unpublish date" />
+  <string key="UnpublishDate.Help" value="Specify at which date and time you want the data to be unpublished automatically." />
   <string key="AddNewInterfaceTypeStep1.DocumentTitle" value="New Datatype" />
   <string key="AddNewCompositionTypeWorkflow.DocumentTitle" value="New Page Metatype" />
   <string key="AddNewAggregationTypeWorkflow.DocumentTitle" value="New Page Datafolder" />

@@ -386,6 +386,22 @@ namespace Composite.Core.ResourceSystem
  public static string PasswordRules_DifferentCharacterGroups { get { return T("PasswordRules.DifferentCharacterGroups"); } } 
  /// <summary>&quot;Password should not be based on a user name.&quot;</summary> 
  public static string PasswordRules_DoNotUseUserName { get { return T("PasswordRules.DoNotUseUserName"); } } 
+ /// <summary>&quot;Confirmation password mismatch&quot;</summary> 
+ public static string ChangePasswordForm_ConfirmationPasswordMimatch { get { return T("ChangePasswordForm.ConfirmationPasswordMimatch"); } } 
+ /// <summary>&quot;Username&quot;</summary> 
+ public static string ChangePasswordForm_Username { get { return T("ChangePasswordForm.Username"); } } 
+ /// <summary>&quot;Old Password&quot;</summary> 
+ public static string ChangePasswordForm_OldPassword { get { return T("ChangePasswordForm.OldPassword"); } } 
+ /// <summary>&quot;NewPassword&quot;</summary> 
+ public static string ChangePasswordForm_NewPassword { get { return T("ChangePasswordForm.NewPassword"); } } 
+ /// <summary>&quot;Confirm Password&quot;</summary> 
+ public static string ChangePasswordForm_ConfirmPassword { get { return T("ChangePasswordForm.ConfirmPassword"); } } 
+ /// <summary>&quot;Change Password&quot;</summary> 
+ public static string ChangePasswordForm_ChangePasswordButton { get { return T("ChangePasswordForm.ChangePasswordButton"); } } 
+ /// <summary>&quot;Password is older than {0} days. Please change your password.&quot;</summary> 
+ public static string ChangePasswordForm_PasswordExpiredMessage(object parameter0) { return string.Format(T("ChangePasswordForm.PasswordExpiredMessage"), parameter0); } 
+ /// <summary>&quot;The old password is incorrect.&quot;</summary> 
+ public static string ChangePasswordForm_IncorrectOldPassword { get { return T("ChangePasswordForm.IncorrectOldPassword"); } } 
      private static string T(string key) 
        { 
             return StringResourceSystemFacade.GetString("Composite.C1Console.Users", key);
@@ -2629,12 +2645,24 @@ namespace Composite.Core.ResourceSystem
  public static string LocalizeData { get { return T("LocalizeData"); } } 
  /// <summary>&quot;Translate selected data&quot;</summary> 
  public static string LocalizeDataToolTip { get { return T("LocalizeDataToolTip"); } } 
- /// <summary>&quot;Publication State&quot;</summary> 
- public static string LabelPublicationState { get { return T("LabelPublicationState"); } } 
  /// <summary>&quot;Draft&quot;</summary> 
  public static string DraftTransition { get { return T("DraftTransition"); } } 
  /// <summary>&quot;Awaiting Approval&quot;</summary> 
  public static string AwaitingApprovalTransition { get { return T("AwaitingApprovalTransition"); } } 
+ /// <summary>&quot;PublicationSettings&quot;</summary> 
+ public static string PublicationSettings_FieldGroupLabel { get { return T("PublicationSettings.FieldGroupLabel"); } } 
+ /// <summary>&quot;Status&quot;</summary> 
+ public static string PublicationStatus_Label { get { return T("PublicationStatus.Label"); } } 
+ /// <summary>&quot;Send the data to another publication status.&quot;</summary> 
+ public static string PublicationStatus_Help { get { return T("PublicationStatus.Help"); } } 
+ /// <summary>&quot;Publish date&quot;</summary> 
+ public static string PublishDate_Label { get { return T("PublishDate.Label"); } } 
+ /// <summary>&quot;Specify at which date and time you want the data to be published automatically.&quot;</summary> 
+ public static string PublishDate_Help { get { return T("PublishDate.Help"); } } 
+ /// <summary>&quot;Unpublish date&quot;</summary> 
+ public static string UnpublishDate_Label { get { return T("UnpublishDate.Label"); } } 
+ /// <summary>&quot;Specify at which date and time you want the data to be unpublished automatically.&quot;</summary> 
+ public static string UnpublishDate_Help { get { return T("UnpublishDate.Help"); } } 
  /// <summary>&quot;New Datatype&quot;</summary> 
  public static string AddNewInterfaceTypeStep1_DocumentTitle { get { return T("AddNewInterfaceTypeStep1.DocumentTitle"); } } 
  /// <summary>&quot;New Page Metatype&quot;</summary> 
@@ -3475,11 +3503,11 @@ namespace Composite.Core.ResourceSystem
  public static string EditPage_LabelAbstractHelp { get { return T("EditPage.LabelAbstractHelp"); } } 
  /// <summary>&quot;Publish date&quot;</summary> 
  public static string EditPage_LabelPublishDate { get { return T("EditPage.LabelPublishDate"); } } 
- /// <summary>&quot;Specify at which date and time you want the page to be published. At the specified time the page will automatically be published to the site&quot;</summary> 
+ /// <summary>&quot;Specify at which date and time you want the page to be published automatically.&quot;</summary> 
  public static string EditPage_HelpPublishDate { get { return T("EditPage.HelpPublishDate"); } } 
  /// <summary>&quot;Unpublish date&quot;</summary> 
  public static string EditPage_LabelUnpublishDate { get { return T("EditPage.LabelUnpublishDate"); } } 
- /// <summary>&quot;Specify at which date and time you want the page to be unpublished. At the specified time the page will automatically be removed from the site&quot;</summary> 
+ /// <summary>&quot;Specify at which date and time you want the page to be unpublished automatically.&quot;</summary> 
  public static string EditPage_HelpUnpublishDate { get { return T("EditPage.HelpUnpublishDate"); } } 
  /// <summary>&quot;Content&quot;</summary> 
  public static string EditPage_LabelContent { get { return T("EditPage.LabelContent"); } } 

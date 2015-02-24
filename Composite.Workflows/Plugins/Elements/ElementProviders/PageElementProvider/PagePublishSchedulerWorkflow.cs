@@ -1,17 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
-using Composite.C1Console.Events;
-using Composite.C1Console.Security;
+using System.Workflow.Runtime;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Workflow;
 using Composite.Core;
 using Composite.Core.Threading;
 using Composite.Data;
-using Composite.Data.ProcessControlled;
-using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
 
@@ -19,7 +16,7 @@ using Composite.Data.Types;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
-    [Obsolete]
+    [Obsolete("Is replaced by Composite.C1Console.Scheduling.PagePublishSchedulerWorkflow")]
     [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
     public sealed partial class PagePublishSchedulerWorkflow : StateMachineWorkflowActivity
     {
@@ -67,30 +64,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private void initializeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
             var delayActivity = (DelayActivity)this.GetActivityByName("waitDelayActivity");
-
-            DateTime now = DateTime.Now;
-            Log.LogVerbose(LogTitle, string.Format("Current time: {0}, Publish time: {1}", this.PublishDate, now));
-
-            if (this.PublishDate > now)
-            {
-                delayActivity.TimeoutDuration = this.PublishDate - now;
-            }
-            else
-            {
-                delayActivity.TimeoutDuration = new TimeSpan(0);
-            }
-
-            Log.LogVerbose(LogTitle, "Timeout in: " + delayActivity.TimeoutDuration);
+            delayActivity.TimeoutDuration = new TimeSpan(0);
         }
 
 
 
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
+            Log.LogInformation(LogTitle, "Converting an obsolete page publishing workflow into a new one.");
             using (ThreadDataManager.EnsureInitialize())
             {
-                IPage page;
-
                 using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
                 {
                     using (var transaction = TransactionsFacade.CreateNewScope())
@@ -103,44 +86,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                         DataFacade.Delete(pagePublishSchedule);
 
-                        page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
-
-
+                        IPage page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
                         Verify.IsNotNull(page, "The page with the id {0} does not exist", PageId);
 
-                        IEnumerable<string> transitions = ProcessControllerFacade.GetValidTransitions(page).Keys;
+                        WorkflowInstance publishWorkflowInstance = null;
+                        WorkflowInstance unpublishWorkflowInstance = null;
 
-                        if (transitions.Contains(GenericPublishProcessController.Published))
-                        {
-                            page.PublicationStatus = GenericPublishProcessController.Published;
-
-                            DataFacade.Update(page);
-
-                            Log.LogVerbose(LogTitle, "Scheduled publishing of page with title '{0}' is complete", page.Title);
-                        }
-                        else
-                        {
-                            Log.LogWarning(LogTitle, "Scheduled publishing of page with title '{0}' could not be done because the page is not in a publisheble state", page.Title);
-                        }
+                        PublishControlledHelper.HandlePublishUnpublishWorkflows(page, PublishDate, null, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
 
                         transaction.Complete();
                     }
-
-                    ReloadPageElementInConsole(page);
                 }
             }
-        }
-
-        private void ReloadPageElementInConsole(IPage page)
-        {
-            Guid parentPageId = PageManager.GetParentId(page.Id);
-            IPage parentPage = parentPageId != Guid.Empty ? PageManager.GetPageById(parentPageId) : null;
-
-            EntityToken parentEntityToken = (parentPage != null)
-                                        ? parentPage.GetDataEntityToken()
-                                        : (EntityToken)new PageElementProviderEntityToken("PageElementProvider");
-
-            ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
         }
     }
 }

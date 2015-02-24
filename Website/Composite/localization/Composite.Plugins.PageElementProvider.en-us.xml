@@ -42,9 +42,9 @@
   <string key="EditPage.LabelAbstract" value="Description" />
   <string key="EditPage.LabelAbstractHelp" value="Use this field for a short description of the page" />
   <string key="EditPage.LabelPublishDate" value="Publish date" />
-  <string key="EditPage.HelpPublishDate" value="Specify at which date and time you want the page to be published. At the specified time the page will automatically be published to the site" />
+  <string key="EditPage.HelpPublishDate" value="Specify at which date and time you want the page to be published automatically." />
   <string key="EditPage.LabelUnpublishDate" value="Unpublish date" />
-  <string key="EditPage.HelpUnpublishDate" value="Specify at which date and time you want the page to be unpublished. At the specified time the page will automatically be removed from the site" />
+  <string key="EditPage.HelpUnpublishDate" value="Specify at which date and time you want the page to be unpublished automatically." />
   <string key="EditPage.LabelContent" value="Content" />
   <string key="EditPage.LabelPreview" value="Preview" />
   <string key="EditPage.PageTypeSelectorLabel" value="Page type" />
