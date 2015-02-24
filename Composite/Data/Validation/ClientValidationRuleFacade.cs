@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Composite.Data.Validation.ClientValidationRules;
 
@@ -18,7 +19,15 @@ namespace Composite.Data.Validation
         /// <exclude />
         public static List<ClientValidationRule> GetClientValidationRules(object objectForValidation, string propertyName)
         {
-            return _implementation.GetClientValidationRules(objectForValidation, propertyName);
+            Verify.ArgumentNotNull(objectForValidation, "objectForValidation");
+
+            return _implementation.GetClientValidationRules(objectForValidation.GetType(), propertyName);
+        }
+
+        /// <exclude />
+        public static List<ClientValidationRule> GetClientValidationRules(Type type, string propertyName)
+        {
+            return _implementation.GetClientValidationRules(type, propertyName);
         }
     }
 }

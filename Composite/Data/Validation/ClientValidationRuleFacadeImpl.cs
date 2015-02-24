@@ -13,18 +13,18 @@ namespace Composite.Data.Validation
 {
     internal sealed class ClientValidationRuleFacadeImpl : IClientValidationRuleFacade
     {
-        public List<ClientValidationRule> GetClientValidationRules(object objectForValidation, string propertyName)
+        public List<ClientValidationRule> GetClientValidationRules(Type type, string propertyName)
         {
-            if (objectForValidation == null) throw new ArgumentNullException("objectForValidation");
-            if (string.IsNullOrEmpty(propertyName)) throw new ArgumentNullException("propertyName");
+            Verify.ArgumentNotNull(type, "type");
+            Verify.ArgumentNotNullOrEmpty(propertyName, "propertyName");
 
-            PropertyInfo propertyInfo = objectForValidation.GetType().GetProperty(propertyName);
+            PropertyInfo propertyInfo = type.GetProperty(propertyName);
 
-            if (propertyInfo == null) throw new InvalidOperationException(string.Format("The property named '{0}' not found on the type '{1}'", propertyName, objectForValidation.GetType()));
+            Verify.IsNotNull(propertyInfo, "The property named '{0}' not found on the type '{1}'", propertyName, type);
 
             List<ValidatorAttribute> attributes = propertyInfo.GetCustomAttributesRecursively<ValidatorAttribute>().ToList();
 
-            List<ClientValidationRule> rules = new List<ClientValidationRule>();
+            var rules = new List<ClientValidationRule>();
             foreach (ValidatorAttribute attribute in attributes)
             {
                 string translatorName = ClientValidationRuleTranslatorRegistry.GetTranslatorName(attribute.GetType());

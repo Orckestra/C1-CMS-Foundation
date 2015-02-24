@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using Composite.C1Console.Events;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Configuration;
 using Composite.Core.Routing.Plugins.Runtime;
 using Composite.Core.Routing.Plugins.UrlFormatters;
 using Composite.Core.Routing.Plugins.UrlFormatters.Runtime;
+using Composite.Data.Types;
+using Composite.Data.Validation;
+using Composite.Data.Validation.ClientValidationRules;
 
 namespace Composite.Core.Routing.Foundation.PluginFacades
 {
@@ -36,7 +42,30 @@ namespace Composite.Core.Routing.Foundation.PluginFacades
                 }
             }
 
+            url = FilterInvalidCharacters(url);
+
             return url;
+        }
+
+        private static string FilterInvalidCharacters(string pageTitle)
+        {
+            var regexClientValidationRule = 
+                ClientValidationRuleFacade.GetClientValidationRules(typeof(IPage), "UrlTitle")
+                                          .OfType<RegexClientValidationRule>().Single();
+
+            var generated = new StringBuilder();
+            var regex = new Regex(regexClientValidationRule.Expression);
+
+            foreach (char c in pageTitle)
+            {
+                var matchString = new string(c, 1);
+                if (regex.IsMatch(matchString))
+                {
+                    generated.Append(c);
+                }
+            }
+
+            return generated.ToString();
         }
 
         private sealed class Resources

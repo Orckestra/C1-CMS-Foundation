@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Workflow.Activities;
 
 using Composite.C1Console.Actions;
@@ -14,7 +12,6 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 using Composite.Data.Validation;
-using Composite.Data.Validation.ClientValidationRules;
 using Composite.Core.Linq;
 using Composite.Core.ResourceSystem;
 using Composite.Core.Extensions;
@@ -539,24 +536,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private string GenerateUrlTitleFromTitle(string title)
         {
-            title = UrlFormattersPluginFacade.FormatUrl(title.Trim(), false);
-
-            RegexClientValidationRule regexClientValidationRule = ClientValidationRuleFacade.GetClientValidationRules(this.GetBinding<IPage>("NewPage"), "UrlTitle").OfType<RegexClientValidationRule>().Single();
-
-            StringBuilder generated = new StringBuilder();
-
-            Regex regex = new Regex(regexClientValidationRule.Expression);
-
-            foreach (char c in title)
-            {
-                string matchString = new string(c, 1);
-                if (regex.IsMatch(matchString))
-                {
-                    generated.Append(c);
-                }
-            }
-
-            return generated.ToString();
+            return UrlFormattersPluginFacade.FormatUrl(title.Trim(), false);
         }
 
 
