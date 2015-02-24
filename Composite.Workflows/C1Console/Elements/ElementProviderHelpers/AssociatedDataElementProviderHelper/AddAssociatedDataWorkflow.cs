@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Workflow.Activities;
-using System.Workflow.Runtime;
+
 using Composite.C1Console.Actions;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
-using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Workflow.Activities;
 using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
@@ -17,75 +17,44 @@ using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Types;
 
-
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
     /// <summary>
     /// This is used when adding data to a page folder
     /// </summary>
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddAssociatedDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddAssociatedDataWorkflow : FormsWorkflow
     {
         [NonSerialized]
-        private bool _doPublish = false;
+        private bool _doPublish;
 
         public AddAssociatedDataWorkflow()
         {
             InitializeComponent();
         }
 
-
-
-        private Type GetInterfaceType()
-        {
-            Type interfaceType;
-
-            AssociatedDataElementProviderHelperEntityToken entityToken = this.EntityToken as AssociatedDataElementProviderHelperEntityToken;
-            if (entityToken != null)
-            {
-                interfaceType = entityToken.GetInterfaceType();
-                IData data = entityToken.GetData();
-
-                this.UpdateBinding("Data", data);
-            }
-            else
-            {
-                DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
-
-                interfaceType = dataEntityToken.Data.DataSourceId.InterfaceType;
-
-                IData data = dataEntityToken.Data;
-                this.UpdateBinding("Data", data);
-            }
-
-            return interfaceType;
-        }
-
-
-
         private void IsDataTypeDescriptorNullTest(object sender, ConditionalEventArgs e)
         {
-            e.Result = this.BindingExist("DataTypeDescriptor") == false;
+            e.Result = !BindingExist("DataTypeDescriptor");
         }
-
 
         private void initialCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            AssociatedDataElementProviderHelperEntityToken entityToken = this.EntityToken as AssociatedDataElementProviderHelperEntityToken;
+            var entityToken = EntityToken as AssociatedDataElementProviderHelperEntityToken;
 
             if ((entityToken != null) && (entityToken.Payload != ""))
             {
-                Type type = TypeManager.GetType(entityToken.Payload);
-                Guid id = type.GetImmutableTypeId();
-                DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(id);
-                this.UpdateBinding("DataTypeDescriptor", dataTypeDescriptor);
+                var type = TypeManager.GetType(entityToken.Payload);
+                var id = type.GetImmutableTypeId();
+                var dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(id);
+                UpdateBinding("DataTypeDescriptor", dataTypeDescriptor);
 
-                IData data = entityToken.GetData();
-                this.UpdateBinding("Data", data);
+                var data = entityToken.GetData();
+                UpdateBinding("Data", data);
 
                 if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !typeof(IPublishControlled).IsAssignableFrom(type))
                 {
-                    FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+                    var formData = WorkflowFacade.GetFormData(InstanceId, true);
 
                     if (formData.ExcludedEvents == null)
                         formData.ExcludedEvents = new List<string>();
@@ -95,126 +64,119 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             }
         }
 
-
-
         private void selectTypeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            List<Type> types = PageFolderFacade.GetAllFolderTypes().ToList();
+            var types = PageFolderFacade.GetAllFolderTypes().ToList();
 
-            this.Bindings.Add("Types", types);
-            this.Bindings.Add("SelectedType", types[0]);
+            Bindings.Add("Types", types);
+            Bindings.Add("SelectedType", types[0]);
         }
-
-
 
         private void selectTypeCodeActivity_Next_ExecuteCode(object sender, EventArgs e)
         {
-            Type type = this.GetBinding<Type>("SelectedType");
+            var type = GetBinding<Type>("SelectedType");
 
-            DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
+            var dataEntityToken = (DataEntityToken)EntityToken;
 
-            Type parentInterfaceType = dataEntityToken.Data.DataSourceId.InterfaceType;
-            object id = parentInterfaceType.GetKeyProperties()[0].GetValue(dataEntityToken.Data, null);
-            string idString = ValueTypeConverter.Convert<string>(id);
+            var parentInterfaceType = dataEntityToken.Data.DataSourceId.InterfaceType;
+            var id = parentInterfaceType.GetKeyProperties()[0].GetValue(dataEntityToken.Data, null);
+            var idString = ValueTypeConverter.Convert<string>(id);
 
-            AssociatedDataElementProviderHelperEntityToken entityToken = new AssociatedDataElementProviderHelperEntityToken(
+            var entityToken = new AssociatedDataElementProviderHelperEntityToken(
                                 TypeManager.SerializeType(parentInterfaceType),
-                                this.EntityToken.Source,
+                                EntityToken.Source,
                                 idString,
                                 TypeManager.SerializeType(type)
                             );
 
-            this.ExecuteWorklow(entityToken, typeof(AddAssociatedDataWorkflow));
+            ExecuteWorklow(entityToken, typeof(AddAssociatedDataWorkflow));
 
-            DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());
-            this.UpdateBinding("DataTypeDescriptor", dataTypeDescriptor);
+            var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(type.GetImmutableTypeId());
+            UpdateBinding("DataTypeDescriptor", dataTypeDescriptor);
         }
-
-
 
         private void enterDataCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DataTypeDescriptor dataTypeDescriptor = this.GetBinding<DataTypeDescriptor>("DataTypeDescriptor");
+            var dataTypeDescriptor = GetBinding<DataTypeDescriptor>("DataTypeDescriptor");
 
-            Type type = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
+            var type = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
-            IPage page = this.GetBinding<IData>("Data") as IPage;
+            var page = GetBinding<IData>("Data") as IPage;
 
-            DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
-            helper.LayoutIconHandle = "associated-data-add";
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor)
+            {
+                LayoutIconHandle = "associated-data-add"
+            };
 
-            GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
+            var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
             helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
             IData newData;
-            if (this.BindingExist("NewData") == false)
+            if (!BindingExist("NewData"))
             {
                 newData = DataFacade.BuildNew(type);
 
                 PageFolderFacade.AssignFolderDataSpecificValues(newData, page);
 
-                IPublishControlled publishControlled = newData as IPublishControlled;
+                var publishControlled = newData as IPublishControlled;
                 if (publishControlled != null)
                 {
                     publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
                 }
 
-                ILocalizedControlled localizedData = newData as ILocalizedControlled;
+                var localizedData = newData as ILocalizedControlled;
                 if (localizedData != null)
                 {
-                    CultureInfo cultureInfo = UserSettings.ActiveLocaleCultureInfo ?? DataLocalizationFacade.DefaultLocalizationCulture;
+                    var cultureInfo = UserSettings.ActiveLocaleCultureInfo ?? DataLocalizationFacade.DefaultLocalizationCulture;
                     localizedData.SourceCultureName = cultureInfo.Name;
                 }
 
-                this.Bindings.Add("NewData", newData);
+                Bindings.Add("NewData", newData);
 
-                helper.UpdateWithNewBindings(this.Bindings);
-                helper.ObjectToBindings(newData, this.Bindings);
+                helper.UpdateWithNewBindings(Bindings);
+                helper.ObjectToBindings(newData, Bindings);
             }
             else
             {
-                newData = this.GetBinding<IData>("NewData");
+                newData = GetBinding<IData>("NewData");
             }
 
-            this.DeliverFormData(
+            DeliverFormData(
                     type.Name,
                     StandardUiContainerTypes.Document,
                     helper.GetForm(),
-                    this.Bindings,
+                    Bindings,
                     helper.GetBindingsValidationRules(newData)
                 );
         }
 
-
-
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DataTypeDescriptor dataTypeDescriptor = this.GetBinding<DataTypeDescriptor>("DataTypeDescriptor");
+            var dataTypeDescriptor = GetBinding<DataTypeDescriptor>("DataTypeDescriptor");
 
-            IData newData = this.GetBinding<IData>("NewData");
+            var newData = GetBinding<IData>("NewData");
 
-            DataTypeDescriptorFormsHelper helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
 
-            GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
+            var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
             helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
 
-            bool isValid = ValidateBindings();
+            var isValid = ValidateBindings();
 
             if (!BindAndValidate(helper, newData))
             {
                 isValid = false;
             }
 
-            bool justAdded = false;
+            var justAdded = false;
             if (isValid)
             {
-                bool published = false;
+                var published = false;
 
-                if (this.BindingExist("DataAdded") == false)
+                if (!BindingExist("DataAdded"))
                 {
-                    DataScopeIdentifier dataScopeIdentifier = DataScopeIdentifier.Public;
-
+                    var dataScopeIdentifier = DataScopeIdentifier.Public;
                     if (dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
                     {
                         dataScopeIdentifier = DataScopeIdentifier.Administrated;
@@ -223,40 +185,42 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
                     using (new DataScope(dataScopeIdentifier))
                     {
                         newData = DataFacade.AddNew(newData);
+
                         justAdded = true;
                     }
 
-                    PublishIfNeeded(newData);
+                    PublishControlledHelper.PublishIfNeeded(newData, _doPublish, Bindings, ShowMessage);
 
-                    this.AcquireLock(newData.GetDataEntityToken());
+                    AcquireLock(newData.GetDataEntityToken());
 
-                    this.UpdateBinding("NewData", newData);
-                    this.Bindings.Add("DataAdded", true);
+                    UpdateBinding("NewData", newData);
+                    Bindings.Add("DataAdded", true);
                 }
                 else
                 {
-                    if (newData is IPublishControlled)
+                    var publishedControlled = newData as IPublishControlled;
+                    if (publishedControlled != null)
                     {
-                        IData refreshedData = DataFacade.GetDataFromDataSourceId(newData.DataSourceId);
-                        if (refreshedData != null &&
-                            (refreshedData as IPublishControlled).PublicationStatus == GenericPublishProcessController.Published)
+                        var refreshedData = (IPublishControlled)DataFacade.GetDataFromDataSourceId(newData.DataSourceId);
+                        if (refreshedData != null && refreshedData.PublicationStatus == GenericPublishProcessController.Published)
                         {
-                            (refreshedData as IPublishControlled).PublicationStatus = GenericPublishProcessController.Draft;
+                            refreshedData.PublicationStatus = GenericPublishProcessController.Draft;
+
                             DataFacade.Update(refreshedData);
                         }
                     }
 
                     DataFacade.Update(newData);
 
-                    published = PublishIfNeeded(newData);
+                    published = PublishControlledHelper.PublishIfNeeded(newData, _doPublish, Bindings, ShowMessage);
 
                     EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
                 }
 
                 if (!published)
                 {
-                    ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
-                    specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                    var specificTreeRefresher = CreateParentTreeRefresher();
+                    specificTreeRefresher.PostRefreshMesseges(EntityToken);
                 }
 
                 if (justAdded)
@@ -272,19 +236,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             {
                 SetSaveStatus(false);
             }
-        }
-
-        private bool PublishIfNeeded(IData newData)
-        {
-            if (newData is IPublishControlled && _doPublish)
-            {
-                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
-                return true;
-            }
-
-            return false;
         }
 
         private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)

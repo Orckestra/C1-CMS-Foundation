@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
+
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 using Composite.Data.Transactions;
-
 
 namespace Composite.Data.Types.Foundation
 {
@@ -12,10 +11,10 @@ namespace Composite.Data.Types.Foundation
     {
         public void OnAfterDataUpdated(IData data)
         {
-            IPage page = (IPage)data;
+            var page = (IPage)data;
 
             IEnumerable<IPagePlaceholderContent> pagePlaceholderContents;
-            using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+            using (new DataScope(DataScopeIdentifier.Administrated))
             {
                 pagePlaceholderContents =
                     (from content in DataFacade.GetData<IPagePlaceholderContent>()
@@ -25,30 +24,31 @@ namespace Composite.Data.Types.Foundation
 
             if (page.PublicationStatus == GenericPublishProcessController.Published)
             {
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+                using (var transactionScope = TransactionsFacade.CreateNewScope())
                 {
-                    using (DataScope dataScope = new DataScope(DataScopeIdentifier.Public))
+                    using (new DataScope(DataScopeIdentifier.Public))
                     {
                         DataFacade.Delete<IPagePlaceholderContent>(f => f.PageId == page.Id);
                     }
 
-                    foreach (IPagePlaceholderContent pagePlaceholderContent in pagePlaceholderContents)
+                    foreach (var pagePlaceholderContent in pagePlaceholderContents)
                     {
                         pagePlaceholderContent.PublicationStatus = page.PublicationStatus;
 
                         DataFacade.Update(pagePlaceholderContent);
                     }
 
-                    using (DataScope dataScope = new DataScope(DataScopeIdentifier.Administrated))
+                    using (new DataScope(DataScopeIdentifier.Administrated))
                     {
-                        IPagePublishSchedule pagePublishSchedule =
-                            (from pps in DataFacade.GetData<IPagePublishSchedule>()
-                             where pps.PageId == page.Id
+                        var publishSchedule =
+                            (from pps in DataFacade.GetData<IPublishSchedule>()
+                             where pps.DataType == typeof(IPage).FullName &&
+                                   pps.DataId == page.Id.ToString()
                              select pps).SingleOrDefault();
 
-                        if (pagePublishSchedule != null)
+                        if (publishSchedule != null)
                         {
-                            DataFacade.Delete<IPagePublishSchedule>(pagePublishSchedule);
+                            DataFacade.Delete(publishSchedule);
                         }
                     }
 
@@ -57,7 +57,7 @@ namespace Composite.Data.Types.Foundation
             }
             else
             {
-                foreach (IPagePlaceholderContent pagePlaceholderContent in pagePlaceholderContents)
+                foreach (var pagePlaceholderContent in pagePlaceholderContents)
                 {
                     if (pagePlaceholderContent.PublicationStatus != page.PublicationStatus)
                     {

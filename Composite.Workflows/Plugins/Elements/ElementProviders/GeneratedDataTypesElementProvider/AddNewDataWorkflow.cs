@@ -1,11 +1,14 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Composite.C1Console.Actions;
 using Composite.C1Console.Elements.ElementProviderHelpers.DataGroupingProviderHelper;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
-using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Workflow.Activities;
 using Composite.Core.Serialization;
 using Composite.Core.Types;
 using Composite.Data;
@@ -13,41 +16,39 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using System.Workflow.Runtime;
-
 
 namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementProvider
 {
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class AddNewDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class AddNewDataWorkflow : FormsWorkflow
     {
         [NonSerialized]
-        private bool _doPublish = false;
+        private bool _doPublish;
 
         [NonSerialized]
-        private DataTypeDescriptorFormsHelper _helper = null;
+        private DataTypeDescriptorFormsHelper _helper;
 
         [NonSerialized]
-        private string _typeName = null;
-
+        private string _typeName;
 
         public AddNewDataWorkflow()
         {
             InitializeComponent();
         }
 
-
         private Type GetInterfaceType()
         {
             Type type;
-            if (this.EntityToken is GeneratedDataTypesElementProviderTypeEntityToken)
+            if (EntityToken is GeneratedDataTypesElementProviderTypeEntityToken)
             {
-                GeneratedDataTypesElementProviderTypeEntityToken entityToken = this.EntityToken as GeneratedDataTypesElementProviderTypeEntityToken;
+                var entityToken = EntityToken as GeneratedDataTypesElementProviderTypeEntityToken;
+
                 type = TypeManager.GetType(entityToken.SerializedTypeName);
             }
-            else if (this.EntityToken is DataGroupingProviderHelperEntityToken)
+            else if (EntityToken is DataGroupingProviderHelperEntityToken)
             {
-                DataGroupingProviderHelperEntityToken entityToken = this.EntityToken as DataGroupingProviderHelperEntityToken;
+                var entityToken = EntityToken as DataGroupingProviderHelperEntityToken;
+
                 type = TypeManager.GetType(entityToken.Type);
             }
             else
@@ -58,23 +59,25 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             return type;
         }
 
-
         private DataTypeDescriptorFormsHelper GetDataTypeDescriptorFormsHelper()
         {
             if (_helper == null)
             {
-                Type type = GetInterfaceType();
+                var type = GetInterfaceType();
+                var guid = type.GetImmutableTypeId();
 
-                Guid guid = type.GetImmutableTypeId();
+                var typeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(guid);
+                if (typeDescriptor == null)
+                {
+                    throw new InvalidOperationException(string.Format("Can not find the type descriptor for the type '{0}'", type));
+                }
 
-                DataTypeDescriptor typeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(guid);
+                var generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor) { AllowForiegnKeyEditing = true };
 
-                if (typeDescriptor == null) throw new InvalidOperationException(string.Format("Can not find the type descriptor for the type '{0}'", type));
-
-                GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor) { AllowForiegnKeyEditing = true };
-
-                _helper = new DataTypeDescriptorFormsHelper(typeDescriptor, true, this.EntityToken);
-                _helper.LayoutIconHandle = "generated-type-data-add";
+                _helper = new DataTypeDescriptorFormsHelper(typeDescriptor, true, EntityToken)
+                {
+                    LayoutIconHandle = "generated-type-data-add"
+                };
 
                 _helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
@@ -84,37 +87,39 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             return _helper;
         }
 
-
         private void initialCodeActivity_Initialize_ExecuteCode(object sender, EventArgs e)
         {
-            Type type = GetInterfaceType();
-            
+            var type = GetInterfaceType();
+
             if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !typeof(IPublishControlled).IsAssignableFrom(type))
             {
-                FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+                var formData = WorkflowFacade.GetFormData(InstanceId, true);
 
                 if (formData.ExcludedEvents == null)
+                {
                     formData.ExcludedEvents = new List<string>();
+                }
 
                 formData.ExcludedEvents.Add("SaveAndPublish");
             }
 
 
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
-            helper.UpdateWithNewBindings(this.Bindings);            
+            var helper = GetDataTypeDescriptorFormsHelper();
+            helper.UpdateWithNewBindings(Bindings);
 
-            IData newData = DataFacade.BuildNew(type);
+            var newData = DataFacade.BuildNew(type);
 
-            IPublishControlled publishControlled = newData as IPublishControlled;
+            var publishControlled = newData as IPublishControlled;
             if (publishControlled != null)
             {
                 publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
             }
 
-            if (string.IsNullOrEmpty(this.Payload) == false)
+            if (string.IsNullOrEmpty(Payload) == false)
             {
-                Dictionary<string, string> serializedValues = StringConversionServices.ParseKeyValueCollection(this.Payload);
-                Dictionary<string, string> values = new Dictionary<string, string>();
+                var values = new Dictionary<string, string>();
+
+                var serializedValues = StringConversionServices.ParseKeyValueCollection(Payload);
                 foreach (var kvp in serializedValues)
                 {
                     values.Add(kvp.Key, StringConversionServices.DeserializeValueString(kvp.Value));
@@ -123,80 +128,75 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
                 newData.SetValues(values);
             }
 
-            helper.ObjectToBindings(newData, this.Bindings);
+            helper.ObjectToBindings(newData, Bindings);
 
             GeneratedTypesHelper.SetNewIdFieldValue(newData);
 
-            this.Bindings.Add("NewData", newData);
+            Bindings.Add("NewData", newData);
         }
-
-
 
         private void step1CodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
+            var helper = GetDataTypeDescriptorFormsHelper();
 
-            if (this.BindingExist("DataAdded") == false)
+            if (BindingExist("DataAdded") == false)
             {
                 helper.LayoutLabel = helper.DataTypeDescriptor.Name;
             }
 
-            IData newData = this.GetBinding<IData>("NewData");
+            var newData = GetBinding<IData>("NewData");
 
-            this.DeliverFormData(
+            DeliverFormData(
                     _typeName,
                     StandardUiContainerTypes.Document,
                     helper.GetForm(),
-                    this.Bindings,
+                    Bindings,
                     helper.GetBindingsValidationRules(newData)
                 );
         }
 
-
-
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            bool isValid = ValidateBindings();
+            var justAdded = false;
 
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
+            var isValid = ValidateBindings();
+            var helper = GetDataTypeDescriptorFormsHelper();
 
-            IData newData = this.GetBinding<IData>("NewData");
-
+            var newData = GetBinding<IData>("NewData");
             if (!BindAndValidate(helper, newData))
             {
                 isValid = false;
             }
 
-
-            bool justAdded = false;
-
             if (isValid)
             {
-                if (this.BindingExist("DataAdded") == false)
+                if (!BindingExist("DataAdded"))
                 {
                     newData = DataFacade.AddNew(newData);
                     justAdded = true;
 
-                    this.AcquireLock(newData.GetDataEntityToken());
+                    AcquireLock(newData.GetDataEntityToken());
 
-                    this.UpdateBinding("NewData", newData);
-                    this.Bindings.Add("DataAdded", true);
+                    UpdateBinding("NewData", newData);
+                    Bindings.Add("DataAdded", true);
 
-                    PublishIfNeeded(newData);
+                    PublishControlledHelper.PublishIfNeeded(newData, _doPublish, Bindings, ShowMessage);
 
-                    ParentTreeRefresher specificTreeRefresher = this.CreateParentTreeRefresher();
-                    specificTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                    var specificTreeRefresher = CreateParentTreeRefresher();
+                    specificTreeRefresher.PostRefreshMesseges(EntityToken);
                 }
                 else
                 {
-                    UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+                    var updateTreeRefresher = CreateUpdateTreeRefresher(EntityToken);
 
                     DataFacade.Update(newData);
                     EntityTokenCacheFacade.ClearCache(newData.GetDataEntityToken());
 
-                    bool published = PublishIfNeeded(newData);
-
-                    if (!published) updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                    var published = PublishControlledHelper.PublishIfNeeded(newData, _doPublish, Bindings, ShowMessage);
+                    if (!published)
+                    {
+                        updateTreeRefresher.PostRefreshMesseges(EntityToken);
+                    }
                 }
             }
 
@@ -208,19 +208,6 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             {
                 SetSaveStatus(isValid);
             }
-        }
-
-        private bool PublishIfNeeded(IData newData)
-        {
-            if (newData is IPublishControlled && _doPublish)
-            {
-                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
-                return true;
-            }
-
-            return false;
         }
 
         private void setEnablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)

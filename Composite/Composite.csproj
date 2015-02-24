@@ -219,6 +219,9 @@
     <Compile Include="Data\StoreEventHandler.cs" />
     <Compile Include="Data\StoreEventArgs.cs" />
     <Compile Include="Data\Types\ICustomFunctionCallEditorMapping.cs" />
+    <Compile Include="Data\Types\IPublishSchedule.cs" />
+    <Compile Include="Data\Types\ISchedule.cs" />
+    <Compile Include="Data\Types\IUnpublishSchedule.cs" />
     <Compile Include="Data\Types\IUserPasswordHistory.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
     <Compile Include="Data\Validation\Validators\NullDateTimeRangeValidatorAttribute.cs" />

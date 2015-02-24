@@ -20,6 +20,7 @@ using Composite.Data.Types;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
+    [Obsolete]
     [AllowPersistingWorkflow(WorkflowPersistingType.Shutdown)]
     public sealed partial class PageUnpublishSchedulerWorkflow : StateMachineWorkflowActivity
     {

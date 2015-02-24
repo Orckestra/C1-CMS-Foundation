@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Transactions;
 using System.Web.UI;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
+
 using Composite.C1Console.Actions;
 using Composite.C1Console.Events;
 using Composite.C1Console.Forms;
 using Composite.C1Console.Forms.DataServices;
 using Composite.C1Console.Forms.Flows;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
 using Composite.C1Console.Trees;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
+using Composite.C1Console.Workflow.Activities;
 using Composite.Core;
 using Composite.Core.Collections.Generic;
 using Composite.Core.Extensions;
@@ -35,28 +37,24 @@ using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
-using Microsoft.Practices.EnterpriseLibrary.Validation;
-using Composite.C1Console.Workflow.Foundation;
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditPageWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditPageWorkflow : FormsWorkflow
     {
         [NonSerialized]
-        private bool _doPublish = false;
+        private bool _doPublish;
 
         public EditPageWorkflow()
         {
             InitializeComponent();
-        }        
+        }
 
-
-
-        private DataTypeDescriptorFormsHelper CreateDataTypeDescriptorFormsHelper(IPageMetaDataDefinition pageMetaDataDefinition, DataTypeDescriptor dataTypeDescriptor)
+        private static DataTypeDescriptorFormsHelper CreateDataTypeDescriptorFormsHelper(IPageMetaDataDefinition pageMetaDataDefinition, DataTypeDescriptor dataTypeDescriptor)
         {
-            string bindingPrefix = string.Format("{0}:{1}.{2}", pageMetaDataDefinition.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
+            var bindingPrefix = string.Format("{0}:{1}.{2}", pageMetaDataDefinition.Name, dataTypeDescriptor.Namespace, dataTypeDescriptor.Name);
 
             var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, bindingPrefix);
 
@@ -72,13 +70,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private List<KeyValuePair<Guid, string>> GetSelectablePageTypes()
         {
-            IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
+            var selectedPage = GetBinding<IPage>("SelectedPage");
 
-            Guid parentPageId = selectedPage.GetParentId();
+            var parentPageId = selectedPage.GetParentId();
             IPage parentPage = null;
             if (parentPageId != Guid.Empty)
             {
-                parentPage = Composite.Data.PageManager.GetPageById(parentPageId);
+                parentPage = PageManager.GetPageById(parentPageId);
             }
 
             return
@@ -91,11 +89,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private List<KeyValuePair<Guid, string>> GetSelectablePageTemplates()
         {
-            IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
+            var selectedPage = GetBinding<IPage>("SelectedPage");
 
-            List<PageTemplateDescriptor> allPageTemplates = PageTemplateFacade.GetPageTemplates().ToList();
+            var allPageTemplates = PageTemplateFacade.GetPageTemplates().ToList();
 
-            List<Guid> templateRestrictions = 
+            var templateRestrictions =
                 DataFacade.GetData<IPageTypePageTemplateRestriction>()
                 .Where(f => f.PageTypeId == selectedPage.PageTypeId)
                 .Select(restriction => restriction.PageTemplateId)
@@ -107,13 +105,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 var allowedTemplatesHash = new HashSet<Guid>(templateRestrictions);
 
-                List<PageTemplateDescriptor> allowedTemplates =
+                var allowedTemplates =
                     allPageTemplates
                     .Where(template => allowedTemplatesHash.Contains(template.Id))
                     .ToList();
 
-                Guid selectedTemplateId = selectedPage.TemplateId;
-                PageTemplateDescriptor selectedTemplate = allPageTemplates.FirstOrDefault(t => t.Id == selectedTemplateId);
+                var selectedTemplateId = selectedPage.TemplateId;
+                var selectedTemplate = allPageTemplates.FirstOrDefault(t => t.Id == selectedTemplateId);
                 if (selectedTemplate != null
                     & !allowedTemplates.Any(t => t.Id == selectedTemplateId))
                 {
@@ -138,7 +136,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         {
             if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish))
             {
-                FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+                var formData = WorkflowFacade.GetFormData(InstanceId, true);
 
                 if (formData.ExcludedEvents == null)
                     formData.ExcludedEvents = new List<string>();
@@ -148,23 +146,23 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
             IPage selectedPage;
-            if (!this.BindingExist("SelectedPage"))
+            if (!BindingExist("SelectedPage"))
             {
-                selectedPage = this.GetDataItemFromEntityToken<IPage>();
+                selectedPage = GetDataItemFromEntityToken<IPage>();
                 selectedPage.PublicationStatus = GenericPublishProcessController.Draft;
-                this.Bindings.Add("SelectedPage", selectedPage);
+                Bindings.Add("SelectedPage", selectedPage);
             }
             else
             {
-                selectedPage = this.GetBinding<IPage>("SelectedPage");
+                selectedPage = GetBinding<IPage>("SelectedPage");
             }
 
-            if (!this.BindingExist("UrlTitleIsRequired"))
+            if (!BindingExist("UrlTitleIsRequired"))
             {
-                bool isRootPage = PageManager.GetParentId(selectedPage.Id) == Guid.Empty;
+                var isRootPage = PageManager.GetParentId(selectedPage.Id) == Guid.Empty;
 
-                this.Bindings["UrlTitleIsRequired"] = !isRootPage;
-                this.Bindings["IsRootPage"] = isRootPage;
+                Bindings["UrlTitleIsRequired"] = !isRootPage;
+                Bindings["IsRootPage"] = isRootPage;
             }
 
             IFormMarkupProvider markupProvider = new FormDefinitionFileMarkupProvider(@"\Administrative\EditPage.xml");
@@ -174,19 +172,19 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             {
                 formDocument = XDocument.Load(reader);
             }
-            
-            XElement bindingsXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
-            XElement layoutXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);
-            XElement tabPanelsXElement = layoutXElement.Element(DataTypeDescriptorFormsHelper.MainNamespace + "TabPanels");
+
+            var bindingsXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Bindings);
+            var layoutXElement = formDocument.Root.Element(DataTypeDescriptorFormsHelper.CmsNamespace + FormKeyTagNames.Layout);
+            var tabPanelsXElement = layoutXElement.Element(DataTypeDescriptorFormsHelper.MainNamespace + "TabPanels");
 
 
             IEnumerable<ICompositionContainer> compositionContainers = selectedPage.GetAllowedMetaDataContainers().Evaluate();
 
             var compositionTabs = new Dictionary<Guid, XElement>();
 
-            foreach (ICompositionContainer compositionContainer in compositionContainers)
+            foreach (var compositionContainer in compositionContainers)
             {
-                XElement element = new XElement(Namespaces.BindingFormsStdUiControls10 + "PlaceHolder");
+                var element = new XElement(Namespaces.BindingFormsStdUiControls10 + "PlaceHolder");
                 element.Add(new XAttribute("Label", StringResourceSystemFacade.ParseString(compositionContainer.Label)));
 
                 compositionTabs.Add(compositionContainer.Id, element);
@@ -194,43 +192,43 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             var clientValidationRules = new Dictionary<string, List<ClientValidationRule>>();
 
-            List<IPageMetaDataDefinition> pageMetaDataDefinitions = selectedPage.GetAllowedMetaDataDefinitions();
+            var pageMetaDataDefinitions = selectedPage.GetAllowedMetaDataDefinitions();
 
-            foreach (IPageMetaDataDefinition pageMetaDataDefinition in pageMetaDataDefinitions)
+            foreach (var pageMetaDataDefinition in pageMetaDataDefinitions)
             {
-                Guid metaDatTypeId = pageMetaDataDefinition.MetaDataTypeId;
+                var metaDatTypeId = pageMetaDataDefinition.MetaDataTypeId;
 
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDatTypeId);
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(metaDatTypeId);
                 Verify.IsNotNull(dataTypeDescriptor, "Failed to get meta data type by id '{0}'. If data type was purposely removed, in order to fix this exception you should remove IPageMetaDataDefinition records that reference this data type.", metaDatTypeId);
 
-                Type metaDataType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
+                var metaDataType = TypeManager.TryGetType(dataTypeDescriptor.TypeManagerTypeName);
                 Verify.IsNotNull(metaDataType, "Failed to get meta data type '{0}', id: {1}. If it has been removed, references from '{2}' have to be removed as well",
                                                 dataTypeDescriptor.TypeManagerTypeName, metaDatTypeId, typeof(IPageMetaDataDefinition).Name);
 
-                DataTypeDescriptorFormsHelper helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
+                var helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
 
-                IData metaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
+                var metaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
                 if (metaData == null)
                 {
                     metaData = DataFacade.BuildNew(metaDataType);
 
                     PageMetaDataFacade.AssignMetaDataSpecificValues(metaData, pageMetaDataDefinition.Name, selectedPage);
 
-                    ILocalizedControlled localizedData = metaData as ILocalizedControlled;
+                    var localizedData = metaData as ILocalizedControlled;
                     if (localizedData != null)
                     {
                         localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                     }
 
-                    IPublishControlled publishControlled = metaData as IPublishControlled;
+                    var publishControlled = metaData as IPublishControlled;
                     publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
 
-                    helper.UpdateWithNewBindings(this.Bindings);
-                    helper.ObjectToBindings(metaData, this.Bindings);
+                    helper.UpdateWithNewBindings(Bindings);
+                    helper.ObjectToBindings(metaData, Bindings);
                 }
                 else
                 {
-                    helper.UpdateWithBindings(metaData, this.Bindings);
+                    helper.UpdateWithBindings(metaData, Bindings);
                 }
 
 
@@ -241,9 +239,9 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            XElement previewTabPanel = tabPanelsXElement.Elements().Last();
+            var previewTabPanel = tabPanelsXElement.Elements().Last();
 
-            foreach (XElement element in compositionTabs.Values)
+            foreach (var element in compositionTabs.Values)
             {
                 previewTabPanel.AddBeforeSelf(element);
             }
@@ -254,11 +252,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.DraftTransition"));
             transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.AwaitingApprovalTransition"));
 
-            string username = UserValidationFacade.GetUsername();
-            IEnumerable<UserPermissionDefinition> userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
-            IEnumerable<UserGroupPermissionDefinition> userGroupPermissionDefinitions = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
-            IEnumerable<PermissionType> currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), this.EntityToken, userPermissionDefinitions, userGroupPermissionDefinitions);
-            foreach (PermissionType permissionType in currentPermissionTypes)
+            var username = UserValidationFacade.GetUsername();
+            var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
+            var userGroupPermissionDefinitions = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
+            var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), EntityToken, userPermissionDefinitions, userGroupPermissionDefinitions);
+            foreach (var permissionType in currentPermissionTypes)
             {
                 if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
                 {
@@ -268,56 +266,58 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            List<IPagePlaceholderContent> contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
-            Dictionary<string, string> namedXhtmlFragments = new Dictionary<string, string>();
-            foreach (IPagePlaceholderContent content in contents)
+            var contents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
+            var namedXhtmlFragments = new Dictionary<string, string>();
+            foreach (var content in contents)
             {
                 namedXhtmlFragments.Add(content.PlaceHolderId, content.Content ?? "");
             }
 
 
 
-            this.UpdateBinding("SelectablePageTypeIds", GetSelectablePageTypes());
-            this.UpdateBinding("SelectableTemplateIds", GetSelectablePageTemplates());
-            this.UpdateBinding("NamedXhtmlFragments", namedXhtmlFragments);
-            this.UpdateBinding("StateOptions", transitionNames);
+            UpdateBinding("SelectablePageTypeIds", GetSelectablePageTypes());
+            UpdateBinding("SelectableTemplateIds", GetSelectablePageTemplates());
+            UpdateBinding("NamedXhtmlFragments", namedXhtmlFragments);
+            UpdateBinding("StateOptions", transitionNames);
 
 
-            IPagePublishSchedule existingPagePublishSchedule =
-                            (from ps in DataFacade.GetData<IPagePublishSchedule>()
-                             where ps.PageId == selectedPage.Id
+            var existingPagePublishSchedule =
+                            (from ps in DataFacade.GetData<IPublishSchedule>()
+                             where ps.DataType == typeof(IPage).FullName &&
+                                ps.DataId == selectedPage.Id.ToString()
                              select ps).FirstOrDefault();
 
             if (existingPagePublishSchedule != null)
             {
-                this.UpdateBinding("PublishDate", existingPagePublishSchedule.PublishDate);
+                UpdateBinding("PublishDate", existingPagePublishSchedule.PublishDate);
             }
             else
             {
-                this.UpdateBinding("PublishDate", null);
+                UpdateBinding("PublishDate", null);
             }
 
-            IPageUnpublishSchedule existingPageUnpublishSchedule =
-                            (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
-                             where ps.PageId == selectedPage.Id
+            var existingPageUnpublishSchedule =
+                            (from ps in DataFacade.GetData<IUnpublishSchedule>()
+                             where ps.DataType == typeof(IPage).FullName &&
+                                ps.DataId == selectedPage.Id.ToString()
                              select ps).FirstOrDefault();
 
             if (existingPageUnpublishSchedule != null)
             {
-                this.UpdateBinding("UnpublishDate", existingPageUnpublishSchedule.UnpublishDate);
+                UpdateBinding("UnpublishDate", existingPageUnpublishSchedule.UnpublishDate);
             }
             else
             {
-                this.UpdateBinding("UnpublishDate", null);
+                UpdateBinding("UnpublishDate", null);
             }
 
-            string formDefinition = formDocument.GetDocumentAsString();
+            var formDefinition = formDocument.GetDocumentAsString();
 
-            this.DeliverFormData(
+            DeliverFormData(
                     selectedPage.Title,
                     StandardUiContainerTypes.Document,
                     formDefinition,
-                    this.Bindings,
+                    Bindings,
                     clientValidationRules
                 );
         }
@@ -326,51 +326,50 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void newPageTypeSelectedCodeActivity_UpdateView_ExecuteCode(object sender, EventArgs e)
         {
-            this.RerenderView();
+            RerenderView();
         }
 
 
 
         private void saveCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
+            var updateTreeRefresher = CreateUpdateTreeRefresher(EntityToken);
 
-            IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
-            IPage originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
+            var selectedPage = GetBinding<IPage>("SelectedPage");
+            var originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
 
-            bool viewLabelUpdated = originalPage == null 
+            var viewLabelUpdated = originalPage == null
                 || selectedPage.MenuTitle != originalPage.MenuTitle
                 || selectedPage.Title != originalPage.Title;
 
-            bool treeviewRequiresRefreshing = false;
+            var treeviewRequiresRefreshing = false;
 
-            Dictionary<string, IData> dataToAdd = new Dictionary<string, IData>();
-            Dictionary<string, IData> dataToUpdate = new Dictionary<string, IData>();
+            var dataToAdd = new Dictionary<string, IData>();
+            var dataToUpdate = new Dictionary<string, IData>();
 
-            bool _dataValidated = true;
+            var dataValidated = true;
 
             WorkflowInstance publishWorkflowInstance = null;
             WorkflowInstance unpublishWorkflowInstance = null;
 
             try
             {
-                using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+                using (var transactionScope = TransactionsFacade.CreateNewScope())
                 {
-                    _dataValidated = PrepareAddUpdateMetaData(selectedPage, dataToAdd, dataToUpdate);
+                    dataValidated = PrepareAddUpdateMetaData(selectedPage, dataToAdd, dataToUpdate);
 
-
-                    if (_dataValidated)
+                    if (dataValidated)
                     {
-                        HandlePublishUnpublishWorkflows(selectedPage, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
+                        PublishControlledHelper.HandlePublishUnpublishWorkflows(selectedPage, PublishDate, UnpublishDate, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
 
                         if (selectedPage.PageTypeId != originalPage.PageTypeId)
                         {
                             // Adding metadata fields
-                            IEnumerable<IPageMetaDataDefinition> oldPageMetaDataDefinitions = originalPage.GetAllowedMetaDataDefinitions().Except(selectedPage.GetAllowedMetaDataDefinitions(), new PageMetaDataDefinitionEqualityComparer());
+                            var oldPageMetaDataDefinitions = originalPage.GetAllowedMetaDataDefinitions().Except(selectedPage.GetAllowedMetaDataDefinitions(), new PageMetaDataDefinitionEqualityComparer());
 
-                            foreach (IPageMetaDataDefinition pageMetaDataDefinition in oldPageMetaDataDefinitions)
+                            foreach (var pageMetaDataDefinition in oldPageMetaDataDefinitions)
                             {
-                                IData oldMetaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, pageMetaDataDefinition.MetaDataTypeId);
+                                var oldMetaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, pageMetaDataDefinition.MetaDataTypeId);
                                 if (oldMetaData != null)
                                 {
                                     ProcessControllerFacade.FullDelete(oldMetaData);
@@ -379,13 +378,13 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
                             // Adding page folders
-                            IEnumerable<IPageTypeDataFolderTypeLink> pageTypeDataFolderTypeLinks =
+                            var pageTypeDataFolderTypeLinks =
                                 DataFacade.GetData<IPageTypeDataFolderTypeLink>().
                                 Where(f => f.PageTypeId == selectedPage.PageTypeId).
                                 Evaluate().
                                 RemoveDeadLinks();
 
-                            foreach (IPageTypeDataFolderTypeLink pageTypeDataFolderTypeLink in pageTypeDataFolderTypeLinks)
+                            foreach (var pageTypeDataFolderTypeLink in pageTypeDataFolderTypeLinks)
                             {
                                 if (selectedPage.GetFolderDefinitionId(pageTypeDataFolderTypeLink.DataTypeId) != Guid.Empty) continue;
 
@@ -396,15 +395,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
 
                             // Adding applications
-                            IEnumerable<IPageTypeTreeLink> pageTypeTreeLinks =
+                            var pageTypeTreeLinks =
                                 DataFacade.GetData<IPageTypeTreeLink>().
                                 Where(f => f.PageTypeId == selectedPage.PageTypeId).
                                 Evaluate().
                                 RemoveDeadLinks();
 
-                            foreach (IPageTypeTreeLink pageTypeTreeLink in pageTypeTreeLinks)
+                            foreach (var pageTypeTreeLink in pageTypeTreeLinks)
                             {
-                                Tree tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
+                                var tree = TreeFacade.GetTree(pageTypeTreeLink.TreeId);
                                 if (tree.HasAttachmentPoints(selectedPage.GetDataEntityToken())) continue;
 
                                 TreeFacade.AddPersistedAttachmentPoint(pageTypeTreeLink.TreeId, typeof(IPage), selectedPage.Id);
@@ -413,14 +412,14 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         }
 
 
-                        foreach (IData data in dataToAdd.Values)
+                        foreach (var data in dataToAdd.Values)
                         {
                             DataFacade.AddNew(data);
                         }
 
-                        foreach (IData data in dataToUpdate.Values)
+                        foreach (var data in dataToUpdate.Values)
                         {
-                            IPublishControlled publishControlled = data as IPublishControlled;
+                            var publishControlled = data as IPublishControlled;
                             publishControlled.PublicationStatus = GenericPublishProcessController.Draft;
 
                             DataFacade.Update(data);
@@ -442,10 +441,10 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                         originalPage.SourceCultureName = selectedPage.SourceCultureName;
                         DataFacade.Update(originalPage);
 
-                        Dictionary<string, string> contentDictionary = this.GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
-                        List<IPagePlaceholderContent> existingContents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
+                        var contentDictionary = GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
+                        var existingContents = DataFacade.GetData<IPagePlaceholderContent>(f => f.PageId == selectedPage.Id).ToList();
 
-                        foreach (IPagePlaceholderContent existingContent in existingContents)
+                        foreach (var existingContent in existingContents)
                         {
                             if (contentDictionary.ContainsKey(existingContent.PlaceHolderId))
                             {
@@ -455,20 +454,20 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                             }
                             else
                             {
-                                DataFacade.Delete<IPagePlaceholderContent>(existingContent);
+                                DataFacade.Delete(existingContent);
                             }
                         }
 
                         foreach (var contentDictionaryElement in contentDictionary.Where(f => existingContents.Any(existing => existing.PlaceHolderId == f.Key) == false))
                         {
-                            IPagePlaceholderContent newContent = DataFacade.BuildNew<IPagePlaceholderContent>();
+                            var newContent = DataFacade.BuildNew<IPagePlaceholderContent>();
                             newContent.PageId = selectedPage.Id;
                             newContent.PlaceHolderId = contentDictionaryElement.Key;
                             newContent.Content = contentDictionaryElement.Value;
                             newContent.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
                             newContent.PublicationStatus = GenericPublishProcessController.Draft;
 
-                            DataFacade.AddNew<IPagePlaceholderContent>(newContent);
+                            DataFacade.AddNew(newContent);
                         }
                     }
 
@@ -485,15 +484,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 {
                     unpublishWorkflowInstance.Start();
                     WorkflowFacade.RunWorkflow(unpublishWorkflowInstance);
-                }                
+                }
 
                 if (_doPublish)
                 {
-                    if (publishWorkflowInstance==null || this.PublishDate < DateTime.Now)
+                    if (publishWorkflowInstance == null || PublishDate < DateTime.Now)
                     {
-                        GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
+                        var actionToken = new GenericPublishProcessController.PublishActionToken();
 
-                        FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+                        var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
 
                         ActionExecutorFacade.Execute(EntityToken, actionToken, serviceContainer);
 
@@ -501,18 +500,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                     }
                     else
                     {
-                        string title = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle");
-                        string message = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublish");
-                        this.ShowMessage(DialogType.Warning, title, message);
+                        var title = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle");
+                        var message = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublish");
+                        ShowMessage(DialogType.Warning, title, message);
                     }
                 }
-                
+
                 if (treeviewRequiresRefreshing)
                 {
                     updateTreeRefresher.PostRefreshMesseges(selectedPage.GetDataEntityToken());
                 }
 
-                this.UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);
+                UpdateBinding("OldPublicationStatus", selectedPage.PublicationStatus);
 
                 if (viewLabelUpdated)
                 {
@@ -521,40 +520,40 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
             catch (Exception ex)
             {
-                Exception mostSpecificException = ex;
+                var mostSpecificException = ex;
                 while (mostSpecificException.InnerException != null) mostSpecificException = mostSpecificException.InnerException;
-                this.ShowMessage(DialogType.Error, "Save failed", string.Format("Save failed: {0}", mostSpecificException.Message));
+                ShowMessage(DialogType.Error, "Save failed", string.Format("Save failed: {0}", mostSpecificException.Message));
                 Log.LogError("Page save", ex);
             }
             finally
             {
-                SetSaveStatus(_dataValidated);
+                SetSaveStatus(dataValidated);
             }
         }
 
 
 
-        private bool PrepareAddUpdateMetaData(IPage selectedPage, Dictionary<string, IData> dataToAdd, Dictionary<string, IData> dataToUpdate)
+        private bool PrepareAddUpdateMetaData(IPage selectedPage, IDictionary<string, IData> dataToAdd, IDictionary<string, IData> dataToUpdate)
         {
-            bool isValid = ValidateBindings();
+            var isValid = ValidateBindings();
 
             IEnumerable<IPageMetaDataDefinition> pageMetaDataDefinitions = selectedPage.GetAllowedMetaDataDefinitions().Evaluate();
 
-            foreach (IPageMetaDataDefinition pageMetaDataDefinition in pageMetaDataDefinitions)
+            foreach (var pageMetaDataDefinition in pageMetaDataDefinitions)
             {
-                DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageMetaDataDefinition.MetaDataTypeId);
-                Type metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
+                var dataTypeDescriptor = DynamicTypeManager.GetDataTypeDescriptor(pageMetaDataDefinition.MetaDataTypeId);
+                var metaDataType = TypeManager.GetType(dataTypeDescriptor.TypeManagerTypeName);
 
-                DataTypeDescriptorFormsHelper helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
+                var helper = CreateDataTypeDescriptorFormsHelper(pageMetaDataDefinition, dataTypeDescriptor);
 
-                IData metaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
+                var metaData = selectedPage.GetMetaData(pageMetaDataDefinition.Name, metaDataType);
                 if (metaData == null)
                 {
-                    IData newData = DataFacade.BuildNew(metaDataType);
+                    var newData = DataFacade.BuildNew(metaDataType);
 
                     PageMetaDataFacade.AssignMetaDataSpecificValues(newData, pageMetaDataDefinition.Name, selectedPage);
 
-                    ILocalizedControlled localizedData = newData as ILocalizedControlled;
+                    var localizedData = newData as ILocalizedControlled;
                     if (localizedData != null)
                     {
                         localizedData.SourceCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
@@ -579,7 +578,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            ValidationResults pageValidationResults = ValidationFacade.Validate<IPage>(selectedPage);
+            var pageValidationResults = ValidationFacade.Validate(selectedPage);
 
             if (pageValidationResults.IsValid == false)
             {
@@ -587,17 +586,17 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             }
 
 
-            foreach (KeyValuePair<string, IData> kvp in dataToAdd.Concat(dataToUpdate))
+            foreach (var kvp in dataToAdd.Concat(dataToUpdate))
             {
-                ValidationResults validationResults = ValidationFacade.Validate(kvp.Value);
+                var validationResults = ValidationFacade.Validate(kvp.Value);
 
                 if (validationResults.IsValid == false)
                 {
                     isValid = false;
 
-                    foreach (ValidationResult result in validationResults)
+                    foreach (var result in validationResults)
                     {
-                        this.ShowFieldMessage(DataTypeDescriptorFormsHelper.GetBindingName(kvp.Key, result.Key), result.Message);
+                        ShowFieldMessage(DataTypeDescriptorFormsHelper.GetBindingName(kvp.Key, result.Key), result.Message);
                     }
                 }
             }
@@ -606,115 +605,37 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         }
 
 
-        private DateTime? PublishDate 
+        private DateTime? PublishDate
         {
-            get { return this.GetBinding<DateTime?>("PublishDate"); }
+            get { return GetBinding<DateTime?>("PublishDate"); }
         }
 
         private DateTime? UnpublishDate
         {
-            get { return this.GetBinding<DateTime?>("UnpublishDate"); }
+            get { return GetBinding<DateTime?>("UnpublishDate"); }
         }
-
-
-
-        private void HandlePublishUnpublishWorkflows(IPage selectedPage, ref WorkflowInstance publishWorkflowInstance, ref WorkflowInstance unpublishWorkflowInstance)
-        {
-            DateTime? publishDateTime = this.PublishDate;
-            DateTime? unpublishDateTime = this.UnpublishDate;
-
-            IPagePublishSchedule existingPagePublishSchedule =
-                (from ps in DataFacade.GetData<IPagePublishSchedule>()
-                 where ps.PageId == selectedPage.Id
-                 select ps).FirstOrDefault();
-
-            if (existingPagePublishSchedule != null)
-            {
-                WorkflowFacade.AbortWorkflow(existingPagePublishSchedule.WorkflowInstanceId);
-
-                DataFacade.Delete<IPagePublishSchedule>(existingPagePublishSchedule);
-            }
-
-            if (publishDateTime != null)
-            {
-                publishWorkflowInstance = WorkflowFacade.CreateNewWorkflow(
-                        typeof(PagePublishSchedulerWorkflow),
-                        new Dictionary<string, object> { 
-                                        { "PublishDate", publishDateTime },
-                                        { "PageId", selectedPage.Id },
-                                        { "LocaleName", UserSettings.ActiveLocaleCultureInfo.Name }
-                                    }
-                    );
-
-                IPagePublishSchedule newPagePublishSchedule = DataFacade.BuildNew<IPagePublishSchedule>();
-                newPagePublishSchedule.Id = Guid.NewGuid();
-                newPagePublishSchedule.PageId = selectedPage.Id;
-                newPagePublishSchedule.PublishDate = publishDateTime.Value;
-                newPagePublishSchedule.WorkflowInstanceId = publishWorkflowInstance.InstanceId;
-                newPagePublishSchedule.LocaleCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-
-                DataFacade.AddNew<IPagePublishSchedule>(newPagePublishSchedule);
-            }
-
-
-
-            IPageUnpublishSchedule existingPageUnpublishSchedule =
-                (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
-                 where ps.PageId == selectedPage.Id
-                 select ps).FirstOrDefault();
-
-            if (existingPageUnpublishSchedule != null)
-            {
-                WorkflowFacade.AbortWorkflow(existingPageUnpublishSchedule.WorkflowInstanceId);
-
-                DataFacade.Delete<IPageUnpublishSchedule>(existingPageUnpublishSchedule);
-            }
-
-            if (unpublishDateTime != null)
-            {
-                unpublishWorkflowInstance = WorkflowFacade.CreateNewWorkflow(
-                        typeof(PageUnpublishSchedulerWorkflow),
-                        new Dictionary<string, object> { 
-                                        { "UnpublishDate", unpublishDateTime },
-                                        { "PageId", selectedPage.Id },
-                                        { "LocaleName", UserSettings.ActiveLocaleCultureInfo.Name }
-                                    }
-                    );
-
-                IPageUnpublishSchedule newPageUnpublishSchedule = DataFacade.BuildNew<IPageUnpublishSchedule>();
-                newPageUnpublishSchedule.Id = Guid.NewGuid();
-                newPageUnpublishSchedule.PageId = selectedPage.Id;
-                newPageUnpublishSchedule.UnpublishDate = unpublishDateTime.Value;
-                newPageUnpublishSchedule.WorkflowInstanceId = unpublishWorkflowInstance.InstanceId;
-                newPageUnpublishSchedule.LocaleCultureName = UserSettings.ActiveLocaleCultureInfo.Name;
-
-                DataFacade.AddNew<IPageUnpublishSchedule>(newPageUnpublishSchedule);
-            }
-        }
-
-
 
         private void editPreviewCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-            IFormFlowWebRenderingService webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
+            var serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
+            var webRenderService = serviceContainer.GetService<IFormFlowWebRenderingService>();
 
             try
             {
-                IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
+                var selectedPage = GetBinding<IPage>("SelectedPage");
 
-                List<IPagePlaceholderContent> contents = new List<IPagePlaceholderContent>();
-                Dictionary<string, string> namedXhtmlFragments = this.GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
+                var contents = new List<IPagePlaceholderContent>();
+                var namedXhtmlFragments = GetBinding<Dictionary<string, string>>("NamedXhtmlFragments");
                 foreach (var placeHolderContent in namedXhtmlFragments)
                 {
-                    IPagePlaceholderContent content = DataFacade.BuildNew<IPagePlaceholderContent>();
+                    var content = DataFacade.BuildNew<IPagePlaceholderContent>();
                     content.PageId = selectedPage.Id;
                     content.PlaceHolderId = placeHolderContent.Key;
                     content.Content = placeHolderContent.Value;
                     contents.Add(content);
                 }
 
-                string output = PagePreviewBuilder.RenderPreview(selectedPage, contents);
+                var output = PagePreviewBuilder.RenderPreview(selectedPage, contents);
                 webRenderService.SetNewPageOutput(new LiteralControl(output));
             }
             catch (Exception ex)
@@ -732,7 +653,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             page.MenuTitle = page.MenuTitle.Trim();
             page.UrlTitle = page.UrlTitle.Trim();
 
-            string friendlyURL = page.FriendlyUrl;
+            var friendlyURL = page.FriendlyUrl;
             page.FriendlyUrl = friendlyURL != null ? friendlyURL.Trim() : null;
         }
 
@@ -744,15 +665,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 return true;
             }
 
-            string bindingName = "SelectedPage." + fieldName;
+            var bindingName = "SelectedPage." + fieldName;
 
-            this.ShowFieldMessage(bindingName, GetText("EditPage.MaxLength").FormatWith(maximumLength));
+            ShowFieldMessage(bindingName, GetText("EditPage.MaxLength").FormatWith(maximumLength));
             return false;
         }
 
         private void ValidateSave(object sender, ConditionalEventArgs e)
         {
-            IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
+            var selectedPage = GetBinding<IPage>("SelectedPage");
 
             selectedPage.MenuTitle = selectedPage.MenuTitle ?? string.Empty;
             selectedPage.FriendlyUrl = selectedPage.FriendlyUrl ?? string.Empty;
@@ -770,26 +691,26 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             e.Result = true;
 
-            string processedUrlTitle = UrlFormattersPluginFacade.FormatUrl(selectedPage.UrlTitle, true);
+            var processedUrlTitle = UrlFormattersPluginFacade.FormatUrl(selectedPage.UrlTitle, true);
             if (selectedPage.UrlTitle != processedUrlTitle)
             {
-                this.RerenderView();
+                RerenderView();
                 selectedPage.UrlTitle = processedUrlTitle;
-                this.ShowMessage(DialogType.Message,
+                ShowMessage(DialogType.Message,
                     GetText("EditPage.UrlTitleFormattedTitle"),
                     (GetText("EditPage.UrlTitleFormattedMessage") ?? string.Empty).FormatWith(processedUrlTitle));
             }
 
-            List<string> siblingPageUrlTitles =
+            var siblingPageUrlTitles =
                 (from page in PageServices.GetChildren(selectedPage.GetParentId())
                  where page.Id != selectedPage.Id
                  select page.UrlTitle).ToList();
 
-            foreach (string siblingUrlTitle in siblingPageUrlTitles)
+            foreach (var siblingUrlTitle in siblingPageUrlTitles)
             {
                 if (siblingUrlTitle.Equals(selectedPage.UrlTitle, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotUniqueError}");
+                    ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotUniqueError}");
                     e.Result = false;
                     break;
                 }
@@ -797,33 +718,33 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
             if (string.IsNullOrEmpty(selectedPage.FriendlyUrl) == false)
             {
-                List<string> usedFrendlyUrls = DataFacade.GetData<IPage>(f => f.FriendlyUrl != null && f.FriendlyUrl != string.Empty && f.Id != selectedPage.Id).Select(f => f.FriendlyUrl).ToList();
+                var usedFrendlyUrls = DataFacade.GetData<IPage>(f => f.FriendlyUrl != null && f.FriendlyUrl != string.Empty && f.Id != selectedPage.Id).Select(f => f.FriendlyUrl).ToList();
 
                 if (usedFrendlyUrls.Any(f => f.Equals(selectedPage.FriendlyUrl, StringComparison.InvariantCultureIgnoreCase)))
                 {
-                    this.ShowFieldMessage("SelectedPage.FriendlyUrl", "${Composite.Plugins.PageElementProvider, FriendlyUrlNotUniqueError}");
+                    ShowFieldMessage("SelectedPage.FriendlyUrl", "${Composite.Plugins.PageElementProvider, FriendlyUrlNotUniqueError}");
                     e.Result = false;
                 }
             }
 
             if (string.IsNullOrEmpty(selectedPage.Title))
             {
-                this.ShowFieldMessage("SelectedPage.Title", "${Composite.Plugins.PageElementProvider, TitleMissingError}");
+                ShowFieldMessage("SelectedPage.Title", "${Composite.Plugins.PageElementProvider, TitleMissingError}");
                 e.Result = false;
             }
 
-            ValidationResults validationResults = ValidationFacade.Validate<IPage>(selectedPage);
+            var validationResults = ValidationFacade.Validate(selectedPage);
             if (validationResults.IsValid == false)
             {
                 if (validationResults.Any(f => f.Key == "UrlTitle"))
                 {
-                    this.ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotValidError}");
+                    ShowFieldMessage("SelectedPage.UrlTitle", "${Composite.Plugins.PageElementProvider, UrlTitleNotValidError}");
                     e.Result = false;
                 }
 
-                foreach (ValidationResult validationResult in validationResults.Where(f => f.Key != "UrlTitle"))
+                foreach (var validationResult in validationResults.Where(f => f.Key != "UrlTitle"))
                 {
-                    this.ShowFieldMessage("SelectedPage." + validationResult.Key, validationResult.Message);
+                    ShowFieldMessage("SelectedPage." + validationResult.Key, validationResult.Message);
                 }
             }
 
@@ -841,8 +762,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void PageStillExists(object sender, ConditionalEventArgs e)
         {
-            IPage selectedPage = this.GetBinding<IPage>("SelectedPage");
-            IPage originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
+            var selectedPage = GetBinding<IPage>("SelectedPage");
+            var originalPage = DataFacade.GetData<IPage>(f => f.Id == selectedPage.Id).SingleOrDefault();
 
             e.Result = originalPage != null;
         }

@@ -212,6 +212,25 @@
     <Compile Include="C1Console\Elements\ElementProviderHelpers\AssociatedDataElementProviderHelper\EditMetaDataWorkflow.designer.cs">
       <DependentUpon>EditMetaDataWorkflow.cs</DependentUpon>
     </Compile>
+    <Compile Include="C1Console\Scheduling\BaseSchedulerWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Scheduling\BaseSchedulerWorkflow.designer.cs">
+      <DependentUpon>BaseSchedulerWorkflow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="C1Console\Scheduling\DataPublishSchedulerWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Scheduling\DataUnpublishSchedulerWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Scheduling\PagePublishSchedulerWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Scheduling\PageUnpublishSchedulerWorkflow.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="C1Console\Scheduling\PublishControlledHelper.cs" />
     <Compile Include="Plugins\Elements\ElementProviders\AllFunctionsElementProvider\FunctionTesterWorkflow.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -1,55 +1,49 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Workflow.Runtime;
+
 using Composite.C1Console.Actions;
+using Composite.C1Console.Scheduling;
 using Composite.C1Console.Security;
 using Composite.C1Console.Workflow;
-using Composite.C1Console.Workflow.Foundation;
+using Composite.C1Console.Workflow.Activities;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
 
-
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
 {
     [EntityTokenLock()]
     [AllowPersistingWorkflow(WorkflowPersistingType.Idle)]
-    public sealed partial class EditAssociatedDataWorkflow : Composite.C1Console.Workflow.Activities.FormsWorkflow
+    public sealed partial class EditAssociatedDataWorkflow : FormsWorkflow
     {
         [NonSerialized]
-        private bool _doPublish = false;
+        private bool _doPublish;
 
         [NonSerialized]
         private DataTypeDescriptorFormsHelper _helper;
 
         private string _typeName;
 
-
         public EditAssociatedDataWorkflow()
         {
             InitializeComponent();
         }
 
-
-
         private DataTypeDescriptorFormsHelper GetDataTypeDescriptorFormsHelper()
         {
             if (_helper == null)
             {
-                DataEntityToken dataEntityToken = (DataEntityToken)this.EntityToken;
+                var dataEntityToken = (DataEntityToken)EntityToken;
+                var interfaceType = dataEntityToken.Data.DataSourceId.InterfaceType;
+                var guid = interfaceType.GetImmutableTypeId();
+                var typeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(guid);
 
-                Type interfaceType = dataEntityToken.Data.DataSourceId.InterfaceType;
+                var generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor);
 
-                Guid guid = interfaceType.GetImmutableTypeId();
-
-                DataTypeDescriptor typeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(guid);
-
-                GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(typeDescriptor);
-
-                _helper = new DataTypeDescriptorFormsHelper(typeDescriptor, true, this.EntityToken);
+                _helper = new DataTypeDescriptorFormsHelper(typeDescriptor, true, EntityToken);
                 _helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
                 _typeName = typeDescriptor.Name;
@@ -58,77 +52,79 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             return _helper;
         }
 
-
-
         private void editDataCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
+            var helper = GetDataTypeDescriptorFormsHelper();
             helper.LayoutIconHandle = "associated-data-edit";
 
-            IData data = ((DataEntityToken)this.EntityToken).Data;
+            var data = ((DataEntityToken)EntityToken).Data;
+            var publishedControlled = data as IPublishControlled;
 
-            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || !(data is IPublishControlled))
+            if (!PermissionsFacade.GetPermissionsForCurrentUser(EntityToken).Contains(PermissionType.Publish) || publishedControlled == null)
             {
-                FormData formData = WorkflowFacade.GetFormData(InstanceId, true);
+                var formData = WorkflowFacade.GetFormData(InstanceId, true);
 
                 if (formData.ExcludedEvents == null)
+                {
                     formData.ExcludedEvents = new List<string>();
+                }
 
                 formData.ExcludedEvents.Add("SaveAndPublish");
             }
 
-            if (data is IPublishControlled && (data as IPublishControlled).PublicationStatus == GenericPublishProcessController.Published)
+            if (publishedControlled != null)
             {
-                (data as IPublishControlled).PublicationStatus = GenericPublishProcessController.Draft;
+                if (publishedControlled.PublicationStatus == GenericPublishProcessController.Published)
+                {
+                    publishedControlled.PublicationStatus = GenericPublishProcessController.Draft;
+                }
             }
 
-            helper.UpdateWithBindings(data, this.Bindings);
+            helper.UpdateWithBindings(data, Bindings);
 
-            this.DeliverFormData(
+            DeliverFormData(
                     _typeName,
                     StandardUiContainerTypes.Document,
                     helper.GetForm(),
-                    this.Bindings,
+                    Bindings,
                     helper.GetBindingsValidationRules(data)
                 );
         }
 
-
-
         private void saveDataCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            bool isValid = ValidateBindings();
+            var isValid = ValidateBindings();
+            var updateTreeRefresher = CreateUpdateTreeRefresher(EntityToken);
+            var helper = GetDataTypeDescriptorFormsHelper();
 
-            UpdateTreeRefresher updateTreeRefresher = this.CreateUpdateTreeRefresher(this.EntityToken);
-
-            DataTypeDescriptorFormsHelper helper = GetDataTypeDescriptorFormsHelper();
-
-            IData data = ((DataEntityToken)this.EntityToken).Data;
+            var data = ((DataEntityToken)EntityToken).Data;
 
             if (!BindAndValidate(helper, data))
             {
                 isValid = false;
             }
 
-            // published data stayed as published data - change to draft if status is published
-            if (data is IPublishControlled)
-            {
-                IPublishControlled publishControlledData = (IPublishControlled)data;
-                if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
-                {
-                    publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
-                }
-            }
-
             if (isValid)
             {
+                // published data stayed as published data - change to draft if status is published
+                if (data is IPublishControlled)
+                {
+                    var publishControlledData = (IPublishControlled)data;
+                    if (publishControlledData.PublicationStatus == GenericPublishProcessController.Published)
+                    {
+                        publishControlledData.PublicationStatus = GenericPublishProcessController.Draft;
+                    }
+                }
+
                 DataFacade.Update(data);
 
                 EntityTokenCacheFacade.ClearCache(data.GetDataEntityToken());
 
-                bool published = PublishIfNeeded(data);
-
-                if (!published) updateTreeRefresher.PostRefreshMesseges(this.EntityToken);
+                var published = PublishControlledHelper.PublishIfNeeded(data, _doPublish, Bindings, ShowMessage);
+                if (!published)
+                {
+                    updateTreeRefresher.PostRefreshMesseges(EntityToken);
+                }
 
                 SetSaveStatus(true);
             }
@@ -136,19 +132,6 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
             {
                 SetSaveStatus(false);
             }
-        }
-
-        private bool PublishIfNeeded(IData newData)
-        {
-            if (newData is IPublishControlled && _doPublish)
-            {
-                GenericPublishProcessController.PublishActionToken actionToken = new GenericPublishProcessController.PublishActionToken();
-                FlowControllerServicesContainer serviceContainer = WorkflowFacade.GetFlowControllerServicesContainer(WorkflowEnvironment.WorkflowInstanceId);
-                ActionExecutorFacade.Execute(newData.GetDataEntityToken(), actionToken, serviceContainer);
-                return true;
-            }
-
-            return false;
         }
 
         private void enablePublishCodeActivity_ExecuteCode(object sender, EventArgs e)

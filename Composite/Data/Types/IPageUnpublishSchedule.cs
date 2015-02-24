@@ -8,6 +8,7 @@ namespace Composite.Data.Types
     /// <summary>    
     /// </summary>
     /// <exclude />
+    [Obsolete]
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     [AutoUpdateble]
     [KeyPropertyName("Id")]
