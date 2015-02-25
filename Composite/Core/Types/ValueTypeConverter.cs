@@ -301,17 +301,13 @@ namespace Composite.Core.Types
             if (targetType == typeof(Guid))
             {
                 Guid guidResult = Guid.Empty;
-
-                try
-                {
-                    guidResult = new Guid(stringValue);
-                }
-                catch
+                
+                if (string.IsNullOrEmpty(stringValue) || !Guid.TryParse(stringValue, out guidResult))
                 {
                     // TODO: localize
                     conversionError = new InvalidOperationException("Failed to convert value '{0}' into a Guid".FormatWith(stringValue));
                 }
-
+                
                 return guidResult;
             }
 
