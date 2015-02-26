@@ -139,8 +139,7 @@ namespace Composite.Services
             t.Options.NumEntities = true;
 
             // Feed tidy the html5 specific tags...
-            List<string> html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr" };
-            foreach (string elementName in html5specificElementNames)
+			foreach (string elementName in MarkupTransformationServices.Html5specificElementNames)
             {
                 t.Options.AddTag(elementName.ToLower());
             }

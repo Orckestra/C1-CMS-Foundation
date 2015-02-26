@@ -34,6 +34,8 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class MarkupTransformationServices
     {
+        public static IEnumerable<string> Html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr", "main" };
+
         static readonly Regex _duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>"")([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>"")([^>]*?)(\k<quote2>)([^>]*?)>", RegexOptions.Compiled);
         static readonly Regex _namespacePrefixedElement = new Regex(@"<([a-zA-Z0-9\._]*?):([a-zA-Z0-9\._]*)([^>]*?)(/?)>", RegexOptions.Multiline | RegexOptions.Compiled);
         static readonly Regex _elementWithNamespaceDeclaration = new Regex(@"<(.*?) xmlns:([a-zA-Z0-9\._]*)=""(.*?)""(.*?)(/?)>", RegexOptions.Compiled);
@@ -422,9 +424,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
 
         private static void AllowHtml5ElementNames(Tidy tidy)
         {
-            List<string> html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr" };
-
-            foreach (string elementName in html5specificElementNames)
+            foreach (string elementName in Html5specificElementNames)
             {
                 tidy.Options.AddTag(elementName.ToLower());
             }
