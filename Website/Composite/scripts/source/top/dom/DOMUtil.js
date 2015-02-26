@@ -487,20 +487,10 @@ _DOMUtil.prototype = {
 		var element = DOMEvents.getTarget ( e );
 		
 		var result = {
-			x : e.pageX ? e.pageX : e.clientX,
-			y : e.pageY ? e.pageY : e.clientY
+			x : e.clientX,
+			y : e.clientY
 		}
-		
-		/*
-		 * Vaguely hardcoded to compensate only for the BODY scroll!
-		 */
-		if ( Client.isMozilla ) {
-			var doc = element.ownerDocument;
-			var win = this.getParentWindow ( doc );
-			result.x -= win.pageXOffset;
-			result.y -= win.pageYOffset;
-		}
-		
+
 		if ( isUniversal ) {
 			var frame = this.getParentWindow ( element ).frameElement;
 			if ( frame ) {
