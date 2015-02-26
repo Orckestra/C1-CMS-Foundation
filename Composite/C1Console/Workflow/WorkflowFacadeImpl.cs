@@ -914,7 +914,7 @@ namespace Composite.C1Console.Workflow
                 DeleteOldWorkflows();
 
                 LoadPersistedWorkflows();
-                LoadPerssistedFormDatas();
+                LoadPersistedFormData();
 
                 int endTime = Environment.TickCount;
                 Log.LogVerbose(LogTitleColored, "----------========== Done initializing Workflows ({0} ms ) ==========----------", endTime - startTime);
@@ -1155,7 +1155,7 @@ namespace Composite.C1Console.Workflow
 
 
 
-        private void LoadPerssistedFormDatas()
+        private void LoadPersistedFormData()
         {
             using (_resourceLocker.Locker)
             {

@@ -1,17 +1,9 @@
 using System;
 using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
+using System.Threading.Tasks;
 using System.Workflow.Activities;
-using System.Workflow.Runtime;
-using Composite.C1Console.Scheduling;
 using Composite.C1Console.Workflow;
 using Composite.Core;
-using Composite.Core.Threading;
-using Composite.Data;
-using Composite.Data.Transactions;
-using Composite.Data.Types;
-
 
 
 namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
@@ -32,6 +24,21 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             InitializeComponent();
         }
 
+
+        protected override void OnActivityExecutionContextLoad(IServiceProvider provider)
+        {
+            base.OnActivityExecutionContextLoad(provider);
+
+            if (PageId == Guid.Empty) return;
+
+            Guid workflowInstanceId = WorkflowInstanceId;
+
+            Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(3000);
+                ConvertObsoleteWorkflow(workflowInstanceId);
+            });
+        }
 
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -71,34 +78,18 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Log.LogInformation(LogTitle, "Converting an obsolete page unpublishing workflow into a new one.");
+            ConvertObsoleteWorkflow(WorkflowInstanceId);
+        }
 
-            using (ThreadDataManager.Initialize())
+        private void ConvertObsoleteWorkflow(Guid workflowInstanceId)
+        {
+            if (PageId == Guid.Empty) return;
+
+            Log.LogVerbose(LogTitle, "Converting an obsolete page unpublishing workflow '{0}' into a new one.", workflowInstanceId);
+
+            if (PagePublishSchedulerWorkflow.ConvertOldPublishingWorkflows(PageId, LocaleName))
             {
-                using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
-                {
-                    using (var transaction = TransactionsFacade.CreateNewScope())
-                    {
-                        IPageUnpublishSchedule pageUnpublishSchedule =
-                            (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
-                                where ps.PageId == this.PageId &&
-                                    ps.LocaleCultureName == this.LocaleName
-                                select ps).Single();
-
-                        DataFacade.Delete(pageUnpublishSchedule);
-
-
-                        IPage page = DataFacade.GetData<IPage>(p => p.Id == PageId).FirstOrDefault();
-                        Verify.IsNotNull(page, "The page with the id {0} does not exist", PageId);
-
-                        WorkflowInstance publishWorkflowInstance = null;
-                        WorkflowInstance unpublishWorkflowInstance = null;
-
-                        PublishControlledHelper.HandlePublishUnpublishWorkflows(page, null, UnpublishDate, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
-
-                        transaction.Complete();
-                    }
-                }
+                PageId = Guid.Empty;
             }
         }
     }

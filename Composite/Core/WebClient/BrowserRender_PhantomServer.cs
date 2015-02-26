@@ -259,7 +259,6 @@ namespace Composite.Core.WebClient
 
                 if (exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion)
                 {
-                    Log.LogWarning("BrowserRenderer", "Error executing PhantomJs.exe. Exit code: {0}, {1}".FormatWith(exitCode, errorFeedback));
                     throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, {1}".FormatWith(exitCode, errorFeedback));
                 }
             }

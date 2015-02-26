@@ -348,7 +348,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                     if (dataValidated)
                     {
-                        PublishControlledHelper.HandlePublishUnpublishWorkflows(selectedPage, PublishDate, UnpublishDate, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
+                        PublishControlledHelper.HandlePublishUnpublishWorkflows(selectedPage, UserSettings.ActiveLocaleCultureInfo.Name, PublishDate, UnpublishDate, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
 
                         if (selectedPage.PageTypeId != originalPage.PageTypeId)
                         {

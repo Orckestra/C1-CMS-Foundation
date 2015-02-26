@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Workflow.Activities;
 using System.Workflow.Runtime;
 using Composite.C1Console.Scheduling;
@@ -26,13 +27,28 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         private Guid _pageId;
         private string _localeName;
 
+        private static readonly object _conversionSyncRoot = new object();
+
 
         public PagePublishSchedulerWorkflow()
         {
             InitializeComponent();
         }
 
+        protected override void OnActivityExecutionContextLoad(IServiceProvider provider)
+        {
+            base.OnActivityExecutionContextLoad(provider);
 
+            if (PageId == Guid.Empty) return;
+
+            Guid workflowInstanceId = WorkflowInstanceId;
+
+            Task.Factory.StartNew(async () =>
+            {
+                await Task.Delay(3000);
+                ConvertObsoleteWorkflow(workflowInstanceId);
+            });
+        }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid PageId
@@ -71,32 +87,85 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void finalizeCodeActivity_ExecuteCode(object sender, EventArgs e)
         {
-            Log.LogInformation(LogTitle, "Converting an obsolete page publishing workflow into a new one.");
-            using (ThreadDataManager.EnsureInitialize())
+            ConvertObsoleteWorkflow(WorkflowInstanceId);
+        }
+
+        private void ConvertObsoleteWorkflow(Guid workflowInstanceId)
+        {
+            if(PageId == Guid.Empty) return;
+
+            Log.LogVerbose(LogTitle, "Converting an obsolete page publishing workflow '{0}' into a new one.", workflowInstanceId);
+
+            if (ConvertOldPublishingWorkflows(PageId, LocaleName))
             {
-                using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(this.LocaleName)))
+                PageId = Guid.Empty;
+            }
+        }
+
+        internal static bool ConvertOldPublishingWorkflows(Guid pageId, string localeName)
+        {
+            lock (_conversionSyncRoot)
+            try
+            {
+                using (GlobalInitializerFacade.CoreIsInitializedScope)
+                using (ThreadDataManager.EnsureInitialize())
                 {
-                    using (var transaction = TransactionsFacade.CreateNewScope())
+                    using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(localeName)))
                     {
-                        IPagePublishSchedule pagePublishSchedule =
-                            (from ps in DataFacade.GetData<IPagePublishSchedule>()
-                             where ps.PageId == this.PageId &&
-                                   ps.LocaleCultureName == this.LocaleName
-                             select ps).Single();
+                        using (var transaction = TransactionsFacade.CreateNewScope())
+                        {
+                            var pagePublishSchedule =
+                                (from ps in DataFacade.GetData<IPagePublishSchedule>()
+                                 where ps.PageId == pageId &&
+                                       ps.LocaleCultureName == localeName
+                                 select ps).SingleOrDefault();
 
-                        DataFacade.Delete(pagePublishSchedule);
+                            var pageUnpublishSchedule =
+                                (from ps in DataFacade.GetData<IPageUnpublishSchedule>()
+                                 where ps.PageId == pageId &&
+                                     ps.LocaleCultureName == localeName
+                                 select ps).SingleOrDefault();
 
-                        IPage page = DataFacade.GetData<IPage>(p => p.Id == this.PageId).FirstOrDefault();
-                        Verify.IsNotNull(page, "The page with the id {0} does not exist", PageId);
+                            if (pagePublishSchedule == null && pageUnpublishSchedule == null)
+                            {
+                                return true;
+                            }
 
-                        WorkflowInstance publishWorkflowInstance = null;
-                        WorkflowInstance unpublishWorkflowInstance = null;
+                            if (pagePublishSchedule != null)
+                            {
+                                DataFacade.Delete(pagePublishSchedule);
+                            }
 
-                        PublishControlledHelper.HandlePublishUnpublishWorkflows(page, PublishDate, null, ref publishWorkflowInstance, ref unpublishWorkflowInstance);
 
-                        transaction.Complete();
+                            if (pageUnpublishSchedule != null)
+                            {
+                                DataFacade.Delete(pageUnpublishSchedule);
+                            }
+
+                            DateTime? publishDate = pagePublishSchedule != null ? pagePublishSchedule.PublishDate : (DateTime?)null;
+                            DateTime? unpublishDate = pageUnpublishSchedule != null ? pageUnpublishSchedule.UnpublishDate : (DateTime?)null;
+
+
+                            IPage page = DataFacade.GetData<IPage>(p => p.Id == pageId).FirstOrDefault();
+                            Verify.IsNotNull(page, "The page with the id {0} does not exist", pageId);
+
+                            WorkflowInstance publishWorkflowInstance = null;
+                            WorkflowInstance unpublishWorkflowInstance = null;
+
+                            PublishControlledHelper.HandlePublishUnpublishWorkflows(page, localeName, publishDate, unpublishDate,
+                                ref publishWorkflowInstance, ref unpublishWorkflowInstance);
+
+                            transaction.Complete();
+                        }
                     }
                 }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log.LogError(LogTitle, ex);
+                return false;
             }
         }
     }
