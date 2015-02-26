@@ -40,6 +40,8 @@ namespace Composite.Core.WebClient
                 var stopWatch = new Stopwatch();
                 stopWatch.Start();
 
+                Log.LogVerbose(LogTitle, "Preloading all the contorls, starting");
+
                 foreach (var controlPath in controlPathes)
                 {
                     try

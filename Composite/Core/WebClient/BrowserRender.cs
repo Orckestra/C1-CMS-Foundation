@@ -196,14 +196,15 @@ namespace Composite.Core.WebClient
 
                 try
                 {
-//                    string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.AdminRootPath) + "/blank.aspx";
                     string testUrl = UrlUtils.Combine(new UrlBuilder(context.Request.Url.ToString()).ServerUrl, UrlUtils.PublicRootPath);
 
                     SetupRecycleTimer();
 
                     string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
 
+                    Log.LogVerbose(LogTitle, "Checking PhantomJs availablitity");
                     await PhantomServer.RenderUrlAsync(authenticationCookie, testUrl, outputFileName, "test");
+                    Log.LogVerbose(LogTitle, "Successfully checked PhantomJs availablitity");
                 }
                 catch (Exception ex)
                 {
