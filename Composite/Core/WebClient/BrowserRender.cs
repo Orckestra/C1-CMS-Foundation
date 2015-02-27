@@ -186,6 +186,16 @@ namespace Composite.Core.WebClient
             }
         }
 
+
+        private static bool SystemFullyOnline
+        {
+            get
+            {
+                return (ApplicationOnlineHandlerFacade.IsApplicationOnline && GlobalInitializerFacade.SystemCoreInitialized && !GlobalInitializerFacade.SystemCoreInitializing && SystemSetupFacade.IsSystemFirstTimeInitialized);
+            }
+        }
+
+
         private static async Task CheckServerAvailabilityAsync(HttpContext context, HttpCookie authenticationCookie)
         {
             if (ServerAvailabilityChecked || authenticationCookie == null) return;
@@ -193,6 +203,8 @@ namespace Composite.Core.WebClient
             using (await _serverAvailabilityCheckLock.LockAsync())
             {
                 if (ServerAvailabilityChecked) return;
+
+                if (!SystemFullyOnline) return;
 
                 try
                 {
@@ -202,9 +214,7 @@ namespace Composite.Core.WebClient
 
                     string outputFileName = Path.Combine(TempDirectoryFacade.TempDirectoryPath, "phantomtest.png");
 
-                    Log.LogVerbose(LogTitle, "Checking PhantomJs availablitity");
                     await PhantomServer.RenderUrlAsync(authenticationCookie, testUrl, outputFileName, "test");
-                    Log.LogVerbose(LogTitle, "Successfully checked PhantomJs availablitity");
                 }
                 catch (Exception ex)
                 {
