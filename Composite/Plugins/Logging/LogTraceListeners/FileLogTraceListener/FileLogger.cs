@@ -18,13 +18,18 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
     /// </summary>
     internal class FileLogger : IDisposable
     {
+        private static readonly TimeSpan LockFileUpdateFrequency = TimeSpan.FromSeconds(20);
+        private static readonly TimeSpan OldLockFilesPreservationTime = TimeSpan.FromSeconds(60);
+
         private readonly string _logDirectoryPath;
         private readonly bool _flushImmediately;
+
+        private DateTime _lockFileUpdatedLast = DateTime.MinValue;
 
         public static event ThreadStart OnReset;
 
 
-        internal LogFileInfo _fileConnection;
+        internal LogFileInfo FileConnection;
         internal readonly object _syncRoot = new object();
 
         public FileLogger(string logDirectoryPath, bool flushImmediately)
@@ -49,9 +54,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 lock (_syncRoot)
                 {
-                    if (_fileConnection != null)
+                    if (FileConnection != null)
                     {
-                        return _fileConnection.StartupTime;
+                        return FileConnection.StartupTime;
                     }
                 }
                 return DateTime.Now;
@@ -70,12 +75,12 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             lock (_syncRoot)
             {
-                _fileConnection.NewEntries.Add(entry);
+                FileConnection.NewEntries.Add(entry);
 
                 // Checking whether we should change the file after midnight
                 int dayNumber = entry.TimeStamp.Day;
 
-                if (dayNumber != _fileConnection.CreationDate.Day
+                if (dayNumber != FileConnection.CreationDate.Day
                    && dayNumber == DateTime.Now.Day)
                 {
                     ResetInitialization();
@@ -90,11 +95,11 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                 {
                     try
                     {
-                        _fileConnection.FileStream.Write(bytes, 0, bytes.Length);
+                        FileConnection.FileStream.Write(bytes, 0, bytes.Length);
 
                         if (_flushImmediately)
                         {
-                            _fileConnection.FileStream.Flush();
+                            FileConnection.FileStream.Flush();
                         }
                     }
                     catch (Exception exception)
@@ -124,9 +129,9 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             lock (_syncRoot)
             {
-                if (_fileConnection != null)
+                if (FileConnection != null)
                 {
-                    currentlyOpenedFileName = _fileConnection.FileName;
+                    currentlyOpenedFileName = FileConnection.FileName;
 
                     result.Add(new CurrentFileReader(this));
                 }
@@ -173,11 +178,11 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             lock (_syncRoot)
             {
-                if (_fileConnection != null)
+                if (FileConnection != null)
                 {
                     try
                     {
-                        _fileConnection.FileStream.Flush();
+                        FileConnection.FileStream.Flush();
                     }
                     catch (Exception)
                     {
@@ -254,11 +259,11 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             RemoveOldLockFiles();            
 
-            if (_fileConnection != null) return;
+            if (FileConnection != null) return;
 
             lock (_syncRoot)
             {
-                if (_fileConnection != null) return;
+                if (FileConnection != null) return;
 
                 DateTime creationDate = DateTime.Now;
 
@@ -284,7 +289,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                             throw new Exception("Failed to create file '{0}'".FormatWith(filePath), ex);
                         }
 
-                        _fileConnection = new LogFileInfo
+                        FileConnection = new LogFileInfo
                                               {
                                                   CreationDate = creationDate.Date,
                                                   StartupTime = creationDate,
@@ -306,7 +311,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
                         continue;
                     }
 
-                    _fileConnection = new LogFileInfo
+                    FileConnection = new LogFileInfo
                                           {
                                               CreationDate = creationDate.Date,
                                               StartupTime = creationDate,
@@ -341,7 +346,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
                     TimeSpan fileAge = DateTime.Now - lastWrite;
 
-                    if (fileAge.TotalSeconds >= 60)
+                    if (fileAge > OldLockFilesPreservationTime)
                     {
                         try
                         {
@@ -370,10 +375,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             lock (_syncRoot)
             {
-                if (_fileConnection != null)
+                if (FileConnection != null)
                 {
-                    _fileConnection.Dispose();
-                    _fileConnection = null;
+                    FileConnection.Dispose();
+                    FileConnection = null;
                 }
 
                 if (OnReset != null)
@@ -397,10 +402,17 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         [SuppressMessage("Composite.IO", "Composite.DoNotUseFileClass:DoNotUseFileClass")]
         private void TouchLockFile()
         {
+            if (_lockFileUpdatedLast + LockFileUpdateFrequency >= DateTime.Now)
+            {
+                return;
+            }
+
             // Create .lock file
             try
             {
                 File.WriteAllText(LockFileName, "");
+
+                _lockFileUpdatedLast = DateTime.Now;
             }
             catch (Exception)
             {
@@ -414,9 +426,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             get
             {
-                string lockFileName = Path.Combine(_logDirectoryPath, AppDomain.CurrentDomain.Id + ".lock");
-
-                return lockFileName;
+                return Path.Combine(_logDirectoryPath, AppDomain.CurrentDomain.Id + ".lock");
             }
         }
 
@@ -430,10 +440,10 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 if (disposing)
                 {
-                    if (_fileConnection != null)
+                    if (FileConnection != null)
                     {
-                        _fileConnection.Dispose();
-                        _fileConnection = null;
+                        FileConnection.Dispose();
+                        FileConnection = null;
                     }
                 }
 
@@ -443,10 +453,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             // Delete the file in any case
             try
             {
-                if (File.Exists(LockFileName))
-                {
-                    File.Delete(LockFileName);
-                }
+                File.Delete(LockFileName);
             }
             catch (Exception)
             {

@@ -20,7 +20,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             lock (_fileLogger._syncRoot)
             {
-                var fileConnection = _fileLogger._fileConnection;
+                var fileConnection = _fileLogger.FileConnection;
 
                 if (fileConnection != null)
                 {
@@ -47,8 +47,8 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
             {
                 lock (_fileLogger._syncRoot)
                 {
-                    return _fileLogger._fileConnection.OldEntries.Length +
-                           _fileLogger._fileConnection.NewEntries.Count;
+                    return _fileLogger.FileConnection.OldEntries.Length +
+                           _fileLogger.FileConnection.NewEntries.Count;
                 }
             }
         }
@@ -57,7 +57,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
         {
             if (timeFrom < _fileLogger.StartupTime)
             {
-                var parserEnumerable = PlainFileReader.ParseLogLines(_fileLogger._fileConnection.OldEntries);
+                var parserEnumerable = PlainFileReader.ParseLogLines(_fileLogger.FileConnection.OldEntries);
                 foreach (var logEntry in parserEnumerable)
                 {
                     yield return logEntry;
@@ -68,7 +68,7 @@ namespace Composite.Plugins.Logging.LogTraceListeners.FileLogTraceListener
 
             lock (_fileLogger._syncRoot)
             {
-                var fileConnection = _fileLogger._fileConnection;
+                var fileConnection = _fileLogger.FileConnection;
                 if (fileConnection != null)
                 {
                     newEntries = fileConnection.NewEntries.ToArray();
