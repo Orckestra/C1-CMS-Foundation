@@ -310,7 +310,8 @@ namespace Composite.Core.Types
             {
                 GenerateExecutable = false,
                 GenerateInMemory = false,
-                OutputAssembly = CompositeGeneratedAssemblyPath
+                OutputAssembly = CompositeGeneratedAssemblyPath,
+                TempFiles = new TempFileCollection(TempAssemblyFolderPath)
             };
 
             compilerParameters.ReferencedAssemblies.AddRangeIfNotContained(builder.AssemblyLocations.ToArray());
