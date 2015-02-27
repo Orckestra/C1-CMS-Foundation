@@ -291,6 +291,6 @@ PreviewWindowBinding.prototype.reset = function () {
 	this._hasFullStop = false;
 	this._isReturning = false;
 	
-	this._coverBinding.show ();
+	//this._coverBinding.show ();
 	this.setURL ( WindowBinding.DEFAULT_URL );
 }

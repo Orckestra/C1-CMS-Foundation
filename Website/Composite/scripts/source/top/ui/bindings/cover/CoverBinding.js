@@ -199,6 +199,7 @@ CoverBinding.prototype.handleEvent = function ( e ) {
 	switch ( e.type ) {
 		case DOMEvents.MOUSEMOVE :
 			this._position = DOMUtil.getUniversalMousePosition(e);
+			break;
 		case DOMEvents.TOUCHEND:
 			//Check double tap
 			if (this.lastTouch && Date.now() - this.lastTouch < 300)
