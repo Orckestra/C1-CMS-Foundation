@@ -133,8 +133,8 @@ namespace Composite.Data
         /// <returns></returns>
         internal static bool KeyEquals(this IData leftData, IData rightData)
         {
-            if (leftData == null) throw new ArgumentNullException("leftData");
-            if (rightData == null) throw new ArgumentNullException("rightData");
+            Verify.ArgumentNotNull(leftData, "leftData");
+            Verify.ArgumentNotNull(rightData, "rightData");
 
             if (leftData.DataSourceId.InterfaceType != rightData.DataSourceId.InterfaceType) return false;
 
@@ -143,7 +143,7 @@ namespace Composite.Data
                 object leftValue = propertyInfo.GetValue(leftData, null);
                 object rightValue = propertyInfo.GetValue(rightData, null);
 
-                if (leftValue.Equals(rightValue) == false) return false;
+                if (!leftValue.Equals(rightValue)) return false;
             }
 
             return true;
@@ -158,10 +158,10 @@ namespace Composite.Data
         /// <returns></returns>
         internal static List<IData> KeyDistinct(this IEnumerable<IData> datas)
         {
-            List<IData> result = new List<IData>();
+            var result = new List<IData>();
             foreach (IData data in datas)
             {
-                if (result.Where(f => f.KeyEquals(data)).Any() == false)
+                if (!result.Any(f => f.KeyEquals(data)))
                 {
                     result.Add(data);
                 }
@@ -173,8 +173,7 @@ namespace Composite.Data
 
 
         /// <summary>
-        /// Compares the value of the key properties of leftData and rightData
-        /// and if all the values are equals then it returns true. Otherwise false.
+        /// Returns the data item's key field's value. If the key is compound, an exeption will be thrown.
         /// </summary>
         /// <param name="data"></param>        
         /// <returns></returns>
@@ -183,16 +182,15 @@ namespace Composite.Data
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
         public static object GetUniqueKey(this IData data)
         {
-            if (data == null) throw new ArgumentNullException("data");
+            Verify.ArgumentNotNull(data, "data");
 
-            return DataAttributeFacade.GetKeyProperties(data.DataSourceId.InterfaceType).Single().GetValue(data, null);
+            return data.DataSourceId.InterfaceType.GetKeyProperties().Single().GetValue(data, null);
         }
 
 
 
         /// <summary>
-        /// Compares the value of the key properties of leftData and rightData
-        /// and if all the values are equals then it returns true. Otherwise false.
+        /// Returns the data item's key field's value. If the key is compound, an exeption will be thrown.
         /// </summary>
         /// <param name="data"></param>       
         /// <returns></returns>
@@ -273,7 +271,7 @@ namespace Composite.Data
         {
             if (queryable == null) throw new ArgumentNullException("queryable");
 
-            List<IData> datas = new List<IData>();
+            var datas = new List<IData>();
 
             foreach (object obj in queryable)
             {

@@ -14,7 +14,7 @@ using Composite.Core.Xml;
 using Composite.Data.DynamicTypes.Foundation;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
-using Composite.Data.Types;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Validation;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Functions;
@@ -254,9 +254,11 @@ namespace Composite.Data.DynamicTypes
             {
                 newBindings.Add(PublicationStatusBindingName, GenericPublishProcessController.Draft);
 
-                IDictionary<string, string> transitionNames = new Dictionary<string, string>();
-                transitionNames.Add(GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DraftTransition"));
-                transitionNames.Add(GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition"));
+                var transitionNames = new Dictionary<string, string>
+                {
+                    { GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DraftTransition") },
+                    { GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition") }
+                };
 
                 var username = UserValidationFacade.GetUsername();
                 var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
@@ -354,9 +356,11 @@ namespace Composite.Data.DynamicTypes
             {
                 bindings.Add(PublicationStatusBindingName, ((IPublishControlled)dataObject).PublicationStatus);
 
-                IDictionary<string, string> transitionNames = new Dictionary<string, string>();
-                transitionNames.Add(GenericPublishProcessController.Draft, Texts.DraftTransition);
-                transitionNames.Add(GenericPublishProcessController.AwaitingApproval, Texts.AwaitingApprovalTransition);
+                var transitionNames = new Dictionary<string, string>
+                {
+                    {GenericPublishProcessController.Draft, Texts.DraftTransition},
+                    {GenericPublishProcessController.AwaitingApproval, Texts.AwaitingApprovalTransition}
+                };
 
                 var username = UserValidationFacade.GetUsername();
                 var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
@@ -374,35 +378,15 @@ namespace Composite.Data.DynamicTypes
 
                 bindings.Add(PublicationStatusOptionsBindingName, transitionNames);
 
-                var existingPublishSchedule =
-                            (from ps in DataFacade.GetData<IPublishSchedule>()
-                             where ps.DataType == dataObject.DataSourceId.InterfaceType.FullName &&
-                             ps.DataId == dataObject.GetUniqueKey().ToString()
-                             select ps).FirstOrDefault();
+                var intefaceType = dataObject.DataSourceId.InterfaceType;
+                var stringKey = dataObject.GetUniqueKey().ToString();
+                var locale = dataObject.DataSourceId.LocaleScope.Name;
 
-                if (existingPublishSchedule != null)
-                {
-                    bindings.Add("PublishDate", existingPublishSchedule.PublishDate);
-                }
-                else
-                {
-                    bindings.Add("PublishDate", null);
-                }
+                var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(intefaceType, stringKey, locale);
+                bindings.Add("PublishDate", existingPublishSchedule != null ? existingPublishSchedule.PublishDate : (DateTime?) null);
 
-                var existingUnpublishSchedule =
-                                (from ps in DataFacade.GetData<IUnpublishSchedule>()
-                                 where ps.DataType == dataObject.DataSourceId.InterfaceType.FullName &&
-                                    ps.DataId == dataObject.GetUniqueKey().ToString()
-                                 select ps).FirstOrDefault();
-
-                if (existingUnpublishSchedule != null)
-                {
-                    bindings.Add("UnpublishDate", existingUnpublishSchedule.UnpublishDate);
-                }
-                else
-                {
-                    bindings.Add("UnpublishDate", null);
-                }
+                var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(intefaceType, stringKey, locale);
+                bindings.Add("UnpublishDate", existingUnpublishSchedule != null ? existingUnpublishSchedule.UnpublishDate : (DateTime?) null);
             }
 
             return bindings;

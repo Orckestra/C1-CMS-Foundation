@@ -7,6 +7,7 @@ using Composite.Core;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
 
@@ -27,13 +28,7 @@ namespace Composite.C1Console.Scheduling
 
                 using (var transaction = TransactionsFacade.CreateNewScope())
                 {
-                    var pagePublishSchedule =
-                        (from ps in DataFacade.GetData<IPublishSchedule>()
-                         where ps.DataType == typeof(IPage).FullName &
-                         ps.DataId == PageId.ToString() &&
-                               ps.LocaleCultureName == LocaleName
-                         select ps).Single();
-
+                    var pagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof(IPage), PageId.ToString(), LocaleName);
                     DataFacade.Delete(pagePublishSchedule);
 
                     page = DataFacade.GetData<IPage>(p => p.Id == PageId).FirstOrDefault();

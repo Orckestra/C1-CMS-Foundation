@@ -33,6 +33,7 @@ using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
 using Composite.Data.Validation;
@@ -281,21 +282,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
             UpdateBinding("StateOptions", transitionNames);
 
 
-            var existingPagePublishSchedule =
-                            (from ps in DataFacade.GetData<IPublishSchedule>()
-                             where ps.DataType == typeof(IPage).FullName &&
-                                ps.DataId == selectedPage.Id.ToString()
-                             select ps).FirstOrDefault();
+            var existingPagePublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage), 
+                selectedPage.Id.ToString(), 
+                UserSettings.CultureInfo.Name);
 
             UpdateBinding("PublishDate", existingPagePublishSchedule != null ? existingPagePublishSchedule.PublishDate : (object) null);
 
-
-            var existingPageUnpublishSchedule =
-                            (from ps in DataFacade.GetData<IUnpublishSchedule>()
-                             where ps.DataType == typeof(IPage).FullName &&
-                                ps.DataId == selectedPage.Id.ToString()
-                             select ps).FirstOrDefault();
-
+            var existingPageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage),
+                selectedPage.Id.ToString(),
+                UserSettings.CultureInfo.Name);
 
             UpdateBinding("UnpublishDate", existingPageUnpublishSchedule != null ? existingPageUnpublishSchedule.UnpublishDate : (object) null);
 

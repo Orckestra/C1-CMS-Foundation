@@ -36,7 +36,7 @@ namespace Composite.Data.Types
 
         /// <exclude />
         [NotNullValidator]
-        [StringSizeValidator(2, 16)]
+        [StringSizeValidator(0, 16)]
         [StoreFieldType(PhysicalStoreFieldType.String, 16)]
         [DefaultFieldStringValue("")]
         [ImmutableFieldId("8bfc68ee-8f63-4674-b1c8-d1ab1f1489f5")]

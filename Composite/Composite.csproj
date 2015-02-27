@@ -223,6 +223,7 @@
     <Compile Include="Data\Types\ISchedule.cs" />
     <Compile Include="Data\Types\IUnpublishSchedule.cs" />
     <Compile Include="Data\Types\IUserPasswordHistory.cs" />
+    <Compile Include="Data\PublishScheduling\PublishScheduleHelper.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
     <Compile Include="Data\Validation\Validators\NullDateTimeRangeValidatorAttribute.cs" />
     <Compile Include="Functions\FunctionParameterIgnoreAttribute.cs" />

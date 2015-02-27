@@ -8,6 +8,7 @@ using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Transactions;
 using Composite.Data.Types;
 
@@ -28,12 +29,8 @@ namespace Composite.C1Console.Scheduling
 
                 using (var transaction = TransactionsFacade.CreateNewScope())
                 {
-                    var pageUnpublishSchedule =
-                        (from ps in DataFacade.GetData<IUnpublishSchedule>()
-                         where ps.DataType == typeof(IPage).FullName &&
-                            ps.DataId == PageId.ToString() &&
-                                ps.LocaleCultureName == LocaleName
-                         select ps).Single();
+                    var pageUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof (IPage), PageId.ToString(), LocaleName);
+                    Verify.IsNotNull(pageUnpublishSchedule, "Missing an unpublish page schedule record.");
 
                     DataFacade.Delete(pageUnpublishSchedule);
 

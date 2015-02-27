@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Workflow.Runtime;
 
 using Composite.C1Console.Actions;
@@ -8,68 +7,24 @@ using Composite.C1Console.Events;
 using Composite.C1Console.Security;
 using Composite.C1Console.Users;
 using Composite.C1Console.Workflow;
-using Composite.Core.ResourceSystem;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Types;
 using Composite.Plugins.Elements.ElementProviders.PageElementProvider;
+
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Management;
 
 namespace Composite.C1Console.Scheduling
 {
     public class PublishControlledHelper
     {
-        public static void CreatePublishSchedule(Type dataType, string id, string cultureName, DateTime date, WorkflowInstance workflow)
-        {
-            var publishSchedule = DataFacade.BuildNew<IPublishSchedule>();
-
-            publishSchedule.Id = Guid.NewGuid();
-            publishSchedule.DataType = dataType.FullName;
-            publishSchedule.DataId = id;
-            publishSchedule.PublishDate = date;
-            publishSchedule.WorkflowInstanceId = workflow.InstanceId;
-            publishSchedule.LocaleCultureName = cultureName;
-
-            DataFacade.AddNew(publishSchedule);
-        }
-
-        public static void CreateUnpublishSchedule(Type dataType, string id, string cultureName, DateTime date, WorkflowInstance workflow)
-        {
-            var unpublishSchedule = DataFacade.BuildNew<IUnpublishSchedule>();
-
-            unpublishSchedule.Id = Guid.NewGuid();
-            unpublishSchedule.DataType = dataType.FullName;
-            unpublishSchedule.DataId = id;
-            unpublishSchedule.UnpublishDate = date;
-            unpublishSchedule.WorkflowInstanceId = workflow.InstanceId;
-            unpublishSchedule.LocaleCultureName = cultureName;
-
-            DataFacade.AddNew(unpublishSchedule);
-        }
-
-        public static IPublishSchedule GetPublishedSchedule(Type dataType, string id, string cultureName)
-        {
-            return (from ps in DataFacade.GetData<IPublishSchedule>()
-                    where ps.DataType == dataType.FullName &&
-                        ps.DataId == id &&
-                        ps.LocaleCultureName == cultureName
-                    select ps).FirstOrDefault();
-        }
-
-        public static IUnpublishSchedule GetUnpublishedSchedule(Type dataType, string id, string cultureName)
-        {
-            return (from ps in DataFacade.GetData<IUnpublishSchedule>()
-                    where ps.DataType == dataType.FullName &&
-                        ps.DataId == id &&
-                        ps.LocaleCultureName == cultureName
-                    select ps).FirstOrDefault();
-        }
-
         public static void HandlePublishUnpublishWorkflows(IData selectedData, string cultureName, DateTime? publishDate, DateTime? unpublishDate, ref WorkflowInstance publishWorkflowInstance, ref WorkflowInstance unpublishWorkflowInstance)
         {
             var key = selectedData.GetUniqueKey().ToString();
 
-            var existingPublishSchedule = GetPublishedSchedule(selectedData.DataSourceId.InterfaceType, key, cultureName);
+            var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(selectedData.DataSourceId.InterfaceType, key, cultureName);
             if (existingPublishSchedule != null)
             {
                 WorkflowFacade.AbortWorkflow(existingPublishSchedule.WorkflowInstanceId);
@@ -90,10 +45,10 @@ namespace Composite.C1Console.Scheduling
                         }
                     );
 
-                CreatePublishSchedule(selectedData.DataSourceId.InterfaceType, selectedData.GetUniqueKey().ToString(), cultureName, publishDate.Value, publishWorkflowInstance);
+                PublishScheduleHelper.CreatePublishSchedule(selectedData.DataSourceId.InterfaceType, selectedData.GetUniqueKey().ToString(), cultureName, publishDate.Value, publishWorkflowInstance);
             }
 
-            var existingUnpublishSchedule = GetUnpublishedSchedule(selectedData.DataSourceId.InterfaceType, key, cultureName);
+            var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(selectedData.DataSourceId.InterfaceType, key, cultureName);
             if (existingUnpublishSchedule != null)
             {
                 WorkflowFacade.AbortWorkflow(existingUnpublishSchedule.WorkflowInstanceId);
@@ -114,13 +69,13 @@ namespace Composite.C1Console.Scheduling
                         }
                     );
 
-                CreateUnpublishSchedule(selectedData.DataSourceId.InterfaceType, key, cultureName, unpublishDate.Value, unpublishWorkflowInstance);
+                PublishScheduleHelper.CreateUnpublishSchedule(selectedData.DataSourceId.InterfaceType, key, cultureName, unpublishDate.Value, unpublishWorkflowInstance);
             }
         }
 
         public static void HandlePublishUnpublishWorkflows(IPage selectedPage, string cultureName, DateTime? publishDate, DateTime? unpublishDate, ref WorkflowInstance publishWorkflowInstance, ref WorkflowInstance unpublishWorkflowInstance)
         {
-            var existingPublishSchedule = GetPublishedSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName);
+            var existingPublishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName);
             if (existingPublishSchedule != null)
             {
                 WorkflowFacade.AbortWorkflow(existingPublishSchedule.WorkflowInstanceId);
@@ -139,10 +94,10 @@ namespace Composite.C1Console.Scheduling
                     { "LocaleName", cultureName }
                 });
 
-                CreatePublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName, publishDate.Value, publishWorkflowInstance);
+                PublishScheduleHelper.CreatePublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName, publishDate.Value, publishWorkflowInstance);
             }
 
-            var existingUnpublishSchedule = GetUnpublishedSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName);
+            var existingUnpublishSchedule = PublishScheduleHelper.GetUnpublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName);
             if (existingUnpublishSchedule != null)
             {
                 WorkflowFacade.AbortWorkflow(existingUnpublishSchedule.WorkflowInstanceId);
@@ -161,7 +116,7 @@ namespace Composite.C1Console.Scheduling
                     { "LocaleName", cultureName }
                 });
 
-                CreateUnpublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName, unpublishDate.Value, unpublishWorkflowInstance);
+                PublishScheduleHelper.CreateUnpublishSchedule(typeof(IPage), selectedPage.Id.ToString(), cultureName, unpublishDate.Value, unpublishWorkflowInstance);
             }
         }
 
@@ -222,8 +177,8 @@ namespace Composite.C1Console.Scheduling
                 return true;
             }
 
-            var title = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublishTitle");
-            var message = StringResourceSystemFacade.GetString("Composite.Management", "Website.Forms.Administrative.EditPage.PublishDatePreventPublish");
+            var title = Texts.Website_Forms_Administrative_EditPage_PublishDatePreventPublishTitle;
+            var message = Texts.Website_Forms_Administrative_EditPage_PublishDatePreventPublish;
 
             messageAction(DialogType.Warning, title, message);
 

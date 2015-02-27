@@ -3,6 +3,7 @@ using System.Linq;
 
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
+using Composite.Data.PublishScheduling;
 using Composite.Data.Transactions;
 
 namespace Composite.Data.Types.Foundation
@@ -40,11 +41,8 @@ namespace Composite.Data.Types.Foundation
 
                     using (new DataScope(DataScopeIdentifier.Administrated))
                     {
-                        var publishSchedule =
-                            (from pps in DataFacade.GetData<IPublishSchedule>()
-                             where pps.DataType == typeof(IPage).FullName &&
-                                   pps.DataId == page.Id.ToString()
-                             select pps).SingleOrDefault();
+                        var publishSchedule = PublishScheduleHelper.GetPublishSchedule(typeof (IPage),
+                            page.Id.ToString(), page.DataSourceId.LocaleScope.Name);
 
                         if (publishSchedule != null)
                         {
