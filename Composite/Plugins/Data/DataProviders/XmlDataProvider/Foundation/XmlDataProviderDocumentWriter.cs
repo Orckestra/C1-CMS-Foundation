@@ -24,6 +24,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
         private static System.Timers.Timer _autoCommitTimer;
 
         private static readonly TimeSpan _updateFrequency = TimeSpan.FromMilliseconds(1000);
+        private static readonly TimeSpan _fileIoDelay = TimeSpan.FromMilliseconds(10); // small pause between io operations to reduce asp.net appPool recycles due to FileWatcher buffer fills - edge case, but highly annoying
         private const int NumberOfRetries = 30;
         private static readonly string LogTitle = "XmlDataProvider";
         private static bool forceImmediateWrite = false;
@@ -113,9 +114,15 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                 foreach (var fileRecord in fileRecords)
                 {
+                    bool doIoDelay = false;
                     try
                     {
+                        if (doIoDelay)
+                        {
+                            Thread.Sleep(_fileIoDelay);
+                        }
                         DoSave(fileRecord);
+                        doIoDelay = true;
                     }
                     catch (Exception ex)
                     {
@@ -175,6 +182,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                     {
                         xDocument.Save(xmlWriter);
                     }
+                    Thread.Sleep(_fileIoDelay);
 
                     bool failed = true;
                     Exception lastException = null;
@@ -199,6 +207,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
 
                     if (!failed)
                     {
+                        Thread.Sleep(_fileIoDelay);
                         File.Delete(fileRecord.TempFilePath);
                     }
                     else
@@ -207,15 +216,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation
                         if (lastException != null) throw lastException;
 
                         throw new InvalidOperationException("Failed to delete a file, this code shouldn't be reacheable");
-                    }
-
-                    try
-                    {
-                        C1File.Touch(fileRecord.FilePath);
-                    }
-                    catch (Exception)
-                    {
-                        // Ignore exception here. The tmp file might have been "recovered" by the load method
                     }
 
                     fileRecord.FileModificationDate = C1File.GetLastWriteTime(fileRecord.FilePath);
