@@ -11436,7 +11436,6 @@ this._loadhandler=null;
 this._hasError=false;
 this._hasFullStop=false;
 this._isReturning=false;
-this._coverBinding.show();
 this.setURL(WindowBinding.DEFAULT_URL);
 };
 RadioGroupBinding.prototype=new Binding;
@@ -28942,6 +28941,7 @@ DOMEvents.stopPropagation(e);
 switch(e.type){
 case DOMEvents.MOUSEMOVE:
 this._position=DOMUtil.getUniversalMousePosition(e);
+break;
 case DOMEvents.TOUCHEND:
 if(this.lastTouch&&Date.now()-this.lastTouch<300){
 if(Application.isLocked){
