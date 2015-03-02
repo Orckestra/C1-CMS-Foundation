@@ -1,45 +1,57 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<visualeditor>
-
-  <!-- stylesheets to import (tip: you can also use @import inside the CSS) -->
+﻿<visualeditor>
+  <!-- stylesheets to import (tip: you can also use @import inside the CSS files referenced below and you can reference LESS files) -->
   <styles>
     <style file="styles/core.css" />
-    <style file="../../styles/visualeditor.common.css" />
+    <style file="../../styles/visualeditor.less" />
   </styles>
-
   <!-- 
-    These format-id's will overwrite or overload TinyMCE built-in formats:
-    alignleft, aligncenter, alignright, alignfull, bold, italic, underline, 
-    strikethrough, forecolor, hilitecolor, fontname, fontsize, blockquote, 
-    removeformat, p, h1, h2, h3, h4, h5, h6, div, address, pre, div, code, 
-    dt, dd, samp. 
-  -->
+		These format-id's will overwrite or overload TinyMCE built-in formats:
+		alignleft, aligncenter, alignright, alignfull, bold, italic, underline, 
+		strikethrough, forecolor, hilitecolor, fontname, fontsize, blockquote, 
+		removeformat, p, h1, h2, h3, h4, h5, h6, div, address, pre, div, code, 
+		dt, dd, samp. 
+  	-->
   <formats>
     <group>
       <format id="bold" label="Strong" image="" notes="Strong text" inline="strong">
-        <!-- Add button: you can overwrite the label, image and notes attributes -->
         <button image="Images/bold.png" label="" />
       </format>
       <format id="italic" label="Emphasis" image="" notes="Emphasized text" inline="em">
         <button image="Images/italic.png" label="" />
       </format>
-      <!-- example: Button to surround selection with u - note this isn't propper xhtml. Consider using a class for this 
-      <format id="underline" label="Underline" image="" notes="Underlined text" inline="u">
-        <button image="Images/underline.png" label="" />
+      <format id="code" label="Inline Code" image="" notes="Inline Code" inline="code">
+        <button label="Code" />
       </format>
-      -->
-      <!-- example: Button to surround selection with span.myclass
-        <format id="example" label="Example" image="" notes="" inline="span" classes="myclass">
-          <button label=":)"/>
-        </format>
-      -->
-      <!-- example2: Button to surround selection with html CODE tag
-        <format id="example2" label="Example2" image="" notes="" inline="code">
-          <button label=";)"/>
-        </format>
-      -->
+      <format id="small" label="Small" image="" notes="Inline Small" inline="small">
+        <button image="Images/smalltext.png" label="" />
+      </format>
+      <!-- examples: 
+
+ 				// Button to surround selection with u - note this isn't propper xhtml. Consider using a class for this 
+				<format id="underline" label="Underline" image="" notes="Underlined text" inline="u">
+					<button image="Images/underline.png" label="" />
+		  		</format>
+
+ 				// Button to surround selection with span.myclass
+				<format id="myclass" label="Example" image="" notes="" inline="span" classes="myclass">
+					<button label="My class"/>
+				</format>
+
+ 				// Button to surround selection with html CODE tag
+				<format id="codespan" label="Example2" image="" notes="" inline="code">
+					<button label="Code"/>
+				</format>
+
+ 				// Button that inserts a H! with a class
+				<format id="h1.test" label="Heading H1 Nice" image="" notes="Example heading with classname" block="h1" priority="1" classes="nice">
+          			<button label="H1.nice"/>
+        		</format>
+			-->
     </group>
     <radiogroup>
+      <format id="p" label="Paragraph" image="" notes="Paragraph" block="p">
+        <select />
+      </format>
       <format id="h1" label="Heading H1" image="" notes="Big heading" block="h1">
         <select />
       </format>
@@ -49,82 +61,178 @@
       <format id="h3" label="Heading H3" image="" notes="Very Small heading" block="h3">
         <select />
       </format>
-      <format id="p" label="Paragraph" image="" notes="Paragraph" block="p">
+      <format id="h4" label="Heading H4" image="" notes="Very Small heading" block="h4">
         <select />
       </format>
-      <!-- example! Selection and button to insert H1.nice -->
-      <!-- NOTE the "priority" attribute to resolve this before H1 with NO class! 
-        <format id="h1.test" label="" image="" notes="Big heading with classname" block="h1" priority="1" classes="nice">
-          <select label="Heading H1.nice"/>
-          <button label="H1.nice"/>
-        </format>
-      -->
+      <!--
+				<format id="h5" label="Heading H5" image="" notes="Very Small heading" block="h5">
+					<select />
+				</format>
+				<format id="h6" label="Heading H6" image="" notes="Very Small heading" block="h6">
+					<select />
+				</format>
+			-->
+      <format id="address" label="Address" image="" notes="For switing an address" block="address">
+        <select />
+      </format>
     </radiogroup>
 
     <radiogroup>
-      <format id="textalignleft" label="Left align text" image="" notes="" classes="textalignleft" selector="p, h1, h2, h3">
+      <format id="textalignleft" label="Left align text" image="" notes="Left align text" classes="text-left" selector="p, h1, h2, h3">
         <button label="" image="Images/textalignleft.png" />
       </format>
-      <format id="textaligncenter" label="Center text" image="" notes="" classes="textaligncenter" selector="p, h1, h2, h3">
+      <format id="textaligncenter" label="Center text" image="" notes="Center text" classes="text-center" selector="p, h1, h2, h3">
         <button label="" image="Images/textaligncenter.png" />
       </format>
-      <format id="textalignright" label="Right align text" image="" notes="" classes="textalignright" selector="p, h1, h2, h3">
+      <format id="textalignright" label="Right align text" image="" notes="Right align text" classes="text-right" selector="p, h1, h2, h3">
         <button label="" image="Images/textalignright.png" />
       </format>
     </radiogroup>
 
-    <!--<radiogroup>
-      <format id="alignleft" label="Left" image="" notes="Align left" classes="left" selector="img,table">
+    <radiogroup>
+      <format id="alignleft" label="Left" image="" notes="Align left" classes="pull-left" selector="img,table">
         <button label="" image="images/left.png" />
       </format>
-      <format id="alignright" label="Right" image="" notes="Align right" classes="right" selector="img,table">
+      <format id="alignright" label="Right" image="" notes="Align right" classes="pull-right" selector="img,table">
         <button label="" image="images/right.png" />
       </format>
-    </radiogroup>-->
+    </radiogroup>
 
     <radiogroup>
-      <!-- Sample classes that show up in the visual editor style selector -->
-      <format id="note" label="Note" image="" notes="" classes="note" selector="p">
+      <format id="page-header" label="Page header" image="" notes="" classes="page-header" selector="h1">
         <select />
       </format>
-      <format id="framed" label="Framed" image="" notes="" classes="framed" selector="img">
+      <!-- paragraphs -->
+      <format id="lead" label="Lead" image="" notes="" classes="lead" selector="p">
         <select />
       </format>
-      <format id="heavyframed" label="Framed (heavy)" image="" notes="" classes="heavyframed" selector="img">
+      <format id="text-muted" label="Text muted" image="" notes="" classes="text-muted" selector="p">
         <select />
       </format>
-      <format id="heavy" label="Heavy" image="" notes="" classes="heavy" selector="table">
+      <format id="text-primary" label="Text primary" image="" notes="" classes="text-primary" selector="p">
         <select />
       </format>
-      <format id="light" label="Light" image="" notes="" classes="light" selector="table">
+      <format id="text-success" label="Text success" image="" notes="" classes="text-success" selector="p">
         <select />
       </format>
-      <format id="sum" label="Sum row" image="" notes="" classes="sum" selector="tr">
+      <format id="text-success" label="Text success" image="" notes="" classes="text-success" selector="p">
         <select />
       </format>
-      <format id="total" label="Total" image="" notes="" classes="total" selector="tr.sum td">
+      <format id="text-info" label="Text info" image="" notes="" classes="text-info" selector="p">
+        <select />
+      </format>
+      <format id="text-warning" label="Text warning" image="" notes="" classes="text-warning" selector="p">
+        <select />
+      </format>
+      <format id="text-danger" label="Text danger" image="" notes="" classes="text-danger" selector="p">
+        <select />
+      </format>
+      <!-- Contextual backgrounds -->
+      <format id="bg-primary" label="Background primary" image="" notes="" classes="bg-primary" selector="p">
+        <select />
+      </format>
+      <format id="bg-success" label="Background success" image="" notes="" classes="bg-success" selector="p">
+        <select />
+      </format>
+      <format id="bg-info" label="Background info" image="" notes="" classes="bg-info" selector="p">
+        <select />
+      </format>
+      <format id="bg-warning" label="Background warning" image="" notes="" classes="bg-warning" selector="p">
+        <select />
+      </format>
+      <format id="bg-danger" label="Background danger" image="" notes="" classes="bg-danger" selector="p">
+        <select />
+      </format>
+      <!-- blockquote -->
+      <format id="pull-right" label="Pull Right" image="" notes="" classes="pull-right" selector="blockquote">
+        <select />
+      </format>
+
+      <!-- lists -->
+      <format id="list-unstyled" label="Unstyled" image="" notes="" classes="list-unstyled" selector="ul, ol">
+        <select />
+      </format>
+      <format id="list-inline" label="Inline" image="" notes="" classes="list-inline" selector="ul, ol">
+        <select />
+      </format>
+
+      <!-- images -->
+      <format id="img-thumbnail" label="Thumbnail" image="" notes="" classes="img-thumbnail" selector="img">
+        <select />
+      </format>
+      <format id="img-rounded" label="Rounded" image="" notes="" classes="img-rounded" selector="img">
+        <select />
+      </format>
+      <format id="img-circle" label="Circle" image="" notes="" classes="img-circle" selector="img">
+        <select />
+      </format>
+      <format id="img-large" label="Large Image" image="" notes="" classes="large-image " selector="img">
+        <select />
+      </format>
+      <!-- tables -->
+      <format id="basicTable" label="Basic Table" image="" notes="" classes="table" selector="table">
+        <select />
+      </format>
+      <format id="BorderedTable" label="Bordered Table" image="" notes="" classes="table-bordered-mix" selector="table">
+        <select />
+      </format>
+      <format id="ZebraStripeTable" label="Zebra-stripe Table" image="" notes="" classes="table-striped-mix" selector="table">
+        <select />
+      </format>
+      <format id="CondensedTable" label="Condensed Table" image="" notes="" classes="table-condensed-mix" selector="table">
+        <select />
+      </format>
+      <format id="styledTable" label="Styled Table" image="" notes="" classes="table-all-mix" selector="table">
+        <select />
+      </format>
+
+      <!-- link buttons -->
+      <format id="btn" label="Default Button" image="" notes="" classes="btn btn-default" selector="a,button">
+        <select />
+      </format>
+      <format id="btn-info" label="Info Button" image="" notes="" classes="btn btn-info" selector="a,button">
+        <select />
+      </format>
+      <format id="btn-primary" label="Primary Button" image="" notes="" classes="btn btn-primary" selector="a,button">
+        <select />
+      </format>
+      <format id="btn-primary-lg" label="Large Primary Button" image="" notes="" classes="btn btn-primary btn-lg" selector="a,button">
         <select />
       </format>
     </radiogroup>
 
+    <radiogroup>
+      <format id="well" label="Well" image="" notes="" block="div" classes="well" wrapper="1">
+        <select />
+      </format>
+      <format id="well-small" label="Well Small" image="" notes="" block="div" classes="well-small-mix" wrapper="1">
+        <select />
+      </format>
+      <format id="well-large" label="Well Large" image="" notes="" block="div" classes="well-large-mix" wrapper="1">
+        <select />
+      </format>
+      <format id="blockquote" label="Quote" image="" notes="" block="blockquote" wrapper="1">
+        <select />
+      </format>
+      <format id="two-columns" label="2 columns" image="" notes="" block="div" classes="two-columns" wrapper="1">
+        <select />
+      </format>
+      <format id="three-columns" label="3 columns" image="" notes="" block="div" classes="three-columns" wrapper="1">
+        <select />
+      </format>
+      <format id="alert-success" label="Alert Success" image="" notes="" block="div" classes="alert-success-mix" wrapper="1">
+        <select />
+      </format>
+      <format id="alert-info" label="Alert Info" image="" notes="" block="div" classes="alert-info-mix" wrapper="1">
+        <select />
+      </format>
+      <format id="alert-warning" label="Alert Warning" image="" notes="" block="div" classes="alert-warning-mix" wrapper="1">
+        <select />
+      </format>
+      <format id="alert-danger" label="Alert Danger" image="" notes="" block="div" classes="alert-danger-mix" wrapper="1">
+        <select />
+      </format>
+    </radiogroup>
 
-		<radiogroup>
-			<format id="well" label="Well" image="" notes="" block="div" classes="well" wrapper="1">
-				<select />
-			</format>
-			<!--<format id="two-columns" label="2 columns" image="" notes="" block="div" classes="two-columns" wrapper="1">
-				<select />
-			</format>
-			<format id="three-columns" label="3 columns" image="" notes="" block="div" classes="three-columns" wrapper="1">
-				<select />
-			</format>-->
-			<format id="blockquote" label="Quote" image="" notes="" block="blockquote" wrapper="1">
-				<select />
-			</format>
-			<format id="fancy-note" label="Fancy note" image="" notes="" block="aside" classes="fancy" wrapper="1">
-				<select />
-			</format>
-		</radiogroup>
-    
   </formats>
 </visualeditor>

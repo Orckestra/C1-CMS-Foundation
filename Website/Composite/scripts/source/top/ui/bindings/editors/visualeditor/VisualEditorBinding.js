@@ -404,6 +404,8 @@ VisualEditorBinding.prototype._finalize = function () {
 	}
 
 	this._tinyInstance.setContent(tinyContent, { format: 'raw' });
+	this._tinyInstance.undoManager.clear();
+	this._tinyInstance.undoManager.add();
 
 	this.updateBodyWidth();
 

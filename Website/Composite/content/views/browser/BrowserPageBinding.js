@@ -122,6 +122,8 @@ BrowserPageBinding.prototype.setPageArgument = function ( map ) {
  * @overwrites {PageBinding#onBeforePageInitialize}
  */
 BrowserPageBinding.prototype.onBeforePageInitialize = function () {
+
+	BrowserPageBinding.superclass.onAfterPageInitialize.call(this);
 	
 	this._box = window.bindingMap.browsertabbox;
 	
