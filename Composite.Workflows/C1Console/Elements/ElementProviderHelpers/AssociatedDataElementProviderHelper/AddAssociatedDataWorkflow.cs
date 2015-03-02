@@ -103,7 +103,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             var page = GetBinding<IData>("Data") as IPage;
 
-            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor)
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, page.GetDataEntityToken())
             {
                 LayoutIconHandle = "associated-data-add"
             };
@@ -156,7 +156,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             var newData = GetBinding<IData>("NewData");
 
-            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
+            var helper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, true, newData.GetDataEntityToken());
 
             var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
             helper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
