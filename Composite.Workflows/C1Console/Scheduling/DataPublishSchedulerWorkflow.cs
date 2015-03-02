@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using Composite.C1Console.Security;
 using Composite.Core;
 using Composite.Core.Types;
 using Composite.Data;
@@ -28,6 +29,8 @@ namespace Composite.C1Console.Scheduling
 
             using (new DataScope(DataScopeIdentifier.Administrated, CultureInfo.CreateSpecificCulture(LocaleName)))
             {
+                DataEntityToken dataEntityToken;
+
                 using (var transaction = TransactionsFacade.CreateNewScope())
                 {
                     var publishSchedule = PublishScheduleHelper.GetPublishSchedule(type, DataId, LocaleName);
@@ -36,6 +39,8 @@ namespace Composite.C1Console.Scheduling
                     var data = (IPublishControlled)DataFacade.GetDataByUniqueKey(type, DataId);
                     Verify.IsNotNull(data, "The data with the id '{0}' does not exist", DataId);
 
+                    dataEntityToken = data.GetDataEntityToken();
+                    
                     var transitions = ProcessControllerFacade.GetValidTransitions(data).Keys;
 
                     if (transitions.Contains(GenericPublishProcessController.Published))
@@ -53,6 +58,9 @@ namespace Composite.C1Console.Scheduling
 
                     transaction.Complete();
                 }
+                
+                EntityTokenCacheFacade.ClearCache(dataEntityToken);
+                PublishControlledHelper.ReloadDataElementInConsole(dataEntityToken);
             }
         }
     }

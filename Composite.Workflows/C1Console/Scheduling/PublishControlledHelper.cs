@@ -132,6 +132,16 @@ namespace Composite.C1Console.Scheduling
             ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
         }
 
+        public static void ReloadDataElementInConsole(DataEntityToken dataEntityToken)
+        {
+            var parentEntityTokens = AuxiliarySecurityAncestorFacade.GetParents(dataEntityToken);
+
+            foreach (var parentEntityToken in parentEntityTokens)
+            {
+                ConsoleMessageQueueFacade.Enqueue(new RefreshTreeMessageQueueItem { EntityToken = parentEntityToken }, null);
+            }
+        }
+
         public static bool PublishIfNeeded(IData data, bool doPublish, IDictionary<string, object> binding, Action<DialogType, string, string> messageAction)
         {
             if (!(data is IPublishControlled))
