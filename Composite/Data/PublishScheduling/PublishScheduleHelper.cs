@@ -17,7 +17,7 @@ namespace Composite.Data.PublishScheduling
             var publishSchedule = DataFacade.BuildNew<IPublishSchedule>();
 
             publishSchedule.Id = Guid.NewGuid();
-            publishSchedule.DataType = dataType.FullName;
+            publishSchedule.DataTypeId = dataType.GetImmutableTypeId();
             publishSchedule.DataId = id;
             publishSchedule.PublishDate = date;
             publishSchedule.WorkflowInstanceId = workflow.InstanceId;
@@ -32,7 +32,7 @@ namespace Composite.Data.PublishScheduling
             var unpublishSchedule = DataFacade.BuildNew<IUnpublishSchedule>();
 
             unpublishSchedule.Id = Guid.NewGuid();
-            unpublishSchedule.DataType = dataType.FullName;
+            unpublishSchedule.DataTypeId = dataType.GetImmutableTypeId();
             unpublishSchedule.DataId = id;
             unpublishSchedule.UnpublishDate = date;
             unpublishSchedule.WorkflowInstanceId = workflow.InstanceId;
@@ -44,8 +44,8 @@ namespace Composite.Data.PublishScheduling
         /// <exclude />
         public static IPublishSchedule GetPublishSchedule(Type dataType, string id, string cultureName)
         {
-            var query = DataFacade.GetData<IPublishSchedule>()
-                .Where(ps => ps.DataId == id && ps.DataType == dataType.FullName);
+            Guid dataTypeId = dataType.GetImmutableTypeId();
+            var query = DataFacade.GetData<IPublishSchedule>().Where(ps => ps.DataId == id && ps.DataTypeId == dataTypeId);
 
             if (DataLocalizationFacade.IsLocalized(dataType))
             {
@@ -58,8 +58,8 @@ namespace Composite.Data.PublishScheduling
         /// <exclude />
         public static IUnpublishSchedule GetUnpublishSchedule(Type dataType, string id, string cultureName)
         {
-            var query = DataFacade.GetData<IUnpublishSchedule>()
-                .Where(ps => ps.DataId == id && ps.DataType == dataType.FullName);
+            Guid dataTypeId = dataType.GetImmutableTypeId();
+            var query = DataFacade.GetData<IUnpublishSchedule>().Where(ps => ps.DataId == id && ps.DataTypeId == dataTypeId);
 
             if (DataLocalizationFacade.IsLocalized(dataType))
             {
