@@ -27356,6 +27356,8 @@ if(_1061.replace(/\s*/gm,"").length==0){
 _1061=VisualEditorBinding.DEFAULT_CONTENT;
 }
 this._tinyInstance.setContent(_1061,{format:"raw"});
+this._tinyInstance.undoManager.clear();
+this._tinyInstance.undoManager.add();
 this.updateBodyWidth();
 this._maybeShowEditor();
 };
