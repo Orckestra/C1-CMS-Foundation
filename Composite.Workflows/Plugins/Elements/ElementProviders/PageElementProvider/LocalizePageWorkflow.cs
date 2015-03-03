@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Transactions;
 using Composite.C1Console.Actions;
+using Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper;
 using Composite.Core;
 using Composite.Core.Extensions;
+using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.ProcessControlled;
 using Composite.Data.ProcessControlled.ProcessControllers.GenericPublishProcessController;
@@ -27,11 +28,11 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private void initializeCodeActivity_Copy_ExecuteCode(object sender, EventArgs e)
         {
-            DataEntityToken castedEntityToken = (DataEntityToken)this.EntityToken;
+            var castedEntityToken = (DataEntityToken)this.EntityToken;
 
             IPage newPage;
 
-            using (TransactionScope transactionScope = TransactionsFacade.CreateNewScope())
+            using (var transactionScope = TransactionsFacade.CreateNewScope())
             {
                 CultureInfo sourceCultureInfo = UserSettings.ForeignLocaleCultureInfo;
 
@@ -116,6 +117,16 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 EntityTokenCacheFacade.ClearCache(sourcePage.GetDataEntityToken());
                 EntityTokenCacheFacade.ClearCache(newPage.GetDataEntityToken());
+
+                foreach (var folderType in PageFolderFacade.GetDefinedFolderTypes(newPage))
+                {
+                    EntityTokenCacheFacade.ClearCache(new AssociatedDataElementProviderHelperEntityToken(
+                        TypeManager.SerializeType(typeof(IPage)),
+                        PageElementProvider.DefaultConfigurationName,
+                        newPage.Id.ToString(),
+                        TypeManager.SerializeType(folderType)));
+                }
+
 
                 transactionScope.Complete();
             }

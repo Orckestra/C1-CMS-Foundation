@@ -72,6 +72,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
         internal static readonly List<PermissionType> AddPermissionTypes = new List<PermissionType> { PermissionType.Add };
         internal static readonly List<PermissionType> DeletePermissionTypes = new List<PermissionType> { PermissionType.Delete };
 
+        internal static readonly string DefaultConfigurationName = "PageElementProvider";
+
 
         private static ResourceHandle GetIconHandle(string name)
         {

@@ -13,6 +13,7 @@ using Composite.C1Console.Users;
 using Composite.Core.Logging;
 using Composite.Data.Validation.ClientValidationRules;
 using Composite.Data.Types;
+using Composite.Plugins.Elements.ElementProviders.PageElementProvider;
 
 
 namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElementProviderHelper
@@ -231,7 +232,7 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
 
             var folderEntityToken = new AssociatedDataElementProviderHelperEntityToken(
                 TypeManager.SerializeType(typeof (IPage)),
-                "PageElementProvider",
+                PageElementProvider.DefaultConfigurationName,
                 page.Id.ToString(),
                 TypeManager.SerializeType(type));
 

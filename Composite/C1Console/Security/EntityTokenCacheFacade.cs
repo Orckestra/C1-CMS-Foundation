@@ -224,16 +224,13 @@ namespace Composite.C1Console.Security
                 return;
             }
 
-            CacheKey cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
+            var cacheKey = new CacheKey { Username = userName, EntityToken = entityToken, Locale = Data.LocalizationScopeManager.CurrentLocalizationScope };
 
             CacheEntry nativeCacheEntry;
             _nativeCache.TryRemove(cacheKey, out nativeCacheEntry);
 
             CacheEntry hookingCacheEntry;
             _hookingCache.TryRemove(cacheKey, out hookingCacheEntry);
-            {
-                _hookingCache = new ConcurrentDictionary<CacheKey, CacheEntry>();
-            }
         }
 
 
