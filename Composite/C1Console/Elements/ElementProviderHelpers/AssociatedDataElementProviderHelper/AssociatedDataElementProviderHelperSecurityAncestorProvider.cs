@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Composite.Data;
 using Composite.C1Console.Security;
 
@@ -10,11 +10,12 @@ namespace Composite.C1Console.Elements.ElementProviderHelpers.AssociatedDataElem
     {
         public IEnumerable<EntityToken> GetParents(EntityToken entityToken)
         {
-            AssociatedDataElementProviderHelperEntityToken castedEntityToken = (AssociatedDataElementProviderHelperEntityToken)entityToken;
+            var castedEntityToken = (AssociatedDataElementProviderHelperEntityToken)entityToken;
 
-            EntityToken rootParent = castedEntityToken.GetData().GetDataEntityToken();
+            var dataItem = castedEntityToken.GetData();
 
-            return new EntityToken[] { rootParent };
+            // Data item may not exist in current language
+            return dataItem != null ? new[] { dataItem.GetDataEntityToken() } : Enumerable.Empty<EntityToken>();
         }
     }
 }
