@@ -26,11 +26,44 @@ namespace Composite.Data.GeneratedTypes
         /// <returns></returns>
         public static Type GetType(DataTypeDescriptor dataTypeDescriptor, bool forceReCompilation = false)
         {
+            bool codeGenerationNeeded;
+
+            Type type = TryGetType(dataTypeDescriptor, forceReCompilation, out codeGenerationNeeded);
+            if (type != null)
+            {
+                return type;
+            }
+
+            if (codeGenerationNeeded)
+            {
+                lock (_lock)
+                {
+                    type = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
+                    if (type != null) return type;
+
+                    var codeGenerationBuilder = new CodeGenerationBuilder("DataInterface: " + dataTypeDescriptor.Name);
+                    InterfaceCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
+                    InterfaceCodeGenerator.AddInterfaceTypeCode(codeGenerationBuilder, dataTypeDescriptor);
+
+                    IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+
+                    return types.Single();
+                }
+            }
+
+            return null;
+        }
+
+        internal static Type TryGetType(DataTypeDescriptor dataTypeDescriptor, bool forceReCompilation, out bool codeGenerationNeeded)
+        {
             Verify.ArgumentNotNull(dataTypeDescriptor, "dataTypeDescriptor");
+            codeGenerationNeeded = false;
+
+            Type type;
 
             if (!forceReCompilation)
             {
-                Type type = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
+                type = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
                 if (type != null) return type;
 
                 if (!dataTypeDescriptor.IsCodeGenerated)
@@ -40,21 +73,19 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
 
-            if (!dataTypeDescriptor.IsCodeGenerated) return null;
-
-            lock (_lock)
+            if (!dataTypeDescriptor.IsCodeGenerated)
             {
-                Type type = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
-                if (type != null) return type;
-
-                var codeGenerationBuilder = new CodeGenerationBuilder("DataInterface: " + dataTypeDescriptor.Name);
-                InterfaceCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
-                InterfaceCodeGenerator.AddInterfaceTypeCode(codeGenerationBuilder, dataTypeDescriptor);
-
-                IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
-
-                return types.Single();
+                return null;
             }
+
+            if (forceReCompilation)
+            {
+                type = TypeManager.TryGetType(dataTypeDescriptor.GetFullInterfaceName());
+                if (type != null) return type;
+            }
+
+            codeGenerationNeeded = true;
+            return null;
         }
     }
 }

@@ -138,5 +138,46 @@ namespace Composite.Data
 
             return false;
         }
+
+        internal static Dictionary<Guid, Type> GetDataTypes(List<DataTypeDescriptor> dataTypeDescriptors)
+        {
+            var result = new Dictionary<Guid, Type>();
+            var toCompile = new List<DataTypeDescriptor>();
+
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                bool compilationNeeded;
+
+                Type type = InterfaceCodeManager.TryGetType(dataTypeDescriptor, false, out compilationNeeded);
+                result[dataTypeDescriptor.DataTypeId] = type;
+
+                if (compilationNeeded)
+                {
+                    toCompile.Add(dataTypeDescriptor);
+                }
+            }
+
+            if (toCompile.Any())
+            {
+                var codeGenerationBuilder = new CodeGenerationBuilder("DataTypeTypesManager:compiling missing interfaces");
+
+                foreach (var dataTypeDescriptor in toCompile)
+                {
+                    InterfaceCodeGenerator.AddAssemblyReferences(codeGenerationBuilder, dataTypeDescriptor);
+                    InterfaceCodeGenerator.AddInterfaceTypeCode(codeGenerationBuilder, dataTypeDescriptor);
+                }
+
+                var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder);
+                var typesMap = types.ToDictionary(type => type.FullName);
+
+                foreach (var dataTypeDescriptor in toCompile)
+                {
+                    var type = typesMap[dataTypeDescriptor.GetFullInterfaceName()];
+                    result[dataTypeDescriptor.DataTypeId] = type;
+                }
+            }
+
+            return result;
+        }
     }
 }
