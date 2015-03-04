@@ -317,7 +317,7 @@ StageBinding.prototype._onStageReady = function () {
 		 * Broadcasting readystate. If no start 
 		 * page, show default start splash. 
 		 */	
-		if ( !Application.hasStartPage || !Application.hasExternalConnection || Client.isPad) {
+		if ( !Application.hasStartPage || !Application.hasExternalConnection) {
 			top.app.bindingMap.defaultstartdeck.select ();
 			this._isShowingDefaultStart = true;
 		}
