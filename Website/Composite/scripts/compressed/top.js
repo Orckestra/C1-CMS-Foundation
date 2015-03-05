@@ -24244,7 +24244,7 @@ this._onStageReady();
 };
 StageBinding.prototype._onStageReady=function(){
 if(!this._isStageReady){
-if(!Application.hasStartPage||!Application.hasExternalConnection||Client.isPad){
+if(!Application.hasStartPage||!Application.hasExternalConnection){
 top.app.bindingMap.defaultstartdeck.select();
 this._isShowingDefaultStart=true;
 }
