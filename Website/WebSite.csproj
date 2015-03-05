@@ -6082,4 +6082,27 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PreBuildEvent>
+      if not exist "$(ProjectDir)bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" (
+      copy "$(ProjectDir)\..\Bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll" "$(ProjectDir)bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll"
+      )
+
+      if not exist "$(ProjectDir)bin\Microsoft.CodeAnalysis.dll" (
+      copy "$(ProjectDir)\..\Bin\Microsoft.CodeAnalysis.dll" "$(ProjectDir)bin\Microsoft.CodeAnalysis.dll"
+      )
+
+      if not exist "$(ProjectDir)bin\Microsoft.CodeAnalysis.CSharp.dll" (
+      copy "$(ProjectDir)\..\Bin\Microsoft.CodeAnalysis.CSharp.dll" "$(ProjectDir)bin\Microsoft.CodeAnalysis.CSharp.dll"
+      )
+
+      if not exist "$(ProjectDir)bin\System.Collections.Immutable.dll" (
+      copy "$(ProjectDir)\..\Bin\System.Collections.Immutable.dll" "$(ProjectDir)bin\System.Collections.Immutable.dll"
+      )
+
+      if not exist "$(ProjectDir)bin\System.Reflection.Metadata.dll" (
+      copy "$(ProjectDir)\..\Bin\System.Reflection.Metadata.dll" "$(ProjectDir)bin\System.Reflection.Metadata.dll"
+      )
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>
