@@ -319,7 +319,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     var codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
                     codeBuilder.AddDataType(dataTypeDescriptor);
 
-                    DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, interfaceType);
+                    DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, dataTypeDescriptor);
 
                     IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false);
 
