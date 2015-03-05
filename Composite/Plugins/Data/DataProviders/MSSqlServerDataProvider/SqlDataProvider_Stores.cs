@@ -856,11 +856,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     sqlDataProviderCodeBuilder.AddDataType(dataTypeDescriptor, storeDataScopesToCompile);
 
                     sqlDataProviderCodeBuilder.AddExistingDataType(dataTypeDescriptor, storeDataScopesAlreadyCompiled);
-
-                    foreach (var kvp in allSqlDataTypeStoreDataScopes.Where(f => f.Key != dataTypeDescriptor))
-                    {
-                        sqlDataProviderCodeBuilder.AddExistingDataType(kvp.Key, kvp.Value);
-                    }
                 },
                 PopulateFieldsAction = types =>
                 {
