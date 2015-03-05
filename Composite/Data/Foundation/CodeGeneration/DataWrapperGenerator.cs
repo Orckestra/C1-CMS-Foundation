@@ -27,7 +27,7 @@ namespace Composite.Data.Foundation.CodeGeneration
                 wrapperType = TryGetWrapperType(interfaceType.FullName);
                 if (wrapperType != null) return wrapperType;
 
-                CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("DataWrapper:" + interfaceType.FullName);
+                var codeGenerationBuilder = new CodeGenerationBuilder("DataWrapper:" + interfaceType.FullName);
 
                 DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, interfaceType);
 
@@ -49,7 +49,7 @@ namespace Composite.Data.Foundation.CodeGeneration
                 wrapperType = TryGetWrapperType(dataTypeDescriptor.GetFullInterfaceName());
                 if (wrapperType != null) return wrapperType;
 
-                CodeGenerationBuilder codeGenerationBuilder = new CodeGenerationBuilder("DataWrapper:" + dataTypeDescriptor.GetFullInterfaceName());
+                var codeGenerationBuilder = new CodeGenerationBuilder("DataWrapper:" + dataTypeDescriptor.GetFullInterfaceName());
 
                 DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, dataTypeDescriptor);
 
@@ -61,7 +61,10 @@ namespace Composite.Data.Foundation.CodeGeneration
 
 
 
-        private static Type TryGetWrapperType(string fullName)
+        /// <summary>
+        /// Returns a wrapper type, if it already exists.
+        /// </summary>
+        public static Type TryGetWrapperType(string fullName)
         {
             string dataWrapperFullName = DataWrapperCodeGenerator.CreateWrapperClassFullName(fullName);
 

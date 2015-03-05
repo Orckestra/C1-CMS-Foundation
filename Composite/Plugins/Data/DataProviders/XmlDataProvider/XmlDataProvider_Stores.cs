@@ -11,6 +11,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
+using Composite.Data.Foundation.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.XmlDataProvider.Foundation;
 
@@ -178,6 +179,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 foreach (var storeToLoad in storesToLoad.Where(s => s.CompilationNeeded))
                 {
                     codeBuilder.AddDataType(storeToLoad.DataTypeDescriptor);
+                    DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, storeToLoad.InterfaceType);
                 }
                 
                 var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToDictionary(type => type.FullName);
@@ -316,6 +318,8 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     // XmlDataProvider types                
                     var codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
                     codeBuilder.AddDataType(dataTypeDescriptor);
+
+                    DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, interfaceType);
 
                     IEnumerable<Type> types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false);
 

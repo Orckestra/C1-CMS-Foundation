@@ -16,6 +16,7 @@ using Composite.Core.Types;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
+using Composite.Data.Foundation.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.CodeGeneration;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundation;
 using Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql;
@@ -181,6 +182,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 foreach (var toCompile in compilationData)
                 {
                     toCompile.GenerateCodeAction(codeGenerationBuilder);
+                }
+
+                // Precompiling DataWrapper classes as well to improve loading time
+                foreach (var interfaceType in dataTypes.Values)
+                {
+                    if (DataWrapperTypeManager.TryGetWrapperType(interfaceType.FullName) == null)
+                    {
+                        DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, interfaceType);
+                    }
                 }
 
                 var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToArray();
