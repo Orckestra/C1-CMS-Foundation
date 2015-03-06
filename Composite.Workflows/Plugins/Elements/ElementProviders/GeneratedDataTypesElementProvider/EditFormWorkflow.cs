@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Workflow.Runtime;
 using System.Xml.Linq;
 using Composite.C1Console.Actions;
@@ -38,9 +39,10 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
             }
             else
             {
-                var formsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor);
+                bool isMetaDataType = dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPageMetaData));
+                var formsHelper = new DataTypeDescriptorFormsHelper(dataTypeDescriptor, null, !isMetaDataType, null);
 
-                GeneratedTypesHelper generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
+                var generatedTypesHelper = new GeneratedTypesHelper(dataTypeDescriptor);
                 formsHelper.AddReadOnlyFields(generatedTypesHelper.NotEditableDataFieldDescriptorNames);
 
                 formMarkup = formsHelper.GetForm();
@@ -80,7 +82,7 @@ namespace Composite.Plugins.Elements.ElementProviders.GeneratedDataTypesElementP
 
         private DataTypeDescriptor GetDataTypeDescriptor()
         {
-            GeneratedDataTypesElementProviderTypeEntityToken entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
+            var entityToken = (GeneratedDataTypesElementProviderTypeEntityToken)this.EntityToken;
             Type type = TypeManager.GetType(entityToken.SerializedTypeName);
 
             Guid guid = type.GetImmutableTypeId();

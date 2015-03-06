@@ -247,38 +247,40 @@ namespace Composite.Data.DynamicTypes
                 newBindings.Add(GetBindingName(fieldDescriptor), value);
             }
 
-
-            //TODO: This code is dublicated. /MRJ
             if (_showPublicationStatusSelector &&
                 _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
                 newBindings.Add(PublicationStatusBindingName, GenericPublishProcessController.Draft);
-
-                var transitionNames = new Dictionary<string, string>
-                {
-                    { GenericPublishProcessController.Draft, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "DraftTransition") },
-                    { GenericPublishProcessController.AwaitingApproval, StringResourceSystemFacade.GetString("Composite.Plugins.GeneratedDataTypesElementProvider", "AwaitingApprovalTransition") }
-                };
-
-                var username = UserValidationFacade.GetUsername();
-                var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
-                var userGroupPermissionDefinition = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
-                var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), EntityToken, userPermissionDefinitions, userGroupPermissionDefinition);
-                foreach (var permissionType in currentPermissionTypes)
-                {
-                    if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
-                    {
-                        transitionNames.Add(GenericPublishProcessController.AwaitingPublication,
-                            LocalizationFiles.Composite_Management.Website_Forms_Administrative_EditPage_AwaitingPublicationTransition);
-                        break;
-                    }
-                }
-
-                newBindings.Add(PublicationStatusOptionsBindingName, transitionNames);
+                newBindings.Add(PublicationStatusOptionsBindingName, GetAvailablePublishingFlowTransitions(EntityToken));
             }
 
 
             return newBindings;
+        }
+
+        private static Dictionary<string, string> GetAvailablePublishingFlowTransitions(EntityToken entityToken)
+        {
+            var transitionNames = new Dictionary<string, string>
+                {
+                    {GenericPublishProcessController.Draft, Texts.DraftTransition},
+                    {GenericPublishProcessController.AwaitingApproval, Texts.AwaitingApprovalTransition}
+                };
+
+            var username = UserValidationFacade.GetUsername();
+            var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
+            var userGroupPermissionDefinition = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
+            var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), entityToken, userPermissionDefinitions, userGroupPermissionDefinition);
+            foreach (var permissionType in currentPermissionTypes)
+            {
+                if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
+                {
+                    transitionNames.Add(GenericPublishProcessController.AwaitingPublication,
+                        LocalizationFiles.Composite_Management.Website_Forms_Administrative_EditPage_AwaitingPublicationTransition);
+                    break;
+                }
+            }
+
+            return transitionNames;
         }
 
 
@@ -355,28 +357,7 @@ namespace Composite.Data.DynamicTypes
                 _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
                 bindings.Add(PublicationStatusBindingName, ((IPublishControlled)dataObject).PublicationStatus);
-
-                var transitionNames = new Dictionary<string, string>
-                {
-                    {GenericPublishProcessController.Draft, Texts.DraftTransition},
-                    {GenericPublishProcessController.AwaitingApproval, Texts.AwaitingApprovalTransition}
-                };
-
-                var username = UserValidationFacade.GetUsername();
-                var userPermissionDefinitions = PermissionTypeFacade.GetUserPermissionDefinitions(username);
-                var userGroupPermissionDefinition = PermissionTypeFacade.GetUserGroupPermissionDefinitions(username);
-                var currentPermissionTypes = PermissionTypeFacade.GetCurrentPermissionTypes(UserValidationFacade.GetUserToken(), EntityToken, userPermissionDefinitions, userGroupPermissionDefinition);
-                foreach (var permissionType in currentPermissionTypes)
-                {
-                    if (GenericPublishProcessController.AwaitingPublicationActionPermissionType.Contains(permissionType))
-                    {
-                        transitionNames.Add(GenericPublishProcessController.AwaitingPublication,
-                            LocalizationFiles.Composite_Management.Website_Forms_Administrative_EditPage_AwaitingPublicationTransition);
-                        break;
-                    }
-                }
-
-                bindings.Add(PublicationStatusOptionsBindingName, transitionNames);
+                bindings.Add(PublicationStatusOptionsBindingName, GetAvailablePublishingFlowTransitions(EntityToken));
 
                 var intefaceType = dataObject.DataSourceId.InterfaceType;
                 var stringKey = dataObject.GetUniqueKey().ToString();
@@ -826,7 +807,7 @@ namespace Composite.Data.DynamicTypes
                 {
                     var bindingName = bindingNameAttribute.Value;
 
-                    if (!fieldNameToBindingNameMapper.ContainsKey(bindingName))
+                    if (!IsNotFieldBinding(bindingName) && !fieldNameToBindingNameMapper.ContainsKey(bindingName))
                     {
                         throw new ParseDefinitionFileException("Invalid binding name '{0}'".FormatWith(bindingName), bindingNameAttribute);
                     }
@@ -834,7 +815,7 @@ namespace Composite.Data.DynamicTypes
 
                 var formDefinitionElement = new XElement(CustomFormDefinition.Root);
 
-                foreach (var bindingNameAttribute in getBindingsFunc(formDefinitionElement))
+                foreach (var bindingNameAttribute in getBindingsFunc(formDefinitionElement).Where(attr => !IsNotFieldBinding(attr.Value)))
                 {
                     bindingNameAttribute.Value = fieldNameToBindingNameMapper[bindingNameAttribute.Value];
                 }
@@ -855,6 +836,11 @@ namespace Composite.Data.DynamicTypes
             }
         }
 
+
+        private bool IsNotFieldBinding(string bindingName)
+        {
+            return bindingName == PublicationStatusBindingName || bindingName == PublicationStatusOptionsBindingName;
+        }
 
         /// <exclude />
         public static string GetBindingName(string prefix, string bindingName)
