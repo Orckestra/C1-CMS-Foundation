@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -366,6 +365,9 @@ namespace Composite.Core.Routing
                     result.Append("/").Append(trimmedPart);
                 }
             }
+
+            // Encoding white spaces
+            result.Replace(" ", "%20");
 
             return result.ToString();
         }
