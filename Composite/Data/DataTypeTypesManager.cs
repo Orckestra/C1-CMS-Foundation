@@ -139,22 +139,27 @@ namespace Composite.Data
             return false;
         }
 
-        internal static Dictionary<Guid, Type> GetDataTypes(List<DataTypeDescriptor> dataTypeDescriptors)
+        internal static Dictionary<Guid, Type> GetDataTypes(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
         {
             var result = new Dictionary<Guid, Type>();
             var toCompile = new List<DataTypeDescriptor>();
 
             foreach (var dataTypeDescriptor in dataTypeDescriptors)
             {
-                bool compilationNeeded;
-
-                Type type = InterfaceCodeManager.TryGetType(dataTypeDescriptor, false, out compilationNeeded);
-                result[dataTypeDescriptor.DataTypeId] = type;
-
-                if (compilationNeeded)
+                string typeFullName = dataTypeDescriptor.GetFullInterfaceName();
+                Type type = _LoadedDataTypes.FirstOrDefault(f => f.FullName == typeFullName);
+                if (type == null)
                 {
-                    toCompile.Add(dataTypeDescriptor);
+                    bool compilationNeeded;
+                    type = InterfaceCodeManager.TryGetType(dataTypeDescriptor, false, out compilationNeeded);
+
+                    if (compilationNeeded)
+                    {
+                        toCompile.Add(dataTypeDescriptor);
+                    }
                 }
+
+                result[dataTypeDescriptor.DataTypeId] = type;
             }
 
             if (toCompile.Any())

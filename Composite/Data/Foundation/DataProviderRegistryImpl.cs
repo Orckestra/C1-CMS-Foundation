@@ -229,28 +229,19 @@ namespace Composite.Data.Foundation
 #pragma warning restore 0612
                 }
 
-
-                if (!_interfaceTypeToReadableProviderNames.ContainsKey(typeToAdd))
+                var readableList = _interfaceTypeToReadableProviderNames.GetOrAdd(typeToAdd, () => new List<string>());
+                if (!readableList.Contains(providerName))
                 {
-                    _interfaceTypeToReadableProviderNames.Add(typeToAdd, new List<string>());
-                }
-
-                if (!_interfaceTypeToReadableProviderNames[typeToAdd].Contains(providerName))
-                {
-                    _interfaceTypeToReadableProviderNames[typeToAdd].Add(providerName);
+                    readableList.Add(providerName);
                 }
 
 
                 if (writeableProvider)
                 {
-                    if (!_interfaceTypeToWriteableProviderNames.ContainsKey(typeToAdd))
+                    var writableList = _interfaceTypeToWriteableProviderNames.GetOrAdd(typeToAdd, () => new List<string>());
+                    if (!writableList.Contains(providerName))
                     {
-                        _interfaceTypeToWriteableProviderNames.Add(typeToAdd, new List<string>());
-                    }
-
-                    if (!_interfaceTypeToWriteableProviderNames[typeToAdd].Contains(providerName))
-                    {
-                        _interfaceTypeToWriteableProviderNames[typeToAdd].Add(providerName);
+                        writableList.Add(providerName);
                     }
                 }
             }

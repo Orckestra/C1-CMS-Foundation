@@ -39,6 +39,40 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         }
 
 
+        public void CreateStores(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
+        {
+            var dataTypes = DataTypeTypesManager.GetDataTypes(dataTypeDescriptors);
+
+            var storesToCreate = new List<GeneratedTypesInfo>();
+
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                Type interfaceType = dataTypes[dataTypeDescriptor.DataTypeId];
+
+                storesToCreate.Add(BuildGeneratedTypesInfo(dataTypeDescriptor, interfaceType));
+            }
+
+            CompileMissingTypes(storesToCreate);
+
+            foreach (var storeToCreate in storesToCreate)
+            {
+                var dataTypeDescriptor = storeToCreate.DataTypeDescriptor;
+
+                InterfaceConfigurationManipulator.AddNew(_dataProviderContext.ProviderName, dataTypeDescriptor);
+
+                var xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
+
+                XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(
+                    dataTypeDescriptor, 
+                    storeToCreate.DataProviderHelperClass, 
+                    storeToCreate.DataIdClass, null);
+
+                Type interfaceType = storeToCreate.InterfaceType;
+
+                AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
+            }
+        }
+
 
         public void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile)
         {
@@ -121,7 +155,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 
             var dataTypes = LoadDataTypes(_dataTypeConfigurationElements);
 
-            var storesToLoad = new List<StoreLoadInfo>();
+            var storesToLoad = new List<GeneratedTypesInfo>();
 
             foreach (XmlProviderInterfaceConfigurationElement element in _dataTypeConfigurationElements)
             {
@@ -134,30 +168,11 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                     interfaceType = dataTypes[dataTypeDescriptor.DataTypeId];
                     if (interfaceType == null)
                     {
-                        Log.LogError(LogTitle, string.Format("The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName));
+                        Log.LogError(LogTitle, "The data interface type '{0}' does not exists and is not code generated. It will not be usable", dataTypeDescriptor.TypeManagerTypeName);
                         continue;
                     }
 
-                    string dataProviderHelperClassFullName, dataIdClassFullName;
-
-                    GetGeneratedClassNames(dataTypeDescriptor, out dataProviderHelperClassFullName, out dataIdClassFullName);
-
-                    Type dataProviderHelperClass = TypeManager.TryGetType(dataProviderHelperClassFullName);
-                    Type dataIdClass = TypeManager.TryGetType(dataIdClassFullName);
-
-                    bool compilationNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { dataProviderHelperClass, dataIdClass });
-
-                    storesToLoad.Add(new StoreLoadInfo
-                    {
-                        Element = element,
-                        DataTypeDescriptor = dataTypeDescriptor,
-                        InterfaceType = interfaceType,
-                        DataIdClass = dataIdClass,
-                        DataIdClassName = dataIdClassFullName,
-                        DataProviderHelperClass = dataProviderHelperClass,
-                        DataProviderHelperClassName = dataProviderHelperClassFullName,
-                        CompilationNeeded = compilationNeeded
-                    });
+                    storesToLoad.Add(BuildGeneratedTypesInfo(dataTypeDescriptor, interfaceType, element));
                 }
                 catch (Exception ex)
                 {
@@ -170,26 +185,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 }
             }
 
-            // Compiling missing classes
-            if (storesToLoad.Any(s => s.CompilationNeeded))
-            {
-                var codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":DataId and helper classes");
-                var codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
-
-                foreach (var storeToLoad in storesToLoad.Where(s => s.CompilationNeeded))
-                {
-                    codeBuilder.AddDataType(storeToLoad.DataTypeDescriptor);
-                    DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, storeToLoad.InterfaceType);
-                }
-                
-                var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToDictionary(type => type.FullName);
-                
-                foreach (var storeToLoad in storesToLoad.Where(s => s.CompilationNeeded))
-                {
-                    storeToLoad.DataIdClass = types[storeToLoad.DataIdClassName];
-                    storeToLoad.DataProviderHelperClass = types[storeToLoad.DataProviderHelperClassName];
-                }
-            }
+            CompileMissingTypes(storesToLoad);
 
             foreach (var storeToLoad in storesToLoad)
             {
@@ -339,7 +335,61 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
             dataIdClassFullName = namespaceName + "." + NamesCreator.MakeDataIdClassName(dataTypeDescriptor);
         }
 
-        private class StoreLoadInfo
+        /// <summary>
+        /// Builds a <see cref="GeneratedTypesInfo"/> object that describes information about helper types generation
+        /// </summary>
+        private GeneratedTypesInfo BuildGeneratedTypesInfo(DataTypeDescriptor dataTypeDescriptor, Type interfaceType, XmlProviderInterfaceConfigurationElement element = null)
+        {
+            string dataProviderHelperClassFullName, dataIdClassFullName;
+
+            GetGeneratedClassNames(dataTypeDescriptor, out dataProviderHelperClassFullName, out dataIdClassFullName);
+
+            Type dataProviderHelperClass = TypeManager.TryGetType(dataProviderHelperClassFullName);
+            Type dataIdClass = TypeManager.TryGetType(dataIdClassFullName);
+
+            bool compilationNeeded = CodeGenerationManager.IsRecompileNeeded(interfaceType, new[] { dataProviderHelperClass, dataIdClass });
+
+            return new GeneratedTypesInfo
+            {
+                Element = element,
+                DataTypeDescriptor = dataTypeDescriptor,
+                InterfaceType = interfaceType,
+                DataIdClass = dataIdClass,
+                DataIdClassName = dataIdClassFullName,
+                DataProviderHelperClass = dataProviderHelperClass,
+                DataProviderHelperClassName = dataProviderHelperClassFullName,
+                CompilationNeeded = compilationNeeded
+            };
+        }
+
+        private void CompileMissingTypes(IList<GeneratedTypesInfo> typesInfo)
+        {
+            // Compiling missing classes
+            if (typesInfo.Any(s => s.CompilationNeeded))
+            {
+                var codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":DataId and helper classes");
+                var codeBuilder = new XmlDataProviderCodeBuilder(_dataProviderContext.ProviderName, codeGenerationBuilder);
+
+                foreach (var storeToLoad in typesInfo.Where(s => s.CompilationNeeded))
+                {
+                    codeBuilder.AddDataType(storeToLoad.DataTypeDescriptor);
+
+                    // Compiling some other classes for optimization
+                    DataWrapperCodeGenerator.AddDataWrapperClassCode(codeGenerationBuilder, storeToLoad.DataTypeDescriptor);
+                    EmptyDataClassCodeGenerator.AddEmptyDataClassTypeCode(codeGenerationBuilder, storeToLoad.DataTypeDescriptor);
+                }
+
+                var types = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToDictionary(type => type.FullName);
+
+                foreach (var storeToLoad in typesInfo.Where(s => s.CompilationNeeded))
+                {
+                    storeToLoad.DataIdClass = types[storeToLoad.DataIdClassName];
+                    storeToLoad.DataProviderHelperClass = types[storeToLoad.DataProviderHelperClassName];
+                }
+            }
+        }
+        
+        private class GeneratedTypesInfo
         {
             public XmlProviderInterfaceConfigurationElement Element;
             public DataTypeDescriptor DataTypeDescriptor;

@@ -181,14 +181,30 @@ namespace Composite.Data.Foundation.PluginFacades
             {
                 using (_resourceLocker.Locker)
                 {
-                    IDynamicDataProvider provider = GetDataProvider<IDynamicDataProvider>(providerName);
+                    var provider = GetDataProvider<IDynamicDataProvider>(providerName);
 
                     provider.CreateStore(typeDescriptor);
                 }
             }
         }
 
+        public static void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors)
+        {
+            Verify.ArgumentNotNull(typeDescriptors, "typeDescriptors");
 
+            using (TimerProfilerFacade.CreateTimerProfiler())
+            {
+                using (_resourceLocker.Locker)
+                {
+                    var provider = GetDataProvider<IDynamicDataProvider>(providerName);
+
+                    provider.CreateStores(typeDescriptors);
+                }
+            }
+
+        }
+
+        
         public static void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile)
         {
             using (TimerProfilerFacade.CreateTimerProfiler())

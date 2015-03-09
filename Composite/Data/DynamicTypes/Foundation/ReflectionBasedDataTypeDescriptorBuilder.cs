@@ -24,14 +24,15 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             bool isCodeGenerated = type.GetCustomInterfaceAttributes<CodeGeneratedAttribute>().Any();
 
-            DataTypeDescriptor typeDescriptor = new DataTypeDescriptor(dataTypeId, type.Namespace, type.Name, TypeManager.SerializeType(type), isCodeGenerated);
-
+            var typeDescriptor = new DataTypeDescriptor(dataTypeId, type.Namespace, type.Name, TypeManager.SerializeType(type), isCodeGenerated)
+            {
+                Title = DynamicTypeReflectionFacade.GetTitle(type),
+                LabelFieldName = DynamicTypeReflectionFacade.GetLabelPropertyName(type),
+                DataAssociations = DynamicTypeReflectionFacade.GetDataTypeAssociationDescriptors(type)
+            };
+            
             List<Type> superInterfaces = type.GetInterfacesRecursively(t => typeof(IData).IsAssignableFrom(t) && t != typeof(IData));
-
             typeDescriptor.SetSuperInterfaces(superInterfaces);
-            typeDescriptor.Title = DynamicTypeReflectionFacade.GetTitle(type);
-            typeDescriptor.LabelFieldName = DynamicTypeReflectionFacade.GetLabelPropertyName(type);
-            typeDescriptor.DataAssociations = DynamicTypeReflectionFacade.GetDataTypeAssociationDescriptors(type);
             
             Type buildNewHandlerType = DynamicTypeReflectionFacade.GetBuildNewHandlerType(type);
             if (buildNewHandlerType != null) typeDescriptor.BuildNewHandlerTypeName = TypeManager.SerializeType(buildNewHandlerType);
@@ -69,7 +70,7 @@ namespace Composite.Data.DynamicTypes.Foundation
 
             foreach (DataScopeIdentifier dataScopeIdentifier in DynamicTypeReflectionFacade.GetDataScopes(type))
             {
-                if (typeDescriptor.DataScopes.Contains(dataScopeIdentifier) == false)
+                if (!typeDescriptor.DataScopes.Contains(dataScopeIdentifier))
                 {
                     typeDescriptor.DataScopes.Add(dataScopeIdentifier);
                 }
@@ -137,13 +138,14 @@ namespace Composite.Data.DynamicTypes.Foundation
             StoreFieldType storeFieldType = DynamicTypeReflectionFacade.GetStoreFieldType(propertyInfo);
 
 
-            DataFieldDescriptor fieldDescriptor = new DataFieldDescriptor(fieldId, fieldName, storeFieldType, fieldType, inherited);
-
-            fieldDescriptor.DefaultValue = DynamicTypeReflectionFacade.GetDefaultValue(propertyInfo);
-            fieldDescriptor.IsNullable = DynamicTypeReflectionFacade.IsNullable(propertyInfo);
-            fieldDescriptor.ForeignKeyReferenceTypeName = DynamicTypeReflectionFacade.ForeignKeyReferenceTypeName(propertyInfo);
-            fieldDescriptor.GroupByPriority = DynamicTypeReflectionFacade.GetGroupByPriority(propertyInfo);
-            fieldDescriptor.TreeOrderingProfile = DynamicTypeReflectionFacade.GetTreeOrderingProfile(propertyInfo);
+            var fieldDescriptor = new DataFieldDescriptor(fieldId, fieldName, storeFieldType, fieldType, inherited)
+            {
+                DefaultValue = DynamicTypeReflectionFacade.GetDefaultValue(propertyInfo),
+                IsNullable = DynamicTypeReflectionFacade.IsNullable(propertyInfo),
+                ForeignKeyReferenceTypeName = DynamicTypeReflectionFacade.ForeignKeyReferenceTypeName(propertyInfo),
+                GroupByPriority = DynamicTypeReflectionFacade.GetGroupByPriority(propertyInfo),
+                TreeOrderingProfile = DynamicTypeReflectionFacade.GetTreeOrderingProfile(propertyInfo)
+            };
 
             var formRenderingProfile = DynamicTypeReflectionFacade.GetFormRenderingProfile(propertyInfo);
             if (formRenderingProfile != null)

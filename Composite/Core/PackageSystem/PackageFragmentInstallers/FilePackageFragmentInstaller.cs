@@ -23,6 +23,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private static readonly string LogTitle = typeof(FilePackageFragmentInstaller).Name;
 
+        private static readonly string[] DllsNotToLoad = 
+        {
+            "System.", "Microsoft.",  "Antlr3.", "WebGrease", "Composite.Web.BundlingAndMinification"
+        };
+
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
@@ -312,18 +317,20 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 this.InstallerContext.ZipFileSystem.WriteFileToDisk(fileToCopy.SourceFilename, fileToCopy.TargetFilePath);
 
                 // Searching for static IData interfaces
-                if (fileToCopy.TargetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase)
-                    && fileToCopy.TargetFilePath.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    string fileName = Path.GetFileName(fileToCopy.TargetFilePath);
+                string targetFilePath = fileToCopy.TargetFilePath;
 
-                    if (!fileName.StartsWith("System.") && !fileName.StartsWith("Microsoft."))
+                if (targetFilePath.StartsWith(Path.Combine(PathUtil.BaseDirectory, "Bin"), StringComparison.InvariantCultureIgnoreCase)
+                    && targetFilePath.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    string fileName = Path.GetFileName(targetFilePath);
+
+                    if (!DllsNotToLoad.Any(fileName.StartsWith))
                     {
                         Assembly assembly;
 
                         try
                         {
-                            assembly = Assembly.LoadFrom(fileToCopy.TargetFilePath);
+                            assembly = Assembly.LoadFrom(targetFilePath);
                         }
                         catch (Exception)
                         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
@@ -119,6 +120,12 @@ namespace Composite.Data.DynamicTypes
         }
 
 
+        /// <exclude />
+        public static void CreateStores(IReadOnlyCollection<DataTypeDescriptor> typeDescriptors, bool doFlush)
+        {
+            CreateStores(DataProviderRegistry.DefaultDynamicTypeDataProviderName, typeDescriptors, doFlush);
+        }
+
 
         // Overload
         /// <exclude />
@@ -133,6 +140,12 @@ namespace Composite.Data.DynamicTypes
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
             _dynamicTypeManager.CreateStore(providerName, typeDescriptor, doFlush);
+        }
+
+        /// <exclude />
+        public static void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors, bool doFlush)
+        {
+            _dynamicTypeManager.CreateStores(providerName, typeDescriptors, doFlush);
         }
 
 

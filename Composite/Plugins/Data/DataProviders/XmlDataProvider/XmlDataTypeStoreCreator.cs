@@ -45,7 +45,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
         {
             if (xmlDataTypeStoreDataScopes == null)
             {
-                List<XmlDataTypeStoreDataScope> defaultDataScopes = new List<XmlDataTypeStoreDataScope>();
+                var defaultDataScopes = new List<XmlDataTypeStoreDataScope>();
 
                 IEnumerable<string> cultureNames;
                 if (dataTypeDescriptor.Localizeable)
@@ -61,7 +61,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 {
                     foreach (string cultureName in cultureNames)
                     {
-                        XmlDataTypeStoreDataScope defaultXmlDataTypeStoreDataScope = new XmlDataTypeStoreDataScope()
+                        var defaultXmlDataTypeStoreDataScope = new XmlDataTypeStoreDataScope
                         {
                             DataScopeName = dataScopeIdentifier.Name,
                             CultureName = cultureName,
@@ -69,7 +69,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                             Filename = Path.Combine(_fileStoreDirectory, NamesCreator.MakeFileName(dataTypeDescriptor, dataScopeIdentifier, cultureName))
                         };
 
-                        XDocument document = new XDocument(new XElement(defaultXmlDataTypeStoreDataScope.ElementName));
+                        var document = new XDocument(new XElement(defaultXmlDataTypeStoreDataScope.ElementName));
                         document.SaveToFile(defaultXmlDataTypeStoreDataScope.Filename);
 
                         defaultDataScopes.Add(defaultXmlDataTypeStoreDataScope);
@@ -79,9 +79,7 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
                 xmlDataTypeStoreDataScopes = defaultDataScopes;
             }
             
-            XmlDataTypeStore xmlDataTypeStore = new XmlDataTypeStore(dataTypeDescriptor, dataProviderHelperClassType, dataIdClassType, xmlDataTypeStoreDataScopes, dataTypeDescriptor.IsCodeGenerated);
-
-            return xmlDataTypeStore;
+            return new XmlDataTypeStore(dataTypeDescriptor, dataProviderHelperClassType, dataIdClassType, xmlDataTypeStoreDataScopes, dataTypeDescriptor.IsCodeGenerated);
         }
     }
 }

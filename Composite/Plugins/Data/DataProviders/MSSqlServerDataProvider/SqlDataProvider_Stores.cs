@@ -68,6 +68,15 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         }
 
 
+        public void CreateStores(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
+        {
+            // TODO: optimize
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                CreateStore(dataTypeDescriptor);
+            }
+        }
+
 
         public void AlterStore(UpdateDataTypeDescriptor updateDataTypeDescriptor, bool forceCompile)
         {
@@ -801,7 +810,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             
             try
             {
-                DataContext dataContext = (DataContext)Activator.CreateInstance(dataContextClassType, connection);
+                var dataContext = (DataContext)Activator.CreateInstance(dataContextClassType, connection);
                 dataContext.Dispose();
             }
             catch (Exception ex)
@@ -968,7 +977,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
                 foreach (StorageInformation storageInformation in element.Stores)
                 {
-                    SqlDataTypeStoreDataScope sqlDataTypeStoreDataScope = new SqlDataTypeStoreDataScope
+                    var sqlDataTypeStoreDataScope = new SqlDataTypeStoreDataScope
                     {
                         DataScopeName = storageInformation.DataScope,
                         CultureName = storageInformation.CultureName,

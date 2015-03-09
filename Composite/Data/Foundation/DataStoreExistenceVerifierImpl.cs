@@ -13,6 +13,8 @@ namespace Composite.Data.Foundation
 {   
     internal sealed class DataStoreExistenceVerifierImpl : IDataStoreExistenceVerifier
     {
+        private const string LogTitle = "DataStoreExistenceVerifier";
+
         // Interfaces in this list will have a store created on system start if they do not exists
         private static readonly List<Type> _interfaceTypes = new List<Type>
                 {
@@ -84,38 +86,42 @@ namespace Composite.Data.Foundation
 
         public bool EnsureDataStores()
         {
-            if (DataProviderPluginFacade.HasConfiguration())
+            if (!DataProviderPluginFacade.HasConfiguration())
             {
-                List<DataTypeDescriptor> typeDescriptors = new List<DataTypeDescriptor>();
+                Log.LogError(LogTitle, "Failed to load the configuration section '{0}' from the configuration", DataProviderSettings.SectionName);
+                return false;
+            }
 
-                foreach (Type type in _interfaceTypes)
+            var typeDescriptors = new List<DataTypeDescriptor>();
+
+            foreach (Type type in _interfaceTypes)
+            {
+                try
                 {
-                    try
+                    if (!DataProviderRegistry.AllKnownInterfaces.Contains(type))
                     {
-                        if (!DataProviderRegistry.AllKnownInterfaces.Contains(type))
-                        {
-                            var dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(type);
+                        var dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(type);
 
-                            dataTypeDescriptor.Validate();
+                        dataTypeDescriptor.Validate();
 
-                            DataProviderPluginFacade.CreateStore(DataProviderRegistry.DefaultDynamicTypeDataProviderName, dataTypeDescriptor);
-
-                            typeDescriptors.Add(dataTypeDescriptor);
-
-                            Log.LogVerbose("DataStoreExistenceVerifier", string.Format("A store for the type '{0}' has been created", type));
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new InvalidOperationException(string.Format("Creating '{0}' store failed", type), ex);
+                        typeDescriptors.Add(dataTypeDescriptor);
                     }
                 }
-
-                return typeDescriptors.Count > 0;
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(string.Format("Failed to validate type '{0}'", type), ex);
+                }
             }
-            
-            Log.LogError("DataStoreExistenceVerifier", string.Format("Failed to load the configuration section '{0}' from the configuration", DataProviderSettings.SectionName));
-            return false;
+
+            if (typeDescriptors.Any())
+            {
+                DataProviderPluginFacade.CreateStores(DataProviderRegistry.DefaultDynamicTypeDataProviderName, typeDescriptors);
+
+                string typeNames = string.Join(", ", typeDescriptors.Select(t => t.GetFullInterfaceName()));
+                Log.LogVerbose(LogTitle, "Stores for the following data types were created: " + typeNames);
+            }
+
+            return typeDescriptors.Count > 0;
         }
     }
 }
