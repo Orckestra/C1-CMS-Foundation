@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Composite.Data.DynamicTypes;
 using Composite.Data.Foundation;
@@ -88,13 +89,27 @@ namespace Composite.Data.GeneratedTypes
         }
 
 
+        // Overload
+        /// <exclude />
+        public static void GenerateNewTypes(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptor, bool makeAFlush)
+        {
+            GenerateNewTypes(DataProviderRegistry.DefaultDynamicTypeDataProviderName, dataTypeDescriptor, makeAFlush);
+        }
+
 
         /// <exclude />
         public static void GenerateNewType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)
         {
+            GenerateNewTypes(providerName, new[] {dataTypeDescriptor}, makeAFlush);
+        }
+
+
+        /// <exclude />
+        public static void GenerateNewTypes(string providerName, IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors, bool makeAFlush)
+        {
             using (GlobalInitializerFacade.CoreLockScope)
             {
-                _generatedTypesFacade.GenerateNewType(providerName, dataTypeDescriptor, makeAFlush);
+                _generatedTypesFacade.GenerateNewTypes(providerName, dataTypeDescriptors, makeAFlush);
 
                 if (_generateNewTypeDelegate != null)
                 {
@@ -103,7 +118,6 @@ namespace Composite.Data.GeneratedTypes
                 }
             }
         }
-
 
 
         /// <exclude />

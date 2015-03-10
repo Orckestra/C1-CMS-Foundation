@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 using Composite.Core.Types;
 using Composite.Core.Types.Plugins.TypeManagerTypeHandler;
@@ -19,7 +18,7 @@ namespace Composite.Plugins.Types.TypeManagerTypeHandler.DynamicBuildManagerType
 
         public Type GetType(string fullName)
         {
-            Type compiledType = CodeGenerationManager.GetCompiledTypes().LastOrDefault(f => f.FullName == fullName);
+            Type compiledType = CodeGenerationManager.GetCompiledType(fullName);
             if (compiledType != null) return compiledType;
 
             if (fullName.StartsWith(_prefix) && !fullName.Contains(","))

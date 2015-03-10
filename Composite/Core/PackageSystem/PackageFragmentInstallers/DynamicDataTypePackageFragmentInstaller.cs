@@ -5,7 +5,6 @@ using System.Xml.Linq;
 using Composite.Data;
 using Composite.Data.DynamicTypes;
 using Composite.Data.GeneratedTypes;
-using Composite.C1Console.Events;
 using Composite.Core.Extensions;
 using Composite.Core.Types;
 
@@ -18,13 +17,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class DynamicDataTypePackageFragmentInstaller : BasePackageFragmentInstaller
     {
+        private static readonly string LogTitle = typeof (DynamicDataTypePackageFragmentInstaller).Name;
+
         private List<DataTypeDescriptor> _dataTypeDescriptors = null;
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
             var foreignKeyReferences = new List<string>();
 
@@ -117,20 +118,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            if (_dataTypeDescriptors == null) throw new InvalidOperationException("DynamicDataTypePackageFragmentInstaller has not been validated");
+            if (_dataTypeDescriptors == null) throw new InvalidOperationException(LogTitle + " has not been validated");
 
-            List<XElement> typeElements = new List<XElement>();
-            foreach (DataTypeDescriptor dataTypeDescriptor in _dataTypeDescriptors)
-            {
-                Log.LogVerbose("DynamicDataTypePackageFragmentInstaller", string.Format("Installing the type '{0}'", dataTypeDescriptor));
+            string typeNames = string.Join(", ", _dataTypeDescriptors.Select(d => d.GetFullInterfaceName()));
 
-                GeneratedTypesFacade.GenerateNewType(dataTypeDescriptor, false);
+            Log.LogVerbose(this.GetType().Name, "Installing types: '{0}'", typeNames);
 
-                XElement typeElement = new XElement("Type", new XAttribute("typeId", dataTypeDescriptor.DataTypeId));
-                typeElements.Add(typeElement);
-            }
+            GeneratedTypesFacade.GenerateNewTypes(_dataTypeDescriptors, true);
 
-            GlobalEventSystemFacade.FlushTheSystem(true);
+            var typeElements = _dataTypeDescriptors.Select(d => new XElement("Type", new XAttribute("typeId", d.DataTypeId)));
 
             yield return new XElement("Types", typeElements);
         }

@@ -1,12 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Transactions;
 using Composite.Core;
 using Composite.Data.DynamicTypes;
-using Composite.Data.Foundation.PluginFacades;
-using Composite.Data.Plugins.DataProvider.Runtime;
-using Composite.Core.Extensions;
-using Composite.Core.Instrumentation;
-using Composite.Core.Linq;
 using Composite.Data.Transactions;
 using Composite.Core.Types;
 
@@ -15,26 +12,31 @@ namespace Composite.Data.GeneratedTypes
 {
     internal sealed class GeneratedTypesFacadeImpl : IGeneratedTypesFacade
     {
-        public void GenerateNewType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)
+        public void GenerateNewTypes(string providerName, IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors, bool makeAFlush)
         {
             Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
-            Verify.ArgumentNotNull(dataTypeDescriptor, "dataTypeDescriptor");
+            Verify.ArgumentNotNull(dataTypeDescriptors, "dataTypeDescriptors");
+
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                UpdateWithNewMetaDataForeignKeySystem(dataTypeDescriptor);
+                UpdateWithNewPageFolderForeignKeySystem(dataTypeDescriptor, false);
+            }
+
+            var types = DataTypeTypesManager.GetDataTypes(dataTypeDescriptors);
             
-            UpdateWithNewMetaDataForeignKeySystem(dataTypeDescriptor);
-            UpdateWithNewPageFolderForeignKeySystem(dataTypeDescriptor, false);
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                dataTypeDescriptor.TypeManagerTypeName = TypeManager.SerializeType(types[dataTypeDescriptor.DataTypeId]);
+            }
 
-            Type type = InterfaceCodeManager.GetType(dataTypeDescriptor);
+            DynamicTypeManager.CreateStores(providerName, dataTypeDescriptors, makeAFlush);
 
-            dataTypeDescriptor.TypeManagerTypeName = TypeManager.SerializeType(type);
-
-            DynamicTypeManager.CreateStore(providerName, dataTypeDescriptor, makeAFlush);
-
-            if (makeAFlush && dataTypeDescriptor.IsCodeGenerated)
+            if (makeAFlush && dataTypeDescriptors.Any(d => d.IsCodeGenerated))
             {
                 CodeGenerationManager.GenerateCompositeGeneratedAssembly(true);
             }
         }
-
 
 
         public void DeleteType(string providerName, DataTypeDescriptor dataTypeDescriptor, bool makeAFlush)

@@ -31,7 +31,7 @@ namespace Composite.Core.Types
         private static bool _compositeGeneratedCompiled = true;
         private static List<ICodeProvider> _dynamicallyAddedCodeProviders = new List<ICodeProvider>();
         private static readonly List<Assembly> _compiledAssemblies = new List<Assembly>();
-        private static readonly List<Type> _compiledTypes = new List<Type>();
+        private static readonly Dictionary<string, Type>  _compiledTypesByFullName = new Dictionary<string, Type>();
 
         /// <summary>
         /// If set to <c>true</c>, /Bin/Composite.Generated.dll won't be overwritten on shutdown
@@ -183,7 +183,7 @@ namespace Composite.Core.Types
 
                 foreach (Type resultType in resultTypes)
                 {
-                    _compiledTypes.Add(resultType);
+                    _compiledTypesByFullName[resultType.FullName] = resultType;
                 }
 
                 return resultTypes;
@@ -295,13 +295,15 @@ namespace Composite.Core.Types
         }
 
 
-
         /// <summary>
         /// Gets the compiled types.
         /// </summary>
         /// <returns></returns>
-        public static IEnumerable<Type> GetCompiledTypes() { return _compiledTypes; }
-
+        public static Type GetCompiledType(string fullName)
+        {
+            Type type;
+            return _compiledTypesByFullName.TryGetValue(fullName, out type) ? type : null;
+        }
 
 
         private static void Compile(CodeGenerationBuilder builder)
