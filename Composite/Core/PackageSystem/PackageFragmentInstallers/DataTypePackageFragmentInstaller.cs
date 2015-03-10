@@ -103,7 +103,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
             Verify.IsNotNull(_typesToInstall, "DataTypePackageFragmentInstaller has not been validated");
 
             string typeNames = string.Join(", ", _typesToInstall.Select(t => t.GetFullInterfaceName()));
-            Log.LogInformation(this.GetType().Name, "Installing types: '{0}'", typeNames);
+            Log.LogVerbose(this.GetType().Name, "Installing types: '{0}'", typeNames);
 
 
             DynamicTypeManager.CreateStores(_typesToInstall, false);

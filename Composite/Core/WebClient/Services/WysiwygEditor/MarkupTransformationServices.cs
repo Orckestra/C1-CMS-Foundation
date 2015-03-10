@@ -34,6 +34,7 @@ namespace Composite.Core.WebClient.Services.WysiwygEditor
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public static class MarkupTransformationServices
     {
+        /// <exclude />
         public static IEnumerable<string> Html5specificElementNames = new List<string> { "article", "aside", "audio", "canvas", "command", "datalist", "details", "embed", "figcaption", "figure", "footer", "header", "hgroup", "keygen", "mark", "meter", "nav", "output", "progress", "rp", "rt", "ruby", "section", "source", "summary", "time", "video", "wbr", "main" };
 
         static readonly Regex _duplicateAttributesRegex = new Regex(@"<([^>]*?) (?<attributeName>\w*?)=(?<quote>"")([^>]*?)(\k<quote>)([^>]*?) (\k<attributeName>)=(?<quote2>"")([^>]*?)(\k<quote2>)([^>]*?)>", RegexOptions.Compiled);

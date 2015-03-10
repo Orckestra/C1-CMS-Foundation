@@ -88,7 +88,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         locale = CultureInfo.CreateSpecificCulture(localeAttribute.Value);
                     }
 
-                    foreach (XElement keysElement in datasElement.Elements("Keys"))
+                    foreach (XElement keysElement in datasElement.Elements("Keys").Reverse())
                     {
                         bool allKeyPropertiesValidated = true;
                         var dataKeyPropertyCollection = new DataKeyPropertyCollection();
