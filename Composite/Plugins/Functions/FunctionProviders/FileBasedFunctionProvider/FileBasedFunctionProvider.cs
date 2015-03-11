@@ -248,6 +248,11 @@ namespace Composite.Plugins.Functions.FunctionProviders.FileBasedFunctionProvide
 
 		private void Watcher_OnChanged(object sender, FileSystemEventArgs e)
 		{
+		    if (SystemSetupFacade.SetupIsRunning)
+		    {
+		        return;
+		    }
+
             // Reloading functions only after a certain delay as otherwise edited in VS function won't be loaded if files are accessed through a network drive
 			if (FunctionNotifier != null && HandleChange(e.FullPath))
 			{

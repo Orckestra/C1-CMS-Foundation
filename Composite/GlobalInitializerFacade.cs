@@ -349,18 +349,22 @@ namespace Composite
 
                 InitializeTheSystem();
 
-                // Updating "hooks" either in the same thread, or in another
-                if (initializeHooksInTheSameThread)
+                if (!SystemSetupFacade.SetupIsRunning)
                 {
-                    object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
-                    EnsureHookingFacade(threadStartParameter);
+                    // Updating "hooks" either in the same thread, or in another
+                    if (initializeHooksInTheSameThread)
+                    {
+                        object threadStartParameter = new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.Zero, new StackTrace());
+                        EnsureHookingFacade(threadStartParameter);
+                    }
+                    else
+                    {
+                        _hookingFacadeThread = new Thread(EnsureHookingFacade);
+                        _hookingFacadeThread.Name = "EnsureHookingFacade";
+                        _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
+                    }
                 }
-                else
-                {
-                    _hookingFacadeThread = new Thread(EnsureHookingFacade);
-                    _hookingFacadeThread.Name = "EnsureHookingFacade";
-                    _hookingFacadeThread.Start(new KeyValuePair<TimeSpan, StackTrace>(TimeSpan.FromSeconds(1), new StackTrace()));
-                }
+
 
                 IsReinitializingTheSystem = false;
             }
