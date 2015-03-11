@@ -107,29 +107,32 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Sql
 
                 string[] tableNames = columnsCache.Keys.ToArray();
 
-                // Performing a query with will get no rows but provide us with columns' types information
-                var fieldTypesQuery = string.Join(";", tableNames.Select(t => "SELECT * FROM [{0}] WHERE 1 = 2".FormatWith(t)));
-
-                int index = 0;
-
-                using (var command = new SqlCommand(fieldTypesQuery, connection))
-                using (var reader = command.ExecuteReader())
+                if (tableNames.Any())
                 {
-                    do
+                    // Performing a query with will get no rows but provide us with columns' types information
+                    var fieldTypesQuery = string.Join(";", tableNames.Select(t => "SELECT * FROM [{0}] WHERE 1 = 2".FormatWith(t)));
+
+                    int index = 0;
+
+                    using (var command = new SqlCommand(fieldTypesQuery, connection))
+                    using (var reader = command.ExecuteReader())
                     {
-                        Verify.That(index < tableNames.Length, "Too many results received");
-
-                        for (int i = 0; i < reader.FieldCount; ++i)
+                        do
                         {
-                            string name = reader.GetName(i);
-                            Type type = reader.GetProviderSpecificFieldType(i);
+                            Verify.That(index < tableNames.Length, "Too many results received");
 
-                            var fieldsInfo = columnsCache[tableNames[index]];
-                            fieldsInfo[name].Type = type;
-                        }
+                            for (int i = 0; i < reader.FieldCount; ++i)
+                            {
+                                string name = reader.GetName(i);
+                                Type type = reader.GetProviderSpecificFieldType(i);
 
-                        index++;
-                    } while (reader.NextResult());
+                                var fieldsInfo = columnsCache[tableNames[index]];
+                                fieldsInfo[name].Type = type;
+                            }
+
+                            index++;
+                        } while (reader.NextResult());
+                    }
                 }
 
                 _columnsInformationCache = columnsCache;
