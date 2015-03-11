@@ -20,25 +20,6 @@ namespace Composite.Plugins.Data.DataProviders.XmlDataProvider
 {
     internal partial class XmlDataProvider
     {
-        public void CreateStore(DataTypeDescriptor dataTypeDescriptor)
-        {
-            InterfaceConfigurationManipulator.AddNew(_dataProviderContext.ProviderName, dataTypeDescriptor);
-
-            Type dataProviderHelperType;
-            Type dataIdClassType;
-            bool typesExists = EnsureNeededTypes(dataTypeDescriptor, out dataProviderHelperType, out dataIdClassType);
-            Verify.That(typesExists, "Could not find or code generated the type '{0}' or one of the needed helper types", dataTypeDescriptor.GetFullInterfaceName());
-
-            var xmlDataTypeStoreCreator = new XmlDataTypeStoreCreator(_fileStoreDirectory);
-
-            XmlDataTypeStore xmlDateTypeStore = xmlDataTypeStoreCreator.CreateStoreResult(dataTypeDescriptor, dataProviderHelperType, dataIdClassType, null);
-
-            Type interfaceType = DataTypeTypesManager.GetDataType(dataTypeDescriptor);
-
-            AddDataTypeStore(dataTypeDescriptor, interfaceType, xmlDateTypeStore);
-        }
-
-
         public void CreateStores(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
         {
             var dataTypes = DataTypeTypesManager.GetDataTypes(dataTypeDescriptors);

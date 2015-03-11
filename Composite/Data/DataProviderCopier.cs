@@ -156,17 +156,21 @@ namespace Composite.Data
 
         private void EnsureInterfaces(IEnumerable<Type> allInterfaces)
         {
+            var dataTypeDescriptors = new List<DataTypeDescriptor>();
+
             foreach (Type interfaceType in allInterfaces)
             {
-                if (DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType).Contains(this.TargetProviderName) == false)
+                if (!DataProviderRegistry.GetDataProviderNamesByInterfaceType(interfaceType).Contains(this.TargetProviderName))
                 {
-                    DataTypeDescriptor dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
+                    var dataTypeDescriptor = DynamicTypeManager.BuildNewDataTypeDescriptor(interfaceType);
 
                     dataTypeDescriptor.Validate();
 
-                    DataProviderPluginFacade.CreateStore(this.TargetProviderName, dataTypeDescriptor);
+                    dataTypeDescriptors.Add(dataTypeDescriptor);
                 }
             }
+
+            DataProviderPluginFacade.CreateStores(this.TargetProviderName, dataTypeDescriptors);
         }
 
 

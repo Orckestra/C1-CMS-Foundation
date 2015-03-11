@@ -183,7 +183,7 @@ namespace Composite.Data.Foundation.PluginFacades
                 {
                     var provider = GetDataProvider<IDynamicDataProvider>(providerName);
 
-                    provider.CreateStore(typeDescriptor);
+                    provider.CreateStores(new [] {typeDescriptor});
                 }
             }
         }

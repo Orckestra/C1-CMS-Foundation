@@ -33,19 +33,29 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
         private static readonly Hashtable<Type, bool> _typeLoadResults = new Hashtable<Type, bool>(); 
 
-        public void CreateStore(DataTypeDescriptor dataTypeDescriptor)
+        public void CreateStores(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
         {
-            using (TimerProfilerFacade.CreateTimerProfiler())
+            var types = DataTypeTypesManager.GetDataTypes(dataTypeDescriptors);
+
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
             {
                 if (InterfaceConfigurationManipulator.ConfigurationExists(_dataProviderContext.ProviderName, dataTypeDescriptor))
                 {
                     throw new InvalidOperationException(string.Format("SqlDataProvider configuration already contains a interface named '{0}'. Remove it from the configuration and restart the application.", dataTypeDescriptor.TypeManagerTypeName));
                 }
+            }
+
+            // Creating Sql tables and adding to the configuration
+            var configElements = new Dictionary<DataTypeDescriptor, InterfaceConfigurationElement>();
+
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                Type type = types[dataTypeDescriptor.DataTypeId];
 
                 Action<string> existingTablesValidator = tableName =>
                 {
                     var errors = new StringBuilder();
-                    var interfaceType = dataTypeDescriptor.GetInterfaceType();
+                    var interfaceType = type;
                     if (!ValidateTable(interfaceType, tableName, errors))
                     {
                         throw new InvalidOperationException("Table '{0}' already exist but isn't valid: {1}".FormatWith(tableName, errors.ToString()));
@@ -57,23 +67,84 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 InterfaceConfigurationElement element = InterfaceConfigurationManipulator.AddNew(_dataProviderContext.ProviderName, dataTypeDescriptor);
                 _interfaceConfigurationElements.Add(element);
 
-                Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes = BuildAllExistingDataTypeStoreDataScopes();
-
-                InitializeStoreResult initializeStoreResult = InitializeStore(element, allSqlDataTypeStoreDataScopes);
-
-                if (initializeStoreResult.InterfaceType == null) return;
-
-                AddDataTypeStore(initializeStoreResult, false);
+                configElements.Add(dataTypeDescriptor, element);
             }
-        }
 
 
-        public void CreateStores(IReadOnlyCollection<DataTypeDescriptor> dataTypeDescriptors)
-        {
-            // TODO: optimize
+            // Generating necessary classes and performing validation
+            Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes = BuildAllExistingDataTypeStoreDataScopes();
+
+            bool dataContextRecompilationNeeded = false;
+
+            var toCompileList = new List<HelperClassesGenerationInfo>();
+            var generatedClassesInfo = new Dictionary<DataTypeDescriptor, InterfaceGeneratedClassesInfo>();
+
+            Type dataContextClass = _sqlDataTypeStoresContainer.DataContextClass;
+
             foreach (var dataTypeDescriptor in dataTypeDescriptors)
             {
-                CreateStore(dataTypeDescriptor);
+                var element = configElements[dataTypeDescriptor];
+
+                // InitializeStoreResult initializeStoreResult = InitializeStore(element, allSqlDataTypeStoreDataScopes);
+
+                HelperClassesGenerationInfo toCompile = null;
+
+                var classesInfo = InitializeStoreTypes(element, allSqlDataTypeStoreDataScopes, dataContextClass, null, false, ref dataContextRecompilationNeeded, ref toCompile);
+
+                if (classesInfo != null && toCompile != null)
+                {
+                    toCompileList.Add(toCompile);
+
+                    generatedClassesInfo[dataTypeDescriptor] = classesInfo;
+                }
+            }
+
+            // Compiling missing classes
+            if (toCompileList.Any())
+            {
+                var codeGenerationBuilder = new CodeGenerationBuilder(_dataProviderContext.ProviderName + ":CreateStores");
+
+                foreach (var toCompile in toCompileList)
+                {
+                    toCompile.GenerateCodeAction(codeGenerationBuilder);
+                }
+
+                var generatedHelperClasses = CodeGenerationManager.CompileRuntimeTempTypes(codeGenerationBuilder, false).ToArray();
+
+                foreach (var toCompile in toCompileList)
+                {
+                    toCompile.PopulateFieldsAction(generatedHelperClasses);
+                }
+            }
+
+            // Emitting a new DataContext class
+            if (dataContextRecompilationNeeded)
+            {
+                var newDataTypeIds = new HashSet<Guid>(dataTypeDescriptors.Select(d => d.DataTypeId));
+
+                _createdSqlDataTypeStoreTables.RemoveAll(f => newDataTypeIds.Contains(f.DataTypeId));
+
+                var fields = _createdSqlDataTypeStoreTables.Select(s => new Tuple<string, Type>(s.DataContextFieldName, s.DataContextFieldType)).ToList();
+                
+                foreach (var classesInfo in generatedClassesInfo.Values)
+                {
+                    fields.AddRange(classesInfo.Fields.Select(f => new Tuple<string, Type>(f.Value.FieldName, f.Value.FieldType)));
+                }
+
+                dataContextClass = DataContextAssembler.EmitDataContextClass(fields);
+
+                UpdateCreatedSqlDataTypeStoreTables(dataContextClass);
+            }
+
+            _sqlDataTypeStoresContainer.DataContextClass = dataContextClass;
+
+            // Registering the new type/tables
+            foreach (var dataTypeDescriptor in dataTypeDescriptors)
+            {
+                var classesInfo = generatedClassesInfo[dataTypeDescriptor];
+                InitializeStoreResult initInfo = EmbedDataContextInfo(classesInfo, dataContextClass);
+
+                AddDataTypeStore(initInfo, false);
             }
         }
 
@@ -167,10 +238,10 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
             var dataTypes = LoadDataTypes(_interfaceConfigurationElements);
 
-            var compilationData = new List<MissingClassesCompilationData>();
+            var compilationData = new List<HelperClassesGenerationInfo>();
             foreach (InterfaceConfigurationElement element in _interfaceConfigurationElements)
             {
-                MissingClassesCompilationData toCompile = null;
+                HelperClassesGenerationInfo toCompile = null;
 
                 var generatedClassesInfo = InitializeStoreTypes(element, allSqlDataTypeStoreDataScopes,
                     dataContextClass, dataTypes, false, ref dataContextRecompilationNeeded, ref toCompile);
@@ -376,7 +447,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             bool forceCompile,
             ref bool dataContextRecompilationNeeded)
         {
-            MissingClassesCompilationData toCompile = null;
+            HelperClassesGenerationInfo toCompile = null;
 
             var result = InitializeStoreTypes(element, allSqlDataTypeStoreDataScopes, dataContextClass, null, forceCompile, ref dataContextRecompilationNeeded, ref toCompile);
 
@@ -400,7 +471,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
             Dictionary<Guid, Type> dataTypes,
             bool forceCompile,
             ref bool dataContextRecompilationNeeded, 
-            ref MissingClassesCompilationData missingClassesCompilationData)
+            ref HelperClassesGenerationInfo helperClassesGenerationInfo)
         {
             var result = new InterfaceGeneratedClassesInfo();
 
@@ -458,7 +529,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                 }
 
                 Dictionary<SqlDataTypeStoreTableKey, StoreTypeInfo> fields;
-                missingClassesCompilationData = EnsureNeededTypes(dataTypeDescriptor, 
+                helperClassesGenerationInfo = EnsureNeededTypes(dataTypeDescriptor, 
                     dataScopes, allSqlDataTypeStoreDataScopes, dataContextClass, 
                     out fields, ref dataContextRecompilationNeeded, forceCompile);
 
@@ -696,7 +767,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         /// <summary>
         /// Checks that tables related to specified data type included in current DataContext class, if not - compiles a new version of DataContext that contains them
         /// </summary>
-        private MissingClassesCompilationData EnsureNeededTypes(
+        private HelperClassesGenerationInfo EnsureNeededTypes(
             DataTypeDescriptor dataTypeDescriptor, 
             IEnumerable<SqlDataTypeStoreDataScope> sqlDataTypeStoreDataScopes, 
             Dictionary<DataTypeDescriptor, IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes, 
@@ -723,14 +794,6 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
                     {
                         dataContextFieldInfo = dataContextClassType.GetFields(BindingFlags.Public | BindingFlags.Instance)
                                                                    .SingleOrDefault(f => f.Name == dataContextFieldName);
-
-                        if (dataContextFieldInfo == null)
-                        {
-                            if (RuntimeInformation.IsDebugBuild)
-                            {
-                                Log.LogInformation(LogTitle, "Missing classes will be compiled for data context's field '{0}'", dataContextFieldName);
-                            }
-                        }
                     }
 
 
@@ -843,7 +906,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
         }
 
 
-        private class MissingClassesCompilationData
+        private class HelperClassesGenerationInfo
         {
             public Action<CodeGenerationBuilder> GenerateCodeAction;
             public Action<Type[]> PopulateFieldsAction;
@@ -851,13 +914,13 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider
 
 
 
-        private MissingClassesCompilationData CompileMissingClasses(DataTypeDescriptor dataTypeDescriptor, Dictionary<DataTypeDescriptor, 
+        private HelperClassesGenerationInfo CompileMissingClasses(DataTypeDescriptor dataTypeDescriptor, Dictionary<DataTypeDescriptor, 
                                            IEnumerable<SqlDataTypeStoreDataScope>> allSqlDataTypeStoreDataScopes,
                                            Dictionary<SqlDataTypeStoreTableKey, StoreTypeInfo> fields,
                                            List<SqlDataTypeStoreDataScope> storeDataScopesToCompile, 
                                            List<SqlDataTypeStoreDataScope> storeDataScopesAlreadyCompiled)
         {
-            return new MissingClassesCompilationData
+            return new HelperClassesGenerationInfo
             {
                 GenerateCodeAction = codeGenerationBuilder =>
                 {

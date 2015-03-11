@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Caching;
 using System.Xml.Linq;
@@ -58,10 +59,7 @@ namespace Composite.Core.WebClient.Media
                 {
                     return Quality.Value;
                 }
-                else
-                {
-                    return GlobalSettingsFacade.ImageQuality;
-                }
+                return GlobalSettingsFacade.ImageQuality;
             }
         }
 
@@ -248,21 +246,26 @@ namespace Composite.Core.WebClient.Media
             return xel;
         }
 
-        //public string Serialize()
-        //{
-        //    var sb = new StringBuilder();
-        //    var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight };
-        //    var parameterNames = new[] { "w", "h", "mw", "mh" };
+        public string ToString()
+        {
+            var sb = new StringBuilder();
+            var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight };
+            var parameterNames = new[] { "w", "h", "mw", "mh" };
 
-        //    for (int i = 0; i < parameters.Length; i++)
-        //    {
-        //        if (parameters[i] != null)
-        //        {
-        //            sb.Append(parameterNames[i]).Append((int)parameters[i]);
-        //        }
-        //    }
-        //    return sb.ToString();
-        //}
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i] != null)
+                {
+                    sb.Append(parameterNames[i]).Append((int)parameters[i]);
+                }
+            }
+
+            if (sb.Length > 0)
+            {
+                sb.Insert(0, "?");
+            }
+            return sb.ToString();
+        }
     }
 }
 

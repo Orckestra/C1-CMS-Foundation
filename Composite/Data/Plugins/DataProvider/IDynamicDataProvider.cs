@@ -19,9 +19,6 @@ namespace Composite.Data.Plugins.DataProvider
         IEnumerable<Type> GetKnownInterfaces();
 
         /// <exclude />
-        void CreateStore(DataTypeDescriptor typeDescriptor);
-
-        /// <exclude />
         void CreateStores(IReadOnlyCollection<DataTypeDescriptor> typeDescriptor);
 
         /// <summary>
