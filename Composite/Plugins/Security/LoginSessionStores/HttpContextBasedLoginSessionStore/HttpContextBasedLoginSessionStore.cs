@@ -19,6 +19,9 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
     [ConfigurationElementType(typeof(HttpContextBasedSessionDataProviderData))]
     internal sealed class HttpContextBasedLoginSessionStore : ILoginSessionStore
     {
+        private static readonly TimeSpan TempTicketMaxAge = TimeSpan.FromDays(5);
+        private static readonly TimeSpan TempTicketMinAge = TimeSpan.FromDays(4); // auto renew tickets younger than this
+
         private static readonly string ContextKey = typeof(HttpContextBasedLoginSessionStore).FullName + "StoredUsername";
 
         private const string AuthCookieName = ".CMSAUTH";
@@ -30,13 +33,18 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
         public void StoreUsername(string userName, bool persistAcrossSessions)
         {
+            StoreUsernameImpl(userName, persistAcrossSessions);
+        }
+
+        private static void StoreUsernameImpl(string userName, bool persistAcrossSessions)
+        {
             Verify.ArgumentNotNullOrEmpty(userName, "userName");
 
             userName = userName.ToLower(CultureInfo.InvariantCulture);
 
-            int daysToLive = (persistAcrossSessions ? 365 : 2);
+            TimeSpan timeToLive = (persistAcrossSessions ? TimeSpan.FromDays(365) : TempTicketMaxAge);
 
-            var ticket = new FormsAuthenticationTicket(userName, persistAcrossSessions, (int)TimeSpan.FromDays(daysToLive).TotalMinutes);
+            var ticket = new FormsAuthenticationTicket(userName, persistAcrossSessions, (int)timeToLive.TotalMinutes);
             string encryptedTicket = FormsAuthentication.Encrypt(ticket);
 
             var cookie = CookieHandler.SetCookieInternal(AuthCookieName, encryptedTicket);
@@ -50,7 +58,7 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
 
             if (persistAcrossSessions)
             {
-                cookie.Expires = DateTime.Now.AddDays(daysToLive);
+                cookie.Expires = DateTime.Now + timeToLive;
             }
         }
 
@@ -103,6 +111,12 @@ namespace Composite.Plugins.Security.LoginSessionStores.HttpContextBasedLoginSes
                 if (!string.IsNullOrEmpty(cookieValue))
                 {
                     FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(cookieValue);
+
+                    if (!ticket.Expired && (ticket.Expiration - DateTime.Now) < TempTicketMinAge)
+                    {
+                        StoreUsernameImpl(ticket.Name, false); 
+                    }
+                    
                     return ticket.Name;
                 }
             }
