@@ -175,17 +175,7 @@ namespace Composite.Data.Foundation.PluginFacades
 
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor)
         {
-            Verify.ArgumentNotNull(typeDescriptor, "typeDescriptor");
-
-            using (TimerProfilerFacade.CreateTimerProfiler())
-            {
-                using (_resourceLocker.Locker)
-                {
-                    var provider = GetDataProvider<IDynamicDataProvider>(providerName);
-
-                    provider.CreateStores(new [] {typeDescriptor});
-                }
-            }
+            CreateStores(providerName, new[] {typeDescriptor});
         }
 
         public static void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors)

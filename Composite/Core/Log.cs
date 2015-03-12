@@ -11,17 +11,6 @@ namespace Composite.Core
     /// </summary>
     public static class Log
     {
-        [FlagsAttribute]
-        public enum Category
-        {
-            /// <exclude />
-            General = 0x1,
-
-            /// <exclude />
-            Audit = 0x2,
-        }
-
-
         /// <summary>
         /// Logs a 'information' message to the Composite C1 log.
         /// </summary>

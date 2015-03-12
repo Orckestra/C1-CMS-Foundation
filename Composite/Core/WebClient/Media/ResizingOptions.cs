@@ -48,6 +48,39 @@ namespace Composite.Core.WebClient.Media
         /// </summary>
         public int? Quality { get; set; }
 
+        /// <exclude />
+        public ResizingOptions()
+        {
+        }
+
+        /// <exclude />
+        internal ResizingOptions(string predefinedOptionsName)
+        {
+            //Load the xml file
+            var options = GetPredefinedResizingOptions().Elements("image");
+
+            foreach (XElement e in options.Where(e => (string)e.Attribute("name") == predefinedOptionsName))
+            {
+                Height = ParseOptionalIntAttribute(e, "height");
+                Width = ParseOptionalIntAttribute(e, "width");
+                MaxHeight = ParseOptionalIntAttribute(e, "maxheight");
+                MaxWidth = ParseOptionalIntAttribute(e, "maxwidth");
+                Quality = ParseOptionalIntAttribute(e, "quality");
+
+                var attr = e.Attribute("action");
+                if (attr != null)
+                {
+                    ResizingAction = (ResizingAction)Enum.Parse(typeof(ResizingAction), attr.Value, true);
+                }
+            }
+        }
+
+        private static int? ParseOptionalIntAttribute(XElement element, string attributeName)
+        {
+            XAttribute attribute = element.Attribute(attributeName);
+            return attribute == null ? (int?) null : int.Parse(attribute.Value);
+        }
+
         /// <summary>
         /// Image quality (when doing lossy compression)
         /// </summary>
@@ -90,7 +123,7 @@ namespace Composite.Core.WebClient.Media
             string resizingKey = queryString["k"];
             if (!string.IsNullOrEmpty(resizingKey))
             {
-                return GetResizingOptionsByKey(httpServerUtility, resizingKey);
+                return new ResizingOptions(resizingKey);
             }
 
             return FromQueryString(queryString);
@@ -151,63 +184,11 @@ namespace Composite.Core.WebClient.Media
             return result;
         }
 
-
-        private static ResizingOptions GetResizingOptionsByKey(HttpServerUtility httpServerUtility, string key)
-        {
-            //Load the xml file
-            XElement xml = GetPredefinedResizingOptions(httpServerUtility);
-
-            //Get all nodes where the name equals the key
-            //To make this code work in .Net 2.0, use an xpath query to get the height
-            //and width values instead of a LINQ query
-            var query = from r in xml.Elements("image")
-                        where r.Attribute("name") != null && r.Attribute("name").Value == key
-                        select r;
-
-
-            var result = new ResizingOptions();
-
-            foreach (XElement r in query)
-            {
-                var attr = r.Attribute("height");
-                if (attr != null)
-                {
-                    result.Height = int.Parse(attr.Value);
-                }
-
-                attr = r.Attribute("width");
-                if (attr != null)
-                {
-                    result.Width = int.Parse(attr.Value);
-                }
-
-                attr = r.Attribute("maxheight");
-                if (attr != null)
-                {
-                    result.MaxHeight = int.Parse(attr.Value);
-                }
-
-                attr = r.Attribute("maxwidth");
-                if (attr != null)
-                {
-                    result.MaxWidth = int.Parse(attr.Value);
-                }
-
-                attr = r.Attribute("action");
-                if (attr != null)
-                {
-                    result.ResizingAction = (ResizingAction)Enum.Parse(typeof(ResizingAction), attr.Value, true);
-                }
-            }
-
-            return result;
-        }
-
-        private static XElement GetPredefinedResizingOptions(HttpServerUtility httpServerUtility)
+        private static XElement GetPredefinedResizingOptions()
         {
             if (_resizedImageKeysFilePath == null)
             {
-                _resizedImageKeysFilePath = httpServerUtility.MapPath(ResizedImageKeys);
+                _resizedImageKeysFilePath = PathUtil.Resolve(ResizedImageKeys);
             }
 
             XElement xel = HttpRuntime.Cache.Get("ResizedImageKeys") as XElement;
@@ -226,7 +207,7 @@ namespace Composite.Core.WebClient.Media
                             new XAttribute("maxwidth", "100"),
                             new XAttribute("maxheight", "100")),
                         new XElement("image",
-                            new XAttribute("normal", "thumbnail"),
+                            new XAttribute("name", "normal"),
                             new XAttribute("maxwidth", "200")),
                         new XElement("image",
                             new XAttribute("name", "large"),
