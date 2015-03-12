@@ -220,50 +220,55 @@ namespace Composite.Core.WebClient.Media
                     string directoryPath = Path.GetDirectoryName(_resizedImageKeysFilePath);
                     if (!C1Directory.Exists(directoryPath)) C1Directory.CreateDirectory(directoryPath);
 
-                    var config = new XElement("ResizedImages");
-                    config.Add(new XElement("image",
-                        new XAttribute("name", "thumbnail"),
-                        new XAttribute("maxwidth", "100"),
-                        new XAttribute("maxheight", "100")));
-
-                    config.Add(new XElement("image",
-                        new XAttribute("normal", "thumbnail"),
-                        new XAttribute("maxwidth", "200")));
-
-                    config.Add(new XElement("image",
-                        new XAttribute("name", "large"),
-                        new XAttribute("maxheight", "300")));
+                    var config = new XElement("ResizedImages",
+                        new XElement("image",
+                            new XAttribute("name", "thumbnail"),
+                            new XAttribute("maxwidth", "100"),
+                            new XAttribute("maxheight", "100")),
+                        new XElement("image",
+                            new XAttribute("normal", "thumbnail"),
+                            new XAttribute("maxwidth", "200")),
+                        new XElement("image",
+                            new XAttribute("name", "large"),
+                            new XAttribute("maxheight", "300"))
+                    );
 
                     config.SaveToPath(_resizedImageKeysFilePath);
                 }
 
                 xel = XElementUtils.Load(_resizedImageKeysFilePath);
-                CacheDependency cd = new CacheDependency(_resizedImageKeysFilePath);
-                TimeSpan ts = new TimeSpan(24, 0, 0);
-                HttpRuntime.Cache.Add("ResizedImageKeys", xel, cd, Cache.NoAbsoluteExpiration, ts, CacheItemPriority.Default, null);
+                var cd = new CacheDependency(_resizedImageKeysFilePath);
+                var cacheExpirationTimeSpan = new TimeSpan(24, 0, 0);
+                HttpRuntime.Cache.Add("ResizedImageKeys", xel, cd, Cache.NoAbsoluteExpiration, cacheExpirationTimeSpan, CacheItemPriority.Default, null);
             }
 
             return xel;
         }
 
-        public string ToString()
+        /// <exclude />
+        override public string ToString()
         {
             var sb = new StringBuilder();
-            var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight };
-            var parameterNames = new[] { "w", "h", "mw", "mh" };
+            var parameters = new int?[] { Width, Height, MaxWidth, MaxHeight, Quality };
+            var parameterNames = new[] { "w", "h", "mw", "mh", "q" };
 
             for (int i = 0; i < parameters.Length; i++)
             {
                 if (parameters[i] != null)
                 {
-                    sb.Append(parameterNames[i]).Append((int)parameters[i]);
+                    sb.Append(sb.Length == 0 ? "" : "&");
+
+                    sb.Append(parameterNames[i]).Append("=").Append((int)parameters[i]);
                 }
             }
 
-            if (sb.Length > 0)
+            if (ResizingAction != ResizingAction.Stretch)
             {
-                sb.Insert(0, "?");
+                sb.Append(sb.Length == 0 ? "" : "&");
+
+                sb.Append("action=").Append(ResizingAction.ToString().ToLowerInvariant());
             }
+
             return sb.ToString();
         }
     }

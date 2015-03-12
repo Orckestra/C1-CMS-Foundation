@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Web.WebPages.Html;
 using System.Xml.Linq;
 using Composite.Core.Types;
+using Composite.Core.WebClient.Media;
 using Composite.Core.WebClient.Renderings.Template;
 using Composite.Data;
 using Composite.Data.Types;
@@ -171,6 +172,27 @@ namespace Composite.AspNet.Razor
             return MediaUrl((string)image.KeyValue);
         }
 
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="image">The image file.</param>
+        /// <param name="resizingOptions">The resizing options.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(DataReference<IImageFile> image, ResizingOptions resizingOptions)
+        {
+            return MediaUrl((string) image.KeyValue, resizingOptions);
+        }
+
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="image">The image file.</param>
+        /// <param name="resizingOptions">The resizing options.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(IImageFile image, ResizingOptions resizingOptions)
+        {
+            return MediaUrl(image.KeyPath, resizingOptions);
+        }
 
 
         /// <summary>
@@ -249,6 +271,28 @@ namespace Composite.AspNet.Razor
             if (querystring != null && querystring.Keys.Count > 0)
             {
                 absoulteUrl += "?" + SerializeQueryString(querystring);
+            }
+
+            return _helper.Raw(absoulteUrl);
+        }
+
+
+        /// <summary>
+        /// Returns a media url.
+        /// </summary>
+        /// <param name="keyPath">Image's KeyPath field value.</param>
+        /// <param name="resizingOptions">The resizing options.</param>
+        /// <returns></returns>
+        public IHtmlString MediaUrl(string keyPath, ResizingOptions resizingOptions)
+        {
+            string relativeUrl = "~/media(" + keyPath + ")";
+            string absoulteUrl = VirtualPathUtility.ToAbsolute(relativeUrl);
+
+            string queryString = resizingOptions.ToString();
+
+            if (!string.IsNullOrEmpty(queryString))
+            {
+                absoulteUrl += "?" + queryString.Replace("&", "&amp;");
             }
 
             return _helper.Raw(absoulteUrl);
