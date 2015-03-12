@@ -12,29 +12,30 @@ using Composite.Core.Xml;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-    /// <summary>    
+    /// <summary>
+    /// Updates the version number for an already installed package.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class PackageVersionBumberFragmentInstaller : BasePackageFragmentInstaller
     {
-        private Dictionary<Guid, string> _packagesToBumb = null;
+        private Dictionary<Guid, string> _packagesToBumb;
 
-        private Dictionary<Guid, string> _installedPackages = null;
+        private Dictionary<Guid, string> _installedPackages;
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "PackageVersions").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "PackageVersions") > 1)
             {
                 validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.OnlyOneElement"), this.ConfigurationParent);
                 return validationResult;
             }            
 
-            XElement packageVersionsElement = this.Configuration.Where(f => f.Name == "PackageVersions").SingleOrDefault();
+            XElement packageVersionsElement = this.Configuration.SingleOrDefault(f => f.Name == "PackageVersions");
 
             _packagesToBumb = new Dictionary<Guid, string>();
 
@@ -57,7 +58,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
 
                     Guid packageId;
-                    if (packageIdAttribute.TryGetGuidValue(out packageId) == false)
+                    if (!packageIdAttribute.TryGetGuidValue(out packageId))
                     {
                         validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"), packageIdAttribute);
                         continue;
@@ -98,9 +99,9 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            if (_packagesToBumb == null) throw new InvalidOperationException("PackageVersionBumberFragmentInstaller has not been validated");
+            Verify.IsNotNull(_packagesToBumb, "PackageVersionBumberFragmentInstaller has not been validated");
 
-            List<XElement> installedElements = new List<XElement>();
+            var installedElements = new List<XElement>();
             foreach (var kvp in _packagesToBumb)
             {
                 if (this.InstalledPackages.ContainsKey(kvp.Key))
@@ -113,10 +114,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     XAttribute attribute = element.Attribute(PackageSystemSettings.VersionAttributeName);
                     if (attribute == null) continue;
 
-                    XElement installedElement = new XElement("PackageVersion");
-                    installedElement.Add(new XAttribute("packageId", kvp.Key));
-                    installedElement.Add(new XAttribute("oldVersion", attribute.Value));
-                    installedElements.Add(installedElement);
+                    installedElements.Add(
+                        new XElement("PackageVersion",
+                            new XAttribute("packageId", kvp.Key),
+                            new XAttribute("oldVersion", attribute.Value))
+                    );
 
                     attribute.Value = kvp.Value;
 
@@ -131,41 +133,40 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
         private Dictionary<Guid, string> InstalledPackages
         {
-            get
+            get { return _installedPackages ?? (_installedPackages = GetInstalledPackages()); }
+        }
+
+        internal static Dictionary<Guid, string> GetInstalledPackages()
+        {
+            var result = new Dictionary<Guid, string>();
+
+            string baseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory);
+
+            if (!C1Directory.Exists(baseDirectory)) return result;
+
+            string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
+            foreach (string packageDirecoty in packageDirectories)
             {
-                if (_installedPackages == null)
+                if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)))
                 {
-                    _installedPackages = new Dictionary<Guid, string>();
+                    string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
 
-                    string baseDirectory = PathUtil.Resolve(GlobalSettingsFacade.PackageDirectory);
-
-                    if (C1Directory.Exists(baseDirectory) == false) return _installedPackages;
-
-                    string[] packageDirectories = C1Directory.GetDirectories(baseDirectory);
-                    foreach (string packageDirecoty in packageDirectories)
+                    if (C1File.Exists(filename))
                     {
-                        if (C1File.Exists(Path.Combine(packageDirecoty, PackageSystemSettings.InstalledFilename)))
+                        string path = packageDirecoty.Remove(0, baseDirectory.Length);
+                        if (path.StartsWith("\\"))
                         {
-                            string filename = Path.Combine(packageDirecoty, PackageSystemSettings.PackageInformationFilename);
-
-                            if (C1File.Exists(filename))
-                            {
-                                string path = packageDirecoty.Remove(0, baseDirectory.Length);
-                                if (path.StartsWith("\\"))
-                                {
-                                    path = path.Remove(0, 1);
-                                }
-
-                                Guid id = new Guid(path);
-
-                                _installedPackages.Add(id, filename);
-                            }
+                            path = path.Remove(0, 1);
                         }
+
+                        Guid id = new Guid(path);
+
+                        result.Add(id, filename);
                     }
                 }
-
-                return _installedPackages;
             }
+
+            return result;
         }
 
         private static string GetText(string stringId)

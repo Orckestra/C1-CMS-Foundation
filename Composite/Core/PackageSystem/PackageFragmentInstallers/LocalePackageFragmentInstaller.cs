@@ -23,15 +23,15 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
-            if (this.Configuration.Where(f => f.Name == "Locales").Count() > 1)
+            if (this.Configuration.Count(f => f.Name == "Locales") > 1)
             {
                 validationResult.AddFatal(GetText("VirtualElementProviderNodePackageFragmentInstaller.OnlyOneElement"));
                 return validationResult;
             }
 
-            XElement areasElement = this.Configuration.Where(f => f.Name == "Locales").SingleOrDefault();
+            XElement areasElement = this.Configuration.SingleOrDefault(f => f.Name == "Locales");
 
             _localesToInstall = new List<Tuple<CultureInfo, string, bool>>();
 
@@ -67,7 +67,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         continue; // Skip it, it is installed
                     }
 
-                    if (_localesToInstall.Where(f => f.Item1.Equals(cultureInfo)).Any())
+                    if (_localesToInstall.Any(f => f.Item1.Equals(cultureInfo)))
                     {
                         // Already installed or going to be installed
                         validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), nameAttribute);
@@ -80,7 +80,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         urlMappingName = urlMappingNameAttribute.Value;
                     }
 
-                    if ((LocalizationFacade.IsUrlMappingNameInUse(urlMappingName)) || (_localesToInstall.Where(f => f.Item2 == urlMappingName).Any()))
+                    if (LocalizationFacade.IsUrlMappingNameInUse(urlMappingName) || _localesToInstall.Any(f => f.Item2 == urlMappingName))
                     {
                         // Url mapping name alread used or going to be used
                         validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), urlMappingNameAttribute);
@@ -90,7 +90,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     bool isDefault = false;
                     if (defaultAttribute != null)
                     {
-                        if (defaultAttribute.TryGetBoolValue(out isDefault) == false)
+                        if (!defaultAttribute.TryGetBoolValue(out isDefault))
                         {
                             // Wrong attribute value
                             validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), defaultAttribute);
@@ -98,7 +98,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         }
                     }
 
-                    if ((isDefault) && (_localesToInstall.Where(f => f.Item3).Any()))
+                    if (isDefault && _localesToInstall.Any(f => f.Item3))
                     {
                         // More than one is specified as default
                         validationResult.AddFatal(GetText("FilePackageFragmentInstaller.MissingAttribute").FormatWith("order"), defaultAttribute);
@@ -133,7 +133,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 oldDefaultAttribute = new XAttribute("oldDefault", DataLocalizationFacade.DefaultLocalizationCulture.Name);
             }
 
-            List<XElement> localeElements = new List<XElement>();
+            var localeElements = new List<XElement>();
 
             foreach (Tuple<CultureInfo, string, bool> tuple in _localesToInstall)
             {
@@ -151,7 +151,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                 localeElements.Add(new XElement("Locale", new XAttribute("name", tuple.Item1.Name)));
             }
 
-            XElement element = new XElement("Locales", localeElements);
+            var element = new XElement("Locales", localeElements);
             
             if (oldDefaultAttribute != null)
             {

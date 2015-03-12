@@ -1,8 +1,10 @@
-﻿using Composite.C1Console.Elements.Plugins.ElementProvider;
+﻿using System;
+using Composite.C1Console.Elements.Plugins.ElementProvider;
 
 
 namespace Composite.Plugins.Elements.ElementProviders.VirtualElementProvider
 {
+    [Obsolete()]
 	internal static class VirtualElementProviderConfigurationManipulator
 	{
         public static void AddNewArea(string providerName, int order, string label, string closeFolderIconName, string openFolderIconName)

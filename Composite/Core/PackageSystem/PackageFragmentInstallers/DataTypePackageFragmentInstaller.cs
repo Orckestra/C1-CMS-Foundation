@@ -11,7 +11,8 @@ using Composite.Core.Types;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-    /// <summary>    
+    /// <summary> 
+    /// Creates data stores for static data types. Can be used in combination with <see cref="DataPackageFragmentInstaller"/> to install content.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

@@ -14,7 +14,10 @@ using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_Pac
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-    /// <summary>    
+    /// <summary> 
+    /// Installs a dll file. If there's already a dll with the same name, will override it only if the installed version is newer,
+    //  also will add/update and assembly binding for the dll in web.config to ensure that the system will run.
+    //  The specified dll files will not be uninstalled automatically to avoid potential website crash.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

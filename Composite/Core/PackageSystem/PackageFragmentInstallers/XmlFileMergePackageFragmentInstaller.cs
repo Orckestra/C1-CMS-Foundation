@@ -81,7 +81,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 					continue;
 				}
 
-				XmlFileMerge xmlFileMerge = new XmlFileMerge
+				var xmlFileMerge = new XmlFileMerge
 				{
 					ChangeFilePath = sourceAttribute.Value,
 					TargetPath = targetAttribute.Value
@@ -111,15 +111,12 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             attribute = element.Attribute(attributeName);
 
-            if (attribute == null)
-            {
-                validationSummary.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
-                    "MissingAttribute '{0}'. XPath: '{1}' ".FormatWith(attributeName, element.GetXPath())));
+            if (attribute != null) return true;
 
-                return false;
-            }
+            validationSummary.Add(new PackageFragmentValidationResult(PackageFragmentValidationResultType.Fatal, 
+                "MissingAttribute '{0}'. XPath: '{1}' ".FormatWith(attributeName, element.GetXPath())));
 
-            return true;
+            return false;
         }
 	}
 }

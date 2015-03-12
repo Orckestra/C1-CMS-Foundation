@@ -8,7 +8,9 @@ using Composite.Core.PackageSystem.WebServiceClient;
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
-    /// <summary>    
+    /// <summary>
+    /// Used for commercial packages distributed by Composite. 
+    /// Checks if a valid license file is present, if not, requests a trial license from Composite server.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
@@ -61,7 +63,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             LicenseDefinitionDescriptor descriptor = LicenseServerFacade.GetTrialLicenseDefinition(InstallationInformationFacade.InstallationId, this.InstallerContext.PackageInformation.Id, _publicKeyXml);
 
-            PackageLicenseDefinition definition = new PackageLicenseDefinition
+            var definition = new PackageLicenseDefinition
             {
                 ProductName = this.InstallerContext.PackageInformation.Name,
                 InstallationId = descriptor.InstallationId,

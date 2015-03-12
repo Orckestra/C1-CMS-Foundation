@@ -9,18 +9,19 @@ using Composite.Data.Types;
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
     /// <summary>    
+    /// Adds all the users to the specified user group.
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
     public sealed class UserGroupUserAdderFragmentInstaller : BasePackageFragmentInstaller
     {
-        private List<string> _names = new List<string>();
+        private readonly List<string> _names = new List<string>();
 
 
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            XElement usergroupNamesElement = this.Configuration.Where(f => f.Name == "UsergroupNames").FirstOrDefault();
+            XElement usergroupNamesElement = this.Configuration.FirstOrDefault(f => f.Name == "UsergroupNames");
             if (usergroupNamesElement == null) yield break;
 
             foreach (XElement usergroupNameElement in usergroupNamesElement.Elements("UsergroupName"))
@@ -30,8 +31,6 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                 _names.Add(nameAttribute.Value);
             }
-
-            yield break;
         }
 
 
@@ -41,14 +40,14 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         {
             foreach (string usergroupName in _names)
             {
-                IUserGroup userGroup = DataFacade.GetData<IUserGroup>().Where(f => f.Name == usergroupName).SingleOrDefault();
+                IUserGroup userGroup = DataFacade.GetData<IUserGroup>().SingleOrDefault(f => f.Name == usergroupName);
                 if (userGroup == null) continue;
 
                 IEnumerable<IUser> users = DataFacade.GetData<IUser>().Evaluate();
 
                 foreach (IUser user in users)
                 {
-                    IUserUserGroupRelation userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
+                    var userUserGroupRelation = DataFacade.BuildNew<IUserUserGroupRelation>();
                     userUserGroupRelation.UserId = user.Id;
                     userUserGroupRelation.UserGroupId = userGroup.Id;
                     DataFacade.AddNew<IUserUserGroupRelation>(userUserGroupRelation);

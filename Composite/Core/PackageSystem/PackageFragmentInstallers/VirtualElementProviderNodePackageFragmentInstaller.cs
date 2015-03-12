@@ -16,6 +16,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
+    [Obsolete]
     public sealed class VirtualElementProviderNodePackageFragmentInstaller : BasePackageFragmentInstaller
     {
         private List<Area> _areasToInstall = null;
@@ -24,7 +25,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<PackageFragmentValidationResult> Validate()
         {
-            List<PackageFragmentValidationResult> validationResult = new List<PackageFragmentValidationResult>();
+            var validationResult = new List<PackageFragmentValidationResult>();
 
             if (this.Configuration.Count(f => f.Name == "Areas") > 1)
             {
@@ -67,11 +68,13 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                         }
 
 
-                        Area area = new Area();
-                        area.Order = (int)orderAttribute;
-                        area.ElementProviderTypeName = elementProviderTypeAttribute.Value;
-                        area.ElementProviderType = elementProviderType;
-                        area.Label = labelAttribute.Value;
+                        Area area = new Area
+                        {
+                            Order = (int) orderAttribute,
+                            ElementProviderTypeName = elementProviderTypeAttribute.Value,
+                            ElementProviderType = elementProviderType,
+                            Label = labelAttribute.Value
+                        };
 
                         if (closeFolderIconNameAttribute != null)
                         {
@@ -131,9 +134,11 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     area.ElementProviderType = TypeManager.GetType(area.ElementProviderTypeName);
                 }
 
-                HooklessElementProviderData elementProviderData = new HooklessElementProviderData();
-                elementProviderData.Type = area.ElementProviderType;
-                elementProviderData.Name = name;
+                HooklessElementProviderData elementProviderData = new HooklessElementProviderData
+                {
+                    Type = area.ElementProviderType,
+                    Name = name
+                };
 
                 ElementProviderConfigurationServices.SaveElementProviderConfiguration(elementProviderData);
                 VirtualElementProviderConfigurationManipulator.AddNewArea(name, area.Order, area.Label, area.CloseFolderIconName, area.OpenFolderIconName);
