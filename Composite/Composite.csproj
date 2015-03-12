@@ -350,8 +350,6 @@
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageFragmentValidationExtension.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageLicenseFragmentUninstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentInstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\RebootingConsoleFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\XmlFileMergePackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\XmlFileMergePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageLicenseDefinition.cs" />
@@ -456,8 +454,6 @@
     <Compile Include="Data\Foundation\EmptyDataClassTypeManager.cs" />
     <Compile Include="Data\Plugins\DataProvider\IFileSystemDataProvider.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentUninstaller.cs" />
     <Compile Include="Core\WebClient\Ajax\AjaxResponseHttpModule.cs" />
     <Compile Include="Core\WebClient\Ajax\AjaxStream.cs" />
     <Compile Include="Core\Application\ApplicationOfflineCheckHttpModule.cs" />
@@ -1119,7 +1115,6 @@
     <Compile Include="Data\IDataFacade.cs" />
     <Compile Include="Data\Types\Foundation\ExceptingSerializerHandler.cs" />
     <Compile Include="Data\Types\IPackageServerSource.cs" />
-    <Compile Include="C1Console\Elements\Plugins\ElementProvider\ElementProviderConfigurationServices.cs" />
     <Compile Include="Core\Extensions\ByteArrayExtensionMethods.cs" />
     <Compile Include="C1Console\Forms\BindablePropertyAttribute.cs" />
     <Compile Include="C1Console\Forms\ControlVaulePropertyAttribute.cs" />
@@ -1485,8 +1480,6 @@
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\DynamicDataTypePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FilePackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\FilePackageFragmentUninstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\VirtualElementProviderNodePackageFragmentInstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\VirtualElementProviderNodePackageFragmentUninstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentValidationResult.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentValidationResultType.cs" />
     <Compile Include="Core\PackageSystem\PackageInstaller.cs" />
@@ -1503,7 +1496,6 @@
     <Compile Include="C1Console\Security\HookingFacadeEventArgs.cs" />
     <Compile Include="C1Console\Security\HookingFacadeImpl.cs" />
     <Compile Include="C1Console\Security\IHookingFacade.cs" />
-    <Compile Include="Plugins\Elements\ElementProviders\VirtualElementProvider\VirtualElementProviderConfigurationManipulator.cs" />
     <Compile Include="Core\Caching\RequestLifetimeCache.cs" />
     <Compile Include="Core\Collections\Generic\DictionaryExtensionMethods.cs" />
     <Compile Include="Core\Collections\Generic\ResourceLocker.cs" />
