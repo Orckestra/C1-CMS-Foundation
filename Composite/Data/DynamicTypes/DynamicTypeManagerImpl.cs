@@ -51,30 +51,6 @@ namespace Composite.Data.DynamicTypes
         }
 
 
-
-        /// <exclude />
-        public void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
-        {
-            Verify.ArgumentNotNullOrEmpty(providerName, "providerName");
-            Verify.ArgumentNotNull(typeDescriptor, "typeDescriptor");
-
-            typeDescriptor.Validate();
-
-            using (var transactionScope = TransactionsFacade.CreateNewScope())
-            {
-                DataMetaDataFacade.PersistMetaData(typeDescriptor);
-
-                DataProviderPluginFacade.CreateStore(providerName, typeDescriptor);                                
-                
-                transactionScope.Complete();
-            }
-
-            if (doFlush)
-            {
-                GlobalEventSystemFacade.FlushTheSystem();
-            }
-        }
-
         /// <exclude />
         public void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptors, bool doFlush)
         {

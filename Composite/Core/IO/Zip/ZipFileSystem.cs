@@ -9,6 +9,7 @@ namespace Composite.Core.IO.Zip
 {
     internal sealed class ZipFileSystem : IZipFileSystem
     {
+        private const int CopyBufferSize = 4096;
         private Dictionary<string, ZipEntry> _existingFilenamesInZip = new Dictionary<string, ZipEntry>();
         private string ZipFilename { get; set; }
 
@@ -94,9 +95,9 @@ namespace Composite.Core.IO.Zip
         {
             string parstedFilename = ParseFilename(filename);
 
-            if (_existingFilenamesInZip.ContainsKey(parstedFilename) == false) throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
+            if (!_existingFilenamesInZip.ContainsKey(parstedFilename)) throw new ArgumentException(string.Format("The file {0} does not exist in the zip", filename));
 
-            ZipInputStream zipInputStream = new ZipInputStream(C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
+            var zipInputStream = new ZipInputStream(C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read));
 
             ZipEntry zipEntry;
             while ((zipEntry = zipInputStream.GetNextEntry()) != null)
@@ -126,12 +127,12 @@ namespace Composite.Core.IO.Zip
         {
             using (Stream stream = GetFileStream(filename))
             {
-                using (C1FileStream fileStream = new C1FileStream(targetFilename, FileMode.Create, FileAccess.Write))
+                using (var fileStream = new C1FileStream(targetFilename, FileMode.Create, FileAccess.Write))
                 {
-                    byte[] buffer = new byte[4096];
+                    byte[] buffer = new byte[CopyBufferSize];
 
                     int readBytes;
-                    while ((readBytes = stream.Read(buffer, 0, 4096)) > 0)
+                    while ((readBytes = stream.Read(buffer, 0, CopyBufferSize)) > 0)
                     {
                         fileStream.Write(buffer, 0, readBytes);
                     }
@@ -145,7 +146,7 @@ namespace Composite.Core.IO.Zip
         {
             using (C1FileStream fileStream = C1File.Open(this.ZipFilename, FileMode.Open, FileAccess.Read))
             {
-                using (ZipInputStream zipInputStream = new ZipInputStream(fileStream))
+                using (var zipInputStream = new ZipInputStream(fileStream))
                 {
                     ZipEntry zipEntry;
                     while ((zipEntry = zipInputStream.GetNextEntry()) != null)

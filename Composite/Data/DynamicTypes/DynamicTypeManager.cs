@@ -139,7 +139,7 @@ namespace Composite.Data.DynamicTypes
         /// <exclude />
         public static void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush)
         {
-            _dynamicTypeManager.CreateStore(providerName, typeDescriptor, doFlush);
+            _dynamicTypeManager.CreateStores(providerName, new[] { typeDescriptor }, doFlush);
         }
 
         /// <exclude />

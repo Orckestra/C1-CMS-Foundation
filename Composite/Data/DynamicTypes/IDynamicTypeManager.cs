@@ -21,9 +21,6 @@ namespace Composite.Data.DynamicTypes
         void UpdateDataTypeDescriptor(DataTypeDescriptor dataTypeDescriptor, bool flushTheSystem);
 
         /// <exclude />
-        void CreateStore(string providerName, DataTypeDescriptor typeDescriptor, bool doFlush);
-
-        /// <exclude />
         void CreateStores(string providerName, IReadOnlyCollection<DataTypeDescriptor> typeDescriptor, bool doFlush);
 
         /// <exclude />
