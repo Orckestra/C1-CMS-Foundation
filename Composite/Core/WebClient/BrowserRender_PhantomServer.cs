@@ -68,7 +68,7 @@ namespace Composite.Core.WebClient
             }
 
 
-            public static void ShutDown(bool alreadyLocked)
+            public static void ShutDown(bool alreadyLocked, bool silent = false)
             {
                 PhantomServer ps;
 
@@ -83,18 +83,19 @@ namespace Composite.Core.WebClient
                     _instance = null;
                 }
 
-                ps.Dispose();
+                ps.DisposeInternal(silent);
+                GC.SuppressFinalize(ps);
             }
 
 
             // Ensures that an instance have been started
-            public async static Task StartAsync()
-            {
-                using (await _instanceAsyncLock.LockAsync())
-                {
-                    var instance = PhantomServer.Instance;
-                }
-            }
+            //public async static Task StartAsync()
+            //{
+            //    using (await _instanceAsyncLock.LockAsync())
+            //    {
+            //        var instance = PhantomServer.Instance;
+            //    }
+            //}
 
 
             private static PhantomServer Instance
@@ -193,6 +194,11 @@ namespace Composite.Core.WebClient
                     return;
                 }
 
+                DisposeInternal(false);
+            }
+
+            void DisposeInternal(bool silent)
+            {
                 bool proccessHasExited;
 
                 try
@@ -257,7 +263,7 @@ namespace Composite.Core.WebClient
                 _process.Dispose();
                 _job.Dispose();
 
-                if (exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion)
+                if (!silent && exitCode != 0 || errorFeedbackTask.Status != TaskStatus.RanToCompletion)
                 {
                     throw new InvalidOperationException("Error executing PhantomJs.exe. Exit code: {0}, {1}".FormatWith(exitCode, errorFeedback));
                 }

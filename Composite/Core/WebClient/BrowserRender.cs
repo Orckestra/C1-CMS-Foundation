@@ -236,7 +236,7 @@ namespace Composite.Core.WebClient
             Enabled = false;
             try
             {
-                PhantomServer.ShutDown(false);
+                PhantomServer.ShutDown(false, true);
             }
             catch
             {

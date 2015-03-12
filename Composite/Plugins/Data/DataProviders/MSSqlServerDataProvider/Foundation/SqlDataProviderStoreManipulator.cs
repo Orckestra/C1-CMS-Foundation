@@ -164,7 +164,7 @@ namespace Composite.Plugins.Data.DataProviders.MSSqlServerDataProvider.Foundatio
                 return;
             }
 
-            Log.LogInformation("ExecuteNonQuery", commandText);
+            Log.LogInformation("SqlDataProvider", commandText);
 
             var conn = SqlConnectionManager.GetConnection(_connectionString);
             using (var cmd = new SqlCommand(commandText, conn))
