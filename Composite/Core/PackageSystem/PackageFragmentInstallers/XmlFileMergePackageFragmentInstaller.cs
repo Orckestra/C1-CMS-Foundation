@@ -10,6 +10,8 @@ using Composite.Core.Xml;
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
 	/// <summary>
+    /// Merges 2 xml files. New child elements and new attibutes are imported to the source. Conflicts are ignored (not merged).
+    /// Used for applying changes to config files.
 	/// </summary>
 	/// <exclude />
 	[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -33,7 +35,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 		/// <exclude />
 		public override IEnumerable<XElement> Install()
 		{
-			if (_xmlFileMerges == null) throw new InvalidOperationException("XmlFileMergePackageFragmentInstaller has not been validated");
+            Verify.IsNotNull(_xmlFileMerges, "XmlFileMergePackageFragmentInstaller has not been validated");
 
 			foreach (XmlFileMerge xmlFileMerge in _xmlFileMerges)
 			{

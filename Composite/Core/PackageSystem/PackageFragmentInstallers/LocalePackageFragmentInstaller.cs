@@ -12,6 +12,7 @@ using Composite.Data;
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 {
     /// <summary>    
+    /// Adds a content language to console. 
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 

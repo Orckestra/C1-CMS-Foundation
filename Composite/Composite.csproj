@@ -454,6 +454,8 @@
     <Compile Include="Data\Foundation\EmptyDataClassTypeManager.cs" />
     <Compile Include="Data\Plugins\DataProvider\IFileSystemDataProvider.cs" />
     <Compile Include="Data\SitemapNavigator.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentInstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\UserGroupUserAdderFragmentUninstaller.cs" />
     <Compile Include="Core\WebClient\Ajax\AjaxResponseHttpModule.cs" />
     <Compile Include="Core\WebClient\Ajax\AjaxStream.cs" />
     <Compile Include="Core\Application\ApplicationOfflineCheckHttpModule.cs" />
