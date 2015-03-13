@@ -322,26 +322,22 @@ namespace Composite.Plugins.Routing.Pages
 
             using (new DataScope(publicationScope, locale))
             {
-                PageUrlData data = ParsePagePath(pathWithoutLanguageCode, publicationScope, locale, hostnameBinding);
-                if (data != null)
-                {
-                    urlKind = UrlKind.Public;
-                    data.QueryParameters = urlBuilder.GetQueryParameters();
-                    return data;
-                }
+                bool isObsolete = false;
+                string pathToResolve = pathWithoutLanguageCode;
 
                 // Supporting obsolete urls
-                if (pathWithoutLanguageCode.Contains(".aspx/") || pathWithoutLanguageCode.EndsWith(".aspx"))
+                if (pathToResolve.Contains(".aspx/") || pathToResolve.EndsWith(".aspx"))
                 {
-                    string patchedLegasyUrl = pathWithoutLanguageCode.Replace(".aspx", UrlSuffix);
+                    pathToResolve = pathToResolve.Replace(".aspx", UrlSuffix);
+                    isObsolete = true;
+                }
 
-                    data = ParsePagePath(patchedLegasyUrl, publicationScope, locale, hostnameBinding);
-                    if (data != null)
-                    {
-                        urlKind = UrlKind.Redirect;
-                        data.QueryParameters = urlBuilder.GetQueryParameters();
-                        return data;
-                    }
+                PageUrlData data = ParsePagePath(pathToResolve, publicationScope, locale, hostnameBinding);
+                if (data != null)
+                {
+                    urlKind = !isObsolete ? UrlKind.Public : UrlKind.Redirect;
+                    data.QueryParameters = urlBuilder.GetQueryParameters();
+                    return data;
                 }
 
                 Guid friendlyUrlPageId = ParseFriendlyUrlPath(pathWithoutLanguageCode);
