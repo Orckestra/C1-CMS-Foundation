@@ -325,8 +325,9 @@ namespace Composite.Plugins.Routing.Pages
                 bool isObsolete = false;
                 string pathToResolve = pathWithoutLanguageCode;
 
-                // Supporting obsolete urls
-                if (pathToResolve.Contains(".aspx/") || pathToResolve.EndsWith(".aspx"))
+                // Supporting obsolete "*.aspx" urls
+                if (!string.Equals(UrlSuffix, ".aspx", StringComparison.OrdinalIgnoreCase) 
+                    && (pathToResolve.Contains(".aspx/") || pathToResolve.EndsWith(".aspx")))
                 {
                     pathToResolve = pathToResolve.Replace(".aspx", UrlSuffix);
                     isObsolete = true;
