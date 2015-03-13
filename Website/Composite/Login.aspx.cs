@@ -1,6 +1,5 @@
 using System;
 using System.Web.Hosting;
-using System.Web.UI.HtmlControls;
 using Composite.C1Console.Security;
 using Composite.Core.Configuration;
 
@@ -8,7 +7,7 @@ public partial class Composite_Management_Login : System.Web.UI.Page
 {
     protected void Page_Init(object sender, EventArgs e)
     {
-        if (SystemSetupFacade.IsSystemFirstTimeInitialized == false)
+        if (!SystemSetupFacade.IsSystemFirstTimeInitialized)
         {
             Response.Redirect("/Composite");
             return;
@@ -62,7 +61,7 @@ public partial class Composite_Management_Login : System.Web.UI.Page
             txtUsername.Attributes["class"] = "error";
         }
 
-        if (string.IsNullOrEmpty(password) || password.Length < 6)
+        if (string.IsNullOrEmpty(password))
         {
             isValid = false;
             txtPassword.Attributes["class"] = "error";
