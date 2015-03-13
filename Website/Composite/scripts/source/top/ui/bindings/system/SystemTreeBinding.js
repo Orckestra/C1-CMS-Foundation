@@ -392,7 +392,7 @@ SystemTreeBinding.prototype.registerTreeNodeBinding = function ( treenode ) {
 
 /** 
  * Unregister treenode. If no selected treenodes are left after whatever operation 
- * occured, we empty the toolbar and contextmenu. This should be considered a 
+ * occurred, we empty the toolbar and contextmenu. This should be considered a 
  * temporary hack until we implement serverside treeselection.
  * @overloads {TreeBinding#unRegisterTreeNodeBinding}
  * @param {SystemTreeNodeBinding} treeNodeBinding

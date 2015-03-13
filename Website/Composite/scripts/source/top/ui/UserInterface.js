@@ -288,7 +288,7 @@ var UserInterface = new function () {
 					result = keys [ key ].binding;
 				}
 			} catch ( exception ) { // if this happens, you can usually solve with a timeout
-				alert ( "getBinding exception occured on element:\n\n\t\t" + element );
+				alert ( "getBinding exception occurred on element:\n\n\t\t" + element );
 				if ( exception.stack ) {
 					alert ( exception.stack );
 				}

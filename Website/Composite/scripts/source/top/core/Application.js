@@ -271,7 +271,7 @@ _Application.prototype = {
 		
 		/*
 		 * Setup ESCAPE to act as a panic button to close 
-		 * the mastercover when a server error occured.
+		 * the mastercover when a server error occurred.
 		 */
 		EventBroadcaster.subscribe ( BroadcastMessages.KEY_ESCAPE, {
 			handleBroadcast : function () {

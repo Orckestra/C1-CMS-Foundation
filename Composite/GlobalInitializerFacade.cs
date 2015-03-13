@@ -418,7 +418,7 @@ namespace Composite
         /// <exclude />
         public static void FatalResetTheSytem()
         {
-            Log.LogWarning(LogTitle, "Unhandled error occured, reinitializing the system!");
+            Log.LogWarning(LogTitle, "Unhandled error occurred, reinitializing the system!");
 
             ReinitializeTheSystem(delegate() { _fatalErrorFlushCount++; GlobalEventSystemFacade.FlushTheSystem(); });
         }

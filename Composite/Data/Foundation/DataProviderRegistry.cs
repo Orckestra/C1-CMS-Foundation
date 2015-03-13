@@ -164,7 +164,7 @@ namespace Composite.Data.Foundation
 
         /// <summary>
         /// Checks whether the data store for the specified data type was created without errors.
-        /// If any errors occured, an exception will be thrown.
+        /// If any errors occurred, an exception will be thrown.
         /// </summary>
         /// <param name="interfaceType">The interface type</param>
         public static void CheckInitializationErrors(Type interfaceType)

@@ -541,7 +541,7 @@ var Welcome = new function () {
 					} else {
 						top.bindingMap.introcover.hide();
 						top.bindingMap.offlinetheatre.stop();
-						alert("An error has occured.");
+						alert("An unfortunate error has occurred.");
 					}
 				}
 			);

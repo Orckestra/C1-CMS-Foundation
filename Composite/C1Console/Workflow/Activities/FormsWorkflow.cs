@@ -352,7 +352,7 @@ namespace Composite.C1Console.Workflow.Activities
         {
             if (ex == null) throw new ArgumentNullException("ex");
 
-            this.ShowMessage(DialogType.Error, "An error occured", string.Format("Sorry, but an error has occured, preventing the opperation from completing as expected. The error has been documented in details so a technican may follow up on this issue.\n\nThe error message is: {0}", ex.Message));
+            this.ShowMessage(DialogType.Error, "An unfortunate error occurred", string.Format("Sorry, but an error has occurred, preventing the opperation from completing as expected. The error has been documented in details so a technican may follow up on this issue.\n\nThe error message is: {0}", ex.Message));
 
             Log.LogCritical(this.GetType().Name, ex);
 

@@ -38,7 +38,7 @@ namespace Composite.Core.PageTemplates
         public virtual string DefaultPlaceholderId { get; set; }
 
         /// <summary>
-        /// Gets or sets an exception that occured during loading the template.
+        /// Gets or sets an exception that occurred during loading the template.
         /// </summary>
         public virtual Exception LoadingException { get; set; }
 
