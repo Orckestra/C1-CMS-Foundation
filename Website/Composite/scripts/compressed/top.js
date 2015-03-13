@@ -29515,7 +29515,7 @@ _11e9=keys[key].binding;
 }
 }
 catch(exception){
-alert("getBinding exception occured on element:\n\n\t\t"+_11e8);
+alert("getBinding exception occurred on element:\n\n\t\t"+_11e8);
 if(exception.stack){
 alert(exception.stack);
 }
