@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Globalization;
+using System.Text;
 using System.Web;
 using Composite.C1Console.Events;
 using Composite.Core.Application;
@@ -10,21 +13,21 @@ using Composite.Core.Logging;
 using Composite.Core.Routing;
 using Composite.Core.Threading;
 using Composite.Core.Types;
-using System.Diagnostics;
 
 
 namespace Composite.Core.WebClient
 {
     /// <summary>    
+    /// ASP.NET Application level logic. This class primarily interact between Composite C1 and the ASP.NET Application.  
+    /// Most of the members on this class is not documented, except for those which developers may find useful to interact with.
     /// </summary>
-    /// <exclude />
-    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     public static class ApplicationLevelEventHandlers
     {
         private const string _verboseLogEntryTitle = "RGB(205, 92, 92)ApplicationEventHandler";
         readonly static object _syncRoot = new object();
         private static DateTime _startTime;
         private static bool _systemIsInitialized = false;
+        private static readonly ConcurrentDictionary<string, Func<HttpContext, string>> _c1PageCustomStringProviders = new ConcurrentDictionary<string, Func<HttpContext, string>>();
 
         /// <exclude />
         public static bool LogRequestDetails { get; set; }
@@ -250,28 +253,47 @@ namespace Composite.Core.WebClient
                     var page = pageUrl.GetPage();
                     if (page != null)
                     {
-                        string pageCacheKey = page.ChangeDate.ToString(CultureInfo.InvariantCulture);
+                        StringBuilder pageCacheKey = new StringBuilder(page.ChangeDate.ToString(CultureInfo.InvariantCulture));
 
                         // Adding the relative path from RawUrl as a part of cache key to make ASP.NET cache respect casing of urls
-                        pageCacheKey += new UrlBuilder(rawUrl).RelativeFilePath;
+                        pageCacheKey.Append(new UrlBuilder(rawUrl).RelativeFilePath);
 
                         if(context.Request.IsSecureConnection)
                         {
-                            pageCacheKey += "https";
+                            pageCacheKey.Append("https");
                         }
 
                         if(!string.IsNullOrEmpty(pageUrl.PathInfo))
                         {
-                            pageCacheKey += pageUrl.PathInfo;
+                            pageCacheKey.Append(pageUrl.PathInfo);
                         }
 
-                        return pageCacheKey;
+                        foreach (string key in _c1PageCustomStringProviders.Keys)
+                        {
+                            pageCacheKey.Append(_c1PageCustomStringProviders[key](context));
+                        }
+
+                        return pageCacheKey.ToString();
                     }
                 }
                 return string.Empty;
             }
 
             return null;
+        }
+
+
+        /// <summary>
+        /// Register a function that provide a custom string to be part of a C1 Page cache key. You should register a function just once and during the application initialization.
+        /// Your function will be called with the current HttpContext and should return either null or a string for the C1 Page request in relation to caching.
+        /// An example situation where this can be used: You want to have full page caching, but you have C1 Page content being dependant on client settings, such as HTTP CLIENT.
+        /// You should kep the 'spread in values' you return to a minimum - each unique string will create a new cache entry and consume memory.
+        /// </summary>
+        /// <param name="providerId">A string unique for your function - used to ensure this is only registered once</param>
+        /// <param name="customStringBuilder">Your function the can return a custom string</param>
+        public static void RegisterC1PageVaryByCustomStringProvider( string providerId, Func<HttpContext,string> customStringBuilder)
+        {
+            _c1PageCustomStringProviders.GetOrAdd(providerId, () => customStringBuilder);
         }
 
 
