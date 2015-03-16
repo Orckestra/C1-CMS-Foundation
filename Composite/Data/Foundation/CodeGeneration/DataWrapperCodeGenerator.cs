@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Composite.Core.Types;
 using Composite.Data.DynamicTypes;
+using Composite.Data.DynamicTypes.Foundation;
 
 
 namespace Composite.Data.Foundation.CodeGeneration
@@ -24,7 +25,7 @@ namespace Composite.Data.Foundation.CodeGeneration
         {
             codeGenerationBuilder.AddReference(interfaceType.Assembly);
 
-            DataTypeDescriptor dataTypeDescriptor = DataMetaDataFacade.GetDataTypeDescriptor(interfaceType.GetImmutableTypeId());
+            DataTypeDescriptor dataTypeDescriptor = ReflectionBasedDescriptorBuilder.Build(interfaceType);
 
             AddDataWrapperClassCode(codeGenerationBuilder, dataTypeDescriptor);
         }
