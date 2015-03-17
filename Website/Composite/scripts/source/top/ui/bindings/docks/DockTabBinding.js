@@ -465,8 +465,12 @@ DockTabBinding.prototype.show = function () {
  */
 DockTabBinding.prototype.handleBroadcast = function ( broadcast, arg ) {
 	
-	DockTabBinding.superclass.handleBroadcast.call ( this, broadcast, arg );
-	
+	DockTabBinding.superclass.handleBroadcast.call(this, broadcast, arg);
+
+
+	if (this._viewBinding == null)
+		return;
+
 	var body = this._viewBinding.getContentDocument ().body;
 	var root = UserInterface.getBinding ( body );
 	
