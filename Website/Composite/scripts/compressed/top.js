@@ -20807,6 +20807,9 @@ _d0b.style.bottom="auto";
 };
 DockTabBinding.prototype.handleBroadcast=function(_d0c,arg){
 DockTabBinding.superclass.handleBroadcast.call(this,_d0c,arg);
+if(this._viewBinding==null){
+return;
+}
 var body=this._viewBinding.getContentDocument().body;
 var root=UserInterface.getBinding(body);
 switch(_d0c){
