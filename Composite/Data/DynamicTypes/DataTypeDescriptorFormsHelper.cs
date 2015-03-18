@@ -41,8 +41,8 @@ namespace Composite.Data.DynamicTypes
         private XElement _bindingsXml;
         private XElement _panelXml;
 
-        private const string PublicationStatusPostFixBindingName = "___PublicationStatus___";
-        private const string PublicationStatusOptionsPostFixBindingName = "___PublicationStatusOptions___";
+        private const string PublicationStatusPostFixBindingName = "PublicationStatus";
+        private const string PublicationStatusOptionsPostFixBindingName = "PublicationStatusOptions";
 
         private static readonly XElement CmsFormElementTemplate;
         private static readonly XElement CmsBindingsElementTemplate;
@@ -250,7 +250,7 @@ namespace Composite.Data.DynamicTypes
             if (_showPublicationStatusSelector &&
                 _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
-                newBindings.Add(PublicationStatusBindingName, GenericPublishProcessController.Draft);
+                newBindings[PublicationStatusBindingName] = GenericPublishProcessController.Draft;
                 newBindings.Add(PublicationStatusOptionsBindingName, GetAvailablePublishingFlowTransitions(EntityToken));
             }
 
@@ -356,7 +356,7 @@ namespace Composite.Data.DynamicTypes
             if (_showPublicationStatusSelector &&
                 _dataTypeDescriptor.SuperInterfaces.Contains(typeof(IPublishControlled)))
             {
-                bindings.Add(PublicationStatusBindingName, ((IPublishControlled)dataObject).PublicationStatus);
+                bindings[PublicationStatusBindingName] = ((IPublishControlled)dataObject).PublicationStatus;
                 bindings.Add(PublicationStatusOptionsBindingName, GetAvailablePublishingFlowTransitions(EntityToken));
 
                 var intefaceType = dataObject.DataSourceId.InterfaceType;
@@ -724,12 +724,6 @@ namespace Composite.Data.DynamicTypes
                 var publishFieldsXml = new XElement(MainNamespace + "FieldGroup", new XAttribute("Label", Texts.PublicationSettings_FieldGroupLabel));
                 placeholder.Add(publishFieldsXml);
 
-                var publicationStatusBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
-                    new XAttribute("name", PublicationStatusBindingName),
-                    new XAttribute("type", typeof(string)));
-
-                _bindingsXml.Add(publicationStatusBinding);
-
                 var publicationStatusOptionsBinding = new XElement(CmsNamespace + FormKeyTagNames.Binding,
                     new XAttribute("name", PublicationStatusOptionsBindingName),
                     new XAttribute("type", typeof(object)));
@@ -839,7 +833,7 @@ namespace Composite.Data.DynamicTypes
 
         private bool IsNotFieldBinding(string bindingName)
         {
-            return bindingName == PublicationStatusBindingName || bindingName == PublicationStatusOptionsBindingName;
+            return bindingName == PublicationStatusOptionsBindingName;
         }
 
         /// <exclude />
