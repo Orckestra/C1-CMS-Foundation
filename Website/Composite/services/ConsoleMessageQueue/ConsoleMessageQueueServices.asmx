@@ -32,6 +32,23 @@ namespace Composite.Services
         {
             return ConsoleMessageServiceFacade.GetNewMessages(consoleId, lastKnownChangeNumber);
         }
-    }
+
+
+#warning THIS IS EXPERIMENTAL
+		[WebMethod]
+		public bool PlaceMessageOrder(string consoleId, string serializedMessageOrder)
+		{
+			var messageBox = new MessageBoxMessageQueueItem
+			{
+				DialogType = Composite.C1Console.Events.DialogType.Message,
+				Message = "Your order was '" + serializedMessageOrder + "'",
+				Title = "We got your order :)"
+			};
+
+			ConsoleMessageQueueFacade.Enqueue(messageBox, consoleId);
+			
+			return true;
+		}
+	}
 
 }
