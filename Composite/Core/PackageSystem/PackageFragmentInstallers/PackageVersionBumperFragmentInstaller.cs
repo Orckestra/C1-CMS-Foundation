@@ -4,10 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Composite.Core.Configuration;
-using Composite.Core.Extensions;
 using Composite.Core.IO;
 using Composite.Core.PackageSystem.Foundation;
 using Composite.Core.Xml;
+
+using Texts = Composite.Core.ResourceSystem.LocalizationFiles.Composite_Core_PackageSystem_PackageFragmentInstallers;
 
 
 namespace Composite.Core.PackageSystem.PackageFragmentInstallers
@@ -17,7 +18,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
     /// </summary>
     /// <exclude />
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)] 
-    public sealed class PackageVersionBumberFragmentInstaller : BasePackageFragmentInstaller
+    public sealed class PackageVersionBumperFragmentInstaller : BasePackageFragmentInstaller
     {
         private Dictionary<Guid, string> _packagesToBumb;
 
@@ -31,7 +32,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
             if (this.Configuration.Count(f => f.Name == "PackageVersions") > 1)
             {
-                validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.OnlyOneElement"), this.ConfigurationParent);
+                validationResult.AddFatal(Texts.PackageVersionBumperFragmentUninstaller_OnlyOneElement, this.ConfigurationParent);
                 return validationResult;
             }            
 
@@ -48,25 +49,25 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
 
                     if (packageIdAttribute == null) 
                     { 
-                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.MissingAttribute").FormatWith("packageId"), packageVersionElement);
+                        validationResult.AddFatal(Texts.PackageVersionBumperFragmentUninstaller_MissingAttribute("packageId"), packageVersionElement);
                         continue; 
                     }
                     if (newVersionAttribute == null) 
                     { 
-                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.MissingAttribute").FormatWith("newVersion"), packageVersionElement); 
+                        validationResult.AddFatal(Texts.PackageVersionBumperFragmentUninstaller_MissingAttribute("newVersion"), packageVersionElement); 
                         continue; 
                     }
 
                     Guid packageId;
                     if (!packageIdAttribute.TryGetGuidValue(out packageId))
                     {
-                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"), packageIdAttribute);
+                        validationResult.AddFatal(Texts.PackageVersionBumperFragmentUninstaller_WrongAttributeGuidFormat, packageIdAttribute);
                         continue;
                     }
 
                     if (_packagesToBumb.ContainsKey(packageId))
                     {
-                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), packageIdAttribute);
+                        validationResult.AddFatal(Texts.PackageVersionBumperFragmentUninstaller_PackageIdDuplicate(packageId), packageIdAttribute);
                         continue;
                     }
 
@@ -77,7 +78,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
                     }
                     catch
                     {
-                        validationResult.AddFatal(GetText("PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"), newVersionAttribute);
+                        validationResult.AddFatal(Texts.PackageVersionBumperFragmentUninstaller_WrongAttributeVersionFormat, newVersionAttribute);
                         continue;
                     }
 
@@ -99,7 +100,7 @@ namespace Composite.Core.PackageSystem.PackageFragmentInstallers
         /// <exclude />
         public override IEnumerable<XElement> Install()
         {
-            Verify.IsNotNull(_packagesToBumb, "PackageVersionBumberFragmentInstaller has not been validated");
+            Verify.IsNotNull(_packagesToBumb, this.GetType().Name + " has not been validated");
 
             var installedElements = new List<XElement>();
             foreach (var kvp in _packagesToBumb)

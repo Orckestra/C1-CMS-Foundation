@@ -81,16 +81,16 @@
   <string key="FileXslTransformationPackageFragmentInstaller.FileReadOnly" value="File '{0}' marked as 'Read Only' and therefore cannot be overwritten." />
   <string key="FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride" value="File '{0}' was marked as 'Read Only'. This file attribute was explicitly removed and the file was updated normally." />
 
-  <string key="PackageVersionBumberFragmentInstaller.OnlyOneElement" value="Only one 'PackageVersions' element allowed" />
-  <string key="PackageVersionBumberFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-  <string key="PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
-  <string key="PackageVersionBumberFragmentInstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
-  <string key="PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
-  <string key="PackageVersionBumberFragmentUninstaller.OnlyOneElement" value="Only one 'PackageVersions' element allowed" />
-  <string key="PackageVersionBumberFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
-  <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
-  <string key="PackageVersionBumberFragmentUninstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
-  <string key="PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
+  <string key="PackageVersionBumperFragmentInstaller.OnlyOneElement" value="Only one 'PackageVersions' element allowed" />
+  <string key="PackageVersionBumperFragmentInstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="PackageVersionBumperFragmentInstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
+  <string key="PackageVersionBumperFragmentInstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
+  <string key="PackageVersionBumperFragmentInstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
+  <string key="PackageVersionBumperFragmentUninstaller.OnlyOneElement" value="Only one 'PackageVersions' element allowed" />
+  <string key="PackageVersionBumperFragmentUninstaller.MissingAttribute" value="Missing {0} attribute in the configuration" />
+  <string key="PackageVersionBumperFragmentUninstaller.WrongAttributeGuidFormat" value="Wrong attribute value format, Guid value expected" />
+  <string key="PackageVersionBumperFragmentUninstaller.PackageIdDuplicate" value="The package id duplicate: '{0}'" />
+  <string key="PackageVersionBumperFragmentUninstaller.WrongAttributeVersionFormat" value="Wrong attribute value format, Version value expected (x.y.z)" />
   <string key="PackageLicenseFragmentInstaller.MissingPublicKeyElement" value="A public RSA key is missing in the package configuration" />
 
   <string key="FileModifyPackageFragmentInstaller.FileDoesNotExist" value="File '{0}' does not exist." />

@@ -651,8 +651,8 @@
     <Compile Include="Core\Localization\LocalizationFacade.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentInstaller.cs" />
     <Compile Include="Core\PackageSystem\PackageFragmentInstallers\LocalePackageFragmentUninstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentInstaller.cs" />
-    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumberFragmentUninstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumperFragmentInstaller.cs" />
+    <Compile Include="Core\PackageSystem\PackageFragmentInstallers\PackageVersionBumperFragmentUninstaller.cs" />
     <Compile Include="Data\PageManager.cs" />
     <Compile Include="Data\PageUrl.cs" />
     <Compile Include="Core\Parallelization\IndexEnumerator.cs" />

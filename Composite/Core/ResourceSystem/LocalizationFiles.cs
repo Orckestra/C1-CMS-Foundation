@@ -572,25 +572,25 @@ namespace Composite.Core.ResourceSystem
  /// <summary>&quot;File &apos;{0}&apos; was marked as &apos;Read Only&apos;. This file attribute was explicitly removed and the file was updated normally.&quot;</summary> 
  public static string FileXslTransformationPackageFragmentInstaller_FileReadOnlyOverride(object parameter0) { return string.Format(T("FileXslTransformationPackageFragmentInstaller.FileReadOnlyOverride"), parameter0); } 
  /// <summary>&quot;Only one &apos;PackageVersions&apos; element allowed&quot;</summary> 
- public static string PackageVersionBumberFragmentInstaller_OnlyOneElement { get { return T("PackageVersionBumberFragmentInstaller.OnlyOneElement"); } } 
+ public static string PackageVersionBumperFragmentInstaller_OnlyOneElement { get { return T("PackageVersionBumperFragmentInstaller.OnlyOneElement"); } } 
  /// <summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
- public static string PackageVersionBumberFragmentInstaller_MissingAttribute(object parameter0) { return string.Format(T("PackageVersionBumberFragmentInstaller.MissingAttribute"), parameter0); } 
+ public static string PackageVersionBumperFragmentInstaller_MissingAttribute(object parameter0) { return string.Format(T("PackageVersionBumperFragmentInstaller.MissingAttribute"), parameter0); } 
  /// <summary>&quot;Wrong attribute value format, Guid value expected&quot;</summary> 
- public static string PackageVersionBumberFragmentInstaller_WrongAttributeGuidFormat { get { return T("PackageVersionBumberFragmentInstaller.WrongAttributeGuidFormat"); } } 
+ public static string PackageVersionBumperFragmentInstaller_WrongAttributeGuidFormat { get { return T("PackageVersionBumperFragmentInstaller.WrongAttributeGuidFormat"); } } 
  /// <summary>&quot;The package id duplicate: &apos;{0}&apos;&quot;</summary> 
- public static string PackageVersionBumberFragmentInstaller_PackageIdDuplicate(object parameter0) { return string.Format(T("PackageVersionBumberFragmentInstaller.PackageIdDuplicate"), parameter0); } 
+ public static string PackageVersionBumperFragmentInstaller_PackageIdDuplicate(object parameter0) { return string.Format(T("PackageVersionBumperFragmentInstaller.PackageIdDuplicate"), parameter0); } 
  /// <summary>&quot;Wrong attribute value format, Version value expected (x.y.z)&quot;</summary> 
- public static string PackageVersionBumberFragmentInstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumberFragmentInstaller.WrongAttributeVersionFormat"); } } 
+ public static string PackageVersionBumperFragmentInstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumperFragmentInstaller.WrongAttributeVersionFormat"); } } 
  /// <summary>&quot;Only one &apos;PackageVersions&apos; element allowed&quot;</summary> 
- public static string PackageVersionBumberFragmentUninstaller_OnlyOneElement { get { return T("PackageVersionBumberFragmentUninstaller.OnlyOneElement"); } } 
+ public static string PackageVersionBumperFragmentUninstaller_OnlyOneElement { get { return T("PackageVersionBumperFragmentUninstaller.OnlyOneElement"); } } 
  /// <summary>&quot;Missing {0} attribute in the configuration&quot;</summary> 
- public static string PackageVersionBumberFragmentUninstaller_MissingAttribute(object parameter0) { return string.Format(T("PackageVersionBumberFragmentUninstaller.MissingAttribute"), parameter0); } 
+ public static string PackageVersionBumperFragmentUninstaller_MissingAttribute(object parameter0) { return string.Format(T("PackageVersionBumperFragmentUninstaller.MissingAttribute"), parameter0); } 
  /// <summary>&quot;Wrong attribute value format, Guid value expected&quot;</summary> 
- public static string PackageVersionBumberFragmentUninstaller_WrongAttributeGuidFormat { get { return T("PackageVersionBumberFragmentUninstaller.WrongAttributeGuidFormat"); } } 
+ public static string PackageVersionBumperFragmentUninstaller_WrongAttributeGuidFormat { get { return T("PackageVersionBumperFragmentUninstaller.WrongAttributeGuidFormat"); } } 
  /// <summary>&quot;The package id duplicate: &apos;{0}&apos;&quot;</summary> 
- public static string PackageVersionBumberFragmentUninstaller_PackageIdDuplicate(object parameter0) { return string.Format(T("PackageVersionBumberFragmentUninstaller.PackageIdDuplicate"), parameter0); } 
+ public static string PackageVersionBumperFragmentUninstaller_PackageIdDuplicate(object parameter0) { return string.Format(T("PackageVersionBumperFragmentUninstaller.PackageIdDuplicate"), parameter0); } 
  /// <summary>&quot;Wrong attribute value format, Version value expected (x.y.z)&quot;</summary> 
- public static string PackageVersionBumberFragmentUninstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumberFragmentUninstaller.WrongAttributeVersionFormat"); } } 
+ public static string PackageVersionBumperFragmentUninstaller_WrongAttributeVersionFormat { get { return T("PackageVersionBumperFragmentUninstaller.WrongAttributeVersionFormat"); } } 
  /// <summary>&quot;A public RSA key is missing in the package configuration&quot;</summary> 
  public static string PackageLicenseFragmentInstaller_MissingPublicKeyElement { get { return T("PackageLicenseFragmentInstaller.MissingPublicKeyElement"); } } 
  /// <summary>&quot;File &apos;{0}&apos; does not exist.&quot;</summary> 
@@ -2649,7 +2649,7 @@ namespace Composite.Core.ResourceSystem
  public static string DraftTransition { get { return T("DraftTransition"); } } 
  /// <summary>&quot;Awaiting Approval&quot;</summary> 
  public static string AwaitingApprovalTransition { get { return T("AwaitingApprovalTransition"); } } 
- /// <summary>&quot;PublicationSettings&quot;</summary> 
+ /// <summary>&quot;Publication settings&quot;</summary> 
  public static string PublicationSettings_FieldGroupLabel { get { return T("PublicationSettings.FieldGroupLabel"); } } 
  /// <summary>&quot;Status&quot;</summary> 
  public static string PublicationStatus_Label { get { return T("PublicationStatus.Label"); } } 
