@@ -271,15 +271,15 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
         /// <exclude />
-        public static List<RefreshChildrenInfo> FindEntityToken(string serializedParentEntityToken, string serializedEntityToken, List<RefreshChildrenParams> openedNodes)
+        public static List<RefreshChildrenInfo> FindEntityToken(string serializedAncestorEntityToken, string serializedEntityToken, List<RefreshChildrenParams> openedNodes)
         {
-            Verify.ArgumentNotNullOrEmpty(serializedParentEntityToken, "serializedParentEntityToken");
+            Verify.ArgumentNotNullOrEmpty(serializedAncestorEntityToken, "serializedAncestorEntityToken");
             Verify.ArgumentNotNullOrEmpty(serializedEntityToken, "serializedEntityToken");
 
-            EntityToken parentEntityToken = EntityTokenSerializer.Deserialize(serializedParentEntityToken);
+            EntityToken ancestorEntityToken = EntityTokenSerializer.Deserialize(serializedAncestorEntityToken);
             EntityToken entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
-            foreach (List<EntityToken> ancestorChain in GetAncestorChains(parentEntityToken, entityToken))
+            foreach (List<EntityToken> ancestorChain in GetAncestorChains(ancestorEntityToken, entityToken))
             {
                 if (ancestorChain == null || ancestorChain.Count == 0)
                 {
@@ -397,13 +397,13 @@ namespace Composite.Core.WebClient.FlowMediators
 
 
 
-        private static IEnumerable<List<EntityToken>> GetAncestorChains(EntityToken parentEnitityToken, EntityToken entityToken)
+        private static IEnumerable<List<EntityToken>> GetAncestorChains(EntityToken ancestorEnitityToken, EntityToken entityToken)
         {
             foreach (List<EntityToken> ancestorChain in GetAncestorChains(entityToken, 20))
             {
                 if (ancestorChain.Count > 1)
                 {
-                    int index = ancestorChain.IndexOf(parentEnitityToken);
+                    int index = ancestorChain.IndexOf(ancestorEnitityToken);
                     if(index < 0) continue;
 
                     yield return (index == 0) ? ancestorChain : ancestorChain.GetRange(index, ancestorChain.Count - index);
@@ -430,7 +430,8 @@ namespace Composite.Core.WebClient.FlowMediators
             List<EntityToken> parents = ParentsFacade.GetAllParents(descendant);            
             if (parents.Count == 0)
             {
-                yield return new List<EntityToken>();
+                var newChain = new List<EntityToken> {descendant};
+                yield return newChain;
                 yield break;
             }
 
