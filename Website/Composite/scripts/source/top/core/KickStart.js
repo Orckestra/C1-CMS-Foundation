@@ -85,7 +85,14 @@ var KickStart = new function () {
 				appwindow.setURL ( "app.aspx" );
 				break;
 				
-			case BroadcastMessages.APPLICATION_OPERATIONAL :
+			case BroadcastMessages.APPLICATION_OPERATIONAL:
+				var serializedMessage = window.location.hash.replace(/^#/, '');
+				if (serializedMessage) {
+					window.location.hash = "";
+					MessageQueue.placeMessageOrder(serializedMessage);
+					MessageQueue.update();
+				}
+
 				showWorkbench ();
 				break;
 				
