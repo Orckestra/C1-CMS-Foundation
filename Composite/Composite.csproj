@@ -225,7 +225,9 @@
     <Compile Include="Data\Types\IUserPasswordHistory.cs" />
     <Compile Include="Data\PublishScheduling\PublishScheduleHelper.cs" />
     <Compile Include="Data\Types\TypeVersionAttribute.cs" />
+    <Compile Include="Data\Validation\Validators\DecimalRangeValidatorAttribute.cs" />
     <Compile Include="Data\Validation\Validators\NullDateTimeRangeValidatorAttribute.cs" />
+    <Compile Include="Data\Validation\Validators\NullDecimalRangeValidatorAttribute.cs" />
     <Compile Include="Functions\FunctionParameterIgnoreAttribute.cs" />
     <Compile Include="Functions\DynamicMethodHelper.cs" />
     <Compile Include="Functions\FunctionCallEditorManager.cs" />
