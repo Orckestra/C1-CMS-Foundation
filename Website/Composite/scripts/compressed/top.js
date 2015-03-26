@@ -30601,8 +30601,11 @@ self._nextAction();
 }
 _12a0=_12cf;
 };
-this.handleBroadcast=function(_12d2,arg){
-switch(_12d2){
+this.placeMessageOrder=function(_12d2){
+_129b.PlaceMessageOrder(Application.CONSOLE_ID,_12d2);
+};
+this.handleBroadcast=function(_12d3,arg){
+switch(_12d3){
 case BroadcastMessages.APPLICATION_LOGIN:
 this.initialize();
 break;
@@ -30654,9 +30657,9 @@ MessageQueue._lockSystem(false);
 break;
 }
 };
-function paramsToList(_12d4){
+function paramsToList(_12d5){
 var list=new List();
-new List(_12d4).each(function(entry){
+new List(_12d5).each(function(entry){
 list.add({name:entry.Key,value:entry.Value});
 });
 return list;
@@ -30665,13 +30668,13 @@ EventBroadcaster.subscribe(BroadcastMessages.APPLICATION_LOGIN,this);
 };
 var ViewDefinitions={"Composite.Management.Null":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.Null"}),"Composite.Management.PostBackDialog":new DialogViewDefinition({handle:"Composite.Management.PostBackDialog",isMutable:true,position:Dialog.MODAL,url:"${root}/content/dialogs/postback/postbackdialog.aspx",argument:{"url":null,"list":null}}),"Composite.Management.PostBackView":new HostedViewDefinition({handle:"Composite.Management.PostBackView",isMutable:true,position:DockBinding.MAIN,url:"${root}/postback.aspx",argument:{"url":null,"list":null}}),"Composite.Management.GenericView":new HostedViewDefinition({handle:"Composite.Management.GenericView",isMutable:true,position:DockBinding.MAIN,url:"${root}/content/views/generic/generic.aspx",label:null,image:null,toolTip:null,argument:{"url":null,"list":null}}),"Composite.Management.ExternalView":new HostedViewDefinition({handle:"Composite.Management.ExternalView",isMutable:true,position:DockBinding.EXTERNAL,url:null,label:null,image:null,toolTip:null}),"Composite.Management.Start":new HostedViewDefinition({handle:"Composite.Management.Start",position:DockBinding.START,label:"Welcome Travellers",url:"${root}/content/views/start/start.aspx"}),"Composite.Management.About":new DialogViewDefinition({handle:"Composite.Management.About",position:Dialog.MODAL,url:"${root}/content/dialogs/about/about.aspx"}),"Composite.Management.PermissionEditor":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.PermissionEditor",position:DockBinding.MAIN,url:"${root}/content/views/editors/permissioneditor/permissioneditor.aspx",argument:{serializedEntityToken:"entityTokenType='Composite\\.Plugins\\.Elements\\.ElementProviders\\.VirtualElementProvider\\.VirtualElementProviderEntityToken,Composite'entityToken='_EntityToken_Type_=\\'Composite\\\\\\.Plugins\\\\\\.Elements\\\\\\.ElementProviders\\\\\\.VirtualElementProvider\\\\\\.VirtualElementProviderEntityToken,Composite\\'_EntityToken_Source_=\\'VirtualElementProvider\\'_EntityToken_Id_=\\'DesignPerspective\\''\""}}),"Composite.Management.SystemLog":new HostedViewDefinition({handle:"Composite.Management.SystemLog",position:DockBinding.ABSBOTTOMLEFT,label:"System Log",url:"${root}/content/views/dev/systemlog/systemlog.aspx"}),"Composite.Management.Developer":new HostedViewDefinition({handle:"Composite.Management.Developer",position:DockBinding.ABSBOTTOMRIGHT,label:"Developer",url:"${root}/content/views/dev/developer/developer.aspx"}),"Composite.Management.IconPack.System":new HostedViewDefinition({handle:"Composite.Management.IconPack.System",position:DockBinding.ABSBOTTOMLEFT,label:"Freja",image:"${icon:icon}",url:"${root}/content/views/dev/icons/system/Default.aspx"}),"Composite.Management.IconPack.Republic":new HostedViewDefinition({handle:"Composite.Management.IconPack.Republic",position:DockBinding.ABSBOTTOMLEFT,label:"Republic",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/republic.aspx"}),"Composite.Management.IconPack.Harmony":new HostedViewDefinition({handle:"Composite.Management.IconPack.Harmony",position:DockBinding.ABSBOTTOMLEFT,label:"Harmony",image:"${icon:icon}",url:"${root}/content/views/dev/icons/files/harmony.aspx"}),"Composite.Management.Explorer":new HostedViewDefinition({handle:"Composite.Management.Explorer",position:DockBinding.EXPLORER,url:"${root}/content/views/explorer/explorer.aspx",label:"Explorer"}),"Composite.Management.Options":new DialogViewDefinition({handle:"Composite.Management.Options",position:Dialog.MODAL,url:"${root}/content/dialogs/options/options.aspx",label:"Options"}),"Composite.Management.VisualEditorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.VisualEditorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/wysiwygeditor/wysiwygeditordialog.aspx",width:1280,height:800,argument:{"formattingconfiguration":null,"embedablefieldstypenames":null}}),"Composite.Management.MultiSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.MultiSelectorDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/multiselector/multiselectordialog.aspx"}),"Composite.Management.Search":new HostedViewDefinition({handle:"Composite.Management.Search",position:DockBinding.RIGHTBOTTOM,url:"${root}/content/views/search/search.aspx",label:"Search",image:"${icon:view_search}",argument:null}),"Composite.Management.Browser":new HostedViewDefinition({isMutable:false,handle:"Composite.Management.Browser",position:DockBinding.MAIN,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,label:"${string:Composite.Management:Browser.Label}",image:"${icon:page-view-administrated-scope}",toolTip:"${string:Composite.Management:Browser.ToolTip}",url:"${root}/content/views/browser/browser.aspx",argument:{"URL":null}}),"Composite.Management.SEOAssistant":new HostedViewDefinition({handle:"Composite.Management.SEOAssistant",position:DockBinding.RIGHTTOP,perspective:ExplorerBinding.PERSPECTIVE_CONTENT,url:"${root}/content/views/seoassist/seoassist.aspx",label:"${string:Composite.Web.SEOAssistant:SEOAssistant}",image:"${icon:seoassistant}",toolTip:"${string:Composite.Web.SEOAssistant:SEOAssistant.ToolTip}"}),"Composite.Management.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.Management.SourceCodeViewer",position:DockBinding.ABSBOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.User.SourceCodeViewer":new HostedViewDefinition({isMutable:true,handle:"Composite.User.SourceCodeViewer",position:DockBinding.BOTTOMLEFT,url:"${root}/content/views/dev/viewsource/viewsource.aspx",argument:{"action":null,"viewBinding":null}}),"Composite.Management.Help":new HostedViewDefinition({label:"${string:Website.App.LabelHelp}",image:"${icon:help}",handle:"Composite.Management.Help",position:DockBinding.ABSRIGHTTOP,url:"${root}/content/views/help/help.aspx"}),"Composite.Management.Dialog.Translations":new DialogViewDefinition({handle:"Composite.Management.TranslationsDialog",position:Dialog.MODAL,url:"${root}/content/dialogs/translations/translations.aspx",label:"Translations",image:"${icon:users-changepublicculture}"}),"Composite.Management.ImageSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.ImageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_IMAGESELECTOR,argument:{label:"${string:Composite.Management:Website.Image.SelectDialog.Title}",image:"${icon:image}",selectionProperty:"ElementType",selectionValue:"image/jpeg image/gif image/png image/bmp image/tiff image/svg+xml",selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:"MediaFileElementProvider.WebImages"}]}}),"Composite.Management.MediaWritableFolderSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.MediaWritableFolderSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.Folder.SelectDialog.Title}",image:"${icon:image}",selectionProperty:"ReadOnly",selectionValue:"False",selectionResult:"EntityToken",actionGroup:"Folder",nodes:[{key:"MediaFileElementProvider",search:"MediaFileElementProvider.WritableFolders"}]}}),"Composite.Management.EmbeddableMediaSelectorDialog":new DialogViewDefinition({isMutable:true,handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.Media.SelectDialog.Title}",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider",search:null}]}}),"Composite.Management.FrontendFileSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.EmbeddableMediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.FrontendFile.SelectDialog.Title}",image:"${icon:media}",selectionProperty:"ElementType",selectionValue:null,selectionResult:"Uri",nodes:[{key:"LayoutFileElementProvider"}],width:480}}),"Composite.Management.PageSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Page.SelectDialog.Title}",image:"${icon:page}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.PageIdSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.PageIdSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Page.SelectDialog.Title}",image:"${icon:page}",selectionProperty:"DataId",selectionValue:null,selectionResult:"DataId",nodes:[{key:"PageElementProvider"}]}}),"Composite.Management.LinkableSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.LinkableSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREEACTIONSELECTOR,argument:{label:"${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"PageElementProvider"},{key:"MediaFileElementProvider"}]}}),"Composite.Management.MediaSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.MediaSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.ContentLink.SelectDialog.Title}",image:"${icon:link}",selectionProperty:"Uri",selectionValue:null,selectionResult:"Uri",nodes:[{key:"MediaFileElementProvider"}]}}),"Composite.Management.FunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.FunctionSelectorDialog",isMutable:true,position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Function.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider"}]}}),"Composite.Management.WidgetFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.WidgetFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Widget.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllWidgetFunctionsElementProvider"}]}}),"Composite.Management.XhtmlDocumentFunctionSelectorDialog":new DialogViewDefinition({handle:"Composite.Management.XhtmlDocumentFunctionSelectorDialog",position:Dialog.MODAL,url:Dialog.URL_TREESELECTOR,argument:{label:"${string:Composite.Management:Website.Function.SelectDialog.Title}",image:"${icon:functioncall}",selectionProperty:"ElementType",selectionValue:MimeTypes.COMPOSITEFUNCTION,selectionResult:"ElementId",nodes:[{key:"AllFunctionsElementProvider",search:"AllFunctionsElementProvider.VisualEditorFunctions"}]}})};
 var KickStart=new function(){
-var _12d7=false;
-var _12d8=null;
-var _12d9=false;
-var _12da=Client.qualifies();
-var _12db="admin";
-var _12dc="123456";
-if(!_12da){
+var _12d8=false;
+var _12d9=null;
+var _12da=false;
+var _12db=Client.qualifies();
+var _12dc="admin";
+var _12dd="123456";
+if(!_12db){
 document.location="unsupported.aspx";
 return;
 }
@@ -30692,18 +30695,18 @@ setTimeout(function(){
 Persistance.initialize();
 },0);
 };
-this.handleBroadcast=function(_12dd){
-switch(_12dd){
+this.handleBroadcast=function(_12de){
+switch(_12de){
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-kickStart(_12dd);
+kickStart(_12de);
 break;
 case BroadcastMessages.APPLICATION_STARTUP:
 break;
 case BroadcastMessages.KEY_ENTER:
 if(bindingMap.decks!=null){
-var _12de=bindingMap.decks.getSelectedDeckBinding();
-if(_12de!=null){
-switch(_12de.getID()){
+var _12df=bindingMap.decks.getSelectedDeckBinding();
+if(_12df!=null){
+switch(_12df.getID()){
 case "logindeck":
 this.login();
 break;
@@ -30716,10 +30719,16 @@ default:
 }
 break;
 case BroadcastMessages.APPLICATION_LOGIN:
-var _12df=window.bindingMap.appwindow;
-_12df.setURL("app.aspx");
+var _12e0=window.bindingMap.appwindow;
+_12e0.setURL("app.aspx");
 break;
 case BroadcastMessages.APPLICATION_OPERATIONAL:
+var _12e1=window.location.hash.replace(/^#/,"");
+if(_12e1){
+window.location.hash="";
+MessageQueue.placeMessageOrder(_12e1);
+MessageQueue.update();
+}
 showWorkbench();
 break;
 case BroadcastMessages.APPLICATION_SHUTDOWN:
@@ -30730,22 +30739,22 @@ bindingMap.cover.show();
 break;
 }
 };
-function fileEventBroadcasterSubscriptions(_12e0){
-new List([BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_12e1){
-if(_12e0){
-EventBroadcaster.subscribe(_12e1,KickStart);
+function fileEventBroadcasterSubscriptions(_12e2){
+new List([BroadcastMessages.PERSISTANCE_INITIALIZED,BroadcastMessages.APPLICATION_STARTUP,BroadcastMessages.APPLICATION_LOGIN,BroadcastMessages.APPLICATION_OPERATIONAL]).each(function(_12e3){
+if(_12e2){
+EventBroadcaster.subscribe(_12e3,KickStart);
 }else{
-EventBroadcaster.unsubscribe(_12e1,KickStart);
+EventBroadcaster.unsubscribe(_12e3,KickStart);
 }
 });
 }
-function kickStart(_12e2){
-switch(_12e2){
+function kickStart(_12e4){
+switch(_12e4){
 case BroadcastMessages.PERSISTANCE_INITIALIZED:
-_12d7=true;
+_12d8=true;
 break;
 }
-if(_12d7){
+if(_12d8){
 if(bindingMap.decks!=null&&LoginService.IsLoggedIn(true)){
 accessGranted();
 }else{
@@ -30776,8 +30785,8 @@ Application.unlock(KickStart);
 bindingMap.decks.select("logindeck");
 setTimeout(function(){
 if(Application.isDeveloperMode&&Application.isLocalHost){
-DataManager.getDataBinding("username").setValue(_12db);
-DataManager.getDataBinding("password").setValue(_12dc);
+DataManager.getDataBinding("username").setValue(_12dc);
+DataManager.getDataBinding("password").setValue(_12dd);
 }
 setTimeout(function(){
 DataManager.getDataBinding("username").focus();
@@ -30803,28 +30812,28 @@ Application.unlock(KickStart);
 }
 this.changePassword=function(){
 if(bindingMap.toppage.validateAllDataBindings()){
-var _12e5=DataManager.getDataBinding("username").getResult();
-var _12e6=DataManager.getDataBinding("passwordold").getResult();
-var _12e7=DataManager.getDataBinding("passwordnew").getResult();
-var _12e8=DataManager.getDataBinding("passwordnew2").getResult();
-if(_12e7==_12e8){
-var _12e9=WebServiceProxy.isLoggingEnabled;
+var _12e7=DataManager.getDataBinding("username").getResult();
+var _12e8=DataManager.getDataBinding("passwordold").getResult();
+var _12e9=DataManager.getDataBinding("passwordnew").getResult();
+var _12ea=DataManager.getDataBinding("passwordnew2").getResult();
+if(_12e9==_12ea){
+var _12eb=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12ea=LoginService.ChangePassword(_12e5,_12e6,_12e7);
-if(_12ea instanceof SOAPFault){
-alert(_12ea.getFaultString());
+var _12ec=LoginService.ChangePassword(_12e7,_12e8,_12e9);
+if(_12ec instanceof SOAPFault){
+alert(_12ec.getFaultString());
 }else{
-if(_12ea.length==0){
+if(_12ec.length==0){
 setTimeout(function(){
 top.window.location.reload(true);
 },0);
 }else{
-this.showPasswordErrors(_12ea);
+this.showPasswordErrors(_12ec);
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_12e9){
+if(_12eb){
 WebServiceProxy.isLoggingEnabled=true;
 }
 }else{
@@ -30832,22 +30841,22 @@ this.showPasswordErrors([Resolver.resolve("${string:Composite.C1Console.Users:Ch
 }
 }
 };
-this.showPasswordErrors=function(_12eb){
-_12eb=new List(_12eb);
-var _12ec=document.getElementById("passworderror");
-_12ec.innerHTML="";
-_12eb.each(function(error){
-var _12ee=document.createElement("div");
-_12ee.textContent=error;
-_12ee.className="errortext";
-_12ec.appendChild(_12ee);
+this.showPasswordErrors=function(_12ed){
+_12ed=new List(_12ed);
+var _12ee=document.getElementById("passworderror");
+_12ee.innerHTML="";
+_12ed.each(function(error){
+var _12f0=document.createElement("div");
+_12f0.textContent=error;
+_12f0.className="errortext";
+_12ee.appendChild(_12f0);
 });
-_12ec.style.display="block";
-var _12ef={handleAction:function(_12f0){
+_12ee.style.display="block";
+var _12f1={handleAction:function(_12f2){
 document.getElementById("passworderror").style.display="none";
-_12f0.target.removeActionListener(Binding.ACTION_DIRTY,_12ef);
+_12f2.target.removeActionListener(Binding.ACTION_DIRTY,_12f1);
 }};
-bindingMap.passwordfields.addActionListener(Binding.ACTION_DIRTY,_12ef);
+bindingMap.passwordfields.addActionListener(Binding.ACTION_DIRTY,_12f1);
 DataManager.getDataBinding("passwordold").clean();
 DataManager.getDataBinding("passwordnew").clean();
 DataManager.getDataBinding("passwordnew2").clean();
@@ -30862,33 +30871,33 @@ Application.unlock(KickStart);
 }
 },25);
 };
-this.doLogin=function(_12f1,_12f2){
-var _12f3=WebServiceProxy.isLoggingEnabled;
+this.doLogin=function(_12f3,_12f4){
+var _12f5=WebServiceProxy.isLoggingEnabled;
 WebServiceProxy.isLoggingEnabled=false;
 WebServiceProxy.isFaultHandler=false;
-var _12f4=false;
-var _12f5=false;
-var _12f6=LoginService.ValidateAndLogin(_12f1,_12f2);
-if(_12f6 instanceof SOAPFault){
-alert(_12f6.getFaultString());
+var _12f6=false;
+var _12f7=false;
+var _12f8=LoginService.ValidateAndLogin(_12f3,_12f4);
+if(_12f8 instanceof SOAPFault){
+alert(_12f8.getFaultString());
 }else{
-if(_12f6=="lockedAfterMaxAttempts"){
+if(_12f8=="lockedAfterMaxAttempts"){
 alert("The account was locked after maximum login attempts. Please contact administrator.");
 }
-if(_12f6=="lockedByAnAdministrator"){
+if(_12f8=="lockedByAnAdministrator"){
 alert("The account was locked by an administrator.");
 }
-if(_12f6=="passwordUpdateRequired"){
-_12f5=true;
+if(_12f8=="passwordUpdateRequired"){
+_12f7=true;
 }
-if(_12f6=="success"){
-_12f4=true;
+if(_12f8=="success"){
+_12f6=true;
 }
 }
-if(_12f5){
+if(_12f7){
 changePasswordRequired();
 }else{
-if(_12f4){
+if(_12f6){
 EventBroadcaster.unsubscribe(BroadcastMessages.KEY_ENTER,KickStart);
 accessGranted();
 }else{
@@ -30899,7 +30908,7 @@ accesssDenied();
 }
 }
 WebServiceProxy.isFaultHandler=true;
-if(_12f3){
+if(_12f5){
 WebServiceProxy.isLoggingEnabled=true;
 }
 };
@@ -30920,8 +30929,8 @@ if(bindingMap.decks!=null){
 bindingMap.decks.select("changepassworddeck");
 bindingMap.cover.attachClassName("widesplash");
 setTimeout(function(){
-var _12f7=document.getElementById("passwordexpired");
-_12f7.firstChild.data=_12f7.firstChild.data.replace("{0}",Installation.passwordExpirationTimeInDays);
+var _12f9=document.getElementById("passwordexpired");
+_12f9.firstChild.data=_12f9.firstChild.data.replace("{0}",Installation.passwordExpirationTimeInDays);
 DataManager.getDataBinding("usernameold").setValue(DataManager.getDataBinding("username").getResult());
 DataManager.getDataBinding("passwordold").focus();
 },0);
@@ -30929,24 +30938,24 @@ DataManager.getDataBinding("passwordold").focus();
 },25);
 }
 function accesssDenied(){
-var _12f8=DataManager.getDataBinding("username");
-var _12f9=DataManager.getDataBinding("password");
-_12f8.blur();
-_12f9.blur();
-_12f8.setValue("");
-_12f9.setValue("");
-_12f8.clean();
-_12f9.clean();
-_12f8.focus();
+var _12fa=DataManager.getDataBinding("username");
+var _12fb=DataManager.getDataBinding("password");
+_12fa.blur();
+_12fb.blur();
+_12fa.setValue("");
+_12fb.setValue("");
+_12fa.clean();
+_12fb.clean();
+_12fa.focus();
 document.getElementById("loginerror").style.display="block";
-var _12fa={handleAction:function(_12fb){
+var _12fc={handleAction:function(_12fd){
 document.getElementById("loginerror").style.display="none";
-_12fb.target.removeActionListener(Binding.ACTION_DIRTY,_12fa);
+_12fd.target.removeActionListener(Binding.ACTION_DIRTY,_12fc);
 }};
-bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12fa);
+bindingMap.loginfields.addActionListener(Binding.ACTION_DIRTY,_12fc);
 }
 WindowManager.fireOnLoad(this);
-if(!_12da){
+if(!_12db){
 UpdateManager.isEnabled=false;
 }
 };
