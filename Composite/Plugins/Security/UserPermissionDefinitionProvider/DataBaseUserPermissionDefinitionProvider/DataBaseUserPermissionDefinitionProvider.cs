@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Transactions;
+using Composite.Core.Linq;
 using Composite.Data;
 using Composite.Data.Caching;
 using Composite.Data.Types;
@@ -161,7 +162,7 @@ namespace Composite.Plugins.Security.UserPermissionDefinitionProvider.DataBaseUs
             var allPermissionTypes = DataFacade.GetData<IUserPermissionDefinitionPermissionType>()
                 .GroupBy(p => p.UserPermissionDefinitionId).ToDictionary(g => g.Key, g => g.ToList());
 
-            var permissions = (from urd in DataFacade.GetData<IUserPermissionDefinition>()
+            var permissions = (from urd in DataFacade.GetData<IUserPermissionDefinition>().Evaluate()
                               where urd.Username == userName
                                     && allPermissionTypes.ContainsKey(urd.Id)
                               select (UserPermissionDefinition) new DataUserPermissionDefinition(urd, allPermissionTypes[urd.Id])).ToList();
