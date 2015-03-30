@@ -293,7 +293,7 @@ namespace Composite.Core.WebClient
         /// <param name="customStringBuilder">Your function the can return a custom string</param>
         public static void RegisterC1PageVaryByCustomStringProvider( string providerId, Func<HttpContext,string> customStringBuilder)
         {
-            _c1PageCustomStringProviders.GetOrAdd(providerId, () => customStringBuilder);
+            _c1PageCustomStringProviders.GetOrAdd(providerId, customStringBuilder);
         }
 
 
