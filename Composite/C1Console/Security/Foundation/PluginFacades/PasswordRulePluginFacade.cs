@@ -103,21 +103,21 @@ namespace Composite.C1Console.Security.Foundation.PluginFacades
 
             public static void DoInitializeResources(Resources resources)
             {
-                if (LoginSessionStorePluginFacade.HasConfiguration())
+                var settings = GetSettings();
+                if (settings == null) return;
+
+                try
                 {
-                    try
-                    {
-                        var factory = resources.Factory = new PasswordRuleFactory();
-                        var rules = GetSettings().PasswordRules.Select(passwordRuleData => factory.Create(passwordRuleData.Name)).ToList();
+                    var factory = resources.Factory = new PasswordRuleFactory();
+                    var rules = settings.PasswordRules.Select(passwordRuleData => factory.Create(passwordRuleData.Name)).ToList();
 
-                        resources.PasswordRules = rules;
-                    }
-                    catch (Exception ex)
-                    {
-                        if (!(ex is ArgumentException) && !(ex is ConfigurationErrorsException)) throw;
+                    resources.PasswordRules = rules;
+                }
+                catch (Exception ex)
+                {
+                    if (!(ex is ArgumentException) && !(ex is ConfigurationErrorsException)) throw;
 
-                        HandleConfigurationError(ex);
-                    }
+                    HandleConfigurationError(ex);
                 }
             }
         }

@@ -89,7 +89,7 @@ var KickStart = new function () {
 				var serializedMessage = window.location.hash.replace(/^#/, '');
 				if (serializedMessage) {
 					window.location.hash = "";
-					MessageQueue.placeMessageOrder(serializedMessage);
+					MessageQueue.placeConsoleCommand(serializedMessage);
 					MessageQueue.update();
 				}
 

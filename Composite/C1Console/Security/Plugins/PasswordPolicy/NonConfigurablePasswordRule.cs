@@ -7,8 +7,9 @@ using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ObjectBuilder;
 
 namespace Composite.C1Console.Security.Plugins.PasswordPolicy
 {
+    /// <exclude />
     [Assembler(typeof(NonConfigurablePasswordRuleAssembler))]
-    internal sealed class NonConfigurablePasswordRule : PasswordRuleData
+    public sealed class NonConfigurablePasswordRule : PasswordRuleData
     {
     }
 

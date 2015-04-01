@@ -692,9 +692,9 @@ window.MessageQueue = new function () {
 	}
 
 
-	this.placeMessageOrder = function (serializedMessageOrder) {
+	this.placeConsoleCommand = function (serializedMessageOrder) {
 
-		service.PlaceMessageOrder(Application.CONSOLE_ID, serializedMessageOrder);
+	    service.PlaceConsoleCommand(Application.CONSOLE_ID, serializedMessageOrder);
 	}
 
 	// EVENTBROADCASTERSTUFF ...................................................

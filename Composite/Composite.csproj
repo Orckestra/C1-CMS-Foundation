@@ -157,6 +157,14 @@
     <Compile Include="AspNet\UserControlFunction.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="C1Console\Commands\ConsoleCommandFacade.cs" />
+    <Compile Include="C1Console\Commands\Foundation\PluginFacades\ConsoleCommandHandlerPluginFacade.cs" />
+    <Compile Include="C1Console\Commands\IConsoleCommandHandler.cs" />
+    <Compile Include="C1Console\Commands\Plugins\ConsoleCommandHandler\ConsoleCommandHandlerData.cs" />
+    <Compile Include="C1Console\Commands\Plugins\ConsoleCommandHandler\NonConfigurableConsoleCommandHandler.cs" />
+    <Compile Include="C1Console\Commands\Plugins\ConsoleCommandHandler\Runtime\ConsoleCommandHandlerCustomFactory.cs" />
+    <Compile Include="C1Console\Commands\Plugins\ConsoleCommandHandler\Runtime\ConsoleCommandHandlerFactory.cs" />
+    <Compile Include="C1Console\Commands\Plugins\ConsoleCommandHandler\Runtime\ConsoleCommandHandlerSettings.cs" />
     <Compile Include="C1Console\Drawing\FunctionPresentation.cs" />
     <Compile Include="C1Console\Elements\ElementProviderHelpers\DataGroupingProviderHelper\ElipsisEntityToken.cs" />
     <Compile Include="C1Console\Forms\CoreUiControls\FontIconSelectorUiControl.cs" />
@@ -232,6 +240,7 @@
     <Compile Include="Functions\DynamicMethodHelper.cs" />
     <Compile Include="Functions\FunctionCallEditorManager.cs" />
     <Compile Include="Functions\FunctionCallEditorSettings.cs" />
+    <Compile Include="Plugins\Commands\ConsoleCommandHandlers\FocusData.cs" />
     <Compile Include="Plugins\Data\DataProviders\MSSqlServerDataProvider\CodeGeneration\DataContextAssembler.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryable.cs" />
     <Compile Include="Plugins\Data\DataProviders\VirtualImageFileProvider\VirtualImageFileQueryableVisitor.cs" />

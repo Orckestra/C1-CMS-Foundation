@@ -1,13 +1,10 @@
 <%@ WebService Language="C#" Class="Composite.Services.ConsoleMessageQueueServices" %>
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Services;
 using System.Web.Services.Protocols;
-
-using Composite.Core.WebClient.FlowMediators;
-using Composite.Core.WebClient.Services.TreeServiceObjects;
+using Composite.C1Console.Commands;
+using Composite.Core;
 using Composite.Core.WebClient.Services.ConsoleMessageService;
 using Composite.C1Console.Events;
 
@@ -34,19 +31,34 @@ namespace Composite.Services
         }
 
 
-#warning THIS IS EXPERIMENTAL
 		[WebMethod]
-		public bool PlaceMessageOrder(string consoleId, string serializedMessageOrder)
+		public bool PlaceConsoleCommand(string consoleId, string consoleCommand)
 		{
-			var messageBox = new MessageBoxMessageQueueItem
-			{
-				DialogType = Composite.C1Console.Events.DialogType.Message,
-				Message = "Your order was '" + serializedMessageOrder + "'",
-				Title = "We got your order :)"
-			};
+		    int delimiterIndex = consoleCommand.IndexOf(';');
 
-			ConsoleMessageQueueFacade.Enqueue(messageBox, consoleId);
-			
+		    string commandName, payload;
+
+		    if (delimiterIndex == -1)
+		    {
+		        commandName = consoleCommand;
+		        payload = null;
+		    }
+		    else
+		    {
+		        commandName = consoleCommand.Substring(0, delimiterIndex);
+		        payload = consoleCommand.Substring(delimiterIndex + 1);
+		    }
+
+		    try
+		    {
+		        ConsoleCommandFacade.HandleConsoleCommand(consoleId, commandName, payload);
+		    }
+		    catch (Exception ex)
+		    {
+                Log.LogError(this.GetType().Name, "Failed to parse/execute console command '{0}'", consoleCommand);
+		        Log.LogError(this.GetType().Name, ex);
+		    }
+            
 			return true;
 		}
 	}
