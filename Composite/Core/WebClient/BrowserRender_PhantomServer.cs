@@ -136,8 +136,6 @@ namespace Composite.Core.WebClient
 
                 string requestLine = cookieInfo + "|" + url + "|" + tempFilePath + "|" + mode;
 
-
-
                 Task<string> readerTask = Task.Run(async () =>
                 {
                     _stdin.WriteLine(requestLine);
@@ -155,7 +153,12 @@ namespace Composite.Core.WebClient
                         break;
                     default:
                         // nuke the exe process here - stuff is likely fucked up.
-                        throw new BrowserRenderException(Environment.NewLine + "Request failed to complete within expected time: " + requestLine);
+                        #if DEBUG
+                            throw new BrowserRenderException(Environment.NewLine + "Request failed to complete within expected time: " + requestLine);
+                        #else
+                            throw new BrowserRenderException(Environment.NewLine + "Request failed to complete within expected time: " + url + " " + mode);
+                        #endif
+
                 }
 
 
@@ -166,7 +169,11 @@ namespace Composite.Core.WebClient
                         output = _stderror.ReadToEnd();
                     }
 
-                    throw new BrowserRenderException(output + Environment.NewLine + "Request: " + requestLine);
+                    #if DEBUG
+                        throw new BrowserRenderException(output + Environment.NewLine + "Request: " + requestLine);
+                    #else
+                        throw new BrowserRenderException(output + Environment.NewLine + "Request: " + url + " " + mode);
+                    #endif
                 }
             }
 
