@@ -30601,8 +30601,8 @@ self._nextAction();
 }
 _12a0=_12cf;
 };
-this.placeMessageOrder=function(_12d2){
-_129b.PlaceMessageOrder(Application.CONSOLE_ID,_12d2);
+this.placeConsoleCommand=function(_12d2){
+_129b.PlaceConsoleCommand(Application.CONSOLE_ID,_12d2);
 };
 this.handleBroadcast=function(_12d3,arg){
 switch(_12d3){
@@ -30726,7 +30726,7 @@ case BroadcastMessages.APPLICATION_OPERATIONAL:
 var _12e1=window.location.hash.replace(/^#/,"");
 if(_12e1){
 window.location.hash="";
-MessageQueue.placeMessageOrder(_12e1);
+MessageQueue.placeConsoleCommand(_12e1);
 MessageQueue.update();
 }
 showWorkbench();
