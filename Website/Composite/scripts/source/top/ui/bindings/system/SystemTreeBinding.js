@@ -326,6 +326,14 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
 				{ activePosition: this._activePosition, actionProfile: this.getCompiledActionProfile() }
 			);
 		}
+		if (!Application.isLocked) {
+			var node = this.getFocusedTreeNodeBindings().getFirst().node;
+			if (node.getPropertyBag()) {
+				top.window.location.hash = node.getPropertyBag().Hash;
+			} else {
+				top.window.location.hash = "";
+			}
+		}
 	}
 }
 
@@ -651,8 +659,9 @@ SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function ( entityToken
 		var self = this;
 		setTimeout ( function () {
 			if ( Binding.exists ( self )) {
-				self._fetchTreeForEntityToken ( entityToken );
-				self._focusTreeNodeByEntityToken ( entityToken, true ); // do it again!
+				if (self._fetchTreeForEntityToken(entityToken)) {
+					self._focusTreeNodeByEntityToken(entityToken, true); // do it again!
+				}
 			}
 			Application.unlock ( self );
 			StatusBar.clear ();
@@ -683,12 +692,26 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 
 	while (perspectiveEntityTokens.hasNext()) {
 		var perspectiveEntityToken = perspectiveEntityTokens.getNext();
-		var openSystemNodes = this.getOpenSystemNodes();
+
+		
+		var openSystemNodes;
+		var rootToken;
+		if (this._activePosition == SystemAction.activePositions.SelectorTree) {
+			rootToken = perspectiveEntityToken;
+			openSystemNodes = this.getOpenSystemNodes();
+			
+		} else {
+			var rootNode = System.getRootNode();
+			rootToken = rootNode.getEntityToken();
+			openSystemNodes = new List([rootNode]);
+			openSystemNodes.merge(this.getOpenSystemNodes());
+		}
+
 		var map = System.getInvisibleBranch(
-			perspectiveEntityToken,
-			entityToken,
-			openSystemNodes
-		);
+				rootToken,
+				entityToken,
+				openSystemNodes
+			);;
 
 		/*
 		* If server goofed up, we quickly disable the lock-tree-to-editor feature.
@@ -708,6 +731,58 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 		* structure, so the parsing code can get a little complicated.
 		*/
 		else if (map.hasEntries()) {
+
+			//TODO Refactor this
+			if (this._activePosition === SystemAction.activePositions.SelectorTree) {
+			} else {
+				var oldHandles = new List();
+				var newHandles = new List();
+				openSystemNodes.each(function (node) {
+					oldHandles.add(node.getHandle());
+				});
+				map.each(function(handle, list) {
+					if (!oldHandles.has(handle)) {
+						newHandles.add(handle);
+					}
+				});
+
+
+				var perspectiveButtons = new List();  
+				ExplorerBinding.bindingInstance.getDescendantBindingsByType(ExplorerToolBarButtonBinding)
+					.each(function (explorerbutton) {
+						if (explorerbutton.isVisible) {
+							perspectiveButtons.add(explorerbutton);
+						}
+					});
+
+				var switchPerspective = false;
+				newHandles.each(function (handle) {
+					if (StageBinding.perspectiveNode.getHandle !== handle) {
+						perspectiveButtons.each(function(perspectiveButton) {
+							var node = perspectiveButton.node.getEntityToken();
+
+
+							if (perspectiveButton.node.getHandle() == handle) {
+								switchPerspective = true;
+								perspectiveButton.fireCommand();
+								setTimeout(function () {
+									EventBroadcaster.broadcast(
+											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+											entityToken
+									);
+								}, 500);
+								return false;
+							}
+							return true;
+						});
+
+
+					}
+				});
+				if (switchPerspective)
+					return false;
+			}
+
 
 			var self = this;
 			var oldnodes = this._treeNodeBindings;
@@ -759,6 +834,8 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 				}
 			});
 		}
+
+		return true;
 	}
 }
 

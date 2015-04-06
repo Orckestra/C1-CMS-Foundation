@@ -688,6 +688,8 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 element.PropertyBag.Add("ElementType", "application/x-composite-page");
                 element.PropertyBag.Add("DataId", page.Id.ToString());
 
+				element.PropertyBag.Add("Hash", "FocusData;IPage:{0}".FormatWith(page.Id));
+
                 if (kvp.Key == PageLocaleState.Own)
                 {
                     // Normal actions
