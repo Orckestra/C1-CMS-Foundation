@@ -269,7 +269,6 @@ namespace Composite.Core.WebClient.FlowMediators
         }
 
 
-
         /// <exclude />
         public static List<RefreshChildrenInfo> FindEntityToken(string serializedAncestorEntityToken, string serializedEntityToken, List<RefreshChildrenParams> openedNodes)
         {
@@ -279,6 +278,12 @@ namespace Composite.Core.WebClient.FlowMediators
             EntityToken ancestorEntityToken = EntityTokenSerializer.Deserialize(serializedAncestorEntityToken);
             EntityToken entityToken = EntityTokenSerializer.Deserialize(serializedEntityToken);
 
+            return FindEntityToken(ancestorEntityToken, entityToken, openedNodes);
+        }
+
+        
+        internal static List<RefreshChildrenInfo> FindEntityToken(EntityToken ancestorEntityToken, EntityToken entityToken, List<RefreshChildrenParams> openedNodes)
+        {
             foreach (List<EntityToken> ancestorChain in GetAncestorChains(ancestorEntityToken, entityToken))
             {
                 if (ancestorChain == null || ancestorChain.Count == 0)

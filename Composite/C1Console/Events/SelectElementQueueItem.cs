@@ -11,5 +11,8 @@ namespace Composite.C1Console.Events
 	{
         /// <exclude />
         public string EntityToken { get; set; }
+
+        /// <exclude />
+        public string PerspectiveElementKey { get; set; }
 	}
 }
