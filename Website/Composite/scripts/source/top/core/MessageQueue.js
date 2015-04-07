@@ -324,10 +324,34 @@ window.MessageQueue = new function () {
 					break;
 
 				case "SelectElement":
-					EventBroadcaster.broadcast(
-						BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-						action.BindEntityTokenToViewParams.EntityToken
-					);
+
+					var perspectiveElementKey = action.SelectElementParams.PerspectiveElementKey;
+					if (perspectiveElementKey) {
+						var handler = {
+							handleBroadcast: function(broadcast, arg) {
+								switch (broadcast) {
+								case BroadcastMessages.EXPLORERDECK_CHANGED:
+									if (arg == perspectiveElementKey) {
+										EventBroadcaster.broadcast(
+											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+											action.SelectElementParams.EntityToken
+										);
+										EventBroadcaster.unsubscribe(BroadcastMessages.EXPLORERDECK_CHANGED, this);
+									}
+									break;
+								}
+							}
+						}
+						EventBroadcaster.subscribe(BroadcastMessages.EXPLORERDECK_CHANGED, handler);
+						StageBinding.selectPerspective(action.SelectElementParams.PerspectiveElementKey);
+					} else {
+						EventBroadcaster.broadcast(
+											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
+											action.SelectElementParams.EntityToken
+										);
+					}
+
+
 					this._nextAction();
 					break;
 

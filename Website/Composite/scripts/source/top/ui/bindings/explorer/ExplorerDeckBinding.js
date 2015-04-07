@@ -17,6 +17,11 @@ function ExplorerDeckBinding () {
 	 * Entitytoken of the associated SystemNode.
 	 */
 	this._entityToken = null;
+
+	/**
+	 * Handle of the associated SystemNode.
+	 */
+	this._handle = null;
 	
 	/**
 	 * If true, contained tree needs to be refreshed.
@@ -115,6 +120,10 @@ ExplorerDeckBinding.prototype.select = function () {
 		ExplorerDeckBinding.superclass.select.call ( this );
 		this.dispatchAction ( DockTabBinding.ACTION_UPDATE_VISUAL );
 	}
+
+	if (this._isExplorerDeckBindingInitialized) {
+		EventBroadcaster.broadcast(BroadcastMessages.EXPLORERDECK_CHANGED, this._handle);
+	}
 }
 
 /**
@@ -132,7 +141,8 @@ ExplorerDeckBinding.prototype.handleAction = function ( action ) {
 		case PageBinding.ACTION_INITIALIZED :
 			if ( binding instanceof SystemPageBinding ) {
 				this._isExplorerDeckBindingInitialized = true;
-				this._entityToken = binding.node.getEntityToken ();
+				this._entityToken = binding.node.getEntityToken();
+				this._handle = binding.node.getHandle();
 				this.removeActionListener ( PageBinding.ACTION_INITIALIZED );
 				this.bindingWindow.bindingMap.explorerdeckscover.hide ();
 				this.dispatchAction ( DockTabBinding.ACTION_UPDATE_VISUAL );
@@ -140,6 +150,7 @@ ExplorerDeckBinding.prototype.handleAction = function ( action ) {
 				if ( StatusBar.state == StatusBar.BUSY ) {
 					StatusBar.clear ();
 				}
+				EventBroadcaster.broadcast(BroadcastMessages.EXPLORERDECK_CHANGED, this._handle);
 			}
 			break;
 	}

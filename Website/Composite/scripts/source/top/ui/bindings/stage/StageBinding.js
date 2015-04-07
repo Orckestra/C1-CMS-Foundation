@@ -61,6 +61,14 @@ StageBinding.isViewOpen = function ( handle ) {
 }
 
 /**
+ * @param {string} handle
+ */
+StageBinding.selectPerspective = function (handle) {
+
+	StageBinding.bindingInstance._explorerBinding.setSelectionByHandle(handle);
+}
+
+/**
  * Present ViewDefinition on stage.
  * @param {ViewDefinition} definition
  */

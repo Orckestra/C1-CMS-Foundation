@@ -27,24 +27,24 @@ SystemTreeBinding.URL_DIALOG_DETAILEDPASTE = "${root}/content/dialogs/systemtree
 /**
  * @class
  */
-function SystemTreeBinding () {
+function SystemTreeBinding() {
 
 	/**
 	 * @type {SystemLogger}
 	 */
-	this.logger = SystemLogger.getLogger ( "SystemTreeBinding" );
-	
+	this.logger = SystemLogger.getLogger("SystemTreeBinding");
+
 	/**
 	 * Associates the tree to the selected perspective.
 	 * @type {SystemNode}
 	 */
 	this.perspectiveNode = null;
-	
+
 	/**
 	 * @type {SystemTreeNodeBinding}
 	 */
 	this._defaultTreeNode = null;
-	
+
 	/**
 	 * Publishing actionprofiles when treenodes get selected? 
 	 * If set to false, no commands will be relayed to main toolbar.
@@ -58,7 +58,7 @@ function SystemTreeBinding () {
 	* @type {int}
 	*/
 	this._activePosition = SystemAction.activePositions.NavigatorTree;
-	
+
 	/**
 	 * @type {HashMap<string><boolean>}
 	 */
@@ -69,39 +69,39 @@ function SystemTreeBinding () {
 	 * @type {string}
 	 */
 	this._backupfocushandle = null;
-	
+
 	/**
 	 * This can be deprecated if we implement serverside treenode selection.
 	 * @type {SystemTreeNodeBinding}
 	 */
 	this._tempSelectedNode = null;
-	
+
 	/**
 	 * This can be deprecated if we implement serverside treenode selection.
 	 * @type {boolean}
 	 */
 	this._tempSelectionTimeout = false;
-	
+
 	/**
 	 * While this._treeNodeBindings index treenodes by unique handle (ElementKey), 
 	 * this will index groups of treenodes sharing the same EntityToken.
 	 * @type {Map<string><List<SystemTreeNodeBinding>>}
 	 */
 	this._entityTokenRegistry = null;
-	
+
 	/**
 	 * Counting refreshing treenodes so that we may poke the MessageQueue 
 	 * once all nodes are finished (some timeouts involved here).
 	 * @type {Map<string><boolean>}
 	 */
 	this._refreshingTreeNodes = null;
-	
+
 	/**
 	 * When the tree is refreshed by MessageQueue, this stores the refreshtoken.
 	 * @type {string}
 	 */
 	this._refreshToken = null;
-	
+
 	/**
 	 * Lock tree to editor?
 	 * @type {boolean}
@@ -130,7 +130,7 @@ function SystemTreeBinding () {
  * Identifies binding.
  */
 SystemTreeBinding.prototype.toString = function () {
-	
+
 	return "[SystemTreeBinding]";
 }
 
@@ -139,40 +139,40 @@ SystemTreeBinding.prototype.toString = function () {
  */
 SystemTreeBinding.prototype.onBindingRegister = function () {
 
-	SystemTreeBinding.superclass.onBindingRegister.call ( this );
-	
+	SystemTreeBinding.superclass.onBindingRegister.call(this);
+
 	/*
 	 * Mark the tree as resident on the currently selected perspective.
 	 */
 	this.perspectiveNode = StageBinding.perspectiveNode;
-	
+
 	/*
 	 * File subscriptions.
 	 */
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_FOCUS);
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_CUT );
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_COPY );
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_PASTE );
-	this.subscribe ( BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL );
-	this.subscribe ( BroadcastMessages.DOCKTABBINDING_SELECT );
-	this.subscribe ( BroadcastMessages.STAGEDIALOG_OPENED );
-	
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_REFRESH);
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_FOCUS);
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_CUT);
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_COPY);
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_PASTE);
+	this.subscribe(BroadcastMessages.SYSTEMTREEBINDING_COLLAPSEALL);
+	this.subscribe(BroadcastMessages.DOCKTABBINDING_SELECT);
+	this.subscribe(BroadcastMessages.STAGEDIALOG_OPENED);
+
 	/*
 	 * Init stuff.
 	 */
-	this.addActionListener ( SystemTreeNodeBinding.ACTION_REFRESHED_YEAH );
-	this.addActionListener ( TreeNodeBinding.ACTION_COMMAND );
-	this._entityTokenRegistry = new Map ();
-	this._refreshingTreeNodes = new Map ();
-	
+	this.addActionListener(SystemTreeNodeBinding.ACTION_REFRESHED_YEAH);
+	this.addActionListener(TreeNodeBinding.ACTION_COMMAND);
+	this._entityTokenRegistry = new Map();
+	this._refreshingTreeNodes = new Map();
+
 	/*
 	 * Should tree selection update top toolbar?
 	 */
-	if ( this.getProperty ( "actionaware" ) == false ) {
+	if (this.getProperty("actionaware") == false) {
 		this._isActionProfileAware = false;
 	} else {
-		this.setContextMenu ( top.app.bindingMap.systemtreepopup );
+		this.setContextMenu(top.app.bindingMap.systemtreepopup);
 	}
 
 
@@ -184,8 +184,8 @@ SystemTreeBinding.prototype.onBindingRegister = function () {
 	/*
 	 * Setup lock-to-editor.
 	 */
-	if ( this.getProperty ( "locktoeditor" ) != null ) {
-		this.isLockedToEditor = this.getProperty ( "locktoeditor" );
+	if (this.getProperty("locktoeditor") != null) {
+		this.isLockedToEditor = this.getProperty("locktoeditor");
 	}
 }
 
@@ -195,11 +195,11 @@ SystemTreeBinding.prototype.onBindingRegister = function () {
  * @param {Binding} binding
  * @return {Binding}
  */
-SystemTreeBinding.prototype.add = function ( binding ) {
-	
-	var returnable = SystemTreeBinding.superclass.add.call ( this, binding );
-	if ( !this._defaultTreeNode ) {
-		if ( binding instanceof SystemTreeNodeBinding ) {
+SystemTreeBinding.prototype.add = function (binding) {
+
+	var returnable = SystemTreeBinding.superclass.add.call(this, binding);
+	if (!this._defaultTreeNode) {
+		if (binding instanceof SystemTreeNodeBinding) {
 			this._defaultTreeNode = binding;
 		}
 	}
@@ -221,17 +221,17 @@ SystemTreeBinding.prototype.handleAction = function (action) {
 
 		/*
 		* Publish actionprofile when selection changes.
-		*/ 
+		*/
 		case TreeNodeBinding.ACTION_ONFOCUS:
 		case TreeNodeBinding.ACTION_ONMULTIFOCUS:
 			this._restorableFocusHandle = null;
 			this._handleSystemTreeFocus();
 			break;
 
-		/**
-		* Broadcast when treenodes are finished refreshing.
-		* This is intercepted by the MessageQueue.
-		*/ 
+			/**
+			* Broadcast when treenodes are finished refreshing.
+			* This is intercepted by the MessageQueue.
+			*/
 		case SystemTreeNodeBinding.ACTION_REFRESHED_YEAH:
 
 			this._updateRefreshingTrees(binding.key);
@@ -279,10 +279,10 @@ SystemTreeBinding.prototype.handleAction = function (action) {
  * @overloads {TreeBinding#focus}
  */
 SystemTreeBinding.prototype.focus = function () {
-	
-	SystemTreeBinding.superclass.focus.call ( this );
-	if ( this.isFocused ) {
-		this._handleSystemTreeFocus ();
+
+	SystemTreeBinding.superclass.focus.call(this);
+	if (this.isFocused) {
+		this._handleSystemTreeFocus();
 	}
 }
 
@@ -291,10 +291,10 @@ SystemTreeBinding.prototype.focus = function () {
  * @overwrites {TreeBinding#_focusDefault}
  */
 SystemTreeBinding.prototype._focusDefault = function () {
-	
-	this._attemptRestorableFocus ();
-	if ( !this.getFocusedTreeNodeBindings ().hasEntries ()) {
-		SystemTreeBinding.superclass._focusDefault.call ( this );
+
+	this._attemptRestorableFocus();
+	if (!this.getFocusedTreeNodeBindings().hasEntries()) {
+		SystemTreeBinding.superclass._focusDefault.call(this);
 	}
 }
 
@@ -303,10 +303,10 @@ SystemTreeBinding.prototype._focusDefault = function () {
  * we back up the last blurred node, we can restore a sensible focus. 
  */
 SystemTreeBinding.prototype._attemptRestorableFocus = function () {
-	
-	if ( this._treeNodeBindings.has ( this._restorableFocusHandle )) {
-		var treenode = this._treeNodeBindings.get ( this._restorableFocusHandle );
-		this.focusSingleTreeNodeBinding ( treenode );
+
+	if (this._treeNodeBindings.has(this._restorableFocusHandle)) {
+		var treenode = this._treeNodeBindings.get(this._restorableFocusHandle);
+		this.focusSingleTreeNodeBinding(treenode);
 	}
 	this._restorableFocusHandle = null;
 }
@@ -326,14 +326,6 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
 				{ activePosition: this._activePosition, actionProfile: this.getCompiledActionProfile() }
 			);
 		}
-		if (!Application.isLocked) {
-			var node = this.getFocusedTreeNodeBindings().getFirst().node;
-			if (node.getPropertyBag()) {
-				top.window.location.hash = node.getPropertyBag().Hash;
-			} else {
-				top.window.location.hash = "";
-			}
-		}
 	}
 }
 
@@ -341,60 +333,60 @@ SystemTreeBinding.prototype._handleSystemTreeFocus = function () {
  * Register treenode.
  * @param {SystemTreeNodeBinding} treenode
  */
-SystemTreeBinding.prototype.registerTreeNodeBinding = function ( treenode ) {
-	
-	SystemTreeBinding.superclass.registerTreeNodeBinding.call ( this, treenode );
-	
+SystemTreeBinding.prototype.registerTreeNodeBinding = function (treenode) {
+
+	SystemTreeBinding.superclass.registerTreeNodeBinding.call(this, treenode);
+
 	/*
 	 * Update entityToken registry so that we may quickly 
 	 * find the treenode(s) based on this property.
 	 */
 	var reg = this._entityTokenRegistry;
-	var token = treenode.node.getEntityToken ();
-	
-	if ( reg.has ( token )) {
-		reg.get ( token ).add ( treenode );	
+	var token = treenode.node.getEntityToken();
+
+	if (reg.has(token)) {
+		reg.get(token).add(treenode);
 	} else {
-		reg.set ( token, new List ([ treenode ]));
+		reg.set(token, new List([treenode]));
 	}
-	
+
 	/*
 	 * This will attempt to restore treenode selection when tree is refreshed.
 	 */
 	var focusnode = null;
-	if ( this.isLockedToEditor ) {
-		
+	if (this.isLockedToEditor) {
+
 		/* 
 		 * Treenode re-focus should be determined by the 
 		 * entityToken of the selected DockTabBinding. 
 		 * Note that unlike the handle (the ElementKey), an 
 		 * entityToken may occur multiple times in the same tree.
 		 */
-		if ( token == StageBinding.entityToken ) {
-			if ( treenode.node.isTreeLockEnabled ()) {
+		if (token == StageBinding.entityToken) {
+			if (treenode.node.isTreeLockEnabled()) {
 				focusnode = treenode;
 			}
 		}
-		
+
 	} else {
-		
+
 		/*
 		 * Treenode gets focused when it matches a previously 
 		 * unregistered, focused treenode.
 		 * @see {SystemTreeBinding#unRegisterTreeNodeBinding}
 		 */
-		if ( this._backupfocushandle != null ) {
-			if ( this._backupfocushandle == treenode.node.getHandle ()) {
+		if (this._backupfocushandle != null) {
+			if (this._backupfocushandle == treenode.node.getHandle()) {
 				focusnode = treenode;
 			}
 		}
 	}
-	
+
 	/*
 	 * If found, focus the treenode.
 	 */
-	if ( focusnode != null ) {
-		this.focusSingleTreeNodeBinding ( focusnode );
+	if (focusnode != null) {
+		this.focusSingleTreeNodeBinding(focusnode);
 	}
 }
 
@@ -405,40 +397,40 @@ SystemTreeBinding.prototype.registerTreeNodeBinding = function ( treenode ) {
  * @overloads {TreeBinding#unRegisterTreeNodeBinding}
  * @param {SystemTreeNodeBinding} treeNodeBinding
  */
-SystemTreeBinding.prototype.unRegisterTreeNodeBinding = function ( treenode ) {
-	
-	SystemTreeBinding.superclass.unRegisterTreeNodeBinding.call ( this, treenode );
-	
+SystemTreeBinding.prototype.unRegisterTreeNodeBinding = function (treenode) {
+
+	SystemTreeBinding.superclass.unRegisterTreeNodeBinding.call(this, treenode);
+
 	/*
 	 * Unregister from entityToken registry.
 	 */
 	var reg = this._entityTokenRegistry;
-	var token = treenode.node.getEntityToken ();
-	
-	if ( reg.has ( token )) {
-		var list = reg.get ( token );
-		list.del ( treenode );
-		if ( !list.hasEntries ()) {
-			reg.del ( token );
-		} 
+	var token = treenode.node.getEntityToken();
+
+	if (reg.has(token)) {
+		var list = reg.get(token);
+		list.del(treenode);
+		if (!list.hasEntries()) {
+			reg.del(token);
+		}
 	} else {
-		this.logger.fatal ( "SystemTreeBinding out of synch: unRegisterTreeNodeBinding" );
-		if ( Application.isDeveloperMode ) {
-			Dialog.error ( "Attention Developer", "Tree is out of synch. Please reproduce this bug and file a report." );
+		this.logger.fatal("SystemTreeBinding out of synch: unRegisterTreeNodeBinding");
+		if (Application.isDeveloperMode) {
+			Dialog.error("Attention Developer", "Tree is out of synch. Please reproduce this bug and file a report.");
 		}
 	}
-	
+
 	/*
 	 * This relates to the treenode re-selection hack.
 	 * @see {SystemTreeBinding#registerTreeNodeBinding}
 	 */
-	if ( !this.isLockedToEditor ) {
-		if ( treenode.isFocused && this._backupfocushandle == null ) {
-			this._backupfocushandle = treenode.node.getHandle ();
+	if (!this.isLockedToEditor) {
+		if (treenode.isFocused && this._backupfocushandle == null) {
+			this._backupfocushandle = treenode.node.getHandle();
 			var self = this;
-			setTimeout ( function () {
+			setTimeout(function () {
 				self._backupfocushandle = null;
-			}, 200 );
+			}, 200);
 		}
 	}
 }
@@ -447,18 +439,18 @@ SystemTreeBinding.prototype.unRegisterTreeNodeBinding = function ( treenode ) {
  * Refreshing treenodes count at zero?
  * @param {String} key
  */
-SystemTreeBinding.prototype._updateRefreshingTrees = function ( key ) {
-	
+SystemTreeBinding.prototype._updateRefreshingTrees = function (key) {
+
 	var trees = this._refreshingTreeNodes;
-	
-	if ( trees.hasEntries () && trees.has ( key )) {
-		trees.del ( key );
-		if ( !trees.hasEntries ()) {
-			EventBroadcaster.broadcast ( 
-				BroadcastMessages.SYSTEMTREEBINDING_REFRESHED, this._refreshToken 
+
+	if (trees.hasEntries() && trees.has(key)) {
+		trees.del(key);
+		if (!trees.hasEntries()) {
+			EventBroadcaster.broadcast(
+				BroadcastMessages.SYSTEMTREEBINDING_REFRESHED, this._refreshToken
 			);
 			this._refreshToken = null;
-			this._attemptRestorableFocus ();
+			this._attemptRestorableFocus();
 		}
 	}
 };
@@ -504,7 +496,7 @@ SystemTreeBinding.prototype._computeClipboardSetup = function () {
  * TODO: Fix nesting test instead?
  */
 SystemTreeBinding.prototype._computeRefreshSetup = function () {
-	
+
 	SystemTreePopupBinding.isRefreshAllowed = SystemTreeBinding.clipboard === null;
 }
 
@@ -573,27 +565,27 @@ SystemTreeBinding.prototype.handleBroadcast = function (broadcast, arg) {
  * update tree selection and thus toolbar actions.
  * @param {DockTabBinding} tab
  */
-SystemTreeBinding.prototype._handleDockTabSelect = function ( tab ) {
-	
+SystemTreeBinding.prototype._handleDockTabSelect = function (tab) {
+
 	/*
 	 * Is the activated tab visible on screen?
 	 */
 	var isVisible = tab.perspectiveNode == null;
-	if ( !isVisible ) {
+	if (!isVisible) {
 		isVisible = tab.perspectiveNode == this.perspectiveNode;
 	}
-	
+
 	/*
 	 * If the tab was launched by the server, there is a chance we might 
 	 * find a matching treenode.
 	 */
-	if ( isVisible ) {
-		var self = this, token = tab.getEntityToken ();
-		setTimeout ( function () { // timeout to minimize freezing sensation
-			if ( token != null ) {
-				self._focusTreeNodeByEntityToken ( token );
+	if (isVisible) {
+		var self = this, token = tab.getEntityToken();
+		setTimeout(function () { // timeout to minimize freezing sensation
+			if (token != null) {
+				self._focusTreeNodeByEntityToken(token);
 			}
-		}, 250 ); // zero not always enough...
+		}, 250); // zero not always enough...
 	}
 }
 
@@ -604,68 +596,67 @@ SystemTreeBinding.prototype._handleDockTabSelect = function ( tab ) {
  * @param {boolean} isSecondAttempt Discourage endless looping
  * @return
  */
-SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function ( entityToken, isSecondAttempt ) {
-	
+SystemTreeBinding.prototype._focusTreeNodeByEntityToken = function (entityToken, isSecondAttempt) {
+
 	/*
 	 * Mark this focus so that it won't trigger a new tab  
 	 * focus in some kind of eternal feedback process.
 	 */
 	this.isLockFeatureFocus = true;
-	
+
 	/*
 	 * Let's find the treenode to focues...
 	 */
 	var treenode = null;
-	
+
 	/*
 	 * Note that we simply select the first available treenode with the given   
 	 * entityToken MARKED AS FOCUSABLE. This may not be the best, though...
 	 */
-	if ( this._entityTokenRegistry.has ( entityToken )) {
-		var list = this._entityTokenRegistry.get ( entityToken );
-		list.each ( function ( tn ) {
+	if (this._entityTokenRegistry.has(entityToken)) {
+		var list = this._entityTokenRegistry.get(entityToken);
+		list.each(function (tn) {
 			var result = true;
-			if ( tn.node.isTreeLockEnabled ()) {
+			if (tn.node.isTreeLockEnabled()) {
 				treenode = tn;
 				result = false;
 			}
 			return result;
 		});
-		if ( treenode != null ) {
-			if ( !treenode.isFocused ) {
-				this.focusSingleTreeNodeBinding ( treenode, true );
+		if (treenode != null) {
+			if (!treenode.isFocused) {
+				this.focusSingleTreeNodeBinding(treenode, true);
 			} else {
-				treenode.dispatchAction ( TreeNodeBinding.ACTION_FOCUSED ); // to reveal it!
+				treenode.dispatchAction(TreeNodeBinding.ACTION_FOCUSED); // to reveal it!
 			}
 		}
 	}
-	
+
 	/*
 	 * Re-enable normal focus.
 	 */
 	this.isLockFeatureFocus = false;
-	
+
 	/*
 	 * But if no focusable treenode was found, we ask the server for more treenodes.
 	 */
-	if ( treenode == null && isSecondAttempt != true ) {
-		
-		Application.lock ( this );
-		StatusBar.busy ();
-		
+	if (treenode == null && isSecondAttempt != true) {
+
+		Application.lock(this);
+		StatusBar.busy();
+
 		/*
 		 * We timeout to lock the GUI while tree is refreshed; this can take some time. 
 		 */
 		var self = this;
-		setTimeout ( function () {
-			if ( Binding.exists ( self )) {
-				if (self._fetchTreeForEntityToken(entityToken)) {
-					self._focusTreeNodeByEntityToken(entityToken, true); // do it again!
-				}
+		setTimeout(function () {
+			if (Binding.exists(self)) {
+				self._fetchTreeForEntityToken(entityToken);
+				self._focusTreeNodeByEntityToken(entityToken, true); // do it again!
 			}
-			Application.unlock ( self );
-			StatusBar.clear ();
-		}, 0 );
+			Application.unlock(self);
+			StatusBar.clear();
+		}, 0);
 	}
 }
 
@@ -692,26 +683,12 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 
 	while (perspectiveEntityTokens.hasNext()) {
 		var perspectiveEntityToken = perspectiveEntityTokens.getNext();
-
-		
-		var openSystemNodes;
-		var rootToken;
-		if (this._activePosition == SystemAction.activePositions.SelectorTree) {
-			rootToken = perspectiveEntityToken;
-			openSystemNodes = this.getOpenSystemNodes();
-			
-		} else {
-			var rootNode = System.getRootNode();
-			rootToken = rootNode.getEntityToken();
-			openSystemNodes = new List([rootNode]);
-			openSystemNodes.merge(this.getOpenSystemNodes());
-		}
-
+		var openSystemNodes = this.getOpenSystemNodes();
 		var map = System.getInvisibleBranch(
-				rootToken,
-				entityToken,
-				openSystemNodes
-			);;
+			perspectiveEntityToken,
+			entityToken,
+			openSystemNodes
+		);
 
 		/*
 		* If server goofed up, we quickly disable the lock-tree-to-editor feature.
@@ -726,63 +703,11 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 			}
 		}
 
-		/*
-		* Controversially, the TreeService exposes no nested tree   
-		* structure, so the parsing code can get a little complicated.
-		*/
+			/*
+			* Controversially, the TreeService exposes no nested tree   
+			* structure, so the parsing code can get a little complicated.
+			*/
 		else if (map.hasEntries()) {
-
-			//TODO Refactor this
-			if (this._activePosition === SystemAction.activePositions.SelectorTree) {
-			} else {
-				var oldHandles = new List();
-				var newHandles = new List();
-				openSystemNodes.each(function (node) {
-					oldHandles.add(node.getHandle());
-				});
-				map.each(function(handle, list) {
-					if (!oldHandles.has(handle)) {
-						newHandles.add(handle);
-					}
-				});
-
-
-				var perspectiveButtons = new List();  
-				ExplorerBinding.bindingInstance.getDescendantBindingsByType(ExplorerToolBarButtonBinding)
-					.each(function (explorerbutton) {
-						if (explorerbutton.isVisible) {
-							perspectiveButtons.add(explorerbutton);
-						}
-					});
-
-				var switchPerspective = false;
-				newHandles.each(function (handle) {
-					if (StageBinding.perspectiveNode.getHandle !== handle) {
-						perspectiveButtons.each(function(perspectiveButton) {
-							var node = perspectiveButton.node.getEntityToken();
-
-
-							if (perspectiveButton.node.getHandle() == handle) {
-								switchPerspective = true;
-								perspectiveButton.fireCommand();
-								setTimeout(function () {
-									EventBroadcaster.broadcast(
-											BroadcastMessages.SYSTEMTREEBINDING_FOCUS,
-											entityToken
-									);
-								}, 500);
-								return false;
-							}
-							return true;
-						});
-
-
-					}
-				});
-				if (switchPerspective)
-					return false;
-			}
-
 
 			var self = this;
 			var oldnodes = this._treeNodeBindings;
@@ -834,8 +759,6 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
 				}
 			});
 		}
-
-		return true;
 	}
 }
 
@@ -844,52 +767,52 @@ SystemTreeBinding.prototype._fetchTreeForEntityToken = function (entityToken) {
  * @param {string} broadcast
  * @param {object} arg
  */
-SystemTreeBinding.prototype._handleCommandBroadcast = function ( broadcast, arg ) {
-	
-	switch ( broadcast ) {
-			
+SystemTreeBinding.prototype._handleCommandBroadcast = function (broadcast, arg) {
+
+	switch (broadcast) {
+
 		/*
 		 * Note that this broadcast can also be intercepted by the 
 		 * {@link SystemPageBinding} in order to refresh the tree root.
 		 */
-		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH :
-			
+		case BroadcastMessages.SYSTEMTREEBINDING_REFRESH:
+
 			/* 
 			 * If arg is present, it implies that MessageQueue invoked the refresh.
 			 * Otherwise the action was instantiated by the user (eg contextmenu).
 			 */
 			var token = arg;
-			if ( token != null ) {
-				this._invokeServerRefresh ( token );
+			if (token != null) {
+				this._invokeServerRefresh(token);
 			} else {
-				this._invokeManualRefresh ();
+				this._invokeManualRefresh();
 			}
 			break;
-		
-		/*
-		 * TODO: support multiple selections!
-		 */
-		case BroadcastMessages.SYSTEMTREEBINDING_CUT :
-			if ( SystemTreeBinding.clipboard != null ) {
-				SystemTreeBinding.clipboard.hideDrag ();
+
+			/*
+			 * TODO: support multiple selections!
+			 */
+		case BroadcastMessages.SYSTEMTREEBINDING_CUT:
+			if (SystemTreeBinding.clipboard != null) {
+				SystemTreeBinding.clipboard.hideDrag();
 			}
-			var treenode = this.getFocusedTreeNodeBindings ().getFirst ();
+			var treenode = this.getFocusedTreeNodeBindings().getFirst();
 			SystemTreeBinding.clipboardOperation = SystemTreePopupBinding.CMD_CUT;
-			SystemTreeBinding.clipboard = treenode;		
-			treenode.showDrag ();
+			SystemTreeBinding.clipboard = treenode;
+			treenode.showDrag();
 			break;
-		
-		/*
-		 * TODO: support multiple selections!
-		 */
-		case BroadcastMessages.SYSTEMTREEBINDING_COPY :
-			var treenode = this.getFocusedTreeNodeBindings ().getFirst ();
+
+			/*
+			 * TODO: support multiple selections!
+			 */
+		case BroadcastMessages.SYSTEMTREEBINDING_COPY:
+			var treenode = this.getFocusedTreeNodeBindings().getFirst();
 			SystemTreeBinding.clipboardOperation = SystemTreePopupBinding.CMD_COPY;
 			SystemTreeBinding.clipboard = treenode;
-			break;		
-			
-		case BroadcastMessages.SYSTEMTREEBINDING_PASTE :
-			this._handlePaste ();
+			break;
+
+		case BroadcastMessages.SYSTEMTREEBINDING_PASTE:
+			this._handlePaste();
 			break;
 	}
 }
@@ -898,37 +821,37 @@ SystemTreeBinding.prototype._handleCommandBroadcast = function ( broadcast, arg 
  * Invoke server refresh. This was probably caused by the MessageQueue.
  * @param {string} token
  */
-SystemTreeBinding.prototype._invokeServerRefresh = function ( token ) {
-	
-	if ( token != null && token == "null" ) {
-		if ( Application.isDeveloperMode ) {
-			alert ( "Saa har vi balladen." );
+SystemTreeBinding.prototype._invokeServerRefresh = function (token) {
+
+	if (token != null && token == "null") {
+		if (Application.isDeveloperMode) {
+			alert("Saa har vi balladen.");
 		}
 	}
-	
-	if ( this._entityTokenRegistry.has ( token )) {
-		
-		var list = this._entityTokenRegistry.get ( token ).reset ();
-		
+
+	if (this._entityTokenRegistry.has(token)) {
+
+		var list = this._entityTokenRegistry.get(token).reset();
+
 		/*
 		 * Broadcast instructs the MessageQueue to delay 
 	 	 * action execution until tree is refreshed. 
 	 	 */
 		this._refreshToken = token;
-		EventBroadcaster.broadcast ( BroadcastMessages.SYSTEMTREEBINDING_REFRESHING, this._refreshToken );
-		
-		while ( list.hasNext ()) {
-			var treenode = list.getNext ();
-			this._refreshingTreeNodes.set ( treenode.key, true );
-			
+		EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING, this._refreshToken);
+
+		while (list.hasNext()) {
+			var treenode = list.getNext();
+			this._refreshingTreeNodes.set(treenode.key, true);
+
 			/*
 			 * Push to next thread in order to give MessageQueue a chance 
 			 * to detect whether or not any trees are actually refreshing 
 			 * (because if not, it needs to execute the next action now). 
 			 */
-			setTimeout ( function () {
-				treenode.refresh ( true );
-			}, 0 );
+			setTimeout(function () {
+				treenode.refresh(true);
+			}, 0);
 		}
 	}
 }
@@ -941,22 +864,22 @@ SystemTreeBinding.prototype._invokeServerRefresh = function ( token ) {
  * @param {string} token
  */
 SystemTreeBinding.prototype._invokeManualRefresh = function () {
-	
-	var treenode = this.getFocusedTreeNodeBindings ().getFirst ();
-	if ( treenode ) {
-		var label = treenode.getLabel ();
-		var parent = treenode.getAncestorBindingByLocalName ( "treenode" );
-		if ( parent ) {
+
+	var treenode = this.getFocusedTreeNodeBindings().getFirst();
+	if (treenode) {
+		var label = treenode.getLabel();
+		var parent = treenode.getAncestorBindingByLocalName("treenode");
+		if (parent) {
 			treenode = parent; // because the treenode itself may have changed!
 		}
 		this._refreshToken = null;
-		this._refreshingTreeNodes.set ( treenode.key, true );
-		EventBroadcaster.broadcast ( BroadcastMessages.SYSTEMTREEBINDING_REFRESHING, null );
-		if ( !StatusBar.state ) {
-			var message = StringBundle.getString ( "ui", "Website.App.StatusBar.Refreshing" );
-			StatusBar.busy ( message, [ label ]);
+		this._refreshingTreeNodes.set(treenode.key, true);
+		EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_REFRESHING, null);
+		if (!StatusBar.state) {
+			var message = StringBundle.getString("ui", "Website.App.StatusBar.Refreshing");
+			StatusBar.busy(message, [label]);
 		}
-		treenode.refresh ();
+		treenode.refresh();
 	}
 }
 
@@ -964,29 +887,29 @@ SystemTreeBinding.prototype._invokeManualRefresh = function () {
  * Handle paste.
  */
 SystemTreeBinding.prototype._handlePaste = function () {
-	
+
 	var treenode = SystemTreeBinding.clipboard;
-	
-	if ( treenode ) {
-		
+
+	if (treenode) {
+
 		/*
 		 * TODO: ALLOW MULTIPLE!!!!
 		 */
 		var type = treenode.dragType;
-		var focused = this.getFocusedTreeNodeBindings ().getFirst ();
-		if ( focused.dragAccept ) {
-			if ( focused.acceptor.isAccepting ( type )) {
-				this._performPaste ( focused );
+		var focused = this.getFocusedTreeNodeBindings().getFirst();
+		if (focused.dragAccept) {
+			if (focused.acceptor.isAccepting(type)) {
+				this._performPaste(focused);
 			} else {
-				Dialog.message (
-					StringBundle.getString ( "ui", "Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed" ),
-					StringBundle.getString ( "ui", "Website.Misc.Trees.DialogText.PasteTypeNotAllowed" ) 
+				Dialog.message(
+					StringBundle.getString("ui", "Website.Misc.Trees.DialogTitle.PasteTypeNotAllowed"),
+					StringBundle.getString("ui", "Website.Misc.Trees.DialogText.PasteTypeNotAllowed")
 				);
 			}
 		} else {
-			Dialog.message (
-				StringBundle.getString ( "ui", "Website.Misc.Trees.DialogTitle.PasteNotAllowed" ),
-				StringBundle.getString ( "ui", "Website.Misc.Trees.DialogText.PasteNotAllowed" ) 
+			Dialog.message(
+				StringBundle.getString("ui", "Website.Misc.Trees.DialogTitle.PasteNotAllowed"),
+				StringBundle.getString("ui", "Website.Misc.Trees.DialogText.PasteNotAllowed")
 			);
 		}
 	}
@@ -996,57 +919,57 @@ SystemTreeBinding.prototype._handlePaste = function () {
  * Perform paste (then refresh the MessageQueue).
  * @param {SystemTreeNodeBinding} treenode
  */
-SystemTreeBinding.prototype._performPaste = function ( treenode ) {
+SystemTreeBinding.prototype._performPaste = function (treenode) {
 
 	var self = this;
-	
-	function update () {
-		MessageQueue.update ();
-		Application.unlock ( self );
+
+	function update() {
+		MessageQueue.update();
+		Application.unlock(self);
 	}
 
-	if ( treenode.node.hasDetailedDropSupport ()) {
-		if ( treenode.node.hasChildren ()) {
-			var argument = treenode.node.getChildren ();
-			Dialog.invokeModal ( SystemTreeBinding.URL_DIALOG_DETAILEDPASTE, {
-				handleDialogResponse : function ( response, result ) {
-					if ( response == Dialog.RESPONSE_ACCEPT ) {
-						Application.lock ( self );
-						var position = result.get ( "switch" );
-						var index = result.get ( "sibling" );
-						if ( position == "after" ) {
-							index ++;
+	if (treenode.node.hasDetailedDropSupport()) {
+		if (treenode.node.hasChildren()) {
+			var argument = treenode.node.getChildren();
+			Dialog.invokeModal(SystemTreeBinding.URL_DIALOG_DETAILEDPASTE, {
+				handleDialogResponse: function (response, result) {
+					if (response == Dialog.RESPONSE_ACCEPT) {
+						Application.lock(self);
+						var position = result.get("switch");
+						var index = result.get("sibling");
+						if (position == "after") {
+							index++;
 						}
-						var isAccept = treenode.accept ( SystemTreeBinding.clipboard, index );
-						if ( isAccept ) {
+						var isAccept = treenode.accept(SystemTreeBinding.clipboard, index);
+						if (isAccept) {
 							SystemTreeBinding.clipboard = null;
 							SystemTreeBinding.clipboardOperation = null;
-							setTimeout ( update, 0 );
+							setTimeout(update, 0);
 						} else {
-							update ();
+							update();
 						}
 					}
 				}
-			}, argument );
+			}, argument);
 		} else {
-			Application.lock ( self );
-			var isAccept = treenode.accept ( SystemTreeBinding.clipboard, 0 );
-			if ( isAccept ) {
+			Application.lock(self);
+			var isAccept = treenode.accept(SystemTreeBinding.clipboard, 0);
+			if (isAccept) {
 				SystemTreeBinding.clipboard = null;
 				SystemTreeBinding.clipboardOperation = null;
-				setTimeout ( update, 0 );
+				setTimeout(update, 0);
 			} else {
-				update ();
+				update();
 			}
 		}
 	} else {
-		Application.lock ( self );
-		var isAccept = treenode.accept ( SystemTreeBinding.clipboard, 0 );
-		if ( isAccept ) {
+		Application.lock(self);
+		var isAccept = treenode.accept(SystemTreeBinding.clipboard, 0);
+		if (isAccept) {
 			SystemTreeBinding.clipboard = null;
 			SystemTreeBinding.clipboardOperation = null;
 		}
-		update ();
+		update();
 	}
 }
 
@@ -1069,22 +992,22 @@ SystemTreeBinding.prototype.selectDefault = function () {
  * @overloads {TreeNodeBinding#collapse}
  * @param {boolean} isDestructive
  */
-SystemTreeBinding.prototype.collapse = function ( isDestructive ) {
+SystemTreeBinding.prototype.collapse = function (isDestructive) {
 
 	EventBroadcaster.broadcast(BroadcastMessages.SYSTEM_ACTIONPROFILE_PUBLISHED, { position: this._activePosition });
-	
-	if ( isDestructive ) {
-		this.blurSelectedTreeNodes ();
-		var treenodes = this.getRootTreeNodeBindings ();
-		treenodes.each ( function ( treenode ) {
-			if ( treenode.isContainer && treenode.isOpen ) {
-				treenode.close ();
+
+	if (isDestructive) {
+		this.blurSelectedTreeNodes();
+		var treenodes = this.getRootTreeNodeBindings();
+		treenodes.each(function (treenode) {
+			if (treenode.isContainer && treenode.isOpen) {
+				treenode.close();
 				treenode.hasBeenOpened = false;
-				treenode.empty ();
+				treenode.empty();
 			}
 		});
 	} else {
-		SystemTreeBinding.superclass.collapse.call ( this );
+		SystemTreeBinding.superclass.collapse.call(this);
 	}
 }
 
@@ -1092,12 +1015,12 @@ SystemTreeBinding.prototype.collapse = function ( isDestructive ) {
  * Lock tree to editor?
  * @param {boolean} isLocked
  */
-SystemTreeBinding.prototype.setLockToEditor = function ( isLocked ) {
-	
-	if ( isLocked != this.isLockedToEditor ) {
+SystemTreeBinding.prototype.setLockToEditor = function (isLocked) {
+
+	if (isLocked != this.isLockedToEditor) {
 		this.isLockedToEditor = isLocked;
-		if ( isLocked ) {
-			EventBroadcaster.broadcast ( BroadcastMessages.SYSTEMTREEBINDING_LOCKTOEDITOR );
+		if (isLocked) {
+			EventBroadcaster.broadcast(BroadcastMessages.SYSTEMTREEBINDING_LOCKTOEDITOR);
 		}
 	}
 }
@@ -1140,11 +1063,11 @@ SystemTreeBinding.prototype.getOpenSystemNodes = function () {
  * @overloads {TreeBinding#focusSingleTreeNodeBinding}
  * @param {TreeNodeBinding} binding;
  */
-SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
-	
-	SystemTreeBinding.superclass.focusSingleTreeNodeBinding.call ( this, binding );
-	if ( binding != null ){
-		this._handleSystemTreeFocus ();
+SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function (binding) {
+
+	SystemTreeBinding.superclass.focusSingleTreeNodeBinding.call(this, binding);
+	if (binding != null) {
+		this._handleSystemTreeFocus();
 	}
 };
 
@@ -1154,15 +1077,15 @@ SystemTreeBinding.prototype.focusSingleTreeNodeBinding = function ( binding ) {
  */
 SystemTreeBinding.prototype.setActionGroup = function (value) {
 
-	
-		if (value) {
-			var list = new List(value.split(" "));
-			this._actionGroup = {};
-			while (list.hasNext()) {
-				this._actionGroup[list.getNext()] = true;
-			}
+
+	if (value) {
+		var list = new List(value.split(" "));
+		this._actionGroup = {};
+		while (list.hasNext()) {
+			this._actionGroup[list.getNext()] = true;
 		}
-	
+	}
+
 }
 
 

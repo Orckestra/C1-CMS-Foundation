@@ -91,6 +91,7 @@ var KickStart = new function () {
 					window.location.hash = "";
 					MessageQueue.placeConsoleCommand(serializedMessage);
 					MessageQueue.update();
+					EventBroadcaster.broadcast(BroadcastMessages.COMPOSITE_STOP);
 				}
 
 				showWorkbench ();
