@@ -678,7 +678,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
                 EntityToken entityToken = page.GetDataEntityToken();
 
-                ElementDragAndDropInfo dragAndDropInfo = new ElementDragAndDropInfo(typeof(IPage));
+                var dragAndDropInfo = new ElementDragAndDropInfo(typeof(IPage));
                 dragAndDropInfo.AddDropType(typeof(IPage));
                 dragAndDropInfo.SupportsIndexedPosition = true;
 
@@ -687,8 +687,6 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
                 element.PropertyBag.Add("Uri", "~/page({0})".FormatWith(page.Id));
                 element.PropertyBag.Add("ElementType", "application/x-composite-page");
                 element.PropertyBag.Add("DataId", page.Id.ToString());
-
-				element.PropertyBag.Add("Hash", "FocusData;IPage:{0}".FormatWith(page.Id));
 
                 if (kvp.Key == PageLocaleState.Own)
                 {
@@ -912,13 +910,15 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
 
         private ElementVisualizedData MakeVisualData(IPage page, PageLocaleState pageLocaleState, string urlMappingName, bool isRootPage)
         {
-            ElementVisualizedData visualizedElement = new ElementVisualizedData();
 
             bool hasChildren = PageServices.GetChildrenCount(page.Id) > 0 || _pageAccociatedHelper.HasChildren(page);
 
-            visualizedElement.HasChildren = hasChildren;
-            visualizedElement.Label = (isRootPage || string.IsNullOrWhiteSpace(page.MenuTitle)) ? page.Title : page.MenuTitle;
-            visualizedElement.ToolTip = page.Description;
+            var visualizedElement = new ElementVisualizedData
+            {
+                HasChildren = hasChildren,
+                Label = (isRootPage || string.IsNullOrWhiteSpace(page.MenuTitle)) ? page.Title : page.MenuTitle,
+                ToolTip = page.Description
+            };
 
             if (pageLocaleState == PageLocaleState.Own)
             {
@@ -1037,7 +1037,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     // Not to used on elements. This is only for determin drag'n'drop security
     internal sealed class DragAndDropActionToken : ActionToken
     {
-        private static PermissionType[] _permissoinTypes = new PermissionType[] { PermissionType.Administrate, PermissionType.Edit };
+        private static PermissionType[] _permissoinTypes = { PermissionType.Administrate, PermissionType.Edit };
 
         public override IEnumerable<PermissionType> PermissionTypes
         {
@@ -1051,11 +1051,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     [ActionExecutor(typeof(PreviewActionExecutor))]
     internal sealed class ViewPublicActionToken : ActionToken
     {
-        private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Read };
-
-        public ViewPublicActionToken()
-        {
-        }
+        private static PermissionType[] _permissionTypes = { PermissionType.Read };
 
         public override IEnumerable<PermissionType> PermissionTypes
         {
@@ -1080,11 +1076,7 @@ namespace Composite.Plugins.Elements.ElementProviders.PageElementProvider
     [ActionExecutor(typeof(PreviewActionExecutor))]
     internal sealed class ViewDraftActionToken : ActionToken
     {
-        private static IEnumerable<PermissionType> _permissionTypes = new PermissionType[] { PermissionType.Read };
-
-        public ViewDraftActionToken()
-        {
-        }
+        private static IEnumerable<PermissionType> _permissionTypes = new[] { PermissionType.Read };
 
         public override IEnumerable<PermissionType> PermissionTypes
         {
