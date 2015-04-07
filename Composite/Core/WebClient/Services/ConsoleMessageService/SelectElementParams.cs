@@ -7,5 +7,8 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
     {
         /// <exclude />
         public string EntityToken { get; set; }
+
+        /// <exclude />
+        public string PerspectiveElementKey { get; set; }
     }
 }

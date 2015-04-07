@@ -404,7 +404,11 @@ namespace Composite.Core.WebClient.Services.ConsoleMessageService
                 {
                     SequenceNumber = queueElement.QueueItemNumber,
                     ActionType = ActionType.SelectElement,
-                    BindEntityTokenToViewParams = new BindEntityTokenToViewParams { EntityToken = selectElementQueueItem.EntityToken }
+                    SelectElementParams = new SelectElementParams
+                    {
+                        EntityToken = selectElementQueueItem.EntityToken,
+                        PerspectiveElementKey = selectElementQueueItem.PerspectiveElementKey
+                    }
                 });
             }
 
